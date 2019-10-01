@@ -1,0 +1,319 @@
+	<header>
+	<section class="topBar topBar-v3 hidden-xs">
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="col-lg-6 col-md-6 col-sm-8">
+							<p>
+					Support:
+					<span><i class="fa fa-envelope-square"></i>support@robot.com</span>
+					<span><i class="fa fa-phone-square"></i>9766323877</span>
+				</p>
+						</div>
+			<div class="col-lg-6 col-md-6 col-sm-4">
+							<div class="login-info text-right text-uppercase flip">
+											<a href="#">Help</a>
+						<a href="#">
+							Download App					</a>
+									</div>
+						</div>
+		</div>
+	</div>
+</section><!-- /.topBar -->
+		<!-- NavBar -->
+
+
+		<style type="text/css">
+
+
+					@media screen and (max-width: 400px) {
+    .mobileloc   { display:none; }
+
+    .mobilesearchbut   { display:none; }
+
+
+
+
+}
+
+		</style>
+<section class="classiera-navbar  classieraNavAffix classiera-navbar-v3 affix-top">
+		<div class="container-fluid">
+				<!-- mobile off canvas nav -->
+				<nav id="myNavmenu" class="navmenu navmenu-default navmenu-fixed-left offcanvas offcanvas-light navmenu-fixed-left" role="navigation">
+			<div class="navmenu-brand clearfix">
+				<a href="#">
+											<img src="files/logo.png" alt="LD">
+
+									</a>
+				<button type="button" class="offcanvas-button" data-toggle="offcanvas" data-target="#myNavmenu">
+					<i class="fa fa-times"></i>
+				</button>
+			</div><!--navmenu-brand clearfix-->
+			<div class="log-reg-btn text-center">
+									<a href="#" class="offcanvas-log-reg-btn">
+						Login					</a>
+					<a href="logsign/index.html" class="offcanvas-log-reg-btn">
+						Get Registered					</a>
+							</div>
+			<div class="menu-main-menu-container"><ul id="menu-main-menu" class="nav navmenu-nav">
+<li id="menu-item-248" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-248"><a title="About Us" href="#">About Us</a></li>
+
+<li id="menu-item-237" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-237 dropdown"><a title="Pages" href="#" class="" aria-haspopup="true">Languages <span class="caret"></span></a><a class="resposnive-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#"><i class="fa fa-plus"></i></a>
+<ul role="menu" class="dropdown-menu">
+	<li id="menu-item-347" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-347"><a title="Shop" href="http://demo.joinwebs.com/classiera/jade/shop/">Hindi</a></li>
+	<li id="menu-item-249" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-249"><a title="All Ads" href="http://demo.joinwebs.com/classiera/jade/all-ads/">Marathi</a></li>
+	<li id="menu-item-250" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-250"><a title="All Categories" href="http://demo.joinwebs.com/classiera/jade/all-categories/">All Gujarati</a></li>
+	<li id="menu-item-254" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-254"><a title="Login V2" href="http://demo.joinwebs.com/classiera/jade/login-v2/">Tamil</a></li>
+</ul>
+</li>
+<li id="menu-item-253" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-253"><a title="Contact Us" href="#">Advertise Here&nbsp</a></li>
+</ul></div>			<div class="submit-post">
+				<a href="#" class="btn btn-block btn-primary btn-md active">
+					Sell on LD				</a>
+			</div><!--submit-post-->
+
+		</nav>
+				<!-- mobile off canvas nav -->
+
+
+
+
+
+
+		<!--Primary Nav-->
+		<nav class="navbar navbar-default classiera-custom-navbar-v1">
+					<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand-custom" href="#">
+									<img class="img-responsive" src="files/logo.png" >
+
+
+								</a>
+
+			</div><!--navbar-header-->
+
+
+					<div class="collapse navbar-collapse visible-lg" id="navbarCollapse">
+
+				<div class="nav navbar-nav navbar-right nav-v3-follow flip">
+
+
+					<p>
+			{% if request.user.is_authenticated %}
+ <div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="padding: 10px;"> Hi, {{user.first_name}}
+  <span class="caret"></span></button>
+  <ul class="dropdown-menu">
+	  						{% if user.user_type == '1'%}
+
+    <li><a href="/dashboard/">Dashboard</a></li>
+    <li><a href="/logout/">Log Out</a></li>
+	  {% else %}
+	      <li><a href="/dashboard/">My Account</a></li>
+	      <li><a href="/logout/">Log Out</a></li>
+
+{% endif %}
+  </ul>
+</div>
+						{% else %}
+		<a href= "{% url 'user_app:login' %}?next={{ request.get_full_path }}" style="color: white; font-weight: bold;">Login</a> <span style="color: white; font-weight: bold;">|</span>
+						<a href="{% url 'user_app:sendotp' %}" style="color: white; font-weight: bold;">Signup</a>
+		{% endif %}											</p>
+
+
+				</div>
+				<div class="nav navbar-nav navbar-right betube-search flip">
+					
+
+<style type="text/css">
+		.button {
+  background-color: #a0e418; /* Green */
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+
+
+.button2:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+
+form.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}
+
+form.example button {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+form.example button:hover {
+  background: #0b7dda;
+}
+
+form.example::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+
+.buttonheader {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+
+  padding: 5px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 0px 12px;
+  cursor: pointer;
+    background-color: white;
+  color: black;
+  border: 2px solid #4CAF50;
+}
+
+</style>
+
+
+
+
+
+
+
+						</div>
+				
+
+<form method='GET' data-toggle="validator" role="form" class="search-form search-form-v2 form-inline" action="{% url 'search:query' %}"  novalidate="true">
+
+	<ul id="menu-main-menu-1" class="nav navbar-nav navbar-right nav-margin-top flip nav-ltr">
+
+	
+
+	
+
+
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-253">
+
+
+ <div class="form-group">
+			<!--Searchkeyword-->
+			<div class="form-icon inner-addon left-addon classieraAjaxInput mobsearch">
+										<i class="form-icon form-icon-size-small fa fa-search mobilesearchbut"  style="color: #a0e418;"></i>
+
+
+     {% if query  %}
+							<input style="width:300px;" type="text" id="college"  class="form-control form-control-sm" placeholder="search" name="q" value="{{query }}">
+
+
+							{% else %}
+
+                            <input type="text" id="college"  class="form-control form-control-sm" placeholder="search" name="q" value="{{request.GET.q }}">
+{% endif %}
+							
+						</div>
+						<!--Searchkeyword-->
+					</div>
+
+
+</li>
+
+
+		<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-237 dropdown">
+<p style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">In</p>
+
+</li>
+
+
+
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-253">
+
+
+<div class="form-group " style="width: 190px; ">
+                       <div class="form-icon inner-addon left-addon mobileloc">
+<a id="" href="#" class="form-icon form-icon-size-small" title="Click here to get your own location" style="margin-top: -5px;">
+
+									<i class="fa fa-crosshairs"></i>
+    								</a>
+
+     {% if location  %}
+                           <input type="text" id="name"  class="form-control form-control-sm" placeholder="location" name="l" value="{{location}}">
+{% else %}
+                           <input type="text" id="nam"  class="form-control form-control-sm" placeholder="location" name="l" value="{{request.GET.l }}">
+<!---->
+                           {% endif %}
+
+					   </div>
+                    </div>
+
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-253"> </li>
+
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-253" style="padding-left: 40px;"><button class="mobilesearchbut btn btn-primary button" type="submit"  value="Search" style="background-color: #a0e418">Search</button></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-253"><button class=" buttonheader" style="font-weight: 600;"> Events And Exibition </button></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-253"><button class=" buttonheader" onclick="location.href='{% url 'jobshome' %}'" style="font-weight: 600; "> Jobs </button></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-253"> <button class=" buttonheader" style="font-weight: 600;"> Sell on Robot </button> </li>
+
+	</ul>				<!--collapse navbar-collapse visible-lg-->
+
+</form>
+						</div>
+		</nav>
+
+		<!--Primary Nav-->
+		</div><!--container-->
+</section>
+<!-- NavBar -->	<!-- Mobile App button -->
+	<div class="mobile-submit affix" style="">
+        <ul class="list-unstyled list-inline mobile-app-button">
+		            <li>
+                <a href="#">
+                    <i class="fa fa-sign-in"></i>
+                    <span>Login</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-edit"></i>
+                    <span>Submit Ad</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-user-o"></i>
+                    <span>Get Registered</span>
+                </a>
+            </li>
+		         </ul>
+    </div>
+	<!-- Mobile App button -->
+	</header>

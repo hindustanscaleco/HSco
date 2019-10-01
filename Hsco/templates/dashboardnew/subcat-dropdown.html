@@ -1,0 +1,6 @@
+<option value="">Select Sub-Category</option>
+{% for items in subcat %}
+        <option value="{{ items.id }}">{{ items.id }}-{{ items.name }}</option>
+    {% endfor %}
+
+

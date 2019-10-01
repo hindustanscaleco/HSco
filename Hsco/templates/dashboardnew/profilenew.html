@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html >
+<head>
+	{% load static %}
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>Landscape Duniya CMS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="dns-prefetch" href="http://fonts.googleapis.com/">
+
+	 <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+<link rel="stylesheet" type="text/css" href='{% static "home/css/thumbnail-gallery.css" %}'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" id="select2.min-css" href='{% static "home/css/select2.css" %}' type="text/css" media="all">
+<link rel="stylesheet" id="jquery-ui-css" href='{% static "home/css/jquery-ui.css" %}' type="text/css" media="all">
+<link rel="stylesheet" id="bootstrap-css" href='{% static "home/css/bootstrap.css" %}' type="text/css" media="all">
+<link rel="stylesheet" id="animate.min-css" href='{% static "home/css/animate.css" %}' type="text/css" media="all">
+<link rel="stylesheet" id="bootstrap-dropdownhover.min-css" href='{% static "home/css/bootstrap-dropdownhover.css" %}' type="text/css" media="all">
+<link rel="stylesheet" id="classiera-components-css" href='{% static "home/css/classiera-components.css" %}' type="text/css" media="all">
+<link rel="stylesheet" id="classiera-css" href='{% static "home/css/classiera.css" %}' type="text/css" media="all">
+<link rel="stylesheet" id="owl.theme.default.min-css" href='{% static "home/css/owl.css" %}' type="text/css" media="all">
+<link rel="stylesheet" id="responsive-css" href='{% static "home/css/responsive.css" %}' type="text/css" media="all">
+
+
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all" />
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+<script type="text/javascript" src='{% static "js/jquery_003.js" %}'></script><link rel="stylesheet" href='{% static "home/css/css.css" %}'>
+
+
+<style type="text/css">
+
+
+html, body {
+    max-width: 100%;
+
+    overflow-x: hidden;
+}
+
+.btn.round:hover{border-color: #232323 !important; } .topBar, .topBar.topBar-v3{ background: #232323; } .classiera-navbar.classiera-navbar-v2, .classiera-navbar.classiera-navbar-v2 .navbar-default, .classiera-navbar.classiera-navbar-v3, .classiera-navbar.classiera-navbar-v3.affix, .home .classiera-navbar.classiera-navbar-v6{ background: #ffffff !important; } .classiera-navbar.classiera-navbar-v2 .navbar-default .navbar-nav > li > a, .classiera-navbar.classiera-navbar-v3 .nav > li > a, .classiera-navbar.classiera-navbar-v6 .navbar-default .navbar-nav > li > a, .classiera-navbar.classiera-navbar-v6 .navbar-default .login-reg a:first-of-type{ color: #232323 !important; } footer .widget-box .tagcloud a{ background: #1a1a1a !important; } footer .widget-box .tagcloud a{ color: #ffffff !important; } .footer-bottom{ background: #444444 !important; } .footer-bottom p, .footer-bottom p a, .footer-bottom ul.footer-bottom-social-icon span{ color: #8e8e8e !important; } .members-v1 .members-text h2.callout_title, .members-v4 .member-content h1, .members-v4 .member-content ul li{ color: #ffffff !important; } .members-v4 .member-content ul li span{border-color: #ffffff; } .members-v1 .members-text h2.callout_title_second, .members-v4 .member-content h4{ color: #ffffff !important; } .members-v1 .members-text p,
+
+    .members-v4 .member-content
+
+ p{ color: #fafafa !important; }
+
+ @media only screen and (max-width: 1200px) {
+ #section05{
+ 	display: none;
+ }
+}
+
+
+
+.bg {
+
+
+		background: linear-gradient(to top, transparent, rgba(0, 0, 0, 0.83)),
+
+
+height: 20%;
+  margin: 0;
+  background-position: center;
+
+}
+
+	section.classiera-static-slider .classiera-static-slider-content h1, section.classiera-static-slider-v2 .classiera-static-slider-content h1, section.classiera-simple-bg-slider .classiera-simple-bg-slider-content h1{
+		color:#fff;
+		font-size:46px;
+		font-family:Catamaran !important;
+		font-weight:700;
+		line-height:46px;
+		text-align:;
+		letter-spacing:;
+	}
+	section.classiera-static-slider .classiera-static-slider-content h2, section.classiera-static-slider-v2 .classiera-static-slider-content h2, section.classiera-simple-bg-slider .classiera-simple-bg-slider-content h4{
+		color:#fff;
+		font-size:20px;
+		font-family:Catamaran !important;
+		font-weight:400;
+		line-height:20px;
+		text-align:;
+		letter-spacing:;
+	}
+
+
+	.show-result {
+  margin: 10px;
+  padding: 10px;
+  color: green;
+  font-size: 20px;
+}
+
+.star-rating s:hover,
+.star-rating s.active {
+    color: gold;
+}
+
+.star-rating s{
+    color: black;
+    font-size: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 50px;
+}
+.star-rating {
+    padding: 2px;
+}
+
+.star-rating s:hover:before,
+.star-rating s.rated:before,
+.star-rating s.active:before {
+    content: "\2605";
+}
+.star-rating s:before {
+    content: "\2606";
+}
+
+	</style>	<noscript><style>.woocommerce-product-gallery{ opacity: 1 !important; }</style></noscript>
+	<style type="text/css" title="dynamic-css" class="options-output">h1,
+h1 a{
+font-family:Catamaran;
+line-height:36px;font-weight:700;font-style:normal;color:#232323;font-size:36px;opacity: 1;visibility: visible;-webkit-transition: opacity 0.24s ease-in-out;-moz-transition: opacity 0.24s ease-in-out;transition: opacity 0.24s ease-in-out;}.wf-loading h1,.wf-loading  h1 a{opacity: 0;}.ie.wf-loading h1,.ie.wf-loading  h1 a{visibility: hidden;}
+
+
+::-webkit-scrollbar
+{
+  width: 15px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+
+}
+
+::-webkit-scrollbar-track
+{
+  background: #232323;
+}
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 15px;
+
+  background: #a0e418;
+}
+
+
+.stars-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+
+.stars-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
+
+
+
+</style>
+
+
+	</head>
+
+
+<body class="home page-template page-template-template-landing page-template-template-landing-php page page-id-6 woocommerce-js single-author">
+	{% include 'base_templates/navnosearch.html' %}
+
+{% for obj in obj %}
+<section class="classiera-simple-bg-slider bg" style="height: 45vh;url('{% static "{{ obj.company_image.url }} "%}');">
+
+
+	<div class="classiera-simple-bg-slider-content text-center">
+
+		<br>
+		<br>
+		<p style="font-family : 'Montserrat',sans-serif;  font-size: 320%; line-height: 1.2; color: #fff;">
+						 <span style="font-weight: 600; font-size: 60px;"> <br>{{ obj.company_name }}</span>
+
+		</p>
+		<br>
+
+	</div ><!--classiera-simple-bg-slider-content-->
+</section><!--classiera-simple-bg-slider-->
+
+</section>
+
+
+
+
+
+  <div class="tz-gallery" >
+
+        <div class="row">
+
+
+             <div class="col-md-3 rr">
+                <div class="thumbnail" style="height: 170px;">
+
+                    </a>
+                     <div class="caption">
+                     	<i class="fa fa-phone" aria-hidden="true" style="font-size: 30px; padding-bottom: 10px; padding-top: 10px;"></i>
+
+
+
+
+                        <p id="para" style="font-family : 'Montserrat',sans-serif; font-size: 16px; font-weight: 300; text-align: center; color: black; margin-top: -20px; padding-top: 20px; padding-bottom: 20px;"> +91 {{ obj.phone.0 }}<br> +91 {{ obj.phone.1 }} <br>+91 {{ obj.phone.2 }} <br>+91 {{ obj.phone.3 }}     </p>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+ <div class="col-md-3 rr">
+                <div class="thumbnail" style="height: 170px;">
+
+
+                     <div class="caption">
+                     	<i class="fa fa-building-o" aria-hidden="true" style="font-size: 30px; padding-bottom: 10px; padding-top: 10px;"></i>
+                        <p id="para" style="font-family : 'Montserrat',sans-serif; font-size: 15px; font-weight: 300; text-align: center; color: black; margin-top: -20px; padding-top: 20px; padding-bottom: 20px;">  {{ obj.address }}     </p>
+
+
+                    </div>
+                </div>
+            </div> <div class="col-md-3 rr">
+                <div class="thumbnail" style="height: 170px;">
+
+
+                     <div class="caption">
+                     	<i class="fa fa-envelope" aria-hidden="true" style="font-size: 30px; padding-bottom: 10px; padding-top: 10px;"></i>
+                        <p id="para" style="font-family : 'Montserrat',sans-serif; font-size: 15px; font-weight: 300; text-align: center; color: black; margin-top: -20px; padding-top: 20px; padding-bottom: 20px;">  {{ obj.company_email }}      </p>
+
+
+                    </div>
+                </div>
+            </div> <div class="col-md-3 rr">
+                <div class="thumbnail" style="height: 170px;">
+
+                    </a>
+                     <div class="caption">
+
+                    	<i class="fa fa-globe" aria-hidden="true" style="font-size: 30px; padding-bottom: 10px; padding-top: 10px;"></i>
+                        <p id="para" style="font-family : 'Montserrat',sans-serif; font-size: 15px; font-weight: 300; text-align: center; color: black; margin-top: -20px; padding-top: 20px; padding-bottom: 20px;"> {{ obj.website }}  </p>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+     {% endfor %}
+
+
+
+        </div>
+    </div>
+
+
+<section class="members-v2 " style="background-color: white; margin-left: 15px;  margin-right: 15px; margin-bottom: 15px; margin-top:-20px;">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-5 col-sm-5">
+				   <p class="text-uppercase" style="font-family : 'Montserrat',sans-serif;  font-size: 35px; color: black; text-align: center;padding-top: 10px; padding-bottom: 40px;">Gallery</p>
+
+<div class="tz-gallery" style="margin-left: 0px;" >
+	      <div class="row" >
+
+ {% for object in gallery %}
+
+             <div class="col-md-6">
+
+                <div class="thumbnail" style="height: 200px;">
+
+                      <a href="{{ object.image_path.url }}">  <img src="{{ object.image_path.url }}" style="height: 200px;"></a><br>
+
+
+                </div>
+            </div>
+
+{% endfor %}
+</div>
+
+
+	<button class="button button2" style="margin:auto; display:block; background-color: black;">Click Here To View More </button>
+
+			</div>
+
+
+			</div>
+
+
+
+			<div class="col-lg-7 col-md-7 col-sm-7">
+				{% for object in profile %}
+				<div class="members-text text-left flip">
+
+					<p style="font-family : 'Montserrat',sans-serif; font-size: 35px; font-weight: 300; text-align: center; color: black; padding-top: 15px">About Business</p>
+
+
+					  <p style="color: black;">{{ object.about_us }}</p>
+					  <p style="color: black;">{{ object.services }}</p>
+<div style="float: left; width: 350px;">
+
+	<p style="font-family : 'Montserrat',sans-serif; color: black; text-align: left; padding-top: 40px;"><span style="font-weight: 900; font-size: 20px; color: rgb(160,228,24);">|</span> <span style="font-size: 20px; font-weight: 600;"> Nature of Business </span>  <br>{{ object.nature_of_business }} </p>
+
+
+</div>
+
+<div style="float: left;">
+
+	<p style="font-family : 'Montserrat',sans-serif; color: black; text-align: left; padding-top: 40px;"><span style="font-weight: 900; font-size: 20px; color: rgb(160,228,24);">|</span> <span style="font-size: 20px; font-weight: 600;"> Total Number of Employees </span>  <br> {{ object.total_employees }}</p>
+
+</div>
+<div style="float: left; width: 350px;">
+
+	<p style="font-family : 'Montserrat',sans-serif; color: black; text-align: left; padding-top: 40px;"><span style="font-weight: 900; font-size: 20px; color: rgb(160,228,24);">|</span> <span style="font-size: 20px; font-weight: 600;"> Year of Establishment </span>  <br>{{ object.year_of_est }} </p>
+
+
+</div>
+					<div style="float: left;">
+
+	<p style="font-family : 'Montserrat',sans-serif; color: black; text-align: left; padding-top: 40px;"><span style="font-weight: 900; font-size: 20px; color: rgb(160,228,24);">|</span> <span style="font-size: 20px; font-weight: 600;"> Annual Turnover </span>  <br> {{ object.annual_turnover }}</p>
+
+
+</div>
+
+									</div>
+
+		{% endfor %}
+
+
+
+
+
+
+
+
+
+
+			</div>
+		</div>
+	</div>
+</section>
+
+
+
+
+
+
+
+<style type="text/css">
+
+	/* Full-width input fields */
+.qfinp {
+  width: 65%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+border:3px solid #696969;
+border-radius: 10px;
+overflow: auto;
+
+
+
+}
+
+
+
+@media screen and (min-width: 600px) {
+
+.cont {
+	width:800px;
+}
+
+}
+
+.qfinp:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+
+@media screen and (max-width: 600px) {
+  .qfinp {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+
+
+</style>
+
+
+<section class="members-v2 " style="background-color: white;">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-7 col-sm-7 col-sm-7" style="padding-top: 40px;">
+
+
+
+    <div class="container">
+
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="rating-block">
+					<h3>Average user rating</h3>
+					<h2 class="bold padding-bottom-7">4 <small>/ 5</small></h2>
+					<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+					<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+					<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+					<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+					<i class="fa fa-star" aria-hidden="true"></i>
+
+
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<h3>Rating breakdown</h3>
+				<div class="pull-left">
+					<div class="pull-left" style="width:35px; line-height:1;">
+						<div style="height:9px; margin:5px 0;">5 <i class="fa fa-star" aria-hidden="true"></i></div>
+					</div>
+					<div class="pull-left" style="width:180px;">
+						<div class="progress" style="height:9px; margin:8px 0;">
+						  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="5" style="width: 1000%">
+							<span class="sr-only">80% Complete (danger)</span>
+						  </div>
+						</div>
+					</div>
+					<div class="pull-right" style="margin-left:10px;">1</div>
+				</div>
+				<div class="pull-left">
+					<div class="pull-left" style="width:35px; line-height:1;">
+						<div style="height:9px; margin:5px 0;">4 <i class="fa fa-star" aria-hidden="true"></i></div>
+					</div>
+					<div class="pull-left" style="width:180px;">
+						<div class="progress" style="height:9px; margin:8px 0;">
+						  <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="5" style="width: 80%">
+							<span class="sr-only">80% Complete (danger)</span>
+						  </div>
+						</div>
+					</div>
+					<div class="pull-right" style="margin-left:10px;">1</div>
+				</div>
+				<div class="pull-left">
+					<div class="pull-left" style="width:35px; line-height:1;">
+						<div style="height:9px; margin:5px 0;">3 <i class="fa fa-star" aria-hidden="true"></i></div>
+					</div>
+					<div class="pull-left" style="width:180px;">
+						<div class="progress" style="height:9px; margin:8px 0;">
+						  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="3" aria-valuemin="0" aria-valuemax="5" style="width: 60%">
+							<span class="sr-only">80% Complete (danger)</span>
+						  </div>
+						</div>
+					</div>
+					<div class="pull-right" style="margin-left:10px;">0</div>
+				</div>
+				<div class="pull-left">
+					<div class="pull-left" style="width:35px; line-height:1;">
+						<div style="height:9px; margin:5px 0;">2 <i class="fa fa-star" aria-hidden="true"></i></div>
+					</div>
+					<div class="pull-left" style="width:180px;">
+						<div class="progress" style="height:9px; margin:8px 0;">
+						  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="2" aria-valuemin="0" aria-valuemax="5" style="width: 40%">
+							<span class="sr-only">80% Complete (danger)</span>
+						  </div>
+						</div>
+					</div>
+					<div class="pull-right" style="margin-left:10px;">0</div>
+				</div>
+				<div class="pull-left">
+					<div class="pull-left" style="width:35px; line-height:1;">
+						<div style="height:9px; margin:5px 0;">1 <i class="fa fa-star" aria-hidden="true"></i></div>
+					</div>
+					<div class="pull-left" style="width:180px;">
+						<div class="progress" style="height:9px; margin:8px 0;">
+						  <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="5" style="width: 20%">
+							<span class="sr-only">80% Complete (danger)</span>
+						  </div>
+						</div>
+					</div>
+					<div class="pull-right" style="margin-left:10px;">0</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="row">
+			<div class="col-sm-7">
+				<hr>
+	<div class="container">
+			<div class="row">
+<div class="col-sm-9	">
+
+
+<form method='POST' action="#" style="display:inline;overflow:hidden;">
+		{% csrf_token %}
+<ul style="list-style-type:none; white-space:nowrap; height:20px;">
+	{% if user.is_authenticated %}
+		<li style="display:inline-block;">{{ form.name }}  </li>
+
+	{%endif%}
+	<li style="display:inline-block;">{{ form.review }}  </li>
+	<li style="display:inline-block;">{{ form.Stars }}  </li>
+	<li style="display:inline-block;"><div class="star-rating"><s><s><s><s><s></s></s></s></s></s></div></li>
+	<li style="display:inline-block;">		  <button type="submit" value="Submit">SEND</button>
+  </li>
+</ul>
+
+</form>
+</div>
+		</div>
+						</div>
+
+				<div class="review-block">
+					{% for obj in rating %}
+					<div class="row">
+						<div class="col-sm-3">
+							<img src="files/w.jpg" class="img-rounded">
+							<div class="review-block-name"><h5>{{ obj.name }}</h5></div>
+					</div>
+						<div class="col-sm-9">
+
+					{% for stars in obj.stars_count|rjust:'5' %}
+						{% if forloop.counter <= obj.stars_count %}
+								<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+
+						{% else %}
+								<i class="fa fa-star" aria-hidden="true"></i>
+
+						{% endif %}
+					{% endfor %}
+
+
+							<div class="review-block-title">April 20, 2019</div>
+							<br>
+							<div class="review-block-description">{{ obj.review }}</div>
+						</div>
+
+					</div>
+
+					<hr>
+					{% endfor %}
+
+
+				</div>
+			</div>
+		</div>
+
+
+
+    </div> <!-- /container -->
+
+
+
+
+
+
+
+			</div>
+
+			<div class="col-lg-5 col-md-5 col-sm-5">
+			<div class="members-text text-left flip">
+
+
+
+
+					<h1 align="center" style="padding-top: 60px;">Contact Us</h1>
+					<p style="font-family : 'Montserrat',sans-serif; font-size: 15px; font-weight: 300; text-align: right; color: black; padding-top: 10px">Fill the below form to get quick response from the seller</p>
+
+
+
+										<form action="/action_page.php">
+  <div class="container cont">
+
+
+
+    <input type="text" class="qfinp" placeholder="Enter Product / Service Name" name="Service" required>
+
+        <input type="text" class="qfinp" placeholder="Enter Your Name" name="email" required>
+
+
+    <input type="text" class="qfinp" placeholder="Enter Your Contact Number" name="Contact" required>
+
+
+
+      <textarea class="form-control qfinp" placeholder="Enter Your Requirement / Message" rows="5" id="comment"></textarea>
+
+
+
+
+  </div>
+
+
+</form>
+
+
+
+	<button class="button button2" style="margin:auto; display:block; background-color: black;">Submit </button>
+
+
+									</div>
+
+
+
+
+
+
+			</div>
+		</div>
+	</div>
+</section>
+
+
+
+
+
+
+
+	<!-- back to top -->
+	<!--<a href="#" id="back-to-top" title="Back to top" class="social-icon social-icon-md"><i class="fas fa-arrow-up"></i></a>-->
+
+<script>
+$(function() {
+$("#stars").val("0");
+    $("div.star-rating > s").on("click", function(e) {
+
+    // remove all active classes first, needed if user clicks multiple times
+    $(this).closest('div').find('.active').removeClass('active');
+
+    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+    $(e.target).addClass('active');  // the element user has clicked on
+
+
+        var numStars = $(e.target).parentsUntil("div").length+1;
+        $("#stars").val(numStars);
+
+
+    });
+});
+
+</script>
+
+
+<script type="text/javascript" src='{% static "home/js/jquery_004.js" %}'></script>
+<script type="text/javascript" src='{% static "home/js/bootstrap.js" %}'></script>
+<script type="text/javascript" src='{% static "home/js/bootstrap-dropdownhover.js" %}'></script>
+
+<script type="text/javascript" src='{% static "home/js/jquery.js" %}'></script>
+
+<script type="text/javascript" src='{% static "home/js/classiera.js" %}'></script>
+<script type="text/javascript" src='{% static "home/js/jquery-ui.js" %}'></script>
+
+
+<div role="log" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></div></body></html>
