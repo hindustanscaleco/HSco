@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 
-from .views import amc_form, home
+from .views import amc_form, home, login, dashboard
 from .views import sidebar, home
 from .views import navbar, home
 from .views import cust_mod_form, home
@@ -39,5 +39,7 @@ path('rep_mod_form/', rep_mod_form, name='rep_mod_form'),
 path('restamping_form/', restamping_form, name='restamping_form'),
 path('sidebar/', sidebar, name='sidebar'),
 path('navbar/', navbar, name='navbar'),
+path('login/', login, name='login'),
+path('dashboard/', dashboard, name='dashboard'),
 
 ]

@@ -1,191 +1,115 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-	<title>SAM | Welcome Back</title>
-</head>
-
-<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js
-"></script>
+    {% load static %}
 
 
-<style type="text/css">
-	:root {
-  --input-padding-x: 1.5rem;
-  --input-padding-y: .75rem;
-}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-body {
-  background: #007bff;
-  background: linear-gradient(to right, #0062E6, #33AEFF);
-}
+  <title>CFO Login</title>
 
-.card-signin {
-  border: 0;
-  border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
-}
+  <!-- Custom fonts for this template-->
+  <link href="{% static 'css/dashboard/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i' %}" rel="stylesheet">
 
-.card-signin .card-title {
-  margin-bottom: 2rem;
-  font-weight: 300;
-  font-size: 1.5rem;
-}
-
-.card-signin .card-body {
-  padding: 2rem;
-}
-
-.form-signin {
-  width: 100%;
-}
-
-.form-signin .btn {
-  font-size: 80%;
-  border-radius: 5rem;
-  letter-spacing: .1rem;
-  font-weight: bold;
-  padding: 1rem;
-  transition: all 0.2s;
-}
-
-.form-label-group {
-  position: relative;
-  margin-bottom: 1rem;
-}
-
-.form-label-group input {
-  height: auto;
-  border-radius: 2rem;
-}
-
-.form-label-group>input,
-.form-label-group>label {
-  padding: var(--input-padding-y) var(--input-padding-x);
-}
-
-.form-label-group>label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  margin-bottom: 0;
-  /* Override default `<label>` margin */
-  line-height: 1.5;
-  color: #495057;
-  border: 1px solid transparent;
-  border-radius: .25rem;
-  transition: all .1s ease-in-out;
-}
-
-.form-label-group input::-webkit-input-placeholder {
-  color: transparent;
-}
-
-.form-label-group input:-ms-input-placeholder {
-  color: transparent;
-}
-
-.form-label-group input::-ms-input-placeholder {
-  color: transparent;
-}
-
-.form-label-group input::-moz-placeholder {
-  color: transparent;
-}
-
-.form-label-group input::placeholder {
-  color: transparent;
-}
-
-.form-label-group input:not(:placeholder-shown) {
-  padding-top: calc(var(--input-padding-y) + var(--input-padding-y) * (2 / 3));
-  padding-bottom: calc(var(--input-padding-y) / 3);
-}
-
-.form-label-group input:not(:placeholder-shown)~label {
-  padding-top: calc(var(--input-padding-y) / 3);
-  padding-bottom: calc(var(--input-padding-y) / 3);
-  font-size: 12px;
-  color: #777;
-}
-
-.btn-google {
-  color: white;
-  background-color: #ea4335;
-}
-
-.btn-facebook {
-  color: white;
-  background-color: #3b5998;
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+<style>
+  *{
+font-family: 'Montserrat', sans-serif;
 }
 </style>
-<body>
+</head>
+
+<body class="bg-gradient-primary">
+
   <div class="container">
-    <div class="row">
-      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-        <div class="card card-signin my-5">
-          <div class="card-body">
-            <h5 class="card-title text-center">Log In</h5>
-            <!--<form class="form-signin">-->
-              <!--<div class="form-label-group">-->
-                <!--<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>-->
-                <!--<label for="inputEmail">Username</label>-->
-              <!--</div>-->
 
-              <!--<div class="form-label-group">-->
-                <!--<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>-->
-                <!--<label for="inputPassword">Password</label>-->
-              <!--</div>-->
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
 
-              <!--<div class="custom-control custom-checkbox mb-3">-->
-                <!--<input type="checkbox" class="custom-control-input" id="customCheck1">-->
-                <!--<label class="custom-control-label" for="customCheck1">Remember password</label>-->
-              <!--</div>-->
-              <!--<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Log in</button>-->
+      <div class="col-xl-10 col-lg-12 col-md-12">
 
-              <!--<h3 align="center">Or </h3>-->
+        <div class="card o-hidden border-0 shadow-lg" style="margin-top: 2.5%;">
+          <div class="card-body " >
+            <!-- Nested Row within Card Body -->  <center>
+                        <img src="{% static 'images/hsco.jpg' %}" style="height: 80px;">
+</center>
+            <div class="row">
 
-              <!--<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign Up</button>-->
+          <div class="col-lg-5 d-none d-lg-block"><center>
 
 
-            <!--</form>-->
-            <form method='POST' >{% csrf_token %}
-	    	{% if form.non_field_errors %}
-                {% for error in form.non_field_errors %}
-                    <strong style="color:red;">{{error | striptags}}</strong><br>
-                {% endfor %}
-            {% endif %}
-            <br>
-
-   <div class="form-group">
-                		{{ form.mobile }}
-
-   </div>
-   <div class="form-group">
-                        {{ form.password }}
-
-   </div>
+<img
+    src="{% static 'images/login.svg' %}" height="397px" width="360px" />
+            <!--<h1 style="margin-top: 45%; margin-left: 20px;"> ATMS </h1>-->
 
 
-<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Log in</button>
+          </center>  </div>
+              <div class="col-lg-6">
+                <div class="p-5">
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                  </div>
+                  <form class="user">
+                    <div class="form-group">
+                      <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="User Id">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                      <div class="custom-control custom-checkbox small">
+                        <input type="checkbox" class="custom-control-input" id="customCheck">
+                        <label class="custom-control-label" for="customCheck">Remember Me</label>
+                      </div>
+                    </div>
+                    <a href="/" class="btn btn-primary btn-user btn-block">
+                      Login
+                    </a>
 
-<!--              <h3 align="center">Or </h3>-->
+                    <a href="/" class="btn btn-primary btn-user btn-block">
+                      Clear
+                    </a>
 
-
-    </form>
-<!--              <button class="btn btn-lg btn-primary btn-block text-uppercase" onclick="location.href='{% url 'register' %}'" >Sign Up</button>-->
-
-          </div>
+                  </form>
+                  <hr>
+                  <!--<div class="text-center">-->
+                    <!--<a class="small" href="/">Forgot Password?</a>-->
+                  <!--</div>-->
+                  <!--<div class="text-center">-->
+                    <!--<a class="small" href="/register/">Create an Account!</a>-->
+                  <!--</div>-->
+                </div>
+              </div>
+            </div>
+          </div> <center> <h2 style="font-size: 20px; color: black;">Powered by Blue Whale Technology</h2>
+        <img src="{% static 'images/bw.png' %}" style="height: 80px;">
+        </center>
         </div>
+
       </div>
+
     </div>
+
   </div>
 
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
 
 </body>
+
 </html>
