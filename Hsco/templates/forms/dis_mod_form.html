@@ -1,0 +1,399 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Landscape Duniya</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid" >
+         <center>  <h1>Dispatch Module</h1>  </center>
+
+
+          <div class="row" style="padding:20px;">
+               <label class="col-md-6 control-label">CRM Number: 9766</label>
+
+          </div>
+<br>
+
+
+    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">
+<fieldset>
+
+<div class="form-group row">
+  <label class="col-md-2 control-label ">Dispatch ID
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="first_name" placeholder="Dispatch ID
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Customer number
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="first_name" placeholder="Customer number
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Customer Email ID
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input  name="first_name" placeholder="Customer Email ID" class="form-control"  type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Customer Name
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="first_name" placeholder="Customer Name
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Company name
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="first_name" placeholder="Company name
+" class="form-control"  type="email">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">customer Address
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+<textarea class="form-control"></textarea>    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Goods to be Dispatched
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="first_name" placeholder="Goods to be Dispatched
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Dispatch Date
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input type="date" name="first_name" placeholder="Dispatch Date
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Dispatched By
+
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="first_name" placeholder="Dispatched By" class="form-control"  type="text">
+
+
+     </div>
+  </div>
+
+    <label class="col-md-2 control-label">Packed by
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="first_name" placeholder="Packed by
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Hamal Name
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="first_name" placeholder="Hamal Name
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">No. of Bundles
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="first_name" placeholder="No. of Bundles
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">transport  Name
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="first_name" placeholder="transport  Name
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">LR NO
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="first_name" placeholder="LR NO
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Photo of LR No
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="first_name" placeholder="Photo of LR No
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Channel of Dispatch
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="first_name" placeholder="Channel of Dispatch
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Notes
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="first_name" placeholder="Notes
+" class="form-control"  type="text">
+    </div>
+  </div>
+</div>
+
+
+
+
+<center>
+	<button class="btn btn-primary">Save</button>
+
+</center>
+
+
+
+<br>
+
+
+
+
+
+
+
+</fieldset>
+</form>
+</div>
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
+</body>
+
+</html>
