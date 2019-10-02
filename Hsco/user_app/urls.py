@@ -29,7 +29,8 @@ from .views import restamping_form, home
 
 
 urlpatterns = [
-path('', home, name='home'),
+path('', dashboard, name='dashboard'),
+# path('', home, name='home'),
 path('amc_form/', amc_form, name='amc_form'),
 path('cust_mod_form/', cust_mod_form, name='cust_mod_form'),
 path('dis_mod_form/', dis_mod_form, name='dis_mod_form'),
