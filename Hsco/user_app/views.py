@@ -31,3 +31,9 @@ def sidebar(request):
 def navbar(request):
     return render(request,"base_templates/navbar_for_dashboard.html",)
 
+def login(request):
+    return render(request,"auth/login.html",)
+
+def dashboard(request):
+    return render(request,"dashboardnew/dashboard.html",)
+
