@@ -67,9 +67,9 @@ DATABASES = {
      'ENGINE': 'django.db.backends.mysql',
      'NAME': 'hsco_db',
      'USER': 'root',
-     'PASSWORD': '',
+     'PASSWORD': 'sagar123',
      'HOST': '127.0.0.1',
-     'PORT': '3306',
+     'PORT': '3308',
  }
 }
 
