@@ -19,6 +19,12 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'customer_app',
+    'ess_app',
+    'onsitevisit_app',
+    'repairing_app',
+    'restamping_app',
+    'dispatch_app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,7 +73,7 @@ DATABASES = {
      'ENGINE': 'django.db.backends.mysql',
      'NAME': 'hsco_db',
      'USER': 'root',
-     'PASSWORD': '123456',
+     'PASSWORD': '',
      'HOST': '127.0.0.1',
      'PORT': '3306',
  }
