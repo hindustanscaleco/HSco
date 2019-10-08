@@ -19,19 +19,20 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'customer_app',
-    'ess_app',
-    'onsitevisit_app',
-    'repairing_app',
-    'restamping_app',
-    'dispatch_app',
-    'django.contrib.admin',
+
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user_app',
+    'customer_app',
+    'ess_app',
+    'onsitevisit_app',
+    'repairing_app',
+    'restamping_app',
+    'dispatch_app',
 ]
 
 MIDDLEWARE = [
