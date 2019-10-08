@@ -3,6 +3,7 @@ from django.utils import timezone
 
 class Customer_Details(models.Model):
     crn_number = models.UUIDField()
+    customer_name = models.CharField(max_length=80)
     company_name = models.CharField(max_length=80)
     address = models.CharField(max_length=250)
     contact_no = models.CharField(max_length=30)

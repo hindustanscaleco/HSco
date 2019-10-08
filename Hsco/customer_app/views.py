@@ -1,18 +1,20 @@
 from django.shortcuts import render, redirect
-from customer_app.forms import Customer_Details_Form
-from customer_app.models import Customer_Details
-from customer_app.forms import Product_Details_Form
-from customer_app.models import Product_Details
+from .forms import Customer_Details_Form
+from .models import Customer_Details
+from .forms import Product_Details_Form
+from .models import Product_Details
 
 def add_customer_details(request):
     form = Customer_Details_Form(request.POST or None)
     if request.method == 'POST':
         crn_number = request.POST.get('crn_number')
+        customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('address')
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
         date_of_purchase = request.POST.get('date_of_purchase')
+        quantity = request.POST.get('quantity')
         product_purchase = request.POST.get('product_purchase')
         bill_no = request.POST.get('bill_no')
         upload_op_file = request.POST.get('upload_op_file')
@@ -28,6 +30,7 @@ def add_customer_details(request):
         item = Customer_Details()
 
         item.crn_number = crn_number
+        item.customer_name = customer_name
         item.company_name = company_name
         item.date = address
         item.company_name = company_name
@@ -36,6 +39,7 @@ def add_customer_details(request):
         item.customer_email_id = customer_email_id
         item.date_of_purchase = date_of_purchase
         item.product_purchase = product_purchase
+        item.quantity = quantity
         item.bill_no = bill_no
         item.upload_op_file = upload_op_file
         item.photo_lr_no = photo_lr_no

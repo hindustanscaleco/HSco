@@ -73,7 +73,7 @@ color:;
         <div class="container-fluid" >
 
           <div class="row" style="padding:20px;">
-               <label class="col-md-6 control-label">CRM Number: 9766</label>
+               <label class="col-md-6 control-label">CRM Number:{{crn_number}}</label>
 
           </div>
 <br>
@@ -89,7 +89,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="first_name" placeholder="Full Name" class="form-control"  type="text">
+  <input  name="customer_name" placeholder="Full Name"  class="form-control"  type="text">
     </div>
   </div>
 
@@ -99,7 +99,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="first_name" placeholder="Compay Name" class="form-control"  type="text">
+  <input  name="company_name" placeholder="Compay Name" class="form-control"  type="text">
     </div>
   </div>
 </div>
@@ -114,7 +114,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <textarea class="form-control"></textarea>
+  <textarea class="form-control" name="address" placeholder="Address"></textarea>
     </div>
   </div>
 
@@ -125,7 +125,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="first_name" placeholder="First Name" class="form-control"  type="text">
+  <input  name="contact_no" placeholder="Contact No" class="form-control"  type="text">
     </div>
   </div>
 
@@ -141,7 +141,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="first_name" placeholder="E-mail Id" class="form-control"  type="email">
+  <input type="email" name="customer_email_id" placeholder="E-mail Id" class="form-control"  type="email">
     </div>
   </div>
 
@@ -151,7 +151,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="first_name" placeholder="Date of Purchase" class="form-control"  type="Date">
+  <input  name="date_of_purchase" placeholder="Date of Purchase" class="form-control"  type="Date">
     </div>
   </div>
 </div>
@@ -166,7 +166,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="first_name" placeholder="Product Purchaced" class="form-control"  type="text">
+  <input  name="product_purchase" placeholder="Product Purchaced" class="form-control"  type="text">
     </div>
   </div>
 
@@ -177,7 +177,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="{{product_name}}" placeholder="Quantity" class="form-control"  type="text">
+  <input  name="quantity" placeholder="Quantity" class="form-control"  type="text">
     </div>
   </div>
 
@@ -194,7 +194,7 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-    <select name="department" class="form-control selectpicker">
+    <select name="type_of_scale" class="form-control selectpicker">
       <option value="">Type of Scale</option>
 
       <option >Type A</option>
@@ -215,7 +215,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-drivers-license faicons"></i></span>
-  <input  name="first_name" placeholder="Model of Purchase" class="form-control"  type="text">
+  <input  name="model_of_purchase" placeholder="Model of Purchase" class="form-control"  type="text">
     </div>
   </div>
 
@@ -231,7 +231,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-drivers-license faicons"></i></span>
-  <input  name="first_name" placeholder="Sub Sub Model" class="form-control"  type="text">
+  <input  name="sub_sub_model" placeholder="Sub Sub Model" class="form-control"  type="text">
     </div>
   </div>
 
@@ -242,7 +242,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="first_name" placeholder="Serial No. of Scale" class="form-control"  type="text">
+  <input  name="serial_no_scale" placeholder="Serial No. of Scale" class="form-control"  type="text">
     </div>
   </div>
 
@@ -258,7 +258,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="first_name" placeholder="Brand" class="form-control"  type="text">
+  <input  name="brand" placeholder="Brand" class="form-control"  type="text">
     </div>
   </div>
 
@@ -269,7 +269,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="first_name" placeholder="Capacity" class="form-control"  type="text">
+  <input  name="capacity" placeholder="Capacity" class="form-control"  type="text">
     </div>
   </div>
 
@@ -285,7 +285,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="first_name" placeholder="Unit" class="form-control"  type="text">
+  <input  name="unit" placeholder="Unit" class="form-control"  type="text">
     </div>
   </div>
 
