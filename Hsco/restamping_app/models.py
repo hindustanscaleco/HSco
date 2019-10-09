@@ -3,15 +3,11 @@ import datetime
 from django.db import models
 from django.utils import timezone
 
-class Restamping(models.Model):
-    restampingno = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.restampingno
 
 
 class Restamping_after_sales_service(models.Model):
     # restamping_id = models.ForeignKey(Restamping,on_delete=models.CASCADE)
+    restampingno = models.CharField(max_length=30)
     customer_no = models.CharField(max_length=13,null=True, blank=True)
     company_name = models.CharField(max_length=250,null=True, blank=True)
     address = models.CharField(max_length=250,null=True, blank=True)
