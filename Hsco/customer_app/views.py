@@ -107,3 +107,7 @@ def add_product_details(request):
         'form': form,
     }
     return render(request,'',context)
+
+
+def manager_report(request):
+    return render(request, 'dashboardnew/manager_report.html',)

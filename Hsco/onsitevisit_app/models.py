@@ -42,5 +42,5 @@ class Onsite_aftersales_service(models.Model):
 
 
     def __str__(self):
-        return self.customer_no
+        return self.customer_name
 
