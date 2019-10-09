@@ -5,21 +5,17 @@ from django.utils import timezone
 
 choices = (('YES', 'YES'),
     ('NO', 'NO'),)
-class Onsite_visit(models.Model):
-    repairingno=models.CharField(max_length=50, null=True, blank=True)
-    customer_name = models.CharField(max_length=80, null=True, blank=True)
-    company_name = models.CharField(max_length=80, null=True, blank=True)
 
-
-    def __str__(self):
-        return self.repairingno
 
 class Onsite_aftersales_service(models.Model):
-    customer_no = models.CharField(max_length=13)
+    repairingno = models.CharField(max_length=50, null=True, blank=True)
+    customer_name = models.CharField(max_length=80, null=True, blank=True)
+    company_name = models.CharField(max_length=80, null=True, blank=True)
+    customer_no = models.CharField(max_length=13, null=True, blank=True)
     previous_repairing_number = models.CharField(max_length=30, null=True, blank=True)
-    in_warranty = models.BooleanField(default=True, null=True, blank=True)
+    in_warranty = models.CharField(default='NO', max_length=30, choices=choices)
     phone_no = models.CharField(max_length=13, null=True, blank=True)
-    customer_email_id = models.EmailField(max_length=255, unique=True, null=True, blank=True)
+    customer_email_id = models.EmailField(max_length=255, null=True, blank=True)
     date_of_complaint_received = models.DateField(default=datetime.date.today,blank=True)
     customer_address = models.CharField(max_length=250, null=True, blank=True)
     complaint_received_by = models.CharField(max_length=30, null=True, blank=True)
