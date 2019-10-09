@@ -56,8 +56,6 @@ def add_ess_details(request):
 
 
 
-    context = {
-        'form': form,
-    }
-    return render(request,'forms/ess_form.html',context)
+
+    return render(request,'forms/ess_form.html',)
 

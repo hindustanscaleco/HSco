@@ -4,18 +4,13 @@ from django.db import models
 from django.utils import timezone
 
 
-class Amcvisit(models.Model):
-    amcno=models.CharField(max_length=50,null=True,blank=True)
-    customer_name = models.CharField(max_length=80,null=True,blank=True)
-    company_name = models.CharField(max_length=80,null=True,blank=True)
-
-
-    def __str__(self):
-        return self.amcno
 
 
 class Amc_After_Sales(models.Model):
     # amc_visit_id = models.ForeignKey(Amcvisit, on_delete=models.CASCADE)
+    amcno = models.CharField(max_length=50, null=True, blank=True)
+    customer_name = models.CharField(max_length=80, null=True, blank=True)
+    company_name = models.CharField(max_length=80, null=True, blank=True)
     customer_no =models.CharField(max_length=13,null=True,blank=True)
     customer_email_id = models.EmailField(max_length=255, unique=True,null=True,blank=True)
     type_of_scale = models.CharField(max_length=30,null=True,blank=True)
