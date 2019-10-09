@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+
 from .forms import Customer_Details_Form
 from .models import Customer_Details
 from .forms import Product_Details_Form
@@ -6,7 +7,7 @@ from .models import Product_Details
 
 def add_customer_details(request):
     form = Customer_Details_Form(request.POST or None, request.FILES or None)
-    if request.method == 'POST' or None:
+    if request.method == 'POST' or  request.method=='FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('address')
@@ -48,8 +49,7 @@ def add_customer_details(request):
         item.feedback_form_filled = feedback_form_filled
 
         item.save()
-        print('dsdsd')
-        print(item)
+
 
         return redirect('/')
 

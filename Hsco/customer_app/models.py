@@ -1,15 +1,20 @@
+import datetime
+import uuid
+
 from django.db import models
 from django.utils import timezone
+choices = (('YES', 'YES'),
+    ('NO', 'NO'),)
 
 class Customer_Details(models.Model):
-    crn_number = models.UUIDField()
+    crn_number = models.UUIDField(primary_key=True, default=uuid.uuid4)
     customer_name = models.CharField(max_length=80,null=True,blank=True)
     company_name = models.CharField(max_length=80,null=True,blank=True)
     address = models.CharField(max_length=250,null=True,blank=True)
     contact_no = models.CharField(max_length=30,null=True,blank=True)
     customer_email_id = models.CharField(max_length=30,null=True,blank=True)
-    date_of_purchase = models.DateField(null=True,blank=True)
-    product_purchase_date = models.DateTimeField(default=timezone.now,null=True,blank=True)
+    date_of_purchase = models.DateField(null=True,blank=True, default=datetime.date.today)
+    product_purchase_date = models.DateField(null=True,blank=True, default=datetime.date.today)
     #sales_person = models.CharField(max_length=30)
     #new_repeat_purchase = models.CharField(max_length=30)
     bill_no = models.CharField(max_length=30,null=True,blank=True)
@@ -21,12 +26,12 @@ class Customer_Details(models.Model):
     value_of_goods = models.CharField(max_length=30,null=True,blank=True)
     channel_of_dispatch = models.CharField(max_length=30,null=True,blank=True)
     notes = models.CharField(max_length=30,null=True,blank=True)
-    feedback_form_filled = models.BooleanField(default=False,null=True,blank=True)
+    feedback_form_filled = models.CharField(max_length=30,null=True,blank=True,choices=choices)
     #dispatch_id_assigned = models.CharField(max_length=30)
 
 
     def __str__(self):
-        return self.crn_number
+        return self.customer_name
 
 
 

@@ -17,8 +17,6 @@ class Customer_Details_Form(forms.ModelForm):
         'contact_no',
         'customer_email_id',
         'date_of_purchase',
-        'product_purchase',
-        'quantity',
         'bill_no',
         'upload_op_file',
         'po_number',

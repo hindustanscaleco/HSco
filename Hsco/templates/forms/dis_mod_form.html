@@ -81,7 +81,7 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">
+    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;" enctype="multipart/form-data">{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
@@ -92,7 +92,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="first_name" placeholder="Dispatch ID
+  <input  name="dispatch_id" placeholder="Dispatch ID
 " class="form-control"  type="text">
     </div>
   </div>
@@ -104,7 +104,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="first_name" placeholder="Customer number
+  <input  name="customer_no" placeholder="Customer number
 " class="form-control"  type="text">
     </div>
   </div>
@@ -124,7 +124,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="first_name" placeholder="Customer Email ID" class="form-control"  type="text">
+  <input  name="customer_email" placeholder="Customer Email ID" class="form-control"  type="text">
     </div>
   </div>
 
@@ -136,7 +136,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="first_name" placeholder="Customer Name
+  <input  name="customer_name" placeholder="Customer Name
 " class="form-control"  type="text">
     </div>
   </div>
@@ -155,7 +155,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="first_name" placeholder="Company name
+  <input  name="company_name" placeholder="Company name
 " class="form-control"  type="email">
     </div>
   </div>
@@ -167,7 +167,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<textarea class="form-control"></textarea>    </div>
+<textarea name="customer_address" class="form-control"></textarea>    </div>
   </div>
 
 </div>
@@ -175,17 +175,17 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Goods to be Dispatched
+  <!--<label class="col-md-2 control-label">Goods to be Dispatched-->
 
 
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-car faicons"></i></span>
-  <input  name="first_name" placeholder="Goods to be Dispatched
-" class="form-control"  type="text">
-    </div>
-  </div>
+<!--</label>-->
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-car faicons"></i></span>-->
+  <!--<input  name="first_name" placeholder="Goods to be Dispatched-->
+<!--" class="form-control"  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
 
     <label class="col-md-2 control-label">Dispatch Date
 
@@ -195,7 +195,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="first_name" placeholder="Dispatch Date
+  <input type="date" name="date_of_dispatch" placeholder="Dispatch Date
 " class="form-control"  type="text">
     </div>
   </div>
@@ -214,7 +214,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="first_name" placeholder="Dispatched By" class="form-control"  type="text">
+  <input  name="dispatch_by" placeholder="Dispatched By" class="form-control"  type="text">
 
 
      </div>
@@ -228,7 +228,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="first_name" placeholder="Packed by
+  <input  name="packed_by" placeholder="Packed by
 " class="form-control"  type="text">
     </div>
   </div>
@@ -246,7 +246,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="first_name" placeholder="Hamal Name
+  <input  name="hamal_name" placeholder="Hamal Name
 " class="form-control"  type="text">
     </div>
   </div>
@@ -259,7 +259,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="first_name" placeholder="No. of Bundles
+  <input  name="no_bundles" placeholder="No. of Bundles
 " class="form-control"  type="text">
     </div>
   </div>
@@ -277,7 +277,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-car faicons"></i></span>
-  <input  name="first_name" placeholder="Transport  Name
+  <input  name="transport_name" placeholder="Transport  Name
 " class="form-control"  type="text">
     </div>
   </div>
@@ -290,7 +290,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="first_name" placeholder="LR NO
+  <input  name="lr_no" placeholder="LR NO
 " class="form-control"  type="text">
     </div>
   </div>
@@ -308,8 +308,8 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-drivers-license faicons"></i></span>
-  <input  name="first_name" placeholder="Photo of LR No
-" class="form-control"  type="text">
+  <input  name="photo_lr_no" placeholder="Photo of LR No
+" class="form-control"  type="file">
     </div>
   </div>
 
@@ -321,7 +321,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="first_name" placeholder="Channel of Dispatch
+  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch
 " class="form-control"  type="text">
     </div>
   </div>
@@ -339,7 +339,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <input  name="first_name" placeholder="Notes
+  <input  name="notes" placeholder="Notes
 " class="form-control"  type="text">
     </div>
   </div>

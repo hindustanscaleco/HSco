@@ -80,7 +80,7 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">
+    <form class="well form-horizontal" action=" " method="post"  id="contact_form" enctype="multipart/form-data" style="padding:20px;">{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
@@ -96,7 +96,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="first_name" placeholder="Employee Name
+  <input  name="employee_name" placeholder="Employee Name
 
 
 
@@ -116,7 +116,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="first_name" placeholder="Details
+  <input  name="details" placeholder="Details
 
 
 
@@ -143,7 +143,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input type="number" name="first_name" placeholder="Contact No
+  <input type="number" name="contact_no" placeholder="Contact No
 
 
 
@@ -163,7 +163,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="first_name" placeholder="E-mail Id
+  <input type="email" name="email_id" placeholder="E-mail Id
 
 
 
@@ -191,12 +191,12 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-photo faicons"></i></span>
-  <input  name="first_name" placeholder="Photo
+  <input  name="photo" placeholder="Photo
 
 
 
 
-" class="form-control"  type="email">
+" class="form-control"  type="file">
     </div>
   </div>
 
@@ -212,7 +212,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <input  name="first_name" placeholder="PAN Card
+  <input  name="pancard" placeholder="PAN Card
 
 
 " class="form-control"  type="text">
@@ -236,7 +236,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <input  name="first_name" placeholder="Aadhar Card
+  <input  name="aadhar_card" placeholder="Aadhar Card
 
 
 
@@ -255,7 +255,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-bank faicons"></i></span>
-  <input  name="first_name" placeholder="Bank Details
+  <input  name="bank_details" placeholder="Bank Details
 
 
 
@@ -284,13 +284,13 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-vcard faicons"></i></span>
-  <input  name="first_name" placeholder="Photo of cancelled cheque
+  <input  name="photo_of_cancelled_cheque" placeholder="Photo of cancelled cheque
 
 
 
 
 
-" class="form-control"  type="text">
+" class="form-control"  type="file">
     </div>
   </div>
 
@@ -312,7 +312,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="first_name" placeholder="Calendar
+  <input type="date" name="calendar" placeholder="Calendar
 
 
 
@@ -335,7 +335,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="first_name" placeholder="Target for the month
+  <input  name="target_of_month" placeholder="Target for the month
 
 
 
@@ -363,7 +363,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-bell faicons"></i></span>
-  <input  name="first_name" placeholder="Target achieved until now
+  <input  name="target_achived_till_now" placeholder="Target achieved until now
 
 
 
@@ -386,7 +386,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-bar-chart faicons"></i></span>
-  <input  name="first_name" placeholder="Month on month sales achieved
+  <input  name="month_on_month_sale_achived" placeholder="Month on month sales achieved
 
 
 
@@ -414,7 +414,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="first_name" placeholder="Defects given
+  <input  name="defect_given" placeholder="Defects given
 
 
 
@@ -436,7 +436,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-warning faicons"></i></span>
-  <input  name="first_name" placeholder="Warnings given
+  <input  name="warnings_given" placeholder="Warnings given
 
 
 
