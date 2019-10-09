@@ -3,9 +3,13 @@ from django.shortcuts import render
 def home(request):
     return render(request,"dashboardnew/dash.html",)
 
+def user_profile(request):
 
-def cust_mod_form(request):
-    return render(request,"forms/cust_mod_form.html",)
+    return render(request,"dashboardnew/userprofile.html",)
+
+def user_logs(request):
+    return render(request,"dashboardnew/logs.html")
+
 
 def amc_form(request):
     return render(request,"forms/amc_form.html",)

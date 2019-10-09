@@ -30,7 +30,7 @@ class Customer_Details(models.Model):
     channel_of_dispatch = models.CharField(max_length=30,null=True,blank=True)
     notes = models.CharField(max_length=30,null=True,blank=True)
     feedback_form_filled = models.CharField(max_length=30,null=True,blank=True, choices=choices)
-    #dispatch_id_assigned = models.CharField(max_length=30)
+    dispatch_id_assigned = models.CharField(max_length=30,null=True,blank=True)
 
     def __str__(self):
         return self.customer_name

@@ -92,3 +92,10 @@ def add_product_details(request):
         'form': form,
     }
     return render(request,'',context)
+
+def view_customer_details(request):
+    customer_list = Customer_Details.objects.all()
+    context={
+        customer_list:'customer_list',
+    }
+    return render(request,'dashboardnew/cm.html',context )
