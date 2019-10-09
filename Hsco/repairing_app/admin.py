@@ -1,3 +1,4 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Repairing_after_sales_service
+admin.site.register(Repairing_after_sales_service)
