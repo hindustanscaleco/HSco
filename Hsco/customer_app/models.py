@@ -6,6 +6,16 @@ from django.utils import timezone
 choices = (('YES', 'YES'),
     ('NO', 'NO'),)
 
+feedback = (('1', '1'),
+    ('2', '2'),
+    ('3', '3'),
+    ('4', '4'),
+    ('5', '5'),
+    ('6', '6'),
+    ('7', '7'),
+    ('8', '8'),
+    ('9', '9'),
+    ('10', '10'),)
 
 
 class Customer_Details(models.Model):
@@ -50,6 +60,19 @@ class Product_Details(models.Model):
 
     def __str__(self):
         return self.product_name
+
+class Feedback(models.Model):
+
+    name = models.CharField(max_length=60,null=True,blank=True)
+    performance = models.CharField(max_length=30,null=True,blank=True,choices=feedback)
+    co_operation     = models.CharField(max_length=30,null=True,blank=True,choices=feedback)
+    communication = models.CharField(max_length=30,null=True,blank=True,choices=feedback)
+    quality_of_work = models.CharField(max_length=30,null=True,blank=True,choices=feedback)
+    stars_count        = models.BigIntegerField()
+
+    def __str__(self):
+        return self.name
+
 
 
 

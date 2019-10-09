@@ -1,13 +1,14 @@
+from django.db.models import Avg
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import Customer_Details_Form
-from .models import Customer_Details
+from .forms import Customer_Details_Form, Feedback_Form
+from .models import Customer_Details, Feedback
 from .forms import Product_Details_Form
 from .models import Product_Details
 
 def add_customer_details(request):
-    instance = get_object_or_404(Customer_Details, id=id)
-    form = Customer_Details_Form(request.POST or None, request.FILES or None, instance=instance)
+    form = Customer_Details_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or  request.method=='FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -62,7 +63,6 @@ def add_customer_details(request):
 
 def view_customer_details(request):
     customer_list = Customer_Details.objects.all()
-    print('dfsafasd')
     print(customer_list)
     context={
         'customer_list':customer_list,
@@ -70,9 +70,33 @@ def view_customer_details(request):
     return render(request,'dashboardnew/cm.html',context )
 
 def update_customer_details(request,id):
-    id = Customer_Details.objects.get(id=id)
-    print(id)
-    return render(request,'dashboardnew/cm.html', )
+    customer_id = Customer_Details.objects.get(id=id)
+    feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
+    if request.method =='POST' and 'performance' in request.POST:
+        name = request.POST.get('name')
+        performance = request.POST.get('performance')
+        co_operation = request.POST.get('co_operation')
+        communication = request.POST.get('communication')
+        quality_of_work = request.POST.get('quality_of_work')
+        stars_count = request.POST.get('stars_count')
+
+        item = Feedback()
+
+        item.name = name
+        item.performance = performance
+        item.co_operation = co_operation
+        item.quality_of_work = quality_of_work
+        item.communication = communication
+        item.stars_count = stars_count
+
+        item.save()
+
+        return HttpResponse('Feedback Submitted!!!')
+    context={
+        'cust_id':customer_id,
+        'feedback_form':feedback_form,
+    }
+    return render(request,'update_forms/update_cust_mod_form.html',context)
 
 
 def add_product_details(request):

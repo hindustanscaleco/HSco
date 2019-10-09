@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Customer_Details
+from .models import Customer_Details, Feedback
 from .models import Product_Details
 
 
@@ -28,10 +28,6 @@ class Customer_Details_Form(forms.ModelForm):
         'notes',
         'feedback_form_filled',)
 
-
-
-
-
 class Product_Details_Form(forms.ModelForm):
 
 
@@ -49,3 +45,26 @@ class Product_Details_Form(forms.ModelForm):
         'brand',
         'capacity',
         'unit',)
+
+class Feedback_Form(forms.ModelForm):
+    stars_count = forms.IntegerField(required=True,
+                               widget=forms.TextInput(
+                                   attrs={
+                                       'type': 'hidden',
+                                       'class': '',
+                                       'placeholder': "Stars",
+                                       'name': 'email',
+                                       'id': 'stars',
+                                   }
+                               ))
+
+    class Meta:
+        model = Feedback  # model
+        fields = (
+        'name',
+        'performance',
+        'co_operation',
+        'communication',
+        'quality_of_work',
+        'stars_count',
+       )

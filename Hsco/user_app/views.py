@@ -42,5 +42,5 @@ def dashboard(request):
     return render(request,"dashboardnew/dashboard.html",)
 
 def report(request):
-    return render(request,"forms/report.html",)
+    return render(request,"dashboardnew/report.html",)
 
