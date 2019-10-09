@@ -1,6 +1,9 @@
+import datetime
+
 from django.db import models
 from django.utils import timezone
-
+choices = (('YES', 'YES'),
+    ('NO', 'NO'),)
 class Repairing(models.Model):
     repairingnumber = models.CharField(max_length=40)
 
@@ -11,9 +14,9 @@ class Repairing(models.Model):
 class Repairing_after_sales_service(models.Model):
     customer_no = models.CharField(max_length=13)
     previous_repairing_number = models.CharField(max_length=30)
-    in_warranty = models.BooleanField(default=True)
+    in_warranty = models.CharField(choices=choices,default='NO',max_length=30)
     date_of_purchase = models.DateField()
-    today_date = models.DateField(timezone.now)
+    today_date = models.DateField(default=datetime.date.today)
     name = models.CharField(max_length=60)
     company_name = models.CharField(max_length=80)
     phone_no = models.CharField(max_length=13)
