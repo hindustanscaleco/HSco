@@ -7,6 +7,7 @@ from .models import Restamping_after_sales_service
 def restamping_after_sales_service(request):
     # form = Customer_Details_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method=='FILES':
+        restampingno = request.POST.get('restampingno')
         customer_no = request.POST.get('customer_no')
         company_name = request.POST.get('company_name')
         address = request.POST.get('address')
@@ -26,6 +27,7 @@ def restamping_after_sales_service(request):
 
         item = Restamping_after_sales_service()
 
+        item.restampingno = restampingno
         item.customer_no = customer_no
         item.company_name = company_name
         item.address = address
