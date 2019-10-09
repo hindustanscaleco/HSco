@@ -13,7 +13,7 @@ class Restamping(models.Model):
 class Restamping_after_sales_service(models.Model):
     # restamping_id = models.ForeignKey(Restamping,on_delete=models.CASCADE)
     customer_no = models.CharField(max_length=13,null=True, blank=True)
-    company_address = models.CharField(max_length=250,null=True, blank=True)
+    company_name = models.CharField(max_length=250,null=True, blank=True)
     address = models.CharField(max_length=250,null=True, blank=True)
     today_date = models.DateField(default=datetime.date.today, blank=True)
     mobile_no = models.CharField(max_length=13,null=True, blank=True)

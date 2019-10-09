@@ -1,45 +1,74 @@
 from django.shortcuts import render, redirect
 
-# Create your views here.
 from .models import Repairing_after_sales_service
 
 
 def add_repairing_details(request):
-    if request.method == 'POST' or  request.method=='FILES':
-        employee_name = request.POST.get('employee_name')
-        details = request.POST.get('details')
-        contact_no = request.POST.get('contact_no')
-        email_id = request.POST.get('email_id')
-        photo = request.POST.get('photo')
-        pancard = request.POST.get('pancard')
-        aadhar_card = request.POST.get('aadhar_card')
-        bank_details = request.POST.get('bank_details')
-        photo_of_cancelled_cheque = request.POST.get('photo_of_cancelled_cheque')
-        calendar = request.POST.get('calendar')
-        target_of_month = request.POST.get('target_of_month')
-        target_achived_till_now = request.POST.get('target_achived_till_now')
-        month_on_month_sale_achived = request.POST.get('month_on_month_sale_achived')
-        defect_given = request.POST.get('defect_given')
-        warnings_given = request.POST.get('warnings_given')
+    if request.method == 'POST' or request.method == 'FILES':
+        customer_no = request.POST.get('customer_no')
+        previous_repairing_number = request.POST.get('previous_repairing_number')
+        in_warranty = request.POST.get('in_warranty')
+        date_of_purchase = request.POST.get('date_of_purchase')
+        today_date = request.POST.get('today_date')
+        name = request.POST.get('name')
+        company_name = request.POST.get('company_name')
+        phone_no = request.POST.get('phone_no')
+        customer_email_id = request.POST.get('customer_email_id')
+        loaction = request.POST.get('loaction')
+        products_to_be_repaired = request.POST.get('products_to_be_repaired')
+        type_of_machine = request.POST.get('type_of_machine')
+        model = request.POST.get('model')
+        sub_model = request.POST.get('sub_model')
+        problem_in_scale = request.POST.get('problem_in_scale')
+        components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
+        components_replaced = request.POST.get('components_replaced')
+        replaced_scale_given = request.POST.get('replaced_scale_given')
+        Replaced_scale_serial_no = request.POST.get('Replaced_scale_serial_no')
+        deposite_taken_for_replaced_scale = request.POST.get('deposite_taken_for_replaced_scale')
+        cost = request.POST.get('cost')
+        total_cost = request.POST('total_cost')
+        informed_on = request.POST.get('informed_on')
+        informed_by = request.POST.get('informed_by')
+        confirmed_estimate = request.POST.get('confirmed_estimate')
+        repaired = request.POST.get('repaired')
+        repaired_date = request.POST.get('repaired_date')
+        delivery_date = request.POST.get('delivery_date')
+        delivery_by = request.POST.get('delivery_by')
+        feedback_given = request.POST.get('feedback_given')
 
         item = Repairing_after_sales_service()
 
-        item.employee_name = employee_name
-        item.details = details
-        item.contact_no = contact_no
-        item.email_id = email_id
-        item.photo = photo
-        item.contact_no = contact_no
-        item.pancard = pancard
-        item.aadhar_card = aadhar_card
-        item.bank_details = bank_details
-        item.photo_of_cancelled_cheque = photo_of_cancelled_cheque
-        item.calendar = calendar
-        item.target_of_month = target_of_month
-        item.target_achived_till_now = target_achived_till_now
-        item.month_on_month_sale_achived = month_on_month_sale_achived
-        item.defect_given = defect_given
-        item.warnings_given = warnings_given
+
+        item.customer_no = customer_no
+        item.previous_repairing_number = previous_repairing_number
+        item.in_warranty = in_warranty
+        item.date_of_purchase = date_of_purchase
+        item.today_date = today_date
+        item.name = name
+        item.company_name = company_name
+        item.phone_no = phone_no
+        item.customer_email_id = customer_email_id
+        item.loaction = loaction
+        item.products_to_be_repaired = products_to_be_repaired
+        item.type_of_machine = type_of_machine
+        item.model = model
+        item.sub_model = sub_model
+        item.problem_in_scale = problem_in_scale
+        item.components_replaced_in_warranty = components_replaced_in_warranty
+        item.components_replaced = components_replaced
+        item.replaced_scale_given = replaced_scale_given
+        item.Replaced_scale_serial_no = Replaced_scale_serial_no
+        item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
+        item.cost = cost
+        item.total_cost = total_cost
+        item.informed_on = informed_on
+        item.informed_by = informed_by
+        item.confirmed_estimate = confirmed_estimate
+        item.repaired = repaired
+        item.repaired_date = repaired_date
+        item.delivery_date = delivery_date
+        item.delivery_by = delivery_by
+        item.feedback_given = feedback_given
 
         item.save()
 
@@ -47,4 +76,4 @@ def add_repairing_details(request):
         return redirect('/')
 
 
-    return render(request,'forms/ess_form.html',)
+    return render(request,'forms/rep_mod_form.html',)
