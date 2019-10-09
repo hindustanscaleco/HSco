@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'repairing_app',
     'restamping_app',
     'dispatch_app',
+    'amc_visit_app',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +75,7 @@ DATABASES = {
      'ENGINE': 'django.db.backends.mysql',
      'NAME': 'hsco_db',
      'USER': 'root',
-     'PASSWORD': '',
+     'PASSWORD': 'sagar123',
      'HOST': '127.0.0.1',
      'PORT': '3306',
  }
