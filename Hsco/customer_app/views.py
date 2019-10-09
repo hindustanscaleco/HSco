@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import Customer_Details_Form
 from .models import Customer_Details
@@ -6,7 +6,8 @@ from .forms import Product_Details_Form
 from .models import Product_Details
 
 def add_customer_details(request):
-    form = Customer_Details_Form(request.POST or None, request.FILES or None)
+    instance = get_object_or_404(Customer_Details, id=id)
+    form = Customer_Details_Form(request.POST or None, request.FILES or None, instance=instance)
     if request.method == 'POST' or  request.method=='FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -59,6 +60,20 @@ def add_customer_details(request):
     return render(request,'forms/cust_mod_form.html',context)
 
 
+def view_customer_details(request):
+    customer_list = Customer_Details.objects.all()
+    print('dfsafasd')
+    print(customer_list)
+    context={
+        'customer_list':customer_list,
+    }
+    return render(request,'dashboardnew/cm.html',context )
+
+def update_customer_details(request,id):
+    id = Customer_Details.objects.get(id=id)
+    print(id)
+    return render(request,'dashboardnew/cm.html', )
+
 
 def add_product_details(request):
     form = Product_Details_Form(request.POST or None)
@@ -92,10 +107,3 @@ def add_product_details(request):
         'form': form,
     }
     return render(request,'',context)
-
-def view_customer_details(request):
-    customer_list = Customer_Details.objects.all()
-    context={
-        customer_list:'customer_list',
-    }
-    return render(request,'dashboardnew/cm.html',context )
