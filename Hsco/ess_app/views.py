@@ -1,4 +1,9 @@
 from django.shortcuts import render, redirect
+from .models import Ess
+
+
+
+
 
 # Create your views here.
 from .models import Ess
@@ -29,6 +34,12 @@ def add_ess_details(request):
         item.contact_no = contact_no
         item.email_id = email_id
         item.photo = photo
+        item.pancard = pancard
+        item.aadhar_card = aadhar_card
+        item.photo_of_cancelled_cheque = photo_of_cancelled_cheque
+        item.target_of_month = target_of_month
+        item.target_achived_till_now = target_achived_till_now
+        item.bank_details = bank_details
         item.contact_no = contact_no
         item.pancard = pancard
         item.aadhar_card = aadhar_card
@@ -42,9 +53,12 @@ def add_ess_details(request):
         item.warnings_given = warnings_given
 
         item.save()
-
-
         return redirect('/')
 
 
-    return render(request,'forms/ess_form.html',)
+
+    context = {
+        'form': form,
+    }
+    return render(request,'forms/ess_form.html',context)
+
