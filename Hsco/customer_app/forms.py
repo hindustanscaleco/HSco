@@ -1,7 +1,7 @@
 from django import forms
 
-from customer_app.models import Customer_Details
-from customer_app.models import Product_Details
+from .models import Customer_Details
+from .models import Product_Details
 
 
 class Customer_Details_Form(forms.ModelForm):

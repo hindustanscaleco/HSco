@@ -19,12 +19,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'customer_app',
-    'ess_app',
-    'onsitevisit_app',
-    'repairing_app',
-    'restamping_app',
-    'dispatch_app',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -32,6 +27,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user_app',
+    'customer_app',
+    'ess_app',
+    'onsitevisit_app',
+    'repairing_app',
+    'restamping_app',
+    'dispatch_app',
 ]
 
 MIDDLEWARE = [
@@ -73,7 +74,7 @@ DATABASES = {
      'ENGINE': 'django.db.backends.mysql',
      'NAME': 'hsco_db',
      'USER': 'root',
-     'PASSWORD': '',
+     'PASSWORD': 'sagar123',
      'HOST': '127.0.0.1',
      'PORT': '3306',
  }
