@@ -1,12 +1,14 @@
 from django.db import models
 from django.utils import timezone
 
+
+
 class Customer_Details(models.Model):
     crn_number = models.UUIDField()
     company_name = models.CharField(max_length=80)
     address = models.CharField(max_length=250)
     contact_no = models.CharField(max_length=30)
-    customer_email_id = models.CharField(max_length=30)
+    customer_email_id = models.EmailField('Email-id', max_length=255, unique=True )
     date_of_purchase = models.DateField()
     product_purchase = models.DateTimeField(default=timezone.now)
     quantity = models.CharField(max_length=30)
@@ -38,7 +40,7 @@ class Product_Details(models.Model):
     model_of_purchase = models.CharField(max_length=30)
     sub_model = models.CharField(max_length=30)
     sub_sub_model = models.CharField(max_length=30)
-    serial_no_scale = models.CharField(max_length=30)
+    serial_no_scale = models.CharField(max_length=80)
     brand = models.CharField(max_length=30)
     capacity = models.CharField(max_length=30)
     unit = models.CharField(max_length=30)
