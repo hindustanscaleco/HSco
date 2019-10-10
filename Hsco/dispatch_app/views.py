@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
+
+# Create your views here.
 from .models import Dispatch
 
+
 def add_dispatch_details(request):
-    form = (request.POST or None, request.FILES or None)
-    if request.method == 'POST':
+    # form = Customer_Details_Form(request.POST or None, request.FILES or None)
+    if request.method == 'POST' or request.method=='FILES':
         dispatch_id = request.POST.get('dispatch_id')
         customer_no = request.POST.get('customer_no')
         customer_email = request.POST.get('customer_email')
@@ -21,7 +24,8 @@ def add_dispatch_details(request):
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
 
-        item=Dispatch()
+        item = Dispatch()
+
         item.dispatch_id = dispatch_id
         item.customer_no = customer_no
         item.customer_email = customer_email
@@ -40,14 +44,13 @@ def add_dispatch_details(request):
         item.notes = notes
 
 
-
         item.save()
+        print('dsdsd')
+        print(item)
 
         return redirect('/')
 
-
     context = {
-        'form': form,
     }
     return render(request,'forms/dis_mod_form.html',context)
 
