@@ -12,7 +12,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = SiteUser
-        fields = ('email', 'mobile', 'first_name', 'last_name')
+        fields = ('email', 'mobile',)
 
     def clean_password2(self):
         password = self.cleaned_data.get("password")
@@ -34,7 +34,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = SiteUser
-        fields = ('email', 'password', 'mobile', 'first_name', 'last_name', 'is_active', 'is_admin', 'user_type')
+        fields = ('email', 'password', 'mobile',  'user_type')
 
     def clean_password(self):
         return self.initial["password"]
@@ -44,23 +44,24 @@ class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('email', 'mobile', 'first_name', 'last_name', 'is_admin', 'is_staff', 'is_active', 'user_type')
-    list_filter = ('is_admin', 'user_type')
+    list_display = ('email', 'mobile',  'user_type')
+    list_filter = ( 'user_type',)
 
     fieldsets = (
-        ('Login Credentials', {'fields': ('mobile', 'password')}),
-        ('Personal info', {'fields': ('email', 'first_name', 'last_name', 'dob', 'user_type', 'image')}),
-        ('Permissions', {'fields': ('is_admin', 'is_active')}),
+                ('Login Credentials', {'fields': ('mobile', 'password')}),
+        ('Personal info', {'fields': ('email', 'name', 'user_type','sales_target','target_achieved','date_of_joining','average_rating')}),
+        ('Bank Details', {'fields': ('bank_name', 'account_no', 'branch_name','ifsc_code')}),
         ('Seen', {'fields': ('last_login',)}),
     )
 
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('mobile', 'email', 'first_name', 'last_name', 'password', 'password2', 'image', )}
+            'fields': ('mobile', 'email', 'name','user_type','sales_target','target_achieved','date_of_joining','average_rating',
+                       'bank_name','account_no','branch_name','ifsc_code','auto_timedate','password', 'password2',   )}
          ),
     )
-    search_fields = ('mobile', 'first_name')
+    search_fields = ('mobile', 'name')
     ordering = ('id',)
     filter_horizontal = ()
 
