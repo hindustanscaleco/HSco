@@ -1,3 +1,4 @@
+from django.db import connection
 from django.shortcuts import render, redirect
 
 from user_app.models import SiteUser
@@ -130,7 +131,38 @@ def manager_repairing_module_home(request):
     return render(request,'dashboardnew/manager_repairing_module_home.html',context)
 
 def repairing_report_module(request):
-    return render(request,'dashboardnew/repairing_report_module.html',)
+    if request.method == 'POST':
+        selected_list = request.POST.getlist('checks[]')
+        start_date = request.POST.get('date1')
+        end_date = request.POST.get('date2')
+        string = ','.join(selected_list)
+        print(selected_list)
+        request.session['start_date'] = start_date
+        request.session['end_date'] = end_date
+        request.session['string'] = string
+        request.session['selected_list'] = selected_list
+        return redirect('/final_report/')
+    return render(request,'report/report_rep_mod_form.html',)
+
+def final_repairing_report_module(request):
+    start_date = request.session.get('start_date')
+    end_date = request.session.get('end_date')
+    string = request.session.get('string')
+    selected_list = request.session.get('selected_list')
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT  " + string + " from repairing_app_repairing_after_sales_service where today_date between '"+start_date+"' and '"+end_date+"';")
+        row = cursor.fetchall()
+
+        final_row = [list(x) for x in row]
+        repairing_data = []
+        for i in row:
+            repairing_data.append(list(i))
+
+    context = {
+        'final_row': final_row,
+        'selected_list': selected_list,
+    }
+    return render(request,'report/final_report_rep_mod_form.html',context)
 
 
 

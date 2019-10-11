@@ -182,11 +182,7 @@ def final_report(request):
         list3=[]
         for i in row:
             list3.append(list(i))
-        print(list3)
-        print(final_row)
-        print(final_row)
-        print(final_row)
-        print(final_row)
+
 
     context={
         'final_row':final_row,
