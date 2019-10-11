@@ -7,6 +7,7 @@ from .models import Repairing_after_sales_service
 def add_repairing_details(request):
     form = Repairing_after_sales_service_form(request.POST or None)
     if request.method == 'POST' or request.method == 'FILES':
+        repairingnumber = request.POST.get('repairingnumber')
         customer_no = request.POST.get('customer_no')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
@@ -41,6 +42,7 @@ def add_repairing_details(request):
         item = Repairing_after_sales_service()
 
 
+        item.repairingnumber = repairingnumber
         item.customer_no = customer_no
         item.previous_repairing_number = previous_repairing_number
         item.in_warranty = in_warranty

@@ -12,9 +12,9 @@ def add_Onsite_visit(request):
         company_name = request.POST.get('company_name')
 
         item = Onsite_visit()
-        item.repairingno=repairingno
-        item.customer_name=customer_name
-        item.company_name=company_name
+        item.repairingno = repairingno
+        item.customer_name = customer_name
+        item.company_name = company_name
 
         item.save()
         return redirect('/')
