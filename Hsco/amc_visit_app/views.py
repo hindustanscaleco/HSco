@@ -1,38 +1,14 @@
 from django.shortcuts import render, redirect
 from .models import Amc_After_Sales
-from .models import Amcvisit
 
 
-def add_amcvisit(request):
-    form = (request.POST or None)
-    if request.method == 'POST':
-        amcno = request.POST.get('amcno')
-        customer_name = request.POST.get('customer_name')
-        company_name = request.POST.get('company_name')
-
-
-
-        item = Amcvisit()
-
-        item.amcno = amcno
-        item.customer_name = customer_name
-        item.company_name = company_name
-
-
-
-        item.save()
-
-        return redirect('/')
-
-
-    context = {
-        'form': form,
-    }
-    return render(request,'forms/amc_form.html',context)
 
 def add_amc_after_sales(request):
     form = (request.POST or None, request.FILES or None)
     if request.method == 'POST':
+        amcno = request.POST.get('amcno')
+        customer_name = request.POST.get('customer_name')
+        company_name = request.POST.get('company_name')
         customer_no = request.POST.get('customer_no')
         customer_email_id = request.POST.get('customer_email_id')
         type_of_scale = request.POST.get('type_of_scale')
@@ -54,6 +30,9 @@ def add_amc_after_sales(request):
 
         item = Amc_After_Sales()
 
+        item.amcno = amcno
+        item.customer_name = customer_name
+        item.company_name = company_name
         item.customer_no = customer_no
         item.customer_email_id = customer_email_id
         item.type_of_scale = type_of_scale
