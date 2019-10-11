@@ -1,0 +1,681 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid" >
+         <center>  <h1>Repairing Module</h1>  </center>
+
+
+          <div class="row" style="padding:20px;">
+               <label class="col-md-6 control-label">CRM Number: 9766</label>
+
+          </div>
+<br>
+
+
+    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
+<fieldset>
+
+<div class="form-group row">
+  <label class="col-md-2 control-label ">Repairing Number
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="repairingnumber" placeholder="Repairing Number
+
+" class="form-control"  type="text" disabled value="{{repairingnumber}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Customer Number
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="customer_no" placeholder="Customer Number
+
+" class="form-control"  type="text" disabled value="{{customer_no}}">
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Previous Repairing number
+
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input  name="previous_repairing_number" placeholder="Previous Repairing number
+" class="form-control" type="text" disabled value="{{previous_repairing_number}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">In Warranty
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+  {{in_warranty}}
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Date of purchase
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input type="date" name="date_of_purchase" placeholder="Company name
+" class="form-control"  type="email" disabled value="{{date_of_purchase}}">
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Today's date
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="today_date" placeholder="Today's date
+
+" class="form-control"  type="date" disabled value="{{today_date}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Name
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="name" placeholder="Name
+
+" class="form-control"  type="text" disabled value="{{name}}" >
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Company name
+
+
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="company_name" placeholder="Company name
+" class="form-control"  type="text" disabled value="{{company_name}}">
+
+
+     </div>
+  </div>
+
+    <label class="col-md-2 control-label">Phone Number
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
+  <input  name="phone_no" placeholder="Phone Number
+
+" class="form-control"  type="text" disabled value="{{phone_no}}">
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Email-id
+
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+  <input type="email" name="customer_email_id" placeholder="Email-id
+
+" class="form-control"  type="text" disabled value="{{customer_email_id}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Location
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-marker faicons"></i></span>
+  <input  name="location" placeholder="Location
+
+" class="form-control"  type="text" disabled value="{{location}}">
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">products To be repaired
+
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
+  <input  name="products_to_be_repaired" placeholder="products To be repaired
+
+" class="form-control"  type="text" disabled value="{{products_to_be_repaired}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Type of Machine
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="type_of_machine" placeholder="Type of Machine
+
+" class="form-control"  type="text" disabled value="{{type_of_machine}}">
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Model
+
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="model" placeholder="Model
+
+" class="form-control"  type="text" disabled value="{{model}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Sub model
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="sub_model" placeholder="Sub model
+
+" class="form-control"  type="text" disabled value="{{sub_model}}">
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Problem in the scale
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="problem_in_scale" placeholder="Problem in the scale
+
+" class="form-control"  type="text" disabled value="{{problem_in_scale}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Components Replaced in Waranty(if scale in Waranty)
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
+  <input  name="components_replaced_in_warranty" placeholder="Components Replaced in Waranty(if scale in Waranty)
+
+" class="form-control"  type="text" disabled value="{{components_replaced_in_warranty}}">
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+  <div class="form-group row">
+  <label class="col-md-2 control-label">Components Replaced
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
+  <input  name="components_replaced" placeholder="Components Replaced
+
+
+" class="form-control"  type="text" disabled value="{{components_replaced}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Replaced Scale given
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  {{replaced_scale_given}}
+    </div>
+  </div>
+
+</div>
+
+
+  <div class="form-group row">
+  <label class="col-md-2 control-label">Replaced scale Serial NO
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <input  name="Replaced_scale_serial_no" placeholder="Replaced scale Serial NO
+
+
+" class="form-control"  type="text" disabled value="{{Replaced_scale_serial_no}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Deposit taken for replaced Scale
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <input  name="deposite_taken_for_replaced_scale" placeholder="Deposit taken for replaced Scale
+
+
+" class="form-control"  type="text" disabled value="{{deposite_taken_for_replaced_scale}}">
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+  <div class="form-group row">
+  <label class="col-md-2 control-label">Cost
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <input  name="cost" placeholder="Cost" value="0.0" class="form-control"  type="text" disabled value="{{cost}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Total Cost
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <input  name="total_cost" placeholder="Total Cost" value="0.0" class="form-control"  type="text" disabled value="{{total_cost}}">
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+  <div class="form-group row">
+  <label class="col-md-2 control-label">Informed On
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="informed_on" placeholder="Informed On
+
+
+" class="form-control"  type="text" disabled value="{{informed_on}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Informed By
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="informed_by" placeholder="Informed By" class="form-control"  type="text" disabled value="{{informed_by}}">
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+  <div class="form-group row">
+  <label class="col-md-2 control-label">Confirmed Estimate
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  {{confirmed_estimate}}
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Repaired
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  {{repaired}}
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+  <div class="form-group row">
+  <label class="col-md-2 control-label">Repaired date
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input type="date" name="repaired_date" placeholder="Repaired date
+
+" class="form-control"  type="text" disabled value="{{repaired_date}}">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+  <div class="form-group row">
+  <label class="col-md-2 control-label">Delivery Date
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control"  type="text" disabled value="{{delivery_date}}">
+    </div>
+  </div>
+
+
+    <label class="col-md-2 control-label">Delivered By
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="delivery_by" placeholder="Delivery By" class="form-control"  type="text" disabled value="{{delivery_by}}">
+    </div>
+  </div>
+</div>
+
+
+
+    <div class="form-group row">
+  <label class="col-md-2 control-label">Feedback Given
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <input  name="feedback_given" placeholder="Feedback Given
+" class="form-control"  type="text" disabled value="{{feedback_given}}">
+    </div>
+  </div>
+
+
+
+
+</div>
+
+<!--<p>"Below Provide Various button to send various SMS and E-mail  like-->
+<!--1) Scale Submit sms-->
+<!--2) Estimate informed sms-->
+<!--3) Repairing done sms-->
+<!--4) Late mark sms-->
+<!--5) Final Deleviry sms"-->
+<!--</p>-->
+
+<center>
+	<button class="btn btn-primary">Save</button>
+
+</center>
+
+
+
+<br>
+
+
+
+
+
+
+
+</fieldset>
+</form>
+</div>
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+    </div>
+  </div>
+
+</body>
+
+</html>
