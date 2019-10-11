@@ -167,27 +167,6 @@ def final_report(request):
     print(row)
     return render(request,"dashboardnew/report.html")
 
-def export_all(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="customer_report.csv"'
-    writer = csv.writer(response)
-    final_list = request.session.get('string')
-    selected_list = request.session.get('selected_list')
-
-    print('final list')
-    print(final_list)
-    export_list = ",".join(selected_list)
-    i = ""
-    for i in list:
-        i.
-    print(export_list)
-
-    writer.writerow(selected_list)
-    members = request.values_list('first_name', 'last_name', 'dob', 'mobile_number', 'admitted_on', 'subscription_type', 'batch')
-    for user in members:
-        writer.writerow(user)
-
-    return response
 
 def manager_report(request):
     employee_list = SiteUser.objects.all()
