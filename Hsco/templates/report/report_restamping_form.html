@@ -5,9 +5,9 @@
   {% load static %}
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="checks[]" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="checks[]" content="">
+  <meta name="checks[]" content="">
 
   <title>HSCO</title>
 
@@ -53,7 +53,7 @@ color:;
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-	{% include 'base_templates/sidebar.html' %}
+  {% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -66,7 +66,7 @@ color:;
 
 
         <!-- Topbar -->
-	{% include 'base_templates/navbar_for_dashboard.html' %}
+  {% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -94,10 +94,10 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="restampingno" placeholder="Restamping Number
+  <input  name="checks[]" placeholder="Restamping Number
 
 
-" class="form-control"  type="text" disabled value="{{restampingno}}">
+" class="form-control"  type="text" value="restampingno">
     </div>
   </div>
 
@@ -109,9 +109,9 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_no" placeholder="Customer Number
+  <input  name="checks[]" placeholder="Customer Number
 
-" class="form-control"  type="text" disabled value="{{customer_no}}">
+" class="form-control"  type="text" value="customer_no">
     </div>
   </div>
 
@@ -132,10 +132,10 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name
+  <input  name="checks[]" placeholder="Company Name
 
 
-" class="form-control"  type="text" disabled value="{{company_name}}">
+" class="form-control"  type="text" value="company_name">
     </div>
   </div>
 
@@ -152,7 +152,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-    <textarea name="address" disabled value="{{address}}"></textarea>
+    <textarea name="checks[]" value="address"></textarea>
     </div>
   </div>
 
@@ -165,7 +165,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="today_date" placeholder="Todays date" class="form-control"  type="text" disabled value="{{today_date}}">
+  <input type="date" name="checks[]" placeholder="Todays date" class="form-control"  type="text" value="today_date">
     </div>
   </div>
 
@@ -183,8 +183,8 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input type="number" name="mobile_no" placeholder="Mobile No
-" class="form-control"  type="text" disabled value="{{mobile_no}}">
+  <input type="number" name="checks[]" placeholder="Mobile No
+" class="form-control"  type="text" value="mobile_no">
     </div>
   </div>
 
@@ -198,10 +198,10 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer E-mail id
+  <input type="email" name="checks[]" placeholder="Customer E-mail id
 
 
-" class="form-control"  type="text" disabled value="{{customer_email_id}}">
+" class="form-control"  type="text" value="customer_email_id">
     </div>
   </div>
 
@@ -221,9 +221,9 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="product_to_stampped" placeholder="Product to be stampped
+  <input  name="checks[]" placeholder="Product to be stampped
 
-" class="form-control"  type="text" disabled value="{{product_to_stampped}}">
+" class="form-control"  type="text" value="product_to_stampped">
 
 
      </div>
@@ -239,10 +239,10 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="scale_type" placeholder="Scale type
+  <input  name="checks[]" placeholder="Scale type
 
 
-" class="form-control"  type="text" disabled value="{{scale_type}}">
+" class="form-control"  type="text" value="scale_type">
     </div>
   </div>
 
@@ -261,10 +261,10 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="sub_model" placeholder="Sub model
+  <input  name="checks[]" placeholder="Sub model
 
 
-" class="form-control"  type="text" disabled value="{{sub_model}}">
+" class="form-control"  type="text" value="sub_model">
     </div>
   </div>
 
@@ -278,10 +278,10 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="capacity" placeholder="Capacity
+  <input  name="checks[]" placeholder="Capacity
 
 
-" class="form-control"  type="text" disabled value="{{capacity}}">
+" class="form-control"  type="text" value="capacity">
     </div>
   </div>
 
@@ -300,10 +300,10 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="old_serial_no" placeholder="Old Serial No.
+  <input  name="checks[]" placeholder="Old Serial No.
 
 
-" class="form-control"  type="text" disabled value="{{old_serial_no}}">
+" class="form-control"  type="text" value="old_serial_no">
     </div>
   </div>
 
@@ -317,10 +317,10 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="old_brand" placeholder="Old Brand
+  <input  name="checks[]" placeholder="Old Brand
 
 
-" class="form-control"  type="text" disabled value="{{old_brand}}">
+" class="form-control"  type="text" value="old_brand">
     </div>
   </div>
 
@@ -339,10 +339,10 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="amount" placeholder="Amount
+  <input  name="checks[]" placeholder="Amount
 
 
-" class="form-control"  type="text" disabled value="{{amount}}">
+" class="form-control"  type="text" value="amount">
     </div>
   </div>
 
@@ -356,10 +356,10 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="new_serial_no" placeholder="New Serial No.
+  <input  name="checks[]" placeholder="New Serial No.
 
 
-" class="form-control"  type="text" disabled value="{{new_serial_no}}">
+" class="form-control"  type="text" value="new_serial_no">
     </div>
   </div>
 
@@ -374,10 +374,10 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="brand" placeholder="Brand
+  <input  name="checks[]" placeholder="Brand
 
 
-" class="form-control"  type="text" disabled value="{{brand}}">
+" class="form-control"  type="text" value="brand">
     </div>
   </div>
 
@@ -391,10 +391,10 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="scale_delivery_date" placeholder="Scale Delivery Date
+  <input type="date" name="checks[]" placeholder="Scale Delivery Date
 
 
-" class="form-control"  type="text" disabled value="{{scale_delivery_date}}">
+" class="form-control"  type="text" value="scale_delivery_date">
     </div>
   </div>
 
@@ -405,7 +405,7 @@ color:;
 
 
 <center>
-	<button class="btn btn-primary">Save</button>
+  <button class="btn btn-primary">Save</button>
 
 </center>
 

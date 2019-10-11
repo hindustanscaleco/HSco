@@ -43,6 +43,8 @@ def login(request):
 def dashboard(request):
     return render(request,"dashboardnew/dashboard.html",)
 
+def graph(request):
+    return render(request,"dashboardnew/graph.html",)
 
 def report(request):
     if request.method =='POST':
@@ -55,7 +57,7 @@ def report(request):
         request.session['end_date']= end_date
         request.session['string']= string
         return redirect('/final_report/')
-    return render(request,"dashboardnew/report.html",)
+    return render(request, "report/report_cust_mod_form.html",)
 
 
 def final_report(request):

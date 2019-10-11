@@ -5,9 +5,9 @@
   {% load static %}
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="checks[]" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="checks[]" content="">
+  <meta name="checks[]" content="">
 
   <title>HSCO</title>
 
@@ -53,7 +53,7 @@ color:;
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-	{% include 'base_templates/sidebar.html' %}
+  {% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -66,15 +66,12 @@ color:;
 
 
         <!-- Topbar -->
-	{% include 'base_templates/navbar_for_dashboard.html' %}
+  {% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
         <div class="container-fluid" >
-         <center>  <h1 style="color: black; font-size: 25px;">Repairing Module</h1>
-         <br>
-           <button class="btn btn-primary">Add Product</button>
-         </center>
+         <center>  <h1>Repairing Module</h1>  </center>
 
 
           <div class="row" style="padding:20px;">
@@ -96,9 +93,9 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="repairingnumber" placeholder="Repairing Number
+  <input  name="checks[]" placeholder="Repairing Number
 
-" class="form-control"  type="text">
+" class="form-control"  type="text" value="repairingnumber">
     </div>
   </div>
 
@@ -110,9 +107,9 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_no" placeholder="Customer Number
+  <input  name="checks[]" placeholder="Customer Number
 
-" class="form-control"  type="text">
+" class="form-control"  type="text" value="customer_no">
     </div>
   </div>
 
@@ -132,8 +129,8 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="previous_repairing_number" placeholder="Previous Repairing number
-" class="form-control"  type="text">
+  <input  name="checks[]" placeholder="Previous Repairing number
+" class="form-control" type="text" value="previous_repairing_number">
     </div>
   </div>
 
@@ -146,7 +143,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  {{form.in_warranty}}
+  {{in_warranty}}
     </div>
   </div>
 
@@ -165,8 +162,8 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="date_of_purchase" placeholder="Company name
-" class="form-control"  type="email">
+  <input type="date" name="checks[]" placeholder="Company name
+" class="form-control"  type="email" value="date_of_purchase">
     </div>
   </div>
 </div>
@@ -182,9 +179,9 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" placeholder="Today's date
+  <input  name="checks[]" placeholder="Today's date
 
-" class="form-control"  type="date">
+" class="form-control"  type="date" value="today_date">
     </div>
   </div>
 
@@ -197,9 +194,9 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="name" placeholder="Name
+  <input  name="checks[]" placeholder="Name
 
-" class="form-control"  type="text">
+" class="form-control"  type="text" value="name" >
     </div>
   </div>
 
@@ -218,8 +215,8 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company name
-" class="form-control"  type="text">
+  <input  name="checks[]" placeholder="Company name
+" class="form-control"  type="text" value="company_name">
 
 
      </div>
@@ -234,9 +231,9 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="phone_no" placeholder="Phone Number
+  <input  name="checks[]" placeholder="Phone Number
 
-" class="form-control"  type="text">
+" class="form-control"  type="text" value="phone_no">
     </div>
   </div>
 
@@ -254,9 +251,9 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Email-id
+  <input type="email" name="checks[]" placeholder="Email-id
 
-" class="form-control"  type="text">
+" class="form-control"  type="text" value="customer_email_id">
     </div>
   </div>
 
@@ -269,9 +266,9 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-marker faicons"></i></span>
-  <input  name="location" placeholder="Location
+  <input  name="checks[]" placeholder="Location
 
-" class="form-control"  type="text">
+" class="form-control"  type="text" value="location">
     </div>
   </div>
 
@@ -289,13 +286,92 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-  <input  name="products_to_be_repaired" placeholder="products To be repaired
+  <input  name="checks[]" placeholder="products To be repaired
 
-" class="form-control"  type="text">
+" class="form-control"  type="text" value="products_to_be_repaired">
     </div>
   </div>
 
+    <label class="col-md-2 control-label">Type of Machine
 
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="checks[]" placeholder="Type of Machine
+
+" class="form-control"  type="text" value="type_of_machine">
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Model
+
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="checks[]" placeholder="Model
+
+" class="form-control"  type="text" value="model">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Sub model
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="checks[]" placeholder="Sub model
+
+" class="form-control"  type="text" value="sub_model">
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Problem in the scale
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="checks[]" placeholder="Problem in the scale
+
+" class="form-control"  type="text" value="problem_in_scale">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Components Replaced in Waranty(if scale in Waranty)
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
+  <input  name="checks[]" placeholder="Components Replaced in Waranty(if scale in Waranty)
+
+" class="form-control"  type="text" value="components_replaced_in_warranty">
+    </div>
+  </div>
 
 </div>
 
@@ -304,7 +380,85 @@ color:;
 
 
   <div class="form-group row">
+  <label class="col-md-2 control-label">Components Replaced
 
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
+  <input  name="checks[]" placeholder="Components Replaced
+
+
+" class="form-control"  type="text" value="components_replaced">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Replaced Scale given
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  {{replaced_scale_given}}
+    </div>
+  </div>
+
+</div>
+
+
+  <div class="form-group row">
+  <label class="col-md-2 control-label">Replaced scale Serial NO
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <input  name="checks[]" placeholder="Replaced scale Serial NO
+
+
+" class="form-control"  type="text" value="Replaced_scale_serial_no">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Deposit taken for replaced Scale
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <input  name="checks[]" placeholder="Deposit taken for replaced Scale
+
+
+" class="form-control"  type="text" value="deposite_taken_for_replaced_scale">
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+  <div class="form-group row">
+  <label class="col-md-2 control-label">Cost
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <input  name="checks[]" placeholder="Cost" value="0.0" class="form-control"  type="text" value="cost">
+    </div>
+  </div>
 
     <label class="col-md-2 control-label">Total Cost
 
@@ -316,7 +470,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="total_cost" placeholder="Total Cost" value="0.0" class="form-control"  type="text">
+  <input  name="checks[]" placeholder="Total Cost" value="0.0" class="form-control"  type="text" value="total_cost">
     </div>
   </div>
 
@@ -336,10 +490,10 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="informed_on" placeholder="Informed On
+  <input  name="checks[]" placeholder="Informed On
 
 
-" class="form-control"  type="text">
+" class="form-control"  type="text" value="informed_on">
     </div>
   </div>
 
@@ -353,10 +507,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="informed_by" placeholder="Informed By
-
-
-" class="form-control"  type="text">
+  <input  name="checks[]" placeholder="Informed By" class="form-control"  type="text" value="informed_by">
     </div>
   </div>
 
@@ -378,7 +529,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  {{form.confirmed_estimate}}
+  {{confirmed_estimate}}
     </div>
   </div>
 
@@ -392,7 +543,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  {{form.repaired}}
+  {{repaired}}
     </div>
   </div>
 
@@ -413,7 +564,9 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="repaired_date" placeholder="Repaired date" class="form-control"  type="text" value="">
+  <input type="date" name="checks[]" placeholder="Repaired date
+
+" class="form-control"  type="text" value="repaired_date">
     </div>
   </div>
 </div>
@@ -432,7 +585,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control"  type="text" value="">
+  <input type="date" name="checks[]" placeholder="Delivery Date" class="form-control"  type="text" value="delivery_date">
     </div>
   </div>
 
@@ -443,7 +596,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="delivery_by" placeholder="Delivery By" class="form-control"  type="text" value="">
+  <input  name="checks[]" placeholder="Delivery By" class="form-control"  type="text" value="delivery_by">
     </div>
   </div>
 </div>
@@ -457,7 +610,8 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="feedback_given" placeholder="Feedback Given" class="form-control"  type="text" value="">
+  <input  name="checks[]" placeholder="Feedback Given
+" class="form-control"  type="text" value="feedback_given">
     </div>
   </div>
 
@@ -473,9 +627,9 @@ color:;
 <!--4) Late mark sms-->
 <!--5) Final Deleviry sms"-->
 <!--</p>-->
-<br>
+
 <center>
-	<button class="btn btn-primary">Save</button>
+  <button class="btn btn-primary">Save</button>
 
 </center>
 
@@ -493,37 +647,6 @@ color:;
 </form>
 </div>
 
-        <h1 style="font-size: 25px; color: black; text-align: center;"> Added Product List </h1>
-  <br>
-
-      <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;">
-
-
-
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"> Type of Machine: Type A </div>
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"> Model: Model XYZ </div>
-                    <div class="col-xl-4 col-md-1 mb-1"> Sub Model: XYZ8907  </div>
-
-                    <div class="col-xl-12 col-md-1 mb-1"> Problem in the scale:</div>
-                  <div class="col-xl-12 col-md-1 mb-1"> Components Replaced in Waranty(if scale in Waranty) </div>
-                  <div class="col-xl-12 col-md-1 mb-1">Components Replaced  </div>
-
-                  <div class="col-xl-6 col-md-1 mb-1" style="border-right: 1px solid black;">Replaced Scale given  </div>
-                  <div class="col-xl-4 col-md-1 mb-1"> Replaced scale Serial NO </div>
-                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;">Deposit taken for replaced Scale </div>
-
-
-                   <div class="col-xl-4 col-md-1 mb-1"> Cost  </div>
-
-                    </div>
-
-              </div>
-      </div>
-
-        <br>
-
   </div>
   <!-- End of Page Wrapper -->
 
@@ -531,7 +654,7 @@ color:;
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-    </div></div>
+
 
 
   <!-- Bootstrap core JavaScript-->
@@ -550,6 +673,8 @@ color:;
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+    </div>
+  </div>
 
 </body>
 
