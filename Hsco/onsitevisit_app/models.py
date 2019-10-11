@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
-
+choices = (('YES', 'YES'),
+    ('NO', 'NO'),)
 class Onsite_visit(models.Model):
     repairingno=models.CharField(max_length=50)
     customer_name = models.CharField(max_length=80)
@@ -37,7 +38,7 @@ class Onsite_aftersales_service(models.Model):
     complaint_assigned_on = models.CharField(max_length=30)
     time_taken_destination_return_office_min = models.CharField(max_length=30)
     notes = models.CharField(max_length=255)
-    feedback_given = models.BooleanField(default=False)
+    feedback_given = models.CharField(max_length=30,choices=choices,default='NO')
 
 
 

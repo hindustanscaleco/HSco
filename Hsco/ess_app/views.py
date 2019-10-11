@@ -10,7 +10,7 @@ from .models import Ess
 
 
 def add_ess_details(request):
-    if request.method == 'POST' or  request.method=='FILES':
+    if request.method == 'POST' or  request.method == 'FILES':
         employee_name = request.POST.get('employee_name')
         details = request.POST.get('details')
         contact_no = request.POST.get('contact_no')

@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('dispatch_app.urls')),
     path('', include('customer_app.urls')),
     path('', include('ess_app.urls')),
+    path('', include('onsitevisit_app.urls')),
 
 ]
 if settings.DEBUG:

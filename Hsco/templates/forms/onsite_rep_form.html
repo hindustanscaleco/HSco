@@ -80,7 +80,7 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">
+    <form class="well form-horizontal" action=" " method="post"  enctype="multipart/form-data" id="contact_form" style="padding:20px;">{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
@@ -154,7 +154,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input type="number" name="first_name" placeholder="Customer Number
+  <input type="customer_no" name="first_name" placeholder="Customer Number
 
 
 
@@ -179,7 +179,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="first_name" placeholder="Previous Repairing number
+  <input  name="previous_repairing_number" placeholder="Previous Repairing number
 
 
 " class="form-control"  type="email">
@@ -196,7 +196,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="first_name" placeholder="In Warranty
+  <input  name="in_warranty" placeholder="In Warranty
 " class="form-control"  type="text">
     </div>
   </div>
@@ -216,7 +216,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input type="number" name="first_name" placeholder="Phone number
+  <input type="phone_no" name="first_name" placeholder="Phone number
 
 " class="form-control"  type="text">
     </div>
@@ -232,7 +232,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="first_name" placeholder="Customer E-mail id
+  <input type="email" name="customer_email_id" placeholder="Customer E-mail id
 
 
 " class="form-control"  type="text">
@@ -256,7 +256,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="first_name" placeholder="Date the complaint was Received
+  <input  name="date_of_complaint_received" placeholder="Date the complaint was Received
 
 
 " class="form-control"  type="text">
@@ -267,16 +267,12 @@ color:;
 
     <label class="col-md-2 control-label">Customer Address
 
-
-
-
-
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <textarea name="textarea"></textarea>
+  <textarea name="customer_address"></textarea>
     </div>
   </div>
 
@@ -296,7 +292,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="first_name" placeholder="Complaint Received By
+  <input  name="complaint_received_by" placeholder="Complaint Received By
 
 
 
@@ -315,7 +311,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="first_name" placeholder="Nearest Railway Station
+  <input  name="nearest_railwaystation" placeholder="Nearest Railway Station
 
 
 
@@ -339,7 +335,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-train faicons"></i></span>
-  <input  name="first_name" placeholder="Train Line
+  <input  name="train_line" placeholder="Train Line
 
 
 
@@ -358,7 +354,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-  <input  name="first_name" placeholder="Products To be repaired
+  <input  name="products_to_be_repaired" placeholder="Products To be repaired
 
 
 
@@ -374,15 +370,11 @@ color:;
   <label class="col-md-2 control-label">Type of Machine
 
 
-
-
-
-
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="first_name" placeholder="Type of Machine
+  <input  name="type_of_machine" placeholder="Type of Machine
 
 
 
@@ -401,7 +393,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="first_name" placeholder="Model
+  <input  name="model" placeholder="Model
 
 
 
@@ -421,7 +413,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="first_name" placeholder="Sub model
+  <input  name="sub_model" placeholder="Sub model
 
 
 
@@ -436,7 +428,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="first_name" placeholder="Capacity
+  <input  name="capacity" placeholder="Capacity
 
 " class="form-control"  type="text">
     </div>
@@ -454,7 +446,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="first_name" placeholder="Problem in the scale
+  <input  name="problem_in_scale" placeholder="Problem in the scale
 
 " class="form-control"  type="text">
     </div>
@@ -474,7 +466,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="first_name" placeholder="Components Replaced in Waranty(if scale in Waranty)
+  <input  name="components_replaced_in_warranty" placeholder="Components Replaced in Waranty(if scale in Waranty)
 
 
 
@@ -491,7 +483,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="first_name" placeholder="Components Replaced
+  <input  name="components_replaced" placeholder="Components Replaced
 
 
 " class="form-control"  type="text">
@@ -512,7 +504,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="first_name" placeholder="Cost
+  <input  name="cost" placeholder="Cost
 
 
 
@@ -529,7 +521,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="first_name" placeholder="Visiting Charges Told to Customer
+  <input  name="visiting_charges_told_customer" placeholder="Visiting Charges Told to Customer
 
 
 " class="form-control"  type="text">
@@ -549,7 +541,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="first_name" placeholder="Total Cost
+  <input  name="total_cost" placeholder="Total Cost
 
 
 
@@ -566,7 +558,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="first_name" placeholder="Complaint Assigned To
+  <input  name="complaint_assigned_to" placeholder="Complaint Assigned To
 
 
 " class="form-control"  type="text">
@@ -586,7 +578,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="first_name" placeholder="Complain Assigned On
+  <input  name="complaint_assigned_on" placeholder="Complain Assigned On
 
 
 
@@ -603,7 +595,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-clock-o faicons"></i></span>
-  <input  name="first_name" placeholder="Time Taken to Reach Destination and Return to office in Minutes
+  <input  name="time_taken_destination_return_office_min" placeholder="Time Taken to Reach Destination and Return to office in Minutes
 
 
 " class="form-control"  type="text">
@@ -626,7 +618,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="first_name" placeholder="Notes
+  <input  name="notes" placeholder="Notes
 
 
 
@@ -645,11 +637,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="first_name" placeholder="Feedback given
-
-
-
-" class="form-control"  type="text">
+  {{form.feedback_given}}
     </div>
   </div>
 
