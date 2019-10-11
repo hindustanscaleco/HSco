@@ -57,7 +57,7 @@ def add_customer_details(request):
         item.save()
 
 
-        return redirect('/')
+        return redirect('/add_product_details/'+str(item.id))
 
     context = {
         'form': form,
@@ -74,6 +74,8 @@ def view_customer_details(request):
     return render(request,'dashboardnew/cm.html',context )
 
 def update_customer_details(request,id):
+    product_list = Product_Details.objects.filter(customer_id=id)
+    print(product_list)
     customer_id = Customer_Details.objects.get(id=id)
     feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
     if request.method =='POST' and 'performance' in request.POST:
@@ -99,42 +101,56 @@ def update_customer_details(request,id):
     context={
         'cust_id':customer_id,
         'feedback_form':feedback_form,
+        'product_list':product_list,
     }
+
     return render(request,'update_forms/update_cust_mod_form.html',context)
 
 
-def add_product_details(request):
+def add_product_details(request,id):
+    customer_id = Customer_Details.objects.get(id=id).id
+    print(id)
     form = Product_Details_Form(request.POST or None)
     if request.method == 'POST':
         product_name = request.POST.get('product_name')
         quantity = request.POST.get('quantity')
+        model_of_purchase = request.POST.get('model_of_purchase')
         type_of_scale = request.POST.get('type_of_scale')
         sub_model = request.POST.get('sub_model')
         sub_sub_model = request.POST.get('sub_sub_model')
         serial_no_scale = request.POST.get('serial_no_scale')
         brand = request.POST.get('brand')
+        capacity = request.POST.get('capacity')
         unit = request.POST.get('unit')
+        sales_person = request.POST.get('sales_person')
+        purchase_type = request.POST.get('purchase_type')
 
         item = Product_Details()
 
         item.product_name = product_name
         item.quantity = quantity
         item.type_of_scale = type_of_scale
+        item.model_of_purchase = model_of_purchase
         item.sub_model = sub_model
         item.sub_sub_model = sub_sub_model
         item.serial_no_scale = serial_no_scale
         item.brand = brand
+        item.capacity = capacity
         item.unit = unit
+        item.customer_id_id = customer_id
+        item.sales_person = sales_person
+        item.purchase_type = purchase_type
 
         item.save()
 
-    return redirect('//')
+        return redirect('/update_customer_details/'+str(id))
 
 
     context = {
         'form': form,
+        'customer_id': customer_id,
     }
-    return render(request,'',context)
+    return render(request,'dashboardnew/add_product.html',context)
 
 
 
@@ -188,8 +204,10 @@ def manager_report(request):
     }
     return render(request, 'dashboardnew/manager_report.html',context)
 
+def employee_sales_graph(request):
+    return render(request,"dashboardnew/graph.html",)
 
-def add_product(request):
-    return render(request, 'dashboardnew/add_product.html',)
+
+
 
 

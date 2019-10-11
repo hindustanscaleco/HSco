@@ -79,30 +79,20 @@ color:;
 <br>
 <br>
 
-            <form method="POST">
+            <form method="POST">{% csrf_token %}
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Type of Scale
-
+    <label class="col-md-2 control-label">Product Name
 
 </label>
-  <div class="col-md-4 inputGroupContainer">
+
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-
-    <select name="type_of_scale" class="form-control selectpicker">
-      <option value="">Type of Scale</option>
-
-      <option  value="">Type A</option>
-      <option  value="">Type B</option>
-      <option  value="">Type C</option>
-      <option  value="">Type D</option>
-      <option  value="">Type E</option>
-      <option value="">Type F</option>
-      <option  value="">Type G</option>
-    </select>
-     </div>
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="product_name" placeholder="Product Name" class="form-control"  type="text" value="">
+    </div>
   </div>
+
 
     <label class="col-md-2 control-label">Model of Purchase
 
@@ -118,6 +108,16 @@ color:;
 </div>
 
 <div class="form-group row">
+     <label class="col-md-2 control-label">Sub Model
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-drivers-license faicons"></i></span>
+  <input  name="sub_model" placeholder="Sub Model" class="form-control"  type="text" value="">
+    </div>
+  </div>
   <label class="col-md-2 control-label">Sub Sub Model
 
 
@@ -129,16 +129,7 @@ color:;
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Serial No. of Scale
 
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="serial_no_scale" placeholder="Serial No. of Scale" class="form-control"  type="text" value="">
-    </div>
-  </div>
 
 </div>
 
@@ -183,36 +174,71 @@ color:;
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Sales Person
+    <label class="col-md-2 control-label">Type of Scale
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+      <input  name="type_of_scale" placeholder="Type of Scale" class="form-control"  type="text" value="">
+
+     </div>
+  </div>
+
+</div>
+
+
+                <div class="form-group row">
+                    <label class="col-md-2 control-label">Serial No. of Scale
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="first_name" placeholder="Sales Person" class="form-control"  type="text" value="">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="serial_no_scale" placeholder="Serial No. of Scale" class="form-control"  type="text" value="">
+    </div>
+  </div>
+                    <label class="col-md-2 control-label">Purchase Type:
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="purchase_type" placeholder="Purchase Type" class="form-control"  type="text" value="">
     </div>
   </div>
 
-</div>
-            <br>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 control-label">Quantity
 
-                <div class="row">
-                      <div class="col-md-2 inputGroupContainer">
-                        <p class="control-label">Purchase Type:</p>
-                    </div>
+</label>
 
-                <div class="col-md-4 inputGroupContainer">
-                    <select class="form-control">
-  <option value="volvo" value="">New Purchase</option>
-  <option value="saab" value="">Repeat Purchase</option>
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="quantity" placeholder="Quantity" class="form-control"  type="text" value="">
+    </div>
+  </div>
+                    <label class="col-md-2 control-label">Sales Person
 
-</select>
-                    </div>
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="sales_person" placeholder="Sales Person" class="form-control"  type="text" value="">
+    </div>
+  </div>
+
                 </div>
             <br>
 <center>
-    <button class="btn btn-primary">Submit</button>
+    <button type="submit" value="submit" class="btn btn-primary">Submit</button>
 
 </center>
             </form>

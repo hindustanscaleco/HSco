@@ -27,8 +27,7 @@ class Customer_Details(models.Model):
     customer_email_id = models.CharField(max_length=30,null=True,blank=True)
     date_of_purchase = models.DateField(default=datetime.date.today,null=True,blank=True)
     product_purchase_date = models.DateField(default=datetime.date.today,null=True,blank=True)
-    #sales_person = models.CharField(max_length=30)
-    #new_repeat_purchase = models.CharField(max_length=30)
+
 
     bill_no = models.CharField(max_length=30,null=True,blank=True)
     upload_op_file = models.FileField(upload_to='',null=True,blank=True)
@@ -46,7 +45,7 @@ class Customer_Details(models.Model):
         return self.customer_name
 
 class Product_Details(models.Model):
-
+    customer_id = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
     product_name = models.CharField(max_length=30,null=True,blank=True)
     quantity = models.CharField(max_length=30,null=True,blank=True)
     type_of_scale = models.CharField(max_length=30,null=True,blank=True)
@@ -57,9 +56,11 @@ class Product_Details(models.Model):
     brand = models.CharField(max_length=30,null=True,blank=True)
     capacity = models.CharField(max_length=30,null=True,blank=True)
     unit = models.CharField(max_length=30,null=True,blank=True)
+    sales_person = models.CharField(max_length=30,null=True,blank=True)
+    new_repeat_purchase = models.CharField(max_length=30,null=True,blank=True)
 
-    def __str__(self):
-        return self.product_name
+    def __int__(self):
+        return self.customer_id
 
 class Feedback(models.Model):
 
