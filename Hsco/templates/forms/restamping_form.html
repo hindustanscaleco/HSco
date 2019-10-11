@@ -81,7 +81,7 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">
+    <form class="well form-horizontal" action=" " method="post" enctype="multipart/form-data" id="contact_form" style="padding:20px;">{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
@@ -94,7 +94,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="firstname" placeholder="Restamping Number
+  <input  name="restampingno" placeholder="Restamping Number
 
 
 " class="form-control"  type="text">

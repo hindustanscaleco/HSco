@@ -11,5 +11,6 @@ class add_Onsite_aftersales_service_form(forms.ModelForm):
         model = Onsite_aftersales_service
         fields = (
         'feedback_given',
+        'in_warranty',
         )
 

@@ -1,30 +1,15 @@
 from django.shortcuts import render, redirect
 
 from onsitevisit_app.forms import add_Onsite_aftersales_service_form
-from .models import Onsite_visit
 from .models import Onsite_aftersales_service
 
-
-def add_Onsite_visit(request):
-    if request.method == 'POST' or request.method == 'FILES':
-        repairingno = request.POST.get('repairingno')
-        customer_name = request.POST.get('customer_name')
-        company_name = request.POST.get('company_name')
-
-        item = Onsite_visit()
-        item.repairingno = repairingno
-        item.customer_name = customer_name
-        item.company_name = company_name
-
-        item.save()
-        return redirect('/')
-
-
-    return render(request, 'forms/onsite_rep_form.html', )
 
 def add_Onsite_aftersales_service(request):
     form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
+		repairingno = request.POST.get('repairingno')
+        customer_name = request.POST.get('customer_name')
+        company_name = request.POST.get('company_name')
         customer_no = request.POST.get('customer_no')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
@@ -54,6 +39,13 @@ def add_Onsite_aftersales_service(request):
 
 
         item=Onsite_aftersales_service()
+
+
+        item.repairingno = repairingno
+        item.customer_name = customer_name
+        item.company_name = company_name
+        item.customer_name = customer_name
+        item.company_name = company_name
         item.customer_no = customer_no
         item.previous_repairing_number = previous_repairing_number
         item.in_warranty = in_warranty
