@@ -7,7 +7,7 @@ from .models import Onsite_aftersales_service
 def add_Onsite_aftersales_service(request):
     form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
-		repairingno = request.POST.get('repairingno')
+        repairingno = request.POST.get('repairingno')
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         customer_no = request.POST.get('customer_no')
