@@ -141,11 +141,18 @@ def add_product_details(request):
 def report(request):
     if request.method =='POST':
         selected_list = request.POST.getlist('checks[]')
+        # list_1 = str(selected_list)[1:-1]
+        list_1 =  "  " + ", ".join(['"{}"'.format(x) for x in selected_list])[1:-1]
+
+        print(list_1)
+        print(list_1)
+        print(list_1)
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         string = ','.join(selected_list)
         print(selected_list)
         request.session['start_date']= start_date
+        request.session['list_1']= list_1
         request.session['end_date']= end_date
         request.session['string']= string
         request.session['selected_list']= selected_list
@@ -157,15 +164,26 @@ def final_report(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
     string = request.session.get('string')
+    list_1 = request.session.get('list_1')
+    selected_list = request.session.get('selected_list')
     with connection.cursor() as cursor:
-        cursor.execute("SELECT "+string+" from customer_app_customer_details where date_of_purchase between '"+start_date+"' and '"+end_date+"';")
+        cursor.execute("SELECT  id,"+string+" from customer_app_customer_details where date_of_purchase between '"+start_date+"' and '"+end_date+"';")
         row = cursor.fetchall()
-        request.session['row']= row
-    print(string)
-    print(start_date)
-    print(end_date)
-    print(row)
-    return render(request,"dashboardnew/report.html")
+        selected_list_values = []
+        for l in row:
+            selected_list_values.append(l[0])
+        values_list = Customer_Details.objects.filter(id__in=selected_list_values).values_list(list_1)
+        print(values_list)
+    # print(selected_list_values)
+    #     # print(start_date)
+    #     # print(end_date)
+    #     # print(row)
+    context={
+        'selected_list_values':selected_list_values,
+        'selected_list':selected_list,
+        'mydict':mydict,
+    }
+    return render(request,"dashboardnew/final_report.html",context)
 
 
 def manager_report(request):

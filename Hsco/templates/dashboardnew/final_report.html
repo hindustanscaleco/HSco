@@ -126,47 +126,22 @@ td {
 
           <table>
             <tr>
-              <th>x</th>
-              <th>x</th>
-              <th>x</th>
-              <th>x</th>
-              <th>x</th>
-              <th>x</th>
-              <th>x</th>
-              <th>x</th>
-              <th>x</th>
-              <th>x</th>
-              <th>x</th>
-              <th>x</th>
-              <th>x</th>
-              <th>x</th>
-              <th>x</th>
-              <th>x</th>
+              {% for list in selected_list%}
+              <th>{{list}}</th>
+              {% endfor %}
 
 
             </tr>
             <tr>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
+                            {% for list in selected_list_values %}
+
+              <td>{{list}}</td>
+                            {% endfor %}
+
 
             </tr>
           </table>
-<button>Export HTML Table To CSV File</button>
-<button onclick="downloadCSV()">b</button>
+
 </div>
 
 
