@@ -5,7 +5,7 @@ from django.utils import timezone
 choices = (('YES', 'YES'),
     ('NO', 'NO'),)
 class Repairing(models.Model):
-    repairingnumber = models.CharField(max_length=40)
+    repairingnumber = models.CharField(max_length=40) #combination of pk and 'rep'
 
     def __str__(self):
         return self.repairingnumber
@@ -32,13 +32,14 @@ class Repairing_after_sales_service(models.Model):
     replaced_scale_given = models.BooleanField(default=True)
     Replaced_scale_serial_no = models.CharField(max_length=60)
     deposite_taken_for_replaced_scale = models.CharField(max_length=60)
-    cost = models.CharField(max_length=60)
+    cost = models.FloatField(default=0.00)
+    total_cost = models.FloatField(default=0.00)
     informed_on = models.CharField(max_length=60)
     informed_by = models.CharField(max_length=60)
     confirmed_estimate = models.BooleanField(default=True)
     repaired = models.BooleanField(default=True)
-    repaired_date = models.BooleanField(default=True)
-    delivery_date = models.DateField(timezone.now)
+    repaired_date = models.DateField(default=datetime.date.today,null=True,blank=True)
+    delivery_date = models.DateField(default=datetime.date.today,null=True,blank=True)
     delivery_by = models.CharField(max_length=50)
     feedback_given = models.CharField(max_length=255)
 
