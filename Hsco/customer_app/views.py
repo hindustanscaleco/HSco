@@ -109,7 +109,6 @@ def update_customer_details(request,id):
 
 def add_product_details(request,id):
     customer_id = Customer_Details.objects.get(id=id).id
-    print(id)
     form = Product_Details_Form(request.POST or None)
     if request.method == 'POST':
         product_name = request.POST.get('product_name')
