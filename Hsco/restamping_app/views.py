@@ -46,11 +46,8 @@ def restamping_after_sales_service(request):
 
 
         item.save()
-        print('dsdsd')
-        print(item)
+
 
         return redirect('/')
 
-    context = {
-    }
-    return render(request,'forms/restamping_form.html',context)
+    return render(request,'forms/restamping_form.html',)
