@@ -82,8 +82,16 @@ class SiteUser(AbstractBaseUser):
     email = models.EmailField( 'Email-id', max_length=255, unique=True )
     name =models.CharField('Name',max_length=50,null=True,blank=True)
     user_type = models.CharField('Type Of User',max_length=20, choices=choices,null=True,blank=True)
-    sales_target =models.FloatField(default=0.0) #in rupees
-    target_achieved = models.FloatField(default=0.0) #in percentage
+    #customer_module
+    sales_target =models.FloatField(default=0.0)                 #in numbers (customer module)
+    target_achieved = models.FloatField(default=0.0)             #in percentage (customer module)
+    #repairing_module
+    repairing_no_of_repairs =models.FloatField(default=0.0)       #in numbers (repairing module)
+    repairing_target_achieved = models.FloatField(default=0.0)   #in percentage (repairing module)
+    # avg_time_repairing_scale = models.FloatField(default=0.0)
+    # avg_time_for_estimation = models.FloatField(default=0.0)
+
+
     date_of_joining = models.DateField(default=datetime.date.today())
     average_rating = models.FloatField(default=0.0)
     is_active = models.BooleanField(default=True)

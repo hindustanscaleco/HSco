@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 
+from user_app.models import SiteUser
 from .forms import Repairing_after_sales_service_form
 from .models import Repairing_after_sales_service
 
@@ -77,7 +78,7 @@ def add_repairing_details(request):
         item.save()
 
 
-        return redirect('/')
+        return redirect('/repair_product/')
 
     context={
         'form':form,
@@ -90,10 +91,18 @@ def repair_product(request):
     return render(request,'dashboardnew/repair_product.html',)
 
 def repairing_module_home(request):
-    return render(request,'dashboardnew/repairing_module_home.html',)
+    repair_list = Repairing_after_sales_service.objects.all()
+    context = {
+        'repair_list': repair_list,
+    }
+    return render(request,'dashboardnew/repairing_module_home.html',context)
 
 def manager_repairing_module_home(request):
-    return render(request,'dashboardnew/manager_repairing_module_home.html',)
+    repair_employee_list = SiteUser.objects.all()
+    context={
+        'repair_employee_list':repair_employee_list,
+    }
+    return render(request,'dashboardnew/manager_repairing_module_home.html',context)
 
 def repairing_report_module(request):
     return render(request,'dashboardnew/repairing_report_module.html',)
