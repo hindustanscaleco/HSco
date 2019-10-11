@@ -174,3 +174,9 @@ def manager_report(request):
         'employee_list':employee_list,
     }
     return render(request, 'dashboardnew/manager_report.html',context)
+
+
+def add_product(request):
+    return render(request, 'dashboardnew/add_product.html',)
+
+
