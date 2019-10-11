@@ -405,23 +405,15 @@ color:;
 
 <div class="form-group row">
   <label class="col-md-2 control-label">Value of Goods
-
-
-
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="value_of_goods" placeholder="Value of Goods" class="form-control"  type="text" disabled value="{{cust_id.value_of_goods}}">
-
     </div>
   </div>
-
     <label class="col-md-2 control-label">Channel of Dispatch
-
-
 </label>
-
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
@@ -429,21 +421,13 @@ color:;
 
     </div>
   </div>
-
 </div>
-
-
-
-
 <div class="form-group row">
   <label class="col-md-2 control-label">Notes
-
-
-
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>
 <input name="notes" class="form-control" disabled value="{{cust_id.notes}}">
 
 </div>
@@ -455,19 +439,23 @@ color:;
 </label>
 
     <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
-  {{cust_id.feedback_form_filled}}
-
-  </div>
-
+      <div class="input-group">
+        <span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>
+        <input class="form-control" disabled value="{{cust_id.feedback_form_filled}}">
+      </div>
+    </div>
 </div>
+<br>
+
+    <div class="col-md-12 inputGroupContainer">
+      <br>
+    <center>
+        <button type="submit" value="Submit" class="btn btn-primary">Save</button>
+      </center>
+    </div>
 
 
-<center>
-	<button type="submit" value="Submit" class="btn btn-primary">Save</button>
 
-</center>
 
 
 
@@ -512,11 +500,12 @@ color:;
                     <br>
 
           {% endfor %}
+          <center>
           <a href="/add_product_details/{{cust_id.id}}"> <button class="btn btn-primary">Add Product</button></a>
+            </center>
+          <br>
 </div>
-
-  </div>
-
+                <center>
                               <div class="col-lg-6">
 
               <div class="card shadow mb-4">
@@ -543,12 +532,18 @@ color:;
 
 
 </form>
-
+    </div>
+      </div>
 
 
 
 
             </div>
+              </div>
+                              </div>
+                </center>
+  </div>
+
 
 
 
@@ -563,6 +558,7 @@ color:;
               </div>
 
             </div>
+
 
   <!-- End of Page Wrapper -->
 

@@ -97,9 +97,21 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="type_of_machine" placeholder="Type of Machine
+    <input  type="text" name="type_of_machine" placeholder="Type of Machine" class="form-control" list="type_of_scale">
+    <datalist style="height:20px;" id="type_of_scale">
+    <option value = "Digital"></option>
+    <option value = "Mechanical"></option>
+    </datalist>
+    </div>
+  </div>
 
-" class="form-control"  type="text">
+    <label class="col-md-2 control-label">Cost
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <input  name="cost" placeholder="Cost" value="0.0" class="form-control"  type="text">
     </div>
   </div>
 
@@ -118,11 +130,26 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="model" placeholder="Model
+      <input  type="text" placeholder="Model" class="form-control" class="form-control" name="model" list="model">
+    <datalist style="height:20px;" id="model">
+    <option value = "Table Top"></option>
+    <option value = "Platform Scale"></option>
+    <option value = "POS Scales"></option>
+    <option value = "Water Proof Scales"></option>
+    <option value = "Jewellery Scales"></option>
+    <option value = "Lab Scales"></option>
+    <option value = "Crane Scales"></option>
+    <option value = "Platform Scales"></option>
+    <option value = "Mobile Platforms"></option>
+    <option value = "Infant Scales"></option>
+    <option value = "Baby Cum Adult Scales"></option>
+    <option value = "Animal Scales"></option>
+    <option value = "Cattle Scales"></option>
+    <option value = "Supra Pall Scales"></option>
+    </datalist>  </div>
 
-" class="form-control"  type="text">
     </div>
-  </div>
+
 
     <label class="col-md-2 control-label">Sub model
 
@@ -149,10 +176,20 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="problem_in_scale" placeholder="Problem in the scale
-
-" class="form-control"  type="text">
-    </div>
+        <input  type="text" name="problem_in_scale" placeholder="Problem In The Scale" class="form-control" list="problem_in_scale">
+    <datalist style="height:20px;" id="problem_in_scale">
+    <option value = "Scale not turning On"></option>
+    <option value = "Scale is showing incorrect weight"></option>
+    <option value = "Scale only shows 888888"></option>
+    <option value = "Scale only shows zero"></option>
+    <option value = "Weight is slowly increasing or decreasing"></option>
+    <option value = "buttons are not working"></option>
+    <option value = "Scale doesnt show stable weight"></option>
+    <option value = "Display problems (Display gets distorted while showing weight)"></option>
+    <option value = "Scale is not working on battery or scale is not charging"></option>
+    <option value = "Scale turns OFF automatically"></option>
+    <option value = "Others"></option>
+    </datalist>    </div>
   </div>
 
     <label class="col-md-2 control-label">Components Replaced in Waranty(if scale in Waranty)
@@ -164,9 +201,20 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-  <input  name="components_replaced_in_warranty" placeholder="Components Replaced in Waranty(if scale in Waranty)
-
-" class="form-control"  type="text">
+<input  type="text" name="components_replaced_in_warranty" placeholder="Components Replaced IW" class="form-control" list="components_replaced_in_warranty">
+    <datalist style="height:20px;" id="components_replaced_in_warranty">
+    <option value = "Display"></option>
+    <option value = "Touch Pad"></option>
+    <option value = "LED"></option>
+    <option value = "Transformer"></option>
+    <option value = "Battery"></option>
+    <option value = "Switch"></option>
+    <option value = "Main Cord wire"></option>
+    <option value = "Main Circuit Board"></option>
+    <option value = "SMPS"></option>
+    <option value = "Load Cell"></option>
+    <option value = "Misc"></option>
+    </datalist>
     </div>
   </div>
 
@@ -183,7 +231,21 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-  <input  name="components_replaced" placeholder="Components Replaced" class="form-control"  type="text">
+
+    <input  type="text" name="components_replaced" placeholder="Components Replaced" class="form-control" list="components_replaced">
+    <datalist style="height:20px;" id="components_replaced">
+    <option value = "Display"></option>
+    <option value = "Touch Pad"></option>
+    <option value = "LED"></option>
+    <option value = "Transformer"></option>
+    <option value = "Battery"></option>
+    <option value = "Switch"></option>
+    <option value = "Main Cord wire"></option>
+    <option value = "Main Circuit Board"></option>
+    <option value = "SMPS"></option>
+    <option value = "Load Cell"></option>
+    <option value = "Misc"></option>
+    </datalist>
     </div>
   </div>
 
@@ -201,20 +263,17 @@ color:;
 
 
   <div class="form-group row">
-  <label class="col-md-2 control-label">Replaced scale Serial NO
+  <label class="col-md-2 control-label">Replaced Scale Serial No
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="Replaced_scale_serial_no" placeholder="Replaced scale Serial NO
-
-
-" class="form-control"  type="text">
+  <input  name="Replaced_scale_serial_no" placeholder="Replaced scale Serial NO" class="form-control"  type="text">
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Deposit taken for replaced Scale
+    <label class="col-md-2 control-label">Deposit Taken For Replaced Scale
 
 
 
@@ -233,18 +292,6 @@ color:;
 
 </div>
 
-
-  <div class="form-group row">
-  <label class="col-md-2 control-label">Cost
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="cost" placeholder="Cost" value="0.0" class="form-control"  type="text">
-    </div>
-  </div>
-  </div>
 
 
 
@@ -282,7 +329,9 @@ color:;
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
-
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
