@@ -99,3 +99,8 @@ def view_customer_details(request):
         customer_list:'customer_list',
     }
     return render(request,'dashboardnew/cm.html',context )
+
+
+
+def manager_report(request):
+    return render(request, 'dashboardnew/manager_report.html',)

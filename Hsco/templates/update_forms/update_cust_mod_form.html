@@ -1,0 +1,501 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid" >
+
+          <div class="row" style="padding:20px;">
+               <label class="col-md-6 control-label">CRM Number:{{crn_number}}</label>
+
+          </div>
+<br>
+
+
+    <form class="well form-horizontal" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
+<fieldset>
+
+<div class="form-group row">
+  <label class="col-md-2 control-label ">Name of customer
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="customer_name" placeholder="Full Name"  class="form-control"  type="text" disabled value="">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Company Name
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled value="">
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Address
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <textarea class="form-control" name="address" placeholder="Address" disabled value=""></textarea>
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Contact Number
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
+  <input  name="contact_no" placeholder="Contact No" class="form-control"  type="text" disabled value="">
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">E-mail Id
+  </label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+  <input type="email" name="customer_email_id" placeholder="E-mail Id" class="form-control"  type="email" disabled value="">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Date of Purchase
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="date_of_purchase" placeholder="Date of Purchase" class="form-control"  type="Date" disabled value="">
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Product Purchased Date
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="product_purchase_date" placeholder="Product Purchased Date" class="form-control"  type="Date" disabled value="">
+    </div>
+  </div>
+
+    <!--<label class="col-md-2 control-label">Quantity-->
+
+<!--</label>-->
+
+    <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>-->
+  <!--<input  name="quantity" placeholder="Quantity" class="form-control"  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+</div>
+
+
+
+<div class="form-group row">
+  <!--<label class="col-md-2 control-label">Type of Scale-->
+
+
+<!--</label>-->
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
+
+    <!--<select name="type_of_scale" class="form-control selectpicker">-->
+      <!--<option value="">Type of Scale</option>-->
+
+      <!--<option >Type A</option>-->
+      <!--<option >Type B</option>-->
+      <!--<option >Type C</option>-->
+      <!--<option >Type D</option>-->
+      <!--<option >Type E</option>-->
+      <!--<option >Type F</option>-->
+      <!--<option >Type G</option>-->
+    <!--</select>-->
+     <!--</div>-->
+  <!--</div>-->
+
+    <!--<label class="col-md-2 control-label">Model of Purchase-->
+
+<!--</label>-->
+
+    <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-drivers-license faicons"></i></span>-->
+  <!--<input  name="model_of_purchase" placeholder="Model of Purchase" class="form-control"  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+</div>
+
+
+
+<!--<div class="form-group row">-->
+  <!--<label class="col-md-2 control-label">Sub Sub Model-->
+
+
+<!--</label>-->
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-drivers-license faicons"></i></span>-->
+  <!--<input  name="sub_sub_model" placeholder="Sub Sub Model" class="form-control"  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+    <!--<label class="col-md-2 control-label">Serial No. of Scale-->
+
+<!--</label>-->
+
+    <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
+  <!--<input  name="serial_no_scale" placeholder="Serial No. of Scale" class="form-control"  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+<!--</div>-->
+
+
+
+<!--<div class="form-group row">-->
+  <!--<label class="col-md-2 control-label">Brand-->
+
+
+<!--</label>-->
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
+  <!--<input  name="brand" placeholder="Brand" class="form-control"  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+    <!--<label class="col-md-2 control-label">Capacity-->
+
+<!--</label>-->
+
+    <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
+  <!--<input  name="capacity" placeholder="Capacity" class="form-control"  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+<!--</div>-->
+
+
+
+<!--<div class="form-group row">-->
+  <!--<label class="col-md-2 con  trol-label">Unit-->
+
+
+<!--</label>-->
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>-->
+  <!--<input  name="unit" placeholder="Unit" class="form-control"  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+    <!--<label class="col-md-2 control-label">Sales Person-->
+
+<!--</label>-->
+
+    <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+  <!--<input  name="first_name" placeholder="Sales Person" class="form-control"  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+<!--</div>-->
+
+
+
+<div class="form-group row" >
+  <!--<label class="col-md-2 control-label">New/Repeat Purchase-->
+
+
+<!--</label>-->
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-envelope-open faicons"></i></span>-->
+  <!--<input  name="first_name" placeholder="New/Repeat Purchase" class="form-control"  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+    <label class="col-md-2 control-label">Bill No
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="bill_no" placeholder="Bill No" class="form-control"  type="text" disabled value="">
+    </div>
+  </div>
+ <label class="col-md-2 control-label">Upload PO File
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+    <input type="file" name="upload_op_file" id="fileToUpload" class="form-control" disabled value="">
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">PO Number
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="po_number" placeholder="PO Number" class="form-control"  type="text" disabled value="">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Upload LR Photo
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+    <input type="file" name="photo_lr_no" id="fileToUpload" class="form-control" disabled value="">
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Channel of Sales
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="channel_of_sales" placeholder="Channel of Sales" class="form-control"  type="text" disabled value="">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Industry
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="industry" placeholder="Industry" class="form-control"  type="text" disabled value="">
+    </div>
+  </div>
+
+</div>
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Value of Goods
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="value_of_goods" placeholder="Value of Goods" class="form-control"  type="text" disabled value="">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Channel of Dispatch
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch" class="form-control"  type="text" disabled value="">
+    </div>
+  </div>
+
+</div>
+
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Notes
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
+<textarea name="notes" class="form-control" disabled value=""></textarea>
+</div>
+  </div>
+
+    <label class="col-md-2 control-label">Feedback Form Filled
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
+{{form.feedback_form_filled}}
+    </div>
+  </div>
+
+</div>
+
+
+<center>
+	<button type="submit" value="Submit" class="btn btn-primary">Save</button>
+
+</center>
+
+
+
+<br>
+
+
+
+
+
+
+
+</fieldset>
+</form>
+</div>
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+    </div>
+  </div>
+</body>
+
+</html>

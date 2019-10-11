@@ -31,6 +31,7 @@ urlpatterns = [
     path('', include('restamping_app.urls')),
     path('', include('onsitevisit_app.urls')),
 
+
 ]
 if settings.DEBUG:
 	urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
