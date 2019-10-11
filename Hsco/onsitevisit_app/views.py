@@ -4,7 +4,7 @@ from onsitevisit_app.forms import add_Onsite_aftersales_service_form
 from .models import Onsite_aftersales_service
 
 
-def add_Onsite_aftersales_service(request):
+def add_onsite_aftersales_service(request):
     form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
         repairingno = request.POST.get('repairingno')
