@@ -73,7 +73,7 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">
+    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
 <fieldset>
 
 <div class="form-group row">
@@ -88,7 +88,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-font faicons"></i></span>
-  <input  name="first_name" placeholder="AMC Number
+  <input  name="amcno" placeholder="AMC Number
 
 
 
@@ -106,7 +106,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="first_name" placeholder="Customer Name
+  <input  name="customer_name" placeholder="Customer Name
 
 
 " class="form-control"  type="text">
@@ -131,7 +131,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="first_name" placeholder="Company Name
+  <input  name="company_name" placeholder="Company Name
 
 
 " class="form-control"  type="text">
@@ -149,7 +149,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="first_name" placeholder="Customer Number
+  <input  name="customer_no" placeholder="Customer Number
 
 
 
@@ -175,7 +175,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <input type="email" name="first_name" placeholder="Customer E-mail id
+  <input type="email" name="customer_email_id" placeholder="Customer E-mail id
 
 
 
@@ -194,7 +194,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="first_name" placeholder="Type of Scale
+  <input  name="type_of_scale" placeholder="Type of Scale
 
 " class="form-control"  type="text">
     </div>
@@ -216,7 +216,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="first_name" placeholder="Scale Serial Number
+  <input  name="serial_no_scale" placeholder="Scale Serial Number
 
 
 " class="form-control"  type="text">
@@ -234,7 +234,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="first_name" placeholder="Contract Validity in Years
+  <input  name="contract_valid_in_years" placeholder="Contract Validity in Years
 
 
 
@@ -260,7 +260,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="first_name" placeholder="Contract Amount
+  <input  name="contract_amount" placeholder="Contract Amount
 
 
 
@@ -282,7 +282,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="first_name" placeholder="Contact Number for reporting Breakdown
+  <input  name="contract_no_reporting_breakdown" placeholder="Contact Number for reporting Breakdown
 
 
 
@@ -308,12 +308,12 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="first_name" placeholder="Contract Start Date
+  <input  name="contract_start_date" placeholder="Contract Start Date
 
 
 
 
-" class="form-control"  type="text">
+" class="form-control"  type="date">
     </div>
   </div>
 
@@ -329,12 +329,12 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="first_name" placeholder="Contract End Date
+  <input  name="contract_end_date" placeholder="Contract End Date
 
 
 
 
-" class="form-control"  type="text">
+" class="form-control"  type="date">
     </div>
   </div>
 
@@ -355,7 +355,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input type="date" name="first_name" placeholder="Visit 1
+  <input type="date" name="visit_1" placeholder="Visit 1
 
 
 
@@ -376,7 +376,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="first_name" placeholder="Report 1
+  <input  name="repot_1" placeholder="Report 1
 
 
 
@@ -402,7 +402,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input type="date" name="first_name" placeholder="Visit 2
+  <input type="date" name="visit_2" placeholder="Visit 2
 
 
 
@@ -422,7 +422,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="first_name" placeholder="Report 2
+  <input  name="repot_2" placeholder="Report 2
 
 
 
@@ -444,7 +444,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input type="date" name="first_name" placeholder="Visit 3
+  <input type="date" name="visit_3" placeholder="Visit 3
 
 
 
@@ -461,7 +461,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="first_name" placeholder="Report 3
+  <input  name="repot_3" placeholder="Report 3
 
 
 " class="form-control"  type="text">
@@ -483,7 +483,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input type="date" name="first_name" placeholder="Visit 4
+  <input type="date" name="visit_4" placeholder="Visit 4
 
 
 
@@ -502,7 +502,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="first_name" placeholder="Report 4
+  <input  name="repot_4" placeholder="Report 4
 
 
 
@@ -521,7 +521,7 @@ color:;
 
 
 <center>
-	<button class="btn btn-primary">Save</button>
+	<button type="submit" value="submit" class="btn btn-primary">Save</button>
 
 </center>
 

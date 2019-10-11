@@ -26,6 +26,9 @@ urlpatterns = [
     path('', include('customer_app.urls')),
     path('', include('ess_app.urls')),
     path('', include('onsitevisit_app.urls')),
+    path('', include('repairing_app.urls')),
+    path('', include('amc_visit_app.urls')),
+    path('', include('restamping_app.urls')),
 
 ]
 if settings.DEBUG:

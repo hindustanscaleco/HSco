@@ -3,7 +3,7 @@ from .models import Amc_After_Sales
 from .models import Amcvisit
 
 
-def add_Amcvisit(request):
+def add_amcvisit(request):
     form = (request.POST or None)
     if request.method == 'POST':
         amcno = request.POST.get('amcno')
@@ -30,7 +30,7 @@ def add_Amcvisit(request):
     }
     return render(request,'forms/amc_form.html',context)
 
-def add_Amc_After_Sales(request):
+def add_amc_after_sales(request):
     form = (request.POST or None, request.FILES or None)
     if request.method == 'POST':
         customer_no = request.POST.get('customer_no')
