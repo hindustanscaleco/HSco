@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 
-from .views import amc_form, home, login, dashboard, graph, report, final_report
+from .views import amc_form, home, login, dashboard, graph
 from .views import sidebar, home
 from .views import navbar, home
 from .views import user_profile, home
@@ -42,8 +42,6 @@ path('sidebar/', sidebar, name='sidebar'),
 path('navbar/', navbar, name='navbar'),
 path('login/', login, name='login'),
 path('dashboard/', dashboard, name='dashboard'),
-path('report/', report, name='report'),
-path('final_report/', final_report, name='final_report'),
 path('graph/', graph, name='graph'),
 
 ]

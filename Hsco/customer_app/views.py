@@ -157,8 +157,6 @@ def add_product_details(request,id):
 def report(request):
     if request.method =='POST':
         selected_list = request.POST.getlist('checks[]')
-
-
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         string = ','.join(selected_list)
@@ -168,23 +166,24 @@ def report(request):
         request.session['string']= string
         request.session['selected_list']= selected_list
         return redirect('/final_report/')
-    return render(request,"dashboardnew/report.html",)
+    return render(request,"report/report_cust_mod_form.html",)
 
 
 def final_report(request):
-    print('hiasdfhnjkabnjkfasdjkbb')
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
     string = request.session.get('string')
     selected_list = request.session.get('selected_list')
     with connection.cursor() as cursor:
-        cursor.execute("SELECT  id,"+string+" from customer_app_customer_details where date_of_purchase between '"+start_date+"' and '"+end_date+"';")
+        cursor.execute("SELECT  "+string+" from customer_app_customer_details where date_of_purchase between '"+start_date+"' and '"+end_date+"';")
         row = cursor.fetchall()
-        print(row)
-        print(row)
-        print(row)
-        print(row)
+
+
         final_row= [list(x) for x in row]
+        list3=[]
+        for i in row:
+            list3.append(list(i))
+        print(list3)
         print(final_row)
         print(final_row)
         print(final_row)

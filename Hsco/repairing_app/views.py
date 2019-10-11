@@ -89,6 +89,15 @@ def add_repairing_details(request):
 def repair_product(request):
     return render(request,'dashboardnew/repair_product.html',)
 
+def repairing_module_home(request):
+    return render(request,'dashboardnew/repairing_module_home.html',)
+
+def manager_repairing_module_home(request):
+    return render(request,'dashboardnew/manager_repairing_module_home.html',)
+
+def repairing_report_module(request):
+    return render(request,'dashboardnew/repairing_report_module.html',)
+
 
 
 
