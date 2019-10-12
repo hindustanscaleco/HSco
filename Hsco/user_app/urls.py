@@ -26,7 +26,6 @@ from .views import user_logs, home
 from .views import onsite_rep_form, home
 from .views import rep_mod_form, home
 from .views import restamping_form, home
-from .views import report, final_report
 
 
 urlpatterns = [

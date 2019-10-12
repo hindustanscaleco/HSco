@@ -1,7 +1,11 @@
+import csv
+
+from django.db import connection
 from django.db.models import Avg
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
+from user_app.models import SiteUser
 from .forms import Customer_Details_Form, Feedback_Form
 from .models import Customer_Details, Feedback
 from .forms import Product_Details_Form
@@ -133,8 +137,44 @@ def add_product_details(request):
     return render(request,'',context)
 
 
+
+def report(request):
+    if request.method =='POST':
+        selected_list = request.POST.getlist('checks[]')
+        start_date = request.POST.get('date1')
+        end_date = request.POST.get('date2')
+        string = ','.join(selected_list)
+        print(selected_list)
+        request.session['start_date']= start_date
+        request.session['end_date']= end_date
+        request.session['string']= string
+        request.session['selected_list']= selected_list
+        return redirect('/final_report/')
+    return render(request,"dashboardnew/report.html",)
+
+
+def final_report(request):
+    start_date = request.session.get('start_date')
+    end_date = request.session.get('end_date')
+    string = request.session.get('string')
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT "+string+" from customer_app_customer_details where date_of_purchase between '"+start_date+"' and '"+end_date+"';")
+        row = cursor.fetchall()
+        request.session['row']= row
+    print(string)
+    print(start_date)
+    print(end_date)
+    print(row)
+    return render(request,"dashboardnew/report.html")
+
+
 def manager_report(request):
-    return render(request, 'dashboardnew/manager_report.html',)
+    employee_list = SiteUser.objects.all()
+    context={
+        'employee_list':employee_list,
+    }
+    return render(request, 'dashboardnew/manager_report.html',context)
+
 
 def add_product(request):
     return render(request, 'dashboardnew/add_product.html',)
