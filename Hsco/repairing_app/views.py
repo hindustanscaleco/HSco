@@ -84,3 +84,11 @@ def add_repairing_details(request):
     }
 
     return render(request,'forms/rep_mod_form.html',context)
+
+
+def repair_product(request):
+    return render(request,'dashboardnew/repair_product.html',)
+
+
+
+
