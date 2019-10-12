@@ -138,3 +138,5 @@ def manager_report(request):
 
 def add_product(request):
     return render(request, 'dashboardnew/add_product.html',)
+
+

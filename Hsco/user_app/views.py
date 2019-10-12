@@ -69,4 +69,4 @@ def final_report(request):
     print(start_date)
     print(end_date)
     print(row)
-    return render(request,"dashboardnew/report.html")
+    return render(request,"dashboardnew/final_report.html")
