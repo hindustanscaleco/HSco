@@ -66,12 +66,95 @@ def add_customer_details(request):
 
 
 def view_customer_details(request):
-    customer_list = Customer_Details.objects.all()
-    print(customer_list)
-    context={
-        'customer_list':customer_list,
-    }
+
+    if request.method=='POST' :
+        if'submit1' in request.POST:
+            start_date = request.POST.get('date1')
+            end_date = request.POST.get('date2')
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT  * from customer_app_customer_details where date_of_purchase between '" + start_date + "' and '" + end_date + "';")
+                row = cursor.fetchall()
+
+                customer_list = [list(x) for x in row]
+                context = {
+                    'customer_list': customer_list,
+                }
+                context.update(context)
+        elif 'submit2' in request.POST:
+            contact = request.POST.get('contact')
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT  * from customer_app_customer_details where contact_no  LIKE '%" + contact + "%' ;")
+                row = cursor.fetchall()
+
+                customer_list = [list(x) for x in row]
+                context = {
+                    'customer_list': customer_list,
+                }
+                context.update(context)
+
+        elif 'submit3' in request.POST:
+            email = request.POST.get('email')
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT  * from customer_app_customer_details where customer_email_id  LIKE '%" + email + "%' ;")
+                row = cursor.fetchall()
+
+                customer_list = [list(x) for x in row]
+                context = {
+                    'customer_list': customer_list,
+                }
+                context.update(context)
+        elif 'submit4' in request.POST:
+            customer = request.POST.get('customer')
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT  * from customer_app_customer_details where customer_name  LIKE '%" + customer + "%' ;")
+                row = cursor.fetchall()
+
+                customer_list = [list(x) for x in row]
+                context = {
+                    'customer_list': customer_list,
+                }
+                context.update(context)
+
+        elif  'submit5' in request.POST:
+            company = request.POST.get('company')
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT  * from customer_app_customer_details where company_name  LIKE '%" + company + "%' ;")
+                row = cursor.fetchall()
+
+                customer_list = [list(x) for x in row]
+                context = {
+                    'customer_list': customer_list,
+                }
+                context.update(context)
+    # elif request.method=='POST' and 'submit6' in request.POST:
+    #     crm = request.POST.get('crm')
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(
+    #             "SELECT  * from customer_app_customer_details where crn_number  LIKE '%" + crm + "%' ;")
+    #         row = cursor.fetchall()
+    #
+    #         customer_list = [list(x) for x in row]
+    #         context = {
+    #             'customer_list': customer_list,
+    #         }
+    #         context.update(context)
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT  * from customer_app_customer_details  ;")
+        row = cursor.fetchall()
+
+        customer_list = [list(x) for x in row]
+        context = {
+            'customer_list': customer_list,
+        }
     return render(request,'dashboardnew/cm.html',context )
+
+# def search_by-
 
 def update_customer_details(request,id):
     product_list = Product_Details.objects.filter(customer_id=id)

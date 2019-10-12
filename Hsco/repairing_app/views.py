@@ -131,33 +131,41 @@ def manager_repairing_module_home(request):
     return render(request,'dashboardnew/manager_repairing_module_home.html',context)
 
 def repairing_report_module(request):
-    if request.method == 'POST':
+    if request.method == 'POST' or None:
         selected_list = request.POST.getlist('checks[]')
-        start_date = request.POST.get('date1')
-        end_date = request.POST.get('date2')
-        string = ','.join(selected_list)
-        print(selected_list)
-        request.session['start_date'] = start_date
-        request.session['end_date'] = end_date
-        request.session['string'] = string
+        repair_start_date = request.POST.get('date1')
+        repair_end_date = request.POST.get('date2')
+        repair_string = ','.join(selected_list)
+
+        request.session['start_date'] = repair_start_date
+        request.session['repair_end_date'] = repair_end_date
+        request.session['repair_string'] = repair_string
         request.session['selected_list'] = selected_list
-        return redirect('/final_report/')
+        return redirect('/final_repairing_report_module/')
     return render(request,'report/report_rep_mod_form.html',)
 
 def final_repairing_report_module(request):
-    start_date = request.session.get('start_date')
-    end_date = request.session.get('end_date')
-    string = request.session.get('string')
+    repair_start_date = str(request.session.get('repair_start_date'))
+    repair_end_date = str(request.session.get('repair_end_date'))
+    repair_string = request.session.get('repair_string')
     selected_list = request.session.get('selected_list')
+    print(repair_string)
+    print(repair_start_date)
+    print(repair_start_date)
+    print(repair_start_date)
+    print(repair_start_date)
+
+    print(repair_start_date)
+    print(repair_end_date)
+    print(selected_list)
     with connection.cursor() as cursor:
-        cursor.execute("SELECT  " + string + " from repairing_app_repairing_after_sales_service where today_date between '"+start_date+"' and '"+end_date+"';")
+        cursor.execute("SELECT "+repair_string+" from repairing_app_repairing_after_sales_service where today_date between '"+repair_start_date+"' and '"+repair_end_date+"';")
         row = cursor.fetchall()
         print(row)
         final_row = [list(x) for x in row]
         repairing_data = []
         for i in row:
             repairing_data.append(list(i))
-
     context = {
         'final_row': final_row,
         'selected_list': selected_list,
