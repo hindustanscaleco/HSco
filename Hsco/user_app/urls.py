@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 
-from .views import amc_form, home, login, dashboard, graph
+from .views import amc_form, home, login, dashboard, graph, report, final_report
 from .views import sidebar, home
 from .views import navbar, home
 from .views import user_profile, home
