@@ -132,14 +132,19 @@ td {
 
 
             </tr>
-            <tr>
                             {% for list in final_row %}
+                          <tr>
 
-              <td>{{list}}</td>
+                            {% for lis in list %}
+
+              <td>{{lis}}</td>
+
+
+                            {% endfor %}
+                              </tr>
                             {% endfor %}
 
 
-            </tr>
           </table>
 
 </div>
@@ -199,7 +204,7 @@ td {
     }
 
     // Download CSV file
-    downloadCSV(csv.join("\n"), filename);
+    downloadCSV(xlsx.join("\n"), filename);
 }
 
 
@@ -209,7 +214,7 @@ function downloadCSV(csv, filename) {
     var downloadLink;
 
     // CSV file
-    csvFile = new Blob([csv], {type: "text/csv"});
+    csvFile = new Blob([csv], {type: "text/xlsx"});
 
     // Download link
     downloadLink = document.createElement("a");
