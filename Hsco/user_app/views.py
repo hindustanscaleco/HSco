@@ -43,6 +43,7 @@ def login(request):
 def dashboard(request):
     return render(request,"dashboardnew/dashboard.html",)
 
+
 def report(request):
     if request.method =='POST':
         selected_list = request.POST.getlist('checks[]')
@@ -69,4 +70,4 @@ def final_report(request):
     print(start_date)
     print(end_date)
     print(row)
-    return render(request,"dashboardnew/report.html")
+    return render(request,"dashboardnew/final_report.html")
