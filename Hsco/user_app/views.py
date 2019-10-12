@@ -43,6 +43,9 @@ def login(request):
 def dashboard(request):
     return render(request,"dashboardnew/dashboard.html",)
 
+def graph(request):
+    return render(request,"dashboardnew/graph.html",)
+
 def report(request):
     if request.method =='POST':
         selected_list = request.POST.getlist('checks[]')
