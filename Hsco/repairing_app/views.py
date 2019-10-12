@@ -152,7 +152,7 @@ def final_repairing_report_module(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT  " + string + " from repairing_app_repairing_after_sales_service where today_date between '"+start_date+"' and '"+end_date+"';")
         row = cursor.fetchall()
-
+        print(row)
         final_row = [list(x) for x in row]
         repairing_data = []
         for i in row:
