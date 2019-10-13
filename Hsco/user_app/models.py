@@ -82,8 +82,8 @@ class SiteUser(AbstractBaseUser):
     email = models.EmailField( 'Email-id', max_length=255, unique=True )
     name =models.CharField('Name',max_length=50,null=True,blank=True)
     user_type = models.CharField('Type Of User',max_length=20, choices=choices,null=True,blank=True)
-    sales_target =models.FloatField(default=0.0)
-    target_achieved = models.FloatField(default=0.0)
+    sales_target =models.FloatField(default=0.0) #in rupees
+    target_achieved = models.FloatField(default=0.0) #in percentage
     date_of_joining = models.DateField(default=datetime.date.today())
     average_rating = models.FloatField(default=0.0)
     is_active = models.BooleanField(default=True)
