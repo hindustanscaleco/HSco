@@ -150,7 +150,7 @@ def report(request):
         request.session['string']= string
         request.session['selected_list']= selected_list
         return redirect('/final_report/')
-    return render(request,"dashboardnew/report.html",)
+    return render(request,"report/report_cust_mod_form.html",)
 
 
 def final_report(request):
@@ -161,6 +161,7 @@ def final_report(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT  "+string+" from customer_app_customer_details where date_of_purchase between '"+start_date+"' and '"+end_date+"';")
         row = cursor.fetchall()
+
 
         final_row= [list(x) for x in row]
         list3=[]
