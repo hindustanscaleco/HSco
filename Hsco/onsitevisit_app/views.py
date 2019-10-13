@@ -83,4 +83,10 @@ def add_onsite_aftersales_service(request):
 
 
 def report_onsite(request):
-    return render(request,"report/report_onsite_rep_form.html")
+    return render(request,"report/report_onsite_rep_form.html",)
+
+def onsite_views(request):
+    return render(request,"manager/onsite_reparing.html",)
+
+def onsite_reparing_logs(request):
+    return render(request,"logs/onsite_reparing_logs.html",)
