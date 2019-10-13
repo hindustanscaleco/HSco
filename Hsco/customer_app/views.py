@@ -150,7 +150,7 @@ def report(request):
         request.session['string']= string
         request.session['selected_list']= selected_list
         return redirect('/final_report/')
-    return render(request,"dashboardnew/report.html",)
+    return render(request,"report/report_cust_mod_form.html",)
 
 
 def final_report(request):
@@ -165,7 +165,7 @@ def final_report(request):
     print(start_date)
     print(end_date)
     print(row)
-    return render(request,"dashboardnew/report.html")
+    return render(request,"report/report_cust_mod_form.html")
 
 
 def manager_report(request):
