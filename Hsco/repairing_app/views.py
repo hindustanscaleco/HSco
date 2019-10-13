@@ -95,6 +95,9 @@ def repairing_module_home(request):
 def manager_repairing_module_home(request):
     return render(request,'dashboardnew/manager_repairing_module_home.html',)
 
+def repairing_report_module(request):
+    return render(request,'dashboardnew/repairing_report_module.html',)
+
 
 
 
