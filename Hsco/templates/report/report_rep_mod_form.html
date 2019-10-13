@@ -91,12 +91,10 @@ color:;
 </label>
 
   <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="checks[]" placeholder="Repairing Number
-
-" class="form-control"  type="checkbox" value="repairingnumber">
-    </div>
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck1">
+  <label class="custom-control-label" for="customCheck1"></label>
+</div>
   </div>
 
     <label class="col-md-2 control-label">Customer Number
@@ -104,34 +102,25 @@ color:;
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="checks[]" placeholder="Customer Number
-
-" class="form-control"  type="checkbox" value="customer_no">
-    </div>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_no" id="customCheck2">
+  <label class="custom-control-label" for="customCheck2"></label>
+</div>
   </div>
-
-
 
 </div>
 
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Previous Repairing number
-
-
-
-</label>
+  <label class="col-md-2 control-label">Previous Repairing number</label>
 
   <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="checks[]" placeholder="Previous Repairing number
-" class="form-control" type="checkbox" value="previous_repairing_number">
-    </div>
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="previous_repairing_number" id="customCheck3">
+  <label class="custom-control-label" for="customCheck3"></label>
+</div>
   </div>
 
     <label class="col-md-2 control-label">In Warranty
@@ -140,11 +129,11 @@ color:;
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  {{in_warranty}}
-    </div>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="in_warranty" id="customCheck4">
+  <label class="custom-control-label" for="customCheck4"></label>
+</div>
   </div>
 
 
@@ -160,29 +149,24 @@ color:;
 
 </label>
   <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="checkbox" name="checks[]" placeholder="Company name
-" class="form-control"   value="date_of_purchase">
-    </div>
-  </div>
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="date_of_purchase" id="customCheck5">
+  <label class="custom-control-label" for="customCheck5"></label>
 </div>
+  </div>
 
 
 
-<div class="form-group row">
   <label class="col-md-2 control-label">Today's date
 
 
 
 </label>
   <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="checks[]" placeholder="Today's date
-
-" class="form-control"  type="checkbox" value="today_date">
-    </div>
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="today_date" id="customCheck6">
+  <label class="custom-control-label" for="customCheck6"></label>
+</div>
   </div>
 
     <label class="col-md-2 control-label">Name
@@ -191,13 +175,11 @@ color:;
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="checks[]" placeholder="Name
-
-" class="form-control"  type="checkbox" value="name" >
-    </div>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="name" id="customCheck7">
+  <label class="custom-control-label" for="customCheck7"></label>
+</div>
   </div>
 
 </div>
@@ -205,21 +187,15 @@ color:;
 
 
 <div class="form-group row">
+
   <label class="col-md-2 control-label">Company name
 
-
-
-
-
 </label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="checks[]" placeholder="Company name
-" class="form-control"  type="checkbox" value="company_name">
-
-
-     </div>
+   <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="company_name" id="customCheck8">
+  <label class="custom-control-label" for="customCheck8"></label>
+</div>
   </div>
 
     <label class="col-md-2 control-label">Phone Number
@@ -228,16 +204,15 @@ color:;
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="checks[]" placeholder="Phone Number
-
-" class="form-control"  type="checkbox" value="phone_no">
-    </div>
-  </div>
-
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="phone_no" id="customCheck9">
+  <label class="custom-control-label" for="customCheck9"></label>
 </div>
+  </div>
+</div>
+
+
 
 
 
@@ -248,13 +223,11 @@ color:;
 
 
 </label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="checkbox" name="checks[]" placeholder="Email-id
-
-" class="form-control"   value="customer_email_id">
-    </div>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_email_id" id="customCheck10">
+  <label class="custom-control-label" for="customCheck10"></label>
+</div>
   </div>
 
     <label class="col-md-2 control-label">Location
@@ -263,13 +236,11 @@ color:;
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-marker faicons"></i></span>
-  <input  name="checks[]" placeholder="Location
-
-" class="form-control"  type="checkbox" value="location">
-    </div>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="location" id="customCheck11">
+  <label class="custom-control-label" for="customCheck11"></label>
+</div>
   </div>
 
 </div>
@@ -280,16 +251,12 @@ color:;
   <label class="col-md-2 control-label">products To be repaired
 
 
-
-
 </label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-  <input  name="checks[]" placeholder="products To be repaired
-
-" class="form-control"  type="checkbox" value="products_to_be_repaired">
-    </div>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="products_to_be_repaired" id="customCheck12">
+  <label class="custom-control-label" for="customCheck12"></label>
+</div>
   </div>
 
     <label class="col-md-2 control-label">Type of Machine
@@ -298,13 +265,11 @@ color:;
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="checks[]" placeholder="Type of Machine
-
-" class="form-control"  type="checkbox" value="type_of_machine">
-    </div>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="type_of_machine" id="customCheck13">
+  <label class="custom-control-label" for="customCheck13"></label>
+</div>
   </div>
 
 </div>
@@ -318,13 +283,11 @@ color:;
 
 
 </label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="checks[]" placeholder="Model
-
-" class="form-control"  type="checkbox" value="model">
-    </div>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="model" id="customCheck14">
+  <label class="custom-control-label" for="customCheck14"></label>
+</div>
   </div>
 
     <label class="col-md-2 control-label">Sub model
@@ -333,13 +296,11 @@ color:;
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="checks[]" placeholder="Sub model
-
-" class="form-control"  type="checkbox" value="sub_model">
-    </div>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_model" id="customCheck15">
+  <label class="custom-control-label" for="customCheck15"></label>
+</div>
   </div>
 
 </div>
@@ -350,12 +311,10 @@ color:;
   <label class="col-md-2 control-label">Problem in the scale
 </label>
   <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="checks[]" placeholder="Problem in the scale
-
-" class="form-control"  type="checkbox" value="problem_in_scale">
-    </div>
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="problem_in_scale" id="customCheck16">
+  <label class="custom-control-label" for="customCheck16"></label>
+</div>
   </div>
 
     <label class="col-md-2 control-label">Components Replaced in Waranty(if scale in Waranty)
@@ -364,13 +323,11 @@ color:;
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-  <input  name="checks[]" placeholder="Components Replaced in Waranty(if scale in Waranty)
-
-" class="form-control"  type="checkbox" value="components_replaced_in_warranty">
-    </div>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="components_replaced_in_warranty" id="customCheck17">
+  <label class="custom-control-label" for="customCheck17"></label>
+</div>
   </div>
 
 </div>
@@ -384,13 +341,10 @@ color:;
 
 </label>
   <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-  <input  name="checks[]" placeholder="Components Replaced
-
-
-" class="form-control"  type="checkbox" value="components_replaced">
-    </div>
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="components_replaced" id="customCheck18">
+  <label class="custom-control-label" for="customCheck4"></label>
+</div>
   </div>
 
     <label class="col-md-2 control-label">Replaced Scale given
@@ -400,11 +354,11 @@ color:;
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  {{replaced_scale_given}}
-    </div>
+ <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Replaced_scale_serial_no" id="customCheck19">
+  <label class="custom-control-label" for="customCheck19"></label>
+</div>
   </div>
 
 </div>
@@ -414,14 +368,11 @@ color:;
   <label class="col-md-2 control-label">Replaced scale Serial NO
 
 </label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="checks[]" placeholder="Replaced scale Serial NO
-
-
-" class="form-control"  type="checkbox" value="Replaced_scale_serial_no">
-    </div>
+ <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="replaced_scale_given" id="customCheck20">
+  <label class="custom-control-label" for="customCheck20"></label>
+</div>
   </div>
 
     <label class="col-md-2 control-label">Deposit taken for replaced Scale
@@ -431,14 +382,11 @@ color:;
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="checks[]" placeholder="Deposit taken for replaced Scale
-
-
-" class="form-control"  type="checkbox" value="deposite_taken_for_replaced_scale">
-    </div>
+ <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="deposite_taken_for_replaced_scale" id="customCheck21">
+  <label class="custom-control-label" for="customCheck21"></label>
+</div>
   </div>
 
 </div>
@@ -453,11 +401,11 @@ color:;
   <label class="col-md-2 control-label">Cost
 
 </label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="checks[]" placeholder="Cost"  class="form-control"  type="checkbox" value="cost">
-    </div>
+ <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="cost" id="customCheck22">
+  <label class="custom-control-label" for="customCheck22"></label>
+</div>
   </div>
 
     <label class="col-md-2 control-label">Total Cost
@@ -467,11 +415,11 @@ color:;
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="checks[]" placeholder="Total Cost"  class="form-control"  type="checkbox" value="total_cost">
-    </div>
+ <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="total_cost" id="customCheck23">
+  <label class="custom-control-label" for="customCheck23"></label>
+</div>
   </div>
 
 </div>
@@ -487,14 +435,11 @@ color:;
   <label class="col-md-2 control-label">Informed On
 
 </label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="checks[]" placeholder="Informed On
-
-
-" class="form-control"  type="checkbox" value="informed_on">
-    </div>
+ <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="informed_on" id="customCheck24">
+  <label class="custom-control-label" for="customCheck24"></label>
+</div>
   </div>
 
     <label class="col-md-2 control-label">Informed By
@@ -504,11 +449,11 @@ color:;
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="checks[]" placeholder="Informed By" class="form-control"  type="checkbox" value="informed_by">
-    </div>
+ <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="informed_by" id="customCheck25">
+  <label class="custom-control-label" for="customCheck25"></label>
+</div>
   </div>
 
 </div>
@@ -526,11 +471,11 @@ color:;
   <label class="col-md-2 control-label">Confirmed Estimate
 
 </label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  {{confirmed_estimate}}
-    </div>
+ <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="repaired_date" id="customCheck26">
+  <label class="custom-control-label" for="customCheck26"></label>
+</div>
   </div>
 
     <label class="col-md-2 control-label">Repaired
@@ -541,10 +486,10 @@ color:;
 </label>
 
     <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  {{repaired}}
-    </div>
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="repaired" id="customCheck27">
+  <label class="custom-control-label" for="customCheck27"></label>
+</div>
   </div>
 
 </div>
@@ -561,13 +506,11 @@ color:;
   <label class="col-md-2 control-label">Repaired date
 
 </label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="checkbox" name="checks[]" placeholder="Repaired date
-
-" class="form-control"   value="repaired_date">
-    </div>
+ <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="repaired_date" id="customCheck28">
+  <label class="custom-control-label" for="customCheck28"></label>
+</div>
   </div>
 </div>
 
@@ -583,21 +526,21 @@ color:;
   <label class="col-md-2 control-label">Delivery Date
 </label>
   <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="checks[]" placeholder="Delivery Date" class="form-control"  type="checkbox" value="delivery_date">
-    </div>
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="delivery_date" id="customCheck29">
+  <label class="custom-control-label" for="customCheck29"></label>
+</div>
   </div>
 
 
     <label class="col-md-2 control-label">Delivered By
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="checks[]" placeholder="Delivery By" class="form-control"  type="checkbox" value="delivery_by">
-    </div>
+     <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="delivery_by" id="customCheck30">
+  <label class="custom-control-label" for="customCheck30"></label>
+</div>
   </div>
 </div>
 
@@ -607,12 +550,11 @@ color:;
   <label class="col-md-2 control-label">Feedback Given
 
 </label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="checks[]" placeholder="Feedback Given
-" class="form-control"  type="checkbox" value="feedback_given">
-    </div>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="feedback_given" id="customCheck31">
+  <label class="custom-control-label" for="customCheck31"></label>
+</div>
   </div>
 
 
