@@ -73,7 +73,6 @@ color:;
         <div class="container-fluid" >
          <center>  <h1 style="color: black; font-size: 25px;">Repairing Module</h1>
          <br>
-           <button class="btn btn-primary">Add Product</button>
          </center>
           <br>
 
@@ -139,7 +138,7 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Previous Repairing number
+  <label class="col-md-2 control-label">Previous Repairing Number
 
 
 
@@ -173,7 +172,7 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Date of purchase
+  <label class="col-md-2 control-label">Date Of Purchase
 
 
 
@@ -181,16 +180,10 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="date_of_purchase" placeholder="Company name
-" class="form-control"  type="email">
+  <input type="date" name="date_of_purchase" placeholder="" class="form-control" type="Date">
     </div>
   </div>
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Today's date
+    <label class="col-md-2 control-label">Today's Date
 
 
 
@@ -203,6 +196,12 @@ color:;
 " class="form-control"  type="date">
     </div>
   </div>
+</div>
+
+
+
+<div class="form-group row">
+
 
     <label class="col-md-2 control-label">Name
 
@@ -219,12 +218,7 @@ color:;
     </div>
   </div>
 
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Company name
+  <label class="col-md-2 control-label">Company Name
 
 
 
@@ -234,13 +228,17 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company name
+  <input  name="company_name" placeholder="Company Name
 " class="form-control"  type="text">
 
 
      </div>
   </div>
+</div>
 
+
+
+<div class="form-group row">
     <label class="col-md-2 control-label">Phone Number
 
 
@@ -256,11 +254,7 @@ color:;
     </div>
   </div>
 
-</div>
 
-
-
-<div class="form-group row">
   <label class="col-md-2 control-label">Email-id
 
 
@@ -275,6 +269,9 @@ color:;
 " class="form-control"  type="text">
     </div>
   </div>
+</div>
+
+<div class="form-group row">
 
     <label class="col-md-2 control-label">Location
 
@@ -291,15 +288,7 @@ color:;
     </div>
   </div>
 
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">products To be repaired
-
-
-
+  <label class="col-md-2 control-label">Products To Be Repaired
 
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -310,6 +299,16 @@ color:;
 " class="form-control"  type="text">
     </div>
   </div>
+</div>
+
+<div class="form-group row">
+
+  <label class="col-md-2 control-label">
+  Type of Machine
+
+
+
+<label class="col-md-2 control-label">Type of Machine
 
 
 
@@ -319,19 +318,18 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="type_of_machine" list="cityname">
-    <datalist style="height:20px;" id="cityname">
-      <option value="Mechanical">
-      <option value="Digital">
+    <input  type="text" name="type_of_machine" placeholder="Type of Machine" class="form-control" list="type_of_machine">
+    <datalist style="height:20px;" id="type_of_machine">
+      <option value="Mechanical"></option>
+      <option value="Digital"></option>
     </datalist>
     </div>
   </div>
 
-</div>
 
 
 
-<div class="form-group row">
+
   <label class="col-md-2 control-label">Model
 
 
@@ -341,25 +339,29 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-      <input  type="text" name="model" list="model">
+      <input  type="text" placeholder="Model" class="form-control" name="model" list="model">
     <datalist style="height:20px;" id="model">
-    <option value = "Table Top">
-    <option value = "Platform Scale">
-    <option value = "POS Scales">
-    <option value = "Water Proof Scales">
-    <option value = "Jewellery Scales">
-    <option value = "Lab Scales">
-    <option value = "Crane Scales">
-    <option value = "Platform Scales">
-    <option value = "Mobile Platforms">
-    <option value = "Infant Scales">
-    <option value = "Baby Cum Adult Scales">
-    <option value = "Animal Scales">
-    <option value = "Cattle Scales">
-    <option value = "Supra Pall Scales">
+    <option value = "Table Top"></option>
+    <option value = "Platform Scale"></option>
+    <option value = "POS Scales"></option>
+    <option value = "Water Proof Scales"></option>
+    <option value = "Jewellery Scales"></option>
+    <option value = "Lab Scales"></option>
+    <option value = "Crane Scales"></option>
+    <option value = "Platform Scales"></option>
+    <option value = "Mobile Platforms"></option>
+    <option value = "Infant Scales"></option>
+    <option value = "Baby Cum Adult Scales"></option>
+    <option value = "Animal Scales"></option>
+    <option value = "Cattle Scales"></option>
+    <option value = "Supra Pall Scales"></option>
     </datalist>
   </div>
   </div>
+  </div>
+
+  <div class="form-group row">
+
 
     <label class="col-md-2 control-label">Sub model
 
@@ -376,34 +378,34 @@ color:;
     </div>
   </div>
 
-</div>
 
 
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Problem in the scale
+  <label class="col-md-2 control-label">Problem In The Scale
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-      <input  type="text" name="problem_in_scale" list="problem_in_scale">
+      <input  type="text" name="problem_in_scale" placeholder="Problem In The Scale" class="form-control" list="problem_in_scale">
     <datalist style="height:20px;" id="problem_in_scale">
-    <option value = "Scale not turning On">
-    <option value = "Scale is showing incorrect weight">
-    <option value = "Scale only shows 888888">
-    <option value = "Scale only shows zero">
-    <option value = "Weight is slowly increasing or decreasing">
-    <option value = "buttons are not working">
-    <option value = "Scale doesnt show stable weight">
-    <option value = "Display problems (Display gets distorted while showing weight)">
-    <option value = "Scale is not working on battery or scale is not charging">
-    <option value = "Scale turns OFF automatically">
-    <option value = "Others">
+    <option value = "Scale not turning On"></option>
+    <option value = "Scale is showing incorrect weight"></option>
+    <option value = "Scale only shows 888888"></option>
+    <option value = "Scale only shows zero"></option>
+    <option value = "Weight is slowly increasing or decreasing"></option>
+    <option value = "buttons are not working"></option>
+    <option value = "Scale doesnt show stable weight"></option>
+    <option value = "Display problems (Display gets distorted while showing weight)"></option>
+    <option value = "Scale is not working on battery or scale is not charging"></option>
+    <option value = "Scale turns OFF automatically"></option>
+    <option value = "Others"></option>
     </datalist>
     </div>
   </div>
+</div>
 
-    <label class="col-md-2 control-label">Components Replaced in Waranty(if scale in Waranty)
+<div class="form-group row">
+
+    <label class="col-md-2 control-label">Components Replaced In Waranty(If Scale In Waranty)
 
 
 
@@ -412,37 +414,31 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-    <input  type="text" name="components_replaced_in_warranty" list="components_replaced_in_warranty">
+    <input  type="text" name="components_replaced_in_warranty" placeholder="Components Replaced IW" class="form-control" list="components_replaced_in_warranty">
     <datalist style="height:20px;" id="components_replaced_in_warranty">
-    <option value = "Display">
-    <option value = "Touch Pad">
-    <option value = "LED">
-    <option value = "Transformer">
-    <option value = "Battery">
-    <option value = "Switch">
-    <option value = "Main Cord wire">
-    <option value = "Main Circuit Board">
-    <option value = "SMPS">
-    <option value = "Load Cell">
-    <option value = "Misc">
+    <option value = "Display"></option>
+    <option value = "Touch Pad"></option>
+    <option value = "LED"></option>
+    <option value = "Transformer"></option>
+    <option value = "Battery"></option>
+    <option value = "Switch"></option>
+    <option value = "Main Cord wire"></option>
+    <option value = "Main Circuit Board"></option>
+    <option value = "SMPS"></option>
+    <option value = "Load Cell"></option>
+    <option value = "Misc"></option>
     </datalist>
     </div>
   </div>
 
-</div>
 
-
-
-
-
-  <div class="form-group row">
   <label class="col-md-2 control-label">Components Replaced
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-    <input  type="text" name="components_replaced" list="components_replaced">
+    <input  type="text" name="components_replaced" placeholder="Components Replaced" class="form-control" list="components_replaced">
     <datalist style="height:20px; color:white;" id="components_replaced">
     <option value = "Display">
     <option value = "Touch Pad">
@@ -458,6 +454,9 @@ color:;
     </datalist>
     </div>
   </div>
+</div>
+
+  <div class="form-group row">
 
     <label class="col-md-2 control-label">Replaced Scale given
 
@@ -473,13 +472,10 @@ color:;
     </div>
   </div>
 
-</div>
 
 
 
 
-
-  <div class="form-group row">
 
 
     <label class="col-md-2 control-label">Total Cost
@@ -592,17 +588,9 @@ color:;
   <input type="date" name="repaired_date" placeholder="Repaired date" class="form-control"  type="text" value="">
     </div>
   </div>
-</div>
 
 
 
-
-
-
-
-
-
-  <div class="form-group row">
   <label class="col-md-2 control-label">Delivery Date
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -611,7 +599,11 @@ color:;
   <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control"  type="text" value="">
     </div>
   </div>
+</div>
 
+
+
+<div class="form-group row">
 
     <label class="col-md-2 control-label">Delivered By
 </label>
@@ -622,11 +614,11 @@ color:;
   <input  name="delivery_by" placeholder="Delivery By" class="form-control"  type="text" value="">
     </div>
   </div>
-</div>
 
 
 
-    <div class="form-group row">
+
+
   <label class="col-md-2 control-label">Feedback Given
 
 </label>
@@ -636,7 +628,7 @@ color:;
   <input  name="feedback_given" placeholder="Feedback Given" class="form-control"  type="text" value="">
     </div>
   </div>
-
+</div>
 
 
 
@@ -651,9 +643,16 @@ color:;
 <!--</p>-->
 <br>
 <center>
-	<button class="btn btn-primary">Save</button>
+	<button type="submit" class="btn btn-primary"> Submit and Product</button>
 
 </center>
+          <br>
+        <center>
+	<button class="btn btn-primary">Add Product</button>
+
+</center>
+
+
 
 
 
@@ -668,35 +667,6 @@ color:;
 </fieldset>
 </form>
 </div>
-
-        <h1 style="font-size: 25px; color: black; text-align: center;"> Added Product List </h1>
-  <br>
-
-      <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;">
-
-
-
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"> Type of Machine: Type A </div>
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"> Model: Model XYZ </div>
-                    <div class="col-xl-4 col-md-1 mb-1"> Sub Model: XYZ8907  </div>
-
-                    <div class="col-xl-12 col-md-1 mb-1"> Problem in the scale:</div>
-                  <div class="col-xl-12 col-md-1 mb-1"> Components Replaced in Waranty(if scale in Waranty) </div>
-                  <div class="col-xl-12 col-md-1 mb-1">Components Replaced  </div>
-
-                  <div class="col-xl-6 col-md-1 mb-1" style="border-right: 1px solid black;">Replaced Scale given  </div>
-                  <div class="col-xl-4 col-md-1 mb-1"> Replaced scale Serial NO </div>
-                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;">Deposit taken for replaced Scale </div>
-
-
-                   <div class="col-xl-4 col-md-1 mb-1"> Cost  </div>
-
-                    </div>
-
-              </div>
-      </div>
 
         <br>
 
