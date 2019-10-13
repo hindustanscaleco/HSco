@@ -112,7 +112,7 @@ td {
       <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <center>  <h1 style="color: black; font-size: 25px;">Custom Report</h1>  </center>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"  onclick="exportTableToCSV('members.csv')"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"  onclick="exportHTMLTableToCSV('members.csv', 'MyTable')"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div>
 
 
@@ -124,7 +124,7 @@ td {
 
 <br>
 
-          <table>
+          <table id="MyTable">
             <tr>
               {% for list in selected_list%}
               <th>{{list}}</th>
@@ -190,50 +190,52 @@ td {
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
 <script>
-  function exportTableToCSV(filename) {
-    var csv = [];
-    var rows = document.querySelectorAll("table tr");
+   function exportHTMLTableToCSV(filename, tableName) {
+        var csv = [];
 
-    for (var i = 0; i < rows.length; i++) {
-        var row = [], cols = rows[i].querySelectorAll("td, th");
+        var container = document.querySelector("#" + tableName);
+        var rows = container.querySelectorAll("table tr");
 
-        for (var j = 0; j < cols.length; j++)
-            row.push(cols[j].innerText);
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
 
-        csv.push(row.join(","));
+            for (var j = 0; j < cols.length; j++)
+                row.push('"' + cols[j].innerText.replace(/\"/g,"\"\"") + '"');
+
+            csv.push(row.join(","));
+        }
+
+
+        // Download CSV file
+        downloadCSV(csv.join("\n"), filename);
     }
 
-    // Download CSV file
-    downloadCSV(xlsx.join("\n"), filename);
-}
+    function downloadCSV(csv, filename) {
+        var csvFile;
+        var downloadLink;
 
+        // CSV file
+        csvFile = new Blob([csv], { type: "text/csv" });
 
+        // Download link
+        downloadLink = document.createElement("a");
 
-function downloadCSV(csv, filename) {
-    var csvFile;
-    var downloadLink;
+        // File name
+        downloadLink.download = filename;
 
-    // CSV file
-    csvFile = new Blob([csv], {type: "text/xlsx"});
+        // Create a link to the file
+        downloadLink.href = window.URL.createObjectURL(csvFile);
 
-    // Download link
-    downloadLink = document.createElement("a");
+        // Hide download link
+        downloadLink.style.display = "none";
 
-    // File name
-    downloadLink.download = filename;
+        // Add the link to DOM
+        document.body.appendChild(downloadLink);
 
-    // Create a link to the file
-    downloadLink.href = window.URL.createObjectURL(csvFile);
+        // Click download link
+        downloadLink.click();
+    }
 
-    // Hide download link
-    downloadLink.style.display = "none";
-
-    // Add the link to DOM
-    document.body.appendChild(downloadLink);
-
-    // Click download link
-    downloadLink.click();
-}
 </script>
 </body>
 
