@@ -74,6 +74,25 @@ color:;
 
 
     <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
+        <div id="d1" class="divs d1 row">
+
+      <div class="col-xl-4 col-md-4 col-mb-4">
+                <input type="date" name="date1" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div class="col-xl-4 col-md-4 col-mb-4">
+                <input type="date" name="date2" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      </div>
+        <br>
 <fieldset>
 
 <div class="form-group row">
@@ -101,7 +120,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
   <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_name" id="customCheck2">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <label class="custom-control-label" for="customCheck2"></label>
   </div>
 
 
@@ -136,8 +155,8 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_no" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_no" id="customCheck4">
+  <label class="custom-control-label" for="customCheck4"></label>
   </div>
 
 </div>
@@ -157,8 +176,8 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_email_id" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_email_id" id="customCheck5">
+  <label class="custom-control-label" for="customCheck5"></label>
   </div>
   </div>
 
@@ -172,8 +191,8 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="type_of_scale" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="type_of_scale" id="customCheck6">
+  <label class="custom-control-label" for="customCheck6"></label>
   </div>
 </div>
 </div>
@@ -191,8 +210,8 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="serial_no_scale" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>  </div></div>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="serial_no_scale" id="customCheck7">
+  <label class="custom-control-label" for="customCheck7"></label>  </div></div>
 
     <label class="col-md-2 control-label">Contract Validity in Years
 
@@ -204,8 +223,8 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="contract_valid_in_years" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="contract_valid_in_years" id="customCheck8">
+  <label class="custom-control-label" for="customCheck8"></label>
   </div>
 </div>
 </div>
@@ -225,8 +244,8 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="contract_amount" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="contract_amount" id="customCheck9">
+  <label class="custom-control-label" for="customCheck9"></label>
   </div></div>
 
     <label class="col-md-2 control-label">Contact Number for reporting Breakdown
@@ -240,8 +259,8 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="contract_no_reporting_breakdown" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="contract_no_reporting_breakdown" id="customCheck10">
+  <label class="custom-control-label" for="customCheck10"></label>
   </div>
 </div>
 </div>
@@ -260,8 +279,8 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="contract_start_date" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="contract_start_date" id="customCheck11">
+  <label class="custom-control-label" for="customCheck11"></label>
   </div></div>
 
     <label class="col-md-2 control-label">Contract End Date
@@ -275,8 +294,8 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="contract_end_date" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="contract_end_date" id="customCheck12">
+  <label class="custom-control-label" for="customCheck12"></label>
   </div>
 </div>
 </div>
@@ -295,8 +314,8 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="visit_1" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label></div></div>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="visit_1" id="customCheck13">
+  <label class="custom-control-label" for="customCheck13"></label></div></div>
 
     <label class="col-md-2 control-label">Report 1
 
@@ -309,8 +328,8 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repot_1" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="repot_1" id="customCheck14">
+  <label class="custom-control-label" for="customCheck14"></label>
   </div>
 </div>
 </div>
@@ -329,8 +348,8 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="visit_2" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="visit_2" id="customCheck15">
+  <label class="custom-control-label" for="customCheck15"></label>
   </div></div>
 
     <label class="col-md-2 control-label">Report 2
@@ -344,8 +363,8 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repot_2" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="repot_2" id="customCheck16">
+  <label class="custom-control-label" for="customCheck16"></label>
   </div>
 </div>
 </div>
@@ -360,8 +379,8 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="visit_3" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="visit_3" id="customCheck17">
+  <label class="custom-control-label" for="customCheck17"></label>
   </div>
 </div>
     <label class="col-md-2 control-label">Report 3
@@ -371,8 +390,8 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repot_3" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="repot_3" id="customCheck18">
+  <label class="custom-control-label" for="customCheck18"></label>
   </div>
 </div>
 </div>
@@ -389,8 +408,8 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="visit_4" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="visit_4" id="customCheck19">
+  <label class="custom-control-label" for="customCheck19"></label>
   </div>
 </div>
     <label class="col-md-2 control-label">Report 4
@@ -401,8 +420,8 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repot_4" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="repot_4" id="customCheck20">
+  <label class="custom-control-label" for="customCheck20"></label>
   </div>
 </div>
 </div>

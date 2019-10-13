@@ -181,14 +181,12 @@ def update_customer_details(request,id):
         stars_count = request.POST.get('stars_count')
 
         item = Feedback()
-
         item.name = name
         item.performance = performance
         item.co_operation = co_operation
         item.quality_of_work = quality_of_work
         item.communication = communication
         item.stars_count = stars_count
-
         item.save()
 
         return HttpResponse('Feedback Submitted!!!')

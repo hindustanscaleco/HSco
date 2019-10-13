@@ -48,13 +48,13 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Customer Module</h1>
+            <h1 class="h3 mb-0 text-gray-800">AMC Module</h1>
           </div>
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
 </style>
 
-            <script>
+<script>
 $( document ).ready(function() {
         $('.divs').hide();
 
@@ -65,8 +65,7 @@ $(function() {
     $('#' + $(this).val()).show();
   });
 });
-
-            </script>
+</script>
                     <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
             <div class="row">
 
@@ -188,9 +187,7 @@ $(function() {
 
 
 
-                    <div class="col-xl-4 col-md-1 mb-1"><center> Name </center></div>|
-                    <div class="col-xl-4 col-md-1 mb-1"><center> Restamping This Month </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Avg Time(Form to Done) </center></div>
+                    <div class="col-xl-12 col-md-12 mb-12"><center> Name </center></div>
 
 
                 </div>
@@ -201,16 +198,22 @@ $(function() {
 
 <br>
 <br>
-                  {% for list in restamp_list %}
+                  {% for list in amc_list %}
 
                 <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                    <div class="col-xl-4 col-md-1 mb-1"><center> <a href="/update_restamping_details/{{list.id}}" >{{ list.company_name }}</a> </center></div>|
-                    <div class="col-xl-4 col-md-1 mb-1"><center>static </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center>static </center></div>
-
+                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_amc_form/{{list.id}}" >{{ list.amcno }}</a> </center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.company_name }} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> 25% </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>  20%</center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i> </center>
 
 
                     </div>
@@ -219,9 +222,8 @@ $(function() {
 
                 </div>
               </div>
-                              {% endfor %}
-
             </div>
+                  {% endfor %}
 
 
 
@@ -240,13 +242,13 @@ $(function() {
 
 
 
-                <div class="col-xl-4 col-md-12 mb-12">
+                <div class="col-xl-5 col-md-12 mb-12">
               <div class="card border-left-primary shadow">
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col ">
- <a href="/restamping_after_sales_service/"><button class="btn btn-primary">Add Restamp</button></a>
-                    </div>
+
+ <a href="/add_amc_after_sales/"><button class="btn btn-primary">Add AMC Details</button></a>                    </div>
 
                   </div>
                 </div>
@@ -254,29 +256,21 @@ $(function() {
             </div>
 
 
-                <div class="col-xl-4 col-md-12 mb-12">
-              <div class="card shadow">
+        <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-6 col-md-12 mb-12">
+              <div class="card border-right-primary shadow">
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
+
                         <a href="/user_logs/"> <button class="btn btn-primary">Log</button></a>&nbsp; &nbsp;
- <a href="/report_restamping/"> <button class="btn btn-primary">Report</button></a>&nbsp;
+ <a href="/report_amc/"> <button class="btn btn-primary">Report</button></a>&nbsp;
                     </div>
 
                   </div>
                 </div>
               </div>
             </div>
-
-
-                <div class="col-xl-5 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body" style="padding: 12px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <a href="#"><button class="btn btn-primary">Deleted User</button></a>&nbsp; &nbsp;
-                                                <a href="/analytics/"><button class="btn btn-primary">Analytics</button></a>
-        
 
           </div>
 
