@@ -211,15 +211,14 @@ $(function() {
 
 
 <br>
-<br>{% for list1 in customer_list %}
-                  {% for list in list1 %}
+<br>{% for list1,list2 in customer_list %}
 
                 <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_customer_details/{{list.id}}" >{{ list.customer_name }}</a> </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.customer_name}} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_customer_details/{{list.id}}" >{{ list1 }}</a> </center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center>{{ list2}} </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> 25% </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center>  20%</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center>
@@ -238,7 +237,6 @@ $(function() {
               </div>
             </div>
                   {% endfor %}
-              {% endfor %}
 
 
 

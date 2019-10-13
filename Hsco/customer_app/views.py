@@ -145,12 +145,24 @@ def view_customer_details(request):
     #         context.update(context)
     with connection.cursor() as cursor:
         cursor.execute(
-            "SELECT  * from customer_app_customer_details  ;")
+            "SELECT  dispatch_id_assigned,company_name from customer_app_customer_details  ;")
         row = cursor.fetchall()
 
         customer_list = [list(x) for x in row]
+        print(customer_list)
+        list2 = []
+        list3 = []
+        for item in customer_list:
+            list2.append(item[0])
+            list3.append(item[1])
+            # for i in item:
+        final_list = zip(list2,list3)
+        print(list2)
+        print(list2)
+        print(list3)
+        print(list3)
         context = {
-            'customer_list': customer_list,
+            'customer_list': final_list,
         }
     return render(request,'dashboardnew/cm.html',context )
 
