@@ -71,7 +71,10 @@ color:;
 
         <!-- Begin Page Content -->
         <div class="container-fluid" >
-         <center>  <h1>Repairing Module</h1>  </center>
+         <center>  <h1 style="color: black; font-size: 25px;">Repairing Module</h1>
+         <br>
+           <button class="btn btn-primary">Add Product</button>
+         </center>
 
 
           <div class="row" style="padding:20px;">
@@ -292,7 +295,6 @@ color:;
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Type of Machine
 
 
 
@@ -458,55 +460,11 @@ color:;
 </div>
 
 
-  <div class="form-group row">
-  <label class="col-md-2 control-label">Replaced scale Serial NO
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="Replaced_scale_serial_no" placeholder="Replaced scale Serial NO
-
-
-" class="form-control"  type="text">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Deposit taken for replaced Scale
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="deposite_taken_for_replaced_scale" placeholder="Deposit taken for replaced Scale
-
-
-" class="form-control"  type="text">
-    </div>
-  </div>
-
-</div>
-
-
-
-
 
 
 
   <div class="form-group row">
-  <label class="col-md-2 control-label">Cost
 
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="cost" placeholder="Cost" value="0.0" class="form-control"  type="text">
-    </div>
-  </div>
 
     <label class="col-md-2 control-label">Total Cost
 
@@ -615,9 +573,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="repaired_date" placeholder="Repaired date
-
-" class="form-control"  type="text">
+  <input type="date" name="repaired_date" placeholder="Repaired date" class="form-control"  type="text" value="">
     </div>
   </div>
 </div>
@@ -636,7 +592,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control"  type="text">
+  <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control"  type="text" value="">
     </div>
   </div>
 
@@ -647,7 +603,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="delivery_by" placeholder="Delivery By" class="form-control"  type="text">
+  <input  name="delivery_by" placeholder="Delivery By" class="form-control"  type="text" value="">
     </div>
   </div>
 </div>
@@ -661,8 +617,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="feedback_given" placeholder="Feedback Given
-" class="form-control"  type="text">
+  <input  name="feedback_given" placeholder="Feedback Given" class="form-control"  type="text" value="">
     </div>
   </div>
 
@@ -678,7 +633,7 @@ color:;
 <!--4) Late mark sms-->
 <!--5) Final Deleviry sms"-->
 <!--</p>-->
-
+<br>
 <center>
 	<button class="btn btn-primary">Save</button>
 
@@ -698,6 +653,37 @@ color:;
 </form>
 </div>
 
+        <h1 style="font-size: 25px; color: black; text-align: center;"> Added Product List </h1>
+  <br>
+
+      <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;">
+
+
+
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"> Type of Machine: Type A </div>
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"> Model: Model XYZ </div>
+                    <div class="col-xl-4 col-md-1 mb-1"> Sub Model: XYZ8907  </div>
+
+                    <div class="col-xl-12 col-md-1 mb-1"> Problem in the scale:</div>
+                  <div class="col-xl-12 col-md-1 mb-1"> Components Replaced in Waranty(if scale in Waranty) </div>
+                  <div class="col-xl-12 col-md-1 mb-1">Components Replaced  </div>
+
+                  <div class="col-xl-6 col-md-1 mb-1" style="border-right: 1px solid black;">Replaced Scale given  </div>
+                  <div class="col-xl-4 col-md-1 mb-1"> Replaced scale Serial NO </div>
+                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;">Deposit taken for replaced Scale </div>
+
+
+                   <div class="col-xl-4 col-md-1 mb-1"> Cost  </div>
+
+                    </div>
+
+              </div>
+      </div>
+
+        <br>
+
   </div>
   <!-- End of Page Wrapper -->
 
@@ -705,7 +691,7 @@ color:;
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
+    </div></div>
 
 
   <!-- Bootstrap core JavaScript-->

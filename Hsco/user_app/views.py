@@ -43,31 +43,8 @@ def login(request):
 def dashboard(request):
     return render(request,"dashboardnew/dashboard.html",)
 
-
-def report(request):
-    if request.method =='POST':
-        selected_list = request.POST.getlist('checks[]')
-        start_date = request.POST.get('date1')
-        end_date = request.POST.get('date2')
-        string = ','.join(selected_list)
-
-        request.session['start_date']= start_date
-        request.session['end_date']= end_date
-        request.session['string']= string
-        return redirect('/final_report/')
-    return render(request, "report/report_cust_mod_form.html",)
+def graph(request):
+    return render(request,"dashboardnew/graph.html",)
 
 
-def final_report(request):
-    start_date = request.session.get('start_date')
-    end_date = request.session.get('end_date')
-    string = request.session.get('string')
-    with connection.cursor() as cursor:
-        cursor.execute(
-            "SELECT " + string + " from customer_app_customer_details where date_of_purchase between '"+start_date+"' and '"+end_date+"';")
-        row = cursor.fetchall()
-    print(string)
-    print(start_date)
-    print(end_date)
-    print(row)
-    return render(request,"dashboardnew/final_report.html")
+

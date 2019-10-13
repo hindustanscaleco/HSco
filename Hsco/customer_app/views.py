@@ -157,15 +157,27 @@ def final_report(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
     string = request.session.get('string')
+    selected_list = request.session.get('selected_list')
     with connection.cursor() as cursor:
-        cursor.execute("SELECT "+string+" from customer_app_customer_details where date_of_purchase between '"+start_date+"' and '"+end_date+"';")
+        cursor.execute("SELECT  "+string+" from customer_app_customer_details where date_of_purchase between '"+start_date+"' and '"+end_date+"';")
         row = cursor.fetchall()
-        request.session['row']= row
-    print(string)
-    print(start_date)
-    print(end_date)
-    print(row)
-    return render(request,"report/report_cust_mod_form.html")
+
+
+        final_row= [list(x) for x in row]
+        list3=[]
+        for i in row:
+            list3.append(list(i))
+        print(list3)
+        print(final_row)
+        print(final_row)
+        print(final_row)
+        print(final_row)
+
+    context={
+        'final_row':final_row,
+        'selected_list':selected_list,
+    }
+    return render(request,"dashboardnew/final_report.html",context)
 
 
 def manager_report(request):
