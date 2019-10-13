@@ -53,7 +53,7 @@ color:;
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-	{% include 'base_templates/sidebar.html' %}
+  {% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -66,7 +66,7 @@ color:;
 
 
         <!-- Topbar -->
-	{% include 'base_templates/navbar_for_dashboard.html' %}
+  {% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -143,7 +143,8 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  {{in_warranty}}
+      <input  name="in_warranty" placeholder="Previous Repairing number
+" class="form-control" type="text" disabled value="{{repair_id.in_warranty}}">
     </div>
   </div>
 
@@ -272,14 +273,13 @@ color:;
   <input  name="location" placeholder="Location
 
 " class="form-control"  type="text" disabled value="{{repair_id.location}}">
-    </div>
   </div>
 
 </div>
 
 
 
-<div class="form-group row">
+
   <label class="col-md-2 control-label">products To be repaired
 
 
@@ -400,7 +400,6 @@ color:;
     </div>
   </div>
 
-</div>
 
 
 
@@ -409,7 +408,7 @@ color:;
 
 
 
-  <div class="form-group row">
+
   <label class="col-md-2 control-label">Informed On
 
 </label>
@@ -422,6 +421,9 @@ color:;
 " class="form-control"  type="text" disabled value="{{repair_id.informed_on}}">
     </div>
   </div>
+</div>
+
+<div class="form-group row">
 
     <label class="col-md-2 control-label">Informed By
 
@@ -437,7 +439,6 @@ color:;
     </div>
   </div>
 
-</div>
 
 
 
@@ -446,18 +447,20 @@ color:;
 
 
 
-
-
-  <div class="form-group row">
   <label class="col-md-2 control-label">Confirmed Estimate
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  {{repair_id.confirmed_estimate}}
+  <input type="text" name="confirmed_estimate" class="form-control" placeholder="Confirmed Estimate" disabled value="{{repair_id.confirmed_estimate}}">
     </div>
   </div>
+</div>
+
+
+
+<div class="form-group row">
 
     <label class="col-md-2 control-label">Repaired
 
@@ -469,30 +472,19 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  {{repair_id.repaired}}
+  <input type="text" name="repaired" placeholder="Repaired" class="form-control" disabled value="{{repair_id.repaired}}">
     </div>
   </div>
 
-</div>
 
 
-
-
-
-
-
-
-
-  <div class="form-group row">
   <label class="col-md-2 control-label">Repaired date
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="repaired_date" placeholder="Repaired date
-
-" class="form-control"   disabled value="{{repair_id.repaired_date}}">
+  <input type="date" name="repaired_date" placeholder="Repaired date" class="form-control"   disabled value="{{repair_id.repaired_date}}">
     </div>
   </div>
 </div>
@@ -555,7 +547,7 @@ color:;
 <!--</p>-->
 
 <center>
-	<button class="btn btn-primary">Save</button>
+  <button class="btn btn-primary">Save</button>
 
 </center>
 
@@ -603,8 +595,9 @@ color:;
       </div>
         <br>
 {% endfor %}
+        <center>
                   <a href="/repair_product/{{repair_id.id}}"> <button class="btn btn-primary">Add Product</button></a>
-
+        </center>
   </div>
   <!-- End of Page Wrapper -->
 
