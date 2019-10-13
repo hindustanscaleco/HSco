@@ -79,7 +79,7 @@ color:;
 <br>
 <br>
 
-            <form method="POST">
+            <form method="POST">{%csrf_token%}
 
 
 
@@ -250,7 +250,7 @@ color:;
 
             <br>
 <center>
-    <button class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
 
 </center>
             </form>
