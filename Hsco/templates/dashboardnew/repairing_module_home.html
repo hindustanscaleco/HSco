@@ -236,62 +236,18 @@ $(function() {
                 <div class="row">
 
 
+                {% for list in repair_list%}
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                    <div class="col-xl-7 col-md-1 mb-1"><center> Company A </center></div>|
-                    <div class="col-xl-4 col-md-1 mb-1"><center> Hash Pathak </center> </div>
-                    </div>
-
-                </div>
-              </div><div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-7 col-md-1 mb-1"><center> Company A </center></div>|
-                    <div class="col-xl-4 col-md-1 mb-1"><center> Hash Pathak </center> </div>
-                    </div>
-
-                </div>
-              </div><div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-7 col-md-1 mb-1"><center> Company A </center></div>|
-                    <div class="col-xl-4 col-md-1 mb-1"><center> Hash Pathak </center> </div>
-                    </div>
-
-                </div>
-              </div><div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-7 col-md-1 mb-1"><center> Company A </center></div>|
-                    <div class="col-xl-4 col-md-1 mb-1"><center> Hash Pathak </center> </div>
-                    </div>
-
-                </div>
-              </div><div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-7 col-md-1 mb-1"><center> Company A </center></div>|
-                    <div class="col-xl-4 col-md-1 mb-1"><center> Hash Pathak </center> </div>
-                    </div>
-
-                </div>
-              </div><div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-7 col-md-1 mb-1"><center> Company A </center></div>|
+                    <div class="col-xl-7 col-md-1 mb-1"><center> {{list.company_name}}</center></div>|
                     <div class="col-xl-4 col-md-1 mb-1"><center> Hash Pathak </center> </div>
                     </div>
 
                 </div>
               </div>
-
+                {% endfor %}
 
             </div>
 
@@ -317,7 +273,7 @@ $(function() {
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col ">
- <a href="/add_customer_details/"><button class="btn btn-primary">Add Customer</button></a>                    </div>
+ <a href="/add_repairing_details/"><button class="btn btn-primary">Add Repairing</button></a>                    </div>
 
                   </div>
                 </div>
