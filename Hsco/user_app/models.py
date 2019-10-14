@@ -84,7 +84,7 @@ class SiteUser(AbstractBaseUser):
     user_type = models.CharField('Type Of User',max_length=20, choices=choices,null=True,blank=True)
     group = models.CharField(max_length=50)
     is_deleted = models.BooleanField(default=False)
-    modules_assigned = models.CharField()
+    modules_assigned = models.CharField(max_length=100)
     #customer_module
     sales_target =models.FloatField(default=0.0)                 #in numbers (customer module)
     target_achieved = models.FloatField(default=0.0)             #in percentage (customer module)
