@@ -54,3 +54,7 @@ def add_dispatch_details(request):
     }
     return render(request,'forms/dis_mod_form.html',context)
 
+
+def report_dis_mod(request):
+    return render(request,"report/report_dis_mod_form.html")
+

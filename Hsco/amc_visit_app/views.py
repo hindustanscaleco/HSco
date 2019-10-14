@@ -61,4 +61,7 @@ def add_amc_after_sales(request):
     context = {
         'form': form,
     }
-    return render(request,'forms/amc_form.html',context)
+    return render(request,'forms/amc_form.html', context)
+
+def report_amc(request):
+    return render(request, "report/report_amc_form.html",)

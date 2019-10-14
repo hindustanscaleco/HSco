@@ -79,4 +79,8 @@ def add_onsite_aftersales_service(request):
         'form':form,
     }
 
-    return render(request, 'forms/onsite_rep_form.html',context )
+    return render(request, 'forms/onsite_rep_form.html',context)
+
+
+def report_onsite(request):
+    return render(request,"report/report_onsite_rep_form.html")

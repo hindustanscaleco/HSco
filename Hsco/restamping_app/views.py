@@ -53,3 +53,6 @@ def restamping_after_sales_service(request):
         return redirect('/')
 
     return render(request,'forms/restamping_form.html',)
+
+def report_restamping(request):
+    return render(request,"report/report_restamping_form.html")
