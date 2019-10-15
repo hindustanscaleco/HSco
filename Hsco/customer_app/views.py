@@ -166,7 +166,6 @@ def view_customer_details(request):
         }
     return render(request,'dashboardnew/cm.html',context )
 
-# def search_by-
 
 def update_customer_details(request,id):
     product_list = Product_Details.objects.filter(customer_id=id)

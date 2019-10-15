@@ -111,11 +111,19 @@ def final_report_amc(request):
 
 
 def amc_views(request):
+
     amc_list=Amc_After_Sales.objects.all()
     context={
         'amc_list':amc_list
     }
-    return render(request,"manager/amc_view.html",context)
+    
+    return render(request,"manager/amc_view.html",)
+
+
+def amc_logs(request):
+    return render(request,"logs/amc_logs.html")
+
+    
 
 def update_amc_form(request,update_id):
     amc_list=Amc_After_Sales.objects.get(id=update_id)
