@@ -62,7 +62,7 @@ def add_repairing_details(request):
 
 
 
-    return render(request,'forms/rep_mod_form.html',    )
+    return render(request,'forms/rep_mod_form.html',)
 
 
 def repair_product(request,id):

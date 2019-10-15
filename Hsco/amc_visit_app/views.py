@@ -69,3 +69,7 @@ def report_amc(request):
 
 def amc_views(request):
     return render(request,"manager/amc_view.html",)
+
+
+def amc_logs(request):
+    return render(request,"logs/amc_logs.html")
