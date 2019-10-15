@@ -4,7 +4,6 @@ from .models import Amc_After_Sales
 
 
 def add_amc_after_sales(request):
-    form = (request.POST or None, request.FILES or None)
     if request.method == 'POST':
         amcno = request.POST.get('amcno')
         customer_name = request.POST.get('customer_name')
@@ -59,7 +58,7 @@ def add_amc_after_sales(request):
 
 
     context = {
-        'form': form,
+
     }
     return render(request,'forms/amc_form.html', context)
 
