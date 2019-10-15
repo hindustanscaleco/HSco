@@ -65,3 +65,7 @@ def add_amc_after_sales(request):
 
 def report_amc(request):
     return render(request, "report/report_amc_form.html",)
+
+
+def amc_views(request):
+    return render(request,"manager/amc_view.html",)
