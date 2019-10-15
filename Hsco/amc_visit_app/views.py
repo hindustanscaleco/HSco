@@ -74,31 +74,26 @@ def report_amc(request):
         request.session['end_date']= end_date
         request.session['string']= string
         request.session['selected_list']= selected_list
-        return redirect('/final_report/')
+        return redirect('/final_report_amc/')
     return render(request, "report/report_amc_form.html",)
 
-def report(request):
-    if request.method =='POST':
-        selected_list = request.POST.getlist('checks[]')
-        start_date = request.POST.get('date1')
-        end_date = request.POST.get('date2')
-        string = ','.join(selected_list)
-        print(selected_list)
-        request.session['start_date']= start_date
-        request.session['end_date']= end_date
-        request.session['string']= string
-        request.session['selected_list']= selected_list
-        return redirect('/final_report/')
-    return render(request,"report/report_cust_mod_form.html",)
 
 
 def final_report_amc(request):
-    start_date = request.session.get('start_date')
-    end_date = request.session.get('end_date')
-    string = request.session.get('string')
+    start_date =    request.session.get('start_date')
+    end_date =      request.session.get('end_date')
+    string =        request.session.get('string')
     selected_list = request.session.get('selected_list')
+
+    try:
+        del request.session['start_date']
+        del request.session['end_date']
+        del request.session['string']
+        del request.session['selected_list']
+    except:
+        pass
     with connection.cursor() as cursor:
-        cursor.execute("SELECT  "+string+" from amc_visit_app_amc_after_sales where date_of_purchase between '"+start_date+"' and '"+end_date+"';")
+        cursor.execute("SELECT  "+string+" from amc_visit_app_amc_after_sales where entry_timedate between '"+start_date+"' and '"+end_date+"';")
         row = cursor.fetchall()
 
 
@@ -112,7 +107,7 @@ def final_report_amc(request):
         'final_row':final_row,
         'selected_list':selected_list,
     }
-    return render(request,"dashboardnew/final_report.html",context)
+    return render(request,"report/amc_final_report.html",context)
 
 
 def amc_views(request):
