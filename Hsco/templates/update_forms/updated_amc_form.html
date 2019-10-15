@@ -88,12 +88,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-font faicons"></i></span>
-  <input  name="amcno" placeholder="AMC Number" disabled value="{{amcno}}">
-
-
-
-
-" class="form-control"  type="text">
+  <input  name="amcno" placeholder="AMC Number" disabled value="{{amc_list.amcno}}" class="form-control"  type="text">
     </div>
   </div>
 
@@ -106,7 +101,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_name" placeholder="Customer Name" class="form-control" type="text" disabled value="{{customer_name}}">
+  <input  name="customer_name" placeholder="Customer Name" class="form-control" type="text" disabled value="{{amc_list.customer_name}}">
     </div>
   </div>
 
@@ -128,7 +123,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled value="{{company_name}}">
+  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled value="{{amc_list.company_name}}">
     </div>
   </div>
 
@@ -143,7 +138,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_no" placeholder="Customer Number" class="form-control"  type="text" disabled value="{{customer_no}}">
+  <input  name="customer_no" placeholder="Customer Number" class="form-control"  type="text" disabled value="{{amc_list.customer_no}}">
     </div>
   </div>
 
@@ -160,7 +155,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  type="email" disabled value="{{customer_email_id}}">
+  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  type="email" disabled value="{{amc_list.customer_email_id}}">
     </div>
   </div>
 
@@ -175,7 +170,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="type_of_scale" placeholder="Type of Scale" class="form-control"  type="text" disabled value="{{type_of_scale}}">
+  <input  name="type_of_scale" placeholder="Type of Scale" class="form-control"  type="text" disabled value="{{amc_list.type_of_scale}}">
     </div>
   </div>
 
@@ -195,7 +190,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="serial_no_scale" placeholder="Scale Serial Number" class="form-control"  type="text" disabled value="{{serial_no_scale}}">
+  <input  name="serial_no_scale" placeholder="Scale Serial Number" class="form-control"  type="text" disabled value="{{amc_list.serial_no_scale}}">
     </div>
   </div>
 
@@ -210,7 +205,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="contract_valid_in_years" placeholder="Contract Validity in Years" class="form-control"  type="text" disabled value="{{contract_valid_in_years}}">
+  <input  name="contract_valid_in_years" placeholder="Contract Validity in Years" class="form-control"  type="text" disabled value="{{amc_list.contract_valid_in_years}}">
     </div>
   </div>
 
@@ -232,7 +227,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="contract_amount" placeholder="Contract Amount" class="form-control"  type="text" disabled value="{{contract_amount}}">
+  <input  name="contract_amount" placeholder="Contract Amount" class="form-control"  type="text" disabled value="{{amc_list.contract_amount}}">
 
 
      </div>
@@ -250,7 +245,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contract_no_reporting_breakdown" placeholder="Contact Number for reporting Breakdown" class="form-control"  type="text" disabled value="{{contract_no_reporting_breakdown}}">
+  <input  name="contract_no_reporting_breakdown" placeholder="Contact Number for reporting Breakdown" class="form-control"  type="text" disabled value="{{amc_list.contract_no_reporting_breakdown}}">
     </div>
   </div>
 
@@ -271,7 +266,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="contract_start_date" placeholder="Contract Start Date" class="form-control"  type="date" disabled value="{{contract_start_date}}">
+  <input name="contract_start_date" placeholder="Contract Start Date" class="form-control"  type="date" disabled value="{{amc_list.contract_start_date|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -287,7 +282,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="contract_end_date" placeholder="Contract End Date" class="form-control"  type="date" disabled value="{{contract_end_date}}">
+  <input name="contract_end_date" placeholder="Contract End Date" class="form-control"  type="date" disabled value="{{amc_list.contract_end_date|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -308,7 +303,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input type="date" name="visit_1" placeholder="Visit 1" class="form-control"  type="text" disabled value="{{visit_1}}">
+  <input type="text" name="visit_1" placeholder="Visit 1" class="form-control" disabled value="{{amc_list.visit_1}}">
     </div>
   </div>
 
@@ -324,7 +319,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_1" placeholder="Report 1" class="form-control"  type="text" disabled value="{{repot_1}}">
+  <input  name="repot_1" placeholder="Report 1" class="form-control"  type="text" disabled value="{{amc_list.repot_1}}">
     </div>
   </div>
 
@@ -339,7 +334,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input type="date" name="visit_2" placeholder="Visit 2" class="form-control"  type="text" disabled value="{{visit_2}}">
+  <input type="date" name="visit_2" placeholder="Visit 2" class="form-control"  type="text" disabled value="{{amc_list.visit_2}}">
     </div>
   </div>
 
@@ -355,7 +350,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_2" placeholder="Report 2" class="form-control"  type="text" disabled value="{{repot_2}}">
+  <input  name="repot_2" placeholder="Report 2" class="form-control"  type="text" disabled value="{{amc_list.repot_2}}">
     </div>
   </div>
 
@@ -372,7 +367,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input type="date" name="visit_3" placeholder="Visit 3" class="form-control"  type="text" disabled value="{{visit_3}}">
+  <input type="date" name="visit_3" placeholder="Visit 3" class="form-control"  type="text" disabled value="{{amc_list.visit_3}}">
     </div>
   </div>
 
@@ -384,7 +379,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_3" placeholder="Report 3" class="form-control"  type="text" disabled value="{{repot_3}}">
+  <input  name="repot_3" placeholder="Report 3" class="form-control"  type="text" disabled value="{{amc_list.repot_3}}">
     </div>
   </div>
 
@@ -403,7 +398,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input type="date" name="visit_4" placeholder="Visit 4" class="form-control"  type="text" disabled value="{{visit_4}}">
+  <input type="date" name="visit_4" placeholder="Visit 4" class="form-control"  type="text" disabled value="{{amc_list.visit_4}}">
     </div>
   </div>
 
@@ -416,7 +411,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_4" placeholder="Report 4" class="form-control"  type="text" disabled value="{{repot_4}}">
+  <input  name="repot_4" placeholder="Report 4" class="form-control"  type="text" disabled value="{{amc_list.repot_4}}">
     </div>
   </div>
 
@@ -431,7 +426,7 @@ color:;
 
 
 <center>
-	<button type="submit" value="submit" class="btn btn-primary">Save</button>
+	<button type="submit" value="submit" class="btn btn-primary">Update</button>
 
 </center>
 
@@ -457,7 +452,7 @@ color:;
     <i class="fas fa-angle-up"></i>
   </a>
 
-
+  </div>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
