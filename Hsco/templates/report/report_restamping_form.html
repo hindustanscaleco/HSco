@@ -82,6 +82,7 @@ color:;
 
 
     <form class="well form-horizontal" action=" " method="post" enctype="multipart/form-data" id="contact_form" style="padding:20px;">{% csrf_token %}
+
       <div id="d1" class="divs d1 row">
 
       <div class="col-xl-4 col-md-4 col-mb-4">
@@ -99,8 +100,8 @@ color:;
 
       </div>
 
-      </div>
-      <br>
+      </div><br>
+      
 <fieldset>
 
 <div class="form-group row">
@@ -112,7 +113,7 @@ color:;
 
   <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck1">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="restampingno" id="customCheck1">
   <label class="custom-control-label" for="customCheck1"></label>
 </div>
   </div>
@@ -124,7 +125,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck2">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_no" id="customCheck2">
   <label class="custom-control-label" for="customCheck2"></label>
 </div>
   </div>
@@ -145,7 +146,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck3">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="company_name" id="customCheck3">
   <label class="custom-control-label" for="customCheck3"></label>
 </div>
   </div>
@@ -162,7 +163,7 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck4">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="address" id="customCheck4">
   <label class="custom-control-label" for="customCheck4"></label>
 </div>
   </div>
@@ -175,7 +176,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck5">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="today_date" id="customCheck5">
   <label class="custom-control-label" for="customCheck5"></label>
 </div>
   </div>
@@ -193,143 +194,14 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck6">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="mobile_no" id="customCheck6">
   <label class="custom-control-label" for="customCheck6"></label>
 </div>
   </div>
 
-    <label class="col-md-2 control-label">Customer E-mail id
 
 
 
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck7">
-  <label class="custom-control-label" for="customCheck7"></label>
-</div>
-  </div>
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Product to be stampped
-
-
-
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck8">
-  <label class="custom-control-label" for="customCheck8"></label>
-</div>
-  </div>
-
-    <label class="col-md-2 control-label">Scale type
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck9">
-  <label class="custom-control-label" for="customCheck9"></label>
-</div>
-  </div>
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Sub model
-
-
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck10">
-  <label class="custom-control-label" for="customCheck10"></label>
-</div>
-  </div>
-
-    <label class="col-md-2 control-label">Capacity
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck11">
-  <label class="custom-control-label" for="customCheck11"></label>
-</div>
-  </div>
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Old Serial No.
-
-
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck12">
-  <label class="custom-control-label" for="customCheck12"></label>
-</div>
-  </div>
-
-    <label class="col-md-2 control-label">Old Brand
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck13">
-  <label class="custom-control-label" for="customCheck13"></label>
-</div>
-  </div>
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Amount
-
-
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck14">
-  <label class="custom-control-label" for="customCheck14"></label>
-</div>
-  </div>
 
     <label class="col-md-2 control-label">New Serial No.
 
@@ -340,7 +212,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck15">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="new_serial_no" id="customCheck15">
   <label class="custom-control-label" for="customCheck15"></label>
 </div>
   </div>
@@ -355,7 +227,7 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck16">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="brand" id="customCheck16">
   <label class="custom-control-label" for="customCheck16"></label>
 </div>
   </div>
@@ -369,7 +241,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairingnumber" id="customCheck17">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_delivery_date" id="customCheck17">
   <label class="custom-control-label" for="customCheck17"></label>
 </div>
   </div>
@@ -381,7 +253,7 @@ color:;
 
 
 <center>
-  <button class="btn btn-primary">Save</button>
+  <button type="submit" class="btn btn-primary">Save</button>
 
 </center>
 

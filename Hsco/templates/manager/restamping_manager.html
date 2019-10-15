@@ -201,22 +201,16 @@ $(function() {
 
 <br>
 <br>
-                  {% for list in customer_list %}
+                  {% for list in restamp_list %}
 
                 <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_customer_details/{{list.id}}" >{{ list.dispatch_id_assigned }}</a> </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.company_name }} </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> 25% </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>  20%</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i> </center>
+                    <div class="col-xl-4 col-md-1 mb-1"><center> <a href="/update_restamping_details/{{list.id}}" >{{ list.company_name }}</a> </center></div>|
+                    <div class="col-xl-4 col-md-1 mb-1"><center>static </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center>static </center></div>
+
 
 
                     </div>
@@ -225,8 +219,9 @@ $(function() {
 
                 </div>
               </div>
+                              {% endfor %}
+
             </div>
-                  {% endfor %}
 
 
 
@@ -250,7 +245,8 @@ $(function() {
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col ">
- <a href="/add_customer_details/"><button class="btn btn-primary">Add Customer</button></a>                    </div>
+ <a href="/restamping_after_sales_service/"><button class="btn btn-primary">Add Restamp</button></a>
+                    </div>
 
                   </div>
                 </div>
@@ -264,7 +260,7 @@ $(function() {
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <a href="/user_logs/"> <button class="btn btn-primary">Log</button></a>&nbsp; &nbsp;
- <a href="/report/"> <button class="btn btn-primary">Report</button></a>&nbsp;
+ <a href="/report_restamping/"> <button class="btn btn-primary">Report</button></a>&nbsp;
                     </div>
 
                   </div>
@@ -273,20 +269,14 @@ $(function() {
             </div>
 
 
-        <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-4 col-md-12 mb-12">
-              <div class="card border-right-primary shadow">
+                <div class="col-xl-5 col-md-12 mb-12">
+              <div class="card shadow">
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <a href="/analytics/"><button class="btn btn-primary">Analytics</button></a>
-
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
+                        <a href="#"><button class="btn btn-primary">Deleted User</button></a>&nbsp; &nbsp;
+                                                <a href="/analytics/"><button class="btn btn-primary">Analytics</button></a>
+        
 
           </div>
 
