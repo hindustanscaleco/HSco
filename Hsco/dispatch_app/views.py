@@ -58,3 +58,7 @@ def add_dispatch_details(request):
 def report_dis_mod(request):
     return render(request,"report/report_dis_mod_form.html")
 
+def manager_view(request):
+    return render(request,"manager/dispatch_view.html")
+
+

@@ -52,7 +52,10 @@ def restamping_after_sales_service(request):
 
         return redirect('/')
 
-    return render(request,'forms/restamping_form.html',)
+    return render(request, 'forms/restamping_form.html',)
 
 def report_restamping(request):
-    return render(request,"report/report_restamping_form.html")
+    return render(request, "report/report_restamping_form.html",)
+
+def restamping_manager(request):
+    return render(request, "manager/restamping_manager.html",)
