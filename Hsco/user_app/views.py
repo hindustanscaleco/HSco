@@ -1,8 +1,83 @@
+from django.contrib.auth import authenticate, login, logout
 from django.db import connection
 from django.shortcuts import render, redirect
+from django.utils.http import is_safe_url
+from django.views.generic import FormView
 
-from .forms import SiteUser_Form
+from .forms import SiteUser_Form, LoginForm
 from .models import SiteUser
+
+class LoginView(FormView):
+
+    form_class = LoginForm
+    template_name = 'auth/login.html'
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('/')
+        else:
+            request = self.request
+            form = LoginForm(request.POST or None)
+            if request.session.has_key('registered_mobile'):
+                mobile = request.session['registered_mobile']
+                password = request.session['user_password']
+                user = authenticate(request, mobile=mobile, password=password)
+                if user is not None:
+                    login(request, user)
+                    request.session['registered_mobile'] = mobile
+                    request.session['user_password'] = password
+
+                    next = request.GET.get('next', '/')
+                    if not is_safe_url(next, allowed_hosts=None):
+                        next = '/'
+                    return redirect(next)
+            return render(request, self.template_name, {'form': form})
+
+    def form_valid(self, form):
+        request = self.request
+
+        if request.session.has_key('registered_mobile'):
+            mobile = request.session['registered_mobile']
+            password = request.session['user_password']
+            user = authenticate(request, mobile=mobile, password=password)
+            if user is not None:
+                login(request, user)
+                request.session['registered_mobile'] = mobile
+                request.session['user_password'] = password
+                next = request.GET.get('next', '/')
+                if not is_safe_url(next,allowed_hosts=None):
+                    next = '/'
+                return redirect(next)
+        else:
+            mobile = form.cleaned_data.get('mobile')
+            password = form.cleaned_data.get('password')
+            print("NormalOGIN" + str(mobile))
+            print("NormalOGIN" + str(password))
+            user = authenticate(request, mobile=mobile, password=password)
+            print("NormalOGIN"+str(user))
+            if user is not None:
+                login(request, user)
+                request.session['registered_mobile'] = mobile
+                request.session['user_password'] = password
+                registered_mobile = request.session['registered_mobile']
+                print(request.session['user_password'])
+
+                next = request.GET.get('next', '/')
+                if not is_safe_url(next,allowed_hosts=None):
+                    next = '/'
+                return redirect(next)
+
+        return super(LoginView, self).form_invalid(form)
+
+def logout_page(request):
+    logout(request)
+    try:
+        del request.session['registered_mobile']
+        del request.session['user_password']
+    except:
+        pass
+    return redirect("/login/")
+
 
 def admin_list(request):
     admin_list = SiteUser.objects.filter(role='Admin')
@@ -240,8 +315,7 @@ def sidebar(request):
 def navbar(request):
     return render(request,"base_templates/navbar_for_dashboard.html",)
 
-def login(request):
-    return render(request,"auth/login.html",)
+
 
 def dashboard(request):
     return render(request,"dashboardnew/dashboard.html",)
