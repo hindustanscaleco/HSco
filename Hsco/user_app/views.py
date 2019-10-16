@@ -363,7 +363,7 @@ def update_manager_add(request):
         item.any_suggestion = any_suggestion
         item.save()
 
-    return render(request,"update_forms/update_manager.html")
+    return render(request,"update_forms/update_manager_add.html")
 
 def update_employee(request):
     if request.method =='POST' and 'performance' in request.POST:
