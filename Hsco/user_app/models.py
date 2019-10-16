@@ -86,7 +86,7 @@ class SiteUser(AbstractBaseUser):
     role = models.CharField('Role  Of User',max_length=20, choices=choices,null=True,blank=True)
     group = models.CharField(max_length=300, null=True, blank=True)
     is_deleted = models.BooleanField(default=False, null=True, blank=True, choices=deleted)
-    modules_assigned = models.CharField(max_length=300)
+    modules_assigned = models.CharField(max_length=300,null=True, blank=True)
     photo = models.FileField(upload_to='',null=True, blank=True)
     created_by = models.CharField(max_length=30,null=True, blank=True)
     assigned_by = models.CharField(max_length=30,null=True, blank=True)
