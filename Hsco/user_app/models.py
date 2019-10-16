@@ -13,6 +13,8 @@ choices = (('Super Admin', 'Super Admin'),
     ('Admin', 'Admin'),
    ('Manager', 'Manager'),
    ('Employee', 'Employee'),)
+deleted = (('True','YES'),
+              ('False','NO'))
 BANK_NAMES = (('Select Bank','Select Bank'),('Axis Bank','Axis Bank'),('HDFC Bank','HDFC Bank'),('ICICI Bank','ICICI Bank'),('State Bank of India','State Bank of India'),('Airtel Payments Bank','Airtel Payments Bank')
 ,('Allahabad Bank','Allahabad Bank'),('Andhra Bank','Andhra Bank'),('Bandhan bank','Bandhan bank'),('Bank of Bahrain and Kuwait','Bank of Bahrain and Kuwait'),('Bank of Baroda - Corporate Banking','Bank of Baroda - Corporate Banking'),
 ('Bank of Baroda - Retail Banking','Bank of Baroda - Retail Banking'),('Bank of India','Bank of India'),('Bank of Maharashtra','Bank of Maharashtra'),('Bassien Catholic Co-Operative Bank','Bassien Catholic Co-Operative Bank'),
@@ -81,7 +83,11 @@ class SiteUser(AbstractBaseUser):
     mobile = models.CharField(validators=[phone_regex], max_length=10, unique=True)
     email = models.EmailField( 'Email-id', max_length=255, unique=True )
     name =models.CharField('Name',max_length=50,null=True,blank=True)
-    user_type = models.CharField('Type Of User',max_length=20, choices=choices,null=True,blank=True)
+    role = models.CharField('Role  Of User',max_length=20, choices=choices,null=True,blank=True)
+    group = models.CharField(max_length=50)
+    is_deleted = models.BooleanField(default=False, null=True, blank=True, choices=deleted)
+    modules_assigned = models.CharField(max_length=100)
+    photo = models.FileField(upload_to='',null=True, blank=True)
     #customer_module
     sales_target =models.FloatField(default=0.0)                 #in numbers (customer module)
     target_achieved = models.FloatField(default=0.0)             #in percentage (customer module)

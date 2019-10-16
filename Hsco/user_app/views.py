@@ -1,6 +1,120 @@
 from django.db import connection
 from django.shortcuts import render, redirect
 
+from .forms import SiteUser_Form
+from .models import SiteUser
+
+#FOR SUPERUSER
+def admin_list(request):
+    admin_list = SiteUser.objects.filter(role='Admin')
+    context={
+        'admin_list':admin_list,
+    }
+    return render(request,"auth/admin_list.html",context)
+
+def create_admin(request):
+    form = SiteUser_Form(request.POST or None)
+    if request.method == 'POST' or request.method == 'FILES':
+        mobile = request.POST.get('mobile')
+        email = request.POST.get('email')
+        name = request.POST.get('name')
+        group = request.POST.get('group')
+        is_deleted = request.POST.get('is_deleted')
+        modules_assigned = request.POST.get('modules_assigned')
+        date_of_joining = request.POST.get('date_of_joining')
+        bank_name = request.POST.get('bank_name')
+        account_no = request.POST.get('account_no')
+        branch_name = request.POST.get('branch_name')
+        ifsc_code = request.POST.get('ifsc_code')
+        photo = request.POST.get('photo')
+
+
+
+        item=SiteUser()
+
+
+        item.mobile = mobile
+        item.email = email
+        item.name = name
+        item.role = 'Admin'
+        item.group = group
+        item.is_deleted = is_deleted
+        item.modules_assigned = modules_assigned
+        item.date_of_joining = date_of_joining
+        item.bank_name = bank_name
+        item.account_no = account_no
+        item.branch_name = branch_name
+        item.ifsc_code = ifsc_code
+        item.photo = photo
+
+        item.save()
+        return redirect('/admin_list/')
+    context={
+        'form':form,
+    }
+    return render(request,"auth/create_admin.html",context)
+
+def manager_list(request):
+    manager_list = SiteUser.objects.filter(role='Manager    ')
+    context={
+        'manager_list':manager_list,
+    }
+    return render(request,"auth/manager_list.html",context)
+
+def create_manager(request):
+    form = SiteUser_Form(request.POST or None)
+    if request.method == 'POST' or request.method == 'FILES':
+        mobile = request.POST.get('mobile')
+        email = request.POST.get('email')
+        name = request.POST.get('name')
+        group = request.POST.get('group')
+        is_deleted = request.POST.get('is_deleted')
+        modules_assigned = request.POST.get('modules_assigned')
+        date_of_joining = request.POST.get('date_of_joining')
+        bank_name = request.POST.get('bank_name')
+        account_no = request.POST.get('account_no')
+        branch_name = request.POST.get('branch_name')
+        ifsc_code = request.POST.get('ifsc_code')
+        photo = request.POST.get('photo')
+
+        item = SiteUser()
+
+        item.mobile = mobile
+        item.email = email
+        item.name = name
+        item.role = 'Manager'
+        item.group = group
+        item.is_deleted = is_deleted
+        item.modules_assigned = modules_assigned
+        item.date_of_joining = date_of_joining
+        item.bank_name = bank_name
+        item.account_no = account_no
+        item.branch_name = branch_name
+        item.ifsc_code = ifsc_code
+        item.photo = photo
+
+        item.save()
+        return redirect('/manager_list/')
+    context = {
+        'form': form,
+    }
+    return render(request, "auth/create_manager.html", context)
+
+def assign_man_to_admin(request):
+    admin_list = SiteUser.objects.filter(role='Admin').all()
+    manager_list = SiteUser.objects.filter(role='Manager')
+    if request.method=='POST':
+        group = request.POST.get('group')
+        item = SiteUser()
+        item.group = group
+
+        item.save(update_fields=['group',])
+    print(admin_list)
+    context = {
+        'admin_list': admin_list,
+        'manager_list': manager_list,
+    }
+    return render(request,"auth/assign_man_to_admin.html",context)
 
 def home(request):
     return render(request,"dashboardnew/dash.html",)

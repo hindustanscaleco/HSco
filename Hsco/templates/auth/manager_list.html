@@ -1,0 +1,187 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+
+        <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Create Manager</h1>
+          </div>
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
+
+            <script>
+$( document ).ready(function() {
+        $('.divs').hide();
+
+});
+$(function() {
+  $('#divselector').change(function(){
+    $('.divs').hide();
+    $('#' + $(this).val()).show();
+  });
+});
+
+            </script>
+                    <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
+
+
+
+
+
+<div style="min-height: 26vw;">
+
+        <div class="row">
+
+
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+
+
+
+                    <div class="col-xl-2 col-md-1 mb-1"> <center>Name </center>  </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Role</center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"> <center>Email </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"> <center> Mobile</center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"> <center> Group </center> </div>
+
+
+
+                </div>
+              </div>
+            </div><br><br>
+
+                {% for list in manager_list %}
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+
+
+
+                    <div class="col-xl-2 col-md-1 mb-1"> <center>{{list.name}} </center>  </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.role}}</center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"> <center>{{list.email}} </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"> <center> {{list.mobile}}</center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"> <center> {{list.group}} </center> </div>
+
+
+
+                </div>
+              </div>
+            </div>
+                {% endfor %}
+
+<br>
+
+
+
+
+
+
+
+        </div>
+</div>
+
+
+
+
+<br>
+<center>
+    <div class="row" style="width: 50%;">
+
+
+
+                <div class="col-xl-4 col-md-12 mb-12">
+              <div class="card border-left-primary shadow">
+                <div class="card-body" style="padding: 12px; ">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col ">
+ <a href="/create_manager/"><button class="btn btn-primary">Add Manager</button></a>                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
+
+</center>
+
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
+</body>
+
+</html>

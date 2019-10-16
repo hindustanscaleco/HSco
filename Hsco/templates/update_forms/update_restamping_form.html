@@ -97,7 +97,7 @@ color:;
   <input  name="restampingno" placeholder="Restamping Number
 
 
-" class="form-control"  type="text" disabled value="{{restampingno}}">
+" class="form-control"  type="text" disabled value="{{restamp_id.restampingno}}">
     </div>
   </div>
 
@@ -111,7 +111,7 @@ color:;
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="customer_no" placeholder="Customer Number
 
-" class="form-control"  type="text" disabled value="{{customer_no}}">
+" class="form-control"  type="text" disabled value="{{restamp_id.customer_no}}">
     </div>
   </div>
 
@@ -135,7 +135,7 @@ color:;
   <input  name="company_name" placeholder="Company Name
 
 
-" class="form-control"  type="text" disabled value="{{company_name}}">
+" class="form-control"  type="text" disabled value="{{restamp_id.company_name}}">
     </div>
   </div>
 
@@ -151,8 +151,8 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-    <textarea name="address" disabled value="{{address}}"></textarea>
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="today_date" placeholder="Todays date" class="form-control"  type="text" disabled value="{{restamp_id.address}}">
     </div>
   </div>
 
@@ -165,7 +165,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="today_date" placeholder="Todays date" class="form-control"  type="text" disabled value="{{today_date}}">
+  <input  name="today_date" placeholder="Todays date" class="form-control"  type="text" disabled value="{{restamp_id.today_date}}">
     </div>
   </div>
 
@@ -183,170 +183,11 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input type="number" name="mobile_no" placeholder="Mobile No
-" class="form-control"  type="text" disabled value="{{mobile_no}}">
+  <input name="mobile_no" placeholder="Mobile No
+" class="form-control"  type="text" disabled value="{{restamp_id.mobile_no}}">
     </div>
   </div>
-
-    <label class="col-md-2 control-label">Customer E-mail id
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer E-mail id
-
-
-" class="form-control"  type="text" disabled value="{{customer_email_id}}">
-    </div>
-  </div>
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Product to be stampped
-
-
-
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="product_to_stampped" placeholder="Product to be stampped
-
-" class="form-control"  type="text" disabled value="{{product_to_stampped}}">
-
-
-     </div>
-  </div>
-
-    <label class="col-md-2 control-label">Scale type
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="scale_type" placeholder="Scale type
-
-
-" class="form-control"  type="text" disabled value="{{scale_type}}">
-    </div>
-  </div>
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Sub model
-
-
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="sub_model" placeholder="Sub model
-
-
-" class="form-control"  type="text" disabled value="{{sub_model}}">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Capacity
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="capacity" placeholder="Capacity
-
-
-" class="form-control"  type="text" disabled value="{{capacity}}">
-    </div>
-  </div>
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Old Serial No.
-
-
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="old_serial_no" placeholder="Old Serial No.
-
-
-" class="form-control"  type="text" disabled value="{{old_serial_no}}">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Old Brand
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="old_brand" placeholder="Old Brand
-
-
-" class="form-control"  type="text" disabled value="{{old_brand}}">
-    </div>
-  </div>
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Amount
-
-
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="amount" placeholder="Amount
-
-
-" class="form-control"  type="text" disabled value="{{amount}}">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">New Serial No.
+ <label class="col-md-2 control-label">New Serial No.
 
 
 
@@ -359,11 +200,16 @@ color:;
   <input  name="new_serial_no" placeholder="New Serial No.
 
 
-" class="form-control"  type="text" disabled value="{{new_serial_no}}">
+" class="form-control"  type="text" disabled value="{{restamp_id.new_serial_no}}">
     </div>
   </div>
 
+
 </div>
+
+
+
+
 
 
 
@@ -377,7 +223,7 @@ color:;
   <input  name="brand" placeholder="Brand
 
 
-" class="form-control"  type="text" disabled value="{{brand}}">
+" class="form-control"  type="text" disabled value="{{restamp_id.brand}}">
     </div>
   </div>
 
@@ -391,10 +237,10 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="scale_delivery_date" placeholder="Scale Delivery Date
+  <input type="text" name="scale_delivery_date" placeholder="Scale Delivery Date
 
 
-" class="form-control"  type="text" disabled value="{{scale_delivery_date}}">
+" class="form-control"   disabled value="{{restamp_id.scale_delivery_date}}">
     </div>
   </div>
 
@@ -422,7 +268,38 @@ color:;
 </fieldset>
 </form>
 </div>
+<h1 style="font-size: 25px; color: black; text-align: center;"> Added Product List </h1>
+  <br>
+    {% for list in restamp_product_list %}
+      <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;">
 
+
+
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Customer Email Id: {{list.customer_email_id}} </center></div>
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product To Be Stampped: {{list.product_to_stampped}} </center></div>
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Scale Type: {{list.scale_type}}  </center></div>
+
+                  <div class="col-xl-4 col-md-1 mb-1"><center> Sub Model: {{list.sub_model}}  </center> </div>
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Capacity: {{list.capacity}}  </center></div>
+                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Old Serial No: {{list.old_serial_no}} </center> </div>
+                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Old Brand: {{list.old_brand}} </center> </div>
+
+                  <div class="col-xl-4 col-md-1 mb-1"><center> Amount: {{list.amount}}  </center> </div>
+
+
+                    </div>
+
+              </div>
+      </div>
+                    <br>
+
+          {% endfor %}
+          <center>
+          <a href="/restamping_product/{{restamp_id.id}}"> <button class="btn btn-primary">Add Product</button></a>
+            </center>
+          <br>
   </div>
   <!-- End of Page Wrapper -->
 

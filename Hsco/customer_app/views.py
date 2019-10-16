@@ -66,12 +66,106 @@ def add_customer_details(request):
 
 
 def view_customer_details(request):
-    customer_list = Customer_Details.objects.all()
-    print(customer_list)
-    context={
-        'customer_list':customer_list,
-    }
+
+    if request.method=='POST' :
+        if'submit1' in request.POST:
+            start_date = request.POST.get('date1')
+            end_date = request.POST.get('date2')
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT  * from customer_app_customer_details where date_of_purchase between '" + start_date + "' and '" + end_date + "';")
+                row = cursor.fetchall()
+
+                customer_list = [list(x) for x in row]
+                context = {
+                    'customer_list': customer_list,
+                }
+                context.update(context)
+        elif 'submit2' in request.POST:
+            contact = request.POST.get('contact')
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT  * from customer_app_customer_details where contact_no  LIKE '%" + contact + "%' ;")
+                row = cursor.fetchall()
+
+                customer_list = [list(x) for x in row]
+                context = {
+                    'customer_list': customer_list,
+                }
+                context.update(context)
+
+        elif 'submit3' in request.POST:
+            email = request.POST.get('email')
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT  * from customer_app_customer_details where customer_email_id  LIKE '%" + email + "%' ;")
+                row = cursor.fetchall()
+
+                customer_list = [list(x) for x in row]
+                context = {
+                    'customer_list': customer_list,
+                }
+                context.update(context)
+        elif 'submit4' in request.POST:
+            customer = request.POST.get('customer')
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT  * from customer_app_customer_details where customer_name  LIKE '%" + customer + "%' ;")
+                row = cursor.fetchall()
+
+                customer_list = [list(x) for x in row]
+                context = {
+                    'customer_list': customer_list,
+                }
+                context.update(context)
+
+        elif  'submit5' in request.POST:
+            company = request.POST.get('company')
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT  * from customer_app_customer_details where company_name  LIKE '%" + company + "%' ;")
+                row = cursor.fetchall()
+
+                customer_list = [list(x) for x in row]
+                context = {
+                    'customer_list': customer_list,
+                }
+                context.update(context)
+    # elif request.method=='POST' and 'submit6' in request.POST:
+    #     crm = request.POST.get('crm')
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(
+    #             "SELECT  * from customer_app_customer_details where crn_number  LIKE '%" + crm + "%' ;")
+    #         row = cursor.fetchall()
+    #
+    #         customer_list = [list(x) for x in row]
+    #         context = {
+    #             'customer_list': customer_list,
+    #         }
+    #         context.update(context)
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT  dispatch_id_assigned,company_name from customer_app_customer_details  ;")
+        row = cursor.fetchall()
+
+        customer_list = [list(x) for x in row]
+        print(customer_list)
+        list2 = []
+        list3 = []
+        for item in customer_list:
+            list2.append(item[0])
+            list3.append(item[1])
+            # for i in item:
+        final_list = zip(list2,list3)
+        print(list2)
+        print(list2)
+        print(list3)
+        print(list3)
+        context = {
+            'customer_list': final_list,
+        }
     return render(request,'dashboardnew/cm.html',context )
+
 
 def update_customer_details(request,id):
     product_list = Product_Details.objects.filter(customer_id=id)
@@ -87,14 +181,12 @@ def update_customer_details(request,id):
         stars_count = request.POST.get('stars_count')
 
         item = Feedback()
-
         item.name = name
         item.performance = performance
         item.co_operation = co_operation
         item.quality_of_work = quality_of_work
         item.communication = communication
         item.stars_count = stars_count
-
         item.save()
 
         return HttpResponse('Feedback Submitted!!!')
@@ -109,7 +201,6 @@ def update_customer_details(request,id):
 
 def add_product_details(request,id):
     customer_id = Customer_Details.objects.get(id=id).id
-    print(id)
     form = Product_Details_Form(request.POST or None)
     if request.method == 'POST':
         product_name = request.POST.get('product_name')
@@ -183,11 +274,7 @@ def final_report(request):
         list3=[]
         for i in row:
             list3.append(list(i))
-        print(list3)
-        print(final_row)
-        print(final_row)
-        print(final_row)
-        print(final_row)
+
 
     context={
         'final_row':final_row,
@@ -205,6 +292,7 @@ def manager_report(request):
 
 def employee_sales_graph(request):
     return render(request,"dashboardnew/graph.html",)
+
 
 
 

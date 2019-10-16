@@ -153,15 +153,16 @@ color:;
   </div>
 
     <label class="col-md-2 control-label">In Warranty
-
-
-
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  {{form.in_warranty}}
+    <input type="text" placeholder="In Warranty" name="in_warranty" class="form-control" value="" list="war">
+    <datalist style="height:20px;" id="war">
+    <option value = "Yes"></option>
+    <option value = "No"></option>
+    </datalist>
     </div>
   </div>
 
@@ -212,9 +213,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="name" placeholder="Name
-
-" class="form-control"  type="text">
+  <input  name="name" placeholder="Name" class="form-control"  type="text">
     </div>
   </div>
 
@@ -301,64 +300,63 @@ color:;
   </div>
 </div>
 
-<div class="form-group row">
-
-  <label class="col-md-2 control-label">
-  Type of Machine
-
-
-
-<label class="col-md-2 control-label">Type of Machine
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="type_of_machine" placeholder="Type of Machine" class="form-control" list="type_of_machine">
-    <datalist style="height:20px;" id="type_of_machine">
-      <option value="Mechanical"></option>
-      <option value="Digital"></option>
-    </datalist>
-    </div>
-  </div>
+<!--<div class="form-group row">-->
 
 
 
 
 
-  <label class="col-md-2 control-label">Model
+<!--<label class="col-md-2 control-label">Type of Machine-->
 
 
 
 
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-      <input  type="text" placeholder="Model" class="form-control" name="model" list="model">
-    <datalist style="height:20px;" id="model">
-    <option value = "Table Top"></option>
-    <option value = "Platform Scale"></option>
-    <option value = "POS Scales"></option>
-    <option value = "Water Proof Scales"></option>
-    <option value = "Jewellery Scales"></option>
-    <option value = "Lab Scales"></option>
-    <option value = "Crane Scales"></option>
-    <option value = "Platform Scales"></option>
-    <option value = "Mobile Platforms"></option>
-    <option value = "Infant Scales"></option>
-    <option value = "Baby Cum Adult Scales"></option>
-    <option value = "Animal Scales"></option>
-    <option value = "Cattle Scales"></option>
-    <option value = "Supra Pall Scales"></option>
-    </datalist>
-  </div>
-  </div>
-  </div>
+<!--</label>-->
+
+    <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
+    <!--<input  type="text" name="type_of_machine" placeholder="Type of Machine" class="form-control" list="type_of_machine">-->
+    <!--<datalist style="height:20px;" id="type_of_machine">-->
+      <!--<option value="Mechanical"></option>-->
+      <!--<option value="Digital"></option>-->
+    <!--</datalist>-->
+    <!--</div>-->
+  <!--</div>-->
+
+
+
+
+
+  <!--<label class="col-md-2 control-label">Model-->
+
+
+
+
+<!--</label>-->
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
+      <!--<input  type="text" placeholder="Model" class="form-control" name="model" list="model">-->
+    <!--<datalist style="height:20px;" id="model">-->
+    <!--<option value = "Table Top"></option>-->
+    <!--<option value = "Platform Scale"></option>-->
+    <!--<option value = "POS Scales"></option>-->
+    <!--<option value = "Water Proof Scales"></option>-->
+    <!--<option value = "Jewellery Scales"></option>-->
+    <!--<option value = "Lab Scales"></option>-->
+    <!--<option value = "Crane Scales"></option>-->
+    <!--<option value = "Platform Scales"></option>-->
+    <!--<option value = "Mobile Platforms"></option>-->
+    <!--<option value = "Infant Scales"></option>-->
+    <!--<option value = "Baby Cum Adult Scales"></option>-->
+    <!--<option value = "Animal Scales"></option>-->
+    <!--<option value = "Cattle Scales"></option>-->
+    <!--<option value = "Supra Pall Scales"></option>-->
+    <!--</datalist>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</div>-->
 
   <div class="form-group row">
 
@@ -459,16 +457,17 @@ color:;
   <div class="form-group row">
 
     <label class="col-md-2 control-label">Replaced Scale given
-
-
-
-
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  {{form.replaced_scale_given}}
+    <input  type="text" placeholder="Components Replaced" name="replaced_scale_given" class="form-control" value="" list="replaced_scale_given">
+    <datalist style="height:20px; color:white;" id="replaced_scale_given">
+    <option value = "Yes"></option>
+    <option value = "No"></option>
+    </datalist>
+
     </div>
   </div>
 
@@ -525,21 +524,11 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="informed_by" placeholder="Informed By
-
-
-" class="form-control"  type="text">
+  <input  name="informed_by" placeholder="Informed By" class="form-control"  type="text">
     </div>
   </div>
 
 </div>
-
-
-
-
-
-
-
 
 
 
@@ -550,21 +539,26 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  {{form.confirmed_estimate}}
+
+
+    <input  type="text" placeholder="Confirmed Estimate" name="confirmed_estimate" class="form-control" value="" list="confirmest">
+    <datalist style="height:20px;" id="confirmest">
+    <option value = "Yes"></option>
+    <option value = "No"></option>
+    </datalist>
     </div>
   </div>
 
     <label class="col-md-2 control-label">Repaired
-
-
-
-
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  {{form.repaired}}
+  <input  type="text" placeholder="Repaired" name="repaired" class="form-control" value="" list="Repaired">
+    <datalist style="height:20px;" id="Repaired">
+    <option value = "Yes"></option>
+    <option value = "No"></option>
     </div>
   </div>
 
@@ -643,14 +637,11 @@ color:;
 <!--</p>-->
 <br>
 <center>
-	<button type="submit" class="btn btn-primary"> Submit and Product</button>
+	<button type="submit" class="btn btn-primary"> Save and Add Product</button>
 
 </center>
           <br>
-        <center>
-	<button class="btn btn-primary">Add Product</button>
 
-</center>
 
 
 

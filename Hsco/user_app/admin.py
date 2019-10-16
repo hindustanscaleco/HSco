@@ -34,7 +34,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = SiteUser
-        fields = ('email', 'password', 'mobile',  'user_type')
+        fields = ('email', 'password', 'mobile',  'role')
 
     def clean_password(self):
         return self.initial["password"]
@@ -44,12 +44,12 @@ class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('email', 'mobile',  'user_type')
-    list_filter = ( 'user_type',)
+    list_display = ('email', 'mobile',  'role')
+    list_filter = ( 'role',)
 
     fieldsets = (
                 ('Login Credentials', {'fields': ('mobile', 'password')}),
-        ('Personal info', {'fields': ('email', 'name', 'user_type','sales_target','target_achieved','repairing_no_of_repairs','repairing_target_achieved','date_of_joining','average_rating')}),
+        ('Personal info', {'fields': ('email', 'name', 'role','sales_target','target_achieved','repairing_no_of_repairs','repairing_target_achieved','date_of_joining','average_rating','group')}),
         ('Bank Details', {'fields': ('bank_name', 'account_no', 'branch_name','ifsc_code')}),
         ('Seen', {'fields': ('last_login',)}),
     )
@@ -57,7 +57,7 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('mobile', 'email', 'name','user_type','sales_target','target_achieved','date_of_joining','average_rating',
+            'fields': ('mobile', 'email', 'name','role','sales_target','target_achieved','date_of_joining','average_rating',
                        'bank_name','account_no','branch_name','ifsc_code','auto_timedate','password', 'password2',   )}
          ),
     )

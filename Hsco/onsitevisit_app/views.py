@@ -1,8 +1,15 @@
+from django.db import connection
 from django.shortcuts import render, redirect
 
 from onsitevisit_app.forms import add_Onsite_aftersales_service_form
-from .models import Onsite_aftersales_service
+from .models import Onsite_aftersales_service, Onsite_Products
 
+def onsite_views(request):
+    onsite_list = Onsite_aftersales_service.objects.all()
+    context = {
+        'onsite_list': onsite_list,
+    }
+    return render(request,"manager/onsite_reparing.html",context)
 
 def add_onsite_aftersales_service(request):
     form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
@@ -21,14 +28,7 @@ def add_onsite_aftersales_service(request):
         nearest_railwaystation = request.POST.get('nearest_railwaystation')
         train_line = request.POST.get('train_line')
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
-        type_of_machine = request.POST.get('type_of_machine')
-        model = request.POST.get('model')
-        sub_model = request.POST.get('sub_model')
-        capacity = request.POST.get('capacity')
-        problem_in_scale = request.POST.get('problem_in_scale')
-        components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
-        components_replaced = request.POST.get('components_replaced')
-        cost = request.POST.get('cost')
+
         visiting_charges_told_customer = request.POST.get('visiting_charges_told_customer')
         total_cost = request.POST.get('components_replaced_in_warranty')
         complaint_assigned_to = request.POST.get('complaint_assigned_to')
@@ -57,14 +57,7 @@ def add_onsite_aftersales_service(request):
         item.nearest_railwaystation = nearest_railwaystation
         item.train_line = train_line
         item.products_to_be_repaired = products_to_be_repaired
-        item.type_of_machine = type_of_machine
-        item.model = model
-        item.sub_model = sub_model
-        item.capacity = capacity
-        item.problem_in_scale = problem_in_scale
-        item.components_replaced_in_warranty = components_replaced_in_warranty
-        item.components_replaced = components_replaced
-        item.cost = cost
+
         item.visiting_charges_told_customer = visiting_charges_told_customer
         item.total_cost = total_cost
         item.complaint_assigned_to = complaint_assigned_to
@@ -74,9 +67,96 @@ def add_onsite_aftersales_service(request):
         item.feedback_given = feedback_given
 
         item.save()
-        return redirect('/')
+        return redirect('/add_onsite_product/'+str(item.id))
     context={
         'form':form,
     }
 
-    return render(request, 'forms/onsite_rep_form.html',context )
+    return render(request, 'forms/onsite_rep_form.html',context)
+
+def add_onsite_product(request,id):
+    onsite_id = Onsite_aftersales_service.objects.get(id=id).id
+    print(onsite_id)
+    if request.method == 'POST' or request.method == 'FILES':
+        type_of_machine = request.POST.get('type_of_machine')
+        model = request.POST.get('model')
+        sub_model = request.POST.get('sub_model')
+        capacity = request.POST.get('capacity')
+        problem_in_scale = request.POST.get('problem_in_scale')
+        components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
+        components_replaced = request.POST.get('components_replaced')
+        cost = request.POST.get('cost')
+
+        item = Onsite_Products()
+
+        item.onsite_repairing_id_id = onsite_id
+        item.type_of_machine = type_of_machine
+        item.model = model
+        item.sub_model = sub_model
+        item.capacity = capacity
+        item.problem_in_scale = problem_in_scale
+        item.components_replaced_in_warranty = components_replaced_in_warranty
+        item.components_replaced = components_replaced
+        item.cost = cost
+
+        item.save()
+        return redirect('/update_onsite_details/'+str(id))
+    context = {
+        'onsite_id': onsite_id,
+    }
+    return render(request,"forms/onsite_product.html",context)
+
+def update_onsite_details(request,id):
+    onsite_product_list = Onsite_Products.objects.filter(onsite_repairing_id=id)
+    print(onsite_product_list)
+    onsite_id = Onsite_aftersales_service.objects.get(id=id)
+
+    context={
+        'onsite_product_list':onsite_product_list,
+        'onsite_id':onsite_id,
+    }
+
+    return render(request,'update_forms/update_onsite_rep_form.html',context)
+
+def report_onsite(request):
+    if request.method == 'POST' or None:
+        selected_list = request.POST.getlist('checks[]')
+        onsite_start_date = request.POST.get('date1')
+        onsite_end_date = request.POST.get('date2')
+        onsite_string = ','.join(selected_list)
+
+        request.session['start_date'] = onsite_start_date
+        request.session['repair_end_date'] = onsite_end_date
+        request.session['repair_string'] = onsite_string
+        request.session['selected_list'] = selected_list
+        return redirect('/final_report_onsite/')
+    return render(request,"report/report_onsite_rep_form.html",)
+
+def final_report_onsite(request):
+    repair_start_date = str(request.session.get('repair_start_date'))
+    repair_end_date = str(request.session.get('repair_end_date'))
+    repair_string = request.session.get('repair_string')
+    selected_list = request.session.get('selected_list')
+    print(repair_string)
+    print(repair_start_date)
+
+
+    print(repair_start_date)
+    print(repair_end_date)
+    print(selected_list)
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT "+repair_string+" from onsitevisit_app_onsite_aftersales_service where auto_timedate between '"+repair_start_date+"' and '"+repair_end_date+"';")
+        row = cursor.fetchall()
+        print(row)
+        final_row = [list(x) for x in row]
+        repairing_data = []
+        for i in row:
+            repairing_data.append(list(i))
+    context = {
+        'final_row': final_row,
+        'selected_list': selected_list,
+    }
+    return render(request,'report/final_onsite_report.html',context)
+
+def onsite_reparing_logs(request):
+    return render(request,"logs/onsite_reparing_logs.html",)
