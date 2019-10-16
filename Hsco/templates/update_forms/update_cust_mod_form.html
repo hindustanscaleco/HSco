@@ -156,7 +156,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="date_of_purchase" placeholder="Date of Purchase" class="form-control"  type="Date" disabled value="{{cust_id.date_of_purchase}}">
+  <input  name="date_of_purchase" placeholder="Date of Purchase" class="form-control"  type="Date" disabled value="{{cust_id.date_of_purchase|date:'Y-m-d'}}">
 
     </div>
   </div>
@@ -172,7 +172,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="product_purchase_date" placeholder="Product Purchased Date" class="form-control"  type="Date" disabled value="{{cust_id.product_purchase_date}}">
+  <input  name="product_purchase_date" placeholder="Product Purchased Date" class="form-control"  type="Date" disabled value="{{cust_id.product_purchase_date|date:'Y-m-d'}}">
 
     </div>
   </div>

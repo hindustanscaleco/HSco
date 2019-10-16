@@ -152,7 +152,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" placeholder="Todays date" class="form-control"  type="text" disabled value="{{restamp_id.address}}">
+  <input  name="address" placeholder="Todays date" class="form-control"  type="text" disabled value="{{restamp_id.address}}">
     </div>
   </div>
 
@@ -165,7 +165,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" placeholder="Todays date" class="form-control"  type="text" disabled value="{{restamp_id.today_date}}">
+  <input  name="today_date" placeholder="Todays date" class="form-control"  type="text" disabled value="{{restamp_id.today_date|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -240,7 +240,7 @@ color:;
   <input type="text" name="scale_delivery_date" placeholder="Scale Delivery Date
 
 
-" class="form-control"   disabled value="{{restamp_id.scale_delivery_date}}">
+" class="form-control"   disabled value="{{restamp_id.scale_delivery_date|date:'Y-m-d'}}">
     </div>
   </div>
 

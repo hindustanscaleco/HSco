@@ -160,3 +160,6 @@ def final_report_onsite(request):
 
 def onsite_reparing_logs(request):
     return render(request,"logs/onsite_reparing_logs.html",)
+
+def feedback_onrepairing(requesrt):
+    return render(requesrt,"feedback/feedback_onrepairing.html",)

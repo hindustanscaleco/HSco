@@ -347,6 +347,10 @@ def employee_sales_graph(request):
     return render(request,"graphs/sales_graph.html",)
 
 
+def feedback_customer(request):
+    return render(request,"feedback/feedback_customer.html")
+
+
 
 
 

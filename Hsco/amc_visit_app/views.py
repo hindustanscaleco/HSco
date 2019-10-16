@@ -182,3 +182,7 @@ def update_amc_form(request,update_id):
     return render(request,"update_forms/updated_amc_form.html",context)
 
 
+def feedback_amc(request):
+    return render(request,'feedback/feedback_amc.html')
+
+
