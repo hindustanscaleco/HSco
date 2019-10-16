@@ -49,8 +49,24 @@ color:;
 
   }
 
-</style>
 
+
+
+</style>
+  <script> function disable() {
+  document.getElementById("name").disabled = true;
+  }
+
+  function enable() {
+   document.getElementById("name").disabled = false;
+  }
+
+var form = document.getElementById("contact_form");
+var elements = form.elements;
+for (var i = 0, len = elements.length; i < len; ++i) {
+    elements[i].disabled = true;
+}
+</script>
   <!-- Page Wrapper -->
   <div id="wrapper">
   {% include 'base_templates/sidebar.html' %}
@@ -81,7 +97,7 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
+    <form  class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
@@ -107,9 +123,9 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_no" placeholder="Customer Number
+  <input id="name" name="customer_no" placeholder="Customer Number
 
-" class="form-control"  type="text" disabled value="{{repair_id.customer_no}}">
+" class="form-control"  type="text" value="{{repair_id.customer_no}}">
     </div>
   </div>
 
@@ -548,7 +564,7 @@ color:;
 
 <center>
   <button class="btn btn-primary">Save</button>
-
+<button onclick="enable()" class="btn btn-primary">Edit</button>
 </center>
 
 

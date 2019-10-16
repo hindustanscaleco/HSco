@@ -82,7 +82,7 @@ def restamping_product(request,id):
 
 def update_restamping_details(request,id):
     restamp_product_list = Restamping_Product.objects.filter(restamping_id=id)
-    print(restamp_product_list)
+    #xprint(restamp_product_list)
     restamp_id = Restamping_after_sales_service.objects.get(id=id)
 
     context={
