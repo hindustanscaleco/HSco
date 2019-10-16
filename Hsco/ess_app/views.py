@@ -59,3 +59,8 @@ def add_ess_details(request):
 
     return render(request,'forms/ess_form.html',)
 
+
+
+def ess_home(request):
+    return render(request,'dashboardnew/ess_home.html',)
+
