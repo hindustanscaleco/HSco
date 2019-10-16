@@ -23,8 +23,8 @@ from .views import navbar, home
 from .views import user_profile, home
 from .views import dis_mod_form, home
 from .views import user_logs, home
-from .views import onsite_rep_form, home
-from .views import rep_mod_form,  assign_man_to_admin
+from .views import onsite_rep_form, home, assign_module_to_emp
+from .views import rep_mod_form,  assign_man_to_admin, create_employee, employee_list, assign_emp_to_manager
 from .views import restamping_form, home, admin_list, create_admin, create_manager,manager_list
 
 
@@ -48,5 +48,9 @@ path('create_admin/', create_admin, name='create_admin'),
 path('manager_list/', manager_list, name='manager_list'),
 path('create_manager/', create_manager, name='create_manager'),
 path('assign_man_to_admin/', assign_man_to_admin, name='assign_man_to_admin'),
+path('create_employee/', create_employee, name='create_employee'),
+path('employee_list/', employee_list, name='employee_list'),
+path('assign_emp_to_manager/', assign_emp_to_manager, name='assign_emp_to_manager'),
+path('assign_module_to_emp/', assign_module_to_emp, name='assign_module_to_emp'),
 
 ]

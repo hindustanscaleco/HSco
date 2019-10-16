@@ -84,10 +84,12 @@ class SiteUser(AbstractBaseUser):
     email = models.EmailField( 'Email-id', max_length=255, unique=True )
     name =models.CharField('Name',max_length=50,null=True,blank=True)
     role = models.CharField('Role  Of User',max_length=20, choices=choices,null=True,blank=True)
-    group = models.CharField(max_length=50)
+    group = models.CharField(max_length=300, null=True, blank=True)
     is_deleted = models.BooleanField(default=False, null=True, blank=True, choices=deleted)
-    modules_assigned = models.CharField(max_length=100)
+    modules_assigned = models.CharField(max_length=300)
     photo = models.FileField(upload_to='',null=True, blank=True)
+    created_by = models.CharField(max_length=30,null=True, blank=True)
+    assigned_by = models.CharField(max_length=30,null=True, blank=True)
     #customer_module
     sales_target =models.FloatField(default=0.0)                 #in numbers (customer module)
     target_achieved = models.FloatField(default=0.0)             #in percentage (customer module)
@@ -115,8 +117,7 @@ class SiteUser(AbstractBaseUser):
     REQUIRED_FIELDS = ['email',]
 
     def __str__(self):
-        return self.mobile
-
+        return self.name
 
     def has_perm(self, perm, obj=None):
         return True

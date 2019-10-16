@@ -48,7 +48,7 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Create Manager</h1>
+            <h1 class="h3 mb-0 text-gray-800">Create Employee</h1>
           </div>
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
@@ -80,14 +80,14 @@ $(function() {
 
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 18px; height: 40px;">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 40px;">
 
 
 
                     <div class="col-xl-1 col-md-1 mb-1"> <center>ID </center>  </div>|
-                    <div class="col-xl-3 col-md-1 mb-1"> <center>Manager </center>  </div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Admin</center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Assign Admin To Manager</center></div>
+                    <div class="col-xl-3 col-md-1 mb-1"> <center>Employee </center>  </div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> Manager</center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> Assign Employee To Manager</center></div>
 
 
 
@@ -97,24 +97,24 @@ $(function() {
             </div>
             <br><br>
 
-                {% for list in manager_list %}
+                {% for list in employee_list %}
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 400; font-size: 18px; height: 50px;">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 400; font-size: 14px; height: 50px;">
 
 
 
                     <div class="col-xl-1 col-md-1 mb-1"> <center>{{list.pk}} </center>  </div>|
                     <div class="col-xl-3 col-md-1 mb-1"> <center>{{list.name}} </center>  </div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center> {{list.group}}</center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>
+                    <div class="col-xl-4 col-md-1 mb-1"><center>
                         <form method="POST"> {% csrf_token %}
-                            <input value="{{list.pk}}" name="manager_id" style="display:none;">
+                            <input value="{{list.pk}}" name="employee_id" style="display:none;">
                         <select name="group">
-                         {%for list2 in admin_list%}
+                         {%for list2 in manager_list %}
                         <option value="{{list2.name}}">{{list2.name}}</option>
                             {% endfor %}
-</select> <button class="btn btn-primary">Submit</button>
+</select> <button style="float:right;" class="btn btn-primary">Submit</button>
                     </form>
                     </center></div>
 
