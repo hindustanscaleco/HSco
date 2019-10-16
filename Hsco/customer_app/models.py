@@ -21,7 +21,8 @@ feedback = (('1', '1'),
 
 
 class Customer_Details(models.Model):
-    crn_number = models.UUIDField(unique=True, default=uuid.uuid4)
+    # crn_number = models.UUIDField(unique=True, default=uuid.uuid4)
+    # crn_number = models.BigIntegerField(unique=True, null=True, blank=True)
     customer_name = models.CharField(max_length=80, null=True, blank=True)
     company_name = models.CharField(max_length=80,null=True,blank=True)
     address = models.CharField(max_length=250,null=True,blank=True)
@@ -29,7 +30,6 @@ class Customer_Details(models.Model):
     customer_email_id = models.CharField(max_length=30,null=True,blank=True)
     date_of_purchase = models.DateField(default=datetime.date.today,null=True,blank=True)
     product_purchase_date = models.DateField(default=datetime.date.today,null=True,blank=True)
-
 
     bill_no = models.CharField(max_length=30,null=True,blank=True)
     upload_op_file = models.FileField(upload_to='',null=True,blank=True)
@@ -42,6 +42,8 @@ class Customer_Details(models.Model):
     notes = models.CharField(max_length=30,null=True,blank=True)
     feedback_form_filled = models.CharField(max_length=30,null=True,blank=True, choices=choices)
     dispatch_id_assigned = models.ForeignKey(Dispatch,on_delete=models.CASCADE,null=True,blank=True)  #remaining make forenkey of this with Dispatch module
+    entry_timedate = models.DateField(default=datetime.date.today)
+    feedback_stars=models.FloatField(default=0.0)
 
     def __str__(self):
         return self.customer_name
@@ -60,6 +62,7 @@ class Product_Details(models.Model):
     unit = models.CharField(max_length=30,null=True,blank=True)
     sales_person = models.CharField(max_length=30,null=True,blank=True)
     new_repeat_purchase = models.CharField(max_length=30,null=True,blank=True)
+    entry_timedate = models.DateTimeField(default=timezone.now,)
 
     def __int__(self):
         return self.customer_id
@@ -71,6 +74,7 @@ class Feedback(models.Model):
     overall_interaction = models.FloatField(default=0.00)
     about_hsco = models.CharField(max_length=60)
     any_suggestion = models.CharField(max_length=255)
+    entry_timedate = models.DateTimeField(default=timezone.now,)
 
     def __str__(self):
         return self.about_hsco

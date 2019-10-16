@@ -1,17 +1,16 @@
-import csv
 from django.db import connection
 from django.db.models import Avg
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from user_app.models import SiteUser
 from dispatch_app.models import Dispatch
-
 from dispatch_app.models import Product_Details_Dispatch
+from ess_app.models import Employee_Analysis
 from .forms import Customer_Details_Form, Feedback_Form
 from .models import Customer_Details, Feedback
 from .forms import Product_Details_Form
 from .models import Product_Details
-
+from datetime import datetime
 
 def add_customer_details(request):
     form = Customer_Details_Form(request.POST or None, request.FILES or None)
@@ -34,8 +33,8 @@ def add_customer_details(request):
         notes = request.POST.get('notes')
         feedback_form_filled = request.POST.get('feedback_form_filled')
 
-
         item = Customer_Details()
+
         item.customer_name = customer_name
         item.company_name = company_name
         item.date = address
@@ -56,6 +55,8 @@ def add_customer_details(request):
         item.notes = notes
         item.feedback_form_filled = feedback_form_filled
         item.save()
+
+
 
 
 
@@ -93,100 +94,70 @@ def view_customer_details(request):
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT  * from customer_app_customer_details where date_of_purchase between '" + start_date + "' and '" + end_date + "';")
-                row = cursor.fetchall()
-
-                customer_list = [list(x) for x in row]
-                context = {
-                    'customer_list': customer_list,
-                }
-                context.update(context)
+            cust_list = Customer_Details.objects.filter(entry_timedate__range=[start_date, end_date])
+            context = {
+                'customer_list': cust_list,
+            }
+            return render(request, 'dashboardnew/cm.html', context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT  * from customer_app_customer_details where contact_no  LIKE '%" + contact + "%' ;")
-                row = cursor.fetchall()
-
-                customer_list = [list(x) for x in row]
-                context = {
-                    'customer_list': customer_list,
-                }
-                context.update(context)
+            cust_list = Customer_Details.objects.filter(contact_no=contact)
+            context = {
+                'customer_list': cust_list,
+            }
+            return render(request, 'dashboardnew/cm.html', context)
 
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT  * from customer_app_customer_details where customer_email_id  LIKE '%" + email + "%' ;")
-                row = cursor.fetchall()
-
-                customer_list = [list(x) for x in row]
-                context = {
-                    'customer_list': customer_list,
-                }
-                context.update(context)
+            cust_list = Customer_Details.objects.filter(customer_email_id=email)
+            context = {
+                'customer_list': cust_list,
+            }
+            return render(request, 'dashboardnew/cm.html', context)
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT  * from customer_app_customer_details where customer_name  LIKE '%" + customer + "%' ;")
-                row = cursor.fetchall()
-
-                customer_list = [list(x) for x in row]
-                context = {
-                    'customer_list': customer_list,
-                }
-                context.update(context)
+            cust_list = Customer_Details.objects.filter(customer_name=customer)
+            context = {
+                'customer_list': cust_list,
+            }
+            return render(request, 'dashboardnew/cm.html', context)
 
         elif  'submit5' in request.POST:
             company = request.POST.get('company')
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT  * from customer_app_customer_details where company_name  LIKE '%" + company + "%' ;")
-                row = cursor.fetchall()
+            cust_list = Customer_Details.objects.filter(company_name=company)
+            context = {
+                'customer_list': cust_list,
+            }
+            return render(request, 'dashboardnew/cm.html', context)
+        elif request.method=='POST' and 'submit6' in request.POST:
+            crm = request.POST.get('crm')
+            cust_list = Customer_Details.objects.filter(crn_number=crm)
+            context = {
+                'customer_list': cust_list,
+            }
+            return render(request, 'dashboardnew/cm.html', context)
+    else:
+        cust_list=Customer_Details.objects.all()
 
-                customer_list = [list(x) for x in row]
-                context = {
-                    'customer_list': customer_list,
-                }
-                context.update(context)
-    # elif request.method=='POST' and 'submit6' in request.POST:
-    #     crm = request.POST.get('crm')
-    #     with connection.cursor() as cursor:
-    #         cursor.execute(
-    #             "SELECT  * from customer_app_customer_details where crn_number  LIKE '%" + crm + "%' ;")
-    #         row = cursor.fetchall()
-    #
-    #         customer_list = [list(x) for x in row]
-    #         context = {
-    #             'customer_list': customer_list,
-    #         }
-    #         context.update(context)
-    with connection.cursor() as cursor:
-        cursor.execute(
-            "SELECT  dispatch_id_assigned_id,company_name from customer_app_customer_details  ;")
-        row = cursor.fetchall()
+        # with connection.cursor() as cursor:
+        #     cursor.execute(
+        #         "SELECT  dispatch_id_assigned_id,company_name from customer_app_customer_details  ;")
+        #     row = cursor.fetchall()
+        #
+        #     customer_list = [list(x) for x in row]
+        #     print(customer_list)
+        #     list2 = []
+        #     list3 = []
+        #     for item in customer_list:
+        #         list2.append(item[0])
+        #         list3.append(item[1])
+        #
+        #     final_list = zip(list2,list3)
 
-        customer_list = [list(x) for x in row]
-        print(customer_list)
-        list2 = []
-        list3 = []
-        for item in customer_list:
-            list2.append(item[0])
-            list3.append(item[1])
-            # for i in item:
-        final_list = zip(list2,list3)
-        print(list2)
-        print(list2)
-        print(list3)
-        print(list3)
         context = {
-            'customer_list': final_list,
+            'customer_list': cust_list,
         }
-    return render(request,'dashboardnew/cm.html',context )
+        return render(request,'dashboardnew/cm.html',context )
 
 
 def update_customer_details(request,id):
@@ -344,7 +315,29 @@ def manager_report(request):
     return render(request, 'dashboardnew/manager_report.html',context)
 
 def employee_sales_graph(request):
-    return render(request,"graphs/sales_graph.html",)
+    user_id=request.user.pk
+    currentMonth = datetime.now().month
+    currentYear = datetime.now().year
+    list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+    list_sales_month=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+    # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+    print(list(list_sales_month))
+    print(list(list_sales))
+    final_list=[]
+    final_list2=[]
+    for item in list_sales:
+        final_list.append(item[0])
+
+    for item in list_sales_month:
+        final_list2.append(item[0])
+
+    print(final_list)
+    print(final_list2)
+    context={
+        'final_list':final_list,
+        'final_list2':final_list2
+    }
+    return render(request,"graphs/sales_graph.html",context)
 
 
 def feedback_customer(request):

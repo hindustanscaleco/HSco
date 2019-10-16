@@ -321,7 +321,6 @@ $(document).ready(function(){
   }
 };
 </script>
-
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
   <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
@@ -340,11 +339,13 @@ $(document).ready(function(){
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
 
 <script>
+
   // Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
 function number_format(number, decimals, dec_point, thousands_sep) {
+
   // *     example: number_format(1234.56, 2, ',', ' ');
   // *     return: '1 234,56'
   number = (number + '').replace(',', '').replace(' ', '');
@@ -374,7 +375,9 @@ var ctx = document.getElementById("myAreaChart");
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+
+    labels: {{final_list|safe}},
+
     datasets: [{
       label: "Leads",
       lineTension: 0.3,
@@ -388,9 +391,11 @@ var myLineChart = new Chart(ctx, {
       pointHoverBorderColor: "rgba(78, 115, 223, 1)",
       pointHitRadius: 10,
       pointBorderWidth: 2,
-      data: [0, 100, 50, 15000, 10000, 20000, 15000, 25000, 2000, 300, 25000, 400],
+      data: {{final_list2}},
+
     }],
   },
+
   options: {
     maintainAspectRatio: false,
     layout: {
