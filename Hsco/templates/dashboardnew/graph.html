@@ -11,6 +11,11 @@
   <meta name="author" content="">
 
   <title>Robot</title>
+
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
+
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -182,12 +187,68 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 </center>
 
 <br>
+        <style>
+          .editableBox {
+    width: 175px;
+    height: 30px;
+}
 
-<select id="prov"></select>
-<select id="town"></select>
+.timeTextBox {
+    width: 154px;
+    margin-left: -178px;
+    height: 25px;
+    border: none;
+}
+
+
+.editableBoxa {
+    width: 75px;
+    height: 30px;
+}
+
+.timeTextBoxa {
+    width: 54px;
+    margin-left: -78px;
+    height: 25px;
+    border: none;
+}
+        </style>
+
+<script>
+$(document).ready(function(){
+
+    $(".editableBox").change(function(){
+        $(".timeTextBox").val($(".editableBox option:selected").html());
+    });
+});
+
+$(document).ready(function(){
+
+    $(".editableBoxa").change(function(){
+        $(".timeTextBoxa").val($(".editableBoxa option:selected").html());
+    });
+});
+</script>
+
+
+<div class="wrapper">
+    <select class="editableBox"  id="prov">
+    </select>
+    <input class="timeTextBox" name="timebox" maxlength="5"/>
+</div>
+
+
+        <div class="wrapper">
+    <select class="editableBoxa" id="town">
+    </select>
+    <input class="timeTextBoxa" name="timebox" maxlength="5"/>
+</div>
+
+<select></select>
+<select ></select>
 
         <!--Test-->
-
+<br><br>
 
 
           </div>
