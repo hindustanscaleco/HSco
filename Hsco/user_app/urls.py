@@ -25,7 +25,7 @@ from .views import dis_mod_form, home
 from .views import user_logs, home
 from .views import onsite_rep_form, home
 from .views import rep_mod_form, home
-from .views import restamping_form, home
+from .views import restamping_form, home, admin_list, create_admin
 
 
 urlpatterns = [
@@ -43,5 +43,7 @@ path('navbar/', navbar, name='navbar'),
 path('login/', login, name='login'),
 path('dashboard/', dashboard, name='dashboard'),
 path('graph/', graph, name='graph'),
+path('admin_list/', admin_list, name='admin_list'),
+path('create_admin/', create_admin, name='create_admin'),
 
 ]

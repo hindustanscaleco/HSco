@@ -2,6 +2,12 @@ from django.db import connection
 from django.shortcuts import render, redirect
 
 
+def admin_list(request):
+    return render(request,"auth/admin_list.html")
+
+def create_admin(request):
+    return render(request,"auth/create_admin.html")
+
 def home(request):
     return render(request,"dashboardnew/dash.html",)
 
