@@ -80,7 +80,7 @@ $(function() {
      <option value="d4">Search By Customer Name</option>
      <option value="d5">Search By Company Name</option>
      <option value="d6">Search By CRM No.</option>
-     <option value="d7">Search By CRM Number Range</option>
+     <!--<option value="d7">Search By CRM Number Range</option>-->
   </select>
 </div>
 
@@ -151,28 +151,28 @@ $(function() {
       <button name="submit6" class="btn btn-primary">Search</button></div>
 </form>
 
-                               <form method="POST">{% csrf_token%}
+                               <!--<form method="POST">{% csrf_token%}-->
 
-  <div id="d7" class="divs d7 row" style="width: 50%;">
-      <div class="col-xl-4 col-md-4 col-mb-4">
-                <input name="crm1" type="text" placeholder="CRM No." class="form-control">
+  <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
+      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
+                <!--<input name="crm1" type="text" placeholder="CRM No." class="form-control">-->
 
-      </div>
+      <!--</div>-->
 
-      <div class="col-xl-0 col-md-0 col-mb-0">
-                <p style="font-weight: 600;">_</p>
+      <!--<div class="col-xl-0 col-md-0 col-mb-0">-->
+                <!--<p style="font-weight: 600;">_</p>-->
 
-      </div>
+      <!--</div>-->
 
-      <div class="col-xl-4 col-md-4 col-mb-4">
-                <input name="crm2" type="text" placeholder="CRM No." class="form-control">
+      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
+                <!--<input name="crm2" type="text" placeholder="CRM No." class="form-control">-->
 
-      </div>
-      <div class="col-xl-2 col-md-2 col-mb-2">
-                <button class="btn btn-primary">Search</button></div>
+      <!--</div>-->
+      <!--<div class="col-xl-2 col-md-2 col-mb-2">-->
+                <!--<button class="btn btn-primary">Search</button></div>-->
 
-      </div>
-                               </form>
+      <!--</div>-->
+                               <!--</form>-->
 </div>
 
 
@@ -195,10 +195,10 @@ $(function() {
 
 
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Dispatch Id </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Customer Name </center></div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center> Company Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Sales </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Target Achieved </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Dispatch Id </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Feedback Filled </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> <p>Stars</p> </center>
                     </div>
 
@@ -211,22 +211,29 @@ $(function() {
 
 
 <br>
-<br>{% for list1,list2 in customer_list %}
+<br>{% for list1 in customer_list %}
 
                 <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_customer_details/{{list.id}}" >{{ list1 }}</a> </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>{{ list2}} </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> static </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>  static</center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center> <a href="/update_customer_details/{{list1.id}}" >{{ list1.customer_name }}</a> </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list1.company_name}} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list1.pk}} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>{{ list1.contact_no}} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>{{ list1.customer_email_id}} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center> {{ list1.dispatch_id_assigned}} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center> {{ list1.feedback_form_filled}}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>static </center>
+                         {% for avg in list1.feedback_stars|rjust:'5'  %}
+							{% if forloop.counter <= list1.feedback_stars %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
+							{% endif %}
+						{% endfor %}
+
+                         </center>
 
 
                     </div>
