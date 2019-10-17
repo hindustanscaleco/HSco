@@ -72,8 +72,8 @@ def logout_page(request):
         pass
     return redirect('/')
 
-
 def admin_list(request):
+
     admin_list = SiteUser.objects.filter(role='Admin')
     context={
         'admin_list':admin_list,
@@ -321,64 +321,125 @@ def graph(request):
     return render(request,"graphs/sales_graph.html",)
 
 
-def update_admin(request):
-    if request.method =='POST' and 'performance' in request.POST:
-        knowledge_of_person = request.POST.get('knowledge_of_person')
-        timeliness_of_person = request.POST.get('timeliness_of_person')
-        price_of_product = request.POST.get('price_of_product')
-        overall_interaction = request.POST.get('overall_interaction')
-        about_hsco = request.POST.get('about_hsco')
-        any_suggestion = request.POST.get('any_suggestion')
+def update_admin(request,id):
+    admin_id = SiteUser.objects.get(id=id)
+    form = SiteUser_Form(request.POST or None)
+    if request.method == 'POST' or request.method == 'FILES':
+        mobile = request.POST.get('mobile')
+        email = request.POST.get('email')
+        name = request.POST.get('name')
+        group = request.POST.get('group')
+        is_deleted = request.POST.get('is_deleted')
+        modules_assigned = request.POST.get('modules_assigned')
+        bank_name = request.POST.get('bank_name')
+        account_no = request.POST.get('account_no')
+        branch_name = request.POST.get('branch_name')
+        ifsc_code = request.POST.get('ifsc_code')
+        photo = request.POST.get('photo')
 
-        item = Feedback()
-        item.knowledge_of_person = knowledge_of_person
-        item.timeliness_of_person = timeliness_of_person
-        item.price_of_product = price_of_product
-        item.overall_interaction = overall_interaction
-        item.about_hsco = about_hsco
-        item.any_suggestion = any_suggestion
-        item.save()
-    return render(request,"update_forms/update_admin.html",)
+        item = admin_id
+
+        item.mobile = mobile
+        item.email = email
+        item.name = name
+        item.role = 'Admin'
+        item.group = group
+        item.is_deleted = is_deleted
+        item.modules_assigned = modules_assigned
+        item.bank_name = bank_name
+        item.account_no = account_no
+        item.branch_name = branch_name
+        item.ifsc_code = ifsc_code
+        item.photo = photo
+        item.set_password(request.POST.get('password'))
+
+        item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_no','branch_name','ifsc_code','photo','password'])
+        return redirect('/update_admin/'+str(item.id))
+    context = {
+        'form': form,
+        'admin_id': admin_id,
+    }
+    return render(request,"update_forms/update_admin.html",context)
 
 
 
-def update_manager_add(request):
-    if request.method =='POST' and 'performance' in request.POST:
-        knowledge_of_person = request.POST.get('knowledge_of_person')
-        timeliness_of_person = request.POST.get('timeliness_of_person')
-        price_of_product = request.POST.get('price_of_product')
-        overall_interaction = request.POST.get('overall_interaction')
-        about_hsco = request.POST.get('about_hsco')
-        any_suggestion = request.POST.get('any_suggestion')
+def update_manager(request,id):
+    manager_id = SiteUser.objects.get(id=id)
+    form = SiteUser_Form(request.POST or None)
+    if request.method == 'POST' or request.method == 'FILES':
+        mobile = request.POST.get('mobile')
+        email = request.POST.get('email')
+        name = request.POST.get('name')
+        group = request.POST.get('group')
+        is_deleted = request.POST.get('is_deleted')
+        modules_assigned = request.POST.get('modules_assigned')
+        bank_name = request.POST.get('bank_name')
+        account_no = request.POST.get('account_no')
+        branch_name = request.POST.get('branch_name')
+        ifsc_code = request.POST.get('ifsc_code')
+        photo = request.POST.get('photo')
 
-        item = Feedback()
-        item.knowledge_of_person = knowledge_of_person
-        item.timeliness_of_person = timeliness_of_person
-        item.price_of_product = price_of_product
-        item.overall_interaction = overall_interaction
-        item.about_hsco = about_hsco
-        item.any_suggestion = any_suggestion
-        item.save()
+        item = manager_id
 
-    return render(request,"update_forms/update_manager_add.html")
+        item.mobile = mobile
+        item.email = email
+        item.name = name
+        item.role = 'Manager'
+        item.group = group
+        item.is_deleted = is_deleted
+        item.modules_assigned = modules_assigned
+        item.bank_name = bank_name
+        item.account_no = account_no
+        item.branch_name = branch_name
+        item.ifsc_code = ifsc_code
+        item.photo = photo
+        item.set_password(request.POST.get('password'))
 
-def update_employee(request):
-    if request.method =='POST' and 'performance' in request.POST:
-        knowledge_of_person = request.POST.get('knowledge_of_person')
-        timeliness_of_person = request.POST.get('timeliness_of_person')
-        price_of_product = request.POST.get('price_of_product')
-        overall_interaction = request.POST.get('overall_interaction')
-        about_hsco = request.POST.get('about_hsco')
-        any_suggestion = request.POST.get('any_suggestion')
+        item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_no','branch_name','ifsc_code','photo','password'])
+        return redirect('/update_admin/' + str(item.id))
+    context = {
+        'form': form,
+        'manager_id': manager_id,
+    }
+    return render(request,"update_forms/update_manager_add.html",context)
 
-        item = Feedback()
-        item.knowledge_of_person = knowledge_of_person
-        item.timeliness_of_person = timeliness_of_person
-        item.price_of_product = price_of_product
-        item.overall_interaction = overall_interaction
-        item.about_hsco = about_hsco
-        item.any_suggestion = any_suggestion
-        item.save()
+def update_employee(request,id):
+    employee_id = SiteUser.objects.get(id=id)
+    form = SiteUser_Form(request.POST or None)
+    if request.method == 'POST' or request.method == 'FILES':
+        mobile = request.POST.get('mobile')
+        email = request.POST.get('email')
+        name = request.POST.get('name')
+        group = request.POST.get('group')
+        is_deleted = request.POST.get('is_deleted')
+        modules_assigned = request.POST.get('modules_assigned')
+        bank_name = request.POST.get('bank_name')
+        account_no = request.POST.get('account_no')
+        branch_name = request.POST.get('branch_name')
+        ifsc_code = request.POST.get('ifsc_code')
+        photo = request.POST.get('photo')
 
-    return render(request,"update_forms/update_employee.html")
+        item = employee_id
+
+        item.mobile = mobile
+        item.email = email
+        item.name = name
+        item.role = 'Employee'
+        item.group = group
+        item.is_deleted = is_deleted
+        item.modules_assigned = modules_assigned
+        item.bank_name = bank_name
+        item.account_no = account_no
+        item.branch_name = branch_name
+        item.ifsc_code = ifsc_code
+        item.photo = photo
+        item.set_password(request.POST.get('password'))
+
+        item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_no','branch_name','ifsc_code','photo','password'])
+        return redirect('/update_employee/' + str(item.id))
+    context = {
+        'form': form,
+        'employee_id': employee_id,
+    }
+    return render(request,"update_forms/update_employee.html",context)
 

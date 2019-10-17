@@ -26,7 +26,7 @@ from .views import user_logs, home
 from .views import onsite_rep_form, home, assign_module_to_emp
 from .views import rep_mod_form,  assign_man_to_admin, create_employee, employee_list, assign_emp_to_manager
 from .views import restamping_form, home, admin_list, create_admin, create_manager,manager_list,update_admin
-from .views import update_manager_add,update_employee
+from .views import update_manager,update_employee
 
 
 urlpatterns = [
@@ -53,8 +53,8 @@ path('create_employee/', create_employee, name='create_employee'),
 path('employee_list/', employee_list, name='employee_list'),
 path('assign_emp_to_manager/', assign_emp_to_manager, name='assign_emp_to_manager'),
 path('assign_module_to_emp/', assign_module_to_emp, name='assign_module_to_emp'),
-path('update_admin/',update_admin, name='update_admin'),
-path('update_manager_add/',update_manager_add, name='update_manager_add'),
-path('update_employee/',update_employee, name='update_employee'),
+path('update_admin/<int:id>',update_admin, name='update_admin'),
+path('update_manager/<int:id>',update_manager, name='update_manager'),
+path('update_employee/<int:id>',update_employee, name='update_employee'),
 
 ]
