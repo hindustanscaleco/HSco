@@ -30,6 +30,7 @@ urlpatterns = [
     path('', include('amc_visit_app.urls')),
     path('', include('restamping_app.urls')),
     path('', include('onsitevisit_app.urls')),
+    path('', include('onsitevisit_app.urls')),
 
 
 ]
