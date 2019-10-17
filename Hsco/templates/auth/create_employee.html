@@ -69,49 +69,34 @@ color:;
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <center><h3>Add Customer Module</h3></center>
 
         <div class="container-fluid" >
 
-          <div class="row" style="padding:20px;">
-               <label class="col-md-6 control-label">CRM Number:{{crn_number}}</label>
 
-          </div>
-<br>
+
 
 
     <form class="well form-horizontal" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
 <fieldset>
-<div class="form-group row">
-  <label class="col-md-2 control-label ">Dispatch ID assigned
 
+<div class="form-group row">
+  <label class="col-md-2 control-label ">Name
 </label>
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="dispatch_id_assigned" placeholder="Dispatch ID assigned"  class="form-control"  type="text">
-    </div>
-  </div>
-</div>
-<div class="form-group row">
-  <label class="col-md-2 control-label ">Name of customer
-</label>
-
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_name" placeholder="Full Name"  class="form-control"  type="text">
+  <input  name="name" placeholder="Full Name"  class="form-control"  type="text">
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Company Name
+    <label class="col-md-2 control-label">Email
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text">
+  <input  name="email" placeholder="Email" class="form-control"  type="text">
     </div>
   </div>
 </div>
@@ -119,25 +104,25 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Address
+  <label class="col-md-2 control-label">Mobile
 
 </label>
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <textarea class="form-control" name="address" placeholder="Address"></textarea>
+  <textarea class="form-control" name="mobile" placeholder="Mobile"></textarea>
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Contact Number
+    <label class="col-md-2 control-label">Role
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" placeholder="Contact No" class="form-control"  type="text">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="role" placeholder="Role" class="form-control" value="Employee" type="text" disabled>
     </div>
   </div>
 
@@ -148,23 +133,22 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Customer Email Id
+  <label class="col-md-2 control-label">Group
   </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer Email Id" class="form-control"  type="email">
+  <input  name="group" placeholder="Group" class="form-control"  type="text">
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Date of Purchase
+    <label class="col-md-2 control-label">Is deleted
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="date_of_purchase" placeholder="Date of Purchase" class="form-control"  type="Date">
-    </div>
+{{form.is_deleted}}
+  </div>
   </div>
 </div>
 
@@ -201,13 +185,13 @@ color:;
   <input  name="bill_no" placeholder="Bill No" class="form-control"  type="text">
     </div>
   </div>
- <label class="col-md-2 control-label">Upload PO File
+ <label class="col-md-2 control-label">Modules Assigned
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-    <input type="file" name="upload_op_file" id="fileToUpload" class="form-control">
+    <input type="text" name="modules_assigned" placeholder="Modules Assigned" class="form-control">
     </div>
   </div>
 </div>
@@ -215,24 +199,24 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">PO Number
+  <label class="col-md-2 control-label">Date of joining
 
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="po_number" placeholder="PO Number" class="form-control"  type="text">
+  <input  name="date_of_joining" placeholder="PO Number" class="form-control"  type="date">
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Upload LR Photo
+    <label class="col-md-2 control-label">Average Rating
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-    <input type="file" name="photo_lr_no" id="fileToUpload" class="form-control">
+    <input type="text" name="average_rating" id="fileToUpload" class="form-control">
     </div>
   </div>
 
@@ -241,25 +225,25 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Channel of Sales
+  <label class="col-md-2 control-label">Bank Name
 
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="channel_of_sales" placeholder="Channel of Sales" class="form-control"  type="text">
+  <input  name="bank_name" placeholder="Bank Name" class="form-control"  type="text">
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Industry
+    <label class="col-md-2 control-label">Account no
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="industry" placeholder="Industry" class="form-control"  type="text">
+  <input  name="account_no" placeholder="Account no" class="form-control"  type="text">
     </div>
   </div>
 
@@ -267,7 +251,7 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Value of Goods
+  <label class="col-md-2 control-label">Branch Name
 
 
 
@@ -275,11 +259,11 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods" placeholder="Value of Goods" class="form-control"  type="text">
+  <input  name="branch_name" placeholder="Branch Name" class="form-control"  type="text">
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Channel of Dispatch
+    <label class="col-md-2 control-label">IFSC Code
 
 
 </label>
@@ -287,52 +271,32 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  type="text" name="channel_of_dispatch" class="form-control" list="channel">
-    <datalist style="height:20px;" id="channel">
-      <option value="Courier">
-      <option value="Transport">
-      <option value="Franchisee Store">
-      <option value="Online Market Places">
-      <option value="Delivery Boys">
-    </datalist>
+  <input  type="text" name="ifsc_code" class="form-control" >
     </div>
   </div>
 
 </div>
-
-
-
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Notes
+   <label class="col-md-2 control-label">Photo
 
 
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
-<textarea name="notes" class="form-control"></textarea>
-</div>
-  </div>
-
-    <label class="col-md-2 control-label">Feedback Form Filled
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
-{{form.feedback_form_filled}}
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="photo" placeholder="Photo" class="form-control"  type="file">
     </div>
   </div>
-
 </div>
+
+
+
 
 
 <center>
-   <button type="submit" value="Submit" class="btn btn-primary">Save and Add Product</button>
+   <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
 </center>
 
 
@@ -357,11 +321,7 @@ color:;
 
 
 
-</fieldset>
-</form>
-</div>
 
-  </div>
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->

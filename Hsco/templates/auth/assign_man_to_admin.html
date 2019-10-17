@@ -48,7 +48,7 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Create Admin</h1>
+            <h1 class="h3 mb-0 text-gray-800">Create Manager</h1>
           </div>
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
@@ -80,40 +80,50 @@ $(function() {
 
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 18px; height: 40px;">
 
 
 
-                    <div class="col-xl-2 col-md-1 mb-1"> <center>Name </center>  </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Role</center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"> <center>Email </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"> <center> Mobile</center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"> <center> Group </center> </div>
+                    <div class="col-xl-1 col-md-1 mb-1"> <center>ID </center>  </div>|
+                    <div class="col-xl-3 col-md-1 mb-1"> <center>Manager </center>  </div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> Admin</center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> Assign Admin To Manager</center></div>
 
-
-
-                </div>
-              </div>
-            </div><br><br>
-
-                {% for list in admin_list%}
-              <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-
-
-                    <div class="col-xl-2 col-md-1 mb-1"> <center>{{list.name}} </center>  </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.role}}</center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"> <center>{{list.email}} </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"> <center> {{list.mobile}}</center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"> <center> {{list.group}} </center> </div>
 
 
 
                 </div>
               </div>
             </div>
+            <br><br>
+
+                {% for list in manager_list %}
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 400; font-size: 18px; height: 50px;">
+
+
+
+                    <div class="col-xl-1 col-md-1 mb-1"> <center>{{list.pk}} </center>  </div>|
+                    <div class="col-xl-3 col-md-1 mb-1"> <center>{{list.name}} </center>  </div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.group}}</center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center>
+                        <form method="POST"> {% csrf_token %}
+                            <input value="{{list.pk}}" name="manager_id" style="display:none;">
+                        <select name="group">
+                         {%for list2 in admin_list%}
+                        <option value="{{list2.name}}">{{list2.name}}</option>
+                            {% endfor %}
+</select> <button class="btn btn-primary">Submit</button>
+                    </form>
+                    </center></div>
+
+
+
+                </div>
+              </div>
+            </div>
+
                 {% endfor %}
 
 <br>
@@ -141,7 +151,7 @@ $(function() {
                 <div class="card-body" style="padding: 12px; ">
                   <div class="row no-gutters align-items-center">
                     <div class="col ">
- <a href="/create_admin/"><button class="btn btn-primary">Add Admin</button></a>                    </div>
+ <a href="/create_manager/"><button class="btn btn-primary">Add Manager</button></a>                    </div>
 
                   </div>
                 </div>
@@ -157,7 +167,7 @@ $(function() {
 
   </div>
   <!-- End of Page Wrapper -->
-
+      </div></div></div>
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
@@ -181,6 +191,8 @@ $(function() {
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
+
 
 </body>
 
