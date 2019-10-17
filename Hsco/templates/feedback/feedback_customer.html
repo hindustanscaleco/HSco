@@ -312,7 +312,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>How were the prices of the products (as compare to others)?</h5>
-<div style="display:inline-block;">{{ feedback_form.price_of_product }}  </div>
+<div style="display:inline-block;">{{ feedback_form.price_of_reparing }}  </div>
 	<div class="star-rating3"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
   </div>
@@ -400,66 +400,66 @@ color:;
 <script>
 
 $(function() {
-$("#stars").val("0");
-    $("div.star-rating > s").on("click", function(e) {
+    $("#stars").val("0");
+        $("div.star-rating > s").on("click", function(e) {
 
-    // remove all active classes first, needed if user clicks multiple times
-    $(this).closest('div').find('.active').removeClass('active');
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
 
-    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
-    $(e.target).addClass('active');  // the element user has clicked on
-
-
-        var numStars = $(e.target).parentsUntil("div").length+1;
-        $("#stars").val(numStars);
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
 
 
-    });
-$("#stars2").val("0");
-    $("div.star-rating2 > s").on("click", function(e) {
-
-    // remove all active classes first, needed if user clicks multiple times
-    $(this).closest('div').find('.active').removeClass('active');
-
-    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
-    $(e.target).addClass('active');  // the element user has clicked on
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars").val(numStars);
 
 
-        var numStars = $(e.target).parentsUntil("div").length+1;
-        $("#stars2").val(numStars);
+        });
+    $("#stars2").val("0");
+        $("div.star-rating2 > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
 
 
-    });
- $("#stars3").val("0");
-    $("div.star-rating3 > s").on("click", function(e) {
-
-    // remove all active classes first, needed if user clicks multiple times
-    $(this).closest('div').find('.active').removeClass('active');
-
-    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
-    $(e.target).addClass('active');  // the element user has clicked on
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars2").val(numStars);
 
 
-        var numStars = $(e.target).parentsUntil("div").length+1;
-        $("#stars3").val(numStars);
+        });
+     $("#stars3").val("0");
+        $("div.star-rating3 > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
 
 
-    });
-  $("#stars4").val("0");
-    $("div.star-rating4 > s").on("click", function(e) {
-
-    // remove all active classes first, needed if user clicks multiple times
-    $(this).closest('div').find('.active').removeClass('active');
-
-    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
-    $(e.target).addClass('active');  // the element user has clicked on
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars3").val(numStars);
 
 
-        var numStars = $(e.target).parentsUntil("div").length+1;
-        $("#stars4").val(numStars);
+        });
+      $("#stars4").val("0");
+        $("div.star-rating4 > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
 
 
-    });
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars4").val(numStars);
+
+
+        });
 
 });
 

@@ -47,7 +47,7 @@ class Onsite_Products(models.Model):
         return self.onsite_repairing_id
 
 
-class Feedback(models.Model):
+class Onsite_Feedback(models.Model):
     backend_team = models.FloatField(default=0.00)
     onsite_worker = models.FloatField(default=0.00)
     speed_of_performance = models.FloatField(default=0.00)

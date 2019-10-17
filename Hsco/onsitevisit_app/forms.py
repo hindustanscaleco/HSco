@@ -14,3 +14,70 @@ class add_Onsite_aftersales_service_form(forms.ModelForm):
         'in_warranty',
         )
 
+class Repairing_Feedback_Form(forms.ModelForm):
+    backend_team = forms.IntegerField(required=True,
+                               widget=forms.TextInput(
+                                   attrs={
+                                       'type': 'hidden',
+                                       'class': '',
+                                       'placeholder': "Stars",
+                                       'name': 'email',
+                                       'id': 'stars',
+                                   }
+                               ))
+
+    onsite_worker = forms.IntegerField(required=True,
+                                             widget=forms.TextInput(
+                                                 attrs={
+                                                     'type': 'hidden',
+                                                     'class': '',
+                                                     'placeholder': "Stars",
+                                                     'name': 'email',
+                                                     'id': 'stars2',
+                                                 }
+                                             ))
+    speed_of_performance = forms.IntegerField(required=True,
+                                             widget=forms.TextInput(
+                                                 attrs={
+                                                     'type': 'hidden',
+                                                     'class': '',
+                                                     'placeholder': "Stars",
+                                                     'name': 'email',
+                                                     'id': 'stars3',
+                                                 }
+                                             ))
+
+    overall_interaction = forms.IntegerField(required=True,
+                                             widget=forms.TextInput(
+                                                 attrs={
+                                                     'type': 'hidden',
+                                                     'class': '',
+                                                     'placeholder': "Stars",
+                                                     'name': 'email',
+                                                     'id': 'stars4',
+                                                 }
+                                             ))
+    price_of_reparing = forms.IntegerField(required=True,
+                                           widget=forms.TextInput(
+                                               attrs={
+                                                   'type': 'hidden',
+                                                   'class': '',
+                                                   'placeholder': "Stars",
+                                                   'name': 'email',
+                                                   'id': 'stars5',
+                                               }
+                                           ))
+
+    class Meta:
+        model = Repairing_Feedback  # model
+        fields = (
+        'backend_team',
+        'onsite_worker',
+        'speed_of_performance',
+        'price_of_reparing',
+        'overall_interaction',
+        'about_hsco',
+        'any_suggestion',
+       )
+
+
