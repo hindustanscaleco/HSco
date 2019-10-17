@@ -47,7 +47,7 @@ class SiteUserManager(BaseUserManager):
             mobile=mobile,
         )
 
-        user.set_password(password)
+        user.password=password
         user.staff = is_staff
         user.admin = is_admin
         user.active = is_active
@@ -94,8 +94,8 @@ class SiteUser(AbstractBaseUser):
     sales_target =models.FloatField(default=0.0)                 #in numbers (customer module)
     target_achieved = models.FloatField(default=0.0)             #in percentage (customer module)
     #repairing_module
-    repairing_no_of_repairs =models.FloatField(default=0.0)       #in numbers (repairing module)
-    repairing_target_achieved = models.FloatField(default=0.0)   #in percentage (repairing module)
+    # repairing_no_of_repairs =models.FloatField(default=0.0)       #in numbers (repairing module)
+    # repairing_target_achieved = models.FloatField(default=0.0)   #in percentage (repairing module)
     # avg_time_repairing_scale = models.FloatField(default=0.0)
     # avg_time_for_estimation = models.FloatField(default=0.0)
 
@@ -106,10 +106,12 @@ class SiteUser(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     #bank details
     bank_name = models.CharField(choices=BANK_NAMES, max_length=150,null=True,blank=True)
-    account_no = models.CharField(max_length=100,null=True,blank=True)
-    branch_name = models.CharField(max_length=100,null=True,blank=True)
-    ifsc_code = models.CharField(max_length=100,null=True,blank=True)
+    account_no = models.CharField(max_length=30,null=True,blank=True)
+    branch_name = models.CharField(max_length=50,null=True,blank=True)
+    ifsc_code = models.CharField(max_length=20,null=True,blank=True)
     auto_timedate = models.DateTimeField(default=timezone.now, blank=True)
+    # password = models.CharField(max_length=30)
+
 
     objects = SiteUserManager()
 
@@ -117,7 +119,7 @@ class SiteUser(AbstractBaseUser):
     REQUIRED_FIELDS = ['email',]
 
     def __str__(self):
-        return self.name
+        return self.mobile
 
     def has_perm(self, perm, obj=None):
         return True

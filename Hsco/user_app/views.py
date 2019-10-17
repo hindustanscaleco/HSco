@@ -247,7 +247,7 @@ def dashboard(request):
     return render(request,"dashboardnew/dashboard.html",)
 
 def graph(request):
-    return render(request,"dashboardnew/graph.html",)
+    return render(request,"graphs/sales_graph.html",)
 
 
 

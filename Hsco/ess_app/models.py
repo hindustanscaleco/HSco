@@ -69,7 +69,6 @@ class Ess(models.Model):
     sales_target_achived_till_now=models.FloatField(default=0.0,null=True, blank=True)
     reparing_target_achived_till_now=models.FloatField(default=0.0,null=True, blank=True)
 
-    # month_on_month_sale_achived=models.CharField(max_length=20,null=True, blank=True)
     defect_warnings=models.ForeignKey(Defects_Warning, on_delete=models.CASCADE,null=True, blank=True)
 
 
