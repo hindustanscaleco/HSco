@@ -87,7 +87,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="name" placeholder="Full Name"  class="form-control" value="{{name}}" type="text">
+  <input  name="name" placeholder="Full Name"  class="form-control" value="{{manager_id.name}}" type="text">
     </div>
   </div>
 
@@ -97,7 +97,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="email" placeholder="Email" class="form-control" value="{{email}}" type="text">
+  <input  name="email" placeholder="Email" class="form-control" value="{{manager_id.email}}" type="text">
     </div>
   </div>
 </div>
@@ -112,7 +112,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input type="text" class="form-control" value="{{mobile}}" name="mobile" placeholder="Mobile">
+  <input type="text" class="form-control" value="{{manager_id.mobile}}" name="mobile" placeholder="Mobile">
  </div>
   </div>
 
@@ -123,9 +123,8 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-    <select  name="{{role}}" class="form-control">
-  <option value="manager">Manager</option>
-  <option value="employee">Employee</option>
+    <select   class="form-control" disabled>
+  <option value="Manager">Manager</option>
 </select>
     </div>
   </div>
@@ -139,7 +138,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input  name="group" placeholder="Group" class="form-control" value="{{group}}"  type="text">
+  <input  name="group" placeholder="Group" class="form-control" value="{{manager_id.group}}"  type="text">
     </div>
   </div>
 
@@ -149,10 +148,9 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
     <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-    <select name="{{is_deleted}}" class="form-control">
-  <option value="Yes">Yes</option>
-  <option value="No">No</option>
-</select>
+    <select name="is_deleted"  class="form-control" disabled>
+    <option value="NO">NO </option>
+   </select>
   </div>
 </div>
 </div>
@@ -183,7 +181,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input  name="group" placeholder="Modules Assigned" class="form-control" value="{{modules_assigned}}"  type="text">
+  <input  name="modules_assigned" placeholder="Modules Assigned" class="form-control" value="{{manager_id.modules_assigned}}"  type="text">
     </div>
   </div>
 
@@ -195,7 +193,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="date_of_joining" placeholder="PO Number" class="form-control" value="{{date_of_joining}}"  type="date">
+  <input  name="date_of_joining" placeholder="PO Number" class="form-control" value="{{manager_id.date_of_joining|date:'Y-m-d'}}"  type="text">
     </div>
   </div>
 </div>
@@ -209,7 +207,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-    <input type="text" name="average_rating" id="fileToUpload" placeholder="Average Rating" class="form-control" value="{{average_rating}}">
+    <input type="text" name="average_rating" id="fileToUpload" placeholder="Average Rating" class="form-control" value="{{manager_id.average_rating}}">
     </div>
   </div>
 
@@ -224,7 +222,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="bank_name" placeholder="Bank Name" class="form-control" value="{{bank_name}}"  type="text">
+  <input  name="bank_name" placeholder="Bank Name" class="form-control" value="{{manager_id.bank_name}}"  type="text">
     </div>
   </div>
   </div>
@@ -240,7 +238,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="account_no" placeholder="Account no" class="form-control" value="{{account_no}}"  type="text">
+  <input  name="account_no" placeholder="Account no" class="form-control" value="{{manager_id.account_no}}"  type="text">
     </div>
   </div>
 
@@ -255,7 +253,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="branch_name" placeholder="Branch Name" class="form-control" value="{{branch_name}}"  type="text">
+  <input  name="branch_name" placeholder="Branch Name" class="form-control" value="{{manager_id.branch_name}}"  type="text">
     </div>
   </div>
   </div>
@@ -271,7 +269,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  type="text" name="ifsc_code" placeholder="IFSC Code" class="form-control" value="{{ifsc_code}}" >
+  <input  type="text" name="ifsc_code" placeholder="IFSC Code" class="form-control" value="{{manager_id.ifsc_code}}" >
     </div>
   </div>
 
@@ -285,7 +283,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="photo" placeholder="Photo" class="form-control" value="{{photo}}"  type="file">
+  <input  name="photo" placeholder="Photo" class="form-control" value="{{manager_id.photo}}"  type="file">
     </div>
   </div>
 </div>
