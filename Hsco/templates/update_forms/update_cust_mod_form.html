@@ -518,12 +518,15 @@ color:;
 
         <form enctype="multipart/form-data" method="post">{% csrf_token %}
 
-                        <b>Name : </b>{{ feedback_form.name }}<br>
-                  <b>Performance : </b>{{feedback_form.performance}} <br>
-                  <b>Co-operation : </b>{{feedback_form.co_operation}} <br>
-                  <b>Communication : </b>{{feedback_form.communication}} <br>
-                  <b>Quality of work : </b>{{feedback_form.quality_of_work}} <br>
+                        <b>Knowledge : </b>{{ feedback_form.knowledge_of_person }}<br>
+                  <b>Timeliness : </b>{{feedback_form.timeliness_of_person}} <br>
+                  <b>Price Of Product : </b>{{feedback_form.price_of_product}} <br>
+                  <b>Over All Interaction : </b>{{feedback_form.overall_interaction}} <br>
+                  <b>About HSCO : </b>{{feedback_form.about_hsco}} <br>
+                  <b>Any Other Suggestions : </b>{{feedback_form.any_suggestion}} <br>
+<!--
                       <b>Ratings : <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+-->
 
 								<i class="fa fa-star" aria-hidden="true"></i></b>
 								<i class="fa fa-star" aria-hidden="true"></i></b>

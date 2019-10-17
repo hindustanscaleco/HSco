@@ -250,4 +250,45 @@ def graph(request):
     return render(request,"dashboardnew/graph.html",)
 
 
+def update_admin(request):
+    if request.method =='POST' and 'performance' in request.POST:
+        knowledge_of_person = request.POST.get('knowledge_of_person')
+        timeliness_of_person = request.POST.get('timeliness_of_person')
+        price_of_product = request.POST.get('price_of_product')
+        overall_interaction = request.POST.get('overall_interaction')
+        about_hsco = request.POST.get('about_hsco')
+        any_suggestion = request.POST.get('any_suggestion')
+
+        item = Feedback()
+        item.knowledge_of_person = knowledge_of_person
+        item.timeliness_of_person = timeliness_of_person
+        item.price_of_product = price_of_product
+        item.overall_interaction = overall_interaction
+        item.about_hsco = about_hsco
+        item.any_suggestion = any_suggestion
+        item.save()
+    return render(request,"update_forms/update_admin.html",)
+
+
+
+def update_manager(request):
+    if request.method =='POST' and 'performance' in request.POST:
+        knowledge_of_person = request.POST.get('knowledge_of_person')
+        timeliness_of_person = request.POST.get('timeliness_of_person')
+        price_of_product = request.POST.get('price_of_product')
+        overall_interaction = request.POST.get('overall_interaction')
+        about_hsco = request.POST.get('about_hsco')
+        any_suggestion = request.POST.get('any_suggestion')
+
+        item = Feedback()
+        item.knowledge_of_person = knowledge_of_person
+        item.timeliness_of_person = timeliness_of_person
+        item.price_of_product = price_of_product
+        item.overall_interaction = overall_interaction
+        item.about_hsco = about_hsco
+        item.any_suggestion = any_suggestion
+        item.save()
+
+    return render(request,"update_forms/update_manager.html")
+
 

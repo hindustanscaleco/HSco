@@ -45,3 +45,17 @@ class Onsite_Products(models.Model):
 
     def __int__(self):
         return self.onsite_repairing_id
+
+
+class Feedback(models.Model):
+    backend_team = models.FloatField(default=0.00)
+    onsite_worker = models.FloatField(default=0.00)
+    speed_of_performance = models.FloatField(default=0.00)
+    price_of_reparing = models.FloatField(default=0.00)
+    overall_interaction = models.FloatField(default=0.00)
+    about_hsco = models.CharField(max_length=60)
+    any_suggestion = models.CharField(max_length=255)
+
+    def __int__(self):
+        return self.onsite_worker
+
