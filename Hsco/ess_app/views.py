@@ -64,6 +64,13 @@ def add_ess_details(request):
 def ess_home(request):
     return render(request,'dashboardnew/ess_home.html',)
 
+def notif_decl_home(request):
+    return render(request,'dashboardnew/notif_decl_home.html',)
+
+
+def ess_all_user(request):
+    return render(request,'dashboardnew/ess_all_user.html',)
+
 def employee_profile(request):
     return render(request,'dashboardnew/employee_profile.html',)
 

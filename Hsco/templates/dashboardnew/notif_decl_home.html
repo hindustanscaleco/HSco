@@ -10,7 +10,7 @@
   <meta name="author" content="">
 
   <title>HSCO</title>
-
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -55,6 +55,42 @@ color:;
 
 </style>
 
+       <style>
+* {box-sizing: border-box}
+
+/* Set height of body and the document to 100% */
+body, html {
+  height: 100%;
+  margin: 0;
+    font-family: 'Montserrat';
+}
+
+/* Style tab links */
+.tablink {
+  background-color: #555;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 50%;
+}
+
+.tablink:hover {
+  background-color: #777;
+}
+
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+
+  display: none;
+  padding: 100px 20px;
+  height: 100%;
+}
+
+</style>
   <!-- Page Wrapper -->
   <div id="wrapper">
 	{% include 'base_templates/sidebar.html' %}
@@ -74,27 +110,24 @@ color:;
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
+
+<!--<p>"Below Provide Various button to send various SMS and E-mail  like-->
+<!--1) Scale Submit sms-->
+<!--2) Estimate informed sms-->
+<!--3) Repairing done sms-->
+<!--4) Late mark sms-->
+<!--5) Final Deleviry sms"-->
+<!--</p>-->
+
+<button class="tablink" onclick="openPage('Business_Profile', this, '#4e73df')" id="defaultOpen">Applied Holidays</button>
+
+<button class="tablink" onclick="openPage('Payment_History', this, '#4e73df')" >Warning / Defects</button>
+
+<div id="Business_Profile" class="tabcontent">
+
+
         <div class="container-fluid" >
-<center>
-  <div style="width: 70%;" class="row">
-    <h3 style="color: black;" class="col-xl-12 col-md-12">Applied Holidays</h3>
-<br>
-<br>
-<br>
 
-   <input type="date" name="from" class="col-xl-3 col-md-4 form-control" style="width: 50%">
-    <p class="col-xl-1 col-md-1">-</p>
-   <input type="date" name="to" class="col-xl-3 col-md-4 form-control" style="width: 50%;"> &nbsp;
-   <button class="btn btn-primary col-xl-2 col-md-2" style="width: 10%;">Submit</button>
-      &nbsp; &nbsp;
-   <button class="btn btn-primary col-xl-1 col-md-2" style="width: 10%;">All</button>
-  </div>
-<br>
-
-
-
-</center>
-<br>
 
            <div class="row">
 
@@ -197,17 +230,67 @@ color:;
 
 </div>
 
-<!--<p>"Below Provide Various button to send various SMS and E-mail  like-->
-<!--1) Scale Submit sms-->
-<!--2) Estimate informed sms-->
-<!--3) Repairing done sms-->
-<!--4) Late mark sms-->
-<!--5) Final Deleviry sms"-->
-<!--</p>-->
+
+</div>
+
+
+<div id="Payment_History" class="tabcontent">
+           <div class="row">
+
+
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; min-height: 35px;">
+                  <p style="font-size: 10px; margin-left: 2%;" class="col-xl-12 col-md-12 mb-12">Date: 20-04-19</p><br>
+                    <div class="col-xl-2 col-md-3 mb-1 cardText" style="font-size: 20px;"><center> Warning</center></div>
+                    <div class="col-xl-9 col-md-9 mb-1 border-left-primary">
+                        <p style="font-weight: 300;">
+                            Cristiano Ronaldo dos Santos Aveiro GOIH ComM
+                            (European Portuguese: [kɾiʃˈtjɐnu ʁoˈnaɫdu]; born 5 February 1985) is a Portuguese
+                            professional footballer who plays as a forward for Serie A club Juventus and captains
+                            the Portugal national team. Often considered the best player in the world and widely
+                            regarded as one of the greatest players of all time,[11][12][13] Ronaldo has won five
+                            FIFA Ballon d'or/Best FIFA Men's Player awards,[note 3] the most for a European player,
+                            and four European Golden Shoes. He has won 29 trophies in his career, including six league
+                            titles, five UEFA Champions Leagues, one UEFA European Championship, and one UEFA Nations
+                            League.
+                        </p>
+
+
+                    </div>
+                </div>
+                </div>
+              </div>
+               <br>
+               <br>
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; min-height: 35px;">
+                  <p style="font-size: 10px; margin-left: 2%;" class="col-xl-12 col-md-12 mb-12">Date: 20-04-19</p><br>
+                    <div class="col-xl-2 col-md-3 mb-1 cardText" style="font-size: 20px;"><center> Defect</center></div>
+                    <div class="col-xl-9 col-md-9 mb-1 border-left-primary">
+                        <p style="font-weight: 300;">
+                            Cristiano Ronaldo dos Santos Aveiro GOIH ComM
+                            (European Portuguese: [kɾiʃˈtjɐnu ʁoˈnaɫdu]; born 5 February 1985) is a Portuguese
+                            professional footballer who plays as a forward for Serie A club Juventus and captains
+                            the Portugal national team. Often considered the best player in the world and widely
+                            regarded as one of the greatest players of all time,[11][12][13] Ronaldo has won five
+                            FIFA Ballon d'or/Best FIFA Men's Player awards,[note 3] the most for a European player,
+                            and four European Golden Shoes. He has won 29 trophies in his career, including six league
+                            titles, five UEFA Champions Leagues, one UEFA European Championship, and one UEFA Nations
+                            League.
+                        </p>
+
+
+                    </div>
+                </div>
+                </div>
+              </div>
 
 
 
 
+        <!-- Begin Page Content -->
 <br>
 
 
@@ -244,7 +327,24 @@ color:;
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+<script>
+function openPage(pageName,elmnt,color) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].style.backgroundColor = "";
+  }
+  document.getElementById(pageName).style.display = "block";
+elmnt.style.backgroundColor = color;
+}
 
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
 
 </body>
 
