@@ -51,6 +51,22 @@ color:;
 
 </style>
 
+
+  <script> function disable() {
+  document.getElementById("name").disabled = true;
+  }
+
+  function enable() {
+   document.getElementById("name").disabled = false;
+  }
+
+var form = document.getElementById("contact_form");
+var elements = form.elements;
+for (var i = 0, len = elements.length; i < len; ++i) {
+    elements[i].disabled = true;
+}
+</script>
+
   <!-- Page Wrapper -->
   <div id="wrapper">
 	{% include 'base_templates/sidebar.html' %}
@@ -77,6 +93,30 @@ color:;
 
           </div>
 <br>
+<script>
+function myFunction() {
+  document.getElementById("myText").disabled = false;
+    document.getElementById("myText2").disabled = false;
+    document.getElementById("myText3").disabled = false;
+    document.getElementById("myText4").disabled = false;
+    document.getElementById("myText5").disabled = false;
+    document.getElementById("myText6").disabled = false;
+    document.getElementById("myText7").disabled = false;
+    document.getElementById("myText8").disabled = false;
+    document.getElementById("myText9").disabled = false;
+    document.getElementById("myText10").disabled = false;
+    document.getElementById("myText11").disabled = false;
+    document.getElementById("myText12").disabled = false;
+    document.getElementById("myText13").disabled = false;
+    document.getElementById("myText14").disabled = false;
+    document.getElementById("myText15").disabled = false;
+    document.getElementById("myText16").disabled = false;
+    document.getElementById("myText17").disabled = false;
+    document.getElementById("myText18").disabled = false;
+
+}
+</script>
+
 
 
     <form class="well form-horizontal" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
@@ -89,7 +129,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_name" placeholder="Full Name"  class="form-control"  type="text" disabled value="{{cust_id.customer_name}}">
+  <input  name="customer_name" placeholder="Full Name"  class="form-control"  type="text" disabled id="myText" value="{{cust_id.customer_name}}">
 
     </div>
   </div>
@@ -100,7 +140,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled value="{{cust_id.company_name}}">
+  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled id="myText2" value="{{cust_id.company_name}}">
 
     </div>
   </div>
@@ -116,7 +156,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input class="form-control" name="address" placeholder="Address" disabled value="{{cust_id.address}}">
+  <input class="form-control" name="address" placeholder="Address" disabled id="myText3" value="{{cust_id.address}}">
 
     </div>
   </div>
@@ -128,7 +168,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" placeholder="Contact No" class="form-control"  type="text" disabled value="{{cust_id.contact_no}}">
+  <input  name="contact_no" placeholder="Contact No" class="form-control"  type="text" disabled id="myText4" value="{{cust_id.contact_no}}">
 
     </div>
   </div>
@@ -145,7 +185,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="E-mail Id" class="form-control"  type="email" disabled value="{{cust_id.customer_email_id}}">
+  <input type="email" name="customer_email_id" placeholder="E-mail Id" class="form-control"  type="email" disabled id="myText5" value="{{cust_id.customer_email_id}}">
 
     </div>
   </div>
@@ -156,7 +196,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="date_of_purchase" placeholder="Date of Purchase" class="form-control"  type="Date" disabled value="{{cust_id.date_of_purchase|date:'Y-m-d'}}">
+  <input  name="date_of_purchase" placeholder="Date of Purchase" class="form-control"  type="Date" disabled id="myText6" value="{{cust_id.date_of_purchase|date:'Y-m-d'}}">
 
     </div>
   </div>
@@ -172,7 +212,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="product_purchase_date" placeholder="Product Purchased Date" class="form-control"  type="Date" disabled value="{{cust_id.product_purchase_date|date:'Y-m-d'}}">
+  <input  name="product_purchase_date" placeholder="Product Purchased Date" class="form-control"  type="Date" disabled id="myText7" value="{{cust_id.product_purchase_date|date:'Y-m-d'}}">
 
     </div>
   </div>
@@ -184,7 +224,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="dispatch_id_assigned" placeholder="Quantity" class="form-control" value="{{cust_id.dispatch_id_assigned}}" type="text">
+  <input  name="dispatch_id_assigned" placeholder="Quantity" class="form-control" disabled id="myText8" value="{{cust_id.dispatch_id_assigned}}" type="text">
     </div>
   </div>
 
@@ -330,7 +370,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="bill_no" placeholder="Bill No" class="form-control"  type="text" disabled value="{{cust_id.bill_no}}">
+  <input  name="bill_no" placeholder="Bill No" class="form-control"  type="text" disabled id="myText9" value="{{cust_id.bill_no}}">
 
     </div>
   </div>
@@ -340,7 +380,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-    <input type="file" name="upload_op_file" id="fileToUpload" class="form-control" disabled value="{{cust_id.upload_op_file}}">
+    <input type="file" name="upload_op_file" class="form-control" disabled id="myText10" value="{{cust_id.upload_op_file}}">
 
     </div>
   </div>
@@ -356,7 +396,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="po_number" placeholder="PO Number" class="form-control"  type="text" disabled value="{{cust_id.po_number}}">
+  <input  name="po_number" placeholder="PO Number" class="form-control"  type="text" disabled id="myText11" value="{{cust_id.po_number}}">
 
     </div>
   </div>
@@ -367,7 +407,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-    <input type="file" name="photo_lr_no" id="fileToUpload" class="form-control" disabled value="{{cust_id.photo_lr_no}}">
+    <input type="file" name="photo_lr_no" class="form-control" disabled id="myText12" value="{{cust_id.photo_lr_no}}">
 
     </div>
   </div>
@@ -384,7 +424,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="channel_of_sales" placeholder="Channel of Sales" class="form-control"  type="text" disabled value="{{cust_id.channel_of_sales}}">
+  <input  name="channel_of_sales" placeholder="Channel of Sales" class="form-control"  type="text" disabled id="myText13" value="{{cust_id.channel_of_sales}}">
     </div>
   </div>
 
@@ -395,7 +435,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="industry" placeholder="Industry" class="form-control"  type="text" disabled value="{{cust_id.industry}}">
+  <input  name="industry" placeholder="Industry" class="form-control"  type="text" disabled id="myText14" value="{{cust_id.industry}}">
 
     </div>
   </div>
@@ -409,7 +449,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods" placeholder="Value of Goods" class="form-control"  type="text" disabled value="{{cust_id.value_of_goods}}">
+  <input  name="value_of_goods" placeholder="Value of Goods" class="form-control"  type="text" disabled id="myText15" value="{{cust_id.value_of_goods}}">
     </div>
   </div>
     <label class="col-md-2 control-label">Channel of Dispatch
@@ -417,7 +457,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch" class="form-control"  type="text" disabled value="{{cust_id.channel_of_dispatch}}">
+  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch" class="form-control"  type="text" disabled id="myText16" value="{{cust_id.channel_of_dispatch}}">
 
     </div>
   </div>
@@ -428,7 +468,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>
-<input name="notes" class="form-control" disabled value="{{cust_id.notes}}">
+<input name="notes" class="form-control" disabled id="myText17" value="{{cust_id.notes}}">
 
 </div>
   </div>
@@ -441,7 +481,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
       <div class="input-group">
         <span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>
-        <input class="form-control" disabled value="{{cust_id.feedback_form_filled}}">
+        <input class="form-control" placeholder="Yes or No" disabled id="myText18" value="{{cust_id.feedback_form_filled}}">
       </div>
     </div>
 </div>
@@ -453,20 +493,13 @@ color:;
         <button type="submit" value="Submit" class="btn btn-primary">Save</button>
       </center>
     </div>
-
-
-
-
-
-
-<br>
-
-
-
-
-
 </fieldset>
 </form>
+
+         <center>
+                      <button  onclick="myFunction()" class="btn btn-primary">Edit</button>
+
+          </center>
 
 </div>
 
@@ -518,12 +551,12 @@ color:;
 
         <form enctype="multipart/form-data" method="post">{% csrf_token %}
 
-                        <b>Knowledge : </b>{{ feedback_form.knowledge_of_person }}<br>
+                        <b>Knowledge : </b>{{ feedback_form.knowledge_of_person }} <br>
                   <b>Timeliness : </b>{{feedback_form.timeliness_of_person}} <br>
                   <b>Price Of Product : </b>{{feedback_form.price_of_product}} <br>
                   <b>Over All Interaction : </b>{{feedback_form.overall_interaction}} <br>
                   <b>About HSCO : </b>{{feedback_form.about_hsco}} <br>
-                  <b>Any Other Suggestions : </b>{{feedback_form.any_suggestion}} <br>
+                  <b>Any Other Suggestions: </b>{{feedback_form.any_suggestion}} <br>
 <!--
                       <b>Ratings : <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
 -->

@@ -223,7 +223,7 @@ $(function() {
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 55px;">
                     <div class="col-xl-12 col-md-11 mb-1" style="font-size:10px;">{{ list1.dispatch_id_assigned}} </div>
 
-                    <div class="col-xl-2 col-md-1 mb-1"> <a href="/update_customer_details/{{list1.id}}" >{{ list1.customer_name }}</a> </></div>
+                    <div class="col-xl-2 col-md-1 mb-1"> <a href="/update_customer_details/{{list1.id}}" >{{ list1.customer_name }}</a> </div></div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.company_name}} </div>
                     <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{{ list1.pk}} </div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.contact_no}} </div>
@@ -238,7 +238,7 @@ $(function() {
 							{% endif %}
 						{% endfor %}
 
-                         </>
+                    </div>
 
 
                     </div>
@@ -322,7 +322,8 @@ $(function() {
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
+  </div>
+</body>
 
 
   <!-- Bootstrap core JavaScript-->
