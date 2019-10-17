@@ -2,7 +2,8 @@ from django.db import connection
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from onsitevisit_app.forms import add_Onsite_aftersales_service_form
+
+from .forms import Onsite_Repairing_Feedback_Form
 from .models import Onsite_aftersales_service, Onsite_Products, Onsite_Feedback
 
 
@@ -210,7 +211,7 @@ def final_report_onsite(request):
     return render(request,'report/final_onsite_report.html',context)
 
 def feedback_onrepairing(request):
-    feedback_form = Repairing_Feedback_Form(request.POST or None, request.FILES or None)
+    feedback_form = Onsite_Repairing_Feedback_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST':
         backend_team = request.POST.get('backend_team')
         onsite_worker = request.POST.get('onsite_worker')

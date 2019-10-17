@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Onsite_aftersales_service
+from .models import Onsite_aftersales_service, Onsite_Feedback
 
 
 class add_Onsite_aftersales_service_form(forms.ModelForm):
@@ -14,7 +14,7 @@ class add_Onsite_aftersales_service_form(forms.ModelForm):
         'in_warranty',
         )
 
-class Repairing_Feedback_Form(forms.ModelForm):
+class Onsite_Repairing_Feedback_Form(forms.ModelForm):
     backend_team = forms.IntegerField(required=True,
                                widget=forms.TextInput(
                                    attrs={
@@ -69,7 +69,7 @@ class Repairing_Feedback_Form(forms.ModelForm):
                                            ))
 
     class Meta:
-        model = Repairing_Feedback  # model
+        model = Onsite_Feedback  # model
         fields = (
         'backend_team',
         'onsite_worker',
