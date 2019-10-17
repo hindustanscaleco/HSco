@@ -14,7 +14,7 @@ class LoginView(FormView):
 
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect('/')
+            return redirect('/dashboard/')
         else:
             request = self.request
             form = LoginForm(request.POST or None)
@@ -27,10 +27,7 @@ class LoginView(FormView):
                     request.session['registered_mobile'] = mobile
                     request.session['user_password'] = password
 
-                    next = request.GET.get('next', '/')
-                    if not is_safe_url(next, allowed_hosts=None):
-                        next = '/'
-                    return redirect(next)
+                    return redirect('/dashboard/')
             return render(request, self.template_name, {'form': form})
 
     def form_valid(self, form):
@@ -44,9 +41,9 @@ class LoginView(FormView):
                 login(request, user)
                 request.session['registered_mobile'] = mobile
                 request.session['user_password'] = password
-                next = request.GET.get('next', '/')
+                next = request.GET.get('next', '/dashboard/')
                 if not is_safe_url(next,allowed_hosts=None):
-                    next = '/'
+                    next = '/dashboard/'
                 return redirect(next)
         else:
             mobile = form.cleaned_data.get('mobile')
@@ -62,10 +59,7 @@ class LoginView(FormView):
                 registered_mobile = request.session['registered_mobile']
                 print(request.session['user_password'])
 
-                next = request.GET.get('next', '/')
-                if not is_safe_url(next,allowed_hosts=None):
-                    next = '/'
-                return redirect(next)
+                return redirect('/dashboard/')
 
         return super(LoginView, self).form_invalid(form)
 
@@ -76,7 +70,7 @@ def logout_page(request):
         del request.session['user_password']
     except:
         pass
-    return redirect("/login/")
+    return redirect('/')
 
 
 def admin_list(request):
@@ -120,6 +114,7 @@ def create_admin(request):
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
+        item.set_password(request.POST.get('password'))
 
         item.save()
         return redirect('/admin_list/')
@@ -166,6 +161,7 @@ def create_manager(request):
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
+        item.set_password(request.POST.get('password'))
 
         item.save()
         return redirect('/manager_list/')
@@ -212,6 +208,7 @@ def create_employee(request):
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
+        item.set_password(request.POST.get('password'))
 
         item.save()
         return redirect('/employee_list/')
