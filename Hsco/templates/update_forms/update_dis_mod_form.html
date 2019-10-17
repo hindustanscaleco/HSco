@@ -92,7 +92,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="dispatch_id" placeholder="Dispatch ID" class="form-control"  type="text" disabled value="{{dispatch_id}}">
+  <input  name="dispatch_id" placeholder="Dispatch ID" class="form-control"  type="text" disabled value="{{dispatch_item.dispatch_id}}">
     </div>
   </div>
 
@@ -103,7 +103,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="customer_no" placeholder="Customer number" class="form-control" type="text" disabled value="{{customer_no}}">
+  <input  name="customer_no" placeholder="Customer number" class="form-control" type="text" disabled value="{{dispatch_item.customer_no}}">
     </div>
   </div>
 
@@ -122,7 +122,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="customer_email" placeholder="Customer Email ID" class="form-control" type="text" disabled value="{{customer_email}}">
+  <input  name="customer_email" placeholder="Customer Email ID" class="form-control" type="text" disabled value="{{dispatch_item.customer_email}}">
     </div>
   </div>
 
@@ -134,7 +134,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_name" placeholder="Customer Name" class="form-control"  type="text" disabled value="{{customer_name}}">
+  <input  name="customer_name" placeholder="Customer Name" class="form-control"  type="text" disabled value="{{dispatch_item.customer_name}}">
     </div>
   </div>
 
@@ -152,7 +152,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company name" class="form-control"  type="text" disabled value="{{company_name}}">
+  <input  name="company_name" placeholder="Company name" class="form-control"  type="text" disabled value="{{dispatch_item.company_name}}">
     </div>
   </div>
 
@@ -163,7 +163,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<textarea name="customer_address" class="form-control" disabled value="{{customer_address}}"></textarea>    </div>
+<textarea name="customer_address" class="form-control" disabled value="{{dispatch_item.customer_address}}"></textarea>    </div>
   </div>
 
 </div>
@@ -191,7 +191,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="date_of_dispatch" placeholder="Dispatch Date" class="form-control" type="text" disabled value="{{date_of_dispatch}}">
+  <input type="date" name="date_of_dispatch" placeholder="Dispatch Date" class="form-control" type="text" disabled value="{{dispatch_item.date_of_dispatch}}">
     </div>
   </div>
 
@@ -209,7 +209,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="dispatch_by" placeholder="Dispatched By" class="form-control"  type="text" disabled value="{{dispatch_by}}">
+  <input  name="dispatch_by" placeholder="Dispatched By" class="form-control"  type="text" disabled value="{{dispatch_item.dispatch_by}}">
 
 
      </div>
@@ -223,7 +223,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="packed_by" placeholder="Packed by" class="form-control"  type="text" disabled value="{{packed_by}}">
+  <input name="packed_by" placeholder="Packed by" class="form-control"  type="text" disabled value="{{dispatch_item.packed_by}}">
     </div>
   </div>
 
@@ -240,7 +240,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="hamal_name" placeholder="Hamal Name" class="form-control"  type="text" disabled value="{{hamal_name}}">
+  <input  name="hamal_name" placeholder="Hamal Name" class="form-control"  type="text" disabled value="{{dispatch_item.hamal_name}}">
     </div>
   </div>
 
@@ -252,7 +252,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="no_bundles" placeholder="No. of Bundles" class="form-control"  type="text" disabled value="{{no_bundles}}">
+  <input  name="no_bundles" placeholder="No. of Bundles" class="form-control"  type="text" disabled value="{{dispatch_item.no_bundles}}">
     </div>
   </div>
 
@@ -269,7 +269,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-car faicons"></i></span>
-  <input  name="transport_name" placeholder="Transport Name" class="form-control"  type="text" disabled value="{{transport_name}}">
+  <input  name="transport_name" placeholder="Transport Name" class="form-control"  type="text" disabled value="{{dispatch_item.transport_name}}">
     </div>
   </div>
 
@@ -281,7 +281,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="lr_no" placeholder="LR NO" class="form-control" type="text" disabled value="{{lr_no}}">
+  <input  name="lr_no" placeholder="LR NO" class="form-control" type="text" disabled value="{{dispatch_item.lr_no}}">
     </div>
   </div>
 
@@ -298,7 +298,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-drivers-license faicons"></i></span>
-  <input  name="photo_lr_no" placeholder="Photo of LR No" class="form-control" type="file" disabled value="{{photo_lr_no}}">
+  <input  name="photo_lr_no" placeholder="Photo of LR No" class="form-control" type="file" disabled value="{{dispatch_item.photo_lr_no}}">
     </div>
   </div>
 
@@ -310,7 +310,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch" class="form-control" type="text" disabled value="{{channel_of_dispatch}}">
+  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch" class="form-control" type="text" disabled value="{{dispatch_item.channel_of_dispatch}}">
     </div>
   </div>
 
@@ -327,7 +327,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <input  name="notes" placeholder="Notes" class="form-control" type="text" disabled value="{{notes}}">
+  <input  name="notes" placeholder="Notes" class="form-control" type="text" disabled value="{{dispatch_item.notes}}">
     </div>
   </div>
 </div>
@@ -339,6 +339,49 @@ color:;
 	<button class="btn btn-primary">Save</button>
 
 </center>
+  <br>
+  <br>
+  <hr>
+
+  <br>
+  <br>
+
+
+
+       <h1 style="font-size: 25px; color: black; text-align: center;"> Added Product List </h1>
+  <br>
+    {% for list in product_list %}
+      <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;">
+
+
+
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Type of Scale: {{list.type_of_scale}} </center></div>
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Model of Purchase: {{list.model_of_purchase}}  </center></div>
+
+                  <div class="col-xl-4 col-md-1 mb-1"><center> Sub Model: {{list.sub_model}}  </center> </div>
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Sub Sub Model: {{list.sub_sub_model}}  </center></div>
+                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Serial No. of Scale: {{list.serial_no_scale}} </center> </div>
+                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Sales Person: {{list.sales_person}} </center> </div>
+
+                  <div class="col-xl-4 col-md-1 mb-1"><center> Brand: {{list.brand}}  </center> </div>
+                  <div class="col-xl-4 col-md-1 mb-1"><center> Capacity: {{list.capacity}}  </center> </div>
+                  <div class="col-xl-4 col-md-1 mb-1"><center> Quantity: {{list.quantity}}  </center> </div>
+                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Unit: {{list.unit}}  </center> </div>
+
+                    </div>
+
+              </div>
+      </div>
+                    <br>
+
+          {% endfor %}
+          <center>
+          <!--<a href="/add_product_details/{{cust_id.id}}"> <button class="btn btn-primary">Add Product</button></a>-->
+            </center>
+          <br>
 
 
 

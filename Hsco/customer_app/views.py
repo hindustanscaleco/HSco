@@ -1,19 +1,21 @@
 import csv
-
 from django.db import connection
 from django.db.models import Avg
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-
 from user_app.models import SiteUser
+from dispatch_app.models import Dispatch
+
+from dispatch_app.models import Product_Details_Dispatch
 from .forms import Customer_Details_Form, Feedback_Form
 from .models import Customer_Details, Feedback
 from .forms import Product_Details_Form
 from .models import Product_Details
 
+
 def add_customer_details(request):
     form = Customer_Details_Form(request.POST or None, request.FILES or None)
-    if request.method == 'POST' or  request.method=='FILES':
+    if request.method == 'POST' or request.method=='FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('address')
@@ -32,8 +34,8 @@ def add_customer_details(request):
         notes = request.POST.get('notes')
         feedback_form_filled = request.POST.get('feedback_form_filled')
 
-        item = Customer_Details()
 
+        item = Customer_Details()
         item.customer_name = customer_name
         item.company_name = company_name
         item.date = address
@@ -53,9 +55,29 @@ def add_customer_details(request):
         item.channel_of_dispatch = channel_of_dispatch
         item.notes = notes
         item.feedback_form_filled = feedback_form_filled
-
         item.save()
 
+
+
+        dispatch = Dispatch()
+
+
+        dispatch.customer_no = item.pk
+        dispatch.customer_email = customer_email_id
+        dispatch.customer_name = customer_name
+        dispatch.company_name = company_name
+        dispatch.customer_address = address
+
+        dispatch.save()
+
+
+        dispatch2 = Dispatch.objects.get(id=dispatch.pk)
+        dispatch2.dispatch_id = str(dispatch.pk + 00000)
+        dispatch2.save(update_fields=['dispatch_id'])
+
+        customer_id = Customer_Details.objects.get(id=item.pk)
+        customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
+        customer_id.save(update_fields=['dispatch_id_assigned'])
 
         return redirect('/add_product_details/'+str(item.id))
 
@@ -145,7 +167,7 @@ def view_customer_details(request):
     #         context.update(context)
     with connection.cursor() as cursor:
         cursor.execute(
-            "SELECT  dispatch_id_assigned,company_name from customer_app_customer_details  ;")
+            "SELECT  dispatch_id_assigned_id,company_name from customer_app_customer_details  ;")
         row = cursor.fetchall()
 
         customer_list = [list(x) for x in row]
@@ -173,20 +195,20 @@ def update_customer_details(request,id):
     customer_id = Customer_Details.objects.get(id=id)
     feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
     if request.method =='POST' and 'performance' in request.POST:
-        name = request.POST.get('name')
-        performance = request.POST.get('performance')
-        co_operation = request.POST.get('co_operation')
-        communication = request.POST.get('communication')
-        quality_of_work = request.POST.get('quality_of_work')
-        stars_count = request.POST.get('stars_count')
+        knowledge_of_person = request.POST.get('knowledge_of_person')
+        timeliness_of_person = request.POST.get('timeliness_of_person')
+        price_of_product = request.POST.get('price_of_product')
+        overall_interaction = request.POST.get('overall_interaction')
+        about_hsco = request.POST.get('about_hsco')
+        any_suggestion = request.POST.get('any_suggestion')
 
         item = Feedback()
-        item.name = name
-        item.performance = performance
-        item.co_operation = co_operation
-        item.quality_of_work = quality_of_work
-        item.communication = communication
-        item.stars_count = stars_count
+        item.knowledge_of_person = knowledge_of_person
+        item.timeliness_of_person = timeliness_of_person
+        item.price_of_product = price_of_product
+        item.overall_interaction = overall_interaction
+        item.about_hsco = about_hsco
+        item.any_suggestion = any_suggestion
         item.save()
 
         return HttpResponse('Feedback Submitted!!!')
@@ -200,7 +222,9 @@ def update_customer_details(request,id):
 
 
 def add_product_details(request,id):
-    customer_id = Customer_Details.objects.get(id=id).id
+    customer = Customer_Details.objects.get(id=id)
+    customer_id = customer.id
+    dispatch_id_assigned = str(customer.dispatch_id_assigned)
     form = Product_Details_Form(request.POST or None)
     if request.method == 'POST':
         product_name = request.POST.get('product_name')
@@ -231,8 +255,37 @@ def add_product_details(request,id):
         item.customer_id_id = customer_id
         item.sales_person = sales_person
         item.purchase_type = purchase_type
-
         item.save()
+
+
+        print("dispatch_id_assigned")
+        print("dispatch_id_assigned")
+        print("dispatch_id_assigned")
+        print(dispatch_id_assigned)
+        print(dispatch_id_assigned)
+        print(dispatch_id_assigned)
+        dispatch_id=Dispatch.objects.get(id=dispatch_id_assigned)
+        dispatch_pro = Product_Details_Dispatch()
+
+        dispatch_pro.product_name = product_name
+        dispatch_pro.quantity = quantity
+        dispatch_pro.type_of_scale = type_of_scale
+        dispatch_pro.model_of_purchase = model_of_purchase
+        dispatch_pro.sub_model = sub_model
+        dispatch_pro.sub_sub_model = sub_sub_model
+        dispatch_pro.serial_no_scale = serial_no_scale
+        dispatch_pro.brand = brand
+        dispatch_pro.capacity = capacity
+        dispatch_pro.unit = unit
+        dispatch_pro.dispatch_id = dispatch_id
+        dispatch_pro.sales_person = sales_person
+        dispatch_pro.purchase_type = purchase_type
+        dispatch_pro.save()
+
+
+
+
+
 
         return redirect('/update_customer_details/'+str(id))
 
@@ -291,7 +344,7 @@ def manager_report(request):
     return render(request, 'dashboardnew/manager_report.html',context)
 
 def employee_sales_graph(request):
-    return render(request,"dashboardnew/graph.html",)
+    return render(request,"graphs/sales_graph.html",)
 
 
 

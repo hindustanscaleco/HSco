@@ -61,10 +61,10 @@ class Feedback_Form(forms.ModelForm):
     class Meta:
         model = Feedback  # model
         fields = (
-        'name',
-        'performance',
-        'co_operation',
-        'communication',
-        'quality_of_work',
-        'stars_count',
+        'knowledge_of_person',
+        'timeliness_of_person',
+        'price_of_product',
+        'overall_interaction',
+        'about_hsco',
+        'any_suggestion',
        )

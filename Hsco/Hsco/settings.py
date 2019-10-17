@@ -15,6 +15,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+from django.contrib.auth.hashers import make_password
+# print "Hashed password is:", make_password("plain_text")
 
 # Application definition
 
@@ -34,6 +36,7 @@ INSTALLED_APPS = [
     'restamping_app',
     'dispatch_app',
     'amc_visit_app',
+    'notif_dec_app',
 ]
 
 MIDDLEWARE = [
