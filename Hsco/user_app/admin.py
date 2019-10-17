@@ -44,7 +44,7 @@ class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('name','email', 'mobile',  'role')
+    list_display = ('email', 'name','mobile',  'role')
     list_filter = ( 'role',)
 
     fieldsets = (

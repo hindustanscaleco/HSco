@@ -116,8 +116,8 @@ class SiteUser(AbstractBaseUser):
     USERNAME_FIELD = 'mobile'
     REQUIRED_FIELDS = ['email',]
 
-    def __str__(self):
-        return self.name
+    def __int__(self):
+        return self.mobile
 
     def has_perm(self, perm, obj=None):
         return True
