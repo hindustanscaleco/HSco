@@ -195,20 +195,20 @@ def update_customer_details(request,id):
     customer_id = Customer_Details.objects.get(id=id)
     feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
     if request.method =='POST' and 'performance' in request.POST:
-        name = request.POST.get('name')
-        performance = request.POST.get('performance')
-        co_operation = request.POST.get('co_operation')
-        communication = request.POST.get('communication')
-        quality_of_work = request.POST.get('quality_of_work')
-        stars_count = request.POST.get('stars_count')
+        knowledge_of_person = request.POST.get('knowledge_of_person')
+        timeliness_of_person = request.POST.get('timeliness_of_person')
+        price_of_product = request.POST.get('price_of_product')
+        overall_interaction = request.POST.get('overall_interaction')
+        about_hsco = request.POST.get('about_hsco')
+        any_suggestion = request.POST.get('any_suggestion')
 
         item = Feedback()
-        item.name = name
-        item.performance = performance
-        item.co_operation = co_operation
-        item.quality_of_work = quality_of_work
-        item.communication = communication
-        item.stars_count = stars_count
+        item.knowledge_of_person = knowledge_of_person
+        item.timeliness_of_person = timeliness_of_person
+        item.price_of_product = price_of_product
+        item.overall_interaction = overall_interaction
+        item.about_hsco = about_hsco
+        item.any_suggestion = any_suggestion
         item.save()
 
         return HttpResponse('Feedback Submitted!!!')

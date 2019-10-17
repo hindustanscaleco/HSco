@@ -65,16 +65,15 @@ class Product_Details(models.Model):
         return self.customer_id
 
 class Feedback(models.Model):
-
-    name = models.CharField(max_length=60,null=True,blank=True)
-    performance = models.CharField(max_length=30,null=True,blank=True,choices=feedback)
-    co_operation     = models.CharField(max_length=30,null=True,blank=True,choices=feedback)
-    communication = models.CharField(max_length=30,null=True,blank=True,choices=feedback)
-    quality_of_work = models.CharField(max_length=30,null=True,blank=True,choices=feedback)
-    stars_count        = models.BigIntegerField()
+    knowledge_of_person = models.FloatField(default=0.00)
+    timeliness_of_person = models.FloatField(default=0.00)
+    price_of_product = models.FloatField(default=0.00)
+    overall_interaction = models.FloatField(default=0.00)
+    about_hsco = models.CharField(max_length=60)
+    any_suggestion = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name
+        return self.about_hsco
 
 
 
