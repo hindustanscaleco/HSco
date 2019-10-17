@@ -26,6 +26,7 @@ class Repairing_after_sales_service(models.Model):
     delivery_date = models.DateField(default=datetime.date.today())
     delivery_by = models.CharField(max_length=50,null=True,blank=True)
     feedback_given = models.CharField(max_length=255,null=True,blank=True)
+    entry_timedate = models.DateField(default=datetime.date.today)
 
 
 

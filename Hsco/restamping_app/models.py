@@ -17,6 +17,7 @@ class Restamping_after_sales_service(models.Model):
     new_serial_no = models.CharField(max_length=150,null=True, blank=True)
     brand = models.CharField(max_length=150,null=True, blank=True)
     scale_delivery_date = models.DateField(default=datetime.date.today, blank=True)
+    entry_timedate = models.DateField(default=datetime.date.today)
 
 
 

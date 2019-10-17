@@ -117,11 +117,60 @@ def update_repairing_details(request,id):
 
 
 def repairing_module_home(request):
-    repair_list = Repairing_after_sales_service.objects.all()
-    context = {
-        'repair_list': repair_list,
-    }
-    return render(request,'dashboardnew/repairing_module_home.html',context)
+    if request.method=='POST' :
+        if'submit1' in request.POST:
+            start_date = request.POST.get('date1')
+            end_date = request.POST.get('date2')
+            repair_list = Repairing_after_sales_service.objects.filter(entry_timedate__range=[start_date, end_date])
+            context = {
+                'repair_list': repair_list,
+            }
+            return render(request, 'dashboardnew/repairing_module_home.html', context)
+        elif 'submit2' in request.POST:
+            contact = request.POST.get('contact')
+            repair_list = Repairing_after_sales_service.objects.filter(phone_no=contact)
+            context = {
+                'repair_list': repair_list,
+            }
+            return render(request, 'dashboardnew/repairing_module_home.html', context)
+
+        elif 'submit3' in request.POST:
+            email = request.POST.get('email')
+            repair_list = Repairing_after_sales_service.objects.filter(customer_email_id=email)
+            context = {
+                'repair_list': repair_list,
+            }
+            return render(request, 'dashboardnew/repairing_module_home.html', context)
+        elif 'submit4' in request.POST:
+            customer = request.POST.get('customer')
+            repair_list = Repairing_after_sales_service.objects.filter(name=customer)
+            context = {
+                'repair_list': repair_list,
+            }
+            return render(request, 'dashboardnew/repairing_module_home.html', context)
+
+        elif  'submit5' in request.POST:
+            company = request.POST.get('company')
+            repair_list = Repairing_after_sales_service.objects.filter(company_name=company)
+            context = {
+                'repair_list': repair_list,
+            }
+            return render(request, 'dashboardnew/repairing_module_home.html', context)
+        elif request.method=='POST' and 'submit6' in request.POST:
+            crm = request.POST.get('crm')
+            repair_list = Repairing_after_sales_service.objects.filter(crn_number=crm)
+            context = {
+                'repair_list': repair_list,
+            }
+            return render(request, 'dashboardnew/repairing_module_home.html', context)
+    else:
+        repair_list = Repairing_after_sales_service.objects.all()
+
+
+        context = {
+            'repair_list': repair_list,
+        }
+        return render(request, 'dashboardnew/repairing_module_home.html', context)
 
 def manager_repairing_module_home(request):
     repair_employee_list = SiteUser.objects.all()
