@@ -87,30 +87,25 @@ class SiteUser(AbstractBaseUser):
     group = models.CharField(max_length=300, null=True, blank=True)
     is_deleted = models.BooleanField(default=False, null=True, blank=True, choices=deleted)
     modules_assigned = models.CharField(max_length=300,null=True, blank=True)
-    photo = models.FileField(upload_to='',null=True, blank=True)
+    photo = models.FileField(upload_to='profile_image/',null=True, blank=True)
     created_by = models.CharField(max_length=30,null=True, blank=True)
     assigned_by = models.CharField(max_length=30,null=True, blank=True)
-    #customer_module
-    sales_target =models.FloatField(default=0.0)                 #in numbers (customer module)
-    target_achieved = models.FloatField(default=0.0)             #in percentage (customer module)
-    #repairing_module
-    # repairing_no_of_repairs =models.FloatField(default=0.0)       #in numbers (repairing module)
-    # repairing_target_achieved = models.FloatField(default=0.0)   #in percentage (repairing module)
-    # avg_time_repairing_scale = models.FloatField(default=0.0)
-    # avg_time_for_estimation = models.FloatField(default=0.0)
-
-
     date_of_joining = models.DateField(default=datetime.date.today())
     average_rating = models.FloatField(default=0.0)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-    #bank details
-    bank_name = models.CharField(choices=BANK_NAMES, max_length=150,null=True,blank=True)
-    account_no = models.CharField(max_length=30,null=True,blank=True)
-    branch_name = models.CharField(max_length=50,null=True,blank=True)
-    ifsc_code = models.CharField(max_length=20,null=True,blank=True)
+
+    details = models.CharField(max_length=250, null=True, blank=True)
+    pancard = models.CharField(max_length=20, null=True, blank=True)
+    aadhar_card = models.CharField(max_length=20, null=True, blank=True)
+    # bank details
+    bank_name = models.CharField(max_length=60, null=True, blank=True,choices=BANK_NAMES)
+    bank_address = models.CharField(max_length=20, null=True, blank=True)
+    IFSC_code = models.CharField(max_length=20, null=True, blank=True)
+    account_number = models.CharField(max_length=40, null=True, blank=True)
+
+    photo_of_cancelled_cheque = models.ImageField(upload_to='cheque_photo/', null=True, blank=True)
     auto_timedate = models.DateTimeField(default=timezone.now, blank=True)
-    # password = models.CharField(max_length=30)
 
 
     objects = SiteUserManager()

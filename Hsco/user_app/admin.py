@@ -49,16 +49,16 @@ class UserAdmin(BaseUserAdmin):
 
     fieldsets = (
                 ('Login Credentials', {'fields': ('mobile', 'password')}),
-        ('Personal info', {'fields': ('modules_assigned','email', 'name', 'role','sales_target','target_achieved','date_of_joining','average_rating','group')}),
-        ('Bank Details', {'fields': ('bank_name', 'account_no', 'branch_name','ifsc_code')}),
+        ('Personal info', {'fields': ('modules_assigned','email', 'name', 'role','date_of_joining','average_rating','group')}),
+        ('Bank Details', {'fields': ('bank_name', 'account_number', 'bank_address','IFSC_code')}),
         ('Seen', {'fields': ('last_login',)}),
     )
 
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('mobile', 'email', 'name','role','sales_target','target_achieved','date_of_joining','average_rating',
-                       'bank_name','account_no','branch_name','ifsc_code','auto_timedate','password', 'password2',   )}
+            'fields': ('mobile', 'email', 'name','role','date_of_joining','average_rating',
+                       'bank_name','account_number','bank_address','IFSC_code','auto_timedate','password', 'password2', )}
          ),
     )
     search_fields = ('mobile', 'name')
