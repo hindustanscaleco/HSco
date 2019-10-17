@@ -9,6 +9,7 @@
   <meta name="author" content="">
 
   <title>HSCO</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -352,7 +353,7 @@ color:;
   <div class="input-group">
   <h5>Where you satisfied with your communication with the technician who worked on your machine?</h5>
 <div style="display:inline-block;">{{ feedback_form.onsite_worker }}  </div>
-	<div class="star-rating1"><s><s><s><s><s></s></s></s></s></s></div>
+	<div class="star-rating2"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
   </div>
 </div>
@@ -364,7 +365,7 @@ color:;
   <div class="input-group">
   <h5>How would you rate the speed of our performance?</h5>
 <div style="display:inline-block;">{{ feedback_form.speed_of_performance }}  </div>
-	<div class="star-rating2"><s><s><s><s><s></s></s></s></s></s></div>
+	<div class="star-rating3"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
   </div>
 </div>
@@ -523,7 +524,7 @@ $(function() {
 
         });
 $("#stars5").val("0");
-        $("div.star-rating4 > s").on("click", function(e) {
+            $("div.star-rating5 > s").on("click", function(e) {
 
         // remove all active classes first, needed if user clicks multiple times
         $(this).closest('div').find('.active').removeClass('active');
@@ -550,13 +551,6 @@ $("#stars5").val("0");
 
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
-
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
 
 
 </body>
