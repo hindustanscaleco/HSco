@@ -11,7 +11,6 @@ class Customer_Details_Form(forms.ModelForm):
     class Meta:
         model = Customer_Details
         fields = (
-        'crn_number',
         'company_name',
         'address',
         'contact_no',

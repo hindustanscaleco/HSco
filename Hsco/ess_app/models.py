@@ -19,62 +19,34 @@ list_of_month=(
     ('December','December'),
 )
 
+
+
+
 class Defects_Warning(models.Model):
     user_id = models.ForeignKey(SiteUser,on_delete=models.CASCADE)
+    # ess_id = models.ForeignKey(Ess, on_delete=models.CASCADE)
     type = models.CharField(max_length=60) #value can be: Defect OR Warning
     content = models.CharField(max_length=255)
     entry_timedate = models.DateTimeField(default=timezone.now,)
 
     def __str__(self):
-        return self.user_id
-
+        return str(self.user_id)
 
 class Employee_Leave(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    # ess_id=models.ForeignKey(Ess, on_delete=models.CASCADE)
     requested_leave_date= models.DateTimeField(default=timezone.now, blank=True)
     reason=models.CharField(max_length=300,)
     is_approved =models.BooleanField(default=False)     #YES Or NO
     in_process = models.BooleanField(default=False)      #Decide Later option for manager
     leave_approved_by = models.CharField(max_length=60,)
+    is_employee_of_month = models.BooleanField(default=False)
+
     entry_timedate = models.DateTimeField(default=timezone.now,)
 
 
     def __str__(self):
-        return self.user_id
-
-
-class Ess(models.Model):
-    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
-    employee_name=models.CharField(max_length=20,null=True, blank=True)
-    details=models.CharField(max_length=250,null=True, blank=True)
-    contact_no=models.CharField(max_length=20,null=True, blank=True)
-    email_id=models.EmailField(max_length=20,null=True, blank=True)
-    photo=models.ImageField(upload_to='profile_image/',null=True, blank=True)
-    pancard=models.CharField(max_length=20,null=True, blank=True)
-    aadhar_card=models.CharField(max_length=20,null=True, blank=True)
-
-    # bank_details=models.CharField(max_length=20,null=True, blank=True)
-    bank_name=models.CharField(max_length=20,null=True, blank=True)
-    bank_address=models.CharField(max_length=20,null=True, blank=True)
-    IFSC_code=models.CharField(max_length=20,null=True, blank=True)
-    account_number=models.CharField(max_length=40,null=True, blank=True)
-
-    photo_of_cancelled_cheque=models.ImageField(upload_to='cheque_photo/',null=True, blank=True)
-    calendar=models.ForeignKey(Employee_Leave, on_delete=models.CASCADE)
-
-    sales_target_given = models.FloatField(default=0.0, )  # in amount
-    reparing_target_given = models.FloatField(default=0.0, )  # in amount
-
-
-    sales_target_achived_till_now=models.FloatField(default=0.0,null=True, blank=True)
-    reparing_target_achived_till_now=models.FloatField(default=0.0,null=True, blank=True)
-
-    defect_warnings=models.ForeignKey(Defects_Warning, on_delete=models.CASCADE,null=True, blank=True)
-
-
-    def __str__(self):
-        return self.employee_name
-
+        return str(self.user_id)
 
 
 
@@ -95,11 +67,23 @@ class Employee_Analysis(models.Model):
     avg_time_collect_to_dispatch_restamping = models.FloatField(default=0.0, )  # Restamping module avg_time_collect_to_dispatch_restamping
     total_reparing_done_onsite = models.BigIntegerField(default=0, )  # Reparing onsite module sales done in this month in amount
 
-    month_year = models.DateTimeField(default=timezone.now,)     # extract month and year from date
+    sales_target_given = models.FloatField(default=0.0, )  # in amount
+    reparing_target_given = models.FloatField(default=0.0, )  # in amount
 
+    sales_target_achived_till_now = models.FloatField(default=0.0, null=True, blank=True)
+    reparing_target_achived_till_now = models.FloatField(default=0.0, null=True, blank=True)
+    is_employee_of_month = models.BooleanField(default=False)
+
+
+    entry_timedate = models.DateTimeField(default=timezone.now,)     # extract month and year from date
+    month = models.CharField(max_length=20, null=True, blank=True,choices=list_of_month)    # extract month and year from date
+    year = models.IntegerField()    # extract month and year from date
+
+    class Meta:
+        unique_together = ('user_id','month','year')
 
     def __str__(self):
-        return self.user_id
+        return str(self.user_id)
 
 
 

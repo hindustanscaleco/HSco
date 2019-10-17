@@ -33,28 +33,38 @@
 
 
 
+            {% if request.user.is_authenticated and 'Customer Module' in user.modules_assigned %}
 
       <li class="nav-item ">
         <a class="nav-link" href="/view_customer_details/">
           <i class="fas fa-fw fa-plus"></i>
           <span>Customer Module</span></a>
       </li>
+                            {% endif %}
 
+            {% if request.user.is_authenticated and 'Repairing Module' in user.modules_assigned %}
 
         <li class="nav-item ">
         <a class="nav-link" href="/repairing_module_home/">
           <i class="fas fa-clipboard-list"></i>
           <span>Repairing Module</span></a>
       </li>
+                                    {% endif %}
+
+                    {% if request.user.is_authenticated and 'Restamping Module' in user.modules_assigned %}
 
       <hr class="sidebar-divider d-none d-md-block">
+
 
 <li class="nav-item ">
         <a class="nav-link" href="/restamping_manager/">
           <i class="fas fa-clipboard-list"></i>
           <span>Restamping Module</span></a>
       </li>
+                            {% endif %}
+
       <!-- Divider -->
+                    {% if request.user.is_authenticated and 'Dispatch Module' in user.modules_assigned %}
 
        <li class="nav-item ">
         <a class="nav-link" href="/dispatch_view/">
@@ -62,19 +72,25 @@
           <span>Dispatch Module</span></a>
       </li>
       <hr class="sidebar-divider d-none d-md-block">
+                    {% endif %}
+
+                            {% if request.user.is_authenticated and 'AMC Module' in user.modules_assigned %}
 
       <li class="nav-item ">
         <a class="nav-link" href="/amc_views/">
           <i class="fas fa-clipboard-list"></i>
           <span>AMC Module</span></a>
       </li>
+                    {% endif %}
 
+                    {% if request.user.is_authenticated and 'Onsite Repairing Module' in user.modules_assigned %}
 
           <li class="nav-item ">
         <a class="nav-link" href="/onsite_views/">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Onsite Repairing Module</span></a>
       </li>
+                    {% endif %}
 
 
 
@@ -92,11 +108,10 @@
             <a class="collapse-item" href="#">Purchase History</a>
 
 
-
           </div>
         </div>
       </li>
-
+            {% if request.user.is_authenticated and user.role == 'Super Admin' %}
               <li class="nav-item">
         <a class="nav-link collapsed" href="/ess_form/" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
           <i class="fas fa-clipboard-list"></i>
@@ -113,7 +128,7 @@
           </div>
         </div>
       </li>
-
+            {% elif request.user.is_authenticated and user.role == 'Admin' %}
                       <li class="nav-item">
         <a class="nav-link collapsed" href="/ess_form/" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
           <i class="fas fa-clipboard-list"></i>
@@ -128,6 +143,7 @@
           </div>
         </div>
       </li>
+            {% elif request.user.is_authenticated and user.role == 'Manager' %}
 
                               <li class="nav-item"      >
         <a class="nav-link collapsed" href="/ess_form/" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
@@ -144,7 +160,7 @@
           </div>
         </div>
       </li>
-
+            {% endif %}
 
      <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">

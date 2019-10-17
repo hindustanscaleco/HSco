@@ -30,7 +30,6 @@ from .views import update_manager_add,update_employee
 
 
 urlpatterns = [
-path('', dashboard, name='dashboard'),
 # path('', home, name='home'),
 path('amc_form/', amc_form, name='amc_form'),
 path('user_profile/', user_profile, name='user_profile'),
@@ -41,7 +40,7 @@ path('rep_mod_form/', rep_mod_form, name='rep_mod_form'),
 path('restamping_form/', restamping_form, name='restamping_form'),
 path('sidebar/', sidebar, name='sidebar'),
 path('navbar/', navbar, name='navbar'),
-path('login/', LoginView.as_view(), name='login'),
+path('', LoginView.as_view(), name='login'),
 path('logout/', logout_page, name='logout'),
 path('dashboard/', dashboard, name='dashboard'),
 path('graph/', graph, name='graph'),

@@ -1,11 +1,7 @@
 from django.shortcuts import render, redirect
 
-
-
-
-
 # Create your views here.
-from .models import Ess
+from user_app.models import SiteUser
 
 
 def add_ess_details(request):
@@ -26,7 +22,7 @@ def add_ess_details(request):
         defect_given = request.POST.get('defect_given')
         warnings_given = request.POST.get('warnings_given')
 
-        item = Ess()
+        item = SiteUser()
 
         item.employee_name = employee_name
         item.details = details
