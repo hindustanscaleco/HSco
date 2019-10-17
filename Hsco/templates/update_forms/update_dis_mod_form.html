@@ -339,6 +339,49 @@ color:;
 	<button class="btn btn-primary">Save</button>
 
 </center>
+  <br>
+  <br>
+  <hr>
+
+  <br>
+  <br>
+
+
+
+       <h1 style="font-size: 25px; color: black; text-align: center;"> Added Product List </h1>
+  <br>
+    {% for list in product_list %}
+      <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;">
+
+
+
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Type of Scale: {{list.type_of_scale}} </center></div>
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Model of Purchase: {{list.model_of_purchase}}  </center></div>
+
+                  <div class="col-xl-4 col-md-1 mb-1"><center> Sub Model: {{list.sub_model}}  </center> </div>
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Sub Sub Model: {{list.sub_sub_model}}  </center></div>
+                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Serial No. of Scale: {{list.serial_no_scale}} </center> </div>
+                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Sales Person: {{list.sales_person}} </center> </div>
+
+                  <div class="col-xl-4 col-md-1 mb-1"><center> Brand: {{list.brand}}  </center> </div>
+                  <div class="col-xl-4 col-md-1 mb-1"><center> Capacity: {{list.capacity}}  </center> </div>
+                  <div class="col-xl-4 col-md-1 mb-1"><center> Quantity: {{list.quantity}}  </center> </div>
+                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Unit: {{list.unit}}  </center> </div>
+
+                    </div>
+
+              </div>
+      </div>
+                    <br>
+
+          {% endfor %}
+          <center>
+          <!--<a href="/add_product_details/{{cust_id.id}}"> <button class="btn btn-primary">Add Product</button></a>-->
+            </center>
+          <br>
 
 
 

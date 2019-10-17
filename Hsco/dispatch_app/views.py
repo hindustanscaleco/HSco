@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db import connection
 # Create your views here.
-from .models import Dispatch
+from .models import Dispatch, Product_Details_Dispatch
 
 
 def add_dispatch_details(request):
@@ -107,6 +107,7 @@ def dispatch_view(request):
 
 def update_dispatch_details(request,update_id):
     dispatch_item=Dispatch.objects.get(id=update_id)
+    product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
     if request.method == 'POST' or request.method=='FILES':
         dispatch_id = request.POST.get('dispatch_id')
         customer_no = request.POST.get('customer_no')
@@ -151,7 +152,8 @@ def update_dispatch_details(request,update_id):
         return redirect('/dispatch_view')
 
     context={
-        'dispatch_item':dispatch_item
+        'dispatch_item':dispatch_item,
+        'product_list':product_list,
     }
     return render(request, "update_forms/update_dis_mod_form.html",context)
 

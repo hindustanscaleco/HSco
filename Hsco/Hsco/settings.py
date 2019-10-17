@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'restamping_app',
     'dispatch_app',
     'amc_visit_app',
+    'notif_dec_app',
 ]
 
 MIDDLEWARE = [
