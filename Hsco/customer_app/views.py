@@ -344,7 +344,7 @@ def manager_report(request):
     return render(request, 'dashboardnew/manager_report.html',context)
 
 def employee_sales_graph(request):
-    return render(request,"dashboardnew/graph.html",)
+    return render(request,"graphs/sales_graph.html",)
 
 
 
