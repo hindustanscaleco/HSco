@@ -323,7 +323,7 @@ def employee_sales_graph(request):
 
 def feedback_customer(request):
     feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
-    if request.method == 'POST' and 'performance' in request.POST:
+    if request.method == 'POST' :
         knowledge_of_person = request.POST.get('knowledge_of_person')
         timeliness_of_person = request.POST.get('timeliness_of_person')
         price_of_product = request.POST.get('price_of_product')

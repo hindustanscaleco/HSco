@@ -1,8 +1,11 @@
 from django.db import connection
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from user_app.models import SiteUser
-from .models import Repairing_after_sales_service, Repairing_Product
+
+from .forms import Repairing_Feedback_Form
+from .models import Repairing_after_sales_service, Repairing_Product, Repairing_Feedback
 
 
 def add_repairing_details(request):
@@ -223,6 +226,28 @@ def final_repairing_report_module(request):
 
 
 def feedback_repairing(request):
+    feedback_form = Repairing_Feedback_Form(request.POST or None, request.FILES or None)
+    if request.method == 'POST':
+        knowledge_of_person = request.POST.get('knowledge_of_person')
+        timeliness_of_person = request.POST.get('timeliness_of_person')
+        price_of_product = request.POST.get('price_of_product')
+        overall_interaction = request.POST.get('overall_interaction')
+        about_hsco = request.POST.get('about_hsco')
+        any_suggestion = request.POST.get('any_suggestion')
+
+        item = Repairing_Feedback()
+        item.knowledge_of_person = knowledge_of_person
+        item.timeliness_of_person = timeliness_of_person
+        item.price_of_product = price_of_product
+        item.overall_interaction = overall_interaction
+        item.about_hsco = about_hsco
+        item.any_suggestion = any_suggestion
+        item.save()
+
+        return HttpResponse('Feedback Submitted!!!')
+    context = {
+        'feedback_form': feedback_form,
+    }
     return render(request,'feedback/feedback_repairing.html')
 
 

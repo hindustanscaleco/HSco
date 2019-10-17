@@ -51,7 +51,7 @@ class Repairing_Product(models.Model):
     def __int__(self):
         return self.repairing_id
 
-class Feedback(models.Model):
+class Repairing_Feedback(models.Model):
     satisfied_with_communication = models.FloatField(default=0.00)
     speed_of_performance = models.FloatField(default=0.00)
     price_of_reparing = models.FloatField(default=0.00)
