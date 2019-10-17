@@ -64,3 +64,6 @@ def add_ess_details(request):
 def ess_home(request):
     return render(request,'dashboardnew/ess_home.html',)
 
+def employee_profile(request):
+    return render(request,'dashboardnew/employee_profile.html',)
+
