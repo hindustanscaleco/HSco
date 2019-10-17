@@ -25,11 +25,11 @@ from .views import dis_mod_form, home
 from .views import user_logs, home
 from .views import onsite_rep_form, home, assign_module_to_emp
 from .views import rep_mod_form,  assign_man_to_admin, create_employee, employee_list, assign_emp_to_manager
-from .views import restamping_form, home, admin_list, create_admin, create_manager,manager_list
+from .views import restamping_form, home, admin_list, create_admin, create_manager,manager_list,update_admin
+from .views import update_manager_add,update_employee
 
 
 urlpatterns = [
-path('', dashboard, name='dashboard'),
 # path('', home, name='home'),
 path('amc_form/', amc_form, name='amc_form'),
 path('user_profile/', user_profile, name='user_profile'),
@@ -40,7 +40,7 @@ path('rep_mod_form/', rep_mod_form, name='rep_mod_form'),
 path('restamping_form/', restamping_form, name='restamping_form'),
 path('sidebar/', sidebar, name='sidebar'),
 path('navbar/', navbar, name='navbar'),
-path('login/', LoginView.as_view(), name='login'),
+path('', LoginView.as_view(), name='login'),
 path('logout/', logout_page, name='logout'),
 path('dashboard/', dashboard, name='dashboard'),
 path('graph/', graph, name='graph'),
@@ -53,5 +53,8 @@ path('create_employee/', create_employee, name='create_employee'),
 path('employee_list/', employee_list, name='employee_list'),
 path('assign_emp_to_manager/', assign_emp_to_manager, name='assign_emp_to_manager'),
 path('assign_module_to_emp/', assign_module_to_emp, name='assign_module_to_emp'),
+path('update_admin/',update_admin, name='update_admin'),
+path('update_manager_add/',update_manager_add, name='update_manager_add'),
+path('update_employee/',update_employee, name='update_employee'),
 
 ]

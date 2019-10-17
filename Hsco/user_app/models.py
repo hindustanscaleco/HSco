@@ -113,6 +113,7 @@ class SiteUser(AbstractBaseUser):
     USERNAME_FIELD = 'mobile'
     REQUIRED_FIELDS = ['email',]
 
+
     def __str__(self):
         return self.mobile
 

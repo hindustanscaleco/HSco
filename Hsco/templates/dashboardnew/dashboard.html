@@ -64,6 +64,7 @@
           <div class="row">
 
 
+            {% if request.user.is_authenticated and 'Customer Module' in user.modules_assigned %}
 
                <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-primary shadow h-100 py-2">
@@ -83,9 +84,11 @@
                          </a>
               </div>
             </div>
-
+            {% endif %}
+            {% if request.user.is_authenticated and 'Repairing Module' in user.modules_assigned %}
 
             <!-- Earnings (Monthly) Card Example -->
+
             <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
@@ -107,8 +110,11 @@
                 </div>
               </div>
             </div>
+            {% endif %}
 
             <!-- Earnings (Monthly) Card Example -->
+                                                {% if request.user.is_authenticated and 'Restamping Module' in user.modules_assigned %}
+
             <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
@@ -133,8 +139,11 @@
                 </div>
               </div>
             </div>
+            {% endif %}
 
             <!-- Pending Requests Card Example -->
+                                                {% if request.user.is_authenticated and 'Dispatch Module' in user.modules_assigned %}
+
             <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
@@ -155,8 +164,11 @@ Module
                 </div>
               </div>
             </div>
+            {% endif %}
 
             <!-- Earnings (Monthly) Card Example -->
+                                          {% if request.user.is_authenticated and 'AMC Module' in user.modules_assigned %}
+
             <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
@@ -176,8 +188,11 @@ Module
                 </div>
               </div>
             </div>
+            {% endif %}
 
             <!-- Earnings (Monthly) Card Example -->
+                                  {% if request.user.is_authenticated and 'Onsite Repairing Module' in user.modules_assigned %}
+
             <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
@@ -200,7 +215,7 @@ Module
                 </div>
               </div>
             </div>
-
+                        {% endif %}
             <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-info shadow h-100 py-2">
