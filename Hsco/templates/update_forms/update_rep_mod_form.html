@@ -21,7 +21,7 @@
 
 </head>
 
-<body id="page-top">
+<div id="page-top">
 
 <style>
 
@@ -86,9 +86,12 @@ for (var i = 0, len = elements.length; i < len; ++i) {
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid" >
-         <center>  <h1>Repairing Module</h1>  </center>
+   <div class="container-fluid" >
 
+          <div class="row" style="padding:20px;">
+               <label class="col-md-6 control-label">Repairing Module</label>
+
+          </div>
 
 <br>
 <script>
@@ -117,6 +120,7 @@ function myFunction() {
 
 }
 </script>
+
 
     <form  class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
 <fieldset>
@@ -194,11 +198,11 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="date_of_purchase" placeholder="Company name" class="form-control" id="myText5"  type="email" disabled value="{{repair_id.date_of_purchase|date:'Y-m-d'}}">
+  <input type="date" name="date_of_purchase" placeholder="Company name" class="form-control" id="myText5"  type="email" disabled value="{{repair_id.date_of_purchase|date:'YYYY-MM-DD'}}">
     </div>
   </div>
 
-  <label class="col-md-2 control-label">Today's date
+  <label class="col-md-2 control-label">Today's Date
 
 
 
@@ -206,7 +210,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" placeholder="Today's date" class="form-control" id="myText6"  type="date" disabled value="repair_id.{{today_date|date:'Y-m-d'}}">
+  <input  name="today_date" placeholder="Today's date" class="form-control" id="myText6"  type="date" disabled value="repair_id.{{today_date|date:'YYYY-MM-DD'}}">
     </div>
   </div>
 </div>
@@ -486,7 +490,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input type="text" name="repaired" placeholder="Repaired" class="form-control" id="myText17"  disabled value="{{repair_id.repaired}}">
+  <input type="text" name="repaired" placeholder="Repaired" class="form-control" id="myText17" disabled value="{{repair_id.repaired}}">
     </div>
   </div>
 
@@ -498,7 +502,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="repaired_date" placeholder="Repaired date" class="form-control"  id="myText18"   disabled value="{{repair_id.repaired_date|date:'Y-m-d'}}">
+  <input type="date" name="repaired_date" placeholder="Repaired date" class="form-control" id="myText18" disabled value="{{repair_id.repaired_date|date:'Y-m-d'}}">
     </div>
   </div>
 </div>
@@ -517,7 +521,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control" id="myText19"   disabled value="{{repair_id.delivery_date|date:'Y-m-d'}}">
+  <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control" id="myText19" disabled value="{{repair_id.delivery_date|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -528,7 +532,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="delivery_by" placeholder="Delivery By" class="form-control"  type="text" id="myText20"  disabled value="{{repair_id.delivery_by}}">
+  <input name="delivery_by" placeholder="Delivery By" class="form-control" type="text" id="myText20" disabled value="{{repair_id.delivery_by}}">
     </div>
   </div>
 </div>
@@ -542,7 +546,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="feedback_given" placeholder="Feedback Given" id="myText21"  class="form-control"  type="text" disabled value="{{repair_id.feedback_given}}">
+  <input  name="feedback_given" placeholder="Feedback Given" id="myText21" class="form-control"  type="text" disabled value="{{repair_id.feedback_given}}">
     </div>
   </div>
 
@@ -616,7 +620,7 @@ function myFunction() {
                   <a href="/repair_product/{{repair_id.id}}"> <button class="btn btn-primary">Add Product</button></a>
         </center>
   </div>
-  <!-- End of Page Wrapper -->
+   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">
@@ -625,7 +629,7 @@ function myFunction() {
 
 
 
-    </div></div>
+
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
@@ -644,8 +648,29 @@ function myFunction() {
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
 
+      <script>
+
+$(function() {
+$("#stars").val("0");
+    $("div.star-rating > s").on("click", function(e) {
+
+    // remove all active classes first, needed if user clicks multiple times
+    $(this).closest('div').find('.active').removeClass('active');
+
+    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+    $(e.target).addClass('active');  // the element user has clicked on
 
 
+        var numStars = $(e.target).parentsUntil("div").length+1;
+        $("#stars").val(numStars);
+
+
+    });
+});
+
+</script>
+</div>
+  </div>
 </body>
 
 </html>

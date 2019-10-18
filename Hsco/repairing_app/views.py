@@ -124,8 +124,77 @@ def repair_product(request,id):
 
 def update_repairing_details(request,id):
     repair_id = Repairing_after_sales_service.objects.get(id=id)
-
     repair_list = Repairing_Product.objects.filter(repairing_id=id)
+    if request.method=='POST':
+        repairingnumber = request.POST.get('repairingnumber')
+        customer_no = request.POST.get('customer_no')
+        previous_repairing_number = request.POST.get('previous_repairing_number')
+        in_warranty = request.POST.get('in_warranty')
+        date_of_purchase = request.POST.get('date_of_purchase')
+        today_date = request.POST.get('today_date')
+        name = request.POST.get('name')
+        company_name = request.POST.get('company_name')
+        phone_no = request.POST.get('phone_no')
+        customer_email_id = request.POST.get('customer_email_id')
+        location = request.POST.get('location')
+        products_to_be_repaired = request.POST.get('products_to_be_repaired')
+
+        total_cost = request.POST.get('total_cost')
+        informed_on = request.POST.get('informed_on')
+        informed_by = request.POST.get('informed_by')
+        confirmed_estimate = request.POST.get('confirmed_estimate')
+        repaired = request.POST.get('repaired')
+        repaired_date = request.POST.get('repaired_date')
+        delivery_date = request.POST.get('delivery_date')
+        delivery_by = request.POST.get('delivery_by')
+        feedback_given = request.POST.get('feedback_given')
+
+        item = repair_id
+
+        item.repairingnumber = repairingnumber
+        item.customer_no = customer_no
+        item.previous_repairing_number = previous_repairing_number
+        item.in_warranty = in_warranty
+        item.date_of_purchase = date_of_purchase
+        item.today_date = today_date
+        item.name = name
+        item.company_name = company_name
+        item.phone_no = phone_no
+        item.customer_email_id = customer_email_id
+        item.location = location
+        #item.products_to_be_repaired = products_to_be_repaired
+        item.total_cost = total_cost
+        item.informed_on = informed_on
+        item.informed_by = informed_by
+        item.confirmed_estimate = confirmed_estimate
+        item.repaired = repaired
+        item.repaired_date = repaired_date
+        item.delivery_date = delivery_date
+        item.delivery_by = delivery_by
+        item.feedback_given = feedback_given
+
+        item.save(update_fields=['repairingnumber', ]),
+        item.save(update_fields=['customer_no', ]),
+        item.save(update_fields=['previous_repairing_number', ]),
+        item.save(update_fields=['in_warranty', ]),
+        item.save(update_fields=['date_of_purchase', ]),
+        item.save(update_fields=['today_date', ]),
+        item.save(update_fields=['name', ]),
+        item.save(update_fields=['company_name', ]),
+        item.save(update_fields=['phone_no', ]),
+        item.save(update_fields=['customer_email_id', ]),
+        item.save(update_fields=['location', ]),
+        #item.save(update_fields=['products_to_be_repaired', ]),
+        item.save(update_fields=['total_cost', ]),
+        item.save(update_fields=['informed_on', ]),
+        item.save(update_fields=['informed_by', ]),
+        item.save(update_fields=['confirmed_estimate', ]),
+        item.save(update_fields=['repaired', ]),
+        item.save(update_fields=['repaired_date', ]),
+        item.save(update_fields=['delivery_date', ]),
+        item.save(update_fields=['delivery_by', ]),
+        item.save(update_fields=['feedback_given', ])
+
     print(repair_list)
     context={
         'repair_list': repair_list,
@@ -335,6 +404,8 @@ def load_reparing_stages_list(request,):
     }
     context.update(context)
     return render(request, 'AJAX/load_reparing_stage.html', context)
+
+
 
 
 
