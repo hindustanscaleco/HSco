@@ -25,6 +25,6 @@ def add_customer_details(request):
         item.save()
 
 
-    return render(request,'forms/cust_mod_form.html',)
+    return render(request,'forms/cust_details_form.html',)
 
 
