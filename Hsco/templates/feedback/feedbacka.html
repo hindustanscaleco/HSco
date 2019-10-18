@@ -256,10 +256,10 @@
     <form  class="well form-horizontal" action="" method="POST"   style="padding:20px;  " enctype="multipart/form-data" novalidate >{% csrf_token %}
 
 				<div class="wrap-input100 validate-input" data-validate="Name is required">
-			<div class="col-md-4 inputGroupContainer">
+		<div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <h5>Where you satisfied with your communication with the technician who worked on your machine?</h5>
-     	<div style="display:inline-block;">{{ feedback_form.satisfied_with_communication }}  </div>
+  <h5>Where you satisfied with your communication with the backend team?</h5>
+<div style="display:inline-block;">{{ feedback_form.backend_team }}  </div>
 	<div class="star-rating"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
   </div>
@@ -269,41 +269,49 @@
 
                 <div class="wrap-input100 validate-input" data-validate="Name is required">
 
-  <div class="col-md-4 inputGroupContainer">
+ <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <h5>How would you rate the speed of our performance?</h5>
-<div style="display:inline-block;">{{ feedback_form.speed_of_performance }}  </div>
+  <h5>Where you satisfied with your communication with the technician who worked on your machine?</h5>
+<div style="display:inline-block;">{{ feedback_form.onsite_worker }}  </div>
 	<div class="star-rating2"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
   </div>
 				</div>
 
                 <div class="wrap-input100 validate-input" data-validate="Name is required">
-                    <div class="col-md-4 inputGroupContainer">
+                <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <h5>How were the prices of the products (as compare to others)?</h5>
-<div style="display:inline-block;">{{ feedback_form.price_of_reparing }}  </div>
+  <h5>How would you rate the speed of our performance?</h5>
+<div style="display:inline-block;">{{ feedback_form.speed_of_performance }}  </div>
 	<div class="star-rating3"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
   </div>
 				</div>
 
                 <div class="wrap-input100 validate-input" data-validate="Name is required">
-                       <div class="col-md-4 inputGroupContainer">
+                 <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <h5>How were the prices of the Repairing (as compare to others)?</h5>
+<div style="display:inline-block;">{{ feedback_form.price_of_reparing }}  </div>
+	<div class="star-rating5"><s><s><s><s><s></s></s></s></s></s></div>
+    </div>
+  </div>
+				</div>
+
+
+          <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>How would you rate the overall interaction with us?</h5>
 <div style="display:inline-block;">{{ feedback_form.overall_interaction }}  </div>
 	<div class="star-rating4"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
   </div>
-				</div>
 
 
-                <div class="wrap-input100 validate-input" data-validate="Name is required">
-                        <div class="col-md-4 inputGroupContainer">
-    <div class="col-md-4 inputGroupContainer">
+            <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>Where did you hear about Hindustan Scale company?</h5>
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
     <select  name="about_hsco" class="form-control">
   <option value="website">Website</option>
   <option value="friend">Friend</option>
@@ -315,14 +323,15 @@
 
     </div>
   </div>
-  </div>
-				</div>
+<h5>Any Suggestion:</h5>
 
+<div class="form-group row">
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <h5>Any Suggestions?</h5>
-<br>
-<textarea placeholder="" name="any_suggestion" maxlength="255" cols="50" rows="10" style="border: 1px solid black;"></textarea>
+
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+<textarea placeholder="Suggestions" name="any_suggestion" maxlength="255"></textarea>
+  </div>
   </div>
   </div>
 
