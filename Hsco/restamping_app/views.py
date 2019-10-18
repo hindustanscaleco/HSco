@@ -211,7 +211,7 @@ def restamping_employee_graph(request):
     list_sales_month=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_restamping_done')
     # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
     list_avg = Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_collect_to_dispatch_restamping')
-    list_total_restamp =Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_reparing_done_onsite')
+    avg_time_est =Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_reparing_done_onsite')
 
     print(list(list_sales_month))
     print(list(list_sales))
@@ -225,13 +225,15 @@ def restamping_employee_graph(request):
     for item in list_sales_month:
         final_list2.append(item[0])
 
-    for item in list_sales_month:
-        final_list2.append(item[0])
-    print(final_list)
-    print(final_list2)
+    for item in list_avg:
+        final_list3.append(item[0])
+
+    for item in avg_time_est:
+        final_list4.append(item[0])
+
     context={
         'final_list':final_list,
-        'final_list2':final_list2
+        'final_list2':final_list2,
     }
     return render(request,"graphs/restamping_employee_graph.html",context)
 
