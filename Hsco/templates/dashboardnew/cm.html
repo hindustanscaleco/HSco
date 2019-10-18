@@ -171,40 +171,31 @@ $(function() {
       <!--</div>-->
                                <!--</form>-->
 </div>
-
-
                 </div>
-
             </div>
 
-
-
-
-
 <div style="min-height: 26vw;">
-
         <div class="row">
-
-
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                <div class="card-body row" style="padding: 10px;color: black; font-weight: 600; font-size: 12px; height: 35px; ">
 
 
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Customer Name </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Company Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Dispatch Id </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Feedback Filled </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <p>Stars</p> </center>
+                    <div class="col-xl-2 col-md-1 mb-1" style="margin-left: -14px;"><center> Customer Name </center></div>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary"> Company Name </center></div>
+                    <div class="col-xl-1 col-md-1 mb-1 "><center class="border-left-primary">  CRM No. </center></div>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">  Contact No. </center> </div>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">   Email Id </center> </div>
+                    <div class="col-xl-1 col-md-1 mb-1 "><center class="border-left-primary"> Feedback Fd. </center></div>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary"> <p>Stars</p> </center>
                     </div>
-
-
 
                 </div>
               </div>
             </div>
 
+            <br>
 <style>
   .border-left-primary {
     border-left: .09rem solid #4e73df!important;
@@ -219,21 +210,21 @@ a:hover {
 </style>
 
 <br>
-<br>{% for list1 in customer_list %}
-
+<br>
+            {% for list1 in customer_list %}
                 <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow" >
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; min-height: 55px;">
                     <div class="col-xl-12 col-md-11 mb-1" style="font-size:10px;">Dispatch Id: {{ list1.dispatch_id_assigned}} </div>
 
-                    <div class="col-xl-2 col-md-1 mb-1"> <a href="/update_customer_details/{{list1.id}}" style="color: black; font-size: 12px;" >{{ list1.customer_name }}</a> </></div>
+                    <div class="col-xl-2 col-md-1 mb-1"> <a href="/update_customer_details/{{list1.id}}" style="color: black; font-size: 12px;" >{{ list1.customer_name }}</a> </div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.company_name}} </div>
                     <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{{ list1.pk}} </div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.contact_no}} </div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.customer_email_id}} </div>
                     <div class="col-xl-1 col-md-1 mb-1 border-left-primary"> {{ list1.feedback_form_filled}}</div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">
-                         {% for avg in list1.feedback_stars|rjust:'5'  %}
+                         {% for avg in  list1.feedback_stars|rjust:'5'  %}
 							{% if forloop.counter <= list1.feedback_stars %}
 									<i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
 							{% else %}
@@ -249,33 +240,40 @@ a:hover {
 
 
                 </div>
-              </div>
+              </div> {% endfor %}
             </div>
-                  {% endfor %}
 
+    <style>
+        .border-right-primarya {
+        border-right: 4px solid blue;
+        }
+        .border-left-primarya {
+        border-left: 4px solid blue;
+        }
+    </style>
 
-
-
-
-
-        </div>
-</div>
-
-
-
-
-<br>
 <center>
-    <div class="row" style="width: 70%;">
-
-
-
-                <div class="col-xl-4 col-md-4 mb-12">
-              <div class="card border-left-primary shadow">
+    <div class="row" style="width: 70%; margin-top: 15%;">
+                <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card border-left-primarya shadow border-right-primarya">
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col ">
- <a href="/add_customer_details/"><button class="btn btn-primary">Add Customer</button></a>                    </div>
+ <a href="/add_customer_details/"><button class="btn btn-primary">Add Customer</button></a>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+         <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card border-left-primarya shadow border-right-primarya">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col ">
+ <a href="/add_customer_details/"><button class="btn btn-primary">Delete Customer</button></a>
+                    </div>
 
                   </div>
                 </div>
@@ -283,13 +281,13 @@ a:hover {
             </div>
 
 
-                <div class="col-xl-5 col-md-12 mb-12">
-              <div class="card shadow">
+                <div class="col-xl-3 col-md-12 mb-12">
+              <div class="card border-left-primarya shadow border-right-primarya">
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <a href="/user_logs/"> <button class="btn btn-primary">Log</button></a>&nbsp; &nbsp;
- <a href="/report/"> <button class="btn btn-primary">Report</button></a>&nbsp;
+                        <a href="/report/"> <button class="btn btn-primary">Report</button></a>&nbsp;
                     </div>
 
                   </div>
@@ -300,7 +298,7 @@ a:hover {
 
         <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-3 col-md-12 mb-12">
-              <div class="card border-right-primary shadow">
+              <div class="card border-left-primarya shadow border-right-primarya">
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -314,19 +312,20 @@ a:hover {
             </div>
 
           </div>
-
 </center>
-
-
+        </div>
+</div>
+<br>
   </div>
   <!-- End of Page Wrapper -->
+  </div>
+  </div>
 
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-  </div>
-</body>
+
 
 
   <!-- Bootstrap core JavaScript-->
