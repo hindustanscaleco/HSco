@@ -223,21 +223,20 @@ def final_repairing_report_module(request):
     }
     return render(request,'report/final_report_rep_mod_form.html',context)
 
-
 def feedback_repairing(request):
     feedback_form = Repairing_Feedback_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST':
-        knowledge_of_person = request.POST.get('knowledge_of_person')
-        timeliness_of_person = request.POST.get('timeliness_of_person')
-        price_of_product = request.POST.get('price_of_product')
+        satisfied_with_communication = request.POST.get('satisfied_with_communication')
+        speed_of_performance = request.POST.get('speed_of_performance')
+        price_of_reparing = request.POST.get('price_of_reparing')
         overall_interaction = request.POST.get('overall_interaction')
         about_hsco = request.POST.get('about_hsco')
         any_suggestion = request.POST.get('any_suggestion')
 
         item = Repairing_Feedback()
-        item.knowledge_of_person = knowledge_of_person
-        item.timeliness_of_person = timeliness_of_person
-        item.price_of_product = price_of_product
+        item.satisfied_with_communication = satisfied_with_communication
+        item.speed_of_performance = speed_of_performance
+        item.price_of_reparing = price_of_reparing
         item.overall_interaction = overall_interaction
         item.about_hsco = about_hsco
         item.any_suggestion = any_suggestion
@@ -247,7 +246,7 @@ def feedback_repairing(request):
     context = {
         'feedback_form': feedback_form,
     }
-    return render(request,'feedback/feedback_repairing.html')
+    return render(request,'feedback/feedback_repairing.html',context)
 
 def edit_product(request,id):
     product_id = Repairing_Product.objects.get(id=id)
