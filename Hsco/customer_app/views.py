@@ -318,7 +318,7 @@ def manager_report(request):
 def feedbacka(request):
     return render(request, 'feedback/feedbacka.html')
 
-def employee_sales_graph(request):
+def customer_employee_sales_graph(request):
     user_id=request.user.pk
     currentMonth = datetime.now().month
     currentYear = datetime.now().year

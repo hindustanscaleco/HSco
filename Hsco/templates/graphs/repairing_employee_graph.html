@@ -70,7 +70,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
           <div class="row">
 
             <!-- Area Chart -->
-            <div class="col-xl-12 col-lg-12">
+            <div class="col-xl-12 col-lg-12" id="myDIVa" style="display: block;">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -99,8 +99,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
 
 
-
-                   <div class="col-xl-12 col-lg-12">
+            <div class="col-xl-12 col-lg-12" id="myDIVb" style="display: none;">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -129,12 +128,11 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
 
 
-
-                   <div class="col-xl-12 col-lg-12">
+            <div class="col-xl-12 col-lg-12" id="myDIVc" style="display: none;">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary"> Average Time To Shift From One Stage To Another </h6>
+                  <h6 class="m-0 font-weight-bold text-primary"> Average Time To Shift From One Stage To Another</h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -156,6 +154,10 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
                 </div>
               </div>
             </div>
+
+
+
+
             <!-- Pie Chart -->
           </div>
 
@@ -165,7 +167,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
             <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body btn">
+                <div class="card-body btn" onclick="myFunctionA()">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="h5 mb-0 font-weight-bold text-gray-800">Target Achieved</div>
@@ -182,7 +184,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
             <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-success shadow h-100 py-2">
 
-                <div class="card-body btn" >
+                <div class="card-body btn" onclick="myFunctionB()">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="h5 mb-0 font-weight-bold text-gray-800">Average Time Taken To Solve A Problem</div>
@@ -202,7 +204,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
             <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body btn">
+                <div class="card-body btn" onclick="myFunctionC()">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="row no-gutters align-items-center">
@@ -244,6 +246,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
           <center>
   <button class="btn btn-primary">Detailed Feedback</button>
 </center>
+
 
 <br>
         <style>
@@ -303,6 +306,8 @@ $(document).ready(function(){
     <input class="timeTextBoxa" name="timebox" maxlength="5"/>
 </div>
 
+<select></select>
+<select ></select>
 
         <!--Test-->
 <br><br>
@@ -523,6 +528,56 @@ var myLineChart = new Chart(ctx, {
   }
 });
 
+</script>
+
+
+<script>
+function myFunctionA() {
+  var x = document.getElementById("myDIVa");
+  var y = document.getElementById("myDIVb");
+  var z = document.getElementById("myDIVc");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.display = "none";
+    z.style.display = "none";
+  } else {
+    x.style.display = "block";
+    y.style.display = "none";
+    xz.style.display = "none";
+  }
+}
+
+
+function myFunctionB() {
+  var x = document.getElementById("myDIVa");
+  var y = document.getElementById("myDIVb");
+  var z = document.getElementById("myDIVc");
+  if (y.style.display === "none") {
+    x.style.display = "none";
+    y.style.display = "block";
+    z.style.display = "none";
+  } else {
+    x.style.display = "none";
+    y.style.display = "block";
+    z.style.display = "none";
+  }
+}
+
+
+function myFunctionC() {
+  var x = document.getElementById("myDIVa");
+  var y = document.getElementById("myDIVb");
+  var z = document.getElementById("myDIVc");
+  if (z.style.display === "none") {
+    x.style.display = "none";
+    y.style.display = "none";
+    z.style.display = "block";
+  } else {
+    x.style.display = "none";
+    y.style.display = "none";
+    z.style.display = "none";
+  }
+}
 </script>
 
 
