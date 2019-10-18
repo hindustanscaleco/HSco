@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.db import connection
 # Create your views here.
 from .models import Dispatch, Product_Details_Dispatch
-
+from django.core.mail import send_mail
+from Hsco import settings
 
 def add_dispatch_details(request):
     # form = Customer_Details_Form(request.POST or None, request.FILES or None)
@@ -45,6 +46,7 @@ def add_dispatch_details(request):
 
 
         item.save()
+        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email])
 
 
         return redirect('/dispatch_view')

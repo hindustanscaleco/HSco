@@ -6,11 +6,14 @@ from user_app.models import SiteUser
 from dispatch_app.models import Dispatch
 from dispatch_app.models import Product_Details_Dispatch
 from ess_app.models import Employee_Analysis
+
 from .forms import Customer_Details_Form, Feedback_Form
 from .models import Customer_Details, Feedback
 from .forms import Product_Details_Form
 from .models import Product_Details
 from datetime import datetime
+from django.core.mail import send_mail
+from Hsco import settings
 
 def add_customer_details(request):
     form = Customer_Details_Form(request.POST or None, request.FILES or None)
@@ -79,6 +82,7 @@ def add_customer_details(request):
         customer_id = Customer_Details.objects.get(id=item.pk)
         customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
         customer_id.save(update_fields=['dispatch_id_assigned'])
+        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
 
         return redirect('/add_product_details/'+str(item.id))
 

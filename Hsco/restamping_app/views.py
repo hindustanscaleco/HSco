@@ -1,7 +1,8 @@
 from django.db import connection
 from django.shortcuts import render, redirect
 
-
+from django.core.mail import send_mail
+from Hsco import settings
 from .models import Restamping_after_sales_service, Restamping_Product
 
 def restamping_manager(request):

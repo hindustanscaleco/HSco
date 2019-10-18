@@ -6,7 +6,8 @@ from user_app.models import SiteUser
 
 from .forms import Repairing_Feedback_Form
 from .models import Repairing_after_sales_service, Repairing_Product, Repairing_Feedback
-
+from django.core.mail import send_mail
+from Hsco import settings
 
 def add_repairing_details(request):
     if request.method == 'POST' or request.method == 'FILES':
@@ -60,6 +61,7 @@ def add_repairing_details(request):
         item.feedback_given = feedback_given
 
         item.save()
+        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
 
         return redirect('/repair_product/'+str(item.id))
 

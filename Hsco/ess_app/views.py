@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from user_app.models import SiteUser
-
+from django.core.mail import send_mail
+from Hsco import settings
 
 def add_ess_details(request):
     if request.method == 'POST' or  request.method=='FILES':
@@ -48,6 +49,8 @@ def add_ess_details(request):
         item.warnings_given = warnings_given
 
         item.save()
+        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [email_id])
+
         return redirect('/')
 
 

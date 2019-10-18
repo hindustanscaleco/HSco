@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect
 from .forms import AMC_Feedback_Form
 from .models import Amc_After_Sales, AMC_Feedback
 from django.db import connection
-
+from django.core.mail import send_mail
+from Hsco import settings
 
 
 def add_amc_after_sales(request):
@@ -57,6 +58,7 @@ def add_amc_after_sales(request):
 
 
         item.save()
+        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
 
         return redirect('/amc_views')
 
