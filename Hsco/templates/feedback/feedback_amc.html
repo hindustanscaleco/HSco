@@ -1,27 +1,21 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  {% load static %}
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
 
-  <title>HSCO</title>
+      {% load static %}
 
-  <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <!-- Custom styles for this template-->
-  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+	<title> Feedback</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
 
+
+
+<!--===============================================================================================-->
 </head>
-
-<body id="page-top">
+<body>
 
 <style>
 
@@ -254,63 +248,33 @@
 }
 </style>
 
-  <!-- Page Wrapper -->
-  <div id="wrapper">
-  {% include 'base_templates/sidebar.html' %}
+	<div class="container-contact100">
+		<div class="wrap-contact100">
+				<span class="contact100-form-title" style="    font-family: 'Montserrat';">
+					Feedback
+				</span>
+    <form  class="well form-horizontal" action="" method="POST"   style="padding:20px;  " enctype="multipart/form-data" novalidate >{% csrf_token %}
 
-    <!-- Sidebar -->
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-      <!-- Main Content -->
-      <div id="content" style="background-color: white;">
-
-
-        <!-- Topbar -->
-  {% include 'base_templates/navbar_for_dashboard.html' %}
-        <!-- End of Topbar -->
-
-        <!-- Begin Page Content -->
-        <center><h3>AMC Feedback Form</h3></center>
-
-        <div class="container-fluid" >
-
-<br>
-
-
-    <form class="well form-horizontal" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
-<fieldset>
-<div class="form-group row">
-
-
-  <div class="col-md-4 inputGroupContainer">
+				<div class="wrap-input100 validate-input" data-validate="Name is required">
+                     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>Where you satisfied with your communication with the technician who worked on your machine ?</h5>
 <div style="display:inline-block;">{{ feedback_form.knowledge_of_person }}  </div>
 	<div class="star-rating"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
   </div>
-</div>
-        <br>
-    <br>
-
-
-<div class="form-group row">
-    <div class="col-md-4 inputGroupContainer">
+                </div>
+				<div class="wrap-input100 validate-input" data-validate="Name is required">
+                      <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>How would you rate the speed of our performance?</h5>
 <div style="display:inline-block;">{{ feedback_form.speed_of_performance }}  </div>
 	<div class="star-rating2"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
   </div>
-</div>
-
-<div class="form-group row">
-
-
-  <div class="col-md-4 inputGroupContainer">
+                </div>
+				<div class="wrap-input100 validate-input" data-validate="Name is required">
+                     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>How were the prices of the AMC (as compare to others)?</h5>
 <div style="display:inline-block;">{{ feedback_form.price_of_amc }}  </div>
@@ -318,27 +282,20 @@
     </div>
   </div>
 </div>
-    <br>
 
-
-<div class="form-group row">
-    <div class="col-md-4 inputGroupContainer">
+				<div class="wrap-input100 validate-input" data-validate="Name is required">
+                        <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>How would you rate the overall interaction with us?</h5>
 <div style="display:inline-block;">{{ feedback_form.overall_interaction }}  </div>
 	<div class="star-rating4"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
   </div>
-</div>
-        <br>
-
-
-
-    <div class="form-group row">
-    <div class="col-md-4 inputGroupContainer">
+                </div>
+				<div class="wrap-input100 validate-input" data-validate="Name is required">
+                    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>Where did you hear about Hindustan Scale company?</h5>
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
     <select  name="{{role}}" class="form-control">
   <option value="website">Website</option>
   <option value="friend">Friend</option>
@@ -350,57 +307,104 @@
 
     </div>
   </div>
-</div>
-    <br>
-  <h5>Any Suggestion:</h5>
+                </div>
 
+
+
+<h5>Any Suggestion:</h5>
 <div class="form-group row">
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-<textarea placeholder="Suggestions" name="suggestion" maxlength="255"></textarea>
-  </div>
-  </div>
-  </div>
-
-
-
-
-<center>
-   <button type="submit" value="Submit" class="btn btn-primary">Save</button>
-</center>
-
-
-
-  <br>
-</fieldset>
-    </form>
-  <!--Product List-->
-
-
-                </div>
-              </div>
-            </div>
-      </div>
 <br>
+<textarea placeholder="" name="any_suggestion" maxlength="255" style="border: 1px solid black;" cols="50" rows="8"></textarea>
+  </div>
+  </div>
+  </div>
+
+  <div class="container-contact100-form-btn">
+					<div class="wrap-contact100-form-btn">
+						<div class="contact100-form-bgbtn"></div>
+						<button class="contact100-form-btn" type="submit">
+							<span>
+								Submit
+								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+							</span>
+						</button>
+					</div>
+				</div>
+
+			</form>
+        </div>
+	</div>
 
 
+<script>
+
+$(function() {
+    $("#stars").val("0");
+        $("div.star-rating > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
 
 
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars").val(numStars);
 
 
+        });
+    $("#stars2").val("0");
+        $("div.star-rating2 > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
 
 
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars2").val(numStars);
 
-  <!-- End of Page Wrapper -->
 
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+        });
+     $("#stars3").val("0");
+        $("div.star-rating3 > s").on("click", function(e) {
 
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
+
+
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars3").val(numStars);
+
+
+        });
+      $("#stars4").val("0");
+        $("div.star-rating4 > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
+
+
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars4").val(numStars);
+
+
+        });
+
+});
+
+</script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
@@ -412,14 +416,6 @@
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
 
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
-
 
 </body>
-
 </html>
