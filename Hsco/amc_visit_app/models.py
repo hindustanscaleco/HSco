@@ -44,7 +44,7 @@ class Amc_After_Sales(models.Model):
     def __str__(self):
         return self.amcno
 
-class Feedback(models.Model):
+class AMC_Feedback(models.Model):
     satisfied_with_work = models.FloatField(default=0.00)
     speed_of_performance = models.FloatField(default=0.00)
     price_of_amc = models.FloatField(default=0.00)
@@ -52,8 +52,7 @@ class Feedback(models.Model):
     about_hsco = models.CharField(max_length=60)
     any_suggestion = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.about_hsco
+
 
 
 
