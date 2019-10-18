@@ -287,19 +287,30 @@ def repairing_employee_graph(request):
     # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
     print(list(list_sales_month))
     print(list(list_sales))
+    list_avg = Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_repair_single_scale')
+    list_total_restamp =Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_give_estimate')
     final_list=[]
     final_list2=[]
+    final_list3=[]
+    final_list4=[]
     for item in list_sales:
         final_list.append(item[0])
 
     for item in list_sales_month:
         final_list2.append(item[0])
 
+    for item in list_sales_month:
+        final_list3.append(item[0])
+
+    for item in list_sales_month:
+        final_list4.append(item[0])
     print(final_list)
     print(final_list2)
     context={
         'final_list':final_list,
-        'final_list2':final_list2
+        'final_list2':final_list2,
+        'final_list3':final_list3,
+        'final_list4':final_list4,
     }
     return render(request,"graphs/repairing_employee_graph.html",context)
 
