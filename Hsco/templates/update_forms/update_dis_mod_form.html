@@ -145,7 +145,7 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Company name
+  <label class="col-md-2 control-label">Company Name
 
 
 </label>
@@ -191,7 +191,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="date_of_dispatch" placeholder="Dispatch Date" class="form-control" type="text" disabled value="{{dispatch_item.date_of_dispatch}}">
+  <input type="date" name="date_of_dispatch" placeholder="Dispatch Date" class="form-control" type="text" disabled value="{{dispatch_item.date_of_dispatch|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -397,6 +397,8 @@ color:;
 </form>
 </div>
 
+  </div>
+    </div>
   </div>
   <!-- End of Page Wrapper -->
 

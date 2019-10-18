@@ -193,7 +193,8 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="date_of_joining" placeholder="PO Number" class="form-control" value="{{employee_id.date_of_joining}}"  type="text">
+
+  <input  name="date_of_joining" placeholder="PO Number" class="form-control" value="{{employee_id.date_of_joining|date:'Y-m-d'}}"  type="text">
     </div>
   </div>
 </div>
@@ -238,6 +239,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+
   <input  name="account_no" placeholder="Account no" class="form-control" value="{{employee_id.account_no}}"  type="text">
     </div>
   </div>

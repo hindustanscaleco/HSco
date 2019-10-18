@@ -173,6 +173,10 @@ def final_repairing_report_module(request):
     return render(request,'report/final_report_rep_mod_form.html',context)
 
 
+def feedback_repairing(request):
+    return render(request,'feedback/feedback_repairing.html')
+
+
 
 
 
