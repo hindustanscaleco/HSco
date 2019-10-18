@@ -16,8 +16,6 @@ def add_customer_details(request):
 
         item.customer_name = customer_name
         item.company_name = company_name
-        item.date = address
-        item.company_name = company_name
         item.address = address
         item.contact_no = contact_no
         item.customer_email_id = customer_email_id

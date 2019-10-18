@@ -3,10 +3,12 @@ import datetime
 from django.db import models
 from django.utils import timezone
 
+from customer_app.models import Customer_Details
+
 
 class Repairing_after_sales_service(models.Model):
+    crm_no = models.ForeignKey(Customer_Details, on_delete=models.CASCADE)
     repairingnumber = models.CharField(max_length=40,null=True,blank=True) #combination of pk and 'rep'
-    customer_no = models.CharField(max_length=13,null=True,blank=True)
     previous_repairing_number = models.CharField(max_length=30,null=True,blank=True)
     in_warranty = models.CharField(default='NO',max_length=30,null=True,blank=True)
     date_of_purchase = models.DateField(default=datetime.date.today())
@@ -32,7 +34,7 @@ class Repairing_after_sales_service(models.Model):
 
 
     def __str__(self):
-        return self.customer_no
+        return self.crm_no
 
 
 class Repairing_Product(models.Model):

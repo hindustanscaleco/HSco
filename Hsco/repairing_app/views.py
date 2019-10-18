@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 
 from user_app.models import SiteUser
 
+from customer_app.models import Customer_Details
 from .forms import Repairing_Feedback_Form
 from .models import Repairing_after_sales_service, Repairing_Product, Repairing_Feedback
 from django.core.mail import send_mail
@@ -16,16 +17,28 @@ from ess_app.models import Employee_Analysis
 
 def add_repairing_details(request):
     if request.method == 'POST' or request.method == 'FILES':
+        customer_name = request.POST.get('customer_name')
+        company_name = request.POST.get('company_name')
+        address = request.POST.get('address')
+        contact_no = request.POST.get('contact_no')
+        customer_email_id = request.POST.get('customer_email_id')
+
+        item = Customer_Details()
+
+        item.customer_name = customer_name
+        item.company_name = company_name
+        item.address = address
+        item.contact_no = contact_no
+        item.customer_email_id = customer_email_id
+
+        item.save()
+
         repairingnumber = request.POST.get('repairingnumber')
-        customer_no = request.POST.get('customer_no')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
         date_of_purchase = request.POST.get('date_of_purchase')
         today_date = request.POST.get('today_date')
         name = request.POST.get('name')
-        company_name = request.POST.get('company_name')
-        phone_no = request.POST.get('phone_no')
-        customer_email_id = request.POST.get('customer_email_id')
         location = request.POST.get('location')
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
 
@@ -39,31 +52,26 @@ def add_repairing_details(request):
         delivery_by = request.POST.get('delivery_by')
         feedback_given = request.POST.get('feedback_given')
 
-        item = Repairing_after_sales_service()
+        item2 = Repairing_after_sales_service()
 
-
-        item.repairingnumber = repairingnumber
-        item.customer_no = customer_no
-        item.previous_repairing_number = previous_repairing_number
-        item.in_warranty = in_warranty
-        item.date_of_purchase = date_of_purchase
-        item.today_date = today_date
-        item.name = name
-        item.company_name = company_name
-        item.phone_no = phone_no
-        item.customer_email_id = customer_email_id
-        item.location = location
-        item.products_to_be_repaired = products_to_be_repaired
-
-        item.total_cost = total_cost
-        item.informed_on = informed_on
-        item.informed_by = informed_by
-        item.confirmed_estimate = confirmed_estimate
-        item.repaired = repaired
-        item.repaired_date = repaired_date
-        item.delivery_date = delivery_date
-        item.delivery_by = delivery_by
-        item.feedback_given = feedback_given
+        item2.repairingnumber = repairingnumber
+        item2.crm_no = Customer_Details.objects.get(id=item.pk)
+        item2.previous_repairing_number = previous_repairing_number
+        item2.in_warranty = in_warranty
+        item2.date_of_purchase = date_of_purchase
+        item2.today_date = today_date
+        item2.name = name
+        item2.location = location
+        item2.products_to_be_repaired = products_to_be_repaired
+        item2.total_cost = total_cost
+        item2.informed_on = informed_on
+        item2.informed_by = informed_by
+        item2.confirmed_estimate = confirmed_estimate
+        item2.repaired = repaired
+        item2.repaired_date = repaired_date
+        item2.delivery_date = delivery_date
+        item2.delivery_by = delivery_by
+        item2.feedback_given = feedback_given
 
         item.save()
         send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
