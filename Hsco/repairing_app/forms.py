@@ -4,7 +4,7 @@ from .models import Repairing_after_sales_service, Repairing_Feedback
 
 
 class Repairing_Feedback_Form(forms.ModelForm):
-    knowledge_of_person = forms.IntegerField(required=True,
+    satisfied_with_communication = forms.IntegerField(required=True,
                                widget=forms.TextInput(
                                    attrs={
                                        'type': 'hidden',
@@ -15,7 +15,7 @@ class Repairing_Feedback_Form(forms.ModelForm):
                                    }
                                ))
 
-    timeliness_of_person = forms.IntegerField(required=True,
+    speed_of_performance = forms.IntegerField(required=True,
                                              widget=forms.TextInput(
                                                  attrs={
                                                      'type': 'hidden',
@@ -25,7 +25,7 @@ class Repairing_Feedback_Form(forms.ModelForm):
                                                      'id': 'stars2',
                                                  }
                                              ))
-    price_of_product = forms.IntegerField(required=True,
+    price_of_reparing = forms.IntegerField(required=True,
                                              widget=forms.TextInput(
                                                  attrs={
                                                      'type': 'hidden',
