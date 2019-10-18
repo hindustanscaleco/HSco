@@ -53,6 +53,71 @@
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
 </style>
+
+                        <style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: green;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
+
+
+
             <script>
 $( document ).ready(function() {
         $('.divs').hide();
@@ -85,7 +150,7 @@ $(function() {
                 </div>
 
 
-                <div  class="col-xl-8 col-md-8 col-mb-8">
+                <div  class="col-xl-6 col-md-6 col-mb-8">
 
 
 <div class="output">
@@ -172,6 +237,45 @@ $(function() {
                                <!--</form>-->
 </div>
                 </div>
+
+                                 <div class="col-xl-3 col-md-2 col-mb-8 row" style="color: black;">
+
+                     <div class="col-xl-12 col-md-2 col-mb-8 row">
+                         <div class="col-xl-4 col-md-2 col-mb-8">
+<p>Done</p>
+                     </div>
+                     <div class="col-xl-3 col-md-2 col-mb-8">
+                         <label class="switch ">
+  <input type="checkbox" checked>
+  <span class="slider round"></span>
+</label>
+                     </div>
+                     <div class="col-xl-5 col-md-2 col-mb-8">
+                         <p> Not Done</p>
+                     </div>
+                     </div>
+
+
+                     <div class="col-xl-12 col-md-2 col-mb-8 row">
+                         <div class="col-xl-4 col-md-2 col-mb-8">
+<p>Employee</p>
+                     </div>
+                     <div class="col-xl-3 col-md-2 col-mb-8">
+                         <label class="switch ">
+  <input type="checkbox" checked>
+  <span class="slider round"></span>
+</label>
+                     </div>
+                     <div class="col-xl-5 col-md-2 col-mb-8">
+                         <p> Manager</p>
+                     </div>
+                     </div>
+
+
+
+
+                </div>
+
             </div>
 
 <div style="min-height: 26vw;">

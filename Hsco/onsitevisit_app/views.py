@@ -6,7 +6,8 @@ from .forms import add_Onsite_aftersales_service_form
 
 from .forms import Onsite_Repairing_Feedback_Form
 from .models import Onsite_aftersales_service, Onsite_Products, Onsite_Feedback
-
+from django.core.mail import send_mail
+from Hsco import settings
 
 def onsite_views(request):
     if request.method=='POST' :
@@ -119,6 +120,8 @@ def add_onsite_aftersales_service(request):
         item.feedback_given = feedback_given
 
         item.save()
+        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
+
         return redirect('/add_onsite_product/'+str(item.id))
     context={
         #'form':form,
