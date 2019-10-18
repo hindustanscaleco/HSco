@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect
 from .forms import AMC_Feedback_Form
 from .models import Amc_After_Sales, AMC_Feedback
 from django.db import connection
-
+from django.core.mail import send_mail
+from Hsco import settings
 
 
 def add_amc_after_sales(request):
@@ -57,6 +58,7 @@ def add_amc_after_sales(request):
 
 
         item.save()
+        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
 
         return redirect('/amc_views')
 
@@ -234,17 +236,17 @@ def update_amc_form(request,update_id):
 def feedback_amc(request):
     feedback_form = AMC_Feedback_Form(request.POST or None)
     if request.method == 'POST':
-        satisfied_with_communication = request.POST.get('satisfied_with_communication')
+        satisfied_with_work = request.POST.get('satisfied_with_work')
         speed_of_performance = request.POST.get('speed_of_performance')
-        price_of_reparing = request.POST.get('price_of_reparing')
+        price_of_amc = request.POST.get('price_of_amc')
         overall_interaction = request.POST.get('overall_interaction')
         about_hsco = request.POST.get('about_hsco')
         any_suggestion = request.POST.get('any_suggestion')
 
         item = AMC_Feedback()
-        item.satisfied_with_communication = satisfied_with_communication
+        item.satisfied_with_work = satisfied_with_work
         item.speed_of_performance = speed_of_performance
-        item.price_of_reparing = price_of_reparing
+        item.price_of_amc = price_of_amc
         item.overall_interaction = overall_interaction
         item.about_hsco = about_hsco
         item.any_suggestion = any_suggestion

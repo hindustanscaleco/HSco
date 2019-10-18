@@ -49,8 +49,8 @@ class AMC_Feedback(models.Model):
     speed_of_performance = models.FloatField(default=0.00)
     price_of_amc = models.FloatField(default=0.00)
     overall_interaction = models.FloatField(default=0.00)
-    about_hsco = models.CharField(max_length=60)
-    any_suggestion = models.CharField(max_length=255)
+    about_hsco = models.CharField(max_length=60, null=True, blank=True)
+    any_suggestion = models.CharField(max_length=255, null=True, blank=True)
 
 
 

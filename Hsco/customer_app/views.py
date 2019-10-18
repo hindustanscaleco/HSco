@@ -6,11 +6,16 @@ from user_app.models import SiteUser
 from dispatch_app.models import Dispatch
 from dispatch_app.models import Product_Details_Dispatch
 from ess_app.models import Employee_Analysis
+
 from .forms import Customer_Details_Form, Feedback_Form
 from .models import Customer_Details, Feedback
 from .forms import Product_Details_Form
 from .models import Product_Details
 from datetime import datetime
+from django.core.mail import send_mail
+from Hsco import settings
+import requests
+import json
 
 def add_customer_details(request):
     form = Customer_Details_Form(request.POST or None, request.FILES or None)
@@ -79,6 +84,26 @@ def add_customer_details(request):
         customer_id = Customer_Details.objects.get(id=item.pk)
         customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
         customer_id.save(update_fields=['dispatch_id_assigned'])
+
+        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
+
+
+        mobile = '+91 7757860524'  # 9766323877'
+        user_hsco = 'HSCo'
+        user = 'vikka'
+        api_hsco = 'PF8MzCBOGTopfpYFlSZT'
+        api = 'puU087yJ0uAQdhggM3T0'
+        message = 'txt'
+        senderid = 'MYTEXT'
+
+        url = "http://smshorizon.co.in/api/sendsms.php?user="+user+"&apikey="+api+"&mobile="+contact_no+"&message="+message+"&senderid="+senderid+"&type=txt"
+        payload = ""
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        x = response.text
+        print(x)
+
 
         return redirect('/add_product_details/'+str(item.id))
 
@@ -210,12 +235,6 @@ def add_product_details(request,id):
         item.save()
 
 
-        print("dispatch_id_assigned")
-        print("dispatch_id_assigned")
-        print("dispatch_id_assigned")
-        print(dispatch_id_assigned)
-        print(dispatch_id_assigned)
-        print(dispatch_id_assigned)
         dispatch_id=Dispatch.objects.get(id=dispatch_id_assigned)
         dispatch_pro = Product_Details_Dispatch()
 
@@ -349,6 +368,17 @@ def feedback_customer(request):
         'feedback_form': feedback_form,
     }
     return render(request,"feedback/feedback_customer.html",context)
+
+
+def edit_product_customer(request,id):
+    product_id = Product_Details.objects.get(id=id)
+    print(product_id)
+    context = {
+        'product_id': product_id,
+    }
+
+    return render(request,'edit_product/edit_product_customer.html',context)
+
 
 
 
