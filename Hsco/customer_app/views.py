@@ -90,7 +90,7 @@ def add_customer_details(request):
 
 def view_customer_details(request):
 
-    if request.method=='POST' :
+    if request.method == 'POST':
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
@@ -137,7 +137,7 @@ def view_customer_details(request):
             }
             return render(request, 'dashboardnew/cm.html', context)
     else:
-        cust_list=Customer_Details.objects.all()
+        cust_list=Customer_Details.objects.all().order_by('-id')
 
         # with connection.cursor() as cursor:
         #     cursor.execute(
@@ -276,10 +276,10 @@ def report(request):
         end_date = request.POST.get('date2')
         string = ','.join(selected_list)
         print(selected_list)
-        request.session['start_date']= start_date
-        request.session['end_date']= end_date
-        request.session['string']= string
-        request.session['selected_list']= selected_list
+        request.session['start_date'] = start_date
+        request.session['end_date'] = end_date
+        request.session['string'] = string
+        request.session['selected_list'] = selected_list
         return redirect('/final_report/')
     return render(request,"report/report_cust_mod_form.html",)
 

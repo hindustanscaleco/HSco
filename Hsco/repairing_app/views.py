@@ -136,7 +136,6 @@ def repairing_report_module(request):
         repair_start_date = request.POST.get('date1')
         repair_end_date = request.POST.get('date2')
         repair_string = ','.join(selected_list)
-
         request.session['start_date'] = repair_start_date
         request.session['repair_end_date'] = repair_end_date
         request.session['repair_string'] = repair_string
@@ -175,6 +174,16 @@ def final_repairing_report_module(request):
 
 def feedback_repairing(request):
     return render(request,'feedback/feedback_repairing.html')
+
+def edit_product(request,id):
+    product_id = Repairing_Product.objects.get(id=id)
+    print(product_id)
+    context = {
+            'product_id': product_id,
+    }
+
+
+    return render(request,'edit_product/edit_product_repair.html',context)
 
 
 
