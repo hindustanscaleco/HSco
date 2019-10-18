@@ -48,11 +48,59 @@ color:;
 
   }
 
+  .star-rating s:hover,
+.star-rating s.active {
+    color: gold;
+}
+
+.star-rating s{
+    color: black;
+    font-size: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 50px;
+}
+.star-rating {
+    padding: 2px;
+}
+
+.star-rating s:hover:before,
+.star-rating s.rated:before,
+.star-rating s.active:before {
+    content: "\2605";
+}
+.star-rating s:before {
+    content: "\2606";
+}
+
+
+.stars-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+
+.stars-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
 </style>
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-  {% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -65,7 +113,6 @@ color:;
 
 
         <!-- Topbar -->
-  {% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -76,7 +123,7 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
+    <form  class="well form-horizontal" action="" method="POST"   style="padding:20px;  " enctype="multipart/form-data" novalidate >{% csrf_token %}
 <fieldset>
 <div class="form-group row">
 
@@ -84,11 +131,8 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>How would you rate the knowledge of the person who spoke to you?</h5>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span>
+	<div class="star-rating"><s><s><s><s><s></s></s></s></s></s></div>
+
     </div>
   </div>
 </div>
@@ -101,11 +145,8 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>How was the rate of timeliness of the person who responded to you?</h5>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span>
+	<div class="star-rating"><s><s><s><s><s></s></s></s></s></s></div>
+
     </div>
   </div>
 </div>
@@ -116,11 +157,8 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>How were the prices of the products (as compare to others)?</h5>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span>
+	<div class="star-rating"><s><s><s><s><s></s></s></s></s></s></div>
+
     </div>
   </div>
 </div>
@@ -129,11 +167,8 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>How would you rate the overall interaction with us?</h5>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span>
+	<div class="star-rating"><s><s><s><s><s></s></s></s></s></s></div>
+
     </div>
   </div>
 </div>
@@ -200,11 +235,6 @@ color:;
 
 
 
-</fieldset>
-</form>
-</div>
-
-  </div>
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
@@ -212,6 +242,27 @@ color:;
     <i class="fas fa-angle-up"></i>
   </a>
 
+<script>
+
+$(function() {
+$("#stars").val("0");
+    $("div.star-rating > s").on("click", function(e) {
+
+    // remove all active classes first, needed if user clicks multiple times
+    $(this).closest('div').find('.active').removeClass('active');
+
+    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+    $(e.target).addClass('active');  // the element user has clicked on
+
+
+        var numStars = $(e.target).parentsUntil("div").length+1;
+        $("#stars").val(numStars);
+
+
+    });
+});
+
+</script>
 
 
   <!-- Bootstrap core JavaScript-->
