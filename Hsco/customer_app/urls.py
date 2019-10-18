@@ -3,6 +3,7 @@ from django.urls import path, include, re_path
 from .views import add_customer_details, view_customer_details, update_customer_details, manager_report, report, \
     final_report, add_product_details, employee_sales_graph, feedbacka
 from .views import feedback_customer
+from .views import edit_product_customer
 
 
 urlpatterns = [
@@ -16,6 +17,7 @@ urlpatterns = [
     path('employee_sales_graph/',employee_sales_graph , name ='employee_sales_graph'),
     path('feedback_customer/',feedback_customer , name ='feedback_customer'),
     path('add_product_details/<int:id>',add_product_details , name ='add_product_details'),
-    path('feedbacka/',feedbacka , name ='feedbacka'),
+    path('feedbacka/',feedbacka, name ='feedbacka'),
+    path('edit_product_customer/<int:id>',edit_product_customer, name = 'edit_product_customer'),
 
 ]

@@ -351,6 +351,17 @@ def feedback_customer(request):
     return render(request,"feedback/feedback_customer.html",context)
 
 
+def edit_product_customer(request,id):
+    product_id = Product_Details.objects.get(id=id)
+    print(product_id)
+    context = {
+        'product_id': product_id,
+    }
+
+    return render(request,'edit_product/edit_product_customer.html',context)
+
+
+
 
 
 

@@ -73,7 +73,6 @@ color:;
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <br>
 
           <br>
           <script>
@@ -88,8 +87,18 @@ function myFunction() {
     document.getElementById("myText8").disabled = false;
     document.getElementById("myText9").disabled = false;
     document.getElementById("myText10").disabled = false;
+    document.getElementById("myText11").disabled = false;
+    document.getElementById("myText12").disabled = false;
+    document.getElementById("myText13").disabled = false;
+    document.getElementById("myText14").disabled = false;
+    document.getElementById("myText15").disabled = false;
+    document.getElementById("myText16").disabled = false;
+    document.getElementById("myText17").disabled = false;
+    document.getElementById("myText18").disabled = false;
+
 }
 </script>
+
 <center>
          <!-- Page Heading -->
             <h1 class="h3 mb-0 text-gray-800"> Customer Product</h1>
@@ -115,7 +124,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="type_of_machine" disabled placeholder="Type of Machine" id="myText" value="{{product_id.type_of_machine}}" class="form-control" list="type_of_scale">
+    <input  type="text" name="type_of_machine" disabled placeholder="Type of Machine" id="myText" value="{{product_id.type_of_scale}}" class="form-control" list="type_of_scale">
     <datalist style="height:20px;" id="type_of_scale">
     <option value = "Digital"></option>
     <option value = "Mechanical"></option>
@@ -148,7 +157,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-      <input  type="text" disabled placeholder="Model" class="form-control" id="myText3" value="{{product_id.model}}" class="form-control" name="model" list="model">
+      <input  type="text" disabled placeholder="Model" class="form-control" id="myText3" value="{{product_id.model_of_purchase}}" class="form-control" name="model" list="model">
     <datalist style="height:20px;" id="model">
     <option value = "Table Top"></option>
     <option value = "Platform Scale"></option>
@@ -189,12 +198,12 @@ function myFunction() {
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Problem in the scale
+  <label class="col-md-2 control-label">Sub Sub Model
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-        <input  type="text" name="problem_in_scale" disabled placeholder="Problem In The Scale" id="myText5" value="{{product_id.problem_in_scale}}" class="form-control" list="problem_in_scale">
+        <input  type="text" name="problem_in_scale" disabled placeholder="Problem In The Scale" id="myText5" value="{{product_id.sub_sub_model}}" class="form-control" list="problem_in_scale">
     <datalist style="height:20px;" id="problem_in_scale">
     <option value = "Scale not turning On"></option>
     <option value = "Scale is showing incorrect weight"></option>
@@ -210,7 +219,7 @@ function myFunction() {
     </datalist>    </div>
   </div>
 
-    <label class="col-md-2 control-label">Components Replaced in Waranty(if scale in Waranty)
+    <label class="col-md-2 control-label">Serial No. on scale
 
 
 
@@ -219,7 +228,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-<input  type="text" name="components_replaced_in_warranty" disabled placeholder="Components Replaced IW" id="myText6" value="{{product_id.components_replaced_in_warranty}}" class="form-control" list="components_replaced_in_warranty">
+<input  type="text" name="components_replaced_in_warranty" disabled placeholder="Components Replaced IW" id="myText6" value="{{product_id.serial_no_scale}}" class="form-control" list="components_replaced_in_warranty">
     <datalist style="height:20px;" id="components_replaced_in_warranty">
     <option value = "Display"></option>
     <option value = "Touch Pad"></option>
@@ -243,14 +252,14 @@ function myFunction() {
 
 
   <div class="form-group row">
-  <label class="col-md-2 control-label">Components Replaced
+  <label class="col-md-2 control-label">Brand
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
 
-    <input  type="text" name="components_replaced" disabled placeholder="Components Replaced" id="myText7" value="{{product_id.components_replaced}}" class="form-control" list="components_replaced">
+    <input  type="text" name="components_replaced" disabled placeholder="Components Replaced" id="myText7" value="{{product_id.brand}}" class="form-control" list="components_replaced">
     <datalist style="height:20px;" id="components_replaced">
     <option value = "Display"></option>
     <option value = "Touch Pad"></option>
@@ -267,13 +276,13 @@ function myFunction() {
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Replaced Scale given
+    <label class="col-md-2 control-label">Capacity
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="components_replaced" disabled placeholder="Components Replaced" id="myText8" value="{{product_id.replaced_scale_given}}" class="form-control"  type="text">
+  <input  name="components_replaced" disabled placeholder="Components Replaced" id="myText8" value="{{product_id.capacity}}" class="form-control"  type="text">
     </div>
   </div>
 
@@ -281,17 +290,17 @@ function myFunction() {
 
 
   <div class="form-group row">
-  <label class="col-md-2 control-label">Replaced Scale Serial No
+  <label class="col-md-2 control-label">Units
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="Replaced_scale_serial_no" disabled placeholder="Replaced scale Serial NO" id="myText9" value="{{product_id.Replaced_scale_serial_no}}" class="form-control" type="text">
+  <input  name="Replaced_scale_serial_no" disabled placeholder="Replaced scale Serial NO" id="myText9" value="{{product_id.unit}}" class="form-control" type="text">
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Deposit Taken For Replaced Scale
+    <label class="col-md-2 control-label">Sales Person
 
 
 
@@ -304,7 +313,38 @@ function myFunction() {
   <input  name="deposite_taken_for_replaced_scale" disabled placeholder="Deposit taken for replaced Scale
 
 
-" class="form-control" id="myText10" value="{{product_id.deposite_taken_for_replaced_scale}}" type="text">
+" class="form-control" id="myText10" value="{{product_id.sales_person}}" type="text">
+    </div>
+  </div>
+
+</div>
+
+
+                <div class="form-group row">
+  <label class="col-md-2 control-label">New/Repeat Purchase
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <input  name="Replaced_scale_serial_no" disabled placeholder="Replaced scale Serial NO" id="myText11" value="{{product_id.new_repeat_purchase}}" class="form-control" type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Entered Time
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <input  name="deposite_taken_for_replaced_scale" disabled placeholder="Deposit taken for replaced Scale
+
+
+" class="form-control" id="myText12" value="{{product_id.entry_timedate}}" type="text">
     </div>
   </div>
 
@@ -320,9 +360,14 @@ function myFunction() {
 </center>
             </form>
           <br>
-        <center>
-          <button  onclick="myFunction()" class="btn btn-primary">Edit</button>
-      </center>
+
+
+<center>
+                        <button  onclick="myFunction()" class="btn btn-primary">Edit</button>
+
+</center>
+
+
 
   </div>
   <!-- End of Page Wrapper -->
