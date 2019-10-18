@@ -49,12 +49,13 @@ class Repairing_Feedback_Form(forms.ModelForm):
     class Meta:
         model = Repairing_Feedback  # model
         fields = (
-        'knowledge_of_person',
-        'timeliness_of_person',
-        'price_of_product',
+        'satisfied_with_communication',
+        'speed_of_performance',
+        'price_of_reparing',
         'overall_interaction',
         'about_hsco',
         'any_suggestion',
+
        )
 
 
