@@ -46,7 +46,7 @@ class Product_Details_Form(forms.ModelForm):
         'unit',)
 
 class Feedback_Form(forms.ModelForm):
-    stars_count = forms.IntegerField(required=True,
+    knowledge_of_person = forms.IntegerField(required=True,
                                widget=forms.TextInput(
                                    attrs={
                                        'type': 'hidden',
@@ -56,6 +56,37 @@ class Feedback_Form(forms.ModelForm):
                                        'id': 'stars',
                                    }
                                ))
+
+    timeliness_of_person = forms.IntegerField(required=True,
+                                             widget=forms.TextInput(
+                                                 attrs={
+                                                     'type': 'hidden',
+                                                     'class': '',
+                                                     'placeholder': "Stars",
+                                                     'name': 'email',
+                                                     'id': 'stars2',
+                                                 }
+                                             ))
+    price_of_product = forms.IntegerField(required=True,
+                                             widget=forms.TextInput(
+                                                 attrs={
+                                                     'type': 'hidden',
+                                                     'class': '',
+                                                     'placeholder': "Stars",
+                                                     'name': 'email',
+                                                     'id': 'stars3',
+                                                 }
+                                             ))
+    overall_interaction = forms.IntegerField(required=True,
+                                             widget=forms.TextInput(
+                                                 attrs={
+                                                     'type': 'hidden',
+                                                     'class': '',
+                                                     'placeholder': "Stars",
+                                                     'name': 'email',
+                                                     'id': 'stars4',
+                                                 }
+                                             ))
 
     class Meta:
         model = Feedback  # model

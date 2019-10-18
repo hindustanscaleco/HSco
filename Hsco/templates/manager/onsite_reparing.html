@@ -89,15 +89,15 @@ $(function() {
 
 
                 <div  class="col-xl-8 col-md-8 col-mb-8">
-                           <form method="POST">
 
 
 
 <div class="output">
+                               <form method="POST">{% csrf_token %}
   <div id="d1" class="divs d1 row">
 
       <div class="col-xl-4 col-md-4 col-mb-4">
-                <input type="date" placeholder="Search 1" class="form-control">
+                <input name="date1" type="date" placeholder="Search 1" class="form-control">
 
       </div>
 
@@ -107,68 +107,75 @@ $(function() {
       </div>
 
       <div class="col-xl-4 col-md-4 col-mb-4">
-                <input type="date" placeholder="Search 1" class="form-control">
+                <input name="date2" type="date" placeholder="Search 1" class="form-control">
 
       </div>
       <div class="col-xl-2 col-md-2 col-mb-2">
-                <button class="btn btn-primary">Search</button></div>
+                <button name="submit1" type="submit" class="btn btn-primary">Search</button></div>
 
       </div>
+                               </form>
 
-
-
+                               <form method="POST">{% csrf_token %}
   <div id="d2" class="divs d2">
-      <input type="number" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
+      <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button class="btn btn-primary">Search</button></div>
+      <button type="submit" name="submit2" class="btn btn-primary">Search</button></div>
+                               </form>
 
+                               <form method="POST">{% csrf_token%}
 
   <div id="d3" class="divs d3">
-      <input type="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
+      <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button class="btn btn-primary">Search</button></div>
-
+      <button name="submit3" class="btn btn-primary">Search</button></div>
+</form>
+                               <form method="POST">{% csrf_token%}
 
     <div id="d4" class="divs d4">
-      <input type="text" placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
+      <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button class="btn btn-primary">Search</button></div>
-
-
+      <button name="submit4" class="btn btn-primary">Search</button></div>
+</form>
+                               <form method="POST">{% csrf_token%}
   <div id="d5" class="divs d5">
-      <input type="text" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
+      <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button class="btn btn-primary">Search</button></div>
+      <button name="submit5" class="btn btn-primary">Search</button></div>
+</form>
 
+                               <form method="POST">{% csrf_token%}
 
     <div id="d6" class="divs d6">
-      <input type="text" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
+      <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button class="btn btn-primary">Search</button></div>
+      <button name="submit6" class="btn btn-primary">Search</button></div>
+</form>
 
+                               <!--<form method="POST">{% csrf_token%}-->
 
-  <div id="d7" class="divs d7 row" style="width: 50%;">
-      <div class="col-xl-4 col-md-4 col-mb-4">
-                <input type="text" placeholder="CRM No." class="form-control">
+  <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
+      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
+                <!--<input name="crm1" type="text" placeholder="CRM No." class="form-control">-->
 
-      </div>
+      <!--</div>-->
 
-      <div class="col-xl-0 col-md-0 col-mb-0">
-                <p style="font-weight: 600;">_</p>
+      <!--<div class="col-xl-0 col-md-0 col-mb-0">-->
+                <!--<p style="font-weight: 600;">_</p>-->
 
-      </div>
+      <!--</div>-->
 
-      <div class="col-xl-4 col-md-4 col-mb-4">
-                <input type="text" placeholder="CEM No." class="form-control">
+      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
+                <!--<input name="crm2" type="text" placeholder="CRM No." class="form-control">-->
 
-      </div>
-      <div class="col-xl-2 col-md-2 col-mb-2">
-                <button class="btn btn-primary">Search</button></div>
+      <!--</div>-->
+      <!--<div class="col-xl-2 col-md-2 col-mb-2">-->
+                <!--<button class="btn btn-primary">Search</button></div>-->
 
-      </div>
+      <!--</div>-->
+                               <!--</form>-->
 </div>
 
- </form>
 
                 </div>
 

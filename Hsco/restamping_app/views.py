@@ -5,11 +5,60 @@ from django.shortcuts import render, redirect
 from .models import Restamping_after_sales_service, Restamping_Product
 
 def restamping_manager(request):
-    restamp_list= Restamping_after_sales_service.objects.all()
-    context={
-        'restamp_list':restamp_list,
-    }
-    return render(request, "manager/restamping_manager.html",context)
+    if request.method == 'POST':
+        if 'submit1' in request.POST:
+            start_date = request.POST.get('date1')
+            end_date = request.POST.get('date2')
+            restamp_list = Restamping_after_sales_service.objects.filter(entry_timedate__range=[start_date, end_date])
+            context = {
+                'restamp_list': restamp_list,
+            }
+            return render(request, "manager/restamping_manager.html", context)
+        elif 'submit2' in request.POST:
+            contact = request.POST.get('contact')
+            restamp_list = Restamping_after_sales_service.objects.filter(mobile_no=contact)
+            context = {
+                'restamp_list': restamp_list,
+            }
+            return render(request, "manager/restamping_manager.html", context)
+
+        elif 'submit3' in request.POST:
+            email = request.POST.get('email')
+            restamp_list = Restamping_after_sales_service.objects.filter(customer_email_id=email)
+            context = {
+                'restamp_list': restamp_list,
+            }
+            return render(request, "manager/restamping_manager.html", context)
+        elif 'submit4' in request.POST:
+            customer = request.POST.get('customer')
+            restamp_list = Restamping_after_sales_service.objects.filter(name=customer)
+            context = {
+                'restamp_list': restamp_list,
+            }
+            return render(request, "manager/restamping_manager.html", context)
+
+        elif 'submit5' in request.POST:
+            company = request.POST.get('company')
+            restamp_list = Restamping_after_sales_service.objects.filter(company_name=company)
+            context = {
+                'restamp_list': restamp_list,
+            }
+            return render(request, "manager/restamping_manager.html", context)
+        elif request.method == 'POST' and 'submit6' in request.POST:
+            crm = request.POST.get('crm')
+            restamp_list = Restamping_after_sales_service.objects.filter(crn_number=crm)
+            context = {
+                'restamp_list': restamp_list,
+            }
+            return render(request, "manager/restamping_manager.html", context)
+    else:
+        restamp_list = Restamping_after_sales_service.objects.all()
+
+        context = {
+            'restamp_list': restamp_list,
+        }
+        return render(request, "manager/restamping_manager.html", context)
+
 
 def restamping_after_sales_service(request):
     # form = Customer_Details_Form(request.POST or None, request.FILES or None)

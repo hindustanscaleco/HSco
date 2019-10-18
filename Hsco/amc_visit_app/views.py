@@ -111,13 +111,59 @@ def final_report_amc(request):
 
 
 def amc_views(request):
+    if request.method=='POST' :
+        if'submit1' in request.POST:
+            start_date = request.POST.get('date1')
+            end_date = request.POST.get('date2')
+            amc_list = Amc_After_Sales.objects.filter(entry_timedate__range=[start_date, end_date])
+            context = {
+                'amc_list': amc_list,
+            }
+            return render(request, "manager/amc_view.html", context)
+        elif 'submit2' in request.POST:
+            contact = request.POST.get('contact')
+            amc_list = Amc_After_Sales.objects.filter(customer_no=contact)
+            context = {
+                'amc_list': amc_list,
+            }
+            return render(request, "manager/amc_view.html",context )
 
-    amc_list=Amc_After_Sales.objects.all()
-    context={
-        'amc_list':amc_list
-    }
-    
-    return render(request,"manager/amc_view.html",)
+        elif 'submit3' in request.POST:
+            email = request.POST.get('email')
+            dispatch_list = Amc_After_Sales.objects.filter(customer_email_id=email)
+            context = {
+                'dispatch_list': dispatch_list,
+            }
+            return render(request, "manager/amc_view.html",context )
+        elif 'submit4' in request.POST:
+            customer = request.POST.get('customer')
+            dispatch_list = Amc_After_Sales.objects.filter(customer_name=customer)
+            context = {
+                'dispatch_list': dispatch_list,
+            }
+            return render(request, "manager/amc_view.html",context )
+
+        elif  'submit5' in request.POST:
+            company = request.POST.get('company')
+            dispatch_list = Amc_After_Sales.objects.filter(company_name=company)
+            context = {
+                'dispatch_list': dispatch_list,
+            }
+            return render(request, "manager/amc_view.html",context )
+        elif request.method=='POST' and 'submit6' in request.POST:
+            crm = request.POST.get('crm')
+            dispatch_list = Amc_After_Sales.objects.filter(crn_number=crm)
+            context = {
+                'dispatch_list': dispatch_list,
+            }
+            return render(request, "manager/amc_view.html",context )
+    else:
+        amc_list = Amc_After_Sales.objects.all()
+
+        context = {
+            'amc_list': amc_list,
+        }
+        return render(request, "manager/amc_view.html", )
 
 
 def amc_logs(request):

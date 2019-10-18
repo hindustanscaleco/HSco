@@ -1,8 +1,11 @@
 from django.db import connection
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from user_app.models import SiteUser
-from .models import Repairing_after_sales_service, Repairing_Product
+
+from .forms import Repairing_Feedback_Form
+from .models import Repairing_after_sales_service, Repairing_Product, Repairing_Feedback
 
 
 def add_repairing_details(request):
@@ -117,11 +120,60 @@ def update_repairing_details(request,id):
 
 
 def repairing_module_home(request):
-    repair_list = Repairing_after_sales_service.objects.all()
-    context = {
-        'repair_list': repair_list,
-    }
-    return render(request,'dashboardnew/repairing_module_home.html',context)
+    if request.method=='POST' :
+        if'submit1' in request.POST:
+            start_date = request.POST.get('date1')
+            end_date = request.POST.get('date2')
+            repair_list = Repairing_after_sales_service.objects.filter(entry_timedate__range=[start_date, end_date])
+            context = {
+                'repair_list': repair_list,
+            }
+            return render(request, 'dashboardnew/repairing_module_home.html', context)
+        elif 'submit2' in request.POST:
+            contact = request.POST.get('contact')
+            repair_list = Repairing_after_sales_service.objects.filter(phone_no=contact)
+            context = {
+                'repair_list': repair_list,
+            }
+            return render(request, 'dashboardnew/repairing_module_home.html', context)
+
+        elif 'submit3' in request.POST:
+            email = request.POST.get('email')
+            repair_list = Repairing_after_sales_service.objects.filter(customer_email_id=email)
+            context = {
+                'repair_list': repair_list,
+            }
+            return render(request, 'dashboardnew/repairing_module_home.html', context)
+        elif 'submit4' in request.POST:
+            customer = request.POST.get('customer')
+            repair_list = Repairing_after_sales_service.objects.filter(name=customer)
+            context = {
+                'repair_list': repair_list,
+            }
+            return render(request, 'dashboardnew/repairing_module_home.html', context)
+
+        elif  'submit5' in request.POST:
+            company = request.POST.get('company')
+            repair_list = Repairing_after_sales_service.objects.filter(company_name=company)
+            context = {
+                'repair_list': repair_list,
+            }
+            return render(request, 'dashboardnew/repairing_module_home.html', context)
+        elif request.method=='POST' and 'submit6' in request.POST:
+            crm = request.POST.get('crm')
+            repair_list = Repairing_after_sales_service.objects.filter(crn_number=crm)
+            context = {
+                'repair_list': repair_list,
+            }
+            return render(request, 'dashboardnew/repairing_module_home.html', context)
+    else:
+        repair_list = Repairing_after_sales_service.objects.all()
+
+
+        context = {
+            'repair_list': repair_list,
+        }
+        return render(request, 'dashboardnew/repairing_module_home.html', context)
 
 def manager_repairing_module_home(request):
     repair_employee_list = SiteUser.objects.all()
@@ -173,6 +225,28 @@ def final_repairing_report_module(request):
 
 
 def feedback_repairing(request):
+    feedback_form = Repairing_Feedback_Form(request.POST or None, request.FILES or None)
+    if request.method == 'POST':
+        knowledge_of_person = request.POST.get('knowledge_of_person')
+        timeliness_of_person = request.POST.get('timeliness_of_person')
+        price_of_product = request.POST.get('price_of_product')
+        overall_interaction = request.POST.get('overall_interaction')
+        about_hsco = request.POST.get('about_hsco')
+        any_suggestion = request.POST.get('any_suggestion')
+
+        item = Repairing_Feedback()
+        item.knowledge_of_person = knowledge_of_person
+        item.timeliness_of_person = timeliness_of_person
+        item.price_of_product = price_of_product
+        item.overall_interaction = overall_interaction
+        item.about_hsco = about_hsco
+        item.any_suggestion = any_suggestion
+        item.save()
+
+        return HttpResponse('Feedback Submitted!!!')
+    context = {
+        'feedback_form': feedback_form,
+    }
     return render(request,'feedback/feedback_repairing.html')
 
 def edit_product(request,id):

@@ -99,11 +99,60 @@ def final_report_dis_mod(request):
     return render(request,"report/final_report_dis_mod.html",context)
 
 def dispatch_view(request):
-    dispatch_list=Dispatch.objects.all()
-    context={
-        'dispatch_list':dispatch_list
-    }
-    return render(request, "manager/dispatch_view.html",context)
+    if request.method=='POST' :
+        if'submit1' in request.POST:
+            start_date = request.POST.get('date1')
+            end_date = request.POST.get('date2')
+            dispatch_list = Dispatch.objects.filter(entry_timedate__range=[start_date, end_date])
+            context = {
+                'dispatch_list': dispatch_list,
+            }
+            return render(request, "manager/dispatch_view.html", context)
+        elif 'submit2' in request.POST:
+            contact = request.POST.get('contact')
+            dispatch_list = Dispatch.objects.filter(customer_no=contact)
+            context = {
+                'dispatch_list': dispatch_list,
+            }
+            return render(request, "manager/dispatch_view.html", context)
+
+        elif 'submit3' in request.POST:
+            email = request.POST.get('email')
+            dispatch_list = Dispatch.objects.filter(customer_email=email)
+            context = {
+                'dispatch_list': dispatch_list,
+            }
+            return render(request, "manager/dispatch_view.html", context)
+        elif 'submit4' in request.POST:
+            customer = request.POST.get('customer')
+            dispatch_list = Dispatch.objects.filter(customer_name=customer)
+            context = {
+                'dispatch_list': dispatch_list,
+            }
+            return render(request, "manager/dispatch_view.html", context)
+
+        elif  'submit5' in request.POST:
+            company = request.POST.get('company')
+            dispatch_list = Dispatch.objects.filter(company_name=company)
+            context = {
+                'dispatch_list': dispatch_list,
+            }
+            return render(request, "manager/dispatch_view.html", context)
+        elif request.method=='POST' and 'submit6' in request.POST:
+            crm = request.POST.get('crm')
+            dispatch_list = Dispatch.objects.filter(crn_number=crm)
+            context = {
+                'dispatch_list': dispatch_list,
+            }
+            return render(request, "manager/dispatch_view.html", context)
+    else:
+        dispatch_list = Dispatch.objects.all()
+
+        context = {
+            'dispatch_list': dispatch_list,
+        }
+        return render(request, "manager/dispatch_view.html", context)
+
 
 def update_dispatch_details(request,update_id):
     dispatch_item=Dispatch.objects.get(id=update_id)
