@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from Hsco import settings
 from .models import Restamping_after_sales_service, Restamping_Product
+import requests
+import json
 
 def restamping_manager(request):
     if request.method == 'POST':
@@ -70,6 +72,7 @@ def restamping_after_sales_service(request):
         address = request.POST.get('address')
         today_date = request.POST.get('today_date')
         mobile_no = request.POST.get('mobile_no')
+        customer_email_id = request.POST.get('customer_email_id')
 
         new_serial_no = request.POST.get('new_serial_no')
         brand = request.POST.get('brand')
@@ -84,14 +87,30 @@ def restamping_after_sales_service(request):
         item.today_date = today_date
         item.company_name = company_name
         item.mobile_no = mobile_no
-
+        item.customer_email_id = customer_email_id
         item.new_serial_no = new_serial_no
         item.brand = brand
         item.scale_delivery_date = scale_delivery_date
 
 
         item.save()
+        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
 
+        mobile = '+91 7757860524'  # 9766323877'
+        user_hsco = 'HSCo'
+        user = 'vikka'
+        api_hsco = 'PF8MzCBOGTopfpYFlSZT'
+        api = 'puU087yJ0uAQdhggM3T0'
+        message = 'txt'
+        senderid = 'MYTEXT'
+
+        url = "http://smshorizon.co.in/api/sendsms.php?user=" + user + "&apikey=" + api + "&mobile=" + mobile_no + "&message=" + message + "&senderid=" + senderid + "&type=txt"
+        payload = ""
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        x = response.text
+        print(x)
 
         return redirect('/restamping_product/'+str(item.id))
 
@@ -101,7 +120,6 @@ def restamping_product(request,id):
     restamping_id = Restamping_after_sales_service.objects.get(id=id).id
 
     if request.method=='POST':
-        customer_email_id = request.POST.get('customer_email_id')
         product_to_stampped = request.POST.get('product_to_stampped')
         scale_type = request.POST.get('scale_type')
         sub_model = request.POST.get('sub_model')
@@ -112,7 +130,6 @@ def restamping_product(request,id):
 
         item=Restamping_Product()
 
-        item.customer_email_id = customer_email_id
         item.product_to_stampped = product_to_stampped
         item.scale_type = scale_type
         item.sub_model = sub_model
