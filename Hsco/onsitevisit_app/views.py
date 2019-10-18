@@ -155,8 +155,10 @@ def add_onsite_product(request,id):
         item.components_replaced_in_warranty = components_replaced_in_warranty
         item.components_replaced = components_replaced
         item.cost = cost
-
         item.save()
+
+
+
         return redirect('/update_onsite_details/'+str(id))
     context = {
         'onsite_id': onsite_id,
@@ -164,12 +166,88 @@ def add_onsite_product(request,id):
     return render(request,"forms/onsite_product.html",context)
 
 def update_onsite_details(request,id):
-    onsite_product_list = Onsite_Products.objects.filter(onsite_repairing_id=id)
-    print(onsite_product_list)
     onsite_id = Onsite_aftersales_service.objects.get(id=id)
+    if request.method == 'POST' or request.method == 'FILES':
+        repairingno = request.POST.get('repairingno')
+        customer_name = request.POST.get('customer_name')
+        company_name = request.POST.get('company_name')
+        customer_no = request.POST.get('customer_no')
+        previous_repairing_number = request.POST.get('previous_repairing_number')
+        in_warranty = request.POST.get('in_warranty')
+        phone_no = request.POST.get('phone_no')
+        customer_email_id = request.POST.get('customer_email_id')
+        date_of_complaint_received = request.POST.get('date_of_complaint_received')
+        customer_address = request.POST.get('customer_address')
+        complaint_received_by = request.POST.get('complaint_received_by')
+        nearest_railwaystation = request.POST.get('nearest_railwaystation')
+        train_line = request.POST.get('train_line')
+        products_to_be_repaired = request.POST.get('products_to_be_repaired')
+
+        visiting_charges_told_customer = request.POST.get('visiting_charges_told_customer')
+        total_cost = request.POST.get('components_replaced_in_warranty')
+        complaint_assigned_to = request.POST.get('complaint_assigned_to')
+        complaint_assigned_on = request.POST.get('complaint_assigned_on')
+        time_taken_destination_return_office_min = request.POST.get('time_taken_destination_return_office_min')
+        notes = request.POST.get('notes')
+        feedback_given = request.POST.get('feedback_given')
+
+
+        item = onsite_id
+
+        item.repairingno = repairingno
+        item.customer_name = customer_name
+        item.company_name = company_name
+        item.customer_no = customer_no
+        item.previous_repairing_number = previous_repairing_number
+        item.in_warranty = in_warranty
+        item.phone_no = phone_no
+        item.customer_email_id = customer_email_id
+        item.date_of_complaint_received = date_of_complaint_received
+        item.customer_address = customer_address
+        item.complaint_received_by = complaint_received_by
+        item.nearest_railwaystation = nearest_railwaystation
+        item.train_line = train_line
+        item.products_to_be_repaired = products_to_be_repaired
+        item.visiting_charges_told_customer = visiting_charges_told_customer
+        item.total_cost = total_cost
+        item.complaint_assigned_to = complaint_assigned_to
+        item.complaint_assigned_on = complaint_assigned_on
+        item.time_taken_destination_return_office_min = time_taken_destination_return_office_min
+        item.notes = notes
+        item.feedback_given = feedback_given
+
+        #item.save(update_fields=['onsite_repairing_id_id', ]),
+        item.save(update_fields=['repairingno', ]),
+        item.save(update_fields=['customer_name', ]),
+        item.save(update_fields=['company_name', ]),
+        item.save(update_fields=['customer_no', ]),
+        item.save(update_fields=['previous_repairing_number', ]),
+        item.save(update_fields=['in_warranty', ]),
+        item.save(update_fields=['phone_no', ]),
+        item.save(update_fields=['customer_email_id', ]),
+        item.save(update_fields=['date_of_complaint_received', ]),
+        item.save(update_fields=['customer_address', ]),
+        item.save(update_fields=['complaint_received_by', ]),
+        item.save(update_fields=['nearest_railwaystation', ]),
+        item.save(update_fields=['train_line', ]),
+        item.save(update_fields=['products_to_be_repaired', ]),
+        item.save(update_fields=['visiting_charges_told_customer', ]),
+        item.save(update_fields=['total_cost', ]),
+        item.save(update_fields=['complaint_assigned_to', ]),
+        item.save(update_fields=['complaint_assigned_on', ]),
+        item.save(update_fields=['time_taken_destination_return_office_min', ]),
+        item.save(update_fields=['notes', ]),
+        item.save(update_fields=['feedback_given', ]),
+        onsite_id = Onsite_aftersales_service.objects.get(id=id)
+
+        context = {
+            'onsite_id': onsite_id,
+        }
+
+        return render(request, 'update_forms/update_onsite_rep_form.html', context)
+
 
     context={
-        'onsite_product_list':onsite_product_list,
         'onsite_id':onsite_id,
     }
 

@@ -50,6 +50,20 @@ color:;
   }
 
 </style>
+ <script> function disable() {
+  document.getElementById("name").disabled = true;
+  }
+
+  function enable() {
+   document.getElementById("name").disabled = false;
+  }
+
+var form = document.getElementById("contact_form");
+var elements = form.elements;
+for (var i = 0, len = elements.length; i < len; ++i) {
+    elements[i].disabled = true;
+}
+</script>
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -70,12 +84,40 @@ color:;
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid" >
-         <center>  <h1>Dispatch Module</h1>  </center>
+<div class="container-fluid" >
 
+          <div class="row" style="padding:20px;">
+               <label class="col-md-6 control-label">Dispatch Module</label>
 
+          </div>
 
 <br>
+<script>
+function myFunction() {
+  document.getElementById("myText").disabled = false;
+    document.getElementById("myText2").disabled = false;
+    document.getElementById("myText3").disabled = false;
+    document.getElementById("myText4").disabled = false;
+    document.getElementById("myText5").disabled = false;
+    document.getElementById("myText6").disabled = false;
+    document.getElementById("myText7").disabled = false;
+    document.getElementById("myText8").disabled = false;
+    document.getElementById("myText9").disabled = false;
+    document.getElementById("myText10").disabled = false;
+    document.getElementById("myText11").disabled = false;
+    document.getElementById("myText12").disabled = false;
+    document.getElementById("myText13").disabled = false;
+    document.getElementById("myText14").disabled = false;
+    document.getElementById("myText15").disabled = false;
+    document.getElementById("myText16").disabled = false;
+    document.getElementById("myText17").disabled = false;
+    document.getElementById("myText18").disabled = false;
+    document.getElementById("myText19").disabled = false;
+    document.getElementById("myText20").disabled = false;
+    document.getElementById("myText21").disabled = false;
+
+}
+</script>
 
 
     <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;" enctype="multipart/form-data">{% csrf_token %}
@@ -89,7 +131,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="dispatch_id" placeholder="Dispatch ID" class="form-control"  type="text" disabled value="{{dispatch_item.dispatch_id}}">
+  <input  name="dispatch_id" placeholder="Dispatch ID" id="myText" class="form-control"  type="text" disabled value="{{dispatch_item.dispatch_id}}">
     </div>
   </div>
 
@@ -100,7 +142,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="customer_no" placeholder="Customer number" class="form-control" type="text" disabled value="{{dispatch_item.customer_no}}">
+  <input  name="customer_no" placeholder="Customer number" class="form-control" type="text" id="myText2" disabled value="{{dispatch_item.customer_no}}">
     </div>
   </div>
 
@@ -119,7 +161,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="customer_email" placeholder="Customer Email ID" class="form-control" type="text" disabled value="{{dispatch_item.customer_email}}">
+  <input  name="customer_email" placeholder="Customer Email ID" class="form-control" type="text" id="myText3" disabled value="{{dispatch_item.customer_email}}">
     </div>
   </div>
 
@@ -131,7 +173,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_name" placeholder="Customer Name" class="form-control"  type="text" disabled value="{{dispatch_item.customer_name}}">
+  <input  name="customer_name" placeholder="Customer Name" class="form-control"  type="text" id="myText4" disabled value="{{dispatch_item.customer_name}}">
     </div>
   </div>
 
@@ -149,7 +191,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company name" class="form-control"  type="text" disabled value="{{dispatch_item.company_name}}">
+  <input  name="company_name" placeholder="Company name" class="form-control"  type="text" id="myText5" disabled value="{{dispatch_item.company_name}}">
     </div>
   </div>
 
@@ -160,7 +202,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<textarea name="customer_address" class="form-control" disabled value="{{dispatch_item.customer_address}}"></textarea>    </div>
+<textarea name="customer_address" class="form-control" id="myText6" disabled value="{{dispatch_item.customer_address}}"></textarea>    </div>
   </div>
 
 </div>
@@ -188,15 +230,14 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="date_of_dispatch" placeholder="Dispatch Date" class="form-control" type="text" disabled value="{{dispatch_item.date_of_dispatch|date:'Y-m-d'}}">
+  <input type="date" name="date_of_dispatch" id="myText7" placeholder="Dispatch Date" class="form-control" type="text" disabled value="{{dispatch_item.date_of_dispatch|date:'Y-m-d'}}">
     </div>
   </div>
 
-</div>
 
 
 
-<div class="form-group row">
+
   <label class="col-md-2 control-label">Dispatched By
 
 
@@ -206,11 +247,14 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="dispatch_by" placeholder="Dispatched By" class="form-control"  type="text" disabled value="{{dispatch_item.dispatch_by}}">
+  <input  name="dispatch_by" placeholder="Dispatched By" id="myText8" class="form-control"  type="text" disabled value="{{dispatch_item.dispatch_by}}">
 
-
+  </div>
      </div>
   </div>
+
+
+  <div class="form-group row">
 
     <label class="col-md-2 control-label">Packed by
 
@@ -220,15 +264,14 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="packed_by" placeholder="Packed by" class="form-control"  type="text" disabled value="{{dispatch_item.packed_by}}">
+  <input name="packed_by" placeholder="Packed by" id="myText9" class="form-control"  type="text" disabled value="{{dispatch_item.packed_by}}">
     </div>
   </div>
 
-</div>
 
 
 
-<div class="form-group row">
+
   <label class="col-md-2 control-label">Hamal Name
 
 
@@ -237,9 +280,15 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="hamal_name" placeholder="Hamal Name" class="form-control"  type="text" disabled value="{{dispatch_item.hamal_name}}">
+  <input  name="hamal_name" placeholder="Hamal Name" class="form-control" id="myText10" type="text" disabled value="{{dispatch_item.hamal_name}}">
     </div>
   </div>
+  </div>
+
+
+  <div class="form-group row">
+
+
 
     <label class="col-md-2 control-label">No. of Bundles
 
@@ -249,15 +298,14 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="no_bundles" placeholder="No. of Bundles" class="form-control"  type="text" disabled value="{{dispatch_item.no_bundles}}">
+  <input  name="no_bundles" placeholder="No. of Bundles" class="form-control" id="myText11" type="text" disabled value="{{dispatch_item.no_bundles}}">
     </div>
   </div>
 
-</div>
 
 
 
-<div class="form-group row">
+
   <label class="col-md-2 control-label">Transport  Name
 
 
@@ -266,9 +314,13 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-car faicons"></i></span>
-  <input  name="transport_name" placeholder="Transport Name" class="form-control"  type="text" disabled value="{{dispatch_item.transport_name}}">
+  <input  name="transport_name" placeholder="Transport Name" class="form-control" id="myText12" type="text" disabled value="{{dispatch_item.transport_name}}">
     </div>
   </div>
+  </div>
+
+  <div class="form-group row">
+
 
     <label class="col-md-2 control-label">LR NO
 
@@ -278,15 +330,14 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="lr_no" placeholder="LR NO" class="form-control" type="text" disabled value="{{dispatch_item.lr_no}}">
+  <input  name="lr_no" placeholder="LR NO" class="form-control" type="text" id="myText13" disabled value="{{dispatch_item.lr_no}}">
     </div>
   </div>
 
-</div>
 
 
 
-<div class="form-group row">
+
   <label class="col-md-2 control-label">Photo of LR No
 
 
@@ -295,9 +346,12 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-drivers-license faicons"></i></span>
-  <input  name="photo_lr_no" placeholder="Photo of LR No" class="form-control" type="file" disabled value="{{dispatch_item.photo_lr_no}}">
+  <input  name="photo_lr_no" placeholder="Photo of LR No" class="form-control" id="myText14" type="file" disabled value="{{dispatch_item.photo_lr_no}}">
     </div>
   </div>
+  </div>
+
+<div class="form-group row">
 
     <label class="col-md-2 control-label">Channel of Dispatch
 
@@ -307,15 +361,14 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch" class="form-control" type="text" disabled value="{{dispatch_item.channel_of_dispatch}}">
+  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch" class="form-control" id="myText15" type="text" disabled value="{{dispatch_item.channel_of_dispatch}}">
     </div>
   </div>
 
-</div>
 
 
 
-<div class="form-group row">
+
   <label class="col-md-2 control-label">Notes
 
 
@@ -324,7 +377,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <input  name="notes" placeholder="Notes" class="form-control" type="text" disabled value="{{dispatch_item.notes}}">
+  <input  name="notes" placeholder="Notes" class="form-control" type="text" id="myText16" disabled value="{{dispatch_item.notes}}">
     </div>
   </div>
 </div>
@@ -333,19 +386,21 @@ color:;
 
 
 <center>
-	<button class="btn btn-primary">Save</button>
-
+<a href="update_dispatch_details/"><button class="btn btn-primary">Save</button></a>
 </center>
-  <br>
-  <br>
-  <hr>
-
-  <br>
-  <br>
 
 
+</fieldset>
+</form>
+          <center>
+                      <button  onclick="myFunction()" class="btn btn-primary">Edit</button>
 
-       <h1 style="font-size: 25px; color: black; text-align: center;"> Added Product List </h1>
+          </center>
+
+          <br>
+</div>
+
+
   <br>
     {% for list in product_list %}
       <div class="col-xl-12 col-md-12 mb-12">
@@ -390,8 +445,7 @@ color:;
 
 
 
-</fieldset>
-</form>
+
 </div>
 
   </div>
@@ -422,6 +476,27 @@ color:;
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+      <script>
+
+$(function() {
+$("#stars").val("0");
+    $("div.star-rating > s").on("click", function(e) {
+
+    // remove all active classes first, needed if user clicks multiple times
+    $(this).closest('div').find('.active').removeClass('active');
+
+    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+    $(e.target).addClass('active');  // the element user has clicked on
+
+
+        var numStars = $(e.target).parentsUntil("div").length+1;
+        $("#stars").val(numStars);
+
+
+    });
+});
+
+</script>
 
 </body>
 
