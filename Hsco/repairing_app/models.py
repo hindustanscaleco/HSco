@@ -8,11 +8,12 @@ from customer_app.models import Customer_Details
 
 class Repairing_after_sales_service(models.Model):
     crm_no = models.ForeignKey(Customer_Details, on_delete=models.CASCADE)
+
     repairingnumber = models.CharField(max_length=40,null=True,blank=True) #combination of pk and 'rep'
     previous_repairing_number = models.CharField(max_length=30,null=True,blank=True)
     in_warranty = models.CharField(default='NO',max_length=30,null=True,blank=True)
-    date_of_purchase = models.DateField(default=datetime.date.today())
-    today_date = models.DateField(default=datetime.date.today())
+    date_of_purchase = models.DateField(default=datetime.date.today)
+    today_date = models.DateField(default=datetime.date.today)
     name = models.CharField(max_length=60,null=True,blank=True)
     company_name = models.CharField(max_length=80,null=True,blank=True)
     phone_no = models.CharField(max_length=13,null=True,blank=True)
@@ -25,8 +26,8 @@ class Repairing_after_sales_service(models.Model):
     informed_by = models.CharField(max_length=60,null=True,blank=True)
     confirmed_estimate = models.CharField(default='NO',max_length=30,null=True,blank=True)
     repaired = models.CharField(default='NO',max_length=30,null=True,blank=True)
-    repaired_date = models.DateField(default=datetime.date.today())
-    delivery_date = models.DateField(default=datetime.date.today())
+    repaired_date = models.DateField(default=datetime.date.today)
+    delivery_date = models.DateField(default=datetime.date.today)
     delivery_by = models.CharField(max_length=50,null=True,blank=True)
     feedback_given = models.CharField(default='NO',max_length=10,null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)

@@ -103,7 +103,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="name" placeholder="Full Name"  class="form-control" value="{{name}}" type="text">
+  <input  name="name" placeholder="Full Name"  class="form-control" value="{{user_id.name}}" type="text">
     </div>
   </div>
 
@@ -113,7 +113,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="email" placeholder="Email" class="form-control" value="{{email}}" type="text">
+  <input  name="email" placeholder="Email" class="form-control" value="{{user_id.email}}" type="text">
     </div>
   </div>
 </div>
@@ -128,7 +128,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input type="text" class="form-control" value="{{mobile}}" name="mobile" placeholder="Mobile">
+  <input type="text" class="form-control" value="{{user_id.mobile}}" name="mobile" placeholder="Mobile">
     </div>
   </div>
 
@@ -157,7 +157,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input  name="group" placeholder="Group" class="form-control" value="{{group}}"  type="text">
+  <input  name="group" placeholder="Group" class="form-control" value="{{user_id.group}}"  type="text">
     </div>
   </div>
 
@@ -167,7 +167,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
     <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-    <select name="{{is_deleted}}" class="form-control">
+    <select name="{{user_id.is_deleted}}" class="form-control">
   <option value="Yes">Yes</option>
   <option value="No">No</option>
 </select>
@@ -201,7 +201,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input  name="group" placeholder="Modules Assigned" class="form-control" value="{{modules_assigned}}"  type="text">
+  <input  name="group" placeholder="Modules Assigned" class="form-control" value="{{user_id.modules_assigned}}"  type="text">
     </div>
   </div>
 
@@ -213,7 +213,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="date_of_joining" placeholder="PO Number" class="form-control" value="{{date_of_joining}}"  type="date">
+  <input  name="date_of_joining" placeholder="PO Number" class="form-control" value="{{user_id.date_of_joining|date:'Y-m-d'}}"  type="date">
     </div>
   </div>
 </div>
@@ -227,7 +227,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-    <input type="text" name="average_rating" id="fileToUpload" placeholder="Average Rating" class="form-control" value="{{average_rating}}">
+    <input type="text" name="average_rating" id="fileToUpload" placeholder="Average Rating" class="form-control" value="{{user_id.average_rating}}">
     </div>
   </div>
 
@@ -242,7 +242,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="bank_name" placeholder="Bank Name" class="form-control" value="{{bank_name}}"  type="text">
+  <input  name="bank_name" placeholder="Bank Name" class="form-control" value="{{user_id.bank_name}}"  type="text">
     </div>
   </div>
   </div>
@@ -258,7 +258,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="account_no" placeholder="Account no" class="form-control" value="{{account_no}}"  type="text">
+  <input  name="account_no" placeholder="Account no" class="form-control" value="{{user_id.account_no}}"  type="text">
     </div>
   </div>
 
@@ -273,7 +273,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="branch_name" placeholder="Branch Name" class="form-control" value="{{branch_name}}"  type="text">
+  <input  name="branch_name" placeholder="Branch Name" class="form-control" value="{{user_id.branch_name}}"  type="text">
     </div>
   </div>
   </div>
@@ -289,7 +289,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  type="text" name="ifsc_code" placeholder="IFSC Code" class="form-control" value="{{ifsc_code}}" >
+  <input  type="text" name="ifsc_code" placeholder="IFSC Code" class="form-control" value="{{user_id.ifsc_code}}" >
     </div>
   </div>
 
@@ -303,18 +303,13 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="photo" placeholder="Photo" class="form-control" value="{{photo}}"  type="file">
+  <input  name="photo" placeholder="Photo" class="form-control" value="{{user_id.photo}}"  type="file">
     </div>
   </div>
 </div>
 
 
 
-
-
-<center>
-   <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
-</center>
 
 
 
@@ -328,9 +323,14 @@ color:;
 
              <div class="col-xl-4 col-md-4 mb-12">
 
+
               <div style="border: 1px solid #C0C0C0	; border-radius: 10px;">
                   <center>
-                    <img src="{% static 'images/harsh.jpg' %}" style="padding: 5px;">
+                      {% if user_id.photo %}
+                    <img src="{{user_id.photo.url }}" style="height:200px; width:250px; padding: 5px;">
+                      {% else %}
+                                          <img src="" style="padding: 5px;">
+{% endif %}
                       <div>
                           <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
                           <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
@@ -342,25 +342,29 @@ color:;
                   </center>
 
               </div>
-<br>
 
+<br>
+                 {% if request.user.is_authenticated  %}
+                                  {% if  user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+            <form method="post"> {% csrf_token %}
                  <div style="border: 1px solid #C0C0C0	; border-radius: 10px; padding: 5px;">
                   <center>
-                      <p>Warning Or Feedback</p>
-<select class="form-control">
+                      <p>Warning Or Defects</p>
+<select name="type" class="form-control">
   <option value="Warning">Warning</option>
-  <option value="Feedback">Feedback</option>
+  <option value="Defects">Defects</option>
 </select>
 <br>
-<textarea class="form-control" rows="7"></textarea>
+<textarea name="content" class="form-control" rows="7"></textarea>
 <br>
-                      <button class="form-control" style="width: 50%;">Submit</button>
+                      <button type="submit" class="btn btn-primary" style="width: 50%;">Submit</button>
 
                   </center>
 
               </div>
-
-
+</form>
+{% endif %}
+                 {% endif %}
               </div>
 
 
@@ -375,8 +379,13 @@ color:;
 
                  <br>
                  <div>
-                     <p>Download Salary Slip: <button class="form-control" style="width: 15%;"> Download </button></p>
-                     <p>Upload Salary Slip: <input type="file" name="myFile" class="form-control"  style="width: 25%;"></p>
+                                           {% if user_id.salary_slip %}
+
+                     <p>Download Salary Slip:<a href="{{user_id.salary_slip.url }}" ><button  class="form-control" style="width: 15%;"> Download </button></a></p>
+                     {% else %}
+                                          <p>Download Salary Slip:<a href="" ><button  class="form-control" style="width: 15%;"> Download </button></a></p>
+                     {%endif%}
+
                  </div>
                      </center>
              </div>
@@ -395,12 +404,14 @@ color:;
 
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;">
 
+{% for item in leave_list %}
+
                  <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> 20/04/19 - 22/04/19 </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> User Name </center></div>|
+                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center>{{item.requested_leave_date_from}} - {{item.requested_leave_date_to}}</center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center>{{item.user_id}} </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> &nbsp; &nbsp; &nbsp;
                       <i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i>
 
@@ -411,70 +422,8 @@ color:;
                 </div>
                 </div>
               </div>
-                 <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> 20/04/19 - 22/04/19 </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> User Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> &nbsp; &nbsp; &nbsp;
-                      <i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i>
-
-&nbsp;
-                      <i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i>
-                    </center> </div>
-
-                </div>
-                </div>
-              </div>
-                 <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> 20/04/19 - 22/04/19 </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> User Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> &nbsp; &nbsp; &nbsp;
-                      <i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i>
-
-&nbsp;
-                      <i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i>
-                    </center> </div>
-
-                </div>
-                </div>
-              </div>
-                 <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> 20/04/19 - 22/04/19 </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> User Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> &nbsp; &nbsp; &nbsp;
-                      <i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i>
-
-&nbsp;
-                      <i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i>
-                    </center> </div>
-
-                </div>
-                </div>
-              </div>
-                 <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> 20/04/19 - 22/04/19 </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> User Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> &nbsp; &nbsp; &nbsp;
-                      <i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i>
-
-&nbsp;
-                      <i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i>
-                    </center> </div>
-
-                </div>
-                </div>
-              </div>
+                    {% endfor %}
                 </div>
               </div>
 </div>

@@ -1,7 +1,7 @@
 from django.db import connection
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
+from customer_app.models import Customer_Details
 from user_app.models import SiteUser
 
 from customer_app.models import Customer_Details
@@ -13,14 +13,16 @@ import datetime
 import requests
 import json
 from datetime import datetime
-from ess_app.models import Employee_Analysis
+from ess_app.models import Employee_Analysis_month
+
+
 
 def add_repairing_details(request):
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('address')
-        contact_no = request.POST.get('contact_no')
+        contact_no = request.POST.get('phone_no')
         customer_email_id = request.POST.get('customer_email_id')
 
         item = Customer_Details()
@@ -56,13 +58,19 @@ def add_repairing_details(request):
 
         item2.repairingnumber = repairingnumber
         item2.crm_no = Customer_Details.objects.get(id=item.pk)
+
         item2.previous_repairing_number = previous_repairing_number
         item2.in_warranty = in_warranty
         item2.date_of_purchase = date_of_purchase
         item2.today_date = today_date
         item2.name = name
+
+        item2.company_name = company_name
+        item2.phone_no = phone_no
+        item2.customer_email_id = customer_email_id
         item2.location = location
         item2.products_to_be_repaired = products_to_be_repaired
+
         item2.total_cost = total_cost
         item2.informed_on = informed_on
         item2.informed_by = informed_by
@@ -73,25 +81,26 @@ def add_repairing_details(request):
         item2.delivery_by = delivery_by
         item2.feedback_given = feedback_given
 
+
         item.save()
+
         send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
 
         message = 'txt'
 
 
-        # url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + phone_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-        # payload = ""
-        # headers = {'content-type': 'application/x-www-form-urlencoded'}
-        #
-        # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-        # x = response.text
+        url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + phone_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+        payload = ""
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        x = response.text
 
         return redirect('/repair_product/'+str(item.id))
 
 
 
     return render(request,'forms/rep_mod_form.html',)
-
 
 def repair_product(request,id):
     repair_id = Repairing_after_sales_service.objects.get(id=id).id
@@ -210,8 +219,6 @@ def update_repairing_details(request,id):
 
     }
     return render(request,'update_forms/update_rep_mod_form.html',context)
-
-
 
 def repairing_module_home(request):
     if request.method == 'POST':
@@ -403,13 +410,13 @@ def repairing_employee_graph(request):
     user_id=request.user.pk
     currentMonth = datetime.now().month
     currentYear = datetime.now().year
-    list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('month')
-    list_sales_month=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_reparing_done')
+    list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+    list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_reparing_done')
     # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
     print(list(list_sales_month))
     print(list(list_sales))
-    list_avg = Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_repair_single_scale')
-    list_total_restamp =Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_give_estimate')
+    list_avg = Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_repair_single_scale')
+    list_total_restamp =Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_give_estimate')
     final_list=[]
     final_list2=[]
     final_list3=[]

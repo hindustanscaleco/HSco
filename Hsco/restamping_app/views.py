@@ -8,7 +8,7 @@ from Hsco import settings
 from .models import Restamping_after_sales_service, Restamping_Product
 import requests
 import json
-from ess_app.models import Employee_Analysis
+from ess_app.models import Employee_Analysis_month
 
 def restamping_manager(request):
     if request.method == 'POST':
@@ -240,11 +240,11 @@ def restamping_employee_graph(request):
     user_id=request.user.pk
     currentMonth = datetime.now().month
     currentYear = datetime.now().year
-    list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('month')
-    list_sales_month=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_restamping_done')
+    list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+    list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_restamping_done')
     # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-    list_avg = Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_collect_to_dispatch_restamping')
-    avg_time_est =Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_reparing_done_onsite')
+    list_avg = Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_collect_to_dispatch_restamping')
+    avg_time_est =Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_reparing_done_onsite')
 
     print(list(list_sales_month))
     print(list(list_sales))

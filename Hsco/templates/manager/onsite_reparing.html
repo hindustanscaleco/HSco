@@ -280,6 +280,35 @@ $(function() {
 
             </div>
 
+    <form  method='POST' id="FilterForm" data-url="{% url 'load_onsite_reparing_stages_list' %}" enctype="multipart/form-data">{% csrf_token %}
+
+
+<div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">
+
+    <!--<div class="col-xl-4 col-md-2 col-mb-2">-->
+        <!--<input type="checkbox" name="checks[]" value="Scale is collected but estimate is not given" checked> Scale is collected but estimate is not given. &nbsp; &nbsp; <br>-->
+  <!--<input type="checkbox" name="checks[]" value="Estimate is given but Estimate is not confirmed"> Estimate is given but Estimate is not confirmed. &nbsp; &nbsp; <br>-->
+         <!--<input type="checkbox" name="checks[]" value="Estimate is confirmed but not repaired"> Estimate is confirmed but not repaired. &nbsp; &nbsp;-->
+
+    <!--</div>-->
+
+
+
+    <div class="col-xl-4 col-md-4 col-mb-4">
+<select id="display_limit2" onchange="choice1(this)" class="form-control">
+
+    <option value="-----">---------</option>
+  <option value="Onsite repairing request is raised">Onsite repairing request is raised.</option>
+  <option value="Onsite repairing request is assigned">Onsite repairing request is assigned.</option>
+  <option value="Onsite repairing request is completed">Onsite repairing request is completed.</option>
+</select>
+
+    </div>
+
+
+
+</div>
+    </form>
 
 
 
@@ -312,14 +341,14 @@ $(function() {
 
 <br>
 
-      <div class="row">
+      <div class="row" id="id_subcat">
                       {% for list in onsite_list %}
 
 <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
 
-                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.name}} </center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.repairingno}} </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.repairing_no_of_repairs}} </center> </div>|
                     <div class="col-xl-1 col-md-1 mb-1"><center> {{list.repairing_target_achieved}}% </center> </div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> 1 Hour </center> </div>|
@@ -424,7 +453,23 @@ $(function() {
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+   <script>
 
+        function choice1(select) {
+
+    $.ajax({
+        url: "/load_onsite_reparing_stages_list/",
+        data: {
+          'loc_id': select.options[select.selectedIndex].value,
+        },
+        success: function (data) {
+           $("#id_subcat").html(data);
+        }
+      });
+}
+
+
+    </script>
 
 
   <!-- Bootstrap core JavaScript-->
