@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import connection
 from django.shortcuts import render, redirect
 
@@ -6,6 +8,7 @@ from Hsco import settings
 from .models import Restamping_after_sales_service, Restamping_Product
 import requests
 import json
+from ess_app.models import Employee_Analysis
 
 def restamping_manager(request):
     if request.method == 'POST':
@@ -199,5 +202,37 @@ def final_report_restamping(request):
         'selected_list': selected_list,
     }
     return render(request,"report/final_report_restamp_mod_form.html",context)
+
+def restamping_employee_graph(request):
+    user_id=request.user.pk
+    currentMonth = datetime.now().month
+    currentYear = datetime.now().year
+    list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+    list_sales_month=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_restamping_done')
+    # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+    list_avg = Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_collect_to_dispatch_restamping')
+    list_total_restamp =Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_reparing_done_onsite')
+
+    print(list(list_sales_month))
+    print(list(list_sales))
+    final_list=[]
+    final_list2=[]
+    final_list3=[]
+    final_list4=[]
+    for item in list_sales:
+        final_list.append(item[0])
+
+    for item in list_sales_month:
+        final_list2.append(item[0])
+
+    for item in list_sales_month:
+        final_list2.append(item[0])
+    print(final_list)
+    print(final_list2)
+    context={
+        'final_list':final_list,
+        'final_list2':final_list2
+    }
+    return render(request,"graphs/restamping_employee_graph.html",context)
 
 

@@ -10,6 +10,8 @@ from django.core.mail import send_mail
 from Hsco import settings
 import requests
 import json
+from datetime import datetime
+from ess_app.models import Employee_Analysis
 
 def add_repairing_details(request):
     if request.method == 'POST' or request.method == 'FILES':
@@ -276,6 +278,30 @@ def edit_product(request,id):
 
     return render(request,'edit_product/edit_product_repair.html',context)
 
+def repairing_employee_graph(request):
+    user_id=request.user.pk
+    currentMonth = datetime.now().month
+    currentYear = datetime.now().year
+    list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+    list_sales_month=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_reparing_done')
+    # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+    print(list(list_sales_month))
+    print(list(list_sales))
+    final_list=[]
+    final_list2=[]
+    for item in list_sales:
+        final_list.append(item[0])
+
+    for item in list_sales_month:
+        final_list2.append(item[0])
+
+    print(final_list)
+    print(final_list2)
+    context={
+        'final_list':final_list,
+        'final_list2':final_list2
+    }
+    return render(request,"graphs/repairing_employee_graph.html",context)
 
 
 
