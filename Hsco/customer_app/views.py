@@ -295,6 +295,10 @@ def manager_report(request):
     }
     return render(request, 'dashboardnew/manager_report.html',context)
 
+
+def feedbacka(request):
+    return render(request, 'feedback/feedbacka.html')
+
 def employee_sales_graph(request):
     user_id=request.user.pk
     currentMonth = datetime.now().month
