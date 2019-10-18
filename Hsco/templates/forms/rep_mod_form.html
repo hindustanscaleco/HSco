@@ -111,7 +111,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="repairingnumber" placeholder="Repairing Number
+  <input  name="repairingnumber" required placeholder="Repairing Number
 
 " class="form-control"  type="text">
     </div>
@@ -158,7 +158,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-    <input type="text" placeholder="In Warranty" name="in_warranty" class="form-control" value="" list="war">
+    <input type="text" placeholder="In Warranty" required name="in_warranty" class="form-control" value="" list="war">
     <datalist style="height:20px;" id="war">
     <option value = "Yes"></option>
     <option value = "No"></option>
@@ -192,7 +192,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" placeholder="Today's date
+  <input  name="today_date" required placeholder="Today's date
 
 " class="form-control"  type="date">
     </div>
@@ -213,7 +213,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="name" placeholder="Name" class="form-control"  type="text">
+  <input  name="name" required placeholder="Name" class="form-control"  type="text">
     </div>
   </div>
 
@@ -247,7 +247,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="phone_no" placeholder="Phone Number
+  <input  name="phone_no" required placeholder="Phone Number
 
 " class="form-control"  type="text">
     </div>
@@ -283,7 +283,7 @@ color:;
   <span class="input-group-addon icon-border"><i class="fa fa-marker faicons"></i></span>
   <input  name="location" placeholder="Location
 
-" class="form-control"  type="text">
+" class="form-control" required type="text">
     </div>
   </div>
 
@@ -300,63 +300,64 @@ color:;
   </div>
 </div>
 
-<!--<div class="form-group row">-->
+<div class="form-group row">
 
 
 
 
 
-<!--<label class="col-md-2 control-label">Type of Machine-->
+<label class="col-md-2 control-label">Type of Machine
 
 
 
 
-<!--</label>-->
+</label>
 
-    <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
-    <!--<input  type="text" name="type_of_machine" placeholder="Type of Machine" class="form-control" list="type_of_machine">-->
-    <!--<datalist style="height:20px;" id="type_of_machine">-->
-      <!--<option value="Mechanical"></option>-->
-      <!--<option value="Digital"></option>-->
-    <!--</datalist>-->
-    <!--</div>-->
-  <!--</div>-->
-
-
-
-
-
-  <!--<label class="col-md-2 control-label">Model-->
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+    <input  type="text" name="type_of_machine" placeholder="Type of Machine" class="form-control" list="type_of_machine">
+    <datalist style="height:20px;" id="type_of_machine">
+      <option value="Mechanical"></option>
+      <option value="Digital"></option>
+    </datalist>
+    </div>
+  </div>
 
 
 
 
-<!--</label>-->
-  <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
-      <!--<input  type="text" placeholder="Model" class="form-control" name="model" list="model">-->
-    <!--<datalist style="height:20px;" id="model">-->
-    <!--<option value = "Table Top"></option>-->
-    <!--<option value = "Platform Scale"></option>-->
-    <!--<option value = "POS Scales"></option>-->
-    <!--<option value = "Water Proof Scales"></option>-->
-    <!--<option value = "Jewellery Scales"></option>-->
-    <!--<option value = "Lab Scales"></option>-->
-    <!--<option value = "Crane Scales"></option>-->
-    <!--<option value = "Platform Scales"></option>-->
-    <!--<option value = "Mobile Platforms"></option>-->
-    <!--<option value = "Infant Scales"></option>-->
-    <!--<option value = "Baby Cum Adult Scales"></option>-->
-    <!--<option value = "Animal Scales"></option>-->
-    <!--<option value = "Cattle Scales"></option>-->
-    <!--<option value = "Supra Pall Scales"></option>-->
-    <!--</datalist>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--</div>-->
+
+
+  <label class="col-md-2 control-label">Model
+
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+      <input  type="text" placeholder="Model" required class="form-control" name="model" list="model">
+    <datalist style="height:20px;" id="model">
+    <option value = "Table Top"></option>
+    <option value = "Platform Scale"></option>
+    <option value = "POS Scales"></option>
+    <option value = "Water Proof Scales"></option>
+    <option value = "Jewellery Scales"></option>
+    <option value = "Lab Scales"></option>
+    <option value = "Crane Scales"></option>
+    <option value = "Platform Scales"></option>
+    <option value = "Mobile Platforms"></option>
+    <option value = "Infant Scales"></option>
+    <option value = "Baby Cum Adult Scales"></option>
+    <option value = "Animal Scales"></option>
+    <option value = "Cattle Scales"></option>
+    <option value = "Supra Pall Scales"></option>
+    </datalist>
+  </div>
+  </div>
+  </div>
 
   <div class="form-group row">
 
@@ -462,7 +463,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" placeholder="Components Replaced" name="replaced_scale_given" class="form-control" value="" list="replaced_scale_given">
+    <input  type="text" placeholder="Components Replaced" required name="replaced_scale_given" class="form-control" value="" list="replaced_scale_given">
     <datalist style="height:20px; color:white;" id="replaced_scale_given">
     <option value = "Yes"></option>
     <option value = "No"></option>
@@ -487,7 +488,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="total_cost" placeholder="Total Cost" value="0.0" class="form-control"  type="text">
+  <input  name="total_cost" placeholder="Total Cost" value="0.0" required class="form-control"  type="text">
     </div>
   </div>
 
@@ -510,7 +511,7 @@ color:;
   <input  name="informed_on" placeholder="Informed On
 
 
-" class="form-control"  type="text">
+" class="form-control" required type="text">
     </div>
   </div>
 
@@ -624,9 +625,6 @@ color:;
   </div>
 </div>
 
-
-
-</div>
 
 <!--<p>"Below Provide Various button to send various SMS and E-mail  like-->
 <!--1) Scale Submit sms-->
