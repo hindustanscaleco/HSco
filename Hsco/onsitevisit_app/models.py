@@ -26,7 +26,7 @@ class Onsite_aftersales_service(models.Model):
     time_taken_destination_return_office_min = models.CharField(max_length=30, null=True, blank=True)
     notes = models.CharField(max_length=255, null=True, blank=True)
     feedback_given = models.CharField(max_length=30,choices=choices,default='NO')
-    auto_timedate = models.DateTimeField(default=timezone.now())
+    entry_timedate = models.DateTimeField(default=timezone.now,)
 
     def __int__(self):
         return self.repairingno
@@ -47,7 +47,7 @@ class Onsite_Products(models.Model):
         return self.onsite_repairing_id
 
 
-class Feedback(models.Model):
+class Onsite_Feedback(models.Model):
     backend_team = models.FloatField(default=0.00)
     onsite_worker = models.FloatField(default=0.00)
     speed_of_performance = models.FloatField(default=0.00)

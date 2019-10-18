@@ -1,10 +1,10 @@
 from django import forms
 
-from .models import Repairing_after_sales_service, Repairing_Feedback
+from .models import AMC_Feedback
 
 
-class Repairing_Feedback_Form(forms.ModelForm):
-    knowledge_of_person = forms.IntegerField(required=True,
+class AMC_Feedback_Form(forms.ModelForm):
+    satisfied_with_work = forms.IntegerField(required=True,
                                widget=forms.TextInput(
                                    attrs={
                                        'type': 'hidden',
@@ -15,7 +15,7 @@ class Repairing_Feedback_Form(forms.ModelForm):
                                    }
                                ))
 
-    timeliness_of_person = forms.IntegerField(required=True,
+    speed_of_performance = forms.IntegerField(required=True,
                                              widget=forms.TextInput(
                                                  attrs={
                                                      'type': 'hidden',
@@ -25,7 +25,7 @@ class Repairing_Feedback_Form(forms.ModelForm):
                                                      'id': 'stars2',
                                                  }
                                              ))
-    price_of_product = forms.IntegerField(required=True,
+    price_of_amc = forms.IntegerField(required=True,
                                              widget=forms.TextInput(
                                                  attrs={
                                                      'type': 'hidden',
@@ -47,19 +47,12 @@ class Repairing_Feedback_Form(forms.ModelForm):
                                              ))
 
     class Meta:
-        model = Repairing_Feedback  # model
+        model = AMC_Feedback  # model
         fields = (
-        'satisfied_with_communication',
+        'satisfied_with_work',
         'speed_of_performance',
-        'price_of_reparing',
+        'price_of_amc',
         'overall_interaction',
         'about_hsco',
         'any_suggestion',
-
        )
-
-
-
-
-
-

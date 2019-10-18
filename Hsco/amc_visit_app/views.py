@@ -1,5 +1,8 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .models import Amc_After_Sales
+
+from .forms import AMC_Feedback_Form
+from .models import Amc_After_Sales, AMC_Feedback
 from django.db import connection
 
 
@@ -111,13 +114,59 @@ def final_report_amc(request):
 
 
 def amc_views(request):
+    if request.method=='POST' :
+        if'submit1' in request.POST:
+            start_date = request.POST.get('date1')
+            end_date = request.POST.get('date2')
+            amc_list = Amc_After_Sales.objects.filter(entry_timedate__range=[start_date, end_date])
+            context = {
+                'amc_list': amc_list,
+            }
+            return render(request, "manager/amc_view.html", context)
+        elif 'submit2' in request.POST:
+            contact = request.POST.get('contact')
+            amc_list = Amc_After_Sales.objects.filter(customer_no=contact)
+            context = {
+                'amc_list': amc_list,
+            }
+            return render(request, "manager/amc_view.html",context )
 
-    amc_list=Amc_After_Sales.objects.all()
-    context={
-        'amc_list':amc_list
-    }
-    
-    return render(request,"manager/amc_view.html",)
+        elif 'submit3' in request.POST:
+            email = request.POST.get('email')
+            dispatch_list = Amc_After_Sales.objects.filter(customer_email_id=email)
+            context = {
+                'dispatch_list': dispatch_list,
+            }
+            return render(request, "manager/amc_view.html",context )
+        elif 'submit4' in request.POST:
+            customer = request.POST.get('customer')
+            dispatch_list = Amc_After_Sales.objects.filter(customer_name=customer)
+            context = {
+                'dispatch_list': dispatch_list,
+            }
+            return render(request, "manager/amc_view.html",context )
+
+        elif  'submit5' in request.POST:
+            company = request.POST.get('company')
+            dispatch_list = Amc_After_Sales.objects.filter(company_name=company)
+            context = {
+                'dispatch_list': dispatch_list,
+            }
+            return render(request, "manager/amc_view.html",context )
+        elif request.method=='POST' and 'submit6' in request.POST:
+            crm = request.POST.get('crm')
+            dispatch_list = Amc_After_Sales.objects.filter(crn_number=crm)
+            context = {
+                'dispatch_list': dispatch_list,
+            }
+            return render(request, "manager/amc_view.html",context )
+    else:
+        amc_list = Amc_After_Sales.objects.all()
+
+        context = {
+            'amc_list': amc_list,
+        }
+        return render(request, "manager/amc_view.html", )
 
 
 def amc_logs(request):
@@ -183,6 +232,28 @@ def update_amc_form(request,update_id):
 
 
 def feedback_amc(request):
-    return render(request,'feedback/feedback_amc.html')
+    feedback_form = AMC_Feedback_Form(request.POST or None)
+    if request.method == 'POST':
+        satisfied_with_communication = request.POST.get('satisfied_with_communication')
+        speed_of_performance = request.POST.get('speed_of_performance')
+        price_of_reparing = request.POST.get('price_of_reparing')
+        overall_interaction = request.POST.get('overall_interaction')
+        about_hsco = request.POST.get('about_hsco')
+        any_suggestion = request.POST.get('any_suggestion')
+
+        item = AMC_Feedback()
+        item.satisfied_with_communication = satisfied_with_communication
+        item.speed_of_performance = speed_of_performance
+        item.price_of_reparing = price_of_reparing
+        item.overall_interaction = overall_interaction
+        item.about_hsco = about_hsco
+        item.any_suggestion = any_suggestion
+        item.save()
+
+        return HttpResponse('Feedback Submitted!!!')
+    context = {
+        'feedback_form': feedback_form,
+    }
+    return render(request,'feedback/feedback_amc.html',context)
 
 

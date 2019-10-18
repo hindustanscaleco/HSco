@@ -90,7 +90,7 @@ def add_customer_details(request):
 
 def view_customer_details(request):
 
-    if request.method=='POST' :
+    if request.method == 'POST':
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
@@ -137,7 +137,7 @@ def view_customer_details(request):
             }
             return render(request, 'dashboardnew/cm.html', context)
     else:
-        cust_list=Customer_Details.objects.all()
+        cust_list=Customer_Details.objects.all().order_by('-id')
 
         # with connection.cursor() as cursor:
         #     cursor.execute(
@@ -164,28 +164,9 @@ def update_customer_details(request,id):
     product_list = Product_Details.objects.filter(customer_id=id)
     print(product_list)
     customer_id = Customer_Details.objects.get(id=id)
-    feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
-    if request.method =='POST' and 'performance' in request.POST:
-        knowledge_of_person = request.POST.get('knowledge_of_person')
-        timeliness_of_person = request.POST.get('timeliness_of_person')
-        price_of_product = request.POST.get('price_of_product')
-        overall_interaction = request.POST.get('overall_interaction')
-        about_hsco = request.POST.get('about_hsco')
-        any_suggestion = request.POST.get('any_suggestion')
 
-        item = Feedback()
-        item.knowledge_of_person = knowledge_of_person
-        item.timeliness_of_person = timeliness_of_person
-        item.price_of_product = price_of_product
-        item.overall_interaction = overall_interaction
-        item.about_hsco = about_hsco
-        item.any_suggestion = any_suggestion
-        item.save()
-
-        return HttpResponse('Feedback Submitted!!!')
     context={
         'cust_id':customer_id,
-        'feedback_form':feedback_form,
         'product_list':product_list,
     }
 
@@ -276,10 +257,10 @@ def report(request):
         end_date = request.POST.get('date2')
         string = ','.join(selected_list)
         print(selected_list)
-        request.session['start_date']= start_date
-        request.session['end_date']= end_date
-        request.session['string']= string
-        request.session['selected_list']= selected_list
+        request.session['start_date'] = start_date
+        request.session['end_date'] = end_date
+        request.session['string'] = string
+        request.session['selected_list'] = selected_list
         return redirect('/final_report/')
     return render(request,"report/report_cust_mod_form.html",)
 
@@ -314,6 +295,10 @@ def manager_report(request):
     }
     return render(request, 'dashboardnew/manager_report.html',context)
 
+
+def feedbacka(request):
+    return render(request, 'feedback/feedbacka.html')
+
 def employee_sales_graph(request):
     user_id=request.user.pk
     currentMonth = datetime.now().month
@@ -341,7 +326,29 @@ def employee_sales_graph(request):
 
 
 def feedback_customer(request):
-    return render(request,"feedback/feedback_customer.html")
+    feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
+    if request.method == 'POST' :
+        knowledge_of_person = request.POST.get('knowledge_of_person')
+        timeliness_of_person = request.POST.get('timeliness_of_person')
+        price_of_product = request.POST.get('price_of_product')
+        overall_interaction = request.POST.get('overall_interaction')
+        about_hsco = request.POST.get('about_hsco')
+        any_suggestion = request.POST.get('any_suggestion')
+
+        item = Feedback()
+        item.knowledge_of_person = knowledge_of_person
+        item.timeliness_of_person = timeliness_of_person
+        item.price_of_product = price_of_product
+        item.overall_interaction = overall_interaction
+        item.about_hsco = about_hsco
+        item.any_suggestion = any_suggestion
+        item.save()
+
+        return HttpResponse('Feedback Submitted!!!')
+    context={
+        'feedback_form': feedback_form,
+    }
+    return render(request,"feedback/feedback_customer.html",context)
 
 
 

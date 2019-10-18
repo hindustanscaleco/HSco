@@ -1,15 +1,67 @@
 from django.db import connection
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from onsitevisit_app.forms import add_Onsite_aftersales_service_form
-from .models import Onsite_aftersales_service, Onsite_Products
+
+from .forms import Onsite_Repairing_Feedback_Form
+from .models import Onsite_aftersales_service, Onsite_Products, Onsite_Feedback
+
 
 def onsite_views(request):
-    onsite_list = Onsite_aftersales_service.objects.all()
-    context = {
-        'onsite_list': onsite_list,
-    }
-    return render(request,"manager/onsite_reparing.html",context)
+    if request.method=='POST' :
+        if'submit1' in request.POST:
+            start_date = request.POST.get('date1')
+            end_date = request.POST.get('date2')
+            onsite_list = Onsite_aftersales_service.objects.filter(entry_timedate__range=[start_date, end_date])
+            context = {
+                'onsite_list': onsite_list,
+            }
+            return render(request, "manager/onsite_reparing.html", context)
+        elif 'submit2' in request.POST:
+            contact = request.POST.get('contact')
+            onsite_list = Onsite_aftersales_service.objects.filter(phone_no=contact)
+            context = {
+                'onsite_list': onsite_list,
+            }
+            return render(request, "manager/onsite_reparing.html", context)
+
+        elif 'submit3' in request.POST:
+            email = request.POST.get('email')
+            onsite_list = Onsite_aftersales_service.objects.filter(customer_email_id=email)
+            context = {
+                'onsite_list': onsite_list,
+            }
+            return render(request, "manager/onsite_reparing.html", context)
+        elif 'submit4' in request.POST:
+            customer = request.POST.get('customer')
+            onsite_list = Onsite_aftersales_service.objects.filter(customer_name=customer)
+            context = {
+                'onsite_list': onsite_list,
+            }
+            return render(request, "manager/onsite_reparing.html", context)
+
+        elif  'submit5' in request.POST:
+            company = request.POST.get('company')
+            onsite_list = Onsite_aftersales_service.objects.filter(company_name=company)
+            context = {
+                'onsite_list': onsite_list,
+            }
+            return render(request, "manager/onsite_reparing.html", context)
+        elif request.method=='POST' and 'submit6' in request.POST:
+            crm = request.POST.get('crm')
+            onsite_list = Onsite_aftersales_service.objects.filter(crn_number=crm)
+            context = {
+                'onsite_list': onsite_list,
+            }
+            return render(request, "manager/onsite_reparing.html", context)
+    else:
+        onsite_list = Onsite_aftersales_service.objects.all()
+
+        context = {
+            'onsite_list': onsite_list,
+        }
+        return render(request, "manager/onsite_reparing.html", context)
+
 
 def add_onsite_aftersales_service(request):
     form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
@@ -158,8 +210,29 @@ def final_report_onsite(request):
     }
     return render(request,'report/final_onsite_report.html',context)
 
-def onsite_reparing_logs(request):
-    return render(request,"logs/onsite_reparing_logs.html",)
+def feedback_onrepairing(request):
+    feedback_form = Onsite_Repairing_Feedback_Form(request.POST or None, request.FILES or None)
+    if request.method == 'POST':
+        backend_team = request.POST.get('backend_team')
+        onsite_worker = request.POST.get('onsite_worker')
+        speed_of_performance = request.POST.get('speed_of_performance')
+        price_of_reparing = request.POST.get('price_of_reparing')
+        overall_interaction = request.POST.get('overall_interaction')
+        about_hsco = request.POST.get('about_hsco')
+        any_suggestion = request.POST.get('any_suggestion')
 
-def feedback_onrepairing(requesrt):
-    return render(requesrt,"feedback/feedback_onrepairing.html",)
+        item = Onsite_Feedback()
+        item.backend_team = backend_team
+        item.onsite_worker = onsite_worker
+        item.speed_of_performance = speed_of_performance
+        item.price_of_reparing = price_of_reparing
+        item.overall_interaction = overall_interaction
+        item.about_hsco = about_hsco
+        item.any_suggestion = any_suggestion
+        item.save()
+
+        return HttpResponse('Feedback Submitted!!!')
+    context = {
+        'feedback_form': feedback_form,
+    }
+    return render(request,"feedback/feedback_onrepairing.html",context)

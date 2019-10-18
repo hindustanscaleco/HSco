@@ -26,6 +26,7 @@ class Repairing_after_sales_service(models.Model):
     delivery_date = models.DateField(default=datetime.date.today())
     delivery_by = models.CharField(max_length=50,null=True,blank=True)
     feedback_given = models.CharField(max_length=255,null=True,blank=True)
+    entry_timedate = models.DateField(default=datetime.date.today)
 
 
 
@@ -50,13 +51,13 @@ class Repairing_Product(models.Model):
     def __int__(self):
         return self.repairing_id
 
-class Feedback(models.Model):
+class Repairing_Feedback(models.Model):
     satisfied_with_communication = models.FloatField(default=0.00)
     speed_of_performance = models.FloatField(default=0.00)
     price_of_reparing = models.FloatField(default=0.00)
     overall_interaction = models.FloatField(default=0.00)
-    about_hsco = models.CharField(max_length=60)
-    any_suggestion = models.CharField(max_length=255)
+    about_hsco = models.CharField(max_length=60, null=True, blank=True)
+    any_suggestion = models.CharField(max_length=255, null=True, blank=True)
 
 
 

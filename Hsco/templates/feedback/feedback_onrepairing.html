@@ -9,6 +9,7 @@
   <meta name="author" content="">
 
   <title>HSCO</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -21,6 +22,7 @@
 </head>
 
 <body id="page-top">
+
 
 <style>
 
@@ -48,8 +50,209 @@ color:;
 
   }
 
-</style>
+  .star-rating s:hover,
+.star-rating s.active {
+    color: gold;
+}
 
+.star-rating s{
+    color: black;
+    font-size: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 50px;
+}
+.star-rating {
+    padding: 2px;
+}
+
+.star-rating s:hover:before,
+.star-rating s.rated:before,
+.star-rating s.active:before {
+    content: "\2605";
+}
+.star-rating s:before {
+    content: "\2606";
+}
+
+
+.stars-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+
+.stars-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
+</style>
+<style>
+    .star-rating2 s:hover,
+.star-rating2 s.active {
+    color: gold;
+}
+
+.star-rating2 s{
+    color: black;
+    font-size: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 50px;
+}
+.star-rating2 {
+    padding: 2px;
+}
+
+.star-rating2 s:hover:before,
+.star-rating2 s.rated:before,
+.star-rating2 s.active:before {
+    content: "\2605";
+}
+.star-rating2 s:before {
+    content: "\2606";
+}
+
+
+.stars2-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+
+.stars2-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+
+.stars2-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars2-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
+</style>
+<style>
+    .star-rating3 s:hover,
+.star-rating3 s.active {
+    color: gold;
+}
+
+.star-rating3 s{
+    color: black;
+    font-size: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 50px;
+}
+.star-rating3 {
+    padding: 2px;
+}
+
+.star-rating3 s:hover:before,
+.star-rating3 s.rated:before,
+.star-rating3 s.active:before {
+    content: "\2605";
+}
+.star-rating3 s:before {
+    content: "\2606";
+}
+
+
+.stars3-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+
+.stars3-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+
+.stars3-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars3-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
+</style>
+<style>
+    .star-rating4 s:hover,
+.star-rating4 s.active {
+    color: gold;
+}
+
+.star-rating4 s{
+    color: black;
+    font-size: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 50px;
+}
+.star-rating4 {
+    padding: 2px;
+}
+
+.star-rating4 s:hover:before,
+.star-rating4 s.rated:before,
+.star-rating4 s.active:before {
+    content: "\2605";
+}
+.star-rating4 s:before {
+    content: "\2606";
+}
+
+
+.stars4-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+
+.stars4-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+
+.stars4-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars4-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
+</style>
   <!-- Page Wrapper -->
   <div id="wrapper">
   {% include 'base_templates/sidebar.html' %}
@@ -84,56 +287,43 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>Where you satisfied with your communication with the backend team?</h5>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span>
+<div style="display:inline-block;">{{ feedback_form.satisfied_with_work }}  </div>
+	<div class="star-rating"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
   </div>
 </div>
         <br>
+<div class="form-group row">
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <h5>How would you rate the speed of our performance?</h5>
+<div style="display:inline-block;">{{ feedback_form.speed_of_performance }}  </div>
+	<div class="star-rating2"><s><s><s><s><s></s></s></s></s></s></div>
+    </div>
+  </div>
+</div>
 
-
+<br>
 <div class="form-group row">
 
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>Where you satisfied with your communication with the technician who worked on your machine?</h5>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span>
+<div style="display:inline-block;">{{ feedback_form.onsite_worker }}  </div>
+	<div class="star-rating2"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
   </div>
 </div>
     <br>
 
 
-<div class="form-group row">
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <h5>How would you rate the speed of our performance?</h5>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span>
-    </div>
-  </div>
-</div>
-        <br>
     <div class="form-group row">
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>How were the prices of the Repairing (as compare to others)?</h5>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span>
+<div style="display:inline-block;">{{ feedback_form.price_of_amc }}  </div>
+	<div class="star-rating3"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
   </div>
 </div>
@@ -143,11 +333,8 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <h5>How would you rate the overall interaction with us?</h5>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span>
+<div style="display:inline-block;">{{ feedback_form.overall_interaction }}  </div>
+	<div class="star-rating4"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
   </div>
 </div>
@@ -160,7 +347,7 @@ color:;
   <div class="input-group">
   <h5>Where did you hear about Hindustan Scale company?</h5>
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-    <select  name="{{role}}" class="form-control">
+    <select  name="about_hsco" class="form-control">
   <option value="website">Website</option>
   <option value="friend">Friend</option>
   <option value="google">Google</option>
@@ -180,7 +367,7 @@ color:;
   <div class="input-group">
 
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-<textarea placeholder="Suggestions" name="suggestion" maxlength="255"></textarea>
+<textarea placeholder="Suggestions" name="any_suggestion" maxlength="255"></textarea>
   </div>
   </div>
   </div>
@@ -214,11 +401,6 @@ color:;
 
 
 
-</fieldset>
-</form>
-</div>
-
-  </div>
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
@@ -226,9 +408,88 @@ color:;
     <i class="fas fa-angle-up"></i>
   </a>
 
+<script>
+
+$(function() {
+    $("#stars").val("0");
+        $("div.star-rating > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
 
 
-  <!-- Bootstrap core JavaScript-->
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars").val(numStars);
+
+
+        });
+    $("#stars2").val("0");
+        $("div.star-rating2 > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
+
+
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars2").val(numStars);
+
+
+        });
+     $("#stars3").val("0");
+        $("div.star-rating3 > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
+
+
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars3").val(numStars);
+
+
+        });
+      $("#stars4").val("0");
+        $("div.star-rating4 > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
+
+
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars4").val(numStars);
+
+
+        });
+$("#stars5").val("0");
+            $("div.star-rating5 > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
+
+
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars5").val(numStars);
+
+
+        });
+});
+
+</script>
+
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
   <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
 
@@ -244,7 +505,6 @@ color:;
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
-
 
 </body>
 
