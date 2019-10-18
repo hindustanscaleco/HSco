@@ -122,7 +122,7 @@ def update_repairing_details(request,id):
 
 
 def repairing_module_home(request):
-    if request.method=='POST' :
+    if request.method == 'POST':
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
