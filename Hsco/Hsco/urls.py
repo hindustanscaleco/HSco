@@ -31,6 +31,7 @@ urlpatterns = [
     path('', include('restamping_app.urls')),
     path('', include('onsitevisit_app.urls')),
     path('', include('onsitevisit_app.urls')),
+    path('', include('notif_dec_app.urls')),
 
 
 ]
