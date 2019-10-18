@@ -1,5 +1,8 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .models import Amc_After_Sales
+
+from .forms import AMC_Feedback_Form
+from .models import Amc_After_Sales, AMC_Feedback
 from django.db import connection
 
 
@@ -229,6 +232,28 @@ def update_amc_form(request,update_id):
 
 
 def feedback_amc(request):
-    return render(request,'feedback/feedback_amc.html')
+    feedback_form = AMC_Feedback_Form(request.POST or None)
+    if request.method == 'POST':
+        satisfied_with_communication = request.POST.get('satisfied_with_communication')
+        speed_of_performance = request.POST.get('speed_of_performance')
+        price_of_reparing = request.POST.get('price_of_reparing')
+        overall_interaction = request.POST.get('overall_interaction')
+        about_hsco = request.POST.get('about_hsco')
+        any_suggestion = request.POST.get('any_suggestion')
+
+        item = AMC_Feedback()
+        item.satisfied_with_communication = satisfied_with_communication
+        item.speed_of_performance = speed_of_performance
+        item.price_of_reparing = price_of_reparing
+        item.overall_interaction = overall_interaction
+        item.about_hsco = about_hsco
+        item.any_suggestion = any_suggestion
+        item.save()
+
+        return HttpResponse('Feedback Submitted!!!')
+    context = {
+        'feedback_form': feedback_form,
+    }
+    return render(request,'feedback/feedback_amc.html',context)
 
 

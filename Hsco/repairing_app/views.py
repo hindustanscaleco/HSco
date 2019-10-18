@@ -1,8 +1,11 @@
 from django.db import connection
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from user_app.models import SiteUser
-from .models import Repairing_after_sales_service, Repairing_Product
+
+from .forms import Repairing_Feedback_Form
+from .models import Repairing_after_sales_service, Repairing_Product, Repairing_Feedback
 
 
 def add_repairing_details(request):
@@ -185,7 +188,6 @@ def repairing_report_module(request):
         repair_start_date = request.POST.get('date1')
         repair_end_date = request.POST.get('date2')
         repair_string = ','.join(selected_list)
-
         request.session['start_date'] = repair_start_date
         request.session['repair_end_date'] = repair_end_date
         request.session['repair_string'] = repair_string
@@ -221,9 +223,40 @@ def final_repairing_report_module(request):
     }
     return render(request,'report/final_report_rep_mod_form.html',context)
 
-
 def feedback_repairing(request):
-    return render(request,'feedback/feedback_repairing.html')
+    feedback_form = Repairing_Feedback_Form(request.POST or None, request.FILES or None)
+    if request.method == 'POST':
+        satisfied_with_communication = request.POST.get('satisfied_with_communication')
+        speed_of_performance = request.POST.get('speed_of_performance')
+        price_of_reparing = request.POST.get('price_of_reparing')
+        overall_interaction = request.POST.get('overall_interaction')
+        about_hsco = request.POST.get('about_hsco')
+        any_suggestion = request.POST.get('any_suggestion')
+
+        item = Repairing_Feedback()
+        item.satisfied_with_communication = satisfied_with_communication
+        item.speed_of_performance = speed_of_performance
+        item.price_of_reparing = price_of_reparing
+        item.overall_interaction = overall_interaction
+        item.about_hsco = about_hsco
+        item.any_suggestion = any_suggestion
+        item.save()
+
+        return HttpResponse('Feedback Submitted!!!')
+    context = {
+        'feedback_form': feedback_form,
+    }
+    return render(request,'feedback/feedback_repairing.html',context)
+
+def edit_product(request,id):
+    product_id = Repairing_Product.objects.get(id=id)
+    print(product_id)
+    context = {
+            'product_id': product_id,
+    }
+
+
+    return render(request,'edit_product/edit_product_repair.html',context)
 
 
 
