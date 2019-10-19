@@ -10,6 +10,7 @@
   <meta name="author" content="">
 
 		<title>HSCO</title>
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -20,6 +21,11 @@
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
 
 <style>
+
+* {
+    font-family: 'Poppins';
+}
+
     a:link {
   text-decoration: none;
 }
@@ -57,9 +63,13 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
           </div>
+<center>
+                <h1 class="h3 mb-0 text-gray-800" style="font-size: 25px;">Dashboard</h1>
 
+</center>
+
+            <br><br>
           <!-- Content Row -->
           <div class="row">
 
@@ -67,17 +77,17 @@
             {% if request.user.is_authenticated and 'Customer Module' in user.modules_assigned %}
 
                <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
+              <div class="card border-left-primary shadow">
                   <a href="/view_customer_details/">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 25px;">Customer Module
+                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 18px;">Customer Module
 </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-user fa-2x text-gray-300"></i>
+                      <i class="fas fa-user fa-x text-gray-300" style="font-size: 18px;"></i>
                     </div>
                   </div>
                 </div>
@@ -90,18 +100,18 @@
             <!-- Earnings (Monthly) Card Example -->
 
             <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
+              <div class="card border-left-success shadow  ">
                 <div class="card-body">
                     <a href="/repairing_module_home/">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1" style="font-size: 25px;">Repairing Module
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1" style="font-size: 18px;">Repairing Module
 </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
                     <div class="col-auto">
 
-                      <i class="fas fa-wrench fa-2x text-gray-300"></i>
+                      <i class="fas fa-wrench fa-x text-gray-300"  style="font-size: 18px;"></i>
 
 
                     </div>
@@ -116,13 +126,13 @@
                                                 {% if request.user.is_authenticated and 'Restamping Module' in user.modules_assigned %}
 
             <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
+              <div class="card border-left-info shadow  ">
                 <div class="card-body">
                                         <a href="/restamping_manager/">
 
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1" style="font-size: 25px;">Restamping Module
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1" style="font-size: 18px;">Restamping Module
 </div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
@@ -132,7 +142,7 @@
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                      <i class="fas fa-clipboard-list fa-x text-gray-300"  style="font-size: 18px;"></i>
                     </div>
                   </div>
                                         </a>
@@ -145,19 +155,19 @@
                                                 {% if request.user.is_authenticated and 'Dispatch Module' in user.modules_assigned %}
 
             <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-warning shadow h-100 py-2">
+              <div class="card border-left-warning shadow  ">
                 <div class="card-body">
                                                         <a href="/dispatch_view/">
 
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="font-size: 25px;">Dispatch
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="font-size: 18px;">Dispatch
 Module
 </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-truck fa-2x text-gray-300"></i>
+                      <i class="fas fa-truck fa-x text-gray-300"  style="font-size: 18px;"></i>
                     </div>
                   </div>
                                                         </a>
@@ -170,18 +180,18 @@ Module
                                           {% if request.user.is_authenticated and 'AMC Module' in user.modules_assigned %}
 
             <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
+              <div class="card border-left-primary shadow  ">
                 <div class="card-body">
                                                                             <a href="/amc_views/">
 
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="font-size: 25px;">AMC Module
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="font-size: 18px;">AMC Module
 </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-area-chart fa-2x text-gray-300"></i>
+                      <i class="fas fa-area-chart fa-x text-gray-300"  style="font-size: 18px;"></i>
                     </div>
                   </div>
                                                                             </a>
@@ -194,19 +204,19 @@ Module
                                   {% if request.user.is_authenticated and 'Onsite Repairing Module' in user.modules_assigned %}
 
             <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
+              <div class="card border-left-success shadow  ">
                 <div class="card-body">
                                                                                                 <a href="/onsite_views/">
 
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1" style="font-size: 25px;">Onsite Repairing Module
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1" style="font-size: 18px;">Onsite Repairing Module
 </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
                     <div class="col-auto">
 
-                      <i class="fas fa-institution fa-2x text-gray-300"></i>
+                      <i class="fas fa-institution fa-x text-gray-300"  style="font-size: 18px;"></i>
 
 
                     </div>
@@ -218,13 +228,13 @@ Module
                         {% endif %}
             <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
+              <div class="card border-left-info shadow  ">
                 <div class="card-body">
                    <a href="/add_ess_details/">
 
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1" style="font-size: 25px;">Employee Self Service Module(ESS)
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1" style="font-size: 18px;">Employee Self Service
 </div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
@@ -236,7 +246,7 @@ Module
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                      <i class="fas fa-clipboard-list fa-x text-gray-300"  style="font-size: 18px;"></i>
                     </div>
                   </div>
                                                                                                                     </a>
@@ -246,16 +256,16 @@ Module
 
             <!-- Pending Requests Card Example -->
             <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-warning shadow h-100 py-2">
+              <div class="card border-left-warning shadow  ">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="font-size: 25px;">Add and Create User
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="font-size: 18px;">Add and Create User
 </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-group fa-2x text-gray-300"></i>
+                      <i class="fas fa-group fa-x text-gray-300"  style="font-size: 18px;"></i>
                     </div>
                   </div>
                 </div>
@@ -270,20 +280,20 @@ Module
 
 
                <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-warning shadow h-100 py-2">
+              <div class="card border-left-warning shadow  ">
                 <div class="card-body">
                     <a href="/notif_decl_home/">
 
 
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="font-size: 25px;">Notification and Declaration
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="font-size: 18px;">Notification and Declaration
 
 </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-comments fa-2x text-gray-300"></i>
+                      <i class="fas fa-comments fa-x text-gray-300"  style="font-size: 18px;"></i>
                     </div>
                   </div>
                         </a>
@@ -297,10 +307,7 @@ Module
           <!-- Content Row -->
 <br>
 <br>
-<center>
-            <a href="/logout/" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="font-size: 25px;"> Logout</a>
 
-    </center>
 
 
 

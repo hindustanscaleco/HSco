@@ -32,16 +32,16 @@
 <hr class="sidebar-divider d-none d-md-block">
 
       <!-- Heading -->
-      <div class="sidebar-heading">
-        Modules
-      </div>
+      <!--<div class="sidebar-heading">-->
+        <!--Modules-->
+      <!--</div>-->
 
 
             {% if request.user.is_authenticated and 'Customer Module' in user.modules_assigned %}
 
       <li class="nav-item ">
         <a class="nav-link" href="/view_customer_details/">
-          <i class="fas fa-fw fa-plus"></i>
+          <!--<i class="fas fa-fw fa-plus"></i>-->
           <span>Customer</span></a>
       </li>
                             {% endif %}
@@ -50,7 +50,7 @@
 
         <li class="nav-item ">
         <a class="nav-link" href="/repairing_module_home/">
-          <i class="fas fa-clipboard-list"></i>
+          <!--<i class="fas fa-clipboard-list"></i>-->
           <span>Repairing</span></a>
       </li>
                                     {% endif %}
@@ -62,7 +62,7 @@
 
 <li class="nav-item ">
         <a class="nav-link" href="/restamping_manager/">
-          <i class="fas fa-clipboard-list"></i>
+          <!--<i class="fas fa-clipboard-list"></i>-->
           <span>Restamping</span></a>
       </li>
                             {% endif %}
@@ -72,7 +72,7 @@
 
        <li class="nav-item ">
         <a class="nav-link" href="/dispatch_view/">
-          <i class="fas fa-clipboard-list"></i>
+          <!--<i class="fas fa-clipboard-list"></i>-->
           <span>Dispatch</span></a>
       </li>
                     {% endif %}
@@ -81,7 +81,7 @@
 
       <li class="nav-item ">
         <a class="nav-link" href="/amc_views/">
-          <i class="fas fa-clipboard-list"></i>
+          <!--<i class="fas fa-clipboard-list"></i>-->
           <span>AMC</span></a>
       </li>
                     {% endif %}
@@ -90,14 +90,14 @@
 
           <li class="nav-item ">
         <a class="nav-link" href="/onsite_views/">
-          <i class="fas fa-fw fa-chart-area"></i>
+          <!--<i class="fas fa-fw fa-chart-area"></i>-->
           <span>Onsite Repairing</span></a>
       </li>
                     {% endif %}
 
   <li class="nav-item ">
         <a class="nav-link" href="/notif_decl_home/">
-          <i class="fas fa-fw fa-chart-area"></i>
+          <!--<i class="fas fa-fw fa-chart-area"></i>-->
           <span>Notif. & Declaration</span></a>
       </li>
 
@@ -106,7 +106,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-clipboard-list"></i>
+          <!--<i class="fas fa-clipboard-list"></i>-->
           <span>Employee Self Service</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -123,7 +123,7 @@
             {% if request.user.is_authenticated and user.role == 'Super Admin' %}
               <li class="nav-item">
         <a class="nav-link collapsed" href="/ess_form/" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-          <i class="fas fa-clipboard-list"></i>
+          <!--<i class="fas fa-clipboard-list"></i>-->
           <span>Super Admin</span>
         </a>
         <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -140,7 +140,7 @@
             {% elif request.user.is_authenticated and user.role == 'Admin' %}
                       <li class="nav-item">
         <a class="nav-link collapsed" href="/ess_form/" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-          <i class="fas fa-clipboard-list"></i>
+          <!--<i class="fas fa-clipboard-list"></i>-->
           <span>Admin</span>
         </a>
         <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -156,7 +156,7 @@
 
                               <li class="nav-item"      >
         <a class="nav-link collapsed" href="/ess_form/" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-          <i class="fas fa-clipboard-list"></i>
+          <!--<i class="fas fa-clipboard-list"></i>-->
           <span>Manager</span>
         </a>
         <div id="collapseFive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
