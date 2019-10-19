@@ -1,13 +1,15 @@
 from django.db import connection
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+
+from customer_app.models import Customer_Details
 from user_app.models import SiteUser
 from dispatch_app.models import Dispatch
 from dispatch_app.models import Product_Details_Dispatch
 from ess_app.models import Employee_Analysis_month
 
 from purchase_app.forms import Purchase_Details_Form, Feedback_Form
-from .models import Customer_Details, Purchase_Details, Feedback, Product_Details
+from .models import  Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
 from datetime import datetime
 from django.core.mail import send_mail
@@ -28,8 +30,6 @@ def add_purchase_details(request):
         item = Customer_Details()
 
         item.customer_name = customer_name
-        item.company_name = company_name
-        item.date = address
         item.company_name = company_name
         item.address = address
         item.contact_no = contact_no

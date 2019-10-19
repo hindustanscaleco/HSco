@@ -49,7 +49,7 @@ class UserAdmin(BaseUserAdmin):
 
     fieldsets = (
                 ('Login Credentials', {'fields': ('mobile', 'password')}),
-        ('Personal info', {'fields': ('modules_assigned','email', 'name', 'role','date_of_joining','average_rating','group')}),
+        ('Personal info', {'fields': ('modules_assigned','email', 'name', 'role','date_of_joining','average_rating','group','photo','salary_slip')}),
         ('Bank Details', {'fields': ('bank_name', 'account_number', 'bank_address','IFSC_code')}),
         ('Seen', {'fields': ('last_login',)}),
     )
