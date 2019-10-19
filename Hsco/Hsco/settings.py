@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'dispatch_app',
     'amc_visit_app',
     'notif_dec_app',
+    'purchase_app',
 ]
 
 MIDDLEWARE = [
