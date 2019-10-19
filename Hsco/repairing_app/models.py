@@ -16,7 +16,8 @@ class Repairing_after_sales_service(models.Model):
     phone_no = models.CharField(max_length=13,null=True,blank=True)
     customer_email_id = models.EmailField(max_length=255,null=True,blank=True)
     location = models.CharField(max_length=255,null=True,blank=True)
-    #products_to_be_repaired = models.CharField(max_length=30,null=True,blank=True)
+    # products_to_be_repaired = models.CharField(max_length=30,null=True,blank=True)
+    current_stage = models.CharField(default='Scale is collected but estimate is not given',max_length=50,null=True,blank=True)
     total_cost = models.FloatField(default=0.0)
     informed_on = models.CharField(max_length=60,null=True,blank=True)
     informed_by = models.CharField(max_length=60,null=True,blank=True)
@@ -25,7 +26,7 @@ class Repairing_after_sales_service(models.Model):
     repaired_date = models.DateField(default=datetime.date.today())
     delivery_date = models.DateField(default=datetime.date.today())
     delivery_by = models.CharField(max_length=50,null=True,blank=True)
-    feedback_given = models.CharField(max_length=255,null=True,blank=True)
+    feedback_given = models.CharField(default='NO',max_length=10,null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
 
 

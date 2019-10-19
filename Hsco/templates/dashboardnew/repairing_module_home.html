@@ -10,7 +10,8 @@
   <meta name="author" content="">
 
   <title>HSCO</title>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 
 
   <!-- Custom fonts for this template-->
@@ -281,39 +282,47 @@ $(function() {
             </div>
 
 
+    <form  method='POST' id="FilterForm" data-url="{% url 'load_reparing_stages_list' %}" enctype="multipart/form-data">{% csrf_token %}
 
 
 <div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">
 
-    <div class="col-xl-4 col-md-2 col-mb-2">
-        <input type="checkbox" name="vehicle3" value="Boat" checked> Scale is collected but estimate is not given. &nbsp; &nbsp; <br>
-  <input type="checkbox" name="vehicle3" value="Boat"> Estimate is given but Estimate is not confirmed. &nbsp; &nbsp; <br>
-         <input type="checkbox" name="vehicle3" value="Boat"> Estimate is confirmed but not repaired. &nbsp; &nbsp;
+    <!--<div class="col-xl-4 col-md-2 col-mb-2">-->
+        <!--<input type="checkbox" name="checks[]" value="Scale is collected but estimate is not given" checked> Scale is collected but estimate is not given. &nbsp; &nbsp; <br>-->
+  <!--<input type="checkbox" name="checks[]" value="Estimate is given but Estimate is not confirmed"> Estimate is given but Estimate is not confirmed. &nbsp; &nbsp; <br>-->
+         <!--<input type="checkbox" name="checks[]" value="Estimate is confirmed but not repaired"> Estimate is confirmed but not repaired. &nbsp; &nbsp;-->
 
-    </div>
+    <!--</div>-->
 
 
 
-    <div class="col-xl-4 col-md-2 col-mb-2">
-
-  <input type="checkbox" name="vehicle3" value="Boat"> Repaired but not collected. &nbsp; &nbsp; <br>
-  <input type="checkbox" name="vehicle3" value="Boat"> Finally Collected. &nbsp; &nbsp;
+    <div class="col-xl-4 col-md-4 col-mb-4">
+<select id="display_limit2" class="form-control">
+    <option value="-----">---------</option>
+  <option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>
+  <option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>
+  <option value="Estimate is confirmed but not repaired">Estimate is confirmed but not repaired.</option>
+  <option value="Repaired but not collected">Repaired but not collected.</option>
+  <option value="Finally Collected">Finally Collected.</option>
+</select>
+  <!--<input type="checkbox" name="checks[]" value="Repaired but not collected"> Repaired but not collected. &nbsp; &nbsp; <br>-->
+  <!--<input type="checkbox" name="checks[]" value="Finally Collected">  &nbsp; &nbsp;-->
     </div>
 
 
      <div class="col-xl-3 col-md-2 col-mb-2">
-<select class="form-control">
-  <option value="volvo">All</option>
-  <option value="saab">3 Days</option>
-  <option value="mercedes">10 Days</option>
+<select name="display_limit" class="form-control" onchange="choice1(this)">
+  <option value="-----">---------</option>
+  <option value="All">All</option>
+  <option value="3">3 Days</option>
+  <option value="10">10 Days</option>
 </select>
 
     </div>
 
 
-
 </div>
-
+    </form>
 
 
 <br>
@@ -344,7 +353,7 @@ $(function() {
 
 <br>
 
-                <div class="row">
+                <div id="id_subcat" class="row">
 
 
                 {% for list in repair_list%}
@@ -428,13 +437,32 @@ $(function() {
 
   </div>
   <!-- End of Page Wrapper -->
-
+    </div></div>
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
 
+   <script>
 
+        function choice1(select) {
+        alert(document.getElementById("display_limit2").options[document.getElementById("display_limit2").selectedIndex].value);
+     var strUser = document.getElementById("display_limit2").options[document.getElementById("display_limit2").selectedIndex].value;
+
+    $.ajax({
+        url: "/load_reparing_stages_list/",
+        data: {
+          'loc_id': select.options[select.selectedIndex].value,
+          'strUser': strUser
+        },
+        success: function (data) {
+           $("#id_subcat").html(data);
+        }
+      });
+}
+
+
+    </script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
@@ -452,6 +480,9 @@ $(function() {
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
+
+
 
 </body>
 
