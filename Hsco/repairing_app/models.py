@@ -8,7 +8,6 @@ from customer_app.models import Customer_Details
 
 class Repairing_after_sales_service(models.Model):
     crm_no = models.ForeignKey(Customer_Details, on_delete=models.CASCADE)
-
     repairingnumber = models.CharField(max_length=40,null=True,blank=True) #combination of pk and 'rep'
     previous_repairing_number = models.CharField(max_length=30,null=True,blank=True)
     in_warranty = models.CharField(default='NO',max_length=30,null=True,blank=True)
