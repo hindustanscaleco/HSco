@@ -32,6 +32,7 @@ urlpatterns = [
     path('', include('onsitevisit_app.urls')),
     path('', include('onsitevisit_app.urls')),
     path('', include('notif_dec_app.urls')),
+    path('', include('purchase_app.urls')),
 
 
 ]

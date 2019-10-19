@@ -11,10 +11,6 @@ class Purchase_Details_Form(forms.ModelForm):
     class Meta:
         model = Purchase_Details
         fields = (
-        'company_name',
-        'address',
-        'contact_no',
-        'customer_email_id',
         'date_of_purchase',
         'bill_no',
         'upload_op_file',

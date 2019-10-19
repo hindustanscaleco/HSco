@@ -6,7 +6,7 @@ from dispatch_app.models import Dispatch
 from dispatch_app.models import Product_Details_Dispatch
 from ess_app.models import Employee_Analysis
 
-from purchase_app.forms import Customer_Details_Form, Feedback_Form
+from purchase_app.forms import Purchase_Details_Form, Feedback_Form
 from .models import Customer_Details, Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
 from datetime import datetime
@@ -16,7 +16,7 @@ import requests
 import json
 
 def add_purchase_details(request):
-    form = Customer_Details_Form(request.POST or None, request.FILES or None)
+    form = Purchase_Details_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
         date_of_purchase = request.POST.get('date_of_purchase')
         product_purchase_date = request.POST.get('product_purchase_date')
