@@ -34,8 +34,8 @@ class Repairing_after_sales_service(models.Model):
 
 
 
-    def __str__(self):
-        return self.crm_no
+    def __int_(self):
+        return self.repairingnumber
 
 
 class Repairing_Product(models.Model):

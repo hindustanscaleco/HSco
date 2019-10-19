@@ -35,6 +35,7 @@ def add_repairing_details(request):
 
         item.save()
 
+
         repairingnumber = request.POST.get('repairingnumber')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
@@ -65,9 +66,6 @@ def add_repairing_details(request):
         item2.today_date = today_date
         item2.name = name
 
-        item2.company_name = company_name
-        item2.phone_no = phone_no
-        item2.customer_email_id = customer_email_id
         item2.location = location
         item2.products_to_be_repaired = products_to_be_repaired
 
@@ -82,21 +80,21 @@ def add_repairing_details(request):
         item2.feedback_given = feedback_given
 
 
-        item.save()
+        item2.save()
 
-        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
+            # send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
+            #
+            # message = 'txt'
+            #
+            #
+            # url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            # payload = ""
+            # headers = {'content-type': 'application/x-www-form-urlencoded'}
+            #
+            # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            # x = response.text
 
-        message = 'txt'
-
-
-        url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + phone_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-        payload = ""
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-        x = response.text
-
-        return redirect('/repair_product/'+str(item.id))
+        return redirect('/repair_product/'+str(item2.id))
 
 
 

@@ -3,11 +3,12 @@ import datetime
 from django.db import models
 from django.utils import timezone
 
-
+from customer_app.models import Customer_Details
 
 
 class Amc_After_Sales(models.Model):
     # amc_visit_id = models.ForeignKey(Amcvisit, on_delete=models.CASCADE)
+    crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
     amcno = models.CharField(max_length=50, null=True,unique=True, blank=True)
     customer_name = models.CharField(max_length=80, null=True, blank=True)
     company_name = models.CharField(max_length=80, null=True, blank=True)
