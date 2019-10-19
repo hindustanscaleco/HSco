@@ -91,7 +91,7 @@ class SiteUser(AbstractBaseUser):
     salary_slip = models.FileField(upload_to='salary_slip/',null=True, blank=True)
     created_by = models.CharField(max_length=30,null=True, blank=True)
     assigned_by = models.CharField(max_length=30,null=True, blank=True)
-    date_of_joining = models.DateField(default=datetime.date.today())
+    date_of_joining = models.DateField(default=datetime.date.today)
     average_rating = models.FloatField(default=0.0)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
