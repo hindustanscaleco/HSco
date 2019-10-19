@@ -65,7 +65,7 @@ def onsite_views(request):
 
 
 def add_onsite_aftersales_service(request):
-    form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
+    # form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
         repairingno = request.POST.get('repairingno')
         customer_name = request.POST.get('customer_name')
@@ -124,7 +124,7 @@ def add_onsite_aftersales_service(request):
 
         return redirect('/add_onsite_product/'+str(item.id))
     context={
-        'form':form,
+        # 'form':form,
     }
 
     return render(request, 'forms/onsite_rep_form.html',context)
