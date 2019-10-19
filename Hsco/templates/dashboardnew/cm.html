@@ -358,6 +358,9 @@ a:hover {
 
 <center>
     <div class="row" style="width: 70%; margin-top: 15%;">
+
+        {% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
                 <div class="col-xl-3 col-md-3 mb-12">
               <div class="card border-left-primarya shadow border-right-primarya">
                 <div class="card-body" style="padding: 12px;">
@@ -370,8 +373,7 @@ a:hover {
                 </div>
               </div>
             </div>
-
-         <div class="col-xl-3 col-md-3 mb-12">
+        <div class="col-xl-3 col-md-3 mb-12">
               <div class="card border-left-primarya shadow border-right-primarya">
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
@@ -414,6 +416,22 @@ a:hover {
                 </div>
               </div>
             </div>
+{% else %}
+          <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card border-left-primarya shadow border-right-primarya">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col ">
+ <a href="/add_purchase_details/"><button class="btn btn-primary">Add Customer</button></a>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+{% endif %}
+{% endif %}
+
 
           </div>
 </center>
