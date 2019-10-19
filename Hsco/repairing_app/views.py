@@ -1,9 +1,7 @@
 from django.db import connection
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
 from user_app.models import SiteUser
-
 from .forms import Repairing_Feedback_Form
 from .models import Repairing_after_sales_service, Repairing_Product, Repairing_Feedback
 from django.core.mail import send_mail
@@ -12,7 +10,9 @@ import datetime
 import requests
 import json
 from datetime import datetime
-from ess_app.models import Employee_Analysis
+from ess_app.models import Employee_Analysis_month
+
+
 
 def add_repairing_details(request):
     if request.method == 'POST' or request.method == 'FILES':
@@ -84,7 +84,6 @@ def add_repairing_details(request):
 
     return render(request,'forms/rep_mod_form.html',)
 
-
 def repair_product(request,id):
     repair_id = Repairing_after_sales_service.objects.get(id=id).id
 
@@ -133,8 +132,6 @@ def update_repairing_details(request,id):
 
     }
     return render(request,'update_forms/update_rep_mod_form.html',context)
-
-
 
 def repairing_module_home(request):
     if request.method == 'POST':
@@ -279,13 +276,13 @@ def repairing_employee_graph(request):
     user_id=request.user.pk
     currentMonth = datetime.now().month
     currentYear = datetime.now().year
-    list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('month')
-    list_sales_month=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_reparing_done')
+    list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+    list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_reparing_done')
     # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
     print(list(list_sales_month))
     print(list(list_sales))
-    list_avg = Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_repair_single_scale')
-    list_total_restamp =Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_give_estimate')
+    list_avg = Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_repair_single_scale')
+    list_total_restamp =Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_give_estimate')
     final_list=[]
     final_list2=[]
     final_list3=[]
