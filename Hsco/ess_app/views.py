@@ -9,6 +9,9 @@ from Hsco import settings
 import requests
 import json
 
+from .models import Employee_Leave
+
+
 def add_ess_details(request):
     if request.method == 'POST' or  request.method=='FILES':
         employee_name = request.POST.get('employee_name')
@@ -54,21 +57,17 @@ def add_ess_details(request):
 
         item.save()
         send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [email_id])
-        mobile = '+91 7757860524'  # 9766323877'
-        user_hsco = 'HSCo'
-        user = 'vikka'
-        api_hsco = 'PF8MzCBOGTopfpYFlSZT'
-        api = 'puU087yJ0uAQdhggM3T0'
+
         message = 'txt'
-        senderid = 'MYTEXT'
 
-        url = "http://smshorizon.co.in/api/sendsms.php?user=" + user + "&apikey=" + api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + senderid + "&type=txt"
-        payload = ""
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-        x = response.text
-        print(x)
+        # url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+        # payload = ""
+        # headers = {'content-type': 'application/x-www-form-urlencoded'}
+        #
+        # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        # x = response.text
+
         return redirect('/')
 
 
@@ -79,7 +78,30 @@ def add_ess_details(request):
 
 
 def ess_home(request):
-    return render(request,'dashboardnew/ess_home.html',)
+    leave_req_list = Employee_Leave.objects.all()
+    if request.method == 'POST':
+        from_date = request.POST.get('from')
+        to = request.POST.get('to')
+        reason = request.POST.get('reason')
+
+        item = Employee_Leave()
+
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.requested_leave_date_from = from_date
+        item.requested_leave_date_to = to
+        item.reason = reason
+        try:
+            item.save()
+        except:
+            pass
+        context={
+            'leave_req_list':leave_req_list
+        }
+        return render(request, 'dashboardnew/ess_home.html', context)
+    context = {
+        'leave_req_list': leave_req_list
+    }
+    return render(request,'dashboardnew/ess_home.html',context)
 
 
 

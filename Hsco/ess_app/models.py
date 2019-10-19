@@ -35,11 +35,12 @@ class Defects_Warning(models.Model):
 class Employee_Leave(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     # ess_id=models.ForeignKey(Ess, on_delete=models.CASCADE)
-    requested_leave_date= models.DateTimeField(default=timezone.now, blank=True)
+    requested_leave_date_from= models.DateTimeField(default=timezone.now, blank=True)
+    requested_leave_date_to= models.DateTimeField(default=timezone.now, blank=True)
     reason=models.CharField(max_length=300,)
-    is_approved =models.BooleanField(default=False)     #YES Or NO
-    in_process = models.BooleanField(default=False)      #Decide Later option for manager
-    leave_approved_by = models.CharField(max_length=60,)
+    is_approved =models.BooleanField(default=False,null=True, blank=True)     #YES Or NO
+    in_process = models.BooleanField(default=False ,null=True, blank=True)      #Decide Later option for manager
+    leave_approved_by = models.CharField(max_length=60,null=True, blank=True)
     is_employee_of_month = models.BooleanField(default=False)
 
     entry_timedate = models.DateTimeField(default=timezone.now,)
@@ -48,8 +49,8 @@ class Employee_Leave(models.Model):
     def __str__(self):
         return str(self.user_id)
 
-
-
+    class Meta:
+        unique_together = ('requested_leave_date_from', 'requested_leave_date_to', 'user_id','reason')
 
 
 class Employee_Analysis(models.Model):
