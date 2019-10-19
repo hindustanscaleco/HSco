@@ -22,7 +22,7 @@ feedback = (('1', '1'),
 
 
 class Purchase_Details(models.Model):
-    customer_id=models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
+    crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
     date_of_purchase = models.DateField(default=datetime.date.today,null=True,blank=True)
     product_purchase_date = models.DateField(default=datetime.date.today,null=True,blank=True)
 
@@ -41,10 +41,10 @@ class Purchase_Details(models.Model):
     feedback_stars=models.FloatField(default=0.0)
 
     def __str__(self):
-        return self.customer_name
+        return self.notes
 
 class Product_Details(models.Model):
-    crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
+    purchase_id = models.ForeignKey(Purchase_Details,on_delete=models.CASCADE)
     product_name = models.CharField(max_length=30,null=True,blank=True)
     quantity = models.CharField(max_length=30,null=True,blank=True)
     type_of_scale = models.CharField(max_length=30,null=True,blank=True)
@@ -60,7 +60,7 @@ class Product_Details(models.Model):
     entry_timedate = models.DateTimeField(default=timezone.now,)
 
     def __int__(self):
-        return self.customer_id
+        return self.purchase_id
 
 class Feedback(models.Model):
     knowledge_of_person = models.FloatField(default=0.00,null=True,blank=True)
