@@ -19,6 +19,7 @@ class Onsite_aftersales_service(models.Model):
     nearest_railwaystation = models.CharField(max_length=30, null=True, blank=True)
     train_line = models.CharField(max_length=30, null=True, blank=True)
     current_stage = models.CharField(default='Onsite repairing request is raised',max_length=50,null=True,blank=True)
+    date_of_complaint_received = models.DateTimeField(timezone.now)
     # products_to_be_repaired = models.CharField(max_length=30, null=True, blank=True)
     visiting_charges_told_customer = models.CharField(max_length=30, null=True, blank=True)
     total_cost = models.CharField(max_length=30, null=True, blank=True)

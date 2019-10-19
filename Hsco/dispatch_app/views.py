@@ -55,7 +55,7 @@ def add_dispatch_details(request):
 
 
         item.save()
-        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email])
+        #send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email])
 
         message = 'txt'
 
@@ -213,11 +213,34 @@ def update_dispatch_details(request,update_id):
         item.channel_of_dispatch = channel_of_dispatch
         item.notes = notes
 
+        item.save(update_fields=['dispatch_id', ]),
+        item.save(update_fields=['customer_no', ]),
+        item.save(update_fields=['customer_email', ]),
+        item.save(update_fields=['customer_name', ]),
+        item.save(update_fields=['company_name', ]),
+        item.save(update_fields=['customer_address', ]),
+        item.save(update_fields=['date_of_dispatch', ]),
+        item.save(update_fields=['dispatch_by', ]),
+        item.save(update_fields=['packed_by', ]),
+        item.save(update_fields=['hamal_name', ]),
+        item.save(update_fields=['no_bundles', ]),
+        item.save(update_fields=['transport_name', ]),
+        item.save(update_fields=['lr_no', ]),
+        item.save(update_fields=['photo_lr_no', ]),
+        item.save(update_fields=['channel_of_dispatch', ]),
+        item.save(update_fields=['notes', ]),
+        dispatch_item = Dispatch.objects.get(id=update_id)
+        product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
 
-        item.save(update_fields=[''])
+        context = {
+            'dispatch_item': dispatch_item,
+            'product_list': product_list,
+        }
+        return render(request, "update_forms/update_dis_mod_form.html", context)
+       # item.save(update_fields=[''])
 
 
-        return redirect('/dispatch_view')
+        #return redirect('/dispatch_view')
 
     context={
         'dispatch_item':dispatch_item,

@@ -6,7 +6,7 @@ from dispatch_app.models import Dispatch
 from dispatch_app.models import Product_Details_Dispatch
 from ess_app.models import Employee_Analysis
 
-from purchase_app.forms import Customer_Details_Form, Feedback_Form
+from purchase_app.forms import Purchase_Details_Form, Feedback_Form
 from .models import Customer_Details, Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
 from datetime import datetime
@@ -16,8 +16,27 @@ import requests
 import json
 
 def add_purchase_details(request):
-    form = Customer_Details_Form(request.POST or None, request.FILES or None)
+    form = Purchase_Details_Form(request.POST or None, request.FILES or None)
+
     if request.method == 'POST' or request.method == 'FILES':
+        customer_name = request.POST.get('customer_name')
+        company_name = request.POST.get('company_name')
+        address = request.POST.get('address')
+        contact_no = request.POST.get('contact_no')
+        customer_email_id = request.POST.get('customer_email_id')
+
+        item = Customer_Details()
+
+        item.customer_name = customer_name
+        item.company_name = company_name
+        item.date = address
+        item.company_name = company_name
+        item.address = address
+        item.contact_no = contact_no
+        item.customer_email_id = customer_email_id
+
+        item.save()
+
         date_of_purchase = request.POST.get('date_of_purchase')
         product_purchase_date = request.POST.get('product_purchase_date')
         bill_no = request.POST.get('bill_no')
@@ -31,63 +50,61 @@ def add_purchase_details(request):
         notes = request.POST.get('notes')
         feedback_form_filled = request.POST.get('feedback_form_filled')
 
-        item = Purchase_Details()
+        item2 = Purchase_Details()
 
-        item.date_of_purchase = date_of_purchase
-        item.product_purchase_date = product_purchase_date
-        item.bill_no = bill_no
-        item.upload_op_file = upload_op_file
-        item.photo_lr_no = photo_lr_no
-        item.po_number = po_number
-        item.channel_of_sales = channel_of_sales
-        item.industry = industry
-        item.value_of_goods = value_of_goods
-        item.channel_of_dispatch = channel_of_dispatch
-        item.notes = notes
-        item.feedback_form_filled = feedback_form_filled
-        item.save()
+        item2.crm_no_id = item.pk
+        item2.date_of_purchase = date_of_purchase
+        item2.product_purchase_date = product_purchase_date
+        item2.bill_no = bill_no
+        item2.upload_op_file = upload_op_file
+        item2.photo_lr_no = photo_lr_no
+        item2.po_number = po_number
+        item2.channel_of_sales = channel_of_sales
+        item2.industry = industry
+        item2.value_of_goods = value_of_goods
+        item2.channel_of_dispatch = channel_of_dispatch
+        item2.notes = notes
+        item2.feedback_form_filled = feedback_form_filled
+        item2.save()
+
+        dispatch = Dispatch()
 
 
+        dispatch.customer_no = item.pk
+        dispatch.customer_email = customer_email_id
+        dispatch.customer_name = customer_name
+        dispatch.company_name = company_name
+        dispatch.customer_address = address
 
-        #
-        # dispatch = Dispatch()
-        #
-        #
-        # dispatch.customer_no = item.pk
-        # dispatch.customer_email = customer_email_id
-        # dispatch.customer_name = customer_name
-        # dispatch.company_name = company_name
-        # dispatch.customer_address = address
-        #
-        # dispatch.save()
-        #
-        #
-        # dispatch2 = Dispatch.objects.get(id=dispatch.pk)
-        # dispatch2.dispatch_id = str(dispatch.pk + 00000)
-        # dispatch2.save(update_fields=['dispatch_id'])
-        #
-        # customer_id = Customer_Details.objects.get(id=item.pk)
-        # customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
-        # customer_id.save(update_fields=['dispatch_id_assigned'])
-        # send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
-        #
-        #
-        # mobile = '+91 7757860524'  # 9766323877'
-        # user_hsco = 'HSCo'
-        # user = 'vikka'
-        # api_hsco = 'PF8MzCBOGTopfpYFlSZT'
-        # api = 'puU087yJ0uAQdhggM3T0'
-        # message = 'txt'
-        # senderid = 'MYTEXT'
-        #
-        # url = "http://smshorizon.co.in/api/sendsms.php?user="+user+"&apikey="+api+"&mobile="+contact_no+"&message="+message+"&senderid="+senderid+"&type=txt"
-        # payload = ""
-        # headers = {'content-type': 'application/x-www-form-urlencoded'}
-        #
-        # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-        # x = response.text
-        # print(x)
-        return redirect('/add_product_details/'+str(item.id))
+        dispatch.save()
+
+
+        dispatch2 = Dispatch.objects.get(id=dispatch.pk)
+        dispatch2.dispatch_id = str(dispatch.pk + 00000)
+        dispatch2.save(update_fields=['dispatch_id'])
+
+        customer_id = Purchase_Details.objects.get(id=item2.pk)
+        customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
+        customer_id.save(update_fields=['dispatch_id_assigned'])
+        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
+
+
+        mobile = '+91 7757860524'  # 9766323877'
+        user_hsco = 'HSCo'
+        user = 'vikka'
+        api_hsco = 'PF8MzCBOGTopfpYFlSZT'
+        api = 'puU087yJ0uAQdhggM3T0'
+        message = 'txt'
+        senderid = 'MYTEXT'
+
+        url = "http://smshorizon.co.in/api/sendsms.php?user="+user+"&apikey="+api+"&mobile="+contact_no+"&message="+message+"&senderid="+senderid+"&type=txt"
+        payload = ""
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        x = response.text
+        print(x)
+        return redirect('/add_product_details/'+str(item2.id))
 
     context = {
         'form': form,
@@ -168,9 +185,9 @@ def view_customer_details(request):
 
 
 def update_customer_details(request,id):
-    product_list = Product_Details.objects.filter(customer_id=id)
+    product_list = Product_Details.objects.filter(purchase_id=id)
     print(product_list)
-    customer_id = Customer_Details.objects.get(id=id)
+    customer_id = Purchase_Details.objects.get(id=id)
 
     context={
         'cust_id':customer_id,
@@ -181,9 +198,9 @@ def update_customer_details(request,id):
 
 
 def add_product_details(request,id):
-    customer = Customer_Details.objects.get(id=id)
-    customer_id = customer.id
-    dispatch_id_assigned = str(customer.dispatch_id_assigned)
+    purchase = Purchase_Details.objects.get(id=id)
+    purchase_id = purchase.id
+    dispatch_id_assigned = str(purchase.dispatch_id_assigned)
     form = Product_Details_Form(request.POST or None)
     if request.method == 'POST':
         product_name = request.POST.get('product_name')
@@ -199,7 +216,7 @@ def add_product_details(request,id):
         sales_person = request.POST.get('sales_person')
         purchase_type = request.POST.get('purchase_type')
 
-        item = Purchase_Details()
+        item = Product_Details()
 
         item.product_name = product_name
         item.quantity = quantity
@@ -211,11 +228,10 @@ def add_product_details(request,id):
         item.brand = brand
         item.capacity = capacity
         item.unit = unit
-        item.customer_id_id = customer_id
+        item.purchase_id_id = purchase_id
         item.sales_person = sales_person
         item.purchase_type = purchase_type
         item.save()
-
 
         dispatch_id=Dispatch.objects.get(id=dispatch_id_assigned)
         dispatch_pro = Product_Details_Dispatch()
@@ -237,15 +253,12 @@ def add_product_details(request,id):
 
 
 
-
-
-
         return redirect('/update_customer_details/'+str(id))
 
 
     context = {
         'form': form,
-        'customer_id': customer_id,
+        'purchase_id': purchase_id,
     }
     return render(request,'dashboardnew/add_product.html',context)
 
