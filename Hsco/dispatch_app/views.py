@@ -74,7 +74,6 @@ def add_dispatch_details(request):
     }
     return render(request,'forms/dis_mod_form.html',context)
 
-
 def report_dis_mod(request):
     if request.method =='POST':
         selected_list = request.POST.getlist('checks[]')
@@ -173,7 +172,6 @@ def dispatch_view(request):
             'dispatch_list': dispatch_list,
         }
         return render(request, "manager/dispatch_view.html", context)
-
 
 def update_dispatch_details(request,update_id):
     dispatch_item=Dispatch.objects.get(id=update_id)
