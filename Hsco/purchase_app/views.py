@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from user_app.models import SiteUser
 from dispatch_app.models import Dispatch
 from dispatch_app.models import Product_Details_Dispatch
-from ess_app.models import Employee_Analysis
+from ess_app.models import Employee_Analysis_month
 
 from purchase_app.forms import Purchase_Details_Form, Feedback_Form
 from .models import Customer_Details, Purchase_Details, Feedback, Product_Details
@@ -317,8 +317,8 @@ def customer_employee_sales_graph(request):
     user_id=request.user.pk
     currentMonth = datetime.now().month
     currentYear = datetime.now().year
-    list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('month')
-    list_sales_month=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+    list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+    list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
     # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
     print(list(list_sales_month))
     print(list(list_sales))
