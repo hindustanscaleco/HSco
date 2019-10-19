@@ -9,6 +9,10 @@ from .models import Repairing_after_sales_service, Repairing_Product, Repairing_
 from django.core.mail import send_mail
 from Hsco import settings
 import datetime
+import requests
+import json
+from datetime import datetime
+from ess_app.models import Employee_Analysis
 
 def add_repairing_details(request):
     if request.method == 'POST' or request.method == 'FILES':
@@ -63,7 +67,21 @@ def add_repairing_details(request):
 
         item.save()
         send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
+        mobile = '+91 7757860524'  # 9766323877'
+        user_hsco = 'HSCo'
+        user = 'vikka'
+        api_hsco = 'PF8MzCBOGTopfpYFlSZT'
+        api = 'puU087yJ0uAQdhggM3T0'
+        message = 'txt'
+        senderid = 'MYTEXT'
 
+        url = "http://smshorizon.co.in/api/sendsms.php?user=" + user + "&apikey=" + api + "&mobile=" + phone_no + "&message=" + message + "&senderid=" + senderid + "&type=txt"
+        payload = ""
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        x = response.text
+        print(x)
         return redirect('/repair_product/'+str(item.id))
 
 
@@ -261,6 +279,41 @@ def edit_product(request,id):
 
     return render(request,'edit_product/edit_product_repair.html',context)
 
+def repairing_employee_graph(request):
+    user_id=request.user.pk
+    currentMonth = datetime.now().month
+    currentYear = datetime.now().year
+    list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+    list_sales_month=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_reparing_done')
+    # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+    print(list(list_sales_month))
+    print(list(list_sales))
+    list_avg = Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_repair_single_scale')
+    list_total_restamp =Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_give_estimate')
+    final_list=[]
+    final_list2=[]
+    final_list3=[]
+    final_list4=[]
+    for item in list_sales:
+        final_list.append(item[0])
+
+    for item in list_sales_month:
+        final_list2.append(item[0])
+
+    for item in list_sales_month:
+        final_list3.append(item[0])
+
+    for item in list_sales_month:
+        final_list4.append(item[0])
+    print(final_list)
+    print(final_list2)
+    context={
+        'final_list':final_list,
+        'final_list2':final_list2,
+        'final_list3':final_list3,
+        'final_list4':final_list4,
+    }
+    return render(request,"graphs/repairing_employee_graph.html",context)
 
 def load_reparing_stages_list(request,):
 

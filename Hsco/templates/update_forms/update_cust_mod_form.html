@@ -129,7 +129,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_name" placeholder="Full Name"  class="form-control"  type="text" disabled id="myText" value="{{cust_id.customer_name}}">
+  <input  name="customer_name" placeholder="Full Name"  class="form-control" required type="text" disabled id="myText" value="{{cust_id.customer_name}}">
 
     </div>
   </div>
@@ -156,7 +156,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input class="form-control" name="address" placeholder="Address" disabled id="myText3" value="{{cust_id.address}}">
+  <input class="form-control" name="address" required placeholder="Address" disabled id="myText3" value="{{cust_id.address}}">
 
     </div>
   </div>
@@ -168,7 +168,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" placeholder="Contact No" class="form-control"  type="text" disabled id="myText4" value="{{cust_id.contact_no}}">
+  <input  name="contact_no" placeholder="Contact No" required class="form-control"  type="number" pattern="[789][0291]" disabled id="myText4" value="{{cust_id.contact_no}}">
 
     </div>
   </div>
@@ -196,7 +196,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="date_of_purchase" placeholder="Date of Purchase" class="form-control"  type="Date" disabled id="myText6" value="{{cust_id.date_of_purchase|date:'Y-m-d'}}">
+  <input  name="date_of_purchase" placeholder="Date of Purchase" required class="form-control"  type="Date" disabled id="myText6" value="{{cust_id.date_of_purchase|date:'Y-m-d'}}">
 
     </div>
   </div>
@@ -212,7 +212,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="product_purchase_date" placeholder="Product Purchased Date" class="form-control"  type="Date" disabled id="myText7" value="{{cust_id.product_purchase_date|date:'Y-m-d'}}">
+  <input name="product_purchase_date" placeholder="Product Purchased Date" required class="form-control"  type="Date" disabled id="myText7" value="{{cust_id.product_purchase_date|date:'Y-m-d'}}">
 
     </div>
   </div>

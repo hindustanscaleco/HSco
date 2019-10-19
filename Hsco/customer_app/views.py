@@ -192,7 +192,7 @@ def update_customer_details(request,id):
 
     context={
         'cust_id':customer_id,
-        'product_list':product_list,
+        'product_list': product_list,
     }
 
     return render(request,'update_forms/update_cust_mod_form.html',context)
@@ -318,7 +318,7 @@ def manager_report(request):
 def feedbacka(request):
     return render(request, 'feedback/feedbacka.html')
 
-def employee_sales_graph(request):
+def customer_employee_sales_graph(request):
     user_id=request.user.pk
     currentMonth = datetime.now().month
     currentYear = datetime.now().year

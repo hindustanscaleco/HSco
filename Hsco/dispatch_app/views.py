@@ -1,9 +1,14 @@
+from datetime import datetime
+
 from django.shortcuts import render, redirect
 from django.db import connection
 # Create your views here.
 from .models import Dispatch, Product_Details_Dispatch
 from django.core.mail import send_mail
 from Hsco import settings
+import requests
+import json
+from ess_app.models import Employee_Analysis
 
 def add_dispatch_details(request):
     # form = Customer_Details_Form(request.POST or None, request.FILES or None)
@@ -47,14 +52,27 @@ def add_dispatch_details(request):
 
         item.save()
         send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email])
+        mobile = '+91 7757860524'  # 9766323877'
+        user_hsco = 'HSCo'
+        user = 'vikka'
+        api_hsco = 'PF8MzCBOGTopfpYFlSZT'
+        api = 'puU087yJ0uAQdhggM3T0'
+        message = 'txt'
+        senderid = 'MYTEXT'
 
+        url = "http://smshorizon.co.in/api/sendsms.php?user=" + user + "&apikey=" + api + "&mobile=" + customer_no + "&message=" + message + "&senderid=" + senderid + "&type=txt"
+        payload = ""
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        x = response.text
+        print(x)
 
         return redirect('/dispatch_view')
 
     context = {
     }
     return render(request,'forms/dis_mod_form.html',context)
-
 
 def report_dis_mod(request):
     if request.method =='POST':
@@ -155,7 +173,6 @@ def dispatch_view(request):
         }
         return render(request, "manager/dispatch_view.html", context)
 
-
 def update_dispatch_details(request,update_id):
     dispatch_item=Dispatch.objects.get(id=update_id)
     product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
@@ -211,4 +228,34 @@ def update_dispatch_details(request,update_id):
 def dispatch_logs(request):
     return render(request,"logs/dispatch_logs.html",)
 
+def dispatch_employee_graph(request):
+    user_id=request.user.pk
+    currentMonth = datetime.now().month
+    currentYear = datetime.now().year
+    list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+    list_sales_month=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_dispatch_done')
+    # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+    list_avg = Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_dispatch_form_to_done')
+
+    print(list(list_sales_month))
+    print(list(list_sales))
+    final_list=[]
+    final_list2=[]
+    final_list3=[]
+    for item in list_sales:
+        final_list.append(item[0])
+
+    for item in list_sales_month:
+        final_list2.append(item[0])
+
+    for item in list_avg:
+        final_list3.append(item[0])
+
+
+    context={
+        'final_list':final_list,
+        'final_list2':final_list2,
+        'final_list3':final_list3,
+    }
+    return render(request,"graphs/dispatch_employee_graph.html",context)
 

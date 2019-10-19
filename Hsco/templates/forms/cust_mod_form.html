@@ -80,7 +80,7 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
+    <form class="well form-horizontal" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
 <fieldset>
 <div class="form-group row">
   <label class="col-md-2 control-label ">Dispatch ID assigned
@@ -90,7 +90,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="dispatch_id_assigned" placeholder="Dispatch ID assigned"  class="form-control"  type="text">
+  <input name="dispatch_id_assigned" placeholder="Dispatch ID assigned" required class="form-control"  type="text">
     </div>
   </div>
 </div>
@@ -101,7 +101,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_name" placeholder="Full Name"  class="form-control"  type="text">
+  <input  name="customer_name" placeholder="Full Name" required class="form-control"  type="text">
     </div>
   </div>
 
@@ -126,7 +126,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <textarea class="form-control" name="address" placeholder="Address"></textarea>
+  <textarea class="form-control" required name="address" placeholder="Address"></textarea>
     </div>
   </div>
 
@@ -137,7 +137,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" placeholder="Contact No" class="form-control"  type="text">
+  <input  name="contact_no" placeholder="Contact No" class="form-control" required type="number" maxlength="10" minlength="10" pattern="[0-9]{9}">
     </div>
   </div>
 
@@ -163,7 +163,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="date_of_purchase" placeholder="Date of Purchase" class="form-control"  type="Date">
+  <input  name="date_of_purchase" required placeholder="Date of Purchase" class="form-control"  type="Date">
     </div>
   </div>
 </div>
@@ -198,7 +198,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="bill_no" placeholder="Bill No" class="form-control"  type="text">
+  <input  name="bill_no" placeholder="Bill No" required class="form-control"  type="text">
     </div>
   </div>
  <label class="col-md-2 control-label">Upload PO File
@@ -248,7 +248,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="channel_of_sales" placeholder="Channel of Sales" class="form-control"  type="text">
+  <input  name="channel_of_sales" required placeholder="Channel of Sales" class="form-control"  type="text">
     </div>
   </div>
 
@@ -259,7 +259,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="industry" placeholder="Industry" class="form-control"  type="text">
+  <input  name="industry" required placeholder="Industry" class="form-control" type="text">
     </div>
   </div>
 

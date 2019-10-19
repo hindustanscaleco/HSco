@@ -2,6 +2,7 @@ from django.urls import path, include, re_path
 from .views import add_repairing_details, repair_product, repairing_module_home, manager_repairing_module_home, \
     repairing_report_module, update_repairing_details, final_repairing_report_module,load_reparing_stages_list
 from .views import feedback_repairing,edit_product
+    repairing_report_module, update_repairing_details, final_repairing_report_module,repairing_employee_graph
 
 urlpatterns = [
     path('add_repairing_details/',add_repairing_details , name ='add_repairing_details'),
@@ -13,5 +14,6 @@ urlpatterns = [
     path('update_repairing_details/<int:id>',update_repairing_details , name ='update_repairing_details'),
     path('feedback_repairing/',feedback_repairing , name ='feedback_repairing'),
     path('load_reparing_stages_list/',load_reparing_stages_list , name ='load_reparing_stages_list'),
+    path('repairing_employee_graph/',repairing_employee_graph , name ='repairing_employee_graph'),
     path('edit_product/<int:id>',edit_product, name ='edit_product'),
 ]
