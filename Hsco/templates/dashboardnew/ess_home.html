@@ -75,6 +75,9 @@ color:;
 
         <!-- Begin Page Content -->
         <div class="container-fluid" >
+            <form action="" method="POST"> {% csrf_token %}
+
+
 <center>
   <div style="width: 70%;" class="row">
     <h3 style="color: black;" class="col-xl-12 col-md-12">Applied Holidays</h3>
@@ -88,40 +91,27 @@ color:;
    <input type="text" name="reason" class="col-xl-3 col-md-4 form-control" style="width: 50%;" placeholder="Reason" required> &nbsp;
    <button class="btn btn-primary col-xl-1 col-md-2" style="width: 10%; font-size: 14px;">Submit</button>
       &nbsp; &nbsp;
-   <button class="btn btn-primary col-xl-1 col-md-2" style="width: 10%;font-size: 14px;">All</button>
   </div>
 <br>
 
 
 
 </center>
+                   </form>
 <br>
 
            <div class="row">
 
 
-              <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> 20/04/19 - 22/04/19 </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> User Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> &nbsp; &nbsp; &nbsp;
-                      <i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i>
-
-&nbsp;
-                      <i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i>
-                    </center> </div>
-                </div>
-                </div>
-              </div>
 
 
 
+{% for item in leave_req_list %}
              <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> 20/04/19 - 22/04/19 </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> User Name </center></div>|
+                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id}} </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> &nbsp; &nbsp; &nbsp;
                       <i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i>
 
@@ -131,68 +121,8 @@ color:;
                 </div>
                 </div>
               </div>
+{% endfor %}
 
-
-             <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> 20/04/19 - 22/04/19 </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> User Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> &nbsp; &nbsp; &nbsp;
-                      <i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i>
-
-&nbsp;
-                      <i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i>
-                    </center> </div>
-                </div>
-                </div>
-              </div>
-
-             <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> 20/04/19 - 22/04/19 </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> User Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> &nbsp; &nbsp; &nbsp;
-                      <i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i>
-
-&nbsp;
-                      <i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i>
-                    </center> </div>
-                </div>
-                </div>
-              </div>
-
-
-             <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> 20/04/19 - 22/04/19 </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> User Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> &nbsp; &nbsp; &nbsp;
-                      <i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i>
-
-&nbsp;
-                      <i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i>
-                    </center> </div>
-                </div>
-                </div>
-              </div>
-
-             <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> 20/04/19 - 22/04/19 </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> User Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> &nbsp; &nbsp; &nbsp;
-                      <i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i>
-
-&nbsp;
-                      <i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i>
-                    </center> </div>
-                </div>
-                </div>
-              </div>
 
             </div>
 

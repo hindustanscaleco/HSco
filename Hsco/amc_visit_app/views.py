@@ -60,21 +60,17 @@ def add_amc_after_sales(request):
 
         item.save()
         send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
-        mobile = '+91 7757860524'  # 9766323877'
-        user_hsco = 'HSCo'
-        user = 'vikka'
-        api_hsco = 'PF8MzCBOGTopfpYFlSZT'
-        api = 'puU087yJ0uAQdhggM3T0'
-        message = 'txt'
-        senderid = 'MYTEXT'
 
-        url = "http://smshorizon.co.in/api/sendsms.php?user=" + user + "&apikey=" + api + "&mobile=" + customer_no + "&message=" + message + "&senderid=" + senderid + "&type=txt"
+        message = 'message to be send with feedback link '
+
+
+        #url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + customer_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
         payload = ""
         headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-        x = response.text
-        print(x)
+        #response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        #x = response.text
+
         return redirect('/amc_views')
 
 

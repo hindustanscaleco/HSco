@@ -115,7 +115,7 @@ class SiteUser(AbstractBaseUser):
 
 
     def __str__(self):
-        return self.mobile
+        return self.name
 
     def has_perm(self, perm, obj=None):
         return True

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'dispatch_app',
     'amc_visit_app',
     'notif_dec_app',
+    'purchase_app',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,10 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'mail.ambrosial@gmail.com'
 EMAIL_HOST_PASSWORD = 'ipv6netuser'
+
+
+user = 'HSCo'
+#user_test = 'vikka'
+api = 'PF8MzCBOGTopfpYFlSZT'
+#api_test = 'puU087yJ0uAQdhggM3T0'
+senderid = 'HSCALE'

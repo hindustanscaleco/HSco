@@ -1,20 +1,16 @@
 from django import forms
 
-from .models import Customer_Details, Feedback
+from .models import Customer_Details, Feedback, Purchase_Details
 from .models import Product_Details
 
 
-class Customer_Details_Form(forms.ModelForm):
+class Purchase_Details_Form(forms.ModelForm):
 
 
 
     class Meta:
-        model = Customer_Details
+        model = Purchase_Details
         fields = (
-        'company_name',
-        'address',
-        'contact_no',
-        'customer_email_id',
         'date_of_purchase',
         'bill_no',
         'upload_op_file',

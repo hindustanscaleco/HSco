@@ -241,3 +241,29 @@ def feedback_onrepairing(request):
         'feedback_form': feedback_form,
     }
     return render(request,"feedback/feedback_onrepairing.html",context)
+
+
+def load_reparing_stages_list(request,):
+
+    selected = request.GET.get('loc_id')
+    locc_id = request.GET.get('strUser')
+    print(selected)
+    print(locc_id)
+    print(locc_id)
+    if selected == 'All':
+        repair_list = Repairing_after_sales_service.objects.filter(current_stage=locc_id)
+        print("True")
+        print(repair_list)
+    else:
+        date= datetime.date.today()-datetime.timedelta(int(selected))
+        repair_list = Repairing_after_sales_service.objects.filter(entry_timedate__range=[date,datetime.date.today()],current_stage=locc_id)
+        print("False")
+        print(date)
+        print(datetime.date.today())
+        print(repair_list)
+
+    context = {
+        'repair_list': repair_list,
+    }
+    context.update(context)
+    return render(request, 'AJAX/load_reparing_stage.html', context)
