@@ -81,7 +81,7 @@ def admin_list(request):
     return render(request,"auth/admin_list.html",context)
 
 def create_admin(request):
-    form = SiteUser_Form(request.POST or None)
+    form = SiteUser_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
         mobile = request.POST.get('mobile')
         email = request.POST.get('email')
@@ -95,6 +95,7 @@ def create_admin(request):
         branch_name = request.POST.get('branch_name')
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.POST.get('photo')
+        salary_slip = request.FILES.get('salary_slip')
 
 
 
@@ -114,6 +115,7 @@ def create_admin(request):
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
+        item.salary_slip = salary_slip
         item.set_password(request.POST.get('password'))
 
         item.save()
@@ -131,7 +133,7 @@ def manager_list(request):
     return render(request,"auth/manager_list.html",context)
 
 def create_manager(request):
-    form = SiteUser_Form(request.POST or None)
+    form = SiteUser_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
         mobile = request.POST.get('mobile')
         email = request.POST.get('email')
@@ -144,7 +146,8 @@ def create_manager(request):
         account_no = request.POST.get('account_no')
         branch_name = request.POST.get('branch_name')
         ifsc_code = request.POST.get('ifsc_code')
-        photo = request.POST.get('photo')
+        photo = request.FILES.get('photo')
+        salary_slip = request.FILES.get('salary_slip')
 
         item = SiteUser()
 
@@ -161,6 +164,7 @@ def create_manager(request):
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
+        item.salary_slip = salary_slip
         item.set_password(request.POST.get('password'))
 
         item.save()
@@ -178,7 +182,7 @@ def employee_list(request):
     return render(request,"auth/employee_list.html",context)
 
 def create_employee(request):
-    form = SiteUser_Form(request.POST or None)
+    form = SiteUser_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
         mobile = request.POST.get('mobile')
         email = request.POST.get('email')
@@ -191,7 +195,8 @@ def create_employee(request):
         account_no = request.POST.get('account_no')
         branch_name = request.POST.get('branch_name')
         ifsc_code = request.POST.get('ifsc_code')
-        photo = request.POST.get('photo')
+        photo = request.FILES.get('photo')
+        salary_slip = request.FILES.get('salary_slip')
 
         item = SiteUser()
 
@@ -208,6 +213,7 @@ def create_employee(request):
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
+        item.salary_slip = salary_slip
         item.set_password(request.POST.get('password'))
 
         item.save()
@@ -335,7 +341,8 @@ def update_admin(request,id):
         account_no = request.POST.get('account_no')
         branch_name = request.POST.get('branch_name')
         ifsc_code = request.POST.get('ifsc_code')
-        photo = request.POST.get('photo')
+        photo = request.FILES.get('photo')
+        salary_slip = request.FILES.get('salary_slip')
 
         item = admin_id
 
@@ -351,6 +358,8 @@ def update_admin(request,id):
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
+        item.salary_slip = salary_slip
+
         item.set_password(request.POST.get('password'))
 
         item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_no','branch_name','ifsc_code','photo','password'])
@@ -377,7 +386,8 @@ def update_manager(request,id):
         account_no = request.POST.get('account_no')
         branch_name = request.POST.get('branch_name')
         ifsc_code = request.POST.get('ifsc_code')
-        photo = request.POST.get('photo')
+        photo = request.FILES.get('photo')
+        salary_slip = request.FILES.get('salary_slip')
 
         item = manager_id
 
@@ -393,6 +403,7 @@ def update_manager(request,id):
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
+        item.salary_slip = salary_slip
         item.set_password(request.POST.get('password'))
 
         item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_no','branch_name','ifsc_code','photo','password'])
@@ -418,6 +429,7 @@ def update_employee(request,id):
         branch_name = request.POST.get('branch_name')
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.POST.get('photo')
+        salary_slip = request.FILES.get('salary_slip')
 
         item = employee_id
 
@@ -433,6 +445,7 @@ def update_employee(request,id):
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
+        item.salary_slip = salary_slip
         item.set_password(request.POST.get('password'))
 
         item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_no','branch_name','ifsc_code','photo','password'])
