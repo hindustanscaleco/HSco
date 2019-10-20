@@ -12,7 +12,7 @@ from django.db.models import Q,F
 from ess_app.models import Employee_Analysis_date
 from .models import  Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
-import datetime
+from datetime import datetime
 from django.core.mail import send_mail
 from Hsco import settings
 import requests

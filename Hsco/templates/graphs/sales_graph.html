@@ -207,37 +207,58 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 </div>
 
           <center>
-  <button class="btn btn-primary">Detailed Feedback</button>
-</center>
-{% for feedbackform in feeback %}
+<div class="card-header py-3">
+                  <h4 class="m-0 font-weight-bold text-primary" > Detailed Feedback</h4>
+                </div></center>
+
+            <div class="row">
+{% for feedback_form in feeback %}
+                        <div class="col-xl-6 col-md-6 mb-4">
 
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary" >Feedback</h6>
+                  <h6 class="m-0 font-weight-bold text-primary" >Feedback {{ feedback_form.id }}</h6>
                 </div>
                 <div class="card-body">
       <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-6">
 
-        <form enctype="multipart/form-data" method="post">{% csrf_token %}
 
-                        <b>Knowledge : </b>{{ feedback_form.knowledge_of_person }} <br>
-                  <b>Timeliness : </b>{{feedback_form.timeliness_of_person}} <br>
-                  <b>Price Of Product : </b>{{feedback_form.price_of_product}} <br>
-                  <b>Over All Interaction : </b>{{feedback_form.overall_interaction}} <br>
+                        <b>Knowledge : </b>{% for avg in feedback_form.knowledge_of_person|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.knowledge_of_person %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %} <br>
+                  <b>Timeliness : </b>{% for avg in feedback_form.timeliness_of_person|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.timeliness_of_person %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %}  <br>
+                  <b>Price Of Product : </b>{% for avg in feedback_form.price_of_product|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.price_of_product %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %}   <br>
+                  <b>Over All Interaction : </b>{% for avg in feedback_form.overall_interaction|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.overall_interaction %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %} <br>
                   <b>About HSCO : </b>{{feedback_form.about_hsco}} <br>
                   <b>Any Other Suggestions: </b>{{feedback_form.any_suggestion}} <br>
 <!--
                       <b>Ratings : <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
 -->
 
-								<i class="fa fa-star" aria-hidden="true"></i></b>
-								<i class="fa fa-star" aria-hidden="true"></i></b>
-								<i class="fa fa-star" aria-hidden="true"></i></b>
-								<i class="fa fa-star" aria-hidden="true"></i></b>
 
-
-</form>
     </div>
       </div>
 
@@ -246,8 +267,9 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
             </div>
               </div>
-
+                        </div>
 {% endfor %}
+                </div>
 <br>
         <style>
           .editableBox {
