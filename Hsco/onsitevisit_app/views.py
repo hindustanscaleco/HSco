@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from customer_app.models import Customer_Details
+
+from user_app.models import SiteUser
 from .forms import add_Onsite_aftersales_service_form
 import datetime
 
@@ -14,6 +16,7 @@ from ess_app.models import Employee_Analysis_month
 from ess_app.models import Employee_Analysis_date
 
 def onsite_views(request):
+
     if request.method=='POST' :
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
@@ -173,6 +176,8 @@ def add_onsite_product(request,id):
 def update_onsite_details(request,id):
     onsite_id = Onsite_aftersales_service.objects.get(id=id)
     onsite_product_list = Onsite_Products.objects.filter(onsite_repairing_id=id)
+    employee_list = SiteUser.objects.filter(role='Employee')
+
     print(onsite_product_list)
     if request.method == 'POST' or request.method == 'FILES':
         repairingno = request.POST.get('repairingno')
@@ -197,6 +202,7 @@ def update_onsite_details(request,id):
         time_taken_destination_return_office_min = request.POST.get('time_taken_destination_return_office_min')
         notes = request.POST.get('notes')
         feedback_given = request.POST.get('feedback_given')
+        assigned_to = request.POST.get('assigned_to')
 
 
         item = onsite_id
@@ -222,8 +228,10 @@ def update_onsite_details(request,id):
         item.time_taken_destination_return_office_min = time_taken_destination_return_office_min
         item.notes = notes
         item.feedback_given = feedback_given
+        item.assigned_to = assigned_to
 
         #item.save(update_fields=['onsite_repairing_id_id', ]),
+        item.save(update_fields=['assigned_to', ]),
         item.save(update_fields=['repairingno', ]),
         item.save(update_fields=['customer_name', ]),
         item.save(update_fields=['company_name', ]),
@@ -258,6 +266,7 @@ def update_onsite_details(request,id):
     context={
         'onsite_id':onsite_id,
         'onsite_product_list':onsite_product_list,
+        'employee_list':employee_list,
     }
 
     return render(request,'update_forms/update_onsite_rep_form.html',context)
