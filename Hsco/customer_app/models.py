@@ -3,7 +3,6 @@ import uuid
 
 from django.db import models
 from django.utils import timezone
-from dispatch_app.models import Dispatch
 
 
 
@@ -17,7 +16,7 @@ class Customer_Details(models.Model):
     customer_email_id = models.CharField(max_length=30,null=True,blank=True)
 
     def __str__(self):
-        return self.customer_name
+        return self.company_name
 
 
 

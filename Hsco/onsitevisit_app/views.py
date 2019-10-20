@@ -1,6 +1,8 @@
 from django.db import connection
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+
+from customer_app.models import Customer_Details
 from .forms import add_Onsite_aftersales_service_form
 import datetime
 
@@ -68,19 +70,29 @@ def onsite_views(request):
 def add_onsite_aftersales_service(request):
     # form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
-        repairingno = request.POST.get('repairingno')
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
-        customer_no = request.POST.get('customer_no')
+        address = request.POST.get('customer_address')
+        contact_no = request.POST.get('phone_no')
+        customer_email_id = request.POST.get('customer_email_id')
+
+        item = Customer_Details()
+
+        item.customer_name = customer_name
+        item.company_name = company_name
+        item.address = address
+        item.contact_no = contact_no
+        item.customer_email_id = customer_email_id
+
+        item.save()
+
+        repairingno = request.POST.get('repairingno')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
-        phone_no = request.POST.get('phone_no')
-        customer_email_id = request.POST.get('customer_email_id')
         date_of_complaint_received = request.POST.get('date_of_complaint_received')
-        customer_address = request.POST.get('customer_address')
         complaint_received_by = request.POST.get('complaint_received_by')
         nearest_railwaystation = request.POST.get('nearest_railwaystation')
-        train_line = request.POST.get('train_line')
+        train_line = request.POST.get('tr   ain_line')
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
 
         visiting_charges_told_customer = request.POST.get('visiting_charges_told_customer')
@@ -91,39 +103,30 @@ def add_onsite_aftersales_service(request):
         notes = request.POST.get('notes')
         feedback_given = request.POST.get('feedback_given')
 
+        item2 = Onsite_aftersales_service()
 
-        item=Onsite_aftersales_service()
+        item2.crm_no_id = item.pk
+        item2.repairingno = repairingno
+        item2.previous_repairing_number = previous_repairing_number
+        item2.in_warranty = in_warranty
+        item2.date_of_complaint_received = date_of_complaint_received
+        item2.complaint_received_by = complaint_received_by
+        item2.nearest_railwaystation = nearest_railwaystation
+        item2.train_line = train_line
+        item2.products_to_be_repaired = products_to_be_repaired
 
+        item2.visiting_charges_told_customer = visiting_charges_told_customer
+        item2.total_cost = total_cost
+        item2.complaint_assigned_to = complaint_assigned_to
+        item2.complaint_assigned_on = complaint_assigned_on
+        item2.time_taken_destination_return_office_min = time_taken_destination_return_office_min
+        item2.notes = notes
+        item2.feedback_given = feedback_given
 
-        item.repairingno = repairingno
-        item.customer_name = customer_name
-        item.company_name = company_name
-        item.customer_name = customer_name
-        item.company_name = company_name
-        item.customer_no = customer_no
-        item.previous_repairing_number = previous_repairing_number
-        item.in_warranty = in_warranty
-        item.phone_no = phone_no
-        item.customer_email_id = customer_email_id
-        item.date_of_complaint_received = date_of_complaint_received
-        item.customer_address = customer_address
-        item.complaint_received_by = complaint_received_by
-        item.nearest_railwaystation = nearest_railwaystation
-        item.train_line = train_line
-        item.products_to_be_repaired = products_to_be_repaired
-
-        item.visiting_charges_told_customer = visiting_charges_told_customer
-        item.total_cost = total_cost
-        item.complaint_assigned_to = complaint_assigned_to
-        item.complaint_assigned_on = complaint_assigned_on
-        item.time_taken_destination_return_office_min = time_taken_destination_return_office_min
-        item.notes = notes
-        item.feedback_given = feedback_given
-
-        item.save()
+        item2.save()
         send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
 
-        return redirect('/add_onsite_product/'+str(item.id))
+        return redirect('/add_onsite_product/'+str(item2.id))
     context={
         # 'form':form,
        
@@ -167,6 +170,8 @@ def add_onsite_product(request,id):
 
 def update_onsite_details(request,id):
     onsite_id = Onsite_aftersales_service.objects.get(id=id)
+    onsite_product_list = Onsite_Products.objects.filter(onsite_repairing_id=id)
+    print(onsite_product_list)
     if request.method == 'POST' or request.method == 'FILES':
         repairingno = request.POST.get('repairingno')
         customer_name = request.POST.get('customer_name')
@@ -242,6 +247,7 @@ def update_onsite_details(request,id):
 
         context = {
             'onsite_id': onsite_id,
+            'onsite_product_list': onsite_product_list,
         }
 
         return render(request, 'update_forms/update_onsite_rep_form.html', context)
@@ -249,6 +255,7 @@ def update_onsite_details(request,id):
 
     context={
         'onsite_id':onsite_id,
+        'onsite_product_list':onsite_product_list,
     }
 
     return render(request,'update_forms/update_onsite_rep_form.html',context)
