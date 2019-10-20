@@ -504,54 +504,90 @@ function myFunction() {
 </div>
 <center>
 	<button class="btn btn-primary">Submit</button>
+                      <button  onclick="myFunction()" class="btn btn-primary" type="reset">Edit</button>
 
 </center>
-
-
-
-
-
-
 
 </fieldset>
 </form>
           <center>
-                      <button  onclick="myFunction()" class="btn btn-primary">Edit</button>
 
           </center>
 
 
+                <style>
+table {
+  font-family: arial, sans-serif;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 5px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
 <br>
 </div>
  <h1 style="font-size: 25px; color: black; text-align: center;"> Added Repair List </h1>
   <br>
       <div class="row">
     {% for list in onsite_product_list %}
-      <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow"s>
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;">
 
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
 
-
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"> Type of Machine: {{list.type_of_machine}} </div>
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"> Model: {{list.model}} </div>
-                    <div class="col-xl-4 col-md-1 mb-1"> Sub Model: {{list.sub_model}}  </div>
-
-                    <div class="col-xl-12 col-md-1 mb-1"> Problem in the scale: {{list.problem_in_scale}}</div>
-                  <div class="col-xl-12 col-md-1 mb-1"> Components Replaced in Waranty(if scale in Waranty): {{list.components_replaced_in_warranty}} </div>
-                  <div class="col-xl-12 col-md-1 mb-1">Components Replaced: {{list.components_replaced}}  </div>
-
-                  <div class="col-xl-6 col-md-1 mb-1" style="border-right: 1px solid black;">Replaced Scale given: {{list.replaced_scale_given}}  </div>
-                  <div class="col-xl-4 col-md-1 mb-1"> Replaced scale Serial NO: {{list.Replaced_scale_serial_no}} </div>
-                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;">Deposit taken for replaced Scale: {{list.deposite_taken_for_replaced_scale}} </div>
-
-
-                   <div class="col-xl-4 col-md-1 mb-1"> Cost  </div>
-
+                  <table style="font-size: 14px;">
+  <tr>
+    <td> Type of Machine:  </td>
+    <td>  {{list.type_of_machine}} </td>
+  </tr>
+  <tr>
+    <td> Model:  </td>
+    <td> {{list.model}} </td>
+  </tr>
+  <tr>
+    <td> Sub Model: </td>
+    <td> {{list.sub_model}} </td>
+  </tr>
+  <tr>
+    <td> Problem in the scale: </td>
+    <td> {{list.problem_in_scale}} </td>
+  </tr>
+  <tr>
+    <td> Components Replaced in Waranty(if scale in Waranty): </td>
+    <td>  {{list.components_replaced_in_warranty}}</td>
+  </tr>
+  <tr>
+    <td> Components Replaced: </td>
+    <td>  {{list.components_replaced}}   </td>
+  </tr>
+  <tr>
+    <td> Replaced Scale given:  </td>
+    <td> {{list.replaced_scale_given}}  </td>
+  </tr>
+  <tr>
+    <td> Replaced scale Serial NO: </td>
+    <td> {{list.Replaced_scale_serial_no}}  </td>
+  </tr>
+  <tr>
+    <td> Deposit taken for replaced Scale:  </td>
+    <td>{{list.deposite_taken_for_replaced_scale}}  </td>
+  </tr>
+</table>
                     </div>
-
+                <center>
+                <a href="/edit_product/{{list.id}}"><button class="btn btn-primary">Edit</button></a>
+</center>
+                <br>
               </div>
-      </div><br> <br>>
+      </div>
+
 {% endfor %}
 
       </div>

@@ -25,6 +25,11 @@
 
 <body id="page-top">
 
+<style>
+    .container-fluid {
+    font-size: 14px;
+    }
+</style>
   <!-- Page Wrapper -->
   <div id="wrapper">
 	{% include 'base_templates/sidebar.html' %}
@@ -240,21 +245,43 @@ $(function() {
                 </div>
 
                                  <div class="col-xl-3 col-md-2 col-mb-8 row" style="color: black;">
-
+{% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
                      <div class="col-xl-12 col-md-2 col-mb-8 row">
                          <div class="col-xl-4 col-md-2 col-mb-8">
-<p>Done</p>
+    <p> Manager</p>
                      </div>
                      <div class="col-xl-3 col-md-2 col-mb-8">
                          <label class="switch ">
-  <input type="checkbox" checked>
+  <input name="Employee" type="checkbox" checked onchange="toggleCheckbox2(this)">
   <span class="slider round"></span>
 </label>
                      </div>
                      <div class="col-xl-5 col-md-2 col-mb-8">
-                         <p> Not Done</p>
+                         <p>Employee</p>
+
                      </div>
                      </div>
+{% else %}
+
+                                   <!--<div class="col-xl-12 col-md-2 col-mb-8 row">-->
+                         <!--<div class="col-xl-4 col-md-2 col-mb-8">-->
+<!--<p>Done</p>-->
+                     <!--</div>-->
+                     <!--<div class="col-xl-3 col-md-2 col-mb-8">-->
+                         <!--<label class="switch ">-->
+  <!--<input name="Done" type="checkbox" checked onchange="toggleCheckbox(this)">-->
+  <!--<span class="slider round"></span>-->
+<!--</label>-->
+                     <!--</div>-->
+                     <!--<div class="col-xl-5 col-md-2 col-mb-8">-->
+                         <!--<p> Pending</p>-->
+                     <!--</div>-->
+                     <!--</div>-->
+
+
+
+
 
 
                      <div class="col-xl-12 col-md-2 col-mb-8 row">
@@ -268,9 +295,12 @@ $(function() {
 </label>
                      </div>
                      <div class="col-xl-5 col-md-2 col-mb-8">
-                         <p> Manager</p>
+                         <p>&nbsp;Manager</p>
                      </div>
                      </div>
+
+                     {% endif %}
+                     {% endif %}
 
 
 
@@ -321,7 +351,8 @@ $(function() {
 
 <div style="min-height: 26vw;">
 
-        <div class="row">
+        <div id="id_manager_view" class="row">
+
 
 
               <div class="col-xl-12 col-md-12 mb-12">
@@ -329,17 +360,16 @@ $(function() {
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 55px;">
 
 
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Employee Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Onsite Reparing Done This Month </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Target Achieved (%) </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Avg. Time For Completing request </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Feedback </center> </div>
+                    <div class="col-xl-3 col-md-1 mb-1"><center> Company Name </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Onsite Reparing No. </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Cost </center> </div>|
+
                     </div>
 
 
                 </div>
               </div>
-            </div>
+
 
 
 
@@ -352,19 +382,11 @@ $(function() {
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
 
-                    <div class="col-xl-3 col-md-1 mb-1"><center> <a href="/update_onsite_details/{{list.pk}}"> {{list.repairingno}}</a> </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.repairing_no_of_repairs}} </center> </div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center> {{list.repairing_target_achieved}}% </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> 1 Hour </center> </div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center> 2 Hour </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1">
-                    <center>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i> </center>
-                    </div>
+                    <div class="col-xl-3 col-md-1 mb-1"><center> <a href="/update_onsite_details/{{list.pk}}"> {{list.crm_no.company_name}}</a> </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.repairingno}} </center> </div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.total_cost}} </center> </div>
+
+
                     </div>
 
 
@@ -373,7 +395,7 @@ $(function() {
           {% endfor %}
             </div>
 
-
+</div>
 
         </div>
 </div>
@@ -383,7 +405,7 @@ $(function() {
 
 <br>
 <center>
-    <div class="row" style="width: 70%;">
+    <div class="row" style="width: 85%; padding-bottom: 10px;">
 
 
 
@@ -474,7 +496,36 @@ $(function() {
 
 
     </script>
+             <script>
 
+        function toggleCheckbox(select) {
+value = select.checked;
+
+    $.ajax({
+        url: "/load_dispatch_done/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_subcat").html(data);
+        }
+      });
+}
+        function toggleCheckbox2(select) {
+value = !select.checked;
+
+    $.ajax({
+        url: "/load_onsite_reparing_manager/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+    </script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>

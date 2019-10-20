@@ -55,6 +55,10 @@
     .border-right-primary{border-right:.25rem solid #4e73df!important}
 </style>
             <style>
+* {
+font-size: 14px;
+}
+
 .switch {
   position: relative;
   display: inline-block;
@@ -255,8 +259,7 @@ $(function() {
 </label>
                      </div>
                      <div class="col-xl-5 col-md-2 col-mb-8">
-                         <p>Employee</p>
-
+                         <p> Pending</p>
                      </div>
                      </div>
 {% else %}
@@ -373,8 +376,8 @@ $(function() {
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                     <div class="col-xl-7 col-md-1 mb-1"><center> <a href="/update_repairing_details/{{list.id}}">{{list.company_name}}</a></center></div>|
-                    <div class="col-xl-4 col-md-1 mb-1"><center> Hash Pathak </center> </div>
+                        <div class="col-xl-7 col-md-1 mb-1"><center> <a href="/update_repairing_details/{{list.id}}">{{list.crm_no.company_name}}</a></center></div>|
+                    <div class="col-xl-4 col-md-1 mb-1"><center> {{list.current_stage}} </center> </div>
                     </div>
 
                 </div>
@@ -396,7 +399,7 @@ $(function() {
 
 <br>
 <center>
-    <div class="row" style="width: 70%; position: absolute; bottom: 0; margin-left: 8%;">
+    <div class="row" style="width: 70%; position: absolute; bottom: 0; margin-left: 8%; padding-bottom: 10px;">
 
         {% if request.user.is_authenticated %}
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}

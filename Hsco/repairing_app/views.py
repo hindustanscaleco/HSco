@@ -290,6 +290,10 @@ def manager_repairing_module_home(request):
     }
     return render(request,'dashboardnew/manager_repairing_module_home.html',context)
 
+
+def repairing_analytics(request):
+    return render(request,'analytics/repairing_analytics.html')
+
 def repairing_report_module(request):
     if request.method == 'POST' or None:
         selected_list = request.POST.getlist('checks[]')

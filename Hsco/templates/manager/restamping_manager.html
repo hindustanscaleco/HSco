@@ -21,6 +21,12 @@
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
             <style>
+
+
+ .container-fluid {
+ font-size: 13px;
+ }
+
 .switch {
   position: relative;
   display: inline-block;
@@ -239,20 +245,43 @@ $(function() {
 
                  <div class="col-xl-3 col-md-2 col-mb-8 row" style="color: black;">
 
+             {% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
                      <div class="col-xl-12 col-md-2 col-mb-8 row">
                          <div class="col-xl-4 col-md-2 col-mb-8">
-<p>Done</p>
+    <p> Manager</p>
                      </div>
                      <div class="col-xl-3 col-md-2 col-mb-8">
                          <label class="switch ">
-  <input type="checkbox" checked>
+  <input name="Employee" type="checkbox" checked onchange="toggleCheckbox2(this)">
   <span class="slider round"></span>
 </label>
                      </div>
                      <div class="col-xl-5 col-md-2 col-mb-8">
-                         <p> Not Done</p>
+                         <p>Employee</p>
+
                      </div>
                      </div>
+{% else %}
+
+                                   <!--<div class="col-xl-12 col-md-2 col-mb-8 row">-->
+                         <!--<div class="col-xl-4 col-md-2 col-mb-8">-->
+<!--<p>Done</p>-->
+                     <!--</div>-->
+                     <!--<div class="col-xl-3 col-md-2 col-mb-8">-->
+                         <!--<label class="switch ">-->
+  <!--<input name="Done" type="checkbox" checked onchange="toggleCheckbox(this)">-->
+  <!--<span class="slider round"></span>-->
+<!--</label>-->
+                     <!--</div>-->
+                     <!--<div class="col-xl-5 col-md-2 col-mb-8">-->
+                         <!--<p> Pending</p>-->
+                     <!--</div>-->
+                     <!--</div>-->
+
+
+
+
 
 
                      <div class="col-xl-12 col-md-2 col-mb-8 row">
@@ -266,9 +295,12 @@ $(function() {
 </label>
                      </div>
                      <div class="col-xl-5 col-md-2 col-mb-8">
-                         <p> Manager</p>
+                         <p>&nbsp; Manager</p>
                      </div>
                      </div>
+
+                     {% endif %}
+                     {% endif %}
 
 
 
@@ -285,17 +317,17 @@ $(function() {
 
 <div style="min-height: 26vw;">
 
-        <div class="row">
+        <div id="id_manager_view" class="row">
 
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
 
-
-                    <div class="col-xl-4 col-md-1 mb-1"><center> Name </center></div>|
-                    <div class="col-xl-4 col-md-1 mb-1"><center> Restamping This Month </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Avg Time(Form to Done) </center></div>
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Company Name </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Restamping No </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> New Sr. no. </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Brand </center></div>
 
 
                 </div>
@@ -312,9 +344,10 @@ $(function() {
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                    <div class="col-xl-4 col-md-1 mb-1"><center> <a href="/update_restamping_details/{{list.id}}" >{{ list.company_name }}</a> </center></div>|
-                    <div class="col-xl-4 col-md-1 mb-1"><center>static </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center>static </center></div>
+                    <div class="col-xl-4 col-md-1 mb-1"><center> <a href="/update_restamping_details/{{list.id}}" >{{ list.crm_no.company_name }}</a> </center></div>|
+                    <div class="col-xl-4 col-md-1 mb-1"><center>{{ list.restampingno }} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.new_serial_no }} </center></div>
+                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.brand }} </center></div>
 
 
 
@@ -349,7 +382,7 @@ $(function() {
 
 <br>
 <center>
-    <div class="row" style="width: 70%;">
+    <div class="row" style="width: 70%; padding-bottom: 10px;">
 
 
 
@@ -446,7 +479,36 @@ $(function() {
     <i class="fas fa-angle-up"></i>
   </a>
 
+               <script>
 
+        function toggleCheckbox(select) {
+value = select.checked;
+
+    $.ajax({
+        url: "/load_dispatch_done/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_subcat").html(data);
+        }
+      });
+}
+        function toggleCheckbox2(select) {
+value = !select.checked;
+
+    $.ajax({
+        url: "/load_restamping_manager/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+    </script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
