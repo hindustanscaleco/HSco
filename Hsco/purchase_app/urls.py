@@ -2,7 +2,7 @@ from django.urls import path, include, re_path
 
 from .views import add_purchase_details, view_customer_details, update_customer_details, manager_report, report, \
     final_report, add_product_details, customer_employee_sales_graph, feedbacka
-from .views import feedback_customer
+from .views import feedback_purchase
 from .views import edit_product_customer
 
 
@@ -15,7 +15,7 @@ urlpatterns = [
     path('final_report/', final_report, name='final_report'),
     path('manager_report/',manager_report , name ='manager_report'),
     path('customer_employee_sales_graph/',customer_employee_sales_graph , name ='customer_employee_sales_graph'),
-    path('feedback_customer/',feedback_customer , name ='feedback_customer'),
+    path('feedback_purchase/<str:user_id>/<str:customer_id>/<str:purchase_id>',feedback_purchase , name ='feedback_purchase'),
     path('add_product_details/<int:id>',add_product_details , name ='add_product_details'),
     path('feedbacka/',feedbacka, name ='feedbacka'),
     path('edit_product_customer/<int:id>',edit_product_customer, name = 'edit_product_customer'),
