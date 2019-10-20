@@ -290,6 +290,31 @@ def restamping_employee_graph(request):
     }
     return render(request,"graphs/restamping_employee_graph.html",context)
 
+def load_restamping_manager(request):
+    selected = request.GET.get('loc_id')
+
+    if selected=='true':
+        user_list = Employee_Analysis_month.objects.filter(manager_id=request.user.name)
+        # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
+
+        context = {
+            'user_list': user_list,
+            'manager': True,
+        }
+
+        return render(request, 'AJAX/load_restamping_manager.html', context)
+    else:
+        restamp_list = Restamping_after_sales_service.objects.all()
+
+        context = {
+            'restamp_list': restamp_list,
+            'manager': False,
+
+        }
+
+
+        return render(request, 'AJAX/load_restamping_manager.html', context)
+
 
 
 
