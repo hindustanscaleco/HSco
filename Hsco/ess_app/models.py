@@ -29,15 +29,17 @@ class Defects_Warning(models.Model):
     content = models.CharField(max_length=255,null=True,blank=True )
     entry_timedate = models.DateTimeField(default=timezone.now,)
     given_by = models.CharField(max_length=90)
+    entry_date = models.DateField(default=datetime.date.today,)
+
 
     def __str__(self):
-        return self.user_id
+        return str(self.user_id)
 
 class Employee_Leave(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     # ess_id=models.ForeignKey(Ess, on_delete=models.CASCADE)
-    requested_leave_date_from= models.DateTimeField(default=timezone.now, blank=True)
-    requested_leave_date_to= models.DateTimeField(default=timezone.now, blank=True)
+    requested_leave_date_from= models.DateField(default=datetime.date.today, blank=True)
+    requested_leave_date_to= models.DateField(default=datetime.date.today, blank=True)
     reason=models.CharField(max_length=300,)
     is_approved =models.BooleanField(default=False,null=True, blank=True)     #YES Or NO
     in_process = models.BooleanField(default=False ,null=True, blank=True)      #Decide Later option for manager
@@ -45,6 +47,7 @@ class Employee_Leave(models.Model):
     is_employee_of_month = models.BooleanField(default=False)
 
     entry_timedate = models.DateTimeField(default=timezone.now,)
+    entry_date = models.DateField(default=datetime.date.today,)
 
 
     def __str__(self):
@@ -61,6 +64,7 @@ class Employee_Analysis_month(models.Model):
     #TARGETS_GIVEN
     sales_target_given = models.FloatField(default=0.0, )  # in amount
     reparing_target_given = models.FloatField(default=0.0, )  # in amount
+    onsitereparing_target_given = models.FloatField(default=0.0, )  # in amount
     restamping_target_given = models.FloatField(default=0.0, )  # in amount
     #DONE_THIS_MONTH
     total_sales_done = models.FloatField(default=0.0, )  # Customer module sales done in this month in amount
@@ -76,12 +80,14 @@ class Employee_Analysis_month(models.Model):
     #ACHIEVED_TILL_NOW
     sales_target_achived_till_now = models.FloatField(default=0.0, null=True, blank=True)
     reparing_target_achived_till_now = models.FloatField(default=0.0, null=True, blank=True)
+    onsitereparing_target_achived_till_now = models.FloatField(default=0.0, null=True, blank=True)
 
 
     entry_timedate = models.DateTimeField(default=timezone.now,)     # extract month and year from date
     month = models.CharField(max_length=20, null=True, blank=True,choices=list_of_month)    # extract month and year from date
     year = models.IntegerField()    # extract month and year from date
-
+    start_rating_feedback_sales = models.FloatField(default=0.0, null=True, blank=True)
+    start_rating_feedback_reparing = models.FloatField(default=0.0, null=True, blank=True)
 
     class Meta:
         unique_together = ('user_id','month','year')
@@ -90,7 +96,7 @@ class Employee_Analysis_month(models.Model):
         return str(self.user_id)
 
 
-class Employee_Analysis_date(models.Model):
+class   Employee_Analysis_date(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
 

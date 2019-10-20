@@ -1,0 +1,98 @@
+
+  {% if manager %}
+
+ <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+
+
+
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Employee Name </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Repairing done </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Target achieved </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Average time to repair scale </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Average time to give Estimate after Scale is submitted </center> </div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center> Feedback</center> </div>
+                    </div>
+
+
+
+                </div>
+              </div>
+
+
+
+
+<br>
+
+                <div id="id_subcat" class="row">
+
+
+                {% for list in user_list%}
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+
+                     <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_repairing_details/{{list.id}}">{{list.user_id.name}}</a></center></div>|
+                    <div class="col-xl-4 col-md-1 mb-1"><center> {{list.total_reparing_done}} </center> </div>
+                    <div class="col-xl-4 col-md-1 mb-1"><center> {{list.reparing_target_given}} </center> </div>
+                    <div class="col-xl-4 col-md-1 mb-1"><center> {{list.reparing_target_given}} </center> </div>
+                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">
+                         {% for avg in  list1.start_rating_feedback_reparing|rjust:'5'  %}
+							{% if forloop.counter <= list1.start_rating_feedback_reparing %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
+							{% endif %}
+						{% endfor %}
+
+                    </div>
+                    </div>
+
+                </div>
+              </div>
+                {% endfor %}
+
+            </div>
+
+{% else %}
+   <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+
+
+
+                    <div class="col-xl-7 col-md-1 mb-1"><center> Company Name </center></div>|
+                    <div class="col-xl-4 col-md-1 mb-1"><center> User Name </center> </div>
+                    </div>
+
+
+
+                </div>
+              </div>
+
+
+
+
+<br>
+
+                <div id="id_subcat" class="row">
+
+
+                {% for list in repair_list%}
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+
+                     <div class="col-xl-7 col-md-1 mb-1"><center> <a href="/update_repairing_details/{{list.id}}">{{list.company_name}}</a></center></div>|
+                    <div class="col-xl-4 col-md-1 mb-1"><center> Hash Pathak </center> </div>
+                    </div>
+
+                </div>
+              </div>
+                {% endfor %}
+
+            </div>
+
+
+  {% endif %}

@@ -487,7 +487,21 @@ function myFunction() {
   </div>
 </div>
 
+ <div class="form-group row">
+  <label class="col-md-2 control-label">Assigned To
 
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+<select  name="employee_id" class="form-control">
+                {% for list2 in employee_list %}
+                        <option value="{{list2.pk}}">{{list2.name}}</option>
+                  {% endfor %}
+</select>    </div>
+  </div>
+
+</div>
 <center>
 	<button class="btn btn-primary">Submit</button>
                       <button  onclick="myFunction()" class="btn btn-primary" type="reset">Edit</button>

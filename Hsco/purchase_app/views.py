@@ -12,7 +12,7 @@ from django.db.models import Q,F
 from ess_app.models import Employee_Analysis_date
 from .models import  Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
-from datetime import datetime
+from _datetime import datetime
 from django.core.mail import send_mail
 from Hsco import settings
 import requests
@@ -55,7 +55,7 @@ def add_purchase_details(request):
 
         item2 = Purchase_Details()
 
-        item2.crm_no_id = item.pk
+        item2.crm_no = Customer_Details.objects.get(id=item.pk)
         item2.date_of_purchase = date_of_purchase
         item2.product_purchase_date = product_purchase_date
         item2.bill_no = bill_no
@@ -73,7 +73,8 @@ def add_purchase_details(request):
         dispatch = Dispatch()
 
 
-        dispatch.customer_no = item.pk
+        dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
+
         dispatch.customer_email = customer_email_id
         dispatch.customer_name = customer_name
         dispatch.company_name = company_name
@@ -85,25 +86,24 @@ def add_purchase_details(request):
         dispatch2 = Dispatch.objects.get(id=dispatch.pk)
         dispatch2.dispatch_id = str(dispatch.pk + 00000)
         dispatch2.save(update_fields=['dispatch_id'])
-
         customer_id = Purchase_Details.objects.get(id=item2.pk)
         customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
         customer_id.save(update_fields=['dispatch_id_assigned'])
         send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
-        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.date.today),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            Employee_Analysis_date.objects.get(user_id=request.user.pk,entry_date=datetime.date.today,month = datetime.now().month,year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + value_of_goods)
-            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
-
-            # ead.save(update_fields=['total_sales_done_today'])
-
-        else:
-            ead = Employee_Analysis_date()
-            ead.user_id = SiteUser.objects.get(id=request.user.pk)
-            ead.total_sales_done_today = value_of_goods
-            ead.month = datetime.now().month
-            ead.year = datetime.now().year
-            ead.save()
+        # if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.date.today),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+        #     Employee_Analysis_date.objects.get(user_id=request.user.pk,entry_date=datetime.date.today,month = datetime.now().month,year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + value_of_goods)
+        #     # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+        #
+        #     # ead.save(update_fields=['total_sales_done_today'])
+        #
+        # else:
+        #     ead = Employee_Analysis_date()
+        #     ead.user_id = SiteUser.objects.get(id=request.user.pk)
+        #     ead.total_sales_done_today = value_of_goods
+        #     ead.month = datetime.now().month
+        #     ead.year = datetime.now().year
+        #     ead.save()
 
         mobile = '+91 7757860524'  # 9766323877'
         user_hsco = 'HSCo'
@@ -129,10 +129,9 @@ def add_purchase_details(request):
 
 
 def view_customer_details(request):
-    date_today= datetime.date.today()
-    message_list = Employee_Leave.objects.filter(entry_date=date_today)
-    print(message_list)
-    print(message_list)
+    date_today= datetime.now().strftime('%Y-%m-%d')
+    message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
+
 
 
     if request.method == 'POST':
@@ -183,6 +182,7 @@ def view_customer_details(request):
             return render(request, 'dashboardnew/cm.html', context)
     else:
         cust_list=Customer_Details.objects.all().order_by('-id')
+        cust_list=Purchase_Details.objects.all().order_by('-id')
 
         # with connection.cursor() as cursor:
         #     cursor.execute(
@@ -207,13 +207,92 @@ def view_customer_details(request):
 
 
 def update_customer_details(request,id):
-    product_list = Product_Details.objects.filter(purchase_id=id)
-    print(product_list)
-    customer_id = Purchase_Details.objects.get(id=id)
+    purchase_id_id = Purchase_Details.objects.get(id=id)
+    customer_id = Purchase_Details.objects.get(id=id).crm_no
+    customer_id = Customer_Details.objects.get(id=customer_id)
+    product_id = Product_Details.objects.filter(purchase_id=id)
+    if request.method=='POST':
+        customer_name = request.POST.get('customer_name')
+        company_name = request.POST.get('company_name')
+        address = request.POST.get('address')
+        contact_no = request.POST.get('phone_no')
+        customer_email_id = request.POST.get('customer_email_id')
+
+        item=customer_id
+
+        item.customer_name = customer_name
+        item.company_name = company_name
+        item.address = address
+        item.contact_no = contact_no
+        item.customer_email_id = customer_email_id
+
+        item.save(update_fields=['customer_name','company_name','address','contact_no','customer_email_id',])
+
+        product_name = request.POST.get('product_name')
+        quantity = request.POST.get('quantity')
+        type_of_scale = request.POST.get('type_of_scale')
+        model_of_purchase = request.POST.get('model_of_purchase')
+        sub_model = request.POST.get('sub_model')
+        sub_sub_model = request.POST.get('sub_sub_model')
+        serial_no_scale = request.POST.get('serial_no_scale')
+        brand = request.POST.get('brand')
+        capacity = request.POST.get('capacity')
+        unit = request.POST.get('unit')
+
+        item2=product_id
+
+        item2.product_name = product_name
+        item2.quantity = quantity
+        item2.type_of_scale = type_of_scale
+        item2.model_of_purchase = model_of_purchase
+        item2.sub_model = sub_model
+        item2.sub_sub_model = sub_sub_model
+        item2.serial_no_scale = serial_no_scale
+        item2.brand = brand
+        item2.capacity = capacity
+        item2.unit = unit
+        item2.save(update_fields=['purchase_id','product_name','quantity','type_of_scale','model_of_purchase','sub_model','sub_sub_model','serial_no_scale','brand','capacity','unit',])
+
+        date_of_purchase = request.POST.get('date_of_purchase')
+        product_purchase_date = request.POST.get('product_purchase_date')
+        bill_no = request.POST.get('bill_no')
+        upload_op_file = request.POST.get('upload_op_file')
+        po_number = request.POST.get('po_number')
+        photo_lr_no = request.POST.get('photo_lr_no')
+        channel_of_sales = request.POST.get('channel_of_sales')
+        industry = request.POST.get('industry')
+        value_of_goods = request.POST.get('value_of_goods')
+        channel_of_dispatch = request.POST.get('channel_of_dispatch')
+        notes = request.POST.get('notes')
+        feedback_form_filled = request.POST.get('feedback_form_filled')
+
+
+        item3=purchase_id_id
+
+        item3.date_of_purchase = date_of_purchase
+        item3.crm_no= Customer_Details.objects.get(id=item.pk)
+        item3.product_purchase_date = product_purchase_date
+        item3.bill_no = bill_no
+        item3.upload_op_file = upload_op_file
+        item3.po_number = po_number
+        item3.photo_lr_no = photo_lr_no
+        item3.channel_of_sales = channel_of_sales
+        item3.industry = industry
+        item3.value_of_goods = value_of_goods
+        item3.channel_of_dispatch = channel_of_dispatch
+        item3.notes = notes
+        item3.feedback_form_filled = feedback_form_filled
+
+
+        item3.save(update_fields=['date_of_purchase', 'product_purchase_date', 'bill_no', 'upload_op_file', 'po_number',
+                                 'photo_lr_no', 'channel_of_sales', 'industry', 'value_of_goods', 'channel_of_dispatch',
+                                 'notes', 'feedback_form_filled',])
+
 
     context={
-        'cust_id':customer_id,
-        'product_list': product_list,
+        'product_id':product_id,
+        'customer_id': customer_id,
+        'purchase_id_id': purchase_id_id,
     }
 
     return render(request,'update_forms/update_cust_mod_form.html',context)
@@ -275,7 +354,7 @@ def add_product_details(request,id):
 
 
 
-        return redirect('/update_customer_details/'+str(id))
+        return redirect('/update_customer_details/'+str(item.id))
 
 
     context = {
@@ -473,6 +552,29 @@ def edit_product_customer(request,id):
     }
 
     return render(request,'edit_product/edit_product_customer.html',context)
+
+def load_users(request):
+    selected = request.GET.get('loc_id')
+
+    if selected=='true':
+        user_list = Employee_Analysis_month.objects.filter(manager_id=request.user.name)
+        # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
+
+        context = {
+            'user_list': user_list,
+            'manager': True,
+        }
+
+        return render(request, 'AJAX/load_users.html', context)
+    else:
+        cust_list=Purchase_Details.objects.all().order_by('-id')
+
+        context = {
+            'customer_list': cust_list,
+            'manager': False,
+        }
+
+        return render(request, 'AJAX/load_users.html', context)
 
 
 
