@@ -11,6 +11,7 @@
 
   <title>HSCO</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
 
   <!-- Custom fonts for this template-->
@@ -20,7 +21,12 @@
 
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+<style>
+    * {
+    font-family: 'Poppins';
+}
 
+</style>
 </head>
 
 <body id="page-top">
@@ -44,12 +50,81 @@
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="container-fluid" style="margin-left: 15%; width: 85%; margin-top: 7%;">
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Purchase Module</h1>
           </div>
+
+                </div>
+                <div class="col-xl-7 col-md-4">
+                        <div class="row">
+                <div class="col-xl-3 col-md-3 mb-12">
+              <div class="  ">
+
+                <div class="" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col ">
+ <a href="/add_customer_details/"><button class="btn btn-primary"  style="font-size: 14px; width: 150px;">Add Customer</button></a>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+         <div class="col-xl-3 col-md-3 mb-12"  style="margin-left: -0px;">
+              <div class="   ">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col ">
+ <a href="/add_customer_details/"><button class="btn btn-primary"  style="font-size: 14px; width: 150px;">Delete Customer</button></a>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+                <div class="col-xl-4 col-md-12 mb-12" style="margin-left: -0px;">
+              <div class="">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <a href="/user_logs/"> <button class="btn btn-primary"  style="font-size: 14px;">Log</button></a>&nbsp; &nbsp;
+                        <a href="/report/"> <button class="btn btn-primary"  style="font-size: 14px;">Report</button></a>&nbsp;
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+        <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-2 col-md-12 mb-12" style="margin-left: -50px;">
+              <div class="">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <a href="/analytics/"><button class="btn btn-primary"  style="font-size: 14px;">Analytics</button></a>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+                </div>
+            </div>
+
+<br>
+
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
 </style>
@@ -251,7 +326,7 @@ $(function() {
 </label>
                      </div>
                      <div class="col-xl-5 col-md-2 col-mb-8">
-                         <p> Not Done</p>
+                         <p> Pending</p>
                      </div>
                      </div>
 
