@@ -241,6 +241,8 @@ $(function() {
     <div class="row" style="width: 50%;">
 
 
+        {% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
 
                 <div class="col-xl-5 col-md-12 mb-12">
               <div class="card border-left-primary shadow">
@@ -271,7 +273,22 @@ $(function() {
                 </div>
               </div>
             </div>
+{% else %}
+         <div class="col-xl-5 col-md-12 mb-12">
+              <div class="card border-left-primary shadow">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col ">
 
+ <a href="/add_amc_after_sales/"><button class="btn btn-primary">Add AMC Details</button></a>                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        {% endif %}
+{% endif %}
           </div>
 
 </center>
