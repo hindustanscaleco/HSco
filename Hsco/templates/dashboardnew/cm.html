@@ -315,37 +315,49 @@ $(function() {
 
                                  <div class="col-xl-3 col-md-2 col-mb-8 row" style="color: black;">
 
+
+{% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
                      <div class="col-xl-12 col-md-2 col-mb-8 row">
                          <div class="col-xl-4 col-md-2 col-mb-8">
-<p>Done</p>
+    <p> Manager</p>
                      </div>
                      <div class="col-xl-3 col-md-2 col-mb-8">
                          <label class="switch ">
-  <input type="checkbox" checked>
+  <input name="Employee" type="checkbox" checked onchange="toggleCheckbox2(this)">
   <span class="slider round"></span>
 </label>
                      </div>
                      <div class="col-xl-5 col-md-2 col-mb-8">
-                         <p> Pending</p>
+                         <p>Employee</p>
+
                      </div>
                      </div>
+{% else %}
+
+                                   <!--<div class="col-xl-12 col-md-2 col-mb-8 row">-->
+                         <!--<div class="col-xl-4 col-md-2 col-mb-8">-->
+<!--<p>Done</p>-->
+                     <!--</div>-->
+                     <!--<div class="col-xl-3 col-md-2 col-mb-8">-->
+                         <!--<label class="switch ">-->
+  <!--<input name="Done" type="checkbox" checked onchange="toggleCheckbox(this)">-->
+  <!--<span class="slider round"></span>-->
+<!--</label>-->
+                     <!--</div>-->
+                     <!--<div class="col-xl-5 col-md-2 col-mb-8">-->
+                         <!--<p> Pending</p>-->
+                     <!--</div>-->
+                     <!--</div>-->
 
 
-                     <div class="col-xl-12 col-md-2 col-mb-8 row">
-                         <div class="col-xl-4 col-md-2 col-mb-8">
-<p>Employee</p>
-                     </div>
-                     <div class="col-xl-3 col-md-2 col-mb-8">
-                         <label class="switch ">
-  <input type="checkbox" checked>
-  <span class="slider round"></span>
-</label>
-                     </div>
-                     <div class="col-xl-5 col-md-2 col-mb-8">
-                         <p> Manager</p>
-                     </div>
-                     </div>
 
+
+
+
+
+                     {% endif %}
+                     {% endif %}
 
 
 
@@ -354,7 +366,7 @@ $(function() {
             </div>
 
 <div style="min-height: 26vw;">
-        <div class="row">
+        <div class="row" id="id_manager_view">
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 10px;color: black; font-weight: 600; font-size: 12px; height: 35px; ">
@@ -396,11 +408,11 @@ a:hover {
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; min-height: 55px;">
                     <div class="col-xl-12 col-md-11 mb-1" style="font-size:10px;">Dispatch Id: {{ list1.dispatch_id_assigned}} </div>
 
-                    <div class="col-xl-2 col-md-1 mb-1"> <a href="/update_customer_details/{{list1.id}}" style="color: black; font-size: 12px;" >{{ list1.customer_name }}</a> </div>
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.company_name}} </div>
-                    <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{{ list1.pk}} </div>
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.contact_no}} </div>
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.customer_email_id}} </div>
+                    <div class="col-xl-2 col-md-1 mb-1"> <a href="/update_customer_details/{{list1.pk}}" style="color: black; font-size: 12px;" >{{ list1.crm_no.customer_name }}</a> </div>
+                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.company_name}} </div>
+                    <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.pk}} </div>
+                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.contact_no}} </div>
+                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.customer_email_id}} </div>
                     <div class="col-xl-1 col-md-1 mb-1 border-left-primary"> {{ list1.feedback_form_filled}}</div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">
                          {% for avg in  list1.feedback_stars|rjust:'5'  %}
@@ -419,7 +431,8 @@ a:hover {
 
 
                 </div>
-              </div> {% endfor %}
+              </div>
+            {% endfor %}
             </div>
 
     <style>
@@ -523,6 +536,36 @@ a:hover {
     <i class="fas fa-angle-up"></i>
   </a>
 
+             <script>
+
+        function toggleCheckbox(select) {
+value = select.checked;
+
+    $.ajax({
+        url: "/load_dispatch_done/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_subcat").html(data);
+        }
+      });
+}
+        function toggleCheckbox2(select) {
+value = !select.checked;
+
+    $.ajax({
+        url: "/load_users/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+    </script>
 
 
   <!-- Bootstrap core JavaScript-->

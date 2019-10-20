@@ -565,6 +565,29 @@ def load_reparing_stages_list(request,):
     context.update(context)
     return render(request, 'AJAX/load_reparing_stage.html', context)
 
+def load_reparing_manager(request):
+    selected = request.GET.get('loc_id')
+
+    if selected=='true':
+        user_list = Employee_Analysis_month.objects.filter(manager_id=request.user.name)
+        # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
+
+        context = {
+            'user_list': user_list,
+            'manager': True,
+        }
+
+        return render(request, 'AJAX/load_reparing_manager.html', context)
+    else:
+        repair_list = Repairing_after_sales_service.objects.all()
+
+        context = {
+            'repair_list': repair_list,
+            'manager': False,
+        }
+
+        return render(request, 'AJAX/load_reparing_manager.html', context)
+
 
 
 
