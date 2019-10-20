@@ -378,14 +378,21 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
     <div class="col-lg-9">
 
 
-                        <b>Satisfied with communication : </b>{% for avg in feedback_form.satisfied_with_communication|rjust:'5'  %}
-{% if forloop.counter <= feedback_form.satisfied_with_communication %}
+                        <b>Backend Team : </b>{% for avg in feedback_form.backend_team|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.backend_team %}
 									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
 							{% else %}
 									<i class="fa fa-star" aria-hidden="true"></i>
 							{% endif %}
         						{% endfor %} <br>
-                  <b>Speed of Performance : </b>{% for avg in feedback_form.speed_of_performance|rjust:'5'  %}
+        <b>Onsite Worker : </b>{% for avg in feedback_form.onsite_worker|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.onsite_worker %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %}  <br>
+                  <b> Speed Performance: </b>{% for avg in feedback_form.speed_of_performance|rjust:'5'  %}
 {% if forloop.counter <= feedback_form.speed_of_performance %}
 									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
 							{% else %}
