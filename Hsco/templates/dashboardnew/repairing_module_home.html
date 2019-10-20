@@ -55,6 +55,10 @@
     .border-right-primary{border-right:.25rem solid #4e73df!important}
 </style>
             <style>
+* {
+font-size: 14px;
+}
+
 .switch {
   position: relative;
   display: inline-block;
@@ -253,7 +257,7 @@ $(function() {
 </label>
                      </div>
                      <div class="col-xl-5 col-md-2 col-mb-8">
-                         <p> Not Done</p>
+                         <p> Pending</p>
                      </div>
                      </div>
 
@@ -384,7 +388,7 @@ $(function() {
 
 <br>
 <center>
-    <div class="row" style="width: 70%; position: absolute; bottom: 0; margin-left: 8%;">
+    <div class="row" style="width: 70%; position: absolute; bottom: 0; margin-left: 8%; padding-bottom: 10px;">
 
         {% if request.user.is_authenticated %}
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}

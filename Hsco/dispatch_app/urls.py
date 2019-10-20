@@ -1,7 +1,7 @@
 from django.urls import path, include, re_path
 
 from .views import add_dispatch_details, report_dis_mod, dispatch_view, dispatch_logs, final_report_dis_mod, \
-    update_dispatch_details, dispatch_employee_graph,load_dispatch_done,load_dispatch_done_manager
+    update_dispatch_details, dispatch_employee_graph, load_dispatch_done, load_dispatch_done_manager, dispatch_analytics
 
 urlpatterns = [
     path('add_dispatch_details/', add_dispatch_details, name ='add_dispatch_details'),
@@ -13,4 +13,5 @@ urlpatterns = [
     path('dispatch_employee_graph/', dispatch_employee_graph, name = 'dispatch_employee_graph'),
     path('load_dispatch_done/', load_dispatch_done, name = 'load_dispatch_done'),
     path('load_dispatch_done_manager/', load_dispatch_done_manager, name = 'load_dispatch_done_manager'),
+    path('dispatch_analytics/', dispatch_analytics, name = 'dispatch_analytics'),
 ]

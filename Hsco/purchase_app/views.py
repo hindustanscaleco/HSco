@@ -335,6 +335,9 @@ def manager_report(request):
 def feedbacka(request):
     return render(request, 'feedback/feedbacka.html')
 
+def purchase_analytics(request):
+    return render(request, 'analytics/purchase_analytics.html')
+
 def customer_employee_sales_graph(request):
     #x=Employee_Analysis_date.objects.annotate(date=TruncMonth('entry_timedate')).values('date').annotate(c=Count('id')).values('date', 'c')
     #print(x)

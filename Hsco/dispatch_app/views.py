@@ -260,6 +260,9 @@ def update_dispatch_details(request,update_id):
 def dispatch_logs(request):
     return render(request,"logs/dispatch_logs.html",)
 
+def dispatch_analytics(request):
+    return render(request,"analytics/dispatch_analytics.html",)
+
 def dispatch_employee_graph(request):
     user_id=request.user.pk
     currentMonth = datetime.now().month

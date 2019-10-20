@@ -24,7 +24,11 @@
 </head>
 
 <body id="page-top">
-
+<style>
+     .container-fluid{
+   font-size: 13px;
+   }
+</style>
   <!-- Page Wrapper -->
   <div id="wrapper">
   {% include 'base_templates/sidebar.html' %}
@@ -54,6 +58,8 @@
     .border-right-primary{border-right:.25rem solid #4e73df!important}
 </style>
             <style>
+
+
 .switch {
   position: relative;
   display: inline-block;
@@ -311,20 +317,19 @@ $(function() {
             </div>
 
 
+</div>
+<br>                  {% for list in dispatch_list %}
 
-<br>
-<br>
          <div id="id_subcat" class="row">
-                  {% for list in dispatch_list %}
 
                 <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
 
-                    <div class="col-xl-3 col-md-1 mb-1"><center> <a href="/update_dispatch_details/{{list.id}}" >{{ list.dispatch_id }}</a> </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_dispatch_details/{{list.id}}" >{{ list.dispatch_id }}</a> </center></div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.company_name }} </center></div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.date_of_dispatch }} </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.dispatch_by }} </center></div>
+                    <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.dispatch_by }} </center></div>
 
 
 
@@ -332,8 +337,8 @@ $(function() {
 
                 </div>
               </div>
-                  {% endfor %}
-            </div>
+
+            </div>{% endfor %}
 
 
 
@@ -345,7 +350,7 @@ $(function() {
 
 <br>
 <center>
-    <div class="row" style="width: 50%;">
+    <div class="row" style="width: 70%;">
 
 
 

@@ -1,7 +1,7 @@
 from django.urls import path, include, re_path
 
 from .views import restamping_after_sales_service, report_restamping, restamping_manager, restamping_product, \
-    update_restamping_details, final_report_restamping, restamping_employee_graph
+    update_restamping_details, final_report_restamping, restamping_employee_graph, restamping_analytics
 
 urlpatterns = [
     path('restamping_after_sales_service/', restamping_after_sales_service, name ='restamping_after_sales_service'),
@@ -10,5 +10,5 @@ urlpatterns = [
     path('restamping_manager/', restamping_manager, name='restamping_manager'),
     path('restamping_employee_graph/', restamping_employee_graph, name='restamping_employee_graph'),
     path('restamping_product/<int:id>', restamping_product, name='restamping_product'),
-    path('update_restamping_details/<int:id>', update_restamping_details, name='update_restamping_details'),
+    path('restamping_analytics/', restamping_analytics, name='restamping_analytics'),
 ]

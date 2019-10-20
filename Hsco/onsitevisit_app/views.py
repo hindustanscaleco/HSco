@@ -336,3 +336,8 @@ def load_onsite_reparing_stages_list(request,):
     }
 
     return render(request, 'AJAX/load_onsite_reparing_stage.html', context)
+
+
+
+def onsite_analytics(request,):
+    return render(request, 'analytics/onsite_analytics.html')

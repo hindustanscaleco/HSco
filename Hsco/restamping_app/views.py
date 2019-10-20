@@ -163,6 +163,11 @@ def restamping_product(request,id):
     }
     return render(request,'dashboardnew/restamping_product.html',context)
 
+
+
+def restamping_analytics(request):
+    return render(request,'analytics/restamping_analytics.html')
+
 def update_restamping_details(request,id):
     personal_id = Restamping_after_sales_service.objects.get(id=id)
     restamp_product_list = Restamping_Product.objects.filter(restamping_id=id)
