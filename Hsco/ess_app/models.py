@@ -29,15 +29,17 @@ class Defects_Warning(models.Model):
     content = models.CharField(max_length=255,null=True,blank=True )
     entry_timedate = models.DateTimeField(default=timezone.now,)
     given_by = models.CharField(max_length=90)
+    entry_date = models.DateField(default=datetime.date.today,)
+
 
     def __str__(self):
-        return self.user_id
+        return str(self.user_id)
 
 class Employee_Leave(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     # ess_id=models.ForeignKey(Ess, on_delete=models.CASCADE)
-    requested_leave_date_from= models.DateTimeField(default=timezone.now, blank=True)
-    requested_leave_date_to= models.DateTimeField(default=timezone.now, blank=True)
+    requested_leave_date_from= models.DateField(default=datetime.date.today, blank=True)
+    requested_leave_date_to= models.DateField(default=datetime.date.today, blank=True)
     reason=models.CharField(max_length=300,)
     is_approved =models.BooleanField(default=False,null=True, blank=True)     #YES Or NO
     in_process = models.BooleanField(default=False ,null=True, blank=True)      #Decide Later option for manager
@@ -45,6 +47,7 @@ class Employee_Leave(models.Model):
     is_employee_of_month = models.BooleanField(default=False)
 
     entry_timedate = models.DateTimeField(default=timezone.now,)
+    entry_date = models.DateField(default=datetime.date.today,)
 
 
     def __str__(self):

@@ -165,7 +165,6 @@ def update_repairing_details(request,id):
         name = request.POST.get('name')
         location = request.POST.get('location')
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
-
         total_cost = request.POST.get('total_cost')
         informed_on = request.POST.get('informed_on')
         informed_by = request.POST.get('informed_by')

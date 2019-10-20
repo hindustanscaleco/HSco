@@ -52,10 +52,9 @@
         <!-- Begin Page Content -->
         <div class="container-fluid" style="margin-left: 15%; width: 85%; margin-top: 7%;">
 
-            <div class="row">
-                <div class="col-xl-5 col-md-8" >
-                        <div class="d-sm-flex align-items-center  mb-4">
-            <h1 class="h3 mb-0 text-gray-800" style="font-size: 25px;">Customer Module</h1>
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Purchase Module</h1>
           </div>
 
                 </div>
@@ -432,6 +431,85 @@ a:hover {
         }
     </style>
 
+<center>
+    <div class="row" style="width: 70%; margin-top: 15%;">
+
+        {% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+                <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card border-left-primarya shadow border-right-primarya">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col ">
+ <a href="/add_purchase_details/"><button class="btn btn-primary">Add Purchase</button></a>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+        <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card border-left-primarya shadow border-right-primarya">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col ">
+ <a href="/add_customer_details/"><button class="btn btn-primary">Delete User</button></a>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+                <div class="col-xl-3 col-md-12 mb-12">
+              <div class="card border-left-primarya shadow border-right-primarya">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <a href="/user_logs/"> <button class="btn btn-primary">Log</button></a>&nbsp; &nbsp;
+                        <a href="/report/"> <button class="btn btn-primary">Report</button></a>&nbsp;
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+        <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-12 mb-12">
+              <div class="card border-left-primarya shadow border-right-primarya">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <a href="/analytics/"><button class="btn btn-primary">Analytics</button></a>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+{% else %}
+          <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card border-left-primarya shadow border-right-primarya">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col ">
+ <a href="/add_purchase_details/"><button class="btn btn-primary">Add Purchase</button></a>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+{% endif %}
+{% endif %}
+
+
+          </div>
+</center>
         </div>
 </div>
 <br>
