@@ -319,39 +319,92 @@ def customer_employee_sales_graph(request):
     #x=Employee_Analysis_date.objects.annotate(date=TruncMonth('entry_timedate')).values('date').annotate(c=Count('id')).values('date', 'c')
     #print(x)
     from django.db.models import Sum
-    qs = Employee_Analysis_date.objects.filter(month=datetime.now().month).values('entry_date').annotate(data_sum=Sum('total_sales_done_today'))
-    lis_date = []
-    lis_sum = []
-    for i in qs:
-        x=i
-        lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        lis_sum.append(x['data_sum'])
-    print(lis_date)
-    print(lis_sum)
+    feeback = Feedback.objects.all()
+    #this month sales
 
-    # user_id=request.user.pk
-    # currentMonth = datetime.now().month
-    # currentYear = datetime.now().year
-    # list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
-    # list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-    # # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-    # print(list(list_sales_month))
-    # print(list(list_sales))
-    # final_list=[]
-    # final_list2=[]
-    # for item in list_sales:
-    #     final_list.append(item[0])
-    #
-    # for item in list_sales_month:
-    #     final_list2.append(item[0])
-    #
-    # print(final_list)
-    # print(final_list2)
-    context={
-        'final_list':lis_date,
-        'final_list2':lis_sum
-    }
-    return render(request,"graphs/sales_graph.html",context)
+    mon = datetime.now().month
+    this_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+        data_sum=Sum('total_sales_done_today'))
+    this_lis_date = []
+    this_lis_sum = []
+    for i in this_month:
+        x = i
+        this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+        this_lis_sum.append(x['data_sum'])
+
+    #previous month sales
+    mon = (datetime.now().month)-1
+    previous_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+        data_sum=Sum('total_sales_done_today'))
+    previous_lis_date = []
+    previous_lis_sum = []
+    for i in previous_month:
+        x = i
+        previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+        previous_lis_sum.append(x['data_sum'])
+
+    if request.method=='POST':
+        start_date = request.POST.get('date1')
+        end_date = request.POST.get('date2')
+        qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values(
+            'entry_date').annotate(data_sum=Sum('total_sales_done_today'))
+        lis_date = []
+        lis_sum = []
+        for i in qs:
+            x = i
+            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
+        context = {
+            'final_list': lis_date,
+            'final_list2': lis_sum,
+
+            'previous_lis_date': previous_lis_date,
+            'previous_lis_sum': previous_lis_sum,
+            'this_lis_date': this_lis_date,
+            'this_lis_sum': this_lis_sum,
+            'feeback': feeback,
+        }
+        return render(request, "graphs/sales_graph.html", context)
+    else:
+
+        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values('entry_date').annotate(data_sum=Sum('total_sales_done_today'))
+        lis_date = []
+        lis_sum = []
+        for i in qs:
+            x=i
+            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
+        print(lis_date)
+        print(lis_sum)
+
+        # user_id=request.user.pk
+        # currentMonth = datetime.now().month
+        # currentYear = datetime.now().year
+        # list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+        # list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+        # # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+        # print(list(list_sales_month))
+        # print(list(list_sales))
+        # final_list=[]
+        # final_list2=[]
+        # for item in list_sales:
+        #     final_list.append(item[0])
+        #
+        # for item in list_sales_month:
+        #     final_list2.append(item[0])
+        #
+        # print(final_list)
+        # print(final_list2)
+        context={
+            'final_list':lis_date,
+            'final_list2':lis_sum,
+            'previous_lis_date': previous_lis_date,
+            'previous_lis_sum': previous_lis_sum,
+            'this_lis_date': this_lis_date,
+            'this_lis_sum': this_lis_sum,
+            'feeback': feeback,
+        }
+        return render(request,"graphs/sales_graph.html",context)
 
 
 def feedback_customer(request):

@@ -13,8 +13,7 @@ import datetime
 import requests
 import json
 from datetime import datetime
-from ess_app.models import Employee_Analysis_month
-
+from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 
 
 def add_repairing_details(request):
@@ -418,37 +417,83 @@ def repairing_employee_graph(request):
     user_id=request.user.pk
     currentMonth = datetime.now().month
     currentYear = datetime.now().year
-    list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
-    list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_reparing_done')
-    # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-    print(list(list_sales_month))
-    print(list(list_sales))
-    list_avg = Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_repair_single_scale')
-    list_total_restamp =Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_give_estimate')
-    final_list=[]
-    final_list2=[]
-    final_list3=[]
-    final_list4=[]
-    for item in list_sales:
-        final_list.append(item[0])
+    # list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+    # list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_reparing_done')
+    # # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+    # print(list(list_sales_month))
+    # print(list(list_sales))
+    # list_avg = Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_repair_single_scale')
+    # list_total_restamp =Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_to_give_estimate')
+    # final_list=[]
+    # final_list2=[]
+    # final_list3=[]
+    # final_list4=[]
+    # for item in list_sales:
+    #     final_list.append(item[0])
+    #
+    # for item in list_sales_month:
+    #     final_list2.append(item[0])
+    #
+    # for item in list_sales_month:
+    #     final_list3.append(item[0])
+    #
+    # for item in list_sales_month:
+    #     final_list4.append(item[0])
+    # print(final_list)
+    # print(final_list2)
 
-    for item in list_sales_month:
-        final_list2.append(item[0])
+    from django.db.models import Sum
 
-    for item in list_sales_month:
-        final_list3.append(item[0])
+    if request.method == 'POST':
+        if'submit1' in request.POST:
+            start_date = request.POST.get('date1')
+            end_date = request.POST.get('date2')
+            qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values('entry_date').annotate(data_sum=Sum('total_reparing_done_today'))
+            lis_date = []
+            lis_sum = []
+            for i in qs:
+                x = i
+                lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+                lis_sum.append(x['data_sum'])
+            context = {
 
-    for item in list_sales_month:
-        final_list4.append(item[0])
-    print(final_list)
-    print(final_list2)
-    context={
-        'final_list':final_list,
-        'final_list2':final_list2,
-        'final_list3':final_list3,
-        'final_list4':final_list4,
-    }
-    return render(request,"graphs/repairing_employee_graph.html",context)
+                'final_list': lis_date,
+                'final_list2': lis_sum,
+
+            }
+            return render(request, "graphs/repairing_employee_graph.html", context)
+
+        if 'submit2' in request.POST:
+            start_date = request.POST.get('date3')
+            end_date = request.POST.get('date4')
+            qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values('entry_date').annotate(
+                data_sum=Sum('avg_time_to_repair_single_scale_today'))
+            lis_date = []
+            lis_sum = []
+            for i in qs:
+                x = i
+                lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+                lis_sum.append(x['data_sum'])
+            context = {
+
+                'final_list3': lis_date,
+                'final_list4': lis_sum,
+
+            }
+            return render(request, "graphs/repairing_employee_graph.html", context)
+
+        # if 'submit3' in request.POST:
+        #     qs = Employee_Analysis_date.objects.filter(month='October').values('entry_date').annotate(
+        #         data_sum=Sum('avg_time_to_repair_single_scale_today'))
+        #     lis_date = []
+        #     lis_sum = []
+        #     for i in qs:
+        #         x = i
+        #         lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+        #         lis_sum.append(x['data_sum'])
+
+
+    return render(request,"graphs/repairing_employee_graph.html",)
 
 def load_reparing_stages_list(request,):
 
