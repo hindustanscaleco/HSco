@@ -1,17 +1,18 @@
 from django.db import connection
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
 from customer_app.models import Customer_Details
 from user_app.models import SiteUser
 from dispatch_app.models import Dispatch
 from dispatch_app.models import Product_Details_Dispatch
 from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
-
 from purchase_app.forms import Purchase_Details_Form, Feedback_Form
+from ess_app.models import Employee_Leave
+from django.db.models import Q,F
+from ess_app.models import Employee_Analysis_date
 from .models import  Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
-from datetime import datetime
+import datetime
 from django.core.mail import send_mail
 from Hsco import settings
 import requests
@@ -88,8 +89,21 @@ def add_purchase_details(request):
         customer_id = Purchase_Details.objects.get(id=item2.pk)
         customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
         customer_id.save(update_fields=['dispatch_id_assigned'])
-        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
+        send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
+        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.date.today),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_date.objects.get(user_id=request.user.pk,entry_date=datetime.date.today,month = datetime.now().month,year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + value_of_goods)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_date()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_sales_done_today = value_of_goods
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
 
         mobile = '+91 7757860524'  # 9766323877'
         user_hsco = 'HSCo'
@@ -115,6 +129,11 @@ def add_purchase_details(request):
 
 
 def view_customer_details(request):
+    date_today= datetime.date.today()
+    message_list = Employee_Leave.objects.filter(entry_date=date_today)
+    print(message_list)
+    print(message_list)
+
 
     if request.method == 'POST':
         if'submit1' in request.POST:
@@ -182,6 +201,7 @@ def view_customer_details(request):
 
         context = {
             'customer_list': cust_list,
+            'message': message_list,
         }
         return render(request,'dashboardnew/cm.html',context )
 
@@ -407,7 +427,7 @@ def customer_employee_sales_graph(request):
         return render(request,"graphs/sales_graph.html",context)
 
 
-def feedback_customer(request):
+def feedback_purchase(request,user_id,customer_id,purchase_id):
     feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' :
         knowledge_of_person = request.POST.get('knowledge_of_person')
@@ -423,8 +443,17 @@ def feedback_customer(request):
         item.price_of_product = price_of_product
         item.overall_interaction = overall_interaction
         item.about_hsco = about_hsco
-        item.any_suggestion = any_suggestion
+        item.user_id = SiteUser.objects.get(id=user_id)
+        item.customer_id = Customer_Details.objects.get(id=customer_id)
+        item.purchase_id = Purchase_Details.objects.get(id=purchase_id)
         item.save()
+
+        purchase=Purchase_Details.objects.get(id=purchase_id)
+        purchase.feedback_stars= (knowledge_of_person+timeliness_of_person+price_of_product+overall_interaction)/4.0
+        purchase.feedback_form_filled= 'YES'
+        purchase.save(update_fields=['feedback_stars','feedback_form_filled'])
+
+
 
         return HttpResponse('Feedback Submitted!!!')
     context={
