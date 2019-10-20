@@ -3,11 +3,14 @@ import datetime
 from django.db import models
 from django.utils import timezone
 
+from customer_app.models import Customer_Details
+
 choices = (('YES', 'YES'),
     ('NO', 'NO'),)
 
 
 class Onsite_aftersales_service(models.Model):
+    crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
     repairingno = models.CharField(max_length=50, null=True, blank=True)
     customer_name = models.CharField(max_length=80, null=True, blank=True)
     company_name = models.CharField(max_length=80, null=True, blank=True)

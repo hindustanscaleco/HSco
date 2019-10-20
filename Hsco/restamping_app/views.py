@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 
 from django.core.mail import send_mail
 from Hsco import settings
+from customer_app.models import Customer_Details
 from .models import Restamping_after_sales_service, Restamping_Product
 import requests
 import json
@@ -69,6 +70,22 @@ def restamping_manager(request):
 def restamping_after_sales_service(request):
     # form = Customer_Details_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method=='FILES':
+        customer_name = request.POST.get('customer_name')
+        company_name = request.POST.get('company_name')
+        address = request.POST.get('address')
+        contact_no = request.POST.get('phone_no')
+        customer_email_id = request.POST.get('customer_email_id')
+
+        item = Customer_Details()
+
+        item.customer_name = customer_name
+        item.company_name = company_name
+        item.address = address
+        item.contact_no = contact_no
+        item.customer_email_id = customer_email_id
+
+        item.save()
+
         restampingno = request.POST.get('restampingno')
         customer_no = request.POST.get('customer_no')
         company_name = request.POST.get('company_name')
@@ -81,23 +98,24 @@ def restamping_after_sales_service(request):
         brand = request.POST.get('brand')
         scale_delivery_date = request.POST.get('scale_delivery_date')
 
-        item = Restamping_after_sales_service()
+        item2 = Restamping_after_sales_service()
 
-        item.restampingno = restampingno
-        item.customer_no = customer_no
-        item.company_name = company_name
-        item.address = address
-        item.today_date = today_date
-        item.company_name = company_name
-        item.mobile_no = mobile_no
-        item.customer_email_id = customer_email_id
-        item.new_serial_no = new_serial_no
-        item.brand = brand
-        item.scale_delivery_date = scale_delivery_date
+        item2.crm_no_id = item.pk
+        item2.restampingno = restampingno
+        item2.customer_no = customer_no
+        item2.company_name = company_name
+        item2.address = address
+        item2.today_date = today_date
+        item2.company_name = company_name
+        item2.mobile_no = mobile_no
+        item2.customer_email_id = customer_email_id
+        item2.new_serial_no = new_serial_no
+        item2.brand = brand
+        item2.scale_delivery_date = scale_delivery_date
 
 
-        item.save()
-        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
+        item2.save()
+        # send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
 
         # message = 'txt'
         #
@@ -110,7 +128,7 @@ def restamping_after_sales_service(request):
         # x = response.text
 
 
-        return redirect('/restamping_product/'+str(item.id))
+        return redirect('/restamping_product/'+str(item2.id))
 
     return render(request, 'forms/restamping_form.html',)
 
@@ -147,6 +165,7 @@ def restamping_product(request,id):
 
 def update_restamping_details(request,id):
     personal_id = Restamping_after_sales_service.objects.get(id=id)
+    restamp_product_list = Restamping_Product.objects.filter(restamping_id=id)
     if request.method == 'POST':
         restampingno = request.POST.get('restampingno')
         customer_no = request.POST.get('customer_no')
@@ -191,6 +210,7 @@ def update_restamping_details(request,id):
 
     context = {
         'personal_id': personal_id,
+        'restamp_product_list': restamp_product_list,
     }
 
     return render(request,'update_forms/update_restamping_form.html',context)

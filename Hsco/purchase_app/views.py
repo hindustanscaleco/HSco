@@ -5,7 +5,7 @@ from customer_app.models import Customer_Details
 from user_app.models import SiteUser
 from dispatch_app.models import Dispatch
 from dispatch_app.models import Product_Details_Dispatch
-from ess_app.models import Employee_Analysis_month
+from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 from purchase_app.forms import Purchase_Details_Form, Feedback_Form
 from ess_app.models import Employee_Leave
 from django.db.models import Q,F
@@ -17,6 +17,8 @@ from django.core.mail import send_mail
 from Hsco import settings
 import requests
 import json
+from django.db.models.functions import TruncMonth
+from django.db.models import Count
 
 def add_purchase_details(request):
     form = Purchase_Details_Form(request.POST or None, request.FILES or None)
@@ -334,27 +336,40 @@ def feedbacka(request):
     return render(request, 'feedback/feedbacka.html')
 
 def customer_employee_sales_graph(request):
-    user_id=request.user.pk
-    currentMonth = datetime.now().month
-    currentYear = datetime.now().year
-    list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
-    list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-    # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-    print(list(list_sales_month))
-    print(list(list_sales))
-    final_list=[]
-    final_list2=[]
-    for item in list_sales:
-        final_list.append(item[0])
+    #x=Employee_Analysis_date.objects.annotate(date=TruncMonth('entry_timedate')).values('date').annotate(c=Count('id')).values('date', 'c')
+    #print(x)
+    from django.db.models import Sum
+    qs = Employee_Analysis_date.objects.filter(month=datetime.now().month).values('entry_date').annotate(data_sum=Sum('total_sales_done_today'))
+    lis_date = []
+    lis_sum = []
+    for i in qs:
+        x=i
+        lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+        lis_sum.append(x['data_sum'])
+    print(lis_date)
+    print(lis_sum)
 
-    for item in list_sales_month:
-        final_list2.append(item[0])
-
-    print(final_list)
-    print(final_list2)
+    # user_id=request.user.pk
+    # currentMonth = datetime.now().month
+    # currentYear = datetime.now().year
+    # list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+    # list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+    # # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+    # print(list(list_sales_month))
+    # print(list(list_sales))
+    # final_list=[]
+    # final_list2=[]
+    # for item in list_sales:
+    #     final_list.append(item[0])
+    #
+    # for item in list_sales_month:
+    #     final_list2.append(item[0])
+    #
+    # print(final_list)
+    # print(final_list2)
     context={
-        'final_list':final_list,
-        'final_list2':final_list2
+        'final_list':lis_date,
+        'final_list2':lis_sum
     }
     return render(request,"graphs/sales_graph.html",context)
 

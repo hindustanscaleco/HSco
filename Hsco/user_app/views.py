@@ -51,7 +51,7 @@ class LoginView(FormView):
             print("NormalOGIN" + str(mobile))
             print("NormalOGIN" + str(password))
             user = authenticate(request, mobile=mobile, password=password)
-            print("NormalOGIN"+str(user))
+            # print("NormalOGIN"+str(user))
             if user is not None:
                 login(request, user)
                 request.session['registered_mobile'] = mobile

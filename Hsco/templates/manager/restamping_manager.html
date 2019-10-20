@@ -353,6 +353,10 @@ $(function() {
 
 
 
+        {% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+
+
                 <div class="col-xl-3 col-md-12 mb-12">
               <div class="card border-left-primarya shadow border-right-primarya">
                 <div class="card-body" style="padding: 12px;">
@@ -410,6 +414,22 @@ $(function() {
                   </div>
                 </div>
               </div>
+            </div>
+{% else %}
+        <div class="col-xl-3 col-md-12 mb-12">
+              <div class="card border-left-primarya shadow border-right-primarya">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col ">
+ <a href="/restamping_after_sales_service/"><button class="btn btn-primary">Add Restamp</button></a>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+{% endif %}
+{% endif %}
             </div>
 
 

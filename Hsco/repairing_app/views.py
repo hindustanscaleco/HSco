@@ -35,6 +35,7 @@ def add_repairing_details(request):
 
         item.save()
 
+
         repairingnumber = request.POST.get('repairingnumber')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
@@ -65,9 +66,6 @@ def add_repairing_details(request):
         item2.today_date = today_date
         item2.name = name
 
-        item2.company_name = company_name
-        item2.phone_no = phone_no
-        item2.customer_email_id = customer_email_id
         item2.location = location
         item2.products_to_be_repaired = products_to_be_repaired
 
@@ -82,21 +80,21 @@ def add_repairing_details(request):
         item2.feedback_given = feedback_given
 
 
-        item.save()
+        item2.save()
 
-        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
+            # send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
+            #
+            # message = 'txt'
+            #
+            #
+            # url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            # payload = ""
+            # headers = {'content-type': 'application/x-www-form-urlencoded'}
+            #
+            # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            # x = response.text
 
-        message = 'txt'
-
-
-        url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + phone_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-        payload = ""
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-        x = response.text
-
-        return redirect('/repair_product/'+str(item.id))
+        return redirect('/repair_product/'+str(item2.id))
 
 
 
@@ -141,18 +139,31 @@ def repair_product(request,id):
 
 def update_repairing_details(request,id):
     repair_id = Repairing_after_sales_service.objects.get(id=id)
+    customer_id = Customer_Details.objects.get(id=id)
     repair_list = Repairing_Product.objects.filter(repairing_id=id)
     if request.method=='POST':
+        customer_name = request.POST.get('customer_name')
+        company_name = request.POST.get('company_name')
+        address = request.POST.get('address')
+        contact_no = request.POST.get('phone_no')
+        customer_email_id = request.POST.get('customer_email_id')
+
+        item = customer_id
+
+        item.customer_name = customer_name
+        item.company_name = company_name
+        item.address = address
+        item.contact_no = contact_no
+        item.customer_email_id = customer_email_id
+
+        item.save(update_fields=['customer_name','company_name','address','contact_no','customer_email_id',])
+
         repairingnumber = request.POST.get('repairingnumber')
-        customer_no = request.POST.get('customer_no')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
         date_of_purchase = request.POST.get('date_of_purchase')
         today_date = request.POST.get('today_date')
         name = request.POST.get('name')
-        company_name = request.POST.get('company_name')
-        phone_no = request.POST.get('phone_no')
-        customer_email_id = request.POST.get('customer_email_id')
         location = request.POST.get('location')
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
 
@@ -166,51 +177,48 @@ def update_repairing_details(request,id):
         delivery_by = request.POST.get('delivery_by')
         feedback_given = request.POST.get('feedback_given')
 
-        item = repair_id
+        item2 = repair_id
 
-        item.repairingnumber = repairingnumber
-        item.customer_no = customer_no
-        item.previous_repairing_number = previous_repairing_number
-        item.in_warranty = in_warranty
-        item.date_of_purchase = date_of_purchase
-        item.today_date = today_date
-        item.name = name
-        item.company_name = company_name
-        item.phone_no = phone_no
-        item.customer_email_id = customer_email_id
-        item.location = location
-        #item.products_to_be_repaired = products_to_be_repaired
-        item.total_cost = total_cost
-        item.informed_on = informed_on
-        item.informed_by = informed_by
-        item.confirmed_estimate = confirmed_estimate
-        item.repaired = repaired
-        item.repaired_date = repaired_date
-        item.delivery_date = delivery_date
-        item.delivery_by = delivery_by
-        item.feedback_given = feedback_given
+        item2.repairingnumber = repairingnumber
+        item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
-        item.save(update_fields=['repairingnumber', ]),
-        item.save(update_fields=['customer_no', ]),
-        item.save(update_fields=['previous_repairing_number', ]),
-        item.save(update_fields=['in_warranty', ]),
-        item.save(update_fields=['date_of_purchase', ]),
-        item.save(update_fields=['today_date', ]),
-        item.save(update_fields=['name', ]),
-        item.save(update_fields=['company_name', ]),
-        item.save(update_fields=['phone_no', ]),
-        item.save(update_fields=['customer_email_id', ]),
-        item.save(update_fields=['location', ]),
-        #item.save(update_fields=['products_to_be_repaired', ]),
-        item.save(update_fields=['total_cost', ]),
-        item.save(update_fields=['informed_on', ]),
-        item.save(update_fields=['informed_by', ]),
-        item.save(update_fields=['confirmed_estimate', ]),
-        item.save(update_fields=['repaired', ]),
-        item.save(update_fields=['repaired_date', ]),
-        item.save(update_fields=['delivery_date', ]),
-        item.save(update_fields=['delivery_by', ]),
-        item.save(update_fields=['feedback_given', ])
+        item2.previous_repairing_number = previous_repairing_number
+        item2.in_warranty = in_warranty
+        item2.date_of_purchase = date_of_purchase
+        item2.today_date = today_date
+        item2.name = name
+
+        item2.location = location
+        item2.products_to_be_repaired = products_to_be_repaired
+
+        item2.total_cost = total_cost
+        item2.informed_on = informed_on
+        item2.informed_by = informed_by
+        item2.confirmed_estimate = confirmed_estimate
+        item2.repaired = repaired
+        item2.repaired_date = repaired_date
+        item2.delivery_date = delivery_date
+        item2.delivery_by = delivery_by
+        item2.feedback_given = feedback_given
+
+        item2.save()
+
+        item2.save(update_fields=['repairingnumber', ]),
+        item2.save(update_fields=['previous_repairing_number', ]),
+        item2.save(update_fields=['in_warranty', ]),
+        item2.save(update_fields=['date_of_purchase', ]),
+        item2.save(update_fields=['today_date', ]),
+        item2.save(update_fields=['location', ]),
+        # item2.save(update_fields=['products_to_be_repaired', ]),
+        item2.save(update_fields=['total_cost', ]),
+        item2.save(update_fields=['informed_on', ]),
+        item2.save(update_fields=['informed_by', ]),
+        item2.save(update_fields=['confirmed_estimate', ]),
+        item2.save(update_fields=['repaired', ]),
+        item2.save(update_fields=['repaired_date', ]),
+        item2.save(update_fields=['delivery_date', ]),
+        item2.save(update_fields=['delivery_by', ]),
+        item2.save(update_fields=['feedback_given', ])
 
     print(repair_list)
     context={
