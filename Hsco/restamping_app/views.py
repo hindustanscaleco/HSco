@@ -6,6 +6,8 @@ from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from Hsco import settings
 from customer_app.models import Customer_Details
+
+from ess_app.models import Employee_Analysis_date
 from .models import Restamping_after_sales_service, Restamping_Product
 import requests
 import json
@@ -257,43 +259,97 @@ def final_report_restamping(request):
     return render(request,"report/final_report_restamp_mod_form.html",context)
 
 def restamping_employee_graph(request):
+    from django.db.models import Sum
+
     user_id=request.user.pk
-    currentMonth = datetime.now().month
-    currentYear = datetime.now().year
-    list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
-    list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_restamping_done')
-    # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-    list_avg = Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_collect_to_dispatch_restamping')
-    avg_time_est =Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_reparing_done_onsite')
 
-    print(list(list_sales_month))
-    print(list(list_sales))
-    final_list=[]
-    final_list2=[]
-    final_list3=[]
-    final_list4=[]
-    for item in list_sales:
-        final_list.append(item[0])
 
-    for item in list_sales_month:
-        final_list2.append(item[0])
+    #current month
+    mon = datetime.now().month
+    this_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+        data_sum=Sum('total_restamping_done_today'))
+    this_lis_date = []
+    this_lis_sum = []
+    for i in this_month:
+        x = i
+        this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+        this_lis_sum.append(x['data_sum'])
 
-    for item in list_avg:
-        final_list3.append(item[0])
+    # previous month sales
+    mon = (datetime.now().month) - 1
+    previous_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+        data_sum=Sum('total_restamping_done_today'))
+    previous_lis_date = []
+    previous_lis_sum = []
+    for i in previous_month:
+        x = i
+        previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+        previous_lis_sum.append(x['data_sum'])
 
-    for item in avg_time_est:
-        final_list4.append(item[0])
+    if request.method == 'POST':
+        start_date = request.POST.get('date1')
+        end_date = request.POST.get('date2')
+        qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values('entry_date').annotate(data_sum=Sum('total_restamping_done_today'))
+        lis_date = []
+        lis_sum = []
+        for i in qs:
+            x = i
+            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
+        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values(
+            'entry_date').annotate(data_sum=Sum('total_restamping_done_today'))
+        lis_date = []
+        lis_sum = []
+        for i in qs:
+            x = i
+            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
+        print(lis_date)
+        print(lis_sum)
 
-    context={
-        'final_list':final_list,
-        'final_list2':final_list2,
-    }
-    return render(request,"graphs/restamping_employee_graph.html",context)
-
+        # user_id=request.user.pk
+        # currentMonth = datetime.now().month
+        # currentYear = datetime.now().year
+        # list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+        # list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+        # # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+        # print(list(list_sales_month))
+        # print(list(list_sales))
+        # final_list=[]
+        # final_list2=[]
+        # for item in list_sales:
+        #     final_list.append(item[0])
+        #
+        # for item in list_sales_month:
+        #     final_list2.append(item[0])
+        #
+        # print(final_list)
+        # print(final_list2)
+        context = {
+            'final_list': lis_date,
+            'final_list2': lis_sum,
+            'previous_lis_date': previous_lis_date,
+            'previous_lis_sum': previous_lis_sum,
+            'this_lis_date': this_lis_date,
+            'this_lis_sum': this_lis_sum,
+            # 'rep_feedback': rep_feedback,
+            # 'feeback': feeback,
+        }
+        return render(request, "graphs/restamping_employee_graph.html", context)
+        context = {
+            'final_list': lis_date,
+            'final_list2': lis_sum,
+            'previous_lis_date': previous_lis_date,
+            'previous_lis_sum': previous_lis_sum,
+            'this_lis_date': this_lis_date,
+            'this_lis_sum': this_lis_sum,
+            # 'rep_feedback': rep_feedback,
+        }
+    return render(request, "graphs/restamping_employee_graph.html", context)
 
 
 def update_restamping_product(request,id):
-    restamp_product_list = Restamping_Product.objects.get(id=id)
+    restamp_product_list = Restamping_Product.objects.filter(restamping_id=id)
     restamping_id = Restamping_after_sales_service.objects.get(id=id)
     if request.method == 'POST':
         restampingno = request.POST.get('restampingno')
@@ -382,6 +438,9 @@ def update_restamping_product(request,id):
     }
 
     return render(request,'update_forms/update_restamping_product.html',context)
+
+
+
 
 
 

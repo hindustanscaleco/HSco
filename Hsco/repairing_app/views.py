@@ -5,6 +5,7 @@ from customer_app.models import Customer_Details
 from user_app.models import SiteUser
 
 from customer_app.models import Customer_Details
+
 from .forms import Repairing_Feedback_Form
 from .models import Repairing_after_sales_service, Repairing_Product, Repairing_Feedback
 from django.core.mail import send_mail
@@ -165,7 +166,6 @@ def update_repairing_details(request,id):
         name = request.POST.get('name')
         location = request.POST.get('location')
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
-
         total_cost = request.POST.get('total_cost')
         informed_on = request.POST.get('informed_on')
         informed_by = request.POST.get('informed_by')
@@ -443,57 +443,102 @@ def repairing_employee_graph(request):
     # print(final_list2)
 
     from django.db.models import Sum
+    rep_feedback = Repairing_Feedback.objects.all()
+
+    print(user_id)
+    obj = Employee_Analysis_month.objects.get(user_id=user_id)
+    obj.sales_target_achived_till_now = (obj.total_reparing_done/obj.reparing_target_given)*100
+    obj.save()
+    #current month
+    target_achieved =  obj.sales_target_achived_till_now
+    mon = datetime.now().month
+    this_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+        data_sum=Sum('total_reparing_done_today'))
+    this_lis_date = []
+    this_lis_sum = []
+    for i in this_month:
+        x = i
+        this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+        this_lis_sum.append(x['data_sum'])
+
+    # previous month sales
+
+    mon = (datetime.now().month) - 1
+    previous_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+        data_sum=Sum('total_reparing_done_today'))
+    previous_lis_date = []
+    previous_lis_sum = []
+    for i in previous_month:
+        x = i
+        previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+        previous_lis_sum.append(x['data_sum'])
 
     if request.method == 'POST':
-        if'submit1' in request.POST:
-            start_date = request.POST.get('date1')
-            end_date = request.POST.get('date2')
-            qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values('entry_date').annotate(data_sum=Sum('total_reparing_done_today'))
-            lis_date = []
-            lis_sum = []
-            for i in qs:
-                x = i
-                lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-                lis_sum.append(x['data_sum'])
-            context = {
-
-                'final_list': lis_date,
-                'final_list2': lis_sum,
-
-            }
-            return render(request, "graphs/repairing_employee_graph.html", context)
-
-        if 'submit2' in request.POST:
-            start_date = request.POST.get('date3')
-            end_date = request.POST.get('date4')
-            qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values('entry_date').annotate(
-                data_sum=Sum('avg_time_to_repair_single_scale_today'))
-            lis_date = []
-            lis_sum = []
-            for i in qs:
-                x = i
-                lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-                lis_sum.append(x['data_sum'])
-            context = {
-
-                'final_list3': lis_date,
-                'final_list4': lis_sum,
-
-            }
-            return render(request, "graphs/repairing_employee_graph.html", context)
-
-        # if 'submit3' in request.POST:
-        #     qs = Employee_Analysis_date.objects.filter(month='October').values('entry_date').annotate(
-        #         data_sum=Sum('avg_time_to_repair_single_scale_today'))
-        #     lis_date = []
-        #     lis_sum = []
-        #     for i in qs:
-        #         x = i
-        #         lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        #         lis_sum.append(x['data_sum'])
+        start_date = request.POST.get('date1')
+        end_date = request.POST.get('date2')
+        qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values('entry_date').annotate(data_sum=Sum('total_reparing_done_today'))
+        lis_date = []
+        lis_sum = []
+        for i in qs:
+            x = i
+            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
 
 
-    return render(request,"graphs/repairing_employee_graph.html",)
+        context = {
+            'final_list': lis_date,
+            'final_list2': lis_sum,
+            'previous_lis_date': previous_lis_date,
+            'previous_lis_sum': previous_lis_sum,
+            'this_lis_date': this_lis_date,
+            'this_lis_sum': this_lis_sum,
+            'rep_feedback': rep_feedback,
+        }
+        return render(request, "graphs/repairing_employee_graph.html", context)
+    else:
+
+        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values('entry_date').annotate(data_sum=Sum('total_reparing_done_today'))
+        lis_date = []
+        lis_sum = []
+        for i in qs:
+            x=i
+            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
+        print(lis_date)
+        print(lis_sum)
+
+        # user_id=request.user.pk
+        # currentMonth = datetime.now().month
+        # currentYear = datetime.now().year
+        # list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+        # list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+        # # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+        # print(list(list_sales_month))
+        # print(list(list_sales))
+        # final_list=[]
+        # final_list2=[]
+        # for item in list_sales:
+        #     final_list.append(item[0])
+        #
+        # for item in list_sales_month:
+        #     final_list2.append(item[0])
+        #
+        # print(final_list)
+        # print(final_list2)
+        context={
+            'final_list':lis_date,
+            'final_list2':lis_sum,
+            'previous_lis_date': previous_lis_date,
+            'previous_lis_sum': previous_lis_sum,
+            'this_lis_date': this_lis_date,
+            'this_lis_sum': this_lis_sum,
+            'target_achieved': target_achieved,
+            'rep_feedback': rep_feedback,
+            # 'feeback': feeback,
+        }
+        return render(request,"graphs/repairing_employee_graph.html",context)
+
+
 
 def load_reparing_stages_list(request,):
 
@@ -519,6 +564,29 @@ def load_reparing_stages_list(request,):
     }
     context.update(context)
     return render(request, 'AJAX/load_reparing_stage.html', context)
+
+def load_reparing_manager(request):
+    selected = request.GET.get('loc_id')
+
+    if selected=='true':
+        user_list = Employee_Analysis_month.objects.filter(manager_id=request.user.name)
+        # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
+
+        context = {
+            'user_list': user_list,
+            'manager': True,
+        }
+
+        return render(request, 'AJAX/load_reparing_manager.html', context)
+    else:
+        repair_list = Repairing_after_sales_service.objects.all()
+
+        context = {
+            'repair_list': repair_list,
+            'manager': False,
+        }
+
+        return render(request, 'AJAX/load_reparing_manager.html', context)
 
 
 

@@ -27,7 +27,6 @@ class Purchase_Details(models.Model):
     crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
     date_of_purchase = models.DateField(default=datetime.date.today,null=True,blank=True)
     product_purchase_date = models.DateField(default=datetime.date.today,null=True,blank=True)
-
     bill_no = models.CharField(max_length=30,null=True,blank=True)
     upload_op_file = models.FileField(upload_to='',null=True,blank=True)
     po_number = models.CharField(max_length=30,null=True,blank=True)
@@ -35,7 +34,7 @@ class Purchase_Details(models.Model):
     channel_of_sales = models.CharField(max_length=30,null=True,blank=True)
     industry = models.CharField(max_length=30,null=True,blank=True)
     value_of_goods = models.CharField(max_length=30,null=True,blank=True)
-    channel_of_dispatch = models.FloatField(default=0.0)
+    channel_of_dispatch = models.CharField(max_length=100,null=True,blank=True)
     notes = models.CharField(max_length=30,null=True,blank=True)
     feedback_form_filled = models.CharField(max_length=30,null=True,blank=True, choices=choices)
     sales_person = models.CharField(max_length=30, null=True, blank=True)
@@ -45,7 +44,7 @@ class Purchase_Details(models.Model):
     feedback_stars=models.FloatField(default=0.0)
 
     def __str__(self):
-        return self.notes
+        return str(self.crm_no)
 
 class Product_Details(models.Model):
     purchase_id = models.ForeignKey(Purchase_Details,on_delete=models.CASCADE)
