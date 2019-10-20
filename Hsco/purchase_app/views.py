@@ -1,23 +1,45 @@
 from django.db import connection
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from customer_app.models import Customer_Details
 from user_app.models import SiteUser
 from dispatch_app.models import Dispatch
 from dispatch_app.models import Product_Details_Dispatch
-from ess_app.models import Employee_Analysis
-
+from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 from purchase_app.forms import Purchase_Details_Form, Feedback_Form
-from .models import Customer_Details, Purchase_Details, Feedback, Product_Details
+from ess_app.models import Employee_Leave
+from django.db.models import Q,F
+from ess_app.models import Employee_Analysis_date
+from .models import  Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
 from datetime import datetime
 from django.core.mail import send_mail
 from Hsco import settings
 import requests
 import json
+from django.db.models.functions import TruncMonth
+from django.db.models import Count
 
 def add_purchase_details(request):
     form = Purchase_Details_Form(request.POST or None, request.FILES or None)
+
     if request.method == 'POST' or request.method == 'FILES':
+        customer_name = request.POST.get('customer_name')
+        company_name = request.POST.get('company_name')
+        address = request.POST.get('address')
+        contact_no = request.POST.get('contact_no')
+        customer_email_id = request.POST.get('customer_email_id')
+
+        item = Customer_Details()
+
+        item.customer_name = customer_name
+        item.company_name = company_name
+        item.address = address
+        item.contact_no = contact_no
+        item.customer_email_id = customer_email_id
+
+        item.save()
+
         date_of_purchase = request.POST.get('date_of_purchase')
         product_purchase_date = request.POST.get('product_purchase_date')
         bill_no = request.POST.get('bill_no')
@@ -31,63 +53,74 @@ def add_purchase_details(request):
         notes = request.POST.get('notes')
         feedback_form_filled = request.POST.get('feedback_form_filled')
 
-        item = Purchase_Details()
+        item2 = Purchase_Details()
 
-        item.date_of_purchase = date_of_purchase
-        item.product_purchase_date = product_purchase_date
-        item.bill_no = bill_no
-        item.upload_op_file = upload_op_file
-        item.photo_lr_no = photo_lr_no
-        item.po_number = po_number
-        item.channel_of_sales = channel_of_sales
-        item.industry = industry
-        item.value_of_goods = value_of_goods
-        item.channel_of_dispatch = channel_of_dispatch
-        item.notes = notes
-        item.feedback_form_filled = feedback_form_filled
-        item.save()
+        item2.crm_no_id = item.pk
+        item2.date_of_purchase = date_of_purchase
+        item2.product_purchase_date = product_purchase_date
+        item2.bill_no = bill_no
+        item2.upload_op_file = upload_op_file
+        item2.photo_lr_no = photo_lr_no
+        item2.po_number = po_number
+        item2.channel_of_sales = channel_of_sales
+        item2.industry = industry
+        item2.value_of_goods = value_of_goods
+        item2.channel_of_dispatch = channel_of_dispatch
+        item2.notes = notes
+        item2.feedback_form_filled = feedback_form_filled
+        item2.save()
+
+        dispatch = Dispatch()
 
 
+        dispatch.customer_no = item.pk
+        dispatch.customer_email = customer_email_id
+        dispatch.customer_name = customer_name
+        dispatch.company_name = company_name
+        dispatch.customer_address = address
 
-        #
-        # dispatch = Dispatch()
-        #
-        #
-        # dispatch.customer_no = item.pk
-        # dispatch.customer_email = customer_email_id
-        # dispatch.customer_name = customer_name
-        # dispatch.company_name = company_name
-        # dispatch.customer_address = address
-        #
-        # dispatch.save()
-        #
-        #
-        # dispatch2 = Dispatch.objects.get(id=dispatch.pk)
-        # dispatch2.dispatch_id = str(dispatch.pk + 00000)
-        # dispatch2.save(update_fields=['dispatch_id'])
-        #
-        # customer_id = Customer_Details.objects.get(id=item.pk)
-        # customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
-        # customer_id.save(update_fields=['dispatch_id_assigned'])
-        # send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
-        #
-        #
-        # mobile = '+91 7757860524'  # 9766323877'
-        # user_hsco = 'HSCo'
-        # user = 'vikka'
-        # api_hsco = 'PF8MzCBOGTopfpYFlSZT'
-        # api = 'puU087yJ0uAQdhggM3T0'
-        # message = 'txt'
-        # senderid = 'MYTEXT'
-        #
-        # url = "http://smshorizon.co.in/api/sendsms.php?user="+user+"&apikey="+api+"&mobile="+contact_no+"&message="+message+"&senderid="+senderid+"&type=txt"
-        # payload = ""
-        # headers = {'content-type': 'application/x-www-form-urlencoded'}
-        #
-        # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-        # x = response.text
-        # print(x)
-        return redirect('/add_product_details/'+str(item.id))
+        dispatch.save()
+
+
+        dispatch2 = Dispatch.objects.get(id=dispatch.pk)
+        dispatch2.dispatch_id = str(dispatch.pk + 00000)
+        dispatch2.save(update_fields=['dispatch_id'])
+
+        customer_id = Purchase_Details.objects.get(id=item2.pk)
+        customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
+        customer_id.save(update_fields=['dispatch_id_assigned'])
+        send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
+
+        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.date.today),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_date.objects.get(user_id=request.user.pk,entry_date=datetime.date.today,month = datetime.now().month,year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + value_of_goods)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_date()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_sales_done_today = value_of_goods
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
+        mobile = '+91 7757860524'  # 9766323877'
+        user_hsco = 'HSCo'
+        user = 'vikka'
+        api_hsco = 'PF8MzCBOGTopfpYFlSZT'
+        api = 'puU087yJ0uAQdhggM3T0'
+        message = 'txt'
+        senderid = 'MYTEXT'
+
+        url = "http://smshorizon.co.in/api/sendsms.php?user="+user+"&apikey="+api+"&mobile="+contact_no+"&message="+message+"&senderid="+senderid+"&type=txt"
+        payload = ""
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        x = response.text
+        print(x)
+        return redirect('/add_product_details/'+str(item2.id))
 
     context = {
         'form': form,
@@ -96,6 +129,11 @@ def add_purchase_details(request):
 
 
 def view_customer_details(request):
+    date_today= datetime.date.today()
+    message_list = Employee_Leave.objects.filter(entry_date=date_today)
+    print(message_list)
+    print(message_list)
+
 
     if request.method == 'POST':
         if'submit1' in request.POST:
@@ -163,14 +201,15 @@ def view_customer_details(request):
 
         context = {
             'customer_list': cust_list,
+            'message': message_list,
         }
         return render(request,'dashboardnew/cm.html',context )
 
 
 def update_customer_details(request,id):
-    product_list = Product_Details.objects.filter(customer_id=id)
+    product_list = Product_Details.objects.filter(purchase_id=id)
     print(product_list)
-    customer_id = Customer_Details.objects.get(id=id)
+    customer_id = Purchase_Details.objects.get(id=id)
 
     context={
         'cust_id':customer_id,
@@ -181,9 +220,9 @@ def update_customer_details(request,id):
 
 
 def add_product_details(request,id):
-    customer = Customer_Details.objects.get(id=id)
-    customer_id = customer.id
-    dispatch_id_assigned = str(customer.dispatch_id_assigned)
+    purchase = Purchase_Details.objects.get(id=id)
+    purchase_id = purchase.id
+    dispatch_id_assigned = str(purchase.dispatch_id_assigned)
     form = Product_Details_Form(request.POST or None)
     if request.method == 'POST':
         product_name = request.POST.get('product_name')
@@ -199,7 +238,7 @@ def add_product_details(request,id):
         sales_person = request.POST.get('sales_person')
         purchase_type = request.POST.get('purchase_type')
 
-        item = Purchase_Details()
+        item = Product_Details()
 
         item.product_name = product_name
         item.quantity = quantity
@@ -211,11 +250,10 @@ def add_product_details(request,id):
         item.brand = brand
         item.capacity = capacity
         item.unit = unit
-        item.customer_id_id = customer_id
+        item.purchase_id_id = purchase_id
         item.sales_person = sales_person
         item.purchase_type = purchase_type
         item.save()
-
 
         dispatch_id=Dispatch.objects.get(id=dispatch_id_assigned)
         dispatch_pro = Product_Details_Dispatch()
@@ -237,15 +275,12 @@ def add_product_details(request,id):
 
 
 
-
-
-
         return redirect('/update_customer_details/'+str(id))
 
 
     context = {
         'form': form,
-        'customer_id': customer_id,
+        'purchase_id': purchase_id,
     }
     return render(request,'dashboardnew/add_product.html',context)
 
@@ -301,32 +336,98 @@ def feedbacka(request):
     return render(request, 'feedback/feedbacka.html')
 
 def customer_employee_sales_graph(request):
-    user_id=request.user.pk
-    currentMonth = datetime.now().month
-    currentYear = datetime.now().year
-    list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('month')
-    list_sales_month=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-    # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-    print(list(list_sales_month))
-    print(list(list_sales))
-    final_list=[]
-    final_list2=[]
-    for item in list_sales:
-        final_list.append(item[0])
+    #x=Employee_Analysis_date.objects.annotate(date=TruncMonth('entry_timedate')).values('date').annotate(c=Count('id')).values('date', 'c')
+    #print(x)
+    from django.db.models import Sum
+    feeback = Feedback.objects.all()
+    #this month sales
 
-    for item in list_sales_month:
-        final_list2.append(item[0])
+    mon = datetime.now().month
+    this_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+        data_sum=Sum('total_sales_done_today'))
+    this_lis_date = []
+    this_lis_sum = []
+    for i in this_month:
+        x = i
+        this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+        this_lis_sum.append(x['data_sum'])
 
-    print(final_list)
-    print(final_list2)
-    context={
-        'final_list':final_list,
-        'final_list2':final_list2
-    }
-    return render(request,"graphs/sales_graph.html",context)
+    #previous month sales
+    mon = (datetime.now().month)-1
+    previous_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+        data_sum=Sum('total_sales_done_today'))
+    previous_lis_date = []
+    previous_lis_sum = []
+    for i in previous_month:
+        x = i
+        previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+        previous_lis_sum.append(x['data_sum'])
+
+    if request.method=='POST':
+        start_date = request.POST.get('date1')
+        end_date = request.POST.get('date2')
+        qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values(
+            'entry_date').annotate(data_sum=Sum('total_sales_done_today'))
+        lis_date = []
+        lis_sum = []
+        for i in qs:
+            x = i
+            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
+        context = {
+            'final_list': lis_date,
+            'final_list2': lis_sum,
+
+            'previous_lis_date': previous_lis_date,
+            'previous_lis_sum': previous_lis_sum,
+            'this_lis_date': this_lis_date,
+            'this_lis_sum': this_lis_sum,
+            'feeback': feeback,
+        }
+        return render(request, "graphs/sales_graph.html", context)
+    else:
+
+        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values('entry_date').annotate(data_sum=Sum('total_sales_done_today'))
+        lis_date = []
+        lis_sum = []
+        for i in qs:
+            x=i
+            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
+        print(lis_date)
+        print(lis_sum)
+
+        # user_id=request.user.pk
+        # currentMonth = datetime.now().month
+        # currentYear = datetime.now().year
+        # list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+        # list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+        # # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+        # print(list(list_sales_month))
+        # print(list(list_sales))
+        # final_list=[]
+        # final_list2=[]
+        # for item in list_sales:
+        #     final_list.append(item[0])
+        #
+        # for item in list_sales_month:
+        #     final_list2.append(item[0])
+        #
+        # print(final_list)
+        # print(final_list2)
+        context={
+            'final_list':lis_date,
+            'final_list2':lis_sum,
+            'previous_lis_date': previous_lis_date,
+            'previous_lis_sum': previous_lis_sum,
+            'this_lis_date': this_lis_date,
+            'this_lis_sum': this_lis_sum,
+            'feeback': feeback,
+        }
+        return render(request,"graphs/sales_graph.html",context)
 
 
-def feedback_customer(request):
+def feedback_purchase(request,user_id,customer_id,purchase_id):
     feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' :
         knowledge_of_person = request.POST.get('knowledge_of_person')
@@ -342,8 +443,17 @@ def feedback_customer(request):
         item.price_of_product = price_of_product
         item.overall_interaction = overall_interaction
         item.about_hsco = about_hsco
-        item.any_suggestion = any_suggestion
+        item.user_id = SiteUser.objects.get(id=user_id)
+        item.customer_id = Customer_Details.objects.get(id=customer_id)
+        item.purchase_id = Purchase_Details.objects.get(id=purchase_id)
         item.save()
+
+        purchase=Purchase_Details.objects.get(id=purchase_id)
+        purchase.feedback_stars= (knowledge_of_person+timeliness_of_person+price_of_product+overall_interaction)/4.0
+        purchase.feedback_form_filled= 'YES'
+        purchase.save(update_fields=['feedback_stars','feedback_form_filled'])
+
+
 
         return HttpResponse('Feedback Submitted!!!')
     context={

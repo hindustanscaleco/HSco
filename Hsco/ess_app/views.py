@@ -9,7 +9,7 @@ from Hsco import settings
 import requests
 import json
 
-from .models import Employee_Leave
+from .models import Employee_Leave, Defects_Warning
 
 
 def add_ess_details(request):
@@ -106,8 +106,32 @@ def ess_home(request):
 
 
 def ess_all_user(request):
-    return render(request,'dashboardnew/ess_all_user.html',)
+    list = SiteUser.objects.all()
 
-def employee_profile(request):
-    return render(request,'dashboardnew/employee_profile.html',)
+
+    context={
+        'list': list
+
+    }
+    return render(request,'dashboardnew/ess_all_user.html',context)
+
+def employee_profile(request,id):
+    user_id = SiteUser.objects.get(id=id)
+    leave_list = Employee_Leave.objects.filter(user_id=id)
+    if request.method == 'POST' or None:
+        type = request.POST.get('type')
+        content = request.POST.get('content')
+
+        item = Defects_Warning()
+
+        item.user_id = user_id
+        item.type = type
+        item.content = content
+        item.save()
+    context = {
+        'user_id': user_id,
+        'leave_list': leave_list,
+
+    }
+    return render(request,'dashboardnew/employee_profile.html',context)
 

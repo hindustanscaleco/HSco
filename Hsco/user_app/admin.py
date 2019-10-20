@@ -23,7 +23,7 @@ class UserCreationForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.password=(self.cleaned_data.get("password"))
+        user.set_password("password")
         if commit:
             user.save()
         return user
@@ -49,7 +49,7 @@ class UserAdmin(BaseUserAdmin):
 
     fieldsets = (
                 ('Login Credentials', {'fields': ('mobile', 'password')}),
-        ('Personal info', {'fields': ('modules_assigned','email', 'name', 'role','date_of_joining','average_rating','group')}),
+        ('Personal info', {'fields': ('modules_assigned','email', 'name', 'role','date_of_joining','average_rating','group','photo','salary_slip')}),
         ('Bank Details', {'fields': ('bank_name', 'account_number', 'bank_address','IFSC_code')}),
         ('Seen', {'fields': ('last_login',)}),
     )

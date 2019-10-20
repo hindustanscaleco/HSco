@@ -1,9 +1,11 @@
 from django.db import models
 from django.utils import timezone
 
+from customer_app.models import Customer_Details
 
 
 class Dispatch(models.Model):
+    crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
     dispatch_id = models.CharField(max_length=8,null=True,blank=True,unique=True) #combination of PK and 00000000(8)
     customer_no = models.CharField(max_length=30,null=True,blank=True)
     customer_email = models.CharField(max_length=30,null=True,blank=True)

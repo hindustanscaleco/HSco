@@ -51,6 +51,21 @@ color:;
 
 </style>
 
+ <script> function disable() {
+  document.getElementById("name").disabled = true;
+  }
+
+  function enable() {
+   document.getElementById("name").disabled = false;
+  }
+
+var form = document.getElementById("contact_form");
+var elements = form.elements;
+for (var i = 0, len = elements.length; i < len; ++i) {
+    elements[i].disabled = true;
+}
+</script>
+
   <!-- Page Wrapper -->
   <div id="wrapper">
 	{% include 'base_templates/sidebar.html' %}
@@ -70,9 +85,43 @@ color:;
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-         <center>  <h1>Onsite Repairing Module</h1>  </center>
 
+   <div class="container-fluid" >
 
+          <div class="row" style="padding:20px;">
+               <label class="col-md-6 control-label">Onsite Repairing Module</label>
+
+          </div>
+
+<br>
+<script>
+function myFunction() {
+  document.getElementById("myText").disabled = false;
+    document.getElementById("myText2").disabled = false;
+    document.getElementById("myText3").disabled = false;
+    document.getElementById("myText3").disabled = false;
+    document.getElementById("myText4").disabled = false;
+    document.getElementById("myText5").disabled = false;
+    document.getElementById("myText6").disabled = false;
+    document.getElementById("myText7").disabled = false;
+    document.getElementById("myText8").disabled = false;
+    document.getElementById("myText9").disabled = false;
+    document.getElementById("myText10").disabled = false;
+    document.getElementById("myText11").disabled = false;
+    document.getElementById("myText12").disabled = false;
+    document.getElementById("myText13").disabled = false;
+    document.getElementById("myText14").disabled = false;
+    document.getElementById("myText15").disabled = false;
+    document.getElementById("myText16").disabled = false;
+    document.getElementById("myText17").disabled = false;
+    document.getElementById("myText18").disabled = false;
+    document.getElementById("myText19").disabled = false;
+    document.getElementById("myText20").disabled = false;
+    document.getElementById("myText21").disabled = false;
+    document.getElementById("myText22").disabled = false;
+
+}
+</script>
 
 <br>
 
@@ -91,7 +140,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="repairingno" placeholder="Repairing Number" class="form-control"  type="text" disabled value="{{onsite_id.repairingno}}">
+  <input  name="repairingno" placeholder="Repairing Number" class="form-control" id="myText" type="text" disabled value="{{onsite_id.repairingno}}">
     </div>
   </div>
 
@@ -104,7 +153,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_name" placeholder="Customer Name" class="form-control"  type="text" disabled value="{{onsite_id.customer_name}}">
+  <input  name="customer_name" placeholder="Customer Name" id="myText2" class="form-control"  type="text" disabled value="{{onsite_id.customer_name}}">
     </div>
   </div>
 
@@ -126,7 +175,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled value="{{onsite_id.company_name}}">
+  <input  name="company_name" placeholder="Company Name" class="form-control" id="myText3" type="text" disabled value="{{onsite_id.company_name}}">
     </div>
   </div>
 
@@ -138,7 +187,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="customer_no" placeholder="Customer Number" class="form-control"  type="text" disabled value="{{onsite_id.customer_no}}">
+  <input name="customer_no" placeholder="Customer Number" class="form-control" id="myText4" type="text" disabled value="{{onsite_id.customer_no}}">
     </div>
   </div>
 
@@ -159,7 +208,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="previous_repairing_number" placeholder="Previous Repairing number" class="form-control" type="text" disabled value="{{onsite_id.previous_repairing_number}}">
+  <input  name="previous_repairing_number" placeholder="Previous Repairing number" id="myText5" class="form-control" type="text" disabled value="{{onsite_id.previous_repairing_number}}">
     </div>
   </div>
 
@@ -173,7 +222,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-    {{onsite_id.in_warranty}}
+      <input  name="in_warranty" placeholder="In Warranty" class="form-control" id="myText6" type="text" disabled value="{{onsite_id.in_warranty}}">
     </div>
   </div>
 
@@ -192,7 +241,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input type="number" name="phone_no" placeholder="Phone number" class="form-control" disabled value="{{onsite_id.phone_no}}">
+  <input type="number" name="phone_no" placeholder="Phone number" id="myText7" class="form-control" disabled value="{{onsite_id.phone_no}}">
     </div>
   </div>
 
@@ -206,7 +255,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control" disabled value="{{onsite_id.customer_email_id}}" >
+  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control" id="myText8" disabled value="{{onsite_id.customer_email_id}}" >
     </div>
   </div>
 
@@ -227,7 +276,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="date_of_complaint_received" placeholder="Date the complaint was Received" class="form-control" type="date" disabled value="{{onsite_id.date_of_complaint_received|date:'Y-m-d'}}">
+  <input  name="date_of_complaint_received" placeholder="Date the complaint was Received" id="myText9" class="form-control" type="date" disabled value="{{onsite_id.date_of_complaint_received|date:'Y-m-d'}}">
 
 
      </div>
@@ -240,7 +289,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <textarea name="customer_address" disabled value="{{customer_address}}"></textarea>
+  <textarea name="customer_address" placeholder="Customer Address" class="form-control" id="myText10" disabled value="{{customer_address}}"></textarea>
     </div>
   </div>
 
@@ -260,7 +309,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="complaint_received_by" placeholder="Complaint Received By" class="form-control" type="text" disabled value="{{onsite_id.complaint_received_by}}">
+  <input  name="complaint_received_by" placeholder="Complaint Received By" id="myText11" class="form-control" type="text" disabled value="{{onsite_id.complaint_received_by}}">
     </div>
   </div>
 
@@ -275,7 +324,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="nearest_railwaystation" placeholder="Nearest Railway Station" class="form-control" type="text" disabled value="{{onsite_id.nearest_railwaystation}}">
+  <input  name="nearest_railwaystation" placeholder="Nearest Railway Station" id="myText12" class="form-control" type="text" disabled value="{{onsite_id.nearest_railwaystation}}">
     </div>
   </div>
 
@@ -295,7 +344,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-train faicons"></i></span>
-  <input  name="train_line" placeholder="Train Line" class="form-control" type="text" disabled value="{{onsite_id.train_line}}">
+  <input  name="train_line" placeholder="Train Line" class="form-control" id="myText13" type="text" id="myText13" disabled value="{{onsite_id.train_line}}">
     </div>
   </div>
 
@@ -310,7 +359,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-  <input  name="products_to_be_repaired" placeholder="Products To be repaired" class="form-control"  type="text" disabled value="{{onsite_id.products_to_be_repaired}}">
+  <input  name="products_to_be_repaired" placeholder="Products To be repaired" class="form-control" id="myText14" type="text" disabled value="{{onsite_id.products_to_be_repaired}}">
     </div>
   </div>
 
@@ -329,7 +378,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="cost" placeholder="Cost" class="form-control"  type="text" disabled value="{{cost}}">
+  <input  name="cost" placeholder="Cost" class="form-control" id="myText15" type="text" disabled value="{{cost}}">
     </div>
   </div>
 
@@ -341,7 +390,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="visiting_charges_told_customer" placeholder="Visiting Charges Told to Customer" class="form-control" type="text" disabled value="{{onsite_id.visiting_charges_told_customer}}">
+  <input  name="visiting_charges_told_customer" placeholder="Visiting Charges Told to Customer" id="myText16" class="form-control" type="text" disabled value="{{onsite_id.visiting_charges_told_customer}}">
     </div>
   </div>
 
@@ -358,7 +407,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="total_cost" placeholder="Total Cost" class="form-control"  type="text" disabled value="{{onsite_id.total_cost}}">
+  <input  name="total_cost" placeholder="Total Cost" class="form-control" id="myText17"  type="text" disabled value="{{onsite_id.total_cost}}">
     </div>
   </div>
 
@@ -370,7 +419,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="complaint_assigned_to" placeholder="Complaint Assigned To" class="form-control"  type="text" disabled value="{{onsite_id.complaint_assigned_to}}">
+  <input  name="complaint_assigned_to" placeholder="Complaint Assigned To" class="form-control" id="myText18" type="text" disabled value="{{onsite_id.complaint_assigned_to}}">
     </div>
   </div>
 
@@ -387,7 +436,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="complaint_assigned_on" placeholder="Complain Assigned On" class="form-control" type="text" disabled value="{{onsite_id.complaint_assigned_on}}">
+  <input  name="complaint_assigned_on" placeholder="Complain Assigned On" class="form-control" id="myText19" type="text" disabled value="{{onsite_id.complaint_assigned_on}}">
     </div>
   </div>
 
@@ -400,7 +449,7 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-clock-o faicons"></i></span>
   <input  name="time_taken_destination_return_office_min" placeholder="Time Taken to Reach Destination and Return to office in Minutes"
-          class="form-control"  type="text" disabled value="{{onsite_id.time_taken_destination_return_office_min}}">
+          class="form-control" id="myText20" type="text" disabled value="{{onsite_id.time_taken_destination_return_office_min}}">
     </div>
   </div>
 
@@ -420,7 +469,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="notes" placeholder="Notes" class="form-control"  type="text" disabled value="{{onsite_id.notes}}">
+  <input  name="notes" placeholder="Notes" class="form-control" id="myText21" type="text" disabled value="{{onsite_id.notes}}">
     </div>
   </div>
 
@@ -433,10 +482,9 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  {{onsite_id.feedback_given}}
+      <input  name="notes" placeholder="Notes" class="form-control" id="myText22" type="text" disabled value="{{onsite_id.feedback_given}}">
     </div>
   </div>
-
 </div>
 
 
@@ -447,16 +495,19 @@ color:;
 
 
 
-<br>
-
-
-
 
 
 
 
 </fieldset>
 </form>
+          <center>
+                      <button  onclick="myFunction()" class="btn btn-primary">Edit</button>
+
+          </center>
+
+
+<br>
 </div>
  <h1 style="font-size: 25px; color: black; text-align: center;"> Added Repair List </h1>
   <br>
@@ -486,7 +537,7 @@ color:;
                     </div>
 
               </div>
-      </div>
+      </div><br> <br>>
 {% endfor %}
 
       </div>
@@ -522,7 +573,28 @@ color:;
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+      <script>
 
+$(function() {
+$("#stars").val("0");
+    $("div.star-rating > s").on("click", function(e) {
+
+    // remove all active classes first, needed if user clicks multiple times
+    $(this).closest('div').find('.active').removeClass('active');
+
+    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+    $(e.target).addClass('active');  // the element user has clicked on
+
+
+        var numStars = $(e.target).parentsUntil("div").length+1;
+        $("#stars").val(numStars);
+
+
+    });
+});
+
+</script>
+  </div>
 </body>
 
 </html>

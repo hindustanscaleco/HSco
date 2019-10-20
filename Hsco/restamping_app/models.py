@@ -13,7 +13,6 @@ class Restamping_after_sales_service(models.Model):
     address = models.CharField(max_length=250,null=True, blank=True)
     today_date = models.DateField(default=datetime.date.today, blank=True)
     mobile_no = models.CharField(max_length=13,null=True, blank=True)
-
     new_serial_no = models.CharField(max_length=150,null=True, blank=True)
     brand = models.CharField(max_length=150,null=True, blank=True)
     scale_delivery_date = models.DateField(default=datetime.date.today, blank=True)

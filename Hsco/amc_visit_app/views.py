@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
+from customer_app.models import Customer_Details
 from .forms import AMC_Feedback_Form
 from .models import Amc_After_Sales, AMC_Feedback
 from django.db import connection
@@ -11,6 +12,22 @@ import json
 
 def add_amc_after_sales(request):
     if request.method == 'POST':
+        customer_name = request.POST.get('customer_name')
+        company_name = request.POST.get('company_name')
+        address = request.POST.get('address')
+        contact_no = request.POST.get('contact_no')
+        customer_email_id = request.POST.get('customer_email_id')
+
+        item = Customer_Details()
+
+        item.customer_name = customer_name
+        item.company_name = company_name
+        item.address = address
+        item.contact_no = contact_no
+        item.customer_email_id = customer_email_id
+
+        item.save()
+
         amcno = request.POST.get('amcno')
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -32,33 +49,31 @@ def add_amc_after_sales(request):
         visit_4 = request.POST.get('visit_4')
         repot_4 = request.POST.get('repot_4')
 
+        item2 = Amc_After_Sales()
 
-        item = Amc_After_Sales()
+        item2.crm_no_id = item.pk
+        item2.amcno = amcno
+        item2.customer_name = customer_name
+        item2.company_name = company_name
+        item2.customer_no = customer_no
+        item2.customer_email_id = customer_email_id
+        item2.type_of_scale = type_of_scale
+        item2.serial_no_scale = serial_no_scale
+        item2.contract_valid_in_years = contract_valid_in_years
+        item2.contract_amount = contract_amount
+        item2.contract_no_reporting_breakdown = contract_no_reporting_breakdown
+        item2.contract_start_date = contract_start_date
+        item2.contract_end_date = contract_end_date
+        item2.visit_1 = visit_1
+        item2.repot_1 = repot_1
+        item2.visit_2 = visit_2
+        item2.repot_2 = repot_2
+        item2.visit_3 = visit_3
+        item2.repot_3 = repot_3
+        item2.visit_4 = visit_4
+        item2.repot_4 = repot_4
 
-        item.amcno = amcno
-        item.customer_name = customer_name
-        item.company_name = company_name
-        item.customer_no = customer_no
-        item.customer_email_id = customer_email_id
-        item.type_of_scale = type_of_scale
-        item.serial_no_scale = serial_no_scale
-        item.contract_valid_in_years = contract_valid_in_years
-        item.contract_amount = contract_amount
-        item.contract_no_reporting_breakdown = contract_no_reporting_breakdown
-        item.contract_start_date = contract_start_date
-        item.contract_end_date = contract_end_date
-        item.visit_1 = visit_1
-        item.repot_1 = repot_1
-        item.visit_2 = visit_2
-        item.repot_2 = repot_2
-        item.visit_3 = visit_3
-        item.repot_3 = repot_3
-        item.visit_4 = visit_4
-        item.repot_4 = repot_4
-
-
-
-        item.save()
+        item2.save()
         send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
 
         message = 'message to be send with feedback link '
@@ -179,7 +194,7 @@ def amc_views(request):
         context = {
             'amc_list': amc_list,
         }
-        return render(request, "manager/amc_view.html", )
+        return render(request, "manager/amc_view.html",context )
 
 
 def amc_logs(request):

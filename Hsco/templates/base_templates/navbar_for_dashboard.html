@@ -57,7 +57,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">3+</span>
+                <span class="badge badge-danger badge-counter">{{ message.count }}+</span>
               </a>
               <!-- Dropdown - Alerts -->
          <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
@@ -65,7 +65,7 @@
                   Alerts Center
                 </h6>
 
-
+{% for msg in message %}
                 <a class="dropdown-item d-flex align-items-center" href="#">
                   <div class="mr-3">
                     <div class="icon-circle bg-warning">
@@ -73,11 +73,12 @@
                     </div>
                   </div>
                   <div>
-                    <div class="small text-gray-500">February 20, 2019</div>
-                    Alert Comming Soon
+                    <div class="small text-gray-500">{{ msg.user_id }}&nbsp; -{{ msg.entry_date }} </div>
+                    {{ msg.reason }}
                   </div>
                 </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+           {% endfor %}
+                <a class="dropdown-item text-center small text-gray-500" href="/notif_decl_home">Show All Alerts</a>
               </div>
             </li>
 
@@ -87,22 +88,22 @@
               <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <!--<i class="fas fa-envelope fa-fw"></i>-->
                 <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">{{ message.count }}</span>
+                <span class="badge badge-danger badge-counter">{{ messge.count }}</span>
               </a>
               <!-- Dropdown - Messages -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                 <h6 class="dropdown-header">
                   Message Center
                 </h6>
-                {% for msg in message|slice:"4" %}
+                {% for msg in mesage %}
                 <!--<a class="dropdown-item d-flex align-items-center" href="#">-->
                   <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://images.performgroup.com/di/library/GOAL/7f/5b/cristiano-ronaldo-juventus-2018-19_1rpt4c6b200ms1azb3eb21f5sc.jpg?t=-96920201" alt="">
+                    <img class="rounded-circle" src="" alt="">
                     <div class="status-indicator bg-success"></div>
                   </div>
                   <div class="font-weight-bold">
-                    <div class="text-truncate">{{ msg.content }}</div>
-                    <div class="small text-gray-500">{{ msg.sent_by }}</div>
+                    <div class="text-truncate">{{ msg.user_id }}</div>
+                    <div class="small text-gray-500">{{ msg.reason }}</div>
                   </div>
                 </a>
                 {% endfor %}
