@@ -200,7 +200,7 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
   <input type="date" name="date_of_purchase" placeholder="Company name" class="form-control" id="myText5"Type of Machine
-  type="email" disabled value="{{repair_id.date_of_purchase|date:'YYYY-MM-DD'}}">
+  type="email" disabled value="{{repair_id.date_of_purchase|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -212,7 +212,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" placeholder="Today's date" class="form-control" id="myText6"  type="date" disabled value="repair_id.{{today_date|date:'YYYY-MM-DD'}}">
+  <input  name="today_date" placeholder="Today's date" class="form-control" id="myText6"  type="date" disabled value="{{repair_id.today_date|date:'Y-m-d'}}">
     </div>
   </div>
 </div>
