@@ -12,7 +12,7 @@ from django.db.models import Q,F
 from ess_app.models import Employee_Analysis_date
 from .models import  Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
-from datetime import datetime
+from _datetime import datetime
 from django.core.mail import send_mail
 from Hsco import settings
 import requests
@@ -129,10 +129,9 @@ def add_purchase_details(request):
 
 
 def view_customer_details(request):
-    date_today= datetime.date.today()
-    message_list = Employee_Leave.objects.filter(entry_date=date_today)
-    print(message_list)
-    print(message_list)
+    date_today= datetime.now().strftime('%Y-%m-%d')
+    message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
+
 
 
     if request.method == 'POST':
@@ -183,6 +182,7 @@ def view_customer_details(request):
             return render(request, 'dashboardnew/cm.html', context)
     else:
         cust_list=Customer_Details.objects.all().order_by('-id')
+        cust_list=Purchase_Details.objects.all().order_by('-id')
 
         # with connection.cursor() as cursor:
         #     cursor.execute(
@@ -208,8 +208,9 @@ def view_customer_details(request):
 
 def update_customer_details(request,id):
     purchase_id_id = Purchase_Details.objects.get(id=id)
-    customer_id = Customer_Details.objects.get(id=id)
-    product_id = Product_Details.objects.get(id=id)
+    customer_id = Purchase_Details.objects.get(id=id).crm_no
+    customer_id = Customer_Details.objects.get(id=customer_id)
+    product_id = Product_Details.objects.filter(purchase_id=id)
     if request.method=='POST':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -548,6 +549,29 @@ def edit_product_customer(request,id):
     }
 
     return render(request,'edit_product/edit_product_customer.html',context)
+
+def load_users(request):
+    selected = request.GET.get('loc_id')
+
+    if selected=='true':
+        user_list = Employee_Analysis_month.objects.filter(manager_id=request.user.name)
+        # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
+
+        context = {
+            'user_list': user_list,
+            'manager': True,
+        }
+
+        return render(request, 'AJAX/load_users.html', context)
+    else:
+        cust_list=Purchase_Details.objects.all().order_by('-id')
+
+        context = {
+            'customer_list': cust_list,
+            'manager': False,
+        }
+
+        return render(request, 'AJAX/load_users.html', context)
 
 
 
