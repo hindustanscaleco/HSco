@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from customer_app.models import Customer_Details
+
+from ess_app.models import Employee_Analysis_month
 from .forms import add_Onsite_aftersales_service_form
 import datetime
 
@@ -336,3 +338,27 @@ def load_onsite_reparing_stages_list(request,):
     }
 
     return render(request, 'AJAX/load_onsite_reparing_stage.html', context)
+
+def load_onsite_reparing_manager(request,):
+    selected = request.GET.get('loc_id')
+
+    if selected=='true':
+        user_list = Employee_Analysis_month.objects.filter(manager_id=request.user.name)
+        # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
+
+        context = {
+            'user_list': user_list,
+            'manager': True,
+        }
+
+        return render(request, 'AJAX/load_onsite_reparing_manager.html', context)
+    else:
+        onsite_list = Onsite_aftersales_service.objects.all()
+
+        context = {
+            'onsite_list': onsite_list,
+            'manager': False,
+
+        }
+
+        return render(request, 'AJAX/load_onsite_reparing_manager.html', context)
