@@ -27,7 +27,7 @@
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-	{% include 'base_templates/sidebar.html' %}
+        {% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -40,7 +40,7 @@
 
 
         <!-- Topbar -->
-	{% include 'base_templates/navbar_for_dashboard.html' %}
+        {% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
 <style>
@@ -70,6 +70,21 @@ color:;
   }
 
 </style>
+
+ <script> function disable() {
+  document.getElementById("name").disabled = true;
+  }
+
+  function enable() {
+   document.getElementById("name").disabled = false;
+  }
+
+var form = document.getElementById("contact_form");
+var elements = form.elements;
+for (var i = 0, len = elements.length; i < len; ++i) {
+    elements[i].disabled = true;
+}
+</script>
         <!-- Begin Page Content -->
         <div class="container-fluid">
 <center>
@@ -78,6 +93,36 @@ color:;
 </center>
 <br>
 <br>
+
+
+
+<script>
+function myFunction() {
+    document.getElementById("myText").disabled = false;
+    document.getElementById("myText2").disabled = false;
+    document.getElementById("myText3").disabled = false;
+    document.getElementById("myText4").disabled = false;
+    document.getElementById("myText5").disabled = false;
+    document.getElementById("myText6").disabled = false;
+    document.getElementById("myText7").disabled = false;
+    document.getElementById("myText8").disabled = false;
+    document.getElementById("myText9").disabled = false;
+    document.getElementById("myText10").disabled = false;
+    document.getElementById("myText11").disabled = false;
+    document.getElementById("myText12").disabled = false;
+    document.getElementById("myText13").disabled = false;
+    document.getElementById("myText14").disabled = false;
+    document.getElementById("myText15").disabled = false;
+    document.getElementById("myText16").disabled = false;
+    document.getElementById("myText17").disabled = false;
+    document.getElementById("myText18").disabled = false;
+    document.getElementById("myText19").disabled = false;
+    document.getElementById("myText20").disabled = false;
+    document.getElementById("myText21").disabled = false;
+    document.getElementById("myText22").disabled = false;
+
+}
+</script>
 
             <form method="POST">{%csrf_token%}
 
@@ -88,7 +133,7 @@ color:;
 <div class="form-group row">
 
 
-    <label class="col-md-2 control-label">Customer Email Id
+    <label class="col-md-2 control-label">Restamping ID
 
 
 
@@ -97,7 +142,24 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="customer_email_id" placeholder="Customer Email Id" class="form-control" >
+    <input  type="text" name="customer_email_id" disabled  values="{{restamp_product_list.restamping_id}}" placeholder="Customer Email Id" class="form-control" >
+
+    </div>
+  </div>
+</div>
+
+                <div class="form-group row">
+
+                <label class="col-md-2 control-label">Customer Email Id
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+    <input  type="text" name="customer_email_id" disabled id="myText" values="{{restamp_product_list.customer_email_id}}" placeholder="Customer Email Id" class="form-control" >
 
     </div>
   </div>
@@ -108,7 +170,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="product_to_stampped" placeholder="Product To Be Stampped"  class="form-control"  type="text">
+  <input  name="product_to_stampped" disabled id="myText2" values="{{restamp_product_list.product_to_stampped}}" placeholder="Product To Be Stampped"  class="form-control"  type="text">
     </div>
   </div>
 
@@ -127,7 +189,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="scale_type" placeholder="Scale Type" class="form-control" >
+    <input  type="text" name="scale_type" disabled id="myText3" values="{{restamp_product_list.scale_type}}" placeholder="Scale Type" class="form-control" >
 
     </div>
   </div>
@@ -141,7 +203,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="sub_model" placeholder="Sub Model" class="form-control" >
+    <input  type="text" name="sub_model" disabled id="myText4" values="{{restamp_product_list.sub_model}}" placeholder="Sub Model" class="form-control" >
 
     </div>
   </div>
@@ -160,7 +222,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="capacity" placeholder="Capacity" class="form-control" >
+    <input  type="text" name="capacity" disabled id="myText5" values="{{restamp_product_list.capacity}}" placeholder="Capacity" class="form-control" >
 
     </div>
   </div>
@@ -174,7 +236,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="old_serial_no" placeholder="Old Serial No" class="form-control" >
+    <input  type="text" name="old_serial_no" disabled id="myText6" values="{{restamp_product_list.old_serial_no}}" placeholder="Old Serial No" class="form-control" >
 
     </div>
   </div>
@@ -195,7 +257,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="old_brand" placeholder="Old Brand" class="form-control" >
+    <input  type="text" name="old_brand" disabled id="myText7" values="{{restamp_product_list.old_brand}}" placeholder="Old Brand" class="form-control" >
 
     </div>
   </div>
@@ -206,7 +268,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="amount" placeholder="Amount" class="form-control"  type="text">
+  <input  name="amount" disabled id="myText8" values="{{restamp_product_list.amount}}" placeholder="Amount" class="form-control"  type="text">
     </div>
   </div>
 
@@ -218,9 +280,13 @@ color:;
             <br>
 <center>
     <button type="submit" class="btn btn-primary">Submit</button>
-
 </center>
             </form>
+<br>
+            <center>
+                      <button  onclick="myFunction()" class="btn btn-primary">Edit</button>
+
+            </center>
 
 
   </div>
@@ -249,6 +315,27 @@ color:;
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+       <script>
+
+$(function() {
+$("#stars").val("0");
+    $("div.star-rating > s").on("click", function(e) {
+
+    // remove all active classes first, needed if user clicks multiple times
+    $(this).closest('div').find('.active').removeClass('active');
+
+    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+    $(e.target).addClass('active');  // the element user has clicked on
+
+
+        var numStars = $(e.target).parentsUntil("div").length+1;
+        $("#stars").val(numStars);
+
+
+    });
+});
+
+</script>
       </div>
     </div>
   </div>
