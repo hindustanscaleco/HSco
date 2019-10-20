@@ -12,7 +12,7 @@ from Hsco import settings
 import requests
 import json
 from ess_app.models import Employee_Analysis_month
-from django.db.models import Q
+from ess_app.models import Employee_Analysis_date
 
 
 
@@ -261,35 +261,97 @@ def dispatch_logs(request):
     return render(request,"logs/dispatch_logs.html",)
 
 def dispatch_employee_graph(request):
-    user_id=request.user.pk
-    currentMonth = datetime.now().month
-    currentYear = datetime.now().year
-    list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
-    list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_dispatch_done')
-    # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-    list_avg = Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('avg_time_dispatch_form_to_done')
+    from django.db.models import Sum
 
-    print(list(list_sales_month))
-    print(list(list_sales))
-    final_list=[]
-    final_list2=[]
-    final_list3=[]
-    for item in list_sales:
-        final_list.append(item[0])
+    user_id = request.user.pk
 
-    for item in list_sales_month:
-        final_list2.append(item[0])
+    # current month
+    mon = datetime.now().month
+    this_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+        data_sum=Sum('total_dispatch_done_today'))
+    this_lis_date = []
+    this_lis_sum = []
+    for i in this_month:
+        x = i
+        this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+        this_lis_sum.append(x['data_sum'])
 
-    for item in list_avg:
-        final_list3.append(item[0])
+    # previous month sales
+    mon = (datetime.now().month) - 1
+    previous_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+        data_sum=Sum('total_dispatch_done_today'))
+    previous_lis_date = []
+    previous_lis_sum = []
+    for i in previous_month:
+        x = i
+        previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+        previous_lis_sum.append(x['data_sum'])
 
+    if request.method == 'POST':
+        start_date = request.POST.get('date1')
+        end_date = request.POST.get('date2')
+        qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values(
+            'entry_date').annotate(data_sum=Sum('total_dispatch_done_today'))
+        lis_date = []
+        lis_sum = []
+        for i in qs:
+            x = i
+            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
 
-    context={
-        'final_list':final_list,
-        'final_list2':final_list2,
-        'final_list3':final_list3,
-    }
-    return render(request,"graphs/dispatch_employee_graph.html",context)
+        context = {
+            'final_list': lis_date,
+            'final_list2': lis_sum,
+            'previous_lis_date': previous_lis_date,
+            'previous_lis_sum': previous_lis_sum,
+            'this_lis_date': this_lis_date,
+            'this_lis_sum': this_lis_sum,
+            # 'rep_feedback': rep_feedback,
+        }
+        return render(request, "graphs/dispatch_employee_graph.html", context)
+    else:
+
+        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values(
+            'entry_date').annotate(data_sum=Sum('total_dispatch_done_today'))
+        lis_date = []
+        lis_sum = []
+        for i in qs:
+            x = i
+            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
+        print(lis_date)
+        print(lis_sum)
+
+        # user_id=request.user.pk
+        # currentMonth = datetime.now().month
+        # currentYear = datetime.now().year
+        # list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
+        # list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+        # # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
+        # print(list(list_sales_month))
+        # print(list(list_sales))
+        # final_list=[]
+        # final_list2=[]
+        # for item in list_sales:
+        #     final_list.append(item[0])
+        #
+        # for item in list_sales_month:
+        #     final_list2.append(item[0])
+        #
+        # print(final_list)
+        # print(final_list2)
+        context = {
+            'final_list': lis_date,
+            'final_list2': lis_sum,
+            'previous_lis_date': previous_lis_date,
+            'previous_lis_sum': previous_lis_sum,
+            'this_lis_date': this_lis_date,
+            'this_lis_sum': this_lis_sum,
+            # 'rep_feedback': rep_feedback,
+            # 'feeback': feeback,
+        }
+        return render(request,"graphs/dispatch_employee_graph.html",context)
+
 
 
 def load_dispatch_done(request,):

@@ -64,6 +64,7 @@ class Employee_Analysis_month(models.Model):
     #TARGETS_GIVEN
     sales_target_given = models.FloatField(default=0.0, )  # in amount
     reparing_target_given = models.FloatField(default=0.0, )  # in amount
+    onsitereparing_target_given = models.FloatField(default=0.0, )  # in amount
     restamping_target_given = models.FloatField(default=0.0, )  # in amount
     #DONE_THIS_MONTH
     total_sales_done = models.FloatField(default=0.0, )  # Customer module sales done in this month in amount
@@ -79,6 +80,7 @@ class Employee_Analysis_month(models.Model):
     #ACHIEVED_TILL_NOW
     sales_target_achived_till_now = models.FloatField(default=0.0, null=True, blank=True)
     reparing_target_achived_till_now = models.FloatField(default=0.0, null=True, blank=True)
+    onsitereparing_target_achived_till_now = models.FloatField(default=0.0, null=True, blank=True)
 
 
     entry_timedate = models.DateTimeField(default=timezone.now,)     # extract month and year from date
@@ -95,7 +97,7 @@ class Employee_Analysis_month(models.Model):
         return str(self.user_id)
 
 
-class Employee_Analysis_date(models.Model):
+class   Employee_Analysis_date(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
 
