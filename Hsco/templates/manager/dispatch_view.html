@@ -299,9 +299,9 @@ $(function() {
 
 
 
-<div style="min-height: 26vw;">
+<div id="id_manager_view" style="min-height: 26vw;">
 
-        <div id="id_manager_view" class="row">
+        <div class="row">
 
   <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
@@ -318,10 +318,10 @@ $(function() {
 
 
 </div>
-<br>                  {% for list in dispatch_list %}
+<br>
 
          <div id="id_subcat" class="row">
-
+{% for list in dispatch_list %}
                 <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
@@ -337,8 +337,9 @@ $(function() {
 
                 </div>
               </div>
+  {% endfor %}
+            </div>
 
-            </div>{% endfor %}
 
 
 

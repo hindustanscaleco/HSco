@@ -1,6 +1,10 @@
 
   {% if manager %}
 
+      <div class="row">
+
+
+
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 55px;">
@@ -20,9 +24,10 @@
 
 
 <br>
-
+        </div>
+    <br>
       <div class="row" id="id_subcat">
-                      {% for list in user_list %}
+                    {% for list in user_list %}
 
 <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
@@ -50,7 +55,17 @@
           {% endfor %}
             </div>
 
+
+
+
+
+
+
 {% else %}
+
+      <div class="row">
+
+
 
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
@@ -71,7 +86,8 @@
 
 
 <br>
-
+        </div>
+    <br>
       <div class="row" id="id_subcat">
                       {% for list in onsite_list %}
 
