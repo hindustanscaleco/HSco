@@ -5,8 +5,12 @@ from django.utils import timezone
 
 from customer_app.models import Customer_Details
 
+from user_app.models import SiteUser
+
 
 class Repairing_after_sales_service(models.Model):
+    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    manager_id = models.CharField(max_length=60, null=True, blank=True)
     crm_no = models.ForeignKey(Customer_Details, on_delete=models.CASCADE)
     repairingnumber = models.CharField(max_length=40,null=True,blank=True) #combination of pk and 'rep'
     previous_repairing_number = models.CharField(max_length=30,null=True,blank=True)
@@ -38,6 +42,8 @@ class Repairing_after_sales_service(models.Model):
 
 
 class Repairing_Product(models.Model):
+    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    manager_id = models.CharField(max_length=60, null=True, blank=True)
     repairing_id = models.ForeignKey(Repairing_after_sales_service,on_delete=models.CASCADE)
     type_of_machine = models.CharField(max_length=30, null=True, blank=True)
     model = models.CharField(max_length=30, null=True, blank=True)

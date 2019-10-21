@@ -12,6 +12,7 @@ choices = (('YES', 'YES'),
 
 
 class Onsite_aftersales_service(models.Model):
+    entered_by = models.CharField(max_length=60, null=True, blank=True)
     crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
     repairingno = models.CharField(max_length=50, null=True, blank=True)
     customer_name = models.CharField(max_length=80, null=True, blank=True)
@@ -44,6 +45,8 @@ class Onsite_aftersales_service(models.Model):
 
 
 class Onsite_Products(models.Model):
+    manager_id = models.CharField(max_length=60, null=True, blank=True)
+    crm_no = models.ForeignKey(Customer_Details, on_delete=models.CASCADE)
     onsite_repairing_id = models.ForeignKey(Onsite_aftersales_service,on_delete=models.CASCADE)
     type_of_machine = models.CharField(max_length=30, null=True, blank=True)
     model = models.CharField(max_length=30, null=True, blank=True)
