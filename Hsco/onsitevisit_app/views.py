@@ -313,7 +313,7 @@ def final_report_onsite(request):
     }
     return render(request,'report/final_onsite_report.html',context)
 
-def feedback_onrepairing(request):
+def feedback_onrepairing(request,user_id,customer_id,onsiterepairing_id):
     feedback_form = Onsite_Repairing_Feedback_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST':
         backend_team = request.POST.get('backend_team')
@@ -332,8 +332,22 @@ def feedback_onrepairing(request):
         item.overall_interaction = overall_interaction
         item.about_hsco = about_hsco
         item.any_suggestion = any_suggestion
+        item.user_id = SiteUser.objects.get(id=user_id)
+        item.customer_id = Customer_Details.objects.get(id=customer_id)
+        item.onsiterepairing_id = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
         item.save()
 
+
+        onsiterepairing = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
+        onsiterepairing.avg_feedback = (backend_team + onsite_worker + speed_of_performance + price_of_reparing + overall_interaction) / 5.0
+        onsiterepairing.feedback_given = 'YES'
+        onsiterepairing.save(update_fields=['avg_feedback', 'feedback_given'])
+        mon = datetime.now().month
+
+        # ess_id = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon )
+        #
+        #
+        # ess_id.start_rating_feedback_onsite_reparing = onsiterepairing.avg_feedback
         return HttpResponse('Feedback Submitted!!!')
     context = {
         'feedback_form': feedback_form,

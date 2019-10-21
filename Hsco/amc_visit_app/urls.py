@@ -10,5 +10,5 @@ urlpatterns = [
     path('amc_views/', amc_views, name='amc_views'),
     path('amc_logs/', amc_logs, name='amc_logs'),
     path('update_amc_form/<str:update_id>', update_amc_form, name='update_amc_form'),
-    path('feedback_amc/',feedback_amc, name = 'feedback_amc')
+    path('feedback_amc/<str:user_id>/<str:customer_id>/<str:amc_id>',feedback_amc, name = 'feedback_amc')
 ]
