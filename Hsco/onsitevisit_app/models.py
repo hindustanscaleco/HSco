@@ -12,7 +12,7 @@ choices = (('YES', 'YES'),
 
 
 class Onsite_aftersales_service(models.Model):
-    entered_by = models.CharField(max_length=60, null=True, blank=True)
+    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE, null=True, blank=True)
     crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
     repairingno = models.CharField(max_length=50, null=True, blank=True)
     customer_name = models.CharField(max_length=80, null=True, blank=True)
@@ -34,10 +34,11 @@ class Onsite_aftersales_service(models.Model):
     time_taken_destination_return_office_min = models.CharField(max_length=30, null=True, blank=True)
     notes = models.CharField(max_length=255, null=True, blank=True)
     feedback_given = models.CharField(max_length=30,choices=choices,default='NO')
+    avg_feedback = models.FloatField(default=0.0)
     entry_timedate = models.DateTimeField(default=timezone.now,)
     is_done = models.BooleanField(default=False)
     assigned_to = models.CharField(max_length=30, null=True, blank=True)
-    assigned_by = models.ForeignKey(SiteUser, on_delete=models.CASCADE, null=True, blank=True)
+    assigned_by = models.CharField(max_length=30, null=True, blank=True)
     done_on = models.DateTimeField(default=timezone.now,)
 
     def __int__(self):

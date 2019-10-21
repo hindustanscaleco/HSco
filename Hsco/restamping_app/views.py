@@ -8,24 +8,39 @@ from Hsco import settings
 from customer_app.models import Customer_Details
 
 from ess_app.models import Employee_Analysis_date
+
+from purchase_app.views import check_admin_roles
+from user_app.models import SiteUser
 from .models import Restamping_after_sales_service, Restamping_Product
 import requests
 import json
 from ess_app.models import Employee_Analysis_month
 
 def restamping_manager(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and 'deleted' not in request.POST:
         if 'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
-            restamp_list = Restamping_after_sales_service.objects.filter(entry_timedate__range=[start_date, end_date])
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.group, user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
+
+            # restamp_list = Restamping_after_sales_service.objects.filter(entry_timedate__range=[start_date, end_date])
             context = {
                 'restamp_list': restamp_list,
             }
             return render(request, "manager/restamping_manager.html", context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
-            restamp_list = Restamping_after_sales_service.objects.filter(mobile_no=contact)
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.group, user_id__is_deleted=False,crm_no__contact_no=contact).order_by('-id')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__contact_no=contact).order_by('-id')
+
+            # restamp_list = Restamping_after_sales_service.objects.filter(mobile_no=contact)
             context = {
                 'restamp_list': restamp_list,
             }
@@ -33,7 +48,12 @@ def restamping_manager(request):
 
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
-            restamp_list = Restamping_after_sales_service.objects.filter(customer_email_id=email)
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.group, user_id__is_deleted=False,crm_no__customer_email_id=email).order_by('-id')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__customer_email_id=email).order_by('-id')
+            # restamp_list = Restamping_after_sales_service.objects.filter(customer_email_id=email)
             context = {
                 'restamp_list': restamp_list,
             }
@@ -41,6 +61,11 @@ def restamping_manager(request):
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
             restamp_list = Restamping_after_sales_service.objects.filter(name=customer)
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.group, user_id__is_deleted=False,crm_no__customer_name=customer).order_by('-id')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__customer_name=customer).order_by('-id')
             context = {
                 'restamp_list': restamp_list,
             }
@@ -49,19 +74,46 @@ def restamping_manager(request):
         elif 'submit5' in request.POST:
             company = request.POST.get('company')
             restamp_list = Restamping_after_sales_service.objects.filter(company_name=company)
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.group, user_id__is_deleted=False,crm_no__company_name=company).order_by('-id')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__company_name=company).order_by('-id')
             context = {
                 'restamp_list': restamp_list,
             }
             return render(request, "manager/restamping_manager.html", context)
         elif request.method == 'POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.group, user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
             restamp_list = Restamping_after_sales_service.objects.filter(crn_number=crm)
+
             context = {
                 'restamp_list': restamp_list,
             }
             return render(request, "manager/restamping_manager.html", context)
+    elif 'deleted' in request.POST:
+        if check_admin_roles(request):  # For ADMIN
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.group, user_id__is_deleted=True).order_by('-id')
+        else:  # For EMPLOYEE
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+        # restamp_list = Restamping_after_sales_service.objects.all()
+
+        context = {
+            'restamp_list': restamp_list,
+            'deleted': True,
+        }
+        return render(request, "manager/restamping_manager.html", context)
     else:
-        restamp_list = Restamping_after_sales_service.objects.all()
+        if check_admin_roles(request):     #For ADMIN
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+        else:  #For EMPLOYEE
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+        # restamp_list = Restamping_after_sales_service.objects.all()
 
         context = {
             'restamp_list': restamp_list,
@@ -102,6 +154,8 @@ def restamping_after_sales_service(request):
 
         item2 = Restamping_after_sales_service()
 
+        item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.crm_no_id = item.pk
         item2.restampingno = restampingno
         item2.customer_no = customer_no
@@ -156,6 +210,8 @@ def restamping_product(request,id):
         item.old_brand = old_brand
         item.amount = amount
         item.restamping_id_id = restamping_id
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item.save()
 
@@ -184,10 +240,8 @@ def update_restamping_details(request,id):
         brand = request.POST.get('brand')
         scale_delivery_date = request.POST.get('scale_delivery_date')
 
-        print(today_date)
-        print(today_date)
-        print(today_date)
         item = personal_id
+
         item.restampingno = restampingno
         item.customer_no = customer_no
         item.company_name = company_name
@@ -211,6 +265,8 @@ def update_restamping_details(request,id):
 
         context = {
             'personal_id': personal_id,
+            'restamp_product_list': restamp_product_list,
+
         }
 
         return render(request, 'update_forms/update_restamping_form.html', context)
@@ -263,15 +319,13 @@ def final_report_restamping(request):
     }
     return render(request,"report/final_report_restamp_mod_form.html",context)
 
-def restamping_employee_graph(request):
+def restamping_employee_graph(request,user_id):
     from django.db.models import Sum
-
-    user_id=request.user.pk
 
 
     #current month
     mon = datetime.now().month
-    this_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
         data_sum=Sum('total_restamping_done_today'))
     this_lis_date = []
     this_lis_sum = []
@@ -282,7 +336,7 @@ def restamping_employee_graph(request):
 
     # previous month sales
     mon = (datetime.now().month) - 1
-    previous_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
         data_sum=Sum('total_restamping_done_today'))
     previous_lis_date = []
     previous_lis_sum = []
@@ -294,15 +348,39 @@ def restamping_employee_graph(request):
     if request.method == 'POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values('entry_date').annotate(data_sum=Sum('total_restamping_done_today'))
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values('entry_date').annotate(data_sum=Sum('total_restamping_done_today'))
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
             lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
             lis_sum.append(x['data_sum'])
-        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values(
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values(
             'entry_date').annotate(data_sum=Sum('total_restamping_done_today'))
+        lis_date = []
+        lis_sum = []
+        for i in qs:
+            x = i
+            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
+        print(lis_date)
+        print(lis_sum)
+
+        context = {
+            'final_list': lis_date,
+            'final_list2': lis_sum,
+            'previous_lis_date': previous_lis_date,
+            'previous_lis_sum': previous_lis_sum,
+            'this_lis_date': this_lis_date,
+            'this_lis_sum': this_lis_sum,
+            # 'rep_feedback': rep_feedback,
+            # 'feeback': feeback,
+        }
+        return render(request, "graphs/restamping_employee_graph.html", context)
+    else:
+
+        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values(
+            'entry_date').annotate(data_sum=Sum('total_reparing_done_onsite_today'))
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -337,68 +415,17 @@ def restamping_employee_graph(request):
             'previous_lis_sum': previous_lis_sum,
             'this_lis_date': this_lis_date,
             'this_lis_sum': this_lis_sum,
-            # 'rep_feedback': rep_feedback,
+            'target_achieved': target_achieved,
             # 'feeback': feeback,
-        }
-        return render(request, "graphs/restamping_employee_graph.html", context)
-        context = {
-            'final_list': lis_date,
-            'final_list2': lis_sum,
-            'previous_lis_date': previous_lis_date,
-            'previous_lis_sum': previous_lis_sum,
-            'this_lis_date': this_lis_date,
-            'this_lis_sum': this_lis_sum,
-            # 'rep_feedback': rep_feedback,
         }
     return render(request, "graphs/restamping_employee_graph.html", context)
 
 
 def update_restamping_product(request,id):
-    restamp_product_list = Restamping_Product.objects.filter(restamping_id=id)
-    restamping_id = Restamping_after_sales_service.objects.get(id=id)
+    restamping_product_id = Restamping_Product.objects.get(id=id)
+    restamping_id = Restamping_Product.objects.get(id=id).restamping_id
+    print(restamping_id)
     if request.method == 'POST':
-        restampingno = request.POST.get('restampingno')
-        customer_no = request.POST.get('customer_no')
-        company_name = request.POST.get('company_name')
-        address = request.POST.get('address')
-        today_date = request.POST.get('today_date')
-        mobile_no = request.POST.get('mobile_no')
-        new_serial_no = request.POST.get('new_serial_no')
-        brand = request.POST.get('brand')
-        scale_delivery_date = request.POST.get('scale_delivery_date')
-        entry_timedate = request.POST.get('entry_timedate')
-
-
-        item = restamping_id
-
-        item.restampingno = restampingno
-        item.customer_no = customer_no
-        item.company_name = company_name
-        item.address = address
-        item.today_date = today_date
-        item.mobile_no = mobile_no
-        item.new_serial_no = new_serial_no
-        item.brand = brand
-        item.scale_delivery_date = scale_delivery_date
-        item.entry_timedate = entry_timedate
-
-        item.save()
-        item.save(update_fields=['restampingno', ]),
-        item.save(update_fields=['customer_no', ]),
-        item.save(update_fields=['company_name', ]),
-        item.save(update_fields=['address', ]),
-        item.save(update_fields=['today_date', ]),
-        item.save(update_fields=['mobile_no', ]),
-        item.save(update_fields=['new_serial_no', ]),
-        item.save(update_fields=['brand', ]),
-        item.save(update_fields=['scale_delivery_date', ]),
-        item.save(update_fields=['entry_timedate', ]),
-
-
-
-
-
-        restamping_id = request.POST.get('restamping_id')
         customer_email_id = request.POST.get('customer_email_id')
         product_to_stampped = request.POST.get('product_to_stampped')
         scale_type = request.POST.get('scale_type')
@@ -409,37 +436,27 @@ def update_restamping_product(request,id):
         amount = request.POST.get('amount')
 
 
-        item2 = restamp_product_list
-        item2.restamping_id = Restamping_after_sales_service.objects.get(id=item.pk)
-        item2.customer_email_id = customer_email_id
-        item2.product_to_stampped = product_to_stampped
-        item2.scale_type = scale_type
-        item2.sub_model = sub_model
-        item2.capacity = capacity
-        item2.old_serial_no = old_serial_no
-        item2.old_brand = old_brand
-        item2.amount = amount
-        item2.save()
-        item2.save(update_fields=['restamping_id',])
-        item2.save(update_fields=['customer_email_id', ]),
-        item2.save(update_fields=['product_to_stampped', ]),
-        item2.save(update_fields=['scale_type', ]),
-        item2.save(update_fields=['sub_model', ]),
-        item2.save(update_fields=['capacity', ]),
-        item2.save(update_fields=['old_serial_no', ]),
-        item2.save(update_fields=['old_brand', ]),
-        item2.save(update_fields=['amount', ]),
-        restamp_product_list = Restamping_Product.objects.get(id=id)
-        restamping_id = Restamping_after_sales_service.objects.get(id=id)
-        context = {
-            'restamp_product_list': restamp_product_list,
-            'restamping_id':restamping_id,
-        }
+        item = restamping_product_id
 
-        return render(request, 'update_forms/update_restamping_form.html', context)
+        item.restamping_id_id = restamping_id
+        item.customer_email_id = customer_email_id
+        item.product_to_stampped = product_to_stampped
+        item.scale_type = scale_type
+        item.sub_model = sub_model
+        item.capacity = capacity
+        item.old_serial_no = old_serial_no
+        item.old_brand = old_brand
+        item.amount = amount
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+
+        item.save(update_fields=['customer_email_id','product_to_stampped','scale_type','sub_model','capacity','old_serial_no','old_brand',
+                                 'amount','manager_id','user_id' ])
+
+
+        return redirect('/update_restamping_details/'+str(restamping_id.id))
     context = {
-        'restamp_product_list': restamp_product_list,
-        'restamping_id':restamping_id,
+        'restamping_product_id': restamping_product_id,
     }
 
     return render(request,'update_forms/update_restamping_product.html',context)

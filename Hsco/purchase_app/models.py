@@ -45,8 +45,8 @@ class Purchase_Details(models.Model):
     entry_timedate = models.DateField(default=datetime.date.today)
     feedback_stars=models.FloatField(default=0.0)
 
-    def __str__(self):
-        return str(self.crm_no)
+    def __int__(self):
+        return self.id
 
 class Product_Details(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)

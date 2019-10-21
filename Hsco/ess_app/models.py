@@ -88,6 +88,7 @@ class Employee_Analysis_month(models.Model):
     year = models.IntegerField()    # extract month and year from date
     start_rating_feedback_sales = models.FloatField(default=0.0, null=True, blank=True)
     start_rating_feedback_reparing = models.FloatField(default=0.0, null=True, blank=True)
+    start_rating_feedback_amc = models.FloatField(default=0.0, null=True, blank=True)
     start_rating_feedback_onsite_reparing = models.FloatField(default=0.0, null=True, blank=True)
 
     class Meta:

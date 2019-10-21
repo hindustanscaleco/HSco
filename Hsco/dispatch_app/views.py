@@ -6,6 +6,8 @@ from django.db import connection
 from user_app.models import SiteUser
 
 from customer_app.models import Customer_Details
+
+from purchase_app.views import check_admin_roles
 from .models import Dispatch, Product_Details_Dispatch
 from django.core.mail import send_mail
 from Hsco import settings
@@ -132,14 +134,24 @@ def dispatch_view(request):
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
-            dispatch_list = Dispatch.objects.filter(entry_timedate__range=[start_date, end_date])
+            if check_admin_roles(request):  # For ADMIN
+                dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,
+                                                        user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
+            else:  # For EMPLOYEE
+                dispatch_list = Dispatch.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
+            # dispatch_list = Dispatch.objects.filter()
             context = {
                 'dispatch_list': dispatch_list,
             }
             return render(request, "manager/dispatch_view.html", context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
-            dispatch_list = Dispatch.objects.filter(customer_no=contact)
+            if check_admin_roles(request):  # For ADMIN
+                dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,
+                                                        user_id__is_deleted=False,crm_no__contact_no=contact).order_by('-id')
+            else:  # For EMPLOYEE
+                dispatch_list = Dispatch.objects.filter(user_id=request.user.pk,crm_no__contact_no=contact).order_by('-id')
+            # dispatch_list = Dispatch.objects.filter(customer_no=contact)
             context = {
                 'dispatch_list': dispatch_list,
             }
@@ -147,14 +159,24 @@ def dispatch_view(request):
 
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
-            dispatch_list = Dispatch.objects.filter(customer_email=email)
+            if check_admin_roles(request):  # For ADMIN
+                dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,
+                                                        user_id__is_deleted=False,crm_no__customer_email_id=email).order_by('-id')
+            else:  # For EMPLOYEE
+                dispatch_list = Dispatch.objects.filter(user_id=request.user.pk,crm_no__customer_email_id=email).order_by('-id')
+            # dispatch_list = Dispatch.objects.filter(customer_email=email)
             context = {
                 'dispatch_list': dispatch_list,
             }
             return render(request, "manager/dispatch_view.html", context)
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
-            dispatch_list = Dispatch.objects.filter(customer_name=customer)
+            if check_admin_roles(request):  # For ADMIN
+                dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,
+                                                        user_id__is_deleted=False,crm_no__customer_name=customer).order_by('-id')
+            else:  # For EMPLOYEE
+                dispatch_list = Dispatch.objects.filter(user_id=request.user.pk,crm_no__customer_name=customer).order_by('-id')
+            # dispatch_list = Dispatch.objects.filter(customer_name=customer)
             context = {
                 'dispatch_list': dispatch_list,
             }
@@ -162,20 +184,34 @@ def dispatch_view(request):
 
         elif  'submit5' in request.POST:
             company = request.POST.get('company')
-            dispatch_list = Dispatch.objects.filter(company_name=company)
+            if check_admin_roles(request):  # For ADMIN
+                dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,
+                                                        user_id__is_deleted=False,crm_no__company_name=company).order_by('-id')
+            else:  # For EMPLOYEE
+                dispatch_list = Dispatch.objects.filter(user_id=request.user.pk,crm_no__company_name=company).order_by('-id')
+            # dispatch_list = Dispatch.objects.filter(company_name=company)
             context = {
                 'dispatch_list': dispatch_list,
             }
             return render(request, "manager/dispatch_view.html", context)
         elif request.method=='POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
-            dispatch_list = Dispatch.objects.filter(crn_number=crm)
+            if check_admin_roles(request):  # For ADMIN
+                dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,
+                                                        user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
+            else:  # For EMPLOYEE
+                dispatch_list = Dispatch.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
+            # dispatch_list = Dispatch.objects.filter(crn_number=crm)
             context = {
                 'dispatch_list': dispatch_list,
             }
             return render(request, "manager/dispatch_view.html", context)
     else:
-        dispatch_list = Dispatch.objects.all()
+        if check_admin_roles(request):     #For ADMIN
+            dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+        else:  #For EMPLOYEE
+            dispatch_list = Dispatch.objects.filter(user_id=request.user.pk).order_by('-id')
+        # dispatch_list = Dispatch.objects.all()
 
         context = {
             'dispatch_list': dispatch_list,
@@ -246,6 +282,12 @@ def update_dispatch_details(request,update_id):
             'product_list': product_list,
         }
         return render(request, "update_forms/update_dis_mod_form.html", context)
+
+    context = {
+            'dispatch_item': dispatch_item,
+            'product_list': product_list,
+        }
+    return render(request, "update_forms/update_dis_mod_form.html", context)
        # item.save(update_fields=[''])
 
 
@@ -263,14 +305,14 @@ def dispatch_logs(request):
 def dispatch_analytics(request):
     return render(request,"analytics/dispatch_analytics.html",)
 
-def dispatch_employee_graph(request):
+def dispatch_employee_graph(request,user_id):
     from django.db.models import Sum
 
     user_id = request.user.pk
 
     # current month
     mon = datetime.now().month
-    this_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
         data_sum=Sum('total_dispatch_done_today'))
     this_lis_date = []
     this_lis_sum = []
@@ -281,7 +323,7 @@ def dispatch_employee_graph(request):
 
     # previous month sales
     mon = (datetime.now().month) - 1
-    previous_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
         data_sum=Sum('total_dispatch_done_today'))
     previous_lis_date = []
     previous_lis_sum = []
@@ -293,7 +335,7 @@ def dispatch_employee_graph(request):
     if request.method == 'POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values(
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values(
             'entry_date').annotate(data_sum=Sum('total_dispatch_done_today'))
         lis_date = []
         lis_sum = []
@@ -314,7 +356,7 @@ def dispatch_employee_graph(request):
         return render(request, "graphs/dispatch_employee_graph.html", context)
     else:
 
-        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values(
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values(
             'entry_date').annotate(data_sum=Sum('total_dispatch_done_today'))
         lis_date = []
         lis_sum = []

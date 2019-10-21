@@ -7,6 +7,8 @@ from customer_app.models import Customer_Details
 from ess_app.models import Employee_Analysis_month
 
 from user_app.models import SiteUser
+
+from purchase_app.views import check_admin_roles
 from .forms import add_Onsite_aftersales_service_form
 import datetime
 
@@ -19,18 +21,29 @@ from ess_app.models import Employee_Analysis_date
 
 def onsite_views(request):
 
-    if request.method=='POST' :
+    if request.method=='POST' and 'deleted' not in request.POST:
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
-            onsite_list = Onsite_aftersales_service.objects.filter(entry_timedate__range=[start_date, end_date])
+            if check_admin_roles(request):  # For ADMIN
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,
+                                                                       user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
+            else:  # For EMPLOYEE
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
+
+            # onsite_list = Onsite_aftersales_service.objects.filter(entry_timedate__range=[start_date, end_date])
             context = {
                 'onsite_list': onsite_list,
             }
             return render(request, "manager/onsite_reparing.html", context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
-            onsite_list = Onsite_aftersales_service.objects.filter(phone_no=contact)
+            if check_admin_roles(request):  # For ADMIN
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,
+                                                                       user_id__is_deleted=False,crm_no__contact_no=contact).order_by('-id')
+            else:  # For EMPLOYEE
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__contact_no=contact).order_by('-id')
+            # onsite_list = Onsite_aftersales_service.objects.filter(phone_no=contact)
             context = {
                 'onsite_list': onsite_list,
             }
@@ -38,14 +51,24 @@ def onsite_views(request):
 
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
-            onsite_list = Onsite_aftersales_service.objects.filter(customer_email_id=email)
+            if check_admin_roles(request):  # For ADMIN
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,
+                                                                       user_id__is_deleted=False,crm_no__customer_email_id=email).order_by('-id')
+            else:  # For EMPLOYEE
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__customer_email_id=email).order_by('-id')
+            # onsite_list = Onsite_aftersales_service.objects.filter(customer_email_id=email)
             context = {
                 'onsite_list': onsite_list,
             }
             return render(request, "manager/onsite_reparing.html", context)
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
-            onsite_list = Onsite_aftersales_service.objects.filter(customer_name=customer)
+            if check_admin_roles(request):  # For ADMIN
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,
+                                                                       user_id__is_deleted=False,crm_no__customer_name=customer).order_by('-id')
+            else:  # For EMPLOYEE
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__customer_name=customer).order_by('-id')
+            # onsite_list = Onsite_aftersales_service.objects.filter(customer_name=customer)
             context = {
                 'onsite_list': onsite_list,
             }
@@ -53,20 +76,47 @@ def onsite_views(request):
 
         elif  'submit5' in request.POST:
             company = request.POST.get('company')
-            onsite_list = Onsite_aftersales_service.objects.filter(company_name=company)
+            if check_admin_roles(request):  # For ADMIN
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,
+                                                                       user_id__is_deleted=False,crm_no__company_name=company).order_by('-id')
+            else:  # For EMPLOYEE
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__company_name=company).order_by('-id')
+            # onsite_list = Onsite_aftersales_service.objects.filter(company_name=company)
             context = {
                 'onsite_list': onsite_list,
             }
             return render(request, "manager/onsite_reparing.html", context)
         elif request.method=='POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
-            onsite_list = Onsite_aftersales_service.objects.filter(crn_number=crm)
+            if check_admin_roles(request):  # For ADMIN
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,
+                                                                       user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
+            else:  # For EMPLOYEE
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
+            # onsite_list = Onsite_aftersales_service.objects.filter(crn_number=crm)
             context = {
                 'onsite_list': onsite_list,
             }
             return render(request, "manager/onsite_reparing.html", context)
+    elif 'deleted' in request.POST:
+        if check_admin_roles(request):  # For ADMIN
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=True).order_by('-id')
+        else:  # For EMPLOYEE
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+        # onsite_list = Onsite_aftersales_service.objects.all()
+
+        context = {
+            'onsite_list': onsite_list,
+            'deleted': True,
+
+        }
+        return render(request, "manager/onsite_reparing.html", context)
     else:
-        onsite_list = Onsite_aftersales_service.objects.all()
+        if check_admin_roles(request):     #For ADMIN
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+        else:  #For EMPLOYEE
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+        # onsite_list = Onsite_aftersales_service.objects.all()
 
         context = {
             'onsite_list': onsite_list,
@@ -90,6 +140,8 @@ def add_onsite_aftersales_service(request):
         item.address = address
         item.contact_no = contact_no
         item.customer_email_id = customer_email_id
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item.save()
 
@@ -110,6 +162,7 @@ def add_onsite_aftersales_service(request):
         notes = request.POST.get('notes')
         feedback_given = request.POST.get('feedback_given')
 
+
         item2 = Onsite_aftersales_service()
 
         item2.crm_no_id = item.pk
@@ -129,6 +182,8 @@ def add_onsite_aftersales_service(request):
         item2.time_taken_destination_return_office_min = time_taken_destination_return_office_min
         item2.notes = notes
         item2.feedback_given = feedback_given
+        item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item2.save()
         send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
@@ -165,7 +220,10 @@ def add_onsite_product(request,id):
         item.components_replaced_in_warranty = components_replaced_in_warranty
         item.components_replaced = components_replaced
         item.cost = cost
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save()
+
 
 
 
@@ -313,7 +371,7 @@ def final_report_onsite(request):
     }
     return render(request,'report/final_onsite_report.html',context)
 
-def feedback_onrepairing(request):
+def feedback_onrepairing(request,user_id,customer_id,onsiterepairing_id):
     feedback_form = Onsite_Repairing_Feedback_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST':
         backend_team = request.POST.get('backend_team')
@@ -332,8 +390,22 @@ def feedback_onrepairing(request):
         item.overall_interaction = overall_interaction
         item.about_hsco = about_hsco
         item.any_suggestion = any_suggestion
+        item.user_id = SiteUser.objects.get(id=user_id)
+        item.customer_id = Customer_Details.objects.get(id=customer_id)
+        item.onsiterepairing_id = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
         item.save()
 
+
+        onsiterepairing = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
+        onsiterepairing.avg_feedback = (backend_team + onsite_worker + speed_of_performance + price_of_reparing + overall_interaction) / 5.0
+        onsiterepairing.feedback_given = 'YES'
+        onsiterepairing.save(update_fields=['avg_feedback', 'feedback_given'])
+        # mon = datetime.now().month
+
+        # ess_id = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon )
+        #
+        #
+        # ess_id.start_rating_feedback_onsite_reparing = onsiterepairing.avg_feedback
         return HttpResponse('Feedback Submitted!!!')
     context = {
         'feedback_form': feedback_form,
@@ -375,9 +447,9 @@ def load_onsite_reparing_manager(request,):
         }
 
         return render(request, 'AJAX/load_onsite_reparing_manager.html', context)
-def onsitevisit_app_graph(request):
+def onsitevisit_app_graph(request,user_id):
     from django.db.models import Sum
-
+    import datetime
     user_id = request.user.pk
     rep_feedback = Onsite_Feedback.objects.all()
 
@@ -389,7 +461,7 @@ def onsitevisit_app_graph(request):
     target_achieved = obj.sales_target_achived_till_now
     # current month
     mon = datetime.now().month
-    this_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
         data_sum=Sum('total_reparing_done_onsite_today'))
     this_lis_date = []
     this_lis_sum = []
@@ -400,7 +472,7 @@ def onsitevisit_app_graph(request):
 
     # previous month sales
     mon = (datetime.now().month) - 1
-    previous_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
         data_sum=Sum('total_reparing_done_onsite_today'))
     previous_lis_date = []
     previous_lis_sum = []
@@ -412,7 +484,7 @@ def onsitevisit_app_graph(request):
     if request.method == 'POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values(
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values(
             'entry_date').annotate(data_sum=Sum('total_reparing_done_onsite_today'))
         lis_date = []
         lis_sum = []
@@ -434,7 +506,7 @@ def onsitevisit_app_graph(request):
         return render(request, "graphs/onsitevisit_app_graph.html", context)
     else:
 
-        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values(
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values(
             'entry_date').annotate(data_sum=Sum('total_reparing_done_onsite_today'))
         lis_date = []
         lis_sum = []

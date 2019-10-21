@@ -316,7 +316,9 @@ $(function() {
 
 
 <div style="min-height: 26vw;">
-
+ {% if deleted %}
+                  <center> <p>list of deleted users</p></center>
+                    {% endif %}
         <div id="id_manager_view" class="row">
 
               <div class="col-xl-12 col-md-12 mb-12">
@@ -410,7 +412,10 @@ $(function() {
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <a href="#"> <button class="btn btn-primary">Deleted User</button></a> &nbsp;&nbsp;
+                                                <form method="POST" action="">{%csrf_token%}
+
+                        <a href="#"> <button name="deleted" class="btn btn-primary">Deleted User</button></a> &nbsp;&nbsp;
+                                                </form>
                     </div>
 
                   </div>
@@ -441,7 +446,7 @@ $(function() {
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-         <a href="/report_restamping/"> <button class="btn btn-primary">Analytics</button></a>&nbsp;
+         <a href="/restamping_analytics/"> <button class="btn btn-primary">Analytics</button></a>&nbsp;
                     </div>
 
                   </div>

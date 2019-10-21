@@ -41,7 +41,9 @@ def add_purchase_details(request):
         item.save()
 
         date_of_purchase = request.POST.get('date_of_purchase')
-        product_purchase_date = request.POST.get('product_purchase_date')
+        new_repeat_purchase = request.POST.get('new_repeat_purchase')
+        sales_person = request.POST.get('product_purchase_date')
+        product_purchase_date = request.POST.get('sales_person')
         bill_no = request.POST.get('bill_no')
         upload_op_file = request.POST.get('upload_op_file')
         po_number = request.POST.get('po_number')
@@ -56,8 +58,10 @@ def add_purchase_details(request):
         item2 = Purchase_Details()
 
         item2.crm_no = Customer_Details.objects.get(id=item.pk)
+        item2.new_repeat_purchase = new_repeat_purchase
         item2.date_of_purchase = date_of_purchase
         item2.product_purchase_date = product_purchase_date
+        item2.sales_person = sales_person
         item2.bill_no = bill_no
         item2.upload_op_file = upload_op_file
         item2.photo_lr_no = photo_lr_no
@@ -68,13 +72,16 @@ def add_purchase_details(request):
         item2.channel_of_dispatch = channel_of_dispatch
         item2.notes = notes
         item2.feedback_form_filled = feedback_form_filled
+        item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save()
 
         dispatch = Dispatch()
 
 
         dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
-
+        dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
+        dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
         dispatch.customer_email = customer_email_id
         dispatch.customer_name = customer_name
         dispatch.company_name = company_name
@@ -134,18 +141,28 @@ def view_customer_details(request):
 
 
 
-    if request.method == 'POST':
+    if request.method == 'POST' and 'deleted' not in request.POST:
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
-            cust_list = Customer_Details.objects.filter(entry_timedate__range=[start_date, end_date])
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                                                            user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
+            else:  # For EMPLOYEE
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
+            # cust_list = Customer_Details.objects.filter()
             context = {
                 'customer_list': cust_list,
             }
             return render(request, 'dashboardnew/cm.html', context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
-            cust_list = Customer_Details.objects.filter(contact_no=contact)
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                                                            user_id__is_deleted=False,crm_no__contact_no=contact).order_by('-id')
+            else:  # For EMPLOYEE
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__contact_no=contact).order_by('-id')
+            # cust_list = Customer_Details.objects.filter(contact_no=contact)
             context = {
                 'customer_list': cust_list,
             }
@@ -153,14 +170,24 @@ def view_customer_details(request):
 
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
-            cust_list = Customer_Details.objects.filter(customer_email_id=email)
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                                                            user_id__is_deleted=False,crm_no__customer_email_id=email).order_by('-id')
+            else:  # For EMPLOYEE
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__customer_email_id=email).order_by('-id')
+            # cust_list = Customer_Details.objects.filter(customer_email_id=email)
             context = {
                 'customer_list': cust_list,
             }
             return render(request, 'dashboardnew/cm.html', context)
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
-            cust_list = Customer_Details.objects.filter(customer_name=customer)
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                                                            user_id__is_deleted=False,crm_no__customer_name=customer).order_by('-id')
+            else:  # For EMPLOYEE
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__customer_name=customer).order_by('-id')
+            # cust_list = Customer_Details.objects.filter(customer_name=customer)
             context = {
                 'customer_list': cust_list,
             }
@@ -168,27 +195,50 @@ def view_customer_details(request):
 
         elif  'submit5' in request.POST:
             company = request.POST.get('company')
-            cust_list = Customer_Details.objects.filter(company_name=company)
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                                                            user_id__is_deleted=False,crm_no__company_name=company).order_by('-id')
+            else:  # For EMPLOYEE
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__company_name=company).order_by('-id')
+            # cust_list = Customer_Details.objects.filter(company_name=company)
             context = {
                 'customer_list': cust_list,
             }
             return render(request, 'dashboardnew/cm.html', context)
         elif request.method=='POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
-            cust_list = Customer_Details.objects.filter(crn_number=crm)
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                                                            user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
+            else:  # For EMPLOYEE
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
+            # cust_list = Customer_Details.objects.filter(crn_number=crm)
             context = {
                 'customer_list': cust_list,
             }
             return render(request, 'dashboardnew/cm.html', context)
+    elif 'deleted' in request.POST:
+        if check_admin_roles(request):  # For ADMIN
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=True).order_by('-id')
+        else:  # For EMPLOYEE
+            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
+
+        context = {
+            'customer_list': cust_list,
+            'message': message_list,
+            'deleted': True,
+        }
+        return render(request, 'dashboardnew/cm.html', context)
     else:
-        cust_list=Customer_Details.objects.all().order_by('-id')
-        cust_list=Purchase_Details.objects.all().order_by('-id')
+        if check_admin_roles(request):  # For ADMIN
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+        else:  # For EMPLOYEE
+            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 
         # with connection.cursor() as cursor:
-        #     cursor.execute(
-        #         "SELECT  dispatch_id_assigned_id,company_name from customer_app_customer_details  ;")
+        #     cursor.execute(000000000000000
+        #     p_customer_details  ;")
         #     row = cursor.fetchall()
-        #
         #     customer_list = [list(x) for x in row]
         #     print(customer_list)
         #     list2 = []
@@ -196,8 +246,7 @@ def view_customer_details(request):
         #     for item in customer_list:
         #         list2.append(item[0])
         #         list3.append(item[1])
-        #
-        #     final_list = zip(list2,list3)
+        #        #     final_list = zip(list2,list3)
 
         context = {
             'customer_list': cust_list,
@@ -208,8 +257,8 @@ def view_customer_details(request):
 
 def update_customer_details(request,id):
     purchase_id_id = Purchase_Details.objects.get(id=id)
-    customer_id = Purchase_Details.objects.get(id=id).crm_no
-    customer_id = Customer_Details.objects.get(id=customer_id)
+    # customer_id = Purchase_Details.objects.get(id=id).crm_no
+    customer_id = Customer_Details.objects.get(id=purchase_id_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
     if request.method=='POST':
         customer_name = request.POST.get('customer_name')
@@ -228,34 +277,10 @@ def update_customer_details(request,id):
 
         item.save(update_fields=['customer_name','company_name','address','contact_no','customer_email_id',])
 
-        product_name = request.POST.get('product_name')
-        quantity = request.POST.get('quantity')
-        type_of_scale = request.POST.get('type_of_scale')
-        model_of_purchase = request.POST.get('model_of_purchase')
-        sub_model = request.POST.get('sub_model')
-        sub_sub_model = request.POST.get('sub_sub_model')
-        serial_no_scale = request.POST.get('serial_no_scale')
-        brand = request.POST.get('brand')
-        capacity = request.POST.get('capacity')
-        unit = request.POST.get('unit')
-
-        item2=product_id
-
-        item2.product_name = product_name
-        item2.quantity = quantity
-        item2.type_of_scale = type_of_scale
-        item2.model_of_purchase = model_of_purchase
-        item2.sub_model = sub_model
-        item2.sub_sub_model = sub_sub_model
-        item2.serial_no_scale = serial_no_scale
-        item2.brand = brand
-        item2.capacity = capacity
-        item2.unit = unit
-        item2.save(update_fields=['purchase_id','product_name','quantity','type_of_scale','model_of_purchase','sub_model','sub_sub_model','serial_no_scale','brand','capacity','unit',])
-
         date_of_purchase = request.POST.get('date_of_purchase')
         product_purchase_date = request.POST.get('product_purchase_date')
         bill_no = request.POST.get('bill_no')
+        new_repeat_purchase = request.POST.get('new_repeat_purchase')
         upload_op_file = request.POST.get('upload_op_file')
         po_number = request.POST.get('po_number')
         photo_lr_no = request.POST.get('photo_lr_no')
@@ -266,28 +291,26 @@ def update_customer_details(request,id):
         notes = request.POST.get('notes')
         feedback_form_filled = request.POST.get('feedback_form_filled')
 
+        item2 = purchase_id_id
 
-        item3=purchase_id_id
-
-        item3.date_of_purchase = date_of_purchase
-        item3.crm_no= Customer_Details.objects.get(id=item.pk)
-        item3.product_purchase_date = product_purchase_date
-        item3.bill_no = bill_no
-        item3.upload_op_file = upload_op_file
-        item3.po_number = po_number
-        item3.photo_lr_no = photo_lr_no
-        item3.channel_of_sales = channel_of_sales
-        item3.industry = industry
-        item3.value_of_goods = value_of_goods
-        item3.channel_of_dispatch = channel_of_dispatch
-        item3.notes = notes
-        item3.feedback_form_filled = feedback_form_filled
-
-
-        item3.save(update_fields=['date_of_purchase', 'product_purchase_date', 'bill_no', 'upload_op_file', 'po_number',
-                                 'photo_lr_no', 'channel_of_sales', 'industry', 'value_of_goods', 'channel_of_dispatch',
-                                 'notes', 'feedback_form_filled',])
-
+        item2.crm_no = Customer_Details.objects.get(id=item.pk)
+        item2.date_of_purchase = date_of_purchase
+        item2.new_repeat_purchase = new_repeat_purchase
+        item2.product_purchase_date = product_purchase_date
+        item2.bill_no = bill_no
+        item2.upload_op_file = upload_op_file
+        item2.photo_lr_no = photo_lr_no
+        item2.po_number = po_number
+        item2.channel_of_sales = channel_of_sales
+        item2.industry = industry
+        item2.value_of_goods = value_of_goods
+        item2.channel_of_dispatch = channel_of_dispatch
+        item2.notes = notes
+        item2.feedback_form_filled = feedback_form_filled
+        item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item2.save(update_fields=['date_of_purchase','product_purchase_date','bill_no','upload_op_file','photo_lr_no','manager_id',
+                                  'po_number','channel_of_sales','industry','channel_of_dispatch','notes','feedback_form_filled','user_id'])
 
     context={
         'product_id':product_id,
@@ -332,11 +355,14 @@ def add_product_details(request,id):
         item.purchase_id_id = purchase_id
         item.sales_person = sales_person
         item.purchase_type = purchase_type
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save()
 
         dispatch_id=Dispatch.objects.get(id=dispatch_id_assigned)
         dispatch_pro = Product_Details_Dispatch()
-
+        dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+        dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
         dispatch_pro.product_name = product_name
         dispatch_pro.quantity = quantity
         dispatch_pro.type_of_scale = type_of_scale
@@ -354,7 +380,7 @@ def add_product_details(request,id):
 
 
 
-        return redirect('/update_customer_details/'+str(item.id))
+        return redirect('/update_customer_details/'+str(purchase_id))
 
 
     context = {
@@ -362,7 +388,6 @@ def add_product_details(request,id):
         'purchase_id': purchase_id,
     }
     return render(request,'dashboardnew/add_product.html',context)
-
 
 
 def report(request):
@@ -410,22 +435,21 @@ def manager_report(request):
     }
     return render(request, 'dashboardnew/manager_report.html',context)
 
-
 def feedbacka(request):
     return render(request, 'feedback/feedbacka.html')
 
 def purchase_analytics(request):
     return render(request, 'analytics/purchase_analytics.html')
 
-def customer_employee_sales_graph(request):
+def customer_employee_sales_graph(request,user_id):
     #x=Employee_Analysis_date.objects.annotate(date=TruncMonth('entry_timedate')).values('date').annotate(c=Count('id')).values('date', 'c')
     #print(x)
     from django.db.models import Sum
-    feeback = Feedback.objects.all()
+    feeback = Feedback.objects.filter(user_id=user_id)
     #this month sales
 
     mon = datetime.now().month
-    this_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
         data_sum=Sum('total_sales_done_today'))
     this_lis_date = []
     this_lis_sum = []
@@ -436,7 +460,7 @@ def customer_employee_sales_graph(request):
 
     #previous month sales
     mon = (datetime.now().month)-1
-    previous_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
         data_sum=Sum('total_sales_done_today'))
     previous_lis_date = []
     previous_lis_sum = []
@@ -448,7 +472,7 @@ def customer_employee_sales_graph(request):
     if request.method=='POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values(
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values(
             'entry_date').annotate(data_sum=Sum('total_sales_done_today'))
         lis_date = []
         lis_sum = []
@@ -469,7 +493,7 @@ def customer_employee_sales_graph(request):
         return render(request, "graphs/sales_graph.html", context)
     else:
 
-        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values('entry_date').annotate(data_sum=Sum('total_sales_done_today'))
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date').annotate(data_sum=Sum('total_sales_done_today'))
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -479,24 +503,6 @@ def customer_employee_sales_graph(request):
         print(lis_date)
         print(lis_sum)
 
-        # user_id=request.user.pk
-        # currentMonth = datetime.now().month
-        # currentYear = datetime.now().year
-        # list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
-        # list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-        # # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-        # print(list(list_sales_month))
-        # print(list(list_sales))
-        # final_list=[]
-        # final_list2=[]
-        # for item in list_sales:
-        #     final_list.append(item[0])
-        #
-        # for item in list_sales_month:
-        #     final_list2.append(item[0])
-        #
-        # print(final_list)
-        # print(final_list2)
         context={
             'final_list':lis_date,
             'final_list2':lis_sum,
@@ -507,7 +513,6 @@ def customer_employee_sales_graph(request):
             'feeback': feeback,
         }
         return render(request,"graphs/sales_graph.html",context)
-
 
 def feedback_purchase(request,user_id,customer_id,purchase_id):
     feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
@@ -543,10 +548,67 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
     }
     return render(request,"feedback/feedback_customer.html",context)
 
-
 def edit_product_customer(request,id):
+    purchase = Product_Details.objects.get(id=id).purchase_id
+    purchase_id = purchase.id
+    dispatch_id_assigned = str(purchase.dispatch_id_assigned)
     product_id = Product_Details.objects.get(id=id)
-    print(product_id)
+    if request.method == 'POST':
+        product_name = request.POST.get('product_name')
+        quantity = request.POST.get('quantity')
+        model_of_purchase = request.POST.get('model_of_purchase')
+        type_of_scale = request.POST.get('type_of_scale')
+        sub_model = request.POST.get('sub_model')
+        sub_sub_model = request.POST.get('sub_sub_model')
+        serial_no_scale = request.POST.get('serial_no_scale')
+        brand = request.POST.get('brand')
+        capacity = request.POST.get('capacity')
+        unit = request.POST.get('unit')
+        sales_person = request.POST.get('sales_person')
+        purchase_type = request.POST.get('purchase_type')
+
+        item = product_id
+
+        item.product_name = product_name
+        item.quantity = quantity
+        item.type_of_scale = type_of_scale
+        item.model_of_purchase = model_of_purchase
+        item.sub_model = sub_model
+        item.sub_sub_model = sub_sub_model
+        item.serial_no_scale = serial_no_scale
+        item.brand = brand
+        item.capacity = capacity
+        item.unit = unit
+        item.purchase_id_id = purchase_id
+        item.sales_person = sales_person
+        item.purchase_type = purchase_type
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item.save(update_fields=['product_name', 'quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
+                                 'serial_no_scale', 'brand', 'capacity', 'unit', 'purchase_id_id',
+                                 'user_id', 'manager_id'])
+
+        dispatch_id = Dispatch.objects.get(id=dispatch_id_assigned)
+        dispatch_pro = Product_Details_Dispatch()
+        dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+        dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        dispatch_pro.product_name = product_name
+        dispatch_pro.quantity = quantity
+        dispatch_pro.type_of_scale = type_of_scale
+        dispatch_pro.model_of_purchase = model_of_purchase
+        dispatch_pro.sub_model = sub_model
+        dispatch_pro.sub_sub_model = sub_sub_model
+        dispatch_pro.serial_no_scale = serial_no_scale
+        dispatch_pro.brand = brand
+        dispatch_pro.capacity = capacity
+        dispatch_pro.unit = unit
+        dispatch_pro.dispatch_id = dispatch_id
+        dispatch_pro.sales_person = sales_person
+        dispatch_pro.purchase_type = purchase_type
+        dispatch_pro.save()
+
+        return redirect('/update_customer_details/' + str(purchase_id))
+
     context = {
         'product_id': product_id,
     }
@@ -567,7 +629,10 @@ def load_users(request):
 
         return render(request, 'AJAX/load_users.html', context)
     else:
-        cust_list=Purchase_Details.objects.all().order_by('-id')
+        if check_admin_roles(request):     #For ADMIN
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+        else:  #For EMPLOYEE
+            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 
         context = {
             'customer_list': cust_list,
@@ -575,6 +640,13 @@ def load_users(request):
         }
 
         return render(request, 'AJAX/load_users.html', context)
+
+def check_admin_roles(request):
+    if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
+        return True
+    else:
+        return False
+
 
 
 

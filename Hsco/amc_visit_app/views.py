@@ -2,6 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from customer_app.models import Customer_Details
+
+from purchase_app.views import check_admin_roles
+from user_app.models import SiteUser
 from .forms import AMC_Feedback_Form
 from .models import Amc_After_Sales, AMC_Feedback
 from django.db import connection
@@ -25,6 +28,8 @@ def add_amc_after_sales(request):
         item.address = address
         item.contact_no = contact_no
         item.customer_email_id = customer_email_id
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item.save()
 
@@ -72,7 +77,8 @@ def add_amc_after_sales(request):
         item2.repot_3 = repot_3
         item2.visit_4 = visit_4
         item2.repot_4 = repot_4
-
+        item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save()
         send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
 
@@ -83,12 +89,11 @@ def add_amc_after_sales(request):
         payload = ""
         headers = {'content-type': 'application/x-www-form-urlencoded'}
 
+
         #response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
         #x = response.text
 
         return redirect('/amc_views')
-
-
     context = {
 
     }
@@ -146,14 +151,24 @@ def amc_views(request):
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
-            amc_list = Amc_After_Sales.objects.filter(entry_timedate__range=[start_date, end_date])
+            if check_admin_roles(request):  # For ADMIN
+                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,
+                                                          user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
+            else:  # For EMPLOYEE
+                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
+            # amc_list = Amc_After_Sales.objects.filter()
             context = {
                 'amc_list': amc_list,
             }
             return render(request, "manager/amc_view.html", context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
-            amc_list = Amc_After_Sales.objects.filter(customer_no=contact)
+            if check_admin_roles(request):  # For ADMIN
+                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,
+                                                          user_id__is_deleted=False,crm_no__contact_no=contact).order_by('-id')
+            else:  # For EMPLOYEE
+                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,crm_no__contact_no=contact).order_by('-id')
+            # amc_list = Amc_After_Sales.objects.filter(customer_no=contact)
             context = {
                 'amc_list': amc_list,
             }
@@ -161,35 +176,75 @@ def amc_views(request):
 
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
-            dispatch_list = Amc_After_Sales.objects.filter(customer_email_id=email)
+            if check_admin_roles(request):  # For ADMIN
+                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,
+                                                          user_id__is_deleted=False,crm_no__customer_email_id=email).order_by('-id')
+            else:  # For EMPLOYEE
+                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,crm_no__customer_email_id=email).order_by('-id')
+            # dispatch_list = Amc_After_Sales.objects.filter(customer_email_id=email)
             context = {
-                'dispatch_list': dispatch_list,
+                'amc_list': amc_list,
             }
             return render(request, "manager/amc_view.html",context )
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
-            dispatch_list = Amc_After_Sales.objects.filter(customer_name=customer)
+            if check_admin_roles(request):  # For ADMIN
+                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,
+                                                          user_id__is_deleted=False,crm_no__customer_name=customer).order_by('-id')
+            else:  # For EMPLOYEE
+                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,crm_no__customer_name=customer).order_by('-id')
+
+            # dispatch_list = Amc_After_Sales.objects.filter(customer_name=customer)
             context = {
-                'dispatch_list': dispatch_list,
+                'amc_list': amc_list,
             }
             return render(request, "manager/amc_view.html",context )
 
         elif  'submit5' in request.POST:
             company = request.POST.get('company')
-            dispatch_list = Amc_After_Sales.objects.filter(company_name=company)
+            if check_admin_roles(request):  # For ADMIN
+                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,
+                                                          user_id__is_deleted=False,
+                                                          crm_no__company_name=company).order_by('-id')
+            else:  # For EMPLOYEE
+                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,crm_no__company_name=company).order_by('-id')
+
+            # dispatch_list = Amc_After_Sales.objects.filter(customer_name=customer)
             context = {
-                'dispatch_list': dispatch_list,
+                'amc_list': amc_list,
             }
-            return render(request, "manager/amc_view.html",context )
+            return render(request, "manager/amc_view.html", context)
+
+
+            # dispatch_list = Amc_After_Sales.objects.filter(company_name=company)
+            # context = {
+            #     'amc_list': amc_list,
+            # }
+            # return render(request, "manager/amc_view.html",context )
         elif request.method=='POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
-            dispatch_list = Amc_After_Sales.objects.filter(crn_number=crm)
+            if check_admin_roles(request):  # For ADMIN
+                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,
+                                                          user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
+            else:  # For EMPLOYEE
+                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
+            # amc_list = Amc_After_Sales.objects.all()
+
+            # context = {
+            #     'amc_list': amc_list,
+            # }
+            #
+            # dispatch_list = Amc_After_Sales.objects.filter(crn_number=crm)
             context = {
-                'dispatch_list': dispatch_list,
+                'amc_list': amc_list,
             }
             return render(request, "manager/amc_view.html",context )
     else:
-        amc_list = Amc_After_Sales.objects.all()
+        if check_admin_roles(request):     #For ADMIN
+            amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+        else:  #For EMPLOYEE
+            amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk).order_by('-id')
+        # amc_list = Amc_After_Sales.objects.all()
 
         context = {
             'amc_list': amc_list,
@@ -259,7 +314,7 @@ def update_amc_form(request,update_id):
     return render(request,"update_forms/updated_amc_form.html",context)
 
 
-def feedback_amc(request):
+def feedback_amc(request,user_id,customer_id,amc_id):
     feedback_form = AMC_Feedback_Form(request.POST or None)
     if request.method == 'POST':
         satisfied_with_work = request.POST.get('satisfied_with_work')
@@ -276,8 +331,15 @@ def feedback_amc(request):
         item.overall_interaction = overall_interaction
         item.about_hsco = about_hsco
         item.any_suggestion = any_suggestion
+        item.user_id = SiteUser.objects.get(id=user_id)
+        item.customer_id = Customer_Details.objects.get(id=customer_id)
+        item.amc_id = Amc_After_Sales.objects.get(id=amc_id)
         item.save()
 
+        amc = Amc_After_Sales.objects.get(id=amc_id)
+        amc.avg_feedback = ( satisfied_with_work + speed_of_performance + price_of_amc + overall_interaction) / 4.0
+        amc.feedback_given = 'YES'
+        amc.save(update_fields=['avg_feedback', 'feedback_given'])
         return HttpResponse('Feedback Submitted!!!')
     context = {
         'feedback_form': feedback_form,

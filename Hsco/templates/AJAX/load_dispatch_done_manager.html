@@ -21,7 +21,7 @@
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_dispatch_details/{{list.id}}" >{{ list.user_id }}</a> </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/dispatch_employee_graph/{{list.user_id}}" >{{ list.user_id }}</a> </center></div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.total_dispatch_done }} </center></div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.avg_time_dispatch_form_to_done }} </center></div>
 
@@ -33,14 +33,6 @@
               </div>
                   {% endfor %}
             </div>
-
-
-
-
-
-
-
-
 
 
 {% else %}
