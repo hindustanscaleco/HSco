@@ -141,14 +141,24 @@ def view_customer_details(request):
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
-            cust_list = Customer_Details.objects.filter(entry_timedate__range=[start_date, end_date])
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                                                            user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
+            else:  # For EMPLOYEE
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
+            # cust_list = Customer_Details.objects.filter()
             context = {
                 'customer_list': cust_list,
             }
             return render(request, 'dashboardnew/cm.html', context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
-            cust_list = Customer_Details.objects.filter(contact_no=contact)
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                                                            user_id__is_deleted=False,crm_no__contact_no=contact).order_by('-id')
+            else:  # For EMPLOYEE
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__contact_no=contact).order_by('-id')
+            # cust_list = Customer_Details.objects.filter(contact_no=contact)
             context = {
                 'customer_list': cust_list,
             }
@@ -156,14 +166,24 @@ def view_customer_details(request):
 
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
-            cust_list = Customer_Details.objects.filter(customer_email_id=email)
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                                                            user_id__is_deleted=False,crm_no__customer_email_id=email).order_by('-id')
+            else:  # For EMPLOYEE
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__customer_email_id=email).order_by('-id')
+            # cust_list = Customer_Details.objects.filter(customer_email_id=email)
             context = {
                 'customer_list': cust_list,
             }
             return render(request, 'dashboardnew/cm.html', context)
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
-            cust_list = Customer_Details.objects.filter(customer_name=customer)
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                                                            user_id__is_deleted=False,crm_no__customer_name=customer).order_by('-id')
+            else:  # For EMPLOYEE
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__customer_name=customer).order_by('-id')
+            # cust_list = Customer_Details.objects.filter(customer_name=customer)
             context = {
                 'customer_list': cust_list,
             }
@@ -171,14 +191,24 @@ def view_customer_details(request):
 
         elif  'submit5' in request.POST:
             company = request.POST.get('company')
-            cust_list = Customer_Details.objects.filter(company_name=company)
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                                                            user_id__is_deleted=False,crm_no__company_name=company).order_by('-id')
+            else:  # For EMPLOYEE
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__company_name=company).order_by('-id')
+            # cust_list = Customer_Details.objects.filter(company_name=company)
             context = {
                 'customer_list': cust_list,
             }
             return render(request, 'dashboardnew/cm.html', context)
         elif request.method=='POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
-            cust_list = Customer_Details.objects.filter(crn_number=crm)
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                                                            user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
+            else:  # For EMPLOYEE
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
+            # cust_list = Customer_Details.objects.filter(crn_number=crm)
             context = {
                 'customer_list': cust_list,
             }
@@ -439,11 +469,11 @@ def customer_employee_sales_graph(request,user_id):
     #x=Employee_Analysis_date.objects.annotate(date=TruncMonth('entry_timedate')).values('date').annotate(c=Count('id')).values('date', 'c')
     #print(x)
     from django.db.models import Sum
-    feeback = Feedback.objects.all()
+    feeback = Feedback.objects.filter(user_id=user_id)
     #this month sales
 
     mon = datetime.now().month
-    this_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
         data_sum=Sum('total_sales_done_today'))
     this_lis_date = []
     this_lis_sum = []
@@ -454,7 +484,7 @@ def customer_employee_sales_graph(request,user_id):
 
     #previous month sales
     mon = (datetime.now().month)-1
-    previous_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
         data_sum=Sum('total_sales_done_today'))
     previous_lis_date = []
     previous_lis_sum = []
@@ -466,7 +496,7 @@ def customer_employee_sales_graph(request,user_id):
     if request.method=='POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values(
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values(
             'entry_date').annotate(data_sum=Sum('total_sales_done_today'))
         lis_date = []
         lis_sum = []
@@ -487,7 +517,7 @@ def customer_employee_sales_graph(request,user_id):
         return render(request, "graphs/sales_graph.html", context)
     else:
 
-        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values('entry_date').annotate(data_sum=Sum('total_sales_done_today'))
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date').annotate(data_sum=Sum('total_sales_done_today'))
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -497,24 +527,6 @@ def customer_employee_sales_graph(request,user_id):
         print(lis_date)
         print(lis_sum)
 
-        # user_id=request.user.pk
-        # currentMonth = datetime.now().month
-        # currentYear = datetime.now().year
-        # list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
-        # list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-        # # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-        # print(list(list_sales_month))
-        # print(list(list_sales))
-        # final_list=[]
-        # final_list2=[]
-        # for item in list_sales:
-        #     final_list.append(item[0])
-        #
-        # for item in list_sales_month:
-        #     final_list2.append(item[0])
-        #
-        # print(final_list)
-        # print(final_list2)
         context={
             'final_list':lis_date,
             'final_list2':lis_sum,
