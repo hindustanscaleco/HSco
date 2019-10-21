@@ -7,6 +7,8 @@ from customer_app.models import Customer_Details
 from ess_app.models import Employee_Analysis_month
 
 from user_app.models import SiteUser
+
+from purchase_app.views import check_admin_roles
 from .forms import add_Onsite_aftersales_service_form
 import datetime
 
@@ -66,7 +68,11 @@ def onsite_views(request):
             }
             return render(request, "manager/onsite_reparing.html", context)
     else:
-        onsite_list = Onsite_aftersales_service.objects.all()
+        if check_admin_roles(request):     #For ADMIN
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+        else:  #For EMPLOYEE
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+        # onsite_list = Onsite_aftersales_service.objects.all()
 
         context = {
             'onsite_list': onsite_list,
@@ -345,7 +351,7 @@ def feedback_onrepairing(request,user_id,customer_id,onsiterepairing_id):
         onsiterepairing.avg_feedback = (backend_team + onsite_worker + speed_of_performance + price_of_reparing + overall_interaction) / 5.0
         onsiterepairing.feedback_given = 'YES'
         onsiterepairing.save(update_fields=['avg_feedback', 'feedback_given'])
-        mon = datetime.now().month
+        # mon = datetime.now().month
 
         # ess_id = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon )
         #
@@ -392,9 +398,9 @@ def load_onsite_reparing_manager(request,):
         }
 
         return render(request, 'AJAX/load_onsite_reparing_manager.html', context)
-def onsitevisit_app_graph(request):
+def onsitevisit_app_graph(request,user_id):
     from django.db.models import Sum
-
+    import datetime
     user_id = request.user.pk
     rep_feedback = Onsite_Feedback.objects.all()
 

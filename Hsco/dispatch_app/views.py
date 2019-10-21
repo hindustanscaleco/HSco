@@ -6,6 +6,8 @@ from django.db import connection
 from user_app.models import SiteUser
 
 from customer_app.models import Customer_Details
+
+from purchase_app.views import check_admin_roles
 from .models import Dispatch, Product_Details_Dispatch
 from django.core.mail import send_mail
 from Hsco import settings
@@ -175,7 +177,11 @@ def dispatch_view(request):
             }
             return render(request, "manager/dispatch_view.html", context)
     else:
-        dispatch_list = Dispatch.objects.all()
+        if check_admin_roles(request):     #For ADMIN
+            dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+        else:  #For EMPLOYEE
+            dispatch_list = Dispatch.objects.filter(user_id=request.user.pk).order_by('-id')
+        # dispatch_list = Dispatch.objects.all()
 
         context = {
             'dispatch_list': dispatch_list,
@@ -269,7 +275,7 @@ def dispatch_logs(request):
 def dispatch_analytics(request):
     return render(request,"analytics/dispatch_analytics.html",)
 
-def dispatch_employee_graph(request):
+def dispatch_employee_graph(request,user_id):
     from django.db.models import Sum
 
     user_id = request.user.pk

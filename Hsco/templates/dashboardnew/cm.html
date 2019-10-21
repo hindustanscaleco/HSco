@@ -366,6 +366,10 @@ $(function() {
             </div>
 
 <div style="min-height: 26vw;">
+
+    {% if deleted %}
+                  <center> <p>list of deleted users</p></center>
+                    {% endif %}
         <div class="row" id="id_manager_view">
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
@@ -402,10 +406,14 @@ a:hover {
 
 <br>
 <br>
+
             {% for list1 in customer_list %}
                 <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow" >
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; min-height: 55px;">
+
+
+
                     <div class="col-xl-12 col-md-11 mb-1" style="font-size:10px;">Dispatch Id: {{ list1.dispatch_id_assigned}} </div>
 
                     <div class="col-xl-2 col-md-1 mb-1"> <a href="/update_customer_details/{{list1.pk}}" style="color: black; font-size: 12px;" >{{ list1.crm_no.customer_name }}</a> </div>
@@ -461,12 +469,18 @@ a:hover {
                 </div>
               </div>
             </div>
+
+
+
+
         <div class="col-xl-3 col-md-3 mb-12">
               <div class="card border-left-primarya shadow border-right-primarya">
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col ">
- <a href="/add_customer_details/"><button class="btn btn-primary">Delete User</button></a>
+                        <form method="POST" action="">{%csrf_token%}
+ <a href="#"><button name="deleted" type="submit" class="btn btn-primary">Delete User</button></a>
+                              </form>
                     </div>
 
                   </div>
@@ -496,7 +510,7 @@ a:hover {
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <a href="/analytics/"><button class="btn btn-primary">Analytics</button></a>
+                        <a href="/purchase_analytics/"><button class="btn btn-primary">Analytics</button></a>
 
                     </div>
 
