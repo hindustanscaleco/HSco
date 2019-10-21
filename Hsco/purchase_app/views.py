@@ -134,7 +134,7 @@ def view_customer_details(request):
 
 
 
-    if request.method == 'POST':
+    if request.method == 'POST' and 'deleted' not in request.POST:
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
@@ -180,15 +180,28 @@ def view_customer_details(request):
                 'customer_list': cust_list,
             }
             return render(request, 'dashboardnew/cm.html', context)
+    elif 'deleted' in request.POST:
+        if check_admin_roles(request):  # For ADMIN
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=True).order_by('-id')
+        else:  # For EMPLOYEE
+            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
+
+        context = {
+            'customer_list': cust_list,
+            'message': message_list,
+            'deleted': True,
+        }
+        return render(request, 'dashboardnew/cm.html', context)
     else:
-        cust_list=Customer_Details.objects.all().order_by('-id')
-        cust_list=Purchase_Details.objects.all().order_by('-id')
+        if check_admin_roles(request):  # For ADMIN
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+        else:  # For EMPLOYEE
+            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 
         # with connection.cursor() as cursor:
-        #     cursor.execute(
-        #         "SELECT  dispatch_id_assigned_id,company_name from customer_app_customer_details  ;")
+        #     cursor.execute(000000000000000
+        #     p_customer_details  ;")
         #     row = cursor.fetchall()
-        #
         #     customer_list = [list(x) for x in row]
         #     print(customer_list)
         #     list2 = []
@@ -196,8 +209,7 @@ def view_customer_details(request):
         #     for item in customer_list:
         #         list2.append(item[0])
         #         list3.append(item[1])
-        #
-        #     final_list = zip(list2,list3)
+        #        #     final_list = zip(list2,list3)
 
         context = {
             'customer_list': cust_list,
@@ -417,7 +429,7 @@ def feedbacka(request):
 def purchase_analytics(request):
     return render(request, 'analytics/purchase_analytics.html')
 
-def customer_employee_sales_graph(request):
+def customer_employee_sales_graph(request,user_id):
     #x=Employee_Analysis_date.objects.annotate(date=TruncMonth('entry_timedate')).values('date').annotate(c=Count('id')).values('date', 'c')
     #print(x)
     from django.db.models import Sum
@@ -567,7 +579,10 @@ def load_users(request):
 
         return render(request, 'AJAX/load_users.html', context)
     else:
-        cust_list=Purchase_Details.objects.all().order_by('-id')
+        if check_admin_roles(request):     #For ADMIN
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+        else:  #For EMPLOYEE
+            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 
         context = {
             'customer_list': cust_list,
@@ -575,6 +590,15 @@ def load_users(request):
         }
 
         return render(request, 'AJAX/load_users.html', context)
+
+
+
+def check_admin_roles(request):
+    if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
+        return True
+    else:
+        return False
+
 
 
 

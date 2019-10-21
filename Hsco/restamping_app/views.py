@@ -8,13 +8,15 @@ from Hsco import settings
 from customer_app.models import Customer_Details
 
 from ess_app.models import Employee_Analysis_date
+
+from purchase_app.views import check_admin_roles
 from .models import Restamping_after_sales_service, Restamping_Product
 import requests
 import json
 from ess_app.models import Employee_Analysis_month
 
 def restamping_manager(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and 'deleted' not in request.POST:
         if 'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
@@ -60,8 +62,24 @@ def restamping_manager(request):
                 'restamp_list': restamp_list,
             }
             return render(request, "manager/restamping_manager.html", context)
+    elif 'deleted' in request.POST:
+        if check_admin_roles(request):  # For ADMIN
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.group, user_id__is_deleted=True).order_by('-id')
+        else:  # For EMPLOYEE
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+        # restamp_list = Restamping_after_sales_service.objects.all()
+
+        context = {
+            'restamp_list': restamp_list,
+            'deleted': True,
+        }
+        return render(request, "manager/restamping_manager.html", context)
     else:
-        restamp_list = Restamping_after_sales_service.objects.all()
+        if check_admin_roles(request):     #For ADMIN
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+        else:  #For EMPLOYEE
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+        # restamp_list = Restamping_after_sales_service.objects.all()
 
         context = {
             'restamp_list': restamp_list,
@@ -263,7 +281,7 @@ def final_report_restamping(request):
     }
     return render(request,"report/final_report_restamp_mod_form.html",context)
 
-def restamping_employee_graph(request):
+def restamping_employee_graph(request,user_id):
     from django.db.models import Sum
 
     user_id=request.user.pk

@@ -6,6 +6,7 @@ from user_app.models import SiteUser
 
 from customer_app.models import Customer_Details
 
+from purchase_app.views import check_admin_roles
 from .forms import Repairing_Feedback_Form
 from .models import Repairing_after_sales_service, Repairing_Product, Repairing_Feedback
 from django.core.mail import send_mail
@@ -275,7 +276,11 @@ def repairing_module_home(request):
             }
             return render(request, 'dashboardnew/repairing_module_home.html', context)
     else:
-        repair_list = Repairing_after_sales_service.objects.all()
+        if check_admin_roles(request):     #For ADMIN
+            repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+        else:  #For EMPLOYEE
+            repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+        # repair_list = Repairing_after_sales_service.objects.all()
 
 
         context = {
@@ -417,7 +422,7 @@ def edit_product(request,id):
 
 
 
-def repairing_employee_graph(request):
+def repairing_employee_graph(request,user_id):
     user_id=request.user.pk
     currentMonth = datetime.now().month
     currentYear = datetime.now().year
