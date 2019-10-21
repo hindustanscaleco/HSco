@@ -50,10 +50,48 @@ color:;
   }
 
 </style>
+<script>
+$(document).ready(function(){
+
+    $(".editableBox").change(function(){
+        $(".timeTextBox").val($(".editableBox option:selected").html());
+    });
+});
+
+$(document).ready(function(){
+
+    $(".editableBoxa").change(function(){
+        $(".timeTextBoxa").val($(".editableBoxa option:selected").html());
+    });
+});
+
+
+$(document).ready(function(){
+
+    $(".editableBoxz").change(function(){
+        $(".timeTextBoxz").val($(".editableBoxz option:selected").html());
+    });
+});
+</script>
+  <script> function disable() {
+  document.getElementById("name"). disabled = true;
+  }
+
+  function enable() {
+   document.getElementById("name"). disabled = false;
+  }
+
+var form = document.getElementById("contact_form");
+var elements = form.elements;
+for (var i = 0, len = elements.length; i < len; ++i) {
+    elements[i]. disabled = true;
+}
+</script>
+
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-	{% include 'base_templates/sidebar.html' %}
+  {% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -66,11 +104,42 @@ color:;
 
 
         <!-- Topbar -->
-	{% include 'base_templates/navbar_for_dashboard.html' %}
+  {% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
+<div class="row" style="padding:20px;">
+               <label class="col-md-6 control-label">AMC Module</label>
 
+          </div>
 <br>
+
+<script>
+function myFunction() {
+  document.getElementById("myText"). disabled = false;
+    document.getElementById("myText2"). disabled = false;
+    document.getElementById("myText3"). disabled = false;
+    document.getElementById("myText3"). disabled = false;
+    document.getElementById("myText4"). disabled = false;
+    document.getElementById("myText5"). disabled = false;
+    document.getElementById("myText6"). disabled = false;
+    document.getElementById("myText7"). disabled = false;
+    document.getElementById("myText8"). disabled = false;
+    document.getElementById("myText9"). disabled = false;
+    document.getElementById("myText10"). disabled = false;
+    document.getElementById("myText11"). disabled = false;
+    document.getElementById("myText12"). disabled = false;
+    document.getElementById("myText13"). disabled = false;
+    document.getElementById("myText14"). disabled = false;
+    document.getElementById("myText15"). disabled = false;
+    document.getElementById("myText16"). disabled = false;
+    document.getElementById("myText17"). disabled = false;
+    document.getElementById("myText18"). disabled = false;
+    document.getElementById("myText19"). disabled = false;
+    document.getElementById("myText20"). disabled = false;
+    document.getElementById("myText21"). disabled = false;
+
+}
+</script>
 
 
     <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
@@ -88,7 +157,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-font faicons"></i></span>
-  <input  name="amcno" placeholder="AMC Number" disabled value="{{amc_list.amcno}}" class="form-control"  type="text">
+  <input  name="amcno" placeholder="AMC Number" id="myText" disabled value="{{amc_list.amcno}}" class="form-control"  type="text">
     </div>
   </div>
 
@@ -101,7 +170,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_name" placeholder="Customer Name" class="form-control" type="text" disabled value="{{amc_list.customer_name}}">
+  <input  name="customer_name" placeholder="Customer Name" class="form-control" type="text" id="myText2" disabled value="{{amc_list.customer_name}}">
     </div>
   </div>
 
@@ -123,7 +192,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled value="{{amc_list.company_name}}">
+  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" id="myText3" disabled value="{{amc_list.company_name}}">
     </div>
   </div>
 
@@ -138,7 +207,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_no" placeholder="Customer Number" class="form-control"  type="text" disabled value="{{amc_list.customer_no}}">
+  <input  name="customer_no" placeholder="Customer Number" class="form-control"  type="text" id="myText4" disabled value="{{amc_list.customer_no}}">
     </div>
   </div>
 
@@ -155,7 +224,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  type="email" disabled value="{{amc_list.customer_email_id}}">
+  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  type="email" id="myText5" disabled value="{{amc_list.customer_email_id}}">
     </div>
   </div>
 
@@ -170,7 +239,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="type_of_scale" placeholder="Type of Scale" class="form-control"  type="text" disabled value="{{amc_list.type_of_scale}}">
+  <input  name="type_of_scale" placeholder="Type of Scale" class="form-control"  type="text" id="myText6" disabled value="{{amc_list.type_of_scale}}">
     </div>
   </div>
 
@@ -190,7 +259,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="serial_no_scale" placeholder="Scale Serial Number" class="form-control"  type="text" disabled value="{{amc_list.serial_no_scale}}">
+  <input  name="serial_no_scale" placeholder="Scale Serial Number" class="form-control"  type="text" id="myText7" disabled value="{{amc_list.serial_no_scale}}">
     </div>
   </div>
 
@@ -205,7 +274,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="contract_valid_in_years" placeholder="Contract Validity in Years" class="form-control"  type="text" disabled value="{{amc_list.contract_valid_in_years}}">
+  <input  name="contract_valid_in_years" placeholder="Contract Validity in Years" class="form-control"  type="text" id="myText8" disabled value="{{amc_list.contract_valid_in_years}}">
     </div>
   </div>
 
@@ -227,7 +296,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="contract_amount" placeholder="Contract Amount" class="form-control"  type="text" disabled value="{{amc_list.contract_amount}}">
+  <input  name="contract_amount" placeholder="Contract Amount" class="form-control"  type="text" id="myText9" disabled value="{{amc_list.contract_amount}}">
 
 
      </div>
@@ -245,7 +314,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contract_no_reporting_breakdown" placeholder="Contact Number for reporting Breakdown" class="form-control"  type="text" disabled value="{{amc_list.contract_no_reporting_breakdown}}">
+  <input  name="contract_no_reporting_breakdown" placeholder="Contact Number for reporting Breakdown" class="form-control"  type="text" id="myText10" disabled value="{{amc_list.contract_no_reporting_breakdown}}">
     </div>
   </div>
 
@@ -266,7 +335,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input name="contract_start_date" placeholder="Contract Start Date" class="form-control"  type="date" disabled value="{{amc_list.contract_start_date|date:'Y-m-d'}}">
+  <input name="contract_start_date" placeholder="Contract Start Date" class="form-control"  type="date" id="myText11" disabled value="{{amc_list.contract_start_date|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -282,7 +351,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input name="contract_end_date" placeholder="Contract End Date" class="form-control"  type="date" disabled value="{{amc_list.contract_end_date|date:'Y-m-d'}}">
+  <input name="contract_end_date" placeholder="Contract End Date" class="form-control"  type="date" id="myText12" disabled value="{{amc_list.contract_end_date|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -303,7 +372,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input type="text" name="visit_1" placeholder="Visit 1" class="form-control" disabled value="{{amc_list.visit_1|date:'Y-m-d'}}">
+  <input type="text" name="visit_1" placeholder="Visit 1" class="form-control" id="myText13" disabled value="{{amc_list.visit_1|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -319,7 +388,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_1" placeholder="Report 1" class="form-control"  type="text" disabled value="{{amc_list.repot_1}}">
+  <input  name="repot_1" placeholder="Report 1" class="form-control"  type="text" id="myText14" disabled value="{{amc_list.repot_1}}">
     </div>
   </div>
 
@@ -334,7 +403,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input type="date" name="visit_2" placeholder="Visit 2" class="form-control"  type="text" disabled value="{{amc_list.visit_2|date:'Y-m-d'}}">
+  <input type="date" name="visit_2" placeholder="Visit 2" class="form-control"  type="text" id="myText15" disabled value="{{amc_list.visit_2|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -350,7 +419,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_2" placeholder="Report 2" class="form-control"  type="text" disabled value="{{amc_list.repot_2}}">
+  <input  name="repot_2" placeholder="Report 2" class="form-control"  type="text16" id="myText16" disabled value="{{amc_list.repot_2}}">
     </div>
   </div>
 
@@ -367,7 +436,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input type="date" name="visit_3" placeholder="Visit 3" class="form-control"  type="text" disabled value="{{amc_list.visit_3|date:'Y-m-d'}}">
+  <input type="date" name="visit_3" placeholder="Visit 3" class="form-control"  type="text17" id="myText17" disabled value="{{amc_list.visit_3|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -379,7 +448,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_3" placeholder="Report 3" class="form-control"  type="text" disabled value="{{amc_list.repot_3}}">
+  <input  name="repot_3" placeholder="Report 3" class="form-control"  type="text" id="myText18" disabled value="{{amc_list.repot_3}}">
     </div>
   </div>
 
@@ -398,7 +467,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input type="date" name="visit_4" placeholder="Visit 4" class="form-control"  type="text" disabled value="{{amc_list.visit_4|date:'Y-m-d'}}">
+  <input type="date" name="visit_4" placeholder="Visit 4" class="form-control"  type="text" id="myText19" disabled value="{{amc_list.visit_4|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -411,22 +480,15 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_4" placeholder="Report 4" class="form-control"  type="text" disabled value="{{amc_list.repot_4}}">
+  <input  name="repot_4" placeholder="Report 4" class="form-control"  type="text" id="myText20" disabled value="{{amc_list.repot_4}}">
     </div>
   </div>
 
 </div>
 
 
-
-
-  
-
-
-
-
 <center>
-	<button type="submit" value="submit" class="btn btn-primary">Update</button>
+  <button type="submit" id="myText21" value="submit" class="btn btn-primary">Update</button>
 
 </center>
 
@@ -435,14 +497,13 @@ color:;
 <br>
 
 
-
-
-
-
-
 </fieldset>
 </form>
-</div>
+  <center>
+<button  onclick="myFunction()" class="btn btn-primary" type="reset">Edit</button>
+</center>
+
+      </div>
 
   </div>
   <!-- End of Page Wrapper -->
@@ -470,6 +531,28 @@ color:;
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
+      <script>
+
+$(function() {
+$("#stars").val("0");
+    $("div.star-rating > s").on("click", function(e) {
+
+    // remove all active classes first, needed if user clicks multiple times
+    $(this).closest('div').find('.active').removeClass('active');
+
+    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+    $(e.target).addClass('active');  // the element user has clicked on
+
+
+        var numStars = $(e.target).parentsUntil("div").length+1;
+        $("#stars").val(numStars);
+
+
+    });
+});
+
+</script>
 
 </body>
 

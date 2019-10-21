@@ -27,6 +27,8 @@ def add_amc_after_sales(request):
         item.address = address
         item.contact_no = contact_no
         item.customer_email_id = customer_email_id
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item.save()
 
@@ -74,7 +76,8 @@ def add_amc_after_sales(request):
         item2.repot_3 = repot_3
         item2.visit_4 = visit_4
         item2.repot_4 = repot_4
-
+        item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save()
         send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
 
@@ -85,12 +88,11 @@ def add_amc_after_sales(request):
         payload = ""
         headers = {'content-type': 'application/x-www-form-urlencoded'}
 
+
         #response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
         #x = response.text
 
         return redirect('/amc_views')
-
-
     context = {
 
     }
