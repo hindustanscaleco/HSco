@@ -380,7 +380,7 @@ def add_product_details(request,id):
 
 
 
-        return redirect('/update_customer_details/'+str(item.id))
+        return redirect('/update_customer_details/'+str(purchase_id))
 
 
     context = {
@@ -549,8 +549,66 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
     return render(request,"feedback/feedback_customer.html",context)
 
 def edit_product_customer(request,id):
+    purchase = Product_Details.objects.get(id=id).purchase_id
+    purchase_id = purchase.id
+    dispatch_id_assigned = str(purchase.dispatch_id_assigned)
     product_id = Product_Details.objects.get(id=id)
-    print(product_id)
+    if request.method == 'POST':
+        product_name = request.POST.get('product_name')
+        quantity = request.POST.get('quantity')
+        model_of_purchase = request.POST.get('model_of_purchase')
+        type_of_scale = request.POST.get('type_of_scale')
+        sub_model = request.POST.get('sub_model')
+        sub_sub_model = request.POST.get('sub_sub_model')
+        serial_no_scale = request.POST.get('serial_no_scale')
+        brand = request.POST.get('brand')
+        capacity = request.POST.get('capacity')
+        unit = request.POST.get('unit')
+        sales_person = request.POST.get('sales_person')
+        purchase_type = request.POST.get('purchase_type')
+
+        item = product_id
+
+        item.product_name = product_name
+        item.quantity = quantity
+        item.type_of_scale = type_of_scale
+        item.model_of_purchase = model_of_purchase
+        item.sub_model = sub_model
+        item.sub_sub_model = sub_sub_model
+        item.serial_no_scale = serial_no_scale
+        item.brand = brand
+        item.capacity = capacity
+        item.unit = unit
+        item.purchase_id_id = purchase_id
+        item.sales_person = sales_person
+        item.purchase_type = purchase_type
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item.save(update_fields=['product_name', 'quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
+                                 'serial_no_scale', 'brand', 'capacity', 'unit', 'purchase_id_id',
+                                 'user_id', 'manager_id'])
+
+        dispatch_id = Dispatch.objects.get(id=dispatch_id_assigned)
+        dispatch_pro = Product_Details_Dispatch()
+        dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+        dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        dispatch_pro.product_name = product_name
+        dispatch_pro.quantity = quantity
+        dispatch_pro.type_of_scale = type_of_scale
+        dispatch_pro.model_of_purchase = model_of_purchase
+        dispatch_pro.sub_model = sub_model
+        dispatch_pro.sub_sub_model = sub_sub_model
+        dispatch_pro.serial_no_scale = serial_no_scale
+        dispatch_pro.brand = brand
+        dispatch_pro.capacity = capacity
+        dispatch_pro.unit = unit
+        dispatch_pro.dispatch_id = dispatch_id
+        dispatch_pro.sales_person = sales_person
+        dispatch_pro.purchase_type = purchase_type
+        dispatch_pro.save()
+
+        return redirect('/update_customer_details/' + str(purchase_id))
+
     context = {
         'product_id': product_id,
     }
