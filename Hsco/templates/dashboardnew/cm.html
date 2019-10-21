@@ -50,14 +50,14 @@
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid" style="margin-left: 15%; width: 85%; margin-top: 7%;">
+        <div class="container-fluid ">
 
           <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <div class="row">
+                   <div class="col-xl-4 col-md-4">
             <h1 class="h3 mb-0 text-gray-800">Purchase Module</h1>
           </div>
 
-                </div>
                 <div class="col-xl-7 col-md-4">
                         <div class="row">
                 <div class="col-xl-3 col-md-3 mb-12">
@@ -73,6 +73,7 @@
                 </div>
               </div>
             </div>
+
 
          <div class="col-xl-3 col-md-3 mb-12"  style="margin-left: -0px;">
               <div class="   ">
@@ -122,6 +123,7 @@
 
                 </div>
             </div>
+
 
 <br>
 
@@ -453,7 +455,7 @@ a:hover {
     </style>
 
 <center>
-    <div class="row" style="width: 70%; margin-top: 15%;">
+    <div class="row" style="width: 70%; margin-top: 20%;">
 
         {% if request.user.is_authenticated %}
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
