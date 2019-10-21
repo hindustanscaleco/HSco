@@ -389,7 +389,33 @@ color:;
 
                  </div>
                      </center>
+             </div><br>
+                              <div style="border: 1px solid #C0C0C0	; border-radius: 10px; color: black; padding: 10px;">
+                 <center>
+                     <p style="font-size: 25px;">Employee of the Month:</p>
+
+
+                 <br>
+                 <div>
+                     <form method="post">{% csrf_token %}
+<div class="form-group row">
+     <label class="col-md-3 control-label">Employee of the Month
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="dispatch_id_assigned" id="customCheck21">
+  <label class="custom-control-label" for="customCheck21"></label>
+</div>
+  </div>
+</div>
+</form>
+
+                 </div>
+                     </center>
              </div>
+
              </div>
 
 

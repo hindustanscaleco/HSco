@@ -24,6 +24,8 @@ feedback = (('1', '1'),
 
 
 class Purchase_Details(models.Model):
+    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    manager_id = models.CharField(max_length=60, null=True, blank=True)
     crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
     date_of_purchase = models.DateField(default=datetime.date.today,null=True,blank=True)
     product_purchase_date = models.DateField(default=datetime.date.today,null=True,blank=True)
@@ -47,6 +49,8 @@ class Purchase_Details(models.Model):
         return str(self.crm_no)
 
 class Product_Details(models.Model):
+    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    manager_id = models.CharField(max_length=60, null=True, blank=True)
     purchase_id = models.ForeignKey(Purchase_Details,on_delete=models.CASCADE)
     product_name = models.CharField(max_length=30,null=True,blank=True)
     quantity = models.CharField(max_length=30,null=True,blank=True)

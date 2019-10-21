@@ -298,6 +298,44 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
 
 </div>
+<form name="myform" id="myForm" style="width: 40%;">
+
+
+<div class="wrapper">
+    <select class="editableBox" name="state" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
+      <option value="" selected="selected">Select</option>
+    </select>
+    <input class="timeTextBox" name="timebox" maxlength="5"/>
+</div>
+
+
+<br>
+<br>
+
+
+  <div class="wrapper">
+    <select class="editableBoxa" name="countrya" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+<option value="" selected="selected">Select</option>
+    </select>
+    <input class="timeTextBoxa" name="timebox" maxlength="5"/>
+</div>
+
+
+<br>
+<br>
+
+
+  <div class="wrapper">
+    <select class="editableBoxz" name="district" id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+<option value="" selected="selected">Select</option>
+
+    </select>
+    <input class="timeTextBoxz" name="timebox" maxlength="5"/>
+</div>
+
+
+
+</form>
 
 <div class="row">
                           <div class="col-xl-6 col-md-6 mb-4">
@@ -430,7 +468,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 <br>
         <style>
           .editableBox {
-    width: 175px;
+    width: 100%;
     height: 30px;
 }
 
@@ -443,7 +481,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
 
 .editableBoxa {
-    width: 75px;
+    width: 100%;
     height: 30px;
 }
 
@@ -456,7 +494,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
 
 .editableBoxz {
-    width: 75px;
+    width: 100%;
     height: 30px;
 }
 
@@ -466,7 +504,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
     height: 25px;
     border: none;
 }
-        <
+
         </style>
 
 <script>
@@ -555,104 +593,100 @@ $(document).ready(function(){
 var stateObject = {
 "Table Top Scales": {
 "ABS": ['ABS001','ABS002','ABS003','ABS004','ABS005','ABS006'],
-'MSS': ['MSS001','MSS002','MSS003','MSS004','MSS005','MSS006'],
-'SSS': ['SSS001','SSS002','SSS003','SSS004','SSS005','SSS006'],
-'MSB': ['MSB001','MSB002','MSB003','MSB004','MSB005','MSB006'],
-'SSS': ['SSS001','SSS002','SSS003','SSS004','SSS005','SSS006'],
-'SSS': ['SSS001','SSS002','SSS003','SSS004','SSS005','SSS006'],
-'SSS': ['SSS001','SSS002','SSS003','SSS004','SSS005','SSS006'],
-'SSB': ['SSB001','SSB002','SSB003','SSB004','SSB005','SSB006'],
-'MSBP':['MSBP001','MSBP002','MSBP003','MSBP004','MSBP005','MSBP006'],
-'SSBP':['SSBP001','SSBP002','SSBP003','SSBP004','SSBP005','SSBP006'],
-'PRCFB':['PRC001','PRC002','PRC003','PRC004','PRC005','PRC006],
-'PRCP':['PRCP001','PRCP002','PRCP003','PRCP004','PRCP005','PRCP006]
+"MSS": ['MSS001','MSS002','MSS003','MSS004','MSS005','MSS006'],
+"SSS": ['SSS001','SSS002','SSS003','SSS004','SSS005','SSS006'],
+"MSB": ['MSB001','MSB002','MSB003','MSB004','MSB005','MSB006'],
+"SSB": ['SSB001','SSB002','SSB003','SSB004','SSB005','SSB006'],
+"MSBP":['MSBP001','MSBP002','MSBP003','MSBP004','MSBP005','MSBP006'],
+"SSBP":['SSBP001','SSBP002','SSBP003','SSBP004','SSBP005','SSBP006'],
+"PRCFB":['PRC001','PRC002','PRC003','PRC004','PRC005','PRC006'],
+"PRCP":['PRCP001','PRCP002','PRCP003','PRCP004','PRCP005','PRCP006']
 },
 
 
 "POS Scales": {
-'PRCPT':['PRCPT001','PRCPT002','PRCPT003','PRCPT004'],
-'POSP': ['PRCPT005','PRCPT006','PRCPT007']
+"PRCPT":['PRCPT001','PRCPT002','PRCPT003','PRCPT004'],
+"POSP": ['PRCPT005','PRCPT006','PRCPT007']
 },
 
 
 "Water Proof Scales": {
-'ABSWR': ['ABSWR001','ABSWR002','ABSWR003','ABSWR004','ABSWR005','ABSWR006','ABSWR007'],
-'SSWR' : ['SSWR001','SSWR002','SSWR003','SSWR004','SSWR005','SSWR006','SSWR007']
+"ABSWR": ['ABSWR001','ABSWR002','ABSWR003','ABSWR004','ABSWR005','ABSWR006','ABSWR007'],
+"SSWR" : ['SSWR001','SSWR002','SSWR003','SSWR004','SSWR005','SSWR006','SSWR007']
 },
 
 
 "Jewellery Scales": {
-'JEWE' :['JEWE001','JEWE002','JEWE003','JEWE004','JEWE005','JEWE006','JEWE007']
+"JEWE" :['JEWE001','JEWE002','JEWE003','JEWE004','JEWE005','JEWE006','JEWE007']
 },
 
 
 
 "Lab Scales": {
-'LAB' :['LAB001','LAB002','LAB003','LAB004','LAB005','LAB006','LAB007','LAB008']
-
+"LAB" :['LAB001','LAB002','LAB003','LAB004','LAB005','LAB006','LAB007','LAB008']
 },
 
 
 
 "Hanging Scales": {
-'CRS' :['CRS001','CRS002,'CRS003,'CRS004,'CRS005,'CRS006']
+"CRS" :['CRS001','CRS002','CRS003','CRS004','CRS005','CRS006']
 },
 
 
 
 "Crane Scales": {
-'CRH' :['CRH001','CRH002','CRH003','CRH004','CRH005','CRH006','CRH007'],
-'Crane Scales with Remote Display and Printer' : ['CRH008','CRH009','CRH010','CRH011'],
-'Crane Scale with Heat Shield': ['CRH012','CRH013','CRH014'],
-'Crane Scale with Hand Held Remote Display': ['CRH015','CRH016','CRH017']
+"CRH" :['CRH001','CRH002','CRH003','CRH004','CRH005','CRH006','CRH007'],
+"Crane Scales with Remote Display and Printer" : ['CRH008','CRH009','CRH010','CRH011'],
+"Crane Scale with Heat Shield": ['CRH012','CRH013','CRH014'],
+"Crane Scale with Hand Held Remote Display": ['CRH015','CRH016','CRH017']
 },
 
 
 "Platform Scales": {
-'PLSS' : ['PLSS001','PLSS002','PLSS003','PLSS004','PLSS005','PLSS006','PLSS007'],
-'PLCHQ' : ['PLCHQ001','PLCHQ002','PLCHQ003','PLCHQ004','PLCHQ005','PLCHQ006','PLCHQ007'],
-'PLCHQH' : ['PLCHQH008','PLCHQH009','PLCHQH010','PLCHQH011','PLCHQH012'],
-'PLCHQR': ['PLCHQR013','PLCHQR014','PLCHQR015','PLCHQR016','PLCHQR017'],
-'PLSSW': ['PLSSW001','PLSSW002','PLSSW003','PLSSW004','PLSSW005'],
-'PLSSWWR': ['PLSSWWR001','PLSSWWR002','PLSSWWR003','PLSSWWR004','PLSSWWR005','PLSSWWR006','PLSSWWR007']
+"PLSS" : ['PLSS001','PLSS002','PLSS003','PLSS004','PLSS005','PLSS006','PLSS007'],
+"PLCHQ" : ['PLCHQ001','PLCHQ002','PLCHQ003','PLCHQ004','PLCHQ005','PLCHQ006','PLCHQ007'],
+"PLCHQH" : ['PLCHQH008','PLCHQH009','PLCHQH010','PLCHQH011','PLCHQH012'],
+"PLCHQR": ['PLCHQR013','PLCHQR014','PLCHQR015','PLCHQR016','PLCHQR017'],
+"PLSSW": ['PLSSW001','PLSSW002','PLSSW003','PLSSW004','PLSSW005'],
+"PLSSWWR": ['PLSSWWR001','PLSSWWR002','PLSSWWR003','PLSSWWR004','PLSSWWR005','PLSSWWR006','PLSSWWR007']
 },
 
 
 "Mobile Platforms": {
-'PLSSCHI': ['PLSSCHI001','PLSSCHI002','PLSSCHI003','PLSSCHI004','PLSSCHI005','PLSSCHI006','PLSSCHI007'],
-'PLCHQCHI':'PLCHQCHI001','PLCHQCHI002','PLCHQCHI003','PLCHQCHI004','PLCHQCHI005','PLCHQCHI006','PLCHQCHI007','PLCHQCHI008','PLCHQCHI009','PLCHQCHI010']
+"PLSSCHI": ['PLSSCHI001','PLSSCHI002','PLSSCHI003','PLSSCHI004','PLSSCHI005','PLSSCHI006','PLSSCHI007'],
+"PLCHQCHI": ['PLCHQCHI001','PLCHQCHI002','PLCHQCHI003','PLCHQCHI004','PLCHQCHI005','PLCHQCHI006','PLCHQCHI007','PLCHQCHI008','PLCHQCHI009','PLCHQCHI010']
 },
 
 
 "Infant Scales": {
-'BCI': ['BCI001','BCI002','BCI003','BCI004','BCIC005']
+"BCI": ['BCI001','BCI002','BCI003','BCI004','BCIC005']
 },
 
 
 "Baby Cum Adult Scales": {
-'BCA': ['BCA001','BCA002','BCA003','BCA004']
+"BCA": ['BCA001','BCA002','BCA003','BCA004']
 },
 
 
 "Animal Scales": {
-'AS': ['AS001','AS002','AS003','AS004','AS005']
+"AS": ['AS001','AS002','AS003','AS004','AS005']
 },
 
 
 "Cattle Scales": {
-'AWSSSG': ['ASSSG001','ASSSG002','ASSSG003','ASSSG004'],
-'AWSCIG': ['AWSCIG001','AWSCIG002','AWSCIG003','AWSCIG004','AWSCIG005','AWSCIG006']
+"AWSSSG": ['ASSSG001','ASSSG002','ASSSG003','ASSSG004'],
+"AWSCIG": ['AWSCIG001','AWSCIG002','AWSCIG003','AWSCIG004','AWSCIG005','AWSCIG006']
 },
 
 
 "Supra Pall Scales": {
-'SUP': ['SUP001','SUP002','SUP003','SUP004','SUP005']
+"SUP": ['SUP001','SUP002','SUP003','SUP004','SUP005']
 },
 
 
 
 "Supra Pall Scales": {
-'LPG': ['LPG001']
+"LPG": ['LPG001']
 },
 
 
@@ -683,7 +717,6 @@ districtSel.options[districtSel.options.length] = new Option(district[i], distri
 }
 }
 </script>
-
 
 
 

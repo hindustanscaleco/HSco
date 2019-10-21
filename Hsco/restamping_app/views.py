@@ -165,6 +165,11 @@ def restamping_product(request,id):
     }
     return render(request,'dashboardnew/restamping_product.html',context)
 
+
+
+def restamping_analytics(request):
+    return render(request,'analytics/restamping_analytics.html')
+
 def update_restamping_details(request,id):
     personal_id = Restamping_after_sales_service.objects.get(id=id)
     restamp_product_list = Restamping_Product.objects.filter(restamping_id=id)
@@ -440,6 +445,31 @@ def update_restamping_product(request,id):
     return render(request,'update_forms/update_restamping_product.html',context)
 
 
+
+def load_restamping_manager(request):
+    selected = request.GET.get('loc_id')
+
+    if selected=='true':
+        user_list = Employee_Analysis_month.objects.filter(manager_id=request.user.name)
+        # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
+
+        context = {
+            'user_list': user_list,
+            'manager': True,
+        }
+
+        return render(request, 'AJAX/load_restamping_manager.html', context)
+    else:
+        restamp_list = Restamping_after_sales_service.objects.all()
+
+        context = {
+            'restamp_list': restamp_list,
+            'manager': False,
+
+        }
+
+
+        return render(request, 'AJAX/load_restamping_manager.html', context)
 
 
 

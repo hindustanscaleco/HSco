@@ -9,7 +9,7 @@ from Hsco import settings
 import requests
 import json
 
-from .models import Employee_Leave, Defects_Warning
+from .models import Employee_Leave, Defects_Warning, Employee_Analysis_month
 
 
 def add_ess_details(request):
@@ -128,6 +128,19 @@ def employee_profile(request,id):
         item.type = type
         item.content = content
         item.save()
+    try:
+        employee_analysis_id = Employee_Analysis_month.objects.get(user_id=user_id)
+    except :
+        print("Something else went wrong")
+
+    if request.method == 'POST' and 'is_employee_of_month' in request.POST:
+        best_employee = request.POST.get('best_employee')
+
+        item2 = employee_analysis_id
+        item2.is_employee_of_month = best_employee
+
+        item2.save(update_fields=['is_employee_of_month',])
+
     context = {
         'user_id': user_id,
         'leave_list': leave_list,

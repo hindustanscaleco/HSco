@@ -5,9 +5,14 @@ from django.utils import timezone
 
 from customer_app.models import Customer_Details
 
+from user_app.models import SiteUser
+
 
 class Amc_After_Sales(models.Model):
     # amc_visit_id = models.ForeignKey(Amcvisit, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    manager_id = models.CharField(max_length=60, null=True, blank=True)
+
     crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
     amcno = models.CharField(max_length=50, null=True,unique=True, blank=True)
     customer_name = models.CharField(max_length=80, null=True, blank=True)

@@ -1,0 +1,112 @@
+
+  {% if manager %}
+
+      <div class="row">
+
+
+
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 55px;">
+
+
+                    <div class="col-xl-3 col-md-1 mb-1"><center> Employee Name </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Onsite Reparing Done This Month </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Target Achieved (%) </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Feedback </center> </div>
+                    </div>
+
+
+                </div>
+              </div>
+
+
+
+
+<br>
+        </div>
+    <br>
+      <div class="row" id="id_subcat">
+                    {% for list in user_list %}
+
+<div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
+
+                    <div class="col-xl-3 col-md-1 mb-1"><center> <a href="/update_onsite_details/{{list.pk}}"> {{list.user_id.name}}</a> </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.total_reparing_done_onsite}} </center> </div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center> {{list.repairing_target_achieved}} </center> </div>|
+
+                       <div class="col-xl-2 col-md-1 mb-1 border-left-primary">
+                         {% for avg in  list.start_rating_feedback_onsite_reparing|rjust:'5'  %}
+							{% if forloop.counter <= list.start_rating_feedback_onsite_reparing %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
+							{% endif %}
+						{% endfor %}
+
+                    </div>
+                    </div>
+
+
+                </div>
+              </div>
+          {% endfor %}
+            </div>
+
+
+
+
+
+
+
+{% else %}
+
+      <div class="row">
+
+
+
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 55px;">
+
+
+                    <div class="col-xl-3 col-md-1 mb-1"><center> Company Name </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Onsite Reparing No. </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Cost </center> </div>|
+
+                    </div>
+
+
+                </div>
+              </div>
+
+
+
+
+<br>
+        </div>
+    <br>
+      <div class="row" id="id_subcat">
+                      {% for list in onsite_list %}
+
+<div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
+
+                    <div class="col-xl-3 col-md-1 mb-1"><center> <a href="/update_onsite_details/{{list.pk}}"> {{list.crm_no.company_name}}</a> </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.repairingno}} </center> </div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.total_cost}} </center> </div>
+
+
+                    </div>
+
+
+                </div>
+              </div>
+          {% endfor %}
+            </div>
+
+
+  {% endif %}
