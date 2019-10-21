@@ -335,6 +335,30 @@ def restamping_employee_graph(request,user_id):
         print(lis_date)
         print(lis_sum)
 
+        context = {
+            'final_list': lis_date,
+            'final_list2': lis_sum,
+            'previous_lis_date': previous_lis_date,
+            'previous_lis_sum': previous_lis_sum,
+            'this_lis_date': this_lis_date,
+            'this_lis_sum': this_lis_sum,
+            # 'rep_feedback': rep_feedback,
+            # 'feeback': feeback,
+        }
+        return render(request, "graphs/restamping_employee_graph.html", context)
+    else:
+
+        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values(
+            'entry_date').annotate(data_sum=Sum('total_reparing_done_onsite_today'))
+        lis_date = []
+        lis_sum = []
+        for i in qs:
+            x = i
+            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
+        print(lis_date)
+        print(lis_sum)
+
         # user_id=request.user.pk
         # currentMonth = datetime.now().month
         # currentYear = datetime.now().year
@@ -360,18 +384,8 @@ def restamping_employee_graph(request,user_id):
             'previous_lis_sum': previous_lis_sum,
             'this_lis_date': this_lis_date,
             'this_lis_sum': this_lis_sum,
-            # 'rep_feedback': rep_feedback,
+            'target_achieved': target_achieved,
             # 'feeback': feeback,
-        }
-        return render(request, "graphs/restamping_employee_graph.html", context)
-        context = {
-            'final_list': lis_date,
-            'final_list2': lis_sum,
-            'previous_lis_date': previous_lis_date,
-            'previous_lis_sum': previous_lis_sum,
-            'this_lis_date': this_lis_date,
-            'this_lis_sum': this_lis_sum,
-            # 'rep_feedback': rep_feedback,
         }
     return render(request, "graphs/restamping_employee_graph.html", context)
 

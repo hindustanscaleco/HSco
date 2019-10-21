@@ -41,7 +41,9 @@ def add_purchase_details(request):
         item.save()
 
         date_of_purchase = request.POST.get('date_of_purchase')
-        product_purchase_date = request.POST.get('product_purchase_date')
+        new_repeat_purchase = request.POST.get('new_repeat_purchase')
+        sales_person = request.POST.get('product_purchase_date')
+        product_purchase_date = request.POST.get('sales_person')
         bill_no = request.POST.get('bill_no')
         upload_op_file = request.POST.get('upload_op_file')
         po_number = request.POST.get('po_number')
@@ -56,8 +58,10 @@ def add_purchase_details(request):
         item2 = Purchase_Details()
 
         item2.crm_no = Customer_Details.objects.get(id=item.pk)
+        item2.new_repeat_purchase = new_repeat_purchase
         item2.date_of_purchase = date_of_purchase
         item2.product_purchase_date = product_purchase_date
+        item2.sales_person = sales_person
         item2.bill_no = bill_no
         item2.upload_op_file = upload_op_file
         item2.photo_lr_no = photo_lr_no
@@ -223,8 +227,8 @@ def view_customer_details(request):
 
 def update_customer_details(request,id):
     purchase_id_id = Purchase_Details.objects.get(id=id)
-    customer_id = Purchase_Details.objects.get(id=id).crm_no
-    customer_id = Customer_Details.objects.get(id=customer_id)
+    # customer_id = Purchase_Details.objects.get(id=id).crm_no
+    customer_id = Customer_Details.objects.get(id=purchase_id_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
     if request.method=='POST':
         customer_name = request.POST.get('customer_name')
@@ -243,34 +247,10 @@ def update_customer_details(request,id):
 
         item.save(update_fields=['customer_name','company_name','address','contact_no','customer_email_id',])
 
-        product_name = request.POST.get('product_name')
-        quantity = request.POST.get('quantity')
-        type_of_scale = request.POST.get('type_of_scale')
-        model_of_purchase = request.POST.get('model_of_purchase')
-        sub_model = request.POST.get('sub_model')
-        sub_sub_model = request.POST.get('sub_sub_model')
-        serial_no_scale = request.POST.get('serial_no_scale')
-        brand = request.POST.get('brand')
-        capacity = request.POST.get('capacity')
-        unit = request.POST.get('unit')
-
-        item2=product_id
-
-        item2.product_name = product_name
-        item2.quantity = quantity
-        item2.type_of_scale = type_of_scale
-        item2.model_of_purchase = model_of_purchase
-        item2.sub_model = sub_model
-        item2.sub_sub_model = sub_sub_model
-        item2.serial_no_scale = serial_no_scale
-        item2.brand = brand
-        item2.capacity = capacity
-        item2.unit = unit
-        item2.save(update_fields=['purchase_id','product_name','quantity','type_of_scale','model_of_purchase','sub_model','sub_sub_model','serial_no_scale','brand','capacity','unit',])
-
         date_of_purchase = request.POST.get('date_of_purchase')
         product_purchase_date = request.POST.get('product_purchase_date')
         bill_no = request.POST.get('bill_no')
+        new_repeat_purchase = request.POST.get('new_repeat_purchase')
         upload_op_file = request.POST.get('upload_op_file')
         po_number = request.POST.get('po_number')
         photo_lr_no = request.POST.get('photo_lr_no')
@@ -281,28 +261,26 @@ def update_customer_details(request,id):
         notes = request.POST.get('notes')
         feedback_form_filled = request.POST.get('feedback_form_filled')
 
+        item2 = purchase_id_id
 
-        item3=purchase_id_id
-
-        item3.date_of_purchase = date_of_purchase
-        item3.crm_no= Customer_Details.objects.get(id=item.pk)
-        item3.product_purchase_date = product_purchase_date
-        item3.bill_no = bill_no
-        item3.upload_op_file = upload_op_file
-        item3.po_number = po_number
-        item3.photo_lr_no = photo_lr_no
-        item3.channel_of_sales = channel_of_sales
-        item3.industry = industry
-        item3.value_of_goods = value_of_goods
-        item3.channel_of_dispatch = channel_of_dispatch
-        item3.notes = notes
-        item3.feedback_form_filled = feedback_form_filled
-
-
-        item3.save(update_fields=['date_of_purchase', 'product_purchase_date', 'bill_no', 'upload_op_file', 'po_number',
-                                 'photo_lr_no', 'channel_of_sales', 'industry', 'value_of_goods', 'channel_of_dispatch',
-                                 'notes', 'feedback_form_filled',])
-
+        item2.crm_no = Customer_Details.objects.get(id=item.pk)
+        item2.date_of_purchase = date_of_purchase
+        item2.new_repeat_purchase = new_repeat_purchase
+        item2.product_purchase_date = product_purchase_date
+        item2.bill_no = bill_no
+        item2.upload_op_file = upload_op_file
+        item2.photo_lr_no = photo_lr_no
+        item2.po_number = po_number
+        item2.channel_of_sales = channel_of_sales
+        item2.industry = industry
+        item2.value_of_goods = value_of_goods
+        item2.channel_of_dispatch = channel_of_dispatch
+        item2.notes = notes
+        item2.feedback_form_filled = feedback_form_filled
+        item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item2.save(update_fields=['date_of_purchase','product_purchase_date','bill_no','upload_op_file','photo_lr_no','manager_id',
+                                  'po_number','channel_of_sales','industry','channel_of_dispatch','notes','feedback_form_filled','user_id'])
 
     context={
         'product_id':product_id,
@@ -382,7 +360,6 @@ def add_product_details(request,id):
     return render(request,'dashboardnew/add_product.html',context)
 
 
-
 def report(request):
     if request.method =='POST':
         selected_list = request.POST.getlist('checks[]')
@@ -427,7 +404,6 @@ def manager_report(request):
         'employee_list':employee_list,
     }
     return render(request, 'dashboardnew/manager_report.html',context)
-
 
 def feedbacka(request):
     return render(request, 'feedback/feedbacka.html')
@@ -526,7 +502,6 @@ def customer_employee_sales_graph(request,user_id):
         }
         return render(request,"graphs/sales_graph.html",context)
 
-
 def feedback_purchase(request,user_id,customer_id,purchase_id):
     feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' :
@@ -560,7 +535,6 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
         'feedback_form': feedback_form,
     }
     return render(request,"feedback/feedback_customer.html",context)
-
 
 def edit_product_customer(request,id):
     product_id = Product_Details.objects.get(id=id)
@@ -596,8 +570,6 @@ def load_users(request):
         }
 
         return render(request, 'AJAX/load_users.html', context)
-
-
 
 def check_admin_roles(request):
     if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
