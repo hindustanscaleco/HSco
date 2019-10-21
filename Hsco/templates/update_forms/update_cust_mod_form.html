@@ -508,7 +508,7 @@ function myFunction() {
 
           <h1 style="font-size: 25px; color: black; text-align: center;"> Added Product List </h1>
   <br>
-    {% for list in product_list %}
+    {% for list in product_id %}
       <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;">
@@ -522,7 +522,6 @@ function myFunction() {
                   <div class="col-xl-4 col-md-1 mb-1"><center> Sub Model: {{list.sub_model}}  </center> </div>
                     <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Sub Sub Model: {{list.sub_sub_model}}  </center></div>
                   <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Serial No. of Scale: {{list.serial_no_scale}} </center> </div>
-                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Sales Person: {{list.sales_person}} </center> </div>
 
                   <div class="col-xl-4 col-md-1 mb-1"><center> Brand: {{list.brand}}  </center> </div>
                   <div class="col-xl-4 col-md-1 mb-1"><center> Capacity: {{list.capacity}}  </center> </div>

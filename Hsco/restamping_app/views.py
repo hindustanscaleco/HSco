@@ -449,7 +449,6 @@ def update_restamping_product(request,id):
         item.amount = amount
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item.save()
 
         item.save(update_fields=['customer_email_id','product_to_stampped','scale_type','sub_model','capacity','old_serial_no','old_brand',
                                  'amount','manager_id','user_id' ])
