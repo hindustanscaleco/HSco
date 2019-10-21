@@ -118,6 +118,7 @@ def add_onsite_aftersales_service(request):
         notes = request.POST.get('notes')
         feedback_given = request.POST.get('feedback_given')
 
+
         item2 = Onsite_aftersales_service()
 
         item2.crm_no_id = item.pk
