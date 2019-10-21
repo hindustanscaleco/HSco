@@ -23,10 +23,8 @@ class Restamping_after_sales_service(models.Model):
     scale_delivery_date = models.DateField(default=datetime.date.today, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
 
-
-
-    def __str__(self):
-        return self.customer_no
+    def __int__(self):
+        return self.id
 
 class Restamping_Product(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)

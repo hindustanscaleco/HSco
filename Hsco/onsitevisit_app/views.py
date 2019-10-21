@@ -342,7 +342,7 @@ def feedback_onrepairing(request,user_id,customer_id,onsiterepairing_id):
         onsiterepairing.avg_feedback = (backend_team + onsite_worker + speed_of_performance + price_of_reparing + overall_interaction) / 5.0
         onsiterepairing.feedback_given = 'YES'
         onsiterepairing.save(update_fields=['avg_feedback', 'feedback_given'])
-        mon = datetime.now().month
+        # mon = datetime.now().month
 
         # ess_id = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon )
         #
@@ -391,7 +391,7 @@ def load_onsite_reparing_manager(request,):
         return render(request, 'AJAX/load_onsite_reparing_manager.html', context)
 def onsitevisit_app_graph(request):
     from django.db.models import Sum
-
+    import datetime
     user_id = request.user.pk
     rep_feedback = Onsite_Feedback.objects.all()
 

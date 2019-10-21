@@ -190,10 +190,8 @@ def update_restamping_details(request,id):
         brand = request.POST.get('brand')
         scale_delivery_date = request.POST.get('scale_delivery_date')
 
-        print(today_date)
-        print(today_date)
-        print(today_date)
         item = personal_id
+
         item.restampingno = restampingno
         item.customer_no = customer_no
         item.company_name = company_name
@@ -363,7 +361,8 @@ def restamping_employee_graph(request):
 
 def update_restamping_product(request,id):
     restamping_product_id = Restamping_Product.objects.get(id=id)
-    # restamping_id = Restamping_after_sales_service.objects.get(restamping_id=id)
+    restamping_id = Restamping_Product.objects.get(id=id).restamping_id
+    print(restamping_id)
     if request.method == 'POST':
         customer_email_id = request.POST.get('customer_email_id')
         product_to_stampped = request.POST.get('product_to_stampped')
@@ -372,12 +371,12 @@ def update_restamping_product(request,id):
         capacity = request.POST.get('capacity')
         old_serial_no = request.POST.get('old_serial_no')
         old_brand = request.POST.get('old_brand')
-        scale_delivery_date = request.POST.get('scale_delivery_date')
         amount = request.POST.get('amount')
 
 
         item = restamping_product_id
 
+        item.restamping_id_id = restamping_id
         item.customer_email_id = customer_email_id
         item.product_to_stampped = product_to_stampped
         item.scale_type = scale_type
@@ -393,11 +392,8 @@ def update_restamping_product(request,id):
         item.save(update_fields=['customer_email_id','product_to_stampped','scale_type','sub_model','capacity','old_serial_no','old_brand',
                                  'amount','manager_id','user_id' ])
 
-        context = {
-            'restamping_product_id': restamping_product_id,
-        }
 
-        return redirect('/update_restamping_product/'+str(id))
+        return redirect('/update_restamping_details/'+str(restamping_id.id))
     context = {
         'restamping_product_id': restamping_product_id,
     }
