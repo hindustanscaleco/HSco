@@ -13,8 +13,8 @@ choices = (('Super Admin', 'Super Admin'),
     ('Admin', 'Admin'),
    ('Manager', 'Manager'),
    ('Employee', 'Employee'),)
-deleted = (('True','YES'),
-              ('False','NO'))
+deleted = (('True','True'),
+              ('False','False'))
 BANK_NAMES = (('Select Bank','Select Bank'),('Axis Bank','Axis Bank'),('HDFC Bank','HDFC Bank'),('ICICI Bank','ICICI Bank'),('State Bank of India','State Bank of India'),('Airtel Payments Bank','Airtel Payments Bank')
 ,('Allahabad Bank','Allahabad Bank'),('Andhra Bank','Andhra Bank'),('Bandhan bank','Bandhan bank'),('Bank of Bahrain and Kuwait','Bank of Bahrain and Kuwait'),('Bank of Baroda - Corporate Banking','Bank of Baroda - Corporate Banking'),
 ('Bank of Baroda - Retail Banking','Bank of Baroda - Retail Banking'),('Bank of India','Bank of India'),('Bank of Maharashtra','Bank of Maharashtra'),('Bassien Catholic Co-Operative Bank','Bassien Catholic Co-Operative Bank'),
@@ -85,7 +85,7 @@ class SiteUser(AbstractBaseUser):
     name =models.CharField('Name',max_length=50,null=True,blank=True)
     role = models.CharField('Role  Of User',max_length=20, choices=choices,null=True,blank=True)
     group = models.CharField(max_length=300, null=True, blank=True)
-    is_deleted = models.BooleanField(default=False, null=True, blank=True, choices=deleted)
+    is_deleted = models.BooleanField(default=False,)
     modules_assigned = models.CharField(max_length=300,null=True, blank=True)
     photo = models.FileField(upload_to='profile_image/',null=True, blank=True)
     salary_slip = models.FileField(upload_to='salary_slip/',null=True, blank=True)

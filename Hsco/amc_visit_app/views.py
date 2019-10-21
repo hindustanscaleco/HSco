@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 
 from customer_app.models import Customer_Details
 
+from purchase_app.views import check_admin_roles
 from user_app.models import SiteUser
 from .forms import AMC_Feedback_Form
 from .models import Amc_After_Sales, AMC_Feedback
@@ -191,7 +192,11 @@ def amc_views(request):
             }
             return render(request, "manager/amc_view.html",context )
     else:
-        amc_list = Amc_After_Sales.objects.all()
+        if check_admin_roles(request):     #For ADMIN
+            amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+        else:  #For EMPLOYEE
+            amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk).order_by('-id')
+        # amc_list = Amc_After_Sales.objects.all()
 
         context = {
             'amc_list': amc_list,
