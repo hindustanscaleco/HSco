@@ -96,6 +96,8 @@ def add_onsite_aftersales_service(request):
         item.address = address
         item.contact_no = contact_no
         item.customer_email_id = customer_email_id
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item.save()
 
@@ -135,6 +137,8 @@ def add_onsite_aftersales_service(request):
         item2.time_taken_destination_return_office_min = time_taken_destination_return_office_min
         item2.notes = notes
         item2.feedback_given = feedback_given
+        item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item2.save()
         send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
