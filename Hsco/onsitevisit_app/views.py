@@ -140,6 +140,8 @@ def add_onsite_aftersales_service(request):
         item.address = address
         item.contact_no = contact_no
         item.customer_email_id = customer_email_id
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item.save()
 
@@ -160,6 +162,7 @@ def add_onsite_aftersales_service(request):
         notes = request.POST.get('notes')
         feedback_given = request.POST.get('feedback_given')
 
+
         item2 = Onsite_aftersales_service()
 
         item2.crm_no_id = item.pk
@@ -179,6 +182,8 @@ def add_onsite_aftersales_service(request):
         item2.time_taken_destination_return_office_min = time_taken_destination_return_office_min
         item2.notes = notes
         item2.feedback_given = feedback_given
+        item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item2.save()
         send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
@@ -215,7 +220,10 @@ def add_onsite_product(request,id):
         item.components_replaced_in_warranty = components_replaced_in_warranty
         item.components_replaced = components_replaced
         item.cost = cost
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save()
+
 
 
 
@@ -392,7 +400,7 @@ def feedback_onrepairing(request,user_id,customer_id,onsiterepairing_id):
         onsiterepairing.avg_feedback = (backend_team + onsite_worker + speed_of_performance + price_of_reparing + overall_interaction) / 5.0
         onsiterepairing.feedback_given = 'YES'
         onsiterepairing.save(update_fields=['avg_feedback', 'feedback_given'])
-        mon = datetime.now().month
+        # mon = datetime.now().month
 
         # ess_id = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon )
         #
@@ -441,7 +449,7 @@ def load_onsite_reparing_manager(request,):
         return render(request, 'AJAX/load_onsite_reparing_manager.html', context)
 def onsitevisit_app_graph(request,user_id):
     from django.db.models import Sum
-
+    import datetime
     user_id = request.user.pk
     rep_feedback = Onsite_Feedback.objects.all()
 

@@ -98,7 +98,7 @@ color:;
 
 
 
-" class="form-control"  type="text">
+" class="form-control" disabled  type="text">
     </div>
   </div>
 
@@ -339,32 +339,11 @@ color:;
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Products To be repaired
 
 
 
 
 
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-  <input  name="products_to_be_repaired" required placeholder="Products To be repaired
-
-
-
-" class="form-control"  type="text">
-    </div>
-  </div>
-
-</div>
-
-
-
-
-
-  <div class="form-group row">
 
     <label class="col-md-2 control-label">Visiting Charges Told to Customer
 
@@ -380,12 +359,13 @@ color:;
 " class="form-control"  type="text">
     </div>
   </div>
-
 </div>
 
 
 
   <div class="form-group row">
+
+
   <label class="col-md-2 control-label">Total Cost
 
 
@@ -403,6 +383,7 @@ color:;
     </div>
   </div>
 
+
     <label class="col-md-2 control-label">Complaint Assigned To
 
 
@@ -417,12 +398,13 @@ color:;
 " class="form-control"  type="text">
     </div>
   </div>
+  </div>
 
-</div>
 
 
 
   <div class="form-group row">
+
   <label class="col-md-2 control-label">Complain Assigned On
 
 
@@ -436,11 +418,12 @@ color:;
 
 
 
-" class="form-control"  type="text">
+" class="form-control"  type="date">
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Time Taken to Reach Destination and Return to office in Minutes
+
+      <label class="col-md-2 control-label">Time Taken to Reach Destination and Return to office in Minutes
 
 
 </label>
@@ -448,20 +431,20 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-clock-o faicons"></i></span>
-  <input  name="time_taken_destination_return_office_min" placeholder="Time Taken to Reach Destination and Return to office in Minutes
+  <input name="time_taken_destination_return_office_min" placeholder="Time Taken to Reach Destination and Return to office in Minutes
 
 
 " class="form-control"  type="text">
     </div>
   </div>
-
-</div>
+    </div>
 
 
 
 
 
   <div class="form-group row">
+
   <label class="col-md-2 control-label">Notes
 
 
@@ -475,6 +458,8 @@ color:;
     </div>
   </div>
 
+
+
     <label class="col-md-2 control-label">Feedback given
 
 
@@ -484,16 +469,16 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-        <input  name="feedback_given" placeholder="Notes" class="form-control"  value="NO" type="text">
+        <input  name="feedback_given" placeholder="No/Yes" class="form-control" value="NO" type="text">
 
     </div>
   </div>
 
-</div>
+    </div>
 
 
 <center>
-	<button class="btn btn-primary">Submit</button>
+  <a href="/add_onsite_product/"><button class="btn btn-primary">Add Product</button></a>
 
 </center>
 
