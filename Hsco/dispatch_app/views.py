@@ -246,6 +246,12 @@ def update_dispatch_details(request,update_id):
             'product_list': product_list,
         }
         return render(request, "update_forms/update_dis_mod_form.html", context)
+
+    context = {
+            'dispatch_item': dispatch_item,
+            'product_list': product_list,
+        }
+    return render(request, "update_forms/update_dis_mod_form.html", context)
        # item.save(update_fields=[''])
 
 

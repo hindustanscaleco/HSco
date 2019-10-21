@@ -165,7 +165,10 @@ def add_onsite_product(request,id):
         item.components_replaced_in_warranty = components_replaced_in_warranty
         item.components_replaced = components_replaced
         item.cost = cost
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save()
+
 
 
 

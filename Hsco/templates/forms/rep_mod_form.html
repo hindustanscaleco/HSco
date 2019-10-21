@@ -76,21 +76,27 @@ color:;
          </center>
           <br>
 
+
 <div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">
 
-    <div class="col-xl-4 col-md-2 col-mb-2">
-        <input type="checkbox" name="vehicle3" value="Boat" checked> Scale is collected but estimate is not given. &nbsp; &nbsp; <br>
-  <input type="checkbox" name="vehicle3" value="Boat"> Estimate is given but Estimate is not confirmed. &nbsp; &nbsp; <br>
-         <input type="checkbox" name="vehicle3" value="Boat"> Estimate is confirmed but not repaired. &nbsp; &nbsp;
-
+<div class="col-xl-4 col-md-4 col-mb-4">
+<select id="display_limit2" class="form-control">
+    <option value="-----">---------</option>
+  <option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>
+  <option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>
+  <option value="Estimate is confirmed but not repaired">Estimate is confirmed but not repaired.</option>
+  <option value="Repaired but not collected">Repaired but not collected.</option>
+  <option value="Finally Collected">Finally Collected.</option>
+</select>
+  <!--<input type="checkbox" name="checks[]" value="Repaired but not collected"> Repaired but not collected. &nbsp; &nbsp; <br>-->
+  <!--<input type="checkbox" name="checks[]" value="Finally Collected">  &nbsp; &nbsp;-->
     </div>
 
 
-    <div class="col-xl-4 col-md-2 col-mb-2">
 
-  <input type="checkbox" name="vehicle3" value="Boat"> Repaired but not collected. &nbsp; &nbsp; <br>
-  <input type="checkbox" name="vehicle3" value="Boat"> Finally Collected. &nbsp; &nbsp;
-    </div></div>
+
+    </div>
+</div>
 
 
 <br>
@@ -297,169 +303,9 @@ color:;
   </div>
 </div>
 
+
+
 <div class="form-group row">
-
-<label class="col-md-2 control-label">Type of Machine
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="type_of_machine" placeholder="Type of Machine" class="form-control" list="type_of_machine">
-    <datalist style="height:20px;" id="type_of_machine">
-      <option value="Mechanical"></option>
-      <option value="Digital"></option>
-    </datalist>
-    </div>
-  </div>
-
-
-
-  <label class="col-md-2 control-label">Model
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-      <input  type="text" placeholder="Model" required class="form-control" name="model" list="model">
-    <datalist style="height:20px;" id="model">
-    <option value = "Table Top"></option>
-    <option value = "Platform Scale"></option>
-    <option value = "POS Scales"></option>
-    <option value = "Water Proof Scales"></option>
-    <option value = "Jewellery Scales"></option>
-    <option value = "Lab Scales"></option>
-    <option value = "Crane Scales"></option>
-    <option value = "Platform Scales"></option>
-    <option value = "Mobile Platforms"></option>
-    <option value = "Infant Scales"></option>
-    <option value = "Baby Cum Adult Scales"></option>
-    <option value = "Animal Scales"></option>
-    <option value = "Cattle Scales"></option>
-    <option value = "Supra Pall Scales"></option>
-    </datalist>
-  </div>
-  </div>
-  </div>
-
-  <!--<div class="form-group row">-->
-
-
-    <!--&lt;!&ndash;<label class="col-md-2 control-label">Sub model&ndash;&gt;-->
-
-
-
-<!--&lt;!&ndash;</label>&ndash;&gt;-->
-
-    <!--&lt;!&ndash;<div class="col-md-4 inputGroupContainer">&ndash;&gt;-->
-  <!--&lt;!&ndash;<div class="input-group">&ndash;&gt;-->
-  <!--&lt;!&ndash;<span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>&ndash;&gt;-->
-  <!--&lt;!&ndash;<input  name="sub_model" placeholder="Sub model" class="form-control"  type="text">&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-  <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-
-
-  <!--<label class="col-md-2 control-label">Problem In The Scale-->
-<!--</label>-->
-  <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
-      <!--<input  type="text" name="problem_in_scale" placeholder="Problem In The Scale" class="form-control" list="problem_in_scale">-->
-    <!--<datalist style="height:20px;" id="problem_in_scale">-->
-    <!--<option value = "Scale not turning On"></option>-->
-    <!--<option value = "Scale is showing incorrect weight"></option>-->
-    <!--<option value = "Scale only shows 888888"></option>-->
-    <!--<option value = "Scale only shows zero"></option>-->
-    <!--<option value = "Weight is slowly increasing or decreasing"></option>-->
-    <!--<option value = "buttons are not working"></option>-->
-    <!--<option value = "Scale doesnt show stable weight"></option>-->
-    <!--<option value = "Display problems (Display gets distorted while showing weight)"></option>-->
-    <!--<option value = "Scale is not working on battery or scale is not charging"></option>-->
-    <!--<option value = "Scale turns OFF automatically"></option>-->
-    <!--<option value = "Others"></option>-->
-    <!--</datalist>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
-
-<!--<div class="form-group row">-->
-
-    <!--<label class="col-md-2 control-label">Components Replaced In Waranty(If Scale In Waranty)-->
-
-
-
-<!--</label>-->
-
-    <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>-->
-    <!--<input  type="text" name="components_replaced_in_warranty" placeholder="Components Replaced IW" class="form-control" list="components_replaced_in_warranty">-->
-    <!--<datalist style="height:20px;" id="components_replaced_in_warranty">-->
-    <!--<option value = "Display"></option>-->
-    <!--<option value = "Touch Pad"></option>-->
-    <!--<option value = "LED"></option>-->
-    <!--<option value = "Transformer"></option>-->
-    <!--<option value = "Battery"></option>-->
-    <!--<option value = "Switch"></option>-->
-    <!--<option value = "Main Cord wire"></option>-->
-    <!--<option value = "Main Circuit Board"></option>-->
-    <!--<option value = "SMPS"></option>-->
-    <!--<option value = "Load Cell"></option>-->
-    <!--<option value = "Misc"></option>-->
-    <!--</datalist>-->
-    <!--</div>-->
-  <!--</div>-->
-
-
-  <!--<label class="col-md-2 control-label">Components Replaced-->
-
-<!--</label>-->
-  <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>-->
-    <!--<input  type="text" name="components_replaced" placeholder="Components Replaced" class="form-control" list="components_replaced">-->
-    <!--<datalist style="height:20px; color:white;" id="components_replaced">-->
-    <!--<option value = "Display">-->
-    <!--<option value = "Touch Pad">-->
-    <!--<option value = "LED">-->
-    <!--<option value = "Transformer">-->
-    <!--<option value = "Battery">-->
-    <!--<option value = "Switch">-->
-    <!--<option value = "Main Cord wire">-->
-    <!--<option value = "Main Circuit Board">-->
-    <!--<option value = "SMPS">-->
-    <!--<option value = "Load Cell">-->
-    <!--<option value = "Misc">-->
-    <!--</datalist>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
-
-  <div class="form-group row">
-
-    <label class="col-md-2 control-label">Replaced Scale given
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" placeholder="Components Replaced" required name="replaced_scale_given" class="form-control" value="" list="replaced_scale_given">
-    <datalist style="height:20px; color:white;" id="replaced_scale_given">
-    <option value = "Yes"></option>
-    <option value = "No"></option>
-    </datalist>
-
-    </div>
-  </div>
-
-
-
-
 
 
 
@@ -477,7 +323,6 @@ color:;
     </div>
   </div>
 
-</div>
 
 
 
@@ -486,7 +331,7 @@ color:;
 
 
 
-  <div class="form-group row">
+
   <label class="col-md-2 control-label">Informed On
 
 </label>
@@ -499,6 +344,10 @@ color:;
 " class="form-control" required type="text">
     </div>
   </div>
+</div>
+
+  <div class="form-group row">
+
 
     <label class="col-md-2 control-label">Informed By
 
@@ -514,11 +363,9 @@ color:;
     </div>
   </div>
 
-</div>
 
 
 
-  <div class="form-group row">
   <label class="col-md-2 control-label">Confirmed Estimate
 
 </label>
@@ -534,6 +381,10 @@ color:;
     </datalist>
     </div>
   </div>
+  </div>
+
+  <div class="form-group row">
+
 
     <label class="col-md-2 control-label">Repaired
 </label>
@@ -545,20 +396,14 @@ color:;
     <datalist style="height:20px;" id="Repaired">
     <option value = "Yes"></option>
     <option value = "No"></option>
+    </datalist>
     </div>
   </div>
 
-</div>
 
 
 
 
-
-
-
-
-
-  <div class="form-group row">
   <label class="col-md-2 control-label">Repaired date
 
 </label>
@@ -568,8 +413,10 @@ color:;
   <input type="date" name="repaired_date" placeholder="Repaired date" class="form-control"  type="text" value="">
     </div>
   </div>
+  </div>
 
 
+<div class="form-group row">
 
   <label class="col-md-2 control-label">Delivery Date
 </label>
@@ -579,11 +426,10 @@ color:;
   <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control"  type="text" value="">
     </div>
   </div>
-</div>
 
 
 
-<div class="form-group row">
+
 
     <label class="col-md-2 control-label">Delivered By
 </label>
@@ -594,10 +440,12 @@ color:;
   <input  name="delivery_by" placeholder="Delivery By" class="form-control"  type="text" value="">
     </div>
   </div>
+</div>
 
 
 
 
+<div class="form-group row">
 
   <label class="col-md-2 control-label">Feedback Given
 
@@ -631,10 +479,6 @@ color:;
 
 
 <br>
-
-
-
-
 
 
 
