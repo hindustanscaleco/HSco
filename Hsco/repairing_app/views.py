@@ -32,7 +32,8 @@ def add_repairing_details(request):
         item.address = address
         item.contact_no = contact_no
         item.customer_email_id = customer_email_id
-
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save()
 
 
@@ -78,6 +79,8 @@ def add_repairing_details(request):
         item2.delivery_date = delivery_date
         item2.delivery_by = delivery_by
         item2.feedback_given = feedback_given
+        item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
 
         item2.save()
@@ -116,6 +119,8 @@ def repair_product(request,id):
         cost = request.POST.get('cost')
 
         item=Repairing_Product()
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item.type_of_machine = type_of_machine
         item.model = model
@@ -218,11 +223,23 @@ def update_repairing_details(request,id):
         item2.save(update_fields=['delivery_date', ]),
         item2.save(update_fields=['delivery_by', ]),
         item2.save(update_fields=['feedback_given', ])
+        repair_id = Repairing_after_sales_service.objects.get(id=id)
+        customer_id = Customer_Details.objects.get(id=id)
+        repair_list = Repairing_Product.objects.filter(repairing_id=id)
+        context = {
+            'repair_list': repair_list,
+            'repair_id': repair_id,
+            'customer_id':customer_id,
+
+
+        }
+        return render(request, 'update_forms/update_rep_mod_form.html', context)
 
     print(repair_list)
     context={
         'repair_list': repair_list,
         'repair_id': repair_id,
+        'customer_id':customer_id,
 
     }
     return render(request,'update_forms/update_rep_mod_form.html',context)

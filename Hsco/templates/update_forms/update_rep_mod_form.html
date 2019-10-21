@@ -184,6 +184,26 @@ function myFunction() {
 
 }
 </script>
+<div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">
+
+<div class="col-xl-4 col-md-4 col-mb-4">
+<select id="display_limit2" class="form-control">
+    <option value="-----">---------</option>
+  <option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>
+  <option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>
+  <option value="Estimate is confirmed but not repaired">Estimate is confirmed but not repaired.</option>
+  <option value="Repaired but not collected">Repaired but not collected.</option>
+  <option value="Finally Collected">Finally Collected.</option>
+</select>
+  <!--<input type="checkbox" name="checks[]" value="Repaired but not collected"> Repaired but not collected. &nbsp; &nbsp; <br>-->
+  <!--<input type="checkbox" name="checks[]" value="Finally Collected">  &nbsp; &nbsp;-->
+    </div>
+
+
+ 
+
+    </div>
+</div>
 
 
     <form  class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
