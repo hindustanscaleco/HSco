@@ -68,13 +68,16 @@ def add_purchase_details(request):
         item2.channel_of_dispatch = channel_of_dispatch
         item2.notes = notes
         item2.feedback_form_filled = feedback_form_filled
+        item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save()
 
         dispatch = Dispatch()
 
 
         dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
-
+        dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
+        dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
         dispatch.customer_email = customer_email_id
         dispatch.customer_name = customer_name
         dispatch.company_name = company_name
@@ -344,11 +347,14 @@ def add_product_details(request,id):
         item.purchase_id_id = purchase_id
         item.sales_person = sales_person
         item.purchase_type = purchase_type
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save()
 
         dispatch_id=Dispatch.objects.get(id=dispatch_id_assigned)
         dispatch_pro = Product_Details_Dispatch()
-
+        dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+        dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
         dispatch_pro.product_name = product_name
         dispatch_pro.quantity = quantity
         dispatch_pro.type_of_scale = type_of_scale

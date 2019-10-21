@@ -34,6 +34,7 @@ class Onsite_aftersales_service(models.Model):
     time_taken_destination_return_office_min = models.CharField(max_length=30, null=True, blank=True)
     notes = models.CharField(max_length=255, null=True, blank=True)
     feedback_given = models.CharField(max_length=30,choices=choices,default='NO')
+    avg_feedback = models.FloatField(default=0.0)
     entry_timedate = models.DateTimeField(default=timezone.now,)
     is_done = models.BooleanField(default=False)
     assigned_to = models.CharField(max_length=30, null=True, blank=True)

@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from customer_app.models import Customer_Details
 
 from purchase_app.views import check_admin_roles
+from user_app.models import SiteUser
 from .forms import AMC_Feedback_Form
 from .models import Amc_After_Sales, AMC_Feedback
 from django.db import connection
@@ -265,7 +266,7 @@ def update_amc_form(request,update_id):
     return render(request,"update_forms/updated_amc_form.html",context)
 
 
-def feedback_amc(request):
+def feedback_amc(request,user_id,customer_id,amc_id):
     feedback_form = AMC_Feedback_Form(request.POST or None)
     if request.method == 'POST':
         satisfied_with_work = request.POST.get('satisfied_with_work')
@@ -282,8 +283,15 @@ def feedback_amc(request):
         item.overall_interaction = overall_interaction
         item.about_hsco = about_hsco
         item.any_suggestion = any_suggestion
+        item.user_id = SiteUser.objects.get(id=user_id)
+        item.customer_id = Customer_Details.objects.get(id=customer_id)
+        item.amc_id = Amc_After_Sales.objects.get(id=amc_id)
         item.save()
 
+        amc = Amc_After_Sales.objects.get(id=amc_id)
+        amc.avg_feedback = ( satisfied_with_work + speed_of_performance + price_of_amc + overall_interaction) / 4.0
+        amc.feedback_given = 'YES'
+        amc.save(update_fields=['avg_feedback', 'feedback_given'])
         return HttpResponse('Feedback Submitted!!!')
     context = {
         'feedback_form': feedback_form,

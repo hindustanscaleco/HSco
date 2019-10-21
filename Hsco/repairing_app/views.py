@@ -33,7 +33,8 @@ def add_repairing_details(request):
         item.address = address
         item.contact_no = contact_no
         item.customer_email_id = customer_email_id
-
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save()
 
 
@@ -79,6 +80,8 @@ def add_repairing_details(request):
         item2.delivery_date = delivery_date
         item2.delivery_by = delivery_by
         item2.feedback_given = feedback_given
+        item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
 
         item2.save()
@@ -117,6 +120,8 @@ def repair_product(request,id):
         cost = request.POST.get('cost')
 
         item=Repairing_Product()
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item.type_of_machine = type_of_machine
         item.model = model
@@ -219,11 +224,23 @@ def update_repairing_details(request,id):
         item2.save(update_fields=['delivery_date', ]),
         item2.save(update_fields=['delivery_by', ]),
         item2.save(update_fields=['feedback_given', ])
+        repair_id = Repairing_after_sales_service.objects.get(id=id)
+        customer_id = Customer_Details.objects.get(id=id)
+        repair_list = Repairing_Product.objects.filter(repairing_id=id)
+        context = {
+            'repair_list': repair_list,
+            'repair_id': repair_id,
+            'customer_id':customer_id,
+
+
+        }
+        return render(request, 'update_forms/update_rep_mod_form.html', context)
 
     print(repair_list)
     context={
         'repair_list': repair_list,
         'repair_id': repair_id,
+        'customer_id':customer_id,
 
     }
     return render(request,'update_forms/update_rep_mod_form.html',context)
@@ -340,7 +357,7 @@ def final_repairing_report_module(request):
     }
     return render(request,'report/final_report_rep_mod_form.html',context)
 
-def feedback_repairing(request):
+def feedback_repairing(request,user_id,customer_id,repairing_id):
     feedback_form = Repairing_Feedback_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST':
         satisfied_with_communication = request.POST.get('satisfied_with_communication')
@@ -357,8 +374,15 @@ def feedback_repairing(request):
         item.overall_interaction = overall_interaction
         item.about_hsco = about_hsco
         item.any_suggestion = any_suggestion
+        item.user_id = SiteUser.objects.get(id=user_id)
+        item.customer_id = Customer_Details.objects.get(id=customer_id)
+        item.repairing_id = Repairing_after_sales_service.objects.get(id=repairing_id)
         item.save()
 
+        repairing = Repairing_after_sales_service.objects.get(id=repairing_id)
+        repairing .avg_feedback = (satisfied_with_communication + speed_of_performance + price_of_reparing + overall_interaction) / 4.0
+        repairing.feedback_given = 'YES'
+        repairing.save(update_fields=['avg_feedback', 'feedback_given'])
         return HttpResponse('Feedback Submitted!!!')
     context = {
         'feedback_form': feedback_form,
