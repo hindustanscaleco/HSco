@@ -34,6 +34,8 @@ class Amc_After_Sales(models.Model):
     repot_3 = models.CharField(max_length=255,null=True,blank=True)
     visit_4 = models.CharField(max_length=255,null=True,blank=True)
     repot_4 = models.CharField(max_length=255,null=True,blank=True)
+    feedback_given = models.CharField(default='NO',max_length=10,null=True,blank=True)
+    avg_feedback = models.FloatField(default=0.0)
     entry_timedate = models.DateTimeField(default=timezone.now,)
 
     #for future use

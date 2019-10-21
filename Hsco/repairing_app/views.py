@@ -352,7 +352,7 @@ def final_repairing_report_module(request):
     }
     return render(request,'report/final_report_rep_mod_form.html',context)
 
-def feedback_repairing(request):
+def feedback_repairing(request,user_id,customer_id,repairing_id):
     feedback_form = Repairing_Feedback_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST':
         satisfied_with_communication = request.POST.get('satisfied_with_communication')
@@ -369,8 +369,15 @@ def feedback_repairing(request):
         item.overall_interaction = overall_interaction
         item.about_hsco = about_hsco
         item.any_suggestion = any_suggestion
+        item.user_id = SiteUser.objects.get(id=user_id)
+        item.customer_id = Customer_Details.objects.get(id=customer_id)
+        item.repairing_id = Repairing_after_sales_service.objects.get(id=repairing_id)
         item.save()
 
+        repairing = Repairing_after_sales_service.objects.get(id=repairing_id)
+        repairing .avg_feedback = (satisfied_with_communication + speed_of_performance + price_of_reparing + overall_interaction) / 4.0
+        repairing.feedback_given = 'YES'
+        repairing.save(update_fields=['avg_feedback', 'feedback_given'])
         return HttpResponse('Feedback Submitted!!!')
     context = {
         'feedback_form': feedback_form,
