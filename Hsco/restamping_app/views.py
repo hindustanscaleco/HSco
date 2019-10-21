@@ -21,14 +21,26 @@ def restamping_manager(request):
         if 'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
-            restamp_list = Restamping_after_sales_service.objects.filter(entry_timedate__range=[start_date, end_date])
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.group, user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
+
+            # restamp_list = Restamping_after_sales_service.objects.filter(entry_timedate__range=[start_date, end_date])
             context = {
                 'restamp_list': restamp_list,
             }
             return render(request, "manager/restamping_manager.html", context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
-            restamp_list = Restamping_after_sales_service.objects.filter(mobile_no=contact)
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.group, user_id__is_deleted=False,crm_no__contact_no=contact).order_by('-id')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__contact_no=contact).order_by('-id')
+
+            # restamp_list = Restamping_after_sales_service.objects.filter(mobile_no=contact)
             context = {
                 'restamp_list': restamp_list,
             }
@@ -36,7 +48,12 @@ def restamping_manager(request):
 
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
-            restamp_list = Restamping_after_sales_service.objects.filter(customer_email_id=email)
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.group, user_id__is_deleted=False,crm_no__customer_email_id=email).order_by('-id')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__customer_email_id=email).order_by('-id')
+            # restamp_list = Restamping_after_sales_service.objects.filter(customer_email_id=email)
             context = {
                 'restamp_list': restamp_list,
             }
@@ -44,6 +61,11 @@ def restamping_manager(request):
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
             restamp_list = Restamping_after_sales_service.objects.filter(name=customer)
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.group, user_id__is_deleted=False,crm_no__customer_name=customer).order_by('-id')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__customer_name=customer).order_by('-id')
             context = {
                 'restamp_list': restamp_list,
             }
@@ -52,13 +74,24 @@ def restamping_manager(request):
         elif 'submit5' in request.POST:
             company = request.POST.get('company')
             restamp_list = Restamping_after_sales_service.objects.filter(company_name=company)
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.group, user_id__is_deleted=False,crm_no__company_name=company).order_by('-id')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__company_name=company).order_by('-id')
             context = {
                 'restamp_list': restamp_list,
             }
             return render(request, "manager/restamping_manager.html", context)
         elif request.method == 'POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.group, user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
             restamp_list = Restamping_after_sales_service.objects.filter(crn_number=crm)
+
             context = {
                 'restamp_list': restamp_list,
             }
@@ -289,12 +322,10 @@ def final_report_restamping(request):
 def restamping_employee_graph(request,user_id):
     from django.db.models import Sum
 
-    user_id=request.user.pk
-
 
     #current month
     mon = datetime.now().month
-    this_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
         data_sum=Sum('total_restamping_done_today'))
     this_lis_date = []
     this_lis_sum = []
@@ -305,7 +336,7 @@ def restamping_employee_graph(request,user_id):
 
     # previous month sales
     mon = (datetime.now().month) - 1
-    previous_month = Employee_Analysis_date.objects.filter(entry_date__month=mon).values('entry_date').annotate(
+    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
         data_sum=Sum('total_restamping_done_today'))
     previous_lis_date = []
     previous_lis_sum = []
@@ -317,15 +348,39 @@ def restamping_employee_graph(request,user_id):
     if request.method == 'POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        qs = Employee_Analysis_date.objects.filter(entry_date__range=(start_date, end_date)).values('entry_date').annotate(data_sum=Sum('total_restamping_done_today'))
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values('entry_date').annotate(data_sum=Sum('total_restamping_done_today'))
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
             lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
             lis_sum.append(x['data_sum'])
-        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values(
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values(
             'entry_date').annotate(data_sum=Sum('total_restamping_done_today'))
+        lis_date = []
+        lis_sum = []
+        for i in qs:
+            x = i
+            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
+        print(lis_date)
+        print(lis_sum)
+
+        context = {
+            'final_list': lis_date,
+            'final_list2': lis_sum,
+            'previous_lis_date': previous_lis_date,
+            'previous_lis_sum': previous_lis_sum,
+            'this_lis_date': this_lis_date,
+            'this_lis_sum': this_lis_sum,
+            # 'rep_feedback': rep_feedback,
+            # 'feeback': feeback,
+        }
+        return render(request, "graphs/restamping_employee_graph.html", context)
+    else:
+
+        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values(
+            'entry_date').annotate(data_sum=Sum('total_reparing_done_onsite_today'))
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -360,18 +415,8 @@ def restamping_employee_graph(request,user_id):
             'previous_lis_sum': previous_lis_sum,
             'this_lis_date': this_lis_date,
             'this_lis_sum': this_lis_sum,
-            # 'rep_feedback': rep_feedback,
+            'target_achieved': target_achieved,
             # 'feeback': feeback,
-        }
-        return render(request, "graphs/restamping_employee_graph.html", context)
-        context = {
-            'final_list': lis_date,
-            'final_list2': lis_sum,
-            'previous_lis_date': previous_lis_date,
-            'previous_lis_sum': previous_lis_sum,
-            'this_lis_date': this_lis_date,
-            'this_lis_sum': this_lis_sum,
-            # 'rep_feedback': rep_feedback,
         }
     return render(request, "graphs/restamping_employee_graph.html", context)
 
@@ -404,7 +449,6 @@ def update_restamping_product(request,id):
         item.amount = amount
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item.save()
 
         item.save(update_fields=['customer_email_id','product_to_stampped','scale_type','sub_model','capacity','old_serial_no','old_brand',
                                  'amount','manager_id','user_id' ])

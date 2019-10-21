@@ -335,10 +335,6 @@ $(function() {
 
     </div>
 
-    <div class="col-xl-4 col-md-4 col-mb-4">
-
-
-    </div>
 
 
 </div>
@@ -353,7 +349,9 @@ $(function() {
 
 
         <div class="row">
-
+   {% if deleted %}
+                  <center> <p>list of deleted users</p></center>
+                    {% endif %}
 
 
               <div class="col-xl-12 col-md-12 mb-12">
@@ -376,6 +374,7 @@ $(function() {
 
 <br>
         </div>
+
     <br>
       <div class="row" id="id_subcat">
                       {% for list in onsite_list %}
@@ -409,9 +408,9 @@ $(function() {
 <center>
     <div class="row" style="width: 85%; padding-bottom: 10px;">
 
-
-
-                <div class="col-xl-3 col-md-12 mb-12">
+        {% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+                        <div class="col-xl-3 col-md-12 mb-12">
               <div class="card border-left-primary shadow">
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
@@ -422,6 +421,7 @@ $(function() {
                 </div>
               </div>
             </div>
+
 
 
                 <div class="col-xl-3 col-md-12 mb-12">
@@ -438,6 +438,20 @@ $(function() {
               </div>
             </div>
 
+              <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card border-left-primarya shadow border-right-primarya">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col ">
+                        <form method="POST" action="">{%csrf_token%}
+ <a href="#"><button name="deleted" type="submit" class="btn btn-primary">Deleted User</button></a>
+                              </form>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
 
         <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-3 col-md-12 mb-12">
@@ -454,20 +468,21 @@ $(function() {
               </div>
             </div>
 
+{% else %}
+                        <div class="col-xl-3 col-md-12 mb-12">
+              <div class="card border-left-primary shadow">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col ">
+     <a href="/add_onsite_aftersales_service/"><button class="btn btn-primary">Add Onsite Repairing</button></a>                    </div>
 
-         <!--<div class="col-xl-3 col-md-12 mb-12">-->
-              <!--<div class="card shadow">-->
-                <!--<div class="card-body" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col mr-2">-->
-                        <!--<a href="/analytics/"><button class="btn btn-primary">View Users</button></a>-->
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                    <!--</div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
+{% endif %}
+{% endif %}
 
           </div>
 
