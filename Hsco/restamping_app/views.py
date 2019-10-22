@@ -173,8 +173,8 @@ def restamping_after_sales_service(request):
 
         item2.save()
         # send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
-
-        # message = 'txt'
+        #
+        # message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
         #
         #
         # url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + mobile_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"

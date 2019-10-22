@@ -56,11 +56,11 @@ def add_ess_details(request):
         item.warnings_given = warnings_given
 
         item.save()
-        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [email_id])
-
-        message = 'txt'
-
-
+        # send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [email_id])
+        #
+        # message = 'txt'
+        #
+        #
         # url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
         # payload = ""
         # headers = {'content-type': 'application/x-www-form-urlencoded'}
