@@ -118,7 +118,7 @@ def ess_all_user(request):
 def employee_profile(request,id):
     user_id = SiteUser.objects.get(id=id)
     leave_list = Employee_Leave.objects.filter(user_id=id)
-    if request.method == 'POST' or None:
+    if request.method == 'POST' and 'checks[]' not in request.POST:
         type = request.POST.get('type')
         content = request.POST.get('content')
 
@@ -128,18 +128,25 @@ def employee_profile(request,id):
         item.type = type
         item.content = content
         item.save()
-    try:
-        employee_analysis_id = Employee_Analysis_month.objects.get(user_id=user_id)
-    except :
-        print("Something else went wrong")
 
-    if request.method == 'POST' and 'is_employee_of_month' in request.POST:
-        best_employee = request.POST.get('best_employee')
 
-        item2 = employee_analysis_id
-        item2.is_employee_of_month = best_employee
+    if request.method == 'POST' and 'checks[]' in request.POST:
+        selected_list = request.POST.getlist('checks[]')
+        if selected_list == "['yes']":
+            try:
+                employee_analysis_id = Employee_Analysis_month.objects.get(user_id=user_id,
+                                                                           entry_date__month=datetime.now().month)
+                item2 = employee_analysis_id
+                item2.is_employee_of_month = True
 
-        item2.save(update_fields=['is_employee_of_month',])
+                item2.save(update_fields=['is_employee_of_month', ])
+            except:
+                print("Something else went wrong")
+
+        print(selected_list)
+        # best_employee = request.POST.get('best_employee')
+
+
 
     context = {
         'user_id': user_id,

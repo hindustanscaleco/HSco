@@ -8,7 +8,8 @@ from dispatch_app.models import Product_Details_Dispatch
 from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 from purchase_app.forms import Purchase_Details_Form, Feedback_Form
 from ess_app.models import Employee_Leave
-from django.db.models import Q,F
+from django.db.models import Q, F, Min
+from django.db.models import Sum
 from ess_app.models import Employee_Analysis_date
 from .models import  Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
@@ -257,8 +258,8 @@ def view_customer_details(request):
 
 def update_customer_details(request,id):
     purchase_id_id = Purchase_Details.objects.get(id=id)
-    # customer_id = Purchase_Details.objects.get(id=id).crm_no
-    customer_id = Customer_Details.objects.get(id=purchase_id_id)
+    customer_id = Purchase_Details.objects.get(id=id).crm_no
+    customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
     if request.method=='POST':
         customer_name = request.POST.get('customer_name')
@@ -439,18 +440,45 @@ def feedbacka(request):
     return render(request, 'feedback/feedbacka.html')
 
 def purchase_analytics(request):
-    return render(request, 'analytics/purchase_analytics.html')
+    mon = datetime.now().month
+    this_month = Employee_Analysis_month.objects.all().values('entry_date').annotate(data_sum=Sum('total_sales_done'))
+    this_lis_date = []
+    this_lis_sum = []
+    for i in this_month:
+        x = i
+        this_lis_date.append(x['entry_date'].strftime("%B-%Y"))
+        this_lis_sum.append(x['data_sum'])
+
+
+
+    from django.db.models import Max
+    # Generates a "SELECT MAX..." query
+    value=Employee_Analysis_month.objects.aggregate(Max('total_sales_done'))
+    print(value['total_sales_done__max'])
+    value = Employee_Analysis_month.objects.get(total_sales_done=value['total_sales_done__max'])
+
+    value_low = Employee_Analysis_month.objects.aggregate(Min('total_sales_done'))
+    print(value_low['total_sales_done__min'])
+    value_low = Employee_Analysis_month.objects.filter(total_sales_done=value_low['total_sales_done__min']).order_by('id').first()
+    context = {
+
+        'this_lis_date': this_lis_date,
+        'this_lis_sum': this_lis_sum,
+        'value': value,
+        'value_low': value_low,
+
+    }
+    return render(request, 'analytics/purchase_analytics_new.html',context)
 
 def customer_employee_sales_graph(request,user_id):
     #x=Employee_Analysis_date.objects.annotate(date=TruncMonth('entry_timedate')).values('date').annotate(c=Count('id')).values('date', 'c')
     #print(x)
-    from django.db.models import Sum
+
     feeback = Feedback.objects.filter(user_id=user_id)
     #this month sales
 
     mon = datetime.now().month
-    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
-        data_sum=Sum('total_sales_done_today'))
+    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(data_sum=Sum('total_sales_done_today'))
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:

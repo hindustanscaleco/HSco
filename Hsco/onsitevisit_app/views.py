@@ -1,4 +1,5 @@
 from django.db import connection
+from django.db.models import Sum, Min
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -423,7 +424,42 @@ def load_onsite_reparing_stages_list(request,):
     return render(request, 'AJAX/load_onsite_reparing_stage.html', context)
 
 def onsite_analytics(request,):
-    return render(request, 'analytics/onsite_analytics.html')
+    mon = datetime.now().month
+    this_month = Employee_Analysis_month.objects.all().values('entry_date').annotate(
+        data_sum=Sum('total_reparing_done_onsite'))
+    this_lis_date = []
+    this_lis_sum = []
+    for i in this_month:
+        x = i
+        this_lis_date.append(x['entry_date'].strftime("%B-%Y"))
+        this_lis_sum.append(x['data_sum'])
+
+    from django.db.models import Max
+    # Generates a "SELECT MAX..." query
+    value = Employee_Analysis_month.objects.aggregate(Max('total_reparing_done_onsite'))
+    print(value['total_reparing_done_onsite__max'])
+    try:
+        value = Employee_Analysis_month.objects.get(total_sales_done=value['total_reparing_done_onsite__max'])
+    except:
+        pass
+
+    value_low = Employee_Analysis_month.objects.aggregate(Min('total_reparing_done_onsite'))
+    print(value_low['total_reparing_done_onsite__min'])
+    try:
+        value_low = Employee_Analysis_month.objects.filter(
+            total_sales_done=value_low['total_reparing_done_onsite__min']).order_by('id').first()
+    except:
+        pass
+    context = {
+
+        'this_lis_date': this_lis_date,
+        'this_lis_sum': this_lis_sum,
+        'value': value,
+        'value_low': value_low,
+
+    }
+    return render(request, 'analytics/onsite_analytics.html',context)
+
 def load_onsite_reparing_manager(request,):
     selected = request.GET.get('loc_id')
 

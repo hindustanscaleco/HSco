@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db import connection
+from django.db.models import Min, Sum
 from django.shortcuts import render, redirect
 
 from django.core.mail import send_mail
@@ -224,7 +225,41 @@ def restamping_product(request,id):
 
 
 def restamping_analytics(request):
-    return render(request,'analytics/restamping_analytics.html')
+    mon = datetime.now().month
+    this_month = Employee_Analysis_month.objects.all().values('entry_date').annotate(
+        data_sum=Sum('total_restamping_done'))
+    this_lis_date = []
+    this_lis_sum = []
+    for i in this_month:
+        x = i
+        this_lis_date.append(x['entry_date'].strftime("%B-%Y"))
+        this_lis_sum.append(x['data_sum'])
+
+    from django.db.models import Max
+    # Generates a "SELECT MAX..." query
+    value = Employee_Analysis_month.objects.aggregate(Max('total_restamping_done'))
+    print(value['total_restamping_done__max'])
+    try:
+        value = Employee_Analysis_month.objects.get(total_sales_done=value['total_restamping_done__max'])
+    except:
+        pass
+
+    value_low = Employee_Analysis_month.objects.aggregate(Min('total_restamping_done'))
+    print(value_low['total_restamping_done__min'])
+    try:
+        value_low = Employee_Analysis_month.objects.filter(
+            total_sales_done=value_low['total_restamping_done__min']).order_by('id').first()
+    except:
+        pass
+    context = {
+
+        'this_lis_date': this_lis_date,
+        'this_lis_sum': this_lis_sum,
+        'value': value,
+        'value_low': value_low,
+
+    }
+    return render(request,'analytics/restamping_analytics.html',context)
 
 def update_restamping_details(request,id):
     personal_id = Restamping_after_sales_service.objects.get(id=id)

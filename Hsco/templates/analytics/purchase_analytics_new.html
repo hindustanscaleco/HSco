@@ -63,7 +63,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Reparing Module Graph</h1>
+            <h1 class="h3 mb-0 text-gray-800">Purchase Module Graph</h1>
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div>
 
@@ -75,9 +75,9 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
                 <div class=" btn" onclick="myFunctionA()">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class=" font-weight-bold text-gray-800" style="font-size: 13px;">Highest Reparing Till Now</div>
+                      <div class=" font-weight-bold text-gray-800" style="font-size: 13px;">Highest Sale Till Now</div>
 
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" style="padding-top: 13px;">{{value.total_reparing_done}}</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800" style="padding-top: 13px;">{{value.total_sales_done}}</div>
                     </div>
                     <div class="col-auto">
 <i class="fa fa-arrow-up" aria-hidden="true"  style="font-size: 60px;color:green;"></i>
@@ -103,7 +103,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
                     <div class="col mr-2">
                       <div class=" font-weight-bold text-gray-800" style="font-size: 13px;">Lowest Sale Till Now</div>
 
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" style="padding-top: 13px;">{{value_low.total_reparing_done}}</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800" style="padding-top: 13px;">{{value_low.total_sales_done}}</div>
                     </div>
                     <div class="col-auto">
 <i class="fa fa-arrow-down" aria-hidden="true"  style="font-size: 60px;color:red;"></i>
@@ -131,7 +131,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Overall Reparings </h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Overall Sale </h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -311,7 +311,7 @@ var myLineChart = new Chart(ctx, {
     labels: {{this_lis_date|safe}},
 
     datasets: [{
-      label: "Reparing",
+      label: "Sale",
       lineTension: 0.3,
       backgroundColor: "rgba(78, 115, 223, 0.05)",
       borderColor: "rgba(78, 115, 223, 1)",

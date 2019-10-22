@@ -80,7 +80,7 @@ color:;
 <div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">
 
 <div class="col-xl-4 col-md-4 col-mb-4">
-<select id="display_limit2" class="form-control">
+<select name="current_stage" id="display_limit2" class="form-control">
     <option value="-----">---------</option>
   <option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>
   <option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>
@@ -195,9 +195,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" required placeholder="Today's date
-
-" class="form-control"  type="date">
+  <input  name="today_date" id="datePicker" required class="form-control"  type="date">
     </div>
   </div>
 </div>
@@ -216,7 +214,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="name" required placeholder="Name" class="form-control"  type="text">
+  <input  name="name" required placeholder="Customer Name" class="form-control"  type="text">
     </div>
   </div>
 
@@ -329,10 +327,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="informed_on" placeholder="Informed On
-
-
-" class="form-control" required type="text">
+  <input  name="informed_on" placeholder="Informed On" class="form-control" required type="date">
     </div>
   </div>
 
@@ -439,7 +434,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="feedback_given" placeholder="Feedback Given" class="form-control" disabled type="text" value="NO">
+  <input  name="feedback_given" placeholder="Feedback Given" class="form-control" type="text" value="NO">
     </div>
   </div>
 </div>
@@ -481,8 +476,12 @@ color:;
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-    </div></div>
-
+    </div>
+<script>
+  window.onload = function() {
+document.getElementById('datePicker').valueAsDate = new Date();
+};
+</script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
