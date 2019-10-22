@@ -399,16 +399,23 @@ color:;
                  <div>
                      <form method="post">{% csrf_token %}
 <div class="form-group row">
-     <label class="col-md-3 control-label">Employee of the Month
+     <label class="col-md-4 control-label">Employee of the Month for: <span id="date"></span>
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="dispatch_id_assigned" id="customCheck21">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="yes" id="customCheck21">
   <label class="custom-control-label" for="customCheck21"></label>
 </div>
   </div>
+
+        <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+ <button  class="form-control" type="submit" style="width: 50%;"> DONE </button>
+</div>
+  </div>
+
 </div>
 </form>
 
@@ -469,7 +476,14 @@ color:;
 <!--5) Final Deleviry sms"-->
 <!--</p>-->
 
+<script>
+    window.onload = function() {
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];;
+    var date = new Date();
 
+    document.getElementById('date').innerHTML = months[date.getMonth()] + ' ' + date.getFullYear();
+};
+</script>
 
 
 <br>

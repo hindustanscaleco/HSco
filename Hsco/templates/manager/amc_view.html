@@ -189,6 +189,11 @@ $(function() {
 
  <div class="col-xl-5 col-md-1 mb-1"><center>AMC No</center></div>|
                     <div class="col-xl-5 col-md-1 mb-1"><center>Company</center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> AMC No </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>Company</center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>Contact No.</center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>Contract start Date</center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center>Contract end Date</center></div>
 
                 </div>
               </div>
@@ -204,8 +209,11 @@ $(function() {
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                    <div class="col-xl-5 col-md-1 mb-1"><center> <a href="/update_amc_form/{{list.id}}" >{{ list.amcno }}</a> </center></div>|
-                    <div class="col-xl-5 col-md-1 mb-1"><center>{{ list.company_name }} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_amc_form/{{list.id}}" >{{ list.amcno }}</a> </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.crm_no.company_name }} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.crm_no.contact_no }} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.contract_start_date }} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.contract_end_date }} </center></div>
                     <!--<div class="col-xl-2 col-md-1 mb-1"><center> 25% </center></div>|-->
                     <!--<div class="col-xl-2 col-md-1 mb-1"><center>  20%</center></div>|-->
                     <!--<div class="col-xl-2 col-md-1 mb-1"><center>-->

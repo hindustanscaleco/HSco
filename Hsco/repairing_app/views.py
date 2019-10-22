@@ -1,4 +1,5 @@
 from django.db import connection
+from django.db.models import Min, Sum
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from customer_app.models import Customer_Details
@@ -56,6 +57,7 @@ def add_repairing_details(request):
         delivery_date = request.POST.get('delivery_date')
         delivery_by = request.POST.get('delivery_by')
         feedback_given = request.POST.get('feedback_given')
+        current_stage = request.POST.get('current_stage')
 
         item2 = Repairing_after_sales_service()
 
@@ -82,21 +84,22 @@ def add_repairing_details(request):
         item2.feedback_given = feedback_given
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item2.current_stage = current_stage
 
 
         item2.save()
 
-            # send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
-            #
-            # message = 'txt'
-            #
-            #
-            # url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-            # payload = ""
-            # headers = {'content-type': 'application/x-www-form-urlencoded'}
-            #
-            # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-            # x = response.text
+        send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
+
+        message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
+
+
+        url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+        payload = ""
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        x = response.text
 
         return redirect('/repair_product/'+str(item2.id))
 
@@ -181,6 +184,7 @@ def update_repairing_details(request,id):
         delivery_date = request.POST.get('delivery_date')
         delivery_by = request.POST.get('delivery_by')
         feedback_given = request.POST.get('feedback_given')
+        current_stage = request.POST.get('current_stage')
 
         item2 = repair_id
 
@@ -205,8 +209,9 @@ def update_repairing_details(request,id):
         item2.delivery_date = delivery_date
         item2.delivery_by = delivery_by
         item2.feedback_given = feedback_given
+        item2.current_stage = current_stage
 
-        item2.save()
+        # item2.save()
 
         item2.save(update_fields=['repairingnumber', ]),
         item2.save(update_fields=['previous_repairing_number', ]),
@@ -224,6 +229,7 @@ def update_repairing_details(request,id):
         item2.save(update_fields=['delivery_date', ]),
         item2.save(update_fields=['delivery_by', ]),
         item2.save(update_fields=['feedback_given', ])
+        item2.save(update_fields=['current_stage', ])
         repair_id = Repairing_after_sales_service.objects.get(id=id)
         customer_id = Customer_Details.objects.get(id=id)
         repair_list = Repairing_Product.objects.filter(repairing_id=id)
@@ -344,7 +350,39 @@ def manager_repairing_module_home(request):
 
 
 def repairing_analytics(request):
-    return render(request,'analytics/repairing_analytics.html')
+    mon = datetime.now().month
+    this_month = Employee_Analysis_month.objects.all().values('entry_date').annotate(data_sum=Sum('total_reparing_done'))
+    this_lis_date = []
+    this_lis_sum = []
+    for i in this_month:
+        x = i
+        this_lis_date.append(x['entry_date'].strftime("%B-%Y"))
+        this_lis_sum.append(x['data_sum'])
+
+    from django.db.models import Max
+    # Generates a "SELECT MAX..." query
+    value = Employee_Analysis_month.objects.aggregate(Max('total_reparing_done'))
+    print(value['total_reparing_done__max'])
+    try:
+        value = Employee_Analysis_month.objects.get(total_sales_done=value['total_reparing_done__max'])
+    except:
+        pass
+
+    value_low = Employee_Analysis_month.objects.aggregate(Min('total_reparing_done'))
+    print(value_low['total_reparing_done__min'])
+    try:
+        value_low = Employee_Analysis_month.objects.filter(total_sales_done=value_low['total_reparing_done__min']).order_by('id').first()
+    except:
+        pass
+    context = {
+
+        'this_lis_date': this_lis_date,
+        'this_lis_sum': this_lis_sum,
+        'value': value,
+        'value_low': value_low,
+
+    }
+    return render(request,'analytics/repairing_analytics.html',context)
 
 def repairing_report_module(request):
     if request.method == 'POST' or None:

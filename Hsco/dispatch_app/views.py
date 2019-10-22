@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.db.models import Sum, Min
 from django.shortcuts import render, redirect
 from django.db import connection
 # Create your views here.
@@ -66,12 +67,12 @@ def add_dispatch_details(request):
         item2.notes = notes
 
         item2.save()
-        #send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email])
-
-        # message = 'txt'
-
-
-        # url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + customer_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+        # send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
+        #
+        # message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
+        #
+        #
+        # url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
         # payload = ""
         # headers = {'content-type': 'application/x-www-form-urlencoded'}
         #
@@ -293,16 +294,48 @@ def update_dispatch_details(request,update_id):
 
         #return redirect('/dispatch_view')
 
-    context={
-        'dispatch_item':dispatch_item,
-        'product_list':product_list,
-    }
-    return render(request, "update_forms/update_dis_mod_form.html",context)
+    # context={
+    #     'dispatch_item':dispatch_item,
+    #     'product_list':product_list,
+    # }
+    # return render(request, "update_forms/update_dis_mod_form.html",context)
 
 def dispatch_logs(request):
     return render(request,"logs/dispatch_logs.html",)
 
 def dispatch_analytics(request):
+    mon = datetime.now().month
+    this_month = Employee_Analysis_month.objects.all().values('entry_date').annotate(data_sum=Sum('total_dispatch_done'))
+    this_lis_date = []
+    this_lis_sum = []
+    for i in this_month:
+        x = i
+        this_lis_date.append(x['entry_date'].strftime("%B-%Y"))
+        this_lis_sum.append(x['data_sum'])
+
+    from django.db.models import Max
+    # Generates a "SELECT MAX..." query
+    value = Employee_Analysis_month.objects.aggregate(Max('total_dispatch_done'))
+    print(value['total_dispatch_done__max'])
+    try:
+        value = Employee_Analysis_month.objects.get(total_sales_done=value['total_dispatch_done__max'])
+    except:
+        pass
+
+    value_low = Employee_Analysis_month.objects.aggregate(Min('total_dispatch_done'))
+    print(value_low['total_dispatch_done__min'])
+    try:
+        value_low = Employee_Analysis_month.objects.filter(total_sales_done=value_low['total_dispatch_done__min']).order_by('id').first()
+    except:
+        pass
+    context = {
+
+        'this_lis_date': this_lis_date,
+        'this_lis_sum': this_lis_sum,
+        'value': value,
+        'value_low': value_low,
+
+    }
     return render(request,"analytics/dispatch_analytics.html",)
 
 def dispatch_employee_graph(request,user_id):

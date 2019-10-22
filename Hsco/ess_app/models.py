@@ -86,6 +86,7 @@ class Employee_Analysis_month(models.Model):
     entry_timedate = models.DateTimeField(default=timezone.now,)     # extract month and year from date
     month = models.CharField(max_length=20, null=True, blank=True,choices=list_of_month)    # extract month and year from date
     year = models.IntegerField()    # extract month and year from date
+    entry_date = models.DateField(default=datetime.date.today, )
     start_rating_feedback_sales = models.FloatField(default=0.0, null=True, blank=True)
     start_rating_feedback_reparing = models.FloatField(default=0.0, null=True, blank=True)
     start_rating_feedback_amc = models.FloatField(default=0.0, null=True, blank=True)
@@ -98,7 +99,7 @@ class Employee_Analysis_month(models.Model):
         return str(self.user_id)
 
 
-class   Employee_Analysis_date(models.Model):
+class  Employee_Analysis_date(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
 

@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db import connection
+from django.db.models import Min, Sum
 from django.shortcuts import render, redirect
 
 from django.core.mail import send_mail
@@ -172,8 +173,8 @@ def restamping_after_sales_service(request):
 
         item2.save()
         # send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
-
-        # message = 'txt'
+        #
+        # message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
         #
         #
         # url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + mobile_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
@@ -224,7 +225,41 @@ def restamping_product(request,id):
 
 
 def restamping_analytics(request):
-    return render(request,'analytics/restamping_analytics.html')
+    mon = datetime.now().month
+    this_month = Employee_Analysis_month.objects.all().values('entry_date').annotate(
+        data_sum=Sum('total_restamping_done'))
+    this_lis_date = []
+    this_lis_sum = []
+    for i in this_month:
+        x = i
+        this_lis_date.append(x['entry_date'].strftime("%B-%Y"))
+        this_lis_sum.append(x['data_sum'])
+
+    from django.db.models import Max
+    # Generates a "SELECT MAX..." query
+    value = Employee_Analysis_month.objects.aggregate(Max('total_restamping_done'))
+    print(value['total_restamping_done__max'])
+    try:
+        value = Employee_Analysis_month.objects.get(total_sales_done=value['total_restamping_done__max'])
+    except:
+        pass
+
+    value_low = Employee_Analysis_month.objects.aggregate(Min('total_restamping_done'))
+    print(value_low['total_restamping_done__min'])
+    try:
+        value_low = Employee_Analysis_month.objects.filter(
+            total_sales_done=value_low['total_restamping_done__min']).order_by('id').first()
+    except:
+        pass
+    context = {
+
+        'this_lis_date': this_lis_date,
+        'this_lis_sum': this_lis_sum,
+        'value': value,
+        'value_low': value_low,
+
+    }
+    return render(request,'analytics/restamping_analytics.html',context)
 
 def update_restamping_details(request,id):
     personal_id = Restamping_after_sales_service.objects.get(id=id)
@@ -379,7 +414,7 @@ def restamping_employee_graph(request,user_id):
         return render(request, "graphs/restamping_employee_graph.html", context)
     else:
 
-        qs = Employee_Analysis_date.objects.filter(entry_date__month=datetime.now().month).values(
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values(
             'entry_date').annotate(data_sum=Sum('total_reparing_done_onsite_today'))
         lis_date = []
         lis_sum = []
@@ -415,7 +450,7 @@ def restamping_employee_graph(request,user_id):
             'previous_lis_sum': previous_lis_sum,
             'this_lis_date': this_lis_date,
             'this_lis_sum': this_lis_sum,
-            'target_achieved': target_achieved,
+            # 'target_achieved': target_achieved,
             # 'feeback': feeback,
         }
     return render(request, "graphs/restamping_employee_graph.html", context)
