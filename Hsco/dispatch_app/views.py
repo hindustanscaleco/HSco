@@ -115,13 +115,20 @@ def final_report_dis_mod(request):
         pass
     with connection.cursor() as cursor:
         cursor.execute(
-            "SELECT  " + string + " from dispatch_app_dispatch where entry_timedate between '" + start_date + "' and '" + end_date + "';")
+            "SELECT  " + string + " from dispatch_app_dispatch , customer_app_customer_details"
+                                  "  where dispatch_app_dispatch.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + start_date + "' and '" + end_date + "';")
         row = cursor.fetchall()
-
         final_row = [list(x) for x in row]
         list3 = []
         for i in row:
             list3.append(list(i))
+    try:
+        del request.session['start_date']
+        del request.session['end_date']
+        del request.session['string']
+        del request.session['selected_list']
+    except:
+        pass
 
     context = {
         'final_row': final_row,

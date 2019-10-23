@@ -23,7 +23,6 @@ from django.db.models import Count
 
 def add_purchase_details(request):
     form = Purchase_Details_Form(request.POST or None, request.FILES or None)
-
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -406,8 +405,10 @@ def final_report(request):
     end_date = request.session.get('end_date')
     string = request.session.get('string')
     selected_list = request.session.get('selected_list')
+
     with connection.cursor() as cursor:
-        cursor.execute("SELECT  "+string+" from customer_app_customer_details where date_of_purchase between '"+start_date+"' and '"+end_date+"';")
+        cursor.execute("SELECT  "+string+" from purchase_app_purchase_details , customer_app_customer_details"
+                                "  where purchase_app_purchase_details.crm_no_id = customer_app_customer_details.id and entry_timedate between '"+start_date+"' and '"+end_date+"';")
         row = cursor.fetchall()
 
 
@@ -415,7 +416,13 @@ def final_report(request):
         list3=[]
         for i in row:
             list3.append(list(i))
-
+    try:
+        del request.session['start_date']
+        del request.session['end_date']
+        del request.session['string']
+        del request.session['selected_list']
+    except:
+        pass
 
     context={
         'final_row':final_row,

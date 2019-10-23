@@ -332,22 +332,25 @@ def final_report_restamping(request):
     restamp_end_date = str(request.session.get('repair_end_date'))
     restamp_string = request.session.get('repair_string')
     selected_list = request.session.get('selected_list')
-    print(restamp_string )
-    print(restamp_string )
-    print(restamp_string )
-    print(restamp_string )
-    print(restamp_string )
-    print(restamp_string )
-    print(restamp_string )
+
     with connection.cursor() as cursor:
         cursor.execute(
-            "SELECT " + restamp_string + " from restamping_app_restamping_after_sales_service where today_date between '" + restamp_start_date + "' and '" + restamp_end_date + "';")
+            "SELECT  " + restamp_string + " from restamping_app_restamping_after_sales_service , customer_app_customer_details"
+                                         "  where restamping_app_restamping_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + restamp_start_date + "' and '" + restamp_end_date + "';")
         row = cursor.fetchall()
-        print(row)
         final_row = [list(x) for x in row]
         repairing_data = []
         for i in row:
             repairing_data.append(list(i))
+
+    try:
+        del request.session['repair_start_date']
+        del request.session['repair_end_date']
+        del request.session['repair_string']
+        del request.session['selected_list']
+    except:
+        pass
+
     context = {
         'final_row': final_row,
         'selected_list': selected_list,

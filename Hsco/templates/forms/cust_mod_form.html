@@ -83,14 +83,18 @@ color:;
     <form class="well form-horizontal" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
 <fieldset>
 <div class="form-group row">
-  <label class="col-md-2 control-label ">Dispatch ID assigned
+  <label class="col-md-2 control-label ">CRM NO:
 
 </label>
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="dispatch_id_assigned" placeholder="Dispatch ID assigned" disabled class="form-control"  type="text">
+  <input name="crm_no" placeholder="Enter CRM NO"   class="form-control"  type="text" list="crm_no">
+    <datalist style="height:20px;" id="crm_no">
+      <option value="Energy industry"></option>
+
+    </datalist>
     </div>
   </div>
 </div>

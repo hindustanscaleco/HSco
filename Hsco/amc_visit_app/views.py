@@ -121,6 +121,17 @@ def final_report_amc(request):
     string =        request.session.get('string')
     selected_list = request.session.get('selected_list')
 
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT  " + string + " from amc_visit_app_amc_after_sales , customer_app_customer_details"
+                                          "  where amc_visit_app_amc_after_sales.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + start_date + "' and '" + end_date + "';")
+        row = cursor.fetchall()
+
+        final_row= [list(x) for x in row]
+        list3=[]
+        for i in row:
+            list3.append(list(i))
     try:
         del request.session['start_date']
         del request.session['end_date']
@@ -128,16 +139,6 @@ def final_report_amc(request):
         del request.session['selected_list']
     except:
         pass
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT  "+string+" from amc_visit_app_amc_after_sales where entry_timedate between '"+start_date+"' and '"+end_date+"';")
-        row = cursor.fetchall()
-
-
-        final_row= [list(x) for x in row]
-        list3=[]
-        for i in row:
-            list3.append(list(i))
-
 
     context={
         'final_row':final_row,
