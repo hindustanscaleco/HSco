@@ -21,6 +21,8 @@ from ess_app.models import Employee_Analysis_date
 
 def add_dispatch_details(request):
     # form = Customer_Details_Form(request.POST or None, request.FILES or None)
+    cust_sugg=Customer_Details.objects.all()
+
     if request.method == 'POST' or request.method=='FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -83,6 +85,7 @@ def add_dispatch_details(request):
         return redirect('/dispatch_view')
 
     context = {
+        'cust_sugg': cust_sugg
     }
     return render(request,'forms/dis_mod_form.html',context)
 

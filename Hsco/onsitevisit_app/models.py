@@ -14,7 +14,7 @@ choices = (('YES', 'YES'),
 class Onsite_aftersales_service(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE, null=True, blank=True)
     crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
-    repairingno = models.CharField(max_length=50, null=True, blank=True)
+    # repairingno = models.CharField(max_length=50, null=True, blank=True)
     # customer_name = models.CharField(max_length=80, null=True, blank=True)
     # company_name = models.CharField(max_length=80, null=True, blank=True)
     # customer_no = models.CharField(max_length=13, null=True, blank=True)
@@ -29,7 +29,7 @@ class Onsite_aftersales_service(models.Model):
     date_of_complaint_received = models.DateTimeField(default=timezone.now)
     # products_to_be_repaired = models.CharField(max_length=30, null=True, blank=True)
     visiting_charges_told_customer = models.CharField(max_length=30, null=True, blank=True)
-    total_cost = models.CharField(max_length=30, null=True, blank=True)
+    total_cost = models.FloatField(default=0.0, null=True, blank=True)
     complaint_assigned_to = models.CharField(max_length=30, null=True, blank=True)
     complaint_assigned_on = models.CharField(max_length=30, null=True, blank=True)
     time_taken_destination_return_office_min = models.CharField(max_length=30, null=True, blank=True)

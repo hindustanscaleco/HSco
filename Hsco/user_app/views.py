@@ -99,7 +99,7 @@ def create_admin(request):
         account_no = request.POST.get('account_no')
         branch_name = request.POST.get('branch_name')
         ifsc_code = request.POST.get('ifsc_code')
-        photo = request.POST.get('photo')
+        photo = request.FILES.get('photo')
         salary_slip = request.FILES.get('salary_slip')
 
 
@@ -116,7 +116,7 @@ def create_admin(request):
         item.modules_assigned = modules_assigned
         item.date_of_joining = date_of_joining
         item.bank_name = bank_name
-        item.account_no = account_no
+        item.account_number = account_no
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
@@ -139,6 +139,8 @@ def manager_list(request):
 
 def create_manager(request):
     form = SiteUser_Form(request.POST or None, request.FILES or None)
+    group = SiteUser.objects.get(id=request.user.pk).name
+    group2 = SiteUser.objects.get(id=request.user.pk).group
     if request.method == 'POST' or request.method == 'FILES':
         mobile = request.POST.get('mobile')
         email = request.POST.get('email')
@@ -165,7 +167,7 @@ def create_manager(request):
         item.modules_assigned = modules_assigned
         item.date_of_joining = date_of_joining
         item.bank_name = bank_name
-        item.account_no = account_no
+        item.account_number = account_no
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
@@ -174,8 +176,13 @@ def create_manager(request):
 
         item.save()
         return redirect('/manager_list/')
+
+    print(group)
+    print(group2)
+    print(group2)
     context = {
         'form': form,
+        'group': "'"+group+"',"+group2,
     }
     return render(request, "auth/create_manager.html", context)
 
@@ -214,7 +221,7 @@ def create_employee(request):
         item.modules_assigned = modules_assigned
         item.date_of_joining = date_of_joining
         item.bank_name = bank_name
-        item.account_no = account_no
+        item.account_number = account_no
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
@@ -341,14 +348,17 @@ def update_admin(request,id):
         name = request.POST.get('name')
         group = request.POST.get('group')
         is_deleted = request.POST.get('is_deleted')
-        modules_assigned = request.POST.get('modules_assigned')
+        modules_assigned = request.POST.getlist('checks[]')
         bank_name = request.POST.get('bank_name')
         account_no = request.POST.get('account_no')
         branch_name = request.POST.get('branch_name')
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.FILES.get('photo')
         salary_slip = request.FILES.get('salary_slip')
-
+        if is_deleted == 'on':
+            is_deleted = True
+        else:
+            is_deleted = False
         item = admin_id
 
         item.mobile = mobile
@@ -359,7 +369,7 @@ def update_admin(request,id):
         item.is_deleted = is_deleted
         item.modules_assigned = modules_assigned
         item.bank_name = bank_name
-        item.account_no = account_no
+        item.account_number = account_no
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
@@ -367,7 +377,7 @@ def update_admin(request,id):
 
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_no','branch_name','ifsc_code','photo','password'])
+        item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/update_admin/'+str(item.id))
     context = {
         'form': form,
@@ -384,14 +394,17 @@ def update_manager(request,id):
         name = request.POST.get('name')
         group = request.POST.get('group')
         is_deleted = request.POST.get('is_deleted')
-        modules_assigned = request.POST.get('modules_assigned')
+        modules_assigned = request.POST.getlist('checks[]')
         bank_name = request.POST.get('bank_name')
         account_no = request.POST.get('account_no')
         branch_name = request.POST.get('branch_name')
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.FILES.get('photo')
         salary_slip = request.FILES.get('salary_slip')
-
+        if is_deleted == 'on':
+            is_deleted = True
+        else:
+            is_deleted = False
         item = manager_id
 
         item.mobile = mobile
@@ -402,15 +415,15 @@ def update_manager(request,id):
         item.is_deleted = is_deleted
         item.modules_assigned = modules_assigned
         item.bank_name = bank_name
-        item.account_no = account_no
+        item.account_number = account_no
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
         item.salary_slip = salary_slip
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_no','branch_name','ifsc_code','photo','password'])
-        return redirect('/update_admin/' + str(item.id))
+        item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        return redirect('/update_manager/' + str(item.id))
     context = {
         'form': form,
         'manager_id': manager_id,
@@ -426,14 +439,17 @@ def update_employee(request,id):
         name = request.POST.get('name')
         group = request.POST.get('group')
         is_deleted = request.POST.get('is_deleted')
-        modules_assigned = request.POST.get('modules_assigned')
+        modules_assigned = request.POST.getlist('checks[]')
         bank_name = request.POST.get('bank_name')
         account_no = request.POST.get('account_no')
         branch_name = request.POST.get('branch_name')
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.POST.get('photo')
         salary_slip = request.FILES.get('salary_slip')
-
+        if is_deleted == 'on':
+            is_deleted = True
+        else:
+            is_deleted = False
         item = employee_id
 
         item.mobile = mobile
@@ -444,14 +460,14 @@ def update_employee(request,id):
         item.is_deleted = is_deleted
         item.modules_assigned = modules_assigned
         item.bank_name = bank_name
-        item.account_no = account_no
+        item.account_number = account_no
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
         item.salary_slip = salary_slip
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_no','branch_name','ifsc_code','photo','password'])
+        item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/update_employee/' + str(item.id))
     context = {
         'form': form,

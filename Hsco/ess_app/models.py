@@ -62,10 +62,10 @@ class Employee_Analysis_month(models.Model):
     manager_id = models.CharField(max_length=60, null=True, blank=True)
     is_employee_of_month = models.BooleanField(default=False)
     #TARGETS_GIVEN
-    sales_target_given = models.FloatField(default=0.0, )  # in amount
-    reparing_target_given = models.FloatField(default=0.0, )  # in amount
-    onsitereparing_target_given = models.FloatField(default=0.0, )  # in amount
-    restamping_target_given = models.FloatField(default=0.0, )  # in amount
+    sales_target_given = models.FloatField(default=0.0,null=True, blank=True )  # in amount
+    reparing_target_given = models.FloatField(default=0.0,null=True, blank=True )  # in amount
+    onsitereparing_target_given = models.FloatField(default=0.0,null=True, blank=True )  # in amount
+    restamping_target_given = models.FloatField(default=0.0,null=True, blank=True )  # in amount
     #DONE_THIS_MONTH
     total_sales_done = models.FloatField(default=0.0, )  # Customer module sales done in this month in amount
     total_dispatch_done = models.BigIntegerField(default=0, )  # Dispatch module dispatch done in this month
@@ -85,7 +85,7 @@ class Employee_Analysis_month(models.Model):
 
     entry_timedate = models.DateTimeField(default=timezone.now,)     # extract month and year from date
     month = models.CharField(max_length=20, null=True, blank=True,choices=list_of_month)    # extract month and year from date
-    year = models.IntegerField()    # extract month and year from date
+    year = models.IntegerField(null=True, blank=True)    # extract month and year from date
     entry_date = models.DateField(default=datetime.date.today, )
     start_rating_feedback_sales = models.FloatField(default=0.0, null=True, blank=True)
     start_rating_feedback_reparing = models.FloatField(default=0.0, null=True, blank=True)

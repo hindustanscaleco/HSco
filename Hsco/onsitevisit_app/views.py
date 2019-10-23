@@ -1,5 +1,5 @@
 from django.db import connection
-from django.db.models import Sum, Min
+from django.db.models import Sum, Min, Q, F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -19,6 +19,9 @@ from django.core.mail import send_mail
 from Hsco import settings
 from ess_app.models import Employee_Analysis_month
 from ess_app.models import Employee_Analysis_date
+import requests
+import json
+
 
 def onsite_views(request):
 
@@ -126,6 +129,8 @@ def onsite_views(request):
 
 
 def add_onsite_aftersales_service(request):
+    cust_sugg = Customer_Details.objects.all()
+    user_list=SiteUser.objects.filter(group__icontains=request.user.name)
     # form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
@@ -134,19 +139,6 @@ def add_onsite_aftersales_service(request):
         contact_no = request.POST.get('phone_no')
         customer_email_id = request.POST.get('customer_email_id')
 
-        item = Customer_Details()
-
-        item.customer_name = customer_name
-        item.company_name = company_name
-        item.address = address
-        item.contact_no = contact_no
-        item.customer_email_id = customer_email_id
-        item.user_id = SiteUser.objects.get(id=request.user.pk)
-        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-
-        item.save()
-
-        repairingno = request.POST.get('repairingno')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
         date_of_complaint_received = request.POST.get('date_of_complaint_received')
@@ -166,8 +158,28 @@ def add_onsite_aftersales_service(request):
 
         item2 = Onsite_aftersales_service()
 
-        item2.crm_no_id = item.pk
-        item2.repairingno = repairingno
+
+        item = Customer_Details()
+        if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
+                                           Q(contact_no=contact_no)).count() > 0:
+
+            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
+                                                           Q(contact_no=contact_no)).first()
+
+        else:
+
+            item.customer_name = customer_name
+            item.company_name = company_name
+            item.address = address
+            item.contact_no = contact_no
+            item.customer_email_id = customer_email_id
+            # item.user_id = SiteUser.objects.get(id=request.user.pk)
+            # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            item.save()
+            item2.crm_no = Customer_Details.objects.get(id=item.pk)
+
+
+        # item2.repairingno = repairingno
         item2.previous_repairing_number = previous_repairing_number
         item2.in_warranty = in_warranty
         item2.date_of_complaint_received = date_of_complaint_received
@@ -187,18 +199,88 @@ def add_onsite_aftersales_service(request):
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item2.save()
-        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
+
+        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
+                                                 Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+                                                  year=datetime.now().year).update(
+                total_reparing_done_today=F("total_reparing_done_onsite_today") + total_cost)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_date()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_reparing_done_onsite_today = total_cost
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+                                                   year=datetime.now().year).update(
+                total_reparing_done=F("total_reparing_done_onsite") + total_cost)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_month()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_reparing_done_onsite = total_cost
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
+
+        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
+            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).first()
+            send_mail('Feedback Form',
+                      'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_onrepairing/' + str(
+                          request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                      [crm_no.customer_email_id])
+
+            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_onrepairing/' + str(
+                request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+        else:
+
+            send_mail('Feedback Form',
+                      'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_onrepairing/' + str(
+                          request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                      [item.customer_email_id])
+
+            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_onrepairing/' + str(
+                request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+
 
         return redirect('/add_onsite_product/'+str(item2.id))
     context={
-        # 'form':form,
-       
+        'cust_sugg':cust_sugg,
+        'user_list':user_list,
+
     }
 
     return render(request, 'forms/onsite_rep_form.html',context)
 
 def add_onsite_product(request,id):
     onsite_id = Onsite_aftersales_service.objects.get(id=id).id
+    crm_id = Onsite_aftersales_service.objects.get(id=id).crm_no
     print(onsite_id)
     if request.method == 'POST' or request.method == 'FILES':
         type_of_machine = request.POST.get('type_of_machine')
@@ -223,10 +305,17 @@ def add_onsite_product(request,id):
         item.cost = cost
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item.crm_no = Customer_Details.objects.get(id=crm_id)
         item.save()
 
+        Onsite_aftersales_service.objects.filter(id=id).update(total_cost=F("total_cost") + cost)
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+                                               year=datetime.now().year).update(
+            total_reparing_done=F("total_reparing_done_onsite") + cost)
 
-
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+                                              year=datetime.now().year).update(
+            total_reparing_done_today=F("total_reparing_done_onsite_today") + cost)
 
         return redirect('/update_onsite_details/'+str(id))
     context = {
@@ -234,10 +323,77 @@ def add_onsite_product(request,id):
     }
     return render(request,"forms/onsite_product.html",context)
 
+def update_onsite_product(request,id):
+    onsite_id = Onsite_Products.objects.get(id=id)
+    onsite = Onsite_aftersales_service.objects.get(id=onsite_id.id).pk
+    # crm_id = Onsite_aftersales_service.objects.get(id=onsite).crm_no
+    print(onsite_id)
+    if request.method == 'POST' or request.method == 'FILES':
+        type_of_machine = request.POST.get('type_of_machine')
+        model = request.POST.get('model')
+        sub_model = request.POST.get('sub_model')
+        capacity = request.POST.get('capacity')
+        problem_in_scale = request.POST.get('problem_in_scale')
+        components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
+        components_replaced = request.POST.get('components_replaced')
+        cost = request.POST.get('cost')
+
+        item = Onsite_Products.objects.get(id=id)
+
+        item.onsite_repairing_id_id = onsite_id
+        item.type_of_machine = type_of_machine
+        item.model = model
+        item.sub_model = sub_model
+        item.capacity = capacity
+        item.problem_in_scale = problem_in_scale
+        item.components_replaced_in_warranty = components_replaced_in_warranty
+        item.components_replaced = components_replaced
+        item.cost = cost
+        # item.user_id = SiteUser.objects.get(id=request.user.pk)
+        # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        # item.crm_no = Customer_Details.objects.get(id=crm_id)
+        item.save(update_fields=['type_of_machine', ]),
+        item.save(update_fields=['model', ]),
+        item.save(update_fields=['sub_model', ]),
+        item.save(update_fields=['capacity', ]),
+        item.save(update_fields=['problem_in_scale', ]),
+        item.save(update_fields=['components_replaced', ]),
+        item.save(update_fields=['components_replaced_in_warranty', ]),
+        item.save(update_fields=['cost', ]),
+
+        cost2 = onsite_id.cost
+        print(cost2)
+        print(cost2)
+        print(cost2)
+        print(cost)
+        print(cost)
+
+        Onsite_aftersales_service.objects.filter(id=onsite).update(total_cost=F("total_cost") - cost2)
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
+
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+                                               entry_date__month=onsite_id.entry_timedate.month,
+                                               year=onsite_id.entry_timedate.year).update(
+            total_reparing_done=F("total_reparing_done_onsite") + cost)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+                                              entry_date__month=onsite_id.entry_timedate.month,
+                                              year=onsite_id.entry_timedate.year).update(
+            total_reparing_done_today=F("total_reparing_done_onsite_today") + cost)
+
+
+
+        return redirect('/update_onsite_details/'+str(id))
+    context = {
+        'onsite_id': onsite_id,
+    }
+    return render(request,"edit_product/edit_onsite_product.html",context)
+
 def update_onsite_details(request,id):
     onsite_id = Onsite_aftersales_service.objects.get(id=id)
     onsite_product_list = Onsite_Products.objects.filter(onsite_repairing_id=id)
-    employee_list = SiteUser.objects.filter(role='Employee')
+    employee_list = SiteUser.objects.filter(role='Employee',group__icontains=request.user.name)
 
     print(onsite_product_list)
     if request.method == 'POST' or request.method == 'FILES':
@@ -293,16 +449,16 @@ def update_onsite_details(request,id):
 
         #item.save(update_fields=['onsite_repairing_id_id', ]),
         item.save(update_fields=['assigned_to', ]),
-        item.save(update_fields=['repairingno', ]),
-        item.save(update_fields=['customer_name', ]),
-        item.save(update_fields=['company_name', ]),
-        item.save(update_fields=['customer_no', ]),
+        # item.save(update_fields=['repairingno', ]),
+        # item.save(update_fields=['customer_name', ]),
+        # item.save(update_fields=['company_name', ]),
+        # item.save(update_fields=['customer_no', ]),
         item.save(update_fields=['previous_repairing_number', ]),
         item.save(update_fields=['in_warranty', ]),
-        item.save(update_fields=['phone_no', ]),
-        item.save(update_fields=['customer_email_id', ]),
+        # item.save(update_fields=['phone_no', ]),
+        # item.save(update_fields=['customer_email_id', ]),
         item.save(update_fields=['date_of_complaint_received', ]),
-        item.save(update_fields=['customer_address', ]),
+        # item.save(update_fields=['customer_address', ]),
         item.save(update_fields=['complaint_received_by', ]),
         item.save(update_fields=['nearest_railwaystation', ]),
         item.save(update_fields=['train_line', ]),

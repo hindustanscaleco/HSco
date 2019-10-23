@@ -75,7 +75,7 @@ color:;
 
         <!-- Begin Page Content -->
         <div class="container-fluid" >
-            <form action="" method="POST"> {% csrf_token %}
+            <form action="" method="POST" autocomplete="off"> {% csrf_token %}
 
 
 <center>
@@ -108,22 +108,39 @@ color:;
 
 {% for item in leave_req_list %}
              <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id}} </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> &nbsp; &nbsp; &nbsp;
-                      <i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i>
+                 {% if item.is_approved %}
+              <div class="card shadow" style=" background-color: #00FF00;">
+                  {% elif not item.is_approved %}
+                  <div class="card shadow" style=" background-color: #FF4500;">
+                     {% else %}
+                      <div class="card shadow">
+                      {% endif %}
 
-&nbsp;
-                      <i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i>
+
+                <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> &nbsp;
+
+                        &nbsp; &nbsp;<form method="post">{% csrf_token %}
+                      <button name="list[]" value="no" id="no" type="submit" class="btn1"><i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i></button>
+&nbsp; <input type="hidden"  name="user_id" value="{{item.pk}}">
+
+                        <button name="list[]" value="yes" onclick="myFunction()" type="submit"  class="btn2"><i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i></button>
+                    </form>
                     </center> </div>
                 </div>
                 </div>
               </div>
 {% endfor %}
 
+<script>
+            function myFunction(){
+                document.getElementById('timer').style.color = '#ADFF2F'
+                document.getElementById('no').style.display = 'none'
 
+            }
+        </script>
             </div>
 
 </div>

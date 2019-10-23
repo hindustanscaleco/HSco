@@ -80,47 +80,35 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" action=" " method="post"  enctype="multipart/form-data" id="contact_form" style="padding:20px;">{% csrf_token %}
+    <form class="well form-horizontal" autocomplete="off" action=" " method="post"  enctype="multipart/form-data" id="contact_form" style="padding:20px;">{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
-  <label class="col-md-2 control-label ">Repairing Number
-
-
-
-
-</label>
-
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="repairingno" placeholder="Repairing Number
-
-
-
-" class="form-control" disabled  type="text">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Customer Name
-
+<label class="col-md-2 control-label">Customer Number
 
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_name" placeholder="Customer Name
+  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+   <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
+    <option value="-----">---------</option>
+       {% for item in cust_sugg %}
+  <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
 
-
-" class="form-control"  type="text">
+   {% endfor %}
+</select>
     </div>
   </div>
 
 
 
+
+
 </div>
+
+<div id="loaded_customer">
 
 
 
@@ -143,48 +131,7 @@ color:;
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Customer Number
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="customer_no" placeholder="Customer Number
-
-
-
-" class="form-control"  type="text">
-    </div>
-  </div>
-
-
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Previous Repairing number
-
-
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="previous_repairing_number" placeholder="Previous Repairing number
-
-
-" class="form-control"  type="text">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">In Warranty
-
+    <label class="col-md-2 control-label">Customer Name
 
 
 
@@ -192,10 +139,15 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-      <input  name="in_warranty" placeholder="In Warranty" value="NO" class="form-control" type="text">
+  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+  <input  name="customer_name" placeholder="Customer Name
+
+
+" class="form-control"  type="text">
     </div>
   </div>
+
+
 
 </div>
 
@@ -238,6 +190,59 @@ color:;
 </div>
 
 
+  <div class="form-group row">
+
+
+    <label class="col-md-2 control-label">Customer Address
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input name="customer_address" class="form-control"  placeholder="address"/>
+    </div>
+  </div>
+
+</div>
+
+
+
+</div>
+  <div class="form-group row">
+  <label class="col-md-2 control-label">Previous Repairing number
+
+
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+  <input  name="previous_repairing_number" placeholder="Previous Repairing number
+
+
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">In Warranty
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-gears faicons"></i></span>
+      <input  name="in_warranty" placeholder="In Warranty" value="NO" class="form-control" type="text">
+    </div>
+  </div>
+
+</div>
+
 
 <div class="form-group row">
   <label class="col-md-2 control-label">Date the complaint was Received
@@ -261,16 +266,6 @@ color:;
      </div>
   </div>
 
-    <label class="col-md-2 control-label">Customer Address
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <textarea name="customer_address" placeholder="address"></textarea>
-    </div>
-  </div>
 
 </div>
 
@@ -287,7 +282,7 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-user-times faicons"></i></span>
   <input  name="complaint_received_by" placeholder="Complaint Received By
 
 
@@ -306,7 +301,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-train faicons"></i></span>
   <input  name="nearest_railwaystation" placeholder="Nearest Railway Station
 
 
@@ -352,7 +347,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
   <input  name="visiting_charges_told_customer" placeholder="Visiting Charges Told to Customer
 
 
@@ -374,12 +369,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="total_cost" placeholder="Total Cost
-
-
-
-
-" class="form-control"  type="text">
+  <input  name="total_cost" placeholder="Total Cost" class="form-control" type="text">
     </div>
   </div>
 
@@ -392,13 +382,17 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="complaint_assigned_to" placeholder="Complaint Assigned To
+         <input  type="text" name="complaint_assigned_to" placeholder="Complaint Assigned To" class="form-control" list="type_of_scale">
+    <datalist style="height:20px;" id="type_of_scale">
+      {% for item in user_list %}
 
-
-" class="form-control"  type="text">
+      <option value = "{{item.name}}"></option>
+    {% endfor %}
+    </datalist>
+    </div>
     </div>
   </div>
-  </div>
+
 
 
 
@@ -413,7 +407,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="complaint_assigned_on" placeholder="Complain Assigned On
+  <input  name="complaint_assigned_on" id="datePicker" placeholder="Complain Assigned On
 
 
 
@@ -453,7 +447,7 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-book faicons"></i></span>
   <input  name="notes" placeholder="Notes" class="form-control"  type="text">
     </div>
   </div>
@@ -468,7 +462,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-thumbs-up faicons"></i></span>
         <input  name="feedback_given" placeholder="No/Yes" class="form-control" value="NO" type="text">
 
     </div>
@@ -495,6 +489,7 @@ color:;
 </fieldset>
 </form>
 </div>
+    </div>
 
   </div>
   <!-- End of Page Wrapper -->
@@ -503,7 +498,26 @@ color:;
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+<script>
+  function choice1(select) {
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
 
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#loaded_customer").html(data);
+    alert("data loaded sucessfully!");
+        }
+      });
+}
+
+  window.onload = function() {
+document.getElementById('datePicker').valueAsDate = new Date();
+};
+</script>
 
 
   <!-- Bootstrap core JavaScript-->

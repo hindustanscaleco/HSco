@@ -130,51 +130,7 @@ function myFunction() {
 
 
 
-<div class="form-group row">
 
-
-    <label class="col-md-2 control-label">Restamping ID
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="customer_email_id" disabled  value="{{restamping_product_id.restamping_id}}" placeholder="Customer Email Id" class="form-control" >
-
-    </div>
-  </div>
-</div>
-
-                <div class="form-group row">
-
-                <label class="col-md-2 control-label">Customer Email Id
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="customer_email_id" disabled id="myText" value="{{restamping_product_id.customer_email_id}}" placeholder="Customer Email Id" class="form-control" >
-
-    </div>
-  </div>
-
-<!--    <label class="col-md-2 control-label">Product To Be Stampped-->
-
-<!--</label>-->
-<!--  <div class="col-md-4 inputGroupContainer">-->
-<!--  <div class="input-group">-->
-<!--  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>-->
-<!--  <input  name="product_to_stampped" disabled id="myText2" value="{{restamping_product_id.product_to_stampped}}" placeholder="Product To Be Stampped"  class="form-control"  type="text">-->
-<!--    </div>-->
-<!--  </div>-->
-
-</div>
 
 
 
@@ -189,7 +145,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="scale_type" disabled id="myText3" value="{{restamping_product_id.scale_type}}" placeholder="Scale Type" class="form-control" >
+    <input  type="text" name="scale_type" disabled id="myText2" value="{{restamping_product_id.scale_type}}" placeholder="Scale Type" class="form-control" >
 
     </div>
   </div>
@@ -203,7 +159,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="sub_model" disabled id="myText4" value="{{restamping_product_id.sub_model}}" placeholder="Sub Model" class="form-control" >
+    <input  type="text" name="sub_model" disabled id="myText3" value="{{restamping_product_id.sub_model}}" placeholder="Sub Model" class="form-control" >
 
     </div>
   </div>
@@ -221,8 +177,8 @@ function myFunction() {
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="capacity" disabled id="myText5" value="{{restamping_product_id.capacity}}" placeholder="Capacity" class="form-control" >
+  <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>
+    <input  type="text" name="capacity" disabled id="myText4" value="{{restamping_product_id.capacity}}" placeholder="Capacity" class="form-control" >
 
     </div>
   </div>
@@ -235,8 +191,8 @@ function myFunction() {
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="old_serial_no" disabled id="myText6" value="{{restamping_product_id.old_serial_no}}" placeholder="Old Serial No" class="form-control" >
+  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
+    <input  type="text" name="old_serial_no" disabled id="myText5" value="{{restamping_product_id.old_serial_no}}" placeholder="Old Serial No" class="form-control" >
 
     </div>
   </div>
@@ -256,8 +212,8 @@ function myFunction() {
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="old_brand" disabled id="myText7" value="{{restamping_product_id.old_brand}}" placeholder="Old Brand" class="form-control" >
+  <span class="input-group-addon icon-border"><i class="fa fa-institution faicons"></i></span>
+    <input  type="text" name="old_brand" disabled id="myText6" value="{{restamping_product_id.old_brand}}" placeholder="Old Brand" class="form-control" >
 
     </div>
   </div>
@@ -267,14 +223,39 @@ function myFunction() {
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="amount" disabled id="myText8" value="{{restamping_product_id.amount}}" placeholder="Amount" class="form-control"  type="text">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <input  name="amount" disabled id="myText7" value="{{restamping_product_id.amount}}" placeholder="Amount" class="form-control"  type="text">
     </div>
   </div>
 
 </div>
 
+<div class="form-group row">
+   <label class="col-md-2 control-label">New Serial No.
 
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-desc faicons"></i></span>
+    <input  type="text" name="new_sr_no" value="{{restamping_product_id.new_sr_no}}" placeholder="New Serial No." class="form-control" >
+
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Brand
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-industry faicons"></i></span>
+  <input  name="brand" placeholder="Brand" value="{{restamping_product_id.brand}}" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
 
 
             <br>

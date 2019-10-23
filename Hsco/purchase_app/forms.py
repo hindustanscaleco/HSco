@@ -15,7 +15,6 @@ class Purchase_Details_Form(forms.ModelForm):
         'bill_no',
         'upload_op_file',
         'po_number',
-        'photo_lr_no',
         'channel_of_sales',
         'industry',
         'value_of_goods',
@@ -30,7 +29,6 @@ class Product_Details_Form(forms.ModelForm):
     class Meta:
         model = Product_Details  # model
         fields = (
-        'product_name',
         'quantity',
         'type_of_scale',
         'model_of_purchase',
