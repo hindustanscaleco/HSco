@@ -88,7 +88,7 @@ def create_admin(request):
         name = request.POST.get('name')
         group = request.POST.get('group')
         is_deleted = request.POST.get('is_deleted')
-        modules_assigned = request.POST.get('modules_assigned')
+        modules_assigned = request.POST.getlist('modules_assigned')
         date_of_joining = request.POST.get('date_of_joining')
         bank_name = request.POST.get('bank_name')
         account_no = request.POST.get('account_no')
