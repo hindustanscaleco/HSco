@@ -26,7 +26,7 @@ class Defects_Warning(models.Model):
     user_id = models.ForeignKey(SiteUser,on_delete=models.CASCADE)
     # ess_id = models.ForeignKey(Ess, on_delete=models.CASCADE)
     type = models.CharField(max_length=60) #value can be: Defect OR Warning
-    content = models.CharField(max_length=255,null=True,blank=True )
+    content = models.CharField(max_length=90,null=True,blank=True )
     entry_timedate = models.DateTimeField(default=timezone.now,)
     given_by = models.CharField(max_length=90)
     entry_date = models.DateField(default=datetime.date.today,)

@@ -77,7 +77,7 @@ class Feedback(models.Model):
     price_of_product = models.FloatField(default=0.00,null=True,blank=True)
     overall_interaction = models.FloatField(default=0.00,null=True,blank=True)
     about_hsco = models.CharField(max_length=60,null=True,blank=True)
-    any_suggestion = models.CharField(max_length=255,null=True,blank=True)
+    any_suggestion = models.CharField(max_length=90,null=True,blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now,)
 
 
