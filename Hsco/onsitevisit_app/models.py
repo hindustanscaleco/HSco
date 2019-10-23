@@ -22,6 +22,7 @@ class Onsite_aftersales_service(models.Model):
     in_warranty = models.CharField(default='NO', max_length=30, choices=choices, null=True, blank=True)
     # phone_no = models.CharField(max_length=13, null=True, blank=True)
     # customer_email_id = models.EmailField(max_length=255, null=True, blank=True)
+
     nearest_railwaystation = models.CharField(max_length=30, null=True, blank=True)
     train_line = models.CharField(max_length=30, null=True, blank=True)
     current_stage = models.CharField(default='Onsite repairing request is raised',max_length=50,null=True,blank=True)
@@ -32,7 +33,7 @@ class Onsite_aftersales_service(models.Model):
     complaint_assigned_to = models.CharField(max_length=30, null=True, blank=True)
     complaint_assigned_on = models.CharField(max_length=30, null=True, blank=True)
     time_taken_destination_return_office_min = models.CharField(max_length=30, null=True, blank=True)
-    notes = models.CharField(max_length=255, null=True, blank=True)
+    notes = models.CharField(max_length=90, null=True, blank=True)
     feedback_given = models.CharField(max_length=30,choices=choices,default='NO')
     avg_feedback = models.FloatField(default=0.0)
     entry_timedate = models.DateTimeField(default=timezone.now,)
@@ -53,9 +54,9 @@ class Onsite_Products(models.Model):
     model = models.CharField(max_length=30, null=True, blank=True)
     sub_model = models.CharField(max_length=30, null=True, blank=True)
     capacity = models.CharField(max_length=30, null=True, blank=True)
-    problem_in_scale = models.CharField(max_length=255, null=True, blank=True)
-    components_replaced_in_warranty = models.CharField(max_length=255, null=True, blank=True)
-    components_replaced = models.CharField(max_length=255, null=True, blank=True)
+    problem_in_scale = models.CharField(max_length=90, null=True, blank=True)
+    components_replaced_in_warranty = models.CharField(max_length=90, null=True, blank=True)
+    components_replaced = models.CharField(max_length=90, null=True, blank=True)
     cost = models.CharField(max_length=30, null=True, blank=True)
 
     def __int__(self):
@@ -69,7 +70,7 @@ class Onsite_Feedback(models.Model):
     price_of_reparing = models.FloatField(default=0.00, null=True, blank=True)
     overall_interaction = models.FloatField(default=0.00, null=True, blank=True)
     about_hsco = models.CharField(max_length=60, null=True, blank=True)
-    any_suggestion = models.CharField(max_length=255, null=True, blank=True)
+    any_suggestion = models.CharField(max_length=90, null=True, blank=True)
 
     def __int__(self):
         return self.onsite_worker

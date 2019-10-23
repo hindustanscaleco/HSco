@@ -30,7 +30,7 @@ class Restamping_Product(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
     restamping_id = models.ForeignKey(Restamping_after_sales_service,on_delete=models.CASCADE)
-    customer_email_id = models.EmailField(max_length=255,null=True, blank=True)
+    customer_email_id = models.EmailField(max_length=90,null=True, blank=True)
     product_to_stampped = models.CharField(max_length=150, null=True, blank=True)
     scale_type = models.CharField(max_length=150, null=True, blank=True)
     sub_model = models.CharField(max_length=150, null=True, blank=True)
