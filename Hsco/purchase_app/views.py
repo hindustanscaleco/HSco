@@ -566,7 +566,7 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
         item.save()
 
         purchase=Purchase_Details.objects.get(id=purchase_id)
-        purchase.feedback_stars= (knowledge_of_person+timeliness_of_person+price_of_product+overall_interaction)/4.0
+        purchase.feedback_stars= (float(knowledge_of_person)+float(timeliness_of_person)+float(price_of_product)+float(overall_interaction))/float(4.0)
         purchase.feedback_form_filled= 'YES'
         purchase.save(update_fields=['feedback_stars','feedback_form_filled'])
 

@@ -338,7 +338,8 @@ def feedback_amc(request,user_id,customer_id,amc_id):
         item.save()
 
         amc = Amc_After_Sales.objects.get(id=amc_id)
-        amc.avg_feedback = ( satisfied_with_work + speed_of_performance + price_of_amc + overall_interaction) / 4.0
+
+        amc.avg_feedback = (float(item.satisfied_with_work) + float(item.speed_of_performance)  + float(item.price_of_amc)  + float(item.overall_interaction) )/ float(4.0)
         amc.feedback_given = 'YES'
         amc.save(update_fields=['avg_feedback', 'feedback_given'])
         return HttpResponse('Feedback Submitted!!!')

@@ -398,10 +398,14 @@ def feedback_onrepairing(request,user_id,customer_id,onsiterepairing_id):
         item.customer_id = Customer_Details.objects.get(id=customer_id)
         item.onsiterepairing_id = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
         item.save()
-
+        print(backend_team)
+        print(onsite_worker)
+        print(speed_of_performance)
+        print(price_of_reparing)
+        print(overall_interaction)
 
         onsiterepairing = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
-        onsiterepairing.avg_feedback = (backend_team + onsite_worker + speed_of_performance + price_of_reparing + overall_interaction) / 5.0
+        onsiterepairing.avg_feedback = (float(backend_team) + float(onsite_worker) + float(speed_of_performance) + float(price_of_reparing) + float(overall_interaction)) / float(5.0)
         onsiterepairing.feedback_given = 'YES'
         onsiterepairing.save(update_fields=['avg_feedback', 'feedback_given'])
         # mon = datetime.now().month

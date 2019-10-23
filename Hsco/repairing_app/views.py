@@ -449,7 +449,7 @@ def feedback_repairing(request,user_id,customer_id,repairing_id):
         item.save()
 
         repairing = Repairing_after_sales_service.objects.get(id=repairing_id)
-        repairing .avg_feedback = (satisfied_with_communication + speed_of_performance + price_of_reparing + overall_interaction) / 4.0
+        repairing .avg_feedback = (float(satisfied_with_communication) + float(speed_of_performance) + float(price_of_reparing) + float(overall_interaction)) / float(4.0)
         repairing.feedback_given = 'YES'
         repairing.save(update_fields=['avg_feedback', 'feedback_given'])
         return HttpResponse('Feedback Submitted!!!')
