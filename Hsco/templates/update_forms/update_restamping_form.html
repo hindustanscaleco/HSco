@@ -86,11 +86,13 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 
         <!-- Begin Page Content -->
      <div class="container-fluid" >
+         <br>
 
-          <div class="row" style="padding:20px;">
-               <label class="col-md-6 control-label">Restamping Module</label>
+<center>
+    <h1 style="font-size: 25px; color: black;">Restamping Module</h1>
 
-          </div>
+</center>
+
 <br>
 <script>
 function myFunction() {
@@ -283,22 +285,35 @@ function myFunction() {
 
 
 <center>
-	<button class="btn btn-primary">Save</button>
+	<button class="btn btn-primary">Save</button>             <button  onclick="myFunction()" class="btn btn-primary">Edit</button>
+
 
 </center>
 
 </fieldset>
 </form>
-  <center>
-            <button  onclick="myFunction()" class="btn btn-primary">Edit</button>
-  </center>
 
 
 
 <br>
 
 
+                <style>
+table {
+  font-family: arial, sans-serif;
+  width: 100%;
+}
 
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 5px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
 
 
 
@@ -306,39 +321,66 @@ function myFunction() {
 </div>
 <h1 style="font-size: 25px; color: black; text-align: center;"> Products to be Stampped </h1>
   <br>
-    {% for list in restamp_product_list %}
-      <div class="col-xl-12 col-md-12 mb-12">
+
+
+                <div class="col-xl-12 col-md-12 mb-12">
+                        {% for list in restamp_product_list %}
+
               <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;">
+                <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+
+                  <table style="font-size: 14px;">
 
 
 
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Customer Email Id: {{list.customer_email_id}} </center></div>
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product To Be Stampped: {{list.product_to_stampped}} </center></div>
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Scale Type: {{list.scale_type}}  </center></div>
+<tr>
 
-                  <div class="col-xl-4 col-md-1 mb-1"><center> Sub Model: {{list.sub_model}}  </center> </div>
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Capacity: {{list.capacity}}  </center></div>
-                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Old Serial No: {{list.old_serial_no}} </center> </div>
-                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Old Brand: {{list.old_brand}} </center> </div>
+    <td>Scale Type:  </td>
+  <td> {{list.scale_type}}</td>
 
-                  <div class="col-xl-4 col-md-1 mb-1"><center> Amount: {{list.amount}}  </center> </div>
+</tr>
+<tr>
+
+
+    <td>Sub Model:</td>
+        <td>{{list.sub_model}}</td>
+
+</tr>
+<tr>
+
+    <td>Capacity:</td>
+        <td>{{list.capacity}} </td></tr>
+<tr>
+
+    <td>Old Serial No:</td>
+        <td> {{list.old_serial_no}} </td></tr>
+<tr>
+
+    <td> Old Brand:</td>
+        <td> {{list.old_brand}}</td></tr>
+<tr>
+
+    <td> Amount: </td>
+        <td>{{list.amount}} </td></tr>
+
+
+
+</table>
 
 
                     </div>
-                    <center><a href="/update_restamping_product/{{list.id}}"> <button class="btn btn-primary">Edit</button></a></center>
+                               <center><a href="/update_restamping_product/{{list.id}}"> <button class="btn btn-primary">Edit</button></a></center>
 
+                <br>
               </div>
+          {% endfor %}
+
 
       </div>
-                    <br>
 
-          {% endfor %}
-          <center>
-          <a href="/restamping_product/{{personal_id.id}}"> <button class="btn btn-primary">Add Product</button></a>
-            </center>
-          <br>
-  </div>
+
+
+
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
