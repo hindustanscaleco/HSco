@@ -85,7 +85,7 @@ class SiteUser(AbstractBaseUser):
     name =models.CharField('Name',max_length=50,null=True,blank=True)
     role = models.CharField('Role  Of User',max_length=20, choices=choices,null=True,blank=True)
     group = models.CharField(max_length=300, null=True, blank=True)
-    is_deleted = models.BooleanField(default=False,)
+    is_deleted = models.BooleanField(default='False',null=True,blank=True)
     modules_assigned = models.CharField(max_length=300,null=True, blank=True)
     photo = models.FileField(upload_to='profile_image/',null=True, blank=True)
     salary_slip = models.FileField(upload_to='salary_slip/',null=True, blank=True)
@@ -115,8 +115,7 @@ class SiteUser(AbstractBaseUser):
     REQUIRED_FIELDS = ['email',]
 
 
-    def __str__(self):
-        return self.name
+
 
     def has_perm(self, perm, obj=None):
         return True
