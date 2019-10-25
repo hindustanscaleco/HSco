@@ -146,8 +146,6 @@ def report_amc(request):
         return redirect('/final_report_amc/')
     return render(request, "report/report_amc_form.html",)
 
-
-
 def final_report_amc(request):
     start_date =    request.session.get('start_date')
     end_date =      request.session.get('end_date')
@@ -178,7 +176,6 @@ def final_report_amc(request):
         'selected_list':selected_list,
     }
     return render(request,"report/amc_final_report.html",context)
-
 
 def amc_views(request):
     if request.method=='POST' :
@@ -316,7 +313,6 @@ def update_amc_form(request,update_id):
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         customer_no = request.POST.get('customer_no')
-        customer_email_id = request.POST.get('customer_email_id')
         type_of_scale = request.POST.get('type_of_scale')
         serial_no_scale = request.POST.get('serial_no_scale')
         contract_valid_in_years = request.POST.get('contract_valid_in_years')
@@ -340,7 +336,6 @@ def update_amc_form(request,update_id):
         item.customer_name = customer_name
         item.company_name = company_name
         item.customer_no = customer_no
-        item.customer_email_id = customer_email_id
         item.type_of_scale = type_of_scale
         item.serial_no_scale = serial_no_scale
         item.contract_valid_in_years = contract_valid_in_years
