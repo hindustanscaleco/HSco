@@ -204,6 +204,7 @@ def repair_product(request,id):
         item.Replaced_scale_serial_no = Replaced_scale_serial_no
         item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
         item.repairing_id_id = repair_id
+
         item.cost = cost
 
         item.save()
