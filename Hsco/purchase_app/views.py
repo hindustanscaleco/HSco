@@ -111,7 +111,7 @@ def add_purchase_details(request):
             ead.save()
 
         if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            Employee_Analysis_month.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done=F("total_sales_done_today") + value_of_goods)
+            Employee_Analysis_month.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done=F("total_sales_done") + value_of_goods)
             # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
             # ead.save(update_fields=['total_sales_done_today'])
