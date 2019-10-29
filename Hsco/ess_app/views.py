@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.db.models import Q
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -132,16 +133,23 @@ def employee_profile(request,id):
 
     if request.method == 'POST' and 'checks[]' in request.POST:
         selected_list = request.POST.getlist('checks[]')
-        if selected_list == "['yes']":
-            try:
-                employee_analysis_id = Employee_Analysis_month.objects.get(user_id=user_id,
-                                                                           entry_date__month=datetime.now().month)
-                item2 = employee_analysis_id
-                item2.is_employee_of_month = True
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            employee_analysis_id = Employee_Analysis_month.objects.get(user_id=user_id,
+                                                                       entry_date__month=datetime.now().month)
+            item2 = employee_analysis_id
+            item2.is_employee_of_month = True
 
-                item2.save(update_fields=['is_employee_of_month', ])
-            except:
-                print("Something else went wrong")
+            item2.save(update_fields=['is_employee_of_month', ])
+        else:
+            item2 = Employee_Analysis_month()
+            item2.user_id = user_id
+            item2.is_employee_of_month = True
+
+            item2.save()
+
+        emp_of_month_list =  Employee_Analysis_month.objects.filter(Q(user_id=SiteUser.objects.get(id=request.user.pk)))
+
 
         print(selected_list)
         # best_employee = request.POST.get('best_employee')
@@ -151,6 +159,7 @@ def employee_profile(request,id):
     context = {
         'user_id': user_id,
         'leave_list': leave_list,
+        'emp_of_month_list': emp_of_month_list,
 
     }
     return render(request,'dashboardnew/employee_profile.html',context)

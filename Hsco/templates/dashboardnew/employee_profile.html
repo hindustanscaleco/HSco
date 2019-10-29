@@ -394,7 +394,6 @@ color:;
                  <center>
                      <p style="font-size: 25px;">Employee of the Month:</p>
 
-
                  <br>
                  <div>
                      <form method="post">{% csrf_token %}
@@ -420,6 +419,16 @@ color:;
 </form>
 
                  </div>
+                     </center>
+             </div><br>
+                              <div style="border: 1px solid #C0C0C0	; border-radius: 10px; color: black; padding: 10px;">
+                 <center>
+                     <p style="font-size: 25px;">Previously Employee of the month declared on :</p>
+                     {% for list in emp_of_month_list%}
+{{list.entry_timedate}}<br>
+{% endfor %}
+                 <br>
+
                      </center>
              </div>
 
