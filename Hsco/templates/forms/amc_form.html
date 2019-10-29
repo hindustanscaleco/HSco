@@ -73,7 +73,7 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" action="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
+    <form class="well form-horizontal" autocomplete="off" action="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
 <fieldset>
 
 <div class="form-group row">
@@ -87,7 +87,7 @@ color:;
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-font faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
   <input  name="amcno" placeholder="AMC Number
 
 
@@ -105,7 +105,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
   <input  name="customer_name" placeholder="Customer Name
 
 
@@ -148,7 +148,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-users faicons faicons"></i></span>
   <input  name="customer_no" placeholder="Customer Number
 
 
@@ -174,7 +174,7 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
   <input type="email" name="customer_email_id" placeholder="Customer E-mail id
 
 
@@ -270,24 +270,13 @@ color:;
      </div>
   </div>
 
-    <label class="col-md-2 control-label">Contact Number for reporting Breakdown
-
-
-
-
-
-
+    <label class="col-md-2 control-label">Contact No. For Reporting Breakdown
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contract_no_reporting_breakdown" placeholder="Contact Number for reporting Breakdown
-
-
-
-
-" class="form-control"  type="text">
+  <input  name="contract_no_reporting_breakdown" placeholder="Contact No. For Reporting Breakdown" class="form-control"  type="text">
     </div>
   </div>
 
@@ -354,7 +343,7 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
   <input type="date" name="visit_1" placeholder="Visit 1
 
 
@@ -401,7 +390,7 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
   <input type="date" name="visit_2" placeholder="Visit 2
 
 
@@ -443,7 +432,7 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
   <input type="date" name="visit_3" placeholder="Visit 3
 
 
@@ -482,7 +471,7 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
   <input type="date" name="visit_4" placeholder="Visit 4
 
 
@@ -538,6 +527,7 @@ color:;
 </fieldset>
 </form>
 </div>
+    </div>
 
   </div>
   <!-- End of Page Wrapper -->

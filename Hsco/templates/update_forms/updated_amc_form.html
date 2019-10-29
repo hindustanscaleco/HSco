@@ -142,7 +142,7 @@ function myFunction() {
 </script>
 
 
-    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
+    <form class="well form-horizontal" autocomplete="off" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
 <fieldset>
 
 <div class="form-group row">
@@ -156,7 +156,7 @@ function myFunction() {
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-font faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
   <input  name="amcno" placeholder="AMC Number" id="myText" disabled value="{{amc_list.amcno}}" class="form-control"  type="text">
     </div>
   </div>
@@ -169,7 +169,7 @@ function myFunction() {
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
   <input  name="customer_name" placeholder="Customer Name" class="form-control" type="text" id="myText2" disabled value="{{amc_list.customer_name}}">
     </div>
   </div>
@@ -206,7 +206,7 @@ function myFunction() {
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
   <input  name="customer_no" placeholder="Customer Number" class="form-control"  type="text" id="myText4" disabled value="{{amc_list.customer_no}}">
     </div>
   </div>
@@ -223,7 +223,7 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
   <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  type="email" id="myText5" disabled value="{{amc_list.customer_email_id}}">
     </div>
   </div>
@@ -258,7 +258,7 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
   <input  name="serial_no_scale" placeholder="Scale Serial Number" class="form-control"  type="text" id="myText7" disabled value="{{amc_list.serial_no_scale}}">
     </div>
   </div>
@@ -302,13 +302,7 @@ function myFunction() {
      </div>
   </div>
 
-    <label class="col-md-2 control-label">Contact Number for reporting Breakdown
-
-
-
-
-
-
+    <label class="col-md-2 control-label">Contact No For Reporting Breakdown
 </label>
 
     <div class="col-md-4 inputGroupContainer">
@@ -371,7 +365,7 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
   <input type="date" name="visit_1" placeholder="Visit 1" class="form-control" id="myText13" disabled value="{{amc_list.visit_1|date:'Y-m-d'}}">
     </div>
   </div>
@@ -402,7 +396,7 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
   <input type="date" name="visit_2" placeholder="Visit 2" class="form-control"  type="text" id="myText15" disabled value="{{amc_list.visit_2|date:'Y-m-d'}}">
     </div>
   </div>
@@ -435,7 +429,7 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
   <input type="date" name="visit_3" placeholder="Visit 3" class="form-control"  type="text17" id="myText17" disabled value="{{amc_list.visit_3|date:'Y-m-d'}}">
     </div>
   </div>
@@ -466,7 +460,7 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
   <input type="date" name="visit_4" placeholder="Visit 4" class="form-control"  type="text" id="myText19" disabled value="{{amc_list.visit_4|date:'Y-m-d'}}">
     </div>
   </div>

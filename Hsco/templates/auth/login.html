@@ -69,7 +69,7 @@ font-family: 'Montserrat', sans-serif;
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                   </div>
-                  <form class="user" method="POST"  >{% csrf_token %}
+                  <form class="user" method="POST" autocomplete="off" >{% csrf_token %}
                     <div class="form-group">
                         {{form.mobile}}
                     </div>
