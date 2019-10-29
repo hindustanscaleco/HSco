@@ -213,83 +213,79 @@ $(function() {
 
                <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-primary shadow">
-                  <a href="/view_customer_details/">
                 <div class="card-body" style="padding: 10px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
 
-                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Purchase Module
+                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Scale is collected but estimate is not given.
 </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-user fa-x text-gray-300" style="font-size: 18px;"></i>
+                      <p style="font-size: 23px;">{{rep1}}</p>
                     </div>
                   </div>
                 </div>
-                         </a>
+
               </div>
                </div>
 
 
         <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-primary shadow">
-                  <a href="/view_customer_details/">
                 <div class="card-body" style="padding: 10px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
 
-                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Purchase Module
+                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Estimate is given but Estimate is not confirmed.
 </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-user fa-x text-gray-300" style="font-size: 18px;"></i>
+                      <p style="font-size: 23px;">{{rep2}}</p>
                     </div>
                   </div>
                 </div>
-                         </a>
+
               </div>
                </div>
 
 
         <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-primary shadow">
-                  <a href="/view_customer_details/">
                 <div class="card-body" style="padding: 10px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
 
-                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Purchase Module
+                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Estimate is confirmed but not repaired.
 </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-user fa-x text-gray-300" style="font-size: 18px;"></i>
+                      <p style="font-size: 23px;">{{rep3}}</p>
                     </div>
                   </div>
                 </div>
-                         </a>
+
               </div>
                </div>
 
         <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-primary shadow">
-                  <a href="/view_customer_details/">
                 <div class="card-body" style="padding: 10px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
 
-                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Purchase Module
+                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Finally Collected.
 </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-user fa-x text-gray-300" style="font-size: 18px;"></i>
+                      <p style="font-size: 23px;">{{rep5}}</p>
                     </div>
                   </div>
                 </div>
-                         </a>
+
               </div>
                </div>
 
@@ -303,13 +299,13 @@ $(function() {
                     <div class="col mr-2">
 
                       <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">
-                          Stage Name
+                          Repaired but not collected.
 
 </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
                     <div class="col-auto">
-                       All (45) &nbsp; 4 Days (44) &nbsp; 10 Days  (1)
+                       TOTAL ({{rep4}}) &nbsp; 4 Days ({{rep4_4d}}) &nbsp; 10 Days  ({{rep4_10d}})
                     </div>
                   </div>
                 </div>
@@ -414,47 +410,47 @@ $(function() {
             </div>
 
 
-    <form  method='POST' id="FilterForm" data-url="{% url 'load_reparing_stages_list' %}" enctype="multipart/form-data">{% csrf_token %}
+    <!--<form  method='POST' id="FilterForm" data-url="{% url 'load_reparing_stages_list' %}" enctype="multipart/form-data">{% csrf_token %}-->
 
 
-<div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">
+<!--<div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">-->
 
-    <!--<div class="col-xl-4 col-md-2 col-mb-2">-->
-        <!--<input type="checkbox" name="checks[]" value="Scale is collected but estimate is not given" checked> Scale is collected but estimate is not given. &nbsp; &nbsp; <br>-->
-  <!--<input type="checkbox" name="checks[]" value="Estimate is given but Estimate is not confirmed"> Estimate is given but Estimate is not confirmed. &nbsp; &nbsp; <br>-->
-         <!--<input type="checkbox" name="checks[]" value="Estimate is confirmed but not repaired"> Estimate is confirmed but not repaired. &nbsp; &nbsp;-->
+    <!--&lt;!&ndash;<div class="col-xl-4 col-md-2 col-mb-2">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" name="checks[]" value="Scale is collected but estimate is not given" checked> Scale is collected but estimate is not given. &nbsp; &nbsp; <br>&ndash;&gt;-->
+  <!--&lt;!&ndash;<input type="checkbox" name="checks[]" value="Estimate is given but Estimate is not confirmed"> Estimate is given but Estimate is not confirmed. &nbsp; &nbsp; <br>&ndash;&gt;-->
+         <!--&lt;!&ndash;<input type="checkbox" name="checks[]" value="Estimate is confirmed but not repaired"> Estimate is confirmed but not repaired. &nbsp; &nbsp;&ndash;&gt;-->
+
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+
+
+    <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
+<!--<select id="display_limita2" class="form-control">-->
+    <!--<option value="-&#45;&#45;&#45;&#45;">-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</option>-->
+  <!--<option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>-->
+  <!--<option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>-->
+  <!--<option value="Estimate is confirmed but not repaired">Estimate is confirmed but not repaired.</option>-->
+  <!--<option value="Repired but not collected">Repaired but not collected.</option>-->
+  <!--<option value="Finally Collected">Finally Collected.</option>-->
+<!--</select>-->
+  <!--&lt;!&ndash;<input type="checkbox" name="checks[]" value="Repaired but not collected"> Repaired but not collected. &nbsp; &nbsp; <br>&ndash;&gt;-->
+  <!--&lt;!&ndash;<input type="checkbox" name="checks[]" value="Finally Collected">  &nbsp; &nbsp;&ndash;&gt;-->
+    <!--</div>-->
+
+
+     <!--<div class="col-xl-3 col-md-2 col-mb-2">-->
+<!--<select name="display_limit" class="form-control" onchange="choice1(this)">-->
+  <!--<option value="-&#45;&#45;&#45;&#45;">-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</option>-->
+  <!--<option value="All">All</option>-->
+  <!--<option value="3">3 Days</option>-->
+  <!--<option value="10">10 Days</option>-->
+<!--</select>-->
 
     <!--</div>-->
 
 
-
-    <div class="col-xl-4 col-md-4 col-mb-4">
-<select id="display_limita2" class="form-control">
-    <option value="-----">---------</option>
-  <option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>
-  <option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>
-  <option value="Estimate is confirmed but not repaired">Estimate is confirmed but not repaired.</option>
-  <option value="Repired but not collected">Repaired but not collected.</option>
-  <option value="Finally Collected">Finally Collected.</option>
-</select>
-  <!--<input type="checkbox" name="checks[]" value="Repaired but not collected"> Repaired but not collected. &nbsp; &nbsp; <br>-->
-  <!--<input type="checkbox" name="checks[]" value="Finally Collected">  &nbsp; &nbsp;-->
-    </div>
-
-
-     <div class="col-xl-3 col-md-2 col-mb-2">
-<select name="display_limit" class="form-control" onchange="choice1(this)">
-  <option value="-----">---------</option>
-  <option value="All">All</option>
-  <option value="3">3 Days</option>
-  <option value="10">10 Days</option>
-</select>
-
-    </div>
-
-
-</div>
-    </form>
+<!--</div>-->
+    <!--</form>-->
 
 
 <br>

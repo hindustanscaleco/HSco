@@ -12,9 +12,9 @@ class Repairing_after_sales_service(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
     crm_no = models.ForeignKey(Customer_Details, on_delete=models.CASCADE)
-    repairingnumber = models.CharField(max_length=40,null=True,blank=True) #combination of pk and 'rep'
-    previous_repairing_number = models.CharField(max_length=30,null=True,blank=True)
-    in_warranty = models.CharField(default='NO',max_length=30,null=True,blank=True)
+    # repairingnumber = models.CharField(max_length=40,null=True,blank=True) #combination of pk and 'rep'
+    previous_repairing_number = models.BigIntegerField(default=0)
+    in_warranty = models.CharField(default='NO',max_length=10,null=True,blank=True)
     date_of_purchase = models.DateField(default=datetime.date.today,null=True,blank=True)
     today_date = models.DateField(default=datetime.date.today,null=True,blank=True)
     # name = models.CharField(max_length=60,null=True,blank=True)
@@ -36,6 +36,7 @@ class Repairing_after_sales_service(models.Model):
     feedback_given = models.CharField(default='NO',max_length=10,null=True,blank=True)
     avg_feedback = models.FloatField(default=0.0)
     entry_timedate = models.DateField(default=datetime.date.today)
+    stage_update_timedate = models.DateField(default=datetime.date.today)
 
 
 
@@ -57,6 +58,8 @@ class Repairing_Product(models.Model):
     Replaced_scale_serial_no = models.CharField(max_length=60, null=True, blank=True)
     deposite_taken_for_replaced_scale = models.CharField(max_length=60, null=True, blank=True)
     cost = models.FloatField(default=0.0)
+    entry_timedate = models.DateField(default=datetime.date.today)
+
 
 
     def __int__(self):

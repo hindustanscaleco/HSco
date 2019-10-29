@@ -188,25 +188,25 @@ function myFunction() {
 
 }
 </script>
-<div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">
+<!--<div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">-->
 
-<div class="col-xl-4 col-md-4 col-mb-4">
-<select name="current_stage" id="display_limit2" class="form-control">
-    <option value="-----">---------</option>
-  <option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>
-  <option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>
-  <option value="Estimate is confirmed but not repaired">Estimate is confirmed but not repaired.</option>
-  <option value="Repaired but not collected">Repaired but not collected.</option>
-  <option value="Finally Collected">Finally Collected.</option>
-</select>
-  <!--<input type="checkbox" name="checks[]" value="Repaired but not collected"> Repaired but not collected. &nbsp; &nbsp; <br>-->
-  <!--<input type="checkbox" name="checks[]" value="Finally Collected">  &nbsp; &nbsp;-->
-    </div>
-
-
+<!--&lt;!&ndash;<div class="col-xl-4 col-md-4 col-mb-4">&ndash;&gt;-->
+<!--&lt;!&ndash;<select name="current_stage" id="display_limit2" class="form-control">&ndash;&gt;-->
+    <!--&lt;!&ndash;<option value="-&#45;&#45;&#45;&#45;">-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Estimate is confirmed but not repaired">Estimate is confirmed but not repaired.</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Repaired but not collected">Repaired but not collected.</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Finally Collected">Finally Collected.</option>&ndash;&gt;-->
+<!--&lt;!&ndash;</select>&ndash;&gt;-->
+  <!--&lt;!&ndash;&lt;!&ndash;<input type="checkbox" name="checks[]" value="Repaired but not collected"> Repaired but not collected. &nbsp; &nbsp; <br>&ndash;&gt;&ndash;&gt;-->
+  <!--&lt;!&ndash;&lt;!&ndash;<input type="checkbox" name="checks[]" value="Finally Collected">  &nbsp; &nbsp;&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
 
 
-    </div>
+
+
+    <!--</div>-->
 </div>
 
 
@@ -222,7 +222,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="repairingnumber" placeholder="Repairing Number" class="form-control" id="myText" type="text" disabled value="{{repair_id.repairingnumber}}">
+  <input  name="repairingnumber" placeholder="Repairing Number" class="form-control" id="myText" type="text" disabled value="{{repair_id.pk}}">
     </div>
   </div>
 
@@ -234,7 +234,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="customer_no" placeholder="Customer Number" class="form-control" id="myText2"  type="text" disabled value="{{repair_id.crm_no}}">
+  <input name="customer_no" placeholder="Customer Number" class="form-control" id="myText2"  type="text" disabled value="{{repair_id.crm_no.pk}}">
     </div>
   </div>
 
@@ -641,6 +641,36 @@ function myFunction() {
   <input  name="feedback_given" placeholder="Feedback Given" id="myText20"  class="form-control"  type="text" disabled value="{{repair_id.feedback_given}}">
     </div>
   </div>
+  </div>
+
+
+      <div class="form-group row">
+    <label class="col-md-2 control-label">Current Stage
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="current_stage_old" placeholder="current stage" class="form-control" id="myText21" disabled value="{{repair_id.current_stage}}">
+
+     </div>
+  </div>
+
+              <label class="col-md-2 control-label">Update Stage
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+<select name="current_stage" id="display_limi" class="form-control">
+  <option value="Scale is collected but estimate is not given">1)Scale is collected but estimate is not given.</option>
+  <option value="Estimate is given but Estimate is not confirmed">2)Estimate is given but Estimate is not confirmed.</option>
+  <option value="Estimate is confirmed but not repaired">3)Estimate is confirmed but not repaired.</option>
+  <option value="Repaired but not collected">4)Repaired but not collected.</option>
+  <option value="Finally Collected">5)Finally Collected.</option>
+</select>      </div>
+  </div>
+
   </div>
 
 
