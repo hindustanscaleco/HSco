@@ -89,7 +89,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
         <div class="container-fluid" >
 
           <div class="row" style="padding:20px;">
-               <label class="col-md-6 control-label">CRM Number:{{cust_id.pk}}</label>
+               <label class="col-md-6 control-label">CRM Number: {{customer_id.pk}}</label>
 
           </div>
 <br>
@@ -122,10 +122,6 @@ function myFunction() {
     <form class="well form-horizontal" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
 <fieldset>
 
-    <div class="form-group row">
-  <label class="col-md-2 control-label ">CRM No. {{crm_no}}
-</label>
-</div>
 
 <div class="form-group row">
   <label class="col-md-2 control-label ">Name of customer
@@ -390,16 +386,7 @@ function myFunction() {
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Upload LR Photo
 
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-    <input type="file" name="photo_lr_no" class="form-control" disabled id="myText12" value="{{purchase_id_id.photo_lr_no}}">
-
-    </div>
-  </div>
 
 </div>
 
@@ -413,7 +400,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="channel_of_sales" placeholder="Channel of Sales" value="{{purchase_id_id.channel_of_sales}}" class="form-control"  type="text" disabled id="myText13" value="{{purchase_id_id.channel_of_sales}}">
+  <input  name="channel_of_sales" placeholder="Channel of Sales" value="{{purchase_id_id.channel_of_sales}}" class="form-control"  type="text" disabled id="myText13">
     </div>
   </div>
 
@@ -438,7 +425,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods" placeholder="Value of Goods" value="{{purchase_id_id.value_of_goods}}" class="form-control"  type="text" disabled id="myText15" value="{{purchase_id_id.value_of_goods}}">
+  <input  name="value_of_goods" placeholder="Value of Goods" value="{{purchase_id_id.value_of_goods}}" class="form-control" step="0.2" type="number" disabled id="myText15">
     </div>
   </div>
     <label class="col-md-2 control-label">Channel of Dispatch
@@ -462,7 +449,7 @@ function myFunction() {
 </div>
   </div>
 
-    <label class="col-md-2 control-label">Feedback Form Filled by me
+    <label class="col-md-2 control-label">Feedback Form Filled
 
 
 </label>
@@ -540,36 +527,56 @@ function myFunction() {
           <a href="/add_product_details/{{purchase_id_id.id}}"> <button class="btn btn-primary">Add Product</button></a>
             </center>
           <br>
-</div>
-                <center>
-                              <div class="col-lg-6">
+
+          <center>
+
+
+     <div class="col-xl-6 col-md-6 mb-4">
+
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary" >Feedback</h6>
+                  <h6 class="m-0 font-weight-bold text-primary" >Feedback From : {{customer_id.company_name}}</h6>
                 </div>
                 <div class="card-body">
       <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-6">
 
-        <form enctype="multipart/form-data" method="post">{% csrf_token %}
 
-                        <b>Knowledge : </b>{{ feedback_form.knowledge_of_person }} <br>
-                  <b>Timeliness : </b>{{feedback_form.timeliness_of_person}} <br>
-                  <b>Price Of Product : </b>{{feedback_form.price_of_product}} <br>
-                  <b>Over All Interaction : </b>{{feedback_form.overall_interaction}} <br>
-                  <b>About HSCO : </b>{{feedback_form.about_hsco}} <br>
-                  <b>Any Other Suggestions: </b>{{feedback_form.any_suggestion}} <br>
+                        <b>Knowledge : </b>{% for avg in feedback.knowledge_of_person|rjust:'5'  %}
+{% if forloop.counter <= feedback.knowledge_of_person %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %} <br>
+                  <b>Timeliness : </b>{% for avg in feedback.timeliness_of_person|rjust:'5'  %}
+{% if forloop.counter <= feedback.timeliness_of_person %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %}  <br>
+                  <b>Price Of Product : </b>{% for avg in feedback.price_of_product|rjust:'5'  %}
+{% if forloop.counter <= feedback.price_of_product %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %}   <br>
+                  <b>Over All Interaction : </b>{% for avg in feedback.overall_interaction|rjust:'5'  %}
+{% if forloop.counter <= feedback.overall_interaction %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %} <br>
+                  <b>About HSCO : </b>{{feedback.about_hsco}} <br>
+                  <b>Any Other Suggestions: </b>{{feedback.any_suggestion}} <br>
 <!--
                       <b>Ratings : <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
 -->
 
-								<i class="fa fa-star" aria-hidden="true"></i></b>
-								<i class="fa fa-star" aria-hidden="true"></i></b>
-								<i class="fa fa-star" aria-hidden="true"></i></b>
-								<i class="fa fa-star" aria-hidden="true"></i></b>
 
-
-</form>
     </div>
       </div>
 
@@ -578,8 +585,52 @@ function myFunction() {
 
             </div>
               </div>
-                              </div>
-                </center>
+                        </div>
+
+
+</center>
+</div>
+
+
+                <!--<center>-->
+                              <!--<div class="col-lg-6">-->
+              <!--<div class="card shadow mb-4">-->
+                <!--<div class="card-header py-3">-->
+                  <!--<h6 class="m-0 font-weight-bold text-primary" >Feedback</h6>-->
+                <!--</div>-->
+                <!--<div class="card-body">-->
+      <!--<div class="row">-->
+    <!--<div class="col-lg-4">-->
+
+        <!--<form enctype="multipart/form-data" method="post">{% csrf_token %}-->
+
+                        <!--<b>Knowledge : </b>{{ feedback_form.knowledge_of_person }} <br>-->
+                  <!--<b>Timeliness : </b>{{feedback_form.timeliness_of_person}} <br>-->
+                  <!--<b>Price Of Product : </b>{{feedback_form.price_of_product}} <br>-->
+                  <!--<b>Over All Interaction : </b>{{feedback_form.overall_interaction}} <br>-->
+                  <!--<b>About HSCO : </b>{{feedback_form.about_hsco}} <br>-->
+                  <!--<b>Any Other Suggestions: </b>{{feedback_form.any_suggestion}} <br>-->
+<!--&lt;!&ndash;-->
+                      <!--<b>Ratings : <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>-->
+<!--&ndash;&gt;-->
+
+								<!--<i class="fa fa-star" aria-hidden="true"></i></b>-->
+								<!--<i class="fa fa-star" aria-hidden="true"></i></b>-->
+								<!--<i class="fa fa-star" aria-hidden="true"></i></b>-->
+								<!--<i class="fa fa-star" aria-hidden="true"></i></b>-->
+
+
+<!--</form>-->
+    <!--</div>-->
+      <!--</div>-->
+
+
+
+
+            <!--</div>-->
+              <!--</div>-->
+                              <!--</div>-->
+                <!--</center>-->
   </div>
 
 

@@ -134,6 +134,8 @@ def manager_list(request):
 
 def create_manager(request):
     form = SiteUser_Form(request.POST or None, request.FILES or None)
+    group = SiteUser.objects.get(id=request.user.pk).name
+    group2 = SiteUser.objects.get(id=request.user.pk).group
     if request.method == 'POST' or request.method == 'FILES':
         mobile = request.POST.get('mobile')
         email = request.POST.get('email')
@@ -169,8 +171,13 @@ def create_manager(request):
 
         item.save()
         return redirect('/manager_list/')
+
+    print(group)
+    print(group2)
+    print(group2)
     context = {
         'form': form,
+        'group': "'"+group+"',"+group2,
     }
     return render(request, "auth/create_manager.html", context)
 

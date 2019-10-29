@@ -38,7 +38,7 @@ class Product_Details_Dispatch(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
     dispatch_id = models.ForeignKey(Dispatch,on_delete=models.CASCADE)
-    product_name = models.CharField(max_length=30,null=True,blank=True)
+    # product_name = models.CharField(max_length=30,null=True,blank=True)
     quantity = models.CharField(max_length=30,null=True,blank=True)
     type_of_scale = models.CharField(max_length=30,null=True,blank=True)
     model_of_purchase = models.CharField(max_length=30,null=True,blank=True)
@@ -48,7 +48,7 @@ class Product_Details_Dispatch(models.Model):
     brand = models.CharField(max_length=30,null=True,blank=True)
     capacity = models.CharField(max_length=30,null=True,blank=True)
     unit = models.CharField(max_length=30,null=True,blank=True)
-    sales_person = models.CharField(max_length=30,null=True,blank=True)
+    # sales_person = models.CharField(max_length=30,null=True,blank=True)
     new_repeat_purchase = models.CharField(max_length=30,null=True,blank=True)
 
 
