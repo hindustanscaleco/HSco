@@ -157,7 +157,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
-  <input  name="amcno" placeholder="AMC Number" id="myText" disabled value="{{amc_list.amcno}}" class="form-control"  type="text">
+  <input  name="amcno" placeholder="AMC Number" id="myText" disabled value="{{amc_list.pk}}" class="form-control"  type="text">
     </div>
   </div>
 
@@ -170,7 +170,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-  <input  name="customer_name" placeholder="Customer Name" class="form-control" type="text" id="myText2" disabled value="{{amc_list.customer_name}}">
+  <input  name="customer_name" placeholder="Customer Name" class="form-control" type="text" id="myText2" disabled value="{{amc_list.crm_no.customer_name}}">
     </div>
   </div>
 
@@ -192,7 +192,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" id="myText3" disabled value="{{amc_list.company_name}}">
+  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" id="myText3" disabled value="{{amc_list.crm_no.company_name}}">
     </div>
   </div>
 
@@ -207,7 +207,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-  <input  name="customer_no" placeholder="Customer Number" class="form-control"  type="text" id="myText4" disabled value="{{amc_list.customer_no}}">
+  <input  name="customer_no" placeholder="Customer Number" class="form-control"  type="text" id="myText4" disabled value="{{amc_list.crm_no.pk}}">
     </div>
   </div>
 
@@ -224,7 +224,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  type="email" id="myText5" disabled value="{{amc_list.customer_email_id}}">
+  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  type="email" id="myText5" disabled value="{{amc_list.crm_no.customer_email_id}}">
     </div>
   </div>
 
