@@ -52,10 +52,61 @@ font-size: 14px;
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Repairing Module</h1>
-          </div>
+            <div class="row">
+             <h1 class="col-xl-9 col-md-2 col-mb-8" style="font-size: 25px; color: black;"> Repairing Module</h1>
+
+             <div class="col-xl-3 col-md-2 col-mb-8 row" style="color: black;">
+
+{% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+                     <div class="col-xl-12 col-md-2 col-mb-8 row">
+                         <div class="col-xl-4 col-md-2 col-mb-8">
+    <p> Manager</p>
+                     </div>
+                     <div class="col-xl-3 col-md-2 col-mb-8">
+                         <label class="switch ">
+  <input name="Employee" type="checkbox" checked onchange="toggleCheckbox2(this)">
+  <span class="slider round"></span>
+</label>
+                     </div>
+                     <div class="col-xl-5 col-md-2 col-mb-8">
+                         <p> Employee</p>
+                     </div>
+                     </div>
+{% else %}
+
+                                   <!--<div class="col-xl-12 col-md-2 col-mb-8 row">-->
+                         <!--<div class="col-xl-4 col-md-2 col-mb-8">-->
+<!--<p>Done</p>-->
+                     <!--</div>-->
+                     <!--<div class="col-xl-3 col-md-2 col-mb-8">-->
+                         <!--<label class="switch ">-->
+  <!--<input name="Done" type="checkbox" checked onchange="toggleCheckbox(this)">-->
+  <!--<span class="slider round"></span>-->
+<!--</label>-->
+                     <!--</div>-->
+                     <!--<div class="col-xl-5 col-md-2 col-mb-8">-->
+                         <!--<p> Pending</p>-->
+                     <!--</div>-->
+                     <!--</div>-->
+
+
+
+
+
+
+
+                     {% endif %}
+                     {% endif %}
+
+
+
+
+                </div>
+
+            </div>
+
+<br>
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
 </style>
@@ -150,10 +201,122 @@ $(function() {
      <option value="d7">Search By CRM Number Range</option>
   </select>
 </div>
-
-<br>
                 </div>
 
+<br>
+<br>
+<br>
+                </div>
+  <div class="row">
+
+
+
+               <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow">
+                  <a href="/view_customer_details/">
+                <div class="card-body" style="padding: 10px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+
+                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Purchase Module
+</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-user fa-x text-gray-300" style="font-size: 18px;"></i>
+                    </div>
+                  </div>
+                </div>
+                         </a>
+              </div>
+               </div>
+
+
+        <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow">
+                  <a href="/view_customer_details/">
+                <div class="card-body" style="padding: 10px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+
+                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Purchase Module
+</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-user fa-x text-gray-300" style="font-size: 18px;"></i>
+                    </div>
+                  </div>
+                </div>
+                         </a>
+              </div>
+               </div>
+
+
+        <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow">
+                  <a href="/view_customer_details/">
+                <div class="card-body" style="padding: 10px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+
+                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Purchase Module
+</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-user fa-x text-gray-300" style="font-size: 18px;"></i>
+                    </div>
+                  </div>
+                </div>
+                         </a>
+              </div>
+               </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow">
+                  <a href="/view_customer_details/">
+                <div class="card-body" style="padding: 10px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+
+                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Purchase Module
+</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-user fa-x text-gray-300" style="font-size: 18px;"></i>
+                    </div>
+                  </div>
+                </div>
+                         </a>
+              </div>
+               </div>
+
+
+        <div class="col-xl-3 col-md-6 mb-4">
+        </div>
+        <div class="col-xl-6 col-md-6 mb-4">
+              <div class="card border-left-primary shadow">
+                <div class="card-body" style="padding: 10px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+
+                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">
+                          Stage Name
+
+</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                    </div>
+                    <div class="col-auto">
+                       All (45) &nbsp; 4 Days (44) &nbsp; 10 Days  (1)
+                    </div>
+                  </div>
+                </div>
+              </div>
+               </div>
+
+  </div>
 
                 <div  class="col-xl-6 col-md-6 col-mb-8">
 
@@ -246,54 +409,6 @@ $(function() {
 
                 </div>
 
-                                 <div class="col-xl-3 col-md-2 col-mb-8 row" style="color: black;">
-
-{% if request.user.is_authenticated %}
-{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
-                     <div class="col-xl-12 col-md-2 col-mb-8 row">
-                         <div class="col-xl-4 col-md-2 col-mb-8">
-    <p> Manager</p>
-                     </div>
-                     <div class="col-xl-3 col-md-2 col-mb-8">
-                         <label class="switch ">
-  <input name="Employee" type="checkbox" checked onchange="toggleCheckbox2(this)">
-  <span class="slider round"></span>
-</label>
-                     </div>
-                     <div class="col-xl-5 col-md-2 col-mb-8">
-                         <p> Employee</p>
-                     </div>
-                     </div>
-{% else %}
-
-                                   <!--<div class="col-xl-12 col-md-2 col-mb-8 row">-->
-                         <!--<div class="col-xl-4 col-md-2 col-mb-8">-->
-<!--<p>Done</p>-->
-                     <!--</div>-->
-                     <!--<div class="col-xl-3 col-md-2 col-mb-8">-->
-                         <!--<label class="switch ">-->
-  <!--<input name="Done" type="checkbox" checked onchange="toggleCheckbox(this)">-->
-  <!--<span class="slider round"></span>-->
-<!--</label>-->
-                     <!--</div>-->
-                     <!--<div class="col-xl-5 col-md-2 col-mb-8">-->
-                         <!--<p> Pending</p>-->
-                     <!--</div>-->
-                     <!--</div>-->
-
-
-
-
-
-
-
-                     {% endif %}
-                     {% endif %}
-
-
-
-
-                </div>
 
 
             </div>
@@ -314,12 +429,12 @@ $(function() {
 
 
     <div class="col-xl-4 col-md-4 col-mb-4">
-<select id="display_limit2" class="form-control">
+<select id="display_limita2" class="form-control">
     <option value="-----">---------</option>
   <option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>
   <option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>
   <option value="Estimate is confirmed but not repaired">Estimate is confirmed but not repaired.</option>
-  <option value="Repaired but not collected">Repaired but not collected.</option>
+  <option value="Repired but not collected">Repaired but not collected.</option>
   <option value="Finally Collected">Finally Collected.</option>
 </select>
   <!--<input type="checkbox" name="checks[]" value="Repaired but not collected"> Repaired but not collected. &nbsp; &nbsp; <br>-->

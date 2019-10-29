@@ -50,3 +50,17 @@ class LoginForm(forms.Form):
         password = self.cleaned_data.get('password')
         user = authenticate(username=mobile, password=password)
         return user
+
+class Password_reset_Form(forms.Form):
+
+    email =forms.EmailField(
+        widget=forms.PasswordInput(
+        attrs={
+            'type': 'email',
+            'class': 'form-control form-control-user',
+            ' placeholder': "Enter Email",
+            'name': 'email',
+        }))
+
+
+

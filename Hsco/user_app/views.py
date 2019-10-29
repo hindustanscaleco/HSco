@@ -1,11 +1,16 @@
 from django.contrib.auth import authenticate, login, logout
+from django.core.mail import send_mail
 from django.db import connection
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 from django.views.generic import FormView
 
-from .forms import SiteUser_Form, LoginForm
+from Hsco import settings
+from .forms import SiteUser_Form, LoginForm, Password_reset_Form
 from .models import SiteUser
+import secrets
+import string
 
 class LoginView(FormView):
 
@@ -377,8 +382,6 @@ def update_admin(request,id):
     }
     return render(request,"update_forms/update_admin.html",context)
 
-
-
 def update_manager(request,id):
     manager_id = SiteUser.objects.get(id=id)
     form = SiteUser_Form(request.POST or None)
@@ -462,4 +465,27 @@ def update_employee(request,id):
         'employee_id': employee_id,
     }
     return render(request,"update_forms/update_employee.html",context)
+
+def forgotpassword(request):
+    form = Password_reset_Form(request.POST or None)
+
+    if request.method == 'POST':
+        email = request.POST.get('email')
+
+
+        alphabet = string.ascii_letters + string.digits
+        password = ''.join(secrets.choice(alphabet) for i in range(8))
+
+
+        user = SiteUser.objects.get(email=email)
+        user.set_password(password)
+        user.save(update_fields=['password'])
+
+        send_mail('HSCO: Your Password has been reset successfully!!!','New Password: '+password  , settings.EMAIL_HOST_USER,[email])
+        return HttpResponse('Password has been reset successfully!!!')
+
+    context = {
+        'form': form
+    }
+    return render(request, 'auth/forgot_password.html', context)
 

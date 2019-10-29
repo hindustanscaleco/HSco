@@ -17,7 +17,7 @@ class Repairing_after_sales_service(models.Model):
     in_warranty = models.CharField(default='NO',max_length=30,null=True,blank=True)
     date_of_purchase = models.DateField(default=datetime.date.today,null=True,blank=True)
     today_date = models.DateField(default=datetime.date.today,null=True,blank=True)
-    name = models.CharField(max_length=60,null=True,blank=True)
+    # name = models.CharField(max_length=60,null=True,blank=True)
     # company_name = models.CharField(max_length=80,null=True,blank=True)
     # phone_no = models.CharField(max_length=13,null=True,blank=True)
     # customer_email_id = models.EmailField(max_length=255,null=True,blank=True)
