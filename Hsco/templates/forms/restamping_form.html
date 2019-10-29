@@ -78,7 +78,7 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" action=" " method="post" enctype="multipart/form-data" id="contact_form" style="padding:20px;">{% csrf_token %}
+    <form class="well form-horizontal" autocomplete="off" action="" method="post" autocomplete="off" enctype="multipart/form-data" id="contact_form" style="padding:20px;">{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
@@ -105,7 +105,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-group faicons"></i></span>
   <input  name="customer_no" placeholder="Customer Number
 
 " class="form-control"  type="text">
@@ -143,7 +143,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar-check-o faicons"></i></span>
   <input type="date" name="today_date" placeholder="Todays date" class="form-control"  type="text">
     </div>
   </div>
@@ -194,7 +194,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
   <input  name="new_serial_no" placeholder="New Serial No.
 
 
@@ -216,7 +216,7 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-industry faicons"></i></span>
   <input  name="brand" placeholder="Brand
 
 
@@ -233,7 +233,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar-check-o faicons"></i></span>
   <input type="date" name="scale_delivery_date" placeholder="Scale Delivery Date
 
 
@@ -265,7 +265,8 @@ color:;
 </fieldset>
 </form>
 </div>
-
+      </div>
+    </div>
   </div>
   <!-- End of Page Wrapper -->
 
@@ -292,6 +293,7 @@ color:;
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
 
 </body>
 

@@ -107,7 +107,7 @@ function myFunction() {
 </script>
 
 
-    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
+    <form class="well form-horizontal" autocomplete="off" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
@@ -134,7 +134,7 @@ function myFunction() {
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
   <input  name="customer_no" placeholder="Customer Number
 
 " class="form-control"  type="text" disabled id="myText2" value="{{personal_id.customer_no}}">
@@ -176,7 +176,7 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
   <input  name="address" placeholder="Address" class="form-control"  type="text" disabled id="myText4" value="{{personal_id.address}}">
     </div>
   </div>
@@ -226,7 +226,7 @@ function myFunction() {
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
   <input  name="new_serial_no" placeholder="New Serial No.
 
 
@@ -248,7 +248,7 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-industry faicons"></i></span>
   <input  name="brand" placeholder="Brand
 
 
