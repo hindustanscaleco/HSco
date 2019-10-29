@@ -114,7 +114,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="repairingnumber" required placeholder="Repairing Number
+  <input  name="repairingnumber" disabled required placeholder="Repairing Number
 
 " class="form-control"  type="text">
     </div>
@@ -161,11 +161,10 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-    <input type="text" placeholder="In Warranty" required name="in_warranty" class="form-control" value="" list="war">
-    <datalist style="height:20px;" id="war">
-    <option value = "Yes"></option>
-    <option value = "No"></option>
-    </datalist>
+<select class="form-control">
+  <option value="yes">Yes</option>
+  <option value="no">No</option>
+</select>
     </div>
   </div>
 
