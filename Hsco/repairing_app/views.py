@@ -44,7 +44,6 @@ def add_repairing_details(request):
         in_warranty = request.POST.get('in_warranty')
         date_of_purchase = request.POST.get('date_of_purchase')
         today_date = request.POST.get('today_date')
-        name = request.POST.get('name')
         location = request.POST.get('location')
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
 
@@ -68,7 +67,6 @@ def add_repairing_details(request):
         item2.in_warranty = in_warranty
         item2.date_of_purchase = date_of_purchase
         item2.today_date = today_date
-        item2.name = name
 
         item2.location = location
         item2.products_to_be_repaired = products_to_be_repaired
@@ -510,11 +508,6 @@ def edit_product(request,id):
 
     return render(request,'edit_product/edit_product_repair.html',context)
 
-
-
-
-
-
 def repairing_employee_graph(request,user_id):
     # user_id=user_id
     currentMonth = datetime.now().month
@@ -639,8 +632,6 @@ def repairing_employee_graph(request,user_id):
             # 'feeback': feeback,
         }
         return render(request,"graphs/repairing_employee_graph.html",context)
-
-
 
 def load_reparing_stages_list(request,):
 
