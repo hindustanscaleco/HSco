@@ -119,7 +119,7 @@ def ess_all_user(request):
 def employee_profile(request,id):
     user_id = SiteUser.objects.get(id=id)
     leave_list = Employee_Leave.objects.filter(user_id=id)
-    if request.method == 'POST' and 'checks[]' not in request.POST:
+    if request.method == 'POST' and 'type'  in request.POST:
         type = request.POST.get('type')
         content = request.POST.get('content')
 
@@ -130,12 +130,44 @@ def employee_profile(request,id):
         item.content = content
         item.save()
 
+    if request.method == 'POST' and 'sales_target_given' or 'reparing_target_givens' or 'onsitereparing_target_given' or 'restamping_target_given' in request.POST:
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                  Q(user_id=id)).count() > 0:
+            sales_target_given = request.POST.get('sales_target_given')
+            reparing_target_given = request.POST.get('reparing_target_given')
+            onsitereparing_target_given = request.POST.get('onsitereparing_target_given')
+            restamping_target_given = request.POST.get('restamping_target_given')
+
+            item3 = Employee_Analysis_month.objects.get(user_id=id, entry_date__month=datetime.now().month)
+
+            item3.sales_target_given = sales_target_given
+            item3.reparing_target_given = reparing_target_given
+            item3.onsitereparing_target_given = onsitereparing_target_given
+            item3.restamping_target_given = restamping_target_given
+            item3.save(update_fields=['sales_target_given', 'reparing_target_given','onsitereparing_target_given','restamping_target_given'])
+        else:
+
+            sales_target_given = request.POST.get('sales_target_given')
+            reparing_target_given = request.POST.get('reparing_target_given')
+            onsitereparing_target_given = request.POST.get('onsitereparing_target_given')
+            restamping_target_given = request.POST.get('restamping_target_given')
+
+            item3 = Employee_Analysis_month()
+
+            item3.user_id = user_id
+            item3.sales_target_given = sales_target_given
+            item3.reparing_target_given = reparing_target_given
+            item3.onsitereparing_target_given = onsitereparing_target_given
+            item3.restamping_target_given = restamping_target_given
+
+            item3.save()
+
 
     if request.method == 'POST' and 'checks[]' in request.POST:
         selected_list = request.POST.getlist('checks[]')
         if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
-                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            employee_analysis_id = Employee_Analysis_month.objects.get(user_id=user_id,
+                                                  Q(user_id=id)).count() > 0:
+            employee_analysis_id = Employee_Analysis_month.objects.get(user_id=id,
                                                                        entry_date__month=datetime.now().month)
             item2 = employee_analysis_id
             item2.is_employee_of_month = True
@@ -149,17 +181,17 @@ def employee_profile(request,id):
             item2.save()
 
         emp_of_month_list =  Employee_Analysis_month.objects.filter(Q(user_id=SiteUser.objects.get(id=request.user.pk)))
+        context = {
+            'user_id': user_id,
+            'leave_list': leave_list,
+            'emp_of_month_list': emp_of_month_list,
 
-
-        print(selected_list)
-        # best_employee = request.POST.get('best_employee')
-
-
+        }
+        return render(request, 'dashboardnew/employee_profile.html', context)
 
     context = {
         'user_id': user_id,
         'leave_list': leave_list,
-        'emp_of_month_list': emp_of_month_list,
 
     }
     return render(request,'dashboardnew/employee_profile.html',context)

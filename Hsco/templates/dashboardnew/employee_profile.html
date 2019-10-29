@@ -390,6 +390,72 @@ color:;
                  </div>
                      </center>
              </div><br>
+                                               <div style="border: 1px solid #C0C0C0	; border-radius: 10px; color: black; padding: 10px;">
+                 <center>
+                     <p style="font-size: 25px;">Target for Employee:</p>
+
+                 <br>
+                 <div>
+                     <form method="post">{% csrf_token %}
+<div class="form-group row">
+    {% if 'Customer Module' in user_id.modules_assigned %}
+    <label class="col-md-3 control-label">Sales Target:
+</label>
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="sales_target_given" placeholder="Sales Target" class="form-control"  type=number step=any>
+    </div>
+  </div>
+    {% endif %}
+
+        {% if 'Repairing Module' in user_id.modules_assigned %}
+ <label class="col-md-3 control-label">Repairing Target:
+</label>
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="reparing_target_given" placeholder="Repairing Target" class="form-control" value="{{admin_id.email}}" type=number step=any>
+    </div>
+  </div><br><br>
+
+        {% endif %}
+
+            {% if 'Onsite Repairing Module' in user_id.modules_assigned %}
+ <label class="col-md-3 control-label">Onsite Repairing Target:
+</label>
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="onsitereparing_target_given" placeholder="Onsite Repairing Target" class="form-control" value="{{admin_id.email}}" type=number step=any>
+    </div>
+  </div>
+        {% endif %}
+            {% if 'Onsite Repairing Module' in user_id.modules_assigned %}
+    <label class="col-md-3 control-label">Restamping Target:
+</label>
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="restamping_target_given" placeholder="Restamping Target" class="form-control" value="{{admin_id.email}}" type=number step=any>
+    </div>
+  </div><br><br>
+        {% endif %}
+
+</div>
+                         <center>
+        <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+ <button  class="form-control" type="submit" style="width: 50%;"> DONE </button>
+</div>
+  </div>
+</center>
+</form>
+
+                 </div>
+                     </center>
+             </div><br>
+
                               <div style="border: 1px solid #C0C0C0	; border-radius: 10px; color: black; padding: 10px;">
                  <center>
                      <p style="font-size: 25px;">Employee of the Month:</p>
