@@ -50,7 +50,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
                 ('Login Credentials', {'fields': ('mobile', 'password')}),
         ('Personal info', {'fields': ('modules_assigned','email', 'name', 'role','date_of_joining','average_rating','group','photo','salary_slip','is_deleted')}),
-        ('Bank Details', {'fields': ('bank_name', 'account_number', 'bank_address','IFSC_code')}),
+        ('Bank Details', {'fields': ('bank_name', 'account_number', 'branch_name','ifsc_code')}),
         ('Seen', {'fields': ('last_login',)}),
     )
 
@@ -58,7 +58,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('mobile', 'email', 'name','role','date_of_joining','average_rating',
-                       'bank_name','account_number','bank_address','IFSC_code','auto_timedate','password', 'password2', )}
+                       'bank_name','account_number','branch_name','ifsc_code','auto_timedate','password', 'password2', )}
          ),
     )
     search_fields = ('mobile', 'name')

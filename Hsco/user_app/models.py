@@ -100,9 +100,9 @@ class SiteUser(AbstractBaseUser):
     pancard = models.CharField(max_length=20, null=True, blank=True)
     aadhar_card = models.CharField(max_length=20, null=True, blank=True)
     # bank details
-    bank_name = models.CharField(max_length=60, null=True, blank=True,choices=BANK_NAMES)
-    bank_address = models.CharField(max_length=20, null=True, blank=True)
-    IFSC_code = models.CharField(max_length=20, null=True, blank=True)
+    bank_name = models.CharField(max_length=60, null=True, blank=True)
+    branch_name = models.CharField(max_length=20, null=True, blank=True)
+    ifsc_code = models.CharField(max_length=20, null=True, blank=True)
     account_number = models.CharField(max_length=40, null=True, blank=True)
 
     photo_of_cancelled_cheque = models.ImageField(upload_to='cheque_photo/', null=True, blank=True)
