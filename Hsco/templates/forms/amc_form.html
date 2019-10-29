@@ -77,27 +77,37 @@ color:;
 <fieldset>
 
 <div class="form-group row">
-  <label class="col-md-2 control-label ">AMC Number
-
-
-
+     <label class="col-md-2 control-label">Customer Number
 
 
 </label>
 
-  <div class="col-md-4 inputGroupContainer">
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
-  <input  name="amcno" placeholder="AMC Number
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+    <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
+    <option value="-----">---------</option>
+       {% for item in cust_sugg %}
+  <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
 
+   {% endfor %}
+</select>
 
-
-
-" class="form-control"  type="text">
     </div>
+Format : (crm no) - (customer name) - (company name)
   </div>
 
-    <label class="col-md-2 control-label">Customer Name
+
+
+
+
+</div>
+
+ <div id="loaded_customer">
+
+<div class="form-group row">
+
+      <label class="col-md-2 control-label">Customer Name
 
 
 
@@ -106,56 +116,24 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-  <input  name="customer_name" placeholder="Customer Name
-
-
-" class="form-control"  type="text">
+  <input  name="customer_name" placeholder="Customer Name" class="form-control"  type="text">
     </div>
   </div>
 
 
 
-</div>
 
-
-
-<div class="form-group row">
   <label class="col-md-2 control-label">Company Name
-
-
-
-
 
 </label>
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name
-
-
-" class="form-control"  type="text">
+  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text">
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Customer Number
-
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-users faicons faicons"></i></span>
-  <input  name="customer_no" placeholder="Customer Number
-
-
-
-" class="form-control"  type="text">
-    </div>
-  </div>
 
 
 
@@ -175,13 +153,28 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer E-mail id
-
-
-
-" class="form-control"  type="email">
+  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  type="email">
     </div>
   </div>
+
+    <label class="col-md-2 control-label">Contact no.
+    </label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="phone_no" placeholder="Contact No.
+
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
+
+ </div>
+
+  <div class="form-group row">
+
 
     <label class="col-md-2 control-label">Type of Scale
 
@@ -201,7 +194,6 @@ color:;
   </div>
 
 </div>
-
 
 
 <div class="form-group row">
@@ -297,14 +289,10 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="contract_start_date" placeholder="Contract Start Date
-
-
-
-
-" class="form-control"  type="date">
+  <input id="contract_start_date"  name="contract_start_date" placeholder="Contract Start Date" class="form-control"  type="date">
     </div>
   </div>
+
 
     <label class="col-md-2 control-label">Contract End Date
 
@@ -344,7 +332,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="visit_1" placeholder="Visit 1
+  <input name="visit_1" placeholder="dd/mm/yyyy
 
 
 
@@ -391,7 +379,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="visit_2" placeholder="Visit 2
+  <input name="visit_2" placeholder="dd/mm/yyyy
 
 
 
@@ -433,7 +421,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="visit_3" placeholder="Visit 3
+  <input name="visit_3" placeholder="dd/mm/yyyy
 
 
 
@@ -472,7 +460,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="visit_4" placeholder="Visit 4
+  <input name="visit_4" placeholder="dd/mm/yyyy
 
 
 
@@ -537,7 +525,27 @@ color:;
     <i class="fas fa-angle-up"></i>
   </a>
 
+<script>
+  window.onload = function() {
+document.getElementById('contract_start_date').required = false;
+};
 
+
+  function choice1(select) {
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#loaded_customer").html(data);
+        }
+      });
+}
+
+</script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
