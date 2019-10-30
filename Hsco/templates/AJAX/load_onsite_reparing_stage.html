@@ -1,25 +1,19 @@
 
 
 
-             {% for list in onsite_list %}
+  {% for list in onsite_list %}
 
 <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
 
-                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.repairingno}} </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.repairing_no_of_repairs}} </center> </div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center> {{list.repairing_target_achieved}}% </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> 1 Hour </center> </div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center> 2 Hour </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1">
-                    <center>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i> </center>
-                    </div>
+                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_onsite_details/{{list.pk}}"> {{list.crm_no.company_name}}</a> </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.pk}} </center> </div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.current_stage}} </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.total_cost}} </center> </div>
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.nearest_railwaystation}} </center> </div>
+
+
                     </div>
 
 

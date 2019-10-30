@@ -123,7 +123,7 @@ function myFunction() {
   <input  name="restampingno" placeholder="Restamping Number
 
 
-" class="form-control"  type="text" disabled id="myText" value="{{personal_id.restampingno}}">
+" class="form-control"  type="text" disabled id="myText" value="{{personal_id.pk}}">
     </div>
   </div>
 
@@ -137,7 +137,7 @@ function myFunction() {
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
   <input  name="customer_no" placeholder="Customer Number
 
-" class="form-control"  type="text" disabled id="myText2" value="{{personal_id.customer_no}}">
+" class="form-control"  type="text" disabled id="myText2" value="{{personal_id.crm_no.pk}}">
     </div>
   </div>
 
@@ -161,7 +161,7 @@ function myFunction() {
   <input  name="company_name" placeholder="Company Name
 
 
-" class="form-control"  type="text" disabled id="myText3" value="{{personal_id.company_name}}">
+" class="form-control"  type="text" disabled id="myText3" value="{{personal_id.crm_no.company_name}}">
     </div>
   </div>
 
@@ -177,7 +177,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <input  name="address" placeholder="Address" class="form-control"  type="text" disabled id="myText4" value="{{personal_id.address}}">
+  <input  name="address" placeholder="Address" class="form-control"  type="text" disabled id="myText4" value="{{personal_id.crm_no.address}}">
     </div>
   </div>
 </div>

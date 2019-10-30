@@ -43,6 +43,7 @@
 	{% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
+
 <style>
 
 * {
@@ -111,7 +112,6 @@ color:;
 }
 
         </style>
-
 <script>
 $(document).ready(function(){
 
@@ -135,12 +135,11 @@ $(document).ready(function(){
     });
 });
 </script>
-
         <!-- Begin Page Content -->
         <div class="container-fluid">
 <center>
          <!-- Page Heading -->
-            <h1 class="h3 mb-0 text-gray-800"> Restamping Product</h1>
+            <h1 class="h3 mb-0 text-gray-800"> Onrepair Product</h1>
 </center>
 <br>
 <br>
@@ -148,46 +147,68 @@ $(document).ready(function(){
             <form method="POST">{%csrf_token%}
 
 
+<div class="form-group row">
+
+
+    <label class="col-md-2 control-label">Type of Machine
 
 
 
+</label>
 
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+    <input  type="text" name="type_of_machine" value="{{onsite_id.type_of_machine}}" placeholder="Type of Machine" class="form-control" >
+
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Model
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+    <input  type="text" name="model" placeholder="Model" value="{{onsite_id.model}}" class="form-control" >
+
+    </div>
+  </div>
+
+
+
+</div>
 
 
 
 
 <div class="form-group row">
-   <label class="col-md-2 control-label">Scale Type
+   <label class="col-md-2 control-label">Sub model
 
 
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
-                   <div class="wrapper" style="">
-    <select class="editableBox" name="state" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
-      <option value="" selected="selected">Select</option>
-    </select>
-    <input class="timeTextBox" name="scale_type" maxlength="5"/>
-</div>
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+    <input  type="text" name="sub_model" value="{{onsite_id.sub_model}}" placeholder="Sub model" class="form-control" >
 
-  </div>
-
- <label class="col-md-2 control-label">Sub Model
+    </div>
+  </div>   <label class="col-md-2 control-label">Cost
 
 
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
-    <div class="wrapper">
-    <select class="editableBoxa" name="countrya" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
-<option value="" selected="selected">Select</option>
-    </select>
-    <input class="timeTextBoxa" name="sub_model" maxlength="5"/>
-</div>
-  </div>
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+    <input  type="text" name="cost" value="{{onsite_id.cost}}" placeholder="Cost" class="form-control" >
 
+    </div>
+  </div>
 </div>
 
 
@@ -201,13 +222,13 @@ $(document).ready(function(){
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>
-    <input  type="text" name="capacity" placeholder="Capacity" class="form-control" >
+  <span class="input-group-addon icon-border"><i class="fa fa-truck	 faicons"></i></span>
+    <input  type="text" name="capacity" value="{{onsite_id.capacity}}" placeholder="Capacity" class="form-control" >
 
     </div>
   </div>
 
-     <label class="col-md-2 control-label">Old Serial No
+     <label class="col-md-2 control-label">Problem in the scale
 
 
 
@@ -215,8 +236,8 @@ $(document).ready(function(){
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-desc faicons"></i></span>
-    <input  type="text" name="old_serial_no" placeholder="Old Serial No" class="form-control" >
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+    <input  type="text" name="problem_in_scale" value="{{onsite_id.problem_in_scale}}" placeholder="Problem in the scale" class="form-control" >
 
     </div>
   </div>
@@ -228,54 +249,26 @@ $(document).ready(function(){
 
 
   <div class="form-group row">
-   <label class="col-md-2 control-label">Old Brand
+   <label class="col-md-2 control-label">Components Replaced in Waranty(if scale in Waranty)
 
 
 
 </label>
-
-    <div class="col-md-4 inputGroupContainer">
+      <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-industry faicons"></i></span>
-    <input  type="text" name="old_brand" placeholder="Old Brand" class="form-control" >
+  <span class="input-group-addon icon-border"><i class="fa fa-gears faicons"></i></span>
+          <input  type="text" name="components_replaced_in_warranty" value="{{onsite_id.components_replaced_in_warranty}}" placeholder="Components Replaced in Waranty" class="form-control" >
 
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Amount
+    <label class="col-md-2 control-label">Components Replaced
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="amount" placeholder="Amount" class="form-control"  type="text">
-    </div>
-  </div>
-
-</div>
-
-                  <div class="form-group row">
-   <label class="col-md-2 control-label">New Serial No.
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-desc faicons"></i></span>
-    <input  type="text" name="new_sr_no" placeholder="New Serial No." class="form-control" >
-
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Brand
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-industry faicons"></i></span>
-  <input  name="brand" placeholder="Brand" class="form-control"  type="text">
+  <span class="input-group-addon icon-border"><i class="fa fa-window-restore faicons"></i></span>
+  <input  name="components_replaced" placeholder="Components Replaced" value="{{onsite_id.components_replaced_in_warranty}}" class="form-control"  type="text">
     </div>
   </div>
 
@@ -283,8 +276,7 @@ $(document).ready(function(){
 
 
 
-
-                <div class="wrapper" style="display: none;">
+<div class="wrapper" style="display:none;">
     <select class="editableBoxz" name="district" id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
 <option value="" selected="selected">Select</option>
 
@@ -294,15 +286,17 @@ $(document).ready(function(){
 
 
 
-
-
-
-            <br>
 <center>
     <button type="submit" class="btn btn-primary">Submit</button>
 
 </center>
-            </form>
+</form>
+</div>
+
+
+            <br>
+
+
 
 
   </div>
@@ -331,7 +325,7 @@ $(document).ready(function(){
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
-        <script>
+  <script>
 var stateObject = {
 "Table Top Scales": {
 "ABS": ['ABS001','ABS002','ABS003','ABS004','ABS005','ABS006'],

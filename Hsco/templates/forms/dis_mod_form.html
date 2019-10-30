@@ -80,27 +80,69 @@ color:;
     <form class="well form-horizontal" autocomplete="off" action=" " method="post"  id="contact_form" style="padding:20px;" enctype="multipart/form-data">{% csrf_token %}
 <fieldset>
 
-<div class="form-group row">
-  <label class="col-md-2 control-label ">Dispatch ID
+
+  <div class="form-group row">
+  <!--<label class="col-md-2 control-label ">Repairing Number-->
+
+
+<!--</label>-->
+
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+  <!--<input  name="repairingnumber" disabled required placeholder="Repairing Number-->
+
+<!--" class="form-control"  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+    <label class="col-md-2 control-label">Customer Number
+
 
 </label>
 
-  <div class="col-md-4 inputGroupContainer">
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="dispatch_id" placeholder="Dispatch ID
-" class="form-control"  type="text">
+  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+    <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
+    <option value="-----">---------</option>
+       {% for item in cust_sugg %}
+  <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
+
+   {% endfor %}
+</select>
+
     </div>
+
   </div>
 
-    <label class="col-md-2 control-label">Customer number
+
+
+</div>
+
+<div id="loaded_customer">
+
+<div class="form-group row">
+  <!--<label class="col-md-2 control-label ">Dispatch ID-->
+
+<!--</label>-->
+
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>-->
+  <!--<input  name="dispatch_id" placeholder="Dispatch ID-->
+<!--" class="form-control"  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+    <label class="col-md-2 control-label">Contact number
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="customer_no" placeholder="Customer number
+  <input  name="customer_no" placeholder="Contact number
 " class="form-control" required type="text">
     </div>
   </div>
@@ -163,10 +205,12 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<textarea name="customer_address" required class="form-control"></textarea>    </div>
+<input name="customer_address" required class="form-control"/>  </div>
   </div>
 
 </div>
+</div>
+
 
 
 
@@ -192,7 +236,7 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
   <input type="date" name="date_of_dispatch" placeholder="Dispatch Date
-" class="form-control"  type="text">
+" class="form-control" >
     </div>
   </div>
 
@@ -370,7 +414,23 @@ color:;
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+<script>
+  function choice1(select) {
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
 
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#loaded_customer").html(data);
+        alert("Customer details loaded sucessfully!");
+
+        }
+      });
+}
+</script>
 
 
   <!-- Bootstrap core JavaScript-->

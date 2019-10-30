@@ -124,6 +124,8 @@ def restamping_manager(request):
 
 def restamping_after_sales_service(request):
     # form = Customer_Details_Form(request.POST or None, request.FILES or None)
+    cust_sugg=Customer_Details.objects.all()
+
     if request.method == 'POST' or request.method=='FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -158,7 +160,7 @@ def restamping_after_sales_service(request):
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.crm_no_id = item.pk
-        item2.restampingno = restampingno
+        # item2.restampingno = restampingno
         item2.customer_no = customer_no
         item2.company_name = company_name
         item2.address = address
@@ -186,8 +188,10 @@ def restamping_after_sales_service(request):
 
 
         return redirect('/restamping_product/'+str(item2.id))
-
-    return render(request, 'forms/restamping_form.html',)
+    context={
+        'cust_sugg':cust_sugg
+    }
+    return render(request, 'forms/restamping_form.html',context)
 
 def restamping_product(request,id):
     restamping_id = Restamping_after_sales_service.objects.get(id=id).id
@@ -200,16 +204,20 @@ def restamping_product(request,id):
         old_serial_no = request.POST.get('old_serial_no')
         old_brand = request.POST.get('old_brand')
         amount = request.POST.get('amount')
+        new_sr_no = request.POST.get('new_sr_no')
+        brand = request.POST.get('brand')
 
         item=Restamping_Product()
 
-        item.product_to_stampped = product_to_stampped
+        # item.product_to_stampped = product_to_stampped
         item.scale_type = scale_type
         item.sub_model = sub_model
         item.capacity = capacity
         item.old_serial_no = old_serial_no
         item.old_brand = old_brand
         item.amount = amount
+        item.new_sr_no = new_sr_no
+        item.brand = brand
         item.restamping_id_id = restamping_id
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -525,6 +533,12 @@ def load_restamping_manager(request):
 
 
         return render(request, 'AJAX/load_restamping_manager.html', context)
+
+
+
+
+
+
 
 
 
