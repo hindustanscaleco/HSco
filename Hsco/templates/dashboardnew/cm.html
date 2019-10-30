@@ -384,7 +384,7 @@ $(function() {
                     <div class="col-xl-1 col-md-1 mb-1 "><center class="border-left-primary">  CRM No. </center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">  Contact No. </center> </div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">   Email Id </center> </div>
-                    <div class="col-xl-1 col-md-1 mb-1 "><center class="border-left-primary"> Feedback Fd. </center></div>
+                    <div class="col-xl-1 col-md-1 mb-1 "><center class="border-left-primary"> Feedback  </center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary"> <p>Stars</p> </center>
                     </div>
 
@@ -455,7 +455,7 @@ a:hover {
     </style>
 
 <center>
-    <div class="row" style="width: 70%; margin-top: 20%;">
+    <div class="row" style="width: 100%; margin-top: 20%;">
 
         {% if request.user.is_authenticated %}
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
