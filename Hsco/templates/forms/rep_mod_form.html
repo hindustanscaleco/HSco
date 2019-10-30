@@ -77,48 +77,30 @@ color:;
           <br>
 
 
-<div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">
 
-<div class="col-xl-4 col-md-4 col-mb-4">
-<select name="current_stage" id="display_limit2" class="form-control">
-    <option value="-----">---------</option>
-  <option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>
-  <option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>
-  <option value="Estimate is confirmed but not repaired">Estimate is confirmed but not repaired.</option>
-  <option value="Repaired but not collected">Repaired but not collected.</option>
-  <option value="Finally Collected">Finally Collected.</option>
-</select>
-  <!--<input type="checkbox" name="checks[]" value="Repaired but not collected"> Repaired but not collected. &nbsp; &nbsp; <br>-->
-  <!--<input type="checkbox" name="checks[]" value="Finally Collected">  &nbsp; &nbsp;-->
-    </div>
-
-
-
-
-    </div>
 </div>
 
 
 <br>
 
 
-    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
+    <form class="well form-horizontal" autocomplete="off" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
-  <label class="col-md-2 control-label ">Repairing Number
+  <!--<label class="col-md-2 control-label ">Repairing Number-->
 
 
-</label>
+<!--</label>-->
 
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="repairingnumber" required placeholder="Repairing Number
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+  <!--<input  name="repairingnumber" disabled required placeholder="Repairing Number-->
 
-" class="form-control"  type="text">
-    </div>
-  </div>
+<!--" class="form-control"  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
 
     <label class="col-md-2 control-label">Customer Number
 
@@ -127,80 +109,24 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_no" placeholder="Customer Number
+  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+    <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
+    <option value="-----">---------</option>
+       {% for item in cust_sugg %}
+  <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
 
-" class="form-control"  type="text">
+   {% endfor %}
+</select>
+
     </div>
+Format : (crm no) - (customer name) - (company name)
   </div>
 
 
 
 </div>
 
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Previous Repairing Number
-
-
-
-</label>
-
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="previous_repairing_number" placeholder="Previous Repairing number
-" class="form-control"  type="text">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">In Warranty
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-    <input type="text" placeholder="In Warranty" required name="in_warranty" class="form-control" value="" list="war">
-    <datalist style="height:20px;" id="war">
-    <option value = "Yes"></option>
-    <option value = "No"></option>
-    </datalist>
-    </div>
-  </div>
-
-
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Date Of Purchase
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="date_of_purchase" placeholder="" class="form-control" type="Date">
-    </div>
-  </div>
-    <label class="col-md-2 control-label">Today's Date
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" id="datePicker" required class="form-control"  type="date">
-    </div>
-  </div>
-</div>
-
-
+  <div id="loaded_customer">
 
 <div class="form-group row">
 
@@ -214,7 +140,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="name" required placeholder="Customer Name" class="form-control"  type="text">
+  <input  name="customer_name" required placeholder="Customer Name" class="form-control"  type="text">
     </div>
   </div>
 
@@ -228,8 +154,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name
-" class="form-control"  type="text">
+  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text">
 
 
      </div>
@@ -264,12 +189,100 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Email-id
-
-" class="form-control"  type="text">
+  <input type="email" name="customer_email_id" placeholder="Email-id" class="form-control"  type="text">
     </div>
   </div>
 </div>
+
+
+    <div class="form-group row">
+  <label class="col-md-2 control-label">Address
+
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input  name="customer_address" placeholder="Address
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+
+
+
+
+</div>
+
+  </div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Previous Repairing Number
+
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input  name="previous_repairing_number" placeholder="Previous Repairing number
+" class="form-control"  type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">In Warranty
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="in_warranty" class="form-control">
+  <option value="yes">Yes</option>
+  <option value="no">No</option>
+</select>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Date Of Purchase
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input type="date" name="date_of_purchase" placeholder="" class="form-control">
+    </div>
+  </div>
+    <label class="col-md-2 control-label">Today's Date
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="today_date" id="datePicker" required class="form-control"  type="date">
+    </div>
+  </div>
+</div>
+
+
+
+
 
 <div class="form-group row">
 
@@ -281,7 +294,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-marker faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-map-marker faicons"></i></span>
   <input  name="location" placeholder="Location
 
 " class="form-control" required type="text">
@@ -296,19 +309,6 @@ color:;
 
 
 
-    <label class="col-md-2 control-label">Total Cost
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="total_cost" placeholder="Total Cost" value="0.0" required class="form-control"  type="text">
-    </div>
-  </div>
 </div>
 
 
@@ -358,7 +358,7 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
 
 
     <input  type="text" placeholder="Confirmed Estimate" name="confirmed_estimate" class="form-control" value="" list="confirmest">
@@ -376,7 +376,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
   <input  type="text" placeholder="Repaired" name="repaired" class="form-control" value="" list="Repaired">
     <datalist style="height:20px;" id="Repaired">
     <option value = "Yes"></option>
@@ -433,10 +433,30 @@ color:;
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-pencil-square-o faicons"></i></span>
   <input  name="feedback_given" placeholder="Feedback Given" class="form-control" type="text" value="NO">
     </div>
   </div>
+</div>
+
+  <div class="form-group row">
+
+    <label class="col-md-2 control-label">Current stage:
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-line-chart faicons"></i></span>
+<select name="current_stage" id="display_limit2" class="form-control">
+  <option value="Scale is collected but estimate is not given">1)Scale is collected but estimate is not given.</option>
+  <option value="Estimate is given but Estimate is not confirmed">2)Estimate is given but Estimate is not confirmed.</option>
+  <option value="Estimate is confirmed but not repaired">3)Estimate is confirmed but not repaired.</option>
+  <option value="Repaired but not collected">4)Repaired but not collected.</option>
+  <option value="Finally Collected">5)Finally Collected.</option>
+</select>    </div>
+  </div>
+
+
 </div>
 
 
@@ -478,6 +498,22 @@ color:;
   </a>
     </div>
 <script>
+function choice1(select) {
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#loaded_customer").html(data);
+    alert("Customer details loaded sucessfully!");
+        }
+      });
+}
+
+
   window.onload = function() {
 document.getElementById('datePicker').valueAsDate = new Date();
 };

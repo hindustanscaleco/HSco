@@ -15,7 +15,7 @@ class add_Onsite_aftersales_service_form(forms.ModelForm):
         )
 
 class Onsite_Repairing_Feedback_Form(forms.ModelForm):
-    backend_team = forms.IntegerField(required=True,
+    backend_team = forms.FloatField(required=True,
                                widget=forms.TextInput(
                                    attrs={
                                        'type': 'hidden',
@@ -26,7 +26,7 @@ class Onsite_Repairing_Feedback_Form(forms.ModelForm):
                                    }
                                ))
 
-    onsite_worker = forms.IntegerField(required=True,
+    onsite_worker = forms.FloatField(required=True,
                                              widget=forms.TextInput(
                                                  attrs={
                                                      'type': 'hidden',
@@ -36,7 +36,7 @@ class Onsite_Repairing_Feedback_Form(forms.ModelForm):
                                                      'id': 'stars2',
                                                  }
                                              ))
-    speed_of_performance = forms.IntegerField(required=True,
+    speed_of_performance = forms.FloatField(required=True,
                                              widget=forms.TextInput(
                                                  attrs={
                                                      'type': 'hidden',
@@ -47,7 +47,7 @@ class Onsite_Repairing_Feedback_Form(forms.ModelForm):
                                                  }
                                              ))
 
-    overall_interaction = forms.IntegerField(required=True,
+    overall_interaction = forms.FloatField(required=True,
                                              widget=forms.TextInput(
                                                  attrs={
                                                      'type': 'hidden',
@@ -57,7 +57,7 @@ class Onsite_Repairing_Feedback_Form(forms.ModelForm):
                                                      'id': 'stars4',
                                                  }
                                              ))
-    price_of_reparing = forms.IntegerField(required=True,
+    price_of_reparing = forms.FloatField(required=True,
                                            widget=forms.TextInput(
                                                attrs={
                                                    'type': 'hidden',

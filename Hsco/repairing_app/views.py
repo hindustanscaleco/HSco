@@ -1,8 +1,9 @@
 from django.db import connection
-from django.db.models import Min, Sum
+from django.db.models import Min, Sum, Q, F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from customer_app.models import Customer_Details
+from django.utils import timezone
 from user_app.models import SiteUser
 
 from customer_app.models import Customer_Details
@@ -20,6 +21,7 @@ from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 
 
 def add_repairing_details(request):
+    cust_sugg=Customer_Details.objects.all()
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -27,28 +29,18 @@ def add_repairing_details(request):
         contact_no = request.POST.get('phone_no')
         customer_email_id = request.POST.get('customer_email_id')
 
-        item = Customer_Details()
-
-        item.customer_name = customer_name
-        item.company_name = company_name
-        item.address = address
-        item.contact_no = contact_no
-        item.customer_email_id = customer_email_id
-        item.user_id = SiteUser.objects.get(id=request.user.pk)
-        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item.save()
 
 
-        repairingnumber = request.POST.get('repairingnumber')
+
+        # repairingnumber = request.POST.get('repairingnumber')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
         date_of_purchase = request.POST.get('date_of_purchase')
         today_date = request.POST.get('today_date')
-        name = request.POST.get('name')
         location = request.POST.get('location')
-        products_to_be_repaired = request.POST.get('products_to_be_repaired')
+        # products_to_be_repaired = request.POST.get('products_to_be_repaired')
 
-        total_cost = request.POST.get('total_cost')
+        total_cost = 0.0
         informed_on = request.POST.get('informed_on')
         informed_by = request.POST.get('informed_by')
         confirmed_estimate = request.POST.get('confirmed_estimate')
@@ -61,19 +53,34 @@ def add_repairing_details(request):
 
         item2 = Repairing_after_sales_service()
 
-        item2.repairingnumber = repairingnumber
-        item2.crm_no = Customer_Details.objects.get(id=item.pk)
+        item = Customer_Details()
+        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
+
+            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).first()
+
+        else:
+
+
+
+            item.customer_name = customer_name
+            item.company_name = company_name
+            item.address = address
+            item.contact_no = contact_no
+            item.customer_email_id = customer_email_id
+            # item.user_id = SiteUser.objects.get(id=request.user.pk)
+            # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            item.save()
+            item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
         item2.previous_repairing_number = previous_repairing_number
         item2.in_warranty = in_warranty
         item2.date_of_purchase = date_of_purchase
         item2.today_date = today_date
-        item2.name = name
 
         item2.location = location
-        item2.products_to_be_repaired = products_to_be_repaired
+        # item2.products_to_be_repaired = products_to_be_repaired
 
-        item2.total_cost = total_cost
+        item2.total_cost = 0.0
         item2.informed_on = informed_on
         item2.informed_by = informed_by
         item2.confirmed_estimate = confirmed_estimate
@@ -89,23 +96,84 @@ def add_repairing_details(request):
 
         item2.save()
 
-        send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
+        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
+                                                 Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+                                                  year=datetime.now().year).update(
+                total_reparing_done_today=F("total_reparing_done_today") + total_cost)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
-        message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_date()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_reparing_done_today = total_cost
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+                                                   year=datetime.now().year).update(
+                total_reparing_done=F("total_reparing_done") + total_cost)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_month()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_reparing_done = total_cost
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
 
 
-        url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-        payload = ""
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
+        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
+            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).first()
+            send_mail('Feedback Form',
+                      'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/' + str(
+                          request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                      [crm_no.customer_email_id])
 
-        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-        x = response.text
+            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/' + str(
+                request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+        else:
+
+            send_mail('Feedback Form',
+                      'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/' + str(
+                          request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                      [item.customer_email_id])
+
+            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/' + str(
+                request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+
+
 
         return redirect('/repair_product/'+str(item2.id))
 
 
+    context={
+        'cust_sugg':cust_sugg
+    }
 
-    return render(request,'forms/rep_mod_form.html',)
+    return render(request,'forms/rep_mod_form.html',context)
 
 def repair_product(request,id):
     repair_id = Repairing_after_sales_service.objects.get(id=id).id
@@ -136,9 +204,19 @@ def repair_product(request,id):
         item.Replaced_scale_serial_no = Replaced_scale_serial_no
         item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
         item.repairing_id_id = repair_id
+
         item.cost = cost
 
         item.save()
+
+        Repairing_after_sales_service.objects.filter(id=id).update(total_cost=F("total_cost") + cost)
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+                                               year=datetime.now().year).update(
+            total_reparing_done=F("total_reparing_done") + cost)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+                                              year=datetime.now().year).update(
+            total_reparing_done_today=F("total_reparing_done_today") + cost)
 
         return redirect('/update_repairing_details/'+str(id))
     context = {
@@ -148,7 +226,8 @@ def repair_product(request,id):
 
 def update_repairing_details(request,id):
     repair_id = Repairing_after_sales_service.objects.get(id=id)
-    customer_id = Customer_Details.objects.get(id=id)
+    customer_id = Repairing_after_sales_service.objects.get(id=id).crm_no
+    customer_id = Customer_Details.objects.get(id=customer_id)
     repair_list = Repairing_Product.objects.filter(repairing_id=id)
     if request.method=='POST':
         customer_name = request.POST.get('customer_name')
@@ -167,7 +246,7 @@ def update_repairing_details(request,id):
 
         item.save(update_fields=['customer_name','company_name','address','contact_no','customer_email_id',])
 
-        repairingnumber = request.POST.get('repairingnumber')
+        # repairingnumber = request.POST.get('repairingnumber')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
         date_of_purchase = request.POST.get('date_of_purchase')
@@ -188,7 +267,7 @@ def update_repairing_details(request,id):
 
         item2 = repair_id
 
-        item2.repairingnumber = repairingnumber
+        # item2.repairingnumber = repairingnumber
         item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
         item2.previous_repairing_number = previous_repairing_number
@@ -210,10 +289,11 @@ def update_repairing_details(request,id):
         item2.delivery_by = delivery_by
         item2.feedback_given = feedback_given
         item2.current_stage = current_stage
+        item2.stage_update_timedate = timezone.now()
 
         # item2.save()
 
-        item2.save(update_fields=['repairingnumber', ]),
+        # item2.save(update_fields=['repairingnumber', ]),
         item2.save(update_fields=['previous_repairing_number', ]),
         item2.save(update_fields=['in_warranty', ]),
         item2.save(update_fields=['date_of_purchase', ]),
@@ -230,8 +310,10 @@ def update_repairing_details(request,id):
         item2.save(update_fields=['delivery_by', ]),
         item2.save(update_fields=['feedback_given', ])
         item2.save(update_fields=['current_stage', ])
+        item2.save(update_fields=['stage_update_timedate', ])
         repair_id = Repairing_after_sales_service.objects.get(id=id)
-        customer_id = Customer_Details.objects.get(id=id)
+        customer_id = Repairing_after_sales_service.objects.get(id=id).crm_no
+        customer_id = Customer_Details.objects.get(id=customer_id)
         repair_list = Repairing_Product.objects.filter(repairing_id=id)
         context = {
             'repair_list': repair_list,
@@ -252,6 +334,11 @@ def update_repairing_details(request,id):
     return render(request,'update_forms/update_rep_mod_form.html',context)
 
 def repairing_module_home(request):
+    from django.db.models import Count
+    from django.db.models import Q
+
+
+
     if request.method == 'POST':
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
@@ -334,11 +421,90 @@ def repairing_module_home(request):
         else:  #For EMPLOYEE
             repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
         # repair_list = Repairing_after_sales_service.objects.all()
-
-
+        res = Repairing_after_sales_service.objects.filter(~Q(delivery_by=None)).values('current_stage').annotate(
+            dcount=Count('current_stage'))
         context = {
             'repair_list': repair_list,
+
         }
+        from datetime import datetime, timedelta
+
+        # Using current time
+        ini_time_for_now = datetime.now()
+
+        new_final_time = ini_time_for_now - timedelta(days=4)
+        res_4d = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time)).values('current_stage').annotate(
+            dcount=Count('current_stage'))
+        try:
+            x = res_4d
+            # if x['current_stage'] == 'Scale is collected but estimate is not given':
+            rep4_4d = x['dcount']
+            context4d = {
+                'rep4_4d': rep4_4d,
+            }
+            context.update(context4d)
+        except:
+            pass
+
+        new_final_time = ini_time_for_now - timedelta(days=10)
+        res_10d = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time)).values('current_stage').annotate(dcount=Count('current_stage'))
+        x = res_10d
+        # if x['current_stage'] == 'Scale is collected but estimate is not given':
+        try:
+            rep4_10d = x['dcount']
+            context10d = {
+                'rep4_10d': rep4_10d,
+            }
+            context.update(context10d)
+        except:
+            pass
+        print(res)
+
+        for i in res:
+            x = i
+            if x['current_stage'] == 'Scale is collected but estimate is not given':
+                rep1 = x['dcount']
+                context1 = {
+                    'rep1': rep1,
+                }
+                context.update(context1)
+
+            if x['current_stage'] == 'Estimate is given but Estimate is not confirmed':
+                rep2 = x['dcount']
+                context2 = {
+
+                  'rep2': rep2,
+
+                }
+                context.update(context2)
+            if x['current_stage'] == 'Estimate is confirmed but not repaired':
+                rep3 = x['dcount']
+                context3 = {
+
+                    'rep3': rep3,
+
+                }
+                context.update(context3)
+            if x['current_stage'] == 'Repaired but not collected':
+                rep4 = x['dcount']
+                context4 = {
+
+                    'rep4': rep4,
+
+                }
+                context.update(context4)
+            if x['current_stage'] == 'Finally Collected':
+                rep5 = x['dcount']
+                context5 = {
+
+                    'rep5': rep5,
+                }
+                context.update(context5)
+
+
+
+        print(context)
+        print(context)
         return render(request, 'dashboardnew/repairing_module_home.html', context)
 
 def manager_repairing_module_home(request):
@@ -402,23 +568,24 @@ def final_repairing_report_module(request):
     repair_end_date = str(request.session.get('repair_end_date'))
     repair_string = request.session.get('repair_string')
     selected_list = request.session.get('selected_list')
-    print(repair_string)
-    print(repair_start_date)
-    print(repair_start_date)
-    print(repair_start_date)
-    print(repair_start_date)
 
-    print(repair_start_date)
-    print(repair_end_date)
-    print(selected_list)
     with connection.cursor() as cursor:
-        cursor.execute("SELECT "+repair_string+" from repairing_app_repairing_after_sales_service where today_date between '"+repair_start_date+"' and '"+repair_end_date+"';")
+        cursor.execute("SELECT  " + repair_string + " from repairing_app_repairing_after_sales_service , customer_app_customer_details"
+                                             "  where repairing_app_repairing_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
         row = cursor.fetchall()
-        print(row)
         final_row = [list(x) for x in row]
         repairing_data = []
         for i in row:
             repairing_data.append(list(i))
+
+    try:
+        del request.session['repair_start_date']
+        del request.session['repair_end_date']
+        del request.session['repair_string']
+        del request.session['selected_list']
+    except:
+        pass
+
     context = {
         'final_row': final_row,
         'selected_list': selected_list,
@@ -448,7 +615,7 @@ def feedback_repairing(request,user_id,customer_id,repairing_id):
         item.save()
 
         repairing = Repairing_after_sales_service.objects.get(id=repairing_id)
-        repairing .avg_feedback = (satisfied_with_communication + speed_of_performance + price_of_reparing + overall_interaction) / 4.0
+        repairing .avg_feedback = (float(satisfied_with_communication) + float(speed_of_performance) + float(price_of_reparing) + float(overall_interaction)) / float(4.0)
         repairing.feedback_given = 'YES'
         repairing.save(update_fields=['avg_feedback', 'feedback_given'])
         return HttpResponse('Feedback Submitted!!!')
@@ -495,6 +662,26 @@ def edit_product(request,id):
         item.save(update_fields=['cost', ]),
 
         product_id = Repairing_Product.objects.get(id=id)
+        reparing_id = Repairing_after_sales_service.objects.get(id=Repairing_Product.objects.get(id=id).repairing_id.pk).pk
+        cost2=product_id.cost
+        print(cost2)
+        print(cost2)
+        print(cost2)
+        print(cost)
+        print(cost)
+
+
+        Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") - cost2)
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
+
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=product_id.entry_timedate.month,
+                                               year=product_id.entry_timedate.year).update(
+            total_reparing_done=F("total_reparing_done") + cost)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=product_id.entry_timedate.month,
+                                              year=product_id.entry_timedate.year).update(
+            total_reparing_done_today=F("total_reparing_done_today") + cost)
 
         context = {
         'product_id': product_id,
@@ -508,11 +695,6 @@ def edit_product(request,id):
 
 
     return render(request,'edit_product/edit_product_repair.html',context)
-
-
-
-
-
 
 def repairing_employee_graph(request,user_id):
     # user_id=user_id
@@ -639,8 +821,6 @@ def repairing_employee_graph(request,user_id):
         }
         return render(request,"graphs/repairing_employee_graph.html",context)
 
-
-
 def load_reparing_stages_list(request,):
 
     selected = request.GET.get('loc_id')
@@ -688,6 +868,18 @@ def load_reparing_manager(request):
         }
 
         return render(request, 'AJAX/load_reparing_manager.html', context)
+
+def load_customer(request):
+    cust_id = request.GET.get('item_id')
+
+    cust_list = Customer_Details.objects.get(id=cust_id)
+
+    context = {
+        'cust_list': cust_list,
+
+    }
+
+    return render(request, 'AJAX/load_customer.html', context)
 
 
 

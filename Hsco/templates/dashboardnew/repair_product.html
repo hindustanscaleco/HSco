@@ -142,7 +142,7 @@ $(document).ready(function(){
 <br>
 <br>
 
-            <form method="POST">{%csrf_token%}
+            <form method="POST" autocomplete="off">{%csrf_token%}
 
 
 
@@ -191,7 +191,7 @@ $(document).ready(function(){
 
 
 <div class="wrapper">
-    <select class="editableBox" name="state" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBox" name="model" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
       <option value="" selected="selected">Select</option>
     </select>
     <input class="timeTextBox" name="timebox" maxlength="5"/>
@@ -209,7 +209,7 @@ $(document).ready(function(){
     <div class="col-md-4 inputGroupContainer">
 
               <div class="wrapper">
-    <select class="editableBoxa" name="countrya" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBoxa" name="sub_model" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
 <option value="" selected="selected">Select</option>
     </select>
     <input class="timeTextBoxa" name="timebox" maxlength="5"/>
@@ -305,7 +305,7 @@ $(document).ready(function(){
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="components_replaced" placeholder="Components Replaced" class="form-control"  type="text">
+  <input  name="replaced_scale_given" placeholder="Components Replaced" class="form-control"  type="text">
     </div>
   </div>
 
@@ -364,7 +364,7 @@ $(document).ready(function(){
     <input class="timeTextBoxz" name="timebox" maxlength="5"/>
 </div>
 
-<form name="myform" id="myForm" style="width: 40%;">
+<form name="myform" autocomplete="off" id="myForm" style="width: 40%;">
 
 
 

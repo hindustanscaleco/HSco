@@ -182,28 +182,31 @@ function myFunction() {
     document.getElementById("myText19").disabled = false;
     document.getElementById("myText20").disabled = false;
     document.getElementById("myText21").disabled = false;
+    document.getElementById("myText22").disabled = false;
+    document.getElementById("button").disabled = false;
+
 
 }
 </script>
-<div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">
+<!--<div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">-->
 
-<div class="col-xl-4 col-md-4 col-mb-4">
-<select name="current_stage" id="display_limit2" class="form-control">
-    <option value="-----">---------</option>
-  <option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>
-  <option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>
-  <option value="Estimate is confirmed but not repaired">Estimate is confirmed but not repaired.</option>
-  <option value="Repaired but not collected">Repaired but not collected.</option>
-  <option value="Finally Collected">Finally Collected.</option>
-</select>
-  <!--<input type="checkbox" name="checks[]" value="Repaired but not collected"> Repaired but not collected. &nbsp; &nbsp; <br>-->
-  <!--<input type="checkbox" name="checks[]" value="Finally Collected">  &nbsp; &nbsp;-->
-    </div>
-
-
+<!--&lt;!&ndash;<div class="col-xl-4 col-md-4 col-mb-4">&ndash;&gt;-->
+<!--&lt;!&ndash;<select name="current_stage" id="display_limit2" class="form-control">&ndash;&gt;-->
+    <!--&lt;!&ndash;<option value="-&#45;&#45;&#45;&#45;">-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Estimate is confirmed but not repaired">Estimate is confirmed but not repaired.</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Repaired but not collected">Repaired but not collected.</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Finally Collected">Finally Collected.</option>&ndash;&gt;-->
+<!--&lt;!&ndash;</select>&ndash;&gt;-->
+  <!--&lt;!&ndash;&lt;!&ndash;<input type="checkbox" name="checks[]" value="Repaired but not collected"> Repaired but not collected. &nbsp; &nbsp; <br>&ndash;&gt;&ndash;&gt;-->
+  <!--&lt;!&ndash;&lt;!&ndash;<input type="checkbox" name="checks[]" value="Finally Collected">  &nbsp; &nbsp;&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
 
 
-    </div>
+
+
+    <!--</div>-->
 </div>
 
 
@@ -219,7 +222,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="repairingnumber" placeholder="Repairing Number" class="form-control" id="myText" type="text" disabled value="{{repair_id.repairingnumber}}">
+  <input  name="repairingnumber" placeholder="Repairing Number" class="form-control" id="myText" type="text" disabled value="{{repair_id.pk}}">
     </div>
   </div>
 
@@ -231,7 +234,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="customer_no" placeholder="Customer Number" class="form-control" id="myText2"  type="text" disabled value="{{repair_id.crm_no}}">
+  <input name="customer_no" placeholder="Customer Number" class="form-control" id="myText2"  type="text" disabled value="{{repair_id.crm_no.pk}}">
     </div>
   </div>
 
@@ -315,7 +318,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="name" placeholder="Name" class="form-control" id="myText7"  type="text" disabled value="{{repair_id.name}}" >
+  <input  name="customer_name" placeholder="Name" class="form-control" id="myText7"  type="text" disabled value="{{customer_id.customer_name}}" >
     </div>
   </div>
 
@@ -381,7 +384,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-marker faicons"></i></span>
-  <input  name="location" placeholder="Location" class="form-control" id="myText11"  type="text" disabled value="{{repair_id.location}}">
+      <input  name="location" placeholder="Location" class="form-control" id="myText11"  type="text" disabled value="{{repair_id.location}}">
   </div>
 
 </div>
@@ -641,6 +644,36 @@ function myFunction() {
   </div>
 
 
+      <div class="form-group row">
+    <label class="col-md-2 control-label">Current Stage
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="current_stage_old" placeholder="current stage" class="form-control" id="myText21" disabled value="{{repair_id.current_stage}}">
+
+     </div>
+  </div>
+
+              <label class="col-md-2 control-label">Update Stage
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+<select name="current_stage" id="display_limi" class="form-control">
+  <option value="Scale is collected but estimate is not given">1)Scale is collected but estimate is not given.</option>
+  <option value="Estimate is given but Estimate is not confirmed">2)Estimate is given but Estimate is not confirmed.</option>
+  <option value="Estimate is confirmed but not repaired">3)Estimate is confirmed but not repaired.</option>
+  <option value="Repaired but not collected">4)Repaired but not collected.</option>
+  <option value="Finally Collected">5)Finally Collected.</option>
+</select>      </div>
+  </div>
+
+  </div>
+
+
 
 
 
@@ -653,15 +686,19 @@ function myFunction() {
 <!--</p>-->
 
 <center>
-  <a href="repairing_module_home/"><button class="btn btn-primary">Save</button></a>
+  <a  href="repairing_module_home/"><button  id="button"  class="btn btn-primary">Save</button></a>
                         <button  onclick="myFunction()" class="btn btn-primary" type="reset">Edit</button>
 
 </center>
 
 
+
 </fieldset>
 </form>
+<center>
+                      <a href="/repair_product/{{repair_id.id}}"> <button class="btn btn-primary">Add Product</button></a>
 
+</center>
 
           <br>
 </div>
@@ -682,17 +719,19 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 </style>
+<br>
 
-
+<br>
         <h1 style="font-size: 25px; color: black; text-align: center;"> Added Repair List </h1>
   <br>
-    {% for list in repair_list %}
 
 
 
 
 
       <div class="col-xl-12 col-md-12 mb-12">
+              {% for list in repair_list %}
+
               <div class="card shadow">
                 <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
 
@@ -739,14 +778,17 @@ tr:nth-child(even) {
 </center>
                 <br>
               </div>
+          {% endfor %}
+
+
       </div>
         <br>
-{% endfor %}
-        <center>
-                  <a href="/repair_product/{{repair_id.id}}"> <button class="btn btn-primary">Add Product</button></a>
-        </center>
+              <br>
+
   </div>
-      <br>
+  </div>
+</div>
+
    <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
@@ -924,9 +966,7 @@ districtSel.options[districtSel.options.length] = new Option(district[i], distri
 }
 }
 </script>
-</div>
-  </div>
-</div>
+
  </html>
 
 </html>

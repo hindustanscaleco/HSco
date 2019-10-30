@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -14,29 +15,18 @@ import requests
 import json
 
 def add_amc_after_sales(request):
+    cust_sugg = Customer_Details.objects.all()
     if request.method == 'POST':
-        customer_name = request.POST.get('customer_name')
-        company_name = request.POST.get('company_name')
+
         address = request.POST.get('address')
-        contact_no = request.POST.get('contact_no')
-        customer_email_id = request.POST.get('customer_email_id')
+        contact_no = request.POST.get('phone_no')
 
-        item = Customer_Details()
 
-        item.customer_name = customer_name
-        item.company_name = company_name
-        item.address = address
-        item.contact_no = contact_no
-        item.customer_email_id = customer_email_id
-        item.user_id = SiteUser.objects.get(id=request.user.pk)
-        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
-        item.save()
-
-        amcno = request.POST.get('amcno')
+        # amcno = request.POST.get('amcno')
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
-        customer_no = request.POST.get('customer_no')
+        # customer_no = request.POST.get('customer_no')
         customer_email_id = request.POST.get('customer_email_id')
         type_of_scale = request.POST.get('type_of_scale')
         serial_no_scale = request.POST.get('serial_no_scale')
@@ -55,13 +45,30 @@ def add_amc_after_sales(request):
         repot_4 = request.POST.get('repot_4')
 
         item2 = Amc_After_Sales()
+        item = Customer_Details()
+        if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
+                                           Q(contact_no=contact_no)).count() > 0:
 
-        item2.crm_no_id = item.pk
-        item2.amcno = amcno
-        item2.customer_name = customer_name
-        item2.company_name = company_name
-        item2.customer_no = customer_no
-        item2.customer_email_id = customer_email_id
+            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
+                                                           Q(contact_no=contact_no)).first()
+
+        else:
+            item.customer_name = customer_name
+            item.company_name = company_name
+            item.address = address
+            item.contact_no = contact_no
+            item.customer_email_id = customer_email_id
+            # item.user_id = SiteUser.objects.get(id=request.user.pk)
+            # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+
+            item.save()
+
+            item2.crm_no = Customer_Details.objects.get(id=item.pk)
+        # item2.amcno = amcno
+        # item2.customer_name = customer_name
+        # item2.company_name = company_name
+        # item2.crm_no = customer_no
+        # item2.customer_email_id = customer_email_id
         item2.type_of_scale = type_of_scale
         item2.serial_no_scale = serial_no_scale
         item2.contract_valid_in_years = contract_valid_in_years
@@ -80,22 +87,50 @@ def add_amc_after_sales(request):
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save()
-        send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
-        message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
+        if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
+                                           Q(contact_no=contact_no)).count() > 0:
+
+            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
+                                                           Q(contact_no=contact_no)).first()
+
+            send_mail('Feedback Form', 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
+                request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                      [crm_no.customer_email_id])
+
+            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
+                request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id)
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
 
 
-        url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + customer_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-        payload = ""
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+        else:
+            send_mail('Feedback Form', 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
+                request.user.pk) + '/' + str(item.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                      [item.customer_email_id])
+
+            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
+                request.user.pk) + '/' + str(item.id) + '/' + str(item2.id)
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
 
 
-        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-        x = response.text
+
 
         return redirect('/amc_views')
     context = {
-
+        'cust_sugg': cust_sugg
     }
     return render(request,'forms/amc_form.html', context)
 
@@ -121,6 +156,17 @@ def final_report_amc(request):
     string =        request.session.get('string')
     selected_list = request.session.get('selected_list')
 
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT  " + string + " from amc_visit_app_amc_after_sales , customer_app_customer_details"
+                                          "  where amc_visit_app_amc_after_sales.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + start_date + "' and '" + end_date + "';")
+        row = cursor.fetchall()
+
+        final_row= [list(x) for x in row]
+        list3=[]
+        for i in row:
+            list3.append(list(i))
     try:
         del request.session['start_date']
         del request.session['end_date']
@@ -128,16 +174,6 @@ def final_report_amc(request):
         del request.session['selected_list']
     except:
         pass
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT  "+string+" from amc_visit_app_amc_after_sales where entry_timedate between '"+start_date+"' and '"+end_date+"';")
-        row = cursor.fetchall()
-
-
-        final_row= [list(x) for x in row]
-        list3=[]
-        for i in row:
-            list3.append(list(i))
-
 
     context={
         'final_row':final_row,
@@ -337,7 +373,8 @@ def feedback_amc(request,user_id,customer_id,amc_id):
         item.save()
 
         amc = Amc_After_Sales.objects.get(id=amc_id)
-        amc.avg_feedback = ( satisfied_with_work + speed_of_performance + price_of_amc + overall_interaction) / 4.0
+
+        amc.avg_feedback = (float(item.satisfied_with_work) + float(item.speed_of_performance)  + float(item.price_of_amc)  + float(item.overall_interaction) )/ float(4.0)
         amc.feedback_given = 'YES'
         amc.save(update_fields=['avg_feedback', 'feedback_given'])
         return HttpResponse('Feedback Submitted!!!')

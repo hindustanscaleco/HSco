@@ -14,11 +14,12 @@ class Amc_After_Sales(models.Model):
     manager_id = models.CharField(max_length=60, null=True, blank=True)
 
     crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
-    amcno = models.CharField(max_length=50, null=True,unique=True, blank=True)
-    customer_name = models.CharField(max_length=80, null=True, blank=True)
-    company_name = models.CharField(max_length=80, null=True, blank=True)
-    customer_no =models.CharField(max_length=13,null=True,blank=True)
-    customer_email_id = models.EmailField(max_length=90,null=True,blank=True)
+    # amcno = models.CharField(max_length=50, null=True,unique=True, blank=True)
+    # customer_name = models.CharField(max_length=80, null=True, blank=True)
+    # company_name = models.CharField(max_length=80, null=True, blank=True)
+    # customer_no =models.CharField(max_length=13,null=True,blank=True)
+    # customer_email_id = models.EmailField(max_length=255,null=True,blank=True)
+
     type_of_scale = models.CharField(max_length=30,null=True,blank=True)
     serial_no_scale = models.CharField(max_length=80,null=True,blank=True)
     contract_valid_in_years = models.CharField(max_length=30,null=True,blank=True)
@@ -49,8 +50,8 @@ class Amc_After_Sales(models.Model):
     # repot_4 = models.CharField(max_length=255, null=True, blank=True)
 
 
-    def __str__(self):
-        return self.amcno
+    def __int__(self):
+        return self.pk
 
 class AMC_Feedback(models.Model):
     satisfied_with_work = models.FloatField(default=0.00)

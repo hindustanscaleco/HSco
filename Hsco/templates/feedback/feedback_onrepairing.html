@@ -13,7 +13,7 @@
 
 
 
-z</head>
+</head>
 <body>
 
 <style>
@@ -299,11 +299,12 @@ z</head>
 </style>
 
 	<div class="container-contact100">
+            <form  class="well form-horizontal" autocomplete="off" action="" method="POST"   style="padding:20px;  " enctype="multipart/form-data" novalidate >{% csrf_token %}
+
 		<div class="wrap-contact100">
 				<span class="contact100-form-title" style="    font-family: 'Montserrat';">
 					Feedback
 				</span>
-    <form  class="well form-horizontal" action="" method="POST"   style="padding:20px;  " enctype="multipart/form-data" novalidate >{% csrf_token %}
 
 				<div class="wrap-input100 validate-input" data-validate="Name is required">
 		<div class="col-md-4 inputGroupContainer">
@@ -342,7 +343,7 @@ z</head>
                 <div class="wrap-input100 validate-input" data-validate="Name is required">
                 <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <h5>How would you rate the speed of our performance?</h5>
+  <h5>How would you rate the overall interaction with us?</h5>
 <div style="display:inline-block;">{{ feedback_form.overall_interaction }}  </div>
 	<div class="star-rating4"><s><s><s><s><s></s></s></s></s></s></div>
     </div>
@@ -404,12 +405,14 @@ z</head>
 					</div>
 				</div>
 
-			</form>
+
         </div>
 	</div>
 
 
     </div>
+                                    </form>
+
 <script>
 
 $(function() {

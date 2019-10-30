@@ -78,7 +78,7 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;" enctype="multipart/form-data">{% csrf_token %}
+    <form class="well form-horizontal" autocomplete="off" action=" " method="post"  id="contact_form" style="padding:20px;" enctype="multipart/form-data">{% csrf_token %}
       <div id="d1" class="divs d1 row">
 
       <div class="col-xl-4 col-md-4 col-mb-4">
@@ -112,13 +112,13 @@ color:;
 </div>
   </div>
 
-    <label class="col-md-2 control-label">Customer number
+    <label class="col-md-2 control-label">Contact number
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_no" id="customCheck2">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="contact_no" id="customCheck2">
   <label class="custom-control-label" for="customCheck2"></label>
 </div>
   </div>
@@ -137,7 +137,7 @@ color:;
 
   <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_email" id="customCheck3">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_email_id" id="customCheck3">
   <label class="custom-control-label" for="customCheck3"></label>
 </div>
   </div>
@@ -178,7 +178,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_address" id="customCheck6">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="address" id="customCheck6">
   <label class="custom-control-label" for="customCheck6"></label>
 </div>
 </div>
@@ -194,7 +194,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_address" id="customCheck17">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="address" id="customCheck17">
   <label class="custom-control-label" for="customCheck17"></label>
 </div>
 </div>

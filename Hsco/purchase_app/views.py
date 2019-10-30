@@ -23,7 +23,6 @@ from django.db.models import Count
 
 def add_purchase_details(request):
     form = Purchase_Details_Form(request.POST or None, request.FILES or None)
-
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -43,12 +42,11 @@ def add_purchase_details(request):
 
         date_of_purchase = request.POST.get('date_of_purchase')
         new_repeat_purchase = request.POST.get('new_repeat_purchase')
-        sales_person = request.POST.get('product_purchase_date')
-        product_purchase_date = request.POST.get('sales_person')
+        sales_person = request.POST.get('sales_personc')
+        product_purchase_date = request.POST.get('product_purchase_date')
         bill_no = request.POST.get('bill_no')
-        upload_op_file = request.POST.get('upload_op_file')
+        upload_op_file = request.FILES.get('upload_op_file')
         po_number = request.POST.get('po_number')
-        photo_lr_no = request.POST.get('photo_lr_no')
         channel_of_sales = request.POST.get('channel_of_sales')
         industry = request.POST.get('industry')
         value_of_goods = request.POST.get('value_of_goods')
@@ -65,7 +63,6 @@ def add_purchase_details(request):
         item2.sales_person = sales_person
         item2.bill_no = bill_no
         item2.upload_op_file = upload_op_file
-        item2.photo_lr_no = photo_lr_no
         item2.po_number = po_number
         item2.channel_of_sales = channel_of_sales
         item2.industry = industry
@@ -97,13 +94,13 @@ def add_purchase_details(request):
         customer_id = Purchase_Details.objects.get(id=item2.pk)
         customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
         customer_id.save(update_fields=['dispatch_id_assigned'])
-        send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
+        send_mail('Feedback Form','Click on the link to give feedback http://127.0.0.1:8000/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
-        if Employee_Analysis_date.objects.filter(Q(entry_date__month=datetime.now().month),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            ead=Employee_Analysis_date.objects.get(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + value_of_goods)
+        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_date.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + value_of_goods)
             # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
-            ead.save(update_fields=['total_sales_done_today'])
+            # ead.save(update_fields=['total_sales_done_today'])
 
         else:
             ead = Employee_Analysis_date()
@@ -113,16 +110,35 @@ def add_purchase_details(request):
             ead.year = datetime.now().year
             ead.save()
 
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_month.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done=F("total_sales_done") + value_of_goods)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
-        message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
+            # ead.save(update_fields=['total_sales_done_today'])
 
-        url = "http://smshorizon.co.in/api/sendsms.php?user="+settings.user+"&apikey="+settings.api+"&mobile="+contact_no+"&message="+message+"&senderid="+settings.senderid+"&type=txt"
+        else:
+            ead = Employee_Analysis_month()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_sales_done = value_of_goods
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
+
+        send_mail('Feedback Form','Click on the link to give feedback http://127.0.0.1:8000/feedback_repairing/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
+
+
+        # // vikka.pythonanywhere.com
+
+        message = 'Click on the link to give feedback http://127.0.0.1:8000/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
+
+        # url = "http://smshorizon.co.in/api/sendsms.php?user="+settings.user+"&apikey="+settings.api+"&mobile="+contact_no+"&message="+message+"&senderid="+settings.senderid+"&type=txt"
         payload = ""
         headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-        x = response.text
-        print(x)
+        # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        # x = response.text
+        # print(x)
         return redirect('/add_product_details/'+str(item2.id))
 
     context = {
@@ -256,6 +272,10 @@ def update_customer_details(request,id):
     customer_id = Purchase_Details.objects.get(id=id).crm_no
     customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
+    try:
+        feedback = Feedback.objects.get(customer_id=customer_id,purchase_id=purchase_id_id)
+    except:
+        feedback = None
     if request.method=='POST':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -274,12 +294,10 @@ def update_customer_details(request,id):
         item.save(update_fields=['customer_name','company_name','address','contact_no','customer_email_id',])
 
         date_of_purchase = request.POST.get('date_of_purchase')
-        product_purchase_date = request.POST.get('product_purchase_date')
         bill_no = request.POST.get('bill_no')
         new_repeat_purchase = request.POST.get('new_repeat_purchase')
-        upload_op_file = request.POST.get('upload_op_file')
+        upload_op_file = request.FILES.get('upload_op_file')
         po_number = request.POST.get('po_number')
-        photo_lr_no = request.POST.get('photo_lr_no')
         channel_of_sales = request.POST.get('channel_of_sales')
         industry = request.POST.get('industry')
         value_of_goods = request.POST.get('value_of_goods')
@@ -292,10 +310,8 @@ def update_customer_details(request,id):
         item2.crm_no = Customer_Details.objects.get(id=item.pk)
         item2.date_of_purchase = date_of_purchase
         item2.new_repeat_purchase = new_repeat_purchase
-        item2.product_purchase_date = product_purchase_date
         item2.bill_no = bill_no
         item2.upload_op_file = upload_op_file
-        item2.photo_lr_no = photo_lr_no
         item2.po_number = po_number
         item2.channel_of_sales = channel_of_sales
         item2.industry = industry
@@ -305,13 +321,14 @@ def update_customer_details(request,id):
         item2.feedback_form_filled = feedback_form_filled
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item2.save(update_fields=['date_of_purchase','product_purchase_date','bill_no','upload_op_file','photo_lr_no','manager_id',
-                                  'po_number','channel_of_sales','industry','channel_of_dispatch','notes','feedback_form_filled','user_id'])
+        item2.save(update_fields=['date_of_purchase','bill_no','upload_op_file','manager_id','po_number','new_repeat_purchase',
+                                  'channel_of_sales','industry','channel_of_dispatch','notes','feedback_form_filled','user_id'])
 
     context={
         'product_id':product_id,
         'customer_id': customer_id,
         'purchase_id_id': purchase_id_id,
+        'feedback': feedback,
     }
 
     return render(request,'update_forms/update_cust_mod_form.html',context)
@@ -323,7 +340,6 @@ def add_product_details(request,id):
     dispatch_id_assigned = str(purchase.dispatch_id_assigned)
     form = Product_Details_Form(request.POST or None)
     if request.method == 'POST':
-        product_name = request.POST.get('product_name')
         quantity = request.POST.get('quantity')
         model_of_purchase = request.POST.get('model_of_purchase')
         type_of_scale = request.POST.get('type_of_scale')
@@ -338,7 +354,6 @@ def add_product_details(request,id):
 
         item = Product_Details()
 
-        item.product_name = product_name
         item.quantity = quantity
         item.type_of_scale = type_of_scale
         item.model_of_purchase = model_of_purchase
@@ -359,7 +374,6 @@ def add_product_details(request,id):
         dispatch_pro = Product_Details_Dispatch()
         dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
         dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        dispatch_pro.product_name = product_name
         dispatch_pro.quantity = quantity
         dispatch_pro.type_of_scale = type_of_scale
         dispatch_pro.model_of_purchase = model_of_purchase
@@ -406,8 +420,10 @@ def final_report(request):
     end_date = request.session.get('end_date')
     string = request.session.get('string')
     selected_list = request.session.get('selected_list')
+
     with connection.cursor() as cursor:
-        cursor.execute("SELECT  "+string+" from customer_app_customer_details where date_of_purchase between '"+start_date+"' and '"+end_date+"';")
+        cursor.execute("SELECT  "+string+" from purchase_app_purchase_details , customer_app_customer_details"
+                                "  where purchase_app_purchase_details.crm_no_id = customer_app_customer_details.id and entry_timedate between '"+start_date+"' and '"+end_date+"';")
         row = cursor.fetchall()
 
 
@@ -415,7 +431,13 @@ def final_report(request):
         list3=[]
         for i in row:
             list3.append(list(i))
-
+    try:
+        del request.session['start_date']
+        del request.session['end_date']
+        del request.session['string']
+        del request.session['selected_list']
+    except:
+        pass
 
     context={
         'final_row':final_row,
@@ -450,8 +472,11 @@ def purchase_analytics(request):
     # Generates a "SELECT MAX..." query
     value=Employee_Analysis_month.objects.aggregate(Max('total_sales_done'))
     print(value['total_sales_done__max'])
-    value = Employee_Analysis_month.objects.get(total_sales_done=value['total_sales_done__max'])
+    try:
 
+        value = Employee_Analysis_month.objects.get(total_sales_done=value['total_sales_done__max'])
+    except:
+        value = None
     value_low = Employee_Analysis_month.objects.aggregate(Min('total_sales_done'))
     print(value_low['total_sales_done__min'])
     value_low = Employee_Analysis_month.objects.filter(total_sales_done=value_low['total_sales_done__min']).order_by('id').first()
@@ -553,13 +578,14 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
         item.price_of_product = price_of_product
         item.overall_interaction = overall_interaction
         item.about_hsco = about_hsco
+        item.any_suggestion = any_suggestion
         item.user_id = SiteUser.objects.get(id=user_id)
         item.customer_id = Customer_Details.objects.get(id=customer_id)
         item.purchase_id = Purchase_Details.objects.get(id=purchase_id)
         item.save()
 
         purchase=Purchase_Details.objects.get(id=purchase_id)
-        purchase.feedback_stars= (knowledge_of_person+timeliness_of_person+price_of_product+overall_interaction)/4.0
+        purchase.feedback_stars= (float(knowledge_of_person)+float(timeliness_of_person)+float(price_of_product)+float(overall_interaction))/float(4.0)
         purchase.feedback_form_filled= 'YES'
         purchase.save(update_fields=['feedback_stars','feedback_form_filled'])
 

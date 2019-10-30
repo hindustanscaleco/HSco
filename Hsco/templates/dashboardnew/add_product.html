@@ -142,20 +142,9 @@ $(document).ready(function(){
 <br>
 <br>
 
-            <form method="POST">{% csrf_token %}
+            <form autocomplete="off"  method="POST">{% csrf_token %}
 
 <div class="form-group row">
-    <label class="col-md-2 control-label">Product Name
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="product_name" placeholder="Product Name" class="form-control"  type="text" value="">
-    </div>
-  </div>
-
 
     <label class="col-md-2 control-label">Model of Purchase
 
@@ -166,7 +155,7 @@ $(document).ready(function(){
     <select class="editableBox" name="state" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
       <option value="" selected="selected">Select</option>
     </select>
-    <input class="timeTextBox" name="timebox" maxlength="5"/>
+    <input class="timeTextBox" name="model_of_purchase" maxlength="5"/>
 </div>
   </div>
 
@@ -182,7 +171,7 @@ $(document).ready(function(){
     <select class="editableBoxa" name="countrya" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
 <option value="" selected="selected">Select</option>
     </select>
-    <input class="timeTextBoxa" name="timebox" maxlength="5"/>
+    <input class="timeTextBoxa" name="sub_model" maxlength="5"/>
 </div>
   </div>
   <label class="col-md-2 control-label">Sub Sub Model
@@ -191,7 +180,7 @@ $(document).ready(function(){
 </label>
   <div class="col-md-4 inputGroupContainer">
    <div class="wrapper">
-    <select class="editableBoxz" name="district" id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBoxz" name="sub_sub_model" id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
 <option value="" selected="selected">Select</option>
     </select>
 
@@ -225,7 +214,7 @@ $(document).ready(function(){
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>
   <input  name="capacity" placeholder="Capacity" class="form-control"  type="text" value="">
     </div>
   </div>
@@ -284,7 +273,7 @@ $(document).ready(function(){
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
   <input  name="serial_no_scale" placeholder="Serial No. of Scale" class="form-control"  type="text" value="">
     </div>
   </div>
@@ -307,20 +296,20 @@ $(document).ready(function(){
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>
   <input  name="quantity" placeholder="Quantity" class="form-control"  type="text" value="">
     </div>
   </div>
-                    <label class="col-md-2 control-label">Sales Person
+<!--                    <label class="col-md-2 control-label">Sales Person-->
 
-</label>
+<!--</label>-->
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="sales_person" placeholder="Sales Person" class="form-control"  type="text" value="">
-    </div>
-  </div>
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
+<!--  <input  name="sales_person" placeholder="Sales Person" class="form-control"  type="text" value="">-->
+<!--    </div>-->
+<!--  </div>-->
 
                 </div>
             <br>

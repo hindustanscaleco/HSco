@@ -69,7 +69,7 @@ font-family: 'Montserrat', sans-serif;
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                   </div>
-                  <form class="user" method="POST" >{% csrf_token %}
+                  <form class="user" method="POST" autocomplete="off" >{% csrf_token %}
                     <div class="form-group">
                         {{form.mobile}}
                     </div>
@@ -82,9 +82,11 @@ font-family: 'Montserrat', sans-serif;
                         <!--<label class="custom-control-label" for="customCheck">Remember Me</label>-->
                       <!--</div>-->
                     <!--</div>-->
-                      <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
+                      <button type="submit" class="btn btn-primary btn-user btn-block">Login</button><br>
 
                   </form>
+                                          <a href="/forgotpassword/"><button  class="btn btn-primary btn-user btn-block">Forgot Password</button></a>
+
                   <hr>
                   <!--<div class="text-center">-->
                     <!--<a class="small" href="/">Forgot Password?</a>-->

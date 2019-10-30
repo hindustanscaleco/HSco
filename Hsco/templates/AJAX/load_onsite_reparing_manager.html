@@ -63,18 +63,22 @@
 
 {% else %}
 
-      <div class="row">
-
+          <div class="row">
+   {% if deleted %}
+                  <center> <p>list of deleted users</p></center>
+                    {% endif %}
 
 
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 55px;">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
 
 
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Company Name </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Company Name </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> Onsite Reparing No. </center> </div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> Current Stage </center> </div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> Cost </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Nearest Station </center> </div>
 
                     </div>
 
@@ -87,6 +91,7 @@
 
 <br>
         </div>
+
     <br>
       <div class="row" id="id_subcat">
                       {% for list in onsite_list %}
@@ -95,9 +100,11 @@
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
 
-                    <div class="col-xl-3 col-md-1 mb-1"><center> <a href="/update_onsite_details/{{list.pk}}"> {{list.crm_no.company_name}}</a> </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.repairingno}} </center> </div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.total_cost}} </center> </div>
+                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_onsite_details/{{list.pk}}"> {{list.crm_no.company_name}}</a> </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.pk}} </center> </div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.current_stage}} </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.total_cost}} </center> </div>
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.nearest_railwaystation}} </center> </div>
 
 
                     </div>

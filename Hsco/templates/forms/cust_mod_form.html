@@ -80,22 +80,43 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
+    <form class="well form-horizontal" autocomplete="off" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
 <fieldset>
-<div class="form-group row">
-  <label class="col-md-2 control-label ">Dispatch ID assigned
+<!--<div class="form-group row">-->
+  <!--<label class="col-md-2 control-label ">CRM NO:-->
 
-</label>
+<!--</label>-->
 
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="dispatch_id_assigned" placeholder="Dispatch ID assigned" disabled class="form-control"  type="text">
-    </div>
-  </div>
-</div>
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+  <!--<input name="crm_no" placeholder="Enter CRM NO"   class="form-control"  type="text" list="crm_no">-->
+    <!--<datalist style="height:20px;" id="crm_no">-->
+      <!--<option value="Energy industry"></option>-->
+
+    <!--</datalist>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+  <!--<input name="crm_no" placeholder="Enter CRM NO"  class="form-control"  type="text" list="crm_no">-->
+    <!--<datalist style="height:20px;" id="crm_no">-->
+      <!--<option value="Energy industry"></option>-->
+    <!--</datalist>-->
+  <!--</div></div>-->
+
+
+
+
+
+
+
 <div class="form-group row">
-  <label class="col-md-2 control-label ">Name of customer
+  <label class="col-md-2 control-label ">Name Of Customer
 </label>
 
   <div class="col-md-4 inputGroupContainer">
@@ -163,7 +184,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="date_of_purchase" required placeholder="Date of Purchase"  class="form-control"  type="Date">
+  <input  name="date_of_purchase" id="date_of_purchase" required placeholder="Date of Purchase"  class="form-control"  type="Date">
     </div>
   </div>
 </div>
@@ -194,7 +215,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope-open faicons"></i></span>
-  <input  name="first_name" placeholder="New/Repeat Purchase" class="form-control"  type="text">
+  <input  name="new_repeat_purchase" placeholder="New/Repeat Purchase" class="form-control"  type="text">
     </div>
   </div>
 </div>
@@ -220,17 +241,21 @@ color:;
 
 <div class="form-group row" >
 
+  <label class="col-md-2 control-label">PO Number
 
-    <label class="col-md-2 control-label">Bill No
 
 </label>
-
-    <div class="col-md-4 inputGroupContainer">
+  <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="bill_no" placeholder="Bill No" required class="form-control"  type="text">
+  <input  name="po_number" placeholder="PO Number" class="form-control"  type="text">
     </div>
   </div>
+
+
+
+
+
  <label class="col-md-2 control-label">Upload PO File
 
 </label>
@@ -245,16 +270,19 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">PO Number
-
+    <label class="col-md-2 control-label">Bill No
 
 </label>
-  <div class="col-md-4 inputGroupContainer">
+
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="po_number" placeholder="PO Number" class="form-control"  type="text">
+  <input  name="bill_no" placeholder="Bill No" required class="form-control"  type="text">
     </div>
   </div>
+
+
+
 <label class="col-md-2 control-label">Channel of Sales
 
 
@@ -262,7 +290,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-    <input  type="text" required name="industry" placeholder="Industry" class="form-control" list="channel10">
+    <input  type="text" required name="channel_of_sales" placeholder="Channel of Sales" class="form-control" list="channel10">
     <datalist style="height:20px;" id="channel10">
       <option value="Energy industry"></option>
       <option value="Chemicals"></option>
@@ -323,7 +351,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods" placeholder="Value of Goods" class="form-control"  type="text">
+  <input  name="value_of_goods" placeholder="Value of Goods" class="form-control" step="0.2" type="number">
     </div>
   </div>
   </div>
@@ -340,7 +368,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  type="text" name="channel_of_dispatch" required class="form-control" list="channel">
+  <input  type="text" name="channel_of_dispatch" placeholder="Channel of Dispatch" required class="form-control" list="channel">
     <datalist style="height:20px;" id="channel">
       <option value="Courier">
       <option value="Transport">
@@ -363,7 +391,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
-<textarea name="notes" class="form-control"></textarea>
+<textarea name="notes" placeholder="Notes" class="form-control"></textarea>
 </div>
   </div>
   </div>
@@ -377,7 +405,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-file faicons" ></i></span>
-      <input name="feedback_form_filled" placeholder="No" class="form-control" disabled value="NO" type="text">
+      <input name="feedback_form_filled" placeholder="No" class="form-control" value="NO" type="text">
     </div>
   </div>
 
@@ -402,18 +430,9 @@ color:;
 <br>
 
 
-
-
-
-
-
-
-
-</fieldset>
-</form>
-</div>
-
-  </div>
+<script>
+  document.getElementById("date_of_purchase").valueAsDate = new Date();
+</script>
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
