@@ -80,7 +80,31 @@ def add_ess_details(request):
 
 def ess_home(request):
     leave_req_list = Employee_Leave.objects.all()
-    if request.method == 'POST':
+    if request.method == 'POST' and 'list[]' in request.POST:
+        user_id = request.POST.get('user_id')
+        list = request.POST.getlist('list[]')
+        print(user_id)
+        print(user_id)
+        print(user_id)
+        print(user_id)
+        print(user_id)
+
+        item2 = Employee_Leave.objects.get(user_id=user_id)
+        if 'yes' in list:
+            item2.is_approved = True
+            item2.save(update_fields=['is_approved'])
+            print(item2.is_approved)
+            print(item2.is_approved)
+            print(item2.is_approved)
+            print(item2.is_approved)
+            print(item2.is_approved)
+            print(item2.is_approved)
+            print(item2.is_approved)
+        elif 'no' in list:
+            item2.is_approved = False
+            item2.save(update_fields=['is_approved'])
+
+    if request.method == 'POST'and not 'check[]' in request.POST:
         from_date = request.POST.get('from')
         to = request.POST.get('to')
         reason = request.POST.get('reason')
