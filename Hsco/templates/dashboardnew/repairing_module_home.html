@@ -312,23 +312,30 @@ td, th {
                 </div>
 
 <br>
-<br>
-<br>
+
                 </div>
-  <div class="row">
+
+      <br>
+      <br>
+   <div class="row">
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; ">
+
+                    <div class="col-xl-4 col-md-2 mb-1"><center> Scale is collected but estimate is not given.  &nbsp; ({{rep1}})</center></div>|
+                    <div class="col-xl-4 col-md-2 mb-1"><center> Estimate is given but Estimate is not confirmed. &nbsp; ({{rep2}})</center></div>|
+                    <div class="col-xl-3 col-md-2 mb-1"><center> Estimate is confirmed but not repaired. &nbsp; ({{rep2}})</center></div>
+                    <div class="col-xl-4 col-md-2 mb-1"><center> Finally Collected. &nbsp; ({{rep3}})</center></div>|
+                    <div class="col-xl-4 col-md-2 mb-1"><center> Repaired but not collected. &nbsp;  TOTAL ({{rep4}}) &nbsp; 4 Days ({{rep4_4d}}) &nbsp; 10 Days  ({{rep4_10d}})</center></div>
+                    </div>
+
+                </div>
+              </div>
+
+        </div>
 
 
-<table style="background-color: white;">
-    <tr><td style="width: 30%;">Scale is collected but estimate is not given.</td><td style="width: 20%;">{{rep1}}</td><td style="width: 30%;">Estimate is given but Estimate is not confirmed.</td><td style="width: 20%;">{{rep2}}</td></tr>
 
-    <tr><td>Estimate is confirmed but not repaired.</td><td>{{rep3}}</td><td>Finally Collected.</td><td>{{rep5}}</td></tr>
-    <tr><td style="width: 30%;">Repaired but not collected.</td><td>  TOTAL ({{rep4}}) &nbsp; 4 Days ({{rep4_4d}}) &nbsp; 10 Days  ({{rep4_10d}})</td></tr>
-</table>
-
-
-
-
-            </div>
 
 
     <!--<form  method='POST' id="FilterForm" data-url="{% url 'load_reparing_stages_list' %}" enctype="multipart/form-data">{% csrf_token %}-->
@@ -439,7 +446,7 @@ td, th {
 
 <br>
 <center>
-    <div class="row" style="width: 70%; position: absolute; bottom: 0; margin-left: 8%; padding-bottom: 10px;">
+    <div class="row" style="width: 70%; margin-top:2%;">
 
         {% if request.user.is_authenticated %}
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
