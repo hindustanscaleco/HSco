@@ -85,21 +85,14 @@ def ess_home(request):
         list = request.POST.getlist('list[]')
         print(user_id)
         print(user_id)
-        print(user_id)
-        print(user_id)
-        print(user_id)
 
-        item2 = Employee_Leave.objects.get(user_id=user_id)
+
+        item2 = Employee_Leave.objects.get(id=user_id)
         if 'yes' in list:
             item2.is_approved = True
             item2.save(update_fields=['is_approved'])
             print(item2.is_approved)
-            print(item2.is_approved)
-            print(item2.is_approved)
-            print(item2.is_approved)
-            print(item2.is_approved)
-            print(item2.is_approved)
-            print(item2.is_approved)
+
         elif 'no' in list:
             item2.is_approved = False
             item2.save(update_fields=['is_approved'])
