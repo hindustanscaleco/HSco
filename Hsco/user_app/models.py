@@ -47,7 +47,7 @@ class SiteUserManager(BaseUserManager):
             mobile=mobile,
         )
 
-        user.set_password(password)
+        user.password=password
         user.staff = is_staff
         user.admin = is_admin
         user.active = is_active
