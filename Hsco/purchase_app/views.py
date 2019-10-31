@@ -74,26 +74,28 @@ def add_purchase_details(request):
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save()
 
-        dispatch = Dispatch()
+
+        if not (channel_of_dispatch == 'Franchisee Store'):
+            dispatch = Dispatch()
 
 
-        dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
-        dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
-        dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        dispatch.customer_email = customer_email_id
-        dispatch.customer_name = customer_name
-        dispatch.company_name = company_name
-        dispatch.customer_address = address
+            dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
+            dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
+            dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            dispatch.customer_email = customer_email_id
+            dispatch.customer_name = customer_name
+            dispatch.company_name = company_name
+            dispatch.customer_address = address
 
-        dispatch.save()
+            dispatch.save()
 
 
-        dispatch2 = Dispatch.objects.get(id=dispatch.pk)
-        dispatch2.dispatch_id = str(dispatch.pk + 00000)
-        dispatch2.save(update_fields=['dispatch_id'])
-        customer_id = Purchase_Details.objects.get(id=item2.pk)
-        customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
-        customer_id.save(update_fields=['dispatch_id_assigned'])
+            dispatch2 = Dispatch.objects.get(id=dispatch.pk)
+            dispatch2.dispatch_id = str(dispatch.pk + 00000)
+            dispatch2.save(update_fields=['dispatch_id'])
+            customer_id = Purchase_Details.objects.get(id=item2.pk)
+            customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
+            customer_id.save(update_fields=['dispatch_id_assigned'])
         send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
         if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
