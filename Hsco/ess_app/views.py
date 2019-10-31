@@ -95,7 +95,9 @@ def ess_home(request):
 
         elif 'no' in list:
             item2.is_approved = False
+            item2.in_process = False
             item2.save(update_fields=['is_approved'])
+            item2.save(update_fields=['in_process'])
 
     if request.method == 'POST'and not 'check[]' in request.POST:
         from_date = request.POST.get('from')

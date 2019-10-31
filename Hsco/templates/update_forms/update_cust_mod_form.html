@@ -388,11 +388,8 @@ function myFunction() {
 
 
 
-</div>
 
 
-
-<div class="form-group row">
   <label class="col-md-2 control-label">Channel of Sales
 
 
@@ -400,9 +397,22 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="channel_of_sales" placeholder="Channel of Sales" value="{{purchase_id_id.channel_of_sales}}" class="form-control"  type="text" disabled id="myText12">
+  <input  name="channel_of_sales" placeholder="Channel of Sales" value="{{purchase_id_id.channel_of_sales}}" class="form-control"  type="text" disabled id="myText12" list="channel10">
+        <datalist style="height:20px;" id="channel10">
+      <option value="Retail through Physical Store"></option>
+      <option value="Online Market Places"></option>
+      <option value="India Mart"></option>
+      <option value="Website"></option>
+      <option value="App"></option>
+      <option value="Field Salesmen"></option>
+      <option value="Fairs and Trade Shows"></option>
+    </datalist>
     </div>
   </div>
+</div>
+
+    <div class="form-group row">
+
 
     <label class="col-md-2 control-label">Industry
 
@@ -416,10 +426,7 @@ function myFunction() {
     </div>
   </div>
 
-</div>
 
-
-<div class="form-group row">
   <label class="col-md-2 control-label">Value of Goods
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -428,6 +435,10 @@ function myFunction() {
   <input  name="value_of_goods" placeholder="Value of Goods" value="{{purchase_id_id.value_of_goods}}" class="form-control" step="0.2" type="number" disabled id="myText14">
     </div>
   </div>
+    </div>
+
+    <div class="form-group row">
+
     <label class="col-md-2 control-label">Channel of Dispatch
 </label>
     <div class="col-md-4 inputGroupContainer">
@@ -437,8 +448,7 @@ function myFunction() {
 
     </div>
   </div>
-</div>
-<div class="form-group row">
+
   <label class="col-md-2 control-label">Notes
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -448,6 +458,10 @@ function myFunction() {
 
 </div>
   </div>
+    </div>
+
+    <div class="form-group row">
+
 
     <label class="col-md-2 control-label">Feedback Form Filled
 
@@ -460,11 +474,10 @@ function myFunction() {
         <input class="form-control" name="feedback_form_filled" placeholder="Yes or No" disabled id="myText17" value="{{purchase_id_id.feedback_form_filled}}">
       </div>
     </div>
-</div>
-    <div class="form-group row">
 
 
-    <label class="col-md-2 control-label">Dispatch ID
+
+    <label class="col-md-2 control-label">Dispatch ID Assigned
 
 </label>
 
@@ -475,6 +488,7 @@ function myFunction() {
     </div>
   </div>
     </div>
+
 <br>
 
     <div class="col-md-12 inputGroupContainer">
@@ -530,7 +544,7 @@ function myFunction() {
 
           <center>
 
-
+{% if  customer_id.feedback_form_filled %}
      <div class="col-xl-6 col-md-6 mb-4">
 
               <div class="card shadow mb-4">
@@ -586,7 +600,7 @@ function myFunction() {
             </div>
               </div>
                         </div>
-
+{% endif %}
 
 </center>
 </div>

@@ -42,7 +42,7 @@ class Employee_Leave(models.Model):
     requested_leave_date_to= models.DateField(default=datetime.date.today, blank=True)
     reason=models.CharField(max_length=300,)
     is_approved =models.BooleanField(default=False,null=True, blank=True)     #YES Or NO
-    in_process = models.BooleanField(default=False ,null=True, blank=True)      #Decide Later option for manager
+    in_process = models.BooleanField(default=True ,null=True, blank=True)      #Decide Later option for manager
     leave_approved_by = models.CharField(max_length=60,null=True, blank=True)
     is_employee_of_month = models.BooleanField(default=False)
 

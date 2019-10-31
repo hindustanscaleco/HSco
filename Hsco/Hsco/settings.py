@@ -141,7 +141,6 @@ EMAIL_HOST_USER = 'mail.ambrosial@gmail.com'
 EMAIL_HOST_PASSWORD = 'ramuchalakashmir'
 
 
-
 user = 'HSCo'
 #user_test = 'vikka'
 api = 'PF8MzCBOGTopfpYFlSZT'

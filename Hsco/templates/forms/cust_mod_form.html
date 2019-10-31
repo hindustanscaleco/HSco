@@ -169,7 +169,7 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Customer Email Id
+  <label class="col-md-2 control-label">Email Id
   </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -209,15 +209,19 @@ color:;
 
 
   <label class="col-md-2 control-label">New/Repeat Purchase
-
-
 </label>
   <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-envelope-open faicons"></i></span>
-  <input  name="new_repeat_purchase" placeholder="New/Repeat Purchase" class="form-control"  type="text">
+    <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="new_repeat_purchase" placeholder="New/Repeat Purchase" class="form-control">
+  <option value="New">New</option>
+  <option value="Repeat">Repeat</option>
+</select>
     </div>
   </div>
+
+
+
 </div>
 
     <!--<label class="col-md-2 control-label">Quantity-->
@@ -292,20 +296,13 @@ color:;
  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
     <input  type="text" required name="channel_of_sales" placeholder="Channel of Sales" class="form-control" list="channel10">
     <datalist style="height:20px;" id="channel10">
-      <option value="Energy industry"></option>
-      <option value="Chemicals"></option>
-      <option value="Industrial Metals "></option>
-      <option value="Gold/Gems and precious Metals "></option>
-      <option value="Home and Heavy Construction companies "></option>
-      <option value="Electrical and Electronic Manufacturers"></option>
-      <option value="Industrial Transportation"></option>
-      <option value="Agriculture"></option>
-      <option value="Poultry/Livestock"></option>
-      <option value="Healthcare Equipment and Services"></option>
-      <option value="Textiles"></option>
-      <option value="Hotels"></option>
-      <option value="Grocery/Retail"></option>
-      <option value="Bakery"></option>
+      <option value="Retail through Physical Store"></option>
+      <option value="Online Market Places"></option>
+      <option value="India Mart"></option>
+      <option value="Website"></option>
+      <option value="App"></option>
+      <option value="Field Salesmen"></option>
+      <option value="Fairs and Trade Shows"></option>
     </datalist>
     </div>
   </div>
@@ -408,7 +405,6 @@ color:;
       <input name="feedback_form_filled" placeholder="No" class="form-control" value="NO" type="text">
     </div>
   </div>
-
   </div>
 
 <center>

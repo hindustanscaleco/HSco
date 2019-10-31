@@ -186,6 +186,24 @@ $(function() {
 
             </script>
                     <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
+
+
+            <style>
+table {
+  font-family: arial, sans-serif;
+  width: 100%;
+  color: black;
+}
+
+td, th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 8px;
+  font-size: 13px;
+}
+
+
+</style>
             <div class="row">
 
                 <div  class="col-xl-3 col-md-3 col-mb-3">
@@ -202,118 +220,6 @@ $(function() {
   </select>
 </div>
                 </div>
-
-<br>
-<br>
-<br>
-                </div>
-  <div class="row">
-
-
-
-               <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow">
-                <div class="card-body" style="padding: 10px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-
-                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Scale is collected but estimate is not given.
-</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
-                    </div>
-                    <div class="col-auto">
-                      <p style="font-size: 23px;">{{rep1}}</p>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-               </div>
-
-
-        <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow">
-                <div class="card-body" style="padding: 10px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-
-                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Estimate is given but Estimate is not confirmed.
-</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
-                    </div>
-                    <div class="col-auto">
-                      <p style="font-size: 23px;">{{rep2}}</p>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-               </div>
-
-
-        <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow">
-                <div class="card-body" style="padding: 10px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-
-                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Estimate is confirmed but not repaired.
-</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
-                    </div>
-                    <div class="col-auto">
-                      <p style="font-size: 23px;">{{rep3}}</p>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-               </div>
-
-        <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow">
-                <div class="card-body" style="padding: 10px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-
-                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">Finally Collected.
-</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
-                    </div>
-                    <div class="col-auto">
-                      <p style="font-size: 23px;">{{rep5}}</p>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-               </div>
-
-
-        <div class="col-xl-3 col-md-6 mb-4">
-        </div>
-        <div class="col-xl-6 col-md-6 mb-4">
-              <div class="card border-left-primary shadow">
-                <div class="card-body" style="padding: 10px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-
-                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 15px;">
-                          Repaired but not collected.
-
-</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
-                    </div>
-                    <div class="col-auto">
-                       TOTAL ({{rep4}}) &nbsp; 4 Days ({{rep4_4d}}) &nbsp; 10 Days  ({{rep4_10d}})
-                    </div>
-                  </div>
-                </div>
-              </div>
-               </div>
-
-  </div>
-
                 <div  class="col-xl-6 col-md-6 col-mb-8">
 
 
@@ -405,9 +311,31 @@ $(function() {
 
                 </div>
 
+<br>
+
+                </div>
+
+      <br>
+      <br>
+   <div class="row">
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; ">
+
+                    <div class="col-xl-4 col-md-2 mb-1"><center> Scale is collected but estimate is not given.  &nbsp; ({{rep1}})</center></div>|
+                    <div class="col-xl-4 col-md-2 mb-1"><center> Estimate is given but Estimate is not confirmed. &nbsp; ({{rep2}})</center></div>|
+                    <div class="col-xl-3 col-md-2 mb-1"><center> Estimate is confirmed but not repaired. &nbsp; ({{rep2}})</center></div>
+                    <div class="col-xl-4 col-md-2 mb-1"><center> Finally Collected. &nbsp; ({{rep3}})</center></div>|
+                    <div class="col-xl-4 col-md-2 mb-1"><center> Repaired but not collected. &nbsp;  TOTAL ({{rep4}}) &nbsp; 4 Days ({{rep4_4d}}) &nbsp; 10 Days  ({{rep4_10d}})</center></div>
+                    </div>
+
+                </div>
+              </div>
+
+        </div>
 
 
-            </div>
+
 
 
     <!--<form  method='POST' id="FilterForm" data-url="{% url 'load_reparing_stages_list' %}" enctype="multipart/form-data">{% csrf_token %}-->
@@ -492,11 +420,11 @@ $(function() {
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                        <div class="col-xl-3 col-md-1 mb-1"><center> <a href="/update_repairing_details/{{list.id}}">{{list.crm_no.company_name}}</a></center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.crm_no.contact_no}} </center> </div>
+                        <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_repairing_details/{{list.id}}">{{list.crm_no.company_name}}</a></center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.crm_no.contact_no}} </center> </div>
                     <div class="col-xl-3 col-md-1 mb-1"><center> {{list.current_stage}} </center> </div>
-<!--                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.repairingnumber}} </center> </div>-->
-<!--                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.date_of_purchase}} </center> </div>-->
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.pk}} </center> </div>
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.date_of_purchase}} </center> </div>
                     </div>
 
                 </div>
@@ -518,7 +446,7 @@ $(function() {
 
 <br>
 <center>
-    <div class="row" style="width: 70%; position: absolute; bottom: 0; margin-left: 8%; padding-bottom: 10px;">
+    <div class="row" style="width: 70%; margin-top:2%;">
 
         {% if request.user.is_authenticated %}
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}

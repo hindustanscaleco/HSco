@@ -237,17 +237,18 @@ Format : (crm no) - (customer name) - (company name)
 
 <div class="form-group row">
   <label class="col-md-2 control-label">Brand
-
 </label>
-  <div class="col-md-4 inputGroupContainer">
+
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-industry faicons"></i></span>
-  <input  name="brand" placeholder="Brand
-
-
-" class="form-control"  type="text">
+  <span class="input-group-addon icon-border"><i class="fa fa-filter faicons"></i></span>
+    <input  type="text" required name="industry" placeholder="Industry" class="form-control" list="channel2">
+    <datalist style="height:20px;" id="channel2">
+      <option value="Hsco"></option>
+    </datalist>
     </div>
   </div>
+
 
     <label class="col-md-2 control-label">Scale Delivery Date
 

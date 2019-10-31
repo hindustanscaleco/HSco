@@ -131,7 +131,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 }
 </script>
   <!-- Page Wrapper -->
-  <div id="wrapper">
+  <div id="wrapper"  style="overflow-y: hidden;">
   {% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
@@ -207,7 +207,6 @@ function myFunction() {
 
 
     <!--</div>-->
-</div>
 
 
     <form  class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}

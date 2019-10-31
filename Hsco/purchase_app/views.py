@@ -106,6 +106,7 @@ def add_purchase_details(request):
             ead = Employee_Analysis_date()
             ead.user_id = SiteUser.objects.get(id=request.user.pk)
             ead.total_sales_done_today = value_of_goods
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
             ead.month = datetime.now().month
             ead.year = datetime.now().year
             ead.save()
@@ -120,6 +121,7 @@ def add_purchase_details(request):
             ead = Employee_Analysis_month()
             ead.user_id = SiteUser.objects.get(id=request.user.pk)
             ead.total_sales_done = value_of_goods
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
             ead.month = datetime.now().month
             ead.year = datetime.now().year
             ead.save()
@@ -668,7 +670,7 @@ def load_users(request):
     selected = request.GET.get('loc_id')
 
     if selected=='true':
-        user_list = Employee_Analysis_month.objects.filter(manager_id=request.user.name)
+        user_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name)
         # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
 
         context = {

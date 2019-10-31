@@ -160,7 +160,7 @@ $(document).ready(function(){
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="type_of_machine" placeholder="Type of Machine" class="form-control" list="type_of_scale">
+    <input  type="text" name="type_of_machine" placeholder="Type of Machine" required class="form-control" list="type_of_scale">
     <datalist style="height:20px;" id="type_of_scale">
     <option value = "Digital"></option>
     <option value = "Mechanical"></option>
@@ -191,7 +191,7 @@ $(document).ready(function(){
 
 
 <div class="wrapper">
-    <select class="editableBox" name="model" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBox" required name="model" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
       <option value="" selected="selected">Select</option>
     </select>
     <input class="timeTextBox" name="timebox" maxlength="5"/>
@@ -299,13 +299,18 @@ $(document).ready(function(){
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Replaced Scale given
+
+
+        <label class="col-md-2 control-label">Replaced Scale given
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="replaced_scale_given" placeholder="Components Replaced" class="form-control"  type="text">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="replaced_scale_given" placeholder="Components Replaced" required class="form-control">
+  <option value="yes">Yes</option>
+  <option value="no">No</option>
+</select>
     </div>
   </div>
 
@@ -323,12 +328,7 @@ $(document).ready(function(){
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Deposit Taken For Replaced Scale
-
-
-
-
-</label>
+    <label class="col-md-2 control-label">Deposit Taken For Replaced Scale</label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
