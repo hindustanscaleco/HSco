@@ -55,9 +55,9 @@ def add_repairing_details(request):
         item2 = Repairing_after_sales_service()
 
         item = Customer_Details()
-        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
+        if Customer_Details.objects.filter(customer_name=customer_name,company_name=company_name,contact_no=contact_no).count() > 0:
 
-            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).first()
+            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,company_name=company_name,contact_no=contact_no).first()
 
         else:
 
@@ -70,8 +70,11 @@ def add_repairing_details(request):
             item.customer_email_id = customer_email_id
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-            item.save()
-            item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            try:
+                item.save()
+                item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            except:
+                pass
 
         item2.previous_repairing_number = previous_repairing_number
         item2.in_warranty = in_warranty
