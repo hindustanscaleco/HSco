@@ -227,17 +227,16 @@ color:;
     </div>
   </div>
 
-    <label class="col-md-2 control-label">In Warranty
-
-
-
-
+      <label class="col-md-2 control-label">In Warranty
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-gears faicons"></i></span>
-      <input  name="in_warranty" placeholder="In Warranty" value="NO" class="form-control" type="text">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="in_warranty" class="form-control">
+  <option value="yes">Yes</option>
+  <option value="no">No</option>
+</select>
     </div>
   </div>
 
@@ -267,11 +266,10 @@ color:;
   </div>
 
 
-</div>
 
 
 
-<div class="form-group row">
+
   <label class="col-md-2 control-label">Complaint Received By
 
 
@@ -290,6 +288,9 @@ color:;
 " class="form-control"  type="text">
     </div>
   </div>
+</div>
+  <div class="form-group row">
+
 
     <label class="col-md-2 control-label">Nearest Railway Station
 
@@ -310,34 +311,27 @@ color:;
     </div>
   </div>
 
-</div>
 
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Train Line
-
-
-
-
-
-
+  <label class="col-md-2 control-label">In Warranty
 </label>
-  <div class="col-md-4 inputGroupContainer">
+
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-train faicons"></i></span>
-  <input  name="train_line" placeholder="Train Line
-
-
-
-" class="form-control"  type="text">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="train_line" class="form-control">
+  <option value="Western">Western</option>
+  <option value="Central">Central</option>
+  <option value="Harbour">Harbour</option>
+</select>
     </div>
+  </div>
   </div>
 
 
 
 
 
+<div class="form-group row">
 
 
     <label class="col-md-2 control-label">Visiting Charges Told to Customer
@@ -354,11 +348,7 @@ color:;
 " class="form-control"  type="text">
     </div>
   </div>
-</div>
 
-
-
-  <div class="form-group row">
 
 
   <label class="col-md-2 control-label">Total Cost
@@ -372,6 +362,8 @@ color:;
   <input  name="total_cost" placeholder="Total Cost" class="form-control" type="text">
     </div>
   </div>
+</div>
+  <div class="form-group row">
 
 
     <label class="col-md-2 control-label">Complaint Assigned To
@@ -391,13 +383,6 @@ color:;
     </datalist>
     </div>
     </div>
-  </div>
-
-
-
-
-
-  <div class="form-group row">
 
   <label class="col-md-2 control-label">Complain Assigned On
 
@@ -415,6 +400,8 @@ color:;
 " class="form-control"  type="date">
     </div>
   </div>
+  </div>
+  <div class="form-group row">
 
 
       <label class="col-md-2 control-label">Time Taken to Reach Destination and Return to office in Minutes
@@ -431,13 +418,7 @@ color:;
 " class="form-control"  type="text">
     </div>
   </div>
-    </div>
 
-
-
-
-
-  <div class="form-group row">
 
   <label class="col-md-2 control-label">Notes
 
@@ -451,8 +432,10 @@ color:;
   <input  name="notes" placeholder="Notes" class="form-control"  type="text">
     </div>
   </div>
+  </div>
 
 
+<div class="form-group row">
 
     <label class="col-md-2 control-label">Feedback given
 
