@@ -94,7 +94,7 @@ def add_purchase_details(request):
         customer_id = Purchase_Details.objects.get(id=item2.pk)
         customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
         customer_id.save(update_fields=['dispatch_id_assigned'])
-        send_mail('Feedback Form','Click on the link to give feedback http://127.0.0.1:8000/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
+        send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
         if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
             Employee_Analysis_date.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + value_of_goods)
@@ -127,12 +127,12 @@ def add_purchase_details(request):
             ead.save()
 
 
-        send_mail('Feedback Form','Click on the link to give feedback http://127.0.0.1:8000/feedback_repairing/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
+        send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
 
         # // vikka.pythonanywhere.com
 
-        message = 'Click on the link to give feedback http://127.0.0.1:8000/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
+        message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
 
         # url = "http://smshorizon.co.in/api/sendsms.php?user="+settings.user+"&apikey="+settings.api+"&mobile="+contact_no+"&message="+message+"&senderid="+settings.senderid+"&type=txt"
         payload = ""
