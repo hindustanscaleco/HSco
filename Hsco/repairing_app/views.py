@@ -22,6 +22,7 @@ from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 
 def add_repairing_details(request):
     cust_sugg=Customer_Details.objects.all()
+    prev_rep_sugg=Repairing_after_sales_service.objects.all()
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -174,7 +175,8 @@ def add_repairing_details(request):
 
 
     context={
-        'cust_sugg':cust_sugg
+        'cust_sugg':cust_sugg,
+        'prev_rep_sugg':prev_rep_sugg,
     }
 
     return render(request,'forms/rep_mod_form.html',context)
@@ -888,6 +890,22 @@ def load_customer(request):
     }
 
     return render(request, 'AJAX/load_customer.html', context)
+
+def load_prev_rep(request):
+    rep_id = request.GET.get('item_id')
+
+    rep_list = Repairing_after_sales_service.objects.get(id=rep_id)
+    location=rep_list.location
+    date_of_purchase=rep_list.date_of_purchase
+
+    context = {
+        'date_of_purchase': date_of_purchase,
+        'location': location,
+
+    }
+
+    return render(request, 'AJAX/load_prev_rep.html', context)
+
 
 
 
