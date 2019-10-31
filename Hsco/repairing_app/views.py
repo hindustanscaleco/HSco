@@ -109,6 +109,8 @@ def add_repairing_details(request):
             ead = Employee_Analysis_date()
             ead.user_id = SiteUser.objects.get(id=request.user.pk)
             ead.total_reparing_done_today = total_cost
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+
             ead.month = datetime.now().month
             ead.year = datetime.now().year
             ead.save()
@@ -126,6 +128,8 @@ def add_repairing_details(request):
             ead = Employee_Analysis_month()
             ead.user_id = SiteUser.objects.get(id=request.user.pk)
             ead.total_reparing_done = total_cost
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+
             ead.month = datetime.now().month
             ead.year = datetime.now().year
             ead.save()

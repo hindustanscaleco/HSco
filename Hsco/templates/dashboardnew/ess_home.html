@@ -109,6 +109,9 @@ color:;
          .border-disapprove {
          border: 3px solid red;
          }
+         .border-process {
+         border: 3px solid orange;
+         }
 
        .no_button {
     background-color: Transparent;
@@ -132,18 +135,29 @@ color:;
              <div class="col-xl-12 col-md-12 mb-12">
                  {% if item.is_approved %}
               <div class="card shadow border-approve">
-                  {% elif not item.is_approved %}
-                  <div class="card shadow border-disapprove">
-                     {% else %}
-                      <div class="card shadow">
-                      {% endif %}
-
-                <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                    <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
                     <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
                     <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp; <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i></div>
+                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;  {% if is_employee_of_month %}
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+
+                        {% endif %}</div>
                         <div class="col-xl-2 col-md-1 mb-1">
-                             <form method="post">{% csrf_token %}
+
+                        </div>
+                    </div>
+                </div>
+                  {% elif item.in_process %}
+                  <div class="card shadow border-process">
+                        <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;  {% if is_employee_of_month %}
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+
+                        {% endif %}</div>
+                        <div class="col-xl-2 col-md-1 mb-1">
+                               <form method="post">{% csrf_token %}
                       <button name="list[]" value="no" id="no" type="submit"  class="no_button"><i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i></button>
 &nbsp; <input type="hidden"  name="user_id" value="{{item.pk}}">
 
@@ -152,10 +166,34 @@ color:;
                         </div>
                     </div>
                 </div>
-                </div>
-              </div>
-{% endfor %}
+                     {% elif not item.is_approved %}
+                      <div class="card shadow border-disapprove">
+                            <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;
+                        {% if is_employee_of_month %}
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
 
+                        {% endif %}
+
+                    </div>
+                        <div class="col-xl-2 col-md-1 mb-1">
+                             <form method="post">{% csrf_token %}
+&nbsp; <input type="hidden"  name="user_id" value="{{item.pk}}">
+
+                        <button name="list[]" value="yes" onclick="myFunction()" type="submit" class="no_button"><i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i></button>
+                    </form>
+                        </div>
+                    </div>
+                </div>
+                      {% endif %}
+
+
+                </div>
+
+{% endfor %}
+</div>
 <script>
             function myFunction(){
                 document.getElementById('timer').style.color = '#ADFF2F'

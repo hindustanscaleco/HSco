@@ -87,6 +87,8 @@ def admin_list(request):
 
 def create_admin(request):
     form = SiteUser_Form(request.POST or None, request.FILES or None)
+    group = SiteUser.objects.get(id=request.user.pk).name
+    group2 = SiteUser.objects.get(id=request.user.pk).group
     if request.method == 'POST' or request.method == 'FILES':
         mobile = request.POST.get('mobile')
         email = request.POST.get('email')
@@ -127,6 +129,7 @@ def create_admin(request):
         return redirect('/admin_list/')
     context={
         'form':form,
+        'group': "'" + group + "'," + group2,
     }
     return render(request,"auth/create_admin.html",context)
 
@@ -195,6 +198,8 @@ def employee_list(request):
 
 def create_employee(request):
     form = SiteUser_Form(request.POST or None, request.FILES or None)
+    group = SiteUser.objects.get(id=request.user.pk).name
+    group2 = SiteUser.objects.get(id=request.user.pk).group
     if request.method == 'POST' or request.method == 'FILES':
         mobile = request.POST.get('mobile')
         email = request.POST.get('email')
@@ -232,6 +237,7 @@ def create_employee(request):
         return redirect('/employee_list/')
     context = {
         'form': form,
+        'group': "'" + group + "'," + group2,
     }
     return render(request,"auth/create_employee.html",context)
 
