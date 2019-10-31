@@ -134,13 +134,13 @@ def add_purchase_details(request):
 
         message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
 
-        # url = "http://smshorizon.co.in/api/sendsms.php?user="+settings.user+"&apikey="+settings.api+"&mobile="+contact_no+"&message="+message+"&senderid="+settings.senderid+"&type=txt"
+        url = "http://smshorizon.co.in/api/sendsms.php?user="+settings.user+"&apikey="+settings.api+"&mobile="+contact_no+"&message="+message+"&senderid="+settings.senderid+"&type=txt"
         payload = ""
         headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-        # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-        # x = response.text
-        # print(x)
+        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        x = response.text
+        print(x)
         return redirect('/add_product_details/'+str(item2.id))
 
     context = {
