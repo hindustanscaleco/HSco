@@ -173,7 +173,7 @@ Format : (crm no) - (customer name) - (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="phone_no" required placeholder="Phone Number
+  <input  name="contact_no" required placeholder="Phone Number
 
 " class="form-control"  type="text">
     </div>
@@ -189,7 +189,7 @@ Format : (crm no) - (customer name) - (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Email-id" class="form-control"  type="text">
+  <input type="email" name="customer_email_id" placeholder="Email-id" class="form-control"  >
     </div>
   </div>
 </div>
@@ -210,7 +210,7 @@ Format : (crm no) - (customer name) - (company name)
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
     <select name="previous_repairing_number" id="display_limi" onchange="choice2(this)" class="form-control">
-    <option value="-----">---------</option>
+    <option value="0">---------</option>
        {% for item in prev_rep_sugg %}
   <option value="{{item.pk}}">{{item.pk}} - {{item.date_of_purchase}} - {{item.crm_no.company_name}}</option>
 

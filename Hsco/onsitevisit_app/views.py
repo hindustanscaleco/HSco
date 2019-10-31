@@ -133,10 +133,10 @@ def add_onsite_aftersales_service(request):
     user_list=SiteUser.objects.filter(group__icontains=request.user.name)
     # form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
-        customer_name = request.POST.get('customer_name')
+        customer_name = request.POST.get('name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('customer_address')
-        contact_no = request.POST.get('phone_no')
+        contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
         previous_repairing_number = request.POST.get('previous_repairing_number')
@@ -148,7 +148,7 @@ def add_onsite_aftersales_service(request):
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
 
         visiting_charges_told_customer = request.POST.get('visiting_charges_told_customer')
-        total_cost = request.POST.get('components_replaced_in_warranty')
+        total_cost = request.POST.get('total_cost')
         complaint_assigned_to = request.POST.get('complaint_assigned_to')
         complaint_assigned_on = request.POST.get('complaint_assigned_on')
         time_taken_destination_return_office_min = request.POST.get('time_taken_destination_return_office_min')
@@ -204,8 +204,9 @@ def add_onsite_aftersales_service(request):
                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
             Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
                                                   year=datetime.now().year).update(
-                total_reparing_done_today=F("total_reparing_done_onsite_today") + total_cost)
+                total_reparing_done_onsite_today=F("total_reparing_done_onsite_today") + total_cost)
             # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
 
             # ead.save(update_fields=['total_sales_done_today'])
 
@@ -398,16 +399,35 @@ def update_onsite_details(request,id):
     onsite_id = Onsite_aftersales_service.objects.get(id=id)
     onsite_product_list = Onsite_Products.objects.filter(onsite_repairing_id=id)
     employee_list = SiteUser.objects.filter(role='Employee',group__icontains=request.user.name)
+    customer_id = Onsite_aftersales_service.objects.get(id=id).crm_no
 
+    customer_id = Customer_Details.objects.get(id=customer_id)
     print(onsite_product_list)
     if request.method == 'POST' or request.method == 'FILES':
-        repairingno = request.POST.get('repairingno')
-        customer_name = request.POST.get('customer_name')
+        contact_no = request.POST.get('contact_no')
+        customer_email = request.POST.get('customer_email_id')
+        customer_name = request.POST.get('name')
         company_name = request.POST.get('company_name')
+        customer_address = request.POST.get('customer_address')
+
+        item2 = customer_id
+
+        item2.customer_name = customer_name
+        item2.company_name = company_name
+        item2.address = customer_address
+        item2.contact_no = contact_no
+        item2.customer_email_id = customer_email
+
+        item2.save(update_fields=['contact_no', ]),
+        item2.save(update_fields=['customer_email_id', ]),
+        item2.save(update_fields=['customer_name', ]),
+        item2.save(update_fields=['company_name', ]),
+        item2.save(update_fields=['address', ]),
+
+        repairingno = request.POST.get('repairingno')
         customer_no = request.POST.get('customer_no')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
-        phone_no = request.POST.get('phone_no')
         customer_email_id = request.POST.get('customer_email_id')
         date_of_complaint_received = request.POST.get('date_of_complaint_received')
         customer_address = request.POST.get('customer_address')
@@ -434,7 +454,6 @@ def update_onsite_details(request,id):
         item.customer_no = customer_no
         item.previous_repairing_number = previous_repairing_number
         item.in_warranty = in_warranty
-        item.phone_no = phone_no
         item.customer_email_id = customer_email_id
         item.date_of_complaint_received = date_of_complaint_received
         item.customer_address = customer_address

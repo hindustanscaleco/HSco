@@ -27,7 +27,7 @@ def add_repairing_details(request):
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('address')
-        contact_no = request.POST.get('phone_no')
+        contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
 
@@ -239,7 +239,7 @@ def update_repairing_details(request,id):
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('address')
-        contact_no = request.POST.get('phone_no')
+        contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
         item = customer_id
