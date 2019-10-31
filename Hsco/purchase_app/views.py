@@ -500,36 +500,37 @@ def customer_employee_sales_graph(request,user_id):
     #this month sales
 
     mon = datetime.now().month
-    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(data_sum=Sum('total_sales_done_today'))
+    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
+                                                                                                         'total_sales_done_today')
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
         x = i
         this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        this_lis_sum.append(x['data_sum'])
+        this_lis_sum.append(x['total_sales_done_today'])
 
     #previous month sales
     mon = (datetime.now().month)-1
-    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
-        data_sum=Sum('total_sales_done_today'))
+    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
+                                                                                                         'total_sales_done_today')
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
         x = i
         previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        previous_lis_sum.append(x['data_sum'])
+        previous_lis_sum.append(x['total_sales_done_today'])
 
     if request.method=='POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values(
-            'entry_date').annotate(data_sum=Sum('total_sales_done_today'))
+            'entry_date','total_sales_done_today')
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
             lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['data_sum'])
+            lis_sum.append(x['total_sales_done_today'])
         context = {
             'final_list': lis_date,
             'final_list2': lis_sum,
@@ -543,15 +544,15 @@ def customer_employee_sales_graph(request,user_id):
         return render(request, "graphs/sales_graph.html", context)
     else:
 
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date').annotate(data_sum=Sum('total_sales_done_today'))
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date',
+                                                                                                         'total_sales_done_today')
         lis_date = []
         lis_sum = []
         for i in qs:
             x=i
             lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['data_sum'])
-        print(lis_date)
-        print(lis_sum)
+            lis_sum.append(x['total_sales_done_today'])
+
 
         context={
             'final_list':lis_date,
