@@ -655,15 +655,15 @@ def onsitevisit_app_graph(request,user_id):
     from django.db.models import Sum
     user_id = request.user.pk
     rep_feedback = Onsite_Feedback.objects.all()
+    mon = datetime.now().month
 
     print(user_id)
-    obj = Employee_Analysis_month.objects.get(id=user_id)
+    obj = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon)
     obj.onsitereparing_target_achived_till_now = (obj.total_reparing_done_onsite / obj.onsitereparing_target_given) * 100
-    obj.save()
+    obj.save(update_fields=['onsitereparing_target_achived_till_now'])
     # current month
     target_achieved = obj.onsitereparing_target_achived_till_now
     # current month
-    mon = datetime.now().month
     this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
                                                                                                      'total_reparing_done_onsite_today')
     this_lis_date = []
