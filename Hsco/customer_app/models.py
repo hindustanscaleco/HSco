@@ -15,6 +15,9 @@ class Customer_Details(models.Model):
     contact_no = models.CharField(max_length=30,null=True,blank=True)
     customer_email_id = models.CharField(max_length=30,null=True,blank=True)
 
+    class Meta:
+        unique_together = ('customer_name','contact_no','customer_email_id')
+
     def __int__(self):
         return self.id
 
