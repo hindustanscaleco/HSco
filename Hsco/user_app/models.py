@@ -87,7 +87,7 @@ class SiteUser(AbstractBaseUser):
     group = models.CharField(max_length=300, null=True, blank=True)
     is_deleted = models.BooleanField(default='False',null=True,blank=True)
     modules_assigned = models.CharField(max_length=300,null=True, blank=True)
-    photo = models.FileField(upload_to='profile_image/',null=True, blank=True)
+    photo = models.ImageField(upload_to='profile_image/',null=True, blank=True)
     salary_slip = models.FileField(upload_to='salary_slip/',null=True, blank=True)
     created_by = models.CharField(max_length=30,null=True, blank=True)
     assigned_by = models.CharField(max_length=30,null=True, blank=True)

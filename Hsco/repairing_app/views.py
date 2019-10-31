@@ -22,6 +22,7 @@ from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 
 def add_repairing_details(request):
     cust_sugg=Customer_Details.objects.all()
+    prev_rep_sugg=Repairing_after_sales_service.objects.all()
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -54,9 +55,9 @@ def add_repairing_details(request):
         item2 = Repairing_after_sales_service()
 
         item = Customer_Details()
-        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
+        if Customer_Details.objects.filter(customer_name=customer_name,company_name=company_name,contact_no=contact_no).count() > 0:
 
-            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).first()
+            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,company_name=company_name,contact_no=contact_no).first()
 
         else:
 
@@ -69,8 +70,11 @@ def add_repairing_details(request):
             item.customer_email_id = customer_email_id
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-            item.save()
-            item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            try:
+                item.save()
+                item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            except:
+                pass
 
         item2.previous_repairing_number = previous_repairing_number
         item2.in_warranty = in_warranty
@@ -174,7 +178,8 @@ def add_repairing_details(request):
 
 
     context={
-        'cust_sugg':cust_sugg
+        'cust_sugg':cust_sugg,
+        'prev_rep_sugg':prev_rep_sugg,
     }
 
     return render(request,'forms/rep_mod_form.html',context)
@@ -733,12 +738,13 @@ def repairing_employee_graph(request,user_id):
     rep_feedback = Repairing_Feedback.objects.all()
 
     print(user_id)
-    obj = Employee_Analysis_month.objects.get(id=user_id)
+    mon = datetime.now().month
+
+    obj = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon)
     obj.reparing_target_achived_till_now = (obj.total_reparing_done/obj.reparing_target_given)*100
-    obj.save()
+    obj.save(update_fields=['reparing_target_achived_till_now'])
     #current month
     target_achieved =  obj.reparing_target_achived_till_now
-    mon = datetime.now().month
     this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
                                                                                                      'total_reparing_done_today')
 
@@ -887,6 +893,22 @@ def load_customer(request):
     }
 
     return render(request, 'AJAX/load_customer.html', context)
+
+def load_prev_rep(request):
+    rep_id = request.GET.get('item_id')
+
+    rep_list = Repairing_after_sales_service.objects.get(id=rep_id)
+    location=rep_list.location
+    date_of_purchase=rep_list.date_of_purchase
+
+    context = {
+        'date_of_purchase': date_of_purchase,
+        'location': location,
+
+    }
+
+    return render(request, 'AJAX/load_prev_rep.html', context)
+
 
 
 
