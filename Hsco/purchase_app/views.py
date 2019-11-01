@@ -118,6 +118,11 @@ def add_purchase_details(request):
             customer_id = Purchase_Details.objects.get(id=item2.pk)
             customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
             customer_id.save(update_fields=['dispatch_id_assigned'])
+
+
+
+
+
         # send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
         if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
@@ -130,6 +135,7 @@ def add_purchase_details(request):
             ead = Employee_Analysis_date()
             ead.user_id = SiteUser.objects.get(id=request.user.pk)
             ead.total_sales_done_today = value_of_goods
+            # ead.total_dispatch_done_today = value_of_goods
             ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
             ead.month = datetime.now().month
             ead.year = datetime.now().year
@@ -145,6 +151,7 @@ def add_purchase_details(request):
             ead = Employee_Analysis_month()
             ead.user_id = SiteUser.objects.get(id=request.user.pk)
             ead.total_sales_done = value_of_goods
+            # ead.total_dispatch_done = value_of_goods
             ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
             ead.month = datetime.now().month
             ead.year = datetime.now().year

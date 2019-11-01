@@ -30,15 +30,15 @@ def add_dispatch_details(request):
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
-        item = Customer_Details()
-
-        item.customer_name = customer_name
-        item.company_name = company_name
-        item.address = address
-        item.contact_no = contact_no
-        item.customer_email_id = customer_email_id
-
-        item.save()
+        # item = Customer_Details()
+        #
+        # item.customer_name = customer_name
+        # item.company_name = company_name
+        # item.address = address
+        # item.contact_no = contact_no
+        # item.customer_email_id = customer_email_id
+        #
+        # item.save()
 
 
         dispatch_id = request.POST.get('dispatch_id')
@@ -54,6 +54,33 @@ def add_dispatch_details(request):
         notes = request.POST.get('notes')
 
         item2 = Dispatch()
+        item = Customer_Details()
+        if Customer_Details.objects.filter(customer_name=customer_name, company_name=company_name,
+                                           contact_no=contact_no).count() > 0:
+
+            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name, company_name=company_name,
+                                                           contact_no=contact_no).first()
+
+        else:
+
+            item.customer_name = customer_name
+            item.company_name = company_name
+            item.address = address
+            item.contact_no = contact_no
+            item.customer_email_id = customer_email_id
+            # item.user_id = SiteUser.objects.get(id=request.user.pk)
+            # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            try:
+                item.save()
+                item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            except:
+                pass
+
+
+
+
+
+
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.crm_no_id = item.pk
         item2.dispatch_id = dispatch_id
@@ -69,18 +96,18 @@ def add_dispatch_details(request):
         item2.notes = notes
 
         item2.save()
-        
-        send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
-        message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
+        # send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
-
-        url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-        payload = ""
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-        x = response.text
+        # message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
+        #
+        #
+        # url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+        # payload = ""
+        # headers = {'content-type': 'application/x-www-form-urlencoded'}
+        #
+        # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        # x = response.text
 
 
         return redirect('/dispatch_view')
@@ -365,7 +392,7 @@ def dispatch_analytics(request):
 def dispatch_employee_graph(request,user_id):
     from django.db.models import Sum
 
-    user_id = request.user.pk
+    # user_id = request.user.pk
 
     # current month
     mon = datetime.now().month
