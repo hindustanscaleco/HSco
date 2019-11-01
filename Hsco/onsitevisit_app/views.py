@@ -133,7 +133,7 @@ def add_onsite_aftersales_service(request):
     user_list=SiteUser.objects.filter(group__icontains=request.user.name)
     # form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
-        customer_name = request.POST.get('name')
+        customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
@@ -144,7 +144,7 @@ def add_onsite_aftersales_service(request):
         date_of_complaint_received = request.POST.get('date_of_complaint_received')
         complaint_received_by = request.POST.get('complaint_received_by')
         nearest_railwaystation = request.POST.get('nearest_railwaystation')
-        train_line = request.POST.get('tr   ain_line')
+        train_line = request.POST.get('train_line')
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
 
         visiting_charges_told_customer = request.POST.get('visiting_charges_told_customer')
@@ -418,7 +418,7 @@ def update_onsite_details(request,id):
     if request.method == 'POST' or request.method == 'FILES':
         contact_no = request.POST.get('contact_no')
         customer_email = request.POST.get('customer_email_id')
-        customer_name = request.POST.get('name')
+        customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         customer_address = request.POST.get('customer_address')
 

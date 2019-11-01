@@ -85,7 +85,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-    <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
+    <select name="customer_number" maxlength="10" id="display_limit" onchange="choice1(this)" class="form-control">
     <option value="-----">---------</option>
        {% for item in cust_sugg %}
   <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
@@ -116,7 +116,7 @@ Format : (crm no) - (customer name) - (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-  <input  name="name" placeholder="Customer Name" class="form-control"  type="text">
+  <input  name="customer_name" placeholder="Customer Name" class="form-control"  type="text">
     </div>
   </div>
 
@@ -242,21 +242,11 @@ Format : (crm no) - (customer name) - (company name)
   <label class="col-md-2 control-label">Contract Amount
 
 
-
-
-
-
-
-
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="contract_amount" placeholder="Contract Amount
-
-
-
-" class="form-control"  type="text">
+  <input  name="contract_amount" required placeholder="Contract Amount" class="form-control"  type="number">
 
 
      </div>

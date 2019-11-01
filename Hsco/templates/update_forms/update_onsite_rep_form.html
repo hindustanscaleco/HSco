@@ -23,10 +23,11 @@
 
 <body id="page-top">
 
+
 <style>
 
-* {
-color:;
+.container-fluid {
+font-size: 14px;
 }
   .faicons {
   font-size: 18px;
@@ -50,7 +51,9 @@ color:;
   }
 
 </style>
-
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
  <script> function disable() {
   document.getElementById("name").disabled = true;
   }
@@ -68,7 +71,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-	{% include 'base_templates/sidebar.html' %}
+  {% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -81,7 +84,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 
 
         <!-- Topbar -->
-	{% include 'base_templates/navbar_for_dashboard.html' %}
+  {% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -187,7 +190,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="customer_no" placeholder="Customer Number" class="form-control" id="myText4" type="text" disabled value="{{onsite_id.crm_no.pk}}">
+  <input name="customer_no" placeholder="Customer Number" maxlength="10" class="form-control" id="myText4" type="text" disabled value="{{onsite_id.crm_no.pk}}">
     </div>
   </div>
 
@@ -348,39 +351,10 @@ function myFunction() {
     </div>
   </div>
 
-    <!--<label class="col-md-2 control-label">Products To be repaired-->
 
 
 
 
-
-<!--</label>-->
-
-    <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>-->
-  <!--<input  name="products_to_be_repaired" placeholder="Products To be repaired" class="form-control" id="myText14" type="text" disabled value="{{onsite_id.products_to_be_repaired}}">-->
-    <!--</div>-->
-  <!--</div>-->
-
-</div>
-
-
-
-
-
-  <div class="form-group row">
-  <label class="col-md-2 control-label">Cost
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="cost" placeholder="Cost" class="form-control" id="myText15" type="text" disabled value="{{cost}}">
-    </div>
-  </div>
 
     <label class="col-md-2 control-label">Visiting Charges Told to Customer
 
@@ -390,7 +364,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="visiting_charges_told_customer" placeholder="Visiting Charges Told to Customer" id="myText16" class="form-control" type="text" disabled value="{{onsite_id.visiting_charges_told_customer}}">
+  <input  name="visiting_charges_told_customer" placeholder="Visiting Charges Told to Customer" id="myText14" class="form-control" type="text" disabled value="{{onsite_id.visiting_charges_told_customer}}">
     </div>
   </div>
 
@@ -407,7 +381,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="total_cost" placeholder="Total Cost" class="form-control" id="myText17"  type="text" disabled value="{{onsite_id.total_cost}}">
+  <input  name="total_cost" placeholder="Total Cost" class="form-control" id="myText15"  type="text" disabled value="{{onsite_id.total_cost}}">
     </div>
   </div>
 
@@ -419,7 +393,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  placeholder="Complaint Assigned To" class="form-control" id="myText18" type="text" disabled value="{{onsite_id.complaint_assigned_to}}">
+  <input  placeholder="Complaint Assigned To" class="form-control" id="myText16" type="text" disabled value="{{onsite_id.complaint_assigned_to}}">
     </div>
   </div>
 
@@ -436,7 +410,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="complaint_assigned_on" placeholder="Complain Assigned On" class="form-control" id="myText19" type="text" disabled value="{{onsite_id.complaint_assigned_on}}">
+  <input  name="complaint_assigned_on" placeholder="Complain Assigned On" class="form-control" id="myText17" type="text" disabled value="{{onsite_id.complaint_assigned_on}}">
     </div>
   </div>
 
@@ -449,7 +423,7 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-clock-o faicons"></i></span>
   <input  name="time_taken_destination_return_office_min" placeholder="Time Taken to Reach Destination and Return to office in Minutes"
-          class="form-control" id="myText20" type="text" disabled value="{{onsite_id.time_taken_destination_return_office_min}}">
+          class="form-control" id="myText18" type="text" disabled value="{{onsite_id.time_taken_destination_return_office_min}}">
     </div>
   </div>
 
@@ -469,7 +443,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="notes" placeholder="Notes" class="form-control" id="myText21" type="text" disabled value="{{onsite_id.notes}}">
+  <input  name="notes" placeholder="Notes" class="form-control" id="myText19" type="text" disabled value="{{onsite_id.notes}}">
     </div>
   </div>
 
@@ -482,28 +456,15 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-      <input  name="notes" placeholder="Notes" class="form-control" id="myText22" type="text" disabled value="{{onsite_id.feedback_given}}">
+      <input  name="notes" placeholder="Notes" class="form-control" id="myText20" type="text" disabled value="{{onsite_id.feedback_given}}">
     </div>
   </div>
 </div>
 
- <div class="form-group row">
-  <label class="col-md-2 control-label">Assigned To
 
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-<select name="complaint_assigned_to" class="form-control">
-                {% for list2 in employee_list %}
-                        <option value="{{list2.pk}}">{{list2.name}}</option>
-                  {% endfor %}
-</select>    </div>
-  </div>
 
-</div>
 <center>
-	<button class="btn btn-primary">Submit</button>
+  <button class="btn btn-primary">Submit</button>
                       <button  onclick="myFunction()" class="btn btn-primary" type="reset">Edit</button>
 
 </center>

@@ -110,7 +110,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-    <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
+    <select name="customer_number" maxlength="10" id="display_limit" onchange="choice1(this)" class="form-control">
     <option value="-----">---------</option>
        {% for item in cust_sugg %}
   <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
@@ -173,9 +173,7 @@ Format : (crm no) - (customer name) - (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" required placeholder="Phone Number
-
-" class="form-control"  type="text">
+  <input  name="contact_no" required placeholder="Phone Number" class="form-control"  type="text">
     </div>
   </div>
 
@@ -226,7 +224,7 @@ Format : (crm no) - (customer name) - (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="in_warranty" class="form-control">
+<select name="in_warranty" required class="form-control">
   <option value="yes">Yes</option>
   <option value="no">No</option>
 </select>
@@ -288,7 +286,7 @@ Format : (crm no) - (customer name) - (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" id="datePicker" required class="form-control"  type="date">
+  <input  name="today_date" required id="datePicker" required class="form-control"  type="date">
     </div>
   </div>
 
@@ -311,7 +309,6 @@ Format : (crm no) - (customer name) - (company name)
 
 
 
-</div>
 
 
 
@@ -320,7 +317,7 @@ Format : (crm no) - (customer name) - (company name)
 
 
 
-<div class="form-group row">
+
 
 
   <label class="col-md-2 control-label">Informed On
@@ -332,9 +329,11 @@ Format : (crm no) - (customer name) - (company name)
   <input  name="informed_on" placeholder="Informed On" class="form-control" required type="date">
     </div>
   </div>
+</div>
 
 
 
+<div class="form-group row">
 
     <label class="col-md-2 control-label">Informed By
 
@@ -349,11 +348,7 @@ Format : (crm no) - (customer name) - (company name)
   <input  name="informed_by" placeholder="Informed By" class="form-control"  type="text">
     </div>
   </div>
-</div>
 
-
-
-<div class="form-group row">
 
   <label class="col-md-2 control-label">Confirmed Estimate
 
@@ -370,8 +365,10 @@ Format : (crm no) - (customer name) - (company name)
     </datalist>
     </div>
   </div>
+</div>
 
 
+<div class="form-group row">
 
     <label class="col-md-2 control-label">Repaired
 </label>
@@ -386,11 +383,7 @@ Format : (crm no) - (customer name) - (company name)
     </datalist>
     </div>
   </div>
-</div>
 
-
-
-<div class="form-group row">
 
 
   <label class="col-md-2 control-label">Repaired date
@@ -402,7 +395,9 @@ Format : (crm no) - (customer name) - (company name)
   <input type="date" name="repaired_date" placeholder="Repaired date" class="form-control"  type="text" value="">
     </div>
   </div>
+</div>
 
+<div class="form-group row">
 
   <label class="col-md-2 control-label">Delivery Date
 </label>
@@ -412,12 +407,7 @@ Format : (crm no) - (customer name) - (company name)
   <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control"  type="text" value="">
     </div>
   </div>
-</div>
 
-
-
-
-<div class="form-group row">
 
     <label class="col-md-2 control-label">Delivered By
 </label>
@@ -428,9 +418,11 @@ Format : (crm no) - (customer name) - (company name)
   <input  name="delivery_by" placeholder="Delivery By" class="form-control"  type="text" value="">
     </div>
   </div>
+</div>
 
 
 
+<div class="form-group row">
 
     <label class="col-md-2 control-label">Feedback Given
 </label>
@@ -446,9 +438,6 @@ Format : (crm no) - (customer name) - (company name)
   </div>
 
 
-</div>
-
-  <div class="form-group row">
 
     <label class="col-md-2 control-label">Current stage:
 </label>

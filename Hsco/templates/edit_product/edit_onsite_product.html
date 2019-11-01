@@ -27,7 +27,7 @@
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-	{% include 'base_templates/sidebar.html' %}
+  {% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -40,14 +40,14 @@
 
 
         <!-- Topbar -->
-	{% include 'base_templates/navbar_for_dashboard.html' %}
+  {% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
 
 <style>
 
-* {
-color:;
+.container-fluid {
+font-size: 14px;
 }
   .faicons {
   font-size: 18px;
@@ -71,69 +71,22 @@ color:;
   }
 
 </style>
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
+ <script> function disable() {
+  document.getElementById("name").disabled = true;
+  }
 
-         <style>
-          .editableBox {
-    width: 70%;
-    height: 30px;
+  function enable() {
+   document.getElementById("name").disabled = false;
+  }
+
+var form = document.getElementById("contact_form");
+var elements = form.elements;
+for (var i = 0, len = elements.length; i < len; ++i) {
+    elements[i].disabled = true;
 }
-
-.timeTextBox {
-    width: 65%;
-    margin-left: -70%;
-    height: 25px;
-    border: none;
-}
-
-
-.editableBoxa {
-    width: 70%;
-    height: 30px;
-}
-
-.timeTextBoxa {
-    width: 65%;
-    margin-left: -70%;
-    height: 25px;
-    border: none;
-}
-
-
-.editableBoxz {
-    width: 70%;
-    height: 30px;
-}
-
-.timeTextBoxz {
-    width: 65%;
-    margin-left: -78px;
-    height: 25px;
-    border: none;
-}
-
-        </style>
-<script>
-$(document).ready(function(){
-
-    $(".editableBox").change(function(){
-        $(".timeTextBox").val($(".editableBox option:selected").html());
-    });
-});
-
-$(document).ready(function(){
-
-    $(".editableBoxa").change(function(){
-        $(".timeTextBoxa").val($(".editableBoxa option:selected").html());
-    });
-});
-
-
-$(document).ready(function(){
-
-    $(".editableBoxz").change(function(){
-        $(".timeTextBoxz").val($(".editableBoxz option:selected").html());
-    });
-});
 </script>
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -142,6 +95,32 @@ $(document).ready(function(){
             <h1 class="h3 mb-0 text-gray-800"> Onrepair Product</h1>
 </center>
 <br>
+            <script>
+function myFunction() {
+  document.getElementById("myText").disabled = false;
+    document.getElementById("myText2").disabled = false;
+    document.getElementById("myText3").disabled = false;
+    document.getElementById("myText4").disabled = false;
+    document.getElementById("myText5").disabled = false;
+    document.getElementById("myText6").disabled = false;
+    document.getElementById("myText7").disabled = false;
+    document.getElementById("myText8").disabled = false;
+    document.getElementById("myText9").disabled = false;
+    document.getElementById("myText10").disabled = false;
+    document.getElementById("myText11").disabled = false;
+    document.getElementById("myText12").disabled = false;
+    document.getElementById("myText13").disabled = false;
+    document.getElementById("myText14").disabled = false;
+    document.getElementById("myText15").disabled = false;
+    document.getElementById("myText16").disabled = false;
+    document.getElementById("myText17").disabled = false;
+    document.getElementById("myText18").disabled = false;
+    document.getElementById("myText19").disabled = false;
+    document.getElementById("myText20").disabled = false;
+    document.getElementById("myText21").disabled = false;
+
+}
+</script>
 <br>
 
             <form method="POST">{%csrf_token%}
@@ -159,7 +138,7 @@ $(document).ready(function(){
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="type_of_machine" value="{{onsite_id.type_of_machine}}" placeholder="Type of Machine" class="form-control" >
+    <input  type="text" name="type_of_machine" disabled id="myText" value="{{onsite_id.type_of_machine}}" placeholder="Type of Machine" class="form-control" >
 
     </div>
   </div>
@@ -171,7 +150,7 @@ $(document).ready(function(){
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="model" placeholder="Model" value="{{onsite_id.model}}" class="form-control" >
+    <input  type="text" name="model" placeholder="Model" disabled id="myText2" value="{{onsite_id.model}}" class="form-control" >
 
     </div>
   </div>
@@ -193,7 +172,7 @@ $(document).ready(function(){
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="sub_model" value="{{onsite_id.sub_model}}" placeholder="Sub model" class="form-control" >
+    <input  type="text" name="sub_model" disabled id="myText3" value="{{onsite_id.sub_model}}" placeholder="Sub model" class="form-control" >
 
     </div>
   </div>   <label class="col-md-2 control-label">Cost
@@ -205,7 +184,7 @@ $(document).ready(function(){
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-    <input  type="text" name="cost" value="{{onsite_id.cost}}" placeholder="Cost" class="form-control" >
+    <input  type="text" name="cost" disabled id="myText4" value="{{onsite_id.cost}}" placeholder="Cost" class="form-control" >
 
     </div>
   </div>
@@ -222,8 +201,8 @@ $(document).ready(function(){
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-truck	 faicons"></i></span>
-    <input  type="text" name="capacity" value="{{onsite_id.capacity}}" placeholder="Capacity" class="form-control" >
+  <span class="input-group-addon icon-border"><i class="fa fa-truck  faicons"></i></span>
+    <input  type="text" name="capacity" disabled id="myText5" value="{{onsite_id.capacity}}" placeholder="Capacity" class="form-control" >
 
     </div>
   </div>
@@ -237,7 +216,7 @@ $(document).ready(function(){
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="problem_in_scale" value="{{onsite_id.problem_in_scale}}" placeholder="Problem in the scale" class="form-control" >
+    <input  type="text" name="problem_in_scale" disabled id="myText6" value="{{onsite_id.problem_in_scale}}" placeholder="Problem in the scale" class="form-control" >
 
     </div>
   </div>
@@ -257,7 +236,7 @@ $(document).ready(function(){
       <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-gears faicons"></i></span>
-          <input  type="text" name="components_replaced_in_warranty" value="{{onsite_id.components_replaced_in_warranty}}" placeholder="Components Replaced in Waranty" class="form-control" >
+          <input  type="text" name="components_replaced_in_warranty" disabled id="myText7" value="{{onsite_id.components_replaced_in_warranty}}" placeholder="Components Replaced in Waranty" class="form-control" >
 
     </div>
   </div>
@@ -268,7 +247,7 @@ $(document).ready(function(){
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-window-restore faicons"></i></span>
-  <input  name="components_replaced" placeholder="Components Replaced" value="{{onsite_id.components_replaced_in_warranty}}" class="form-control"  type="text">
+  <input  name="components_replaced" placeholder="Components Replaced" disabled id="myText8" value="{{onsite_id.components_replaced_in_warranty}}" class="form-control"  type="text">
     </div>
   </div>
 
@@ -285,9 +264,9 @@ $(document).ready(function(){
 </div>
 
 
-
 <center>
-    <button type="submit" class="btn btn-primary">Submit</button>
+  <button class="btn btn-primary">Submit</button>
+                      <button  onclick="myFunction()" class="btn btn-primary" type="reset">Edit</button>
 
 </center>
 </form>

@@ -104,7 +104,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-    <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
+    <select name="customer_number" maxlength="10" required id="display_limit" onchange="choice1(this)" class="form-control">
     <option value="-----">---------</option>
        {% for item in cust_sugg %}
   <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
@@ -174,7 +174,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="name" placeholder="Customer Name
+  <input  name="customer_name" required placeholder="Customer Name
 " class="form-control"  type="text">
     </div>
   </div>
@@ -205,7 +205,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<input name="customer_address" required class="form-control"/>  </div>
+<input name="customer_address" placeholder="Customer Address" required class="form-control"/>  </div>
   </div>
 
 </div>
@@ -240,11 +240,10 @@ color:;
     </div>
   </div>
 
-</div>
 
 
 
-<div class="form-group row">
+
   <label class="col-md-2 control-label">Dispatched By
 
 
@@ -254,11 +253,19 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="dispatch_by" placeholder="Dispatched By" class="form-control"  type="text">
+  <input  name="dispatch_by" placeholder="Dispatched By" class="form-control"  type="text" list="dispat_list">
+    <datalist style="height:20px;" id="dispat_list">
+      {% for item in user_list %}
 
+      <option value = "{{item.name}}"></option>
+    {% endfor %}
+    </datalist>
 
      </div>
   </div>
+</div>
+  <div class="form-group row">
+
 
     <label class="col-md-2 control-label">Packed by
 
@@ -269,15 +276,17 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="packed_by" placeholder="Packed by
-" class="form-control"  type="text">
+" class="form-control"  type="text" list="packed_list">
+        <datalist style="height:20px;" id="packed_list">
+      {% for item in user_list %}
+
+      <option value = "{{item.name}}"></option>
+    {% endfor %}
+    </datalist>
     </div>
   </div>
 
-</div>
 
-
-
-<div class="form-group row">
   <label class="col-md-2 control-label">Hamal Name
 
 
@@ -290,6 +299,8 @@ color:;
 " class="form-control"  type="text">
     </div>
   </div>
+  </div>
+<div class="form-group row">
 
     <label class="col-md-2 control-label">No. of Bundles
 
@@ -304,12 +315,8 @@ color:;
     </div>
   </div>
 
-</div>
 
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Transport  Name
+  <label class="col-md-2 control-label">Transport Name
 
 
 
@@ -321,6 +328,10 @@ color:;
 " class="form-control"  type="text">
     </div>
   </div>
+</div>
+
+  <div class="form-group row">
+
 
     <label class="col-md-2 control-label">LR NO
 
@@ -335,11 +346,7 @@ color:;
     </div>
   </div>
 
-</div>
 
-
-
-<div class="form-group row">
   <label class="col-md-2 control-label">Photo of LR No
 
 
@@ -352,25 +359,30 @@ color:;
 " class="form-control"  type="file">
     </div>
   </div>
+  </div>
+  <div class="form-group row">
+
 
     <label class="col-md-2 control-label">Channel of Dispatch
 
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
+       <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch
-" class="form-control"  type="text">
+  <input  type="text" name="channel_of_dispatch" placeholder="Channel of Dispatch" required class="form-control" list="channel">
+    <datalist style="height:20px;" id="channel">
+      <option value="Courier">
+      <option value="Transport">
+      <option value="Franchisee Store">
+      <option value="Online Market Places">
+      <option value="Delivery Boys">
+    </datalist>
     </div>
   </div>
 
-</div>
 
-
-
-<div class="form-group row">
   <label class="col-md-2 control-label">Notes
 
 
@@ -407,6 +419,8 @@ color:;
 </form>
 </div>
 
+  </div>
+    </div>
   </div>
   <!-- End of Page Wrapper -->
 

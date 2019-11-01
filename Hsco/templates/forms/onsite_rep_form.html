@@ -92,7 +92,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-   <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
+   <select name="customer_number" id="display_limit" maxlength="10" onchange="choice1(this)" class="form-control">
     <option value="-----">---------</option>
        {% for item in cust_sugg %}
   <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
@@ -124,10 +124,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name
-
-
-" class="form-control"  type="text">
+  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text">
     </div>
   </div>
 
@@ -140,7 +137,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-  <input  name="name" placeholder="Customer Name
+  <input  name="customer_name" placeholder="Customer Name
 
 
 " class="form-control"  type="text">
@@ -170,20 +167,12 @@ color:;
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Customer E-mail id
-
-
-
-
-</label>
+    <label class="col-md-2 control-label">Customer E-mail id</label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer E-mail id
-
-
-" class="form-control" >
+  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control" >
     </div>
   </div>
 
@@ -220,10 +209,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-  <input  name="previous_repairing_number" placeholder="Previous Repairing number
-
-
-" class="form-control"  type="text">
+  <input  name="previous_repairing_number" placeholder="Previous Repairing number" class="form-control"  type="text">
     </div>
   </div>
 
@@ -233,7 +219,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="in_warranty" class="form-control">
+<select name="in_warranty" required class="form-control">
   <option value="yes">Yes</option>
   <option value="no">No</option>
 </select>
@@ -274,18 +260,20 @@ color:;
 
 
 
-
-
-
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user-times faicons"></i></span>
-  <input  name="complaint_received_by" placeholder="Complaint Received By
+  <input  name="complaint_received_by" placeholder="Complaint Received By" class="form-control"  type="text"  list="complaint_list">
+    <datalist style="height:20px;" id="complaint_list">
+      {% for item in user_list %}
+
+      <option value = "{{item.name}}"></option>
+    {% endfor %}
+    </datalist>
 
 
 
-" class="form-control"  type="text">
     </div>
   </div>
 </div>
@@ -303,26 +291,172 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-train faicons"></i></span>
-  <input  name="nearest_railwaystation" placeholder="Nearest Railway Station
+    <input  name="nearest_railwaystation" placeholder="Nearest Railway Station" class="form-control"  type="text" list="stn_train_list">
+    <datalist style="height:20px;" id="stn_train_list">
+    <option value = "Airoli"></option>
+<option value = "Ambarnath"></option>
+<option value = "Ambivli"></option>
+<option value = "Andheri"></option>
+<option value = "Asangaon"></option>
+<option value = "Atgaon"></option>
+<option value = "Badlapur"></option>
+<option value = "Baman Dongari"></option>
+<option value = "Nerul–Uran line"></option>
+<option value = "Bandra"></option>
+<option value = "Bhandup"></option>
+<option value = "Bhayandar"></option>
+<option value = "Bhivpuri Road"></option>
+<option value = "Bhiwandi"></option>
+<option value = "Boisar"></option>
+<option value = "Borivali"></option>
+<option value = "Byculla"></option>
+<option value = "CBD Belapur"></option>
+<option value = "Charni Road"></option>
+<option value = "Chembur"></option>
+<option value = "Shivaji Maharaj Terminus"></option>
+<option value = "Chinchpokli"></option>
+<option value = "Chunabhatti"></option>
+<option value = "Churchgate"></option>
+<option value = "Cotton Green"></option>
+<option value = "Currey Road"></option>
+<option value = "Dadar Western"></option>
+<option value = "Dahanu Road"></option>
+<option value = "Dahisar"></option>
+<option value = "Dativali"></option>
+<option value = "Diva"></option>
+<option value = "Panvel"></option>
+<option value = "Dockyard Road"></option>
+<option value = "Dolavli"></option>
+<option value = "Dombivli"></option>
+<option value = "Prabhadevi"></option>
+<option value = "Parel"></option>
+<option value = "Gavan"></option>
+<option value = "Ghansoli"></option>
+<option value = "Ghatkopar"></option>
+<option value = "Goregaon"></option>
+<option value = "Govandi"></option>
+<option value = "Grant Road"></option>
+<option value = "Guru Tegh Bahadur Nagar"></option>
+<option value = "Jogeshwari"></option>
+<option value = "Juchandra"></option>
+<option value = "Juinagar"></option>
+<option value = "Kalamboli"></option>
+<option value = "Kalwa"></option>
+<option value = "Kalyan"></option>
+<option value = "Kaman Road"></option>
+<option value = "Kandivali"></option>
+<option value = "Kanjurmarg"></option>
+<option value = "Karjat"></option>
+<option value = "Kasara"></option>
+<option value = "Kelavli"></option>
+<option value = "Kelve Road"></option>
+<option value = "Khadavli"></option>
+<option value = "Khandeshwar"></option>
+<option value = "Khar Road"></option>
+<option value = "Kharbao"></option>
+<option value = "Khardi"></option>
+<option value = "Kharghar"></option>
+<option value = "Kharkopar"></option>
+<option value = "Khopoli"></option>
+<option value = "King's Circle"></option>
+<option value = "Kopar"></option>
+<option value = "Kopar Khairane"></option>
+<option value = "Kurla"></option>
+<option value = "Lower Parel"></option>
+<option value = "Lowjee"></option>
+<option value = "Mahalaxmi"></option>
+<option value = "Mahim"></option>
+<option value = "Malad"></option>
+<option value = "Mankhurd"></option>
+<option value = "Mansarovar"></option>
+<option value = "Marine Lines"></option>
+<option value = "Masjid"></option>
+<option value = "Matunga"></option>
+<option value = "Matunga Road"></option>
+<option value = "Mumbai Central"></option>
+<option value = "Mira Road"></option>
+<option value = "Mumbra"></option>
+<option value = "Nahur"></option>
+<option value = "Naigaon"></option>
+<option value = "Nallasopara"></option>
+<option value = "Neral"></option>
+<option value = "Nerul"></option>
+<option value = "Navade Road"></option>
+<option value = "Nhava Sheva"></option>
+<option value = "Nilaje"></option>
+<option value = "Palghar"></option>
+<option value = "Palasdari"></option>
+<option value = "Panvel"></option>
+<option value = "Harbour Line"></option>
+<option value = "Parel"></option>
+<option value = "Prabhadevi"></option>
+<option value = "Rabale"></option>
+<option value = "Ram Mandir"></option>
+<option value = "Ranjanpada"></option>
+<option value = "Roha"></option>
+<option value = "Sagar Sangam"></option>
+<option value = "Sandhurst Road"></option>
+<option value = "Sanpada"></option>
+<option value = "Santacruz"></option>
+<option value = "Seawoods–Darave"></option>
+<option value = "Saphale"></option>
+<option value = "Sion"></option>
+<option value = "Shahad"></option>
+<option value = "Shelu"></option>
+<option value = "Thansit"></option>
+<option value = "Targhar"></option>
+<option value = "Thane"></option>
+<option value = "Thakurli"></option>
+<option value = "Titwala"></option>
+<option value = "Turbhe"></option>
+<option value = "Ulhasnagar"></option>
+<option value = "Umbermali"></option>
+<option value = "Umroli"></option>
+<option value = "Uran City"></option>
+<option value = "Wadala Road"></option>
+<option value = "Vaitarna"></option>
+<option value = "Vangaon"></option>
+<option value = "Vangani"></option>
+<option value = "Vasai Road"></option>
+<option value = "Vashi"></option>
+<option value = "Vasind"></option>
+<option value = "Vidyavihar"></option>
+<option value = "Vikhroli"></option>
+<option value = "Vile Parle"></option>
+<option value = "Virar"></option>
+<option value = "Vithalwadi"></option>
+<option value = "Mulund"></option>
+<option value = "Tilak Nagar"></option>
+<option value = "Sewri"></option>
+<option value = "Taloja"></option>
+<option value = "Pen"></option>
+<option value = "Rasayani"></option>
+<option value = "Nagothane"></option>
+    </datalist>
 
 
-
-" class="form-control"  type="text">
     </div>
   </div>
 
 
-  <label class="col-md-2 control-label">In Warranty
+  <label class="col-md-2 control-label">Train Line
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="train_line" class="form-control">
-  <option value="Western">Western</option>
-  <option value="Central">Central</option>
-  <option value="Harbour">Harbour</option>
-</select>
+
+    <input  name="train_line" placeholder="Train Line" class="form-control"  type="text"  list="train_list">
+    <datalist style="height:20px;" id="train_list">
+
+
+      <option value = "Western"></option>
+      <option value = "Central"></option>
+      <option value = "Harbour"></option>
+      <option value = "Trans-Harbour"></option>
+      <option value = "Nerul–Uran line"></option>
+
+    </datalist>
     </div>
   </div>
   </div>
@@ -362,8 +496,7 @@ color:;
   <!--<input  name="total_cost" placeholder="Total Cost" class="form-control" type="text">-->
     <!--</div>-->
   <!--</div>-->
-</div>
-  <div class="form-group row">
+
 
 
     <label class="col-md-2 control-label">Complaint Assigned To
@@ -383,6 +516,9 @@ color:;
     </datalist>
     </div>
     </div>
+</div>
+    <div class="form-group row">
+
 
   <label class="col-md-2 control-label">Complain Assigned On
 
@@ -400,8 +536,7 @@ color:;
 " class="form-control"  type="date">
     </div>
   </div>
-  </div>
-  <div class="form-group row">
+
 
 
       <label class="col-md-2 control-label">Time Taken to Reach Destination and Return to office in Minutes
@@ -418,7 +553,9 @@ color:;
 " class="form-control"  type="text">
     </div>
   </div>
+    </div>
 
+  <div class="form-group row">
 
   <label class="col-md-2 control-label">Notes
 
@@ -432,10 +569,7 @@ color:;
   <input  name="notes" placeholder="Notes" class="form-control"  type="text">
     </div>
   </div>
-  </div>
 
-
-<div class="form-group row">
 
     <label class="col-md-2 control-label">Feedback given
 

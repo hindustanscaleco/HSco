@@ -68,10 +68,10 @@ class Employee_Analysis_month(models.Model):
     restamping_target_given = models.FloatField(default=0.0,null=True, blank=True )  # in amount
     #DONE_THIS_MONTH
     total_sales_done = models.FloatField(default=0.0, )  # Customer module sales done in this month in amount
-    total_dispatch_done = models.BigIntegerField(default=0, )  # Dispatch module dispatch done in this month
-    total_reparing_done = models.BigIntegerField(default=0, )  # Reparing module Reparing done in this month in units
-    total_restamping_done = models.BigIntegerField(default=0, )  # Restamping module restamping done in this month in unit
-    total_reparing_done_onsite = models.BigIntegerField(default=0, )  # Reparing onsite module sales done in this month in amount
+    total_dispatch_done = models.FloatField(default=0.0, )  # Dispatch module dispatch done in this month
+    total_reparing_done = models.FloatField(default=0.0, )  # Reparing module Reparing done in this month in units
+    total_restamping_done = models.FloatField(default=0.0, )  # Restamping module restamping done in this month in unit
+    total_reparing_done_onsite = models.FloatField(default=0.0, )  # Reparing onsite module sales done in this month in amount
     #AVERAGE
     avg_time_to_repair_single_scale = models.FloatField(default=0.0, )  # Reparing module avg_time_to_repair_single_scale in this month
     avg_time_to_give_estimate = models.FloatField(default=0.0, )  # Reparing module savg_time_to_give_estimate in this month
@@ -105,10 +105,10 @@ class  Employee_Analysis_date(models.Model):
 
     # DONE_THIS_DATE
     total_sales_done_today = models.FloatField(default=0.0, )  # Customer module sales done in this month in amount
-    total_dispatch_done_today = models.BigIntegerField(default=0, )  # Dispatch module dispatch done in this month
-    total_reparing_done_today = models.BigIntegerField(default=0, )  # Reparing module Reparing done in this month in units
-    total_restamping_done_today = models.BigIntegerField(default=0, )  # Restamping module restamping done in this month in unit
-    total_reparing_done_onsite_today = models.BigIntegerField(default=0, )  # Reparing onsite module sales done in this month in amount
+    total_dispatch_done_today = models.FloatField(default=0.0, )  # Dispatch module dispatch done in this month
+    total_reparing_done_today = models.FloatField(default=0.0, )  # Reparing module Reparing done in this month in units
+    total_restamping_done_today = models.FloatField(default=0.0, )  # Restamping module restamping done in this month in unit
+    total_reparing_done_onsite_today = models.FloatField(default=0.0, )  # Reparing onsite module sales done in this month in amount
     # AVERAGE
     avg_time_to_repair_single_scale_today = models.FloatField(default=0.0, )  # Reparing module avg_time_to_repair_single_scale in this month
     avg_time_to_give_estimate_today = models.FloatField(default=0.0, )  # Reparing module savg_time_to_give_estimate in this month

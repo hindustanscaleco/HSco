@@ -142,7 +142,7 @@ $(document).ready(function(){
 <br>
 <br>
 
-            <form method="POST" autocomplete="off">{% csrf_token %}
+            <form method="POST" action="" autocomplete="off">{% csrf_token %}
 
 <div class="form-group row">
 
@@ -152,7 +152,7 @@ $(document).ready(function(){
 
     <div class="col-md-4 inputGroupContainer">
 <div class="wrapper">
-    <select class="editableBox" name="state" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBox" required name="state" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
       <option value="" selected="selected">Select</option>
     </select>
     <input class="timeTextBox" name="model_of_purchase" maxlength="5"/>
@@ -168,7 +168,7 @@ $(document).ready(function(){
 </label>
   <div class="col-md-4 inputGroupContainer">
     <div class="wrapper">
-    <select class="editableBoxa" name="countrya" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBoxa" required name="countrya" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
 <option value="" selected="selected">Select</option>
     </select>
     <input class="timeTextBoxa" name="sub_model" maxlength="5"/>
@@ -180,7 +180,7 @@ $(document).ready(function(){
 </label>
   <div class="col-md-4 inputGroupContainer">
    <div class="wrapper">
-    <select class="editableBoxz" name="sub_sub_model" id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBoxz" required name="sub_sub_model" id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
 <option value="" selected="selected">Select</option>
     </select>
 
@@ -215,7 +215,7 @@ $(document).ready(function(){
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>
-  <input  name="capacity" placeholder="Capacity" class="form-control"  type="text" value="">
+  <input  name="capacity" required placeholder="Capacity" class="form-control"  type="text" value="">
     </div>
   </div>
 
@@ -231,7 +231,7 @@ $(document).ready(function(){
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
- <input  type="text" placeholder="unit" class="form-control" name="unit" list="unit">
+ <input  type="text" required placeholder="unit" class="form-control" name="unit" list="unit">
     <datalist style="height:20px;" id="unit">
     <option value = "gm"></option>
     <option value = "kg"></option>
@@ -253,7 +253,7 @@ $(document).ready(function(){
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-<input  type="text" name="type_of_scale" placeholder="Type Of Scale" class="form-control" list="type_of_scale">
+<input  type="text" required name="type_of_scale" placeholder="Type Of Scale" class="form-control" list="type_of_scale">
     <datalist style="height:20px;" id="type_of_scale">
     <option value = "Electronics"></option>
     <option value = "Mechanical"></option>
@@ -277,19 +277,16 @@ $(document).ready(function(){
   <input  name="serial_no_scale" placeholder="Serial No. of Scale" class="form-control"  type="text" value="">
     </div>
   </div>
-                    <label class="col-md-2 control-label">Purchase Type:
+<!--                    <label class="col-md-2 control-label">Purchase Type:-->
 
-</label>
+<!--</label>-->
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="purchase_type" placeholder="Purchase Type" class="form-control"  type="text" value="">
-    </div>
-  </div>
-
-                </div>
-                <div class="form-group row">
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
+<!--  <input  name="purchase_type" placeholder="Purchase Type" class="form-control"  type="text" value="">-->
+<!--    </div>-->
+<!--  </div>-->
                     <label class="col-md-2 control-label">Quantity
 
 </label>

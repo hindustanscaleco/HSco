@@ -19,7 +19,7 @@ class LoginForm(forms.Form):
              attrs={
                  'type': 'number',
                  'class': 'form-control',
-                 ' placeholder': "Enter Mobile Number",
+                 'placeholder': "Enter Mobile Number",
                  'name': 'mobile',
              }))
 
