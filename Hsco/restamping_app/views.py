@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.db import connection
-from django.db.models import Min, Sum
+from django.db.models import Min, Sum, Q
 from django.shortcuts import render, redirect
 
 from django.core.mail import send_mail
@@ -133,15 +133,15 @@ def restamping_after_sales_service(request):
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
-        item = Customer_Details()
-
-        item.customer_name = customer_name
-        item.company_name = company_name
-        item.address = address
-        item.contact_no = contact_no
-        item.customer_email_id = customer_email_id
-
-        item.save()
+        # item = Customer_Details()
+        #
+        # item.customer_name = customer_name
+        # item.company_name = company_name
+        # item.address = address
+        # item.contact_no = contact_no
+        # item.customer_email_id = customer_email_id
+        #
+        # item.save()
 
         restampingno = request.POST.get('restampingno')
         customer_no = request.POST.get('customer_no')
@@ -151,7 +151,32 @@ def restamping_after_sales_service(request):
         brand = request.POST.get('brand')
         scale_delivery_date = request.POST.get('scale_delivery_date')
 
+        item = Customer_Details()
         item2 = Restamping_after_sales_service()
+
+        if Customer_Details.objects.filter(customer_name=customer_name, company_name=company_name,
+                                           contact_no=contact_no).count() > 0:
+
+            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name, company_name=company_name,
+                                                           contact_no=contact_no).first()
+
+        else:
+
+            item.customer_name = customer_name
+            item.company_name = company_name
+            item.address = address
+            item.contact_no = contact_no
+            item.customer_email_id = customer_email_id
+            # item.user_id = SiteUser.objects.get(id=request.user.pk)
+            # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            try:
+                item.save()
+                item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            except:
+                pass
+
+
+
 
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -165,17 +190,45 @@ def restamping_after_sales_service(request):
 
 
         item2.save()
-        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [customer_email_id])
 
-        message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
+        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
+            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).first()
+            send_mail('Feedback Form', 'Click on the link to give feedback', settings.EMAIL_HOST_USER,
+                      [crm_no.customer_email_id])
+
+            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
+                request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id)
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+        else:
+
+            send_mail('Feedback Form', 'Click on the link to give feedback', settings.EMAIL_HOST_USER,
+                      [item.customer_email_id])
+
+            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
+                request.user.pk) + '/' + str(item.id) + '/' + str(item2.id)
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
 
 
-        url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-        payload = ""
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-        x = response.text
+
+
+
+
+
+
+
 
 
         return redirect('/restamping_product/'+str(item2.id))
