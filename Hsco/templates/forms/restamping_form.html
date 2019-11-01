@@ -92,7 +92,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-    <select name="contact_no" id="display_limit" onchange="choice1(this)" class="form-control">
+    <select name="contact_no" id="display_limit" maxlength="10" onchange="choice1(this)" class="form-control">
     <option value="-----">---------</option>
        {% for item in cust_sugg %}
   <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>

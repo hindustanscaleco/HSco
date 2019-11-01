@@ -92,7 +92,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-   <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
+   <select name="customer_number" id="display_limit" maxlength="10" onchange="choice1(this)" class="form-control">
     <option value="-----">---------</option>
        {% for item in cust_sugg %}
   <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
@@ -362,8 +362,7 @@ color:;
   <!--<input  name="total_cost" placeholder="Total Cost" class="form-control" type="text">-->
     <!--</div>-->
   <!--</div>-->
-</div>
-  <div class="form-group row">
+
 
 
     <label class="col-md-2 control-label">Complaint Assigned To
@@ -383,6 +382,9 @@ color:;
     </datalist>
     </div>
     </div>
+</div>
+    <div class="form-group row">
+
 
   <label class="col-md-2 control-label">Complain Assigned On
 
@@ -400,8 +402,7 @@ color:;
 " class="form-control"  type="date">
     </div>
   </div>
-  </div>
-  <div class="form-group row">
+
 
 
       <label class="col-md-2 control-label">Time Taken to Reach Destination and Return to office in Minutes
@@ -418,7 +419,9 @@ color:;
 " class="form-control"  type="text">
     </div>
   </div>
+    </div>
 
+  <div class="form-group row">
 
   <label class="col-md-2 control-label">Notes
 
@@ -432,10 +435,7 @@ color:;
   <input  name="notes" placeholder="Notes" class="form-control"  type="text">
     </div>
   </div>
-  </div>
 
-
-<div class="form-group row">
 
     <label class="col-md-2 control-label">Feedback given
 
