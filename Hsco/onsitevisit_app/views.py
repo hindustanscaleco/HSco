@@ -148,7 +148,7 @@ def add_onsite_aftersales_service(request):
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
 
         visiting_charges_told_customer = request.POST.get('visiting_charges_told_customer')
-        total_cost = request.POST.get('total_cost')
+        total_cost = 0.0
         complaint_assigned_to = request.POST.get('complaint_assigned_to')
         complaint_assigned_on = request.POST.get('complaint_assigned_on')
         time_taken_destination_return_office_min = request.POST.get('time_taken_destination_return_office_min')
@@ -349,6 +349,20 @@ def update_onsite_product(request,id):
         components_replaced = request.POST.get('components_replaced')
         cost = request.POST.get('cost')
 
+        cost2 = onsite_id.cost
+
+        Onsite_aftersales_service.objects.filter(id=onsite).update(total_cost=F("total_cost") - cost2)
+
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+                                               entry_date__month=onsite_id.entry_timedate.month,
+                                               year=onsite_id.entry_timedate.year).update(
+            total_reparing_done=F("total_reparing_done_onsite") - cost2)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+                                              entry_date__month=onsite_id.entry_timedate.month,
+                                              year=onsite_id.entry_timedate.year).update(
+            total_reparing_done_today=F("total_reparing_done_onsite_today") - cost2)
+
         item = Onsite_Products.objects.get(id=id)
 
         item.onsite_repairing_id_id = onsite_id
@@ -372,16 +386,8 @@ def update_onsite_product(request,id):
         item.save(update_fields=['components_replaced_in_warranty', ]),
         item.save(update_fields=['cost', ]),
 
-        cost2 = onsite_id.cost
-        print(cost2)
-        print(cost2)
-        print(cost2)
-        print(cost)
-        print(cost)
 
-        Onsite_aftersales_service.objects.filter(id=onsite).update(total_cost=F("total_cost") - cost2)
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
+        Onsite_aftersales_service.objects.filter(id=onsite).update(total_cost=F("total_cost") + cost)
 
         Employee_Analysis_month.objects.filter(user_id=request.user.pk,
                                                entry_date__month=onsite_id.entry_timedate.month,

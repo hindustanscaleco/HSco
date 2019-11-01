@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -6,6 +6,8 @@ from customer_app.models import Customer_Details
 
 from purchase_app.views import check_admin_roles
 from user_app.models import SiteUser
+
+from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 from .forms import AMC_Feedback_Form
 from .models import Amc_After_Sales, AMC_Feedback
 from django.db import connection
@@ -13,6 +15,8 @@ from django.core.mail import send_mail
 from Hsco import settings
 import requests
 import json
+import datetime
+
 
 def add_amc_after_sales(request):
     cust_sugg = Customer_Details.objects.all()
@@ -85,6 +89,17 @@ def add_amc_after_sales(request):
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save()
+
+        # Amc_After_Sales.objects.filter(id=id).update(total_cost=F("total_cost") + contract_amount)
+        # Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+        #                                        year=datetime.now().year).update(
+        #     total_reparing_done=F("total_reparing_done") + contract_amount)
+        #
+        # Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+        #                                       year=datetime.now().year).update(
+        #     total_reparing_done_today=F("total_reparing_done_today") + contract_amount)
+
+
 
         if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
                                            Q(contact_no=contact_no)).count() > 0:
