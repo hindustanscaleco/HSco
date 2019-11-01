@@ -33,7 +33,7 @@ class Purchase_Details(models.Model):   #cleaned
     po_number = models.CharField(max_length=30,null=True,blank=True)
     channel_of_sales = models.CharField(max_length=80,null=True,blank=True)
     industry = models.CharField(max_length=80,null=True,blank=True)
-    value_of_goods = models.CharField(max_length=30,null=True,blank=True)
+    value_of_goods = models.FloatField(default=0.0,null=True,blank=True)
     channel_of_dispatch = models.CharField(max_length=100,null=True,blank=True)
     notes = models.CharField(max_length=100,null=True,blank=True)
     feedback_form_filled = models.BooleanField(default=False,null=True,blank=True)

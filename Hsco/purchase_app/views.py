@@ -31,22 +31,9 @@ def add_purchase_details(request):
         customer_email_id = request.POST.get('customer_email_id')
 
 
-
-
-
-        # item = Customer_Details()
-
-        # item.customer_name = customer_name
-        # item.company_name = company_name
-        # item.address = address
-        # item.contact_no = contact_no
-        # item.customer_email_id = customer_email_id
-
-        # item.save()
-
         date_of_purchase = request.POST.get('date_of_purchase')
         new_repeat_purchase = request.POST.get('new_repeat_purchase')
-        sales_person = request.POST.get('sales_personc')
+        sales_person = request.POST.get('sales_person')
         product_purchase_date = request.POST.get('product_purchase_date')
         bill_no = request.POST.get('bill_no')
         upload_op_file = request.FILES.get('upload_op_file')
@@ -195,6 +182,21 @@ def add_purchase_details(request):
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
+
+        # Purchase_Details.objects.filter(id=purchase_id_id.pk).update(
+        #     value_of_goods=F("value_of_goods") + value_of_goods)
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
+
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+                                               entry_date__month=item2.entry_timedate.month,
+                                               year=item2.entry_timedate.year).update(
+            total_sales_done=F("total_sales_done") + value_of_goods)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+                                              entry_date__month=item2.entry_timedate.month,
+                                              year=item2.entry_timedate.year).update(
+            total_sales_done_today=F("total_sales_done_today") + value_of_goods)
 
         return redirect('/add_product_details/'+str(item2.id))
 
@@ -351,6 +353,7 @@ def update_customer_details(request,id):
         item.save(update_fields=['customer_name','company_name','address','contact_no','customer_email_id',])
 
         date_of_purchase = request.POST.get('date_of_purchase')
+        sales_person = request.POST.get('sales_person')
         bill_no = request.POST.get('bill_no')
         new_repeat_purchase = request.POST.get('new_repeat_purchase')
         upload_op_file = request.FILES.get('upload_op_file')
@@ -362,10 +365,33 @@ def update_customer_details(request,id):
         notes = request.POST.get('notes')
         feedback_form_filled = request.POST.get('feedback_form_filled')
 
+
+        cost2=purchase_id_id.value_of_goods
+
+        Purchase_Details.objects.filter(id=purchase_id_id.pk).update(
+            value_of_goods=F("value_of_goods") - cost2)
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
+
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+                                               entry_date__month=purchase_id_id.entry_timedate.month,
+                                               year=item.entry_timedate.year).update(
+            total_sales_done=F("total_sales_done") - cost2)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+                                              entry_date__month=purchase_id_id.entry_timedate.month,
+                                              year=item.entry_timedate.year).update(
+            total_sales_done_today=F("total_sales_done_today") - cost2)
+
+
+
+
+
         item2 = purchase_id_id
 
         item2.crm_no = Customer_Details.objects.get(id=item.pk)
         item2.date_of_purchase = date_of_purchase
+        item2.sales_person = sales_person
         item2.new_repeat_purchase = new_repeat_purchase
         item2.bill_no = bill_no
         item2.upload_op_file = upload_op_file
@@ -378,8 +404,22 @@ def update_customer_details(request,id):
         item2.feedback_form_filled = feedback_form_filled
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item2.save(update_fields=['date_of_purchase','bill_no','upload_op_file','manager_id','po_number','new_repeat_purchase',
+        item2.save(update_fields=['date_of_purchase','sales_person','bill_no','upload_op_file','manager_id','po_number','new_repeat_purchase',
                                   'channel_of_sales','industry','channel_of_dispatch','notes','feedback_form_filled','user_id'])
+
+        Purchase_Details.objects.filter(id=purchase_id_id.pk).update(value_of_goods=F("value_of_goods") + value_of_goods)
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
+
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+                                               entry_date__month=purchase_id_id.entry_timedate.month,
+                                               year=product_id.entry_timedate.year).update(
+            total_sales_done=F("total_sales_done") + value_of_goods)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+                                              entry_date__month=purchase_id_id.entry_timedate.month,
+                                              year=product_id.entry_timedate.year).update(
+            total_sales_done_today=F("total_sales_done_today") + value_of_goods)
 
     context={
         'product_id':product_id,
