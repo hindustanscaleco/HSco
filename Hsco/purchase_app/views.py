@@ -30,15 +30,19 @@ def add_purchase_details(request):
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
-        item = Customer_Details()
 
-        item.customer_name = customer_name
-        item.company_name = company_name
-        item.address = address
-        item.contact_no = contact_no
-        item.customer_email_id = customer_email_id
 
-        item.save()
+
+
+        # item = Customer_Details()
+
+        # item.customer_name = customer_name
+        # item.company_name = company_name
+        # item.address = address
+        # item.contact_no = contact_no
+        # item.customer_email_id = customer_email_id
+
+        # item.save()
 
         date_of_purchase = request.POST.get('date_of_purchase')
         new_repeat_purchase = request.POST.get('new_repeat_purchase')
@@ -55,8 +59,29 @@ def add_purchase_details(request):
         feedback_form_filled = request.POST.get('feedback_form_filled')
 
         item2 = Purchase_Details()
+         item = Customer_Details()
+        if Customer_Details.objects.filter(customer_name=customer_name,company_name=company_name,contact_no=contact_no).count() > 0:
 
-        item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,company_name=company_name,contact_no=contact_no).first()
+
+        else:
+
+
+
+            item.customer_name = customer_name
+            item.company_name = company_name
+            item.address = address
+            item.contact_no = contact_no
+            item.customer_email_id = customer_email_id
+            # item.user_id = SiteUser.objects.get(id=request.user.pk)
+            # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            try:
+                item.save()
+                item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            except:
+                pass
+
+        # item2.crm_no = Customer_Details.objects.get(id=item.pk)
         item2.new_repeat_purchase = new_repeat_purchase
         item2.date_of_purchase = date_of_purchase
         item2.product_purchase_date = product_purchase_date
@@ -128,9 +153,10 @@ def add_purchase_details(request):
             ead.year = datetime.now().year
             ead.save()
 
-
-        send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
-
+        try:
+            send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
+        except:
+            pass
 
         # // vikka.pythonanywhere.com
 

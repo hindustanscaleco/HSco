@@ -141,10 +141,13 @@ def add_repairing_details(request):
 
         if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
             crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).first()
-            send_mail('Feedback Form',
+            try:
+                send_mail('Feedback Form',
                       'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/' + str(
                           request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
                       [crm_no.customer_email_id])
+            except:
+                pass
 
             message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/' + str(
                 request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
@@ -156,11 +159,14 @@ def add_repairing_details(request):
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
         else:
+            try:
 
-            send_mail('Feedback Form',
+                send_mail('Feedback Form',
                       'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/' + str(
                           request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
                       [item.customer_email_id])
+            except:
+                pass
 
             message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/' + str(
                 request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)

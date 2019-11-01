@@ -193,8 +193,11 @@ def restamping_after_sales_service(request):
 
         if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
             crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).first()
-            send_mail('Feedback Form', 'Click on the link to give feedback', settings.EMAIL_HOST_USER,
+            try:
+                send_mail('Feedback Form', 'Click on the link to give feedback', settings.EMAIL_HOST_USER,
                       [crm_no.customer_email_id])
+            except:
+                pass
 
             message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
                 request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id)
@@ -206,9 +209,11 @@ def restamping_after_sales_service(request):
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
         else:
-
-            send_mail('Feedback Form', 'Click on the link to give feedback', settings.EMAIL_HOST_USER,
+            try:
+                send_mail('Feedback Form', 'Click on the link to give feedback', settings.EMAIL_HOST_USER,
                       [item.customer_email_id])
+            except:
+                pass
 
             message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
                 request.user.pk) + '/' + str(item.id) + '/' + str(item2.id)
