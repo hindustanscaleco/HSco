@@ -24,7 +24,7 @@ def add_dispatch_details(request):
     cust_sugg=Customer_Details.objects.all()
 
     if request.method == 'POST' or request.method=='FILES':
-        customer_name = request.POST.get('name')
+        customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
@@ -69,6 +69,7 @@ def add_dispatch_details(request):
         item2.notes = notes
 
         item2.save()
+        
         send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
         message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
@@ -239,7 +240,7 @@ def update_dispatch_details(request,update_id):
     if request.method == 'POST' or request.method=='FILES':
         contact_no = request.POST.get('contact_no')
         customer_email = request.POST.get('customer_email_id')
-        customer_name = request.POST.get('name')
+        customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         customer_address = request.POST.get('customer_address')
 

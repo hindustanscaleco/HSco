@@ -22,11 +22,13 @@ from django.db.models.functions import TruncMonth
 from django.db.models import Count
 
 def add_purchase_details(request):
+    cust_sugg = Customer_Details.objects.all()
+    sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name)
     form = Purchase_Details_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
-        address = request.POST.get('address')
+        address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
@@ -90,8 +92,16 @@ def add_purchase_details(request):
         if not (channel_of_dispatch == 'Franchisee Store'):
             dispatch = Dispatch()
 
+            if Customer_Details.objects.filter(customer_name=customer_name, company_name=company_name,
+                                               contact_no=contact_no).count() > 0:
 
-            dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
+
+                dispatch.crm_no = Customer_Details.objects.filter(customer_name=customer_name, company_name=company_name,
+                                                               contact_no=contact_no).first()
+
+            else:
+                dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
+
             dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
             dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
             dispatch.customer_email = customer_email_id
@@ -202,6 +212,8 @@ def add_purchase_details(request):
 
     context = {
         'form': form,
+        'cust_sugg': cust_sugg,
+        'sales_person_sugg': sales_person_sugg,
     }
     return render(request,'forms/cust_mod_form.html',context)
 
@@ -338,8 +350,8 @@ def update_customer_details(request,id):
     if request.method=='POST':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
-        address = request.POST.get('address')
-        contact_no = request.POST.get('phone_no')
+        address = request.POST.get('customer_address')
+        contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
         item=customer_id
