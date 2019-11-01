@@ -18,7 +18,7 @@ class LoginForm(forms.Form):
          widget=forms.TextInput(
              attrs={
                  'type': 'number',
-                 'class': 'form-control form-control-user',
+                 'class': 'form-control',
                  ' placeholder': "Enter Mobile Number",
                  'name': 'mobile',
              }))
@@ -27,7 +27,7 @@ class LoginForm(forms.Form):
         widget=forms.PasswordInput(
             attrs={
                 'type': 'password',
-                'class': 'form-control form-control-user',
+                'class': 'form-control',
                 'placeholder': "Confirm Password",
                 'name': 'password',
             }))
