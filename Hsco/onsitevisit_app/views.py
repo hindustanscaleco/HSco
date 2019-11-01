@@ -2,6 +2,7 @@ from django.db import connection
 from django.db.models import Sum, Min, Q, F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from _datetime import datetime
 
 from customer_app.models import Customer_Details
 
@@ -11,7 +12,6 @@ from user_app.models import SiteUser
 
 from purchase_app.views import check_admin_roles
 from .forms import add_Onsite_aftersales_service_form
-import datetime
 
 from .forms import Onsite_Repairing_Feedback_Form
 from .models import Onsite_aftersales_service, Onsite_Products, Onsite_Feedback
@@ -133,10 +133,10 @@ def add_onsite_aftersales_service(request):
     user_list=SiteUser.objects.filter(group__icontains=request.user.name)
     # form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
-        customer_name = request.POST.get('customer_name')
+        customer_name = request.POST.get('name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('customer_address')
-        contact_no = request.POST.get('phone_no')
+        contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
         previous_repairing_number = request.POST.get('previous_repairing_number')
@@ -148,7 +148,7 @@ def add_onsite_aftersales_service(request):
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
 
         visiting_charges_told_customer = request.POST.get('visiting_charges_told_customer')
-        total_cost = request.POST.get('components_replaced_in_warranty')
+        total_cost = request.POST.get('total_cost')
         complaint_assigned_to = request.POST.get('complaint_assigned_to')
         complaint_assigned_on = request.POST.get('complaint_assigned_on')
         time_taken_destination_return_office_min = request.POST.get('time_taken_destination_return_office_min')
@@ -204,8 +204,9 @@ def add_onsite_aftersales_service(request):
                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
             Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
                                                   year=datetime.now().year).update(
-                total_reparing_done_today=F("total_reparing_done_onsite_today") + total_cost)
+                total_reparing_done_onsite_today=F("total_reparing_done_onsite_today") + total_cost)
             # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
 
             # ead.save(update_fields=['total_sales_done_today'])
 
@@ -398,16 +399,35 @@ def update_onsite_details(request,id):
     onsite_id = Onsite_aftersales_service.objects.get(id=id)
     onsite_product_list = Onsite_Products.objects.filter(onsite_repairing_id=id)
     employee_list = SiteUser.objects.filter(role='Employee',group__icontains=request.user.name)
+    customer_id = Onsite_aftersales_service.objects.get(id=id).crm_no
 
+    customer_id = Customer_Details.objects.get(id=customer_id)
     print(onsite_product_list)
     if request.method == 'POST' or request.method == 'FILES':
-        repairingno = request.POST.get('repairingno')
-        customer_name = request.POST.get('customer_name')
+        contact_no = request.POST.get('contact_no')
+        customer_email = request.POST.get('customer_email_id')
+        customer_name = request.POST.get('name')
         company_name = request.POST.get('company_name')
+        customer_address = request.POST.get('customer_address')
+
+        item2 = customer_id
+
+        item2.customer_name = customer_name
+        item2.company_name = company_name
+        item2.address = customer_address
+        item2.contact_no = contact_no
+        item2.customer_email_id = customer_email
+
+        item2.save(update_fields=['contact_no', ]),
+        item2.save(update_fields=['customer_email_id', ]),
+        item2.save(update_fields=['customer_name', ]),
+        item2.save(update_fields=['company_name', ]),
+        item2.save(update_fields=['address', ]),
+
+        repairingno = request.POST.get('repairingno')
         customer_no = request.POST.get('customer_no')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
-        phone_no = request.POST.get('phone_no')
         customer_email_id = request.POST.get('customer_email_id')
         date_of_complaint_received = request.POST.get('date_of_complaint_received')
         customer_address = request.POST.get('customer_address')
@@ -434,7 +454,6 @@ def update_onsite_details(request,id):
         item.customer_no = customer_no
         item.previous_repairing_number = previous_repairing_number
         item.in_warranty = in_warranty
-        item.phone_no = phone_no
         item.customer_email_id = customer_email_id
         item.date_of_complaint_received = date_of_complaint_received
         item.customer_address = customer_address
@@ -650,51 +669,51 @@ def load_onsite_reparing_manager(request,):
         }
 
         return render(request, 'AJAX/load_onsite_reparing_manager.html', context)
+
 def onsitevisit_app_graph(request,user_id):
     from django.db.models import Sum
-    import datetime
     user_id = request.user.pk
     rep_feedback = Onsite_Feedback.objects.all()
+    mon = datetime.now().month
 
     print(user_id)
-    obj = Employee_Analysis_month.objects.get(user_id=user_id)
+    obj = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon)
     obj.onsitereparing_target_achived_till_now = (obj.total_reparing_done_onsite / obj.onsitereparing_target_given) * 100
-    obj.save()
+    obj.save(update_fields=['onsitereparing_target_achived_till_now'])
     # current month
-    target_achieved = obj.sales_target_achived_till_now
+    target_achieved = obj.onsitereparing_target_achived_till_now
     # current month
-    mon = datetime.now().month
-    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
-        data_sum=Sum('total_reparing_done_onsite_today'))
+    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
+                                                                                                     'total_reparing_done_onsite_today')
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
         x = i
         this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        this_lis_sum.append(x['data_sum'])
+        this_lis_sum.append(x['total_reparing_done_onsite_today'])
 
     # previous month sales
     mon = (datetime.now().month) - 1
-    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
-        data_sum=Sum('total_reparing_done_onsite_today'))
+    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
+                                                                                                         'total_reparing_done_onsite_today')
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
         x = i
         previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        previous_lis_sum.append(x['data_sum'])
+        previous_lis_sum.append(x['total_reparing_done_onsite_today'])
 
     if request.method == 'POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values(
-            'entry_date').annotate(data_sum=Sum('total_reparing_done_onsite_today'))
+            'entry_date','total_reparing_done_onsite_today')
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
             lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['data_sum'])
+            lis_sum.append(x['total_reparing_done_onsite_today'])
 
         context = {
             'final_list': lis_date,
@@ -709,14 +728,14 @@ def onsitevisit_app_graph(request,user_id):
         return render(request, "graphs/onsitevisit_app_graph.html", context)
     else:
 
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values(
-            'entry_date').annotate(data_sum=Sum('total_reparing_done_onsite_today'))
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date',
+                                                                                                                  'total_reparing_done_onsite_today')
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
             lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['data_sum'])
+            lis_sum.append(x['total_reparing_done_onsite_today'])
         print(lis_date)
         print(lis_sum)
 

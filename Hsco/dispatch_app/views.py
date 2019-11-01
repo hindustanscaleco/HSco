@@ -24,11 +24,11 @@ def add_dispatch_details(request):
     cust_sugg=Customer_Details.objects.all()
 
     if request.method == 'POST' or request.method=='FILES':
-        customer_name = request.POST.get('customer_name')
+        customer_name = request.POST.get('name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('customer_address')
-        contact_no = request.POST.get('phone_no')
-        customer_email_id = request.POST.get('customer_email')
+        contact_no = request.POST.get('contact_no')
+        customer_email_id = request.POST.get('customer_email_id')
 
         item = Customer_Details()
 
@@ -54,7 +54,7 @@ def add_dispatch_details(request):
         notes = request.POST.get('notes')
 
         item2 = Dispatch()
-
+        item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.crm_no_id = item.pk
         item2.dispatch_id = dispatch_id
         item2.date_of_dispatch = date_of_dispatch
@@ -232,13 +232,34 @@ def dispatch_view(request):
 def update_dispatch_details(request,update_id):
     dispatch_item=Dispatch.objects.get(id=update_id)
     product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
+    customer_id = Dispatch.objects.get(id=update_id).crm_no
+
+    customer_id = Customer_Details.objects.get(id=customer_id)
+
     if request.method == 'POST' or request.method=='FILES':
-        dispatch_id = request.POST.get('dispatch_id')
-        customer_no = request.POST.get('customer_no')
-        customer_email = request.POST.get('customer_email')
-        customer_name = request.POST.get('customer_name')
+        contact_no = request.POST.get('contact_no')
+        customer_email = request.POST.get('customer_email_id')
+        customer_name = request.POST.get('name')
         company_name = request.POST.get('company_name')
         customer_address = request.POST.get('customer_address')
+
+        item2 = customer_id
+
+        item2.customer_name = customer_name
+        item2.company_name = company_name
+        item2.address = customer_address
+        item2.contact_no = contact_no
+        item2.customer_email_id = customer_email
+
+        item2.save(update_fields=['contact_no', ]),
+        item2.save(update_fields=['customer_email_id', ]),
+        item2.save(update_fields=['customer_name', ]),
+        item2.save(update_fields=['company_name', ]),
+        item2.save(update_fields=['address', ]),
+
+
+        dispatch_id = request.POST.get('dispatch_id')
+
         date_of_dispatch = request.POST.get('date_of_dispatch')
         dispatch_by = request.POST.get('dispatch_by')
         packed_by = request.POST.get('packed_by')
@@ -253,11 +274,7 @@ def update_dispatch_details(request,update_id):
         item = Dispatch.objects.get(id=update_id)
 
         item.dispatch_id = dispatch_id
-        item.customer_no = customer_no
-        item.customer_email = customer_email
-        item.customer_name = customer_name
-        item.company_name = company_name
-        item.customer_address = customer_address
+
         item.date_of_dispatch = date_of_dispatch
         item.dispatch_by = dispatch_by
         item.packed_by = packed_by
@@ -270,11 +287,7 @@ def update_dispatch_details(request,update_id):
         item.notes = notes
 
         item.save(update_fields=['dispatch_id', ]),
-        item.save(update_fields=['customer_no', ]),
-        item.save(update_fields=['customer_email', ]),
-        item.save(update_fields=['customer_name', ]),
-        item.save(update_fields=['company_name', ]),
-        item.save(update_fields=['customer_address', ]),
+
         item.save(update_fields=['date_of_dispatch', ]),
         item.save(update_fields=['dispatch_by', ]),
         item.save(update_fields=['packed_by', ]),
@@ -355,37 +368,37 @@ def dispatch_employee_graph(request,user_id):
 
     # current month
     mon = datetime.now().month
-    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
-        data_sum=Sum('total_dispatch_done_today'))
+    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
+                                                                                                         'total_dispatch_done_today')
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
         x = i
         this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        this_lis_sum.append(x['data_sum'])
+        this_lis_sum.append(x['total_dispatch_done_today'])
 
     # previous month sales
     mon = (datetime.now().month) - 1
-    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
-        data_sum=Sum('total_dispatch_done_today'))
+    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
+                                                                                                         'total_dispatch_done_today')
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
         x = i
         previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        previous_lis_sum.append(x['data_sum'])
+        previous_lis_sum.append(x['total_dispatch_done_today'])
 
     if request.method == 'POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values(
-            'entry_date').annotate(data_sum=Sum('total_dispatch_done_today'))
+            'entry_date','total_dispatch_done_today')
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
             lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['data_sum'])
+            lis_sum.append(x['total_dispatch_done_today'])
 
         context = {
             'final_list': lis_date,
@@ -400,13 +413,13 @@ def dispatch_employee_graph(request,user_id):
     else:
 
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values(
-            'entry_date').annotate(data_sum=Sum('total_dispatch_done_today'))
+            'entry_date','total_dispatch_done_today')
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
             lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['data_sum'])
+            lis_sum.append(x['total_dispatch_done_today'])
         print(lis_date)
         print(lis_sum)
 

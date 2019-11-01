@@ -145,7 +145,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="customer_no" placeholder="Customer number" class="form-control" type="text" id="myText2" disabled value="{{dispatch_item.crm_no.pk}}">
+  <input  name="contact_no" placeholder="Customer number" class="form-control" type="text" id="myText2" disabled value="{{dispatch_item.crm_no.pk}}">
     </div>
   </div>
 
@@ -164,7 +164,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="customer_email" placeholder="Customer Email ID" class="form-control" type="text" id="myText3" disabled value="{{dispatch_item.crm_no.customer_email_id}}">
+  <input  name="customer_email_id" placeholder="Customer Email ID" class="form-control" type="text" id="myText3" disabled value="{{dispatch_item.crm_no.customer_email_id}}">
     </div>
   </div>
 
@@ -176,7 +176,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_name" placeholder="Customer Name" class="form-control"  type="text" id="myText4" disabled value="{{dispatch_item.crm_no.customer_name}}">
+  <input  name="name" placeholder="Customer Name" class="form-control"  type="text" id="myText4" disabled value="{{dispatch_item.crm_no.customer_name}}">
     </div>
   </div>
 
@@ -457,7 +457,7 @@ function myFunction() {
 
                     </div>
                 <center>
-                <a href="/edit_product/{{list.id}}"><button class="btn btn-primary">Edit</button></a>
+                <a href="/edit_product_customer/{{list.id}}"><button class="btn btn-primary">Edit</button></a>
 </center>
                 <br>
               </div>

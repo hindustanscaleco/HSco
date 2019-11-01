@@ -74,26 +74,28 @@ def add_purchase_details(request):
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save()
 
-        dispatch = Dispatch()
+
+        if not (channel_of_dispatch == 'Franchisee Store'):
+            dispatch = Dispatch()
 
 
-        dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
-        dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
-        dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        dispatch.customer_email = customer_email_id
-        dispatch.customer_name = customer_name
-        dispatch.company_name = company_name
-        dispatch.customer_address = address
+            dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
+            dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
+            dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            dispatch.customer_email = customer_email_id
+            dispatch.customer_name = customer_name
+            dispatch.company_name = company_name
+            dispatch.customer_address = address
 
-        dispatch.save()
+            dispatch.save()
 
 
-        dispatch2 = Dispatch.objects.get(id=dispatch.pk)
-        dispatch2.dispatch_id = str(dispatch.pk + 00000)
-        dispatch2.save(update_fields=['dispatch_id'])
-        customer_id = Purchase_Details.objects.get(id=item2.pk)
-        customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
-        customer_id.save(update_fields=['dispatch_id_assigned'])
+            dispatch2 = Dispatch.objects.get(id=dispatch.pk)
+            dispatch2.dispatch_id = str(dispatch.pk + 00000)
+            dispatch2.save(update_fields=['dispatch_id'])
+            customer_id = Purchase_Details.objects.get(id=item2.pk)
+            customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
+            customer_id.save(update_fields=['dispatch_id_assigned'])
         send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
         if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
@@ -500,36 +502,37 @@ def customer_employee_sales_graph(request,user_id):
     #this month sales
 
     mon = datetime.now().month
-    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(data_sum=Sum('total_sales_done_today'))
+    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
+                                                                                                         'total_sales_done_today')
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
         x = i
         this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        this_lis_sum.append(x['data_sum'])
+        this_lis_sum.append(x['total_sales_done_today'])
 
     #previous month sales
     mon = (datetime.now().month)-1
-    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
-        data_sum=Sum('total_sales_done_today'))
+    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
+                                                                                                         'total_sales_done_today')
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
         x = i
         previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        previous_lis_sum.append(x['data_sum'])
+        previous_lis_sum.append(x['total_sales_done_today'])
 
     if request.method=='POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values(
-            'entry_date').annotate(data_sum=Sum('total_sales_done_today'))
+            'entry_date','total_sales_done_today')
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
             lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['data_sum'])
+            lis_sum.append(x['total_sales_done_today'])
         context = {
             'final_list': lis_date,
             'final_list2': lis_sum,
@@ -543,15 +546,15 @@ def customer_employee_sales_graph(request,user_id):
         return render(request, "graphs/sales_graph.html", context)
     else:
 
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date').annotate(data_sum=Sum('total_sales_done_today'))
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date',
+                                                                                                         'total_sales_done_today')
         lis_date = []
         lis_sum = []
         for i in qs:
             x=i
             lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['data_sum'])
-        print(lis_date)
-        print(lis_sum)
+            lis_sum.append(x['total_sales_done_today'])
+
 
         context={
             'final_list':lis_date,

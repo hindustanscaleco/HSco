@@ -22,11 +22,12 @@ from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 
 def add_repairing_details(request):
     cust_sugg=Customer_Details.objects.all()
+    prev_rep_sugg=Repairing_after_sales_service.objects.all()
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('address')
-        contact_no = request.POST.get('phone_no')
+        contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
 
@@ -54,9 +55,9 @@ def add_repairing_details(request):
         item2 = Repairing_after_sales_service()
 
         item = Customer_Details()
-        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
+        if Customer_Details.objects.filter(customer_name=customer_name,company_name=company_name,contact_no=contact_no).count() > 0:
 
-            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).first()
+            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,company_name=company_name,contact_no=contact_no).first()
 
         else:
 
@@ -69,8 +70,11 @@ def add_repairing_details(request):
             item.customer_email_id = customer_email_id
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-            item.save()
-            item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            try:
+                item.save()
+                item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            except:
+                pass
 
         item2.previous_repairing_number = previous_repairing_number
         item2.in_warranty = in_warranty
@@ -174,7 +178,8 @@ def add_repairing_details(request):
 
 
     context={
-        'cust_sugg':cust_sugg
+        'cust_sugg':cust_sugg,
+        'prev_rep_sugg':prev_rep_sugg,
     }
 
     return render(request,'forms/rep_mod_form.html',context)
@@ -237,7 +242,7 @@ def update_repairing_details(request,id):
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('address')
-        contact_no = request.POST.get('phone_no')
+        contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
         item = customer_id
@@ -733,43 +738,46 @@ def repairing_employee_graph(request,user_id):
     rep_feedback = Repairing_Feedback.objects.all()
 
     print(user_id)
-    obj = Employee_Analysis_month.objects.get(user_id=user_id)
-    obj.sales_target_achived_till_now = (obj.total_reparing_done/obj.reparing_target_given)*100
-    obj.save()
-    #current month
-    target_achieved =  obj.sales_target_achived_till_now
     mon = datetime.now().month
-    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
-        data_sum=Sum('total_reparing_done_today'))
+
+    obj = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon)
+    obj.reparing_target_achived_till_now = (obj.total_reparing_done/obj.reparing_target_given)*100
+    obj.save(update_fields=['reparing_target_achived_till_now'])
+    #current month
+    target_achieved =  obj.reparing_target_achived_till_now
+    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
+                                                                                                     'total_reparing_done_today')
+
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
         x = i
         this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        this_lis_sum.append(x['data_sum'])
+        this_lis_sum.append(x['total_reparing_done_today'])
 
     # previous month sales
 
     mon = (datetime.now().month) - 1
-    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date').annotate(
-        data_sum=Sum('total_reparing_done_today'))
+    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
+                                                                                                     'total_reparing_done_today')
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
         x = i
         previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        previous_lis_sum.append(x['data_sum'])
+        previous_lis_sum.append(x['total_reparing_done_today'])
 
     if request.method == 'POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values('entry_date').annotate(data_sum=Sum('total_reparing_done_today'))
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values('entry_date',
+                                                                                                     'total_reparing_done_today')
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
             lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['data_sum'])
+            lis_sum.append(x['total_reparing_done_today'])
 
 
         context = {
@@ -784,13 +792,14 @@ def repairing_employee_graph(request,user_id):
         return render(request, "graphs/repairing_employee_graph.html", context)
     else:
 
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date').annotate(data_sum=Sum('total_reparing_done_today'))
+        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date',
+                                                                                                     'total_reparing_done_today')
         lis_date = []
         lis_sum = []
         for i in qs:
             x=i
             lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['data_sum'])
+            lis_sum.append(x['total_reparing_done_today'])
         print(lis_date)
         print(lis_sum)
 
@@ -884,6 +893,22 @@ def load_customer(request):
     }
 
     return render(request, 'AJAX/load_customer.html', context)
+
+def load_prev_rep(request):
+    rep_id = request.GET.get('item_id')
+
+    rep_list = Repairing_after_sales_service.objects.get(id=rep_id)
+    location=rep_list.location
+    date_of_purchase=rep_list.date_of_purchase
+
+    context = {
+        'date_of_purchase': date_of_purchase,
+        'location': location,
+
+    }
+
+    return render(request, 'AJAX/load_prev_rep.html', context)
+
 
 
 

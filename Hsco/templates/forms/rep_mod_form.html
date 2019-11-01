@@ -173,7 +173,7 @@ Format : (crm no) - (customer name) - (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="phone_no" required placeholder="Phone Number
+  <input  name="contact_no" required placeholder="Phone Number
 
 " class="form-control"  type="text">
     </div>
@@ -189,7 +189,7 @@ Format : (crm no) - (customer name) - (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Email-id" class="form-control"  type="text">
+  <input type="email" name="customer_email_id" placeholder="Email-id" class="form-control"  >
     </div>
   </div>
 </div>
@@ -209,8 +209,14 @@ Format : (crm no) - (customer name) - (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="previous_repairing_number" placeholder="Previous Repairing number
-" class="form-control"  type="text">
+    <select name="previous_repairing_number" id="display_limi" onchange="choice2(this)" class="form-control">
+    <option value="0">---------</option>
+       {% for item in prev_rep_sugg %}
+  <option value="{{item.pk}}">{{item.pk}} - {{item.date_of_purchase}} - {{item.crm_no.company_name}}</option>
+
+   {% endfor %}
+</select>
+    Format : (Rep no.) - (DOPurchase) - (Company Name)
     </div>
   </div>
 
@@ -231,9 +237,8 @@ Format : (crm no) - (customer name) - (company name)
 
 </div>
 
-
-
-<div class="form-group row">
+<div id="loaded_prev_rep">
+  <div class="form-group row">
   <label class="col-md-2 control-label">Date Of Purchase
 
 
@@ -245,26 +250,9 @@ Format : (crm no) - (customer name) - (company name)
   <input type="date" name="date_of_purchase" placeholder="" class="form-control">
     </div>
   </div>
-    <label class="col-md-2 control-label">Today's Date
 
 
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" id="datePicker" required class="form-control"  type="date">
-    </div>
-  </div>
-</div>
-
-
-
-
-
-<div class="form-group row">
-
-    <label class="col-md-2 control-label">Location
+      <label class="col-md-2 control-label">Location
 
 
 
@@ -276,6 +264,31 @@ Format : (crm no) - (customer name) - (company name)
   <input  name="location" placeholder="Location
 
 " class="form-control" required type="text">
+    </div>
+  </div>
+
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="form-group row">
+
+    <label class="col-md-2 control-label">Today's Date
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="today_date" id="datePicker" required class="form-control"  type="date">
     </div>
   </div>
 
@@ -505,6 +518,21 @@ function choice1(select) {
         success: function (data) {   // `data` is the return of the `load_cities` view function
     $("#loaded_customer").html(data);
     alert("Customer details loaded sucessfully!");
+        }
+      });
+}
+
+function choice2(select) {
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_prev_rep/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#loaded_prev_rep").html(data);
+    alert("Date of Purchase and location loaded sucessfully!");
         }
       });
 }

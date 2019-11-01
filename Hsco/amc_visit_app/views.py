@@ -19,12 +19,12 @@ def add_amc_after_sales(request):
     if request.method == 'POST':
 
         address = request.POST.get('address')
-        contact_no = request.POST.get('phone_no')
+        contact_no = request.POST.get('contact_no')
 
 
 
         # amcno = request.POST.get('amcno')
-        customer_name = request.POST.get('customer_name')
+        customer_name = request.POST.get('name')
         company_name = request.POST.get('company_name')
         # customer_no = request.POST.get('customer_no')
         customer_email_id = request.POST.get('customer_email_id')
@@ -295,7 +295,25 @@ def amc_logs(request):
 
 def update_amc_form(request,update_id):
     amc_list=Amc_After_Sales.objects.get(id=update_id)
-    if request.method == 'POST':
+    customer_id = Amc_After_Sales.objects.get(id=update_id).crm_no
+
+    customer_id = Customer_Details.objects.get(id=customer_id)
+
+    if request.method == 'POST' or request.method == 'FILES':
+        customer_email = request.POST.get('customer_email_id')
+        customer_name = request.POST.get('name')
+        company_name = request.POST.get('company_name')
+
+        item2 = customer_id
+
+        item2.customer_name = customer_name
+        item2.company_name = company_name
+        item2.customer_email_id = customer_email
+
+        item2.save(update_fields=['customer_email_id', ]),
+        item2.save(update_fields=['customer_name', ]),
+        item2.save(update_fields=['company_name', ]),
+
         amcno = request.POST.get('amcno')
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
