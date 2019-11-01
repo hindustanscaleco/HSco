@@ -144,7 +144,7 @@ def add_onsite_aftersales_service(request):
         date_of_complaint_received = request.POST.get('date_of_complaint_received')
         complaint_received_by = request.POST.get('complaint_received_by')
         nearest_railwaystation = request.POST.get('nearest_railwaystation')
-        train_line = request.POST.get('tr   ain_line')
+        train_line = request.POST.get('train_line')
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
 
         visiting_charges_told_customer = request.POST.get('visiting_charges_told_customer')

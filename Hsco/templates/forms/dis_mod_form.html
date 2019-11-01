@@ -253,8 +253,13 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="dispatch_by" placeholder="Dispatched By" class="form-control"  type="text">
+  <input  name="dispatch_by" placeholder="Dispatched By" class="form-control"  type="text" list="dispat_list">
+    <datalist style="height:20px;" id="dispat_list">
+      {% for item in user_list %}
 
+      <option value = "{{item.name}}"></option>
+    {% endfor %}
+    </datalist>
 
      </div>
   </div>
@@ -271,7 +276,13 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="packed_by" placeholder="Packed by
-" class="form-control"  type="text">
+" class="form-control"  type="text" list="packed_list">
+        <datalist style="height:20px;" id="packed_list">
+      {% for item in user_list %}
+
+      <option value = "{{item.name}}"></option>
+    {% endfor %}
+    </datalist>
     </div>
   </div>
 
