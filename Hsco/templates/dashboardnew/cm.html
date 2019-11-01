@@ -54,75 +54,57 @@
 
           <!-- Page Heading -->
             <div class="row">
-                   <div class="col-xl-4 col-md-4">
-            <h1 class="h3 mb-0 text-gray-800">Purchase Module</h1>
-          </div>
-
-                <!--<div class="col-xl-7 col-md-4">-->
-                        <!--<div class="row">-->
-                <!--<div class="col-xl-3 col-md-3 mb-12">-->
-              <!--<div class="  ">-->
-
-                <!--<div class="" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col ">-->
- <!--<a href="/add_customer_details/"><button class="btn btn-primary"  style="font-size: 14px; width: 150px;">Add Customer</button></a>-->
-                    <!--</div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
+           <div class="col-xl-6 col-md-3 mb-3 ">
 
 
-         <!--<div class="col-xl-3 col-md-3 mb-12"  style="margin-left: -0px;">-->
-              <!--<div class="   ">-->
-                <!--<div class="card-body" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col ">-->
- <!--<a href="/add_customer_details/"><button class="btn btn-primary"  style="font-size: 14px; width: 150px;">Delete Customer</button></a>-->
-                    <!--</div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+<h1 class="h3 mb-0 text-gray-800 ">Purchase Module</h1>
 
 
-                <!--<div class="col-xl-4 col-md-12 mb-12" style="margin-left: -0px;">-->
-              <!--<div class="">-->
-                <!--<div class="card-body" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col mr-2">-->
-                        <!--<a href="/user_logs/"> <button class="btn btn-primary"  style="font-size: 14px;">Log</button></a>&nbsp; &nbsp;-->
-                        <!--<a href="/report/"> <button class="btn btn-primary"  style="font-size: 14px;">Report</button></a>&nbsp;-->
-                    <!--</div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
+                </div>
+              </div>
 
 
-        <!--&lt;!&ndash; Earnings (Monthly) Card Example &ndash;&gt;-->
-            <!--<div class="col-xl-2 col-md-12 mb-12" style="margin-left: -50px;">-->
-              <!--<div class="">-->
-                <!--<div class="card-body" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col mr-2">-->
-                        <!--<a href="/analytics/"><button class="btn btn-primary"  style="font-size: 14px;">Analytics</button></a>-->
 
-                    <!--</div>-->
 
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-
-          <!--</div>-->
-
-                <!--</div>-->
             </div>
+
+
+
+                 <div class="col-xl-6 col-md-9 mb-9 ">
+
+
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+
+
+<a style="padding: 2px;" href="/add_purchase_details/"><button class="btn btn-primary">Analytics</button></a>
+
+
+
+ <a style="padding: 2px;" href="/add_purchase_details/"><button  class="btn btn-primary">Deleted User</button></a>
+ <a style="padding: 2px;" href="/add_purchase_details/"><button class="btn btn-primary">Log</button></a>
+ <a style="padding: 2px;" href="/add_purchase_details/"><button class="btn btn-primary">Report</button></a>
+ <a style="padding: 2px;" href="/add_purchase_details/"><button class="btn btn-primary"> Add Purchase </button></a>
+
+
+
+
+
+
+                </div>
+              </div>
+
+
+
+
+            </div>
+
+
+
+                </div>
+
 
 
 <br>
@@ -254,27 +236,37 @@ $(function() {
       </div>
                                </form>
 
-                               <form method="POST" autocomplete="off">{% csrf_token%}
+
   <div id="d2" class="divs d2">
+      <form method="POST" autocomplete="off">{% csrf_token%}
       <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button type="submit" name="submit2" class="btn btn-primary">Search</button></div>
-                               </form>
+      <button type="submit" name="submit2" class="btn btn-primary">Search</button>
+  </form>
+  </div>
 
-                               <form method="POST">{% csrf_token%}
+
+
 
   <div id="d3" class="divs d3">
+      <form method="POST">{% csrf_token%}
       <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button name="submit3" class="btn btn-primary">Search</button></div>
-</form>
-                               <form method="POST">{% csrf_token%}
+
+      <button name="submit3" class="btn btn-primary">Search</button>
+          </form>
+  </div>
+
+
 
     <div id="d4" class="divs d4">
+        <form method="POST">{% csrf_token%}
       <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button name="submit4" class="btn btn-primary">Search</button></div>
-</form>
+      <button name="submit4" class="btn btn-primary">Search</button>
+    </form>
+    </div>
+
                                <form method="POST">{% csrf_token%}
   <div id="d5" class="divs d5">
       <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
