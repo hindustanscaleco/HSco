@@ -180,7 +180,7 @@ def restamping_after_sales_service(request):
 
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item2.crm_no_id = item.pk
+        # item2.crm_no_id = item.pk
         # item2.restampingno = restampingno
         item2.customer_no = customer_no
         item2.today_date = today_date
