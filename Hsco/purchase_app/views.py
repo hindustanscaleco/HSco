@@ -59,7 +59,7 @@ def add_purchase_details(request):
         feedback_form_filled = request.POST.get('feedback_form_filled')
 
         item2 = Purchase_Details()
-         item = Customer_Details()
+        item = Customer_Details()
         if Customer_Details.objects.filter(customer_name=customer_name,company_name=company_name,contact_no=contact_no).count() > 0:
 
             item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,company_name=company_name,contact_no=contact_no).first()
