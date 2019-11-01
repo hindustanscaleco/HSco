@@ -295,19 +295,25 @@ def update_amc_form(request,update_id):
     customer_id = Customer_Details.objects.get(id=customer_id)
 
     if request.method == 'POST' or request.method == 'FILES':
-        customer_email = request.POST.get('customer_email_id')
-        customer_name = request.POST.get('name')
+        customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
+        address = request.POST.get('address')
+        contact_no = request.POST.get('contact_no')
+        customer_email_id = request.POST.get('customer_email_id')
 
         item2 = customer_id
 
         item2.customer_name = customer_name
         item2.company_name = company_name
-        item2.customer_email_id = customer_email
+        item2.customer_email_id = customer_email_id
+        item2.address = address
+        item2.contact_no = contact_no
 
         item2.save(update_fields=['customer_email_id', ]),
         item2.save(update_fields=['customer_name', ]),
         item2.save(update_fields=['company_name', ]),
+        item2.save(update_fields=['address', ]),
+        item2.save(update_fields=['contact_no', ]),
 
         amcno = request.POST.get('amcno')
         customer_name = request.POST.get('customer_name')

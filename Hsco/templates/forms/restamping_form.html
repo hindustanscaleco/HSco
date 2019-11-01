@@ -92,7 +92,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-    <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
+    <select name="contact_no" id="display_limit" onchange="choice1(this)" class="form-control">
     <option value="-----">---------</option>
        {% for item in cust_sugg %}
   <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
@@ -121,7 +121,7 @@ Format : (crm no) - (customer name) - (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="name" required placeholder="Customer Name" class="form-control" value="{{cust_list.customer_name}}" type="text">
+  <input  name="customer_name" required placeholder="Customer Name" class="form-control" value="{{cust_list.customer_name}}" type="text">
     </div>
   </div>
 
@@ -183,7 +183,7 @@ Format : (crm no) - (customer name) - (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="customer_address" placeholder="Address" value="{{cust_list.address}}" class="form-control"  type="text">
+  <input  name="address" placeholder="Address" value="{{cust_list.address}}" class="form-control"  type="text">
     </div>
   </div>
 
@@ -242,7 +242,7 @@ Format : (crm no) - (customer name) - (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-filter faicons"></i></span>
-    <input  type="text" required name="industry" placeholder="Industry" class="form-control" list="channel2">
+    <input  type="text" required name="brand" placeholder="Industry" class="form-control" list="channel2">
     <datalist style="height:20px;" id="channel2">
       <option value="Hsco"></option>
     </datalist>
