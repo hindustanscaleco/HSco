@@ -249,8 +249,9 @@ def assign_man_to_admin(request):
         manager_id = request.POST.get('manager_id')
 
         item = SiteUser.objects.get(id=manager_id)
-
-        item.group = group
+        # old_group=item.group
+        # item.group = "'"+group+"'"+old_group
+        item.group=group
 
         item.save(update_fields=['group',])
     print(admin_list)
@@ -269,9 +270,9 @@ def assign_emp_to_manager(request):
         employee_id = request.POST.get('employee_id')
 
         item = SiteUser.objects.get(id=employee_id)
-
-        item.group = group
-
+        item.group=group
+        # old_group = item.group
+        # item.group = group + old_group
         item.save(update_fields=['group',])
     context = {
         'employee_list': employee_list,
