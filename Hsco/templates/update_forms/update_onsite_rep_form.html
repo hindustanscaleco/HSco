@@ -363,24 +363,8 @@ function myFunction() {
     <!--</div>-->
   <!--</div>-->
 
-</div>
 
 
-
-
-
-  <div class="form-group row">
-  <label class="col-md-2 control-label">Cost
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="cost" placeholder="Cost" class="form-control" id="myText15" type="text" disabled value="{{cost}}">
-    </div>
-  </div>
 
     <label class="col-md-2 control-label">Visiting Charges Told to Customer
 
@@ -487,19 +471,6 @@ function myFunction() {
   </div>
 </div>
 
- <div class="form-group row">
-  <label class="col-md-2 control-label">Assigned To
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-<select name="complaint_assigned_to" class="form-control">
-                {% for list2 in employee_list %}
-                        <option value="{{list2.pk}}">{{list2.name}}</option>
-                  {% endfor %}
-</select>    </div>
-  </div>
 
 </div>
 <center>
