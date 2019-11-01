@@ -20,6 +20,7 @@ class Restamping_after_sales_service(models.Model):
     # mobile_no = models.CharField(max_length=13,null=True, blank=True)
     new_serial_no = models.CharField(max_length=150,null=True, blank=True)
     brand = models.CharField(max_length=150,null=True, blank=True)
+    total_amount = models.FloatField(default=0.0, null=True, blank=True)
     scale_delivery_date = models.DateField(default=datetime.date.today, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
 
@@ -37,7 +38,7 @@ class Restamping_Product(models.Model):
     capacity = models.CharField(max_length=150, null=True, blank=True)
     old_serial_no = models.CharField(max_length=150, null=True, blank=True)
     old_brand = models.CharField(max_length=150, null=True, blank=True)
-    amount = models.CharField(max_length=150, null=True, blank=True)
+    amount = models.FloatField(default=0.0, null=True, blank=True)
     new_sr_no = models.CharField(max_length=80, null=True, blank=True)
     brand = models.CharField(max_length=50, null=True, blank=True)
 

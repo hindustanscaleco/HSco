@@ -23,7 +23,7 @@ class Amc_After_Sales(models.Model):
     type_of_scale = models.CharField(max_length=30,null=True,blank=True)
     serial_no_scale = models.CharField(max_length=80,null=True,blank=True)
     contract_valid_in_years = models.CharField(max_length=30,null=True,blank=True)
-    contract_amount = models.CharField(max_length=50,null=True,blank=True)
+    contract_amount = models.FloatField(default=0.0,null=True,blank=True)
     contract_no_reporting_breakdown = models.CharField(max_length=30,null=True,blank=True)
     contract_start_date = models.DateField(default=datetime.date.today,null=True,blank=True)
     contract_end_date = models.DateField(default=datetime.date.today,null=True,blank=True)

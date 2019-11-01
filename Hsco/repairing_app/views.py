@@ -649,6 +649,25 @@ def edit_product(request,id):
         deposite_taken_for_replaced_scale = request.POST.get('deposite_taken_for_replaced_scale')
         cost = request.POST.get('cost')
 
+        product_id = Repairing_Product.objects.get(id=id)
+        reparing_id = Repairing_after_sales_service.objects.get(
+            id=Repairing_Product.objects.get(id=id).repairing_id.pk).pk
+        cost2 = product_id.cost
+
+        Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") - cost2)
+
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+                                               entry_date__month=product_id.entry_timedate.month,
+                                               year=product_id.entry_timedate.year).update(
+            total_reparing_done=F("total_reparing_done") - cost2)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+                                              entry_date__month=product_id.entry_timedate.month,
+                                              year=product_id.entry_timedate.year).update(
+            total_reparing_done_today=F("total_reparing_done_today") - cost2)
+
+
+
         item = product_id
         item.type_of_machine = type_of_machine
         item.model = model
@@ -661,6 +680,10 @@ def edit_product(request,id):
         item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
         item.cost = cost
 
+
+
+
+
         item.save(update_fields=['type_of_machine', ]),
         item.save(update_fields=['model', ]),
         item.save(update_fields=['sub_model', ]),
@@ -672,25 +695,21 @@ def edit_product(request,id):
         item.save(update_fields=['deposite_taken_for_replaced_scale', ]),
         item.save(update_fields=['cost', ]),
 
-        product_id = Repairing_Product.objects.get(id=id)
-        reparing_id = Repairing_after_sales_service.objects.get(id=Repairing_Product.objects.get(id=id).repairing_id.pk).pk
-        cost2=product_id.cost
-        print(cost2)
-        print(cost2)
-        print(cost2)
-        print(cost)
-        print(cost)
 
 
-        Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") - cost2)
+        Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + cost)
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
 
-        Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=product_id.entry_timedate.month,
+
+
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+                                               entry_date__month=product_id.entry_timedate.month,
                                                year=product_id.entry_timedate.year).update(
             total_reparing_done=F("total_reparing_done") + cost)
 
-        Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=product_id.entry_timedate.month,
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+                                              entry_date__month=product_id.entry_timedate.month,
                                               year=product_id.entry_timedate.year).update(
             total_reparing_done_today=F("total_reparing_done_today") + cost)
 
