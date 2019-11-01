@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -6,6 +6,8 @@ from customer_app.models import Customer_Details
 
 from purchase_app.views import check_admin_roles
 from user_app.models import SiteUser
+
+from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 from .forms import AMC_Feedback_Form
 from .models import Amc_After_Sales, AMC_Feedback
 from django.db import connection
@@ -13,6 +15,8 @@ from django.core.mail import send_mail
 from Hsco import settings
 import requests
 import json
+import datetime
+
 
 def add_amc_after_sales(request):
     cust_sugg = Customer_Details.objects.all()
@@ -46,11 +50,9 @@ def add_amc_after_sales(request):
 
         item2 = Amc_After_Sales()
         item = Customer_Details()
-        if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
-                                           Q(contact_no=contact_no)).count() > 0:
+        if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
 
-            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
-                                                           Q(contact_no=contact_no)).first()
+            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),Q(contact_no=contact_no)).first()
 
         else:
             item.customer_name = customer_name
@@ -88,17 +90,28 @@ def add_amc_after_sales(request):
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save()
 
+        # Amc_After_Sales.objects.filter(id=id).update(total_cost=F("total_cost") + contract_amount)
+        # Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+        #                                        year=datetime.now().year).update(
+        #     total_reparing_done=F("total_reparing_done") + contract_amount)
+        #
+        # Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+        #                                       year=datetime.now().year).update(
+        #     total_reparing_done_today=F("total_reparing_done_today") + contract_amount)
+
+
+
         if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
                                            Q(contact_no=contact_no)).count() > 0:
 
             crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
                                                            Q(contact_no=contact_no)).first()
 
-            send_mail('Feedback Form', 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
+            send_mail('Feedback Form', 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_amc/' + str(
                 request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
                       [crm_no.customer_email_id])
 
-            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
+            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_amc/' + str(
                 request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
@@ -111,11 +124,11 @@ def add_amc_after_sales(request):
 
 
         else:
-            send_mail('Feedback Form', 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
+            send_mail('Feedback Form', 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_amc/' + str(
                 request.user.pk) + '/' + str(item.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
                       [item.customer_email_id])
 
-            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
+            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_amc/' + str(
                 request.user.pk) + '/' + str(item.id) + '/' + str(item2.id)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
@@ -148,8 +161,6 @@ def report_amc(request):
         return redirect('/final_report_amc/')
     return render(request, "report/report_amc_form.html",)
 
-
-
 def final_report_amc(request):
     start_date =    request.session.get('start_date')
     end_date =      request.session.get('end_date')
@@ -180,7 +191,6 @@ def final_report_amc(request):
         'selected_list':selected_list,
     }
     return render(request,"report/amc_final_report.html",context)
-
 
 def amc_views(request):
     if request.method=='POST' :
@@ -318,7 +328,6 @@ def update_amc_form(request,update_id):
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         customer_no = request.POST.get('customer_no')
-        customer_email_id = request.POST.get('customer_email_id')
         type_of_scale = request.POST.get('type_of_scale')
         serial_no_scale = request.POST.get('serial_no_scale')
         contract_valid_in_years = request.POST.get('contract_valid_in_years')
@@ -342,7 +351,6 @@ def update_amc_form(request,update_id):
         item.customer_name = customer_name
         item.company_name = company_name
         item.customer_no = customer_no
-        item.customer_email_id = customer_email_id
         item.type_of_scale = type_of_scale
         item.serial_no_scale = serial_no_scale
         item.contract_valid_in_years = contract_valid_in_years

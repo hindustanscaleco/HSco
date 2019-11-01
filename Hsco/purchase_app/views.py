@@ -31,19 +31,6 @@ def add_purchase_details(request):
         customer_email_id = request.POST.get('customer_email_id')
 
 
-
-
-
-        # item = Customer_Details()
-
-        # item.customer_name = customer_name
-        # item.company_name = company_name
-        # item.address = address
-        # item.contact_no = contact_no
-        # item.customer_email_id = customer_email_id
-
-        # item.save()
-
         date_of_purchase = request.POST.get('date_of_purchase')
         new_repeat_purchase = request.POST.get('new_repeat_purchase')
         sales_person = request.POST.get('sales_personc')
@@ -121,7 +108,7 @@ def add_purchase_details(request):
             customer_id = Purchase_Details.objects.get(id=item2.pk)
             customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
             customer_id.save(update_fields=['dispatch_id_assigned'])
-        send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
+        # send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
         if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
             Employee_Analysis_date.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + value_of_goods)
@@ -153,22 +140,64 @@ def add_purchase_details(request):
             ead.year = datetime.now().year
             ead.save()
 
-        try:
-            send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
-        except:
-            pass
+        if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
+                                           Q(contact_no=contact_no)).count() > 0:
+            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
+                                                     Q(contact_no=contact_no)).first()
+            try:
+                send_mail('Feedback Form',
+                          'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/' + str(
+                              request.user.pk) + '/' + str(item.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                          [crm_no.customer_email_id])
 
-        # // vikka.pythonanywhere.com
+            except:
+                pass
 
-        message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
+            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/' + str(
+                request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
 
-        url = "http://smshorizon.co.in/api/sendsms.php?user="+settings.user+"&apikey="+settings.api+"&mobile="+contact_no+"&message="+message+"&senderid="+settings.senderid+"&type=txt"
-        payload = ""
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-        x = response.text
-        print(x)
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+        else:
+            try:
+
+                send_mail('Feedback Form',
+                          'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/' + str(
+                              request.user.pk) + '/' + str(item.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                          [item.customer_email_id])
+
+            except:
+                pass
+
+            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/' + str(
+                request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+
+        # Purchase_Details.objects.filter(id=purchase_id_id.pk).update(
+        #     value_of_goods=F("value_of_goods") + value_of_goods)
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
+
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+                                               entry_date__month=item2.entry_timedate.month,
+                                               year=item2.entry_timedate.year).update(
+            total_sales_done=F("total_sales_done") + value_of_goods)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+                                              entry_date__month=item2.entry_timedate.month,
+                                              year=item2.entry_timedate.year).update(
+            total_sales_done_today=F("total_sales_done_today") + value_of_goods)
+
         return redirect('/add_product_details/'+str(item2.id))
 
     context = {
@@ -335,6 +364,28 @@ def update_customer_details(request,id):
         notes = request.POST.get('notes')
         feedback_form_filled = request.POST.get('feedback_form_filled')
 
+
+        cost2=purchase_id_id.value_of_goods
+
+        Purchase_Details.objects.filter(id=purchase_id_id.pk).update(
+            value_of_goods=F("value_of_goods") - cost2)
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
+
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+                                               entry_date__month=purchase_id_id.entry_timedate.month,
+                                               year=item.entry_timedate.year).update(
+            total_sales_done=F("total_sales_done") - cost2)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+                                              entry_date__month=purchase_id_id.entry_timedate.month,
+                                              year=item.entry_timedate.year).update(
+            total_sales_done_today=F("total_sales_done_today") - cost2)
+
+
+
+
+
         item2 = purchase_id_id
 
         item2.crm_no = Customer_Details.objects.get(id=item.pk)
@@ -353,6 +404,20 @@ def update_customer_details(request,id):
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save(update_fields=['date_of_purchase','bill_no','upload_op_file','manager_id','po_number','new_repeat_purchase',
                                   'channel_of_sales','industry','channel_of_dispatch','notes','feedback_form_filled','user_id'])
+
+        Purchase_Details.objects.filter(id=purchase_id_id.pk).update(value_of_goods=F("value_of_goods") + value_of_goods)
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
+
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+                                               entry_date__month=purchase_id_id.entry_timedate.month,
+                                               year=product_id.entry_timedate.year).update(
+            total_sales_done=F("total_sales_done") + value_of_goods)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+                                              entry_date__month=purchase_id_id.entry_timedate.month,
+                                              year=product_id.entry_timedate.year).update(
+            total_sales_done_today=F("total_sales_done_today") + value_of_goods)
 
     context={
         'product_id':product_id,

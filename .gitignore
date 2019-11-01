@@ -2,4 +2,6 @@
 **/.idea
 **/migrations
 **/venv
+Hsco/settings.py
+
 
