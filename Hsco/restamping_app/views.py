@@ -335,20 +335,22 @@ def update_restamping_details(request,id):
     customer_id = Customer_Details.objects.get(id=customer_id)
 
     if request.method == 'POST':
+        customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('address')
         contact_no = request.POST.get('contact_no')
+        customer_email_id = request.POST.get('customer_email_id')
 
         item2 = customer_id
 
         item2.company_name = company_name
         item2.address = address
         item2.contact_no = contact_no
-        item2.save(update_fields=['company_name','address','contact_no',])
+        item2.customer_name = customer_name
+        item2.customer_email_id = customer_email_id
+        item2.save(update_fields=['company_name','address','contact_no','customer_email_id','customer_name'])
 
         restampingno = request.POST.get('restampingno')
-        customer_no = request.POST.get('customer_no')
-        company_name = request.POST.get('company_name')
         address = request.POST.get('address')
         today_date = request.POST.get('today_date')
         mobile_no = request.POST.get('mobile_no')
@@ -359,7 +361,6 @@ def update_restamping_details(request,id):
         item = personal_id
 
         item.restampingno = restampingno
-        item.company_name = company_name
         item.address = address
         item.today_date = today_date
         item.mobile_no = mobile_no

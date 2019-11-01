@@ -266,7 +266,6 @@ def update_repairing_details(request,id):
         in_warranty = request.POST.get('in_warranty')
         date_of_purchase = request.POST.get('date_of_purchase')
         today_date = request.POST.get('today_date')
-        name = request.POST.get('name')
         location = request.POST.get('location')
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
         total_cost = request.POST.get('total_cost')
@@ -289,7 +288,6 @@ def update_repairing_details(request,id):
         item2.in_warranty = in_warranty
         item2.date_of_purchase = date_of_purchase
         item2.today_date = today_date
-        item2.name = name
 
         item2.location = location
         item2.products_to_be_repaired = products_to_be_repaired
@@ -333,9 +331,7 @@ def update_repairing_details(request,id):
         context = {
             'repair_list': repair_list,
             'repair_id': repair_id,
-            'customer_id':customer_id,
-
-
+            'customer_id': customer_id,
         }
         return render(request, 'update_forms/update_rep_mod_form.html', context)
 

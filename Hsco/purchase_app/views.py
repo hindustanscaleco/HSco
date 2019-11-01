@@ -33,7 +33,7 @@ def add_purchase_details(request):
 
         date_of_purchase = request.POST.get('date_of_purchase')
         new_repeat_purchase = request.POST.get('new_repeat_purchase')
-        sales_person = request.POST.get('sales_personc')
+        sales_person = request.POST.get('sales_person')
         product_purchase_date = request.POST.get('product_purchase_date')
         bill_no = request.POST.get('bill_no')
         upload_op_file = request.FILES.get('upload_op_file')
@@ -353,6 +353,7 @@ def update_customer_details(request,id):
         item.save(update_fields=['customer_name','company_name','address','contact_no','customer_email_id',])
 
         date_of_purchase = request.POST.get('date_of_purchase')
+        sales_person = request.POST.get('sales_person')
         bill_no = request.POST.get('bill_no')
         new_repeat_purchase = request.POST.get('new_repeat_purchase')
         upload_op_file = request.FILES.get('upload_op_file')
@@ -390,6 +391,7 @@ def update_customer_details(request,id):
 
         item2.crm_no = Customer_Details.objects.get(id=item.pk)
         item2.date_of_purchase = date_of_purchase
+        item2.sales_person = sales_person
         item2.new_repeat_purchase = new_repeat_purchase
         item2.bill_no = bill_no
         item2.upload_op_file = upload_op_file
@@ -402,7 +404,7 @@ def update_customer_details(request,id):
         item2.feedback_form_filled = feedback_form_filled
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item2.save(update_fields=['date_of_purchase','bill_no','upload_op_file','manager_id','po_number','new_repeat_purchase',
+        item2.save(update_fields=['date_of_purchase','sales_person','bill_no','upload_op_file','manager_id','po_number','new_repeat_purchase',
                                   'channel_of_sales','industry','channel_of_dispatch','notes','feedback_form_filled','user_id'])
 
         Purchase_Details.objects.filter(id=purchase_id_id.pk).update(value_of_goods=F("value_of_goods") + value_of_goods)
