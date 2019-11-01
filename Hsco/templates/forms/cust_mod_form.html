@@ -82,22 +82,27 @@ color:;
 
     <form class="well form-horizontal" autocomplete="off" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
 
-<!--<div class="form-group row">-->
-  <!--<label class="col-md-2 control-label ">CRM NO:-->
+<div class="form-group row">
+    <label class="col-md-2 control-label">Customer Number
 
-<!--</label>-->
 
-  <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-  <!--<input name="crm_no" placeholder="Enter CRM NO"   class="form-control"  type="text" list="crm_no">-->
-    <!--<datalist style="height:20px;" id="crm_no">-->
-      <!--<option value="Energy industry"></option>-->
+</label>
 
-    <!--</datalist>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+    <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
+    <option value="-----">---------</option>
+       {% for item in cust_sugg %}
+  <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
+
+   {% endfor %}
+</select>
+
+    </div>
+Format : (crm no)-(customer name)-(company name)
+  </div>
+</div>
 
 
   <!--<div class="col-md-4 inputGroupContainer">-->
@@ -147,7 +152,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input class="form-control" required name="address" placeholder="Address"/>
+  <input class="form-control" required name="customer_address" placeholder="Address"/>
     </div>
   </div>
 
@@ -209,7 +214,12 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="sales_person" placeholder="Sales Person" required class="form-control"  type="text">
+  <input name="sales_person" placeholder="Sales Person" required class="form-control" list="channel101" type="text">
+    <datalist style="height:20px;" id="channel101">
+      {% for item in sales_person_sugg %}
+      <option value="{{item.name}}"></option>
+    {% endfor %}
+    </datalist>
     </div>
   </div>
   </div>

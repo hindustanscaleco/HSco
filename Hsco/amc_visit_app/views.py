@@ -22,13 +22,12 @@ def add_amc_after_sales(request):
     cust_sugg = Customer_Details.objects.all()
     if request.method == 'POST':
 
-        address = request.POST.get('address')
+        address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
 
 
-
         # amcno = request.POST.get('amcno')
-        customer_name = request.POST.get('name')
+        customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         # customer_no = request.POST.get('customer_no')
         customer_email_id = request.POST.get('customer_email_id')
@@ -312,7 +311,7 @@ def update_amc_form(request,update_id):
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
-        address = request.POST.get('address')
+        address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 

@@ -133,7 +133,7 @@ def add_onsite_aftersales_service(request):
     user_list=SiteUser.objects.filter(group__icontains=request.user.name)
     # form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
-        customer_name = request.POST.get('name')
+        customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
@@ -418,7 +418,7 @@ def update_onsite_details(request,id):
     if request.method == 'POST' or request.method == 'FILES':
         contact_no = request.POST.get('contact_no')
         customer_email = request.POST.get('customer_email_id')
-        customer_name = request.POST.get('name')
+        customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         customer_address = request.POST.get('customer_address')
 
