@@ -46,11 +46,9 @@ def add_amc_after_sales(request):
 
         item2 = Amc_After_Sales()
         item = Customer_Details()
-        if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
-                                           Q(contact_no=contact_no)).count() > 0:
+        if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
 
-            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
-                                                           Q(contact_no=contact_no)).first()
+            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),Q(contact_no=contact_no)).first()
 
         else:
             item.customer_name = customer_name
@@ -94,11 +92,11 @@ def add_amc_after_sales(request):
             crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
                                                            Q(contact_no=contact_no)).first()
 
-            send_mail('Feedback Form', 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
+            send_mail('Feedback Form', 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_amc/' + str(
                 request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
                       [crm_no.customer_email_id])
 
-            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
+            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_amc/' + str(
                 request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
@@ -111,11 +109,11 @@ def add_amc_after_sales(request):
 
 
         else:
-            send_mail('Feedback Form', 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
+            send_mail('Feedback Form', 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_amc/' + str(
                 request.user.pk) + '/' + str(item.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
                       [item.customer_email_id])
 
-            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/' + str(
+            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_amc/' + str(
                 request.user.pk) + '/' + str(item.id) + '/' + str(item2.id)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
