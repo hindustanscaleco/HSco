@@ -176,7 +176,7 @@ $(document).ready(function(){
 
 
   <div class="wrapper">
-    <select class="editableBox" class="form-control" name="model" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBox" class="form-control" name="model" required id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
       <option value="" selected="selected">Select</option>
     </select>
     <input class="timeTextBox" name="timebox" maxlength="5"/>
@@ -198,7 +198,7 @@ $(document).ready(function(){
 
     <div class="col-md-4 inputGroupContainer">
 <div class="wrapper">
-    <select class="editableBoxa" class="form-control" name="sub_model" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBoxa" class="form-control" required name="sub_model" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
 <option value="" selected="selected">Select</option>
     </select>
     <input class="timeTextBoxa" name="timebox" maxlength="5"/>
@@ -217,7 +217,7 @@ $(document).ready(function(){
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-    <input  type="text" name="cost" placeholder="Cost" class="form-control" >
+    <input  type="text" name="cost" required placeholder="Cost" class="form-control" >
 
     </div>
   </div>
