@@ -471,7 +471,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
       <div class="input-group">
         <span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>
-        <input class="form-control" name="feedback_form_filled" placeholder="Yes or No" disabled id="myText17" value="{{purchase_id_id.feedback_form_filled}}">
+        <input class="form-control" name="feedback_form_filled" placeholder="Yes or No" disabled id="myText17" value="{% if purchase_id_id.feedback_form_filled %} YES {% else %} NO {% endif %}">
       </div>
     </div>
 
