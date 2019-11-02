@@ -33,6 +33,7 @@ class Repairing_after_sales_service(models.Model):
     repaired_date = models.DateField(default=datetime.date.today,null=True,blank=True)
     delivery_date = models.DateField(default=datetime.date.today,null=True,blank=True)
     delivery_by = models.CharField(max_length=50,null=True,blank=True)
+    repaired_by = models.CharField(max_length=50,null=True,blank=True)
     feedback_given = models.CharField(default='NO',max_length=10,null=True,blank=True)
     avg_feedback = models.FloatField(default=0.0)
     entry_timedate = models.DateField(default=datetime.date.today)

@@ -46,11 +46,10 @@ def add_repairing_details(request):
         informed_by = request.POST.get('informed_by')
         confirmed_estimate = request.POST.get('confirmed_estimate')
         repaired = request.POST.get('repaired')
-        repaired_date = request.POST.get('repaired_date')
-        delivery_date = request.POST.get('delivery_date')
         delivery_by = request.POST.get('delivery_by')
         feedback_given = request.POST.get('feedback_given')
         current_stage = request.POST.get('current_stage')
+        repaired_by = request.POST.get('repaired_by')
 
         item2 = Repairing_after_sales_service()
 
@@ -89,9 +88,8 @@ def add_repairing_details(request):
         item2.informed_by = informed_by
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired
-        item2.repaired_date = repaired_date
-        item2.delivery_date = delivery_date
         item2.delivery_by = delivery_by
+        item2.repaired_by = repaired_by
         item2.feedback_given = feedback_given
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -276,6 +274,7 @@ def update_repairing_details(request,id):
         repaired_date = request.POST.get('repaired_date')
         delivery_date = request.POST.get('delivery_date')
         delivery_by = request.POST.get('delivery_by')
+        repaired_by = request.POST.get('repaired_by')
         feedback_given = request.POST.get('feedback_given')
         current_stage = request.POST.get('current_stage')
 
@@ -300,6 +299,7 @@ def update_repairing_details(request,id):
         item2.repaired_date = repaired_date
         item2.delivery_date = delivery_date
         item2.delivery_by = delivery_by
+        item2.repaired_by = repaired_by
         item2.feedback_given = feedback_given
         item2.current_stage = current_stage
         item2.stage_update_timedate = timezone.now()
@@ -321,6 +321,7 @@ def update_repairing_details(request,id):
         item2.save(update_fields=['repaired_date', ]),
         item2.save(update_fields=['delivery_date', ]),
         item2.save(update_fields=['delivery_by', ]),
+        item2.save(repaired_by=['repaired_by', ]),
         item2.save(update_fields=['feedback_given', ])
         item2.save(update_fields=['current_stage', ])
         item2.save(update_fields=['stage_update_timedate', ])
