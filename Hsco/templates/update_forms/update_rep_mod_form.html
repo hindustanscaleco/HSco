@@ -220,9 +220,11 @@ function myFunction() {
 </label>
 
   <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="repairingnumber" placeholder="Repairing Number" class="form-control" id="myText" type="text" disabled value="{{repair_id.pk}}">
+  <div class="input-group">:
+       <label class="col-md-2 control-label">{{repair_id.pk}}
+
+
+</label>
     </div>
   </div>
 
@@ -675,7 +677,7 @@ function myFunction() {
 
 <center>
   <a  href="repairing_module_home/"><button  id="button"  class="btn btn-primary">Save</button></a>
-                        <button  onclick="myFunction()" class="btn btn-primary" type="reset">Edit</button>
+                        <button  onclick="myFunction()" class="btn btn-primary" type="button">Edit</button>
 
 </center>
 
