@@ -15,13 +15,13 @@ class Repairing_after_sales_service(models.Model):
     # repairingnumber = models.CharField(max_length=40,null=True,blank=True) #combination of pk and 'rep'
     previous_repairing_number = models.BigIntegerField(default=0,null=True,blank=True)
     in_warranty = models.CharField(default='NO',max_length=10,null=True,blank=True)
-    date_of_purchase = models.DateField(default=datetime.date.today,null=True,blank=True)
+    # date_of_purchase = models.DateField(default=datetime.date.today,null=True,blank=True)
     today_date = models.DateField(default=datetime.date.today,null=True,blank=True)
     # name = models.CharField(max_length=60,null=True,blank=True)
     # company_name = models.CharField(max_length=80,null=True,blank=True)
     # phone_no = models.CharField(max_length=13,null=True,blank=True)
     # customer_email_id = models.EmailField(max_length=255,null=True,blank=True)
-    location = models.CharField(max_length=255,null=True,blank=True)
+    # location = models.CharField(max_length=255,null=True,blank=True)
 
     # products_to_be_repaired = models.CharField(max_length=30,null=True,blank=True)
     current_stage = models.CharField(default='Scale is collected but estimate is not given',max_length=50,null=True,blank=True)
@@ -30,8 +30,7 @@ class Repairing_after_sales_service(models.Model):
     informed_by = models.CharField(max_length=60,null=True,blank=True)
     confirmed_estimate = models.CharField(default='NO',max_length=30,null=True,blank=True)
     repaired = models.CharField(default='NO',max_length=30,null=True,blank=True)
-    repaired_date = models.DateField(default=datetime.date.today,null=True,blank=True)
-    delivery_date = models.DateField(default=datetime.date.today,null=True,blank=True)
+
     delivery_by = models.CharField(max_length=50,null=True,blank=True)
     repaired_by = models.CharField(max_length=50,null=True,blank=True)
     feedback_given = models.CharField(default='NO',max_length=10,null=True,blank=True)

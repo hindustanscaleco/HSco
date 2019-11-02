@@ -38,7 +38,6 @@ def add_repairing_details(request):
         # repairingnumber = request.POST.get('repairingnumber')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
-        date_of_purchase = request.POST.get('date_of_purchase')
         today_date = request.POST.get('today_date')
         location = request.POST.get('location')
         # products_to_be_repaired = request.POST.get('products_to_be_repaired')
@@ -79,7 +78,6 @@ def add_repairing_details(request):
 
         item2.previous_repairing_number = previous_repairing_number
         item2.in_warranty = in_warranty
-        item2.date_of_purchase = date_of_purchase
         item2.today_date = today_date
 
         item2.location = location
@@ -265,7 +263,6 @@ def update_repairing_details(request,id):
         # repairingnumber = request.POST.get('repairingnumber')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
-        date_of_purchase = request.POST.get('date_of_purchase')
         today_date = request.POST.get('today_date')
         location = request.POST.get('location')
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
@@ -288,7 +285,6 @@ def update_repairing_details(request,id):
 
         item2.previous_repairing_number = previous_repairing_number
         item2.in_warranty = in_warranty
-        item2.date_of_purchase = date_of_purchase
         item2.today_date = today_date
 
         item2.location = location
@@ -312,9 +308,7 @@ def update_repairing_details(request,id):
         # item2.save(update_fields=['repairingnumber', ]),
         item2.save(update_fields=['previous_repairing_number', ]),
         item2.save(update_fields=['in_warranty', ]),
-        item2.save(update_fields=['date_of_purchase', ]),
         item2.save(update_fields=['today_date', ]),
-        item2.save(update_fields=['location', ]),
         # item2.save(update_fields=['products_to_be_repaired', ]),
         item2.save(update_fields=['total_cost', ]),
         item2.save(update_fields=['informed_on', ]),
