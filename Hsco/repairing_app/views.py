@@ -203,6 +203,7 @@ def repair_product(request,id):
         Replaced_scale_serial_no = request.POST.get('Replaced_scale_serial_no')
         deposite_taken_for_replaced_scale = request.POST.get('deposite_taken_for_replaced_scale')
         cost = request.POST.get('cost')
+        in_warranty = request.POST.get('in_warranty')
 
         item=Repairing_Product()
         item.user_id = SiteUser.objects.get(id=request.user.pk)
@@ -218,6 +219,7 @@ def repair_product(request,id):
         item.Replaced_scale_serial_no = Replaced_scale_serial_no
         item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
         item.repairing_id_id = repair_id
+        item.in_warranty = in_warranty
 
         item.cost = cost
 
@@ -262,7 +264,6 @@ def update_repairing_details(request,id):
 
         # repairingnumber = request.POST.get('repairingnumber')
         previous_repairing_number = request.POST.get('previous_repairing_number')
-        in_warranty = request.POST.get('in_warranty')
         today_date = request.POST.get('today_date')
         location = request.POST.get('location')
         products_to_be_repaired = request.POST.get('products_to_be_repaired')
@@ -284,7 +285,6 @@ def update_repairing_details(request,id):
         item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
         item2.previous_repairing_number = previous_repairing_number
-        item2.in_warranty = in_warranty
         item2.today_date = today_date
 
         item2.location = location
@@ -307,7 +307,6 @@ def update_repairing_details(request,id):
 
         # item2.save(update_fields=['repairingnumber', ]),
         item2.save(update_fields=['previous_repairing_number', ]),
-        item2.save(update_fields=['in_warranty', ]),
         item2.save(update_fields=['today_date', ]),
         # item2.save(update_fields=['products_to_be_repaired', ]),
         item2.save(update_fields=['total_cost', ]),
@@ -645,6 +644,8 @@ def edit_product(request,id):
         replaced_scale_given = request.POST.get('replaced_scale_given')
         Replaced_scale_serial_no = request.POST.get('Replaced_scale_serial_no')
         deposite_taken_for_replaced_scale = request.POST.get('deposite_taken_for_replaced_scale')
+        in_warranty = request.POST.get('in_warranty')
+
         cost = request.POST.get('cost')
 
         product_id = Repairing_Product.objects.get(id=id)
@@ -676,6 +677,8 @@ def edit_product(request,id):
         item.replaced_scale_given = replaced_scale_given
         item.Replaced_scale_serial_no = Replaced_scale_serial_no
         item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
+        item.in_warranty = in_warranty
+
         item.cost = cost
 
 
@@ -692,7 +695,7 @@ def edit_product(request,id):
         item.save(update_fields=['Replaced_scale_serial_no', ]),
         item.save(update_fields=['deposite_taken_for_replaced_scale', ]),
         item.save(update_fields=['cost', ]),
-
+        item.save(update_fields=['in_warranty', ]),
 
 
         Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + cost)
