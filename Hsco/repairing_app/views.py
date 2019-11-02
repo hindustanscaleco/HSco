@@ -917,12 +917,11 @@ def load_prev_rep(request):
     rep_id = request.GET.get('item_id')
 
     rep_list = Repairing_after_sales_service.objects.get(id=rep_id)
-    location=rep_list.location
-    date_of_purchase=rep_list.date_of_purchase
+
+    # cust_list = Customer_Details.objects.get(id=rep_list.crm_no)
 
     context = {
-        'date_of_purchase': date_of_purchase,
-        'location': location,
+        'cust_list': rep_list,
 
     }
 

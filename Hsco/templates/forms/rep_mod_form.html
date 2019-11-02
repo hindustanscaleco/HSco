@@ -102,6 +102,27 @@ color:;
     <!--</div>-->
   <!--</div>-->
 
+      <label class="col-md-2 control-label">Previous Repairing Number
+
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+    <select name="previous_repairing_number" id="display_limi" onchange="choice2(this)" class="form-control">
+    <option value="0">---------</option>
+       {% for item in prev_rep_sugg %}
+  <option value="{{item.pk}}">{{item.pk}} - {{item.date_of_purchase}} - {{item.crm_no.company_name}}</option>
+
+   {% endfor %}
+</select>
+    Format : (Rep no.) - (DOPurchase) - (Company Name)
+    </div>
+  </div>
+
+
     <label class="col-md-2 control-label">Customer Number
 
 
@@ -192,31 +213,29 @@ Format : (crm no) - (customer name) - (company name)
   </div>
 </div>
 
-
-  </div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Previous Repairing Number
+      <div class="form-group row">
+    <label class="col-md-2 control-label">Customer Address
 
 
 
 </label>
 
-  <div class="col-md-4 inputGroupContainer">
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-    <select name="previous_repairing_number" id="display_limi" onchange="choice2(this)" class="form-control">
-    <option value="0">---------</option>
-       {% for item in prev_rep_sugg %}
-  <option value="{{item.pk}}">{{item.pk}} - {{item.date_of_purchase}} - {{item.crm_no.company_name}}</option>
-
-   {% endfor %}
-</select>
-    Format : (Rep no.) - (DOPurchase) - (Company Name)
+  <input  name="customer_address" required placeholder="Customer Address" class="form-control"  type="text">
     </div>
   </div>
+
+
+</div>
+
+
+  </div>
+
+
+<div class="form-group row">
+
 
     <label class="col-md-2 control-label">In Warranty
 </label>
@@ -235,17 +254,7 @@ Format : (crm no) - (customer name) - (company name)
 
 </div>
 
-<!--<div id="loaded_prev_rep">-->
-<!--  <div class="form-group row">-->
-<!-- -->
 
-
-
-
-
-
-<!--</div>-->
-<!--</div>-->
 
 
 
@@ -486,7 +495,7 @@ function choice2(select) {
 
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
-    $("#loaded_prev_rep").html(data);
+    $("#loaded_customer").html(data);
     alert("Date of Purchase and location loaded sucessfully!");
         }
       });
