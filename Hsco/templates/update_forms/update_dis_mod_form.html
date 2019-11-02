@@ -123,29 +123,26 @@ function myFunction() {
 </script>
 
 
+
     <form class="well form-horizontal" autocomplete="off" action=" " method="post"  id="contact_form" style="padding:20px;" enctype="multipart/form-data">{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
-  <label class="col-md-2 control-label ">Dispatch ID
+<label class="col-md-2 control-label ">Dispatch ID :- {{dispatch_item.pk}}
 
 </label>
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="dispatch_id" placeholder="Dispatch ID" id="myText" class="form-control"  type="text" disabled value="{{dispatch_item.pk}}">
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Customer number
+    <label class="col-md-2 control-label">Customer number :- {{dispatch_item.crm_no.pk}}
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" placeholder="Customer number" maxlength="10" class="form-control" type="text" id="myText2" disabled value="{{dispatch_item.crm_no.pk}}">
     </div>
   </div>
 

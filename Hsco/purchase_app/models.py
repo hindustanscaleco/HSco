@@ -78,6 +78,9 @@ class Feedback(models.Model):
     any_suggestion = models.CharField(max_length=120,null=True,blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now,)
 
+    class Meta:
+        unique_together = ('user_id', 'customer_id', 'purchase_id',)
+
 
 
 

@@ -157,21 +157,34 @@ def add_purchase_details(request):
             ead.year = datetime.now().year
             ead.save()
 
+        message=""
+
         if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
                                            Q(contact_no=contact_no)).count() > 0:
             crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
                                                      Q(contact_no=contact_no)).first()
+
+            print("crm_no")
+            print("crm_no")
+            print(crm_no)
+            print(crm_no)
+            print(crm_no)
             try:
+                message = 'Dear ' + str(crm_no.customer_name) + '. Thanks for purchasing your scale from HSCo. ' \
+                                                           'Your Purchase ID is ' + str(item2.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
+                                                                                               ' avail exciting offers in the future Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/' \
+                          + str(request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
                 send_mail('Feedback Form',
-                          'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/' + str(
-                              request.user.pk) + '/' + str(item.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                          message, settings.EMAIL_HOST_USER,
                           [crm_no.customer_email_id])
 
             except:
+                print("exception occured!!")
                 pass
 
-            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/' + str(
-                request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
+            message = 'Dear '+str(crm_no.customer_name)+'. Thanks for purchasing your scale from HSCo. ' \
+                      'Your Purchase ID is '+str(item2.pk)+'. Please quote this Purchase number for all future references. Please fill the feedback form to' \
+                      ' avail exciting offers in the future Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+ str(request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
@@ -179,19 +192,30 @@ def add_purchase_details(request):
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
+            print(x)
+            print(x)
+            print(x)
+            print(x)
+            print(x)
         else:
             try:
+                message = 'Dear '+item.customer_name+'. Thanks for purchasing your scale from HSCo. ' \
+                      'Your Purchase ID is '+str(item2.pk)+'. Please quote this Purchase number for all future references. Please fill the feedback form to' \
+                      ' avail exciting offers in the future Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/' \
+                      + str(request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
                 send_mail('Feedback Form',
-                          'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/' + str(
-                              request.user.pk) + '/' + str(item.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                          message, settings.EMAIL_HOST_USER,
                           [item.customer_email_id])
 
             except:
                 pass
 
-            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/' + str(
-                request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+            message = 'Dear '+item.customer_name+'. Thanks for purchasing your scale from HSCo. ' \
+                      'Your Purchase ID is '+item2.pk+'. Please quote this Purchase number for all future references. Please fill the feedback form to' \
+                      ' avail exciting offers in the future Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/' \
+                      + str(request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
@@ -199,6 +223,12 @@ def add_purchase_details(request):
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
+            print("else wala x")
+            print("else wala x")
+            print(x)
+            print(x)
+            print(x)
+            print(x)
 
         # Purchase_Details.objects.filter(id=purchase_id_id.pk).update(
         #     value_of_goods=F("value_of_goods") + value_of_goods)
@@ -350,11 +380,16 @@ def update_customer_details(request,id):
     customer_id = Purchase_Details.objects.get(id=id).crm_no
     customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
+    print('enering')
 
     try:
-        feedback = Feedback.objects.get(customer_id=customer_id,purchase_id=purchase_id_id)
+        feedback = Feedback.objects.get(customer_id=customer_id.pk,purchase_id=id)
+        print(feedback)
+        print(id)
+        print(customer_id.pk)
     except:
         feedback = None
+
     if request.method=='POST':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -469,6 +504,7 @@ def update_customer_details(request,id):
         'purchase_id_id': purchase_id_id,
         'feedback': feedback,
     }
+
 
     return render(request,'update_forms/update_cust_mod_form.html',context)
 
@@ -618,7 +654,7 @@ def purchase_analytics(request):
         value = None
     value_low = Employee_Analysis_month.objects.aggregate(Min('total_sales_done'))
     print(value_low['total_sales_done__min'])
-    value_low = Employee_Analysis_month.objects.filter(total_sales_done=value_low['total_sales_done__min']).order_by('id').first()
+    value_low = Employee_Analysis_month.objects.filter(total_sales_done=value_low['total_sales_done__min']).order_by('total_sales_done')[0]
     context = {
 
         'this_lis_date': this_lis_date,
@@ -627,6 +663,7 @@ def purchase_analytics(request):
         'value_low': value_low,
 
     }
+    print(value_low)
     return render(request, 'analytics/purchase_analytics_new.html',context)
 
 def customer_employee_sales_graph(request,user_id):
@@ -722,16 +759,19 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
         item.user_id = SiteUser.objects.get(id=user_id)
         item.customer_id = Customer_Details.objects.get(id=customer_id)
         item.purchase_id = Purchase_Details.objects.get(id=purchase_id)
-        item.save()
+        try:
+            item.save()
 
-        purchase=Purchase_Details.objects.get(id=purchase_id)
-        purchase.feedback_stars= (float(knowledge_of_person)+float(timeliness_of_person)+float(price_of_product)+float(overall_interaction))/float(4.0)
-        purchase.feedback_form_filled= 'YES'
-        purchase.save(update_fields=['feedback_stars','feedback_form_filled'])
+            purchase=Purchase_Details.objects.get(id=purchase_id)
+            purchase.feedback_stars= (float(knowledge_of_person)+float(timeliness_of_person)+float(price_of_product)+float(overall_interaction))/float(4.0)
+            purchase.feedback_form_filled= True
+            purchase.save(update_fields=['feedback_stars','feedback_form_filled'])
+        except:
+            pass
 
 
 
-        return HttpResponse('Feedback Submitted!!!')
+        return HttpResponse('Feedback Submitted!!! Thankyou For Your Response.')
     context={
         'feedback_form': feedback_form,
     }
