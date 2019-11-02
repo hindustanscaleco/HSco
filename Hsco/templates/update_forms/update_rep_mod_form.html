@@ -286,7 +286,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="date_of_purchase" placeholder="Company name" class="form-control" id="myText5"
+  <input type="date" required name="date_of_purchase" placeholder="Date of Purchase" class="form-control" id="myText5"
   type="email" disabled value="{{repair_id.date_of_purchase | date:'Y-m-d'}}">
     </div>
   </div>
@@ -299,7 +299,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" placeholder="Today's date" class="form-control" id="myText6" type="date" disabled value="{{repair_id.today_date|date:'Y-m-d'}}">
+  <input  name="today_date" required placeholder="Today's date" class="form-control" id="myText6" type="date" disabled value="{{repair_id.today_date|date:'Y-m-d'}}">
     </div>
   </div>
 </div>
@@ -593,7 +593,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="repaired_date" placeholder="Repaired date" class="form-control"  id="myText17"   disabled value="{{repair_id.repaired_date|date:'Y-m-d'}}">
+  <input type="date" name="repaired_date" placeholder="Repaired date" class="form-control"  id="myText17" required disabled value="{{repair_id.repaired_date|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -611,7 +611,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control" id="myText18"   disabled value="{{repair_id.delivery_date|date:'Y-m-d'}}">
+  <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control" id="myText18"  required disabled value="{{repair_id.delivery_date|date:'Y-m-d'}}">
     </div>
   </div>
 </div>

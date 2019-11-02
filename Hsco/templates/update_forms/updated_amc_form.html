@@ -329,7 +329,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input name="contract_start_date" placeholder="Contract Start Date" class="form-control"  type="date" id="myText11" disabled value="{{amc_list.contract_start_date|date:'Y-m-d'}}">
+  <input name="contract_start_date" placeholder="Contract Start Date" required class="form-control"  type="date" id="myText11" disabled value="{{amc_list.contract_start_date|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -345,7 +345,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input name="contract_end_date" placeholder="Contract End Date" class="form-control"  type="date" id="myText12" disabled value="{{amc_list.contract_end_date|date:'Y-m-d'}}">
+  <input name="contract_end_date" placeholder="Contract End Date" class="form-control" required type="date" id="myText12" disabled value="{{amc_list.contract_end_date|date:'Y-m-d'}}">
     </div>
   </div>
 
