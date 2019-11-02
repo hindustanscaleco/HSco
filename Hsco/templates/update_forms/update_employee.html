@@ -77,7 +77,7 @@ color:;
 
 
 
-    <form class="well form-horizontal" action="" method="POST" autocomplete="off"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
+    <form class="well form-horizontal" action="" method="POST" autocomplete="off"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
@@ -279,22 +279,6 @@ color:;
 
 
 
-<div class="form-group row">
-  <label class="col-md-2 control-label">ESS
-
-
-
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="ESS" {% if 'ESS' in employee_id.modules_assigned %}checked{% endif %} id="customCheck7">
-  <label class="custom-control-label" for="customCheck7"></label>  </div></div>
-
-
-</div>
   </div>
 
 

@@ -76,7 +76,7 @@ color:;
 
 
 
-    <form class="well form-horizontal" autocomplete="off" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
+    <form class="well form-horizontal" autocomplete="off" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
@@ -111,7 +111,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-      <input  name="mobile" placeholder="Phone No" class="form-control"  type="number"></div>
+      <input  name="mobile" placeholder="Phone No" class="form-control" required  type="number"></div>
   </div>
 
     <label class="col-md-2 control-label">Role
@@ -272,22 +272,6 @@ color:;
 
 
 
-<div class="form-group row">
-  <label class="col-md-2 control-label">ESS
-
-
-
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="ESS" id="customCheck7">
-  <label class="custom-control-label" for="customCheck7"></label>  </div></div>
-
-
-</div>
   </div>
 </div>
 
@@ -378,7 +362,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="password" placeholder="Password" class="form-control"  type="password">
+  <input  name="password" placeholder="Password" class="form-control"  type="password" required>
     </div>
   </div>
 </div>
