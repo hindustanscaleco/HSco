@@ -395,11 +395,10 @@ td, th {
 
 
 
-                    <div class="col-xl-2 col-md-2 mb-1"><center> Company Name </center></div>|
+                    <div class="col-xl-2 col-md-2 mb-1"><center> Customer Name </center></div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Contact No. </center></div>|
                     <div class="col-xl-3 col-md-2 mb-1"><center> Current Stage </center> </div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Reparing No. </center> </div>|
-                    <div class="col-xl-2 col-md-2 mb-1"><center> Purchase Date </center> </div>
                     </div>
 
 
@@ -420,11 +419,10 @@ td, th {
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                        <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_repairing_details/{{list.id}}">{{list.crm_no.company_name}}</a></center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.crm_no.contact_no}} </center> </div>
-                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.current_stage}} </center> </div>
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.pk}} </center> </div>
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.date_of_purchase}} </center> </div>
+                        <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_repairing_details/{{list.id}}">{{list.crm_no.customer_name}}</a></center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.crm_no.contact_no}} </center> </div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.current_stage}} </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.pk}} </center> </div>|
                     </div>
 
                 </div>
@@ -451,17 +449,17 @@ td, th {
         {% if request.user.is_authenticated %}
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
 
-                    <div class="col-xl-4 col-md-12 mb-12">
-                  <div class="card border-left-primary shadow">
-                    <div class="card-body" style="padding: 12px;">
-                      <div class="row no-gutters align-items-center">
-                        <div class="col ">
-     <a href="/add_repairing_details/"><button class="btn btn-primary">Add Repairing</button></a>                    </div>
+<!--                    <div class="col-xl-4 col-md-12 mb-12">-->
+<!--                  <div class="card border-left-primary shadow">-->
+<!--                    <div class="card-body" style="padding: 12px;">-->
+<!--                      <div class="row no-gutters align-items-center">-->
+<!--                        <div class="col ">-->
+<!--     <a href="/add_repairing_details/"><button class="btn btn-primary">Add Repairing</button></a>                    </div>-->
 
-                      </div>
-                    </div>
-                  </div>
-                </div>
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
 
 
                 <div class="col-xl-4 col-md-12 mb-12">
