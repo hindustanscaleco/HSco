@@ -88,6 +88,7 @@ function myFunction() {
     document.getElementById("myText8").disabled = false;
     document.getElementById("myText9").disabled = false;
     document.getElementById("myText10").disabled = false;
+    document.getElementById("myText11").disabled = false;
 }
 </script>
 <center>
@@ -311,6 +312,26 @@ function myFunction() {
 </div>
 
 
+<div class="form-group row">
+
+<label class="col-md-2 control-label">In Warranty
+</label>
+
+
+
+  <div class="col-md-4 inputGroupContainer">
+      <div class="input-group">
+        <span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>
+        <input class="form-control" name="in_warranty" placeholder="Yes or No" disabled id="myText11" list="rep_by" value="{{product_id.in_warranty}}">
+            <datalist style="height:20px;" id="rep_by">
+
+      <option value="YES">
+      <option value="NO">
+
+    </datalist>
+      </div>
+    </div>
+</div>
 
 
             <br>
