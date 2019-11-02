@@ -279,22 +279,6 @@ color:;
 
 
 
-<div class="form-group row">
-  <label class="col-md-2 control-label">ESS
-
-
-
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="ESS" {% if 'ESS' in manager_id.modules_assigned %}checked{% endif %} id="customCheck7">
-  <label class="custom-control-label" for="customCheck7"></label>  </div></div>
-
-
-</div>
   </div>
 
 </div>
@@ -412,6 +396,18 @@ color:;
     </div>
   </div>
 </div>
+
+     <div class="form-group row">
+
+ <label class="col-md-2 control-label">Password
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="password" placeholder="Password" class="form-control"  type="password" required>
+    </div>
+  </div>
+    </div>
 
 
 <center>
