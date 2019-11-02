@@ -350,6 +350,7 @@ def update_customer_details(request,id):
     customer_id = Purchase_Details.objects.get(id=id).crm_no
     customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
+    this_product_id = Product_Details.objects.get(purchase_id=id)
     try:
         feedback = Feedback.objects.get(customer_id=customer_id,purchase_id=purchase_id_id)
     except:
@@ -384,22 +385,27 @@ def update_customer_details(request,id):
         notes = request.POST.get('notes')
         feedback_form_filled = request.POST.get('feedback_form_filled')
 
+        if feedback_form_filled == None:
+            pass
+        elif feedback_form_filled.lower() == 'yes':
+            feedback_form_filled=True
+        else :
+            feedback_form_filled=False
+
 
         cost2=purchase_id_id.value_of_goods
-
         Purchase_Details.objects.filter(id=purchase_id_id.pk).update(
             value_of_goods=F("value_of_goods") - cost2)
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
-
         Employee_Analysis_month.objects.filter(user_id=request.user.pk,
-                                               entry_date__month=purchase_id_id.entry_timedate.month,
-                                               year=item.entry_timedate.year).update(
+                                               entry_date__month=this_product_id.entry_timedate.month,
+                                               year=this_product_id.entry_timedate.year).update(
             total_sales_done=F("total_sales_done") - cost2)
 
         Employee_Analysis_date.objects.filter(user_id=request.user.pk,
-                                              entry_date__month=purchase_id_id.entry_timedate.month,
-                                              year=item.entry_timedate.year).update(
+                                              entry_date__month=this_product_id.entry_timedate.month,
+                                              year=this_product_id.entry_timedate.year).update(
             total_sales_done_today=F("total_sales_done_today") - cost2)
 
 
@@ -432,12 +438,12 @@ def update_customer_details(request,id):
 
         Employee_Analysis_month.objects.filter(user_id=request.user.pk,
                                                entry_date__month=purchase_id_id.entry_timedate.month,
-                                               year=product_id.entry_timedate.year).update(
+                                               year=purchase_id_id.entry_timedate.year).update(
             total_sales_done=F("total_sales_done") + value_of_goods)
 
         Employee_Analysis_date.objects.filter(user_id=request.user.pk,
                                               entry_date__month=purchase_id_id.entry_timedate.month,
-                                              year=product_id.entry_timedate.year).update(
+                                              year=purchase_id_id.entry_timedate.year).update(
             total_sales_done_today=F("total_sales_done_today") + value_of_goods)
 
     context={
