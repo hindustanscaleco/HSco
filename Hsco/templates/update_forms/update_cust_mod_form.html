@@ -471,7 +471,13 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
       <div class="input-group">
         <span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>
-        <input class="form-control" name="feedback_form_filled" placeholder="Yes or No" disabled id="myText17" value="{% if purchase_id_id.feedback_form_filled %} YES {% else %} NO {% endif %}">
+        <input class="form-control" name="feedback_form_filled" placeholder="Yes or No" disabled id="myText17" list="rep_by" value="{% if purchase_id_id.feedback_form_filled %} YES {% else %} NO {% endif %}">
+            <datalist style="height:20px;" id="rep_by">
+
+      <option value="YES">
+      <option value="NO">
+
+    </datalist>
       </div>
     </div>
 

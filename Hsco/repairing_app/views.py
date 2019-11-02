@@ -23,6 +23,8 @@ from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 def add_repairing_details(request):
     cust_sugg=Customer_Details.objects.all()
     prev_rep_sugg=Repairing_after_sales_service.objects.all()
+    user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Repairing Module')
+
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -183,6 +185,7 @@ def add_repairing_details(request):
 
     context={
         'cust_sugg':cust_sugg,
+        'user_list':user_list,
         'prev_rep_sugg':prev_rep_sugg,
     }
 
