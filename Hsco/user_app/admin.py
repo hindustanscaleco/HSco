@@ -30,7 +30,7 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserChangeForm(forms.ModelForm):
-    # password = ReadOnlyPasswordHashField()
+    password = ReadOnlyPasswordHashField()
 
     class Meta:
         model = SiteUser

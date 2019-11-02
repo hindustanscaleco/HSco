@@ -126,7 +126,8 @@ def ess_home(request):
 
 
 def ess_all_user(request):
-    list = SiteUser.objects.all()
+    # list = SiteUser.objects.all()
+    list = SiteUser.objects.filter(group__icontains=request.user.name,)
 
 
     context={

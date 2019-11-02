@@ -124,6 +124,8 @@ def create_admin(request):
         item.photo = photo
         item.salary_slip = salary_slip
         item.set_password(request.POST.get('password'))
+        item.normal_password=(request.POST.get('password'))
+
 
         item.save()
         return redirect('/admin_list/')
@@ -176,6 +178,8 @@ def create_manager(request):
         item.photo = photo
         item.salary_slip = salary_slip
         item.set_password(request.POST.get('password'))
+        item.normal_password=(request.POST.get('password'))
+
 
         item.save()
         return redirect('/manager_list/')
@@ -232,6 +236,7 @@ def create_employee(request):
         item.photo = photo
         item.salary_slip = salary_slip
         item.set_password(request.POST.get('password'))
+        item.normal_password=(request.POST.get('password'))
 
         item.save()
         return redirect('/employee_list/')
