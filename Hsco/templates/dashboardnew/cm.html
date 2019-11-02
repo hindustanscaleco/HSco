@@ -379,7 +379,7 @@ $(function() {
 
                     <div class="col-xl-2 col-md-1 mb-1" style="margin-left: -14px;"><center> Customer Name </center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary"> Company Name </center></div>
-                    <div class="col-xl-1 col-md-1 mb-1 "><center class="border-left-primary">  CRM No. </center></div>
+                    <div class="col-xl-1 col-md-1 mb-1 "><center class="border-left-primary">  Purchase ID </center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">  Contact No. </center> </div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">   Email Id </center> </div>
                     <div class="col-xl-1 col-md-1 mb-1 "><center class="border-left-primary"> Feedback  </center></div>
@@ -408,20 +408,21 @@ a:hover {
 <br>
 
             {% for list1 in customer_list %}
-                <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow" >
+            <!--<a href="/update_customer_details/{{list1.pk}}" style="color: black; font-size: 12px;" >-->
+<div style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';" class="col-xl-12 col-md-12 mb-12">
+    <a class="card shadow" >
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; min-height: 55px;">
 
 
 
                     <div class="col-xl-12 col-md-11 mb-1" style="font-size:10px;">Dispatch Id: {{ list1.dispatch_id_assigned}} </div>
 
-                    <div class="col-xl-2 col-md-1 mb-1"> <a href="/update_customer_details/{{list1.pk}}" style="color: black; font-size: 12px;" >{{ list1.crm_no.customer_name }}</a> </div>
+                    <div class="col-xl-2 col-md-1 mb-1"> {{ list1.crm_no.customer_name }}</div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.company_name}} </div>
-                    <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.pk}} </div>
+                    <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{{ list1.pk}} </div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.contact_no}} </div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.customer_email_id}} </div>
-                    <div class="col-xl-1 col-md-1 mb-1 border-left-primary"> {{ list1.feedback_form_filled}}</div>
+                    <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{% if list1.feedback_form_filled %} YES {% else %} NO {% endif %}</div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">
                          {% for avg in  list1.feedback_stars|rjust:'5'  %}
 							{% if forloop.counter <= list1.feedback_stars %}
@@ -436,11 +437,14 @@ a:hover {
 
                     </div>
 
-
+              </a>
 
                 </div>
+                <!--</a>-->
+                  {% endfor %}
               </div>
-            {% endfor %}
+
+
             </div>
 
     <style>

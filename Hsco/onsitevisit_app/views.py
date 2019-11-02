@@ -130,7 +130,7 @@ def onsite_views(request):
 
 def add_onsite_aftersales_service(request):
     cust_sugg = Customer_Details.objects.all()
-    user_list=SiteUser.objects.filter(group__icontains=request.user.name)
+    user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Onsite Repairing Module')
     # form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')

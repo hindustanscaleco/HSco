@@ -245,7 +245,7 @@ Format : (crm no) - (customer name) - (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="date_of_purchase" placeholder="" class="form-control">
+  <input type="date" required name="date_of_purchase" placeholder="" class="form-control">
     </div>
   </div>
 
@@ -286,7 +286,7 @@ Format : (crm no) - (customer name) - (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" required id="datePicker" required class="form-control"  type="date">
+  <input  name="today_date" required id="datePicker" class="form-control" type="date">
     </div>
   </div>
 
@@ -345,7 +345,12 @@ Format : (crm no) - (customer name) - (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="informed_by" placeholder="Informed By" class="form-control"  type="text">
+  <input  name="informed_by" placeholder="Informed By" class="form-control"  type="text" list="inform_by">
+      <datalist style="height:20px;" id="inform_by">
+        {% for item in user_list %}
+      <option value="{{item.name}}">
+    {% endfor %}
+    </datalist>
     </div>
   </div>
 
@@ -391,8 +396,12 @@ Format : (crm no) - (customer name) - (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="repaired_by" placeholder="Repaired By" class="form-control" id="myText22"  value="{{repair_id.repaired_by}}">
-
+  <input name="repaired_by" placeholder="Repaired By" class="form-control" id="myText22"  value="{{repair_id.repaired_by}}" list="rep_by">
+   <datalist style="height:20px;" id="rep_by">
+        {% for item in user_list %}
+      <option value="{{item.name}}">
+    {% endfor %}
+    </datalist>
      </div>
   </div>
 
