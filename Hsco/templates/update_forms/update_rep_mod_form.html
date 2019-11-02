@@ -158,6 +158,26 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 
 
 <br>
+<!--<div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">-->
+
+<!--&lt;!&ndash;<div class="col-xl-4 col-md-4 col-mb-4">&ndash;&gt;-->
+<!--&lt;!&ndash;<select name="current_stage" id="display_limit2" class="form-control">&ndash;&gt;-->
+    <!--&lt;!&ndash;<option value="-&#45;&#45;&#45;&#45;">-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Estimate is confirmed but not repaired">Estimate is confirmed but not repaired.</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Repaired but not collected">Repaired but not collected.</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;<option value="Finally Collected">Finally Collected.</option>&ndash;&gt;-->
+<!--&lt;!&ndash;</select>&ndash;&gt;-->
+  <!--&lt;!&ndash;&lt;!&ndash;<input type="checkbox" name="checks[]" value="Repaired but not collected"> Repaired but not collected. &nbsp; &nbsp; <br>&ndash;&gt;&ndash;&gt;-->
+  <!--&lt;!&ndash;&lt;!&ndash;<input type="checkbox" name="checks[]" value="Finally Collected">  &nbsp; &nbsp;&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+
+
+
+    <!--</div>-->
+
 <script>
 function myFunction() {
   document.getElementById("myText").disabled = false;
@@ -185,32 +205,13 @@ function myFunction() {
     document.getElementById("myText22").disabled = false;
     document.getElementById("myText23").disabled = false;
     document.getElementById("button").disabled = false;
+    document.getElementById("myText25").style.display = "block";
 
 
 }
 </script>
-<!--<div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">-->
 
-<!--&lt;!&ndash;<div class="col-xl-4 col-md-4 col-mb-4">&ndash;&gt;-->
-<!--&lt;!&ndash;<select name="current_stage" id="display_limit2" class="form-control">&ndash;&gt;-->
-    <!--&lt;!&ndash;<option value="-&#45;&#45;&#45;&#45;">-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</option>&ndash;&gt;-->
-  <!--&lt;!&ndash;<option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>&ndash;&gt;-->
-  <!--&lt;!&ndash;<option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>&ndash;&gt;-->
-  <!--&lt;!&ndash;<option value="Estimate is confirmed but not repaired">Estimate is confirmed but not repaired.</option>&ndash;&gt;-->
-  <!--&lt;!&ndash;<option value="Repaired but not collected">Repaired but not collected.</option>&ndash;&gt;-->
-  <!--&lt;!&ndash;<option value="Finally Collected">Finally Collected.</option>&ndash;&gt;-->
-<!--&lt;!&ndash;</select>&ndash;&gt;-->
-  <!--&lt;!&ndash;&lt;!&ndash;<input type="checkbox" name="checks[]" value="Repaired but not collected"> Repaired but not collected. &nbsp; &nbsp; <br>&ndash;&gt;&ndash;&gt;-->
-  <!--&lt;!&ndash;&lt;!&ndash;<input type="checkbox" name="checks[]" value="Finally Collected">  &nbsp; &nbsp;&ndash;&gt;&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-
-
-
-    <!--</div>-->
-
-
-    <form  class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
+    <form  class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;" >{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
@@ -676,15 +677,18 @@ function myFunction() {
 <!--</p>-->
 
 <center>
-  <a  href="repairing_module_home/"><button  id="button"  class="btn btn-primary">Save</button></a>
-                        <button  onclick="myFunction()" class="btn btn-primary" type="button">Edit</button>
+  <a  href="repairing_module_home/"><button  id="myText25" style=""  class="btn btn-primary">Save</button></a>
 
 </center>
 
 
 
 </fieldset>
-</form>
+</form><center>
+
+                               <button  onclick="myFunction()" type="reset" class="btn btn-primary" >Edit</button>
+</center>
+<br>
 <center>
                       <a href="/repair_product/{{repair_id.id}}"> <button class="btn btn-primary">Add Product</button></a>
 
@@ -788,7 +792,11 @@ tr:nth-child(even) {
 
 
 
-
+<script>
+      window.onload = function() {
+document.getElementById("myText25").style.display = "none";
+};
+</script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
@@ -957,6 +965,6 @@ districtSel.options[districtSel.options.length] = new Option(district[i], distri
 }
 </script>
 
- </html>
+</div></html>
 
-</html>
+
