@@ -80,7 +80,7 @@ def add_purchase_details(request):
         item2.po_number = po_number
         item2.channel_of_sales = channel_of_sales
         item2.industry = industry
-        item2.value_of_goods = value_of_goods
+        item2.value_of_goods = float(value_of_goods)
         item2.channel_of_dispatch = channel_of_dispatch
         item2.notes = notes
         item2.feedback_form_filled = feedback_form_filled
