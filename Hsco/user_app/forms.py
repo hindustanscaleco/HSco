@@ -28,7 +28,7 @@ class LoginForm(forms.Form):
             attrs={
                 'type': 'password',
                 'class': 'form-control',
-                'placeholder': "Confirm Password",
+                'placeholder': "Password",
                 'name': 'password',
             }))
 
