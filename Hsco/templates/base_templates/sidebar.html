@@ -117,11 +117,11 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
               {% if request.user.is_authenticated %}
-              {% if user.role == 'Employee'   %}
-                          <a class="collapse-item" href="/employee_profile/{{request.user.id}}">Profile</a>
 
-                          <a class="collapse-item" href="/ess_home/">Apply Leave</a>
-              {% endif %}
+                          <a class="collapse-item" href="/employee_profile/{{request.user.id}}">My Profile</a>
+
+                          <a class="collapse-item" href="/ess_home/">Apply For Leave</a>
+
               {% endif %}
             <!--<a class="collapse-item" href="/employee_profile/">Profile</a>-->
               {% if request.user.is_authenticated %}

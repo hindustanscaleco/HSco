@@ -79,7 +79,7 @@ def logout_page(request):
 
 def admin_list(request):
 
-    admin_list = SiteUser.objects.filter(role='Admin')
+    admin_list = SiteUser.objects.filter(role='Admin',is_deleted=False)
     context={
         'admin_list':admin_list,
     }
@@ -135,7 +135,7 @@ def create_admin(request):
     return render(request,"auth/create_admin.html",context)
 
 def manager_list(request):
-    manager_list = SiteUser.objects.filter(role='Manager')
+    manager_list = SiteUser.objects.filter(role='Manager',group__icontains=request.user.name,is_deleted=False)
     context={
         'manager_list':manager_list,
     }
@@ -192,7 +192,7 @@ def create_manager(request):
     return render(request, "auth/create_manager.html", context)
 
 def employee_list(request):
-    employee_list = SiteUser.objects.filter(role='Employee')
+    employee_list = SiteUser.objects.filter(role='Employee',group__icontains=request.user.name,is_deleted=False)
     context = {
         'employee_list': employee_list,
     }

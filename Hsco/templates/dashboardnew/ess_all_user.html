@@ -72,11 +72,78 @@ color:;
         <!-- Topbar -->
 	{% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
+
+                        <style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: green;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
 
         <!-- Begin Page Content -->
         <div class="container-fluid" >
 <center>
-    <h3 style="color: black;" class="col-xl-12 col-md-12"> All Users</h3>
+    <div class="row">
+
+
 <!--<br>-->
 
    <!--<input type="text" name="from" class=" form-control" style="width: 20%" placeholder="Search By Name">-->
@@ -86,12 +153,32 @@ color:;
 
 <!--<br>-->
 
+                <div style="color: black;" class="col-xl-12 col-md-2 col-mb-8 row">
+                    <h3 style="margin-left:10%;" class="col-xl-5 col-md-3"> All Users</h3>
+                         <div class="col-xl-2 col-md-2 col-mb-8">
+    <p>Deleted Users</p>
+                     </div>
+                     <div class="col-xl-1 col-md-2 col-mb-8">
+                         <form method="POST" ion="">{%csrf_token%}
+                         <label class="switch ">
+  <input name="deleted" type="checkbox" checked onchange="toggleCheckbox2(this)">
+  <span class="slider round"></span>
+</label>
+                         </form>
+                     </div>
+                     <div class="col-xl-2 col-md-2 col-mb-8">
+                         <p>Existing Users</p>
+
+                     </div>
+                     </div>
+    </div>
+
 
 
 </center>
 <br>
 
-           <div class="row">
+           <div class="row"  id="id_deleted_view">
 
 
               <div class="col-xl-12 col-md-12 mb-12">
@@ -104,8 +191,14 @@ color:;
                 </div>
                 </div>
               </div><br><br>
+               {% if deleted %}
+               <center>
+                   <p>List Of Deleted Users Under Your Work Area</p>
 
-            {% for list in list%}
+               </center>
+               {% endif %}
+
+    {% for list in list%}
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 400; font-size: 14px; height: 35px;">
@@ -117,6 +210,8 @@ color:;
                 </div>
               </div>
             {% endfor %}
+
+
             </div>
 
 </div>
@@ -150,7 +245,21 @@ color:;
     <i class="fas fa-angle-up"></i>
   </a>
 
+<script>
+            function toggleCheckbox2(select) {
+value = !select.checked;
 
+    $.ajax({
+        url: "/load_deletd_users/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_deleted_view").html(data);
+        }
+      });
+}
+</script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
