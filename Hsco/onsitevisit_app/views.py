@@ -497,7 +497,7 @@ def update_onsite_details(request,id):
         item.save(update_fields=['complaint_received_by', ]),
         item.save(update_fields=['nearest_railwaystation', ]),
         item.save(update_fields=['train_line', ]),
-        item.save(update_fields=['products_to_be_repaired', ]),
+        # item.save(update_fields=['products_to_be_repaired', ]),
         item.save(update_fields=['visiting_charges_told_customer', ]),
         item.save(update_fields=['total_cost', ]),
         item.save(update_fields=['complaint_assigned_to', ]),
