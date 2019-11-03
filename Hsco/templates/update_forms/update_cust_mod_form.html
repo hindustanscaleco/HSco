@@ -95,6 +95,15 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 <br>
 <script>
 function myFunction() {
+
+  var x = document.getElementById("myText19");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+
+
   document.getElementById("myText").disabled = false;
     document.getElementById("myText2").disabled = false;
     document.getElementById("myText3").disabled = false;
@@ -497,17 +506,19 @@ function myFunction() {
 
 <br>
 
-    <div class="col-md-12 inputGroupContainer">
+    <div class="col-md-12 ">
       <br>
     <center>
-        <button id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
+        <button  onclick="myFunction()" class="btn btn-primary" type="reset" style="">Edit</button>
+        <br>
+        <br>
+        <button style="display:none;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
       </center>
     </div>
 </fieldset>
 </form>
 
          <center>
-                      <button  onclick="myFunction()" class="btn btn-primary">Edit</button>
 
           </center>
 
@@ -715,8 +726,9 @@ $("#stars").val("0");
 });
 
   window.onload = function() {
-document.getElementById("myText19").style.display = "none";
+document.getElementById("").style.display = "none";
 };
+
 
 </script>
     </div>
