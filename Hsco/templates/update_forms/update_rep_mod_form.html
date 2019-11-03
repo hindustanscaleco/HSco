@@ -229,20 +229,20 @@ function myFunction() {
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Customer Number
+  <label class="col-md-2 control-label ">Customer Number
 
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="customer_no" placeholder="Customer Number" class="form-control" id="myText2" maxlength="10" type="text" disabled value="{{repair_id.crm_no.pk}}">
-    </div>
-  </div>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">:
+       <label class="col-md-2 control-label">{{repair_id.crm_no.pk}}
 
 
+</label>
 
+</div>
+</div>
 </div>
 
 
@@ -257,7 +257,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="previous_repairing_number" placeholder="Previous Repairing number " id="myText3" class="form-control" type="text" disabled value="{{repair_id.previous_repairing_number}}">
+  <input  name="previous_repairing_number" placeholder="Previous Repairing number " id="myText" class="form-control" type="text" disabled value="{{repair_id.previous_repairing_number}}">
     </div>
   </div>
 
@@ -270,7 +270,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-      <input  name="in_warranty" placeholder="Previous Repairing number" class="form-control" id="myText4" type="text" disabled value="{{repair_id.in_warranty}}">
+      <input  name="in_warranty" placeholder="Previous Repairing number" class="form-control" id="myText2" type="text" disabled value="{{repair_id.in_warranty}}">
     </div>
   </div>
 
@@ -291,7 +291,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" required placeholder="Today's date" class="form-control" id="myText6" type="date" disabled value="{{repair_id.today_date|date:'Y-m-d'}}">
+  <input  name="today_date" required placeholder="Today's date" class="form-control" id="myText3" type="date" disabled value="{{repair_id.today_date|date:'Y-m-d'}}">
     </div>
   </div>
 </div>
@@ -310,7 +310,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_name" placeholder="Name" class="form-control" id="myText7"  type="text" disabled value="{{customer_id.customer_name}}" >
+  <input  name="customer_name" placeholder="Name" class="form-control" id="myText4"  type="text" disabled value="{{customer_id.customer_name}}" >
     </div>
   </div>
 
@@ -324,7 +324,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company name" class="form-control" id="myText8"  type="text" disabled value="{{customer_id.company_name}}">
+  <input  name="company_name" placeholder="Company name" class="form-control" id="myText5"  type="text" disabled value="{{customer_id.company_name}}">
 
 
      </div>
@@ -345,7 +345,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" placeholder="Phone Number" class="form-control" id="myText9"  type="text" disabled value="{{customer_id.contact_no}}">
+  <input  name="contact_no" placeholder="Phone Number" class="form-control" id="myText6"  type="text" disabled value="{{customer_id.contact_no}}">
     </div>
   </div>
 <label class="col-md-2 control-label">Email-id
@@ -357,7 +357,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Email-id" id="myText10" class="form-control"   disabled value="{{customer_id.customer_email_id}}">
+  <input type="email" name="customer_email_id" placeholder="Email-id" id="myText7" class="form-control"   disabled value="{{customer_id.customer_email_id}}">
     </div>
   </div>
 </div>
@@ -366,112 +366,6 @@ function myFunction() {
 
 <div class="form-group row">
 
-
-
-
-
-  <!--<label class="col-md-2 control-label">products To be repaired-->
-
-
-
-
-<!--</label>-->
-  <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>-->
-  <!--<input  name="products_to_be_repaired" placeholder="products To be repaired" id="myText12" class="form-control"  type="text" disabled value="{{repair_id.products_to_be_repaired}}">-->
-    <!--</div>-->
-  <!--</div>-->
-
-    <!--<label class="col-md-2 control-label">Type of Machine-->
-
-
-
-<!--</label>-->
-
-    <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
-  <!--<input  name="type_of_machine" placeholder="Type of Machine-->
-
-<!--" class="form-control"  type="text" disabled value="{{repair_id.type_of_machine}}">-->
-    <!--</div>-->
-  <!--</div>-->
-
-
-
-
-
-<!--<div class="form-group row">-->
-  <!--<label class="col-md-2 control-label">Model-->
-
-
-
-
-<!--</label>-->
-  <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
-  <!--<input  name="model" placeholder="Model-->
-
-<!--" class="form-control"  type="text" disabled value="{{repair_id.model}}">-->
-    <!--</div>-->
-  <!--</div>-->
-
-    <!--<label class="col-md-2 control-label">Sub model-->
-
-
-
-<!--</label>-->
-
-    <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
-  <!--<input  name="sub_model" placeholder="Sub model-->
-
-<!--" class="form-control"  type="text" disabled value="{{repair_id.sub_model}}">-->
-    <!--</div>-->
-  <!--</div>-->
-
-<!--</div>-->
-
-
-
-<!--<div class="form-group row">-->
-  <!--<label class="col-md-2 control-label">Problem in the scale-->
-<!--</label>-->
-  <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
-  <!--<input  name="problem_in_scale" placeholder="Problem in the scale-->
-
-<!--" class="form-control"  type="text" disabled value="{{repair_id.problem_in_scale}}">-->
-    <!--</div>-->
-  <!--</div>-->
-
-    <!--<label class="col-md-2 control-label">Components Replaced in Waranty(if scale in Waranty)-->
-
-
-
-<!--</label>-->
-
-
-
-
-
-
-
-
-
-  <!--<label class="col-md-2 control-label">Cost-->
-
-<!--</label>-->
-  <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>-->
-  <!--<input  name="cost" placeholder="Cost"  class="form-control"  type="text" disabled value="{{repair_id.cost}}">-->
-    <!--</div>-->
-  <!--</div>-->
 
     <label class="col-md-2 control-label">Total Cost
 
@@ -483,7 +377,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="total_cost" placeholder="Total Cost" class="form-control"  id="myText12"  type="text" disabled value="{{repair_id.total_cost}}">
+  <input  name="total_cost" placeholder="Total Cost" class="form-control"  id="myText8"  type="text" disabled value="{{repair_id.total_cost}}">
     </div>
   </div>
 </div>
@@ -504,7 +398,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="informed_on" placeholder="Informed On" class="form-control" id="myText13"   type="text" disabled value="{{repair_id.informed_on}}">
+  <input  name="informed_on" placeholder="Informed On" class="form-control" id="myText9"   type="text" disabled value="{{repair_id.informed_on}}">
     </div>
   </div>
 
@@ -520,7 +414,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="informed_by" placeholder="Informed By" class="form-control" id="myText14"   type="text" disabled value="{{repair_id.informed_by}}">
+  <input  name="informed_by" placeholder="Informed By" class="form-control" id="myText10"   type="text" disabled value="{{repair_id.informed_by}}">
     </div>
   </div>
   </div>
@@ -540,7 +434,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input type="text" name="confirmed_estimate" class="form-control" id="myText15"  placeholder="Confirmed Estimate" disabled value="{{repair_id.confirmed_estimate}}">
+  <input type="text" name="confirmed_estimate" class="form-control" id="myText11"  placeholder="Confirmed Estimate" disabled value="{{repair_id.confirmed_estimate}}">
     </div>
   </div>
 
@@ -558,7 +452,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input type="text" name="repaired" placeholder="Repaired" class="form-control" id="myText16"  disabled value="{{repair_id.repaired}}">
+  <input type="text" name="repaired" placeholder="Repaired" class="form-control" id="myText12"  disabled value="{{repair_id.repaired}}">
     </div>
   </div>
 </div>
@@ -571,7 +465,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="repaired_date" placeholder="Repaired date" class="form-control"  id="myText17" required disabled value="{{repair_id.repaired_date|date:'Y-m-d'}}">
+  <input type="date" name="repaired_date" placeholder="Repaired date" class="form-control"  id="myText13" required disabled value="{{repair_id.repaired_date|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -589,7 +483,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control" id="myText18"  required disabled value="{{repair_id.delivery_date|date:'Y-m-d'}}">
+  <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control" id="myText14"  required disabled value="{{repair_id.delivery_date|date:'Y-m-d'}}">
     </div>
   </div>
 </div>
@@ -603,7 +497,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="delivery_by" placeholder="Delivery By" class="form-control"  type="text" id="myText19"  disabled value="{{repair_id.delivery_by}}">
+  <input  name="delivery_by" placeholder="Delivery By" class="form-control"  type="text" id="myText15"  disabled value="{{repair_id.delivery_by}}">
     </div>
   </div>
 
@@ -616,7 +510,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="feedback_given" placeholder="Feedback Given" id="myText20"  class="form-control"  type="text" disabled value="{{repair_id.feedback_given}}">
+  <input  name="feedback_given" placeholder="Feedback Given" id="myText16"  class="form-control"  type="text" disabled value="{{repair_id.feedback_given}}">
     </div>
   </div>
   </div>
@@ -629,7 +523,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="current_stage_old" placeholder="current stage" class="form-control" id="myText21" disabled value="{{repair_id.current_stage}}">
+  <input name="current_stage_old" placeholder="current stage" class="form-control" id="myText18" disabled value="{{repair_id.current_stage}}">
 
      </div>
   </div>
@@ -659,7 +553,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="repaired_by" placeholder="Repaired By" class="form-control" id="myText22" disabled value="{{repair_id.repaired_by}}">
+  <input name="repaired_by" placeholder="Repaired By" class="form-control" id="myText17" disabled value="{{repair_id.repaired_by}}">
 
      </div>
   </div>
@@ -677,7 +571,7 @@ function myFunction() {
 <!--</p>-->
 
 <center>
-  <a  href="repairing_module_home/"><button  id="myText25" style=""  class="btn btn-primary">Save</button></a>
+  <a  href="repairing_module_home/"><button style=""  class="btn btn-primary">Save</button></a>
 
 </center>
 

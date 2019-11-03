@@ -790,7 +790,7 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
     return render(request,"feedback/feedback_customer.html",context)
 
 def edit_product_customer(request,id):
-    purchase = Product_Details.objects.get(id=id).purchase_id
+    purchase = Product_Details.objects.get(purchase_id=id).pk
     purchase_id = purchase.id
     dispatch_id_assigned = str(purchase.dispatch_id_assigned)
     product_id = Product_Details.objects.get(id=id)
