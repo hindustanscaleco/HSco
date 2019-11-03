@@ -322,7 +322,7 @@ def update_repairing_details(request,id):
         item2.save(update_fields=['repaired_date', ]),
         item2.save(update_fields=['delivery_date', ]),
         item2.save(update_fields=['delivery_by', ]),
-        item2.save(repaired_by=['repaired_by', ]),
+        item2.save(update_fields=['repaired_by', ]),
         item2.save(update_fields=['feedback_given', ])
         item2.save(update_fields=['current_stage', ])
         item2.save(update_fields=['stage_update_timedate', ])

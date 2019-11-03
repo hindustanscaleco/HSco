@@ -36,6 +36,8 @@ class Repairing_after_sales_service(models.Model):
     avg_feedback = models.FloatField(default=0.0)
     entry_timedate = models.DateField(default=datetime.date.today)
     stage_update_timedate = models.DateField(default=datetime.date.today)
+    repaired_date = models.DateField(default=datetime.date.today,null=True,blank=True)
+    delivery_date = models.DateField(default=datetime.date.today,null=True,blank=True)
 
 
 
