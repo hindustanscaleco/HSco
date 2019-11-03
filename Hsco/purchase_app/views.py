@@ -790,9 +790,9 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
     return render(request,"feedback/feedback_customer.html",context)
 
 def edit_product_customer(request,id):
-    purchase = Product_Details.objects.get(purchase_id=id)
+    purchase = Product_Details.objects.get(id=id)
     purchase_id = Purchase_Details.objects.get(id=purchase.id)
-    dispatch_id_assigned = str(purchase_id.dispatch_id_assigned)
+    # dispatch_id_assigned = str(purchase_id.dispatch_id_assigned)
     product_id = Product_Details.objects.get(id=id)
     if request.method == 'POST':
         product_name = request.POST.get('product_name')
