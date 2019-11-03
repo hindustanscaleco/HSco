@@ -120,7 +120,7 @@ function myFunction() {
 
 
 
-    <form class="well form-horizontal" ion="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
+    <form class="well form-horizontal" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
 <fieldset>
 
 
@@ -414,14 +414,11 @@ function myFunction() {
     <div class="form-group row">
 
 
-    <label class="col-md-2 control-label">Industry
-
-</label>
-
+    <label class="col-md-2 control-label">Industry</label>
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="industry" placeholder="Industry" value="{{purchase_id_id.industry}}" class="form-control"  type="text" disabled id="myText13" value="{{purchase_id_id.industry}}">
+  <input name="industry" placeholder="Industry" value="{{purchase_id_id.industry}}" class="form-control"  type="text" disabled id="myText13" value="{{purchase_id_id.industry}}">
 
     </div>
   </div>
@@ -460,13 +457,9 @@ function myFunction() {
   </div>
     </div>
 
+
     <div class="form-group row">
-
-
-    <label class="col-md-2 control-label">Feedback Form Filled
-
-
-</label>
+        <label class="col-md-2 control-label">Feedback Form Filled</label>
 
     <div class="col-md-4 inputGroupContainer">
       <div class="input-group">
@@ -490,7 +483,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="dispatch_id_assigned" placeholder="Quantity" class="form-control" disabled id="myText18" value="{{purchase_id_id.dispatch_id_assigned}}" type="text">
+  <input  name="dispatch_id_assigned" placeholder="Dispatch ID Assigned" class="form-control" disabled value="{{purchase_id_id.dispatch_id_assigned}}" type="text">
     </div>
   </div>
     </div>
@@ -505,12 +498,11 @@ function myFunction() {
     </div>
 </fieldset>
 </form>
-
+<br>
          <center>
                       <button  onclick="myFunction()" class="btn btn-primary">Edit</button>
-
           </center>
-
+<br>
 </div>
 
           <h1 style="font-size: 25px; color: black; text-align: center;"> Added Product List </h1>
@@ -538,6 +530,8 @@ function myFunction() {
                     </div>
 
               </div>
+
+          <br>
           <br><center> <a href="/edit_product_customer/{{list.id}}"><button class="btn btn-primary">Edit</button></a></center>
       </div>
                     <br>
