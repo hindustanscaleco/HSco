@@ -239,11 +239,11 @@ def employee_profile(request,id):
     x = ast.literal_eval(x)
 
     for item in x:
-        name = SiteUser.objects.get(name=item)
+        name = SiteUser.objects.filter(name=item)
         if name.role == 'Admin':
             valid_user=True
     for item in x:
-        name = SiteUser.objects.get(name=item)
+        name = SiteUser.objects.filter(name=item)
         if name.role == 'Manager':
             valid_Manager = True
 
