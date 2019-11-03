@@ -82,6 +82,7 @@ class Employee_Analysis_month(models.Model):
     reparing_target_achived_till_now = models.FloatField(default=0.0, null=True, blank=True)
     onsitereparing_target_achived_till_now = models.FloatField(default=0.0, null=True, blank=True)
 
+    salary_slip = models.FileField(upload_to='salary_slip/',null=True, blank=True)
 
     entry_timedate = models.DateTimeField(default=timezone.now,)     # extract month and year from date
     month = models.CharField(max_length=20, null=True, blank=True,choices=list_of_month)    # extract month and year from date

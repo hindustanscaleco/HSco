@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -139,7 +140,62 @@ def ess_all_user(request):
 def employee_profile(request,id):
     user_id = SiteUser.objects.get(id=id)
     leave_list = Employee_Leave.objects.filter(user_id=id)
-    if request.method == 'POST' and 'type'  in request.POST:
+    mon = datetime.now().month
+
+    if Employee_Analysis_month.objects.filter(user_id=id,entry_date__month=mon).count()>0:
+        this_month_target = Employee_Analysis_month.objects.get(user_id=id,entry_date__month=mon)
+
+        context = {
+            'user_id': user_id,
+            'leave_list': leave_list,
+            'this_month_target': this_month_target,
+        }
+    else:
+        context = {
+            'user_id': user_id,
+            'leave_list': leave_list,
+        }
+    if request.method == 'POST' and 'submit2' in request.POST:
+        salary_date = request.POST.get('salary_date')
+        salary_date = datetime.strptime(salary_date, "%Y-%m-%d")
+        salary_date = salary_date.month
+
+        if Employee_Analysis_month.objects.filter(user_id=id,entry_date__month=salary_date).count()>0:
+            salary_slip = Employee_Analysis_month.objects.get(user_id=id,entry_date__month=salary_date).salary_slip
+            context = {
+                'user_id': user_id,
+                'leave_list': leave_list,
+                'salary_slip': salary_slip,
+
+            }
+            context.update(context)
+        else:
+            pass
+
+    elif request.method == 'POST'  and 'submit1' in request.POST:
+        mobile = request.POST.get('mobile')
+        email = request.POST.get('email')
+        name = request.POST.get('name')
+        bank_name = request.POST.get('bank_name')
+        account_no = request.POST.get('account_no')
+        branch_name = request.POST.get('branch_name')
+        ifsc_code = request.POST.get('ifsc_code')
+        photo = request.FILES.get('photo')
+
+        item = user_id
+
+        item.mobile = mobile
+        item.email = email
+        item.name = name
+        item.bank_name = bank_name
+        item.account_number = account_no
+        item.branch_name = branch_name
+        item.ifsc_code = ifsc_code
+        item.photo = photo
+
+        item.save(update_fields=['mobile','email', 'name','bank_name','account_number','branch_name','ifsc_code','photo'])
+
+    elif request.method == 'POST' and 'submit3'  in request.POST:
         type = request.POST.get('type')
         content = request.POST.get('content')
 
@@ -150,7 +206,7 @@ def employee_profile(request,id):
         item.content = content
         item.save()
 
-    if request.method == 'POST' and 'sales_target_given' or 'reparing_target_givens' or 'onsitereparing_target_given' or 'restamping_target_given' in request.POST:
+    elif request.method == 'POST' and 'submit4'  in request.POST:
         if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
                                                   Q(user_id=id)).count() > 0:
             sales_target_given = request.POST.get('sales_target_given')
@@ -183,7 +239,7 @@ def employee_profile(request,id):
             item3.save()
 
 
-    if request.method == 'POST' and 'checks[]' in request.POST:
+    elif request.method == 'POST' and 'submit5' in request.POST:
         selected_list = request.POST.getlist('checks[]')
         if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
                                                   Q(user_id=id)).count() > 0:
@@ -207,12 +263,25 @@ def employee_profile(request,id):
             'emp_of_month_list': emp_of_month_list,
 
         }
-        return render(request, 'dashboardnew/employee_profile.html', context)
+        context.update(context)
 
-    context = {
-        'user_id': user_id,
-        'leave_list': leave_list,
+    elif request.method == 'POST' or request.method =='FILES' and 'submit6' in request.POST:
+        upload_slip = request.FILES.get('upload_slip')
+        salary_date = request.POST.get('salary_date')
+        salary_date = datetime.strptime(salary_date, "%Y-%m-%d")
+        salary_date = salary_date.month
+        if Employee_Analysis_month.objects.filter(user_id=id, entry_date__month=salary_date).count() > 0:
 
-    }
+            slip = Employee_Analysis_month.objects.get(user_id=id,entry_date__month=salary_date)
+
+            slip.salary_slip = upload_slip
+            slip.save(update_fields=['salary_slip',])
+            return HttpResponse('Salary Slip Uploaded!!!')
+        else:
+            new_slip= Employee_Analysis_month()
+            new_slip.salary_slip = upload_slip
+            new_slip.save()
+            return HttpResponse('Salary Slip Uploaded!!!')
+
     return render(request,'dashboardnew/employee_profile.html',context)
 
