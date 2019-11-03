@@ -240,12 +240,14 @@ def employee_profile(request,id):
 
     for item in x:
         name = SiteUser.objects.filter(name=item)
-        if name.role == 'Admin':
-            valid_user=True
+        for i in name:
+            if i.role == 'Admin':
+                valid_user=True
     for item in x:
         name = SiteUser.objects.filter(name=item)
-        if name.role == 'Manager':
-            valid_Manager = True
+        for i in name:
+            if i.role == 'Manager':
+                valid_Manager = True
 
 
 
