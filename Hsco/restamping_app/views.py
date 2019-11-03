@@ -147,8 +147,8 @@ def restamping_after_sales_service(request):
         customer_no = request.POST.get('customer_no')
         today_date = request.POST.get('today_date')
 
-        new_serial_no = request.POST.get('new_serial_no')
-        brand = request.POST.get('brand')
+        # new_serial_no = request.POST.get('new_serial_no')
+        # brand = request.POST.get('brand')
         scale_delivery_date = request.POST.get('scale_delivery_date')
 
         item = Customer_Details()
@@ -184,8 +184,8 @@ def restamping_after_sales_service(request):
         # item2.restampingno = restampingno
         item2.customer_no = customer_no
         item2.today_date = today_date
-        item2.new_serial_no = new_serial_no
-        item2.brand = brand
+        # item2.new_serial_no = new_serial_no
+        # item2.brand = brand
         item2.total_amount = 0.0
         item2.scale_delivery_date = scale_delivery_date
 
@@ -247,12 +247,12 @@ def restamping_product(request,id):
     restamping_id = Restamping_after_sales_service.objects.get(id=id).id
 
     if request.method=='POST':
-        product_to_stampped = request.POST.get('product_to_stampped')
+        # product_to_stampped = request.POST.get('product_to_stampped')
         scale_type = request.POST.get('scale_type')
         sub_model = request.POST.get('sub_model')
         capacity = request.POST.get('capacity')
         old_serial_no = request.POST.get('old_serial_no')
-        old_brand = request.POST.get('old_brand')
+        # old_brand = request.POST.get('brand')
         amount = request.POST.get('amount')
         new_sr_no = request.POST.get('new_sr_no')
         brand = request.POST.get('brand')
@@ -264,10 +264,10 @@ def restamping_product(request,id):
         item.sub_model = sub_model
         item.capacity = capacity
         item.old_serial_no = old_serial_no
-        item.old_brand = old_brand
+        item.brand = brand
         item.amount = amount
         item.new_sr_no = new_sr_no
-        item.brand = brand
+        # item.old_brand = old_brand
         item.restamping_id_id = restamping_id
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -275,13 +275,48 @@ def restamping_product(request,id):
         item.save()
 
         Restamping_after_sales_service.objects.filter(id=id).update(total_amount=F("total_amount") + amount)
-        Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
-                                               year=datetime.now().year).update(
-            total_restamping_done=F("total_restamping_done") + amount)
 
-        Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
-                                              year=datetime.now().year).update(
-            total_restamping_done_today=F("total_restamping_done_today") + amount)
+        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_date.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_restamping_done_today=F("total_restamping_done_today") + amount)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_date()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_restamping_done_today = amount
+            # ead.total_dispatch_done_today = value_of_goods
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_month.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_restamping_done=F("total_restamping_done") + amount)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_month()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_restamping_done = amount
+            # ead.total_dispatch_done = value_of_goods
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
+
+
+
+
+
+
+
+
+
 
         return redirect('/update_restamping_details/'+str(id))
     context = {
@@ -354,9 +389,16 @@ def update_restamping_details(request,id):
         address = request.POST.get('address')
         today_date = request.POST.get('today_date')
         mobile_no = request.POST.get('mobile_no')
-        new_serial_no = request.POST.get('new_serial_no')
-        brand = request.POST.get('brand')
+        # new_serial_no = request.POST.get('new_serial_no')
+        # brand = request.POST.get('brand')
         scale_delivery_date = request.POST.get('scale_delivery_date')
+
+
+
+
+
+
+
 
         item = personal_id
 
@@ -364,14 +406,14 @@ def update_restamping_details(request,id):
         item.address = address
         item.today_date = today_date
         item.mobile_no = mobile_no
-        item.new_serial_no = new_serial_no
-        item.brand = brand
+        # item.new_serial_no = new_serial_no
+        # item.brand = brand
 
         item.scale_delivery_date = scale_delivery_date
 
         item.save(update_fields=['today_date', ]),
-        item.save(update_fields=['new_serial_no', ]),
-        item.save(update_fields=['brand', ]),
+        # item.save(update_fields=['new_serial_no', ]),
+        # item.save(update_fields=['brand', ]),
         item.save(update_fields=['scale_delivery_date', ]),
         personal_id = Restamping_after_sales_service.objects.get(id=id)
 
@@ -538,7 +580,7 @@ def update_restamping_product(request,id):
         sub_model = request.POST.get('sub_model')
         capacity = request.POST.get('capacity')
         old_serial_no = request.POST.get('old_serial_no')
-        old_brand = request.POST.get('old_brand')
+        # old_brand = request.POST.get('old_brand')
         amount = request.POST.get('amount')
 
         product_id = Restamping_Product.objects.get(id=id)
@@ -561,19 +603,19 @@ def update_restamping_product(request,id):
 
         item.restamping_id_id = restamping_id
         item.customer_email_id = customer_email_id
-        item.product_to_stampped = product_to_stampped
+        # item.product_to_stampped = product_to_stampped
         item.scale_type = scale_type
         item.sub_model = sub_model
         item.capacity = capacity
         item.old_serial_no = old_serial_no
-        item.old_brand = old_brand
+        # item.old_brand = old_brand
         item.amount = amount
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
 
 
-        item.save(update_fields=['customer_email_id','product_to_stampped','scale_type','sub_model','capacity','old_serial_no','old_brand',
+        item.save(update_fields=['customer_email_id','product_to_stampped','scale_type','sub_model','capacity','old_serial_no',
                                  'amount','manager_id','user_id' ])
 
 

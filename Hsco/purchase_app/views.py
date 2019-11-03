@@ -23,7 +23,26 @@ from django.db.models import Count
 
 def add_purchase_details(request):
     cust_sugg = Customer_Details.objects.all()
-    sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name)
+    # sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name)
+    if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
+        sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name,
+                                            modules_assigned__icontains='Customer Module')
+    else:  # display colleague
+        list_group = SiteUser.objects.get(id=request.user.id).group
+        import ast
+
+        x = "[" + list_group + "]"
+        x = ast.literal_eval(x)
+        manager_list = []
+        for item in x:
+            name = SiteUser.objects.get(name=item)
+            if name.role == 'Manager':
+                if item not in manager_list:
+                    manager_list.append(item)
+
+        sales_person_sugg = SiteUser.objects.filter(group__icontains=manager_list,
+                                            modules_assigned__icontains='Customer Module')
+
     form = Purchase_Details_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
@@ -164,11 +183,7 @@ def add_purchase_details(request):
             crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
                                                      Q(contact_no=contact_no)).first()
 
-            print("crm_no")
-            print("crm_no")
-            print(crm_no)
-            print(crm_no)
-            print(crm_no)
+
             try:
                 message = 'Dear ' + str(crm_no.customer_name) + '. Thanks for purchasing your scale from HSCo. ' \
                                                            'Your Purchase ID is ' + str(item2.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
@@ -193,10 +208,7 @@ def add_purchase_details(request):
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
             print(x)
-            print(x)
-            print(x)
-            print(x)
-            print(x)
+
         else:
             try:
                 message = 'Dear '+item.customer_name+'. Thanks for purchasing your scale from HSCo. ' \
@@ -224,26 +236,23 @@ def add_purchase_details(request):
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
             print("else wala x")
-            print("else wala x")
             print(x)
-            print(x)
-            print(x)
-            print(x)
+
 
         # Purchase_Details.objects.filter(id=purchase_id_id.pk).update(
         #     value_of_goods=F("value_of_goods") + value_of_goods)
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
 
-        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
-                                               entry_date__month=item2.entry_timedate.month,
-                                               year=item2.entry_timedate.year).update(
-            total_sales_done=F("total_sales_done") + value_of_goods)
-
-        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
-                                              entry_date__month=item2.entry_timedate.month,
-                                              year=item2.entry_timedate.year).update(
-            total_sales_done_today=F("total_sales_done_today") + value_of_goods)
+        # Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+        #                                        entry_date__month=item2.entry_timedate.month,
+        #                                        year=item2.entry_timedate.year).update(
+        #     total_sales_done=F("total_sales_done") + value_of_goods)
+        #
+        # Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+        #                                       entry_date__month=item2.entry_timedate.month,
+        #                                       year=item2.entry_timedate.year).update(
+        #     total_sales_done_today=F("total_sales_done_today") + value_of_goods)
 
         return redirect('/add_product_details/'+str(item2.id))
 
@@ -545,23 +554,26 @@ def add_product_details(request,id):
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save()
 
-        dispatch_id=Dispatch.objects.get(id=dispatch_id_assigned)
-        dispatch_pro = Product_Details_Dispatch()
-        dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
-        dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        dispatch_pro.quantity = quantity
-        dispatch_pro.type_of_scale = type_of_scale
-        dispatch_pro.model_of_purchase = model_of_purchase
-        dispatch_pro.sub_model = sub_model
-        dispatch_pro.sub_sub_model = sub_sub_model
-        dispatch_pro.serial_no_scale = serial_no_scale
-        dispatch_pro.brand = brand
-        dispatch_pro.capacity = capacity
-        dispatch_pro.unit = unit
-        dispatch_pro.dispatch_id = dispatch_id
-        dispatch_pro.sales_person = sales_person
-        dispatch_pro.purchase_type = purchase_type
-        dispatch_pro.save()
+        try:
+            dispatch_id=Dispatch.objects.get(id=dispatch_id_assigned)
+            dispatch_pro = Product_Details_Dispatch()
+            dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+            dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            dispatch_pro.quantity = quantity
+            dispatch_pro.type_of_scale = type_of_scale
+            dispatch_pro.model_of_purchase = model_of_purchase
+            dispatch_pro.sub_model = sub_model
+            dispatch_pro.sub_sub_model = sub_sub_model
+            dispatch_pro.serial_no_scale = serial_no_scale
+            dispatch_pro.brand = brand
+            dispatch_pro.capacity = capacity
+            dispatch_pro.unit = unit
+            dispatch_pro.dispatch_id = dispatch_id
+            dispatch_pro.sales_person = sales_person
+            dispatch_pro.purchase_type = purchase_type
+            dispatch_pro.save()
+        except:
+            print("Franchisee Store selected")
 
 
 

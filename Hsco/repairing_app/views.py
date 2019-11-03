@@ -25,9 +25,24 @@ def add_repairing_details(request):
     prev_rep_sugg=Repairing_after_sales_service.objects.all()
     if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
         user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Repairing Module')
-    else:
+    else: #display colleague
+        list_group = SiteUser.objects.get(id=request.user.id).group
+        import ast
 
-        user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Repairing Module')
+        x = "[" + list_group + "]"
+        x = ast.literal_eval(x)
+        manager_list = []
+        for item in x:
+            name = SiteUser.objects.get(name=item)
+            if name.role == 'Manager':
+                if item not in manager_list:
+                    manager_list.append(item)
+
+        user_list = SiteUser.objects.filter(group__icontains=manager_list,
+                                            modules_assigned__icontains='Repairing Module')
+
+
+
 
 
     if request.method == 'POST' or request.method == 'FILES':
