@@ -11,6 +11,7 @@ from Hsco import settings
 import requests
 import json
 
+from purchase_app.views import check_admin_roles
 from .models import Employee_Leave, Defects_Warning, Employee_Analysis_month
 
 
@@ -80,7 +81,11 @@ def add_ess_details(request):
 
 
 def ess_home(request):
-    leave_req_list = Employee_Leave.objects.all()
+    if request.user.role == 'Super Admin':
+        leave_req_list = Employee_Leave.objects.filter(user_id__is_deleted=False,)
+    elif request.user.role == 'Manager' or request.user.role == 'Admin':
+        leave_req_list = Employee_Leave.objects.filter(user_id__group__icontains=request.user.group, user_id__is_deleted=False)
+
     if request.method == 'POST' and 'list[]' in request.POST:
         user_id = request.POST.get('user_id')
         list = request.POST.getlist('list[]')
@@ -125,10 +130,96 @@ def ess_home(request):
     return render(request,'dashboardnew/ess_home.html',context)
 
 
+def load_deletd_users(request):
+    selected = request.GET.get('loc_id')
+
+    if selected == 'true':
+        list = SiteUser.objects.filter(group__icontains=request.user.group, is_deleted=True).order_by('-id')
+
+
+        context = {
+            'list': list,
+            'deleted': True,
+        }
+    else:
+        list = SiteUser.objects.filter(group__icontains=request.user.name,is_deleted=False )
+
+        context = {
+            'list': list
+
+        }
+
+
+    return render(request, 'AJAX/load_deleted.html', context)
+
+def load_deletd_employee(request):
+    selected = request.GET.get('loc_id')
+
+    if selected == 'true':
+        list = SiteUser.objects.filter(role='Employee',group__icontains=request.user.name,is_deleted=True).order_by('-id')
+
+
+        context = {
+            'employee_list': list,
+            'deleted': True,
+        }
+    else:
+        list = SiteUser.objects.filter(role='Employee',group__icontains=request.user.name,is_deleted=False)
+
+        context = {
+            'employee_list': list
+
+        }
+
+
+    return render(request, 'AJAX/load_deleted_employee.html', context)
+
+
+def load_deletd_admin(request):
+    selected = request.GET.get('loc_id')
+
+    if selected == 'true':
+        list = SiteUser.objects.filter(role='Admin', is_deleted=True).order_by('-id')
+
+        context = {
+            'admin_list': list,
+            'deleted': True,
+        }
+    else:
+        list = SiteUser.objects.filter(role='Admin', is_deleted=False)
+
+        context = {
+            'admin_list': list
+
+        }
+
+    return render(request, 'AJAX/load_deleted_admin.html', context)
+
+def load_deletd_manager(request):
+    selected = request.GET.get('loc_id')
+
+    if selected == 'true':
+        list = SiteUser.objects.filter(group__icontains=request.user.name,role='Manager', is_deleted=True).order_by('-id')
+
+        context = {
+            'manager_list': list,
+            'deleted': True,
+        }
+    else:
+        list = SiteUser.objects.filter(group__icontains=request.user.name,role='Manager', is_deleted=False)
+
+        context = {
+            'manager_list': list
+
+        }
+
+    return render(request, 'AJAX/load_deleted_manager.html', context)
+
+
 
 def ess_all_user(request):
     # list = SiteUser.objects.all()
-    list = SiteUser.objects.filter(group__icontains=request.user.name,)
+    list = SiteUser.objects.filter(Q(is_deleted=False),group__icontains=request.user.name,)
 
 
     context={
@@ -138,8 +229,28 @@ def ess_all_user(request):
     return render(request,'dashboardnew/ess_all_user.html',context)
 
 def employee_profile(request,id):
+    valid_user=False
+    valid_Manager=False
     user_id = SiteUser.objects.get(id=id)
+    valid_group = user_id.group
+    import ast
+
+    x = "[" + valid_group + "]"
+    x = ast.literal_eval(x)
+
+    for item in x:
+        name = SiteUser.objects.get(name=item)
+        if name.role == 'Admin':
+            valid_user=True
+    for item in x:
+        name = SiteUser.objects.get(name=item)
+        if name.role == 'Manager':
+            valid_Manager = True
+
+
+
     leave_list = Employee_Leave.objects.filter(user_id=id)
+
     mon = datetime.now().month
 
     if Employee_Analysis_month.objects.filter(user_id=id,entry_date__month=mon).count()>0:
@@ -149,12 +260,32 @@ def employee_profile(request,id):
             'user_id': user_id,
             'leave_list': leave_list,
             'this_month_target': this_month_target,
+            'valid_user': valid_user,
+            'valid_Manager': valid_Manager,
         }
+        emp_of_month_list = Employee_Analysis_month.objects.filter(Q(user_id=SiteUser.objects.get(id=request.user.pk)))
+        context2 = {
+            'user_id': user_id,
+            'leave_list': leave_list,
+            'emp_of_month_list': emp_of_month_list,
+
+        }
+        context.update(context2)
     else:
         context = {
             'user_id': user_id,
             'leave_list': leave_list,
+            'valid_user': valid_user,
+            'valid_Manager': valid_Manager,
         }
+        emp_of_month_list = Employee_Analysis_month.objects.filter(Q(user_id=SiteUser.objects.get(id=request.user.pk)))
+        context2 = {
+            'user_id': user_id,
+            'leave_list': leave_list,
+            'emp_of_month_list': emp_of_month_list,
+
+        }
+        context.update(context2)
     if request.method == 'POST' and 'submit2' in request.POST:
         salary_date = request.POST.get('salary_date')
         salary_date = datetime.strptime(salary_date, "%Y-%m-%d")
@@ -162,15 +293,16 @@ def employee_profile(request,id):
 
         if Employee_Analysis_month.objects.filter(user_id=id,entry_date__month=salary_date).count()>0:
             salary_slip = Employee_Analysis_month.objects.get(user_id=id,entry_date__month=salary_date).salary_slip
-            context = {
+            context2 = {
                 'user_id': user_id,
                 'leave_list': leave_list,
                 'salary_slip': salary_slip,
 
             }
-            context.update(context)
+            context.update(context2)
         else:
             pass
+
 
     elif request.method == 'POST'  and 'submit1' in request.POST:
         mobile = request.POST.get('mobile')
@@ -194,6 +326,7 @@ def employee_profile(request,id):
         item.photo = photo
 
         item.save(update_fields=['mobile','email', 'name','bank_name','account_number','branch_name','ifsc_code','photo'])
+        return redirect('/employee_profile/' + str(id))
 
     elif request.method == 'POST' and 'submit3'  in request.POST:
         type = request.POST.get('type')
@@ -205,6 +338,8 @@ def employee_profile(request,id):
         item.type = type
         item.content = content
         item.save()
+        return redirect('/employee_profile/' + str(id))
+
 
     elif request.method == 'POST' and 'submit4'  in request.POST:
         if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
@@ -216,7 +351,7 @@ def employee_profile(request,id):
 
             item3 = Employee_Analysis_month.objects.get(user_id=id, entry_date__month=datetime.now().month)
 
-            item3.sales_target_given = sales_target_given
+            item3.sales_target_given = float(sales_target_given)
             item3.reparing_target_given = reparing_target_given
             item3.onsitereparing_target_given = onsitereparing_target_given
             item3.restamping_target_given = restamping_target_given
@@ -237,6 +372,8 @@ def employee_profile(request,id):
             item3.restamping_target_given = restamping_target_given
 
             item3.save()
+        return redirect('/employee_profile/' + str(id))
+
 
 
     elif request.method == 'POST' and 'submit5' in request.POST:
@@ -257,13 +394,14 @@ def employee_profile(request,id):
             item2.save()
 
         emp_of_month_list =  Employee_Analysis_month.objects.filter(Q(user_id=SiteUser.objects.get(id=request.user.pk)))
-        context = {
+        context2 = {
             'user_id': user_id,
             'leave_list': leave_list,
             'emp_of_month_list': emp_of_month_list,
 
         }
-        context.update(context)
+        context.update(context2)
+
 
     elif request.method == 'POST' or request.method =='FILES' and 'submit6' in request.POST:
         upload_slip = request.FILES.get('upload_slip')
@@ -276,12 +414,13 @@ def employee_profile(request,id):
 
             slip.salary_slip = upload_slip
             slip.save(update_fields=['salary_slip',])
-            return HttpResponse('Salary Slip Uploaded!!!')
+            return HttpResponse('Salary Slip Updated!!!')
         else:
             new_slip= Employee_Analysis_month()
             new_slip.salary_slip = upload_slip
             new_slip.save()
             return HttpResponse('Salary Slip Uploaded!!!')
+
 
     return render(request,'dashboardnew/employee_profile.html',context)
 
