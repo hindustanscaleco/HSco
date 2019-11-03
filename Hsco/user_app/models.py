@@ -107,7 +107,6 @@ class SiteUser(AbstractBaseUser):
 
     photo_of_cancelled_cheque = models.ImageField(upload_to='cheque_photo/', null=True, blank=True)
     auto_timedate = models.DateTimeField(default=timezone.now, blank=True)
-    normal_password=models.CharField(max_length=40, null=True, blank=True)
 
 
     objects = SiteUserManager()
