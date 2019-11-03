@@ -397,8 +397,9 @@ td, th {
 
                     <div class="col-xl-2 col-md-2 mb-1"><center> Customer Name </center></div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Contact No. </center></div>|
+                    <div class="col-xl-2 col-md-2 mb-1"><center> Customer Email </center></div>|
                     <div class="col-xl-3 col-md-2 mb-1"><center> Current Stage </center> </div>|
-                    <div class="col-xl-2 col-md-2 mb-1"><center> Reparing No. </center> </div>|
+                    <div class="col-xl-2 col-md-2 mb-1"><center> Reparing No. </center> </div>
                     </div>
 
 
@@ -415,12 +416,13 @@ td, th {
 
 
                 {% for list in repair_list %}
-              <div class="col-xl-12 col-md-12 mb-12">
+              <div style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                        <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_repairing_details/{{list.id}}">{{list.crm_no.customer_name}}</a></center></div>|
+                        <div class="col-xl-2 col-md-1 mb-1"><center> {{list.crm_no.customer_name}}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.crm_no.contact_no}} </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.crm_no.customer_email_id}} </center> </div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center> {{list.current_stage}} </center> </div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.pk}} </center> </div>|
                     </div>

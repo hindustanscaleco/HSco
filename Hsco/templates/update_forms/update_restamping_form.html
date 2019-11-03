@@ -109,45 +109,38 @@ function myFunction() {
 </script>
 
 
-    <form class="well form-horizontal" ion=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
-<fieldset>
 
+<fieldset>
 <div class="form-group row">
-  <label class="col-md-2 control-label ">Restamping Number
+  <label class="col-md-3 control-label ">Restamping Number :- {{personal_id.pk}}
 
 
 
 </label>
 
-  <div class="col-md-4 inputGroupContainer">
+  <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="restampingno" placeholder="Restamping Number
 
-
-" class="form-control"  type="text" disabled id="myText" value="{{personal_id.pk}}">
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Customer Number
+    <label class="col-md-2 control-label">Customer Number :- {{personal_id.crm_no.pk}}
 
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-  <input  name="customer_no" maxlength="10" placeholder="Customer Number
 
-" class="form-control"  type="text" disabled id="myText2" value="{{personal_id.crm_no.pk}}">
     </div>
   </div>
 
 
 
 </div>
-
-
+</fieldset>
+ <form class="well form-horizontal" ion=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
+<fieldset>
 
 <div class="form-group row">
     <label class="col-md-2 control-label">Company Name
@@ -186,7 +179,7 @@ function myFunction() {
 
   <div class="form-group row">
 
-    <label class="col-md-2 control-label">Todays date
+    <label class="col-md-2 control-label">Entry date
 
 
 
@@ -212,11 +205,44 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
   <input name="contact_no" placeholder="Mobile No
-" class="form-control"  type="number" disabled id="myText6" value="{{personal_id.contact_no}}">
+" class="form-control"  type="number" disabled id="myText6" value="{{personal_id.crm_no.contact_no}}">
     </div>
   </div>
 </div>
 
+
+      <div class="form-group row">
+
+    <label class="col-md-2 control-label">Address
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="customer_address" placeholder="Customer Address" class="form-control" required type="text" disabled id="myText5" value="{{personal_id.crm_no.address}}">
+    </div>
+  </div>
+
+
+
+
+  <label class="col-md-2 control-label">Customer Email
+
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
+  <input name="customer_email_id" placeholder="Customer Email
+" class="form-control"  type="email" disabled id="myText6" value="{{personal_id.crm_no.customer_email_id}}">
+    </div>
+  </div>
+</div>
 
     <div class="form-group row">
  <!--<label class="col-md-2 control-label">New Serial No.-->
@@ -374,10 +400,14 @@ tr:nth-child(even) {
 
     <td>Old Serial No:</td>
         <td> {{list.old_serial_no}} </td></tr>
+                      <tr>
+
+    <td>New Serial No:</td>
+        <td> {{list.new_sr_no}} </td></tr>
 <tr>
 
-    <td> Old Brand:</td>
-        <td> {{list.old_brand}}</td></tr>
+    <td> Brand:</td>
+        <td> {{list.brand}}</td></tr>
 <tr>
 
     <td> Amount: </td>
