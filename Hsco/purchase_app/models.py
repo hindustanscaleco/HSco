@@ -54,7 +54,7 @@ class Product_Details(models.Model):
     quantity = models.CharField(max_length=30,null=True,blank=True)
     type_of_scale = models.CharField(max_length=30,null=True,blank=True)
     model_of_purchase = models.CharField(max_length=30,null=True,blank=True)
-    sub_model = models.CharField(max_length=30,null=True,blank=True)
+    sub_model = models.CharField(max_length=60,null=True,blank=True)
     sub_sub_model = models.CharField(max_length=30,null=True,blank=True)
     serial_no_scale = models.CharField(max_length=30,null=True,blank=True)
     brand = models.CharField(max_length=30,null=True,blank=True)

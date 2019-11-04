@@ -187,23 +187,23 @@ function myFunction() {
     document.getElementById("myText4").disabled = false;
     document.getElementById("myText5").disabled = false;
     document.getElementById("myText6").disabled = false;
-    <!--document.getElementById("myText7").disabled = false;      this should not be editable-->
-    document.getElementById("myText8").disabled = false;
+    document.getElementById("myText7").disabled = false;
+    document.getElementById("myText8").disabled = true;
     document.getElementById("myText9").disabled = false;
     document.getElementById("myText10").disabled = false;
     document.getElementById("myText11").disabled = false;
     document.getElementById("myText12").disabled = false;
     document.getElementById("myText13").disabled = false;
     document.getElementById("myText14").disabled = false;
-    <!--document.getElementById("myText15").disabled = false;       this should not be editable-->
-    document.getElementById("myText16").disabled = false;
+    document.getElementById("myText15").disabled = false;
+    document.getElementById("myText16").disabled = true;
     document.getElementById("myText17").disabled = false;
     document.getElementById("myText18").disabled = false;
-    <!--document.getElementById("myText19").disabled = false;-->
-    <!--document.getElementById("myText20").disabled = false;-->
-    <!--document.getElementById("myText21").disabled = false;-->
-    <!--document.getElementById("myText22").disabled = false;-->
-    <!--document.getElementById("myText23").disabled = false;-->
+<!--    document.getElementById("myText19").disabled = false;-->
+<!--    document.getElementById("myText20").disabled = false;-->
+<!--    document.getElementById("myText21").disabled = false;-->
+<!--    document.getElementById("myText22").disabled = false;-->
+<!--    document.getElementById("myText23").disabled = false;-->
     document.getElementById("button").disabled = false;
     document.getElementById("myText25").style.display = "block";
 
@@ -340,7 +340,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_address" placeholder="Email-id" id="myText18" class="form-control"   disabled value="{{customer_id.customer_address}}">
+  <input type="text" name="customer_address" placeholder="Address" id="myText6" class="form-control" disabled value="{{customer_id.address}}">
     </div>
   </div>
 </div>
@@ -354,7 +354,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Email-id" id="myText6" class="form-control"   disabled value="{{customer_id.customer_email_id}}">
+  <input type="email" name="customer_email_id" placeholder="Email-id" id="myText7" class="form-control"   disabled value="{{repair_id.crm_no.customer_email_id}}">
     </div>
   </div>
 
@@ -373,7 +373,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="total_cost" placeholder="Total Cost" class="form-control"  id="myText7"  type="text" disabled value="{{repair_id.total_cost}}">
+  <input  name="total_cost" placeholder="Total Cost" class="form-control"  id="myText8"  type="text" disabled value="{{repair_id.total_cost}}">
     </div>
   </div>
 
@@ -385,7 +385,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="informed_on" placeholder="Informed On" class="form-control" id="myText8"   type="text" disabled value="{{repair_id.informed_on}}">
+  <input  name="informed_on" placeholder="Informed On" class="form-control" id="myText9"   type="text" disabled value="{{repair_id.informed_on}}">
     </div>
   </div>
 </div>
@@ -403,7 +403,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="informed_by" placeholder="Informed By" class="form-control" id="myText9"   type="text" disabled value="{{repair_id.informed_by}}">
+  <input  name="informed_by" placeholder="Informed By" class="form-control" id="myText10"   type="text" disabled value="{{repair_id.informed_by}}">
     </div>
   </div>
 
@@ -415,7 +415,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input type="text" name="confirmed_estimate" class="form-control" id="myText10"  placeholder="Confirmed Estimate" disabled value="{{repair_id.confirmed_estimate}}">
+  <input type="text" name="confirmed_estimate" class="form-control" id="myText11"  placeholder="Confirmed Estimate" disabled value="{{repair_id.confirmed_estimate}}">
     </div>
   </div>
   </div>
@@ -437,7 +437,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input type="text" name="repaired" placeholder="Repaired" class="form-control" id="myText11"  disabled value="{{repair_id.repaired}}">
+  <input type="text" name="repaired" placeholder="Repaired" class="form-control" id="myText12"  disabled value="{{repair_id.repaired}}">
     </div>
   </div>
 
@@ -449,7 +449,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="repaired_date" placeholder="Repaired date" class="form-control"  id="myText12" required disabled value="{{repair_id.repaired_date|date:'Y-m-d'}}">
+  <input type="date" name="repaired_date" placeholder="Repaired date" class="form-control"  id="myText13" required disabled value="{{repair_id.repaired_date|date:'Y-m-d'}}">
     </div>
   </div>
   </div>
@@ -469,7 +469,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control" id="myText13"  required disabled value="{{repair_id.delivery_date|date:'Y-m-d'}}">
+  <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control" id="myText14"  required disabled value="{{repair_id.delivery_date|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -479,7 +479,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="delivery_by" placeholder="Delivery By" class="form-control"  type="text" id="myText14"  disabled value="{{repair_id.delivery_by}}">
+  <input  name="delivery_by" placeholder="Delivery By" class="form-control"  type="text" id="myText15"  disabled value="{{repair_id.delivery_by}}">
     </div>
   </div>
   </div>
@@ -494,7 +494,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="feedback_given" placeholder="Feedback Given" id="myText15"  class="form-control"  type="text" disabled value="{% if repair_id.feedback_given %}YES{% else %}NO{% endif %}">
+  <input  name="feedback_given" placeholder="Feedback Given" id="myText16"  class="form-control"  type="text" disabled value="{% if repair_id.feedback_given %}YES{% else %}NO{% endif %}">
     </div>
   </div>
 
@@ -504,7 +504,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="current_stage_old" placeholder="current stage" class="form-control" id="myText16" disabled value="{{repair_id.current_stage}}">
+  <input name="current_stage_old" placeholder="current stage" class="form-control" id="myText17" disabled value="{{repair_id.current_stage}}">
 
      </div>
   </div>
@@ -534,7 +534,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="repaired_by" placeholder="Repaired By" class="form-control" id="myText17" disabled value="{{repair_id.repaired_by}}">
+  <input name="repaired_by" placeholder="Repaired By" class="form-control" id="myText18" disabled value="{{repair_id.repaired_by}}">
 
      </div>
   </div>
