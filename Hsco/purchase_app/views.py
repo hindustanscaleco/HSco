@@ -176,7 +176,7 @@ def add_purchase_details(request):
             ead.year = datetime.now().year
             ead.save()
 
-        message=""
+
 
         if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
                                            Q(contact_no=contact_no)).count() > 0:

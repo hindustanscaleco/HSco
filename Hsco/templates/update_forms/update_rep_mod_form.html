@@ -180,14 +180,14 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 
 <script>
 function myFunction() {
-  document.getElementById("myText").disabled = false;
-    document.getElementById("myText2").disabled = false;
+  <!--document.getElementById("myText").disabled = false;   this should no edit-->
+    <!--document.getElementById("myText2").disabled = false;   this should not be editable-->
     document.getElementById("myText3").disabled = false;
     document.getElementById("myText3").disabled = false;
     document.getElementById("myText4").disabled = false;
     document.getElementById("myText5").disabled = false;
     document.getElementById("myText6").disabled = false;
-    document.getElementById("myText7").disabled = false;
+    <!--document.getElementById("myText7").disabled = false;      this should not be editable-->
     document.getElementById("myText8").disabled = false;
     document.getElementById("myText9").disabled = false;
     document.getElementById("myText10").disabled = false;
@@ -195,15 +195,15 @@ function myFunction() {
     document.getElementById("myText12").disabled = false;
     document.getElementById("myText13").disabled = false;
     document.getElementById("myText14").disabled = false;
-    document.getElementById("myText15").disabled = false;
+    <!--document.getElementById("myText15").disabled = false;       this should not be editable-->
     document.getElementById("myText16").disabled = false;
     document.getElementById("myText17").disabled = false;
     document.getElementById("myText18").disabled = false;
-    document.getElementById("myText19").disabled = false;
-    document.getElementById("myText20").disabled = false;
-    document.getElementById("myText21").disabled = false;
-    document.getElementById("myText22").disabled = false;
-    document.getElementById("myText23").disabled = false;
+    <!--document.getElementById("myText19").disabled = false;-->
+    <!--document.getElementById("myText20").disabled = false;-->
+    <!--document.getElementById("myText21").disabled = false;-->
+    <!--document.getElementById("myText22").disabled = false;-->
+    <!--document.getElementById("myText23").disabled = false;-->
     document.getElementById("button").disabled = false;
     document.getElementById("myText25").style.display = "block";
 
@@ -266,7 +266,7 @@ function myFunction() {
 
 
 
-  <label class="col-md-2 control-label">Today's Date *
+  <label class="col-md-2 control-label">Entry Date
 
 
 
@@ -331,7 +331,21 @@ function myFunction() {
   <input  name="contact_no" placeholder="Phone Number" class="form-control" id="myText5"  type="text" disabled value="{{customer_id.contact_no}}">
     </div>
   </div>
-<label class="col-md-2 control-label">Email-id
+<label class="col-md-2 control-label">Address
+
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+  <input type="email" name="customer_address" placeholder="Email-id" id="myText18" class="form-control"   disabled value="{{customer_id.customer_address}}">
+    </div>
+  </div>
+</div>
+    <div class="form-group row">
+    <label class="col-md-2 control-label">Email-id
 
 
 
@@ -343,9 +357,8 @@ function myFunction() {
   <input type="email" name="customer_email_id" placeholder="Email-id" id="myText6" class="form-control"   disabled value="{{customer_id.customer_email_id}}">
     </div>
   </div>
-</div>
 
-
+    </div>
 
 <div class="form-group row">
 
@@ -481,7 +494,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="feedback_given" placeholder="Feedback Given" id="myText15"  class="form-control"  type="text" disabled value="{{repair_id.feedback_given}}">
+  <input  name="feedback_given" placeholder="Feedback Given" id="myText15"  class="form-control"  type="text" disabled value="{% if repair_id.feedback_given %}YES{% else %}NO{% endif %}">
     </div>
   </div>
 

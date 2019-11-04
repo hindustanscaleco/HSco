@@ -283,10 +283,10 @@ def update_repairing_details(request,id):
         item.save(update_fields=['customer_name','company_name','address','contact_no','customer_email_id',])
 
         # repairingnumber = request.POST.get('repairingnumber')
-        previous_repairing_number = request.POST.get('previous_repairing_number')
-        today_date = request.POST.get('today_date')
-        location = request.POST.get('location')
-        products_to_be_repaired = request.POST.get('products_to_be_repaired')
+        # previous_repairing_number = request.POST.get('previous_repairing_number')
+        # today_date = request.POST.get('today_date')
+        # location = request.POST.get('location')
+        # products_to_be_repaired = request.POST.get('products_to_be_repaired')
         total_cost = request.POST.get('total_cost')
         informed_on = request.POST.get('informed_on')
         informed_by = request.POST.get('informed_by')
@@ -296,7 +296,7 @@ def update_repairing_details(request,id):
         delivery_date = request.POST.get('delivery_date')
         delivery_by = request.POST.get('delivery_by')
         repaired_by = request.POST.get('repaired_by')
-        feedback_given = request.POST.get('feedback_given')
+        # feedback_given = request.POST.get('feedback_given')
         current_stage = request.POST.get('current_stage')
 
         item2 = repair_id
@@ -304,13 +304,13 @@ def update_repairing_details(request,id):
         # item2.repairingnumber = repairingnumber
         item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
-        item2.previous_repairing_number = previous_repairing_number
-        item2.today_date = today_date
+        # item2.previous_repairing_number = previous_repairing_number
+        # item2.today_date = today_date
 
-        item2.location = location
-        item2.products_to_be_repaired = products_to_be_repaired
+        # item2.location = location
+        # item2.products_to_be_repaired = products_to_be_repaired
 
-        item2.total_cost = total_cost
+        # item2.total_cost = total_cost
         item2.informed_on = informed_on
         item2.informed_by = informed_by
         item2.confirmed_estimate = confirmed_estimate
@@ -319,17 +319,17 @@ def update_repairing_details(request,id):
         item2.delivery_date = delivery_date
         item2.delivery_by = delivery_by
         item2.repaired_by = repaired_by
-        item2.feedback_given = feedback_given
+        # item2.feedback_given = feedback_given
         item2.current_stage = current_stage
         item2.stage_update_timedate = timezone.now()
 
         # item2.save()
 
         # item2.save(update_fields=['repairingnumber', ]),
-        item2.save(update_fields=['previous_repairing_number', ]),
-        item2.save(update_fields=['today_date', ]),
+        # item2.save(update_fields=['previous_repairing_number', ]),
+        # item2.save(update_fields=['today_date', ]),
         # item2.save(update_fields=['products_to_be_repaired', ]),
-        item2.save(update_fields=['total_cost', ]),
+        # item2.save(update_fields=['total_cost', ]),
         item2.save(update_fields=['informed_on', ]),
         item2.save(update_fields=['informed_by', ]),
         item2.save(update_fields=['confirmed_estimate', ]),
@@ -338,7 +338,7 @@ def update_repairing_details(request,id):
         item2.save(update_fields=['delivery_date', ]),
         item2.save(update_fields=['delivery_by', ]),
         item2.save(update_fields=['repaired_by', ]),
-        item2.save(update_fields=['feedback_given', ])
+        # item2.save(update_fields=['feedback_given', ])
         item2.save(update_fields=['current_stage', ])
         item2.save(update_fields=['stage_update_timedate', ])
         repair_id = Repairing_after_sales_service.objects.get(id=id)

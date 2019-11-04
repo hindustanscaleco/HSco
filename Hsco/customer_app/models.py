@@ -12,8 +12,8 @@ class Customer_Details(models.Model):
     customer_name = models.CharField(max_length=80, null=True, blank=True)
     company_name = models.CharField(max_length=80,null=True,blank=True)
     address = models.CharField(max_length=250,null=True,blank=True)
-    contact_no = models.CharField(max_length=30,null=True,blank=True)
-    customer_email_id = models.CharField(max_length=30,null=True,blank=True)
+    contact_no = models.CharField(max_length=30,null=True,blank=True, unique=True)
+    customer_email_id = models.EmailField(max_length=30,null=True,blank=True, unique=True)
 
     class Meta:
         unique_together = ('customer_name','contact_no','customer_email_id')

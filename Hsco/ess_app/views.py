@@ -219,7 +219,7 @@ def load_deletd_manager(request):
 
 def ess_all_user(request):
     # list = SiteUser.objects.all()
-    list = SiteUser.objects.filter(Q(is_deleted=False),group__icontains=request.user.name,)
+    list = SiteUser.objects.filter(is_deleted=False,group__icontains=request.user.name,)
 
 
     context={

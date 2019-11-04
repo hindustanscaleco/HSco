@@ -188,12 +188,12 @@ function myFunction() {
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">E-mail Id
+  <label class="col-md-2 control-label">E-mail Id *
   </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input name="customer_email_id" placeholder="E-mail Id" class="form-control"  type="email" disabled id="myText5" value="{{customer_id.customer_email_id}}">
+  <input name="customer_email_id" required placeholder="E-mail Id" class="form-control"  type="email" disabled id="myText5" value="{{customer_id.customer_email_id}}">
 
     </div>
   </div>
@@ -513,7 +513,7 @@ function myFunction() {
 
 
 
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>
+                    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
                     <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Type of Scale: {{list.type_of_scale}} </center></div>
                     <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Model of Purchase: {{list.model_of_purchase}}  </center></div>
 

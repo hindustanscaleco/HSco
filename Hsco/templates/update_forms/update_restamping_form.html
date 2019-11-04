@@ -98,12 +98,12 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 function myFunction() {
   document.getElementById("myText").disabled = false;
     document.getElementById("myText2").disabled = false;
-    document.getElementById("myText3").disabled = false;
+    <!--document.getElementById("myText3").disabled = false;         entry date should not be editable-->
     document.getElementById("myText4").disabled = false;
     document.getElementById("myText5").disabled = false;
     document.getElementById("myText6").disabled = false;
     document.getElementById("myText7").disabled = false;
-    document.getElementById("myText8").disabled = false;
+    <!--document.getElementById("myText8").disabled = false;      Total amount should not be editable-->
     document.getElementById("myText9").disabled = false;
 }
 </script>
@@ -139,7 +139,7 @@ function myFunction() {
 
 </div>
 </fieldset>
- <form class="well form-horizontal" ion=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
+ <form class="well form-horizontal" action="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
@@ -153,28 +153,25 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name
-
-
-" class="form-control"  type="text" disabled id="myText" value="{{personal_id.crm_no.company_name}}">
+  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled id="myText" value="{{personal_id.crm_no.company_name}}">
     </div>
   </div>
 
 
 
-
-
-
-
-  <label class="col-md-2 control-label">Address
+  <label class="col-md-2 control-label">Customer Name
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <input  name="address" placeholder="Address" class="form-control"  type="text" disabled id="myText2" value="{{personal_id.crm_no.address}}">
+  <input  name="customer_name" placeholder="Customer Name" class="form-control" type="text" disabled id="myText2" value="{{personal_id.crm_no.customer_name}}">
     </div>
   </div>
+
+
+
+
 </div>
 
   <div class="form-group row">
@@ -260,7 +257,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="text" name="scale_delivery_date" placeholder="Scale Delivery Date
+  <input type="date" name="scale_delivery_date" placeholder="Scale Delivery Date
 
 
 " class="form-control"   disabled id="myText7" value="{{personal_id.scale_delivery_date|date:'Y-m-d'}}">
@@ -277,7 +274,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="number" name="scale_delivery_date" placeholder="Total Amount
+  <input type="number" name="total_amount" placeholder="Total Amount
 
 
 " class="form-control"   disabled id="myText8" value="{{personal_id.total_amount}}">
@@ -288,13 +285,22 @@ function myFunction() {
 
 
 </div>
+<!--<div class="form-group row">-->
 
+  <!--<label class="col-md-2 control-label">Address-->
 
-
-
+<!--</label>-->
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
+  <!--<input  name="address" placeholder="Address" class="form-control" type="text" disabled id="myText9" value="{{personal_id.crm_no.address}}">-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
 
 <center>
-	<button type="submit" class="btn btn-primary">Save</button>             <button type="button"  onclick="myFunction()" class="btn btn-primary">Edit</button>
+	<button type="submit" class="btn btn-primary">Save</button>
+    <button type="button"  onclick="myFunction()" class="btn btn-primary">Edit</button>
 
 
 </center>
@@ -325,6 +331,7 @@ tr:nth-child(even) {
 </style>
 
 
+<center><a href="/restamping_product/{{personal_id.id}}"> <button class="btn btn-primary">Add Product</button></a></center>
 
 
 </div>

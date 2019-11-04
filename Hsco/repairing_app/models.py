@@ -32,7 +32,7 @@ class Repairing_after_sales_service(models.Model):
 
     delivery_by = models.CharField(max_length=50,null=True,blank=True)
     repaired_by = models.CharField(max_length=50,null=True,blank=True)
-    feedback_given = models.CharField(default='NO',max_length=10,null=True,blank=True)
+    feedback_given = models.BooleanField(default=False,max_length=10,null=True,blank=True)
     avg_feedback = models.FloatField(default=0.0)
     entry_timedate = models.DateField(default=datetime.date.today)
     stage_update_timedate = models.DateField(default=datetime.date.today)
@@ -41,8 +41,8 @@ class Repairing_after_sales_service(models.Model):
 
 
 
-    def __int_(self):
-        return self.repairingnumber
+    def __int__(self):
+        return self.pk
 
 
 class Repairing_Product(models.Model):

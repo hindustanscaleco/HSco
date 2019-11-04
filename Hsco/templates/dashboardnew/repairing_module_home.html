@@ -326,7 +326,7 @@ td, th {
                     <div class="col-xl-4 col-md-2 mb-1"><center> Estimate is given but Estimate is not confirmed. &nbsp; ({{rep2}})</center></div>|
                     <div class="col-xl-3 col-md-2 mb-1"><center> Estimate is confirmed but not repaired. &nbsp; ({{rep3}})</center></div>
                     <div class="col-xl-4 col-md-2 mb-1"><center> Finally Collected. &nbsp; ({{rep5}})</center></div>|
-                    <div class="col-xl-4 col-md-2 mb-1"><center> Repaired but not collected. &nbsp;  TOTAL ({{rep4}}) &nbsp; 4 Days ({{rep4_4d}}) &nbsp; 10 Days  ({{rep4_10d}})</center></div>
+                    <div class="col-xl-5 col-md-2 mb-1"><center> Repaired but not collected. &nbsp;  TOTAL ({{rep4}}) &nbsp; 4 Days ({{rep4_4d}}) &nbsp; 10 Days  ({{rep4_10d}})</center></div>
                     </div>
 
                 </div>
@@ -418,13 +418,13 @@ td, th {
                 {% for list in repair_list %}
               <div style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 45px;">
 
                         <div class="col-xl-2 col-md-1 mb-1"><center> {{list.crm_no.customer_name}}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.crm_no.contact_no}} </center> </div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.crm_no.customer_email_id}} </center> </div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center> {{list.current_stage}} </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.pk}} </center> </div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center> {{list.pk}} </center> </div>
                     </div>
 
                 </div>
