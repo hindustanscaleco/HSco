@@ -35,13 +35,14 @@ class Onsite_aftersales_service(models.Model):
     complaint_received_by = models.CharField(max_length=30, null=True, blank=True)
     time_taken_destination_return_office_min = models.CharField(max_length=30, null=True, blank=True)
     notes = models.CharField(max_length=90, null=True, blank=True)
-    feedback_given = models.CharField(max_length=30,choices=choices,default='NO')
+    feedback_given = models.BooleanField(default=False)
     avg_feedback = models.FloatField(default=0.0)
     entry_timedate = models.DateTimeField(default=timezone.now,)
     is_done = models.BooleanField(default=False)
     assigned_to = models.CharField(max_length=30, null=True, blank=True)
     assigned_by = models.CharField(max_length=30, null=True, blank=True)
     done_on = models.DateTimeField(default=timezone.now,)
+    entry_timedate = models.DateTimeField(default=timezone.now, )
 
     def __int__(self):
         return self.repairingno
@@ -59,12 +60,16 @@ class Onsite_Products(models.Model):
     components_replaced_in_warranty = models.CharField(max_length=90, null=True, blank=True)
     components_replaced = models.CharField(max_length=90, null=True, blank=True)
     cost = models.CharField(max_length=30, null=True, blank=True)
+    entry_timedate = models.DateTimeField(default=timezone.now, )
 
     def __int__(self):
         return self.onsite_repairing_id
 
 
 class Onsite_Feedback(models.Model):
+    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    customer_id = models.ForeignKey(Customer_Details, on_delete=models.CASCADE)
+    onsite_repairing_id = models.ForeignKey(Onsite_aftersales_service, on_delete=models.CASCADE)
     backend_team = models.FloatField(default=0.00, null=True, blank=True)
     onsite_worker = models.FloatField(default=0.00, null=True, blank=True)
     speed_of_performance = models.FloatField(default=0.00, null=True, blank=True)
@@ -72,7 +77,8 @@ class Onsite_Feedback(models.Model):
     overall_interaction = models.FloatField(default=0.00, null=True, blank=True)
     about_hsco = models.CharField(max_length=60, null=True, blank=True)
     any_suggestion = models.CharField(max_length=90, null=True, blank=True)
+    entry_timedate = models.DateTimeField(default=timezone.now, )
 
     def __int__(self):
-        return self.onsite_worker
+        return self.user_id
 

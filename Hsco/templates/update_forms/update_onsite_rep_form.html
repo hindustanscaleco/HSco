@@ -99,7 +99,15 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 <br>
 <script>
 function myFunction() {
-  document.getElementById("myText").disabled = false;
+
+  var x = document.getElementById("myText21");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+
+  document.getElementById("myText").disabled = true;
     document.getElementById("myText2").disabled = false;
     document.getElementById("myText3").disabled = false;
     document.getElementById("myText3").disabled = false;
@@ -119,9 +127,8 @@ function myFunction() {
     document.getElementById("myText17").disabled = false;
     document.getElementById("myText18").disabled = false;
     document.getElementById("myText19").disabled = false;
-    document.getElementById("myText20").disabled = false;
-    document.getElementById("myText21").disabled = false;
-    document.getElementById("myText22").disabled = false;
+    document.getElementById("myText20").disabled = true;
+    document.getElementById("myText21").style.display = "block";
 
 }
 </script>
@@ -156,7 +163,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="name" placeholder="Customer Name" id="myText2" class="form-control"  type="text" disabled value="{{onsite_id.crm_no.customer_name}}">
+  <input  name="customer_name" placeholder="Customer Name" id="myText2" class="form-control"  type="text" disabled value="{{onsite_id.crm_no.customer_name}}">
     </div>
   </div>
 
@@ -381,7 +388,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="total_cost" placeholder="Total Cost" class="form-control" id="myText15"  type="text" disabled value="{{onsite_id.total_cost}}">
+  <input  name="total_cost" placeholder="Total Cost" class="form-control" id="myText15"  type="number" disabled value="{{onsite_id.total_cost}}">
     </div>
   </div>
 
@@ -456,18 +463,21 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-      <input  name="notes" placeholder="Notes" class="form-control" id="myText20" type="text" disabled value="{{onsite_id.feedback_given}}">
+      <input  name="notes" placeholder="Notes" class="form-control" id="myText20" type="text" disabled value="{% if onsite_id.feedback_given %} YES {% else %} NO {% endif %}">
     </div>
   </div>
 </div>
 
 
-
-<center>
-  <button class="btn btn-primary">Submit</button>
-                      <button  onclick="myFunction()" class="btn btn-primary" type="reset">Edit</button>
-
-</center>
+ <div class="col-md-12 ">
+      <br>
+    <center>
+        <button  onclick="myFunction()" class="btn btn-primary" type="reset" style="">Edit</button>
+        <br>
+        <br>
+        <button style="display:none;" id="myText21" type="submit" value="Submit" class="btn btn-primary">Save</button>
+      </center>
+    </div>
 
 </fieldset>
 </form>
@@ -556,6 +566,76 @@ tr:nth-child(even) {
 <center>
                   <a href="/add_onsite_product/{{onsite_id.id}}"> <button class="btn btn-primary">Add Product</button></a>
         </center>
+
+
+         <center>
+
+          {% if onsite_id.feedback_given %}
+     <div class="col-xl-6 col-md-6 mb-4">
+
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary" >Feedback From : {{customer_id.company_name}}</h6>
+                </div>
+                <div class="card-body">
+      <div class="row">
+    <div class="col-lg-12">
+
+
+                        <b>Knowledge : </b>{% for avg in feedback.backend_team|rjust:'5'  %}
+{% if forloop.counter <= feedback.backend_team %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %} <br>
+                  <b>Timeliness : </b>{% for avg in feedback.onsite_worker|rjust:'5'  %}
+{% if forloop.counter <= feedback.onsite_worker %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %}  <br>
+                  <b>Price Of Product : </b>{% for avg in feedback.speed_of_performance|rjust:'5'  %}
+{% if forloop.counter <= feedback.speed_of_performance %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %}   <br>
+                  <b>Over All Interaction : </b>{% for avg in feedback.price_of_reparing|rjust:'5'  %}
+{% if forloop.counter <= feedback.price_of_reparing %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %} <br>
+
+         <b>Over All Interaction : </b>{% for avg in feedback.overall_interaction|rjust:'5'  %}
+{% if forloop.counter <= feedback.overall_interaction %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %} <br>
+                  <b>About HSCO : </b>{{feedback.about_hsco}} <br>
+                  <b>Any Other Suggestions: </b>{{feedback.any_suggestion}} <br>
+<!--
+                      <b>Ratings : <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+-->
+
+
+    </div>
+      </div>
+
+
+
+
+            </div>
+              </div>
+                        </div>
+{% endif %}
+         </center>
   </div>
   </div>
 
