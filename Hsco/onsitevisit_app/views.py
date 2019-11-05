@@ -153,17 +153,17 @@ def add_onsite_aftersales_service(request):
         complaint_assigned_on = request.POST.get('complaint_assigned_on')
         time_taken_destination_return_office_min = request.POST.get('time_taken_destination_return_office_min')
         notes = request.POST.get('notes')
-        feedback_given = request.POST.get('feedback_given')
+        # feedback_given = request.POST.get('feedback_given')
 
 
         item2 = Onsite_aftersales_service()
 
 
         item = Customer_Details()
-        if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
+        if Customer_Details.objects.filter(Q(customer_email_id=customer_email_id),
                                            Q(contact_no=contact_no)).count() > 0:
 
-            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
+            item2.crm_no = Customer_Details.objects.filter(Q(customer_email_id=customer_email_id),
                                                            Q(contact_no=contact_no)).first()
 
         else:
@@ -194,7 +194,7 @@ def add_onsite_aftersales_service(request):
         item2.complaint_assigned_on = complaint_assigned_on
         item2.time_taken_destination_return_office_min = time_taken_destination_return_office_min
         item2.notes = notes
-        item2.feedback_given = feedback_given
+        item2.feedback_given = False
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
@@ -319,6 +319,11 @@ def add_onsite_product(request,id):
         item.crm_no = Customer_Details.objects.get(id=crm_id)
         item.save()
 
+        print(cost)
+        print(cost)
+        print(cost)
+        print(cost)
+
         Onsite_aftersales_service.objects.filter(id=id).update(total_cost=F("total_cost") + cost)
         Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
                                                year=datetime.now().year).update(
@@ -336,7 +341,7 @@ def add_onsite_product(request,id):
 
 def update_onsite_product(request,id):
     onsite_id = Onsite_Products.objects.get(id=id)
-    onsite = Onsite_aftersales_service.objects.get(id=onsite_id.id).pk
+    onsite = Onsite_aftersales_service.objects.get(id=onsite_id.onsite_repairing_id.pk).pk
     # crm_id = Onsite_aftersales_service.objects.get(id=onsite).crm_no
     print(onsite_id)
     if request.method == 'POST' or request.method == 'FILES':
@@ -365,7 +370,7 @@ def update_onsite_product(request,id):
 
         item = Onsite_Products.objects.get(id=id)
 
-        item.onsite_repairing_id_id = onsite_id
+        # item.onsite_repairing_id_id = onsite_id
         item.type_of_machine = type_of_machine
         item.model = model
         item.sub_model = sub_model
@@ -414,6 +419,13 @@ def update_onsite_details(request,id):
     customer_id = Onsite_aftersales_service.objects.get(id=id).crm_no
 
     customer_id = Customer_Details.objects.get(id=customer_id)
+    try:
+        feedback = Onsite_Feedback.objects.get(onsite_repairing_id=onsite_id.pk, customer_id=customer_id)
+        print(feedback)
+        print(id)
+        print(customer_id.pk)
+    except:
+        feedback = None
     print(onsite_product_list)
     if request.method == 'POST' or request.method == 'FILES':
         contact_no = request.POST.get('contact_no')
@@ -454,7 +466,7 @@ def update_onsite_details(request,id):
         complaint_assigned_on = request.POST.get('complaint_assigned_on')
         time_taken_destination_return_office_min = request.POST.get('time_taken_destination_return_office_min')
         notes = request.POST.get('notes')
-        feedback_given = request.POST.get('feedback_given')
+        # feedback_given = request.POST.get('feedback_given')
         assigned_to = request.POST.get('assigned_to')
 
 
@@ -479,7 +491,7 @@ def update_onsite_details(request,id):
         item.complaint_assigned_on = complaint_assigned_on
         item.time_taken_destination_return_office_min = time_taken_destination_return_office_min
         item.notes = notes
-        item.feedback_given = feedback_given
+        # item.feedback_given = feedback_given
         item.assigned_to = assigned_to
 
         #item.save(update_fields=['onsite_repairing_id_id', ]),
@@ -504,7 +516,7 @@ def update_onsite_details(request,id):
         item.save(update_fields=['complaint_assigned_on', ]),
         item.save(update_fields=['time_taken_destination_return_office_min', ]),
         item.save(update_fields=['notes', ]),
-        item.save(update_fields=['feedback_given', ]),
+        # item.save(update_fields=['feedback_given', ]),
         onsite_id = Onsite_aftersales_service.objects.get(id=id)
 
         context = {
@@ -519,6 +531,7 @@ def update_onsite_details(request,id):
         'onsite_id':onsite_id,
         'onsite_product_list':onsite_product_list,
         'employee_list':employee_list,
+        'feedback': feedback,
     }
 
     return render(request,'update_forms/update_onsite_rep_form.html',context)
@@ -588,17 +601,20 @@ def feedback_onrepairing(request,user_id,customer_id,onsiterepairing_id):
         item.user_id = SiteUser.objects.get(id=user_id)
         item.customer_id = Customer_Details.objects.get(id=customer_id)
         item.onsiterepairing_id = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
-        item.save()
-        print(backend_team)
-        print(onsite_worker)
-        print(speed_of_performance)
-        print(price_of_reparing)
-        print(overall_interaction)
+        try:
+            item.save()
+            print(backend_team)
+            print(onsite_worker)
+            print(speed_of_performance)
+            print(price_of_reparing)
+            print(overall_interaction)
 
-        onsiterepairing = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
-        onsiterepairing.avg_feedback = (float(backend_team) + float(onsite_worker) + float(speed_of_performance) + float(price_of_reparing) + float(overall_interaction)) / float(5.0)
-        onsiterepairing.feedback_given = 'YES'
-        onsiterepairing.save(update_fields=['avg_feedback', 'feedback_given'])
+            onsiterepairing = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
+            onsiterepairing.avg_feedback = (float(backend_team) + float(onsite_worker) + float(speed_of_performance) + float(price_of_reparing) + float(overall_interaction)) / float(5.0)
+            onsiterepairing.feedback_given = True
+            onsiterepairing.save(update_fields=['avg_feedback', 'feedback_given'])
+        except:
+            pass
         # mon = datetime.now().month
 
         # ess_id = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon )
@@ -684,7 +700,7 @@ def load_onsite_reparing_manager(request,):
 
 def onsitevisit_app_graph(request,user_id):
     from django.db.models import Sum
-    user_id = request.user.pk
+    # user_id = request.user.pk
     rep_feedback = Onsite_Feedback.objects.all()
     mon = datetime.now().month
 

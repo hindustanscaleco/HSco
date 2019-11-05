@@ -115,6 +115,13 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 
 <script>
 function myFunction() {
+
+  var x = document.getElementById("myText23");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
   document.getElementById("myText"). disabled = false;
     document.getElementById("myText2"). disabled = false;
     document.getElementById("myText3"). disabled = false;
@@ -137,6 +144,8 @@ function myFunction() {
     document.getElementById("myText19"). disabled = false;
     document.getElementById("myText20"). disabled = false;
     document.getElementById("myText21"). disabled = false;
+    document.getElementById("myText22"). disabled = false;
+    document.getElementById("myText23").style.display = "block";
 
 }
 </script>
@@ -228,6 +237,33 @@ function myFunction() {
     </div>
   </div>
 
+  <label class="col-md-2 control-label">Address *
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input class="form-control" name="customer_address" required placeholder="Address" disabled id="myText6" value="{{amc_list.crm_no.address}}">
+
+    </div>
+  </div>
+</div>
+    <div class="form-group row">
+
+    <label class="col-md-2 control-label">Contact Number *
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
+  <input  name="contact_no" placeholder="Contact No" required class="form-control"  type="number" pattern="[789][0291]" disabled id="myText7" value="{{amc_list.crm_no.contact_no}}">
+
+    </div>
+  </div>
+
+
     <label class="col-md-2 control-label">Type of Scale
 
 
@@ -239,7 +275,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="type_of_scale" placeholder="Type of Scale" class="form-control"  type="text" id="myText6" disabled value="{{amc_list.type_of_scale}}">
+  <input  name="type_of_scale" placeholder="Type of Scale" class="form-control"  type="text" id="myText8" disabled value="{{amc_list.type_of_scale}}">
     </div>
   </div>
 
@@ -259,7 +295,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
-  <input  name="serial_no_scale" placeholder="Scale Serial Number" class="form-control"  type="text" id="myText7" disabled value="{{amc_list.serial_no_scale}}">
+  <input  name="serial_no_scale" placeholder="Scale Serial Number" class="form-control"  type="text" id="myText9" disabled value="{{amc_list.serial_no_scale}}">
     </div>
   </div>
 
@@ -274,7 +310,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="contract_valid_in_years" placeholder="Contract Validity in Years" class="form-control"  type="text" id="myText8" disabled value="{{amc_list.contract_valid_in_years}}">
+  <input  name="contract_valid_in_years" placeholder="Contract Validity in Years" class="form-control"  type="text" id="myText10" disabled value="{{amc_list.contract_valid_in_years}}">
     </div>
   </div>
 
@@ -296,7 +332,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="contract_amount" placeholder="Contract Amount" class="form-control"  type="text" id="myText9" disabled value="{{amc_list.contract_amount}}">
+  <input  name="contract_amount" placeholder="Contract Amount" class="form-control"  type="text" id="myText11" disabled value="{{amc_list.contract_amount}}">
 
 
      </div>
@@ -308,7 +344,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contract_no_reporting_breakdown" placeholder="Contact Number for reporting Breakdown" class="form-control"  type="text" id="myText10" disabled value="{{amc_list.contract_no_reporting_breakdown}}">
+  <input  name="contract_no_reporting_breakdown" placeholder="Contact Number for reporting Breakdown" class="form-control"  type="text" id="myText12" disabled value="{{amc_list.contract_no_reporting_breakdown}}">
     </div>
   </div>
 
@@ -329,7 +365,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input name="contract_start_date" placeholder="Contract Start Date" required class="form-control"  type="date" id="myText11" disabled value="{{amc_list.contract_start_date|date:'Y-m-d'}}">
+  <input name="contract_start_date" placeholder="Contract Start Date" required class="form-control"  type="date" id="myText13" disabled value="{{amc_list.contract_start_date|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -345,7 +381,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input name="contract_end_date" placeholder="Contract End Date" class="form-control" required type="date" id="myText12" disabled value="{{amc_list.contract_end_date|date:'Y-m-d'}}">
+  <input name="contract_end_date" placeholder="Contract End Date" class="form-control" required type="date" id="myText14" disabled value="{{amc_list.contract_end_date|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -366,7 +402,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="visit_1" placeholder="Visit 1" class="form-control" id="myText13" disabled value="{{amc_list.visit_1|date:'Y-m-d'}}">
+  <input type="date" name="visit_1" placeholder="Visit 1" class="form-control" id="myText15" disabled value="{{amc_list.visit_1|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -382,7 +418,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_1" placeholder="Report 1" class="form-control"  type="text" id="myText14" disabled value="{{amc_list.repot_1}}">
+  <input  name="repot_1" placeholder="Report 1" class="form-control"  type="text" id="myText16" disabled value="{{amc_list.repot_1}}">
     </div>
   </div>
 
@@ -397,7 +433,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="visit_2" placeholder="Visit 2" class="form-control"  type="text" id="myText15" disabled value="{{amc_list.visit_2|date:'Y-m-d'}}">
+  <input type="date" name="visit_2" placeholder="Visit 2" class="form-control" id="myText17" disabled value="{{amc_list.visit_2|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -413,7 +449,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_2" placeholder="Report 2" class="form-control"  type="text16" id="myText16" disabled value="{{amc_list.repot_2}}">
+  <input  name="repot_2" placeholder="Report 2" class="form-control"  type="text" id="myText18" disabled value="{{amc_list.repot_2}}">
     </div>
   </div>
 
@@ -430,7 +466,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="visit_3" placeholder="Visit 3" class="form-control"  type="text17" id="myText17" disabled value="{{amc_list.visit_3|date:'Y-m-d'}}">
+  <input type="date" name="visit_3" placeholder="Visit 3" class="form-control"  type="text" id="myText19" disabled value="{{amc_list.visit_3|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -442,7 +478,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_3" placeholder="Report 3" class="form-control"  type="text" id="myText18" disabled value="{{amc_list.repot_3}}">
+  <input  name="repot_3" placeholder="Report 3" class="form-control"  type="text" id="myText20" disabled value="{{amc_list.repot_3}}">
     </div>
   </div>
 
@@ -461,7 +497,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="visit_4" placeholder="Visit 4" class="form-control"  type="text" id="myText19" disabled value="{{amc_list.visit_4|date:'Y-m-d'}}">
+  <input type="date" name="visit_4" placeholder="Visit 4" class="form-control"  type="text" id="myText21" disabled value="{{amc_list.visit_4|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -474,28 +510,27 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_4" placeholder="Report 4" class="form-control"  type="text" id="myText20" disabled value="{{amc_list.repot_4}}">
+  <input  name="repot_4" placeholder="Report 4" class="form-control"  type="text" id="myText22" disabled value="{{amc_list.repot_4}}">
     </div>
   </div>
 
 </div>
 
 
-<center>
-  <button type="submit" id="myText21" value="submit" class="btn btn-primary">Update</button>
-
-</center>
-
-
-
-<br>
+<div class="col-md-12 ">
+      <br>
+    <center>
+        <button  onclick="myFunction()" class="btn btn-primary" type="reset" style="">Edit</button>
+        <br>
+        <br>
+        <button style="display:none;" id="myText23" type="submit" value="Submit" class="btn btn-primary">Save</button>
+      </center>
+    </div>
 
 
 </fieldset>
 </form>
-  <center>
-<button  onclick="myFunction()" class="btn btn-primary" type="reset">Edit</button>
-</center>
+
 
       </div>
 

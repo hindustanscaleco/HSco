@@ -371,7 +371,9 @@ def update_amc_form(request,update_id):
         item.repot_3 = repot_3
         item.visit_4 = visit_4
         item.repot_4 = repot_4
-        item.save(update_fields=['contract_amount','visit_1','repot_1','visit_2','repot_2','visit_3','repot_3','visit_4','repot_4',])
+        item.save(update_fields=['contract_amount','type_of_scale','serial_no_scale',
+                                 'contract_valid_in_years','contract_amount','contract_no_reporting_breakdown','contract_start_date',
+                                 'contract_end_date','visit_1','repot_1','visit_2','repot_2','visit_3','repot_3','visit_4','repot_4',])
 
         return redirect('/amc_views')
     context={
