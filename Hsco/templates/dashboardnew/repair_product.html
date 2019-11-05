@@ -42,7 +42,47 @@
         <!-- Topbar -->
 	{% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
+<style>
 
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
 <style>
 
 * {
@@ -242,64 +282,6 @@ $(document).ready(function(){
     </datalist>    </div>
   </div>
 
-    <label class="col-md-2 control-label">Components Replaced in Waranty(if scale in Waranty)
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-<input  type="text" name="components_replaced_in_warranty" placeholder="Components Replaced IW" class="form-control" list="components_replaced_in_warranty">
-    <datalist style="height:20px;" id="components_replaced_in_warranty">
-    <option value = "Display"></option>
-    <option value = "Touch Pad"></option>
-    <option value = "LED"></option>
-    <option value = "Transformer"></option>
-    <option value = "Battery"></option>
-    <option value = "Switch"></option>
-    <option value = "Main Cord wire"></option>
-    <option value = "Main Circuit Board"></option>
-    <option value = "SMPS"></option>
-    <option value = "Load Cell"></option>
-    <option value = "Misc"></option>
-    </datalist>
-    </div>
-  </div>
-
-</div>
-
-
-
-
-
-  <div class="form-group row">
-  <label class="col-md-2 control-label">Components Replaced
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-
-    <input  type="text" name="components_replaced" placeholder="Components Replaced" class="form-control" list="components_replaced">
-    <datalist style="height:20px;" id="components_replaced">
-    <option value = "Display"></option>
-    <option value = "Touch Pad"></option>
-    <option value = "LED"></option>
-    <option value = "Transformer"></option>
-    <option value = "Battery"></option>
-    <option value = "Switch"></option>
-    <option value = "Main Cord wire"></option>
-    <option value = "Main Circuit Board"></option>
-    <option value = "SMPS"></option>
-    <option value = "Load Cell"></option>
-    <option value = "Misc"></option>
-    </datalist>
-    </div>
-  </div>
-
-
 
         <label class="col-md-2 control-label">Replaced Scale given *
 </label>
@@ -314,7 +296,9 @@ $(document).ready(function(){
     </div>
   </div>
 
+
 </div>
+
 
 
   <div class="form-group row">
@@ -356,10 +340,67 @@ $(document).ready(function(){
     </div>
   </div>
 </div>
+
+                <div  class="form-group row">
+                      <label class="col-md-2 control-label">Components Replaced
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+
+  <div class="input-group"><button class="btn btn-primary" type="reset"  id="myBtnb">+</button> &nbsp;
+  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
+
+    <input  type="text" name="components_replaced" placeholder="Components Replaced" class="form-control" list="components_replaced">
+    <datalist style="height:20px;" id="components_replaced">
+    <option value = "Display"></option>
+    <option value = "Touch Pad"></option>
+    <option value = "LED"></option>
+    <option value = "Transformer"></option>
+    <option value = "Battery"></option>
+    <option value = "Switch"></option>
+    <option value = "Main Cord wire"></option>
+    <option value = "Main Circuit Board"></option>
+    <option value = "SMPS"></option>
+    <option value = "Load Cell"></option>
+    <option value = "Misc"></option>
+    </datalist>
+    </div>
+  </div>
+
+
+
+    <label class="col-md-2 control-label">Components Replaced in Waranty(if scale in Waranty)
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group"><button class="btn btn-primary" type="reset"  id="myBtn">+</button>&nbsp;
+  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
+<input  type="text" name="components_replaced_in_warranty" placeholder="Components Replaced IW" class="form-control" list="components_replaced_in_warranty">
+    <datalist style="height:20px;" id="components_replaced_in_warranty">
+    <option value = "Display"></option>
+    <option value = "Touch Pad"></option>
+    <option value = "LED"></option>
+    <option value = "Transformer"></option>
+    <option value = "Battery"></option>
+    <option value = "Switch"></option>
+    <option value = "Main Cord wire"></option>
+    <option value = "Main Circuit Board"></option>
+    <option value = "SMPS"></option>
+    <option value = "Load Cell"></option>
+    <option value = "Misc"></option>
+    </datalist>
+    </div>
+  </div>
+
+                </div>
             <br>
 <center>
     <button type="submit" class="btn btn-primary">Submit</button>
-
+<br>
+<br>
 </center>
             </form>
 
@@ -375,18 +416,114 @@ $(document).ready(function(){
     <input class="timeTextBoxz" name="timebox" maxlength="5"/>
 </div>
 
-<form name="myform"  id="myForm" style="width: 40%;">
+
+  </div>    <!-- Trigger/Open The Modal -->
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+          <span class="close">&times;</span>
 
 
+      <div style="border: 0.5px solid grey; border-radius: 15px;">
+<br>
+<center>
+    <form method="POST">
+                      <div class="form-group row">
+  <div class="col-md-8 inputGroupContainer" style="margin-left: 15%;">
+<p style="color:black;">Components Replaced in Waranty(if scale in Waranty)
+</p>
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
+
+    <input  type="text" name="components_replaced" placeholder="Components Replaced On Warranty" class="form-control" list="components_replaced">
+    <datalist style="height:20px;" id="xyz">
+    <option value = "Display"></option>
+    <option value = "Touch Pad"></option>
+    <option value = "LED"></option>
+    <option value = "Transformer"></option>
+    <option value = "Battery"></option>
+    <option value = "Switch"></option>
+    <option value = "Main Cord wire"></option>
+    <option value = "Main Circuit Board"></option>
+    <option value = "SMPS"></option>
+    <option value = "Load Cell"></option>
+    <option value = "Misc"></option>
+    </datalist>
+    </div>
+  </div>
 
 
-
-
-
-
-</form>
 
   </div>
+                              <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+    <br>
+          </center>
+
+</div>
+
+
+      </div>
+
+
+  </div>
+<div id="myModalb" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+      <div id="closeb">
+                    <span class="close">&times;</span>
+
+      </div>
+
+
+      <div style="border: 0.5px solid grey; border-radius: 15px;">
+<br>
+<center>
+    <form method="POST">
+                      <div class="form-group row">
+  <div class="col-md-8 inputGroupContainer" style="margin-left: 15%;">
+<p style="color:black;">Components Replaced</p>
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
+
+    <input  type="text" name="components_replaced" placeholder="Components Replaced" class="form-control" list="components_replaced">
+    <datalist style="height:20px;" id="">
+    <option value = "Display"></option>
+    <option value = "Touch Pad"></option>
+    <option value = "LED"></option>
+    <option value = "Transformer"></option>
+    <option value = "Battery"></option>
+    <option value = "Switch"></option>
+    <option value = "Main Cord wire"></option>
+    <option value = "Main Circuit Board"></option>
+    <option value = "SMPS"></option>
+    <option value = "Load Cell"></option>
+    <option value = "Misc"></option>
+    </datalist>
+    </div>
+  </div>
+
+
+
+  </div>
+                              <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+    <br>
+          </center>
+
+</div>
+
+
+      </div>
+
+
+  </div>
+
+</div>
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
@@ -543,6 +680,60 @@ districtSel.options[districtSel.options.length] = new Option(district[i], distri
       </div>
     </div>
   </div>
+
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+var modalb = document.getElementById("myModalb");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+var btnb = document.getElementById("myBtnb");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+btnb.onclick = function() {
+  modalb.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+
+// When the user clicks on <span> (x), close the modal
+closeb.onclick = function() {
+  modalb.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modalb) {
+    modalb.style.display = "none";
+  }
+}
+</script>
+
+
+
+
+
 </body>
 
 </html>
