@@ -24,6 +24,112 @@
 </head>
 
 <body id="page-top">
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+                   <style>
+          .editableBox {
+    width: 70%;
+    height: 30px;
+}
+
+.timeTextBox {
+    width: 65%;
+    margin-left: -70%;
+    height: 25px;
+    border: none;
+}
+
+
+.editableBoxa {
+    width: 70%;
+    height: 30px;
+}
+
+.timeTextBoxa {
+    width: 65%;
+    margin-left: -70%;
+    height: 25px;
+    border: none;
+}
+
+
+.editableBoxaa {
+    width: 70%;
+    height: 30px;
+}
+
+.timeTextBoxaa {
+    width: 65%;
+    margin-left: -70%;
+    height: 25px;
+    border: none;
+}
+
+
+
+.editableBoxz {
+    width: 70%;
+    height: 30px;
+}
+
+.timeTextBoxz {
+    width: 65%;
+    margin-left: -70px;
+    margin-top: 10px;
+    height: 25px;
+    border: none;
+}
+
+        </style>
+                             <script>
+$(document).ready(function(){
+
+    $(".editableBox").change(function(){
+        $(".timeTextBox").val($(".editableBox option:selected").html());
+    });
+});
+
+$(document).ready(function(){
+
+    $(".editableBoxa").change(function(){
+        $(".timeTextBoxa").val($(".editableBoxa option:selected").html());
+    });
+});
+
+
+$(document).ready(function(){
+
+    $(".editableBoxz").change(function(){
+        $(".timeTextBoxz").val($(".editableBoxz option:selected").html());
+    });
+});
+</script>
+
   <script> function disable() {
   document.getElementById("name").disabled = true;
   }
@@ -56,33 +162,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
   {% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
-<style>
 
-* {
-color:;
-}
-  .faicons {
-  font-size: 18px;
-  margin-top: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  color: #5a5c69;
-  }
-
-  .icon-border {
-  border: 1px solid #d1d3e2;
-  border-radius: 5px 1px 1px 5px;
-  border-right: none;
-
-
-  }
-
-  .control-label {
-  color: black;
-
-  }
-
-</style>
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
@@ -92,7 +172,7 @@ color:;
           <script>
 function myFunction() {
 
-  var x = document.getElementById("myText12");
+  var x = document.getElementById("myText13");
   if (x.style.display === "none") {
     x.style.display = "block";
   } else {
@@ -109,7 +189,8 @@ function myFunction() {
     document.getElementById("myText9").disabled = false;
     document.getElementById("myText10").disabled = false;
     document.getElementById("myText11").disabled = false;
-    document.getElementById("myText12").style.display = "block";
+    document.getElementById("myText12").disabled = false;
+    document.getElementById("myText13").style.display = "block";
 }
 </script>
 <center>
@@ -138,6 +219,7 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
     <input  type="text" name="type_of_machine" disabled placeholder="Type of Machine" id="myText" value="{{product_id.type_of_machine}}" class="form-control" list="type_of_scale">
+      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
     <datalist style="height:20px;" id="type_of_scale">
     <option value = "Digital"></option>
     <option value = "Mechanical"></option>
@@ -161,52 +243,38 @@ function myFunction() {
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Model
 
 
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-      <input  type="text" disabled placeholder="Model" class="form-control" id="myText3" value="{{product_id.model}}" class="form-control" name="model" list="model">
-    <datalist style="height:20px;" id="model">
-    <option value = "Table Top"></option>
-    <option value = "Platform Scale"></option>
-    <option value = "POS Scales"></option>
-    <option value = "Water Proof Scales"></option>
-    <option value = "Jewellery Scales"></option>
-    <option value = "Lab Scales"></option>
-    <option value = "Crane Scales"></option>
-    <option value = "Platform Scales"></option>
-    <option value = "Mobile Platforms"></option>
-    <option value = "Infant Scales"></option>
-    <option value = "Baby Cum Adult Scales"></option>
-    <option value = "Animal Scales"></option>
-    <option value = "Cattle Scales"></option>
-    <option value = "Supra Pall Scales"></option>
-    </datalist>  </div>
-
-    </div>
-
-
-    <label class="col-md-2 control-label">Sub model
-
-
+  <label class="col-md-2 control-label">Model *
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="sub_model" disabled placeholder="Sub model
-
-" class="form-control" id="myText4" value="{{product_id.sub_model}}" type="text">
-    </div>
+<div class="wrapper">
+    <select class="editableBox" required name="state" value="" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
+      <option value="" selected="selected">Select</option>
+    </select>
+    <input class="timeTextBox" disabled id="myText3" value="{{product_id.model}}" name="model" maxlength="30"/>
+</div>
   </div>
 
+
+
+
+     <label class="col-md-2 control-label">Sub Model *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="wrapper">
+    <select class="editableBoxa" required name="countrya" value="" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+<option value="" selected="selected">Select</option>
+    </select>
+    <input class="timeTextBoxa" disabled id="myText4" value="{{product_id.sub_model}}" name="sub_model" maxlength="30"/>
 </div>
+  </div>
+</div>
+
 
 
 
@@ -217,6 +285,7 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
         <input  type="text" name="problem_in_scale" disabled placeholder="Problem In The Scale" id="myText5" value="{{product_id.problem_in_scale}}" class="form-control" list="problem_in_scale">
+      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
     <datalist style="height:20px;" id="problem_in_scale">
     <option value = "Scale not turning On"></option>
     <option value = "Scale is showing incorrect weight"></option>
@@ -242,6 +311,7 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
 <input  type="text" name="components_replaced_in_warranty" disabled placeholder="Components Replaced IW" id="myText6" value="{{product_id.components_replaced_in_warranty}}" class="form-control" list="components_replaced_in_warranty">
+      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
     <datalist style="height:20px;" id="components_replaced_in_warranty">
     <option value = "Display"></option>
     <option value = "Touch Pad"></option>
@@ -273,6 +343,7 @@ function myFunction() {
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
 
     <input  type="text" name="components_replaced" disabled placeholder="Components Replaced" id="myText7" value="{{product_id.components_replaced}}" class="form-control" list="components_replaced">
+      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
     <datalist style="height:20px;" id="components_replaced">
     <option value = "Display"></option>
     <option value = "Touch Pad"></option>
@@ -295,7 +366,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="replaced_scale_given" disabled placeholder="replaced_scale_given" id="myText8" value="{{product_id.replaced_scale_given}}" class="form-control"  type="text">
+  <input  name="replaced_scale_given" disabled placeholder="Replaced Scale given" id="myText8" value="{{product_id.replaced_scale_given}}" class="form-control"  type="text">
     </div>
   </div>
 
@@ -344,6 +415,7 @@ function myFunction() {
       <div class="input-group">
         <span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>
         <input class="form-control" name="in_warranty" placeholder="Yes or No" disabled id="myText11" list="rep_by" value="{{product_id.in_warranty}}">
+          <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
             <datalist style="height:20px;" id="rep_by">
 
       <option value="YES">
@@ -352,6 +424,19 @@ function myFunction() {
     </datalist>
       </div>
     </div>
+      <label class="col-md-2 control-label">
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+   <div class="wrapper">
+    <select class="editableBoxaa" required id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px; display:none;">
+<option value="{{product_id.sub_sub_model}}" selected="selected">Select</option>
+    </select>
+    <input class="timeTextBoxaa" disabled id="myText12" name="sub_sub_model" style="display:none;" maxlength="30"/>
+
+</div>
+  </div>
 </div>
 
 
@@ -362,7 +447,7 @@ function myFunction() {
         <button  onclick="myFunction()" class="btn btn-primary" type="reset" style="">Edit</button>
         <br>
         <br>
-        <button style="display:none;" id="myText12" type="submit" value="Submit" class="btn btn-primary">Save</button>
+        <button style="display:none;" id="myText13" type="submit" value="Submit" class="btn btn-primary">Save</button>
       </center>
     </div>
             </form>
@@ -395,9 +480,8 @@ function myFunction() {
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
-                <script>
-
-$(function() {
+          <script>
+  $(function() {
 $("#stars").val("0");
     $("div.star-rating > s").on("click", function(e) {
 
@@ -420,6 +504,133 @@ document.getElementById("").style.display = "none";
 };
 
 
+</script>
+           <script>
+var stateObject = {
+"Table Top Scales": {
+"ABS": ['ABS001','ABS002','ABS003','ABS004','ABS005','ABS006'],
+"MSS": ['MSS001','MSS002','MSS003','MSS004','MSS005','MSS006'],
+"SSS": ['SSS001','SSS002','SSS003','SSS004','SSS005','SSS006'],
+"MSB": ['MSB001','MSB002','MSB003','MSB004','MSB005','MSB006'],
+"SSB": ['SSB001','SSB002','SSB003','SSB004','SSB005','SSB006'],
+"MSBP":['MSBP001','MSBP002','MSBP003','MSBP004','MSBP005','MSBP006'],
+"SSBP":['SSBP001','SSBP002','SSBP003','SSBP004','SSBP005','SSBP006'],
+"PRCFB":['PRC001','PRC002','PRC003','PRC004','PRC005','PRC006'],
+"PRCP":['PRCP001','PRCP002','PRCP003','PRCP004','PRCP005','PRCP006']
+},
+
+
+"POS Scales": {
+"PRCPT":['PRCPT001','PRCPT002','PRCPT003','PRCPT004'],
+"POSP": ['PRCPT005','PRCPT006','PRCPT007']
+},
+
+
+"Water Proof Scales": {
+"ABSWR": ['ABSWR001','ABSWR002','ABSWR003','ABSWR004','ABSWR005','ABSWR006','ABSWR007'],
+"SSWR" : ['SSWR001','SSWR002','SSWR003','SSWR004','SSWR005','SSWR006','SSWR007']
+},
+
+
+"Jewellery Scales": {
+"JEWE" :['JEWE001','JEWE002','JEWE003','JEWE004','JEWE005','JEWE006','JEWE007']
+},
+
+
+
+"Lab Scales": {
+"LAB" :['LAB001','LAB002','LAB003','LAB004','LAB005','LAB006','LAB007','LAB008']
+},
+
+
+
+"Hanging Scales": {
+"CRS" :['CRS001','CRS002','CRS003','CRS004','CRS005','CRS006']
+},
+
+
+
+"Crane Scales": {
+"CRH" :['CRH001','CRH002','CRH003','CRH004','CRH005','CRH006','CRH007'],
+"Crane Scales with Remote Display and Printer" : ['CRH008','CRH009','CRH010','CRH011'],
+"Crane Scale with Heat Shield": ['CRH012','CRH013','CRH014'],
+"Crane Scale with Hand Held Remote Display": ['CRH015','CRH016','CRH017']
+},
+
+
+"Platform Scales": {
+"PLSS" : ['PLSS001','PLSS002','PLSS003','PLSS004','PLSS005','PLSS006','PLSS007'],
+"PLCHQ" : ['PLCHQ001','PLCHQ002','PLCHQ003','PLCHQ004','PLCHQ005','PLCHQ006','PLCHQ007'],
+"PLCHQH" : ['PLCHQH008','PLCHQH009','PLCHQH010','PLCHQH011','PLCHQH012'],
+"PLCHQR": ['PLCHQR013','PLCHQR014','PLCHQR015','PLCHQR016','PLCHQR017'],
+"PLSSW": ['PLSSW001','PLSSW002','PLSSW003','PLSSW004','PLSSW005'],
+"PLSSWWR": ['PLSSWWR001','PLSSWWR002','PLSSWWR003','PLSSWWR004','PLSSWWR005','PLSSWWR006','PLSSWWR007']
+},
+
+
+"Mobile Platforms": {
+"PLSSCHI": ['PLSSCHI001','PLSSCHI002','PLSSCHI003','PLSSCHI004','PLSSCHI005','PLSSCHI006','PLSSCHI007'],
+"PLCHQCHI": ['PLCHQCHI001','PLCHQCHI002','PLCHQCHI003','PLCHQCHI004','PLCHQCHI005','PLCHQCHI006','PLCHQCHI007','PLCHQCHI008','PLCHQCHI009','PLCHQCHI010']
+},
+
+
+"Infant Scales": {
+"BCI": ['BCI001','BCI002','BCI003','BCI004','BCIC005']
+},
+
+
+"Baby Cum Adult Scales": {
+"BCA": ['BCA001','BCA002','BCA003','BCA004']
+},
+
+
+"Animal Scales": {
+"AS": ['AS001','AS002','AS003','AS004','AS005']
+},
+
+
+"Cattle Scales": {
+"AWSSSG": ['ASSSG001','ASSSG002','ASSSG003','ASSSG004'],
+"AWSCIG": ['AWSCIG001','AWSCIG002','AWSCIG003','AWSCIG004','AWSCIG005','AWSCIG006']
+},
+
+
+"Supra Pall Scales": {
+"SUP": ['SUP001','SUP002','SUP003','SUP004','SUP005']
+},
+
+
+
+"Supra Pall Scales": {
+"LPG": ['LPG001']
+},
+
+}
+window.onload = function () {
+var countySel = document.getElementById("countySel"),
+stateSel = document.getElementById("stateSel"),
+districtSel = document.getElementById("districtSel");
+for (var country in stateObject) {
+countySel.options[countySel.options.length] = new Option(country, country);
+}
+countySel.onchange = function () {
+stateSel.length = 1; // remove all options bar first
+districtSel.length = 1; // remove all options bar first
+if (this.selectedIndex < 1) return; // done
+for (var state in stateObject[this.value]) {
+stateSel.options[stateSel.options.length] = new Option(state, state);
+}
+}
+countySel.onchange(); // reset in case page is reloaded
+stateSel.onchange = function () {
+districtSel.length = 1; // remove all options bar first
+if (this.selectedIndex < 1) return; // done
+var district = stateObject[countySel.value][this.value];
+for (var i = 0; i < district.length; i++) {
+districtSel.options[districtSel.options.length] = new Option(district[i], district[i]);
+}
+}
+}
 </script>
       </div>
     </div>

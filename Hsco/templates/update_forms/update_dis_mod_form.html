@@ -49,10 +49,50 @@ font-size: 14px;
 
   }
 
+
+
+
 </style>
-<style>
-    .border-right-primary{border-right:.25rem solid #4e73df!important}
-</style>
+   <style>
+          .editableBox {
+    width: 100%;
+    height: 30px;
+}
+
+.timeTextBox {
+    width: 154px;
+    margin-left: -178px;
+    height: 25px;
+    border: none;
+}
+
+
+.editableBoxa {
+    width: 100%;
+    height: 30px;
+}
+
+.timeTextBoxa {
+    width: 54px;
+    margin-left: -78px;
+    height: 25px;
+    border: none;
+}
+
+
+.editableBoxz {
+    width: 100%;
+    height: 30px;
+}
+
+.timeTextBoxz {
+    width: 54px;
+    margin-left: -78px;
+    height: 25px;
+    border: none;
+}
+
+        </style>
  <script> function disable() {
   document.getElementById("name").disabled = true;
   }
@@ -362,7 +402,15 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch" class="form-control" id="myText13" type="text" disabled value="{{dispatch_item.channel_of_dispatch}}">
+  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch" class="form-control" id="myText13" list="channel" type="text" disabled value="{{dispatch_item.channel_of_dispatch}}">
+     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+    <datalist style="height:20px;" id="channel">
+      <option value="Courier">
+      <option value="Transport">
+      <option value="Franchisee Store">
+      <option value="Online Market Places">
+      <option value="Delivery Boys">
+    </datalist>
     </div>
   </div>
 
@@ -403,11 +451,27 @@ function myFunction() {
 
           <br>
 </div>
+                <style>
+table {
+  font-family: arial, sans-serif;
+  width: 100%;
+}
 
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 5px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
 
   <br>
+        <div class="col-xl-12 col-md-12 mb-12">
     {% for list in product_list %}
-              <div class="col-xl-12 col-md-12 mb-12">
+
               <div class="card shadow">
                 <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
 

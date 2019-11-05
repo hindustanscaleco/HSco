@@ -396,9 +396,10 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="channel_of_sales" placeholder="Channel of Sales" value="{{purchase_id_id.channel_of_sales}}" class="form-control"  type="text" disabled id="myText12" list="channel10">
-        <datalist style="height:20px;" id="channel10">
+ <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+    <input type="text" required name="channel_of_sales" placeholder="Channel of Sales" class="form-control" disabled id="myText12" value="{{purchase_id_id.channel_of_sales}}" list="channel10">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="channel10">
       <option value="Retail through Physical Store"></option>
       <option value="Online Market Places"></option>
       <option value="India Mart"></option>
@@ -414,14 +415,31 @@ function myFunction() {
     <div class="form-group row">
 
 
-    <label class="col-md-2 control-label">Industry</label>
+    <label class="col-md-2 control-label">Industry * </label>
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="industry" placeholder="Industry" value="{{purchase_id_id.industry}}" class="form-control"  type="text" disabled id="myText13" value="{{purchase_id_id.industry}}">
-
+  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+    <input  type="text" required name="industry" placeholder="Industry" class="form-control" disabled id="myText13" value="{{purchase_id_id.industry}}" list="channel2">
+        <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="channel2">
+      <option value="Energy industry"></option>
+      <option value="Chemicals"></option>
+      <option value="Industrial Metals "></option>
+      <option value="Gold/Gems and precious Metals "></option>
+      <option value="Home and Heavy Construction companies "></option>
+      <option value="Electrical and Electronic Manufacturers"></option>
+      <option value="Industrial Transportation"></option>
+      <option value="Agriculture"></option>
+      <option value="Poultry/Livestock"></option>
+      <option value="Healthcare Equipment and Services"></option>
+      <option value="Textiles"></option>
+      <option value="Hotels"></option>
+      <option value="Grocery/Retail"></option>
+      <option value="Bakery"></option>
+    </datalist>
     </div>
   </div>
+
 
 
   <label class="col-md-2 control-label">Value of Goods
@@ -438,11 +456,18 @@ function myFunction() {
 
     <label class="col-md-2 control-label">Channel of Dispatch
 </label>
-    <div class="col-md-4 inputGroupContainer">
+      <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch"  class="form-control"  type="text" disabled id="myText15" value="{{purchase_id_id.channel_of_dispatch}}">
-
+  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+  <input  type="text" name="channel_of_dispatch" placeholder="Channel of Dispatch" required class="form-control" disabled id="myText15" value="{{purchase_id_id.channel_of_dispatch}}" list="channel">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="channel">
+      <option value="Courier">
+      <option value="Transport">
+      <option value="Franchisee Store">
+      <option value="Online Market Places">
+      <option value="Delivery Boys">
+    </datalist>
     </div>
   </div>
 

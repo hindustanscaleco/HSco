@@ -97,6 +97,20 @@ color:;
 }
 
 
+.editableBoxaa {
+    width: 70%;
+    height: 30px;
+}
+
+.timeTextBoxaa {
+    width: 65%;
+    margin-left: -70%;
+    height: 25px;
+    border: none;
+}
+
+
+
 .editableBoxz {
     width: 70%;
     height: 30px;
@@ -104,7 +118,8 @@ color:;
 
 .timeTextBoxz {
     width: 65%;
-    margin-left: -78px;
+    margin-left: -70px;
+    margin-top: 10px;
     height: 25px;
     border: none;
 }
@@ -128,8 +143,8 @@ $(document).ready(function(){
 
 $(document).ready(function(){
 
-    $(".editableBoxz").change(function(){
-        $(".timeTextBoxz").val($(".editableBoxz option:selected").html());
+    $(".editableBoxaa").change(function(){
+        $(".timeTextBoxaa").val($(".editableBoxaa option:selected").html());
     });
 });
 </script>
@@ -155,6 +170,7 @@ $(document).ready(function(){
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
 <input  type="text" required name="type_of_scale" placeholder="Type Of Scale" class="form-control" list="type_of_scale">
+      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
     <datalist style="height:20px;" id="type_of_scale">
     <option value = "Electronics"></option>
     <option value = "Mechanical"></option>
@@ -175,7 +191,7 @@ $(document).ready(function(){
     <select class="editableBox" required name="state" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
       <option value="" selected="selected">Select</option>
     </select>
-    <input class="timeTextBox" name="model_of_purchase" maxlength="5"/>
+    <input class="timeTextBox" name="model_of_purchase" maxlength="30"/>
 </div>
   </div>
 
@@ -191,7 +207,7 @@ $(document).ready(function(){
     <select class="editableBoxa" required name="countrya" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
 <option value="" selected="selected">Select</option>
     </select>
-    <input class="timeTextBoxa" name="sub_model" maxlength="5"/>
+    <input class="timeTextBoxa" name="sub_model" maxlength="30"/>
 </div>
   </div>
   <label class="col-md-2 control-label">Sub Sub Model *
@@ -200,9 +216,10 @@ $(document).ready(function(){
 </label>
   <div class="col-md-4 inputGroupContainer">
    <div class="wrapper">
-    <select class="editableBoxz" required name="sub_sub_model" id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBoxaa" required id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
 <option value="" selected="selected">Select</option>
     </select>
+    <input class="timeTextBoxaa" name="sub_sub_model" maxlength="30"/>
 
 </div>
   </div>

@@ -139,8 +139,12 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="type_of_machine" disabled id="myText" value="{{onsite_id.type_of_machine}}" placeholder="Type of Machine" class="form-control" >
-
+    <input  type="text" name="type_of_machine" disabled id="myText" value="{{onsite_id.type_of_machine}}" list="type_of_scale"placeholder="Type of Machine" class="form-control" >
+  <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+    <datalist style="height:20px;" id="type_of_scale">
+    <option value = "Digital"></option>
+    <option value = "Mechanical"></option>
+    </datalist>
     </div>
   </div>
 
@@ -217,8 +221,21 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="problem_in_scale" disabled id="myText6" value="{{onsite_id.problem_in_scale}}" placeholder="Problem in the scale" class="form-control" >
-
+    <input  type="text" name="problem_in_scale" disabled id="myText6" list="problem_in_scale" value="{{onsite_id.problem_in_scale}}" placeholder="Problem in the scale" class="form-control" >
+ <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+    <datalist style="height:20px;" id="problem_in_scale">
+    <option value = "Scale not turning On"></option>
+    <option value = "Scale is showing incorrect weight"></option>
+    <option value = "Scale only shows 888888"></option>
+    <option value = "Scale only shows zero"></option>
+    <option value = "Weight is slowly increasing or decreasing"></option>
+    <option value = "buttons are not working"></option>
+    <option value = "Scale doesnt show stable weight"></option>
+    <option value = "Display problems (Display gets distorted while showing weight)"></option>
+    <option value = "Scale is not working on battery or scale is not charging"></option>
+    <option value = "Scale turns OFF automatically"></option>
+    <option value = "Others"></option>
+    </datalist>
     </div>
   </div>
 
@@ -237,8 +254,21 @@ function myFunction() {
       <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-gears faicons"></i></span>
-          <input  type="text" name="components_replaced_in_warranty" disabled id="myText7" value="{{onsite_id.components_replaced_in_warranty}}" placeholder="Components Replaced in Waranty" class="form-control" >
-
+          <input  type="text" name="components_replaced_in_warranty" list="components_replaced_in_warranty" disabled id="myText7" value="{{onsite_id.components_replaced_in_warranty}}" placeholder="Components Replaced in Waranty" class="form-control" >
+  <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="components_replaced_in_warranty">
+    <option value = "Display"></option>
+    <option value = "Touch Pad"></option>
+    <option value = "LED"></option>
+    <option value = "Transformer"></option>
+    <option value = "Battery"></option>
+    <option value = "Switch"></option>
+    <option value = "Main Cord wire"></option>
+    <option value = "Main Circuit Board"></option>
+    <option value = "SMPS"></option>
+    <option value = "Load Cell"></option>
+    <option value = "Misc"></option>
+    </datalist>
     </div>
   </div>
 
@@ -248,8 +278,22 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-window-restore faicons"></i></span>
-  <input  name="components_replaced" placeholder="Components Replaced" disabled id="myText8" value="{{onsite_id.components_replaced_in_warranty}}" class="form-control"  type="text">
-    </div>
+  <input  name="components_replaced" placeholder="Components Replaced" list="components_replaced" disabled id="myText8" value="{{onsite_id.components_replaced_in_warranty}}" class="form-control"  type="text">
+      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="components_replaced">
+    <option value = "Display"></option>
+    <option value = "Touch Pad"></option>
+    <option value = "LED"></option>
+    <option value = "Transformer"></option>
+    <option value = "Battery"></option>
+    <option value = "Switch"></option>
+    <option value = "Main Cord wire"></option>
+    <option value = "Main Circuit Board"></option>
+    <option value = "SMPS"></option>
+    <option value = "Load Cell"></option>
+    <option value = "Misc"></option>
+    </datalist>
+  </div>
   </div>
 
 </div>
