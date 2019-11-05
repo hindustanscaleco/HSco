@@ -63,7 +63,10 @@ def add_repairing_details(request):
         # products_to_be_repaired = request.POST.get('products_to_be_repaired')
 
         total_cost = 0.0
+
         informed_on = request.POST.get('informed_on')
+
+
         informed_by = request.POST.get('informed_by')
         confirmed_estimate = request.POST.get('confirmed_estimate')
         repaired = request.POST.get('repaired')
@@ -104,7 +107,9 @@ def add_repairing_details(request):
         # item2.products_to_be_repaired = products_to_be_repaired
 
         item2.total_cost = 0.0
-        item2.informed_on = informed_on
+        if informed_on != '':
+            item2.informed_on = informed_on
+
         item2.informed_by = informed_by
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired

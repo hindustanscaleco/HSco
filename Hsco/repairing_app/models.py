@@ -25,7 +25,7 @@ class Repairing_after_sales_service(models.Model):
     # products_to_be_repaired = models.CharField(max_length=30,null=True,blank=True)
     current_stage = models.CharField(default='Scale is collected but estimate is not given',max_length=50,null=True,blank=True)
     total_cost = models.FloatField(default=0.0)
-    informed_on = models.CharField(max_length=60,null=True,blank=True)
+    informed_on = models.DateField(null=True,blank=True)
     informed_by = models.CharField(max_length=60,null=True,blank=True)
     confirmed_estimate = models.CharField(default='NO',max_length=30,null=True,blank=True)
     repaired = models.CharField(default='NO',max_length=30,null=True,blank=True)
