@@ -36,7 +36,7 @@ class Purchase_Details(models.Model):   #cleaned
     value_of_goods = models.FloatField(default=0.0,null=True,blank=True)
     channel_of_dispatch = models.CharField(max_length=100,null=True,blank=True)
     notes = models.CharField(max_length=100,null=True,blank=True)
-    feedback_form_filled = models.BooleanField(default=False,null=True,blank=True)
+    feedback_form_filled = models.BooleanField(default=False)
     sales_person = models.CharField(max_length=30, null=True, blank=True)
     new_repeat_purchase = models.CharField(max_length=10, null=True, blank=True)
     dispatch_id_assigned = models.ForeignKey(Dispatch,on_delete=models.CASCADE,null=True,blank=True)  #remaining make forenkey of this with Dispatch module

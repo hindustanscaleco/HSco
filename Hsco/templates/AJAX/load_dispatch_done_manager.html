@@ -37,15 +37,16 @@
 
 {% else %}
 
-   <div class="row">
+     <div class="row">
 
   <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
                     <div class="col-xl-2 col-md-1 mb-1"><center> Dispatch ID </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Company Name </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Date Of Dispatch </center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> Customer Name </center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> Contact No </center></div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center> Dispatched by </center></div>
+                    <!--<div class="col-xl-3 col-md-1 mb-1"><center> Feedback Given </center></div>-->
 
 
                 </div>
@@ -62,10 +63,11 @@
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_dispatch_details/{{list.id}}" >{{ list.dispatch_id }}</a> </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.company_name }} </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.date_of_dispatch }} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_dispatch_details/{{list.id}}" >{{ list.pk }}</a> </center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.crm_no.customer_name }} </center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.crm_no.contact_no }} </center></div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.dispatch_by }} </center></div>
+                    <!--<div class="col-xl-3 col-md-1 mb-1"><center>{{ list.dispatch_by }} </center></div>-->
 
 
 

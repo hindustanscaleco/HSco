@@ -214,7 +214,7 @@ Format : (crm no)-(customer name)-(company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="sales_person" placeholder="Sales Person" required class="form-control" list="channel101" type="text">
+  <input name="sales_person" placeholder="Sales Person" value="{{ user.name }}" required class="form-control" list="channel101" type="text">
     <datalist style="height:20px;" id="channel101">
       {% for item in sales_person_sugg %}
       <option value="{{item.name}}"></option>
@@ -360,17 +360,17 @@ Format : (crm no)-(customer name)-(company name)
 
 <div class="form-group row">
 
-  <label class="col-md-2 control-label">Value of Goods
+  <!--<label class="col-md-2 control-label">Value of Goods-->
 
 
 
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods" required placeholder="Value of Goods" class="form-control" step="0.2" type="number">
-    </div>
-  </div>
+<!--</label>-->
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+  <!--<input  name="value_of_goods" required placeholder="Value of Goods" class="form-control" step="0.2" type="number">-->
+    <!--</div>-->
+  <!--</div>-->
 
 
 
@@ -412,17 +412,17 @@ Format : (crm no)-(customer name)-(company name)
 
 
 
-    <label class="col-md-2 control-label">Feedback Form Filled
-</label>
-    <div class="col-md-4 inputGroupContainer">
-    <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="feedback_form_filled" placeholder="New/Repeat Purchase" class="form-control" value="False" class="form-control">
-  <option value="False">No</option>
-  <option value="True">Yes</option>
-</select>
-    </div>
-  </div>
+    <!--<label class="col-md-2 control-label">Feedback Form Filled-->
+<!--</label>-->
+    <!--<div class="col-md-4 inputGroupContainer">-->
+    <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
+<!--<select name="feedback_form_filled" placeholder="New/Repeat Purchase" class="form-control" value="False" class="form-control">-->
+  <!--<option value="False">No</option>-->
+  <!--<option value="True">Yes</option>-->
+<!--</select>-->
+    <!--</div>-->
+  <!--</div>-->
   </div>
 
 <center>

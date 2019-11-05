@@ -365,6 +365,29 @@ $(function() {
 
             </div>
 
+
+                        <br>
+               <style>
+        .border-right-primarya {
+        border-right: 4px solid blue;
+        }
+        .border-left-primarya {
+        border-left: 4px solid blue;
+        }
+    </style>
+<style>
+  .border-left-primary {
+    border-left: .09rem solid #4e73df!important;
+    font-size: 12px;
+
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+</style>
+
 <div style="min-height: 26vw;">
 
     {% if deleted %}
@@ -381,7 +404,7 @@ $(function() {
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary"> Company Name </center></div>
                     <div class="col-xl-1 col-md-1 mb-1 "><center class="border-left-primary">  Purchase ID </center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">  Contact No. </center> </div>
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">   Email Id </center> </div>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">   Sales Person </center> </div>
                     <div class="col-xl-1 col-md-1 mb-1 "><center class="border-left-primary"> Feedback  </center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary"> <p>Stars</p> </center>
                     </div>
@@ -390,19 +413,7 @@ $(function() {
               </div>
             </div>
 
-            <br>
-<style>
-  .border-left-primary {
-    border-left: .09rem solid #4e73df!important;
-    font-size: 12px;
 
-}
-
-a:hover {
-  text-decoration: none;
-}
-
-</style>
 
 <br>
 <br>
@@ -415,13 +426,13 @@ a:hover {
 
 
 
-                    <div class="col-xl-12 col-md-11 mb-1" style="font-size:10px;">Dispatch Id: {% if list1.dispatch_id_assigned %} {{ list1.dispatch_id_assigned}}{% else %}N/A{% endif %} </div>
+                    <div class="col-xl-12 col-md-11 mb-1" style="font-size:10px;">Dispatch Id: {% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned}}{% endif %} </div>
 
                     <div class="col-xl-2 col-md-1 mb-1"> {{ list1.crm_no.customer_name }}</div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.company_name}} </div>
                     <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{{ list1.pk}} </div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.contact_no}} </div>
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.customer_email_id}} </div>
+                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.sales_person}} </div>
                     <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{% if list1.feedback_form_filled %} YES {% else %} NO {% endif %}</div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">
                          {% for avg in  list1.feedback_stars|rjust:'5'  %}
@@ -447,16 +458,51 @@ a:hover {
 
             </div>
 
-    <style>
-        .border-right-primarya {
-        border-right: 4px solid blue;
-        }
-        .border-left-primarya {
-        border-left: 4px solid blue;
-        }
-    </style>
 
-<center>
+
+        </div>
+</div>
+<br>
+  </div>
+  <!-- End of Page Wrapper -->
+  </div>
+  </div>
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+             <script>
+
+        function toggleCheckbox(select) {
+value = select.checked;
+
+    $.ajax({
+        url: "/load_dispatch_done/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_subcat").html(data);
+        }
+      });
+}
+        function toggleCheckbox2(select) {
+value = !select.checked;
+
+    $.ajax({
+        url: "/load_users/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+    </script>
     <!--<div class="row" style="width: 100%; margin-top: 20%;">-->
 
         <!--{% if request.user.is_authenticated %}-->
@@ -540,51 +586,6 @@ a:hover {
 
 
           <!--</div>-->
-</center>
-        </div>
-</div>
-<br>
-  </div>
-  <!-- End of Page Wrapper -->
-  </div>
-  </div>
-
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-
-             <script>
-
-        function toggleCheckbox(select) {
-value = select.checked;
-
-    $.ajax({
-        url: "/load_dispatch_done/",
-        data: {
-          'loc_id':value,
-        },
-        success: function (data) {
-           $("#id_subcat").html(data);
-        }
-      });
-}
-        function toggleCheckbox2(select) {
-value = !select.checked;
-
-    $.ajax({
-        url: "/load_users/",
-        data: {
-          'loc_id':value,
-        },
-        success: function (data) {
-           $("#id_manager_view").html(data);
-        }
-      });
-}
-
-    </script>
-
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>

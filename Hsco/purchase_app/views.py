@@ -27,6 +27,8 @@ def add_purchase_details(request):
     if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
         sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name,
                                             modules_assigned__icontains='Customer Module')
+
+
     else:  # display colleague
         list_group = SiteUser.objects.get(id=request.user.id).group
         import ast
@@ -42,6 +44,8 @@ def add_purchase_details(request):
 
         sales_person_sugg = SiteUser.objects.filter(group__icontains=manager_list,
                                             modules_assigned__icontains='Customer Module')
+
+
 
     form = Purchase_Details_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
@@ -61,10 +65,10 @@ def add_purchase_details(request):
         po_number = request.POST.get('po_number')
         channel_of_sales = request.POST.get('channel_of_sales')
         industry = request.POST.get('industry')
-        value_of_goods = request.POST.get('value_of_goods')
+        # value_of_goods = request.POST.get('value_of_goods')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
-        feedback_form_filled = request.POST.get('feedback_form_filled')
+        # feedback_form_filled = request.POST.get('feedback_form_filled')
 
         item2 = Purchase_Details()
         item = Customer_Details()
@@ -99,10 +103,10 @@ def add_purchase_details(request):
         item2.po_number = po_number
         item2.channel_of_sales = channel_of_sales
         item2.industry = industry
-        item2.value_of_goods = float(value_of_goods)
+        item2.value_of_goods = 0.0
         item2.channel_of_dispatch = channel_of_dispatch
         item2.notes = notes
-        item2.feedback_form_filled = feedback_form_filled
+        item2.feedback_form_filled = False
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save()
@@ -138,6 +142,9 @@ def add_purchase_details(request):
             customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
             customer_id.save(update_fields=['dispatch_id_assigned'])
 
+        # customer_id = Purchase_Details.objects.get(id=item2.pk)
+        # customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
+        # customer_id.save(update_fields=['dispatch_id_assigned'])
 
 
 
@@ -145,7 +152,7 @@ def add_purchase_details(request):
         # send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
         if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            Employee_Analysis_date.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + value_of_goods)
+            Employee_Analysis_date.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + 0.0)
             # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
             # ead.save(update_fields=['total_sales_done_today'])
@@ -153,7 +160,7 @@ def add_purchase_details(request):
         else:
             ead = Employee_Analysis_date()
             ead.user_id = SiteUser.objects.get(id=request.user.pk)
-            ead.total_sales_done_today = value_of_goods
+            ead.total_sales_done_today = 0.0
             # ead.total_dispatch_done_today = value_of_goods
             ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
             ead.month = datetime.now().month
@@ -161,7 +168,7 @@ def add_purchase_details(request):
             ead.save()
 
         if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            Employee_Analysis_month.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done=F("total_sales_done") + value_of_goods)
+            Employee_Analysis_month.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done=F("total_sales_done") + 0.0)
             # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
             # ead.save(update_fields=['total_sales_done_today'])
@@ -169,7 +176,7 @@ def add_purchase_details(request):
         else:
             ead = Employee_Analysis_month()
             ead.user_id = SiteUser.objects.get(id=request.user.pk)
-            ead.total_sales_done = value_of_goods
+            ead.total_sales_done = 0.0
             # ead.total_dispatch_done = value_of_goods
             ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
             ead.month = datetime.now().month
@@ -256,11 +263,16 @@ def add_purchase_details(request):
 
         return redirect('/add_product_details/'+str(item2.id))
 
+
+
     context = {
         'form': form,
         'cust_sugg': cust_sugg,
         'sales_person_sugg': sales_person_sugg,
     }
+    # print(sales_person_sugg)
+    # print(sales_person_sugg)
+    # print(sales_person_sugg)
     return render(request,'forms/cust_mod_form.html',context)
 
 

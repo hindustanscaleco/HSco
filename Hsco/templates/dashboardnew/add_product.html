@@ -146,6 +146,26 @@ $(document).ready(function(){
 
 <div class="form-group row">
 
+        <label class="col-md-2 control-label">Type of Scale *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+<input  type="text" required name="type_of_scale" placeholder="Type Of Scale" class="form-control" list="type_of_scale">
+    <datalist style="height:20px;" id="type_of_scale">
+    <option value = "Electronics"></option>
+    <option value = "Mechanical"></option>
+    <option value = "China"></option>
+    <option value = "Addons"></option>
+    </datalist>
+     </div>
+  </div>
+
+
+
     <label class="col-md-2 control-label">Model of Purchase *
 
 </label>
@@ -245,23 +265,7 @@ $(document).ready(function(){
   </div>
   </div>
 
-    <label class="col-md-2 control-label">Type of Scale *
 
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-
-<input  type="text" required name="type_of_scale" placeholder="Type Of Scale" class="form-control" list="type_of_scale">
-    <datalist style="height:20px;" id="type_of_scale">
-    <option value = "Electronics"></option>
-    <option value = "Mechanical"></option>
-    <option value = "China"></option>
-    <option value = "Addons"></option>
-    </datalist>
-     </div>
-  </div>
 
 </div>
 
@@ -287,14 +291,14 @@ $(document).ready(function(){
 <!--  <input  name="purchase_type" placeholder="Purchase Type" class="form-control"  type="text" value="">-->
 <!--    </div>-->
 <!--  </div>-->
-                    <label class="col-md-2 control-label">Quantity
+                    <label class="col-md-2 control-label">Quantity *
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>
-  <input  name="quantity" placeholder="Quantity" class="form-control" type="text" value="">
+  <input  name="quantity" placeholder="Quantity" required class="form-control" type="text" value="1">
     </div>
   </div>
 <!--                    <label class="col-md-2 control-label">Sales Person-->

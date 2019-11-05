@@ -90,6 +90,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 
           <div class="row" style="padding:20px;">
                <label class="col-md-6 control-label">CRM Number: {{customer_id.pk}}</label>
+               <label class="col-md-6 control-label">Purchase ID: {{purchase_id_id.pk}}</label>
 
           </div>
 <br>
@@ -120,7 +121,7 @@ function myFunction() {
     document.getElementById("myText14").disabled = false;
     document.getElementById("myText15").disabled = false;
     document.getElementById("myText16").disabled = false;
-    document.getElementById("myText17").disabled = false;
+    document.getElementById("myText17").disabled = true;
     document.getElementById("myText18").disabled = false;
     document.getElementById("myText19").style.display = "block";
 
@@ -482,7 +483,10 @@ function myFunction() {
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
   <input  name="dispatch_id_assigned" placeholder="Dispatch ID Assigned" class="form-control" disabled value="{{purchase_id_id.dispatch_id_assigned}}" type="text">
     </div>
+        <a style="margin-left:30%;" href="/update_dispatch_details/{{purchase_id_id.dispatch_id_assigned}}">Go To Dispatch --></a>
   </div>
+
+
     </div>
 
 <br>
@@ -523,8 +527,9 @@ function myFunction() {
 
                   <div class="col-xl-4 col-md-1 mb-1"><center> Brand: {{list.brand}}  </center> </div>
                   <div class="col-xl-4 col-md-1 mb-1"><center> Capacity: {{list.capacity}}  </center> </div>
+                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Unit: {{list.unit}}  </center> </div>
                   <div class="col-xl-4 col-md-1 mb-1"><center> Quantity: {{list.quantity}}  </center> </div>
-                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Unit: {{list.unit}}  </center> </div>
+
 
                     </div>
 
