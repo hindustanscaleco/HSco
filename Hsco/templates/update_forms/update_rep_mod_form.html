@@ -180,6 +180,13 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 
 <script>
 function myFunction() {
+
+  var x = document.getElementById("myText19");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
   <!--document.getElementById("myText").disabled = false;   this should no edit-->
     <!--document.getElementById("myText2").disabled = false;   this should not be editable-->
     document.getElementById("myText3").disabled = false;
@@ -205,9 +212,7 @@ function myFunction() {
 <!--    document.getElementById("myText22").disabled = false;-->
 <!--    document.getElementById("myText23").disabled = false;-->
     document.getElementById("button").disabled = false;
-    document.getElementById("myText25").style.display = "block";
-
-
+    document.getElementById("myText19").style.display = "block";
 }
 </script>
 
@@ -551,18 +556,20 @@ function myFunction() {
 <!--5) Final Deleviry sms"-->
 <!--</p>-->
 
-<center>
-  <a  href="repairing_module_home/"><button style=""  class="btn btn-primary">Save</button></a>
-
-</center>
+   <div class="col-md-12 ">
+      <br>
+    <center>
+        <button  onclick="myFunction()" class="btn btn-primary" type="reset" style="">Edit</button>
+        <br>
+        <br>
+        <button style="display:none;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
+      </center>
+    </div>
 
 
 
 </fieldset>
-</form><center>
-
-                               <button  onclick="myFunction()" type="reset" class="btn btn-primary" >Edit</button>
-</center>
+</form>
 <br>
 <center>
                       <a href="/repair_product/{{repair_id.id}}"> <button class="btn btn-primary">Add Product</button></a>

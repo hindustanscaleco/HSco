@@ -24,7 +24,20 @@
 </head>
 
 <body id="page-top">
+  <script> function disable() {
+  document.getElementById("name").disabled = true;
+  }
 
+  function enable() {
+   document.getElementById("name").disabled = false;
+  }
+
+var form = document.getElementById("contact_form");
+var elements = form.elements;
+for (var i = 0, len = elements.length; i < len; ++i) {
+    elements[i].disabled = true;
+}
+</script>
   <!-- Page Wrapper -->
   <div id="wrapper">
   {% include 'base_templates/sidebar.html' %}
@@ -78,6 +91,13 @@ color:;
           <br>
           <script>
 function myFunction() {
+
+  var x = document.getElementById("myText12");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
   document.getElementById("myText").disabled = false;
     document.getElementById("myText2").disabled = false;
     document.getElementById("myText3").disabled = false;
@@ -89,6 +109,7 @@ function myFunction() {
     document.getElementById("myText9").disabled = false;
     document.getElementById("myText10").disabled = false;
     document.getElementById("myText11").disabled = false;
+    document.getElementById("myText12").style.display = "block";
 }
 </script>
 <center>
@@ -274,7 +295,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="components_replaced" disabled placeholder="Components Replaced" id="myText8" value="{{product_id.replaced_scale_given}}" class="form-control"  type="text">
+  <input  name="replaced_scale_given" disabled placeholder="replaced_scale_given" id="myText8" value="{{product_id.replaced_scale_given}}" class="form-control"  type="text">
     </div>
   </div>
 
@@ -335,15 +356,18 @@ function myFunction() {
 
 
             <br>
-<center>
-    <button type="submit" class="btn btn-primary">Submit</button>
-
-</center>
+    <div class="col-md-12 ">
+      <br>
+    <center>
+        <button  onclick="myFunction()" class="btn btn-primary" type="reset" style="">Edit</button>
+        <br>
+        <br>
+        <button style="display:none;" id="myText12" type="submit" value="Submit" class="btn btn-primary">Save</button>
+      </center>
+    </div>
             </form>
           <br>
-        <center>
-          <button  onclick="myFunction()" class="btn btn-primary">Edit</button>
-      </center>
+
 
   </div>
   <!-- End of Page Wrapper -->
@@ -371,6 +395,32 @@ function myFunction() {
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+                <script>
+
+$(function() {
+$("#stars").val("0");
+    $("div.star-rating > s").on("click", function(e) {
+
+    // remove all active classes first, needed if user clicks multiple times
+    $(this).closest('div').find('.active').removeClass('active');
+
+    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+    $(e.target).addClass('active');  // the element user has clicked on
+
+
+        var numStars = $(e.target).parentsUntil("div").length+1;
+        $("#stars").val(numStars);
+
+
+    });
+});
+
+  window.onload = function() {
+document.getElementById("").style.display = "none";
+};
+
+
+</script>
       </div>
     </div>
   </div>

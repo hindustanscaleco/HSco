@@ -795,7 +795,6 @@ def edit_product_customer(request,id):
     # dispatch_id_assigned = str(purchase_id.dispatch_id_assigned)
     product_id = Product_Details.objects.get(id=id)
     if request.method == 'POST':
-        product_name = request.POST.get('product_name')
         quantity = request.POST.get('quantity')
         model_of_purchase = request.POST.get('model_of_purchase')
         type_of_scale = request.POST.get('type_of_scale')
@@ -810,7 +809,6 @@ def edit_product_customer(request,id):
 
         item = product_id
 
-        item.product_name = product_name
         item.quantity = quantity
         item.type_of_scale = type_of_scale
         item.model_of_purchase = model_of_purchase
@@ -825,7 +823,7 @@ def edit_product_customer(request,id):
         item.purchase_type = purchase_type
         # item.user_id = SiteUser.objects.get(id=request.user.pk)
         # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item.save(update_fields=['product_name', 'quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
+        item.save(update_fields=['quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
                                  'serial_no_scale', 'brand', 'capacity', 'unit', 'purchase_id_id',
                                  ])
         # try:
@@ -852,7 +850,7 @@ def edit_product_customer(request,id):
         # except:
         #     pass
 
-        return redirect('/update_customer_details/' + str(purchase_id))
+        return redirect('/update_customer_details/' + str(purchase_id.id))
 
     context = {
         'product_id': product_id,
