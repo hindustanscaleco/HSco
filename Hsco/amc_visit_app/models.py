@@ -35,7 +35,7 @@ class Amc_After_Sales(models.Model):
     repot_3 = models.CharField(max_length=80,null=True,blank=True)
     visit_4 = models.DateField(null=True,blank=True)
     repot_4 = models.CharField(max_length=80,null=True,blank=True)
-    feedback_given = models.CharField(default='NO',max_length=10,null=True,blank=True)
+    feedback_given = models.BooleanField(default=False)
     avg_feedback = models.FloatField(default=0.0)
     entry_timedate = models.DateTimeField(default=timezone.now,)
 
@@ -54,6 +54,9 @@ class Amc_After_Sales(models.Model):
         return self.pk
 
 class AMC_Feedback(models.Model):
+    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    customer_id = models.ForeignKey(Customer_Details, on_delete=models.CASCADE)
+    amc_id = models.ForeignKey(Amc_After_Sales, on_delete=models.CASCADE)
     satisfied_with_work = models.FloatField(default=0.00)
     speed_of_performance = models.FloatField(default=0.00)
     price_of_amc = models.FloatField(default=0.00)
@@ -61,6 +64,8 @@ class AMC_Feedback(models.Model):
     about_hsco = models.CharField(max_length=60, null=True, blank=True)
     any_suggestion = models.CharField(max_length=90, null=True, blank=True)
 
+    class Meta:
+        unique_together = ('user_id', 'customer_id', 'amc_id',)
 
 
 

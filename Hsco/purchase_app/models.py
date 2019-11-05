@@ -1,26 +1,16 @@
-
 import datetime
 from django.db import models
 from django.utils import timezone
-
 from customer_app.models import Customer_Details
 from dispatch_app.models import Dispatch
-
 from user_app.models import SiteUser
+
+from dispatch_app.models import Product_Details_Dispatch
 
 choices = (('NO', 'NO'),
     ('YES', 'YES'),)
 
-feedback = (('1', '1'),
-    ('2', '2'),
-    ('3', '3'),
-    ('4', '4'),
-    ('5', '5'),
-    ('6', '6'),
-    ('7', '7'),
-    ('8', '8'),
-    ('9', '9'),
-    ('10', '10'),)
+
 
 
 class Purchase_Details(models.Model):   #cleaned
@@ -50,6 +40,7 @@ class Product_Details(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
     purchase_id = models.ForeignKey(Purchase_Details,on_delete=models.CASCADE)
+    product_dispatch_id = models.ForeignKey(Product_Details_Dispatch,on_delete=models.CASCADE,null=True, blank=True)
     # product_name = models.CharField(max_length=30,null=True,blank=True)
     quantity = models.CharField(max_length=30,null=True,blank=True)
     type_of_scale = models.CharField(max_length=30,null=True,blank=True)

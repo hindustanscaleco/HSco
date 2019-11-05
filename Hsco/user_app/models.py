@@ -85,7 +85,7 @@ class SiteUser(AbstractBaseUser):
     name =models.CharField('Name',max_length=50,null=True,blank=True)
     role = models.CharField('Role  Of User',max_length=20, choices=choices,null=True,blank=True)
     group = models.CharField(max_length=300, null=True, blank=True)
-    is_deleted = models.BooleanField(default=False,null=True,blank=True)
+    is_deleted = models.BooleanField(default=False)
     modules_assigned = models.CharField(max_length=300,null=True, blank=True)
     photo = models.ImageField(upload_to='profile_image/',null=True, blank=True)
     created_by = models.CharField(max_length=30,null=True, blank=True)
