@@ -128,7 +128,7 @@ def add_repairing_details(request):
         item2.repaired = repaired
         item2.delivery_by = delivery_by
         item2.repaired_by = repaired_by
-        item2.feedback_given = feedback_given
+        item2.feedback_given = False
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.current_stage = current_stage

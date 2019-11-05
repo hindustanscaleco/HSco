@@ -251,7 +251,7 @@ function myFunction() {
     <select class="editableBox" required name="state" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
       <option value="{{product_id.model_of_purchase}}" selected="selected">Select</option>
     </select>
-    <input class="timeTextBox" disabled id="myText2" name="model_of_purchase" maxlength="30"/>
+    <input class="timeTextBox" value="{{product_id.model_of_purchase}}" disabled id="myText2" name="model_of_purchase" maxlength="30"/>
 </div>
   </div>
 
@@ -267,7 +267,7 @@ function myFunction() {
     <select class="editableBoxa" required name="countrya" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
 <option value="{{product_id.sub_model}}" selected="selected">Select</option>
     </select>
-    <input class="timeTextBoxa" disabled id="myText3" name="sub_model" maxlength="30"/>
+    <input class="timeTextBoxa" value="{{product_id.sub_model}}" disabled id="myText3" name="sub_model" maxlength="30"/>
 </div>
   </div>
   <label class="col-md-2 control-label">Sub Sub Model *
@@ -279,7 +279,7 @@ function myFunction() {
     <select class="editableBoxaa" required id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
 <option value="{{product_id.sub_sub_model}}" selected="selected">Select</option>
     </select>
-    <input class="timeTextBoxaa" disabled id="myText4" name="sub_sub_model" maxlength="30"/>
+    <input class="timeTextBoxaa" value="{{product_id.sub_sub_model}}" disabled id="myText4" name="sub_sub_model" maxlength="30"/>
 
 </div>
   </div>
