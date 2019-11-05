@@ -158,6 +158,7 @@ function myFunction() {
     document.getElementById("myText12").disabled = false;
     document.getElementById("myText13").disabled = false;
     document.getElementById("myText14").disabled = false;
+    document.getElementById("myText16").disabled = false;
     document.getElementById("myText15").style.display = "block";
 
 }
@@ -194,17 +195,7 @@ function myFunction() {
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Customer Email ID
 
-
-</label>
-
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="customer_email_id" placeholder="Customer Email ID" class="form-control" type="text" id="myText" disabled value="{{dispatch_item.crm_no.customer_email_id}}">
-    </div>
-  </div>
 
     <label class="col-md-2 control-label">Customer Name *
 
@@ -218,6 +209,17 @@ function myFunction() {
     </div>
   </div>
 
+    <label class="col-md-2 control-label">Customer Email ID
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input  name="customer_email_id" placeholder="Customer Email ID" class="form-control" type="text" id="myText" disabled value="{{dispatch_item.crm_no.customer_email_id}}">
+    </div>
+  </div>
 
 
 </div>
@@ -236,15 +238,31 @@ function myFunction() {
     </div>
   </div>
 
-    <label class="col-md-2 control-label">customer Address *
+    <label class="col-md-2 control-label">customer Address
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<input name="customer_address" class="form-control" required id="myText4" disabled value="{{dispatch_item.crm_no.address}}"/>    </div>
+<input name="customer_address" class="form-control" id="myText4" disabled value="{{dispatch_item.crm_no.address}}"/>    </div>
   </div>
+
+</div>
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Contact No *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="contact_no" placeholder="Contact No" required class="form-control"  type="text" id="myText16" disabled value="{{dispatch_item.crm_no.contact_no}}">
+    </div>
+  </div>
+
 
 </div>
 
@@ -288,7 +306,14 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="dispatch_by" placeholder="Dispatched By" id="myText6" class="form-control"  type="text" disabled value="{{dispatch_item.dispatch_by}}">
+<input  name="dispatch_by" placeholder="Dispatched By" id="myText6" disabled class="form-control" value="{{dispatch_item.dispatch_by}}" type="text" list="dispat_list">
+    <datalist style="height:20px;" id="dispat_list">
+      {% for item in user_list %}
+
+      <option value = "{{item.name}}"></option>
+    {% endfor %}
+    </datalist>
+
 
   </div>
      </div>
@@ -305,7 +330,17 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="packed_by" placeholder="Packed by" id="myText7" class="form-control"  type="text" disabled value="{{dispatch_item.packed_by}}">
+
+      <input  name="packed_by" placeholder="Packed by
+" class="form-control" id="myText7" disabled value="{{dispatch_item.packed_by}}" type="text" list="packed_list">
+        <datalist style="height:20px;" id="packed_list">
+      {% for item in user_list %}
+
+      <option value = "{{item.name}}"></option>
+    {% endfor %}
+    </datalist>
+
+
     </div>
   </div>
 
@@ -402,8 +437,10 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+
   <input  name="channel_of_dispatch" placeholder="Channel of Dispatch" class="form-control" id="myText13" list="channel" type="text" disabled value="{{dispatch_item.channel_of_dispatch}}">
      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+
     <datalist style="height:20px;" id="channel">
       <option value="Courier">
       <option value="Transport">
@@ -411,7 +448,9 @@ function myFunction() {
       <option value="Online Market Places">
       <option value="Delivery Boys">
     </datalist>
+
     </div>
+
   </div>
 
 

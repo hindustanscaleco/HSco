@@ -1,10 +1,10 @@
      {% for list in dispatch_list %}
 
-                <div class="col-xl-12 col-md-12 mb-12">
+                <div style="cursor: pointer; " onclick="location.href='/update_dispatch_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_dispatch_details/{{list.id}}" >{{ list.dispatch_id }}</a> </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.dispatch_id }} </center></div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.company_name }} </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> 25% </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center>  20%</center></div>|

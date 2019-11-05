@@ -59,7 +59,7 @@ class Onsite_Products(models.Model):
     problem_in_scale = models.CharField(max_length=90, null=True, blank=True)
     components_replaced_in_warranty = models.CharField(max_length=90, null=True, blank=True)
     components_replaced = models.CharField(max_length=90, null=True, blank=True)
-    cost = models.CharField(max_length=30, null=True, blank=True)
+    cost = models.FloatField(default=0.0,)
     entry_timedate = models.DateTimeField(default=timezone.now, )
 
     def __int__(self):
@@ -81,4 +81,8 @@ class Onsite_Feedback(models.Model):
 
     def __int__(self):
         return self.user_id
+
+
+    class Meta:
+        unique_together = ('user_id', 'customer_id', 'onsite_repairing_id',)
 
