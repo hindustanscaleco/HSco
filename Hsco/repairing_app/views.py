@@ -24,7 +24,7 @@ def add_repairing_details(request):
     cust_sugg=Customer_Details.objects.all()
     prev_rep_sugg=Repairing_after_sales_service.objects.all()
     if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
-        user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Repairing Module')
+        user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Repairing Module', is_deleted=False)
     else: #display colleague
         list_group = SiteUser.objects.get(id=request.user.id).group
         import ast
@@ -39,7 +39,7 @@ def add_repairing_details(request):
                     manager_list.append(item)
 
         user_list = SiteUser.objects.filter(group__icontains=manager_list,
-                                            modules_assigned__icontains='Repairing Module')
+                                            modules_assigned__icontains='Repairing Module', is_deleted=False)
 
 
 
@@ -78,19 +78,32 @@ def add_repairing_details(request):
         item2 = Repairing_after_sales_service()
 
         item = Customer_Details()
-        if Customer_Details.objects.filter(customer_name=customer_name,company_name=company_name,contact_no=contact_no).count() > 0:
+        if Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).count() > 0:
 
-            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,company_name=company_name,contact_no=contact_no).first()
+            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).first()
+            item3 = Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).first()
+            if company_name != '':
+                item3.company_name = company_name
+                item3.save(update_fields=['company_name'])
+            if address != '':
+                item3.address = address
+                item3.save(update_fields=['address'])
+            if customer_email_id != '':
+                item3.customer_email_id = customer_email_id
+                item3.save(update_fields=['customer_email_id'])
 
         else:
 
 
 
             item.customer_name = customer_name
-            item.company_name = company_name
-            item.address = address
+            if company_name != '':
+                item.company_name = company_name
+            if address != '':
+                item.address = address
             item.contact_no = contact_no
-            item.customer_email_id = customer_email_id
+            if customer_email_id != '':
+                item.customer_email_id = customer_email_id
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
             try:
@@ -162,8 +175,8 @@ def add_repairing_details(request):
             ead.save()
 
 
-        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
-            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).first()
+        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
+            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
             try:
                 send_mail('Feedback Form',
                       'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_repairing/' + str(
@@ -267,8 +280,8 @@ def repair_product(request,id):
 
 def update_repairing_details(request,id):
     repair_id = Repairing_after_sales_service.objects.get(id=id)
-    customer_id = Repairing_after_sales_service.objects.get(id=id).crm_no
-    customer_id = Customer_Details.objects.get(id=customer_id)
+    # customer_id = Repairing_after_sales_service.objects.get(id=id).crm_no
+    customer_id = Customer_Details.objects.get(id=repair_id.crm_no)
     repair_list = Repairing_Product.objects.filter(repairing_id=id)
     if request.method=='POST':
         customer_name = request.POST.get('customer_name')
@@ -280,12 +293,20 @@ def update_repairing_details(request,id):
         item = customer_id
 
         item.customer_name = customer_name
-        item.company_name = company_name
-        item.address = address
         item.contact_no = contact_no
-        item.customer_email_id = customer_email_id
 
-        item.save(update_fields=['customer_name','company_name','address','contact_no','customer_email_id',])
+        if company_name != '':
+            item.company_name = company_name
+            item.save(update_fields=['company_name'])
+        if address != '':
+            item.address = address
+            item.save(update_fields=['address'])
+
+        if customer_email_id != '':
+            item.customer_email_id = customer_email_id
+            item.save(update_fields=['customer_email_id'])
+
+
 
         # repairingnumber = request.POST.get('repairingnumber')
         # previous_repairing_number = request.POST.get('previous_repairing_number')
@@ -316,7 +337,10 @@ def update_repairing_details(request,id):
         # item2.products_to_be_repaired = products_to_be_repaired
 
         # item2.total_cost = total_cost
-        item2.informed_on = informed_on
+        if informed_on != '':
+
+            item2.informed_on = informed_on
+            item2.save(update_fields=['informed_on', ]),
         item2.informed_by = informed_by
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired
@@ -335,7 +359,7 @@ def update_repairing_details(request,id):
         # item2.save(update_fields=['today_date', ]),
         # item2.save(update_fields=['products_to_be_repaired', ]),
         # item2.save(update_fields=['total_cost', ]),
-        item2.save(update_fields=['informed_on', ]),
+
         item2.save(update_fields=['informed_by', ]),
         item2.save(update_fields=['confirmed_estimate', ]),
         item2.save(update_fields=['repaired', ]),
@@ -645,12 +669,15 @@ def feedback_repairing(request,user_id,customer_id,repairing_id):
         item.user_id = SiteUser.objects.get(id=user_id)
         item.customer_id = Customer_Details.objects.get(id=customer_id)
         item.repairing_id = Repairing_after_sales_service.objects.get(id=repairing_id)
-        item.save()
+        try:
+            item.save()
 
-        repairing = Repairing_after_sales_service.objects.get(id=repairing_id)
-        repairing .avg_feedback = (float(satisfied_with_communication) + float(speed_of_performance) + float(price_of_reparing) + float(overall_interaction)) / float(4.0)
-        repairing.feedback_given = 'YES'
-        repairing.save(update_fields=['avg_feedback', 'feedback_given'])
+            repairing = Repairing_after_sales_service.objects.get(id=repairing_id)
+            repairing .avg_feedback = (float(satisfied_with_communication) + float(speed_of_performance) + float(price_of_reparing) + float(overall_interaction)) / float(4.0)
+            repairing.feedback_given = True
+            repairing.save(update_fields=['avg_feedback', 'feedback_given'])
+        except:
+            pass
         return HttpResponse('Feedback Submitted!!!')
     context = {
         'feedback_form': feedback_form,

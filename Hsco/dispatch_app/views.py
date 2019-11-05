@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.db.models import Sum, Min
+from django.db.models import Sum, Min, Q
 from django.shortcuts import render, redirect
 from django.db import connection
 # Create your views here.
@@ -22,7 +22,28 @@ from ess_app.models import Employee_Analysis_date
 def add_dispatch_details(request):
     # form = Customer_Details_Form(request.POST or None, request.FILES or None)
     cust_sugg=Customer_Details.objects.all()
-    user_list=SiteUser.objects.filter(group__icontains=request.user.name)
+    if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
+        user_list = SiteUser.objects.filter(group__icontains=request.user.name,
+                                            modules_assigned__icontains='Dispatch Module', is_deleted=False)
+
+
+    else:  # display colleague
+        list_group = SiteUser.objects.get(id=request.user.id).group
+        import ast
+
+        x = "[" + list_group + "]"
+        x = ast.literal_eval(x)
+        manager_list = []
+        for item in x:
+            name = SiteUser.objects.get(name=item)
+            if name.role == 'Manager':
+                if item not in manager_list:
+                    manager_list.append(item)
+
+        user_list = SiteUser.objects.filter(group__icontains=manager_list,
+                                            modules_assigned__icontains='Dispatch Module', is_deleted=False)
+
+    # user_list=SiteUser.objects.filter(group__icontains=request.user.name)
 
     if request.method == 'POST' or request.method=='FILES':
         customer_name = request.POST.get('customer_name')
@@ -56,19 +77,33 @@ def add_dispatch_details(request):
 
         item2 = Dispatch()
         item = Customer_Details()
-        if Customer_Details.objects.filter(customer_name=customer_name, company_name=company_name,
+        if Customer_Details.objects.filter(customer_name=customer_name,
                                            contact_no=contact_no).count() > 0:
 
-            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name, company_name=company_name,
+            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,
                                                            contact_no=contact_no).first()
+            item3 = Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).first()
+            if company_name != '':
+                item3.company_name = company_name
+                item3.save(update_fields=['company_name'])
+            if address != '':
+                item3.address = address
+                item3.save(update_fields=['address'])
+            if customer_email_id != '':
+                item3.customer_email_id = customer_email_id
+                item3.save(update_fields=['customer_email_id'])
 
         else:
 
             item.customer_name = customer_name
-            item.company_name = company_name
-            item.address = address
+            if company_name != '':
+                item.company_name = company_name
+            if address != '':
+                item.address = address
+            if customer_email_id != '':
+                item.customer_email_id = customer_email_id
             item.contact_no = contact_no
-            item.customer_email_id = customer_email_id
+
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
             try:
@@ -257,9 +292,34 @@ def dispatch_view(request):
 def update_dispatch_details(request,update_id):
     dispatch_item=Dispatch.objects.get(id=update_id)
     product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
-    customer_id = Dispatch.objects.get(id=update_id).crm_no
+    # customer_id = Dispatch.objects.get(id=update_id).crm_no
 
-    customer_id = Customer_Details.objects.get(id=customer_id)
+
+    customer_id = Customer_Details.objects.get(id=dispatch_item.crm_no)
+    if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
+        user_list = SiteUser.objects.filter(group__icontains=request.user.name,
+                                            modules_assigned__icontains='Dispatch Module', is_deleted=False)
+
+
+    else:  # display colleague
+        list_group = SiteUser.objects.get(id=request.user.id).group
+        import ast
+
+        x = "[" + list_group + "]"
+        x = ast.literal_eval(x)
+        manager_list = []
+        for item in x:
+            name = SiteUser.objects.get(name=item)
+            if name.role == 'Manager':
+                if item not in manager_list:
+                    manager_list.append(item)
+
+        user_list = SiteUser.objects.filter(group__icontains=manager_list,
+                                            modules_assigned__icontains='Dispatch Module', is_deleted=False)
+
+
+    # user_list=SiteUser.objects.filter(group__icontains=request.user.name)
+
 
     if request.method == 'POST' or request.method=='FILES':
         contact_no = request.POST.get('contact_no')
@@ -271,19 +331,21 @@ def update_dispatch_details(request,update_id):
         item2 = customer_id
 
         item2.customer_name = customer_name
-        item2.company_name = company_name
-        item2.address = customer_address
+        if company_name != '':
+            item2.company_name = company_name
+            item2.save(update_fields=['company_name'])
+        if customer_address != '':
+            item2.address = customer_address
+            item2.save(update_fields=['address'])
+
+        if customer_email != '':
+            item2.customer_email_id = customer_email
+            item2.save(update_fields=['customer_email_id'])
         item2.contact_no = contact_no
-        item2.customer_email_id = customer_email
-
-        item2.save(update_fields=['contact_no', ]),
-        item2.save(update_fields=['customer_email_id', ]),
-        item2.save(update_fields=['customer_name', ]),
-        item2.save(update_fields=['company_name', ]),
-        item2.save(update_fields=['address', ]),
 
 
-        dispatch_id = request.POST.get('dispatch_id')
+
+        # dispatch_id = request.POST.get('dispatch_id')
 
         date_of_dispatch = request.POST.get('date_of_dispatch')
         dispatch_by = request.POST.get('dispatch_by')
@@ -298,7 +360,7 @@ def update_dispatch_details(request,update_id):
 
         item = Dispatch.objects.get(id=update_id)
 
-        item.dispatch_id = dispatch_id
+        # item.dispatch_id = dispatch_id
 
         item.date_of_dispatch = date_of_dispatch
         item.dispatch_by = dispatch_by
@@ -311,7 +373,7 @@ def update_dispatch_details(request,update_id):
         item.channel_of_dispatch = channel_of_dispatch
         item.notes = notes
 
-        item.save(update_fields=['dispatch_id', ]),
+        # item.save(update_fields=['dispatch_id', ]),
 
         item.save(update_fields=['date_of_dispatch', ]),
         item.save(update_fields=['dispatch_by', ]),
@@ -335,6 +397,7 @@ def update_dispatch_details(request,update_id):
     context = {
             'dispatch_item': dispatch_item,
             'product_list': product_list,
+            'user_list': user_list,
         }
     return render(request, "update_forms/update_dis_mod_form.html", context)
        # item.save(update_fields=[''])

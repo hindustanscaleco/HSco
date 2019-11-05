@@ -17,7 +17,7 @@ urlpatterns = [
     path('feedback_purchase/<str:user_id>/<str:customer_id>/<str:purchase_id>',feedback_purchase , name ='feedback_purchase'),
     path('add_product_details/<int:id>',add_product_details, name ='add_product_details'),
     path('feedbacka/',feedbacka, name ='feedbacka'),
-    path('edit_product_customer/<int:id>',edit_product_customer, name = 'edit_product_customer'),
+    path('edit_product_customer/<int:product_id_rec>',edit_product_customer, name = 'edit_product_customer'),
     path('purchase_analytics/',purchase_analytics, name = 'purchase_analytics'),
     path('load_users/',load_users, name = 'load_users'),
 

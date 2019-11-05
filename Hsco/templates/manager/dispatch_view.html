@@ -323,11 +323,11 @@ $(function() {
 
          <div id="id_subcat" class="row">
 {% for list in dispatch_list %}
-                <div class="col-xl-12 col-md-12 mb-12">
+                <div style="cursor: pointer; " onclick="location.href='/update_dispatch_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/update_dispatch_details/{{list.id}}" >{{ list.pk }}</a> </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.pk }}</center></div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.crm_no.customer_name }} </center></div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.crm_no.contact_no }} </center></div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.dispatch_by }} </center></div>

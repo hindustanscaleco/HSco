@@ -167,13 +167,13 @@ function myFunction() {
 
 
 
-  <label class="col-md-2 control-label">Customer Name
+  <label class="col-md-2 control-label">Customer Name *
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <input  name="customer_name" placeholder="Customer Name" class="form-control" type="text" disabled id="myText2" value="{{personal_id.crm_no.customer_name}}">
+  <input  name="customer_name" required placeholder="Customer Name" class="form-control" type="text" disabled id="myText2" value="{{personal_id.crm_no.customer_name}}">
     </div>
   </div>
 
@@ -200,7 +200,7 @@ function myFunction() {
 
 
 
-  <label class="col-md-2 control-label">Mobile No
+  <label class="col-md-2 control-label">Mobile No *
 
 
 
@@ -210,7 +210,7 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
   <input name="contact_no" placeholder="Mobile No
-" class="form-control"  type="number" disabled id="myText4" value="{{personal_id.crm_no.contact_no}}">
+" class="form-control" required type="number" disabled id="myText4" value="{{personal_id.crm_no.contact_no}}">
     </div>
   </div>
 </div>

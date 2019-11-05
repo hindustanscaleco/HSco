@@ -49,16 +49,34 @@ def add_amc_after_sales(request):
 
         item2 = Amc_After_Sales()
         item = Customer_Details()
-        if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
+        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
 
-            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),Q(contact_no=contact_no)).first()
+            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
+
+            item3 = Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).first()
+            if company_name != '':
+                item3.company_name = company_name
+                item3.save(update_fields=['company_name'])
+            if address != '':
+                item3.address = address
+                item3.save(update_fields=['address'])
+            if customer_email_id != '':
+                item3.customer_email_id = customer_email_id
+                item3.save(update_fields=['customer_email_id'])
 
         else:
             item.customer_name = customer_name
-            item.company_name = company_name
-            item.address = address
+
             item.contact_no = contact_no
-            item.customer_email_id = customer_email_id
+
+
+            if company_name != '':
+                item.company_name = company_name
+            if address != '':
+                item.address = address
+            if customer_email_id != '':
+                item.customer_email_id = customer_email_id
+
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
@@ -77,13 +95,17 @@ def add_amc_after_sales(request):
         item2.contract_no_reporting_breakdown = contract_no_reporting_breakdown
         item2.contract_start_date = contract_start_date
         item2.contract_end_date = contract_end_date
-        item2.visit_1 = visit_1
+        if visit_1 != '':
+            item2.visit_1 = visit_1
         item2.repot_1 = repot_1
-        item2.visit_2 = visit_2
+        if visit_2 != '':
+            item2.visit_2 = visit_2
         item2.repot_2 = repot_2
-        item2.visit_3 = visit_3
+        if visit_3 != '':
+            item2.visit_3 = visit_3
         item2.repot_3 = repot_3
-        item2.visit_4 = visit_4
+        if visit_4 != '':
+            item2.visit_4 = visit_4
         item2.repot_4 = repot_4
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -100,10 +122,10 @@ def add_amc_after_sales(request):
 
 
 
-        if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
+        if Customer_Details.objects.filter(Q(customer_name=customer_name),
                                            Q(contact_no=contact_no)).count() > 0:
 
-            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
+            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),
                                                            Q(contact_no=contact_no)).first()
 
             send_mail('Feedback Form', 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_amc/' + str(
@@ -318,21 +340,24 @@ def update_amc_form(request,update_id):
         item2 = customer_id
 
         item2.customer_name = customer_name
-        item2.company_name = company_name
-        item2.customer_email_id = customer_email_id
-        item2.address = address
+        if company_name != '':
+            item2.company_name = company_name
+            item2.save(update_fields=['company_name'])
+        if address != '':
+            item2.address = address
+            item2.save(update_fields=['address'])
+
+        if customer_email_id != '':
+            item2.customer_email_id = customer_email_id
+            item2.save(update_fields=['customer_email_id'])
         item2.contact_no = contact_no
 
-        item2.save(update_fields=['customer_email_id', ]),
-        item2.save(update_fields=['customer_name', ]),
-        item2.save(update_fields=['company_name', ]),
-        item2.save(update_fields=['address', ]),
-        item2.save(update_fields=['contact_no', ]),
 
-        amcno = request.POST.get('amcno')
-        customer_name = request.POST.get('customer_name')
+
+        # amcno = request.POST.get('amcno')
+        # customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
-        customer_no = request.POST.get('customer_no')
+        # customer_no = request.POST.get('customer_no')
         type_of_scale = request.POST.get('type_of_scale')
         serial_no_scale = request.POST.get('serial_no_scale')
         contract_valid_in_years = request.POST.get('contract_valid_in_years')
@@ -352,10 +377,10 @@ def update_amc_form(request,update_id):
 
         item = Amc_After_Sales.objects.get(id=update_id)
 
-        item.amcno = amcno
+        # item.amcno = amcno
         item.customer_name = customer_name
         item.company_name = company_name
-        item.customer_no = customer_no
+        # item.customer_no = customer_no
         item.type_of_scale = type_of_scale
         item.serial_no_scale = serial_no_scale
         item.contract_valid_in_years = contract_valid_in_years
@@ -363,17 +388,27 @@ def update_amc_form(request,update_id):
         item.contract_no_reporting_breakdown = contract_no_reporting_breakdown
         item.contract_start_date = contract_start_date
         item.contract_end_date = contract_end_date
-        item.visit_1 = visit_1
-        item.repot_1 = repot_1
-        item.visit_2 = visit_2
-        item.repot_2 = repot_2
-        item.visit_3 = visit_3
-        item.repot_3 = repot_3
-        item.visit_4 = visit_4
+
+        if visit_1 != '':
+            item2.visit_1 = visit_1
+            item.save(update_fields=['visit_1'])
+        item2.repot_1 = repot_1
+        if visit_2 != '':
+            item2.visit_2 = visit_2
+            item.save(update_fields=['visit_2'])
+        item2.repot_2 = repot_2
+        if visit_3 != '':
+            item2.visit_3 = visit_3
+            item.save(update_fields=['visit_3'])
+        item2.repot_3 = repot_3
+        if visit_4 != '':
+            item2.visit_4 = visit_4
+            item.save(update_fields=['visit_4'])
+
         item.repot_4 = repot_4
         item.save(update_fields=['contract_amount','type_of_scale','serial_no_scale',
                                  'contract_valid_in_years','contract_amount','contract_no_reporting_breakdown','contract_start_date',
-                                 'contract_end_date','visit_1','repot_1','visit_2','repot_2','visit_3','repot_3','visit_4','repot_4',])
+                                 'contract_end_date','repot_1','repot_2','repot_3','repot_4',])
 
         return redirect('/amc_views')
     context={
@@ -403,13 +438,16 @@ def feedback_amc(request,user_id,customer_id,amc_id):
         item.user_id = SiteUser.objects.get(id=user_id)
         item.customer_id = Customer_Details.objects.get(id=customer_id)
         item.amc_id = Amc_After_Sales.objects.get(id=amc_id)
-        item.save()
+        try:
+            item.save()
 
-        amc = Amc_After_Sales.objects.get(id=amc_id)
+            amc = Amc_After_Sales.objects.get(id=amc_id)
 
-        amc.avg_feedback = (float(item.satisfied_with_work) + float(item.speed_of_performance)  + float(item.price_of_amc)  + float(item.overall_interaction) )/ float(4.0)
-        amc.feedback_given = 'YES'
-        amc.save(update_fields=['avg_feedback', 'feedback_given'])
+            amc.avg_feedback = (float(item.satisfied_with_work) + float(item.speed_of_performance)  + float(item.price_of_amc)  + float(item.overall_interaction) )/ float(4.0)
+            amc.feedback_given = True
+            amc.save(update_fields=['avg_feedback', 'feedback_given'])
+        except:
+            pass
         return HttpResponse('Feedback Submitted!!!')
     context = {
         'feedback_form': feedback_form,
