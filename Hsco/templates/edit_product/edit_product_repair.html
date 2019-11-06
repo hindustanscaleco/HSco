@@ -251,10 +251,10 @@ function myFunction() {
 
     <div class="col-md-4 inputGroupContainer">
 <div class="wrapper">
-    <select class="editableBox" required name="state" value="" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
-      <option value="" selected="selected">Select</option>
+    <select class="editableBox" required name="state" name="model" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
+      <option value="{{product_id.model}}" selected="selected">Select</option>
     </select>
-    <input class="timeTextBox" disabled id="myText3" value="{{product_id.model}}" name="model" maxlength="30"/>
+    <input class="timeTextBox" value="{{product_id.model}}" disabled id="myText3" name="model" maxlength="30"/>
 </div>
   </div>
 
@@ -267,8 +267,8 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
     <div class="wrapper">
-    <select class="editableBoxa" required name="countrya" value="" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
-<option value="" selected="selected">Select</option>
+    <select class="editableBoxa" required name="countrya" name="sub_model" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+<option value="{{product_id.sub_model}}" selected="selected">Select</option>
     </select>
     <input class="timeTextBoxa" disabled id="myText4" value="{{product_id.sub_model}}" name="sub_model" maxlength="30"/>
 </div>
@@ -430,10 +430,10 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
    <div class="wrapper">
-    <select class="editableBoxaa" required id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px; display:none;">
+    <select class="editableBoxaa" id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px; display:none;">
 <option value="{{product_id.sub_sub_model}}" selected="selected">Select</option>
     </select>
-    <input class="timeTextBoxaa" disabled id="myText12" name="sub_sub_model" style="display:none;" maxlength="30"/>
+    <input class="timeTextBoxaa" disabled id="myText12" style="display:none;" maxlength="30"/>
 
 </div>
   </div>

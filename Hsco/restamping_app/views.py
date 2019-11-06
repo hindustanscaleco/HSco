@@ -129,7 +129,7 @@ def restamping_after_sales_service(request):
     if request.method == 'POST' or request.method=='FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
-        address = request.POST.get('address')
+        address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 

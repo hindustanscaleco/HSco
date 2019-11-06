@@ -143,8 +143,8 @@ $(document).ready(function(){
 
 $(document).ready(function(){
 
-    $(".editableBoxz").change(function(){
-        $(".timeTextBoxz").val($(".editableBoxz option:selected").html());
+    $(".editableBoxaa").change(function(){
+        $(".timeTextBoxaa").val($(".editableBoxaa option:selected").html());
     });
 });
 </script>
@@ -248,7 +248,7 @@ function myFunction() {
 
     <div class="col-md-4 inputGroupContainer">
 <div class="wrapper">
-    <select class="editableBox" required name="state" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBox" required name="state" name="model_of_purchase" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
       <option value="{{product_id.model_of_purchase}}" selected="selected">Select</option>
     </select>
     <input class="timeTextBox" value="{{product_id.model_of_purchase}}" disabled id="myText2" name="model_of_purchase" maxlength="30"/>
@@ -264,7 +264,7 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
     <div class="wrapper">
-    <select class="editableBoxa" required name="countrya" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBoxa" required name="countrya" id="stateSel" size="1" name="sub_model" style="border: 1px solid grey; border-radius: 5px;">
 <option value="{{product_id.sub_model}}" selected="selected">Select</option>
     </select>
     <input class="timeTextBoxa" value="{{product_id.sub_model}}" disabled id="myText3" name="sub_model" maxlength="30"/>
@@ -276,7 +276,7 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
    <div class="wrapper">
-    <select class="editableBoxaa" required id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBoxaa" required id="districtSel" size="1" name="district" name="sub_sub_model" style="border: 1px solid grey; border-radius: 5px;">
 <option value="{{product_id.sub_sub_model}}" selected="selected">Select</option>
     </select>
     <input class="timeTextBoxaa" value="{{product_id.sub_sub_model}}" disabled id="myText4" name="sub_sub_model" maxlength="30"/>
@@ -347,7 +347,18 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="unit" disabled placeholder="unit" id="myText8" value="{{product_id.unit}}" class="form-control" type="text">
+  <input  name="unit" disabled placeholder="unit" id="myText8" list="unit" value="{{product_id.unit}}" class="form-control" type="text">
+      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+        <datalist style="height:20px;" id="unit">
+    <option value = "gm"></option>
+    <option value = "kg"></option>
+    <option value = "Ton"></option>
+    <option value = "Liter"></option>
+    <option value = "ml"></option>
+    <option value = "meter"></option>
+    <option value = "inch"></option>
+    <option value = "foot"></option>
+    </datalist>
     </div>
   </div>
               </div>
