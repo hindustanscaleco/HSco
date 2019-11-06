@@ -129,7 +129,7 @@ def restamping_after_sales_service(request):
     if request.method == 'POST' or request.method=='FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
-        address = request.POST.get('address')
+        address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
@@ -154,19 +154,36 @@ def restamping_after_sales_service(request):
         item = Customer_Details()
         item2 = Restamping_after_sales_service()
 
-        if Customer_Details.objects.filter(customer_name=customer_name, customer_email_id=customer_email_id,
+        if Customer_Details.objects.filter(customer_name=customer_name,
                                            contact_no=contact_no).count() > 0:
 
-            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name, customer_email_id=customer_email_id,
+            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,
                                                            contact_no=contact_no).first()
+            item3 = Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).first()
+            if company_name != '':
+                item3.company_name = company_name
+                item3.save(update_fields=['company_name'])
+            if address != '':
+                item3.address = address
+                item3.save(update_fields=['address'])
+            if customer_email_id != '':
+                item3.customer_email_id = customer_email_id
+                item3.save(update_fields=['customer_email_id'])
 
         else:
 
             item.customer_name = customer_name
-            item.company_name = company_name
-            item.address = address
+
+
             item.contact_no = contact_no
-            item.customer_email_id = customer_email_id
+
+            item.customer_name = customer_name
+            if company_name != '':
+                item.company_name = company_name
+            if address != '':
+                item.address = address
+            if customer_email_id != '':
+                item.customer_email_id = customer_email_id
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
             try:
@@ -192,8 +209,8 @@ def restamping_after_sales_service(request):
 
         item2.save()
 
-        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
-            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).first()
+        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
+            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
             try:
                 send_mail('Feedback Form', 'Click on the link to give feedback', settings.EMAIL_HOST_USER,
                       [crm_no.customer_email_id])
@@ -225,15 +242,6 @@ def restamping_after_sales_service(request):
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
-
-
-
-
-
-
-
-
-
 
 
 
@@ -313,14 +321,6 @@ def restamping_product(request,id):
 
 
 
-
-
-
-
-
-
-
-
         return redirect('/update_restamping_details/'+str(id))
     context = {
         'restamping_id': restamping_id,
@@ -373,8 +373,8 @@ def restamping_analytics(request):
 def update_restamping_details(request,id):
     personal_id = Restamping_after_sales_service.objects.get(id=id)
     restamp_product_list = Restamping_Product.objects.filter(restamping_id=id)
-    customer_id = Restamping_after_sales_service.objects.get(id=id).crm_no
-    customer_id = Customer_Details.objects.get(id=customer_id)
+    # customer_id = Restamping_after_sales_service.objects.get(id=id).crm_no
+    customer_id = Customer_Details.objects.get(id=personal_id.crm_no)
 
     if request.method == 'POST':
         customer_name = request.POST.get('customer_name')
@@ -385,12 +385,20 @@ def update_restamping_details(request,id):
 
         item2 = customer_id
 
-        item2.company_name = company_name
-        item2.address = address
         item2.contact_no = contact_no
         item2.customer_name = customer_name
-        item2.customer_email_id = customer_email_id
-        item2.save(update_fields=['company_name','address','contact_no','customer_email_id','customer_name'])
+
+
+        if company_name != '':
+            item2.company_name = company_name
+            item2.save(update_fields=['company_name'])
+        if address != '':
+            item2.address = address
+            item2.save(update_fields=['address'])
+
+        if customer_email_id != '':
+            item2.customer_email_id = customer_email_id
+            item2.save(update_fields=['customer_email_id'])
 
         total_amount = request.POST.get('total_amount')
         # address = request.POST.get('address')
@@ -580,13 +588,7 @@ def restamping_employee_graph(request,user_id):
 def update_restamping_product(request,id):
     restamping_product = Restamping_Product.objects.get(id=id)
     restamping_id = Restamping_Product.objects.get(id=id).restamping_id
-    print(restamping_id)
-    print(restamping_id)
-    print(restamping_id)
-    print(restamping_id)
-    print(restamping_id)
-    print(restamping_id)
-    print(restamping_id)
+
     if request.method == 'POST':
         # customer_email_id = request.POST.get('customer_email_id')
         # product_to_stampped = request.POST.get('product_to_stampped')
@@ -600,9 +602,8 @@ def update_restamping_product(request,id):
         # product_id = Restamping_Product.objects.get(id=id)
         restamping_id = Restamping_after_sales_service.objects.get(id=restamping_id.pk).pk
         cost2 = restamping_product.amount
-        print("cost2")
-        print("cost2")
-        print(cost2)
+
+
         Restamping_after_sales_service.objects.filter(id=restamping_id).update(total_amount=F("total_amount") - cost2)
         Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
                                                year=datetime.now().year).update(

@@ -122,7 +122,7 @@ function myFunction() {
   } else {
     x.style.display = "none";
   }
-  document.getElementById("myText"). disabled = false;
+  document.getElementById("myText"). disabled = true;
     document.getElementById("myText2"). disabled = false;
     document.getElementById("myText3"). disabled = false;
     document.getElementById("myText3"). disabled = false;
@@ -151,7 +151,7 @@ function myFunction() {
 </script>
 
 
-    <form class="well form-horizontal" ion=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
+    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
 <fieldset>
 
 <div class="form-group row">
@@ -170,7 +170,7 @@ function myFunction() {
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Customer Name
+    <label class="col-md-2 control-label">Customer Name *
 
 
 
@@ -179,7 +179,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-  <input  name="customer_name" placeholder="Customer Name" class="form-control" type="text" id="myText2" disabled value="{{amc_list.crm_no.customer_name}}">
+  <input  name="customer_name" required placeholder="Customer Name" class="form-control" type="text" id="myText2" disabled value="{{amc_list.crm_no.customer_name}}">
     </div>
   </div>
 
@@ -233,18 +233,18 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  type="email" id="myText5" disabled value="{{amc_list.crm_no.customer_email_id}}">
+  <input name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  type="email" id="myText5" disabled value="{{amc_list.crm_no.customer_email_id}}">
     </div>
   </div>
 
-  <label class="col-md-2 control-label">Address *
+  <label class="col-md-2 control-label">Address
 
 </label>
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input class="form-control" name="customer_address" required placeholder="Address" disabled id="myText6" value="{{amc_list.crm_no.address}}">
+  <input class="form-control" name="customer_address" placeholder="Address" disabled id="myText6" value="{{amc_list.crm_no.address}}">
 
     </div>
   </div>

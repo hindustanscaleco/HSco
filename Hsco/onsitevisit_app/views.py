@@ -130,7 +130,30 @@ def onsite_views(request):
 
 def add_onsite_aftersales_service(request):
     cust_sugg = Customer_Details.objects.all()
-    user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Onsite Repairing Module')
+    if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
+        user_list = SiteUser.objects.filter(group__icontains=request.user.name,
+                                            modules_assigned__icontains='Onsite Repairing Module' , is_deleted=False)
+
+
+    else:  # display colleague
+        list_group = SiteUser.objects.get(id=request.user.id).group
+        import ast
+
+        x = "[" + list_group + "]"
+        x = ast.literal_eval(x)
+        manager_list = []
+        for item in x:
+            name = SiteUser.objects.get(name=item)
+            if name.role == 'Manager':
+                if item not in manager_list:
+                    manager_list.append(item)
+
+        user_list = SiteUser.objects.filter(group__icontains=manager_list,
+                                            modules_assigned__icontains='Onsite Repairing Module',is_deleted=False)
+
+
+    # user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Onsite Repairing Module')
+
     # form = add_Onsite_aftersales_service_form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
@@ -165,14 +188,28 @@ def add_onsite_aftersales_service(request):
 
             item2.crm_no = Customer_Details.objects.filter(Q(customer_email_id=customer_email_id),
                                                            Q(contact_no=contact_no)).first()
+            item3 = Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).first()
+            if company_name != '':
+                item3.company_name = company_name
+                item3.save(update_fields=['company_name'])
+            if address != '':
+                item3.address = address
+                item3.save(update_fields=['address'])
+            if customer_email_id != '':
+                item3.customer_email_id = customer_email_id
+                item3.save(update_fields=['customer_email_id'])
 
         else:
 
             item.customer_name = customer_name
-            item.company_name = company_name
-            item.address = address
             item.contact_no = contact_no
-            item.customer_email_id = customer_email_id
+
+            if company_name != '':
+                item.company_name = company_name
+            if address != '':
+                item.address = address
+            if customer_email_id != '':
+                item.customer_email_id = customer_email_id
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
             item.save()
@@ -189,7 +226,7 @@ def add_onsite_aftersales_service(request):
         item2.products_to_be_repaired = products_to_be_repaired
 
         item2.visiting_charges_told_customer = visiting_charges_told_customer
-        item2.total_cost = total_cost
+        item2.total_cost = 0.0
         item2.complaint_assigned_to = complaint_assigned_to
         item2.complaint_assigned_on = complaint_assigned_on
         item2.time_taken_destination_return_office_min = time_taken_destination_return_office_min
@@ -240,8 +277,8 @@ def add_onsite_aftersales_service(request):
             ead.save()
 
 
-        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).count() > 0:
-            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(company_name=company_name),Q(contact_no=contact_no)).first()
+        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
+            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
             try:
                 send_mail('Feedback Form',
                       'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_onrepairing/' + str(
@@ -319,10 +356,6 @@ def add_onsite_product(request,id):
         item.crm_no = Customer_Details.objects.get(id=crm_id)
         item.save()
 
-        print(cost)
-        print(cost)
-        print(cost)
-        print(cost)
 
         Onsite_aftersales_service.objects.filter(id=id).update(total_cost=F("total_cost") + cost)
         Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
@@ -437,28 +470,31 @@ def update_onsite_details(request,id):
         item2 = customer_id
 
         item2.customer_name = customer_name
-        item2.company_name = company_name
-        item2.address = customer_address
+        # item2.company_name = company_name
+        # item2.address = customer_address
         item2.contact_no = contact_no
-        item2.customer_email_id = customer_email
+        if company_name != '':
+            item2.company_name = company_name
+            item2.save(update_fields=['company_name'])
+        if customer_address != '':
+            item2.address = customer_address
+            item2.save(update_fields=['address'])
 
-        item2.save(update_fields=['contact_no', ]),
-        item2.save(update_fields=['customer_email_id', ]),
-        item2.save(update_fields=['customer_name', ]),
-        item2.save(update_fields=['company_name', ]),
-        item2.save(update_fields=['address', ]),
+        if customer_email != '':
+            item2.customer_email_id = customer_email
+            item2.save(update_fields=['customer_email_id'])
 
-        repairingno = request.POST.get('repairingno')
-        customer_no = request.POST.get('customer_no')
+        # repairingno = request.POST.get('repairingno')
+        # customer_no = request.POST.get('customer_no')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
-        customer_email_id = request.POST.get('customer_email_id')
+        # customer_email_id = request.POST.get('customer_email_id')
         date_of_complaint_received = request.POST.get('date_of_complaint_received')
-        customer_address = request.POST.get('customer_address')
+        # customer_address = request.POST.get('customer_address')
         complaint_received_by = request.POST.get('complaint_received_by')
         nearest_railwaystation = request.POST.get('nearest_railwaystation')
         train_line = request.POST.get('train_line')
-        products_to_be_repaired = request.POST.get('products_to_be_repaired')
+        # products_to_be_repaired = request.POST.get('products_to_be_repaired')
 
         visiting_charges_told_customer = request.POST.get('visiting_charges_told_customer')
         total_cost = request.POST.get('components_replaced_in_warranty')
@@ -472,21 +508,21 @@ def update_onsite_details(request,id):
 
         item = onsite_id
 
-        item.repairingno = repairingno
+        # item.repairingno = repairingno
         item.customer_name = customer_name
         item.company_name = company_name
-        item.customer_no = customer_no
+        # item.customer_no = customer_no
         item.previous_repairing_number = previous_repairing_number
         item.in_warranty = in_warranty
-        item.customer_email_id = customer_email_id
+        # item.customer_email_id = customer_email_id
         item.date_of_complaint_received = date_of_complaint_received
         item.customer_address = customer_address
         item.complaint_received_by = complaint_received_by
         item.nearest_railwaystation = nearest_railwaystation
         item.train_line = train_line
-        item.products_to_be_repaired = products_to_be_repaired
+        # item.products_to_be_repaired = products_to_be_repaired
         item.visiting_charges_told_customer = visiting_charges_told_customer
-        item.total_cost = total_cost
+        # item.total_cost = total_cost
         item.complaint_assigned_to = complaint_assigned_to
         item.complaint_assigned_on = complaint_assigned_on
         item.time_taken_destination_return_office_min = time_taken_destination_return_office_min
@@ -511,7 +547,7 @@ def update_onsite_details(request,id):
         item.save(update_fields=['train_line', ]),
         # item.save(update_fields=['products_to_be_repaired', ]),
         item.save(update_fields=['visiting_charges_told_customer', ]),
-        item.save(update_fields=['total_cost', ]),
+        # item.save(update_fields=['total_cost', ]),
         item.save(update_fields=['complaint_assigned_to', ]),
         item.save(update_fields=['complaint_assigned_on', ]),
         item.save(update_fields=['time_taken_destination_return_office_min', ]),
@@ -603,11 +639,6 @@ def feedback_onrepairing(request,user_id,customer_id,onsiterepairing_id):
         item.onsiterepairing_id = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
         try:
             item.save()
-            print(backend_team)
-            print(onsite_worker)
-            print(speed_of_performance)
-            print(price_of_reparing)
-            print(overall_interaction)
 
             onsiterepairing = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
             onsiterepairing.avg_feedback = (float(backend_team) + float(onsite_worker) + float(speed_of_performance) + float(price_of_reparing) + float(overall_interaction)) / float(5.0)

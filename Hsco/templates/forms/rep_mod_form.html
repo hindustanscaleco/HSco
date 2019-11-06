@@ -152,7 +152,7 @@ Format : (crm no) - (customer name) - (company name)
 <div class="form-group row">
 
 
-    <label class="col-md-2 control-label">Name
+    <label class="col-md-2 control-label">Customer Name *
 
 
 
@@ -185,7 +185,7 @@ Format : (crm no) - (customer name) - (company name)
 
 
 <div class="form-group row">
-    <label class="col-md-2 control-label">Phone Number
+    <label class="col-md-2 control-label">Phone Number *
 
 
 
@@ -223,7 +223,7 @@ Format : (crm no) - (customer name) - (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="customer_address" required placeholder="Customer Address" class="form-control"  type="text">
+  <input  name="customer_address" placeholder="Customer Address" class="form-control"  type="text">
     </div>
   </div>
 
@@ -253,8 +253,9 @@ Format : (crm no) - (customer name) - (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" required id="datePicker" readonly class="form-control" type="date">
+  <input name="today_date" required id="datePicker" readonly class="form-control" type="date">
     </div>
+      <span style="margin-left:35%;">(Readonly Field)</span>
   </div>
 
     <!--<label class="col-md-2 control-label">Total Cost-->
@@ -287,7 +288,7 @@ Format : (crm no) - (customer name) - (company name)
 
 
 
-  <label class="col-md-2 control-label">Informed On *
+  <label class="col-md-2 control-label">Informed On
 
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -331,6 +332,7 @@ Format : (crm no) - (customer name) - (company name)
 
 
     <input  type="text" placeholder="Confirmed Estimate" name="confirmed_estimate" class="form-control" value="" list="confirmest">
+      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
     <datalist style="height:20px;" id="confirmest">
     <option value = "Yes"></option>
     <option value = "No"></option>
@@ -349,6 +351,7 @@ Format : (crm no) - (customer name) - (company name)
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
   <input  type="text" placeholder="Repaired" name="repaired" class="form-control" value="" list="Repaired">
+      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
     <datalist style="height:20px;" id="Repaired">
     <option value = "Yes"></option>
     <option value = "No"></option>
@@ -427,16 +430,7 @@ Format : (crm no) - (customer name) - (company name)
 
 </center>
           <br>
-
-
-
-
-
-
 <br>
-
-
-
 </fieldset>
 </form>
 </div>

@@ -19,18 +19,18 @@
             </div>
 
             <br>
+            <br>
 
 
-<br>
-<br>
+
             {% for list1 in user_list %}
-                <div class="col-xl-12 col-md-12 mb-12">
+                <div style="cursor: pointer; " onclick="location.href='/customer_employee_sales_graph/{{list1.user_id}}';" class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow" >
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; min-height: 55px;">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; min-height: auto;">
 
-                    <div class="col-xl-2 col-md-1 mb-1"> <a href="/customer_employee_sales_graph/{{list1.user_id}}" style="color: black; font-size: 12px;" >{{ list1.user_id.name }}</a> </div>
+                    <div class="col-xl-3 col-md-1 mb-1"> {{ list1.user_id.name }} </div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.total_sales_done}} </div>
-                    <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{{ list1.sales_target_given}} </div>
+                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.sales_target_given}} </div>
 
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">
                          {% for avg in  list1.start_rating_feedback_sales|rjust:'5'  %}

@@ -32,7 +32,7 @@ class Repairing_after_sales_service(models.Model):
 
     delivery_by = models.CharField(max_length=50,null=True,blank=True)
     repaired_by = models.CharField(max_length=50,null=True,blank=True)
-    feedback_given = models.BooleanField(default=False,max_length=10,null=True,blank=True)
+    feedback_given = models.BooleanField(default=False,)
     avg_feedback = models.FloatField(default=0.0)
     entry_timedate = models.DateField(default=datetime.date.today)
     stage_update_timedate = models.DateField(default=datetime.date.today)
@@ -68,12 +68,27 @@ class Repairing_Product(models.Model):
         return self.repairing_id
 
 class Repairing_Feedback(models.Model):
+    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    customer_id = models.ForeignKey(Customer_Details, on_delete=models.CASCADE)
+    reparing_id = models.ForeignKey(Repairing_after_sales_service, on_delete=models.CASCADE)
     satisfied_with_communication = models.FloatField(default=0.00)
     speed_of_performance = models.FloatField(default=0.00)
     price_of_reparing = models.FloatField(default=0.00)
     overall_interaction = models.FloatField(default=0.00)
     about_hsco = models.CharField(max_length=60, null=True, blank=True)
     any_suggestion = models.CharField(max_length=90, null=True, blank=True)
+
+    class Meta:
+        unique_together = ('user_id', 'customer_id', 'reparing_id',)
+
+class Component_Replaced(models.Model):
+    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Repairing_Product, on_delete=models.CASCADE)
+    replaced_name = models.CharField(max_length=80,null=True,blank=True)
+    in_waranty = models.BooleanField(default=False)
+    entry_timedate = models.DateField(default=datetime.date.today)
+
+
 
 
 

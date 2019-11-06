@@ -26,7 +26,7 @@ def add_purchase_details(request):
     # sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name)
     if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
         sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name,
-                                            modules_assigned__icontains='Customer Module')
+                                            modules_assigned__icontains='Customer Module', is_deleted=False)
 
 
     else:  # display colleague
@@ -43,7 +43,7 @@ def add_purchase_details(request):
                     manager_list.append(item)
 
         sales_person_sugg = SiteUser.objects.filter(group__icontains=manager_list,
-                                            modules_assigned__icontains='Customer Module')
+                                            modules_assigned__icontains='Customer Module', is_deleted=False)
 
 
 
@@ -72,19 +72,33 @@ def add_purchase_details(request):
 
         item2 = Purchase_Details()
         item = Customer_Details()
-        if Customer_Details.objects.filter(customer_name=customer_name,company_name=company_name,contact_no=contact_no).count() > 0:
+        if Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).count() > 0:
 
-            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,company_name=company_name,contact_no=contact_no).first()
+            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).first()
+            item3 = Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).first()
+            if company_name != '':
+                item3.company_name = company_name
+                item3.save(update_fields=['company_name'])
+            if address != '':
+                item3.address = address
+                item3.save(update_fields=['address'])
+            if customer_email_id != '':
+                item3.customer_email_id = customer_email_id
+                item3.save(update_fields=['customer_email_id'])
+
 
         else:
 
 
 
             item.customer_name = customer_name
-            item.company_name = company_name
-            item.address = address
+            if company_name != '':
+                item.company_name = company_name
+            if address != '':
+                item.address = address
             item.contact_no = contact_no
-            item.customer_email_id = customer_email_id
+            if customer_email_id != '':
+                item.customer_email_id = customer_email_id
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
             try:
@@ -115,11 +129,11 @@ def add_purchase_details(request):
         if not (channel_of_dispatch == 'Franchisee Store'):
             dispatch = Dispatch()
 
-            if Customer_Details.objects.filter(customer_name=customer_name, company_name=company_name,
+            if Customer_Details.objects.filter(customer_name=customer_name,
                                                contact_no=contact_no).count() > 0:
 
 
-                dispatch.crm_no = Customer_Details.objects.filter(customer_name=customer_name, company_name=company_name,
+                dispatch.crm_no = Customer_Details.objects.filter(customer_name=customer_name,
                                                                contact_no=contact_no).first()
 
             else:
@@ -135,9 +149,9 @@ def add_purchase_details(request):
             dispatch.save()
 
 
-            dispatch2 = Dispatch.objects.get(id=dispatch.pk)
-            dispatch2.dispatch_id = str(dispatch.pk + 00000)
-            dispatch2.save(update_fields=['dispatch_id'])
+            # dispatch2 = Dispatch.objects.get(id=dispatch.pk)
+            # dispatch2.dispatch_id = dispatch.pk
+            # dispatch2.save(update_fields=['dispatch_id'])
             customer_id = Purchase_Details.objects.get(id=item2.pk)
             customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
             customer_id.save(update_fields=['dispatch_id_assigned'])
@@ -185,9 +199,9 @@ def add_purchase_details(request):
 
 
 
-        if Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
+        if Customer_Details.objects.filter(Q(customer_name=customer_name),
                                            Q(contact_no=contact_no)).count() > 0:
-            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name), Q(company_name=company_name),
+            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),
                                                      Q(contact_no=contact_no)).first()
 
 
@@ -270,9 +284,7 @@ def add_purchase_details(request):
         'cust_sugg': cust_sugg,
         'sales_person_sugg': sales_person_sugg,
     }
-    # print(sales_person_sugg)
-    # print(sales_person_sugg)
-    # print(sales_person_sugg)
+
     return render(request,'forms/cust_mod_form.html',context)
 
 
@@ -376,18 +388,6 @@ def view_customer_details(request):
         else:  # For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 
-        # with connection.cursor() as cursor:
-        #     cursor.execute(000000000000000
-        #     p_customer_details  ;")
-        #     row = cursor.fetchall()
-        #     customer_list = [list(x) for x in row]
-        #     print(customer_list)
-        #     list2 = []
-        #     list3 = []
-        #     for item in customer_list:
-        #         list2.append(item[0])
-        #         list3.append(item[1])
-        #        #     final_list = zip(list2,list3)
 
         context = {
             'customer_list': cust_list,
@@ -401,7 +401,6 @@ def update_customer_details(request,id):
     customer_id = Purchase_Details.objects.get(id=id).crm_no
     customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
-    print('enering')
 
     try:
         feedback = Feedback.objects.get(customer_id=customer_id.pk,purchase_id=id)
@@ -421,12 +420,23 @@ def update_customer_details(request,id):
         item=customer_id
 
         item.customer_name = customer_name
-        item.company_name = company_name
-        item.address = address
         item.contact_no = contact_no
-        item.customer_email_id = customer_email_id
 
-        item.save(update_fields=['customer_name','company_name','address','contact_no','customer_email_id',])
+        if company_name != '':
+            item.company_name = company_name
+            item.save(update_fields=['company_name'])
+        if address != '':
+            item.address = address
+            item.save(update_fields=['address'])
+
+        if customer_email_id != '':
+            item.customer_email_id = customer_email_id
+            item.save(update_fields=['customer_email_id'])
+
+
+
+
+
 
         date_of_purchase = request.POST.get('date_of_purchase')
         sales_person = request.POST.get('sales_person')
@@ -439,14 +449,8 @@ def update_customer_details(request,id):
         value_of_goods = request.POST.get('value_of_goods')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
-        feedback_form_filled = request.POST.get('feedback_form_filled')
+        # feedback_form_filled = request.POST.get('feedback_form_filled')
 
-        if feedback_form_filled == None:
-            pass
-        elif feedback_form_filled.lower() == 'yes':
-            feedback_form_filled=True
-        else :
-            feedback_form_filled=False
 
 
         cost2=purchase_id_id.value_of_goods
@@ -487,11 +491,11 @@ def update_customer_details(request,id):
         item2.value_of_goods = value_of_goods
         item2.channel_of_dispatch = channel_of_dispatch
         item2.notes = notes
-        item2.feedback_form_filled = feedback_form_filled
-        item2.user_id = SiteUser.objects.get(id=request.user.pk)
-        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item2.save(update_fields=['date_of_purchase','sales_person','bill_no','upload_op_file','manager_id','po_number','new_repeat_purchase',
-                                  'channel_of_sales','industry','channel_of_dispatch','notes','feedback_form_filled','user_id'])
+        # item2.feedback_form_filled = feedback_form_filled
+        # item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        # item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item2.save(update_fields=['date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
+                                  'channel_of_sales','industry','channel_of_dispatch','notes'])
 
         Purchase_Details.objects.filter(id=purchase_id_id.pk).update(value_of_goods=F("value_of_goods") + value_of_goods)
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
@@ -533,7 +537,10 @@ def update_customer_details(request,id):
 def add_product_details(request,id):
     purchase = Purchase_Details.objects.get(id=id)
     purchase_id = purchase.id
-    dispatch_id_assigned = str(purchase.dispatch_id_assigned)
+    try:
+        dispatch_id_assigned = str(purchase.dispatch_id_assigned)
+    except:
+        dispatch_id_assigned=None
     form = Product_Details_Form(request.POST or None)
     if request.method == 'POST':
         quantity = request.POST.get('quantity')
@@ -545,8 +552,8 @@ def add_product_details(request,id):
         brand = request.POST.get('brand')
         capacity = request.POST.get('capacity')
         unit = request.POST.get('unit')
-        sales_person = request.POST.get('sales_person')
-        purchase_type = request.POST.get('purchase_type')
+        # sales_person = request.POST.get('sales_person')
+        # purchase_type = request.POST.get('purchase_type')
 
         item = Product_Details()
 
@@ -560,8 +567,9 @@ def add_product_details(request,id):
         item.capacity = capacity
         item.unit = unit
         item.purchase_id_id = purchase_id
-        item.sales_person = sales_person
-        item.purchase_type = purchase_type
+
+        # item.sales_person = sales_person
+        # item.purchase_type = purchase_type
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save()
@@ -581,9 +589,12 @@ def add_product_details(request,id):
             dispatch_pro.capacity = capacity
             dispatch_pro.unit = unit
             dispatch_pro.dispatch_id = dispatch_id
-            dispatch_pro.sales_person = sales_person
-            dispatch_pro.purchase_type = purchase_type
+            # dispatch_pro.sales_person = sales_person
+            # dispatch_pro.purchase_type = purchase_type
             dispatch_pro.save()
+
+            item.product_dispatch_id = dispatch_pro.pk
+            item.save(update_fields=['product_dispatch_id'])
         except:
             print("Franchisee Store selected")
 
@@ -801,11 +812,11 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
     }
     return render(request,"feedback/feedback_customer.html",context)
 
-def edit_product_customer(request,id):
-    purchase = Product_Details.objects.get(id=id)
-    purchase_id = Purchase_Details.objects.get(id=purchase.id)
+def edit_product_customer(request,product_id_rec):
+    purchase = Product_Details.objects.get(id=product_id_rec)
+    purchase_id = Purchase_Details.objects.get(id=purchase.purchase_id)
     # dispatch_id_assigned = str(purchase_id.dispatch_id_assigned)
-    product_id = Product_Details.objects.get(id=id)
+    product_id = Product_Details.objects.get(id=product_id_rec)
     if request.method == 'POST':
         quantity = request.POST.get('quantity')
         model_of_purchase = request.POST.get('model_of_purchase')
@@ -816,8 +827,8 @@ def edit_product_customer(request,id):
         brand = request.POST.get('brand')
         capacity = request.POST.get('capacity')
         unit = request.POST.get('unit')
-        sales_person = request.POST.get('sales_person')
-        purchase_type = request.POST.get('purchase_type')
+        # sales_person = request.POST.get('sales_person')
+        # purchase_type = request.POST.get('purchase_type')
 
         item = product_id
 
@@ -830,13 +841,13 @@ def edit_product_customer(request,id):
         item.brand = brand
         item.capacity = capacity
         item.unit = unit
-        item.purchase_id_id = purchase_id
-        item.sales_person = sales_person
-        item.purchase_type = purchase_type
+        # item.purchase_id_id = purchase_id
+        # item.sales_person = sales_person
+        # item.purchase_type = purchase_type
         # item.user_id = SiteUser.objects.get(id=request.user.pk)
         # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save(update_fields=['quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
-                                 'serial_no_scale', 'brand', 'capacity', 'unit', 'purchase_id_id',
+                                 'serial_no_scale', 'brand', 'capacity', 'unit',
                                  ])
         # try:
         #     dispatch_id = Dispatch.objects.get(id=dispatch_id_assigned)

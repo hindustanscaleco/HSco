@@ -79,13 +79,10 @@ DATABASES = {
      'ENGINE': 'django.db.backends.mysql',
     'NAME': 'hsco_db',
     'USER': 'root',
-    'PASSWORD': '',
+    'PASSWORD': 'sagar123',
     'HOST': '127.0.0.1',
 
-     # 'NAME': 'vikka$hsco_db',
-     # 'USER': 'vikka',
-     # 'PASSWORD': 'rooney101',
-     # 'HOST': 'vikka.mysql.pythonanywhere-services.com',
+
 
      'PORT': '3306',
  }
