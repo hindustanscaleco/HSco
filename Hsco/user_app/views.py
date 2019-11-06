@@ -94,7 +94,7 @@ def create_admin(request):
         email = request.POST.get('email')
         name = request.POST.get('name')
         group = request.POST.get('group')
-        is_deleted = request.POST.get('is_deleted')
+        is_deleted = False
         modules_assigned = request.POST.getlist('checks[]')
         date_of_joining = request.POST.get('date_of_joining')
         bank_name = request.POST.get('bank_name')
@@ -150,7 +150,7 @@ def create_manager(request):
         email = request.POST.get('email')
         name = request.POST.get('name')
         group = request.POST.get('group')
-        is_deleted = request.POST.get('is_deleted')
+        is_deleted = False
         modules_assigned = request.POST.getlist('checks[]')
         date_of_joining = request.POST.get('date_of_joining')
         bank_name = request.POST.get('bank_name')
@@ -207,7 +207,7 @@ def create_employee(request):
         email = request.POST.get('email')
         name = request.POST.get('name')
         group = request.POST.get('group')
-        is_deleted = request.POST.get('is_deleted')
+        is_deleted = False
         modules_assigned = request.POST.getlist('checks[]')
         date_of_joining = request.POST.get('date_of_joining')
         bank_name = request.POST.get('bank_name')
@@ -244,8 +244,8 @@ def create_employee(request):
     return render(request,"auth/create_employee.html",context)
 
 def assign_man_to_admin(request):
-    admin_list = SiteUser.objects.filter(role='Admin').all()
-    manager_list = SiteUser.objects.filter(role='Manager')
+    admin_list = SiteUser.objects.filter(role='Admin',is_deleted=False)
+    manager_list = SiteUser.objects.filter(role='Manager',is_deleted=False)
     if request.method=='POST':
         group = request.POST.get('group')
         manager_id = request.POST.get('manager_id')
@@ -264,8 +264,8 @@ def assign_man_to_admin(request):
     return render(request,"auth/assign_man_to_admin.html",context)
 
 def assign_emp_to_manager(request):
-    employee_list = SiteUser.objects.filter(role='Employee').all()
-    manager_list = SiteUser.objects.filter(role='Manager')
+    employee_list = SiteUser.objects.filter(role='Employee',is_deleted=False)
+    manager_list = SiteUser.objects.filter(role='Manager',is_deleted=False)
 
     if request.method=='POST':
         group = request.POST.get('group')
@@ -283,7 +283,7 @@ def assign_emp_to_manager(request):
     return render(request,"auth/assign_emp_to_manager.html",context)
 
 def assign_module_to_emp(request):
-    employee_list = SiteUser.objects.filter(role='Employee')
+    employee_list = SiteUser.objects.filter(role='Employee',is_deleted=False)
     if request.method=='POST':
         employee_id = request.POST.get('employee_id')
         selected_list = request.POST.getlist('checks[]')
