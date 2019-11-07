@@ -104,6 +104,11 @@ class SiteUser(AbstractBaseUser):
     ifsc_code = models.CharField(max_length=20, null=True, blank=True)
     account_number = models.CharField(max_length=40, null=True, blank=True)
 
+    manager = models.CharField(max_length=40, null=True, blank=True)
+    admin = models.CharField(max_length=40, null=True, blank=True)
+    super_admin = models.CharField(max_length=40, null=True, blank=True)
+
+
     photo_of_cancelled_cheque = models.ImageField(upload_to='cheque_photo/', null=True, blank=True)
     auto_timedate = models.DateTimeField(default=timezone.now, blank=True)
 
