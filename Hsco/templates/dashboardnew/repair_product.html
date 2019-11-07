@@ -434,7 +434,7 @@ $(document).ready(function(){
       <div style="border: 0.5px solid grey; border-radius: 15px;">
 <br>
 <center>
-    <form method="POST">
+    <form action="" method="POST">{% csrf_token%}
                       <div class="form-group row">
   <div class="col-md-8 inputGroupContainer" style="margin-left: 15%;">
 <p style="color:black;">Components Replaced in Waranty(if scale in Waranty)
@@ -442,7 +442,7 @@ $(document).ready(function(){
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
 
-    <input  type="text" name="components_replaced" placeholder="Components Replaced On Warranty" class="form-control" list="components_replaced">
+    <input  type="text" name="components_replaced_popup" placeholder="Components Replaced On Warranty" class="form-control" list="components_replaced">
     <datalist style="height:20px;" id="xyz">
     <option value = "Display"></option>
     <option value = "Touch Pad"></option>
@@ -487,7 +487,7 @@ $(document).ready(function(){
       <div style="border: 0.5px solid grey; border-radius: 15px;">
 <br>
 <center>
-    <form method="POST">
+    <form method="POST">{% csrf_token%}
                       <div class="form-group row">
   <div class="col-md-8 inputGroupContainer" style="margin-left: 15%;">
 <p style="color:black;">Components Replaced</p>
@@ -514,7 +514,7 @@ $(document).ready(function(){
 
 
   </div>
-                              <button class="btn btn-primary" type="submit">Submit</button>
+                              <button class="btn btn-primary" type="submit">ADD</button>
 </form>
     <br>
           </center>

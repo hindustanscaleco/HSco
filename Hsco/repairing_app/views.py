@@ -10,7 +10,7 @@ from customer_app.models import Customer_Details
 
 from purchase_app.views import check_admin_roles
 from .forms import Repairing_Feedback_Form
-from .models import Repairing_after_sales_service, Repairing_Product, Repairing_Feedback
+from .models import Repairing_after_sales_service, Repairing_Product, Repairing_Feedback,Component_Replaced
 from django.core.mail import send_mail
 from Hsco import settings
 import datetime
@@ -273,6 +273,9 @@ def repair_product(request,id):
             total_reparing_done_today=F("total_reparing_done_today") + cost)
 
         return redirect('/update_repairing_details/'+str(id))
+
+
+
     context = {
         'repair_id': repair_id,
     }
@@ -983,8 +986,20 @@ def load_prev_rep(request):
     return render(request, 'AJAX/load_prev_rep.html', context)
 
 
-
-
+#
+# def add_component_replaced(request,component_id):
+#     component_replaced_id = Repairing_Product.objects.get(id=component_id).repairing_id
+#     if request.method == 'POST':
+#         replaced_name = request.POST.get('components_replaced_popup')
+#         item = Repairing_Product()
+#         item.component_replaced_id = Component_Replaced()
+#         item.replaced_name = replaced_name
+#         item.save()
+#     context = {
+#         'component_replaced_id':component_replaced_id,
+#     }
+#
+#     return render(request,'dashboardnew/repair_product.html',context)
 
 
 
