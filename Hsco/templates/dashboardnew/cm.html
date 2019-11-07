@@ -80,18 +80,18 @@
 
      {% if request.user.is_authenticated %}
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
-<a style="padding: 2px;" href="/purchase_analytics/"><button class="btn btn-primary">Analytics</button></a>
+<a style="padding: 2px; " href="/purchase_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
 
 
     <form method="POST" ion="">{%csrf_token%}
- <a href="#"><button name="deleted" type="submit" class="btn btn-primary" style="margin-top: 2px;">Deleted User</button></a>
+ <a href="#"><button style="background-color: #FC6E20;" name="deleted" type="submit" class="btn btn-primary" style="margin-top: 2px;">Deleted User</button></a>
                               </form>
 
- <a style="padding: 2px;" href="/user_logs/"><button class="btn btn-primary">Log</button></a>
- <a style="padding: 2px;" href="/report/"><button class="btn btn-primary">Report</button></a>
- <a style="padding: 2px;" href="/add_purchase_details/"><button class="btn btn-primary"> Add Purchase </button></a>
+ <a style="padding: 2px;" href="/user_lottgs/"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
+ <a style="padding: 2px;" href="/report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
+ <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Purchase </button></a>
 {% else %}
- <a style="padding: 2px;" href="/add_purchase_details/"><button class="btn btn-primary"> Add Purchase </button></a>
+ <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Purchase </button></a>
 {% endif %}
 {% endif %}
 
@@ -237,7 +237,7 @@ $(function() {
 
       </div>
       <div class="col-xl-2 col-md-2 col-mb-2">
-                <button name="submit1" type="submit" class="btn btn-primary">Search</button></div>
+                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
 
       </div>
                                </form>
@@ -247,7 +247,7 @@ $(function() {
       <form method="POST" >{% csrf_token%}
       <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button type="submit" name="submit2" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Search</button>
   </form>
   </div>
 
@@ -259,7 +259,7 @@ $(function() {
       <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
 
-      <button name="submit3" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" name="submit3" class="btn btn-primary">Search</button>
           </form>
   </div>
 
@@ -269,7 +269,7 @@ $(function() {
         <form method="POST">{% csrf_token%}
       <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button name="submit4" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button>
     </form>
     </div>
 
@@ -277,7 +277,7 @@ $(function() {
   <div id="d5" class="divs d5">
       <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button name="submit5" class="btn btn-primary">Search</button></div>
+      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button></div>
 </form>
 
                                <form method="POST">{% csrf_token%}
@@ -285,7 +285,7 @@ $(function() {
     <div id="d6" class="divs d6">
       <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button name="submit6" class="btn btn-primary">Search</button></div>
+      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
 </form>
 
                                <!--<form method="POST">{% csrf_token%}-->
