@@ -250,12 +250,17 @@ def load_deletd_manager(request):
 
 
 def ess_all_user(request):
-    # list = SiteUser.objects.all()
-    list = SiteUser.objects.filter(is_deleted=False,group__icontains=request.user.name,)
+    list = SiteUser.objects.all()
+    if request.user.role=='Super Admin':
+        list = SiteUser.objects.filter(is_deleted=False,)
+    elif request.user.role == 'Admin':
+        list = SiteUser.objects.filter(is_deleted=False,admin__icontains=request.user.name,)
+    elif request.user.role == 'Manager':
+        list = SiteUser.objects.filter(is_deleted=False,manager__icontains=request.user.name,)
 
 
     context={
-        'list': list
+        'list': list,
 
     }
     return render(request,'dashboardnew/ess_all_user.html',context)
