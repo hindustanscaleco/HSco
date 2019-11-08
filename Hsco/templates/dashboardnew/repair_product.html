@@ -348,8 +348,8 @@ $(document).ready(function(){
 
 </label>
   <div class="col-md-4 inputGroupContainer">
-
-  <div class="input-group"><button class="btn btn-primary" type="reset"  id="myBtnb">+</button> &nbsp;
+    <div class="input-group">
+<!--  <div class="input-group"><button style="background-color: #FC6E20;" class="btn btn-primary" type="reset"  id="myBtnb">+</button> &nbsp;-->
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
 
     <input  type="text" name="components_replaced" placeholder="Components Replaced" class="form-control" list="components_replaced">
@@ -372,6 +372,7 @@ $(document).ready(function(){
 
 
 
+
     <label class="col-md-2 control-label">Components Replaced in Waranty(if scale in Waranty)
 
 
@@ -379,7 +380,8 @@ $(document).ready(function(){
 </label>
 
     <div class="col-md-4 inputGroupContainer">
-  <div class="input-group"><button class="btn btn-primary" type="reset"  id="myBtn">+</button>&nbsp;
+        <div class="input-group">
+<!--  <div class="input-group"><button style="background-color: #FC6E20;" class="btn btn-primary" type="reset"  id="myBtn">+</button>&nbsp;-->
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
 <input  type="text" name="components_replaced_in_warranty" placeholder="Components Replaced IW" class="form-control" list="components_replaced_in_warranty">
     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
@@ -400,9 +402,75 @@ $(document).ready(function(){
   </div>
 
                 </div>
+
+<!--                <div class="form-group row">-->
+
+<!--<label class="col-md-2 control-label">Components Replaced-->
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <table border>-->
+<!--    <tr>-->
+<!--    <td>-->
+<!--        Sr no.-->
+<!--    </td>-->
+<!--    <td>-->
+<!--        Product replaced-->
+<!--    </td>-->
+<!--    </tr>-->
+<!--{% for item in components_replaced_popup %}-->
+
+<!--    <tr>-->
+<!--    <td>-->
+<!--        Sr no.-->
+<!--    </td>-->
+<!--    <td>-->
+<!--Product    </td>-->
+<!--    </tr>-->
+<!--{% endfor %}-->
+<!--</table>-->
+
+<!--    </div>-->
+<!--  </div>-->
+
+
+
+
+<!--<label class="col-md-2 control-label">Components Replaced In Warranty *-->
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--<table border>-->
+<!--    <tr>-->
+<!--    <td>-->
+<!--        Sr no.-->
+<!--    </td>-->
+<!--    <td>-->
+<!--        Product replaced-->
+<!--    </td>-->
+<!--    </tr>-->
+<!--{% for item in components_replaced_popup_iw %}-->
+<!--    <tr>-->
+<!--    <td>-->
+<!--    {{ forloop.counter }}-->
+<!--    </td>-->
+<!--    <td>-->
+<!--        {{ item }}-->
+<!--    </td>-->
+<!--</tr>-->
+<!--{% endfor %}-->
+
+<!--</table>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+
             <br>
 <center>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button style="background-color: #FC6E20;" type="submit" class="btn btn-primary">Submit</button>
 <br>
 <br>
 </center>
@@ -427,94 +495,94 @@ $(document).ready(function(){
 <div id="myModal" class="modal">
 
   <!-- Modal content -->
-  <div class="modal-content">
-          <span class="close">&times;</span>
+<!--  <div class="modal-content">-->
+<!--          <span class="close">&times;</span>-->
 
 
-      <div style="border: 0.5px solid grey; border-radius: 15px;">
-<br>
-<center>
-    <form method="POST">
-                      <div class="form-group row">
-  <div class="col-md-8 inputGroupContainer" style="margin-left: 15%;">
-<p style="color:black;">Components Replaced in Waranty(if scale in Waranty)
-</p>
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
+<!--      <div style="border: 0.5px solid grey; border-radius: 15px;">-->
+<!--<br>-->
+<!--<center>-->
+<!--    <form action="" id="components_riw" method="POST">{% csrf_token%}-->
+<!--                      <div class="form-group row">-->
+<!--  <div class="col-md-8 inputGroupContainer" style="margin-left: 15%;">-->
+<!--<p style="color:black;">Components Replaced in Waranty(if scale in Waranty)-->
+<!--</p>-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>-->
 
-    <input  type="text" name="components_replaced" placeholder="Components Replaced On Warranty" class="form-control" list="components_replaced">
-    <datalist style="height:20px;" id="xyz">
-    <option value = "Display"></option>
-    <option value = "Touch Pad"></option>
-    <option value = "LED"></option>
-    <option value = "Transformer"></option>
-    <option value = "Battery"></option>
-    <option value = "Switch"></option>
-    <option value = "Main Cord wire"></option>
-    <option value = "Main Circuit Board"></option>
-    <option value = "SMPS"></option>
-    <option value = "Load Cell"></option>
-    <option value = "Misc"></option>
-    </datalist>
-    </div>
-  </div>
-
-
-
-  </div>
-                              <button class="btn btn-primary" type="submit">Submit</button>
-</form>
-    <br>
-          </center>
-
-</div>
-
-
-      </div>
-
-
-  </div>
-<div id="myModalb" class="modal">
-
-  <!-- Modal content -->
-  <div class="modal-content">
-      <div id="closeb">
-                    <span class="close">&times;</span>
-
-      </div>
-
-
-      <div style="border: 0.5px solid grey; border-radius: 15px;">
-<br>
-<center>
-    <form method="POST">
-                      <div class="form-group row">
-  <div class="col-md-8 inputGroupContainer" style="margin-left: 15%;">
-<p style="color:black;">Components Replaced</p>
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-
-    <input  type="text" name="components_replaced" placeholder="Components Replaced" class="form-control" list="components_replaced">
-    <datalist style="height:20px;" id="">
-    <option value = "Display"></option>
-    <option value = "Touch Pad"></option>
-    <option value = "LED"></option>
-    <option value = "Transformer"></option>
-    <option value = "Battery"></option>
-    <option value = "Switch"></option>
-    <option value = "Main Cord wire"></option>
-    <option value = "Main Circuit Board"></option>
-    <option value = "SMPS"></option>
-    <option value = "Load Cell"></option>
-    <option value = "Misc"></option>
-    </datalist>
-    </div>
-  </div>
+<!--    <input  type="text" name="components_replaced_popup" placeholder="Components Replaced On Warranty" class="form-control" list="components_replaced">-->
+<!--    <datalist style="height:20px;" id="xyz">-->
+<!--    <option value = "Display"></option>-->
+<!--    <option value = "Touch Pad"></option>-->
+<!--    <option value = "LED"></option>-->
+<!--    <option value = "Transformer"></option>-->
+<!--    <option value = "Battery"></option>-->
+<!--    <option value = "Switch"></option>-->
+<!--    <option value = "Main Cord wire"></option>-->
+<!--    <option value = "Main Circuit Board"></option>-->
+<!--    <option value = "SMPS"></option>-->
+<!--    <option value = "Load Cell"></option>-->
+<!--    <option value = "Misc"></option>-->
+<!--    </datalist>-->
+<!--    </div>-->
+<!--  </div>-->
 
 
 
-  </div>
-                              <button class="btn btn-primary" type="submit">Submit</button>
+<!--  </div>-->
+<!--                              <button style="background-color: #FC6E20;" class="btn btn-primary" type="submit">Submit</button>-->
+<!--</form>-->
+<!--    <br>-->
+<!--          </center>-->
+
+<!--</div>-->
+
+
+<!--      </div>-->
+
+
+<!--  </div>-->
+<!--<div id="myModalb" class="modal">-->
+
+<!--  &lt;!&ndash; Modal content &ndash;&gt;-->
+<!--  <div class="modal-content">-->
+<!--      <div id="closeb">-->
+<!--                    <span class="close">&times;</span>-->
+
+<!--      </div>-->
+
+
+<!--      <div style="border: 0.5px solid grey; border-radius: 15px;">-->
+<!--<br>-->
+<!--<center>-->
+<!--    <form id="component_r" method="POST">{% csrf_token%}-->
+<!--                      <div class="form-group row">-->
+<!--  <div class="col-md-8 inputGroupContainer" style="margin-left: 15%;">-->
+<!--<p style="color:black;">Components Replaced</p>-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>-->
+
+<!--    <input  type="text" name="components_replaced_popup_iw" placeholder="Components Replaced" class="form-control" list="components_replaced">-->
+<!--    <datalist style="height:20px;" id="">-->
+<!--    <option value = "Display"></option>-->
+<!--    <option value = "Touch Pad"></option>-->
+<!--    <option value = "LED"></option>-->
+<!--    <option value = "Transformer"></option>-->
+<!--    <option value = "Battery"></option>-->
+<!--    <option value = "Switch"></option>-->
+<!--    <option value = "Main Cord wire"></option>-->
+<!--    <option value = "Main Circuit Board"></option>-->
+<!--    <option value = "SMPS"></option>-->
+<!--    <option value = "Load Cell"></option>-->
+<!--    <option value = "Misc"></option>-->
+<!--    </datalist>-->
+<!--    </div>-->
+<!--  </div>-->
+
+
+
+<!--  </div>-->
+                              <button style="background-color: #FC6E20;" class="btn btn-primary" type="submit">ADD</button>
 </form>
     <br>
           </center>
@@ -684,7 +752,11 @@ districtSel.options[districtSel.options.length] = new Option(district[i], distri
       </div>
     </div>
   </div>
-
+<!--<script>-->
+<!--document.getElementById("components_riw").addEventListener("click", function(event){-->
+<!--  event.preventDefault()-->
+<!--});-->
+<!--</script>-->
 
 <script>
 // Get the modal

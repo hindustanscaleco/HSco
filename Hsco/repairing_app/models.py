@@ -83,7 +83,7 @@ class Repairing_Feedback(models.Model):
 
 class Component_Replaced(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
-    product_id = models.ForeignKey(Repairing_Product, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Repairing_Product, on_delete=models.CASCADE,null=True,blank=True)
     replaced_name = models.CharField(max_length=80,null=True,blank=True)
     in_waranty = models.BooleanField(default=False)
     entry_timedate = models.DateField(default=datetime.date.today)
