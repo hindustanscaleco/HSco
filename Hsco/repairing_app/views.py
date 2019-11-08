@@ -229,8 +229,12 @@ def add_repairing_details(request):
 
 def repair_product(request,id):
     repair_id = Repairing_after_sales_service.objects.get(id=id).id
+    components_replaced_popup = []
+    # components_replaced_popup_name = []
+    # components_replaced_popup_iw_name = []
+    # context={}
 
-    if request.method=='POST':
+    if request.method=='POST' and 'components_replaced_popup_iw' not in request.POST and 'components_replaced_popup' not in request.POST:
         type_of_machine = request.POST.get('type_of_machine')
         model = request.POST.get('model')
         sub_model = request.POST.get('sub_model')
@@ -263,6 +267,8 @@ def repair_product(request,id):
 
         item.save()
 
+        Component_Replaced.objects.filter(pk__in=components_replaced_popup).update(product_id=item.pk)
+
         Repairing_after_sales_service.objects.filter(id=id).update(total_cost=F("total_cost") + cost)
         Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
                                                year=datetime.now().year).update(
@@ -273,6 +279,38 @@ def repair_product(request,id):
             total_reparing_done_today=F("total_reparing_done_today") + cost)
 
         return redirect('/update_repairing_details/'+str(id))
+    # if request.method == 'POST' and 'components_replaced_popup' in request.POST and 'components_replaced_popup_iw' not in request.POST:
+    #     replaced_name=request.POST.get('components_replaced_popup')
+    #     in_waranty= False
+    #     item = Component_Replaced()
+    #     item.user_id=SiteUser.objects.get(id=request.user.pk)
+    #     #item.product_id=
+    #     item.replaced_name=replaced_name
+    #     item.in_waranty=in_waranty
+    #     item.save()
+    #     components_replaced_popup.append(item.pk)
+    #     components_replaced_popup_name.append(replaced_name)
+    #     context3 = {
+    #         'components_replaced_popup_name': components_replaced_popup_name,
+    #     }
+    #     context.update(context3)
+    #
+    # if request.method == 'POST' and 'components_replaced_popup_iw' in request.POST and 'components_replaced_popup' not in request.POST:
+    #     replaced_name=request.POST.get('components_replaced_popup_iw')
+    #     in_waranty=True
+    #     item = Component_Replaced()
+    #     item.user_id=SiteUser.objects.get(id=request.user.pk)
+    #     #item.product_id=
+    #     item.replaced_name=replaced_name
+    #     item.in_waranty=in_waranty
+    #     item.save()
+    #     components_replaced_popup.append(item.pk)
+    #     components_replaced_popup_iw_name.append(replaced_name)
+    #     context2={
+    #         'components_replaced_popup_iw': components_replaced_popup_iw_name,
+    #     }
+    #     context.update(context2)
+    #
 
 
 
@@ -988,7 +1026,7 @@ def load_prev_rep(request):
 
 #
 # def add_component_replaced(request,component_id):
-#     component_replaced_id = Repairing_Product.objects.get(id=component_id).repairing_id
+#     component_replaced_id = Repairing_Product.objects.get(id=component_id)
 #     if request.method == 'POST':
 #         replaced_name = request.POST.get('components_replaced_popup')
 #         item = Repairing_Product()
