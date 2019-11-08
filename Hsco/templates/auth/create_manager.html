@@ -143,20 +143,27 @@ color:;
   </div>
 
 
+
+
+
+    <label class="col-md-2 control-label">Admin
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+            <select name="admin" class="form-control">
+                <option value="---------">-----------</option>
+                 {% for item in admin_list %}
+         <option value="{{item.name}}">{{item.name}}</option>
+ {% endfor %}
+
+</select>
+
+    </div>
+  </div>
 </div>
-
-
-    <!--<label class="col-md-2 control-label">Quantity-->
-
-<!--</label>-->
-
-    <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>-->
-  <!--<input  name="quantity" placeholder="Quantity" class="form-control"  type="text">-->
-    <!--</div>-->
-  <!--</div>-->
-
 
 
 
@@ -173,6 +180,7 @@ color:;
 
   <div class="col xl-12">
   <div class="form-group row">
+                      {% if request.user.is_authenticated and 'Customer Module' in user.modules_assigned %}
 
   <label class="col-md-2 control-label ">Purchase Module
 
@@ -182,14 +190,15 @@ color:;
 
 </label>
 
-
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
   <input type="checkbox" class="custom-control-input" name="checks[]" value="Customer Module" id="customCheck1">
   <label class="custom-control-label" for="customCheck1"></label>
   </div>
 </div>
+        {% endif %}
 
+{% if request.user.is_authenticated and 'Repairing Module' in user.modules_assigned %}
     <label class="col-md-2 control-label">Repairing Module
 
 
@@ -204,11 +213,15 @@ color:;
 
 
 </div>
+    {% endif %}
+
 </div>
 
 
 
 <div class="form-group row">
+                      {% if request.user.is_authenticated and 'Restamping Module' in user.modules_assigned %}
+
   <label class="col-md-2 control-label">Restamping Module
 
 
@@ -223,7 +236,10 @@ color:;
   <label class="custom-control-label" for="customCheck3"></label>
   </div>
 </div>
+{% endif %}
 
+      <!-- Divider -->
+                    {% if request.user.is_authenticated and 'Dispatch Module' in user.modules_assigned %}
     <label class="col-md-2 control-label">Dispatch Module
 
 
@@ -239,12 +255,15 @@ color:;
   </div>
 
 </div>
+                    {% endif %}
 
 </div>
 
 
 
 <div class="form-group row">
+                              {% if request.user.is_authenticated and 'AMC Module' in user.modules_assigned %}
+
   <label class="col-md-2 control-label">AMC Module
 
 
@@ -255,7 +274,9 @@ color:;
   <label class="custom-control-label" for="customCheck5"></label>
   </div>
   </div>
+        {% endif %}
 
+                    {% if request.user.is_authenticated and 'Onsite Repairing Module' in user.modules_assigned %}
     <label class="col-md-2 control-label">Onsite Repairing Module
 
 
@@ -270,6 +291,8 @@ color:;
   <label class="custom-control-label" for="customCheck6"></label>
   </div>
 </div>
+          {% endif %}
+
 </div>
 
 
@@ -367,7 +390,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="password" required placeholder="Password" class="form-control"  type="password">
+  <input  name="password" required placeholder="Password" class="form-control"  type="text">
     </div>
   </div>
 </div>

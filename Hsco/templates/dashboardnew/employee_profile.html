@@ -139,12 +139,14 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-    <select disabled  name="{{role}}" class="form-control">
-  <option value="super_admin">Super Admin</option>
-  <option value="admin">Admin</option>
-  <option value="manager">Manager</option>
-  <option value="employee">Employee</option>
-</select>
+      <input type="text" class="form-control" value="{{user_id.role}}" disabled name="role" placeholder="Role">
+
+    <!--<select disabled  name="{{role}}" class="form-control">-->
+  <!--<option value="super_admin">Super Admin</option>-->
+  <!--<option value="admin">Admin</option>-->
+  <!--<option value="manager">Manager</option>-->
+  <!--<option value="employee">Employee</option>-->
+<!--</select>-->
     </div>
   </div>
 </div>
@@ -167,11 +169,12 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
     <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-    <select name="{{user_id.is_deleted}}" disabled class="form-control">
-         <option value="No">No</option>
-  <option value="Yes">Yes</option>
+      <input  name="group" placeholder="Group" disabled class="form-control" value="{% if user_id.is_deleted %}YES {% else %} NO{% endif %}" type="text">
+    <!--<select name="{{user_id.is_deleted}}" disabled class="form-control">-->
+         <!--<option value="No">No</option>-->
+  <!--<option value="Yes">Yes</option>-->
 
-</select>
+<!--</select>-->
   </div>
 </div>
 </div>
@@ -398,7 +401,7 @@ color:;
 <br>
          <button style="background-color: #FC6E20;" onclick="location.href='{{salary_slip.url}}'" class="form-control" style="width: 15%;"> Download </button>
 <br>
-
+{% if user.role == 'Super Admin' or valid_Manager or valid_user %}
                      <form method="post" enctype="multipart/form-data">{% csrf_token %}
                          <div class="form-group row">
 
@@ -420,7 +423,7 @@ color:;
     </div>
   </div>  <br>  <button style="background-color: #FC6E20;" name="submit6" type="submit" >Upload</button>
                          </div>      </form>
-
+{% endif %}
 
                  </div>
                      </center>

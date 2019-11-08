@@ -4,14 +4,10 @@ from django.utils import timezone
 from customer_app.models import Customer_Details
 from dispatch_app.models import Dispatch
 from user_app.models import SiteUser
-
 from dispatch_app.models import Product_Details_Dispatch
 
 choices = (('NO', 'NO'),
     ('YES', 'YES'),)
-
-
-
 
 class Purchase_Details(models.Model):   #cleaned
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
@@ -51,6 +47,7 @@ class Product_Details(models.Model):
     brand = models.CharField(max_length=30,null=True,blank=True)
     capacity = models.CharField(max_length=30,null=True,blank=True)
     unit = models.CharField(max_length=30,null=True,blank=True)
+    value_of_goods = models.FloatField(default=0.0,)
 
     entry_timedate = models.DateTimeField(default=timezone.now,)
 

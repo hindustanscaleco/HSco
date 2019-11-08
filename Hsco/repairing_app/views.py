@@ -33,10 +33,11 @@ def add_repairing_details(request):
         x = ast.literal_eval(x)
         manager_list = []
         for item in x:
-            name = SiteUser.objects.get(name=item)
-            if name.role == 'Manager':
-                if item not in manager_list:
-                    manager_list.append(item)
+            name = SiteUser.objects.filter(name__icontains=item)
+            for it in name:
+                if it.role == 'Manager':
+                    if item not in manager_list:
+                        manager_list.append(item)
 
         user_list = SiteUser.objects.filter(group__icontains=manager_list,
                                             modules_assigned__icontains='Repairing Module', is_deleted=False)
