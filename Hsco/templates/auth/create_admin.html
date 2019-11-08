@@ -96,7 +96,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="email" placeholder="Email" class="form-control"  type="text">
+  <input  name="email" placeholder="Email" class="form-control"  type="email">
     </div>
   </div>
 </div>
@@ -137,7 +137,16 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input  name="group" placeholder="Group" value="{{group}}" class="form-control"  type="text">
+  <input  name="group" placeholder="Group" value="{{group}}" class="form-control" disabled type="text">
+    </div>
+  </div>
+
+     <label class="col-md-2 control-label">Super Admin
+  </label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="super_admin" placeholder="Group" value="{{user.name}}" disabled class="form-control"  type="text">
     </div>
   </div>
 
@@ -362,7 +371,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="password" placeholder="Password" class="form-control"  type="password" required>
+  <input  name="password" placeholder="Password" class="form-control"  type="text" required>
     </div>
   </div>
 </div>

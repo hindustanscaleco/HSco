@@ -37,10 +37,11 @@ def add_purchase_details(request):
         x = ast.literal_eval(x)
         manager_list = []
         for item in x:
-            name = SiteUser.objects.get(name=item)
-            if name.role == 'Manager':
-                if item not in manager_list:
-                    manager_list.append(item)
+            name = SiteUser.objects.filter(name=item)
+            for i in name:
+                if i.role == 'Manager':
+                    if item not in manager_list:
+                        manager_list.append(item)
 
         sales_person_sugg = SiteUser.objects.filter(group__icontains=manager_list,
                                             modules_assigned__icontains='Customer Module', is_deleted=False)
@@ -260,20 +261,6 @@ def add_purchase_details(request):
             print(x)
 
 
-        # Purchase_Details.objects.filter(id=purchase_id_id.pk).update(
-        #     value_of_goods=F("value_of_goods") + value_of_goods)
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
-
-        # Employee_Analysis_month.objects.filter(user_id=request.user.pk,
-        #                                        entry_date__month=item2.entry_timedate.month,
-        #                                        year=item2.entry_timedate.year).update(
-        #     total_sales_done=F("total_sales_done") + value_of_goods)
-        #
-        # Employee_Analysis_date.objects.filter(user_id=request.user.pk,
-        #                                       entry_date__month=item2.entry_timedate.month,
-        #                                       year=item2.entry_timedate.year).update(
-        #     total_sales_done_today=F("total_sales_done_today") + value_of_goods)
 
         return redirect('/add_product_details/'+str(item2.id))
 
@@ -446,32 +433,10 @@ def update_customer_details(request,id):
         po_number = request.POST.get('po_number')
         channel_of_sales = request.POST.get('channel_of_sales')
         industry = request.POST.get('industry')
-        value_of_goods = request.POST.get('value_of_goods')
+        # value_of_goods = request.POST.get('value_of_goods')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
         # feedback_form_filled = request.POST.get('feedback_form_filled')
-
-
-
-        cost2=purchase_id_id.value_of_goods
-
-        Purchase_Details.objects.filter(id=purchase_id_id.pk).update(
-            value_of_goods=F("value_of_goods") - cost2)
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
-        if cost2>0.0:
-            Employee_Analysis_month.objects.filter(user_id=request.user.pk,
-                                                   entry_date__month=purchase_id_id.entry_timedate.month,
-                                                   year=purchase_id_id.entry_timedate.year).update(
-                total_sales_done=F("total_sales_done") - cost2)
-
-            Employee_Analysis_date.objects.filter(user_id=request.user.pk,
-                                                  entry_date__month=purchase_id_id.entry_timedate.month,
-                                                  year=purchase_id_id.entry_timedate.year).update(
-                total_sales_done_today=F("total_sales_done_today") - cost2)
-
-
-
 
 
         item2 = purchase_id_id
@@ -488,7 +453,7 @@ def update_customer_details(request,id):
         item2.po_number = po_number
         item2.channel_of_sales = channel_of_sales
         item2.industry = industry
-        item2.value_of_goods = value_of_goods
+        # item2.value_of_goods = value_of_goods
         item2.channel_of_dispatch = channel_of_dispatch
         item2.notes = notes
         # item2.feedback_form_filled = feedback_form_filled
@@ -497,19 +462,7 @@ def update_customer_details(request,id):
         item2.save(update_fields=['date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
                                   'channel_of_sales','industry','channel_of_dispatch','notes'])
 
-        Purchase_Details.objects.filter(id=purchase_id_id.pk).update(value_of_goods=F("value_of_goods") + value_of_goods)
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
 
-        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
-                                               entry_date__month=purchase_id_id.entry_timedate.month,
-                                               year=purchase_id_id.entry_timedate.year).update(
-            total_sales_done=F("total_sales_done") + value_of_goods)
-
-        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
-                                              entry_date__month=purchase_id_id.entry_timedate.month,
-                                              year=purchase_id_id.entry_timedate.year).update(
-            total_sales_done_today=F("total_sales_done_today") + value_of_goods)
         purchase_id_id = Purchase_Details.objects.get(id=id)
         customer_id = Purchase_Details.objects.get(id=id).crm_no
         customer_id = Customer_Details.objects.get(id=customer_id)
@@ -552,8 +505,11 @@ def add_product_details(request,id):
         brand = request.POST.get('brand')
         capacity = request.POST.get('capacity')
         unit = request.POST.get('unit')
+        value_of_goods = request.POST.get('value_of_goods')
         # sales_person = request.POST.get('sales_person')
         # purchase_type = request.POST.get('purchase_type')
+
+
 
         item = Product_Details()
 
@@ -566,6 +522,8 @@ def add_product_details(request,id):
         item.brand = brand
         item.capacity = capacity
         item.unit = unit
+        # item.unit = unit
+        item.value_of_goods = value_of_goods
         item.purchase_id_id = purchase_id
 
         # item.sales_person = sales_person
@@ -573,6 +531,21 @@ def add_product_details(request,id):
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save()
+
+
+        Purchase_Details.objects.filter(id=purchase_id).update(value_of_goods=F("value_of_goods") + value_of_goods)
+
+
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+                                               entry_date__month=datetime.now().month,
+                                               year=datetime.now().year).update(
+            total_sales_done=F("total_sales_done") + value_of_goods)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+                                              entry_date__month=datetime.now().month,
+                                              year=datetime.now().year).update(
+            total_sales_done_today=F("total_sales_done_today") + value_of_goods)
+
 
         try:
             dispatch_id=Dispatch.objects.get(id=dispatch_id_assigned)
@@ -828,7 +801,28 @@ def edit_product_customer(request,product_id_rec):
         capacity = request.POST.get('capacity')
         unit = request.POST.get('unit')
         # sales_person = request.POST.get('sales_person')
+        value_of_goods = request.POST.get('value_of_goods')
         # purchase_type = request.POST.get('purchase_type')
+
+        cost2 = purchase.value_of_goods
+
+        Purchase_Details.objects.filter(id=purchase_id.pk).update(value_of_goods=F("value_of_goods") - cost2)
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
+        # if cost2 > 0.0:
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+                                               entry_date__month=product_id.entry_timedate.month,
+                                               year=product_id.entry_timedate.year).update(
+            total_sales_done=F("total_sales_done") - cost2)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+                                              entry_date__month=product_id.entry_timedate.month,
+                                              year=product_id.entry_timedate.year).update(
+            total_sales_done_today=F("total_sales_done_today") - cost2)
+
+
+
+
 
         item = product_id
 
@@ -841,14 +835,30 @@ def edit_product_customer(request,product_id_rec):
         item.brand = brand
         item.capacity = capacity
         item.unit = unit
+        item.value_of_goods = value_of_goods
         # item.purchase_id_id = purchase_id
         # item.sales_person = sales_person
         # item.purchase_type = purchase_type
         # item.user_id = SiteUser.objects.get(id=request.user.pk)
         # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save(update_fields=['quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
-                                 'serial_no_scale', 'brand', 'capacity', 'unit',
+                                 'serial_no_scale', 'brand', 'capacity', 'unit','value_of_goods',
                                  ])
+
+        Purchase_Details.objects.filter(id=purchase_id.pk).update(
+            value_of_goods=F("value_of_goods") + value_of_goods)
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
+
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+                                               entry_date__month=purchase_id.entry_timedate.month,
+                                               year=purchase_id.entry_timedate.year).update(
+            total_sales_done=F("total_sales_done") + value_of_goods)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+                                              entry_date__month=purchase_id.entry_timedate.month,
+                                              year=purchase_id.entry_timedate.year).update(
+            total_sales_done_today=F("total_sales_done_today") + value_of_goods)
         # try:
         #     dispatch_id = Dispatch.objects.get(id=dispatch_id_assigned)
         #     dispatch_pro = Product_Details_Dispatch()

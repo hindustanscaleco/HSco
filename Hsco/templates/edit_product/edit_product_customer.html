@@ -188,6 +188,7 @@ function myFunction() {
     document.getElementById("myText9").disabled = false;
     document.getElementById("myText9").disabled = false;
     document.getElementById("myText10").style.display = "block";
+    document.getElementById("myText11").disabled = false;
     document.getElementById("countySel").disabled = false;
     document.getElementById(stateSel).disabled = false;
     document.getElementById(districtSel).disabled = false;
@@ -381,6 +382,21 @@ function myFunction() {
 " class="form-control" id="myText9" value="{{product_id.quantity}}" type="text">
     </div>
   </div>
+
+
+                    <label class="col-md-2 control-label">Amount
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="value_of_goods" required placeholder="Rate x quantity" id="myText11" value="{{product_id.value_of_goods}}" disabled class="form-control" step="0.2" type="number">
+    </div>
+  </div>
+
+
 
                 </div>
 

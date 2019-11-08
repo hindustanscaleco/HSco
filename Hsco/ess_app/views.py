@@ -156,18 +156,38 @@ def load_deletd_employee(request):
     selected = request.GET.get('loc_id')
 
     if selected == 'true':
-        list = SiteUser.objects.filter(role='Employee',group__icontains=request.user.name,is_deleted=True).order_by('-id')
+
+        if request.user.role == 'Super Admin':
+            employee_list = SiteUser.objects.filter(role='Employee', group__icontains=request.user.name,
+                                                    is_deleted=True)
+        elif request.user.role == 'Admin':
+            employee_list = SiteUser.objects.filter(role='Employee', admin__icontains=request.user.name,
+                                                    is_deleted=True)
+        elif request.user.role == 'Manager':
+            employee_list = SiteUser.objects.filter(role='Employee', manager__icontains=request.user.name,
+                                                    is_deleted=True)
+
+
+        # list = SiteUser.objects.filter(role='Employee',group__icontains=request.user.name,is_deleted=True).order_by('-id')
 
 
         context = {
-            'employee_list': list,
+            'employee_list': employee_list,
             'deleted': True,
         }
     else:
-        list = SiteUser.objects.filter(role='Employee',group__icontains=request.user.name,is_deleted=False)
+        if request.user.role == 'Super Admin':
+            employee_list = SiteUser.objects.filter(role='Employee', group__icontains=request.user.name,
+                                                    is_deleted=False)
+        elif request.user.role == 'Admin':
+            employee_list = SiteUser.objects.filter(role='Employee', admin__icontains=request.user.name,
+                                                    is_deleted=False)
+        elif request.user.role == 'Manager':
+            employee_list = SiteUser.objects.filter(role='Employee', manager__icontains=request.user.name,
+                                                    is_deleted=False)
 
         context = {
-            'employee_list': list
+            'employee_list': employee_list
 
         }
 
@@ -199,14 +219,26 @@ def load_deletd_manager(request):
     selected = request.GET.get('loc_id')
 
     if selected == 'true':
-        list = SiteUser.objects.filter(group__icontains=request.user.name,role='Manager', is_deleted=True).order_by('-id')
+
+        if request.user.role == 'Super Admin':
+            list = SiteUser.objects.filter(role='Manager', group__icontains=request.user.name, is_deleted=True).order_by('-id')
+        else:
+            list = SiteUser.objects.filter(role='Manager', admin__icontains=request.user.name, is_deleted=True).order_by('-id')
+
+
+
+        # list = SiteUser.objects.filter(group__icontains=request.user.name,role='Manager', is_deleted=True).order_by('-id')
 
         context = {
             'manager_list': list,
             'deleted': True,
         }
     else:
-        list = SiteUser.objects.filter(group__icontains=request.user.name,role='Manager', is_deleted=False)
+        if request.user.role == 'Super Admin':
+            list = SiteUser.objects.filter(role='Manager', group__icontains=request.user.name, is_deleted=False).order_by('-id')
+        else:
+            list = SiteUser.objects.filter(role='Manager', admin__icontains=request.user.name, is_deleted=False).order_by('-id')
+        # list = SiteUser.objects.filter(group__icontains=request.user.name,role='Manager', is_deleted=False)
 
         context = {
             'manager_list': list
