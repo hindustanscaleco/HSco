@@ -291,9 +291,10 @@ $(document).ready(function(){
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="replaced_scale_given" placeholder="Components Replaced" required class="form-control">
+<select name="replaced_scale_given" required onchange="toggleCheckbox2(this)" class="form-control">
+    <option value="no">No</option>
   <option value="yes">Yes</option>
-  <option value="no">No</option>
+
 </select>
     </div>
   </div>
@@ -303,14 +304,14 @@ $(document).ready(function(){
 
 
 
-  <div class="form-group row">
+  <div id="show_hide" class="form-group row">
   <label class="col-md-2 control-label">Replaced Scale Serial No *
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="Replaced_scale_serial_no" required placeholder="Replaced scale Serial NO" class="form-control"  type="text">
+  <input id="Replaced_scale_serial_no" name="Replaced_scale_serial_no" placeholder="Replaced scale Serial NO" class="form-control"  type="text">
     </div>
   </div>
 
@@ -319,7 +320,7 @@ $(document).ready(function(){
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="deposite_taken_for_replaced_scale" required placeholder="Deposit taken for replaced Scale
+  <input id="deposite_taken_for_replaced_scale" name="deposite_taken_for_replaced_scale" placeholder="Deposit taken for replaced Scale
 
 
 " class="form-control"  type="text">
@@ -603,7 +604,25 @@ $(document).ready(function(){
     <i class="fas fa-angle-up"></i>
   </a>
 
+<script>
+$(document).ready(function(){
+$('#show_hide').hide();
+});
+            function toggleCheckbox2(select) {
+  value = select.options[select.selectedIndex].value;
+if (value == 'no'){
+$('#show_hide').hide();
+}
+else{
+$('#show_hide').show();
+$('#Replaced_scale_serial_no').prop('required',true);
+$('#deposite_taken_for_replaced_scale').prop('required',true);
 
+}
+
+
+}
+</script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>

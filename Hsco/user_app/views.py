@@ -550,15 +550,24 @@ def forgotpassword(request):
 def load_modules(request):
     item_name=request.GET.get('item_name')
     print(item_name)
-    print(item_name)
-    print(item_name)
-    print(item_name)
-    print(item_name)
-    print(item_name)
+    reparing_true = False
+
     valid_modules = SiteUser.objects.get(name=item_name)
+    valid_modules_list = SiteUser.objects.get(name=item_name).modules_assigned
+    print(valid_modules_list)
+    print(valid_modules_list)
+    print(valid_modules_list)
+    for item in valid_modules_list:
+        if item == 'Repairing Module':
+            reparing_true=True
+    print(reparing_true)
+    print(reparing_true)
+    print(reparing_true)
+    print(reparing_true)
 
     context={
-        'valid_modules':valid_modules
+        'valid_modules':valid_modules,
+        'reparing_true':reparing_true
     }
     return render(request, 'AJAX/load_modules.html', context)
 
