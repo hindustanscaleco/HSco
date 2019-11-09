@@ -153,7 +153,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-            <select name="admin" class="form-control">
+            <select name="admin" onchange="toggleCheckbox2(this)" class="form-control">
                 <option value="---------">-----------</option>
                  {% for item in admin_list %}
          <option value="{{item.name}}">{{item.name}}</option>
@@ -178,7 +178,7 @@ color:;
 
 </label>
 
-  <div class="col xl-12">
+  <div id="id_loaded_view" class="col xl-12">
   <div class="form-group row">
                       {% if request.user.is_authenticated and 'Customer Module' in user.modules_assigned %}
 
@@ -428,6 +428,21 @@ color:;
 <br>
 
 
+<script>
+            function toggleCheckbox2(select) {
+//value = !select.checked;
+
+    $.ajax({
+        url: "/load_modules/",
+        data: {
+          'item_name':select.options[select.selectedIndex].value,
+        },
+        success: function (data) {
+           $("#id_loaded_view").html(data);
+        }
+      });
+}
+</script>
 
 
 

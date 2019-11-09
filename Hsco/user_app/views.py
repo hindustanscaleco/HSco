@@ -194,9 +194,7 @@ def create_manager(request):
         item.save()
         return redirect('/manager_list/')
 
-    print(group)
-    print(group2)
-    print(group2)
+
     context = {
         'form': form,
         'admin_list': admin_list,
@@ -548,4 +546,20 @@ def forgotpassword(request):
         'form': form
     }
     return render(request, 'auth/forgot_password.html', context)
+
+def load_modules(request):
+    item_name=request.GET.get('item_name')
+    print(item_name)
+    print(item_name)
+    print(item_name)
+    print(item_name)
+    print(item_name)
+    print(item_name)
+    valid_modules = SiteUser.objects.get(name=item_name)
+
+    context={
+        'valid_modules':valid_modules
+    }
+    return render(request, 'AJAX/load_modules.html', context)
+
 
