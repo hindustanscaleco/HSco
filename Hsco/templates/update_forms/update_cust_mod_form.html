@@ -370,7 +370,11 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
     <input type="file" name="upload_op_file"  class="form-control" disabled id="myText10" value="{{purchase_id_id.upload_op_file}}">
+
    </div>
+        {% if purchase_id_id.upload_op_file %}
+        <a style="margin-left:30%;" href="{{purchase_id_id.upload_op_file.url}}">Download PO</a>
+        {% endif %}
   </div>
 </div>
 

@@ -134,8 +134,13 @@ def load_deletd_users(request):
     selected = request.GET.get('loc_id')
 
     if selected == 'true':
-        list = SiteUser.objects.filter(group__icontains=request.user.group, is_deleted=True).order_by('-id')
-
+        list = SiteUser.objects.filter(is_deleted=True).order_by('-id')
+        if request.user.role == 'Super Admin':
+            list = SiteUser.objects.filter(is_deleted=True, )
+        elif request.user.role == 'Admin':
+            list = SiteUser.objects.filter(is_deleted=True, admin__icontains=request.user.name, )
+        elif request.user.role == 'Manager':
+            list = SiteUser.objects.filter(is_deleted=True, manager__icontains=request.user.name, )
 
         context = {
             'list': list,
@@ -143,6 +148,12 @@ def load_deletd_users(request):
         }
     else:
         list = SiteUser.objects.filter(group__icontains=request.user.name,is_deleted=False )
+        if request.user.role == 'Super Admin':
+            list = SiteUser.objects.filter(is_deleted=False, )
+        elif request.user.role == 'Admin':
+            list = SiteUser.objects.filter(is_deleted=False, admin__icontains=request.user.name, )
+        elif request.user.role == 'Manager':
+            list = SiteUser.objects.filter(is_deleted=False, manager__icontains=request.user.name, )
 
         context = {
             'list': list
