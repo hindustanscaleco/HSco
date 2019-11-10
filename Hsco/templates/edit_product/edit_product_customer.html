@@ -220,7 +220,7 @@ function myFunction() {
 <div class="form-group row">
 
 
-    <label class="col-md-2 control-label">Type of Scale
+    <label class="col-md-2 control-label">Type of Scale *
 
 
 
@@ -291,27 +291,6 @@ function myFunction() {
 
               <div class="form-group row">
 
-
-    <label class="col-md-2 control-label">Serial No. on scale
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-<input  type="text" name="serial_no_scale" disabled placeholder="Serial No. on scale" id="myText5" value="{{product_id.serial_no_scale}}" class="form-control">
-
-    </div>
-  </div>
-
-
-
-
-
-
-
   <label class="col-md-2 control-label">Brand
 
 </label>
@@ -326,11 +305,9 @@ function myFunction() {
     </datalist>
     </div>
   </div>
-              </div>
-              <div class="form-group row">
 
 
-    <label class="col-md-2 control-label">Capacity
+    <label class="col-md-2 control-label">Capacity *
 </label>
 
     <div class="col-md-4 inputGroupCont+-ainer">
@@ -339,10 +316,11 @@ function myFunction() {
   <input  name="capacity" disabled placeholder="Components Replaced" id="myText7" value="{{product_id.capacity}}" class="form-control"  type="text">
     </div>
   </div>
+</div>
 
 
-
-  <label class="col-md-2 control-label">Units
+<div class="form-group row">
+  <label class="col-md-2 control-label">Units *
 
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -362,26 +340,7 @@ function myFunction() {
     </datalist>
     </div>
   </div>
-              </div>
-              <div class="form-group row">
 
-
-    <label class="col-md-2 control-label">Quantity
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="quantity" disabled placeholder="Quantity
-
-
-" class="form-control" id="myText9" value="{{product_id.quantity}}" type="text">
-    </div>
-  </div>
 
 
                     <label class="col-md-2 control-label">Amount
@@ -397,8 +356,46 @@ function myFunction() {
   </div>
 
 
+  </div>
 
-                </div>
+  <div class="form-group row">
+    <label class="col-md-2 control-label">Serial No. on scale
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
+<input  type="text" name="serial_no_scale" disabled placeholder="Serial No. on scale" id="myText5" value="{{product_id.serial_no_scale}}" class="form-control">
+
+    </div>
+  </div>
+
+
+
+
+   <label class="col-md-2 control-label">Quantity *
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <input  name="quantity" disabled placeholder="Quantity
+
+
+" class="form-control" id="myText9" value="{{product_id.quantity}}" type="text">
+    </div>
+</div>
+</div>
+
+
+
 
 
             <br>
