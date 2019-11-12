@@ -12,10 +12,10 @@
 
                     <div class="col-xl-2 col-md-1 mb-1"><center> Employee Name </center></div>|
                     <div class="col-xl-1 col-md-1 mb-1"><center> Repairing done </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Target achieved </center> </div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center> Target achieved </center> </div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> Average time to repair scale </center> </div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center> Average time to give Estimate after Scale is submitted </center> </div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center> Feedback</center> </div>
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Feedback</center> </div>
                     </div>
 
 
@@ -40,10 +40,11 @@
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
                      <div class="col-xl-2 col-md-1 mb-1"><center> <a href="/repairing_employee_graph/{{list.user_id}}">{{list.user_id.name}}</a></center></div>|
-                    <div class="col-xl-4 col-md-1 mb-1"><center> {{list.total_reparing_done}} </center> </div>
-                    <div class="col-xl-4 col-md-1 mb-1"><center> {{list.reparing_target_given}} </center> </div>
-                    <div class="col-xl-4 col-md-1 mb-1"><center> {{list.reparing_target_given}} </center> </div>
-                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">
+                    <div class="col-xl-1 col-md-1 mb-1"><center> {{list.total_reparing_done}} </center> </div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center> {{list.reparing_target_given}} </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.reparing_target_given}} </center> </div>|
+                    <div class="col-xl-3 col-md-1 mb-1"><center> Need some value </center> </div>|
+                     <div class="col-xl-2 col-md-1 mb-1">
                          {% for avg in  list1.start_rating_feedback_reparing|rjust:'5'  %}
 							{% if forloop.counter <= list1.start_rating_feedback_reparing %}
 									<i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>

@@ -101,10 +101,13 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 function myFunction() {
 
   var x = document.getElementById("myText21");
+  var y = document.getElementById("myText22");
   if (x.style.display === "none") {
     x.style.display = "block";
+    y.style.display = "none";
   } else {
     x.style.display = "none";
+    y.style.display = "block";
   }
 
   document.getElementById("myText").disabled = true;
@@ -162,7 +165,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="customer_no" placeholder="Customer Number" maxlength="10" class="form-control" id="myText4" type="text" disabled value="{{onsite_id.crm_no.pk}}">
+  <input name="customer_no" placeholder="Customer Number" maxlength="10" class="form-control" id="myText3" type="text" disabled value="{{onsite_id.crm_no.pk}}">
     </div>
   </div>
 
@@ -531,7 +534,7 @@ function myFunction() {
  <div class="col-md-12 ">
       <br>
     <center>
-        <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" type="reset" style="">Edit</button>
+        <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" id="myText22" type="reset" style="">Edit</button>
         <br>
         <br>
         <button style="display:none; background-color: #FC6E20;" id="myText21" type="submit" value="Submit" class="btn btn-primary">Save</button>

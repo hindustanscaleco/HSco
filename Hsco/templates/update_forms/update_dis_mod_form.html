@@ -139,10 +139,13 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 function myFunction() {
 
   var x = document.getElementById("myText15");
+  var y = document.getElementById("myText17");
   if (x.style.display === "none") {
     x.style.display = "block";
+    y.style.display = "none";
   } else {
     x.style.display = "none";
+    y.style.display = "block";
   }
   document.getElementById("myText").disabled = false;
     document.getElementById("myText2").disabled = false;
@@ -476,7 +479,7 @@ function myFunction() {
 <div class="col-md-12 ">
       <br>
     <center>
-        <button  onclick="myFunction()" class="btn btn-primary" type="reset" style="">Edit</button>
+        <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" id="myText17" type="reset" style="">Edit</button>
         <br>
         <br>
         <button style="display:none; background-color: #FC6E20;" id="myText15" type="submit" value="Submit" class="btn btn-primary">Save</button>
@@ -558,7 +561,7 @@ tr:nth-child(even) {
 
                     </div>
                 <center>
-                <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"Edit</button></a>
+                <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
 </center>
                 <br>
               </div>

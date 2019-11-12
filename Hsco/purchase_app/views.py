@@ -262,7 +262,7 @@ def add_purchase_details(request):
 
 
 
-        return redirect('/add_product_details/'+str(item2.id))
+        return redirect('/view_customer_details/')
 
 
 
@@ -474,7 +474,7 @@ def update_customer_details(request,id):
             'feedback': feedback,
         }
 
-        return render(request, 'update_forms/update_cust_mod_form.html', context)
+        return redirect('/view_customer_details/')
 
     context={
         'product_id':product_id,

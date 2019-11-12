@@ -21,6 +21,9 @@ class Customer_Details(models.Model):
     def __int__(self):
         return self.id
 
+    def short_address(self):
+        return self.address[:18]
+
 
 
 
