@@ -172,10 +172,13 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 function myFunction() {
 
   var x = document.getElementById("myText10");
+  var y = document.getElementById("myText12");
   if (x.style.display === "none") {
     x.style.display = "block";
+    y.style.display = "none";
   } else {
     x.style.display = "none";
+    y.style.display = "block";
   }
   document.getElementById("myText").disabled = false;
     document.getElementById("myText2").disabled = false;
@@ -220,7 +223,7 @@ function myFunction() {
 <div class="form-group row">
 
 
-    <label class="col-md-2 control-label">Type of Scale
+    <label class="col-md-2 control-label">Type of Scale *
 
 
 
@@ -291,27 +294,6 @@ function myFunction() {
 
               <div class="form-group row">
 
-
-    <label class="col-md-2 control-label">Serial No. on scale
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-<input  type="text" name="serial_no_scale" disabled placeholder="Serial No. on scale" id="myText5" value="{{product_id.serial_no_scale}}" class="form-control">
-
-    </div>
-  </div>
-
-
-
-
-
-
-
   <label class="col-md-2 control-label">Brand
 
 </label>
@@ -326,11 +308,9 @@ function myFunction() {
     </datalist>
     </div>
   </div>
-              </div>
-              <div class="form-group row">
 
 
-    <label class="col-md-2 control-label">Capacity
+    <label class="col-md-2 control-label">Capacity *
 </label>
 
     <div class="col-md-4 inputGroupCont+-ainer">
@@ -339,10 +319,11 @@ function myFunction() {
   <input  name="capacity" disabled placeholder="Components Replaced" id="myText7" value="{{product_id.capacity}}" class="form-control"  type="text">
     </div>
   </div>
+</div>
 
 
-
-  <label class="col-md-2 control-label">Units
+<div class="form-group row">
+  <label class="col-md-2 control-label">Units *
 
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -362,26 +343,7 @@ function myFunction() {
     </datalist>
     </div>
   </div>
-              </div>
-              <div class="form-group row">
 
-
-    <label class="col-md-2 control-label">Quantity
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="quantity" disabled placeholder="Quantity
-
-
-" class="form-control" id="myText9" value="{{product_id.quantity}}" type="text">
-    </div>
-  </div>
 
 
                     <label class="col-md-2 control-label">Amount
@@ -397,15 +359,53 @@ function myFunction() {
   </div>
 
 
+  </div>
 
-                </div>
+  <div class="form-group row">
+    <label class="col-md-2 control-label">Serial No. on scale
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
+<input  type="text" name="serial_no_scale" disabled placeholder="Serial No. on scale" id="myText5" value="{{product_id.serial_no_scale}}" class="form-control">
+
+    </div>
+  </div>
+
+
+
+
+   <label class="col-md-2 control-label">Quantity *
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <input  name="quantity" disabled placeholder="Quantity
+
+
+" class="form-control" id="myText9" value="{{product_id.quantity}}" type="text">
+    </div>
+</div>
+</div>
+
+
+
 
 
             <br>
                    <div class="col-md-12 ">
       <br>
     <center>
-        <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" type="reset" style="">Edit</button>
+        <button style=" background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" id="myText12" type="reset" style="">Edit</button>
         <br>
         <br>
         <button style="display:none; background-color: #FC6E20;" id="myText10" type="submit" value="Submit" class="btn btn-primary">Save</button>

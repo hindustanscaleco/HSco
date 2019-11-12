@@ -101,10 +101,13 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 function myFunction() {
 
   var x = document.getElementById("myText21");
+  var y = document.getElementById("myText22");
   if (x.style.display === "none") {
     x.style.display = "block";
+    y.style.display = "none";
   } else {
     x.style.display = "none";
+    y.style.display = "block";
   }
 
   document.getElementById("myText").disabled = true;
@@ -140,7 +143,7 @@ function myFunction() {
 <fieldset>
 
 <div class="form-group row">
-  <label class="col-md-2 control-label ">Repairing Number
+  <label class="col-md-2 control-label ">Repairing Number *
 
 
 
@@ -154,7 +157,25 @@ function myFunction() {
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Customer Name
+    <label class="col-md-2 control-label">Customer Number *
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="customer_no" placeholder="Customer Number" maxlength="10" class="form-control" id="myText3" type="text" disabled value="{{onsite_id.crm_no.pk}}">
+    </div>
+  </div>
+
+
+</div>
+
+
+
+<div class="form-group row">
+     <label class="col-md-2 control-label">Customer Name *
 
 
 
@@ -168,28 +189,7 @@ function myFunction() {
   </div>
 
 
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Company Name
-
-
-
-
-
-</label>
-
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" class="form-control" id="myText3" type="text" disabled value="{{onsite_id.crm_no.company_name}}">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Customer Number
+    <label class="col-md-2 control-label">Phone Number *
 
 
 </label>
@@ -200,9 +200,34 @@ function myFunction() {
   <input name="customer_no" placeholder="Customer Number" maxlength="10" class="form-control" id="myText4" type="text" disabled value="{{onsite_id.crm_no.pk}}">
     </div>
   </div>
+</div>
+
+<div class="form-group row">
+	    <label class="col-md-2 control-label">Customer E-mail id
 
 
 
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control" id="myText8" disabled value="{{onsite_id.crm_no.customer_email_id}}" >
+    </div>
+  </div>
+
+
+    <label class="col-md-2 control-label">Customer Address *
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input name="customer_address" placeholder="Customer Address" class="form-control" id="myText10" disabled value="{{onsite_id.crm_no.address}}"/>
+    </div>
+  </div>
 </div>
 
 
@@ -222,7 +247,7 @@ function myFunction() {
     </div>
   </div>
 
-    <label class="col-md-2 control-label">In Warranty
+    <label class="col-md-2 control-label">In Warranty *
 
 
 
@@ -241,47 +266,7 @@ function myFunction() {
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Phone number
-
-
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input type="number" name="contact_no" placeholder="Phone number" id="myText7" class="form-control" disabled value="{{onsite_id.crm_no.contact_no}}">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Customer E-mail id
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control" id="myText8" disabled value="{{onsite_id.crm_no.customer_email_id}}" >
-    </div>
-  </div>
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Date the complaint was Received *
-
-
-
-
-
-
-
+ <label class="col-md-2 control-label">Date the complaint was Received *
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -291,24 +276,7 @@ function myFunction() {
 
      </div>
   </div>
-
-    <label class="col-md-2 control-label">Customer Address
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input name="customer_address" placeholder="Customer Address" class="form-control" id="myText10" disabled value="{{onsite_id.crm_no.address}}"/>
-    </div>
-  </div>
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Complaint Received By
+  <label class="col-md-2 control-label">Complaint Received By *
 
 
 
@@ -322,13 +290,12 @@ function myFunction() {
   <input  name="complaint_received_by" placeholder="Complaint Received By" id="myText11" class="form-control" type="text" disabled value="{{onsite_id.complaint_received_by}}">
     </div>
   </div>
-
-    <label class="col-md-2 control-label">Nearest Railway Station
-
+</div>
 
 
 
-
+<div class="form-group row">
+ <label class="col-md-2 control-label">Nearest Railway Station *
 </label>
 
     <div class="col-md-4 inputGroupContainer">
@@ -480,17 +447,7 @@ function myFunction() {
   </div>
   </div>
 
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Train Line
-
-
-
-
-
+   <label class="col-md-2 control-label">Train Line *
 
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -509,14 +466,13 @@ function myFunction() {
 
     </datalist>
   </div>
-  </div>
+</div>
+</div>
 
 
+<div class="form-group row">
 
-
-
-
-    <label class="col-md-2 control-label">Visiting Charges Told to Customer
+  <label class="col-md-2 control-label">Visiting Charges Told to Customer
 
 
 </label>
@@ -528,41 +484,8 @@ function myFunction() {
     </div>
   </div>
 
-</div>
 
-
-
-  <div class="form-group row">
-  <label class="col-md-2 control-label">Total Cost
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="total_cost" placeholder="Total Cost" class="form-control" id="myText15"  type="number" disabled value="{{onsite_id.total_cost}}">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Complaint Assigned To
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  placeholder="Complaint Assigned To" class="form-control" id="myText16" type="text" disabled value="{{onsite_id.complaint_assigned_to}}">
-    </div>
-  </div>
-
-</div>
-
-
-
-  <div class="form-group row">
-  <label class="col-md-2 control-label">Complain Assigned On
+   <label class="col-md-2 control-label">Complain Assigned On
 
 
 
@@ -573,8 +496,11 @@ function myFunction() {
   <input  name="complaint_assigned_on" placeholder="Complain Assigned On" class="form-control" id="myText17" type="text" disabled value="{{onsite_id.complaint_assigned_on}}">
     </div>
   </div>
+</div>
 
-    <label class="col-md-2 control-label">Time Taken to Reach Destination and Return to office in Minutes
+<div class="form-group row">
+
+  <label class="col-md-2 control-label">Time Taken to Reach Destination and Return to office in Minutes
 
 
 </label>
@@ -587,13 +513,7 @@ function myFunction() {
     </div>
   </div>
 
-</div>
 
-
-
-
-
-  <div class="form-group row">
   <label class="col-md-2 control-label">Notes
 
 
@@ -606,26 +526,15 @@ function myFunction() {
   <input  name="notes" placeholder="Notes" class="form-control" id="myText19" type="text" disabled value="{{onsite_id.notes}}">
     </div>
   </div>
-
-    <label class="col-md-2 control-label">Feedback given
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-      <input  name="notes" placeholder="Notes" class="form-control" id="myText20" type="text" disabled value="{% if onsite_id.feedback_given %} YES {% else %} NO {% endif %}">
-    </div>
-  </div>
 </div>
+
+
 
 
  <div class="col-md-12 ">
       <br>
     <center>
-        <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" type="reset" style="">Edit</button>
+        <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" id="myText22" type="reset" style="">Edit</button>
         <br>
         <br>
         <button style="display:none; background-color: #FC6E20;" id="myText21" type="submit" value="Submit" class="btn btn-primary">Save</button>

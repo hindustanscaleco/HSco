@@ -28,11 +28,11 @@
               <div class="card shadow" >
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; min-height: auto;">
 
-                    <div class="col-xl-3 col-md-1 mb-1"> {{ list1.user_id.name }} </div>
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.total_sales_done}} </div>
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.sales_target_given}} </div>
+                    <div class="col-xl-3 col-md-1 mb-1"><center> {{ list1.user_id.name }}</center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1 "><center> {{ list1.total_sales_done}} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1 "><center> {{ list1.sales_target_given}} </center></div>|
 
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">
+                    <div class="col-xl-2 col-md-1 mb-1 "><center>
                          {% for avg in  list1.start_rating_feedback_sales|rjust:'5'  %}
 							{% if forloop.counter <= list1.start_rating_feedback_sales %}
 									<i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
@@ -40,7 +40,7 @@
 									<i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
 							{% endif %}
 						{% endfor %}
-
+</center>
                     </div>
 
 

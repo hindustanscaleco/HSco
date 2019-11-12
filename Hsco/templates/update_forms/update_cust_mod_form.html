@@ -98,10 +98,13 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 function myFunction() {
 
   var x = document.getElementById("myText19");
+  var y = document.getElementById("myText20");
   if (x.style.display === "none") {
     x.style.display = "block";
+    y.style.display = "none";
   } else {
     x.style.display = "none";
+    y.style.display = "block";
   }
 
 
@@ -135,7 +138,7 @@ function myFunction() {
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label ">Name of customer *
+  <label class="col-md-2 control-label ">Name of Customer *
 </label>
 
   <div class="col-md-4 inputGroupContainer">
@@ -161,7 +164,7 @@ function myFunction() {
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Address
+  <label class="col-md-2 control-label">Address *
 
 </label>
 
@@ -323,7 +326,7 @@ function myFunction() {
 
 
 
-    <label class="col-md-2 control-label">Sales Person
+    <label class="col-md-2 control-label">Sales Person *
 
 </label>
 
@@ -341,7 +344,7 @@ function myFunction() {
 
 
 
-  <label class="col-md-2 control-label">New/Repeat Purchase</label>
+  <label class="col-md-2 control-label">New/Repeat Purchase *</label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope-open faicons"></i></span>
@@ -353,13 +356,13 @@ function myFunction() {
 
 <div class="form-group row" >
 
-    <label class="col-md-2 control-label">Bill No</label>
-
-    <div class="col-md-4 inputGroupContainer">
+ <label class="col-md-2 control-label">PO Number</label>
+  <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="bill_no" placeholder="Bill No" class="form-control"  type="text" disabled id="myText9" value="{{purchase_id_id.bill_no}}">
-  </div>
+  <input  name="po_number" placeholder="PO Number"  class="form-control"  type="text" disabled id="myText11" value="{{purchase_id_id.po_number}}">
+
+    </div>
   </div>
 
 
@@ -379,22 +382,20 @@ function myFunction() {
 </div>
 
 
-
 <div class="form-group row">
-  <label class="col-md-2 control-label">PO Number</label>
-  <div class="col-md-4 inputGroupContainer">
+
+
+    <label class="col-md-2 control-label">Bill No</label>
+
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="po_number" placeholder="PO Number"  class="form-control"  type="text" disabled id="myText11" value="{{purchase_id_id.po_number}}">
-
-    </div>
+  <input  name="bill_no" placeholder="Bill No" class="form-control"  type="text" disabled id="myText9" value="{{purchase_id_id.bill_no}}">
+  </div>
   </div>
 
 
-
-
-
-  <label class="col-md-2 control-label">Channel of Sales
+  <label class="col-md-2 control-label">Channel of Sales *
 
 
 </label>
@@ -446,7 +447,7 @@ function myFunction() {
 
 
 
-  <label class="col-md-2 control-label">Value of Goods
+  <label class="col-md-2 control-label">Value of Goods *
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -458,7 +459,7 @@ function myFunction() {
 
     <div class="form-group row">
 
-    <label class="col-md-2 control-label">Channel of Dispatch
+    <label class="col-md-2 control-label">Channel of Dispatch *
 </label>
       <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -523,7 +524,7 @@ function myFunction() {
     <div class="col-md-12 ">
       <br>
     <center>
-        <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" type="reset" style="">Edit</button>
+        <button style="background-color: #FC6E20;" onclick="myFunction()" id="myText20" class="btn btn-primary" type="reset" style="">Edit</button>
         <br>
         <br>
         <button style="display:none; background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>

@@ -318,7 +318,7 @@ def add_onsite_aftersales_service(request):
             x = response.text
 
 
-        return redirect('/add_onsite_product/'+str(item2.id))
+        return redirect('/onsite_views/')
     context={
         'cust_sugg':cust_sugg,
         'user_list':user_list,
