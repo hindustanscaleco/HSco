@@ -149,7 +149,7 @@ def restamping_after_sales_service(request):
 
         # new_serial_no = request.POST.get('new_serial_no')
         # brand = request.POST.get('brand')
-        scale_delivery_date = request.POST.get('scale_delivery_date')
+        # scale_delivery_date = request.POST.get('scale_delivery_date')
 
         item = Customer_Details()
         item2 = Restamping_after_sales_service()
@@ -204,7 +204,7 @@ def restamping_after_sales_service(request):
         # item2.new_serial_no = new_serial_no
         # item2.brand = brand
         item2.total_amount = 0.0
-        item2.scale_delivery_date = scale_delivery_date
+        # item2.scale_delivery_date = scale_delivery_date
 
 
         item2.save()
@@ -596,7 +596,7 @@ def update_restamping_product(request,id):
         sub_model = request.POST.get('sub_model')
         capacity = request.POST.get('capacity')
         old_serial_no = request.POST.get('old_serial_no')
-        # old_brand = request.POST.get('old_brand')
+        brand = request.POST.get('brand')
         amount = request.POST.get('amount')
 
         # product_id = Restamping_Product.objects.get(id=id)
@@ -625,14 +625,14 @@ def update_restamping_product(request,id):
         item.sub_model = sub_model
         item.capacity = capacity
         item.old_serial_no = old_serial_no
-        # item.old_brand = old_brand
+        item.brand = brand
         item.amount = amount
         # item.user_id = SiteUser.objects.get(id=request.user.pk)
         # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
 
 
-        item.save(update_fields=['scale_type','sub_model','capacity','old_serial_no',
+        item.save(update_fields=['scale_type','sub_model','capacity','old_serial_no','brand',
                                  'amount', ])
 
 

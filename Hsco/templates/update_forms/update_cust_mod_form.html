@@ -513,7 +513,9 @@ function myFunction() {
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
   <input  name="dispatch_id_assigned" placeholder="Dispatch ID Assigned" class="form-control" disabled value="{{purchase_id_id.dispatch_id_assigned}}" type="text">
     </div>
+        {% if purchase_id_id.dispatch_id_assigned %}
         <a style="margin-left:30%;" href="/update_dispatch_details/{{purchase_id_id.dispatch_id_assigned}}">Go To Dispatch --></a>
+        {% endif %}
   </div>
 
 

@@ -228,7 +228,7 @@ def create_employee(request):
 
     elif SiteUser.objects.get(id=request.user.pk).role =='Manager':
         manager_logged = SiteUser.objects.get(id=request.user.pk).name
-        admin_logged = SiteUser.objects.get(id=request.user.pk,admin__icontains=manager_logged).name
+        admin_logged = SiteUser.objects.get(id=request.user.pk, is_deleted=False).admin
 
 
     if request.method == 'POST' or request.method == 'FILES':

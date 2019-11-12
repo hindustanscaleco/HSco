@@ -21,7 +21,7 @@ class Restamping_after_sales_service(models.Model):
     # new_serial_no = models.CharField(max_length=150,null=True, blank=True)
     # brand = models.CharField(max_length=150,null=True, blank=True)
     total_amount = models.FloatField(default=0.0, null=True, blank=True)
-    scale_delivery_date = models.DateField(default=datetime.date.today, blank=True)
+    scale_delivery_date = models.DateField(null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
 
     def __int__(self):

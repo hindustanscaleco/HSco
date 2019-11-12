@@ -281,21 +281,24 @@ def employee_profile(request,id):
     valid_Manager=False
     user_id = SiteUser.objects.get(id=id)
     valid_group = user_id.group
-    import ast
 
-    x = "[" + valid_group + "]"
-    x = ast.literal_eval(x)
 
-    for item in x:
-        name = SiteUser.objects.filter(name=item)
-        for i in name:
-            if i.role == 'Admin':
-                valid_user=True
-    for item in x:
-        name = SiteUser.objects.filter(name=item)
-        for i in name:
-            if i.role == 'Manager':
-                valid_Manager = True
+
+    if user_id.manager == SiteUser.objects.get(id=request.user.pk).name:
+        valid_Manager = True
+    if user_id.admin == SiteUser.objects.get(id=request.user.pk).name:
+        valid_user = True
+
+    # for item in x:
+    #     name = SiteUser.objects.filter(name=item)
+    #     for i in name:
+    #         if i.role == 'Admin':
+    #             valid_user=True
+    # for item in x:
+    #     name = SiteUser.objects.filter(name=item)
+    #     for i in name:
+    #         if i.role == 'Manager':
+    #             valid_Manager = True
 
 
 
@@ -368,14 +371,14 @@ def employee_profile(request,id):
 
         item.mobile = mobile
         item.email = email
-        item.name = name
+        item.profile_name = name
         item.bank_name = bank_name
         item.account_number = account_no
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
 
-        item.save(update_fields=['mobile','email', 'name','bank_name','account_number','branch_name','ifsc_code','photo'])
+        item.save(update_fields=['mobile','email', 'profile_name','bank_name','account_number','branch_name','ifsc_code','photo'])
         return redirect('/employee_profile/' + str(id))
 
     elif request.method == 'POST' and 'submit3'  in request.POST:

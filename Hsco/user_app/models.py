@@ -80,8 +80,9 @@ class SiteUserManager(BaseUserManager):
 
 class SiteUser(AbstractBaseUser):
     #user details(i.e super admin,admin, manager, employee)
+    profile_name = models.CharField(max_length=30,null=True, blank=True)
     mobile = models.CharField(validators=[phone_regex], max_length=10, unique=True)
-    email = models.EmailField( 'Email-id', max_length=255, unique=True )
+    email = models.EmailField( 'Email-id', max_length=255,)
     name =models.CharField('Name',max_length=50,null=True,blank=True)
     role = models.CharField('Role  Of User',max_length=20, choices=choices,null=True,blank=True)
     group = models.CharField(max_length=300, null=True, blank=True)
