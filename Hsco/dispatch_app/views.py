@@ -62,7 +62,10 @@ def add_dispatch_details(request):
         #
         # item.save()
 
-
+        second_person = request.POST.get('second_person')
+        third_person = request.POST.get('third_person')
+        second_contact_no = request.POST.get('second_contact_no')
+        third_contact_no = request.POST.get('third_contact_no')
         dispatch_id = request.POST.get('dispatch_id')
         date_of_dispatch = request.POST.get('date_of_dispatch')
         dispatch_by = request.POST.get('dispatch_by')
@@ -114,6 +117,10 @@ def add_dispatch_details(request):
 
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         # item2.crm_no_id = item.pk
+        item2.second_person=second_person
+        item2.third_person=third_person
+        item2.second_contact_no=second_contact_no
+        item2.third_contact_no=third_contact_no
         item2.dispatch_id = dispatch_id
         item2.date_of_dispatch = date_of_dispatch
         item2.dispatch_by = dispatch_by
@@ -346,7 +353,10 @@ def update_dispatch_details(request,update_id):
 
 
         # dispatch_id = request.POST.get('dispatch_id')
-
+        second_person=request.POST.get('second_person')
+        third_person=request.POST.get('third_person')
+        second_contact_no=request.POST.get('second_contact_no')
+        third_contact_no=request.POST.get('third_contact_no')
         date_of_dispatch = request.POST.get('date_of_dispatch')
         dispatch_by = request.POST.get('dispatch_by')
         packed_by = request.POST.get('packed_by')
@@ -361,7 +371,10 @@ def update_dispatch_details(request,update_id):
         item = Dispatch.objects.get(id=update_id)
 
         # item.dispatch_id = dispatch_id
-
+        item.second_person=second_person
+        item.third_person=third_person
+        item.second_contact_no=second_contact_no
+        item.third_contact_no=third_contact_no
         item.date_of_dispatch = date_of_dispatch
         item.dispatch_by = dispatch_by
         item.packed_by = packed_by
@@ -375,7 +388,7 @@ def update_dispatch_details(request,update_id):
 
         # item.save(update_fields=['dispatch_id', ]),
 
-        item.save(update_fields=['date_of_dispatch', ]),
+        item.save(update_fields=['date_of_dispatch','second_person','third_person','second_contact_no','third_contact_no', ]),
         item.save(update_fields=['dispatch_by', ]),
         item.save(update_fields=['packed_by', ]),
         item.save(update_fields=['hamal_name', ]),

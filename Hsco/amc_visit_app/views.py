@@ -31,6 +31,10 @@ def add_amc_after_sales(request):
         company_name = request.POST.get('company_name')
         # customer_no = request.POST.get('customer_no')
         customer_email_id = request.POST.get('customer_email_id')
+        second_person = request.POST.get('second_person')
+        third_person = request.POST.get('third_person')
+        second_contact_no = request.POST.get('second_contact_no')
+        third_contact_no = request.POST.get('third_contact_no')
         type_of_scale = request.POST.get('type_of_scale')
         serial_no_scale = request.POST.get('serial_no_scale')
         contract_valid_in_years = request.POST.get('contract_valid_in_years')
@@ -88,6 +92,10 @@ def add_amc_after_sales(request):
         # item2.company_name = company_name
         # item2.crm_no = customer_no
         # item2.customer_email_id = customer_email_id
+        item2.second_person=second_person
+        item2.third_person=third_person
+        item2.second_contact_no=second_contact_no
+        item2.third_contact_no=third_contact_no
         item2.type_of_scale = type_of_scale
         item2.serial_no_scale = serial_no_scale
         item2.contract_valid_in_years = contract_valid_in_years
@@ -359,6 +367,10 @@ def update_amc_form(request,update_id):
         company_name = request.POST.get('company_name')
         # customer_no = request.POST.get('customer_no')
         type_of_scale = request.POST.get('type_of_scale')
+        second_person=request.POST.get('second_person')
+        third_person=request.POST.get('third_person')
+        second_contact_no=request.POST.get('second_contact_no')
+        third_contact_no=request.POST.get('third_contact_no')
         serial_no_scale = request.POST.get('serial_no_scale')
         contract_valid_in_years = request.POST.get('contract_valid_in_years')
         contract_amount = request.POST.get('contract_amount')
@@ -382,6 +394,10 @@ def update_amc_form(request,update_id):
         item.company_name = company_name
         # item.customer_no = customer_no
         item.type_of_scale = type_of_scale
+        item.second_person=second_person
+        item.third_person=third_person
+        item.second_contact_no=second_contact_no
+        item.third_contact_no=third_contact_no
         item.serial_no_scale = serial_no_scale
         item.contract_valid_in_years = contract_valid_in_years
         item.contract_amount = contract_amount
@@ -408,7 +424,8 @@ def update_amc_form(request,update_id):
         item.repot_4 = repot_4
         item.save(update_fields=['contract_amount','type_of_scale','serial_no_scale',
                                  'contract_valid_in_years','contract_amount','contract_no_reporting_breakdown','contract_start_date',
-                                 'contract_end_date','repot_1','repot_2','repot_3','repot_4',])
+                                 'contract_end_date','repot_1','repot_2','repot_3','repot_4','second_person','third_person',
+                                 'second_contact_no','third_contact_no',])
 
         return redirect('/amc_views')
     context={

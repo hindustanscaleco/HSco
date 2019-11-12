@@ -23,6 +23,10 @@ class Onsite_aftersales_service(models.Model):
     # phone_no = models.CharField(max_length=13, null=True, blank=True)
     # customer_email_id = models.EmailField(max_length=255, null=True, blank=True)
 
+    second_person = models.CharField(max_length=80,null=True,blank=True)
+    third_person = models.CharField(max_length=80,null=True,blank=True)
+    second_contact_no = models.CharField(max_length=80,null=True,blank=True)
+    third_contact_no = models.CharField(max_length=80,null=True,blank=True)
     nearest_railwaystation = models.CharField(max_length=30, null=True, blank=True)
     train_line = models.CharField(max_length=30, null=True, blank=True)
     current_stage = models.CharField(default='Onsite repairing request is raised',max_length=50,null=True,blank=True)
