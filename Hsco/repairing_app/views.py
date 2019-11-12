@@ -61,6 +61,10 @@ def add_repairing_details(request):
         in_warranty = request.POST.get('in_warranty')
         today_date = request.POST.get('today_date')
         location = request.POST.get('location')
+        second_person = request.POST.get('second_person')
+        third_person = request.POST.get('third_person')
+        second_contact_no = request.POST.get('second_contact_no')
+        third_contact_no = request.POST.get('third_contact_no')
         # products_to_be_repaired = request.POST.get('products_to_be_repaired')
 
         total_cost = 0.0
@@ -118,6 +122,10 @@ def add_repairing_details(request):
         item2.today_date = today_date
 
         item2.location = location
+        item2.second_person=second_person
+        item2.third_person=third_person
+        item2.second_contact_no=second_contact_no
+        item2.third_contact_no=third_contact_no
         # item2.products_to_be_repaired = products_to_be_repaired
 
         item2.total_cost = 0.0
@@ -355,6 +363,10 @@ def update_repairing_details(request,id):
         # today_date = request.POST.get('today_date')
         # location = request.POST.get('location')
         # products_to_be_repaired = request.POST.get('products_to_be_repaired')
+        second_person=request.POST.get('second_person')
+        third_person=request.POST.get('third_person')
+        second_contact_no=request.POST.get('second_contact_no')
+        third_contact_no=request.POST.get('third_contact_no')
         total_cost = request.POST.get('total_cost')
         informed_on = request.POST.get('informed_on')
         informed_by = request.POST.get('informed_by')
@@ -384,6 +396,10 @@ def update_repairing_details(request,id):
             item2.informed_on = informed_on
             item2.save(update_fields=['informed_on', ]),
         item2.informed_by = informed_by
+        item2.second_person=second_person
+        item2.third_person=third_person
+        item2.second_contact_no=second_contact_no
+        item2.third_contact_no=third_contact_no
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired
         item2.repaired_date = repaired_date
@@ -411,7 +427,7 @@ def update_repairing_details(request,id):
         item2.save(update_fields=['repaired_by', ]),
         # item2.save(update_fields=['feedback_given', ])
         item2.save(update_fields=['current_stage', ])
-        item2.save(update_fields=['stage_update_timedate', ])
+        item2.save(update_fields=['stage_update_timedate','second_person','third_person','second_contact_no','third_contact_no', ])
         repair_id = Repairing_after_sales_service.objects.get(id=id)
         customer_id = Repairing_after_sales_service.objects.get(id=id).crm_no
         customer_id = Customer_Details.objects.get(id=customer_id)

@@ -211,9 +211,10 @@ function myFunction() {
     document.getElementById("myText18").disabled = false;
 <!--    document.getElementById("myText19").disabled = false;-->
 <!--    document.getElementById("myText20").disabled = false;-->
-<!--    document.getElementById("myText21").disabled = false;-->
-<!--    document.getElementById("myText22").disabled = false;-->
-<!--    document.getElementById("myText23").disabled = false;-->
+    document.getElementById("myText21").disabled = false;
+    document.getElementById("myText22").disabled = false;
+    document.getElementById("myText23").disabled = false;
+    document.getElementById("myText24").disabled = false;
     document.getElementById("button").disabled = false;
     document.getElementById("myText19").style.display = "block";
 }
@@ -367,6 +368,55 @@ function myFunction() {
   </div>
 
     </div>
+<div class="form-group row">
+
+ <label class="col-md-2 control-label">Second Person
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+    <input type="text" name="second_person" placeholder="Name" class="form-control" disabled id="myText21" value="{{repair_id.second_person}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Contact No
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="second_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="myText22" value="{{repair_id.second_contact_no}}">
+    </div>
+  </div>
+</div>
+
+<div class="form-group row">
+
+ <label class="col-md-2 control-label">Third Person
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+    <input type="text" name="third_person" placeholder="Name" class="form-control" disabled id="myText23" value="{{repair_id.third_person}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Contact No
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="third_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="myText24" value="{{repair_id.third_contact_no}}">
+    </div>
+  </div>
+</div>
 
 <div class="form-group row">
 

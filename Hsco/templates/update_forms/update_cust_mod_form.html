@@ -124,8 +124,12 @@ function myFunction() {
     document.getElementById("myText14").disabled = true;
     document.getElementById("myText15").disabled = false;
     document.getElementById("myText16").disabled = false;
-    document.getElementById("myText17").disabled = true;
+    document.getElementById("myText17").disabled = false;
     document.getElementById("myText18").disabled = false;
+    document.getElementById("myText21").disabled = false;
+    document.getElementById("myText22").disabled = false;
+    document.getElementById("myText23").disabled = true;
+    document.getElementById("myText24").disabled = false;
     document.getElementById("myText19").style.display = "block";
 
 }
@@ -212,7 +216,55 @@ function myFunction() {
     </div>
   </div>
 </div>
+<div class="form-group row">
 
+ <label class="col-md-2 control-label">Second Person
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+    <input type="text" name="second_person" placeholder="Name" class="form-control" disabled id="myText7" value="{{purchase_id_id.second_person}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Contact No
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="second_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="myText8" value="{{purchase_id_id.second_contact_no}}">
+    </div>
+  </div>
+</div>
+
+<div class="form-group row">
+
+ <label class="col-md-2 control-label">Third Person
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+    <input type="text" name="third_person" placeholder="Name" class="form-control" disabled id="myText9" value="{{purchase_id_id.third_person}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Contact No
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="third_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="myText10" value="{{purchase_id_id.third_contact_no}}">
+    </div>
+  </div>
+</div>
 
 
 <div class="form-group row">
@@ -333,7 +385,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="sales_person" placeholder="Sales Person" value="{{purchase_id_id.sales_person}}" id="myText7" disabled class="form-control"  type="text">
+  <input  name="sales_person" placeholder="Sales Person" value="{{purchase_id_id.sales_person}}" id="myText11" disabled class="form-control"  type="text">
     </div>
   </div>
 
@@ -348,7 +400,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope-open faicons"></i></span>
-  <input name="new_repeat_purchase"  value="{{purchase_id_id.new_repeat_purchase}}" placeholder="New/Repeat Purchase" disabled id="myText8" class="form-control"  type="text">
+  <input name="new_repeat_purchase"  value="{{purchase_id_id.new_repeat_purchase}}" placeholder="New/Repeat Purchase" disabled id="myText12" class="form-control"  type="text">
     </div>
   </div>
 </div>
@@ -360,7 +412,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="po_number" placeholder="PO Number"  class="form-control"  type="text" disabled id="myText11" value="{{purchase_id_id.po_number}}">
+  <input  name="po_number" placeholder="PO Number"  class="form-control"  type="text" disabled id="myText13" value="{{purchase_id_id.po_number}}">
 
     </div>
   </div>
@@ -372,7 +424,7 @@ function myFunction() {
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-    <input type="file" name="upload_op_file"  class="form-control" disabled id="myText10" value="{{purchase_id_id.upload_op_file}}">
+    <input type="file" name="upload_op_file"  class="form-control" disabled id="myText14" value="{{purchase_id_id.upload_op_file}}">
 
    </div>
         {% if purchase_id_id.upload_op_file %}
@@ -390,7 +442,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="bill_no" placeholder="Bill No" class="form-control"  type="text" disabled id="myText9" value="{{purchase_id_id.bill_no}}">
+  <input  name="bill_no" placeholder="Bill No" class="form-control"  type="text" disabled id="myText15" value="{{purchase_id_id.bill_no}}">
   </div>
   </div>
 
@@ -402,7 +454,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input type="text" required name="channel_of_sales" placeholder="Channel of Sales" class="form-control" disabled id="myText12" value="{{purchase_id_id.channel_of_sales}}" list="channel10">
+    <input type="text" required name="channel_of_sales" placeholder="Channel of Sales" class="form-control" disabled id="myText16" value="{{purchase_id_id.channel_of_sales}}" list="channel10">
     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
       <datalist style="height:20px;" id="channel10">
       <option value="Retail through Physical Store"></option>
@@ -424,7 +476,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input  type="text" required name="industry" placeholder="Industry" class="form-control" disabled id="myText13" value="{{purchase_id_id.industry}}" list="channel2">
+    <input  type="text" required name="industry" placeholder="Industry" class="form-control" disabled id="myText17" value="{{purchase_id_id.industry}}" list="channel2">
         <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
       <datalist style="height:20px;" id="channel2">
       <option value="Energy industry"></option>
@@ -452,7 +504,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods" placeholder="Value of Goods" value="{{purchase_id_id.value_of_goods}}" class="form-control" step="0.2" type="number" disabled id="myText14">
+  <input  name="value_of_goods" placeholder="Value of Goods" value="{{purchase_id_id.value_of_goods}}" class="form-control" step="0.2" type="number" disabled id="myText18">
     </div>
   </div>
     </div>
@@ -464,7 +516,7 @@ function myFunction() {
       <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-  <input  type="text" name="channel_of_dispatch" placeholder="Channel of Dispatch" required class="form-control" disabled id="myText15" value="{{purchase_id_id.channel_of_dispatch}}" list="channel">
+  <input  type="text" name="channel_of_dispatch" placeholder="Channel of Dispatch" required class="form-control" disabled id="myText21" value="{{purchase_id_id.channel_of_dispatch}}" list="channel">
     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
       <datalist style="height:20px;" id="channel">
       <option value="Courier">
@@ -481,7 +533,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>
-<input name="notes" class="form-control" value="{{purchase_id_id.notes}}" placeholder="Notes" disabled id="myText16">
+<input name="notes" class="form-control" value="{{purchase_id_id.notes}}" placeholder="Notes" disabled id="myText22">
 </div>
   </div>
     </div>
@@ -492,7 +544,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
       <div class="input-group">
         <span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>
-        <input class="form-control" name="feedback_form_filled" placeholder="Yes or No" disabled id="myText17" list="rep_by" value="{% if purchase_id_id.feedback_form_filled %} YES {% else %} NO {% endif %}">
+        <input class="form-control" name="feedback_form_filled" placeholder="Yes or No" disabled id="myText23" list="rep_by" value="{% if purchase_id_id.feedback_form_filled %} YES {% else %} NO {% endif %}">
             <datalist style="height:20px;" id="rep_by">
 
       <option value="YES">

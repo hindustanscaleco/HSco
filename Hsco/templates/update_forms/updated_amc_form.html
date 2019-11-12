@@ -148,6 +148,10 @@ function myFunction() {
     document.getElementById("myText20"). disabled = false;
     document.getElementById("myText21"). disabled = false;
     document.getElementById("myText22"). disabled = false;
+    document.getElementById("myText25"). disabled = false;
+    document.getElementById("myText26"). disabled = false;
+    document.getElementById("myText27"). disabled = false;
+    document.getElementById("myText28"). disabled = false;
     document.getElementById("myText23").style.display = "block";
 
 }
@@ -282,6 +286,55 @@ function myFunction() {
     </div>
   </div>
 
+</div>
+  <div class="form-group row">
+
+ <label class="col-md-2 control-label">Second Person
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+    <input type="text" name="second_person" placeholder="Name" class="form-control" disabled id="myText25" value="{{amc_list.second_person}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Contact No
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="second_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="myText26" value="{{amc_list.second_contact_no}}">
+    </div>
+  </div>
+</div>
+
+<div class="form-group row">
+
+ <label class="col-md-2 control-label">Third Person
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+    <input type="text" name="third_person" placeholder="Name" class="form-control" disabled id="myText27" value="{{amc_list.third_person}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Contact No
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="third_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="myText28" value="{{amc_list.third_contact_no}}">
+    </div>
+  </div>
 </div>
 
 

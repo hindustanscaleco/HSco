@@ -19,7 +19,10 @@ class Amc_After_Sales(models.Model):
     # company_name = models.CharField(max_length=80, null=True, blank=True)
     # customer_no =models.CharField(max_length=13,null=True,blank=True)
     # customer_email_id = models.EmailField(max_length=255,null=True,blank=True)
-
+    second_person = models.CharField(max_length=80,null=True,blank=True)
+    third_person = models.CharField(max_length=80,null=True,blank=True)
+    second_contact_no = models.CharField(max_length=80,null=True,blank=True)
+    third_contact_no = models.CharField(max_length=80,null=True,blank=True)
     type_of_scale = models.CharField(max_length=30,null=True,blank=True)
     serial_no_scale = models.CharField(max_length=80,null=True,blank=True)
     contract_valid_in_years = models.CharField(max_length=30,null=True,blank=True)
