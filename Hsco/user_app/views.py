@@ -555,15 +555,13 @@ def load_modules(request):
     valid_modules = SiteUser.objects.get(name=item_name)
     valid_modules_list = SiteUser.objects.get(name=item_name).modules_assigned
     print(valid_modules_list)
-    print(valid_modules_list)
-    print(valid_modules_list)
+
+    valid_modules_list = valid_modules_list.strip('][').split(',')
     for item in valid_modules_list:
-        if item == 'Repairing Module':
+
+        if item == "'Repairing Module'":
             reparing_true=True
-    print(reparing_true)
-    print(reparing_true)
-    print(reparing_true)
-    print(reparing_true)
+
 
     context={
         'valid_modules':valid_modules,
