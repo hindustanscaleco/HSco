@@ -111,6 +111,7 @@ def create_admin(request):
         item.mobile = mobile
         item.email = email
         item.name = name
+        item.profile_name = name
         item.role = 'Admin'
         item.group = "'" + group + "'," + group2
         item.is_deleted = is_deleted
@@ -170,6 +171,7 @@ def create_manager(request):
         item.mobile = mobile
         item.email = email
         item.name = name
+        item.profile_name = name
         item.role = 'Manager'
         if admin != '---------':
             item.group = "'"+group+"',"+group2+admin
@@ -253,6 +255,7 @@ def create_employee(request):
         item.mobile = mobile
         item.email = email
         item.name = name
+        item.profile_name = name
         item.role = 'Employee'
         item.group = group
         item.is_deleted = is_deleted
@@ -412,7 +415,7 @@ def update_admin(request,id):
 
         item.mobile = mobile
         item.email = email
-        item.name = name
+        item.profile_name = name
         item.role = 'Admin'
         item.group = group
         item.is_deleted = is_deleted
@@ -426,7 +429,7 @@ def update_admin(request,id):
 
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.save(update_fields=['mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/update_admin/'+str(item.id))
     context = {
         'form': form,
@@ -458,7 +461,7 @@ def update_manager(request,id):
 
         item.mobile = mobile
         item.email = email
-        item.name = name
+        item.profile_name = name
         item.role = 'Manager'
         item.group = group
         item.is_deleted = is_deleted
@@ -471,7 +474,7 @@ def update_manager(request,id):
         item.salary_slip = salary_slip
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.save(update_fields=['mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/update_manager/' + str(item.id))
     context = {
         'form': form,
@@ -503,7 +506,7 @@ def update_employee(request,id):
 
         item.mobile = mobile
         item.email = email
-        item.name = name
+        item.profile_name = name
         item.role = 'Employee'
         item.group = group
         item.is_deleted = is_deleted
@@ -516,7 +519,7 @@ def update_employee(request,id):
         item.salary_slip = salary_slip
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['mobile','email', 'name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.save(update_fields=['mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/update_employee/' + str(item.id))
     context = {
         'form': form,
@@ -568,5 +571,38 @@ def load_modules(request):
         'reparing_true':reparing_true
     }
     return render(request, 'AJAX/load_modules.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
