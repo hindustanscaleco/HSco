@@ -1,19 +1,18 @@
 from datetime import datetime
-
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
-# Create your views here.
 from user_app.models import SiteUser
 from django.core.mail import send_mail
 from Hsco import settings
 import requests
 import json
-
 from purchase_app.views import check_admin_roles
+from onsitevisit_app.models import Onsite_Feedback
 from .models import Employee_Leave, Defects_Warning, Employee_Analysis_month
-
+from purchase_app.models import Feedback
+from repairing_app.models import Repairing_Feedback
+from amc_visit_app.models import AMC_Feedback
 
 def add_ess_details(request):
     if request.method == 'POST' or  request.method=='FILES':
@@ -303,19 +302,35 @@ def employee_profile(request,id):
 
 
     leave_list = Employee_Leave.objects.filter(user_id=id)
-
+    context={}
     mon = datetime.now().month
+
+    feeback = Feedback.objects.filter(user_id=user_id)
+
+    rep_feedback = Repairing_Feedback.objects.filter(user_id=user_id)
+    onsite_rep_feedback = Onsite_Feedback.objects.filter(user_id=user_id)
+
+    amc_feedback = AMC_Feedback.objects.filter(user_id=user_id)
+
+    context3={
+        'feeback': feeback,
+        'rep_feedback': rep_feedback,
+        'onsite_rep_feedback': onsite_rep_feedback,
+        'amc_feedback': amc_feedback,
+    }
+    context.update(context3)
 
     if Employee_Analysis_month.objects.filter(user_id=id,entry_date__month=mon).count()>0:
         this_month_target = Employee_Analysis_month.objects.get(user_id=id,entry_date__month=mon)
 
-        context = {
+        context4 = {
             'user_id': user_id,
             'leave_list': leave_list,
             'this_month_target': this_month_target,
             'valid_user': valid_user,
             'valid_Manager': valid_Manager,
         }
+        context.update(context4)
         emp_of_month_list = Employee_Analysis_month.objects.filter(Q(user_id=SiteUser.objects.get(id=request.user.pk)))
         context2 = {
             'user_id': user_id,

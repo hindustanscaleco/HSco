@@ -711,6 +711,211 @@ color:;
 </div>
 
 
+            <div class="card-header py-3">
+                  <h4 class="m-0 font-weight-bold text-primary" > Detailed Sales Feedback</h4>
+                </div></center>
+
+            <div class="row">
+{% for feedback_form in feeback %}
+                        <div class="col-xl-6 col-md-6 mb-4">
+
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary" >Feedback {{ feedback_form.id }}</h6>
+                </div>
+                <div class="card-body">
+      <div class="row">
+    <div class="col-lg-6">
+
+
+                        <b>Knowledge : </b>{% for avg in feedback_form.knowledge_of_person|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.knowledge_of_person %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %} <br>
+                  <b>Timeliness : </b>{% for avg in feedback_form.timeliness_of_person|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.timeliness_of_person %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %}  <br>
+                  <b>Price Of Product : </b>{% for avg in feedback_form.price_of_product|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.price_of_product %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %}   <br>
+                  <b>Over All Interaction : </b>{% for avg in feedback_form.overall_interaction|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.overall_interaction %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %} <br>
+                  <b>About HSCO : </b>{{feedback_form.about_hsco}} <br>
+                  <b>Any Other Suggestions: </b>{{feedback_form.any_suggestion}} <br>
+<!--
+                      <b>Ratings : <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+-->
+
+
+    </div>
+      </div>
+
+
+
+
+            </div>
+              </div>
+                        </div>
+{% endfor %}
+                </div>
+            <br>
+            <br>
+
+
+            <div class="card-header py-3">
+                  <h4 class="m-0 font-weight-bold text-primary" > Detailed Reparing Feedback</h4>
+                </div></center>
+
+            <div class="row">
+{% for feedback_form in rep_feedback %}
+                        <div class="col-xl-6 col-md-6 mb-4">
+
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary" >Feedback {{ feedback_form.id }}</h6>
+                </div>
+                <div class="card-body">
+      <div class="row">
+    <div class="col-lg-9">
+
+
+                        <b>Backend Team : </b>{% for avg in feedback_form.backend_team|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.backend_team %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %} <br>
+        <b>Onsite Worker : </b>{% for avg in feedback_form.onsite_worker|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.onsite_worker %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %}  <br>
+                  <b> Speed Performance: </b>{% for avg in feedback_form.speed_of_performance|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.speed_of_performance %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %}  <br>
+                  <b>Price Of Repairing : </b>{% for avg in feedback_form.price_of_reparing|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.price_of_reparing %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %}   <br>
+                  <b>Over All Interaction : </b>{% for avg in feedback_form.overall_interaction|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.overall_interaction %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %} <br>
+                  <b>About HSCO : </b>{{feedback_form.about_hsco}} <br>
+                  <b>Any Other Suggestions: </b>{{feedback_form.any_suggestion}} <br>
+<!--
+                      <b>Ratings : <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+-->
+
+
+    </div>
+      </div>
+
+
+
+
+            </div>
+              </div>
+                        </div>
+{% endfor %}
+                </div>
+<br>
+<br>
+
+            <div class="card-header py-3">
+                  <h4 class="m-0 font-weight-bold text-primary" > Detailed Onsite Reparing Feedback</h4>
+                </div></center>
+
+            <div class="row">
+{% for feedback_form in onsite_rep_feedback %}
+                        <div class="col-xl-6 col-md-6 mb-4">
+
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary" >Feedback {{ feedback_form.id }}</h6>
+                </div>
+                <div class="card-body">
+      <div class="row">
+    <div class="col-lg-9">
+
+
+                        <b>Satisfied with communication : </b>{% for avg in feedback_form.satisfied_with_communication|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.satisfied_with_communication %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %} <br>
+                  <b>Speed of Performance : </b>{% for avg in feedback_form.speed_of_performance|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.speed_of_performance %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %}  <br>
+                  <b>Price Of Repairing : </b>{% for avg in feedback_form.price_of_reparing|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.price_of_reparing %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %}   <br>
+                  <b>Over All Interaction : </b>{% for avg in feedback_form.overall_interaction|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.overall_interaction %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true"></i>
+							{% endif %}
+        						{% endfor %} <br>
+                  <b>About HSCO : </b>{{feedback_form.about_hsco}} <br>
+                  <b>Any Other Suggestions: </b>{{feedback_form.any_suggestion}} <br>
+<!--
+                      <b>Ratings : <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+-->
+
+
+    </div>
+      </div>
+
+
+
+
+            </div>
+              </div>
+                        </div>
+{% endfor %}
+                </div>
+
+
 
 
 

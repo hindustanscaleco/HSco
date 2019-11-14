@@ -326,11 +326,8 @@ def amc_views(request):
         }
         return render(request, "manager/amc_view.html",context )
 
-
 def amc_logs(request):
     return render(request,"logs/amc_logs.html")
-
-    
 
 def update_amc_form(request,update_id):
     amc_list=Amc_After_Sales.objects.get(id=update_id)
@@ -433,7 +430,6 @@ def update_amc_form(request,update_id):
 
     }
     return render(request,"update_forms/updated_amc_form.html",context)
-
 
 def feedback_amc(request,user_id,customer_id,amc_id):
     feedback_form = AMC_Feedback_Form(request.POST or None)

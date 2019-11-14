@@ -749,7 +749,7 @@ def load_onsite_reparing_manager(request,):
 def onsitevisit_app_graph(request,user_id):
     from django.db.models import Sum
     # user_id = request.user.pk
-    rep_feedback = Onsite_Feedback.objects.all()
+    rep_feedback = Onsite_Feedback.objects.filter(user_id=user_id)
     mon = datetime.now().month
 
     print(user_id)
@@ -799,7 +799,7 @@ def onsitevisit_app_graph(request,user_id):
             'this_lis_date': this_lis_date,
             'this_lis_sum': this_lis_sum,
             'target_achieved': target_achieved,
-            # 'rep_feedback': rep_feedback,
+            'rep_feedback': rep_feedback,
         }
         return render(request, "graphs/onsitevisit_app_graph.html", context)
     else:
@@ -841,7 +841,7 @@ def onsitevisit_app_graph(request,user_id):
             'this_lis_date': this_lis_date,
             'this_lis_sum': this_lis_sum,
             'target_achieved': target_achieved,
-            # 'feeback': feeback,
+            'rep_feedback': rep_feedback,
         }
         return render(request,"graphs/onsitevisit_app_graph.html",context)
 

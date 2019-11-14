@@ -581,8 +581,9 @@ def add_product_details(request,id):
             # dispatch_pro.purchase_type = purchase_type
             dispatch_pro.save()
 
-            item.product_dispatch_id = dispatch_pro.pk
-            item.save(update_fields=['product_dispatch_id'])
+            Product_Details.objects.filter(id=item.pk).update(product_dispatch_id=dispatch_pro.pk)
+            # item.product_dispatch_id = dispatch_pro.pk
+            # item.save(update_fields=['product_dispatch_id'])
         except:
             print("Franchisee Store selected")
 
@@ -804,6 +805,10 @@ def edit_product_customer(request,product_id_rec):
     purchase = Product_Details.objects.get(id=product_id_rec)
     purchase_id = Purchase_Details.objects.get(id=purchase.purchase_id)
     # dispatch_id_assigned = str(purchase_id.dispatch_id_assigned)
+    try:
+        dispatch_id_assigned = str(purchase.dispatch_id_assigned)
+    except:
+        dispatch_id_assigned=None
     product_id = Product_Details.objects.get(id=product_id_rec)
     if request.method == 'POST':
         quantity = request.POST.get('quantity')
@@ -874,27 +879,41 @@ def edit_product_customer(request,product_id_rec):
                                               entry_date__month=purchase_id.entry_timedate.month,
                                               year=purchase_id.entry_timedate.year).update(
             total_sales_done_today=F("total_sales_done_today") + value_of_goods)
+
+
+        if dispatch_id_assigned != '' or dispatch_id_assigned != None:
+            if product_id.product_dispatch_id != '' or product_id.product_dispatch_id != None:
+                dispatch_pro = Product_Details_Dispatch.objects.get(id=product_id.product_dispatch_id.pk)
+                print(product_id.product_dispatch_id)
+                print(product_id.product_dispatch_id)
+                print(product_id.product_dispatch_id)
+                print(product_id.product_dispatch_id)
+                print(product_id.product_dispatch_id)
+                print(product_id.product_dispatch_id)
+                # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+                # dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                # dispatch_pro.product_name = product_name
+                dispatch_pro.quantity = quantity
+                dispatch_pro.type_of_scale = type_of_scale
+                dispatch_pro.model_of_purchase = model_of_purchase
+                dispatch_pro.sub_model = sub_model
+                dispatch_pro.sub_sub_model = sub_sub_model
+                dispatch_pro.serial_no_scale = serial_no_scale
+                dispatch_pro.brand = brand
+                dispatch_pro.capacity = capacity
+                dispatch_pro.unit = unit
+                # dispatch_pro.dispatch_id = dispatch_id
+                # dispatch_pro.sales_person = sales_person
+                # dispatch_pro.purchase_type = purchase_type
+                dispatch_pro.save(
+                    update_fields=['quantity', 'type_of_scale', 'model_of_purchase', 'sub_model',
+                                   'sub_sub_model',
+                                   'serial_no_scale', 'brand', 'capacity', 'unit',
+                                   ])
+
         # try:
-        #     dispatch_id = Dispatch.objects.get(id=dispatch_id_assigned)
-        #     dispatch_pro = Product_Details_Dispatch()
-        #     # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
-        #     # dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        #     dispatch_pro.product_name = product_name
-        #     dispatch_pro.quantity = quantity
-        #     dispatch_pro.type_of_scale = type_of_scale
-        #     dispatch_pro.model_of_purchase = model_of_purchase
-        #     dispatch_pro.sub_model = sub_model
-        #     dispatch_pro.sub_sub_model = sub_sub_model
-        #     dispatch_pro.serial_no_scale = serial_no_scale
-        #     dispatch_pro.brand = brand
-        #     dispatch_pro.capacity = capacity
-        #     dispatch_pro.unit = unit
-        #     dispatch_pro.dispatch_id = dispatch_id
-        #     dispatch_pro.sales_person = sales_person
-        #     dispatch_pro.purchase_type = purchase_type
-        #     dispatch_pro.save(update_fields=['product_name', 'quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
-        #                          'serial_no_scale', 'brand', 'capacity', 'unit', 'purchase_id_id',
-        #                          ])
+        #     # dispatch_id = Dispatch.objects.get(id=dispatch_id_assigned)
+        #
         # except:
         #     pass
 

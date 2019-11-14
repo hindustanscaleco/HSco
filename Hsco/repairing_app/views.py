@@ -929,7 +929,7 @@ def repairing_employee_graph(request,user_id):
     # print(final_list2)
 
     from django.db.models import Sum
-    rep_feedback = Repairing_Feedback.objects.all()
+    rep_feedback = Repairing_Feedback.objects.filter(user_id=user_id)
 
     print(user_id)
     mon = datetime.now().month
