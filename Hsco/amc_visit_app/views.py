@@ -463,8 +463,33 @@ def feedback_amc(request,user_id,customer_id,amc_id):
             amc.avg_feedback = (float(item.satisfied_with_work) + float(item.speed_of_performance)  + float(item.price_of_amc)  + float(item.overall_interaction) )/ float(4.0)
             amc.feedback_given = True
             amc.save(update_fields=['avg_feedback', 'feedback_given'])
+
+            if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                      Q(user_id=SiteUser.objects.get(id=user_id))).count() > 0:
+                Employee_Analysis_month.objects.filter(user_id=user_id, entry_date__month=datetime.now().month,
+                                                       year=datetime.now().year).update(
+                    start_rating_feedback_amc=(F("start_rating_feedback_amc") + amc.avg_feedback) / 2.0)
+                # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+                # ead.save(update_fields=['total_sales_done_today'])
+
+            else:
+                ead = Employee_Analysis_month()
+                ead.user_id = SiteUser.objects.get(id=user_id)
+                ead.start_rating_feedback_amc = amc.avg_feedback
+                # ead.total_dispatch_done = value_of_goods
+                ead.manager_id = SiteUser.objects.get(id=user_id).group
+                ead.month = datetime.now().month
+                ead.year = datetime.now().year
+                ead.save()
+
+
         except:
             pass
+
+
+
+
         return HttpResponse('Feedback Submitted!!!')
     context = {
         'feedback_form': feedback_form,

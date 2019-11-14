@@ -23,24 +23,35 @@ from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 def add_repairing_details(request):
     cust_sugg=Customer_Details.objects.all()
     prev_rep_sugg=Repairing_after_sales_service.objects.all()
-    if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
+    if request.user.role == 'Super Admin':
         user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Repairing Module', is_deleted=False)
-    else: #display colleague
-        list_group = SiteUser.objects.get(id=request.user.id).group
-        import ast
 
-        x = "[" + list_group + "]"
-        x = ast.literal_eval(x)
-        manager_list = []
-        for item in x:
-            name = SiteUser.objects.filter(name__icontains=item)
-            for it in name:
-                if it.role == 'Manager':
-                    if item not in manager_list:
-                        manager_list.append(item)
-
-        user_list = SiteUser.objects.filter(group__icontains=manager_list,
+    elif request.user.role == 'Admin':
+        user_list = SiteUser.objects.filter(admin=request.user.name,
                                             modules_assigned__icontains='Repairing Module', is_deleted=False)
+    elif request.user.role == 'Manager':
+        user_list = SiteUser.objects.filter(manager=request.user.name,
+                                            modules_assigned__icontains='Repairing Module', is_deleted=False)
+    else: #display colleague
+
+        list_group = SiteUser.objects.get(id=request.user.id).manager
+        user_list = SiteUser.objects.filter(manager=list_group,
+                                            modules_assigned__icontains='Repairing Module', is_deleted=False)
+
+        # import ast
+        #
+        # x = "[" + list_group + "]"
+        # x = ast.literal_eval(x)
+        # manager_list = []
+        # for item in x:
+        #     name = SiteUser.objects.filter(name__icontains=item)
+        #     for it in name:
+        #         if it.role == 'Manager':
+        #             if item not in manager_list:
+        #                 manager_list.append(item)
+        #
+        # user_list = SiteUser.objects.filter(group__icontains=manager_list,
+        #                                     modules_assigned__icontains='Repairing Module', is_deleted=False)
 
 
 
@@ -77,7 +88,7 @@ def add_repairing_details(request):
         repaired = request.POST.get('repaired')
         delivery_by = request.POST.get('delivery_by')
         feedback_given = request.POST.get('feedback_given')
-        current_stage = request.POST.get('current_stage')
+        # current_stage = request.POST.get('current_stage')
         repaired_by = request.POST.get('repaired_by')
 
         item2 = Repairing_after_sales_service()
@@ -140,7 +151,7 @@ def add_repairing_details(request):
         item2.feedback_given = False
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item2.current_stage = current_stage
+        # item2.current_stage = current_stage
 
 
         item2.save()
@@ -276,6 +287,18 @@ def repair_product(request,id):
 
         item.save()
 
+        current_stage_in_db=Repairing_after_sales_service.objects.filter(id=id).current_stage #updatestage1
+        if current_stage_in_db == '' and sub_model !='':
+            Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Scale is collected but estimate is not given',stage_update_timedate = timezone.now())
+            # item2.save(update_fields=['stage_update_timedate', ])
+
+        current_stage_in_db = Repairing_after_sales_service.objects.filter(id=id).current_stage  #updatestage2
+        if current_stage_in_db == 'Scale is collected but estimate is not given' and cost != 0.0:
+            Repairing_after_sales_service.objects.filter(id=id).update(
+                current_stage='Estimate is given but Estimate is not confirmed',stage_update_timedate = timezone.now())
+
+
+
         Component_Replaced.objects.filter(pk__in=components_replaced_popup).update(product_id=item.pk)
 
         Repairing_after_sales_service.objects.filter(id=id).update(total_cost=F("total_cost") + cost)
@@ -333,6 +356,22 @@ def update_repairing_details(request,id):
     # customer_id = Repairing_after_sales_service.objects.get(id=id).crm_no
     customer_id = Customer_Details.objects.get(id=repair_id.crm_no)
     repair_list = Repairing_Product.objects.filter(repairing_id=id)
+
+    if request.user.role == 'Super Admin':
+        user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Repairing Module', is_deleted=False)
+
+    elif request.user.role == 'Admin':
+        user_list = SiteUser.objects.filter(admin=request.user.name,
+                                            modules_assigned__icontains='Repairing Module', is_deleted=False)
+    elif request.user.role == 'Manager':
+        user_list = SiteUser.objects.filter(manager=request.user.name,
+                                            modules_assigned__icontains='Repairing Module', is_deleted=False)
+    else: #display colleague
+
+        list_group = SiteUser.objects.get(id=request.user.id).manager
+        user_list = SiteUser.objects.filter(manager=list_group,
+                                            modules_assigned__icontains='Repairing Module', is_deleted=False)
+
     if request.method=='POST':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
@@ -377,7 +416,9 @@ def update_repairing_details(request,id):
         delivery_by = request.POST.get('delivery_by')
         repaired_by = request.POST.get('repaired_by')
         # feedback_given = request.POST.get('feedback_given')
-        current_stage = request.POST.get('current_stage')
+        # current_stage = request.POST.get('current_stage')
+
+
 
         item2 = repair_id
 
@@ -389,6 +430,26 @@ def update_repairing_details(request,id):
 
         # item2.location = location
         # item2.products_to_be_repaired = products_to_be_repaired
+        current_stage_in_db = Repairing_after_sales_service.objects.filter(id=id).current_stage  # updatestage3
+        if current_stage_in_db == 'Estimate is given but Estimate is not confirmed' and confirmed_estimate == 'Yes':
+            Repairing_after_sales_service.objects.filter(id=id).update(
+                current_stage='Estimate is confirmed but not repaired')
+            item2.stage_update_timedate = timezone.now()
+            item2.save(update_fields=['stage_update_timedate',])
+
+        current_stage_in_db = Repairing_after_sales_service.objects.filter(id=id).current_stage  # updatestage4
+        if current_stage_in_db == 'Estimate is confirmed but not repaired' and repaired == 'Yes':
+            Repairing_after_sales_service.objects.filter(id=id).update(
+                current_stage='Repaired but not collected')
+            item2.stage_update_timedate = timezone.now()
+            item2.save(update_fields=['stage_update_timedate', ])
+
+        current_stage_in_db = Repairing_after_sales_service.objects.filter(id=id).current_stage  # updatestage4
+        if current_stage_in_db == 'Repaired but not collected' and delivery_date != '':
+            Repairing_after_sales_service.objects.filter(id=id).update(
+                current_stage='Finally Collected')
+            item2.stage_update_timedate = timezone.now()
+            item2.save(update_fields=['stage_update_timedate', ])
 
         # item2.total_cost = total_cost
         if informed_on != '':
@@ -407,8 +468,8 @@ def update_repairing_details(request,id):
         item2.delivery_by = delivery_by
         item2.repaired_by = repaired_by
         # item2.feedback_given = feedback_given
-        item2.current_stage = current_stage
-        item2.stage_update_timedate = timezone.now()
+        # item2.current_stage = current_stage
+
 
         # item2.save()
 
@@ -426,8 +487,8 @@ def update_repairing_details(request,id):
         item2.save(update_fields=['delivery_by', ]),
         item2.save(update_fields=['repaired_by', ]),
         # item2.save(update_fields=['feedback_given', ])
-        item2.save(update_fields=['current_stage', ])
-        item2.save(update_fields=['stage_update_timedate','second_person','third_person','second_contact_no','third_contact_no', ])
+        # item2.save(update_fields=['current_stage', ])
+        item2.save(update_fields=['second_person','third_person','second_contact_no','third_contact_no', ])
         repair_id = Repairing_after_sales_service.objects.get(id=id)
         customer_id = Repairing_after_sales_service.objects.get(id=id).crm_no
         customer_id = Customer_Details.objects.get(id=customer_id)
@@ -443,6 +504,7 @@ def update_repairing_details(request,id):
     context={
         'repair_list': repair_list,
         'repair_id': repair_id,
+        'user_list': user_list,
         'customer_id':customer_id,
 
     }

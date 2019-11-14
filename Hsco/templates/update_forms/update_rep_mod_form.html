@@ -461,7 +461,12 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="informed_by" placeholder="Informed By" class="form-control" id="myText10"   type="text" disabled value="{{repair_id.informed_by}}">
+  <input  name="informed_by" placeholder="Informed By" class="form-control" id="myText10" type="text" disabled value="{{repair_id.informed_by}}" list="inf_by">
+            <datalist style="height:20px;" id="inf_by">
+        {% for item in user_list %}
+      <option value="{{item.name}}">
+    {% endfor %}
+    </datalist>
     </div>
   </div>
 
@@ -537,7 +542,12 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="delivery_by" placeholder="Delivery By" class="form-control"  type="text" id="myText15"  disabled value="{{repair_id.delivery_by}}">
+  <input  name="delivery_by" placeholder="Delivery By" class="form-control"  type="text" id="myText15"  disabled value="{{repair_id.delivery_by}}" list="del_by">
+      <datalist style="height:20px;" id="del_by">
+        {% for item in user_list %}
+      <option value="{{item.name}}">
+    {% endfor %}
+    </datalist>
     </div>
   </div>
   </div>
@@ -570,20 +580,20 @@ function myFunction() {
 
       <div class="form-group row">
 
-              <label class="col-md-2 control-label">Update Stage
-</label>
+              <!--<label class="col-md-2 control-label">Update Stage-->
+<!--</label>-->
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-<select name="current_stage" id="display_limi" class="form-control">
-  <option value="Scale is collected but estimate is not given">1)Scale is collected but estimate is not given.</option>
-  <option value="Estimate is given but Estimate is not confirmed">2)Estimate is given but Estimate is not confirmed.</option>
-  <option value="Estimate is confirmed but not repaired">3)Estimate is confirmed but not repaired.</option>
-  <option value="Repaired but not collected">4)Repaired but not collected.</option>
-  <option value="Finally Collected">5)Finally Collected.</option>
-</select>      </div>
-  </div>
+    <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+<!--<select name="current_stage" id="display_limi" class="form-control">-->
+  <!--<option value="Scale is collected but estimate is not given">1)Scale is collected but estimate is not given.</option>-->
+  <!--<option value="Estimate is given but Estimate is not confirmed">2)Estimate is given but Estimate is not confirmed.</option>-->
+  <!--<option value="Estimate is confirmed but not repaired">3)Estimate is confirmed but not repaired.</option>-->
+  <!--<option value="Repaired but not collected">4)Repaired but not collected.</option>-->
+  <!--<option value="Finally Collected">5)Finally Collected.</option>-->
+<!--</select>      </div>-->
+  <!--</div>-->
 
 
     <label class="col-md-2 control-label">Repaired By
@@ -592,8 +602,12 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="repaired_by" placeholder="Repaired By" class="form-control" id="myText18" disabled value="{{repair_id.repaired_by}}">
-
+  <input name="repaired_by" placeholder="Repaired By" class="form-control" id="myText18" disabled value="{{repair_id.repaired_by}}" list="repe_by">
+         <datalist style="height:20px;" id="repe_by">
+        {% for item in user_list %}
+      <option value="{{item.name}}">
+    {% endfor %}
+    </datalist>
      </div>
   </div>
 
