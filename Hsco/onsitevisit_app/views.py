@@ -661,6 +661,29 @@ def feedback_onrepairing(request,user_id,customer_id,onsiterepairing_id):
             onsiterepairing.avg_feedback = (float(backend_team) + float(onsite_worker) + float(speed_of_performance) + float(price_of_reparing) + float(overall_interaction)) / float(5.0)
             onsiterepairing.feedback_given = True
             onsiterepairing.save(update_fields=['avg_feedback', 'feedback_given'])
+
+            if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                      Q(user_id=SiteUser.objects.get(id=user_id))).count() > 0:
+                Employee_Analysis_month.objects.filter(user_id=user_id, entry_date__month=datetime.now().month,
+                                                       year=datetime.now().year).update(
+                    start_rating_feedback_onsite_reparing=(F(
+                        "start_rating_feedback_onsite_reparing") + Onsite_aftersales_service.objects.get(id=onsiterepairing_id).avg_feedback) / 2.0)
+                # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+                # ead.save(update_fields=['total_sales_done_today'])
+
+            else:
+                ead = Employee_Analysis_month()
+                ead.user_id = SiteUser.objects.get(id=user_id)
+                ead.start_rating_feedback_onsite_reparing = Onsite_aftersales_service.objects.get(id=onsiterepairing_id).avg_feedback
+                # ead.total_dispatch_done = value_of_goods
+                ead.manager_id = SiteUser.objects.get(id=user_id).group
+                ead.month = datetime.now().month
+                ead.year = datetime.now().year
+                ead.save()
+
+
+
         except:
             pass
         # mon = datetime.now().month

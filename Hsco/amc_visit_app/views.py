@@ -472,7 +472,7 @@ def feedback_amc(request,user_id,customer_id,amc_id):
             else:
                 ead = Employee_Analysis_month()
                 ead.user_id = SiteUser.objects.get(id=user_id)
-                ead.start_rating_feedback_amc = amc.avg_feedback
+                ead.start_rating_feedback_amc = Amc_After_Sales.objects.get(id=amc_id).avg_feedback
                 # ead.total_dispatch_done = value_of_goods
                 ead.manager_id = SiteUser.objects.get(id=user_id).group
                 ead.month = datetime.now().month

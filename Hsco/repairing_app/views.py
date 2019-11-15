@@ -796,6 +796,26 @@ def feedback_repairing(request,user_id,customer_id,repairing_id):
             repairing .avg_feedback = (float(satisfied_with_communication) + float(speed_of_performance) + float(price_of_reparing) + float(overall_interaction)) / float(4.0)
             repairing.feedback_given = True
             repairing.save(update_fields=['avg_feedback', 'feedback_given'])
+
+
+            if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                      Q(user_id=SiteUser.objects.get(id=user_id))).count() > 0:
+                Employee_Analysis_month.objects.filter(user_id=user_id, entry_date__month=datetime.now().month,
+                                                       year=datetime.now().year).update(
+                    start_rating_feedback_reparing=(F("start_rating_feedback_reparing") + Repairing_after_sales_service.objects.get(id=repairing_id).avg_feedback) / 2.0)
+                # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+                # ead.save(update_fields=['total_sales_done_today'])
+
+            else:
+                ead = Employee_Analysis_month()
+                ead.user_id = SiteUser.objects.get(id=user_id)
+                ead.start_rating_feedback_reparing = Repairing_after_sales_service.objects.get(id=repairing_id).avg_feedback
+                # ead.total_dispatch_done = value_of_goods
+                ead.manager_id = SiteUser.objects.get(id=user_id).group
+                ead.month = datetime.now().month
+                ead.year = datetime.now().year
+                ead.save()
         except:
             pass
         return HttpResponse('Feedback Submitted!!!')

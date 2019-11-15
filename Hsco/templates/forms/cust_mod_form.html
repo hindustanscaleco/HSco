@@ -88,7 +88,7 @@ color:;
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
+    <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
     <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
@@ -100,10 +100,48 @@ color:;
 </select>
 
     </div>
-Format : (crm no)-(customer name)-(company name)
+Format : (crm no)
   </div>
-</div>
 
+
+      <!--<label class="col-md-1 control-label">Customer Number-->
+
+
+<!--</label>-->
+
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+    <select name="customer_number" id="display_limit2" onchange="choice1(this)" class="form-control">
+    <option value="-----">---------</option>
+       {% for item in cust_sugg %}
+  <option value="{{item.pk}}">{{item.customer_name}} - {{item.company_name}}</option>
+
+   {% endfor %}
+</select>
+
+    </div>
+Format : (customer name)
+  </div>
+
+
+      <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+    <select name="customer_number" id="display_limit3" onchange="choice1(this)" class="form-control">
+    <option value="-----">---------</option>
+       {% for item in cust_sugg %}
+  <option value="{{item.pk}}">{{item.company_name}} - {{item.customer_name}}</option>
+
+   {% endfor %}
+</select>
+
+    </div>
+Format : (company name)
+  </div>
+
+</div>
+<hr>
 
   <!--<div class="col-md-4 inputGroupContainer">-->
   <!--<div class="input-group">-->
