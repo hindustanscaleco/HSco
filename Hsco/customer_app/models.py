@@ -22,7 +22,10 @@ class Customer_Details(models.Model):
         return self.id
 
     def short_address(self):
-        return self.address[:18]
+        if self.address:
+            return self.address[:18]
+        else:
+            return 'N/A'
 
 
 
