@@ -108,12 +108,12 @@ function myFunction() {
   }
   document.getElementById("myText").disabled = false;
     document.getElementById("myText2").disabled = false;
-    <!--document.getElementById("myText3").disabled = false;         entry date should not be editable-->
+    document.getElementById("myText3").disabled = false;
     document.getElementById("myText4").disabled = false;
     document.getElementById("myText5").disabled = false;
-    document.getElementById("myText6").disabled = false;
+    document.getElementById("myText6").disabled = true;
     document.getElementById("myText7").disabled = false;
-    document.getElementById("myText8").disabled = false;
+    document.getElementById("myText8").disabled = true;
     document.getElementById("myText9").disabled = false;
     document.getElementById("myText10").disabled = false;
     document.getElementById("myText11").disabled = false;
@@ -160,51 +160,31 @@ function myFunction() {
 <fieldset>
 
 <div class="form-group row">
+    <label class="col-md-2 control-label">Customer Name *
+
+    </label>
+    <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+            <input  name="customer_name" required placeholder="Customer Name" class="form-control" type="text" disabled id="myText" value="{{personal_id.second_person}}">
+        </div>
+    </div>
+
+
     <label class="col-md-2 control-label">Company Name
-
-
-
-
-</label>
+    </label>
 
     <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled id="myText" value="{{personal_id.crm_no.company_name}}">
-    </div>
+        <div class="input-group">
+      <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+      <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled id="myText2" value="{{personal_id.crm_no.company_name}}">
   </div>
-
-
-
-  <label class="col-md-2 control-label">Customer Name *
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <input  name="customer_name" required placeholder="Customer Name" class="form-control" type="text" disabled id="myText2" value="{{personal_id.second_person}}">
     </div>
-  </div>
-
-
-
-
 </div>
 
   <div class="form-group row">
 
-    <label class="col-md-2 control-label">Entry date
 
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="today_date" placeholder="Todays date" class="form-control" required type="date" disabled id="myText3" value="{{personal_id.today_date|date:'Y-m-d'}}">
-    </div>
-  </div>
 
   <label class="col-md-2 control-label">Mobile No *
 
@@ -216,7 +196,21 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
   <input name="contact_no" placeholder="Mobile No
-" class="form-control" required type="number" disabled id="myText4" value="{{personal_id.second_contact_no}}">
+" class="form-control" required type="number" disabled id="myText3" value="{{personal_id.second_contact_no}}">
+    </div>
+  </div>
+
+  <label class="col-md-2 control-label">Customer Email
+
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
+  <input name="customer_email_id" placeholder="Customer Email
+" class="form-control"  type="email" disabled id="myText4" value="{{personal_id.crm_no.customer_email_id}}">
     </div>
   </div>
 </div>
@@ -237,22 +231,20 @@ function myFunction() {
     </div>
   </div>
 
-
-
-
-  <label class="col-md-2 control-label">Customer Email
-
+    <label class="col-md-2 control-label">Entry date
 
 
 
 </label>
-  <div class="col-md-4 inputGroupContainer">
+
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input name="customer_email_id" placeholder="Customer Email
-" class="form-control"  type="email" disabled id="myText6" value="{{personal_id.crm_no.customer_email_id}}">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="today_date" placeholder="Todays date" class="form-control" required type="date" disabled id="myText6" value="{{personal_id.today_date|date:'Y-m-d'}}">
     </div>
   </div>
+
+
 </div>
 
 
@@ -265,7 +257,7 @@ function myFunction() {
 <!--    <div class="col-md-4 inputGroupContainer">-->
 <!--  <div class="input-group">-->
 <!--      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-<!--    <input type="text" name="second_person" placeholder="Name" class="form-control" disabled id="myText7" value="{{personal_id.second_person}}">-->
+<!--    <input type="text" name="second_person" placeholder="Name" class="form-control" disabled id="" value="{{personal_id.second_person}}">-->
 <!--    </div>-->
 <!--  </div>-->
 
@@ -276,7 +268,7 @@ function myFunction() {
 <!--    <div class="col-md-4 inputGroupContainer">-->
 <!--  <div class="input-group">-->
 <!--  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-<!--  <input name="second_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="myText8" value="{{personal_id.second_contact_no}}">-->
+<!--  <input name="second_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="" value="{{personal_id.second_contact_no}}">-->
 <!--    </div>-->
 <!--  </div>-->
 <!--</div>-->
@@ -290,7 +282,7 @@ function myFunction() {
 <!--    <div class="col-md-4 inputGroupContainer">-->
 <!--  <div class="input-group">-->
 <!--      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-<!--    <input type="text" name="third_person" placeholder="Name" class="form-control" disabled id="myText9" value="{{personal_id.third_person}}">-->
+<!--    <input type="text" name="third_person" placeholder="Name" class="form-control" disabled id="" value="{{personal_id.third_person}}">-->
 <!--    </div>-->
 <!--  </div>-->
 
@@ -301,7 +293,7 @@ function myFunction() {
 <!--    <div class="col-md-4 inputGroupContainer">-->
 <!--  <div class="input-group">-->
 <!--  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-<!--  <input name="third_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="myText10" value="{{personal_id.third_contact_no}}">-->
+<!--  <input name="third_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="" value="{{personal_id.third_contact_no}}">-->
 <!--    </div>-->
 <!--  </div>-->
 <!--</div>-->
@@ -322,7 +314,7 @@ function myFunction() {
   <input type="date" name="scale_delivery_date" placeholder="Scale Delivery Date
 
 
-" class="form-control"   disabled id="myText11" value="{{personal_id.scale_delivery_date|date:'Y-m-d'}}">
+" class="form-control"   disabled id="myText7" value="{{personal_id.scale_delivery_date|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -339,7 +331,7 @@ function myFunction() {
   <input type="number" name="total_amount" placeholder="Total Amount
 
 
-" class="form-control"   disabled id="myText12" value="{{personal_id.total_amount}}">
+" class="form-control"   disabled id="myText8" value="{{personal_id.total_amount}}">
     </div>
   </div>
 
