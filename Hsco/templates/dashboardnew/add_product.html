@@ -363,13 +363,7 @@ $(document).ready(function(){
       </div>
     </div>
   </div>
-<script>
-      $(document).ready(function() {
-         function disablePrev() { window.history.forward() }
-         window.onload = disablePrev();
-         window.onpageshow = function(evt) { if (evt.persisted) disableBack() }
-      });
-   </script>
+
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
