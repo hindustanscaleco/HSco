@@ -112,9 +112,9 @@ def add_purchase_details(request):
 
         # item2.crm_no = Customer_Details.objects.get(id=item.pk)
         item2.new_repeat_purchase = new_repeat_purchase
-        item2.second_person=customer_name
+        item2.second_person=customer_name  #new1
         # item2.third_person=third_person
-        item2.second_contact_no=contact_no
+        item2.second_contact_no=contact_no  #new2
         # item2.third_contact_no=third_contact_no
         item2.date_of_purchase = date_of_purchase
         item2.product_purchase_date = product_purchase_date
@@ -414,7 +414,7 @@ def update_customer_details(request,id):
 
         item.customer_name = customer_name
         item.contact_no = contact_no
-        item.save(update_fields=['customer_name','contact_no'])
+        item.save(update_fields=['customer_name','contact_no'])  #new3
 
         if company_name != '':
             item.company_name = company_name
@@ -457,9 +457,9 @@ def update_customer_details(request,id):
 
 
         item2.date_of_purchase = date_of_purchase
-        item2.second_person=customer_name
+        item2.second_person=customer_name   #new4
         # item2.third_person=third_person
-        item2.second_contact_no=contact_no
+        item2.second_contact_no=contact_no   #new5
         # item2.third_contact_no=third_contact_no
         item2.sales_person = sales_person
         item2.new_repeat_purchase = new_repeat_purchase
@@ -475,8 +475,8 @@ def update_customer_details(request,id):
         # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         # item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save(update_fields=['date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
-                                  'channel_of_sales','industry','channel_of_dispatch','notes','second_person','third_person','second_contact_no',
-                                  'third_contact_no',])
+                                  'channel_of_sales','industry','channel_of_dispatch','notes','second_person','second_contact_no',
+                                  ])  #new6
 
 
         purchase_id_id = Purchase_Details.objects.get(id=id)
