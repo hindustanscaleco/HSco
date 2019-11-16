@@ -222,10 +222,12 @@ def add_onsite_aftersales_service(request):
 
 
         # item2.repairingno = repairingno
-        item2.second_person=second_person
-        item2.third_person=third_person
-        item2.second_contact_no=second_contact_no
-        item2.third_contact_no=third_contact_no
+        # item2.second_person=second_person
+        # item2.third_person=third_person
+        # item2.second_contact_no=second_contact_no
+        # item2.third_contact_no=third_contact_no
+        item2.second_person = customer_name  # new1
+        item2.second_contact_no = contact_no  # new2
         item2.previous_repairing_number = previous_repairing_number
         item2.in_warranty = in_warranty
         item2.date_of_complaint_received = date_of_complaint_received
@@ -479,9 +481,10 @@ def update_onsite_details(request,id):
         item2 = customer_id
 
         item2.customer_name = customer_name
-        # item2.company_name = company_name
         # item2.address = customer_address
         item2.contact_no = contact_no
+        item2.save(update_fields=['customer_name','contact_no'])  #new3
+
         if company_name != '':
             item2.company_name = company_name
             item2.save(update_fields=['company_name'])
@@ -495,10 +498,10 @@ def update_onsite_details(request,id):
 
         # repairingno = request.POST.get('repairingno')
         # customer_no = request.POST.get('customer_no')
-        second_person=request.POST.get('second_person')
-        third_person=request.POST.get('third_person')
-        second_contact_no=request.POST.get('second_contact_no')
-        third_contact_no=request.POST.get('third_contact_no')
+        # second_person=request.POST.get('second_person')
+        # third_person=request.POST.get('third_person')
+        # second_contact_no=request.POST.get('second_contact_no')
+        # third_contact_no=request.POST.get('third_contact_no')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
         # customer_email_id = request.POST.get('customer_email_id')
@@ -522,10 +525,12 @@ def update_onsite_details(request,id):
         item = onsite_id
 
         # item.repairingno = repairingno
-        item.second_person=second_person
-        item.third_person=third_person
-        item.second_contact_no=second_contact_no
-        item.third_contact_no=third_contact_no
+        # item.second_person=second_person
+        # item.third_person=third_person
+        # item.second_contact_no=second_contact_no
+        # item.third_contact_no=third_contact_no
+        item.second_person=customer_name   #new4
+        item.second_contact_no=contact_no   #new5
         item.customer_name = customer_name
         item.company_name = company_name
         # item.customer_no = customer_no
@@ -568,7 +573,7 @@ def update_onsite_details(request,id):
         item.save(update_fields=['complaint_assigned_to', ]),
         item.save(update_fields=['complaint_assigned_on', ]),
         item.save(update_fields=['time_taken_destination_return_office_min', ]),
-        item.save(update_fields=['notes','second_person','third_person','second_contact_no','third_contact_no', ]),
+        item.save(update_fields=['notes','second_person','second_contact_no',]),
         # item.save(update_fields=['feedback_given', ]),
         onsite_id = Onsite_aftersales_service.objects.get(id=id)
 

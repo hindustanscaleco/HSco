@@ -146,10 +146,10 @@ def restamping_after_sales_service(request):
         # restampingno = request.POST.get('restampingno')
         # customer_no = request.POST.get('customer_no')
         today_date = request.POST.get('today_date')
-        second_person = request.POST.get('second_person')
-        third_person = request.POST.get('third_person')
-        second_contact_no = request.POST.get('second_contact_no')
-        third_contact_no = request.POST.get('third_contact_no')
+        # second_person = request.POST.get('second_person')
+        # third_person = request.POST.get('third_person')
+        # second_contact_no = request.POST.get('second_contact_no')
+        # third_contact_no = request.POST.get('third_contact_no')
         # new_serial_no = request.POST.get('new_serial_no')
         # brand = request.POST.get('brand')
         # scale_delivery_date = request.POST.get('scale_delivery_date')
@@ -203,10 +203,12 @@ def restamping_after_sales_service(request):
         # item2.crm_no_id = item.pk
         # item2.restampingno = restampingno
         # item2.customer_no = customer_no
-        item2.second_person=second_person
-        item2.third_person=third_person
-        item2.second_contact_no=second_contact_no
-        item2.third_contact_no=third_contact_no
+        item2.second_person = customer_name  # new1
+        item2.second_contact_no = contact_no  # new2
+        # item2.second_person=second_person
+        # item2.third_person=third_person
+        # item2.second_contact_no=second_contact_no
+        # item2.third_contact_no=third_contact_no
         item2.today_date = today_date
         # item2.new_serial_no = new_serial_no
         # item2.brand = brand
@@ -362,6 +364,7 @@ def update_restamping_details(request,id):
 
         item2.contact_no = contact_no
         item2.customer_name = customer_name
+        item2.save(update_fields=['customer_name', 'contact_no']) #new3
 
 
         if company_name != '':
@@ -376,10 +379,10 @@ def update_restamping_details(request,id):
             item2.save(update_fields=['customer_email_id'])
 
         total_amount = request.POST.get('total_amount')
-        second_person=request.POST.get('second_person')
-        third_person=request.POST.get('third_person')
-        second_contact_no=request.POST.get('second_contact_no')
-        third_contact_no=request.POST.get('third_contact_no')
+        # second_person=request.POST.get('second_person')
+        # third_person=request.POST.get('third_person')
+        # second_contact_no=request.POST.get('second_contact_no')
+        # third_contact_no=request.POST.get('third_contact_no')
         # address = request.POST.get('address')
         # today_date = request.POST.get('today_date')
         # mobile_no = request.POST.get('mobile_no')
@@ -402,17 +405,20 @@ def update_restamping_details(request,id):
         # item.mobile_no = mobile_no
         # item.new_serial_no = new_serial_no
         # item.brand = brand
-        item.second_person=second_person
-        item.third_person=third_person
-        item.second_contact_no=second_contact_no
-        item.third_contact_no=third_contact_no
+        # item.second_person=second_person
+        # item.third_person=third_person
+        # item.second_contact_no=second_contact_no
+        # item.third_contact_no=third_contact_no
+        item.second_person=customer_name   #new4
+        item.second_contact_no=contact_no   #new5
 
         item.scale_delivery_date = scale_delivery_date
 
         # item.save(update_fields=['total_amount', ]),
         # item.save(update_fields=['new_serial_no', ]),
         # item.save(update_fields=['brand', ]),
-        item.save(update_fields=['scale_delivery_date','second_person','third_person','second_contact_no','third_contact_no', ]),
+        item.save(update_fields=['scale_delivery_date','second_person','second_contact_no', ]),
+
         personal_id = Restamping_after_sales_service.objects.get(id=id)
         restamp_product_list = Restamping_Product.objects.filter(restamping_id=id)
 
