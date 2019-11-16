@@ -11,7 +11,8 @@
 
   <title>HSCO</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-
+<!--<script src = "http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>-->
+    <script src = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -362,7 +363,13 @@ $(document).ready(function(){
       </div>
     </div>
   </div>
-
+<script>
+      $(document).ready(function() {
+         function disablePrev() { window.history.forward() }
+         window.onload = disablePrev();
+         window.onpageshow = function(evt) { if (evt.persisted) disableBack() }
+      });
+   </script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
@@ -506,7 +513,11 @@ districtSel.options[districtSel.options.length] = new Option(district[i], distri
 }
 }
 }
+
+//window.onbeforeunload = function() { return "Your work will be lost."; };
 </script>
+
+
 
 </body>
 

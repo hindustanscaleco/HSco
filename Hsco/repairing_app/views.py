@@ -386,7 +386,7 @@ def update_repairing_details(request,id):
         item.customer_name = customer_name
         item.contact_no = contact_no
         item.save(update_fields=['customer_name', 'contact_no'])  # new3
-        
+
         if company_name != '':
             item.company_name = company_name
             item.save(update_fields=['company_name'])
