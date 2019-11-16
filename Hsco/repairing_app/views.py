@@ -1103,6 +1103,9 @@ def load_customer(request):
     cust_id = request.GET.get('item_id')
 
     cust_list = Customer_Details.objects.get(id=cust_id)
+    print(cust_list.customer_email_id)
+    print(cust_list.customer_email_id)
+    print(cust_list.customer_email_id)
 
     context = {
         'cust_list': cust_list,
