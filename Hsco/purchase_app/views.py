@@ -22,6 +22,23 @@ from django.db.models.functions import TruncMonth
 from django.db.models import Count
 
 def add_purchase_details(request):
+    if 'purchase_id' in request.session:
+        if request.session.get('product_saved'):
+            pass
+
+            # request.session['product_saved'] = True
+
+        else:
+            prod_list=Product_Details.objects.all().values_list('purchase_id', flat=True)
+            if request.session.get('purchase_id') not in prod_list:
+                Purchase_Details.objects.filter(id=request.session.get('purchase_id')).delete()
+
+        try:
+            del request.session['purchase_id']
+            del request.session['user_id']
+            del request.session['product_saved']
+        except:
+            pass
     cust_sugg = Customer_Details.objects.all()
     # sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name)
     if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
@@ -107,6 +124,8 @@ def add_purchase_details(request):
             try:
                 item.save()
                 item2.crm_no = Customer_Details.objects.get(id=item.pk)
+
+
             except:
                 pass
 
@@ -132,6 +151,14 @@ def add_purchase_details(request):
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save()
 
+        try:
+            del request.session['purchase_id']
+            del request.session['user_id']
+        except:
+            pass
+
+        request.session['purchase_id'] = item2.pk
+        request.session['user_id'] = request.user.pk
 
         if not (channel_of_dispatch == 'Franchisee Store'):
             dispatch = Dispatch()
@@ -268,7 +295,7 @@ def add_purchase_details(request):
 
 
 
-        return redirect('/view_customer_details/')
+        return redirect('/add_product_details/'+str(item2.pk))
 
 
 
@@ -299,6 +326,7 @@ def view_customer_details(request):
             # cust_list = Customer_Details.objects.filter()
             context = {
                 'customer_list': cust_list,
+                'search_msg': 'Search result for date range: '+start_date+' TO '+end_date,
             }
             return render(request, 'dashboardnew/cm.html', context)
         elif 'submit2' in request.POST:
@@ -311,6 +339,7 @@ def view_customer_details(request):
             # cust_list = Customer_Details.objects.filter(contact_no=contact)
             context = {
                 'customer_list': cust_list,
+                'search_msg': 'Search result for Customer Contact No: ' + contact,
             }
             return render(request, 'dashboardnew/cm.html', context)
 
@@ -324,6 +353,7 @@ def view_customer_details(request):
             # cust_list = Customer_Details.objects.filter(customer_email_id=email)
             context = {
                 'customer_list': cust_list,
+                'search_msg': 'Search result for Customer Email ID: ' + email,
             }
             return render(request, 'dashboardnew/cm.html', context)
         elif 'submit4' in request.POST:
@@ -336,6 +366,7 @@ def view_customer_details(request):
             # cust_list = Customer_Details.objects.filter(customer_name=customer)
             context = {
                 'customer_list': cust_list,
+                'search_msg': 'Search result for Customer Name: ' +customer,
             }
             return render(request, 'dashboardnew/cm.html', context)
 
@@ -349,6 +380,7 @@ def view_customer_details(request):
             # cust_list = Customer_Details.objects.filter(company_name=company)
             context = {
                 'customer_list': cust_list,
+                'search_msg': 'Search result for Company Name: ' + company,
             }
             return render(request, 'dashboardnew/cm.html', context)
         elif request.method=='POST' and 'submit6' in request.POST:
@@ -361,6 +393,7 @@ def view_customer_details(request):
             # cust_list = Customer_Details.objects.filter(crn_number=crm)
             context = {
                 'customer_list': cust_list,
+                'search_msg': 'Search result for CRM No. : ' + crm,
             }
             return render(request, 'dashboardnew/cm.html', context)
     elif 'deleted' in request.POST:
@@ -394,6 +427,25 @@ def update_customer_details(request,id):
     customer_id = Purchase_Details.objects.get(id=id).crm_no
     customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
+
+    if 'product_saved' in request.session:
+        if request.session.get('product_saved'):
+            pass
+
+            # request.session['product_saved'] = True
+
+        else:
+            prod_list=Product_Details.objects.all().values_list('purchase_id', flat=True)
+            if request.session.get('purchase_id') not in prod_list:
+                Purchase_Details.objects.filter(id=request.session.get('purchase_id')).delete()
+
+        try:
+            del request.session['purchase_id']
+            del request.session['user_id']
+            del request.session['product_saved']
+        except:
+            pass
+
 
     try:
         feedback = Feedback.objects.get(customer_id=customer_id.pk,purchase_id=id)
@@ -479,16 +531,16 @@ def update_customer_details(request,id):
                                   ])  #new6
 
 
-        purchase_id_id = Purchase_Details.objects.get(id=id)
-        customer_id = Purchase_Details.objects.get(id=id).crm_no
-        customer_id = Customer_Details.objects.get(id=customer_id)
-        product_id = Product_Details.objects.filter(purchase_id=id)
-        context = {
-            'product_id': product_id,
-            'customer_id': customer_id,
-            'purchase_id_id': purchase_id_id,
-            'feedback': feedback,
-        }
+        # purchase_id_id = Purchase_Details.objects.get(id=id)
+        # customer_id = Purchase_Details.objects.get(id=id).crm_no
+        # customer_id = Customer_Details.objects.get(id=customer_id)
+        # product_id = Product_Details.objects.filter(purchase_id=id)
+        # context = {
+        #     'product_id': product_id,
+        #     'customer_id': customer_id,
+        #     'purchase_id_id': purchase_id_id,
+        #     'feedback': feedback,
+        # }
 
         return redirect('/view_customer_details/')
 
@@ -506,6 +558,9 @@ def update_customer_details(request,id):
 def add_product_details(request,id):
     purchase = Purchase_Details.objects.get(id=id)
     purchase_id = purchase.id
+    if 'purchase_id' in request.session:
+        request.session['product_saved'] = False
+
     try:
         dispatch_id_assigned = str(purchase.dispatch_id_assigned)
     except:
@@ -524,6 +579,7 @@ def add_product_details(request,id):
         value_of_goods = request.POST.get('value_of_goods')
         # sales_person = request.POST.get('sales_person')
         # purchase_type = request.POST.get('purchase_type')
+
 
 
 
@@ -547,6 +603,7 @@ def add_product_details(request,id):
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save()
+
 
 
         Purchase_Details.objects.filter(id=purchase_id).update(value_of_goods=F("value_of_goods") + value_of_goods)
@@ -587,6 +644,12 @@ def add_product_details(request,id):
             # item.save(update_fields=['product_dispatch_id'])
         except:
             print("Franchisee Store selected")
+
+
+        if 'purchase_id' in request.session:
+
+
+            request.session['product_saved'] = True
 
 
 
