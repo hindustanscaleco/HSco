@@ -754,7 +754,7 @@ def load_onsite_reparing_manager(request,):
     selected = request.GET.get('loc_id')
 
     if selected=='true':
-        user_list = Employee_Analysis_month.objects.filter(manager_id=request.user.name)
+        user_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name)
         # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
 
         context = {
@@ -782,7 +782,10 @@ def onsitevisit_app_graph(request,user_id):
 
     print(user_id)
     obj = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon)
-    obj.onsitereparing_target_achived_till_now = (obj.total_reparing_done_onsite / obj.onsitereparing_target_given) * 100
+    try:
+        obj.onsitereparing_target_achived_till_now = (obj.total_reparing_done_onsite / obj.onsitereparing_target_given) * 100
+    except:
+        pass
     obj.save(update_fields=['onsitereparing_target_achived_till_now'])
     # current month
     target_achieved = obj.onsitereparing_target_achived_till_now

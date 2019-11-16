@@ -178,6 +178,7 @@ color:;
 
     <div class="col xl-12">
   <div class="form-group row">
+      {% if 'Customer Module' in employee_id.modules_assigned %}
   <label class="col-md-2 control-label ">Purchase Module
 
 
@@ -194,7 +195,8 @@ color:;
   <label class="custom-control-label"  for="customCheck1"></label>
   </div>
 </div>
-
+{% endif %}
+       {% if 'Repairing Module' in employee_id.modules_assigned %}
     <label class="col-md-2 control-label">Repairing Module
 
 
@@ -209,11 +211,13 @@ color:;
 
 
 </div>
+      {% endif %}
 </div>
 
 
 
 <div class="form-group row">
+    {% if 'Restamping Module' in employee_id.modules_assigned %}
   <label class="col-md-2 control-label">Restamping Module
 
 
@@ -228,7 +232,8 @@ color:;
   <label class="custom-control-label" for="customCheck3"></label>
   </div>
 </div>
-
+  {% endif %}
+    {% if 'Dispatch Module' in employee_id.modules_assigned %}
     <label class="col-md-2 control-label">Dispatch Module
 
 
@@ -244,12 +249,13 @@ color:;
   </div>
 
 </div>
-
+  {% endif %}
 </div>
 
 
 
 <div class="form-group row">
+    {% if 'AMC Module' in employee_id.modules_assigned %}
   <label class="col-md-2 control-label">AMC Module
 
 
@@ -260,7 +266,8 @@ color:;
   <label class="custom-control-label" for="customCheck5"></label>
   </div>
   </div>
-
+ {% endif %}
+    {% if 'Onsite Repairing Module' in employee_id.modules_assigned %}
     <label class="col-md-2 control-label">Onsite Repairing Module
 
 
@@ -275,6 +282,7 @@ color:;
   <label class="custom-control-label" for="customCheck6"></label>
   </div>
 </div>
+     {% endif %}
 </div>
 
 

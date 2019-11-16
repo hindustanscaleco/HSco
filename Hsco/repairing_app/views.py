@@ -290,12 +290,13 @@ def repair_product(request,id):
         item.save()
 
         current_stage_in_db=Repairing_after_sales_service.objects.get(id=id).current_stage #updatestage1
-        if current_stage_in_db == '' and sub_model !='':
+        if (current_stage_in_db == '' or current_stage_in_db == None ) and (sub_model !='' or sub_model != None):
             Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Scale is collected but estimate is not given',stage_update_timedate = timezone.now())
             # item2.save(update_fields=['stage_update_timedate', ])
 
-        current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  #updatestage2
-        if current_stage_in_db == 'Scale is collected but estimate is not given' and cost != 0.0:
+        # current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  #updatestage2
+
+        if current_stage_in_db == 'Scale is collected but estimate is not given' and float(cost) > 0.0:
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Estimate is given but Estimate is not confirmed',stage_update_timedate = timezone.now())
 
@@ -829,6 +830,7 @@ def feedback_repairing(request,user_id,customer_id,repairing_id):
 
 def edit_product(request,id):
     product_id = Repairing_Product.objects.get(id=id)
+    repairing_id = Repairing_Product.objects.get(id=id).repairing_id
     if request.method == 'POST':
         type_of_machine = request.POST.get('type_of_machine')
         model = request.POST.get('model')
@@ -860,7 +862,12 @@ def edit_product(request,id):
                                               year=product_id.entry_timedate.year).update(
             total_reparing_done_today=F("total_reparing_done_today") - cost2)
 
+        current_stage_in_db = Repairing_after_sales_service.objects.get(id=repairing_id.pk).current_stage  # updatestage2
 
+
+        if current_stage_in_db == 'Scale is collected but estimate is not given' and float(cost) > 0.0:
+            Repairing_after_sales_service.objects.filter(id=repairing_id.pk).update(
+                current_stage='Estimate is given but Estimate is not confirmed', stage_update_timedate=timezone.now())
 
         item = product_id
         item.type_of_machine = type_of_machine
@@ -958,7 +965,10 @@ def repairing_employee_graph(request,user_id):
     mon = datetime.now().month
 
     obj = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon)
-    obj.reparing_target_achived_till_now = (obj.total_reparing_done/obj.reparing_target_given)*100
+    try:
+        obj.reparing_target_achived_till_now = (obj.total_reparing_done/obj.reparing_target_given)*100
+    except:
+        pass
     obj.save(update_fields=['reparing_target_achived_till_now'])
     #current month
     target_achieved =  obj.reparing_target_achived_till_now
@@ -1080,7 +1090,7 @@ def load_reparing_manager(request):
     selected = request.GET.get('loc_id')
 
     if selected=='true':
-        user_list = Employee_Analysis_month.objects.filter(manager_id=request.user.name)
+        user_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name)
         # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
 
         context = {
@@ -1090,7 +1100,8 @@ def load_reparing_manager(request):
 
         return render(request, 'AJAX/load_reparing_manager.html', context)
     else:
-        repair_list = Repairing_after_sales_service.objects.all()
+        # repair_list = Repairing_after_sales_service.objects.all()
+        repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
 
         context = {
             'repair_list': repair_list,
