@@ -289,12 +289,12 @@ def repair_product(request,id):
 
         item.save()
 
-        current_stage_in_db=Repairing_after_sales_service.objects.filter(id=id).current_stage #updatestage1
+        current_stage_in_db=Repairing_after_sales_service.objects.get(id=id).current_stage #updatestage1
         if current_stage_in_db == '' and sub_model !='':
             Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Scale is collected but estimate is not given',stage_update_timedate = timezone.now())
             # item2.save(update_fields=['stage_update_timedate', ])
 
-        current_stage_in_db = Repairing_after_sales_service.objects.filter(id=id).current_stage  #updatestage2
+        current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  #updatestage2
         if current_stage_in_db == 'Scale is collected but estimate is not given' and cost != 0.0:
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Estimate is given but Estimate is not confirmed',stage_update_timedate = timezone.now())
@@ -385,7 +385,8 @@ def update_repairing_details(request,id):
 
         item.customer_name = customer_name
         item.contact_no = contact_no
-
+        item.save(update_fields=['customer_name', 'contact_no'])  # new3
+        
         if company_name != '':
             item.company_name = company_name
             item.save(update_fields=['company_name'])
@@ -432,21 +433,21 @@ def update_repairing_details(request,id):
 
         # item2.location = location
         # item2.products_to_be_repaired = products_to_be_repaired
-        current_stage_in_db = Repairing_after_sales_service.objects.filter(id=id).current_stage  # updatestage3
+        current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage3
         if current_stage_in_db == 'Estimate is given but Estimate is not confirmed' and confirmed_estimate == 'Yes':
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Estimate is confirmed but not repaired')
             item2.stage_update_timedate = timezone.now()
             item2.save(update_fields=['stage_update_timedate',])
 
-        current_stage_in_db = Repairing_after_sales_service.objects.filter(id=id).current_stage  # updatestage4
+        current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage4
         if current_stage_in_db == 'Estimate is confirmed but not repaired' and repaired == 'Yes':
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Repaired but not collected')
             item2.stage_update_timedate = timezone.now()
             item2.save(update_fields=['stage_update_timedate', ])
 
-        current_stage_in_db = Repairing_after_sales_service.objects.filter(id=id).current_stage  # updatestage4
+        current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage4
         if current_stage_in_db == 'Repaired but not collected' and delivery_date != '':
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Finally Collected')
