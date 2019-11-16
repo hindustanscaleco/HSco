@@ -428,10 +428,10 @@ a:hover {
 
                     <div class="col-xl-12 col-md-11 mb-1" style="font-size:10px;">Dispatch Id: {% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned}}{% endif %} </div>
 
-                    <div class="col-xl-2 col-md-1 mb-1"> {{ list1.crm_no.customer_name }}</div>
+                    <div class="col-xl-2 col-md-1 mb-1"> {{ list1.second_person }}</div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.company_name}} </div>
                     <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{{ list1.pk}} </div>
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.contact_no}} </div>
+                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.second_contact_no}} </div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.sales_person}} </div>
                     <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{% if list1.feedback_form_filled %} YES {% else %} NO {% endif %}</div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">
