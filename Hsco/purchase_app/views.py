@@ -61,10 +61,10 @@ def add_purchase_details(request):
         product_purchase_date = request.POST.get('product_purchase_date')
         bill_no = request.POST.get('bill_no')
         upload_op_file = request.FILES.get('upload_op_file')
-        second_person = request.POST.get('second_person')
-        third_person = request.POST.get('third_person')
-        second_contact_no = request.POST.get('second_contact_no')
-        third_contact_no = request.POST.get('third_contact_no')
+        # second_person = request.POST.get('second_person')
+        # third_person = request.POST.get('third_person')
+        # second_contact_no = request.POST.get('second_contact_no')
+        # third_contact_no = request.POST.get('third_contact_no')
         po_number = request.POST.get('po_number')
         channel_of_sales = request.POST.get('channel_of_sales')
         industry = request.POST.get('industry')
@@ -112,10 +112,10 @@ def add_purchase_details(request):
 
         # item2.crm_no = Customer_Details.objects.get(id=item.pk)
         item2.new_repeat_purchase = new_repeat_purchase
-        item2.second_person=second_person
-        item2.third_person=third_person
-        item2.second_contact_no=second_contact_no
-        item2.third_contact_no=third_contact_no
+        item2.second_person=customer_name
+        # item2.third_person=third_person
+        item2.second_contact_no=contact_no
+        # item2.third_contact_no=third_contact_no
         item2.date_of_purchase = date_of_purchase
         item2.product_purchase_date = product_purchase_date
         item2.sales_person = sales_person
@@ -414,6 +414,7 @@ def update_customer_details(request,id):
 
         item.customer_name = customer_name
         item.contact_no = contact_no
+        item.save(update_fields=['customer_name','contact_no'])
 
         if company_name != '':
             item.company_name = company_name
@@ -432,10 +433,10 @@ def update_customer_details(request,id):
 
 
         date_of_purchase = request.POST.get('date_of_purchase')
-        second_person=request.POST.get('second_person')
-        third_person=request.POST.get('third_person')
-        second_contact_no=request.POST.get('second_contact_no')
-        third_contact_no=request.POST.get('third_contact_no')
+        # second_person=request.POST.get('second_person')
+        # third_person=request.POST.get('third_person')
+        # second_contact_no=request.POST.get('second_contact_no')
+        # third_contact_no=request.POST.get('third_contact_no')
         sales_person = request.POST.get('sales_person')
         bill_no = request.POST.get('bill_no')
         new_repeat_purchase = request.POST.get('new_repeat_purchase')
@@ -456,10 +457,10 @@ def update_customer_details(request,id):
 
 
         item2.date_of_purchase = date_of_purchase
-        item2.second_person=second_person
-        item2.third_person=third_person
-        item2.second_contact_no=second_contact_no
-        item2.third_contact_no=third_contact_no
+        item2.second_person=customer_name
+        # item2.third_person=third_person
+        item2.second_contact_no=contact_no
+        # item2.third_contact_no=third_contact_no
         item2.sales_person = sales_person
         item2.new_repeat_purchase = new_repeat_purchase
         item2.bill_no = bill_no
