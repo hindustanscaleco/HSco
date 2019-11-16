@@ -212,16 +212,14 @@ function myFunction() {
 <div class="form-group row">
 
 
-    <label class="col-md-2 control-label">Type of Machine
-
-
+    <label class="col-md-2 control-label">Type of Machine *
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="type_of_machine" disabled placeholder="Type of Machine" id="myText" value="{{product_id.type_of_machine}}" class="form-control" list="type_of_scale">
+    <input  type="text" required name="type_of_machine" disabled placeholder="Type of Machine" id="myText" value="{{product_id.type_of_machine}}" class="form-control" list="type_of_scale">
       <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
     <datalist style="height:20px;" id="type_of_scale">
     <option value = "Digital"></option>
@@ -363,13 +361,13 @@ function myFunction() {
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Replaced Scale given
+    <label class="col-md-2 control-label">Replaced Scale given *
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="replaced_scale_given" disabled placeholder="Replaced Scale given" id="myText8" value="{{product_id.replaced_scale_given}}" class="form-control"  type="text">
+  <input  name="replaced_scale_given" required disabled placeholder="Replaced Scale given" id="myText8" value="{{product_id.replaced_scale_given}}" class="form-control"  type="text">
     </div>
   </div>
 
@@ -377,7 +375,7 @@ function myFunction() {
 
 
   <div class="form-group row">
-  <label class="col-md-2 control-label">Replaced Scale Serial No
+  <label class="col-md-2 control-label">Replaced Scale Serial No *
 
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -387,7 +385,7 @@ function myFunction() {
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Deposit Taken For Replaced Scale
+    <label class="col-md-2 control-label">Deposit Taken For Replaced Scale *
 
 
 
@@ -397,7 +395,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="deposite_taken_for_replaced_scale" disabled placeholder="Deposit taken for replaced Scale
+  <input name="deposite_taken_for_replaced_scale" disabled placeholder="Deposit taken for replaced Scale
 
 
 " class="form-control" id="myText10" value="{{product_id.deposite_taken_for_replaced_scale}}" type="text">
