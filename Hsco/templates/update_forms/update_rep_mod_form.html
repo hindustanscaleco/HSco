@@ -421,7 +421,7 @@ function myFunction() {
 <div class="form-group row">
 
 
-    <label class="col-md-2 control-label">Total Cost
+    <label class="col-md-2 control-label">Informed By
 
 
 
@@ -430,8 +430,13 @@ function myFunction() {
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="total_cost" placeholder="Total Cost" class="form-control"  id="myText8"  type="text" disabled value="{{repair_id.total_cost}}">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="informed_by" placeholder="Informed By" class="form-control" id="myText10" type="text" disabled value="{{repair_id.informed_by}}" list="inf_by">
+            <datalist style="height:20px;" id="inf_by">
+        {% for item in user_list %}
+      <option value="{{item.name}}">
+    {% endfor %}
+    </datalist>
     </div>
   </div>
 
@@ -451,24 +456,7 @@ function myFunction() {
 
   <div class="form-group row">
 
-    <label class="col-md-2 control-label">Informed By
 
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="informed_by" placeholder="Informed By" class="form-control" id="myText10" type="text" disabled value="{{repair_id.informed_by}}" list="inf_by">
-            <datalist style="height:20px;" id="inf_by">
-        {% for item in user_list %}
-      <option value="{{item.name}}">
-    {% endfor %}
-    </datalist>
-    </div>
-  </div>
 
 
 
@@ -609,6 +597,21 @@ function myFunction() {
     {% endfor %}
     </datalist>
      </div>
+  </div>
+
+
+            <label class="col-md-2 control-label">Total Cost
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <input  name="total_cost" placeholder="Total Cost" class="form-control"  id="myText8"  type="text" disabled value="{{repair_id.total_cost}}">
+    </div>
   </div>
 
   </div>
