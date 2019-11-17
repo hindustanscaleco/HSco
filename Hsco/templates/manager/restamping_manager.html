@@ -115,6 +115,30 @@ input:checked + .slider:before {
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Restamping Module</h1>
+                           <div class="row no-gutters align-items-right">
+
+     {% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+<a style="padding: 2px; " href="/restamping_after_sales_service/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Restamp</button></a>
+
+
+<form method="POST" ion="">{%csrf_token%}
+ <a href="#"><button style="background-color: #FC6E20; margin-top: 3px;" name="deleted" type="submit" class="btn btn-primary" >Deleted User</button></a>
+</form>
+
+ <a style="padding: 2px;" href="/user_logs/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
+ <a style="padding: 2px;" href="/report_restamping/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
+ <a style="padding: 2px;" href="/restamping_analytics/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
+{% else %}
+ <a style="padding: 2px;" href="/restamping_after_sales_service/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Restamp</button></a>
+{% endif %}
+{% endif %}
+
+
+
+
+
+                </div>
           </div>
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
@@ -385,97 +409,7 @@ $(function() {
 
 
 <br>
-<center>
-    <div class="row" style="width: 70%; padding-bottom: 10px;">
 
-
-
-        {% if request.user.is_authenticated %}
-{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
-
-
-                <div class="col-xl-3 col-md-12 mb-12">
-              <div class="card border-left-primarya shadow border-right-primarya">
-                <div class="card-body" style="padding: 12px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col ">
- <a href="/restamping_after_sales_service/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Restamp</button></a>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-
-        <div class="col-xl-3 col-md-12 mb-12">
-              <div class="card shadow border-left-primarya border-right-primarya">
-                <div class="card-body" style="padding: 12px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                                                <form method="POST" ion="">{%csrf_token%}
-
-                        <a href="#"> <button style="background-color: #FC6E20;" name="deleted" class="btn btn-primary">Deleted User</button></a> &nbsp;&nbsp;
-                                                </form>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-
-
-                <div class="col-xl-3 col-md-12 mb-12">
-              <div class="card shadow border-left-primarya border-right-primarya">
-                <div class="card-body" style="padding: 12px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <a href="/user_logs/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>&nbsp; &nbsp;
- <a href="/report_restamping/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>&nbsp;
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-                    <div class="col-xl-3 col-md-4 mb-12">
-              <div class="card shadow border-left-primarya border-right-primarya">
-                <div class="card-body" style="padding: 12px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-         <a href="/restamping_analytics/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>&nbsp;
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-{% else %}
-        <div class="col-xl-3 col-md-12 mb-12">
-              <div class="card border-left-primarya shadow border-right-primarya">
-                <div class="card-body" style="padding: 12px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col ">
- <a href="/restamping_after_sales_service/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Restamp</button></a>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-
-{% endif %}
-{% endif %}
-            </div>
-
-
-    </div>
-
-</center>
 
 
   </div>

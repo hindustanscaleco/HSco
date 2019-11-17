@@ -53,6 +53,21 @@
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dispatch Module</h1>
+                           <div class="row no-gutters align-items-right">
+
+     {% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+<a style="padding: 2px; " href="/add_dispatch_details/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Dispatch</button></a>
+
+
+ <a style="padding: 2px;" href="/dispatch_logs/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
+ <a style="padding: 2px;" href="/report_dis_mod/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
+ <a style="padding: 2px;" href="/dispatch_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
+{% else %}
+ <a style="padding: 2px;" href="/add_dispatch_details/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Dispatch</button></a>
+{% endif %}
+{% endif %}
+                </div>
           </div>
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
@@ -352,69 +367,7 @@ $(function() {
 
 
 <br>
-<center>
-    <div class="row" style="    width: 70%;">
 
-
-{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
-
-                <div class="col-xl-4 col-md-12 mb-12">
-              <div class="card border-left-primary shadow">
-                <div class="card-body" style="padding: 12px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col ">
- <a href="/add_dispatch_details/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Dispatch</button></a>                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-                <div class="col-xl-4 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body" style="padding: 12px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <a href="/dispatch_logs/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>&nbsp; &nbsp;
- <a href="/report_dis_mod/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>&nbsp;
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-        <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-4 col-md-12 mb-12">
-              <div class="card border-right-primary shadow">
-                <div class="card-body" style="padding: 12px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <a href="/dispatch_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
-
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-{% else %}
- <div class="col-xl-4 col-md-12 mb-12">
-              <div class="card border-left-primary shadow">
-                <div class="card-body" style="padding: 12px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col ">
- <a href="/add_dispatch_details/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Dispatch</button></a>                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-        {% endif %}
-          </div>
-
-</center>
 
 
   </div>

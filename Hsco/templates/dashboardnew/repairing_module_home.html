@@ -53,56 +53,46 @@ font-size: 14px;
         <div class="container-fluid">
 
             <div class="row">
-             <h1 class="col-xl-9 col-md-2 col-mb-8" style="font-size: 25px; color: black;"> Repairing Module</h1>
+          <div class="col-xl-6 col-md-3 mb-3 ">
 
-             <div class="col-xl-3 col-md-2 col-mb-8 row" style="color: black;">
 
-{% if request.user.is_authenticated %}
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+<h1 class="h3 mb-0 text-gray-800 ">Reparing Module</h1>
+
+
+                </div>
+              </div>
+            </div>
+                                 <div class="col-xl-6 col-md-9 mb-9 ">
+
+
+                <div class="card-body" style="padding: 2px;">
+                    <div class="row no-gutters align-items-right">
+
+     {% if request.user.is_authenticated %}
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
-                     <div class="col-xl-12 col-md-2 col-mb-8 row">
-                         <div class="col-xl-4 col-md-2 col-mb-8">
-    <p> Manager</p>
-                     </div>
-                     <div class="col-xl-3 col-md-2 col-mb-8">
-                         <label class="switch ">
-  <input name="Employee" type="checkbox" checked onchange="toggleCheckbox2(this)">
-  <span class="slider round"></span>
-</label>
-                     </div>
-                     <div class="col-xl-5 col-md-2 col-mb-8">
-                         <p> Employee</p>
-                     </div>
-                     </div>
+<a style="padding: 2px; " href="/add_repairing_details/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Repairing</button></a>
+
+<form method="POST" ion="">{%csrf_token%}
+ <a href="#"><button style="background-color: #FC6E20; margin-top: 3px;" name="deleted" type="submit" class="btn btn-primary" >Deleted User</button></a>
+</form>
+ <a style="padding: 2px;" href="/user_logs/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
+ <a style="padding: 2px;" href="/repairing_report_module/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
+ <a style="padding: 2px;" href="/repairing_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
 {% else %}
+ <a style="padding: 2px;" href="/add_repairing_details/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Repairing</button></a>
+{% endif %}
+{% endif %}
 
-                                   <!--<div class="col-xl-12 col-md-2 col-mb-8 row">-->
-                         <!--<div class="col-xl-4 col-md-2 col-mb-8">-->
-<!--<p>Done</p>-->
-                     <!--</div>-->
-                     <!--<div class="col-xl-3 col-md-2 col-mb-8">-->
-                         <!--<label class="switch ">-->
-  <!--<input name="Done" type="checkbox" checked onchange="toggleCheckbox(this)">-->
-  <!--<span class="slider round"></span>-->
-<!--</label>-->
-                     <!--</div>-->
-                     <!--<div class="col-xl-5 col-md-2 col-mb-8">-->
-                         <!--<p> Pending</p>-->
-                     <!--</div>-->
-                     <!--</div>-->
-
-
-
-
-
-
-
-                     {% endif %}
-                     {% endif %}
 
 
 
 
                 </div>
+              </div>
+            </div>
+
 
             </div>
 
@@ -311,9 +301,38 @@ td, th {
 
                 </div>
 
-<br>
 
+
+             <div class="col-xl-3 col-md-2 col-mb-8 row" style="color: black;">
+
+{% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+                     <div class="col-xl-12 col-md-2 col-mb-8 row">
+                         <div class="col-xl-4 col-md-2 col-mb-8">
+    <p> Manager</p>
+                     </div>
+                     <div class="col-xl-3 col-md-2 col-mb-8">
+                         <label class="switch ">
+  <input name="Employee" type="checkbox" checked onchange="toggleCheckbox2(this)">
+  <span class="slider round"></span>
+</label>
+                     </div>
+                     <div class="col-xl-5 col-md-2 col-mb-8">
+                         <p> Employee</p>
+                     </div>
+                     </div>
+{% else %}
+
+                     {% endif %}
+                     {% endif %}
+
+
+
+</div>
                 </div>
+
+
+
 
       <br>
    <div class="row" style="margin-left: 10%;">
@@ -497,73 +516,7 @@ td, th {
 
 
 
-<br>
-<center>
-    <div class="row" style="width: 70%; margin-top:2%;">
 
-        {% if request.user.is_authenticated %}
-{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
-
-                    <div class="col-xl-4 col-md-12 mb-12">
-                  <div class="card border-left-primary shadow">
-                    <div class="card-body" style="padding: 12px;">
-                      <div class="row no-gutters align-items-center">
-                        <div class="col ">
-     <a href="/add_repairing_details/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Repairing</button></a>                    </div>
-
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-                <div class="col-xl-4 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body" style="padding: 12px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <a href="/user_logs/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>&nbsp; &nbsp;
- <a href="/repairing_report_module/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>&nbsp;
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-        <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-4 col-md-12 mb-12">
-              <div class="card border-right-primary shadow">
-                <div class="card-body" style="padding: 12px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <a href="/repairing_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
-
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-{% else %}
-        <div class="col-xl-4 col-md-12 mb-12">
-              <div class="card border-left-primary shadow">
-                <div class="card-body" style="padding: 12px;">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col ">
- <a href="/add_repairing_details/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Repairing</button></a>                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-        {% endif %}
-{% endif %}
-          </div>
-
-</center>
 
   </div>
   <!-- End of Page Wrapper -->

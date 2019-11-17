@@ -340,7 +340,23 @@ function myFunction() {
   <input  name="contact_no" placeholder="Phone Number" class="form-control" id="myText5" required type="text" disabled value="{{repair_id.second_contact_no}}">
     </div>
   </div>
-<label class="col-md-2 control-label">Address
+
+    <label class="col-md-2 control-label">Email-id
+
+
+
+
+        </label>
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+        <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+        <input type="email" name="customer_email_id" placeholder="Email-id" id="myText7" class="form-control" disabled value="{{repair_id.crm_no.customer_email_id}}">
+        </div>
+    </div>
+</div>
+    <div class="form-group row">
+
+    <label class="col-md-2 control-label">Address
 
 
 
@@ -352,21 +368,15 @@ function myFunction() {
   <input type="text" name="customer_address" placeholder="Address" id="myText6" class="form-control" disabled value="{{customer_id.address}}">
     </div>
   </div>
-</div>
-    <div class="form-group row">
-    <label class="col-md-2 control-label">Email-id
-
-
-
+         <label class="col-md-2 control-label">Informed On
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Email-id" id="myText7" class="form-control" disabled value="{{repair_id.crm_no.customer_email_id}}">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="informed_on" placeholder="Informed On" class="form-control" id="myText9" type="date" disabled value="{{repair_id.informed_on|date:'Y-m-d'}}">
     </div>
   </div>
-
     </div>
 <!--<div class="form-group row">-->
 
@@ -440,26 +450,6 @@ function myFunction() {
     </div>
   </div>
 
-
-
-  <label class="col-md-2 control-label">Informed On
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="informed_on" placeholder="Informed On" class="form-control" id="myText9" type="date" disabled value="{{repair_id.informed_on|date:'Y-m-d'}}">
-    </div>
-  </div>
-</div>
-
-
-  <div class="form-group row">
-
-
-
-
-
   <label class="col-md-2 control-label">Confirmed Estimate
 
 </label>
@@ -469,7 +459,12 @@ function myFunction() {
   <input type="text" name="confirmed_estimate" class="form-control" id="myText11"  placeholder="Confirmed Estimate" disabled value="{{repair_id.confirmed_estimate}}">
     </div>
   </div>
-  </div>
+
+
+</div>
+
+
+
 
 
 
