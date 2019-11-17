@@ -336,9 +336,49 @@ $(function() {
             </div>
 
 
+    <form  method='POST' autocomplete="off" id="FilterForm" data-url="{% url 'load_onsite_reparing_stages_list' %}" enctype="multipart/form-data">{% csrf_token %}
 
 
+<div class="row" style="margin-left: 10%;">
 
+
+            <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,5.5),rgba(120,115,245,.9))">
+                <div class="card-body row" style="padding-left: 20px;color: white; font-weight: 600; font-size: 16px; height: 130px;">
+
+                  <center> Scales in Restamping Queue.  <br> ({{rep1}}) </center>
+
+                    </div>
+
+                </div>
+              </div>
+
+        <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">
+                <div class="card-body row" style="padding-left: 25px; color: white; font-weight: 600; font-size: 16px;  height: 130px;">
+                 <center> Restamping is done but scale <br> is not collected &nbsp;<br> ({{rep2}})</center>
+
+
+                    </div>
+
+                </div>
+              </div>
+
+            <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
+                <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 16px;  height: 130px;">
+
+                   <center><p> Restamping done and scale <br>also collected. <br>&nbsp; ({{rep3}}) </p></center>
+
+                    </div>
+                </div>
+              </div>
+
+        </div>
+    </form>
+
+<br>
+            <br>
 <div style="min-height: 26vw;">
  {% if deleted %}
                   <center> <p>list of deleted users</p></center>
