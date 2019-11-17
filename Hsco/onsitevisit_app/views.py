@@ -163,10 +163,10 @@ def add_onsite_aftersales_service(request):
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
-        second_person = request.POST.get('second_person')
-        third_person = request.POST.get('third_person')
-        second_contact_no = request.POST.get('second_contact_no')
-        third_contact_no = request.POST.get('third_contact_no')
+        # second_person = request.POST.get('second_person')
+        # third_person = request.POST.get('third_person')
+        # second_contact_no = request.POST.get('second_contact_no')
+        # third_contact_no = request.POST.get('third_contact_no')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
         date_of_complaint_received = request.POST.get('date_of_complaint_received')
@@ -505,7 +505,7 @@ def update_onsite_details(request,id):
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
         # customer_email_id = request.POST.get('customer_email_id')
-        date_of_complaint_received = request.POST.get('date_of_complaint_received')
+        # date_of_complaint_received = request.POST.get('date_of_complaint_received')
         # customer_address = request.POST.get('customer_address')
         complaint_received_by = request.POST.get('complaint_received_by')
         nearest_railwaystation = request.POST.get('nearest_railwaystation')
@@ -537,7 +537,7 @@ def update_onsite_details(request,id):
         item.previous_repairing_number = previous_repairing_number
         item.in_warranty = in_warranty
         # item.customer_email_id = customer_email_id
-        item.date_of_complaint_received = date_of_complaint_received
+        # item.date_of_complaint_received = date_of_complaint_received
         item.customer_address = customer_address
         item.complaint_received_by = complaint_received_by
         item.nearest_railwaystation = nearest_railwaystation
@@ -562,7 +562,7 @@ def update_onsite_details(request,id):
         item.save(update_fields=['in_warranty', ]),
         # item.save(update_fields=['phone_no', ]),
         # item.save(update_fields=['customer_email_id', ]),
-        item.save(update_fields=['date_of_complaint_received', ]),
+        # item.save(update_fields=['date_of_complaint_received', ]),
         # item.save(update_fields=['customer_address', ]),
         item.save(update_fields=['complaint_received_by', ]),
         item.save(update_fields=['nearest_railwaystation', ]),

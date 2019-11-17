@@ -177,10 +177,24 @@ function myFunction() {
     </div>
   </div>
 
+  <label class="col-md-2 control-label">Customer Number *
+  </label>
+
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+      <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+      <input  name="customer_no" placeholder="Customer Number" class="form-control" maxlength="10" type="text" id="myText4" disabled value="{{amc_list.crm_no.pk}}">
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+<div class="form-group row">
     <label class="col-md-2 control-label">Customer Name *
-
-
-
 </label>
 
     <div class="col-md-4 inputGroupContainer">
@@ -190,42 +204,16 @@ function myFunction() {
     </div>
   </div>
 
-
-
-</div>
-
-
-
-<div class="form-group row">
   <label class="col-md-2 control-label">Company Name
-
-
-
-
-
-</label>
+  </label>
 
   <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" id="myText3" disabled value="{{amc_list.crm_no.company_name}}">
-    </div>
+    <div class="input-group">
+    <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+    <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" id="myText3" disabled value="{{amc_list.crm_no.company_name}}">
+  </div>
   </div>
 
-    <label class="col-md-2 control-label">Customer Number *
-
-
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-  <input  name="customer_no" placeholder="Customer Number" class="form-control" maxlength="10" type="text" id="myText4" disabled value="{{amc_list.crm_no.pk}}">
-    </div>
-  </div>
 
 
 
@@ -234,48 +222,48 @@ function myFunction() {
 
 
 <div class="form-group row">
+
+
+  <label class="col-md-2 control-label">Contact Number *
+
+  </label>
+
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+      <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
+      <input  name="contact_no" placeholder="Contact No" required class="form-control"  type="number" pattern="[789][0291]" disabled id="myText7" value="{{amc_list.second_contact_no}}">
+
+    </div>
+  </div>
+
+
   <label class="col-md-2 control-label">Customer E-mail id
 
-</label>
+  </label>
   <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  type="email" id="myText5" disabled value="{{amc_list.crm_no.customer_email_id}}">
-    </div>
-  </div>
-
-  <label class="col-md-2 control-label">Address
-
-</label>
-
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input class="form-control" name="customer_address" placeholder="Address" disabled id="myText6" value="{{amc_list.crm_no.address}}">
-
+    <div class="input-group">
+      <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+      <input name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  type="email" id="myText5" disabled value="{{amc_list.crm_no.customer_email_id}}">
     </div>
   </div>
 </div>
-    <div class="form-group row">
 
-    <label class="col-md-2 control-label">Contact Number *
+<div class="form-group row">
 
-</label>
+ <label class="col-md-2 control-label">Address
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" placeholder="Contact No" required class="form-control"  type="number" pattern="[789][0291]" disabled id="myText7" value="{{amc_list.second_contact_no}}">
+  </label>
 
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+      <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+      <input class="form-control" name="customer_address" placeholder="Address" disabled id="myText6" value="{{amc_list.crm_no.address}}">
     </div>
   </div>
+
 
 
     <label class="col-md-2 control-label">Type of Scale *
-
-
-
-
 
 </label>
 

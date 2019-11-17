@@ -587,6 +587,8 @@ def update_restamping_product(request,id):
         old_serial_no = request.POST.get('old_serial_no')
         brand = request.POST.get('brand')
         amount = request.POST.get('amount')
+        new_sr_no = request.POST.get('new_sr_no')
+
 
         # product_id = Restamping_Product.objects.get(id=id)
         restamping_id = Restamping_after_sales_service.objects.get(id=restamping_id.pk).pk
@@ -606,6 +608,7 @@ def update_restamping_product(request,id):
 
 
         item = restamping_product
+        item.new_sr_no = new_sr_no
 
         # item.restamping_id_id = restamping_id
         # item.customer_email_id = customer_email_id
@@ -622,7 +625,7 @@ def update_restamping_product(request,id):
 
 
         item.save(update_fields=['scale_type','sub_model','capacity','old_serial_no','brand',
-                                 'amount', ])
+                                 'amount','new_sr_no', ])
 
 
 

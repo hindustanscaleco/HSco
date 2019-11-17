@@ -21,11 +21,8 @@ import datetime
 def add_amc_after_sales(request):
     cust_sugg = Customer_Details.objects.all()
     if request.method == 'POST':
-
         address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
-
-
         # amcno = request.POST.get('amcno')
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')

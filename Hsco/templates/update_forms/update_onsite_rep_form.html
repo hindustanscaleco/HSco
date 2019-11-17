@@ -120,7 +120,7 @@ function myFunction() {
     document.getElementById("myText7").disabled = false;
     document.getElementById("myText8").disabled = false;
     document.getElementById("myText9").disabled = false;
-    document.getElementById("myText10").disabled = false;
+    document.getElementById("myText10").disabled = true;
     document.getElementById("myText11").disabled = false;
     document.getElementById("myText12").disabled = false;
     document.getElementById("myText13").disabled = false;
@@ -202,7 +202,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" id="myText23" class="form-control" type="text" disabled value="{{onsite_id.crm_no.company_name}}">
+  <input  name="company_name" placeholder="Company Name" id="myText4" class="form-control" type="text" disabled value="{{onsite_id.crm_no.company_name}}">
     </div>
   </div>
 </div>
@@ -215,7 +215,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="customer_no" placeholder="Customer Number" maxlength="10" class="form-control" id="myText4" type="text" disabled value="{{onsite_id.crm_no.pk}}">
+  <input name="contact_no" placeholder="Customer Number" maxlength="10" class="form-control" id="myText5" type="text" disabled value="{{onsite_id.crm_no.pk}}">
     </div>
   </div>
 
@@ -231,7 +231,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control" id="myText5" disabled value="{{onsite_id.crm_no.customer_email_id}}" >
+  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control" id="myText6" disabled value="{{onsite_id.crm_no.customer_email_id}}" >
     </div>
   </div>
 </div>
@@ -245,59 +245,11 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input name="customer_address" placeholder="Customer Address" class="form-control" id="myText6" disabled value="{{onsite_id.crm_no.address}}"/>
-    </div>
-  </div>
-</div>
-<div class="form-group row">
-
- <label class="col-md-2 control-label">Second Person
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-    <input type="text" name="second_person" placeholder="Name" class="form-control" disabled id="myText7" value="{{onsite_id.second_person}}">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Contact No
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="second_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="myText8" value="{{onsite_id.second_contact_no}}">
+  <input name="customer_address" placeholder="Customer Address" class="form-control" id="myText7" disabled value="{{onsite_id.crm_no.address}}"/>
     </div>
   </div>
 </div>
 
-<div class="form-group row">
-
- <label class="col-md-2 control-label">Third Person
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-    <input type="text" name="third_person" placeholder="Name" class="form-control" disabled id="myText9" value="{{onsite_id.third_person}}">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Contact No
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="third_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="myText10" value="{{onsite_id.third_contact_no}}">
-    </div>
-  </div>
-</div>
 
 
 
@@ -312,7 +264,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="previous_repairing_number" placeholder="Previous Repairing number" id="myText11" class="form-control" type="text" disabled value="{{onsite_id.previous_repairing_number}}">
+  <input  name="previous_repairing_number" placeholder="Previous Repairing number" id="myText8" class="form-control" type="text" disabled value="{{onsite_id.previous_repairing_number}}">
     </div>
   </div>
 
@@ -326,7 +278,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-      <input  name="in_warranty" placeholder="In Warranty" class="form-control" id="myText12" type="text" disabled value="{{onsite_id.in_warranty}}">
+      <input  name="in_warranty" placeholder="In Warranty" class="form-control" id="myText9" type="text" disabled value="{{onsite_id.in_warranty}}">
     </div>
   </div>
 
@@ -340,7 +292,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input required name="date_of_complaint_received" placeholder="Date the complaint was Received" id="myText13" class="form-control" type="date" disabled value="{{onsite_id.date_of_complaint_received|date:'Y-m-d'}}">
+  <input name="date_of_complaint_received" placeholder="Date the complaint was Received" id="myText10" required class="form-control" type="date" disabled value="{{onsite_id.date_of_complaint_received|date:'Y-m-d'}}">
 
 
      </div>
@@ -356,7 +308,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="complaint_received_by" placeholder="Complaint Received By" id="myText14" class="form-control" type="text" disabled value="{{onsite_id.complaint_received_by}}">
+  <input  name="complaint_received_by" placeholder="Complaint Received By" id="myText11" class="form-control" type="text" disabled value="{{onsite_id.complaint_received_by}}">
     </div>
   </div>
 </div>
@@ -370,7 +322,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="nearest_railwaystation" placeholder="Nearest Railway Station" list="stn_train_list" id="myText15" class="form-control" type="text" disabled value="{{onsite_id.nearest_railwaystation}}">
+  <input  name="nearest_railwaystation" placeholder="Nearest Railway Station" list="stn_train_list" id="myText12" class="form-control" type="text" disabled value="{{onsite_id.nearest_railwaystation}}">
   <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
       <datalist style="height:20px;" id="stn_train_list">
     <option value = "Airoli"></option>
@@ -522,7 +474,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-train faicons"></i></span>
-  <input  name="train_line" placeholder="Train Line" class="form-control" type="text" id="myText16" list="train_list" disabled value="{{onsite_id.train_line}}">
+  <input  name="train_line" placeholder="Train Line" class="form-control" type="text" id="myText13" list="train_list" disabled value="{{onsite_id.train_line}}">
    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
       <datalist style="height:20px;" id="train_list">
 
@@ -549,7 +501,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="visiting_charges_told_customer" placeholder="Visiting Charges Told to Customer" id="myText17" class="form-control" type="text" disabled value="{{onsite_id.visiting_charges_told_customer}}">
+  <input  name="visiting_charges_told_customer" placeholder="Visiting Charges Told to Customer" id="myText14" class="form-control" type="text" disabled value="{{onsite_id.visiting_charges_told_customer}}">
     </div>
   </div>
 
@@ -562,7 +514,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="complaint_assigned_on" placeholder="Complain Assigned On" class="form-control" id="myText18" type="text" disabled value="{{onsite_id.complaint_assigned_on}}">
+  <input name="complaint_assigned_on" placeholder="Complain Assigned On" class="form-control" id="datePicker" type="text" disabled value="{{onsite_id.complaint_assigned_on}}">
     </div>
   </div>
 </div>
@@ -578,7 +530,7 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-clock-o faicons"></i></span>
   <input  name="time_taken_destination_return_office_min" placeholder="Time Taken to Reach Destination and Return to office in Minutes"
-          class="form-control" id="myText19" type="text" disabled value="{{onsite_id.time_taken_destination_return_office_min}}">
+          class="form-control" id="myText15" type="text" disabled value="{{onsite_id.time_taken_destination_return_office_min}}">
     </div>
   </div>
 
@@ -592,7 +544,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="notes" placeholder="Notes" class="form-control" id="myText20" type="text" disabled value="{{onsite_id.notes}}">
+  <input  name="notes" placeholder="Notes" class="form-control" id="myText16" type="text" disabled value="{{onsite_id.notes}}">
     </div>
   </div>
 </div>
@@ -674,17 +626,13 @@ tr:nth-child(even) {
     <td>  {{list.components_replaced}}   </td>
   </tr>
   <tr>
-    <td> Replaced Scale given:  </td>
-    <td> {{list.replaced_scale_given}}  </td>
+    <td> Capacity  </td>
+    <td> {{list.capacity}}  </td>
+  </tr><tr>
+    <td> Cost  </td>
+    <td> {{list.cost}}  </td>
   </tr>
-  <tr>
-    <td> Replaced scale Serial NO: </td>
-    <td> {{list.Replaced_scale_serial_no}}  </td>
-  </tr>
-  <tr>
-    <td> Deposit taken for replaced Scale:  </td>
-    <td>{{list.deposite_taken_for_replaced_scale}}  </td>
-  </tr>
+
 </table>
                     </div>
                 <center>
@@ -796,6 +744,26 @@ tr:nth-child(even) {
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+      <script>
+  function choice1(select) {
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#loaded_customer").html(data);
+    alert("data loaded sucessfully!");
+        }
+      });
+}
+
+  window.onload = function() {
+document.getElementById('datePicker').valueAsDate = new Date();
+};
+</script>
       <script>
 
 $(function() {

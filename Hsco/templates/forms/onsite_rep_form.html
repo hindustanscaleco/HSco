@@ -148,36 +148,29 @@ Format : (company name)
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Company Name
-
-
-
-
-
-</label>
+  <label class="col-md-2 control-label">Customer Name *
+  </label>
 
   <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Customer Name *
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-  <input  name="customer_name" required placeholder="Customer Name
+    <div class="input-group">
+      <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+      <input  name="customer_name" required placeholder="Customer Name
 
 
 " class="form-control"  type="text">
     </div>
   </div>
+
+  <label class="col-md-2 control-label">Company Name
+  </label>
+
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+    <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+    <input  name="company_name" placeholder="Company Name" class="form-control"  type="text">
+  </div>
+  </div>
+
 
 
 
@@ -233,55 +226,55 @@ Format : (company name)
 
 
 </div>
-  <div class="form-group row">
+<!--  <div class="form-group row">-->
 
- <label class="col-md-2 control-label">Second Person
+<!-- <label class="col-md-2 control-label">Second Person-->
 
-</label>
+<!--</label>-->
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-    <input type="text" name="second_person" placeholder="Name" class="form-control" >
-    </div>
-  </div>
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+<!--    <input type="text" name="second_person" placeholder="Name" class="form-control" >-->
+<!--    </div>-->
+<!--  </div>-->
 
-    <label class="col-md-2 control-label">Contact No
+<!--    <label class="col-md-2 control-label">Contact No-->
 
-</label>
+<!--</label>-->
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="second_contact_no" placeholder="Contact No" class="form-control" type="number" >
-    </div>
-  </div>
-</div>
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+<!--  <input name="second_contact_no" placeholder="Contact No" class="form-control" type="number" >-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
-<div class="form-group row">
+<!--<div class="form-group row">-->
 
- <label class="col-md-2 control-label">Third Person
+<!-- <label class="col-md-2 control-label">Third Person-->
 
-</label>
+<!--</label>-->
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-    <input type="text" name="third_person" placeholder="Name" class="form-control" >
-    </div>
-  </div>
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+<!--    <input type="text" name="third_person" placeholder="Name" class="form-control" >-->
+<!--    </div>-->
+<!--  </div>-->
 
-    <label class="col-md-2 control-label">Contact No
+<!--    <label class="col-md-2 control-label">Contact No-->
 
-</label>
+<!--</label>-->
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="third_contact_no" placeholder="Contact No" class="form-control" type="number" >
-    </div>
-  </div>
-</div>
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+<!--  <input name="third_contact_no" placeholder="Contact No" class="form-control" type="number" >-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
   <div class="form-group row">
   <label class="col-md-2 control-label">Previous Repairing Number
@@ -328,7 +321,7 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="date_of_complaint_received" required placeholder="Date the complaint was Received
+  <input  name="date_of_complaint_received" readonly id="dt2" required placeholder="Date the complaint was Received
 
 
 " class="form-control"  type="date">
@@ -615,12 +608,7 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="complaint_assigned_on" required id="datePicker" placeholder="Complain Assigned On
-
-
-
-
-" class="form-control"  type="date">
+  <input  name="complaint_assigned_on" readonly required id="datePicker" placeholder="Complain Assigned On" class="form-control"  type="date">
     </div>
   </div>
 
@@ -704,6 +692,7 @@ Format : (company name)
 
   window.onload = function() {
 document.getElementById('datePicker').valueAsDate = new Date();
+document.getElementById('dt2').valueAsDate = new Date();
 };
 </script>
 

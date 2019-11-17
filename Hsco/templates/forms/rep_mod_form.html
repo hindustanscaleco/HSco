@@ -415,20 +415,17 @@ Format : (company name)
   </div>
 
 
-  <label class="col-md-2 control-label">Confirmed Estimate
-
+      <label class="col-md-2 control-label">Confirmed Estimate
 </label>
-  <div class="col-md-4 inputGroupContainer">
+
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="confirmed_estimate" class="form-control">
 
-
-    <input  type="text" placeholder="Confirmed Estimate" name="confirmed_estimate" class="form-control" value="" list="confirmest">
-      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-    <datalist style="height:20px;" id="confirmest">
-    <option value = "Yes"></option>
-    <option value = "No"></option>
-    </datalist>
+  <option value="No">No</option>
+  <option value="Yes">Yes</option>
+</select>
     </div>
   </div>
 </div>
@@ -436,18 +433,17 @@ Format : (company name)
 
 <div class="form-group row">
 
-    <label class="col-md-2 control-label">Repaired
+      <label class="col-md-2 control-label">Repaired
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-  <input  type="text" placeholder="Repaired" name="repaired" class="form-control" value="" list="Repaired">
-      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-    <datalist style="height:20px;" id="Repaired">
-    <option value = "Yes"></option>
-    <option value = "No"></option>
-    </datalist>
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="repaired" class="form-control">
+
+  <option value="No">No</option>
+  <option value="Yes">Yes</option>
+</select>
     </div>
   </div>
 

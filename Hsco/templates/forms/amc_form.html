@@ -149,7 +149,7 @@ Format : (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-  <input  name="customer_name" placeholder="Customer Name" class="form-control"  type="text">
+  <input  name="customer_name" required placeholder="Customer Name" class="form-control"  type="text">
     </div>
   </div>
 
@@ -175,36 +175,30 @@ Format : (company name)
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Customer E-mail id
-
-
-
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  >
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Contact No. *
+    <label class="col-md-2 control-label">Contact Number. *
     </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="contact_no" placeholder="Contact No.
+  <input name="contact_no" required placeholder="Contact No." class="form-control"  type="text">
+    </div>
+  </div>
+  <label class="col-md-2 control-label">Customer E-mail id
 
-" class="form-control"  type="text">
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control">
     </div>
   </div>
 
+
 </div>
    <div class="form-group row">
-  <label class="col-md-2 control-label">Address
+  <label class="col-md-2 control-label">Address *
 
 
 
@@ -215,7 +209,7 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="Address" name="customer_address" placeholder="Address" class="form-control"  >
+  <input type="Address" required name="customer_address" placeholder="Address" class="form-control"  >
     </div>
   </div>
    </div>
