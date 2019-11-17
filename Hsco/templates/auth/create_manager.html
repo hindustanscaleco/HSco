@@ -76,17 +76,17 @@ color:;
 
 
 
-    <form class="well form-horizontal" ion="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
+    <form class="well form-horizontal" name="cm_form" onsubmit="return validateForm()" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
-  <label class="col-md-2 control-label ">Name
+  <label class="col-md-2 control-label ">Name *
 </label>
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="name" placeholder="Full Name"  class="form-control"  type="text">
+  <input required name="name" placeholder="Full Name" class="form-control"  type="text">
     </div>
   </div>
 
@@ -104,18 +104,18 @@ color:;
 <div class="form-group row">
 
 
- <label class="col-md-2 control-label">Mobile
+ <label class="col-md-2 control-label">Mobile *
 
 </label>
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-<input  name="mobile" placeholder="Phone No" class="form-control" required type="number">    </div>
+<input name="mobile" placeholder="Phone No" class="form-control" required type="number">    </div>
   </div>
 
 
-    <label class="col-md-2 control-label">Role
+    <label class="col-md-2 control-label">Role *
 
 </label>
 
@@ -133,12 +133,12 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Group
+  <label class="col-md-2 control-label">Group *
   </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input  name="group" placeholder="Enter Name of Admin" class="form-control" value="{{group}}" type="text">
+  <input name="group" id="group" placeholder="Enter Name of Admin" class="form-control" value="{{group}}" type="text" readonly>
     </div>
   </div>
 
@@ -146,15 +146,15 @@ color:;
 
 
 
-    <label class="col-md-2 control-label">Admin
+    <label class="col-md-2 control-label">Admin *
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-            <select name="admin" onchange="toggleCheckbox2(this)" class="form-control">
-                <option value="---------">-----------</option>
+            <select required name="admin" onchange="toggleCheckbox2(this)" class="form-control">
+                <option disabled="disabled" selected="selected" >-----------</option>
                  {% for item in admin_list %}
          <option value="{{item.name}}">{{item.name}}</option>
  {% endfor %}
@@ -167,7 +167,7 @@ color:;
 
 
 
-
+<input name="tp" id="tp" style="visibility:hidden">
 
 
 
@@ -303,14 +303,14 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Date of joining *
+  <label class="col-md-2 control-label">Date of joining
 
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="date_of_joining" placeholder="PO Number" class="form-control" required type="date">
+  <input  name="date_of_joining" class="form-control" type="date">
     </div>
   </div>
 
@@ -366,7 +366,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  type="text" name="ifsc_code" class="form-control" >
+  <input  type="text" placeholder="IFSC Code" name="ifsc_code" class="form-control" >
     </div>
   </div>
 
@@ -385,7 +385,7 @@ color:;
     </div>
   </div>
 
-  <label class="col-md-2 control-label">Password
+  <label class="col-md-2 control-label">Password *
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -430,8 +430,8 @@ color:;
 
 <script>
             function toggleCheckbox2(select) {
-//value = !select.checked;
 
+document.getElementById("tp").value = select.options[select.selectedIndex].value
     $.ajax({
         url: "/load_modules/",
         data: {
@@ -441,6 +441,25 @@ color:;
            $("#id_loaded_view").html(data);
         }
       });
+}
+
+
+function validateForm() {
+  var x = document.forms["cm_form"]["tp"].value;
+var phone = document.forms["cm_form"]["mobile"].value;
+
+var phoneno = /^\d{10}$/
+
+  if (x == "") {
+    alert("Please Select Admin To Proceed.");
+    return false;
+  }
+
+  if(phone.length > 11 && phone.length < 9)
+   {
+   alert("Mobile Number is not valid.");
+   return false;
+     }
 }
 </script>
 
@@ -476,8 +495,7 @@ color:;
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
-    </div>
-  </div>
+
 
 </body>
 

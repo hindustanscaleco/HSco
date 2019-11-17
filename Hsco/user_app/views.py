@@ -148,7 +148,7 @@ def manager_list(request):
 def create_manager(request):
     form = SiteUser_Form(request.POST or None, request.FILES or None)
     group = SiteUser.objects.get(id=request.user.pk).name
-    group2 = SiteUser.objects.get(id=request.user.pk).group
+    group2 = SiteUser.objects.get(id=request.user.pk).group[:-1]
     admin_list = SiteUser.objects.filter(role='Admin', is_deleted=False)
     if request.method == 'POST' or request.method == 'FILES':
         mobile = request.POST.get('mobile')
@@ -173,12 +173,20 @@ def create_manager(request):
         item.name = name
         item.profile_name = name
         item.role = 'Manager'
-        if admin != '---------':
-            item.group = "'"+group+"',"+group2+admin
-        item.group = "'"+group+"',"+group2
+        print(admin)
+        print(admin)
+        print(admin)
+        print(admin)
+        if admin == '' or admin == None or admin =='---------':
+            item.group = "'" + group + "'," + group2
+        else:
+            item.group = "'"+group+"',"+group2+",'"+admin+"'"
+            item.admin = admin
+
         item.is_deleted = is_deleted
         item.modules_assigned = modules_assigned
-        item.date_of_joining = date_of_joining
+        if date_of_joining != '' and date_of_joining != None:
+            item.date_of_joining = date_of_joining
         item.bank_name = bank_name
         item.account_number = account_no
         item.branch_name = branch_name
@@ -186,8 +194,8 @@ def create_manager(request):
         item.photo = photo
         item.salary_slip = salary_slip
         item.super_admin = SiteUser.objects.get(role='Super Admin').name
-        if admin != '---------':
-            item.admin = admin
+        # if admin != '---------':
+        #     item.admin = admin
 
 
         item.set_password(request.POST.get('password'))
