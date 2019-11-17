@@ -78,26 +78,42 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" ion=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
-        <div id="d1" class="divs d1 row">
+    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
 
-      <div class="col-xl-4 col-md-4 col-mb-4">
-                <input type="date" name="date1" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      <div class="col-xl-0 col-md-0 col-mb-0">
-                <p style="font-weight: 600;">_</p>
-
-      </div>
-
-      <div class="col-xl-4 col-md-4 col-mb-4">
-                <input type="date" name="date2" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      </div><br>
 <fieldset>
+
+<div class="form-group row">
+     <label class="col-md-2 control-label">From(DATE) :
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control ">
+<input type="date" name="date1" placeholder="Search 1" class="form-control">
+
+</div>
+  </div>
+
+
+
+    <label class="col-md-2 control-label">To(DATE) :
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+<div class="custom-control">
+<input type="date" name="date2" placeholder="Search 1" class="form-control">
+</div>
+  </div>
+</div>
+
+
+
+      <br>
+
 <div class="form-group row">
      <label class="col-md-2 control-label">Repairing Number
 
@@ -106,7 +122,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck1">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="repairing_app_repairing_after_sales_service.id" id="customCheck1">
   <label class="custom-control-label" for="customCheck1"></label>
 </div>
   </div>
@@ -121,7 +137,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck2">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="crm_no_id" id="customCheck2">
   <label class="custom-control-label" for="customCheck2"></label>
 </div>
   </div>
@@ -225,7 +241,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]"  value="customer_address" id="customCheck25">
+  <input type="checkbox" class="custom-control-input" name="checks[]"  value="address" id="customCheck25">
   <label class="custom-control-label" for="customCheck25"></label>
 </div>
   </div>
@@ -340,7 +356,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="current_stage_old" id="customCheck17">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="current_stage" id="customCheck17">
   <label class="custom-control-label" for="customCheck17"></label>
 </div>
   </div>
@@ -372,6 +388,12 @@ color:;
 </div>
   </div>
 </div>
+</fieldset>
+      <center>
+                <button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Proceed</button>
+
+      </center>
+    </form>
 <hr>
          <center>  <h1>Product Module</h1>  </center>
 
@@ -525,15 +547,15 @@ color:;
   </div>
 </div>
 
-</fieldset>
+
 
 <center>
-    <button style="background-color: #FC6E20;" type="submit" id="export" name="export" class="btn btn-dark">Export to Excel</button>
+    <!--<button style="background-color: #FC6E20;" type="submit" id="export" name="export" class="btn btn-dark">Export to Excel</button>-->
 
   <button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Save</button>
 
 </center>
-</form>
+<br>
 </div>
       </div>
   <!-- End of Page Wrapper -->

@@ -24,19 +24,19 @@ def add_repairing_details(request):
     cust_sugg=Customer_Details.objects.all()
     prev_rep_sugg=Repairing_after_sales_service.objects.all()
     if request.user.role == 'Super Admin':
-        user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Repairing Module', is_deleted=False)
+        user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains="'Repairing Module'", is_deleted=False)
 
     elif request.user.role == 'Admin':
         user_list = SiteUser.objects.filter(admin=request.user.name,
-                                            modules_assigned__icontains='Repairing Module', is_deleted=False)
+                                            modules_assigned__icontains="'Repairing Module'", is_deleted=False)
     elif request.user.role == 'Manager':
         user_list = SiteUser.objects.filter(manager=request.user.name,
-                                            modules_assigned__icontains='Repairing Module', is_deleted=False)
+                                            modules_assigned__icontains="'Repairing Module'", is_deleted=False)
     else: #display colleague
 
         list_group = SiteUser.objects.get(id=request.user.id).manager
         user_list = SiteUser.objects.filter(manager=list_group,
-                                            modules_assigned__icontains='Repairing Module', is_deleted=False)
+                                            modules_assigned__icontains="'Repairing Module'", is_deleted=False)
 
         # import ast
         #
@@ -52,10 +52,6 @@ def add_repairing_details(request):
         #
         # user_list = SiteUser.objects.filter(group__icontains=manager_list,
         #                                     modules_assigned__icontains='Repairing Module', is_deleted=False)
-
-
-
-
 
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
@@ -598,7 +594,7 @@ def repairing_module_home(request):
             return render(request, 'dashboardnew/repairing_module_home.html', context)
     else:
         if check_admin_roles(request):     #For ADMIN
-            repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+            repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains="Repairing Module").order_by('-id')
         else:  #For EMPLOYEE
             repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
         # repair_list = Repairing_after_sales_service.objects.all()
@@ -748,11 +744,24 @@ def final_repairing_report_module(request):
     repair_start_date = str(request.session.get('repair_start_date'))
     repair_end_date = str(request.session.get('repair_end_date'))
     repair_string = request.session.get('repair_string')
+    # print("repair_string[1:]")
+    # print(repair_string[1:])
+    # print(repair_string[0:])
+
     selected_list = request.session.get('selected_list')
+    for n, i in enumerate(selected_list):
+        if i == 'repairing_app_repairing_after_sales_service.id':
+            selected_list[n] = 'Reparing ID'
+        if i == 'crm_no_id':
+            selected_list[n] = 'Customer No'
+        if i == 'today_date':
+            selected_list[n] = 'Entry Date'
+
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT  " + repair_string + " from repairing_app_repairing_after_sales_service , customer_app_customer_details"
-                                             "  where repairing_app_repairing_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
+        sql="SELECT  " + repair_string[1:] + " from repairing_app_repairing_after_sales_service , customer_app_customer_details where repairing_app_repairing_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';"
+        print(sql)
+        cursor.execute("SELECT "+repair_string+" from repairing_app_repairing_after_sales_service , customer_app_customer_details where repairing_app_repairing_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
         row = cursor.fetchall()
         final_row = [list(x) for x in row]
         repairing_data = []
@@ -1065,9 +1074,7 @@ def load_reparing_stages_list(request,):
 
     selected = request.GET.get('loc_id')
     locc_id = request.GET.get('strUser')
-    print(selected)
-    print(locc_id)
-    print(locc_id)
+
     if selected == 'All':
         repair_list = Repairing_after_sales_service.objects.filter(current_stage=locc_id)
         print("True")
@@ -1090,7 +1097,7 @@ def load_reparing_manager(request):
     selected = request.GET.get('loc_id')
 
     if selected=='true':
-        user_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name)
+        user_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains="'Repairing Module'")
         # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
 
         context = {
@@ -1100,8 +1107,14 @@ def load_reparing_manager(request):
 
         return render(request, 'AJAX/load_reparing_manager.html', context)
     else:
-        # repair_list = Repairing_after_sales_service.objects.all()
-        repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+        if check_admin_roles(request):  # For ADMIN
+            repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,
+                                                                       user_id__is_deleted=False,
+                                                                       user_id__modules_assigned__icontains="'Repairing Module'").order_by(
+                '-id')
+        else:  # For EMPLOYEE
+            repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+        # repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
 
         context = {
             'repair_list': repair_list,

@@ -147,7 +147,10 @@ def manager_list(request):
 
 def create_manager(request):
     form = SiteUser_Form(request.POST or None, request.FILES or None)
-    group = SiteUser.objects.get(id=request.user.pk).name
+    if request.user.role == 'Manager' or request.user.role == 'Admin':
+        group = SiteUser.objects.get(id=request.user.pk).name
+    else:
+        group=''
     group2 = SiteUser.objects.get(id=request.user.pk).group[:-1]
     admin_list = SiteUser.objects.filter(role='Admin', is_deleted=False)
     if request.method == 'POST' or request.method == 'FILES':
@@ -173,14 +176,15 @@ def create_manager(request):
         item.name = name
         item.profile_name = name
         item.role = 'Manager'
-        print(admin)
-        print(admin)
-        print(admin)
-        print(admin)
-        if admin == '' or admin == None or admin =='---------':
+
+        if request.user.role == 'Super Admin':
+            if admin == '' or admin == None or admin =='---------':
+                item.group = "'" + group + "'," + group2
+            else:
+                item.group = "'"+group+"',"+group2+",'"+admin+"'"
+                item.admin = admin
+        elif request.user.role == 'Admin':
             item.group = "'" + group + "'," + group2
-        else:
-            item.group = "'"+group+"',"+group2+",'"+admin+"'"
             item.admin = admin
 
         item.is_deleted = is_deleted
@@ -228,6 +232,7 @@ def create_employee(request):
     form = SiteUser_Form(request.POST or None, request.FILES or None)
     group = SiteUser.objects.get(id=request.user.pk).name
     group2 = SiteUser.objects.get(id=request.user.pk).group
+    is_admin = False
 
     admin_logged = None
     manager_logged = None
@@ -235,10 +240,12 @@ def create_employee(request):
     if SiteUser.objects.get(id=request.user.pk).role =='Admin':
         admin_logged = SiteUser.objects.get(id=request.user.pk).name
         manager_list = SiteUser.objects.filter(role='Manager', admin__icontains=request.user.name, is_deleted=False)
+        is_admin = True
 
     elif SiteUser.objects.get(id=request.user.pk).role =='Manager':
         manager_logged = SiteUser.objects.get(id=request.user.pk).name
         admin_logged = SiteUser.objects.get(id=request.user.pk, is_deleted=False).admin
+        is_admin = False
 
 
     if request.method == 'POST' or request.method == 'FILES':
@@ -265,10 +272,11 @@ def create_employee(request):
         item.name = name
         item.profile_name = name
         item.role = 'Employee'
-        item.group = group
+        # item.group = group
         item.is_deleted = is_deleted
         item.modules_assigned = modules_assigned
-        item.date_of_joining = date_of_joining
+        if date_of_joining != '':
+            item.date_of_joining = date_of_joining
         item.bank_name = bank_name
         item.account_number = account_no
         item.branch_name = branch_name
@@ -276,10 +284,20 @@ def create_employee(request):
         item.photo = photo
         item.salary_slip = salary_slip
         item.super_admin = SiteUser.objects.get(role='Super Admin').name
-        if manager != '---------':
+        item.admin = admin
+
+        if is_admin:
+
+            if manager == '' or manager == None or manager == '---------':
+                item.group = group
+            else:
+                item.group = group+ "'" + manager + "'"
+                item.manager = manager
+        else:
+            item.group = group
             item.manager = manager
-        if admin != '---------':
-            item.admin = admin
+
+
         item.set_password(request.POST.get('password'))
 
         item.save()

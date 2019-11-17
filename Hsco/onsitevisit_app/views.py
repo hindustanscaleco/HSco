@@ -104,7 +104,7 @@ def onsite_views(request):
             return render(request, "manager/onsite_reparing.html", context)
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
-            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=True).order_by('-id')
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=True,user_id__modules_assigned__icontains='Onsite Repairing Module').order_by('-id')
         else:  # For EMPLOYEE
             onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk).order_by('-id')
         # onsite_list = Onsite_aftersales_service.objects.all()
@@ -117,7 +117,7 @@ def onsite_views(request):
         return render(request, "manager/onsite_reparing.html", context)
     else:
         if check_admin_roles(request):     #For ADMIN
-            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Onsite Repairing Module').order_by('-id')
         else:  #For EMPLOYEE
             onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk).order_by('-id')
         # onsite_list = Onsite_aftersales_service.objects.all()
@@ -754,7 +754,7 @@ def load_onsite_reparing_manager(request,):
     selected = request.GET.get('loc_id')
 
     if selected=='true':
-        user_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name)
+        user_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Onsite Repairing Module')
         # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
 
         context = {
@@ -764,7 +764,13 @@ def load_onsite_reparing_manager(request,):
 
         return render(request, 'AJAX/load_onsite_reparing_manager.html', context)
     else:
-        onsite_list = Onsite_aftersales_service.objects.all()
+        if check_admin_roles(request):  # For ADMIN
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,
+                                                                   user_id__is_deleted=False,
+                                                                   user_id__modules_assigned__icontains='Onsite Repairing Module').order_by(
+                '-id')
+        else:  # For EMPLOYEE
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk).order_by('-id')
 
         context = {
             'onsite_list': onsite_list,

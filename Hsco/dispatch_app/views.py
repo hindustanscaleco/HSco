@@ -291,7 +291,7 @@ def dispatch_view(request):
             return render(request, "manager/dispatch_view.html", context)
     else:
         if check_admin_roles(request):     #For ADMIN
-            dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+            dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Dispatch Module').order_by('-id')
         else:  #For EMPLOYEE
             dispatch_list = Dispatch.objects.filter(user_id=request.user.pk).order_by('-id')
         # dispatch_list = Dispatch.objects.all()
@@ -585,7 +585,7 @@ def load_dispatch_done_manager(request,):
     selected = request.GET.get('loc_id')
 
     if selected=='true':
-        dispatch_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name)
+        dispatch_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Dispatch Module')
         # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
         print("dispatch_list22")
         print(dispatch_list)
@@ -596,7 +596,11 @@ def load_dispatch_done_manager(request,):
 
         return render(request, 'AJAX/load_dispatch_done_manager.html', context)
     else:
-        dispatch_list = Dispatch.objects.all()
+        if check_admin_roles(request):     #For ADMIN
+            dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Dispatch Module').order_by('-id')
+        else:  #For EMPLOYEE
+            dispatch_list = Dispatch.objects.filter(user_id=request.user.pk).order_by('-id')
+        # dispatch_list = Dispatch.objects.all()
         print("dispatch_list")
         print(dispatch_list)
         context = {

@@ -400,7 +400,7 @@ def view_customer_details(request):
             return render(request, 'dashboardnew/cm.html', context)
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
-            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=True).order_by('-id')
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=True,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
         else:  # For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 
@@ -412,7 +412,7 @@ def view_customer_details(request):
         return render(request, 'dashboardnew/cm.html', context)
     else:
         if check_admin_roles(request):  # For ADMIN
-            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
         else:  # For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 
@@ -581,7 +581,8 @@ def add_product_details(request,id):
         value_of_goods = request.POST.get('value_of_goods')
         # sales_person = request.POST.get('sales_person')
         # purchase_type = request.POST.get('purchase_type')
-
+        if value_of_goods == '' or value_of_goods == None:
+            value_of_goods=0.0
 
 
 
@@ -685,6 +686,15 @@ def final_report(request):
     end_date = request.session.get('end_date')
     string = request.session.get('string')
     selected_list = request.session.get('selected_list')
+    for n, i in enumerate(selected_list):
+        if i == 'purchase_app_purchase_details.id':
+            selected_list[n] = 'Purchase ID'
+        if i == 'customer_app_customer_details.id':
+            selected_list[n] = 'Customer No'
+        if i == 'today_date':
+            selected_list[n] = 'Entry Date'
+        if i == 'second_person':
+            selected_list[n] = 'Customer Name'
 
     with connection.cursor() as cursor:
         cursor.execute("SELECT  "+string+" from purchase_app_purchase_details , customer_app_customer_details"
@@ -1015,7 +1025,7 @@ def load_users(request):
     selected = request.GET.get('loc_id')
 
     if selected=='true':
-        user_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name)
+        user_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module')
         # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
 
         context = {
@@ -1026,7 +1036,7 @@ def load_users(request):
         return render(request, 'AJAX/load_users.html', context)
     else:
         if check_admin_roles(request):     #For ADMIN
-            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
         else:  #For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 

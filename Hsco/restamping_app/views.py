@@ -99,7 +99,7 @@ def restamping_manager(request):
             return render(request, "manager/restamping_manager.html", context)
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
-            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.group, user_id__is_deleted=True).order_by('-id')
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.group, user_id__is_deleted=True,user_id__modules_assigned__icontains='Restamping Module').order_by('-id')
         else:  # For EMPLOYEE
             restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
         # restamp_list = Restamping_after_sales_service.objects.all()
@@ -111,7 +111,7 @@ def restamping_manager(request):
         return render(request, "manager/restamping_manager.html", context)
     else:
         if check_admin_roles(request):     #For ADMIN
-            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Restamping Module').order_by('-id')
         else:  #For EMPLOYEE
             restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
         # restamp_list = Restamping_after_sales_service.objects.all()
@@ -656,7 +656,7 @@ def load_restamping_manager(request):
     selected = request.GET.get('loc_id')
 
     if selected=='true':
-        user_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name)
+        user_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Restamping Module')
         # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
 
         context = {
@@ -666,7 +666,11 @@ def load_restamping_manager(request):
 
         return render(request, 'AJAX/load_restamping_manager.html', context)
     else:
-        restamp_list = Restamping_after_sales_service.objects.all()
+        if check_admin_roles(request):     #For ADMIN
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Restamping Module').order_by('-id')
+        else:  #For EMPLOYEE
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+        # restamp_list = Restamping_after_sales_service.objects.all()
 
         context = {
             'restamp_list': restamp_list,

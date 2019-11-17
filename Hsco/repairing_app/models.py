@@ -42,6 +42,11 @@ class Repairing_after_sales_service(models.Model):
     stage_update_timedate = models.DateField(default=datetime.date.today)
     repaired_date = models.DateField(default=datetime.date.today,null=True,blank=True)
     delivery_date = models.DateField(default=datetime.date.today,null=True,blank=True)
+    scale_sub_sms_count = models.IntegerField(default=0)
+    estimate_informed_sms_count = models.IntegerField(default=0)
+    reparing_done_sms_count = models.IntegerField(default=0)
+    late_mark_sms_count = models.IntegerField(default=0)
+    final_del_sms_count = models.IntegerField(default=0)
 
 
 

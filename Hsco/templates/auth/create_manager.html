@@ -142,9 +142,21 @@ color:;
     </div>
   </div>
 
+ {% if request.user.is_authenticated and user.role == 'Admin' %}
+     <label class="col-md-2 control-label">Admin *
 
+</label>
 
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+            <input name="admin" class="form-control" value="{{user.name}}" type="text" readonly>
 
+    </div>
+  </div>
+    {% endif %}
+
+ {% if request.user.is_authenticated and user.role == 'Super Admin' %}
 
     <label class="col-md-2 control-label">Admin *
 
@@ -163,13 +175,14 @@ color:;
 
     </div>
   </div>
+    {% endif %}
 </div>
 
-
+ {% if request.user.is_authenticated and user.role == 'Super Admin' %}
 
 <input name="tp" id="tp" style="visibility:hidden">
 
-
+  {% endif %}
 
 
 <div class="form-group row" >

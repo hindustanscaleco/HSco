@@ -368,15 +368,28 @@ function myFunction() {
   <input type="text" name="customer_address" placeholder="Address" id="myText6" class="form-control" disabled value="{{customer_id.address}}">
     </div>
   </div>
-         <label class="col-md-2 control-label">Informed On
+
+
+
+          <label class="col-md-2 control-label">Confirmed Estimate
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="informed_on" placeholder="Informed On" class="form-control" id="myText9" type="date" disabled value="{{repair_id.informed_on|date:'Y-m-d'}}">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+       <select disabled id="myText11" name="confirmed_estimate" class="form-control">
+{% if repair_id.confirmed_estimate == 'No' %}
+  <option value="No">No</option>
+  <option value="Yes">Yes</option>
+  {% else %}
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+ {% endif %}
+</select>
+  <!--<input type="text" name="confirmed_estimate" class="form-control" id="myText11"  placeholder="Confirmed Estimate" disabled value="{{repair_id.confirmed_estimate}}">-->
     </div>
   </div>
+
     </div>
 <!--<div class="form-group row">-->
 
@@ -450,13 +463,13 @@ function myFunction() {
     </div>
   </div>
 
-  <label class="col-md-2 control-label">Confirmed Estimate
+         <label class="col-md-2 control-label">Informed On
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input type="text" name="confirmed_estimate" class="form-control" id="myText11"  placeholder="Confirmed Estimate" disabled value="{{repair_id.confirmed_estimate}}">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="informed_on" placeholder="Informed On" class="form-control" id="myText9" type="date" disabled value="{{repair_id.informed_on|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -483,11 +496,36 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input type="text" name="repaired" placeholder="Repaired" class="form-control" id="myText12"  disabled value="{{repair_id.repaired}}">
+      <select disabled id="myText12" name="repaired" class="form-control">
+{% if repair_id.repaired == 'No' %}
+  <option value="No">No</option>
+  <option value="Yes">Yes</option>
+  {% else %}
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+ {% endif %}
+</select>
+
+  <!--<input type="text" name="repaired" placeholder="Repaired" class="form-control" id="myText12"  disabled value="{{repair_id.repaired}}">-->
     </div>
   </div>
 
+  </div>
+  <div class="form-group row">
+          <label class="col-md-2 control-label">Repaired By
+</label>
 
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="repaired_by" placeholder="Repaired By" class="form-control" id="myText18" disabled value="{{repair_id.repaired_by}}" list="repe_by">
+         <datalist style="height:20px;" id="repe_by">
+        {% for item in user_list %}
+      <option value="{{item.name}}">
+    {% endfor %}
+    </datalist>
+     </div>
+  </div>
 
   <label class="col-md-2 control-label">Repaired date *
 
@@ -510,16 +548,7 @@ function myFunction() {
 
   <div class="form-group row">
 
-  <label class="col-md-2 control-label">Delivery Date *
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control" id="myText14"  required disabled value="{{repair_id.delivery_date|date:'Y-m-d'}}">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Delivered By
+          <label class="col-md-2 control-label">Delivered By
 </label>
 
     <div class="col-md-4 inputGroupContainer">
@@ -533,21 +562,24 @@ function myFunction() {
     </datalist>
     </div>
   </div>
+
+
+  <label class="col-md-2 control-label">Delivery Date *
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input type="date" name="delivery_date" placeholder="Delivery Date" class="form-control" id="myText14"  required disabled value="{{repair_id.delivery_date|date:'Y-m-d'}}">
+    </div>
+  </div>
+
+
   </div>
 
 
 
   <div class="form-group row">
 
-  <label class="col-md-2 control-label">Feedback Given
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="feedback_given" placeholder="Feedback Given" id="myText16"  class="form-control"  type="text" disabled value="{% if repair_id.feedback_given %}YES{% else %}NO{% endif %}">
-    </div>
-  </div>
 
     <label class="col-md-2 control-label">Current Stage
 </label>
@@ -558,6 +590,20 @@ function myFunction() {
   <input name="current_stage_old" placeholder="current stage" class="form-control" id="myText17" disabled value="{{repair_id.current_stage}}">
 
      </div>
+  </div>
+
+                  <label class="col-md-2 control-label">Total Cost
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <input  name="total_cost" placeholder="Total Cost" class="form-control"  id="myText8"  type="text" disabled value="{{repair_id.total_cost}}">
+    </div>
   </div>
   </div>
 
@@ -579,35 +625,19 @@ function myFunction() {
   <!--</div>-->
 
 
-    <label class="col-md-2 control-label">Repaired By
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="repaired_by" placeholder="Repaired By" class="form-control" id="myText18" disabled value="{{repair_id.repaired_by}}" list="repe_by">
-         <datalist style="height:20px;" id="repe_by">
-        {% for item in user_list %}
-      <option value="{{item.name}}">
-    {% endfor %}
-    </datalist>
-     </div>
-  </div>
-
-
-            <label class="col-md-2 control-label">Total Cost
-
-
-
+  <label class="col-md-2 control-label">Feedback Given
 
 </label>
-
-    <div class="col-md-4 inputGroupContainer">
+  <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="total_cost" placeholder="Total Cost" class="form-control"  id="myText8"  type="text" disabled value="{{repair_id.total_cost}}">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <input  name="feedback_given" placeholder="Feedback Given" id="myText16"  class="form-control"  type="text" disabled value="{% if repair_id.feedback_given %}YES{% else %}NO{% endif %}">
     </div>
   </div>
+
+
+
+
 
   </div>
 
@@ -624,7 +654,7 @@ function myFunction() {
    <div class="col-md-12 ">
       <br>
     <center>
-        <button style="background-color: #FC6E20;" onclick="myFunction()" id="myText20" class="btn btn-primary" type="reset" style="">Edit</button>
+        <button style="background-color: #FC6E20;" onclick="myFunction()" id="myText20" class="btn btn-primary" type="reset">Edit</button>
         <br>
         <br>
         <button style="display:none; background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
@@ -635,6 +665,147 @@ function myFunction() {
 
 </fieldset>
 </form>
+       <hr>
+<div class="row" style="margin-left: 10%;">
+
+        <div class="col-xl-2 col-md-3 mb-12">
+              <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,5.5),rgba(120,115,245,.9))">
+                <div class="card-body row" style="padding-left: 20px;color: white; font-weight: 600; font-size: 16px; height: auto;">
+
+                  <center> Total Sent: {{repair_id.scale_sub_sms_count}} </center>
+
+                    </div>
+
+                </div>
+              </div>
+
+        <div class="col-xl-2 col-md-3 mb-12">
+              <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">
+                <div class="card-body row" style="padding-left: 25px; color: white; font-weight: 600; font-size: 16px;  height: auto;">
+                 <center>Total Sent: {{repair_id.estimate_informed_sms_count}}</center>
+
+
+                    </div>
+
+                </div>
+              </div>
+
+            <div class="col-xl-2 col-md-3 mb-12">
+              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
+                <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 16px;  height: auto;">
+
+                   <center>Total Sent: {{repair_id.reparing_done_sms_count}}</center>
+
+                    </div>
+
+                </div>
+              </div>
+
+        <div class="col-xl-2 col-md-3 mb-12">
+              <div class="card shadow" style="    background: linear-gradient(40deg,rgba(69,202,252,.9),rgba(48,63,159,.9))">
+                <div class="card-body row" style="padding-left: 45px;color: white; font-weight: 600; font-size: 16px;  height: auto;">
+
+                    <center>Total Sent: {{repair_id.late_mark_sms_count}}</center>
+
+                    </div>
+
+                </div>
+              </div>
+
+        <div class="col-xl-2 col-md-3 mb-12" >
+              <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,.9),rgba(120,115,245,.9))">
+                <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 14px;  height: auto;">
+
+                    <center>Total Sent: {{repair_id.final_del_sms_count}}
+                        </center>
+
+                    </div>
+
+                </div>
+              </div>
+        </div>
+       <br>
+
+          <div class="row" style="margin-left: 10%;">
+
+        <div class="col-xl-2 col-md-3 mb-12">
+              <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,5.5),rgba(120,115,245,.9))">
+                <div class="card-body row" style="padding-left: 20px;color: white; font-weight: 600; font-size: 16px; height: 130px;">
+
+                  <center> Scale Submit SMS </center>
+
+                    </div>
+
+                </div>
+              </div>
+
+        <div class="col-xl-2 col-md-3 mb-12">
+              <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">
+                <div class="card-body row" style="padding-left: 25px; color: white; font-weight: 600; font-size: 16px;  height: 130px;">
+                 <center> Estimate inform SMS</center>
+
+
+                    </div>
+
+                </div>
+              </div>
+
+            <div class="col-xl-2 col-md-3 mb-12">
+              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
+                <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 16px;  height: 130px;">
+
+                   <center>Reparing done SMS</center>
+
+                    </div>
+
+                </div>
+              </div>
+
+        <div class="col-xl-2 col-md-3 mb-12">
+              <div class="card shadow" style="    background: linear-gradient(40deg,rgba(69,202,252,.9),rgba(48,63,159,.9))">
+                <div class="card-body row" style="padding-left: 45px;color: white; font-weight: 600; font-size: 16px;  height: 130px;">
+
+                    <center>Late Mark SMS</center>
+
+                    </div>
+
+                </div>
+              </div>
+
+        <div class="col-xl-2 col-md-3 mb-12" >
+              <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,.9),rgba(120,115,245,.9))">
+                <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 14px;  height: 130px;">
+
+                    <center>Final Delivery SMS
+                        </center>
+
+                    </div>
+
+                </div>
+              </div>
+        </div>
+<br>
+   <div class="row" style="margin-left: 10%;">
+
+        <div class="col-xl-2 col-md-3 mb-12">
+                  <center> <button style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
+        </div>
+
+ <div class="col-xl-2 col-md-3 mb-12">
+                  <center> <button style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
+        </div>
+       <div class="col-xl-2 col-md-3 mb-12">
+                  <center> <button style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
+        </div>
+       <div class="col-xl-2 col-md-3 mb-12">
+                  <center> <button style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
+        </div>
+       <div class="col-xl-2 col-md-3 mb-12">
+                  <center> <button style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
+        </div>
+        </div>
+<hr>
+
 <br>
 <center>
                       <a href="/repair_product/{{repair_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>

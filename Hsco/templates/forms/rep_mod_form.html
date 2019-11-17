@@ -362,33 +362,21 @@ Format : (company name)
   <!--<input  name="total_cost" placeholder="Total Cost" class="form-control" type="text">-->
     <!--</div>-->
   <!--</div>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <label class="col-md-2 control-label">Informed On
-
+      <label class="col-md-2 control-label">Confirmed Estimate
 </label>
-  <div class="col-md-4 inputGroupContainer">
+
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="informed_on" placeholder="Informed On" class="form-control" type="date">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="confirmed_estimate" class="form-control">
+
+  <option value="No">No</option>
+  <option value="Yes">Yes</option>
+</select>
     </div>
   </div>
+
+
 </div>
 
 
@@ -415,17 +403,16 @@ Format : (company name)
   </div>
 
 
-      <label class="col-md-2 control-label">Confirmed Estimate
+
+
+
+      <label class="col-md-2 control-label">Informed On
+
 </label>
-
-    <div class="col-md-4 inputGroupContainer">
+  <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="confirmed_estimate" class="form-control">
-
-  <option value="No">No</option>
-  <option value="Yes">Yes</option>
-</select>
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="informed_on" placeholder="Informed On" class="form-control" type="date">
     </div>
   </div>
 </div>
