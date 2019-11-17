@@ -178,13 +178,10 @@ color:;
 
     <div class="col xl-12">
   <div class="form-group row">
-  <label class="col-md-2 control-label ">Purchase Module
 
+      {% if 'Customer Module' in admin_id.modules_assigned %}
 
-
-
-
-</label>
+  <label class="col-md-2 control-label ">Purchase Module</label>
 
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
@@ -195,6 +192,10 @@ color:;
   </div>
 </div>
 
+      {% endif %}
+
+
+      {% if 'Repairing Module' in admin_id.modules_assigned %}
     <label class="col-md-2 control-label">Repairing Module
 
 
@@ -209,16 +210,15 @@ color:;
 
 
 </div>
+          {% endif %}
 </div>
 
 
 
 <div class="form-group row">
+    {% if 'Restamping Module' in admin_id.modules_assigned %}
+
   <label class="col-md-2 control-label">Restamping Module
-
-
-
-
 
 </label>
 
@@ -229,6 +229,8 @@ color:;
   </div>
 </div>
 
+     {% endif %}
+     {% if 'Dispatch Module' in admin_id.modules_assigned %}
     <label class="col-md-2 control-label">Dispatch Module
 
 
@@ -244,12 +246,13 @@ color:;
   </div>
 
 </div>
-
+ {% endif %}
 </div>
 
 
 
 <div class="form-group row">
+    {% if 'AMC Module' in admin_id.modules_assigned %}
   <label class="col-md-2 control-label">AMC Module
 
 
@@ -260,7 +263,8 @@ color:;
   <label class="custom-control-label" for="customCheck5"></label>
   </div>
   </div>
-
+ {% endif %}
+    {% if 'Onsite Repairing Module' in admin_id.modules_assigned %}
     <label class="col-md-2 control-label">Onsite Repairing Module
 
 
@@ -275,6 +279,7 @@ color:;
   <label class="custom-control-label" for="customCheck6"></label>
   </div>
 </div>
+     {% endif %}
 </div>
 
 

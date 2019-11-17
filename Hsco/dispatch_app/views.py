@@ -585,7 +585,7 @@ def load_dispatch_done_manager(request,):
     selected = request.GET.get('loc_id')
 
     if selected=='true':
-        dispatch_list = Employee_Analysis_month.objects.filter(manager_id=request.user.name)
+        dispatch_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name)
         # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
         print("dispatch_list22")
         print(dispatch_list)

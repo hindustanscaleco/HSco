@@ -1,3 +1,4 @@
+import calendar
 from datetime import datetime
 from django.db.models import Q
 from django.http import HttpResponse
@@ -358,6 +359,7 @@ def employee_profile(request,id):
         salary_date = request.POST.get('salary_date')
         salary_date = datetime.strptime(salary_date, "%Y-%m-%d")
         salary_date = salary_date.month
+        salary_date2 = calendar.month_name[salary_date]
 
         if Employee_Analysis_month.objects.filter(user_id=id,entry_date__month=salary_date).count()>0:
             salary_slip = Employee_Analysis_month.objects.get(user_id=id,entry_date__month=salary_date).salary_slip
@@ -365,6 +367,7 @@ def employee_profile(request,id):
                 'user_id': user_id,
                 'leave_list': leave_list,
                 'salary_slip': salary_slip,
+                'salary_date': salary_date2,
 
             }
             context.update(context2)

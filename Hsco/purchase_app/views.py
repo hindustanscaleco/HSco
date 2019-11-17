@@ -175,10 +175,10 @@ def add_purchase_details(request):
 
             dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
             dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
-            dispatch.customer_email = customer_email_id
-            dispatch.customer_name = customer_name
-            dispatch.company_name = company_name
-            dispatch.customer_address = address
+            # dispatch.customer_email = customer_email_id
+            # dispatch.customer_name = customer_name
+            # dispatch.company_name = company_name
+            # dispatch.customer_address = address
 
             dispatch.save()
 

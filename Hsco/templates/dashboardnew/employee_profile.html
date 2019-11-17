@@ -225,15 +225,15 @@ color:;
   <div class="form-group row">
 
 
-    <label class="col-md-2 control-label">Average Rating
+    <!--<label class="col-md-2 control-label">Average Rating-->
 
-</label>
+<!--</label>-->
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-    <input type="text" name="average_rating" id="fileToUpload" disabled placeholder="Average Rating" class="form-control" value="{{user_id.average_rating}}">
-    </div>
-  </div>
+    <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+    <!--<input type="text" name="average_rating" id="fileToUpload" disabled placeholder="Average Rating" class="form-control" value="{{user_id.average_rating}}">-->
+    <!--</div>-->
+  <!--</div>-->
 
 
 
@@ -390,22 +390,33 @@ color:;
 
                      <form method="post">{% csrf_token %}
 
+ <div class="form-group row">
+
+                       <label class="col-md-3 control-label">Check Salary Slip by entering any date:
+</label>
     <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
   <input  name="salary_date" placeholder="Sales Target" class="form-control"  type=date >
     </div>
-  </div>  <br>  <button style="background-color: #FC6E20;" name="submit2" type="submit" >Submit</button>
-                                              </form>
+  </div>
+                         <br>  <button style="background-color: #FC6E20;" name="submit2" type="submit" >Submit</button>
+ </div>
+                     </form>
 
 <br>
-         <button style="background-color: #FC6E20;" onclick="location.href='{{salary_slip.url}}'" class="form-control" style="width: 15%;"> Download </button>
+                     {% if salary_slip.url %}
+                     Salary Slip For Month "{{salary_date}}" Found!! Click button to download.
+         <button style="background-color: #FC6E20; width: 15%; " onclick="location.href='{{salary_slip.url}}'" class="form-control"> Download </button>
+                     {% endif %}
+
+
 <br>
 {% if user.role == 'Super Admin' or valid_Manager or valid_user %}
                      <form method="post" enctype="multipart/form-data">{% csrf_token %}
                          <div class="form-group row">
 
-<label class="col-md-2 control-label">Salary Slip
+<label class="col-md-1 control-label">Salary Slip
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -414,7 +425,7 @@ color:;
     </div>
   </div>
 
-                         <label class="col-md-2 control-label">Salary Slip Date
+                         <label class="col-md-2 control-label">Salary Slip Month & Year: (Choose any date)
 </label>
     <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
@@ -637,6 +648,7 @@ color:;
 
 
 <div class="col-xl-12 col-md-12 mb-12" style=" height: 200px; overflow: scroll;">
+
               <div class="card shadow">
 
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;">
@@ -710,7 +722,7 @@ color:;
               </div>
 </div>
 
-
+          {% if 'Customer Module' in user_id.modules_assigned %}
             <div class="card-header py-3">
                   <h4 class="m-0 font-weight-bold text-primary" > Detailed Sales Feedback</h4>
                 </div></center>
@@ -776,8 +788,8 @@ color:;
                 </div>
             <br>
             <br>
-
-
+{% endif %}
+ {% if 'Repairing Module' in user_id.modules_assigned %}
             <div class="card-header py-3">
                   <h4 class="m-0 font-weight-bold text-primary" > Detailed Reparing Feedback</h4>
                 </div></center>
@@ -850,7 +862,8 @@ color:;
                 </div>
 <br>
 <br>
-
+{% endif %}
+             {% if 'Onsite Repairing Module' in user_id.modules_assigned %}
             <div class="card-header py-3">
                   <h4 class="m-0 font-weight-bold text-primary" > Detailed Onsite Reparing Feedback</h4>
                 </div></center>
@@ -915,7 +928,7 @@ color:;
 {% endfor %}
                 </div>
 
-
+{% endif %}
 
 
 
