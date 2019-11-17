@@ -25,8 +25,8 @@
 
 <style>
 
-* {
-color:;
+.container-fluid {
+font-size: 14px;
 }
   .faicons {
   font-size: 18px;
@@ -49,7 +49,50 @@ color:;
 
   }
 
+
+
+
 </style>
+   <style>
+          .editableBox {
+    width: 100%;
+    height: 30px;
+}
+
+.timeTextBox {
+    width: 154px;
+    margin-left: -178px;
+    height: 25px;
+    border: none;
+}
+
+
+.editableBoxa {
+    width: 100%;
+    height: 30px;
+}
+
+.timeTextBoxa {
+    width: 54px;
+    margin-left: -78px;
+    height: 25px;
+    border: none;
+}
+
+
+.editableBoxz {
+    width: 100%;
+    height: 30px;
+}
+
+.timeTextBoxz {
+    width: 54px;
+    margin-left: -78px;
+    height: 25px;
+    border: none;
+}
+
+        </style>
 
 
   <script> function disable() {
@@ -589,8 +632,22 @@ function myFunction() {
 </fieldset>
 </form>
 <br>
-         <center>
-          </center>
+                <style>
+table {
+  font-family: arial, sans-serif;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 5px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
 <br>
 </div>
 
@@ -599,27 +656,39 @@ function myFunction() {
     {% for list in product_id %}
       <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;">
+<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
+               <table style="font-size: 14px;">
+  <tr>
+    <td>Type of Scale:</td>
+        <td>{{list.type_of_scale}}</td>
+  </tr><tr>
+    <td>Model of Purchase:</td>
+  <td>{{list.model_of_purchase}}</td></tr>
+<tr>
+    <td>Sub Sub Model</td>
+  <td>{{list.sub_sub_model}} </td></tr>
+<tr>
+    <td>Serial No. of Scale::</td>
+        <td>{{list.serial_no_scale}}</td></tr>
+<tr>
+    <td>Brand:</td>
+        <td>{{list.brand}} </td></tr>
+<tr>
+    <td>Capacity:</td>
+        <td>{{list.capacity}} </td></tr>
+<tr>
+    <td>Unit:</td>
+        <td>{{list.unit}}</td></tr>
+<tr>
+    <td>Quantity:</td>
+        <td>{{list.quantity}}</td></tr>
+<tr>
+    <td>Amount:</td>
+        <td>{{list.value_of_goods}} </td><s></s>
 
-
-
-                    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Type of Scale: {{list.type_of_scale}} </center></div>
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Model of Purchase: {{list.model_of_purchase}}  </center></div>
-
-                  <div class="col-xl-4 col-md-1 mb-1"><center> Sub Model: {{list.sub_model}}  </center> </div>
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Sub Sub Model: {{list.sub_sub_model}}  </center></div>
-                  <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Serial No. of Scale: {{list.serial_no_scale}} </center> </div>
-
-                  <div class="col-xl-4 col-md-1 mb-1"><center> Brand: {{list.brand}}  </center> </div>
-                  <div class="col-xl-4 col-md-1 mb-1"><center> Capacity: {{list.capacity}}  </center> </div>
-                    <div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Unit: {{list.unit}}  </center> </div>
-                  <div class="col-xl-4 col-md-1 mb-1"><center> Quantity: {{list.quantity}}  </center> </div>
-                  <div class="col-xl-4 col-md-1 mb-1"><center> Amount: {{list.value_of_goods}}  </center> </div>
-
-
-                    </div>
-
+  </tr>
+</table>
               </div>
 
           <br>
