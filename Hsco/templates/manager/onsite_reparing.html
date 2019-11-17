@@ -76,6 +76,22 @@
                 </div>
 
           </div>
+                        <style>
+table {
+  font-family: arial, sans-serif;
+  width: 100%;
+  color: black;
+}
+
+td, th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 8px;
+  font-size: 13px;
+}
+
+
+</style>
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
 </style>
@@ -334,31 +350,42 @@ $(function() {
     <form  method='POST' autocomplete="off" id="FilterForm" data-url="{% url 'load_onsite_reparing_stages_list' %}" enctype="multipart/form-data">{% csrf_token %}
 
 
-<div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">
-
-    <!--<div class="col-xl-4 col-md-2 col-mb-2">-->
-        <!--<input type="checkbox" name="checks[]" value="Scale is collected but estimate is not given" checked> Scale is collected but estimate is not given. &nbsp; &nbsp; <br>-->
-  <!--<input type="checkbox" name="checks[]" value="Estimate is given but Estimate is not confirmed"> Estimate is given but Estimate is not confirmed. &nbsp; &nbsp; <br>-->
-         <!--<input type="checkbox" name="checks[]" value="Estimate is confirmed but not repaired"> Estimate is confirmed but not repaired. &nbsp; &nbsp;-->
-
-    <!--</div>-->
+ <div class="row" style="margin-left: 10%;">
 
 
+            <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,5.5),rgba(120,115,245,.9))">
+                <div class="card-body row" style="padding-left: 20px;color: white; font-weight: 600; font-size: 16px; height: 130px;">
 
-    <div class="col-xl-4 col-md-4 col-mb-4">
-<select id="display_limit2" onchange="choice1(this)" class="form-control">
+                  <center> Onsite repairing request<br> is raised.  <br> ({{rep1}}) </center>
 
-    <option value="-----">---------</option>
-  <option value="Onsite repairing request is raised">Onsite repairing request is raised.</option>
-  <option value="Onsite repairing request is assigned">Onsite repairing request is assigned.</option>
-  <option value="Onsite repairing request is completed">Onsite repairing request is completed.</option>
-</select>
+                    </div>
 
-    </div>
+                </div>
+              </div>
+
+        <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">
+                <div class="card-body row" style="padding-left: 25px; color: white; font-weight: 600; font-size: 16px;  height: 130px;">
+                 <center> Onsite repairing request<br> is assigned &nbsp;<br> ({{rep2}})</center>
 
 
+                    </div>
 
-</div>
+                </div>
+              </div>
+
+            <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
+                <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 16px;  height: 130px;">
+
+                   <center><p> Onsite repairing request<br> is completed. <br>&nbsp; ({{rep3}}) </p></center>
+
+                    </div>
+                </div>
+              </div>
+
+        </div>
     </form>
 
 
