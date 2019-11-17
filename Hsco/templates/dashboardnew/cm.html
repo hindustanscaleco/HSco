@@ -73,7 +73,7 @@
 
 
                  <div class="col-xl-6 col-md-9 mb-9 ">
-
+<form method="POST" ion="">{%csrf_token%}
 
                 <div class="card-body" style="padding: 2px;">
                   <div class="row no-gutters align-items-right">
@@ -83,9 +83,9 @@
 <a style="padding: 2px; " href="/purchase_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
 
 
-    <form method="POST" ion="">{%csrf_token%}
- <a href="#"><button style="background-color: #FC6E20;" name="deleted" type="submit" class="btn btn-primary" style="margin-top: 2px;">Deleted User</button></a>
-                              </form>
+
+ <a href="#"><button style="background-color: #FC6E20; margin-top: 3px;" name="deleted" type="submit" class="btn btn-primary" >Deleted User</button></a>
+
 
  <a style="padding: 2px;" href="/user_lottgs/"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
  <a style="padding: 2px;" href="/report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
@@ -103,7 +103,7 @@
               </div>
 
 
-
+      </form>
 
             </div>
 

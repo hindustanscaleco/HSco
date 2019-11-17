@@ -173,6 +173,8 @@ def add_purchase_details(request):
             else:
                 dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
 
+            dispatch.second_person = customer_name  # new1
+            dispatch.second_contact_no = contact_no  # new2
             dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
             dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
             # dispatch.customer_email = customer_email_id
