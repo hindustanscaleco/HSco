@@ -580,6 +580,8 @@ def update_onsite_details(request,id):
         context = {
             'onsite_id': onsite_id,
             'onsite_product_list': onsite_product_list,
+            'employee_list': employee_list,
+            'feedback': feedback,
         }
 
         return render(request, 'update_forms/update_onsite_rep_form.html', context)

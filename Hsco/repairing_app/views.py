@@ -357,19 +357,19 @@ def update_repairing_details(request,id):
     repair_list = Repairing_Product.objects.filter(repairing_id=id)
 
     if request.user.role == 'Super Admin':
-        user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Repairing Module', is_deleted=False)
+        user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains="'Repairing Module'", is_deleted=False)
 
     elif request.user.role == 'Admin':
         user_list = SiteUser.objects.filter(admin=request.user.name,
-                                            modules_assigned__icontains='Repairing Module', is_deleted=False)
+                                            modules_assigned__icontains="'Repairing Module'", is_deleted=False)
     elif request.user.role == 'Manager':
         user_list = SiteUser.objects.filter(manager=request.user.name,
-                                            modules_assigned__icontains='Repairing Module', is_deleted=False)
+                                            modules_assigned__icontains="'Repairing Module'", is_deleted=False)
     else: #display colleague
 
         list_group = SiteUser.objects.get(id=request.user.id).manager
         user_list = SiteUser.objects.filter(manager=list_group,
-                                            modules_assigned__icontains='Repairing Module', is_deleted=False)
+                                            modules_assigned__icontains="'Repairing Module'", is_deleted=False)
 
     if request.method=='POST':
         customer_name = request.POST.get('customer_name')
