@@ -546,7 +546,7 @@ def update_customer_details(request,id):
 
         return redirect('/view_customer_details/')
 
-    context={
+    context = {
         'product_id':product_id,
         'customer_id': customer_id,
         'purchase_id_id': purchase_id_id,

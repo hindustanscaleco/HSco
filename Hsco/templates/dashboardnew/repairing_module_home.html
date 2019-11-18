@@ -42,8 +42,8 @@ font-size: 14px;
     <div id="content-wrapper" class="d-flex flex-column">
 
       <!-- Main Content -->
-      <div id="content">
 
+        <div id="content">
 
         <!-- Topbar -->
 	{% include 'base_templates/navbar_for_dashboard.html' %}
@@ -64,11 +64,11 @@ font-size: 14px;
                 </div>
               </div>
             </div>
-                                 <div class="col-xl-6 col-md-9 mb-9 ">
+                                 <div class="col-xl-6 col-md-9 mb-9">
 
 
                 <div class="card-body" style="padding: 2px;">
-                    <div class="row no-gutters align-items-right">
+                    <div class="row no-gutters align-items-right" >
 
      {% if request.user.is_authenticated %}
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
@@ -195,10 +195,13 @@ td, th {
 display:none;
 }
 
-</style>
-            <div class="row">
 
-                <div  class="col-xl-3 col-md-3 col-mb-3">
+
+
+</style>
+            <div class="row" >
+
+                <div  class="col-xl-3 col-md-3 col-mb-3" >
                     <div class="button dropdown">
   <select id="divselector" class="form-control">
      <option value="d0">Select Search Type</option>
@@ -454,19 +457,16 @@ display:none;
 <div id="id_manager_view"  style="min-height: 15vw;">
 
         <div class="row">
-
-
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
 
-
+                    <div class="col-xl-2 col-md-2 mb-1"><center> Reparing No. </center> </div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Customer Name </center></div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Contact No. </center></div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Customer Email </center></div>|
-                    <div class="col-xl-3 col-md-2 mb-1"><center> Current Stage </center> </div>|
-                    <div class="col-xl-2 col-md-2 mb-1"><center> Reparing No. </center> </div>
+                    <div class="col-xl-3 col-md-2 mb-1"><center> Current Stage </center> </div>
                     </div>
 
 
@@ -486,12 +486,11 @@ display:none;
               <div style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 45px;">
-
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.pk}} </center> </div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_person}}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_contact_no}} </center> </div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.crm_no.customer_email_id}} </center> </div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.current_stage}} </center> </div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center> {{list.pk}} </center> </div>
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.current_stage}} </center> </div>
                     </div>
 
                 </div>
