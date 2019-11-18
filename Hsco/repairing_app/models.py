@@ -21,7 +21,7 @@ class Repairing_after_sales_service(models.Model):
     # phone_no = models.CharField(max_length=13,null=True,blank=True)
     # customer_email_id = models.EmailField(max_length=255,null=True,blank=True)
     # location = models.CharField(max_length=255,null=True,blank=True)
-
+    taken_by = models.CharField(max_length=60, null=True, blank=True)
     # products_to_be_repaired = models.CharField(max_length=30,null=True,blank=True)
     current_stage = models.CharField(max_length=50,null=True,blank=True)
     second_person = models.CharField(max_length=80,null=True,blank=True)
