@@ -756,20 +756,20 @@ function myFunction() {
    <div class="row" style="margin-left: 10%;">
 
         <div class="col-xl-2 col-md-3 mb-12">
-                  <center> <button style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
+                  <center> <button onclick="send_sms('1')" style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
         </div>
 
  <div class="col-xl-2 col-md-3 mb-12">
-                  <center> <button style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
+                  <center> <button onclick="send_sms('2')" style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
         </div>
        <div class="col-xl-2 col-md-3 mb-12">
-                  <center> <button style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
+                  <center> <button onclick="send_sms('3')" style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
         </div>
        <div class="col-xl-2 col-md-3 mb-12">
-                  <center> <button style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
+                  <center> <button onclick="send_sms('4')" style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
         </div>
        <div class="col-xl-2 col-md-3 mb-12">
-                  <center> <button style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
+                  <center> <button onclick="send_sms('5')" style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
         </div>
         </div>
 <hr>
@@ -886,6 +886,26 @@ tr:nth-child(even) {
       window.onload = function() {
 document.getElementById("myText25").style.display = "none";
 };
+
+function send_sms(select) {
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/send_sms/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select,       // add the country id to the GET parameters
+          'name': document.getElementById("myText3").value,       // add the country id to the GET parameters
+          'phone': document.getElementById("myText5").value,       // add the country id to the GET parameters
+          'email': document.getElementById("myText7").value,       // add the country id to the GET parameters
+          'id': {{repair_id.pk}},       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+        alert("SMS and E-mail sent sucessfully!");
+        //$("#loaded_customer").html(data);
+
+        }
+      });
+}
 </script>
 
   <!-- Bootstrap core JavaScript-->
