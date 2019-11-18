@@ -70,6 +70,7 @@ def add_repairing_details(request):
         in_warranty = request.POST.get('in_warranty')
         today_date = request.POST.get('today_date')
         location = request.POST.get('location')
+        taken_by = request.POST.get('taken_by')
         # second_person = request.POST.get('second_person')
         # third_person = request.POST.get('third_person')
         # second_contact_no = request.POST.get('second_contact_no')
@@ -131,6 +132,7 @@ def add_repairing_details(request):
         item2.today_date = today_date
 
         item2.location = location
+        item2.taken_by = taken_by
         item2.second_person = customer_name  # new1
         item2.second_contact_no = contact_no  # new2
         # item2.second_person=second_person
@@ -413,6 +415,7 @@ def update_repairing_details(request,id):
         informed_by = request.POST.get('informed_by')
         confirmed_estimate = request.POST.get('confirmed_estimate')
         repaired = request.POST.get('repaired')
+        taken_by = request.POST.get('taken_by')
         repaired_date = request.POST.get('repaired_date')
         delivery_date = request.POST.get('delivery_date')
         delivery_by = request.POST.get('delivery_by')
@@ -465,6 +468,7 @@ def update_repairing_details(request,id):
         # item2.third_contact_no=third_contact_no
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired
+        item2.taken_by = taken_by
         item2.repaired_date = repaired_date
         item2.delivery_date = delivery_date
         item2.delivery_by = delivery_by
@@ -487,7 +491,7 @@ def update_repairing_details(request,id):
         item2.save(update_fields=['repaired_date', ]),
         item2.save(update_fields=['delivery_date', ]),
         item2.save(update_fields=['delivery_by', ]),
-        item2.save(update_fields=['repaired_by', ]),
+        item2.save(update_fields=['repaired_by','taken_by', ]),
         # item2.save(update_fields=['feedback_given', ])
         # item2.save(update_fields=['current_stage', ])
         item2.save(update_fields=['second_person','second_contact_no', ])
