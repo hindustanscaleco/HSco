@@ -594,7 +594,7 @@ def repairing_module_home(request):
             return render(request, 'dashboardnew/repairing_module_home.html', context)
     else:
         if check_admin_roles(request):     #For ADMIN
-            repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains="Repairing Module").order_by('-id')
+            repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains="'Repairing Module'").order_by('-id')
         else:  #For EMPLOYEE
             repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
         # repair_list = Repairing_after_sales_service.objects.all()
@@ -1167,6 +1167,33 @@ def load_prev_rep(request):
 #     }
 #
 #     return render(request,'dashboardnew/repair_product.html',context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
