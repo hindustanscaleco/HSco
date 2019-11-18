@@ -18,7 +18,9 @@ import requests
 import json
 from datetime import datetime
 from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
-
+from django.db.models import Count
+from django.db.models import Q
+from datetime import datetime, timedelta
 
 def add_repairing_details(request):
     cust_sugg=Customer_Details.objects.all()
@@ -511,9 +513,6 @@ def update_repairing_details(request,id):
     return render(request,'update_forms/update_rep_mod_form.html',context)
 
 def repairing_module_home(request):
-    from django.db.models import Count
-    from django.db.models import Q
-
 
 
     if request.method == 'POST':
@@ -602,16 +601,12 @@ def repairing_module_home(request):
             dcount=Count('current_stage'))
         context = {
             'repair_list': repair_list,
-
         }
-        from datetime import datetime, timedelta
-
         # Using current time
         ini_time_for_now = datetime.now()
 
         new_final_time = ini_time_for_now - timedelta(days=4)
-        res_4d = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time)).values('current_stage').annotate(
-            dcount=Count('current_stage'))
+        res_4d = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time),Q(current_stage='Repaired but not collected')).values('current_stage').annotate(dcount=Count('current_stage'))
         try:
             x = res_4d
             # if x['current_stage'] == 'Scale is collected but estimate is not given':
@@ -624,7 +619,7 @@ def repairing_module_home(request):
             pass
 
         new_final_time = ini_time_for_now - timedelta(days=10)
-        res_10d = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time)).values('current_stage').annotate(dcount=Count('current_stage'))
+        res_10d = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time),Q(current_stage='Repaired but not collected')).values('current_stage').annotate(dcount=Count('current_stage'))
         x = res_10d
         # if x['current_stage'] == 'Scale is collected but estimate is not given':
         try:
@@ -649,39 +644,28 @@ def repairing_module_home(request):
             if x['current_stage'] == 'Estimate is given but Estimate is not confirmed':
                 rep2 = x['dcount']
                 context2 = {
-
-                  'rep2': rep2,
-
+                    'rep2': rep2,
                 }
                 context.update(context2)
             if x['current_stage'] == 'Estimate is confirmed but not repaired':
                 rep3 = x['dcount']
                 context3 = {
-
                     'rep3': rep3,
-
                 }
                 context.update(context3)
             if x['current_stage'] == 'Repaired but not collected':
                 rep4 = x['dcount']
                 context4 = {
-
                     'rep4': rep4,
-
                 }
                 context.update(context4)
             if x['current_stage'] == 'Finally Collected':
                 rep5 = x['dcount']
                 context5 = {
-
                     'rep5': rep5,
                 }
                 context.update(context5)
 
-
-
-        print(context)
-        print(context)
         return render(request, 'dashboardnew/repairing_module_home.html', context)
 
 def manager_repairing_module_home(request):
@@ -878,6 +862,11 @@ def edit_product(request,id):
             Repairing_after_sales_service.objects.filter(id=repairing_id.pk).update(
                 current_stage='Estimate is given but Estimate is not confirmed', stage_update_timedate=timezone.now())
 
+        current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage1
+        if (current_stage_in_db == '' or current_stage_in_db == None) and (sub_model != '' or sub_model != None):
+            Repairing_after_sales_service.objects.filter(id=id).update(
+                current_stage='Scale is collected but estimate is not given', stage_update_timedate = timezone.now())
+
         item = product_id
         item.type_of_machine = type_of_machine
         item.model = model
@@ -1072,20 +1061,21 @@ def repairing_employee_graph(request,user_id):
 
 def load_reparing_stages_list(request,):
 
-    selected = request.GET.get('loc_id')
-    locc_id = request.GET.get('strUser')
+    selected_stage = request.GET.get('selected_stage')
+    ini_time_for_now = datetime.now()
+    if selected_stage == '4days':
 
-    if selected == 'All':
-        repair_list = Repairing_after_sales_service.objects.filter(current_stage=locc_id)
-        print("True")
-        print(repair_list)
+
+        new_final_time = ini_time_for_now - timedelta(days=4)
+        repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time),
+                                                              Q(current_stage='Repaired but not collected'))
+        repair_list = Repairing_after_sales_service.objects.filter(current_stage=selected_stage)
+    elif selected_stage == '10days':
+        new_final_time = ini_time_for_now - timedelta(days=10)
+        repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time),
+                                                                   Q(current_stage='Repaired but not collected'))
     else:
-        date= datetime.date.today()-datetime.timedelta(int(selected))
-        repair_list = Repairing_after_sales_service.objects.filter(entry_timedate__range=[date,datetime.date.today()],current_stage=locc_id)
-        print("False")
-        print(date)
-        print(datetime.date.today())
-        print(repair_list)
+        repair_list = Repairing_after_sales_service.objects.filter(current_stage=selected_stage)
 
     context = {
         'repair_list': repair_list,

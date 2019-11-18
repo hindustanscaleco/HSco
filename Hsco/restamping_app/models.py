@@ -27,6 +27,7 @@ class Restamping_after_sales_service(models.Model):
     total_amount = models.FloatField(default=0.0, null=True, blank=True)
     scale_delivery_date = models.DateField(null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
+    current_stage= models.CharField(max_length=50,null=True,blank=True)
 
     def __int__(self):
         return self.id
