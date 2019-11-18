@@ -579,40 +579,6 @@ Format : (company name)
 
 
 
-    <label class="col-md-2 control-label">Complaint Assigned To
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-         <input  type="text" name="complaint_assigned_to" placeholder="Complaint Assigned To" class="form-control" list="type_of_scale">
-    <datalist style="height:20px;" id="type_of_scale">
-      {% for item in user_list %}
-
-      <option value = "{{item.name}}"></option>
-    {% endfor %}
-    </datalist>
-    </div>
-    </div>
-</div>
-    <div class="form-group row">
-
-
-  <label class="col-md-2 control-label">Complain Assigned On
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="complaint_assigned_on" readonly required id="datePicker" placeholder="Complain Assigned On" class="form-control"  type="date">
-    </div>
-  </div>
-
-
 
       <label class="col-md-2 control-label">Time Taken to Reach Destination and Return to office in Minutes
 
@@ -645,6 +611,52 @@ Format : (company name)
     </div>
   </div>
     </div>
+
+
+
+{% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+      <div class="form-group row">
+
+      <label class="col-md-2 control-label">Complaint Assigned To
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+         <input  type="text" name="complaint_assigned_to" placeholder="Complaint Assigned To" class="form-control" list="type_of_scale">
+    <datalist style="height:20px;" id="type_of_scale">
+      {% for item in user_list %}
+
+      <option value = "{{item.name}}"></option>
+    {% endfor %}
+    </datalist>
+    </div>
+    </div>
+
+
+
+  <label class="col-md-2 control-label">Complain Assigned On
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="complaint_assigned_on" readonly required id="datePicker" placeholder="Complain Assigned On" class="form-control"  type="date">
+    </div>
+  </div>
+      </div>
+{% else %}
+                     {% endif %}
+                     {% endif %}
+
+
+
+                
 
 
 <center>

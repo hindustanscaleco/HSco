@@ -713,13 +713,18 @@ def update_onsite_details(request,id):
 def report_onsite(request):
     if request.method == 'POST' or None:
         selected_list = request.POST.getlist('checks[]')
+        selected_product_list = request.POST.getlist('products[]')
         onsite_start_date = request.POST.get('date1')
         onsite_end_date = request.POST.get('date2')
         onsite_string = ','.join(selected_list)
+        onsite_repair_product_string = ','.join(selected_product_list)
+
 
         request.session['start_date'] = onsite_start_date
         request.session['repair_end_date'] = onsite_end_date
         request.session['repair_string'] = onsite_string
+        request.session['onsite_repair_product_string'] = onsite_repair_product_string
+        request.session['selected_product_list'] = selected_product_list
         request.session['selected_list'] = selected_list
         return redirect('/final_report_onsite/')
     return render(request,"report/report_onsite_rep_form.html",)
@@ -728,14 +733,36 @@ def final_report_onsite(request):
     repair_start_date = str(request.session.get('repair_start_date'))
     repair_end_date = str(request.session.get('repair_end_date'))
     repair_string = request.session.get('repair_string')
+    onsite_repair_product_string = request.session.get('onsite_repair_product_string')
+    selected_product_list = request.session.get('selected_product_list')
+
+
+
     selected_list = request.session.get('selected_list')
+    for n, i in enumerate(selected_list):
+        if i == 'onsitevisit_app_onsite_aftersales_service.id':
+            selected_list[n] = 'Onsite Rep ID'
+        if i == 'customer_app_customer_details.id':
+            selected_list[n] = 'CRM No.'
+        if i == 'today_date':
+            selected_list[n] = 'Entry Date'
     with connection.cursor() as cursor:
-        cursor.execute("SELECT  " + repair_string + " from onsitevisit_app_onsite_aftersales_service , customer_app_customer_details"
-                                             "  where onsitevisit_app_onsite_aftersales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
+        cursor.execute("SELECT  " + repair_string + " from onsitevisit_app_onsite_aftersales_service , customer_app_customer_details where onsitevisit_app_onsite_aftersales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
         row = cursor.fetchall()
 
         print(row)
         final_row = [list(x) for x in row]
+        repairing_data = []
+        for i in row:
+            repairing_data.append(list(i))
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT  " + onsite_repair_product_string + " from onsitevisit_app_onsite_products , onsitevisit_app_onsite_aftersales_service"
+                                             "  where onsitevisit_app_onsite_products.onsite_repairing_id_id = onsitevisit_app_onsite_aftersales_service.id and onsitevisit_app_onsite_products.entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
+        row = cursor.fetchall()
+
+        print(row)
+        final_row_product = [list(x) for x in row]
         repairing_data = []
         for i in row:
             repairing_data.append(list(i))
@@ -744,12 +771,16 @@ def final_report_onsite(request):
         del request.session['repair_end_date']
         del request.session['repair_string']
         del request.session['selected_list']
+        del request.session['selected_product_list']
+        del request.session['onsite_repair_product_string']
     except:
         pass
 
     context = {
         'final_row': final_row,
         'selected_list': selected_list,
+        'selected_product_list': selected_product_list,
+        'final_row_product': final_row_product,
     }
     return render(request,'report/final_onsite_report.html',context)
 
