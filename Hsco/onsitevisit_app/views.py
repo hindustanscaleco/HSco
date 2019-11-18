@@ -1,5 +1,5 @@
 from django.db import connection
-from django.db.models import Sum, Min, Q, F
+from django.db.models import Sum, Min, Q, F, Count
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from _datetime import datetime
@@ -116,41 +116,112 @@ def onsite_views(request):
         }
         return render(request, "manager/onsite_reparing.html", context)
     else:
+        context={}
         if check_admin_roles(request):     #For ADMIN
             onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Onsite Repairing Module').order_by('-id')
         else:  #For EMPLOYEE
             onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk).order_by('-id')
         # onsite_list = Onsite_aftersales_service.objects.all()
 
-        context = {
+        stage1 = Onsite_aftersales_service.objects.filter(Q(current_stage='Onsite repairing request is raised')).values(
+            'current_stage').annotate(dcount=Count('current_stage'))
+        x = stage1
+
+        # if x['current_stage'] == 'Scale is collected but estimate is not given':
+        try:
+            for item in x:
+                stage1 = item['dcount']
+            context10d = {
+                'stage1': stage1,
+            }
+            context.update(context10d)
+
+        except:
+
+            pass
+
+        stage2 = Onsite_aftersales_service.objects.filter(
+            Q(current_stage='Onsite repairing request is assigned')).values(
+            'current_stage').annotate(dcount=Count('current_stage'))
+        x = stage2
+        # if x['current_stage'] == 'Scale is collected but estimate is not given':
+        if not x:
+            x = None
+        try:
+
+            for item in x:
+                if item['dcount'] in x:
+                    # stage1 = item['dcount']
+                    stage2 = item['dcount']
+            contextd = {
+                'stage2': stage2,
+            }
+            context.update(contextd)
+        except:
+            pass
+
+        stage3 = Onsite_aftersales_service.objects.filter(
+            Q(current_stage='Onsite repairing request is completed')).values(
+            'current_stage').annotate(dcount=Count('current_stage'))
+        x = stage3
+        if not x:
+            x = None
+        # if x['current_stage'] == 'Scale is collected but estimate is not given':
+        try:
+            for item in x:
+                # stage1 = item['dcount']
+                stage3 = item['dcount']
+            context10d = {
+                'stage3': stage3,
+            }
+            context.update(context10d)
+        except:
+            pass
+
+        context2 = {
             'onsite_list': onsite_list,
         }
+        context.update(context2)
         return render(request, "manager/onsite_reparing.html", context)
 
 
 def add_onsite_aftersales_service(request):
     cust_sugg = Customer_Details.objects.all()
-    if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
-        user_list = SiteUser.objects.filter(group__icontains=request.user.name,
-                                            modules_assigned__icontains='Onsite Repairing Module' , is_deleted=False)
+    # if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
+    #     user_list = SiteUser.objects.filter(group__icontains=request.user.name,
+    #                                         modules_assigned__icontains='Onsite Repairing Module' , is_deleted=False)
+    #
+    #
+    # else:  # display colleague
+    #     list_group = SiteUser.objects.get(id=request.user.id).group
+    #     import ast
+    #
+    #     x = "[" + list_group + "]"
+    #     x = ast.literal_eval(x)
+    #     manager_list = []
+    #     for item in x:
+    #         name = SiteUser.objects.filter(name__icontains=item)
+    #         for it in name:
+    #             if it.role == 'Manager':
+    #                 if item not in manager_list:
+    #                     manager_list.append(item)
+    #
+    #     user_list = SiteUser.objects.filter(group__icontains=manager_list,
+    #                                         modules_assigned__icontains='Onsite Repairing Module',is_deleted=False)
+    if request.user.role == 'Super Admin':
+        user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
 
+    elif request.user.role == 'Admin':
+        user_list = SiteUser.objects.filter(admin=request.user.name,
+                                            modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
+    elif request.user.role == 'Manager':
+        user_list = SiteUser.objects.filter(manager=request.user.name,
+                                            modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
+    else: #display colleague
 
-    else:  # display colleague
-        list_group = SiteUser.objects.get(id=request.user.id).group
-        import ast
-
-        x = "[" + list_group + "]"
-        x = ast.literal_eval(x)
-        manager_list = []
-        for item in x:
-            name = SiteUser.objects.filter(name__icontains=item)
-            for it in name:
-                if it.role == 'Manager':
-                    if item not in manager_list:
-                        manager_list.append(item)
-
-        user_list = SiteUser.objects.filter(group__icontains=manager_list,
-                                            modules_assigned__icontains='Onsite Repairing Module',is_deleted=False)
+        list_group = SiteUser.objects.get(id=request.user.id).manager
+        user_list = SiteUser.objects.filter(manager=list_group,
+                                            modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
 
 
     # user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Onsite Repairing Module')
@@ -247,6 +318,18 @@ def add_onsite_aftersales_service(request):
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item2.save()
+        current_stage_in_db = Onsite_aftersales_service.objects.get(
+            id=id).current_stage  # updatestage2
+
+        if (current_stage_in_db == 'Onsite repairing request is raised') and (
+                complaint_assigned_to != '' or complaint_assigned_to != None):
+            Onsite_aftersales_service.objects.filter(id=id).update(
+                current_stage='Onsite repairing request is assigned')
+
+        if (current_stage_in_db == 'Onsite repairing request is assigned') and (
+                time_taken_destination_return_office_min != '' or time_taken_destination_return_office_min != None):
+            Onsite_aftersales_service.objects.filter(id=id).update(
+                current_stage='Onsite repairing request is completed')
 
         if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
@@ -367,6 +450,15 @@ def add_onsite_product(request,id):
         item.crm_no = Customer_Details.objects.get(id=crm_id)
         item.save()
 
+        current_stage_in_db = Onsite_aftersales_service.objects.get(
+            id=id).current_stage  # updatestage2
+        if (current_stage_in_db == '' or current_stage_in_db == None) and (problem_in_scale != '' or problem_in_scale != None):
+            Onsite_aftersales_service.objects.filter(id=id).update(
+                current_stage='Onsite repairing request is raised')
+        # if (current_stage_in_db == 'Scales in Restamping Queue') and (new_sr_no != '' or new_sr_no != None):
+        #     Onsite_aftersales_service.objects.filter(id=id).update(
+        #         current_stage='Restamping is done but scale is not collected')
+
 
         Onsite_aftersales_service.objects.filter(id=id).update(total_cost=F("total_cost") + cost)
         Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
@@ -434,6 +526,13 @@ def update_onsite_product(request,id):
         item.save(update_fields=['components_replaced', ]),
         item.save(update_fields=['components_replaced_in_warranty', ]),
         item.save(update_fields=['cost', ]),
+
+        current_stage_in_db = Onsite_aftersales_service.objects.get(
+            id=id).current_stage  # updatestage2
+        if (current_stage_in_db == '' or current_stage_in_db == None) and (
+                problem_in_scale != '' or problem_in_scale != None):
+            Onsite_aftersales_service.objects.filter(id=id).update(
+                current_stage='Onsite repairing request is raised')
 
 
         Onsite_aftersales_service.objects.filter(id=onsite).update(total_cost=F("total_cost") + cost)
@@ -520,6 +619,19 @@ def update_onsite_details(request,id):
         notes = request.POST.get('notes')
         # feedback_given = request.POST.get('feedback_given')
         assigned_to = request.POST.get('assigned_to')
+
+        current_stage_in_db = Onsite_aftersales_service.objects.get(
+            id=id).current_stage  # updatestage2
+
+        if (current_stage_in_db == 'Onsite repairing request is raised') and (complaint_assigned_to != '' or complaint_assigned_to != None):
+            Onsite_aftersales_service.objects.filter(id=id).update(
+                current_stage='Onsite repairing request is assigned')
+
+
+        if (current_stage_in_db == 'Onsite repairing request is assigned') and (
+                time_taken_destination_return_office_min != '' or time_taken_destination_return_office_min != None):
+            Onsite_aftersales_service.objects.filter(id=id).update(
+                current_stage='Onsite repairing request is completed')
 
 
         item = onsite_id
