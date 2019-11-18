@@ -669,14 +669,18 @@ def add_product_details(request,id):
 def report(request):
     if request.method =='POST':
         selected_list = request.POST.getlist('checks[]')
+        selected_product_list = request.POST.getlist('products[]')
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         string = ','.join(selected_list)
+        string_product = ','.join(selected_product_list)
         print(selected_list)
         request.session['start_date'] = start_date
         request.session['end_date'] = end_date
         request.session['string'] = string
+        request.session['string_product'] = string_product
         request.session['selected_list'] = selected_list
+        request.session['selected_product_list'] = selected_product_list
         return redirect('/final_report/')
     return render(request,"report/report_cust_mod_form.html",)
 
@@ -685,7 +689,11 @@ def final_report(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
     string = request.session.get('string')
+    string_product = request.session.get('string_product')
     selected_list = request.session.get('selected_list')
+    selected_product_list = request.session.get('selected_product_list')
+
+
     for n, i in enumerate(selected_list):
         if i == 'purchase_app_purchase_details.id':
             selected_list[n] = 'Purchase ID'
@@ -706,17 +714,33 @@ def final_report(request):
         list3=[]
         for i in row:
             list3.append(list(i))
+
+        cursor.execute("SELECT  " + string_product + " from purchase_app_product_details , purchase_app_purchase_details"
+                                             "  where purchase_app_product_details.purchase_id_id = purchase_app_purchase_details.id and purchase_app_product_details.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+        row = cursor.fetchall()
+
+        final_row_product = [list(x) for x in row]
+        list3 = []
+        for i in row:
+            list3.append(list(i))
+
+
+
     try:
         del request.session['start_date']
         del request.session['end_date']
         del request.session['string']
         del request.session['selected_list']
+        del request.session['string_product']
+        del request.session['selected_product_list']
     except:
         pass
 
     context={
         'final_row':final_row,
+        'final_row_product':final_row_product,
         'selected_list':selected_list,
+        'selected_product_list':selected_product_list,
     }
     return render(request,"dashboardnew/final_report.html",context)
 
