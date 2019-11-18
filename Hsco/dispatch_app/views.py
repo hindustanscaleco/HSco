@@ -22,25 +22,40 @@ from ess_app.models import Employee_Analysis_date
 def add_dispatch_details(request):
     # form = Customer_Details_Form(request.POST or None, request.FILES or None)
     cust_sugg=Customer_Details.objects.all()
-    if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
-        user_list = SiteUser.objects.filter(group__icontains=request.user.name,
+    # if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
+    #     user_list = SiteUser.objects.filter(group__icontains=request.user.name,
+    #                                         modules_assigned__icontains='Dispatch Module', is_deleted=False)
+    #
+    #
+    # else:  # display colleague
+    #     list_group = SiteUser.objects.get(id=request.user.id).group
+    #     import ast
+    #
+    #     x = "[" + list_group + "]"
+    #     x = ast.literal_eval(x)
+    #     manager_list = []
+    #     for item in x:
+    #         name = SiteUser.objects.get(name=item)
+    #         if name.role == 'Manager':
+    #             if item not in manager_list:
+    #                 manager_list.append(item)
+    #
+    #     user_list = SiteUser.objects.filter(group__icontains=manager_list,
+    #                                         modules_assigned__icontains='Dispatch Module', is_deleted=False)
+
+    if request.user.role == 'Super Admin':
+        user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Dispatch Module', is_deleted=False)
+
+    elif request.user.role == 'Admin':
+        user_list = SiteUser.objects.filter(admin=request.user.name,
                                             modules_assigned__icontains='Dispatch Module', is_deleted=False)
+    elif request.user.role == 'Manager':
+        user_list = SiteUser.objects.filter(manager=request.user.name,
+                                            modules_assigned__icontains='Dispatch Module', is_deleted=False)
+    else: #display colleague
 
-
-    else:  # display colleague
-        list_group = SiteUser.objects.get(id=request.user.id).group
-        import ast
-
-        x = "[" + list_group + "]"
-        x = ast.literal_eval(x)
-        manager_list = []
-        for item in x:
-            name = SiteUser.objects.get(name=item)
-            if name.role == 'Manager':
-                if item not in manager_list:
-                    manager_list.append(item)
-
-        user_list = SiteUser.objects.filter(group__icontains=manager_list,
+        list_group = SiteUser.objects.get(id=request.user.id).manager
+        user_list = SiteUser.objects.filter(manager=list_group,
                                             modules_assigned__icontains='Dispatch Module', is_deleted=False)
 
     # user_list=SiteUser.objects.filter(group__icontains=request.user.name)
@@ -308,27 +323,41 @@ def update_dispatch_details(request,update_id):
 
 
     customer_id = Customer_Details.objects.get(id=dispatch_item.crm_no)
-    if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
+    # if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
+    #     user_list = SiteUser.objects.filter(group__icontains=request.user.name,
+    #                                         modules_assigned__icontains='Dispatch Module', is_deleted=False)
+    #
+    #
+    # else:  # display colleague
+    #     list_group = SiteUser.objects.get(id=request.user.id).group
+    #     import ast
+    #
+    #     x = "[" + list_group + "]"
+    #     x = ast.literal_eval(x)
+    #     manager_list = []
+    #     for item in x:
+    #         name = SiteUser.objects.get(name=item)
+    #         if name.role == 'Manager':
+    #             if item not in manager_list:
+    #                 manager_list.append(item)
+    #
+    #     user_list = SiteUser.objects.filter(group__icontains=manager_list,
+    #                                         modules_assigned__icontains='Dispatch Module', is_deleted=False)
+    if request.user.role == 'Super Admin':
         user_list = SiteUser.objects.filter(group__icontains=request.user.name,
                                             modules_assigned__icontains='Dispatch Module', is_deleted=False)
 
-
-    else:  # display colleague
-        list_group = SiteUser.objects.get(id=request.user.id).group
-        import ast
-
-        x = "[" + list_group + "]"
-        x = ast.literal_eval(x)
-        manager_list = []
-        for item in x:
-            name = SiteUser.objects.get(name=item)
-            if name.role == 'Manager':
-                if item not in manager_list:
-                    manager_list.append(item)
-
-        user_list = SiteUser.objects.filter(group__icontains=manager_list,
+    elif request.user.role == 'Admin':
+        user_list = SiteUser.objects.filter(admin=request.user.name,
                                             modules_assigned__icontains='Dispatch Module', is_deleted=False)
+    elif request.user.role == 'Manager':
+        user_list = SiteUser.objects.filter(manager=request.user.name,
+                                            modules_assigned__icontains='Dispatch Module', is_deleted=False)
+    else:  # display colleague
 
+        list_group = SiteUser.objects.get(id=request.user.id).manager
+        user_list = SiteUser.objects.filter(manager=list_group,
+                                            modules_assigned__icontains='Dispatch Module', is_deleted=False)
 
     # user_list=SiteUser.objects.filter(group__icontains=request.user.name)
 

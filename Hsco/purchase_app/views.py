@@ -41,27 +41,43 @@ def add_purchase_details(request):
             pass
     cust_sugg = Customer_Details.objects.all()
     # sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name)
-    if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
-        sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name,
+    # if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
+    #     sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name,
+    #                                         modules_assigned__icontains='Customer Module', is_deleted=False)
+    #
+    #
+    # else:  # display colleague
+    #     list_group = SiteUser.objects.get(id=request.user.id).group
+    #     import ast
+    #
+    #     x = "[" + list_group + "]"
+    #     x = ast.literal_eval(x)
+    #     manager_list = []
+    #     for item in x:
+    #         name = SiteUser.objects.filter(name=item)
+    #         for i in name:
+    #             if i.role == 'Manager':
+    #                 if item not in manager_list:
+    #                     manager_list.append(item)
+    #
+    #     sales_person_sugg = SiteUser.objects.filter(group__icontains=manager_list,
+    #                                         modules_assigned__icontains='Customer Module', is_deleted=False)
+
+    if request.user.role == 'Super Admin':
+        sales_person_sugg=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Customer Module', is_deleted=False)
+
+    elif request.user.role == 'Admin':
+        sales_person_sugg = SiteUser.objects.filter(admin=request.user.name,
+                                            modules_assigned__icontains='Customer Module', is_deleted=False)
+    elif request.user.role == 'Manager':
+        sales_person_sugg = SiteUser.objects.filter(manager=request.user.name,
+                                            modules_assigned__icontains='Customer Module', is_deleted=False)
+    else: #display colleague
+
+        list_group = SiteUser.objects.get(id=request.user.id).manager
+        sales_person_sugg = SiteUser.objects.filter(manager=list_group,
                                             modules_assigned__icontains='Customer Module', is_deleted=False)
 
-
-    else:  # display colleague
-        list_group = SiteUser.objects.get(id=request.user.id).group
-        import ast
-
-        x = "[" + list_group + "]"
-        x = ast.literal_eval(x)
-        manager_list = []
-        for item in x:
-            name = SiteUser.objects.filter(name=item)
-            for i in name:
-                if i.role == 'Manager':
-                    if item not in manager_list:
-                        manager_list.append(item)
-
-        sales_person_sugg = SiteUser.objects.filter(group__icontains=manager_list,
-                                            modules_assigned__icontains='Customer Module', is_deleted=False)
 
 
 
@@ -121,12 +137,14 @@ def add_purchase_details(request):
                 item.customer_email_id = customer_email_id
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            import sys
             try:
                 item.save()
                 item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
 
             except:
+                print("Unexpected error:", sys.exc_info()[0])
                 pass
 
         # item2.crm_no = Customer_Details.objects.get(id=item.pk)
@@ -249,7 +267,7 @@ def add_purchase_details(request):
                 send_mail('Feedback Form',
                           message, settings.EMAIL_HOST_USER,
                           [crm_no.customer_email_id])
-
+                print("send mail!!")
             except:
                 print("exception occured!!")
                 pass
