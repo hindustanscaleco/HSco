@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.db import connection
-from django.db.models import Min, Sum, Q, F
+from django.db.models import Min, Sum, Q, F, Count
 from django.shortcuts import render, redirect
 
 from django.core.mail import send_mail
@@ -18,6 +18,7 @@ import json
 from ess_app.models import Employee_Analysis_month
 
 def restamping_manager(request):
+
     if request.method == 'POST' and 'deleted' not in request.POST:
         if 'submit1' in request.POST:
             start_date = request.POST.get('date1')
@@ -110,15 +111,75 @@ def restamping_manager(request):
         }
         return render(request, "manager/restamping_manager.html", context)
     else:
+        context = {
+            'none':None,
+        }
         if check_admin_roles(request):     #For ADMIN
             restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Restamping Module').order_by('-id')
         else:  #For EMPLOYEE
             restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
         # restamp_list = Restamping_after_sales_service.objects.all()
 
-        context = {
+        stage1 = Restamping_after_sales_service.objects.filter(Q(current_stage='Scales in Restamping Queue')).values('current_stage').annotate(dcount=Count('current_stage'))
+        x = stage1
+
+        # if x['current_stage'] == 'Scale is collected but estimate is not given':
+        try:
+            for item in x:
+                stage1 = item['dcount']
+            context10d = {
+                'stage1': stage1,
+            }
+            context.update(context10d)
+
+        except:
+
+            pass
+
+        stage2 = Restamping_after_sales_service.objects.filter(Q(current_stage='Restamping is done but scale is not collected')).values(
+            'current_stage').annotate(dcount=Count('current_stage'))
+        x = stage2
+        # if x['current_stage'] == 'Scale is collected but estimate is not given':
+        if not x:
+            x = None
+        try:
+
+            for item in x:
+                if item['dcount'] in x:
+                # stage1 = item['dcount']
+                    stage2 = item['dcount']
+            contextd = {
+                'stage2': stage2,
+            }
+            context.update(contextd)
+        except:
+            pass
+
+        stage3 = Restamping_after_sales_service.objects.filter(Q(current_stage='Restamping done and scale also collected')).values(
+            'current_stage').annotate(dcount=Count('current_stage'))
+        x = stage3
+        if not x:
+            x = None
+        # if x['current_stage'] == 'Scale is collected but estimate is not given':
+        try:
+            for item in x:
+                # stage1 = item['dcount']
+                stage3 = item['dcount']
+            context10d = {
+                'stage3': stage3,
+            }
+            context.update(context10d)
+        except:
+            pass
+
+
+        context2 = {
             'restamp_list': restamp_list,
         }
+        context.update(context2)
+        print(context)
+        print(context)
+
         return render(request, "manager/restamping_manager.html", context)
 
 
@@ -260,6 +321,15 @@ def restamping_product(request,id):
         item.save()
 
         Restamping_after_sales_service.objects.filter(id=id).update(total_amount=F("total_amount") + amount)
+
+        current_stage_in_db = Restamping_after_sales_service.objects.get(
+            id=id).current_stage  # updatestage2
+        if (current_stage_in_db == '' or current_stage_in_db == None) and (sub_model != '' or sub_model != None):
+            Restamping_after_sales_service.objects.filter(id=id).update(
+                current_stage='Scales in Restamping Queue')
+        if (current_stage_in_db == 'Scales in Restamping Queue') and (new_sr_no != '' or new_sr_no != None):
+            Restamping_after_sales_service.objects.filter(id=id).update(
+                current_stage='Restamping is done but scale is not collected')
 
         if Employee_Analysis_date.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).count() > 0:
             # print(Employee_Analysis_date.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year))
@@ -413,6 +483,15 @@ def update_restamping_details(request,id):
         item.second_contact_no=contact_no   #new5
 
         item.scale_delivery_date = scale_delivery_date
+
+        current_stage_in_db = Restamping_after_sales_service.objects.get(
+            id=id).current_stage  # updatestage2
+
+        if (current_stage_in_db == 'Restamping is done but scale is not collected') and (
+                scale_delivery_date != '' or scale_delivery_date != None):
+            Restamping_after_sales_service.objects.filter(id=id).update(
+                current_stage='Restamping done and scale also collected')
+
 
         # item.save(update_fields=['total_amount', ]),
         # item.save(update_fields=['new_serial_no', ]),
@@ -604,8 +683,17 @@ def update_restamping_product(request,id):
                                               year=datetime.now().year).update(
             total_restamping_done_today=F("total_restamping_done_today") - cost2)
 
-
-
+        current_stage_in_db = Restamping_after_sales_service.objects.get(
+            id=restamping_id).current_stage  # updatestage2
+        if (current_stage_in_db == '' or current_stage_in_db == None) and (sub_model != '' or sub_model != None):
+            Restamping_after_sales_service.objects.filter(id=restamping_id).update(
+                current_stage='Scales in Restamping Queue')
+        if (current_stage_in_db == 'Scales in Restamping Queue') and (new_sr_no != '' or new_sr_no != None):
+            Restamping_after_sales_service.objects.filter(id=restamping_id).update(
+                current_stage='Restamping is done but scale is not collected')
+        if (current_stage_in_db == 'Restamping is done but scale is not collected') and (new_sr_no != '' or new_sr_no != None):
+            Restamping_after_sales_service.objects.filter(id=restamping_id).update(
+                current_stage='Restamping is done but scale is not collected')
 
         item = restamping_product
         item.new_sr_no = new_sr_no
@@ -680,6 +768,18 @@ def load_restamping_manager(request):
 
 
         return render(request, 'AJAX/load_restamping_manager.html', context)
+
+def load_restamping_stages_list(request,):
+
+    selected_stage = request.GET.get('selected_stage')
+
+    restamp_list = Restamping_after_sales_service.objects.filter(current_stage=selected_stage)
+
+    context = {
+        'restamp_list': restamp_list,
+    }
+    context.update(context)
+    return render(request, 'AJAX/load_restamping_stage.html', context)
 
 
 

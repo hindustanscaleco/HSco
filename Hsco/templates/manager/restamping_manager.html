@@ -344,21 +344,22 @@ $(function() {
 <div class="row" style="margin-left: 10%;">
 
 
-            <div class="col-xl-3 col-md-3 mb-12">
+            <div style="cursor: pointer; " onclick="choice1('Scales in Restamping Queue')" class="col-xl-3 col-md-3 mb-12">
               <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,5.5),rgba(120,115,245,.9))">
                 <div class="card-body row" style="padding-left: 20px;color: white; font-weight: 600; font-size: 16px; height: 100px;">
 
-                  <center> Scales in Restamping Queue.  <br> ({{rep1}}) </center>
+                  <center> Scales in Restamping Queue.  <br> ({{stage1}}) </center>
 
                     </div>
 
                 </div>
               </div>
 
-        <div class="col-xl-3 col-md-3 mb-12">
+        <div style="cursor: pointer; " onclick="choice1('Restamping is done but scale is not collected')" class="col-xl-3 col-md-3 mb-12">
               <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">
                 <div class="card-body row" style="padding-left: 25px; color: white; font-weight: 600; font-size: 16px;  height: 100px;">
-                 <center> Restamping is done but scale <br> is not collected &nbsp;<br> ({{rep2}})</center>
+
+                 <center> Restamping is done but scale <br> is not collected &nbsp;<br> ({{stage2}})</center>
 
 
                     </div>
@@ -366,11 +367,11 @@ $(function() {
                 </div>
               </div>
 
-            <div class="col-xl-3 col-md-3 mb-12">
+            <div style="cursor: pointer; " onclick="choice1('Restamping done and scale also collected')" class="col-xl-3 col-md-3 mb-12">
               <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
                 <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 16px;  height: 100px;">
 
-                   <center><p> Restamping done and scale <br>also collected. <br>&nbsp; ({{rep3}}) </p></center>
+                   <center><p> Restamping done and scale <br>also collected. <br>&nbsp; ({{stage3}}) </p></center>
 
                     </div>
                 </div>
@@ -406,6 +407,7 @@ $(function() {
 
 <br>
 <br>
+
                   {% for list in restamp_list %}
 
                 <div style="cursor: pointer; " onclick="location.href='/update_restamping_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
@@ -426,6 +428,8 @@ $(function() {
                 </div>
               </div>
                               {% endfor %}
+
+
 
             </div>
 
@@ -459,7 +463,26 @@ $(function() {
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+   <script>
 
+        function choice1(select) {
+        //alert(document.getElementById("display_limit2").options[document.getElementById("display_limit2").selectedIndex].value);
+    // var strUser = document.getElementById("display_limit2").options[document.getElementById("display_limit2").selectedIndex].value;
+
+    $.ajax({
+        url: "/load_restamping_stages_list/",
+        data: {
+          'selected_stage': select,
+
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+
+    </script>
                <script>
 
         function toggleCheckbox(select) {
@@ -471,7 +494,7 @@ value = select.checked;
           'loc_id':value,
         },
         success: function (data) {
-           $("#id_subcat").html(data);
+           $("#id_manager_view").html(data);
         }
       });
 }
