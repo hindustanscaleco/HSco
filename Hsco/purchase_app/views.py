@@ -145,7 +145,7 @@ def add_purchase_details(request):
             except:
                 print("Unexpected error:", sys.exc_info()[0])
                 pass
-
+        site_user_id=SiteUser.objects.get(name=sales_person).pk
         # item2.crm_no = Customer_Details.objects.get(id=item.pk)
         item2.new_repeat_purchase = new_repeat_purchase
         item2.second_person=customer_name  #new1
@@ -155,7 +155,7 @@ def add_purchase_details(request):
         item2.date_of_purchase = date_of_purchase
         item2.product_purchase_date = product_purchase_date
         item2.sales_person = sales_person
-        item2.user_id=SiteUser.objects.get(id=SiteUser.objects.get(name=sales_person).pk)
+        item2.user_id=SiteUser.objects.get(id=site_user_id)
         item2.bill_no = bill_no
         item2.upload_op_file = upload_op_file
         item2.po_number = po_number
@@ -219,34 +219,34 @@ def add_purchase_details(request):
 
         # send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
-        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            Employee_Analysis_date.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + 0.0)
+        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(user_id=site_user_id)).count() > 0:
+            Employee_Analysis_date.objects.filter(user_id=site_user_id,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + 0.0)
             # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
             # ead.save(update_fields=['total_sales_done_today'])
 
         else:
             ead = Employee_Analysis_date()
-            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.user_id = SiteUser.objects.get(id=site_user_id)
             ead.total_sales_done_today = 0.0
             # ead.total_dispatch_done_today = value_of_goods
-            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            ead.manager_id = SiteUser.objects.get(id=site_user_id).group
             ead.month = datetime.now().month
             ead.year = datetime.now().year
             ead.save()
 
-        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            Employee_Analysis_month.objects.filter(user_id=request.user.pk,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done=F("total_sales_done") + 0.0)
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(user_id=site_user_id)).count() > 0:
+            Employee_Analysis_month.objects.filter(user_id=site_user_id,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done=F("total_sales_done") + 0.0)
             # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
             # ead.save(update_fields=['total_sales_done_today'])
 
         else:
             ead = Employee_Analysis_month()
-            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.user_id = SiteUser.objects.get(id=site_user_id)
             ead.total_sales_done = 0.0
             # ead.total_dispatch_done = value_of_goods
-            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            ead.manager_id = SiteUser.objects.get(id=site_user_id).group
             ead.month = datetime.now().month
             ead.year = datetime.now().year
             ead.save()
@@ -630,12 +630,12 @@ def add_product_details(request,id):
         Purchase_Details.objects.filter(id=purchase_id).update(value_of_goods=F("value_of_goods") + value_of_goods)
 
 
-        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+        Employee_Analysis_month.objects.filter(user_id=purchase.user_id,
                                                entry_date__month=datetime.now().month,
                                                year=datetime.now().year).update(
             total_sales_done=F("total_sales_done") + value_of_goods)
 
-        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+        Employee_Analysis_date.objects.filter(user_id=purchase.user_id,
                                               entry_date__month=datetime.now().month,
                                               year=datetime.now().year).update(
             total_sales_done_today=F("total_sales_done_today") + value_of_goods)
@@ -968,12 +968,12 @@ def edit_product_customer(request,product_id_rec):
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
         # if cost2 > 0.0:
-        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+        Employee_Analysis_month.objects.filter(user_id=purchase_id.user_id,
                                                entry_date__month=product_id.entry_timedate.month,
                                                year=product_id.entry_timedate.year).update(
             total_sales_done=F("total_sales_done") - cost2)
 
-        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+        Employee_Analysis_date.objects.filter(user_id=purchase_id.user_id,
                                               entry_date__month=product_id.entry_timedate.month,
                                               year=product_id.entry_timedate.year).update(
             total_sales_done_today=F("total_sales_done_today") - cost2)
@@ -1022,12 +1022,7 @@ def edit_product_customer(request,product_id_rec):
         if dispatch_id_assigned != '' or dispatch_id_assigned != None:
             if product_id.product_dispatch_id != '' or product_id.product_dispatch_id != None:
                 dispatch_pro = Product_Details_Dispatch.objects.get(id=product_id.product_dispatch_id.pk)
-                print(product_id.product_dispatch_id)
-                print(product_id.product_dispatch_id)
-                print(product_id.product_dispatch_id)
-                print(product_id.product_dispatch_id)
-                print(product_id.product_dispatch_id)
-                print(product_id.product_dispatch_id)
+
                 # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
                 # dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
                 # dispatch_pro.product_name = product_name
