@@ -586,13 +586,13 @@ function myFunction() {
   <input  name="feedback_given" placeholder="Feedback Given" id="myText16"  class="form-control"  type="text" disabled value="{% if repair_id.feedback_given %}YES{% else %}NO{% endif %}">
     </div>
   </div>
-          <label class="col-md-2 control-label">Taken By
+          <label class="col-md-2 control-label">Taken By *
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-         <input  name="taken_by" placeholder="Taken By" id="myText21" class="form-control"  type="text" disabled value="{{repair_id.taken_by}}" list="taken_by">
+         <input  name="taken_by" placeholder="Taken By" required id="myText21" class="form-control"  type="text" disabled value="{{repair_id.taken_by}}" list="taken_by">
       <datalist style="height:20px;" id="taken_by">
         {% for item in user_list %}
       <option value="{{item.name}}">

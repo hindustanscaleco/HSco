@@ -201,6 +201,9 @@ def add_purchase_details(request):
             # dispatch.customer_address = address
 
             dispatch.save()
+            current_stage_in_db = Dispatch.objects.get(id=dispatch.pk).current_stage  # updatestage1
+            if (current_stage_in_db == '' or current_stage_in_db == None):
+                Dispatch.objects.filter(id=id).update(current_stage='dispatch q')
 
 
             # dispatch2 = Dispatch.objects.get(id=dispatch.pk)
@@ -656,6 +659,7 @@ def add_product_details(request,id):
             dispatch_pro.capacity = capacity
             dispatch_pro.unit = unit
             dispatch_pro.dispatch_id = dispatch_id
+            dispatch_pro.value_of_goods = value_of_goods
             # dispatch_pro.sales_person = sales_person
             # dispatch_pro.purchase_type = purchase_type
             dispatch_pro.save()
@@ -1035,11 +1039,13 @@ def edit_product_customer(request,product_id_rec):
                 dispatch_pro.brand = brand
                 dispatch_pro.capacity = capacity
                 dispatch_pro.unit = unit
+                dispatch_pro.value_of_goods = value_of_goods
+
                 # dispatch_pro.dispatch_id = dispatch_id
                 # dispatch_pro.sales_person = sales_person
                 # dispatch_pro.purchase_type = purchase_type
                 dispatch_pro.save(
-                    update_fields=['quantity', 'type_of_scale', 'model_of_purchase', 'sub_model',
+                    update_fields=['quantity', 'type_of_scale','value_of_goods', 'model_of_purchase', 'sub_model',
                                    'sub_sub_model',
                                    'serial_no_scale', 'brand', 'capacity', 'unit',
                                    ])

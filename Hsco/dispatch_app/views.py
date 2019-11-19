@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.db.models import Sum, Min, Q
+from django.db.models import Sum, Min, Q, Count, F
 from django.shortcuts import render, redirect
 from django.db import connection
 # Create your views here.
@@ -22,26 +22,7 @@ from ess_app.models import Employee_Analysis_date
 def add_dispatch_details(request):
     # form = Customer_Details_Form(request.POST or None, request.FILES or None)
     cust_sugg=Customer_Details.objects.all()
-    # if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
-    #     user_list = SiteUser.objects.filter(group__icontains=request.user.name,
-    #                                         modules_assigned__icontains='Dispatch Module', is_deleted=False)
-    #
-    #
-    # else:  # display colleague
-    #     list_group = SiteUser.objects.get(id=request.user.id).group
-    #     import ast
-    #
-    #     x = "[" + list_group + "]"
-    #     x = ast.literal_eval(x)
-    #     manager_list = []
-    #     for item in x:
-    #         name = SiteUser.objects.get(name=item)
-    #         if name.role == 'Manager':
-    #             if item not in manager_list:
-    #                 manager_list.append(item)
-    #
-    #     user_list = SiteUser.objects.filter(group__icontains=manager_list,
-    #                                         modules_assigned__icontains='Dispatch Module', is_deleted=False)
+
 
     if request.user.role == 'Super Admin':
         user_list=SiteUser.objects.filter(Q(id=request.user.id) | Q(group__icontains=request.user.name),modules_assigned__icontains='Dispatch Module', is_deleted=False)
@@ -155,6 +136,17 @@ def add_dispatch_details(request):
 
         item2.save()
 
+        current_stage_in_db = Dispatch.objects.get(id=item2.pk).current_stage  # updatestage1
+        if (current_stage_in_db == '' or current_stage_in_db == None):
+            Dispatch.objects.filter(id=item2.pk).update(current_stage='dispatch q')
+
+        # current_stage_in_db = Dispatch.objects.get(id=item2.pk).current_stage  # updatestage1
+        if (current_stage_in_db == 'dispatch q') and (dispatch_by != '' or dispatch_by != None):
+            Dispatch.objects.filter(id=item2.pk).update(current_stage='dispatch but lr not updated')
+
+        if (current_stage_in_db == 'dispatch but lr not updated') and (lr_no != '' or lr_no != None):
+            Dispatch.objects.filter(id=item2.pk).update(current_stage='dispatch completed')
+
         # send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
         # message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
@@ -228,6 +220,7 @@ def final_report_dis_mod(request):
     return render(request,"report/final_report_dis_mod.html",context)
 
 def dispatch_view(request):
+    context={}
     if request.method=='POST' :
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
@@ -306,14 +299,71 @@ def dispatch_view(request):
             return render(request, "manager/dispatch_view.html", context)
     else:
         if check_admin_roles(request):     #For ADMIN
-            dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Dispatch Module').order_by('-id')
+            dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,).order_by('-id')
         else:  #For EMPLOYEE
-            dispatch_list = Dispatch.objects.filter(user_id=request.user.pk).order_by('-id')
+            manager=SiteUser.objects.get(id=request.user.pk).manager
+            dispatch_list = Dispatch.objects.filter(user_id__manager=manager).order_by('-id')
         # dispatch_list = Dispatch.objects.all()
+        stage1 = Dispatch.objects.filter(current_stage='dispatch q').values('current_stage').annotate(
+            dcount=Count('current_stage'))
+        x = stage1
+        if not x:
+            x = None
+        # if x['current_stage'] == 'Scale is collected but estimate is not given':
+        try:
+            for item in x:
+                stage1 = item['dcount']
+            context10d = {
+                'stage1': stage1,
+            }
+            context.update(context10d)
 
-        context = {
+        except:
+
+            pass
+
+        stage2 = Dispatch.objects.filter(Q(current_stage='dispatch but lr not updated')).values('current_stage').annotate(dcount=Count('current_stage'))
+        x = stage2
+        # if x['current_stage'] == 'Scale is collected but estimate is not given':
+        if not x:
+            x = None
+        try:
+
+            for item in x:
+                # if item['dcount'] in x:
+                    # stage1 = item['dcount']
+                stage2 = item['dcount']
+            contextd = {
+                'stage2': stage2,
+            }
+            context.update(contextd)
+        except:
+            pass
+
+        stage3 = Dispatch.objects.filter(Q(current_stage='dispatch completed')).values(
+            'current_stage').annotate(dcount=Count('current_stage'))
+        x = stage3
+        if not x:
+            x = None
+        # if x['current_stage'] == 'Scale is collected but estimate is not given':
+        try:
+            for item in x:
+                # stage1 = item['dcount']
+                stage3 = item['dcount']
+                print(stage3)
+                print(stage3)
+                print(stage3)
+            context10d = {
+                'stage3': stage3,
+            }
+            context.update(context10d)
+        except:
+            pass
+
+        context2 = {
             'dispatch_list': dispatch_list,
         }
+        context.update(context2)
         return render(request, "manager/dispatch_view.html", context)
 
 def update_dispatch_details(request,update_id):
@@ -323,26 +373,7 @@ def update_dispatch_details(request,update_id):
 
 
     customer_id = Customer_Details.objects.get(id=dispatch_item.crm_no)
-    # if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
-    #     user_list = SiteUser.objects.filter(group__icontains=request.user.name,
-    #                                         modules_assigned__icontains='Dispatch Module', is_deleted=False)
-    #
-    #
-    # else:  # display colleague
-    #     list_group = SiteUser.objects.get(id=request.user.id).group
-    #     import ast
-    #
-    #     x = "[" + list_group + "]"
-    #     x = ast.literal_eval(x)
-    #     manager_list = []
-    #     for item in x:
-    #         name = SiteUser.objects.get(name=item)
-    #         if name.role == 'Manager':
-    #             if item not in manager_list:
-    #                 manager_list.append(item)
-    #
-    #     user_list = SiteUser.objects.filter(group__icontains=manager_list,
-    #                                         modules_assigned__icontains='Dispatch Module', is_deleted=False)
+
     if request.user.role == 'Super Admin':
         user_list = SiteUser.objects.filter(group__icontains=request.user.name,
                                             modules_assigned__icontains='Dispatch Module', is_deleted=False)
@@ -425,6 +456,75 @@ def update_dispatch_details(request,update_id):
         item.photo_lr_no = photo_lr_no
         item.channel_of_dispatch = channel_of_dispatch
         item.notes = notes
+
+
+
+        current_stage_in_db = Dispatch.objects.get(id=update_id).current_stage  # updatestage3
+        if (current_stage_in_db == 'dispatch but lr not updated') and (lr_no != '' and lr_no != None):
+            Dispatch.objects.filter(id=update_id).update(current_stage='dispatch completed')
+            msg = "Dear "+customer_name+", Your goods have been successfully dispatched through "+transport_name+", having LR Number "+lr_no+". Please track the details on the transporters website"
+            send_mail('Dispatch Done - HSCo',
+                      msg, settings.EMAIL_HOST_USER,
+                      [Dispatch.objects.get(id=update_id).crm_no.customer_email_id])
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+
+        if (current_stage_in_db == 'dispatch q') and (dispatch_by != '' and dispatch_by != None):
+            Dispatch.objects.filter(id=update_id).update(current_stage='dispatch but lr not updated')
+            dispatch_by_id=SiteUser.objects.get(name=dispatch_by).id
+
+            value_of_goods=Product_Details_Dispatch.objects.filter(dispatch_id=update_id).aggregate(Sum('value_of_goods'))
+            total_amt=value_of_goods['value_of_goods__sum']
+
+            if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
+                                                     Q(user_id=dispatch_by_id)).count() > 0:
+                Employee_Analysis_date.objects.filter(user_id=dispatch_by_id, entry_date__month=datetime.now().month,
+                                                      year=datetime.now().year).update(
+                    total_dispatch_done_today=F("total_dispatch_done_today") + total_amt)
+                # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+                # ead.save(update_fields=['total_sales_done_today'])
+
+            else:
+                ead = Employee_Analysis_date()
+                ead.user_id = SiteUser.objects.get(id=dispatch_by_id)
+                ead.total_dispatch_done_today = total_amt
+                # ead.total_dispatch_done_today = value_of_goods
+                ead.manager_id = SiteUser.objects.get(id=dispatch_by_id).group
+                ead.month = datetime.now().month
+                ead.year = datetime.now().year
+                ead.save()
+
+            if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                      Q(user_id=dispatch_by_id)).count() > 0:
+                Employee_Analysis_month.objects.filter(user_id=dispatch_by_id, entry_date__month=datetime.now().month,
+                                                       year=datetime.now().year).update(
+                    total_dispatch_done=F("total_dispatch_done") + total_amt)
+                # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+                # ead.save(update_fields=['total_sales_done_today'])
+
+            else:
+                ead = Employee_Analysis_month()
+                ead.user_id = SiteUser.objects.get(id=dispatch_by_id)
+                ead.total_dispatch_done = total_amt
+                # ead.total_dispatch_done = value_of_goods
+                ead.manager_id = SiteUser.objects.get(id=dispatch_by_id).group
+                ead.month = datetime.now().month
+                ead.year = datetime.now().year
+                ead.save()
+
+
+
+
+
+
+
+
 
         # item.save(update_fields=['dispatch_id', ]),
 
@@ -628,16 +728,32 @@ def load_dispatch_done_manager(request,):
         if check_admin_roles(request):     #For ADMIN
             dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Dispatch Module').order_by('-id')
         else:  #For EMPLOYEE
-            dispatch_list = Dispatch.objects.filter(user_id=request.user.pk).order_by('-id')
-        # dispatch_list = Dispatch.objects.all()
-        print("dispatch_list")
-        print(dispatch_list)
+            manager = SiteUser.objects.get(id=request.user.pk).manager
+            dispatch_list = Dispatch.objects.filter(user_id__manager=manager).order_by('-id')
+
         context = {
             'dispatch_list': dispatch_list,
             'manager': False,
         }
 
         return render(request, 'AJAX/load_dispatch_done_manager.html', context)
+
+def load_dispatch_stages_list(request):
+    selected_stage = request.GET.get('selected_stage')
+
+    if check_admin_roles(request):  # For ADMIN
+        dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,
+                                                user_id__is_deleted=False,current_stage=selected_stage ).order_by('-id')
+    else:  # For EMPLOYEE
+        manager = SiteUser.objects.get(id=request.user.pk).manager
+        dispatch_list = Dispatch.objects.filter(user_id__manager=manager,current_stage=selected_stage).order_by('-id')
+
+    context = {
+        'dispatch_list': dispatch_list,
+    }
+    context.update(context)
+    return render(request, 'AJAX/load_dispatch_stage.html', context)
+
 
 
 

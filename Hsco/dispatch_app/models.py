@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils import timezone
-
 from customer_app.models import Customer_Details
-
 from user_app.models import SiteUser
 # from purchase_app.models import Product_Details
 
@@ -32,6 +30,7 @@ class Dispatch(models.Model):
     photo_lr_no = models.ImageField(upload_to='',null=True,blank=True)
     channel_of_dispatch = models.CharField(max_length=30,null=True,blank=True)
     notes = models.CharField(max_length=30,null=True,blank=True)
+    current_stage = models.CharField(max_length=50,null=True,blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now,)
 
 
@@ -55,7 +54,20 @@ class Product_Details_Dispatch(models.Model):
     unit = models.CharField(max_length=30,null=True,blank=True)
     # sales_person = models.CharField(max_length=30,null=True,blank=True)
     new_repeat_purchase = models.CharField(max_length=30,null=True,blank=True)
+    value_of_goods = models.FloatField(default=0.0, )
+    entry_timedate = models.DateTimeField(default=timezone.now, )
 
 
     def __int__(self):
         return self.dispatch_id
+
+class Product_Despatched(models.Model):
+    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    manager_id = models.CharField(max_length=60, null=True, blank=True)
+    dispatch_id = models.ForeignKey(Dispatch,on_delete=models.CASCADE, null=True, blank=True)
+    value = models.CharField(max_length=120, null=True,blank=True)
+    entry_timedate = models.DateTimeField(default=timezone.now, )
+
+    def __int__(self):
+        return self.dispatch_id
+
