@@ -1267,6 +1267,14 @@ def send_sms(request,name,phone,email,repair_id,item_id):
 
 
 
+def repairing_form(request):
+    return render(request,'repairing_format/reparingform.html')
+#
+# def repairing_form_back(request):
+#     return render(request,'repairing_form/reparingformback.html')
+
+
+
 
 
 

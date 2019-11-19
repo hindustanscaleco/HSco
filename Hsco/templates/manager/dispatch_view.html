@@ -150,6 +150,7 @@ $(function() {
 });
 
             </script>
+
                     <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
             <div class="row">
 
@@ -309,9 +310,47 @@ $(function() {
 
 
                 </div>
+
             </div>
 
 
+
+<div class="row" style="margin-left: 10%;">
+
+        <div style="cursor: pointer; " onclick="choice1('Scale is collected but estimate is not given')" class="col-xl-2 col-md-3 mb-12">
+              <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,5.5),rgba(120,115,245,.9))">
+                <div class="card-body row" style="padding-left: 20px;color: white; font-weight: 600; font-size: 16px; height: 130px;">
+
+                  <center> Scale is collected but estimate <br> is not given.  <br> ({{rep1}}) </center>
+
+                    </div>
+
+                </div>
+              </div>
+
+        <div style="cursor: pointer; " onclick="choice1('Estimate is given but Estimate is not confirmed')" class="col-xl-2 col-md-3 mb-12">
+              <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">
+                <div class="card-body row" style="padding-left: 25px; color: white; font-weight: 600; font-size: 16px;  height: 130px;">
+                 <center> Estimate is given but Estimate <br> is not confirmed. &nbsp;<br> ({{rep2}})</center>
+
+
+                    </div>
+
+                </div>
+              </div>
+
+            <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-2 col-md-3 mb-12">
+              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
+                <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 16px;  height: 130px;">
+
+                   <center><p> Estimate is confirmed  but<br> not repaired. <br>&nbsp; ({{rep3}}) </p></center>
+
+                    </div>
+
+                </div>
+              </div>
+            </div>
+            <br>
 
 
 
