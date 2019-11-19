@@ -599,7 +599,9 @@ def repairing_module_home(request):
         if check_admin_roles(request):     #For ADMIN
             repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains="'Repairing Module'").order_by('-id')
         else:  #For EMPLOYEE
-            repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+            repair_list = Repairing_after_sales_service.objects.filter(Q(taken_by=None) | Q(taken_by='') | Q(taken_by=request.user.name)).order_by('-id')
+            # repair_list2 = Repairing_after_sales_service.objects.filter(Q(taken_by='')).order_by('-id')
+            # repair_list = Repairing_after_sales_service.objects.filter(taken_by=request.user.name,).order_by('-id')
         # repair_list = Repairing_after_sales_service.objects.all()
         res = Repairing_after_sales_service.objects.filter(~Q(delivery_by=None)).values('current_stage').annotate(
             dcount=Count('current_stage'))
@@ -1160,7 +1162,60 @@ def load_prev_rep(request):
     }
 
     return render(request, 'AJAX/load_prev_rep.html', context)
+from django.http import JsonResponse
+def send_sms(request):
+    msg_id = request.GET.get('item_id')
+    name = request.GET.get('name')
+    phone = request.GET.get('phone')
+    email = request.GET.get('email')
+    id = request.GET.get('id')
 
+    import requests
+    import json
+
+    mobile = '+91'+phone  # 9766323877'
+    user = 'HSCo'
+    senderid = 'HSCALE'
+
+    api = 'PF8MzCBOGTopfpYFlSZT'
+    if msg_id == '1':
+        message = 'Scale Submit SMS & E-mail'
+        Repairing_after_sales_service.objects.filter(id=id).update(scale_sub_sms_count=F("scale_sub_sms_count")+1)
+        send_mail('Scale Submit - HSCo','Hello '+name+message, settings.EMAIL_HOST_USER,[email])
+    elif msg_id == '2':
+        message = 'Estimate inform SMS & E-mail'
+        Repairing_after_sales_service.objects.filter(id=id).update(estimate_informed_sms_count=F("estimate_informed_sms_count") + 1)
+        send_mail('Estimate inform - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+    elif msg_id == '3':
+        message = 'Reparing done SMS & E-mail'
+        Repairing_after_sales_service.objects.filter(id=id).update(reparing_done_sms_count=F("reparing_done_sms_count") + 1)
+        send_mail('Reparing done - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+    elif msg_id == '4':
+        message = 'Late Mark SMS & E-mail'
+        Repairing_after_sales_service.objects.filter(id=id).update(late_mark_sms_count=F("late_mark_sms_count") + 1)
+        send_mail('Late Mark - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+    elif msg_id == '5':
+        message = 'Final Delivery SMS & E-mail'
+        Repairing_after_sales_service.objects.filter(id=id).update(final_del_sms_count=F("final_del_sms_count") + 1)
+        send_mail('Final Delivery - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+
+
+    url = "http://smshorizon.co.in/api/sendsms.php?user=" + user + "&apikey=" + api + "&mobile=" + mobile + "&message=" + message + "&senderid=" + senderid + "&type=txt"
+    payload = ""
+    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+    x = response.text
+    print(x)
+    repair_id = Repairing_after_sales_service.objects.get(id=id)
+    data = {
+        'repair_id': repair_id.scale_sub_sms_count
+    }
+
+
+
+
+    return JsonResponse(data)
 
 #
 # def add_component_replaced(request,component_id):

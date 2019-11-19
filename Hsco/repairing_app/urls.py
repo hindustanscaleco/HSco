@@ -1,7 +1,7 @@
 from django.urls import path, include, re_path
 from .views import add_repairing_details, repair_product, repairing_module_home, manager_repairing_module_home,load_reparing_stages_list, repairing_analytics
 from .views import feedback_repairing,edit_product, repairing_report_module, update_repairing_details, \
-    final_repairing_report_module,repairing_employee_graph,load_reparing_manager,load_customer ,load_prev_rep
+    final_repairing_report_module,repairing_employee_graph,load_reparing_manager,load_customer ,load_prev_rep,send_sms
 
 urlpatterns = [
     path('add_repairing_details/',add_repairing_details , name ='add_repairing_details'),
@@ -19,4 +19,5 @@ urlpatterns = [
     path('load_reparing_manager/',load_reparing_manager, name ='load_reparing_manager'),
     path('load_customer/',load_customer, name ='load_customer'),
     path('load_prev_rep/',load_prev_rep, name ='load_prev_rep'),
+    path('send_sms/',send_sms, name ='send_sms'),
 ]

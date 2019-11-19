@@ -122,7 +122,8 @@ def restamping_manager(request):
 
         stage1 = Restamping_after_sales_service.objects.filter(Q(current_stage='Scales in Restamping Queue')).values('current_stage').annotate(dcount=Count('current_stage'))
         x = stage1
-
+        if not x:
+            x = None
         # if x['current_stage'] == 'Scale is collected but estimate is not given':
         try:
             for item in x:
