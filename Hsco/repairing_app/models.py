@@ -69,6 +69,7 @@ class Repairing_Product(models.Model):
     deposite_taken_for_replaced_scale = models.CharField(max_length=60, null=True, blank=True)
     cost = models.FloatField(default=0.0)
     in_warranty = models.CharField(default='NO',max_length=10,null=True,blank=True)
+    is_last_product = models.BooleanField(default=False,)
     entry_timedate = models.DateField(default=datetime.date.today)
 
 

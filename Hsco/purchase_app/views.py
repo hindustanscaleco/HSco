@@ -155,6 +155,7 @@ def add_purchase_details(request):
         item2.date_of_purchase = date_of_purchase
         item2.product_purchase_date = product_purchase_date
         item2.sales_person = sales_person
+        item2.user_id=SiteUser.objects.get(id=SiteUser.objects.get(name=sales_person).pk)
         item2.bill_no = bill_no
         item2.upload_op_file = upload_op_file
         item2.po_number = po_number
@@ -164,7 +165,7 @@ def add_purchase_details(request):
         item2.channel_of_dispatch = channel_of_dispatch
         item2.notes = notes
         item2.feedback_form_filled = False
-        item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save()
 

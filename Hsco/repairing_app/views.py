@@ -268,6 +268,7 @@ def repair_product(request,id):
         deposite_taken_for_replaced_scale = request.POST.get('deposite_taken_for_replaced_scale')
         cost = request.POST.get('cost')
         in_warranty = request.POST.get('in_warranty')
+        is_last_product = request.POST.get('is_last_product')
 
         item=Repairing_Product()
         item.user_id = SiteUser.objects.get(id=request.user.pk)
@@ -284,6 +285,10 @@ def repair_product(request,id):
         item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
         item.repairing_id_id = repair_id
         item.in_warranty = in_warranty
+        if is_last_product == None:
+            item.is_last_product = False
+        else:
+            item.is_last_product = True
 
         item.cost = cost
 
@@ -294,7 +299,12 @@ def repair_product(request,id):
             Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Scale is collected but estimate is not given',stage_update_timedate = timezone.now())
             # item2.save(update_fields=['stage_update_timedate', ])
             rep = Repairing_after_sales_service.objects.get(id=id)
-            ret=send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
+            if is_last_product == None:
+                pass
+                # item.is_last_product = False
+            else:
+                ret=send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
+
 
         # current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  #updatestage2
 
@@ -889,8 +899,8 @@ def edit_product(request,id):
         if (current_stage_in_db == '' or current_stage_in_db == None) and (sub_model != '' or sub_model != None):
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Scale is collected but estimate is not given', stage_update_timedate = timezone.now())
-            rep=Repairing_after_sales_service.objects.get(id=reparing_id)
-            send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, reparing_id, '1')
+            # rep=Repairing_after_sales_service.objects.get(id=reparing_id)
+            # send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, reparing_id, '1')
 
         item = product_id
         item.type_of_machine = type_of_machine
