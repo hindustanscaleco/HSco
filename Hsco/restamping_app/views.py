@@ -120,7 +120,7 @@ def restamping_manager(request):
             restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
         # restamp_list = Restamping_after_sales_service.objects.all()
 
-        stage1 = Restamping_after_sales_service.objects.filter(Q(current_stage='Scales in Restamping Queue')).values('current_stage').annotate(dcount=Count('current_stage'))
+        stage1 = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),Q(current_stage='Scales in Restamping Queue')).values('current_stage').annotate(dcount=Count('current_stage'))
         x = stage1
         if not x:
             x = None
@@ -137,7 +137,7 @@ def restamping_manager(request):
 
             pass
 
-        stage2 = Restamping_after_sales_service.objects.filter(Q(current_stage='Restamping is done but scale is not collected')).values(
+        stage2 = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),Q(current_stage='Restamping is done but scale is not collected')).values(
             'current_stage').annotate(dcount=Count('current_stage'))
         x = stage2
         # if x['current_stage'] == 'Scale is collected but estimate is not given':
@@ -156,7 +156,7 @@ def restamping_manager(request):
         except:
             pass
 
-        stage3 = Restamping_after_sales_service.objects.filter(Q(current_stage='Restamping done and scale also collected')).values(
+        stage3 = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),Q(current_stage='Restamping done and scale also collected')).values(
             'current_stage').annotate(dcount=Count('current_stage'))
         x = stage3
         if not x:
