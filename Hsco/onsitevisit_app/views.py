@@ -152,9 +152,9 @@ def onsite_views(request):
         try:
 
             for item in x:
-                if item['dcount'] in x:
+                # if item['dcount'] in x:
                     # stage1 = item['dcount']
-                    stage2 = item['dcount']
+                stage2 = item['dcount']
             contextd = {
                 'stage2': stage2,
             }
