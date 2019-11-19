@@ -890,7 +890,7 @@ document.getElementById("myText25").style.display = "none";
 function send_sms(select) {
      //alert(select.options[select.selectedIndex].value);
     $.ajax({                       // initialize an AJAX request
-        url: "/send_sms/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        url: "/send_sms/"+document.getElementById("myText3").value+'/'+document.getElementById("myText5").value+'/'+document.getElementById("myText7").value+'/'+{{repair_id.pk}}+'/'+select,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
         data: {
           'item_id': select,       // add the country id to the GET parameters
           'name': document.getElementById("myText3").value,       // add the country id to the GET parameters

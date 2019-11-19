@@ -19,5 +19,5 @@ urlpatterns = [
     path('load_reparing_manager/',load_reparing_manager, name ='load_reparing_manager'),
     path('load_customer/',load_customer, name ='load_customer'),
     path('load_prev_rep/',load_prev_rep, name ='load_prev_rep'),
-    path('send_sms/',send_sms, name ='send_sms'),
+    path('send_sms/<str:name>/<str:phone>/<str:email>/<str:repair_id>/<str:item_id>',send_sms, name ='send_sms'),
 ]

@@ -211,18 +211,18 @@ def add_onsite_aftersales_service(request):
     #     user_list = SiteUser.objects.filter(group__icontains=manager_list,
     #                                         modules_assigned__icontains='Onsite Repairing Module',is_deleted=False)
     if request.user.role == 'Super Admin':
-        user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
+        user_list=SiteUser.objects.filter(Q(id=request.user.id) | Q(group__icontains=request.user.name),modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
 
     elif request.user.role == 'Admin':
-        user_list = SiteUser.objects.filter(admin=request.user.name,
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(admin=request.user.name),
                                             modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
     elif request.user.role == 'Manager':
-        user_list = SiteUser.objects.filter(manager=request.user.name,
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=request.user.name),
                                             modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
     else: #display colleague
 
         list_group = SiteUser.objects.get(id=request.user.id).manager
-        user_list = SiteUser.objects.filter(manager=list_group,
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=list_group),
                                             modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
 
 
@@ -853,7 +853,7 @@ def feedback_onrepairing(request,user_id,customer_id,onsiterepairing_id):
 
 def load_onsite_reparing_stages_list(request,):
     selected = request.GET.get('loc_id')
-    onsite_list = Onsite_aftersales_service.objects.filter(current_stage=selected)
+    onsite_list = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),current_stage=selected)
     context = {
         'onsite_list': onsite_list,
     }

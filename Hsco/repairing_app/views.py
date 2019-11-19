@@ -26,18 +26,18 @@ def add_repairing_details(request):
     cust_sugg=Customer_Details.objects.all()
     prev_rep_sugg=Repairing_after_sales_service.objects.all()
     if request.user.role == 'Super Admin':
-        user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains="'Repairing Module'", is_deleted=False)
+        user_list=SiteUser.objects.filter(Q(id=request.user.id) | Q(group__icontains=request.user.name),modules_assigned__icontains="'Repairing Module'", is_deleted=False)
 
     elif request.user.role == 'Admin':
-        user_list = SiteUser.objects.filter(admin=request.user.name,
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(admin=request.user.name),
                                             modules_assigned__icontains="'Repairing Module'", is_deleted=False)
     elif request.user.role == 'Manager':
-        user_list = SiteUser.objects.filter(manager=request.user.name,
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=request.user.name),
                                             modules_assigned__icontains="'Repairing Module'", is_deleted=False)
     else: #display colleague
 
         list_group = SiteUser.objects.get(id=request.user.id).manager
-        user_list = SiteUser.objects.filter(manager=list_group,
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=list_group),
                                             modules_assigned__icontains="'Repairing Module'", is_deleted=False)
 
         # import ast
@@ -293,6 +293,8 @@ def repair_product(request,id):
         if (current_stage_in_db == '' or current_stage_in_db == None ) and (sub_model !='' or sub_model != None):
             Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Scale is collected but estimate is not given',stage_update_timedate = timezone.now())
             # item2.save(update_fields=['stage_update_timedate', ])
+            rep = Repairing_after_sales_service.objects.get(id=id)
+            ret=send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
 
         # current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  #updatestage2
 
@@ -603,7 +605,7 @@ def repairing_module_home(request):
             # repair_list2 = Repairing_after_sales_service.objects.filter(Q(taken_by='')).order_by('-id')
             # repair_list = Repairing_after_sales_service.objects.filter(taken_by=request.user.name,).order_by('-id')
         # repair_list = Repairing_after_sales_service.objects.all()
-        res = Repairing_after_sales_service.objects.filter(~Q(delivery_by=None)).values('current_stage').annotate(
+        res = Repairing_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),~Q(delivery_by=None)).values('current_stage').annotate(
             dcount=Count('current_stage'))
         context = {
             'repair_list': repair_list,
@@ -612,7 +614,7 @@ def repairing_module_home(request):
         ini_time_for_now = datetime.now()
 
         new_final_time = ini_time_for_now - timedelta(days=4)
-        res_4d = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time),Q(current_stage='Repaired but not collected')).values('current_stage').annotate(dcount=Count('current_stage'))
+        res_4d = Repairing_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),Q(stage_update_timedate=new_final_time),Q(current_stage='Repaired but not collected')).values('current_stage').annotate(dcount=Count('current_stage'))
         try:
             x = res_4d
             # if x['current_stage'] == 'Scale is collected but estimate is not given':
@@ -625,7 +627,7 @@ def repairing_module_home(request):
             pass
 
         new_final_time = ini_time_for_now - timedelta(days=10)
-        res_10d = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time),Q(current_stage='Repaired but not collected')).values('current_stage').annotate(dcount=Count('current_stage'))
+        res_10d = Repairing_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),Q(stage_update_timedate=new_final_time),Q(current_stage='Repaired but not collected')).values('current_stage').annotate(dcount=Count('current_stage'))
         x = res_10d
         # if x['current_stage'] == 'Scale is collected but estimate is not given':
         try:
@@ -887,6 +889,8 @@ def edit_product(request,id):
         if (current_stage_in_db == '' or current_stage_in_db == None) and (sub_model != '' or sub_model != None):
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Scale is collected but estimate is not given', stage_update_timedate = timezone.now())
+            rep=Repairing_after_sales_service.objects.get(id=reparing_id)
+            send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, reparing_id, '1')
 
         item = product_id
         item.type_of_machine = type_of_machine
@@ -1090,13 +1094,13 @@ def load_reparing_stages_list(request,):
         new_final_time = ini_time_for_now - timedelta(days=4)
         repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time),
                                                               Q(current_stage='Repaired but not collected'))
-        repair_list = Repairing_after_sales_service.objects.filter(current_stage=selected_stage)
+        # repair_list = Repairing_after_sales_service.objects.filter(current_stage=selected_stage)
     elif selected_stage == '10days':
         new_final_time = ini_time_for_now - timedelta(days=10)
         repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time),
                                                                    Q(current_stage='Repaired but not collected'))
     else:
-        repair_list = Repairing_after_sales_service.objects.filter(current_stage=selected_stage)
+        repair_list = Repairing_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),current_stage=selected_stage)
 
     context = {
         'repair_list': repair_list,
@@ -1163,12 +1167,26 @@ def load_prev_rep(request):
 
     return render(request, 'AJAX/load_prev_rep.html', context)
 from django.http import JsonResponse
-def send_sms(request):
-    msg_id = request.GET.get('item_id')
-    name = request.GET.get('name')
-    phone = request.GET.get('phone')
-    email = request.GET.get('email')
-    id = request.GET.get('id')
+def send_sms(request,name,phone,email,repair_id,item_id):
+    msg_id = None
+    # if phone == None:
+    #     msg_id = request.GET.get('item_id')
+    #     name = request.GET.get('name')
+    #     phone = request.GET.get('phone')
+    #     email = request.GET.get('email')
+    #     id = request.GET.get('id')
+    #     print("name")
+    #     print(name)
+    #     print(name)
+    # elif request.GET == None:
+    msg_id =item_id
+    name = name
+    print("name55555")
+    print(name)
+    print(name)
+    phone =phone
+    email = email
+    id = repair_id
 
     import requests
     import json

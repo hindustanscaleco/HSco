@@ -44,18 +44,18 @@ def add_dispatch_details(request):
     #                                         modules_assigned__icontains='Dispatch Module', is_deleted=False)
 
     if request.user.role == 'Super Admin':
-        user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Dispatch Module', is_deleted=False)
+        user_list=SiteUser.objects.filter(Q(id=request.user.id) | Q(group__icontains=request.user.name),modules_assigned__icontains='Dispatch Module', is_deleted=False)
 
     elif request.user.role == 'Admin':
-        user_list = SiteUser.objects.filter(admin=request.user.name,
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(admin=request.user.name),
                                             modules_assigned__icontains='Dispatch Module', is_deleted=False)
     elif request.user.role == 'Manager':
-        user_list = SiteUser.objects.filter(manager=request.user.name,
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=request.user.name),
                                             modules_assigned__icontains='Dispatch Module', is_deleted=False)
     else: #display colleague
 
         list_group = SiteUser.objects.get(id=request.user.id).manager
-        user_list = SiteUser.objects.filter(manager=list_group,
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=list_group),
                                             modules_assigned__icontains='Dispatch Module', is_deleted=False)
 
     # user_list=SiteUser.objects.filter(group__icontains=request.user.name)

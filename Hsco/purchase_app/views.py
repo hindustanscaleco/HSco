@@ -64,19 +64,18 @@ def add_purchase_details(request):
     #                                         modules_assigned__icontains='Customer Module', is_deleted=False)
 
     if request.user.role == 'Super Admin':
-        sales_person_sugg=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Customer Module', is_deleted=False)
+        sales_person_sugg=SiteUser.objects.filter(Q(id=request.user.id) | Q(group__icontains=request.user.name),modules_assigned__icontains='Customer Module', is_deleted=False)
 
     elif request.user.role == 'Admin':
         sales_person_sugg = SiteUser.objects.filter(admin=request.user.name,
                                             modules_assigned__icontains='Customer Module', is_deleted=False)
     elif request.user.role == 'Manager':
-        sales_person_sugg = SiteUser.objects.filter(manager=request.user.name,
-                                            modules_assigned__icontains='Customer Module', is_deleted=False)
+        sales_person_sugg = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=request.user.name),modules_assigned__icontains='Customer Module', is_deleted=False)
     else: #display colleague
 
         list_group = SiteUser.objects.get(id=request.user.id).manager
-        sales_person_sugg = SiteUser.objects.filter(manager=list_group,
-                                            modules_assigned__icontains='Customer Module', is_deleted=False)
+        sales_person_sugg = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=list_group),
+                                            modules_assigned__icontains='Customer Module', is_deleted=False )
 
 
 
