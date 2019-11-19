@@ -523,9 +523,78 @@ function myFunction() {
   <input  name="notes" placeholder="Notes" class="form-control" type="text" id="myText14" disabled value="{{dispatch_item.notes}}">
     </div>
   </div>
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
+<br>
+
+  <label class="col-md-2 control-label">Dispatched Goods
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+
+
+       <div class="repeatable">
+        <table style="border: 1px solid grey; width: 150%;">
+            <tr style="border: none;">
+                <td style="border: none; ">
+                    <input type="text" name="userInput[]"  class="item_name form-control"/>
+                </td>
+            </tr>
+        </table>        <button class="repeat btn btn-primary" style="font-size: 18px; margin-left: 5%;">Add </button>
+           <button id="submitList" type="button" class="btn btn-primary">  Submit List</button>
+
+
+    </div>
+<br>
+<br>
+
+
+
+
+    </div>
+  </div>
 </div>
 
 <br>
+
+
+
+
+
+
+
+<p> Yaha pe ayega array-> <input type="text" name="user" id="aa"></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <div class="col-md-12 ">
@@ -695,6 +764,107 @@ document.getElementById("").style.display = "none";
 
 
 </script>
+
+
+
+<script type="text/javascript">
+
+
+
+
+
+ $(document).ready(function() {
+            $("#submitList").click(function() {
+
+            	var details = $('.item_name').map(function() {
+  return {
+    name: $(this).val(),
+  };
+}).get();
+
+$("#test").val(details.join(''));
+
+
+console.log(details);
+// document.getElementById("whereToPrint").innerHTML = JSON.stringify(details, null, 4);
+
+
+
+var myJSON = JSON.stringify(details);  // String me convert
+
+
+  var myJSON2 = myJSON.replace(/[[\]]/g,'');  // remove square
+
+  var matches = myJSON2.replace(/[{:["}]/g, " ");  // remove Some characters
+
+  var matches2 = matches.replace(/name/g, "");  // remove curly braces
+var final = matches2.replace(/  /g,'');
+
+  // var matches = myJSON.replace(/[^1-9 ]/g, "");
+
+  // var matches2 = matches.split(/[ ,]+/).join(',');
+    $("#aa").val(final);
+
+
+// document.getElementById("demo").innerHTML = ;
+
+
+
+
+
+    //     result = myJSON.split(":"),
+    //     alpha = result[0],
+    //     count = result[1],
+    //     count_array = count.split(",");
+    // for(var i=0; i<count_array.length;i++) count_array[i] = +count_array[i];
+
+
+
+            var myJSON = "jhkj7682834";
+
+            if (matches) {
+                document.getElementById('GFG').innerHTML
+                        = matches[0];
+            }
+
+
+
+
+
+
+
+
+
+
+            });
+        });
+
+
+ $(function () {
+    $(".repeat").on('click', function (e) {
+        e.preventDefault();
+        var $self = $(this);
+        $self.before($self.prev('table').clone());
+        //$self.remove();
+    });
+});
+
+
+// var inputArray = [];
+// var input = document.getElementById('inputbox');
+// var screen = document.getElementById('screen');
+
+// document.getElementById('submit').onclick = function () {
+//     inputArray.push(input.value);
+//     screen.innerHTML = input.value;
+// };
+// document.getElementById('display').onclick = function () {
+//     screen.innerHTML = inputArray
+// };
+
+
+</script>
+
 
 </body>
 
