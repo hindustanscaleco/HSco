@@ -755,9 +755,12 @@ def load_restamping_manager(request):
 
         return render(request, 'AJAX/load_restamping_manager.html', context)
     else:
-        if check_admin_roles(request):     #For ADMIN
-            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Restamping Module').order_by('-id')
-        else:  #For EMPLOYEE
+        if check_admin_roles(request):  # For ADMIN
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
+                                                                         user_id__is_deleted=False,
+                                                                         user_id__modules_assigned__icontains='Restamping Module').order_by(
+                '-id')
+        else:  # For EMPLOYEE
             restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
         # restamp_list = Restamping_after_sales_service.objects.all()
 
