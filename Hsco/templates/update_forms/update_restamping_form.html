@@ -201,16 +201,12 @@ function myFunction() {
   </div>
 
   <label class="col-md-2 control-label">Customer Email
-
-
-
-
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
   <input name="customer_email_id" placeholder="Customer Email
-" class="form-control"  type="email" disabled id="myText4" value="{{personal_id.crm_no.customer_email_id}}">
+" class="form-control" type="email" disabled id="myText4" value="{% if personal_id.crm_no.customer_email_id != None and personal_id.crm_no.customer_email_id != '' %}{{personal_id.crm_no.customer_email_id}}{% else %}{% endif %}"">
     </div>
   </div>
 </div>
