@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils import timezone
-
 from customer_app.models import Customer_Details
-
 from user_app.models import SiteUser
 # from purchase_app.models import Product_Details
 

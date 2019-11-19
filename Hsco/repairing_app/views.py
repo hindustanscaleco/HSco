@@ -251,10 +251,8 @@ def add_repairing_details(request):
 
 def repair_product(request,id):
     repair_id = Repairing_after_sales_service.objects.get(id=id).id
+    user_id = Repairing_after_sales_service.objects.get(id=id).user_id
     components_replaced_popup = []
-    # components_replaced_popup_name = []
-    # components_replaced_popup_iw_name = []
-    # context={}
 
     if request.method=='POST' and 'components_replaced_popup_iw' not in request.POST and 'components_replaced_popup' not in request.POST:
         type_of_machine = request.POST.get('type_of_machine')
@@ -268,7 +266,8 @@ def repair_product(request,id):
         deposite_taken_for_replaced_scale = request.POST.get('deposite_taken_for_replaced_scale')
         cost = request.POST.get('cost')
         in_warranty = request.POST.get('in_warranty')
-        is_last_product = request.POST.get('is_last_product')
+        is_last_product_yes = request.POST.get('is_last_product_yes')
+        is_last_product_no = request.POST.get('is_last_product_no')
 
         item=Repairing_Product()
         item.user_id = SiteUser.objects.get(id=request.user.pk)
@@ -285,10 +284,14 @@ def repair_product(request,id):
         item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
         item.repairing_id_id = repair_id
         item.in_warranty = in_warranty
-        if is_last_product == None:
-            item.is_last_product = False
-        else:
-            item.is_last_product = True
+        print("is_last_product_yes")
+        print(is_last_product_yes)
+        print("is_last_product_no")
+        print(is_last_product_no)
+        # if is_last_product_yes == None:
+        #     item.is_last_product = False
+        # else:
+        #     item.is_last_product = True
 
         item.cost = cost
 
@@ -299,11 +302,12 @@ def repair_product(request,id):
             Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Scale is collected but estimate is not given',stage_update_timedate = timezone.now())
             # item2.save(update_fields=['stage_update_timedate', ])
             rep = Repairing_after_sales_service.objects.get(id=id)
-            if is_last_product == None:
-                pass
+            if is_last_product_yes == 'on':
+                ret = send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
+                # pass
                 # item.is_last_product = False
-            else:
-                ret=send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
+            # else:
+            #     ret=send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
 
 
         # current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  #updatestage2
@@ -317,15 +321,17 @@ def repair_product(request,id):
         Component_Replaced.objects.filter(pk__in=components_replaced_popup).update(product_id=item.pk)
 
         Repairing_after_sales_service.objects.filter(id=id).update(total_cost=F("total_cost") + cost)
-        Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+        Employee_Analysis_month.objects.filter(user_id=user_id, entry_date__month=datetime.now().month,
                                                year=datetime.now().year).update(
             total_reparing_done=F("total_reparing_done") + cost)
 
-        Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+        Employee_Analysis_date.objects.filter(user_id=user_id, entry_date__month=datetime.now().month,
                                               year=datetime.now().year).update(
             total_reparing_done_today=F("total_reparing_done_today") + cost)
-
-        return redirect('/update_repairing_details/'+str(id))
+        if is_last_product_yes == 'on':
+            return redirect('/update_repairing_details/'+str(id))
+        elif is_last_product_no == 'on':
+            return redirect('/repair_product/'+str(id))
     # if request.method == 'POST' and 'components_replaced_popup' in request.POST and 'components_replaced_popup_iw' not in request.POST:
     #     replaced_name=request.POST.get('components_replaced_popup')
     #     in_waranty= False
@@ -373,18 +379,18 @@ def update_repairing_details(request,id):
     repair_list = Repairing_Product.objects.filter(repairing_id=id)
 
     if request.user.role == 'Super Admin':
-        user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains="'Repairing Module'", is_deleted=False)
+        user_list=SiteUser.objects.filter(Q(id=request.user.id) | Q(group__icontains=request.user.name),modules_assigned__icontains="'Repairing Module'", is_deleted=False)
 
     elif request.user.role == 'Admin':
-        user_list = SiteUser.objects.filter(admin=request.user.name,
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(admin=request.user.name),
                                             modules_assigned__icontains="'Repairing Module'", is_deleted=False)
     elif request.user.role == 'Manager':
-        user_list = SiteUser.objects.filter(manager=request.user.name,
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=request.user.name),
                                             modules_assigned__icontains="'Repairing Module'", is_deleted=False)
     else: #display colleague
 
         list_group = SiteUser.objects.get(id=request.user.id).manager
-        user_list = SiteUser.objects.filter(manager=list_group,
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=list_group),
                                             modules_assigned__icontains="'Repairing Module'", is_deleted=False)
 
     if request.method=='POST':
@@ -480,7 +486,12 @@ def update_repairing_details(request,id):
         # item2.third_contact_no=third_contact_no
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired
-        item2.taken_by = taken_by
+        if taken_by != '' or taken_by != None:
+            item2.taken_by = taken_by
+            item2.user_id = SiteUser.objects.get(name=taken_by).id
+            item2.save(update_fields=['taken_by',]),
+            item2.save(update_fields=['user_id', ]),
+
         item2.repaired_date = repaired_date
         item2.delivery_date = delivery_date
         item2.delivery_by = delivery_by
@@ -495,7 +506,7 @@ def update_repairing_details(request,id):
         # item2.save(update_fields=['previous_repairing_number', ]),
         # item2.save(update_fields=['today_date', ]),
         # item2.save(update_fields=['products_to_be_repaired', ]),
-        # item2.save(update_fields=['total_cost', ]),
+
 
         item2.save(update_fields=['informed_by', ]),
         item2.save(update_fields=['confirmed_estimate', ]),
@@ -610,11 +621,11 @@ def repairing_module_home(request):
         if check_admin_roles(request):     #For ADMIN
             repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains="'Repairing Module'").order_by('-id')
         else:  #For EMPLOYEE
-            repair_list = Repairing_after_sales_service.objects.filter(Q(taken_by=None) | Q(taken_by='') | Q(taken_by=request.user.name)).order_by('-id')
+            repair_list = Repairing_after_sales_service.objects.filter(Q(id=request.user.id)|Q(taken_by=None) | Q(taken_by='')).order_by('-id')
             # repair_list2 = Repairing_after_sales_service.objects.filter(Q(taken_by='')).order_by('-id')
             # repair_list = Repairing_after_sales_service.objects.filter(taken_by=request.user.name,).order_by('-id')
         # repair_list = Repairing_after_sales_service.objects.all()
-        res = Repairing_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name)).values('current_stage').annotate(
+        res = Repairing_after_sales_service.objects.filter((Q(id=request.user.id)|Q(taken_by=None) | Q(taken_by='')|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name)) & (~Q(current_stage='')|~Q(current_stage=None))).values('current_stage').annotate(
             dcount=Count('current_stage'))
         context = {
             'repair_list': repair_list,
@@ -856,6 +867,7 @@ def feedback_repairing(request,user_id,customer_id,repairing_id):
 def edit_product(request,id):
     product_id = Repairing_Product.objects.get(id=id)
     repairing_id = Repairing_Product.objects.get(id=id).repairing_id
+    user_id=Repairing_after_sales_service.objects.get(id=repairing_id).user_id
     if request.method == 'POST':
         type_of_machine = request.POST.get('type_of_machine')
         model = request.POST.get('model')
@@ -877,12 +889,12 @@ def edit_product(request,id):
 
         Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") - cost2)
 
-        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+        Employee_Analysis_month.objects.filter(user_id=user_id,
                                                entry_date__month=product_id.entry_timedate.month,
                                                year=product_id.entry_timedate.year).update(
             total_reparing_done=F("total_reparing_done") - cost2)
 
-        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+        Employee_Analysis_date.objects.filter(user_id=user_id,
                                               entry_date__month=product_id.entry_timedate.month,
                                               year=product_id.entry_timedate.year).update(
             total_reparing_done_today=F("total_reparing_done_today") - cost2)
@@ -938,12 +950,12 @@ def edit_product(request,id):
 
 
 
-        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+        Employee_Analysis_month.objects.filter(user_id=user_id,
                                                entry_date__month=product_id.entry_timedate.month,
                                                year=product_id.entry_timedate.year).update(
             total_reparing_done=F("total_reparing_done") + cost)
 
-        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+        Employee_Analysis_date.objects.filter(user_id=user_id,
                                               entry_date__month=product_id.entry_timedate.month,
                                               year=product_id.entry_timedate.year).update(
             total_reparing_done_today=F("total_reparing_done_today") + cost)
@@ -1151,10 +1163,6 @@ def load_customer(request):
     cust_id = request.GET.get('item_id')
 
     cust_list = Customer_Details.objects.get(id=cust_id)
-    print(cust_list.customer_email_id)
-    print(cust_list.customer_email_id)
-    print(cust_list.customer_email_id)
-
     context = {
         'cust_list': cust_list,
 
@@ -1166,8 +1174,6 @@ def load_prev_rep(request):
     rep_id = request.GET.get('item_id')
 
     rep_list = Repairing_after_sales_service.objects.get(id=rep_id)
-
-    # cust_list = Customer_Details.objects.get(id=rep_list.crm_no)
 
     context = {
         'cust_list': rep_list,

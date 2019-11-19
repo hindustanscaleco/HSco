@@ -306,9 +306,10 @@ def dispatch_view(request):
             return render(request, "manager/dispatch_view.html", context)
     else:
         if check_admin_roles(request):     #For ADMIN
-            dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Dispatch Module').order_by('-id')
+            dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,).order_by('-id')
         else:  #For EMPLOYEE
-            dispatch_list = Dispatch.objects.filter(user_id=request.user.pk).order_by('-id')
+            manager=SiteUser.objects.get(id=request.user.pk).manager
+            dispatch_list = Dispatch.objects.filter(user_id__manager=manager).order_by('-id')
         # dispatch_list = Dispatch.objects.all()
 
         context = {
@@ -425,6 +426,12 @@ def update_dispatch_details(request,update_id):
         item.photo_lr_no = photo_lr_no
         item.channel_of_dispatch = channel_of_dispatch
         item.notes = notes
+
+
+        msg="Dear AAAA, Your goods have been successfully dispatched through BBBBB, having LR Number CCCCC. Please track the details on the transporters website "
+
+
+
 
         # item.save(update_fields=['dispatch_id', ]),
 
@@ -628,10 +635,9 @@ def load_dispatch_done_manager(request,):
         if check_admin_roles(request):     #For ADMIN
             dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Dispatch Module').order_by('-id')
         else:  #For EMPLOYEE
-            dispatch_list = Dispatch.objects.filter(user_id=request.user.pk).order_by('-id')
-        # dispatch_list = Dispatch.objects.all()
-        print("dispatch_list")
-        print(dispatch_list)
+            manager = SiteUser.objects.get(id=request.user.pk).manager
+            dispatch_list = Dispatch.objects.filter(user_id__manager=manager).order_by('-id')
+
         context = {
             'dispatch_list': dispatch_list,
             'manager': False,
