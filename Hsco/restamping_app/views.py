@@ -482,8 +482,8 @@ def update_restamping_details(request,id):
         # item.third_contact_no=third_contact_no
         item.second_person=customer_name   #new4
         item.second_contact_no=contact_no   #new5
-
-        item.scale_delivery_date = scale_delivery_date
+        if scale_delivery_date != '':
+            item.scale_delivery_date = scale_delivery_date
 
         current_stage_in_db = Restamping_after_sales_service.objects.get(
             id=id).current_stage  # updatestage2
