@@ -284,7 +284,7 @@ def restamping_after_sales_service(request):
 
 
 
-        return redirect('/restamping_manager/')
+        return redirect('/restamping_product/'+str(item2.pk))
     context={
         'cust_sugg':cust_sugg
     }

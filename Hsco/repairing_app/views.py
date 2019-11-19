@@ -238,7 +238,7 @@ def add_repairing_details(request):
 
 
 
-        return redirect('/repairing_module_home/')
+        return redirect('/repair_product/'+str(item2.pk))
 
 
     context={

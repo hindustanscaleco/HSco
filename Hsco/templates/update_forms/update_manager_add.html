@@ -77,7 +77,7 @@ color:;
 
 
 
-    <form class="well form-horizontal" ion="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
+    <form class="well form-horizontal" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
@@ -147,7 +147,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <input  name="is_deleted" placeholder="Is deleted" class="form-control" type="checkbox" {% if 'True' in manager_id.is_deleted %} checked {% endif %} >
+  <input  name="is_deleted" placeholder="Is deleted" class="form-control" type="checkbox" {% if manager_id.is_deleted == True %} checked {% endif %} >
   </div>
   </div>
 </div>
@@ -178,7 +178,7 @@ color:;
 
     <div class="col xl-12">
   <div class="form-group row">
-      {% if 'Customer Module' in manager_id.modules_assigned %}
+      {% if 'Customer Module' in admin_id.modules_assigned %}
   <label class="col-md-2 control-label ">Purchase Module
 
 
@@ -196,7 +196,7 @@ color:;
   </div>
 </div>
 {% endif %}
-      {% if 'Repairing Module' in manager_id.modules_assigned %}
+      {% if "'Repairing Module'" in admin_id.modules_assigned %}
     <label class="col-md-2 control-label">Repairing Module
 
 
@@ -217,7 +217,7 @@ color:;
 
 
 <div class="form-group row">
-     {% if 'Restamping Module' in manager_id.modules_assigned %}
+     {% if 'Restamping Module' in admin_id.modules_assigned %}
   <label class="col-md-2 control-label">Restamping Module
 
 
@@ -233,7 +233,7 @@ color:;
   </div>
 </div>
    {% endif %}
-    {% if 'Dispatch Module' in manager_id.modules_assigned %}
+    {% if 'Dispatch Module' in admin_id.modules_assigned %}
     <label class="col-md-2 control-label">Dispatch Module
 
 
@@ -255,7 +255,7 @@ color:;
 
 
 <div class="form-group row">
-    {% if 'AMC Module' in manager_id.modules_assigned %}
+    {% if 'AMC Module' in admin_id.modules_assigned %}
   <label class="col-md-2 control-label">AMC Module
 
 
@@ -267,7 +267,7 @@ color:;
   </div>
   </div>
  {% endif %}
-    {% if 'Onsite Repairing Module' in manager_id.modules_assigned %}
+    {% if 'Onsite Repairing Module' in admin_id.modules_assigned %}
     <label class="col-md-2 control-label">Onsite Repairing Module
 
 

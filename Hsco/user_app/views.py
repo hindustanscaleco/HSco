@@ -456,7 +456,7 @@ def update_admin(request,id):
         item.set_password(request.POST.get('password'))
 
         item.save(update_fields=['mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
-        return redirect('/update_admin/'+str(item.id))
+        return redirect('/admin_list/')
     context = {
         'form': form,
         'admin_id': admin_id,
@@ -465,6 +465,8 @@ def update_admin(request,id):
 
 def update_manager(request,id):
     manager_id = SiteUser.objects.get(id=id)
+    admin = SiteUser.objects.get(id=id).admin
+    admin_id = SiteUser.objects.get(name=admin)
     form = SiteUser_Form(request.POST or None)
     if request.method == 'POST' or request.method == 'FILES':
         mobile = request.POST.get('mobile')
@@ -501,15 +503,18 @@ def update_manager(request,id):
         item.set_password(request.POST.get('password'))
 
         item.save(update_fields=['mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
-        return redirect('/update_manager/' + str(item.id))
+        return redirect('/manager_list/')
     context = {
         'form': form,
         'manager_id': manager_id,
+        'admin_id': admin_id,
     }
     return render(request,"update_forms/update_manager_add.html",context)
 
 def update_employee(request,id):
     employee_id = SiteUser.objects.get(id=id)
+    manager = SiteUser.objects.get(id=id).manager
+    manager_id = SiteUser.objects.get(name=manager)
     form = SiteUser_Form(request.POST or None)
     if request.method == 'POST' or request.method == 'FILES':
         mobile = request.POST.get('mobile')
@@ -546,10 +551,11 @@ def update_employee(request,id):
         item.set_password(request.POST.get('password'))
 
         item.save(update_fields=['mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
-        return redirect('/update_employee/' + str(item.id))
+        return redirect('/employee_list/')
     context = {
         'form': form,
         'employee_id': employee_id,
+        'manager_id': manager_id,
     }
     return render(request,"update_forms/update_employee.html",context)
 

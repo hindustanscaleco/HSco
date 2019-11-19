@@ -147,7 +147,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <input  name="is_deleted" placeholder="Is deleted" class="form-control" type="checkbox" {% if 'True' in manager_id.is_deleted %} checked {% endif %} >
+  <input  name="is_deleted" placeholder="Is deleted" class="form-control" type="checkbox" {% if manager_id.is_deleted == True %} checked {% endif %} >
   </div>
   </div>
 </div>
