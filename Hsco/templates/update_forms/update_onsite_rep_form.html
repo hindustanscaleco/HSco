@@ -231,7 +231,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control" id="myText6" disabled value="{{onsite_id.crm_no.customer_email_id}}" >
+  <input type="email" name="customer_email_id" placeholder="Customer E-mail id" class="form-control" id="myText6" disabled value="{% if onsite_id.crm_no.customer_email_id != None and onsite_id.crm_no.customer_email_id != '' %}{{onsite_id.crm_no.customer_email_id}}{% else %}{% endif %}">
     </div>
   </div>
 </div>
