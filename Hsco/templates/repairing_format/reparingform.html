@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	  {% load static %}
 	<title></title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -174,12 +175,18 @@ width: 100%;
 }
 
 
-
+.div2 {
+  width: 300px;
+  height: 100px;
+  padding: 50px;
+  border: 1px solid red;
+}
 
 </style>
 </head>
 <body>
 	<form>
+		<div class="div1">
 <div class="container">
   <div class="row">
     <div class="col-xl-6 col-md-6 "><h2>HINDUSTAN SCALE COMPANY</h2>
@@ -191,7 +198,7 @@ width: 100%;
 
 <div class="col-xl-6 col-md-6 ">
 
-<img src="hsco_logo.jpg" class="img-rounded" alt="Cinque Terre" width="250" height="130">
+<img src="{% static 'images/hsco_logo.jpg' %}" class="img-rounded" alt="Cinque Terre" width="250" height="130">
 
 	
 </div>
@@ -200,8 +207,8 @@ width: 100%;
 <hr>
 
 </div>
-<div class="container">
-  <div class="row">
+<div class="container" class="div1">
+  <div class="row" >
 <div class="col-xl-6 col-md-6">Sr No: 591</div>
 <div class="col-md-6 col-xl-6">Date:</div>
 
@@ -226,6 +233,7 @@ width: 100%;
 <div class="col-xl-9 col-md-12"><hr>HINDUSTAN SCALE COMPANY, 186/188 Janjikar Street, Crawford Market, Mumbai - 400003</div>
 </div>
 </div>
+		</div>
 </form>
 
 </body>

@@ -1,5 +1,6 @@
 from django.urls import path, include, re_path
-from .views import add_repairing_details, repair_product, repairing_module_home, manager_repairing_module_home,load_reparing_stages_list, repairing_analytics
+from .views import add_repairing_details, repair_product, repairing_module_home, manager_repairing_module_home, \
+    load_reparing_stages_list, repairing_analytics, repairing_form
 from .views import feedback_repairing,edit_product, repairing_report_module, update_repairing_details, \
     final_repairing_report_module,repairing_employee_graph,load_reparing_manager,load_customer ,load_prev_rep,send_sms
 
@@ -20,4 +21,6 @@ urlpatterns = [
     path('load_customer/',load_customer, name ='load_customer'),
     path('load_prev_rep/',load_prev_rep, name ='load_prev_rep'),
     path('send_sms/<str:name>/<str:phone>/<str:email>/<str:repair_id>/<str:item_id>',send_sms, name ='send_sms'),
+    path('repairing_form/',repairing_form, name ='repairing_form'),
+    # path('repairing_form_back',repairing_form_back, name ='repairing_form_back'),
 ]
