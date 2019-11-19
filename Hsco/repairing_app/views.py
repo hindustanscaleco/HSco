@@ -1195,7 +1195,7 @@ def send_sms(request):
         Repairing_after_sales_service.objects.filter(id=id).update(late_mark_sms_count=F("late_mark_sms_count") + 1)
         send_mail('Late Mark - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
     elif msg_id == '5':
-        message = 'Final Delivery SMS & E-mail'
+        message = 'Your scale has been collected. Thanks for choosing HSCo as your service partner. Please leave a feedback'
         Repairing_after_sales_service.objects.filter(id=id).update(final_del_sms_count=F("final_del_sms_count") + 1)
         send_mail('Final Delivery - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
 
