@@ -38,6 +38,7 @@ def onsite_views(request):
             # onsite_list = Onsite_aftersales_service.objects.filter(entry_timedate__range=[start_date, end_date])
             context = {
                 'onsite_list': onsite_list,
+                'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
             }
             return render(request, "manager/onsite_reparing.html", context)
         elif 'submit2' in request.POST:
@@ -50,6 +51,7 @@ def onsite_views(request):
             # onsite_list = Onsite_aftersales_service.objects.filter(phone_no=contact)
             context = {
                 'onsite_list': onsite_list,
+                'search_msg': 'Search result for Customer Contact No: ' + contact,
             }
             return render(request, "manager/onsite_reparing.html", context)
 
@@ -63,6 +65,7 @@ def onsite_views(request):
             # onsite_list = Onsite_aftersales_service.objects.filter(customer_email_id=email)
             context = {
                 'onsite_list': onsite_list,
+                'search_msg': 'Search result for Customer Email ID: ' + email,
             }
             return render(request, "manager/onsite_reparing.html", context)
         elif 'submit4' in request.POST:
@@ -75,6 +78,7 @@ def onsite_views(request):
             # onsite_list = Onsite_aftersales_service.objects.filter(customer_name=customer)
             context = {
                 'onsite_list': onsite_list,
+                'search_msg': 'Search result for Customer Name: ' + customer,
             }
             return render(request, "manager/onsite_reparing.html", context)
 
@@ -88,6 +92,7 @@ def onsite_views(request):
             # onsite_list = Onsite_aftersales_service.objects.filter(company_name=company)
             context = {
                 'onsite_list': onsite_list,
+                'search_msg': 'Search result for Company Name: ' + company,
             }
             return render(request, "manager/onsite_reparing.html", context)
         elif request.method=='POST' and 'submit6' in request.POST:
@@ -100,6 +105,7 @@ def onsite_views(request):
             # onsite_list = Onsite_aftersales_service.objects.filter(crn_number=crm)
             context = {
                 'onsite_list': onsite_list,
+                'search_msg': 'Search result for CRM No. : ' + crm,
             }
             return render(request, "manager/onsite_reparing.html", context)
     elif 'deleted' in request.POST:

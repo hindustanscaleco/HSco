@@ -185,7 +185,7 @@ $(function() {
      <option value="d4">Search By Customer Name</option>
      <option value="d5">Search By Company Name</option>
      <option value="d6">Search By CRM No.</option>
-     <option value="d7">Search By CRM Number Range</option>
+     <!--<option value="d7">Search By CRM Number Range</option>-->
   </select>
 </div>
 
@@ -411,6 +411,7 @@ $(function() {
 
     <br>
       <div class="row" id="id_subcat">
+           <center><p>{{search_msg}}</p></center>
                       {% for list in onsite_list %}
 
 <div style="cursor:pointer;" onclick="location.href='/update_onsite_details/{{list.pk}}'" class="col-xl-12 col-md-12 mb-12">

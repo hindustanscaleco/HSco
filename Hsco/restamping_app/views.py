@@ -32,6 +32,8 @@ def restamping_manager(request):
             # restamp_list = Restamping_after_sales_service.objects.filter(entry_timedate__range=[start_date, end_date])
             context = {
                 'restamp_list': restamp_list,
+                'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
+
             }
             return render(request, "manager/restamping_manager.html", context)
         elif 'submit2' in request.POST:
@@ -45,6 +47,7 @@ def restamping_manager(request):
             # restamp_list = Restamping_after_sales_service.objects.filter(mobile_no=contact)
             context = {
                 'restamp_list': restamp_list,
+                'search_msg': 'Search result for Customer Contact No: ' + contact,
             }
             return render(request, "manager/restamping_manager.html", context)
 
@@ -58,6 +61,7 @@ def restamping_manager(request):
             # restamp_list = Restamping_after_sales_service.objects.filter(customer_email_id=email)
             context = {
                 'restamp_list': restamp_list,
+                'search_msg': 'Search result for Customer Email ID: ' + email,
             }
             return render(request, "manager/restamping_manager.html", context)
         elif 'submit4' in request.POST:
@@ -70,6 +74,7 @@ def restamping_manager(request):
                 restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__customer_name=customer).order_by('-id')
             context = {
                 'restamp_list': restamp_list,
+                'search_msg': 'Search result for Customer Name: ' + customer,
             }
             return render(request, "manager/restamping_manager.html", context)
 
@@ -83,6 +88,7 @@ def restamping_manager(request):
                 restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__company_name=company).order_by('-id')
             context = {
                 'restamp_list': restamp_list,
+                'search_msg': 'Search result for Company Name: ' + company,
             }
             return render(request, "manager/restamping_manager.html", context)
         elif request.method == 'POST' and 'submit6' in request.POST:
@@ -96,6 +102,7 @@ def restamping_manager(request):
 
             context = {
                 'restamp_list': restamp_list,
+                'search_msg': 'Search result for CRM No. : ' + crm,
             }
             return render(request, "manager/restamping_manager.html", context)
     elif 'deleted' in request.POST:

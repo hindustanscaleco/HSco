@@ -211,7 +211,7 @@ display:none;
      <option value="d4">Search By Customer Name</option>
      <option value="d5">Search By Company Name</option>
      <option value="d6">Search By CRM No.</option>
-     <option value="d7">Search By CRM Number Range</option>
+     <!--<option value="d7">Search By CRM Number Range</option>-->
   </select>
 </div>
                 </div>
@@ -507,7 +507,7 @@ display:none;
 <br>
 
                 <div id="id_subcat" class="row">
-
+ <center><p>{{search_msg}}</p></center>
 
                 {% for list in repair_list %}
               <div style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
