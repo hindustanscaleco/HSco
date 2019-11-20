@@ -323,7 +323,8 @@ def amc_views(request):
         if check_admin_roles(request):     #For ADMIN
             amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
         else:  #For EMPLOYEE
-            amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk).order_by('-id')
+            manager = SiteUser.objects.get(id=request.user.pk).manager
+            amc_list = Amc_After_Sales.objects.filter(user_id__manager=manager,user_id__is_deleted=False).order_by('-id')
         # amc_list = Amc_After_Sales.objects.all()
 
         context = {
