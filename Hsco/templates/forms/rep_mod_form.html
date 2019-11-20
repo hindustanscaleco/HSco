@@ -458,7 +458,25 @@ Format : (company name)
 
 <div class="form-group row">
 
+
+    {% if user.role == 'Employee' %}
       <label class="col-md-2 control-label">Taken By
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+       <input name="taken_by" placeholder="Taken By" class="form-control"  type="text" list="taken_by">
+      <datalist style="height:20px;" id="taken_by">
+
+      <option value="{{user.name}}">
+
+    </datalist>
+    </div>
+  </div>
+
+    {% else %}
+          <label class="col-md-2 control-label">Taken By
 
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -472,6 +490,8 @@ Format : (company name)
     </datalist>
     </div>
   </div>
+
+    {% endif %}
 
 
 </div>

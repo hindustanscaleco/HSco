@@ -488,7 +488,7 @@ def update_repairing_details(request,id):
         item2.repaired = repaired
         if taken_by != '' or taken_by != None:
             item2.taken_by = taken_by
-            item2.user_id = SiteUser.objects.get(name=taken_by).id
+            item2.user_id = SiteUser.objects.get(name=taken_by)
             item2.save(update_fields=['taken_by',]),
             item2.save(update_fields=['user_id', ]),
 

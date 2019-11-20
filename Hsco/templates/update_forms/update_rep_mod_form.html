@@ -211,7 +211,7 @@ function myFunction() {
     document.getElementById("myText18").disabled = false;
 <!--    document.getElementById("myText19").disabled = false;-->
 <!--    document.getElementById("myText20").disabled = false;-->
-    document.getElementById("myText21").disabled = false;
+    document.getElementById("myText21").disabled = true;
     document.getElementById("myText22").disabled = false;
     document.getElementById("myText23").disabled = false;
     document.getElementById("myText24").disabled = false;
@@ -586,21 +586,46 @@ function myFunction() {
   <input  name="feedback_given" placeholder="Feedback Given" id="myText16"  class="form-control"  type="text" disabled value="{% if repair_id.feedback_given %}YES{% else %}NO{% endif %}">
     </div>
   </div>
-          <label class="col-md-2 control-label">Taken By *
+
+            {% if user.role == 'Employee' %}
+      <label class="col-md-2 control-label">Taken By
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-         <input  name="taken_by" placeholder="Taken By" required id="myText21" class="form-control"  type="text" disabled value="{{repair_id.taken_by}}" list="taken_by">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+       <input name="taken_by" placeholder="Taken By" class="form-control"  type="text" list="taken_by">
+      <datalist style="height:20px;" id="taken_by">
+
+      <option value="{{user.name}}">
+
+    </datalist>
+    </div>
+  </div>
+
+    {% else %}
+          <label class="col-md-2 control-label">Taken By
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+       <input  name="taken_by" placeholder="Taken By" class="form-control"  type="text" list="taken_by">
       <datalist style="height:20px;" id="taken_by">
         {% for item in user_list %}
       <option value="{{item.name}}">
     {% endfor %}
     </datalist>
-
-
     </div>
+  </div>
+
+    {% endif %}
+
+
+
+
+
+
   </div>
 
 

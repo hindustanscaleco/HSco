@@ -612,6 +612,7 @@ def add_product_details(request,id):
         item.quantity = quantity
         item.type_of_scale = type_of_scale
         item.model_of_purchase = model_of_purchase
+
         item.sub_model = sub_model
         item.sub_sub_model = sub_sub_model
         item.serial_no_scale = serial_no_scale

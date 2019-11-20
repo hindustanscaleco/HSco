@@ -784,7 +784,7 @@ def load_restamping_stages_list(request,):
 
     selected_stage = request.GET.get('selected_stage')
 
-    restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),current_stage=selected_stage)
+    restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),current_stage=selected_stage).order_by('-id')
 
     context = {
         'restamp_list': restamp_list,

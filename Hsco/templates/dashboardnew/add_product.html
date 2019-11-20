@@ -38,7 +38,29 @@
 
       <!-- Main Content -->
       <div id="content">
+<script>
+$(document).ready(function(){
 
+    $(".editableBox22").change(function(){
+        $(".timeTextBox22").val($(".editableBox22 option:selected").html());
+    });
+});
+
+$(document).ready(function(){
+
+    $(".editableBoxa22").change(function(){
+        $(".timeTextBoxa22").val($(".editableBoxa22 option:selected").html());
+    });
+});
+
+
+$(document).ready(function(){
+
+    $(".editableBoxaa").change(function(){
+        $(".timeTextBoxaa").val($(".editableBoxaa option:selected").html());
+    });
+});
+</script>
 
         <!-- Topbar -->
 	{% include 'base_templates/navbar_for_dashboard.html' %}
@@ -72,12 +94,24 @@ color:;
 
 </style>
                    <style>
-          .editableBox {
+          .editableBox, .editableBox1,.editableBoxa22  {
     width: 70%;
     height: 30px;
 }
 
-.timeTextBox {
+.timeTextBox, .timeTextBox1 , .timeTextBoxa22 {
+    width: 65%;
+    margin-left: -70%;
+    height: 25px;
+    border: none;
+}
+
+          .editableBox22  {
+    width: 70%;
+    height: 30px;
+}
+
+.timeTextBox22 {
     width: 65%;
     margin-left: -70%;
     height: 25px;
@@ -85,12 +119,12 @@ color:;
 }
 
 
-.editableBoxa {
+.editableBoxa,.editableBoxa1 {
     width: 70%;
     height: 30px;
 }
 
-.timeTextBoxa {
+.timeTextBoxa,.timeTextBoxa1 {
     width: 65%;
     margin-left: -70%;
     height: 25px;
@@ -98,12 +132,12 @@ color:;
 }
 
 
-.editableBoxaa {
+.editableBoxaa ,.editableBoxaa1 {
     width: 70%;
     height: 30px;
 }
 
-.timeTextBoxaa {
+.timeTextBoxaa ,.timeTextBoxaa1{
     width: 65%;
     margin-left: -70%;
     height: 25px;
@@ -119,36 +153,13 @@ color:;
 
 .timeTextBoxz {
     width: 65%;
-    margin-left: -70px;
-    margin-top: 10px;
+    margin-left: -70%;
     height: 25px;
     border: none;
 }
 
         </style>
-          <script>
-$(document).ready(function(){
 
-    $(".editableBox").change(function(){
-        $(".timeTextBox").val($(".editableBox option:selected").html());
-    });
-});
-
-$(document).ready(function(){
-
-    $(".editableBoxa").change(function(){
-        $(".timeTextBoxa").val($(".editableBoxa option:selected").html());
-    });
-});
-
-
-$(document).ready(function(){
-
-    $(".editableBoxaa").change(function(){
-        $(".timeTextBoxaa").val($(".editableBoxaa option:selected").html());
-    });
-});
-</script>
         <!-- Begin Page Content -->
         <div class="container-fluid">
 <center>
@@ -170,18 +181,21 @@ $(document).ready(function(){
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-<input  type="text" required name="type_of_scale" placeholder="Type Of Scale" class="form-control" list="type_of_scale">
-      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-    <datalist style="height:20px;" id="type_of_scale">
-    <option value = "Electronics"></option>
-    <option value = "Mechanical"></option>
-    <option value = "China"></option>
-    <option value = "Addons"></option>
-    </datalist>
+      <select id="divselector" required name="type_of_scale" class="form-control">
+     <option value="d0">Select Scale Type</option>
+     <option value="d1"> China </option>
+     <option value="d2"> Electronical </option>
+     <option value="d3"> Mechanical </option>
+
+  </select>
+
+
      </div>
   </div>
+</div>
 
-
+     <div id="d1" class="divs d1 ">
+<div class="form-group row">
 
     <label class="col-md-2 control-label">Model of Purchase *
 
@@ -189,7 +203,59 @@ $(document).ready(function(){
 
     <div class="col-md-4 inputGroupContainer">
 <div class="wrapper">
-    <select class="editableBox" required name="state" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBox1" name="chinaVar2" id="chinaD1" style="border: 1px solid grey; border-radius: 5px;">
+      <option value="" selected="selected">Select</option>
+    </select>
+    <input class="timeTextBox1" name="model_of_purchase" maxlength="30"/>
+</div>
+  </div>
+
+</div>
+         <div class="form-group row">
+     <label class="col-md-2 control-label">Sub Model *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="wrapper">
+    <select class="editableBoxa1" name="chinaVar1a" id="chinaD2" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+<option value="" selected="selected">Select</option>
+    </select>
+    <input class="timeTextBoxa1" name="sub_model" maxlength="30"/>
+</div>
+  </div>
+  <label class="col-md-2 control-label">Sub Sub Model
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+   <div class="wrapper">
+    <select class="editableBoxaa1" name="chinaVar3" id="chinaD3" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+<option value="" selected="selected">Select</option>
+    </select>
+    <input class="timeTextBoxaa1" name="sub_sub_model" maxlength="30"/>
+
+</div>
+  </div>
+
+
+
+</div>
+     </div>
+
+
+
+
+    <div id="d2" class="divs d2 ">
+<div class="form-group row">
+
+    <label class="col-md-2 control-label">Model of Purchase *
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+<div class="wrapper">
+    <select class="editableBox" required name="state" id="electronicsD1" size="1" style="border: 1px solid grey; border-radius: 5px;">
       <option value="" selected="selected">Select</option>
     </select>
     <input class="timeTextBox" name="model_of_purchase" maxlength="30"/>
@@ -197,18 +263,17 @@ $(document).ready(function(){
   </div>
 
 </div>
-
-<div class="form-group row">
+         <div class="form-group row">
      <label class="col-md-2 control-label">Sub Model *
 
 
 </label>
   <div class="col-md-4 inputGroupContainer">
     <div class="wrapper">
-    <select class="editableBoxa" required name="countrya" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+    <select  class="editableBoxa22" required name="countrya" id="electronicsD2" size="1"  style="border: 1px solid grey; border-radius: 5px;">
 <option value="" selected="selected">Select</option>
     </select>
-    <input class="timeTextBoxa" name="sub_model" maxlength="30"/>
+    <input class="timeTextBoxa22" name="sub_model" maxlength="30"/>
 </div>
   </div>
   <label class="col-md-2 control-label">Sub Sub Model *
@@ -217,7 +282,7 @@ $(document).ready(function(){
 </label>
   <div class="col-md-4 inputGroupContainer">
    <div class="wrapper">
-    <select class="editableBoxaa" required id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+    <select class="editableBoxaa" required id="electronicsD3" size="1"  style="border: 1px solid grey; border-radius: 5px;">
 <option value="" selected="selected">Select</option>
     </select>
     <input class="timeTextBoxaa" name="sub_sub_model" maxlength="30"/>
@@ -228,6 +293,78 @@ $(document).ready(function(){
 
 
 </div>
+     </div>
+
+
+
+
+
+                    <div id="d3" class="divs d3 ">
+<div class="form-group row">
+
+    <label class="col-md-2 control-label">Model of Purchase *
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+<div class="wrapper">
+    <select class="editableBox22" required name="state" id="mechD1" size="1" style="border: 1px solid grey; border-radius: 5px;">
+      <option value="" selected="selected">Select</option>
+    </select>
+    <input class="timeTextBox22" name="model_of_purchase" maxlength="30"/>
+</div>
+  </div>
+
+</div>
+         <div class="form-group row">
+     <label class="col-md-2 control-label">Sub Model *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="wrapper">
+    <select  class="editableBoxa" required name="countrya" id="mechD2" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+<option value="" selected="selected">Select</option>
+    </select>
+    <input class="timeTextBoxa" name="sub_model" maxlength="30"/>
+</div>
+  </div>
+
+                  <label class="col-md-2 control-label">Sub Model
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="wrapper">
+    <select  class="editableBoxz" name="countrya" id="mechD3" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+<option value="" selected="selected">Select</option>
+    </select>
+    <input class="timeTextBoxz" name="sub_model" maxlength="30"/>
+</div>
+  </div>
+         </div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -381,8 +518,86 @@ $(document).ready(function(){
   <!-- Page level custom scripts -->
   <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
  <script>
-var stateObject = {
+
+$(document).ready(function(){
+
+    $(".editableBox").change(function(){
+        $(".timeTextBox").val($(".editableBox option:selected").html());
+    });
+});
+
+$(document).ready(function(){
+
+    $(".editableBoxa").change(function(){
+        $(".timeTextBoxa").val($(".editableBoxa option:selected").html());
+    });
+});
+
+
+$(document).ready(function(){
+
+    $(".editableBoxz").change(function(){
+        $(".timeTextBoxz").val($(".editableBoxz option:selected").html());
+    });
+});
+
+
+
+
+
+$(document).ready(function(){
+
+    $(".editableBox1").change(function(){
+        $(".timeTextBox1").val($(".editableBox1 option:selected").html());
+    });
+});
+
+$(document).ready(function(){
+
+    $(".editableBoxa1").change(function(){
+        $(".timeTextBoxa1").val($(".editableBoxa1 option:selected").html());
+    });
+});
+
+
+$(document).ready(function(){
+
+    $(".editableBoxz1").change(function(){
+        $(".timeTextBoxz1").val($(".editableBoxz1 option:selected").html());
+    });
+});
+</script>
+
+<script>
+var China = {
+"Luggage Scales": {
+"None": ['None'],
+},
+"Personal Scales": {
+"None": ['None'],
+},
+"Kitchen Scales": {
+"None": ['None'],
+},
+"Jewellery Scales": {
+"None": ['None'],
+},
+"Sealing Machines": {
+"None": ['None'],
+},
+}
+
+
+
+
+
+
+
+
+var electronics = {
+
 "Table Top Scales": {
 "ABS": ['ABS001','ABS002','ABS003','ABS004','ABS005','ABS006'],
 "MSS": ['MSS001','MSS002','MSS003','MSS004','MSS005','MSS006'],
@@ -482,35 +697,208 @@ var stateObject = {
 },
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+var mechanical = {
+
+
+
+"Weights": {
+"CI Weight": ['None'],
+"SS Weight": ['None'],
+"Brass Weight": ['None'],
+"Brass Flat Weight": ['None'],
+"SS Weight box": ['None']
+},
+
+"Mechanical Platform Scales": {
+"None": ['None'],
+},
+"Peg Measure": {
+"None": ['None'],
+},
+"Sealing Machines": {
+"None": ['None'],
+},
+"Mandir Scales": {
+"None": ['None'],
+},
+"Pedestral": {
+"None": ['None'],
+},
+"Counter Scales": {
+"Emboss Body Counter Scale with Tray": ['J5','J6'],
+"Plain Body Counter Scale ": ['J2','J5','J6'],
+"Stainless Steel Counter Scale": ['J2','J5','J6'],
+},
+"Circular Spring Balance": {
+"None": ['None'],
+},
+"Conical Measure": {
+"GI Conical Measure": ['None'],
+"SS Conical Measure": ['None'],
+"Brass Conical Measure": ['None'],
+
+},
+"Milk Measure": {
+"Aluminium Milk Measure": ['None'],
+"Stainless Steel Milk Measure": ['None'],
+
+},
+"Handy": {
+"None": ['None'],
+
+},
+"Dip Rod": {
+"None": ['None'],
+},
+"Dip Stick": {
+"None": ['None'],
+},
+"Meter Patti": {
+"None": ['None'],
+},
+"B Class Scales": {
+"None": ['None'],
+},
+"Ratio Palla Scales": {
+"None": ['None'],
+},
+"Dandi Kata": {
+"SDK": ['None'],
+"TDK": ['None'],
+},
+"Tagri Kata": {
+"TKGI": ['None'],
+"TKSS": ['None'],
+},
+
+
+}
+
+
+
+
+
+
+
 window.onload = function () {
-var countySel = document.getElementById("countySel"),
-stateSel = document.getElementById("stateSel"),
-districtSel = document.getElementById("districtSel");
-for (var country in stateObject) {
-countySel.options[countySel.options.length] = new Option(country, country);
+var chinaD1 = document.getElementById("chinaD1"),
+chinaD2 = document.getElementById("chinaD2"),
+chinaD3 = document.getElementById("chinaD3");
+for (var chinaVar1 in China) {
+chinaD1.options[chinaD1.options.length] = new Option(chinaVar1, chinaVar1);
 }
-countySel.onchange = function () {
-stateSel.length = 1; // remove all options bar first
-districtSel.length = 1; // remove all options bar first
+chinaD1.onchange = function () {
+chinaD2.length = 1; // remove all options bar first
+chinaD3.length = 1; // remove all options bar first
 if (this.selectedIndex < 1) return; // done
-for (var state in stateObject[this.value]) {
-stateSel.options[stateSel.options.length] = new Option(state, state);
-}
-}
-countySel.onchange(); // reset in case page is reloaded
-stateSel.onchange = function () {
-districtSel.length = 1; // remove all options bar first
-if (this.selectedIndex < 1) return; // done
-var district = stateObject[countySel.value][this.value];
-for (var i = 0; i < district.length; i++) {
-districtSel.options[districtSel.options.length] = new Option(district[i], district[i]);
-}
+for (var chinaVar2 in China[this.value]) {
+chinaD2.options[chinaD2.options.length] = new Option(chinaVar2, chinaVar2);
 }
 }
 
-//window.onbeforeunload = function() { return "Your work will be lost."; };
+chinaD1.onchange(); // reset in case page is reloaded
+chinaD2.onchange = function () {
+chinaD3.length = 1; // remove all options bar first
+if (this.selectedIndex < 1) return; // done
+var chinaVar3 = China[chinaD1.value][this.value];
+for (var i = 0; i < chinaVar3.length; i++) {
+chinaD3.options[chinaD3.options.length] = new Option(chinaVar3[i], chinaVar3[i]);
+}
+}
+
+
+// Electronics JS Code
+// Electronics JS Code
+
+
+
+var electronicsD1 = document.getElementById("electronicsD1"),
+electronicsD2 = document.getElementById("electronicsD2"),
+electronicsD3 = document.getElementById("electronicsD3");
+for (var electVar1 in electronics) {
+electronicsD1.options[electronicsD1.options.length] = new Option(electVar1, electVar1);
+}
+electronicsD1.onchange = function () {
+electronicsD2.length = 1; // remove all options bar first
+electronicsD3.length = 1; // remove all options bar first
+if (this.selectedIndex < 1) return; // done
+for (var electVar2 in electronics[this.value]) {
+electronicsD2.options[electronicsD2.options.length] = new Option(electVar2, electVar2);
+}
+}
+electronicsD1.onchange(); // reset in case page is reloaded
+electronicsD2.onchange = function () {
+electronicsD3.length = 1; // remove all options bar first
+if (this.selectedIndex < 1) return; // done
+var electVar3 = electronics[electronicsD1.value][this.value];
+for (var i = 0; i < electVar3.length; i++) {
+electronicsD3.options[electronicsD3.options.length] = new Option(electVar3[i], electVar3[i]);
+}
+}
+
+
+// Mechanical JS Code
+// Mechanical JS Code
+
+
+var mechD1 = document.getElementById("mechD1"),
+mechD2 = document.getElementById("mechD2"),
+mechD3 = document.getElementById("mechD3");
+for (var mechVar1 in mechanical) {
+mechD1.options[mechD1.options.length] = new Option(mechVar1, mechVar1);
+}
+mechD1.onchange = function () {
+mechD2.length = 1; // remove all options bar first
+mechD3.length = 1; // remove all options bar first
+if (this.selectedIndex < 1) return; // done
+for (var mechVar2 in mechanical[this.value]) {
+mechD2.options[mechD2.options.length] = new Option(mechVar2, mechVar2);
+}
+}
+mechD1.onchange(); // reset in case page is reloaded
+mechD2.onchange = function () {
+mechD3.length = 1; // remove all options bar first
+if (this.selectedIndex < 1) return; // done
+var mechVar2 = mechanical[mechD1.value][this.value];
+for (var i = 0; i < mechVar2.length; i++) {
+mechD3.options[mechD3.options.length] = new Option(mechVar2[i], mechVar2[i]);
+}
+}
+
+
+
+}
 </script>
 
+
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+            <script>
+$( document ).ready(function() {
+        $('.divs').css("display", "none");
+
+});
+$(function() {
+  $('#divselector').change(function(){
+    $('.divs').css("display", "none");
+    $('#' + $(this).val()).css("display", "block");;
+  });
+});
+
+            </script>
 
 
 </body>
