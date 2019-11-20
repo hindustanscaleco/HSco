@@ -233,6 +233,7 @@ def amc_views(request):
             # amc_list = Amc_After_Sales.objects.filter()
             context = {
                 'amc_list': amc_list,
+                'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
             }
             return render(request, "manager/amc_view.html", context)
         elif 'submit2' in request.POST:
@@ -245,6 +246,7 @@ def amc_views(request):
             # amc_list = Amc_After_Sales.objects.filter(customer_no=contact)
             context = {
                 'amc_list': amc_list,
+                'search_msg': 'Search result for Customer Contact No: ' + contact,
             }
             return render(request, "manager/amc_view.html",context )
 
@@ -258,6 +260,7 @@ def amc_views(request):
             # dispatch_list = Amc_After_Sales.objects.filter(customer_email_id=email)
             context = {
                 'amc_list': amc_list,
+                'search_msg': 'Search result for Customer Email ID: ' + email,
             }
             return render(request, "manager/amc_view.html",context )
         elif 'submit4' in request.POST:
@@ -271,6 +274,7 @@ def amc_views(request):
             # dispatch_list = Amc_After_Sales.objects.filter(customer_name=customer)
             context = {
                 'amc_list': amc_list,
+                'search_msg': 'Search result for Customer Name: ' + customer,
             }
             return render(request, "manager/amc_view.html",context )
 
@@ -286,6 +290,7 @@ def amc_views(request):
             # dispatch_list = Amc_After_Sales.objects.filter(customer_name=customer)
             context = {
                 'amc_list': amc_list,
+                'search_msg': 'Search result for Company Name: ' + company,
             }
             return render(request, "manager/amc_view.html", context)
 
@@ -311,6 +316,7 @@ def amc_views(request):
             # dispatch_list = Amc_After_Sales.objects.filter(crn_number=crm)
             context = {
                 'amc_list': amc_list,
+                'search_msg': 'Search result for CRM No. : ' + crm,
             }
             return render(request, "manager/amc_view.html",context )
     else:
@@ -322,6 +328,7 @@ def amc_views(request):
 
         context = {
             'amc_list': amc_list,
+
         }
         return render(request, "manager/amc_view.html",context )
 

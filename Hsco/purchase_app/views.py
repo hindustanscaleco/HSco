@@ -203,7 +203,7 @@ def add_purchase_details(request):
             dispatch.save()
             current_stage_in_db = Dispatch.objects.get(id=dispatch.pk).current_stage  # updatestage1
             if (current_stage_in_db == '' or current_stage_in_db == None):
-                Dispatch.objects.filter(id=id).update(current_stage='dispatch q')
+                Dispatch.objects.filter(id=dispatch.pk).update(current_stage='dispatch q')
 
 
             # dispatch2 = Dispatch.objects.get(id=dispatch.pk)

@@ -553,6 +553,7 @@ def repairing_module_home(request):
             # repair_list = Repairing_after_sales_service.objects.filter(entry_timedate__range=[start_date, end_date])
             context = {
                 'repair_list': repair_list,
+                'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
             }
             return render(request, 'dashboardnew/repairing_module_home.html', context)
         elif 'submit2' in request.POST:
@@ -565,6 +566,7 @@ def repairing_module_home(request):
             # repair_list = Repairing_after_sales_service.objects.filter(phone_no=contact)
             context = {
                 'repair_list': repair_list,
+                'search_msg': 'Search result for Customer Contact No: ' + contact,
             }
             return render(request, 'dashboardnew/repairing_module_home.html', context)
 
@@ -578,6 +580,7 @@ def repairing_module_home(request):
             # repair_list = Repairing_after_sales_service.objects.filter(customer_email_id=email)
             context = {
                 'repair_list': repair_list,
+                'search_msg': 'Search result for Customer Email ID: ' + email,
             }
             return render(request, 'dashboardnew/repairing_module_home.html', context)
         elif 'submit4' in request.POST:
@@ -590,6 +593,7 @@ def repairing_module_home(request):
             # repair_list = Repairing_after_sales_service.objects.filter(name=customer)
             context = {
                 'repair_list': repair_list,
+                'search_msg': 'Search result for Customer Name: ' + customer,
             }
             return render(request, 'dashboardnew/repairing_module_home.html', context)
 
@@ -603,6 +607,7 @@ def repairing_module_home(request):
             # repair_list = Repairing_after_sales_service.objects.filter(company_name=company)
             context = {
                 'repair_list': repair_list,
+                'search_msg': 'Search result for Company Name: ' + company,
             }
             return render(request, 'dashboardnew/repairing_module_home.html', context)
         elif request.method=='POST' and 'submit6' in request.POST:
@@ -615,6 +620,7 @@ def repairing_module_home(request):
             # repair_list = Repairing_after_sales_service.objects.filter(crn_number=crm)
             context = {
                 'repair_list': repair_list,
+                'search_msg': 'Search result for CRM No. : ' + crm,
             }
             return render(request, 'dashboardnew/repairing_module_home.html', context)
     else:
