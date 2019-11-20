@@ -195,27 +195,7 @@ def onsite_views(request):
 
 def add_onsite_aftersales_service(request):
     cust_sugg = Customer_Details.objects.all()
-    # if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
-    #     user_list = SiteUser.objects.filter(group__icontains=request.user.name,
-    #                                         modules_assigned__icontains='Onsite Repairing Module' , is_deleted=False)
-    #
-    #
-    # else:  # display colleague
-    #     list_group = SiteUser.objects.get(id=request.user.id).group
-    #     import ast
-    #
-    #     x = "[" + list_group + "]"
-    #     x = ast.literal_eval(x)
-    #     manager_list = []
-    #     for item in x:
-    #         name = SiteUser.objects.filter(name__icontains=item)
-    #         for it in name:
-    #             if it.role == 'Manager':
-    #                 if item not in manager_list:
-    #                     manager_list.append(item)
-    #
-    #     user_list = SiteUser.objects.filter(group__icontains=manager_list,
-    #                                         modules_assigned__icontains='Onsite Repairing Module',is_deleted=False)
+
     if request.user.role == 'Super Admin':
         user_list=SiteUser.objects.filter(Q(id=request.user.id) | Q(group__icontains=request.user.name),modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
 
@@ -230,7 +210,6 @@ def add_onsite_aftersales_service(request):
         list_group = SiteUser.objects.get(id=request.user.id).manager
         user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=list_group),
                                             modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
-
 
     # user_list=SiteUser.objects.filter(group__icontains=request.user.name,modules_assigned__icontains='Onsite Repairing Module')
 
@@ -315,7 +294,7 @@ def add_onsite_aftersales_service(request):
         item2.train_line = train_line
         item2.products_to_be_repaired = products_to_be_repaired
 
-        item2.visiting_charges_told_customer = visiting_charges_told_customer
+        item2.visiting_charges_told_customer = float(visiting_charges_told_customer)
         item2.total_cost = 0.0
         item2.complaint_assigned_to = complaint_assigned_to
         item2.complaint_assigned_on = complaint_assigned_on
@@ -326,17 +305,16 @@ def add_onsite_aftersales_service(request):
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item2.save()
-        current_stage_in_db = Onsite_aftersales_service.objects.get(
-            id=id).current_stage  # updatestage2
+        current_stage_in_db = Onsite_aftersales_service.objects.get(id=item2.pk).current_stage  # updatestage2
 
         if (current_stage_in_db == 'Onsite repairing request is raised') and (
                 complaint_assigned_to != '' or complaint_assigned_to != None):
-            Onsite_aftersales_service.objects.filter(id=id).update(
+            Onsite_aftersales_service.objects.filter(id=item2.pk).update(
                 current_stage='Onsite repairing request is assigned')
 
         if (current_stage_in_db == 'Onsite repairing request is assigned') and (
                 time_taken_destination_return_office_min != '' or time_taken_destination_return_office_min != None):
-            Onsite_aftersales_service.objects.filter(id=id).update(
+            Onsite_aftersales_service.objects.filter(id=item2.pk).update(
                 current_stage='Onsite repairing request is completed')
 
         if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
