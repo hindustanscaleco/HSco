@@ -355,7 +355,7 @@ def view_customer_details(request):
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
                                                             user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
@@ -368,7 +368,7 @@ def view_customer_details(request):
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
                                                             user_id__is_deleted=False,crm_no__contact_no=contact).order_by('-id')
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__contact_no=contact).order_by('-id')
@@ -382,7 +382,7 @@ def view_customer_details(request):
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
                                                             user_id__is_deleted=False,crm_no__customer_email_id=email).order_by('-id')
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__customer_email_id=email).order_by('-id')
@@ -395,7 +395,7 @@ def view_customer_details(request):
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
                                                             user_id__is_deleted=False,crm_no__customer_name=customer).order_by('-id')
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__customer_name=customer).order_by('-id')
@@ -409,7 +409,7 @@ def view_customer_details(request):
         elif  'submit5' in request.POST:
             company = request.POST.get('company')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
                                                             user_id__is_deleted=False,crm_no__company_name=company).order_by('-id')
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__company_name=company).order_by('-id')
@@ -422,7 +422,7 @@ def view_customer_details(request):
         elif request.method=='POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
                                                             user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
@@ -434,7 +434,7 @@ def view_customer_details(request):
             return render(request, 'dashboardnew/cm.html', context)
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
-            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=True,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=True,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
         else:  # For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 
@@ -446,7 +446,7 @@ def view_customer_details(request):
         return render(request, 'dashboardnew/cm.html', context)
     else:
         if check_admin_roles(request):  # For ADMIN
-            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
         else:  # For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 
@@ -602,8 +602,14 @@ def update_customer_details(request,id):
             customer_id.save(update_fields=['dispatch_id_assigned'])
 
 
+            prod_list= list(Product_Details.objects.filter(purchase_id=customer_id.pk).values_list('id', flat=True))
+            for item in prod_list:   #newold
+                oobj=Product_Details.objects.get(id=item)
+                nobj=Product_Details_Dispatch()
+                nobj.__dict__ = oobj.__dict__.copy()
+                nobj.dispatch_id = dispatch.pk
 
-            # nobj.__dict__ = oobj.__dict__.copy()
+                Product_Details.objects.filter(id=item).update(product_dispatch_id=nobj.pk)
 
 
 
@@ -1200,7 +1206,7 @@ def load_users(request):
         return render(request, 'AJAX/load_users.html', context)
     else:
         if check_admin_roles(request):     #For ADMIN
-            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
         else:  #For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 

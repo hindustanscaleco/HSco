@@ -30,7 +30,7 @@ def onsite_views(request):
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
             if check_admin_roles(request):  # For ADMIN
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
                                                                        user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
             else:  # For EMPLOYEE
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
@@ -44,7 +44,7 @@ def onsite_views(request):
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
                                                                        user_id__is_deleted=False,crm_no__contact_no=contact).order_by('-id')
             else:  # For EMPLOYEE
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__contact_no=contact).order_by('-id')
@@ -58,7 +58,7 @@ def onsite_views(request):
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
             if check_admin_roles(request):  # For ADMIN
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
                                                                        user_id__is_deleted=False,crm_no__customer_email_id=email).order_by('-id')
             else:  # For EMPLOYEE
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__customer_email_id=email).order_by('-id')
@@ -71,7 +71,7 @@ def onsite_views(request):
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
                                                                        user_id__is_deleted=False,crm_no__customer_name=customer).order_by('-id')
             else:  # For EMPLOYEE
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__customer_name=customer).order_by('-id')
@@ -85,7 +85,7 @@ def onsite_views(request):
         elif  'submit5' in request.POST:
             company = request.POST.get('company')
             if check_admin_roles(request):  # For ADMIN
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
                                                                        user_id__is_deleted=False,crm_no__company_name=company).order_by('-id')
             else:  # For EMPLOYEE
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__company_name=company).order_by('-id')
@@ -98,7 +98,7 @@ def onsite_views(request):
         elif request.method=='POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
             if check_admin_roles(request):  # For ADMIN
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
                                                                        user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
             else:  # For EMPLOYEE
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
@@ -110,7 +110,7 @@ def onsite_views(request):
             return render(request, "manager/onsite_reparing.html", context)
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
-            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=True,user_id__modules_assigned__icontains='Onsite Repairing Module').order_by('-id')
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=True,user_id__modules_assigned__icontains='Onsite Repairing Module').order_by('-id')
         else:  # For EMPLOYEE
             onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk).order_by('-id')
         # onsite_list = Onsite_aftersales_service.objects.all()
@@ -124,7 +124,7 @@ def onsite_views(request):
     else:
         context={}
         if check_admin_roles(request):     #For ADMIN
-            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains='Onsite Repairing Module').order_by('-id')
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Onsite Repairing Module').order_by('-id')
         else:  #For EMPLOYEE
             onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk).order_by('-id')
         # onsite_list = Onsite_aftersales_service.objects.all()
@@ -896,7 +896,7 @@ def load_onsite_reparing_manager(request,):
         return render(request, 'AJAX/load_onsite_reparing_manager.html', context)
     else:
         if check_admin_roles(request):  # For ADMIN
-            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.group,
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
                                                                    user_id__is_deleted=False,
                                                                    user_id__modules_assigned__icontains='Onsite Repairing Module').order_by(
                 '-id')

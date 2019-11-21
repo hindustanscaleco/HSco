@@ -226,7 +226,7 @@ def amc_views(request):
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
             if check_admin_roles(request):  # For ADMIN
-                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,
+                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
                                                           user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
             else:  # For EMPLOYEE
                 amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
@@ -239,7 +239,7 @@ def amc_views(request):
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
-                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,
+                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
                                                           user_id__is_deleted=False,crm_no__contact_no=contact).order_by('-id')
             else:  # For EMPLOYEE
                 amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,crm_no__contact_no=contact).order_by('-id')
@@ -253,7 +253,7 @@ def amc_views(request):
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
             if check_admin_roles(request):  # For ADMIN
-                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,
+                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
                                                           user_id__is_deleted=False,crm_no__customer_email_id=email).order_by('-id')
             else:  # For EMPLOYEE
                 amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,crm_no__customer_email_id=email).order_by('-id')
@@ -266,7 +266,7 @@ def amc_views(request):
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
-                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,
+                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
                                                           user_id__is_deleted=False,crm_no__customer_name=customer).order_by('-id')
             else:  # For EMPLOYEE
                 amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,crm_no__customer_name=customer).order_by('-id')
@@ -281,7 +281,7 @@ def amc_views(request):
         elif  'submit5' in request.POST:
             company = request.POST.get('company')
             if check_admin_roles(request):  # For ADMIN
-                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,
+                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
                                                           user_id__is_deleted=False,
                                                           crm_no__company_name=company).order_by('-id')
             else:  # For EMPLOYEE
@@ -303,7 +303,7 @@ def amc_views(request):
         elif request.method=='POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
             if check_admin_roles(request):  # For ADMIN
-                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,
+                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
                                                           user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
             else:  # For EMPLOYEE
                 amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
@@ -321,7 +321,7 @@ def amc_views(request):
             return render(request, "manager/amc_view.html",context )
     else:
         if check_admin_roles(request):     #For ADMIN
-            amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False).order_by('-id')
+            amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False).order_by('-id')
         else:  #For EMPLOYEE
             manager = SiteUser.objects.get(id=request.user.pk).manager
             amc_list = Amc_After_Sales.objects.filter(user_id__manager=manager,user_id__is_deleted=False).order_by('-id')
