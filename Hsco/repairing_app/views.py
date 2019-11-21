@@ -631,7 +631,7 @@ def repairing_module_home(request):
             # repair_list2 = Repairing_after_sales_service.objects.filter(Q(taken_by='')).order_by('-id')
             # repair_list = Repairing_after_sales_service.objects.filter(taken_by=request.user.name,).order_by('-id')
         # repair_list = Repairing_after_sales_service.objects.all()
-        res = Repairing_after_sales_service.objects.filter((Q(id=request.user.id)|Q(taken_by=None) | Q(taken_by='')|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name)) & (~Q(current_stage='')|~Q(current_stage=None))).values('current_stage').annotate(
+        res = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by=''))| Q(taken_by=request.user.name)).values('current_stage').annotate(
             dcount=Count('current_stage'))
         context = {
             'repair_list': repair_list,
