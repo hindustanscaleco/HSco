@@ -233,8 +233,8 @@ $(function() {
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
                     <div class="col-xl-1 col-md-1 mb-1"><center> {{ list.pk }}</center></div>
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_person}}</center></div>
-					<div class="col-xl-2 col-md-1 mb-1"><center> {{list.crm_no.customer_email_id}} </center> </div>
-                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.crm_no.company_name }} </center></div>
+					<div class="col-xl-2 col-md-1 mb-1"><center> {% if list.crm_no.customer_email_id != None and list.crm_no.customer_email_id != '' %}{{list.crm_no.customer_email_id}}{% else %}{% endif %} </center> </div>
+                    <div class="col-xl-1 col-md-1 mb-1"><center>{% if list.crm_no.company_name != None and list.crm_no.company_name != '' %}{{list.crm_no.company_name}}{% else %}{% endif %} </center></div>
                     <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.second_contact_no }} </center></div>
                     <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.contract_start_date }} </center></div>
                     <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.contract_end_date }} </center></div>
