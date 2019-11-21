@@ -198,7 +198,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled id="myText2" value="{% if customer_id.company_name != None and customer_id.company_name != '' %}{{customer_id.company_name}}{% else %}{% endif %}">
+  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled id="myText2" value="{% if purchase_id_id.second_company_name != None and purchase_id_id.second_company_name != '' %}{{purchase_id_id.second_company_name}}{% else %}{% endif %}">
 
     </div>
   </div>
@@ -214,7 +214,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input class="form-control" name="customer_address" placeholder="Address" disabled id="myText3" value="{{customer_id.address}}">
+  <input class="form-control" name="customer_address" placeholder="Address" disabled id="myText3" value="{{purchase_id_id.company_address}}">
 
     </div>
   </div>
@@ -240,7 +240,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input name="customer_email_id" placeholder="E-mail Id" class="form-control"  type="email" disabled id="myText5" value="{% if customer_id.customer_email_id != None and customer_id.customer_email_id != '' %}{{customer_id.customer_email_id}}{% else %}{% endif %}">
+  <input name="customer_email_id" placeholder="E-mail Id" class="form-control"  type="email" disabled id="myText5" value="{% if purchase_id_id.company_email != None and purchase_id_id.company_email != '' %}{{purchase_id_id.company_email}}{% else %}{% endif %}">
     </div>
   </div>
 
