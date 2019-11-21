@@ -182,24 +182,25 @@ $(function() {
 
 
 <div class="output">
-                               <form method="POST">{% csrf_token%}
+
+                                               <form method="POST" autocomplete="off">{% csrf_token%}
   <div id="d1" class="divs d1 row">
 
-      <div class="col-xl-4 col-md-4 col-mb-4">
-                <input name="date1" required type="date" placeholder="Search 1" class="form-control">
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date1" type="date" placeholder="Search 1" class="form-control">
 
       </div>
 
-      <div class="col-xl-0 col-md-0 col-mb-0">
+      <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
                 <p style="font-weight: 600;">_</p>
 
       </div>
 
-      <div class="col-xl-4 col-md-4 col-mb-4">
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
                 <input name="date2" type="date" placeholder="Search 1" class="form-control">
 
       </div>
-      <div class="col-xl-2 col-md-2 col-mb-2">
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
                 <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
 
       </div>

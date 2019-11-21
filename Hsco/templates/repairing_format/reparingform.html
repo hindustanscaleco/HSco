@@ -178,21 +178,23 @@ width: 100%;
 
 </style>
 </head>
-<body>
+<body id="section-to-print">
 
 <style>
 
 
 .mainDiv {
-width: 60%;
+width: auto;
 border: 1px solid black;
 }
 </style>
 <center>
 <br>
-<div class="mainDiv">
+		<button onclick="fun2()" class="btn btn-primary no-print">Print this page</button>
+<br>
+	<br>
+<div  class="mainDiv">
 
-	<form class="div2">
 
 <div class="container">
   <div class="row">
@@ -216,17 +218,23 @@ border: 1px solid black;
 </div>
 <div class="container div2">
   <div class="row" >
-<div class="col-xl-6 col-md-6">Sr No: 591</div>
-<div class="col-md-6 col-xl-6">Date:</div>
+<div class="col-xl-6 col-md-6">Sr No: {{ data.pk }}</div>
+<div class="col-md-6 col-xl-6">Date:{{ data.entry_timedate }}</div>
 
     <div class="col-xl-12">
 	<table border=1 style="width: 100%;">
 		<tr>
 			<td style="width: 50%;"><b>Name:</b></td>
-			<td>&nbsp;</td>
+			<td>&nbsp; {{ data.second_person }}</td>
 		</tr>
 		<tr>	<td><b>Make and Model:</b></td>
-			<td>&nbsp;</td>
+			<td>
+			{% for item in product_list %}
+				{{ forloop.counter }} )
+				{{ item.model }}
+				,{{ item.sub_model }} <br>
+				{% endfor %}
+			</td>
 		</tr>
 	</table>
 	1- दुरुस्तीसाठी कोणतीही हमी नाही. कार्यशाळेतून बाहेर जाण्यापूर्वी आपल्या पूर्ण समाधानानुसार स्केल तपासा.<br>
@@ -243,7 +251,6 @@ border: 1px solid black;
 	</form>
 </div>
 </center>
-	<form class="div2">
 <center>
 <br>
 <div class="mainDiv">
@@ -263,9 +270,15 @@ border: 1px solid black;
 </div>
 	<br>
 	</div>
+
 </center>
 
-</form>
+
+<script>
+function fun2() {
+  window.print();
+}
+</script>
 
 <br>
 </body>

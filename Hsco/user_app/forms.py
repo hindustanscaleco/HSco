@@ -17,7 +17,8 @@ class LoginForm(forms.Form):
     mobile = forms.IntegerField(validators=[phone_regex],
          widget=forms.TextInput(
              attrs={
-                 'type': 'number',
+                 'type': 'text',
+                 'onkeypress':"return isNumber(event)",
                  'class': 'form-control',
                  'placeholder': "Enter Mobile Number",
                  'name': 'mobile',

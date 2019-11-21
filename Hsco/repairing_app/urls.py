@@ -21,6 +21,6 @@ urlpatterns = [
     path('load_customer/',load_customer, name ='load_customer'),
     path('load_prev_rep/',load_prev_rep, name ='load_prev_rep'),
     path('send_sms/<str:name>/<str:phone>/<str:email>/<str:repair_id>/<str:item_id>',send_sms, name ='send_sms'),
-    path('repairing_form/',repairing_form, name ='repairing_form'),
+    path('repairing_form/<str:id>',repairing_form, name ='repairing_form'),
     # path('repairing_form_back',repairing_form_back, name ='repairing_form_back'),
 ]

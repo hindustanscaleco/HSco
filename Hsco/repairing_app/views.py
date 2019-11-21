@@ -258,6 +258,11 @@ def repair_product(request,id):
         type_of_machine = request.POST.get('type_of_machine')
         model = request.POST.get('model')
         sub_model = request.POST.get('sub_model')
+        model1 = request.POST.get('model1')
+        sub_model1 = request.POST.get('sub_model1')
+        model2 = request.POST.get('model2')
+        sub_model2 = request.POST.get('sub_model2')
+
         problem_in_scale = request.POST.get('problem_in_scale')
         components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
         components_replaced = request.POST.get('components_replaced')
@@ -274,8 +279,24 @@ def repair_product(request,id):
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item.type_of_machine = type_of_machine
-        item.model = model
-        item.sub_model = sub_model
+        if model != None and model != '':
+            item.model = model
+
+            item.sub_model = sub_model
+
+        elif model1 != None and model1 != '':
+
+            item.model = model1
+
+            item.sub_model = sub_model1
+
+
+        elif model2 != None and model2 != '':
+
+            item.model = model2
+
+            item.sub_model = sub_model2
+
         item.problem_in_scale = problem_in_scale
         item.components_replaced_in_warranty = components_replaced_in_warranty
         item.components_replaced = components_replaced
@@ -475,11 +496,16 @@ def update_repairing_details(request,id):
             item2.save(update_fields=['stage_update_timedate', ])
 
         # item2.total_cost = total_cost
-        if informed_on != '':
-
-            item2.informed_on = informed_on
-            item2.save(update_fields=['informed_on', ]),
-        item2.informed_by = informed_by
+        # if informed_on != '':
+        #
+        #     item2.informed_on = informed_on
+        #     item2.save(update_fields=['informed_on', ]),
+        #
+        if informed_by != None:
+            item2.informed_by = informed_by
+            item2.informed_on = datetime.today().strftime('%Y-%m-%d')
+            item2.save(update_fields=['informed_on'])
+            item2.save(update_fields=['informed_by', ]),
         item2.second_person=customer_name
         # item2.third_person=third_person
         item2.second_contact_no=contact_no
@@ -492,10 +518,17 @@ def update_repairing_details(request,id):
             item2.save(update_fields=['taken_by',]),
             item2.save(update_fields=['user_id', ]),
 
-        item2.repaired_date = repaired_date
-        item2.delivery_date = delivery_date
-        item2.delivery_by = delivery_by
-        item2.repaired_by = repaired_by
+        if repaired_by != None:
+            item2.repaired_by = informed_by
+            item2.repaired_date = datetime.today().strftime('%Y-%m-%d')
+            item2.save(update_fields=['repaired_by'])
+            item2.save(update_fields=['repaired_date', ]),
+
+        if delivery_by != None:
+            item2.delivery_by = informed_by
+            item2.delivery_date = datetime.today().strftime('%Y-%m-%d')
+            item2.save(update_fields=['delivery_by'])
+            item2.save(update_fields=['delivery_date', ]),
         # item2.feedback_given = feedback_given
         # item2.current_stage = current_stage
 
@@ -508,12 +541,8 @@ def update_repairing_details(request,id):
         # item2.save(update_fields=['products_to_be_repaired', ]),
 
 
-        item2.save(update_fields=['informed_by', ]),
+        # item2.save(update_fields=['informed_by', ]),
         item2.save(update_fields=['confirmed_estimate', ]),
-        item2.save(update_fields=['repaired', ]),
-        item2.save(update_fields=['repaired_date', ]),
-        item2.save(update_fields=['delivery_date', ]),
-        item2.save(update_fields=['delivery_by', ]),
         item2.save(update_fields=['repaired_by','taken_by', ]),
         # item2.save(update_fields=['feedback_given', ])
         # item2.save(update_fields=['current_stage', ])
@@ -1273,8 +1302,14 @@ def send_sms(request,name,phone,email,repair_id,item_id):
 
 
 
-def repairing_form(request):
-    return render(request,'repairing_format/reparingform.html')
+def repairing_form(request,id):
+    data=Repairing_after_sales_service.objects.get(id=id)
+    product_list=Repairing_Product.objects.filter(repairing_id=id)
+    context={
+        'data':data,
+        'product_list':product_list,
+    }
+    return render(request,'repairing_format/reparingform.html',context)
 #
 # def repairing_form_back(request):
 #     return render(request,'repairing_form/reparingformback.html')
