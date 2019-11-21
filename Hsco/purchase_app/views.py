@@ -604,22 +604,31 @@ def update_customer_details(request,id):
 
             prod_list= list(Product_Details.objects.filter(purchase_id=customer_id.pk).values_list('id', flat=True))
             for item in prod_list:   #newold
+
                 oobj=Product_Details.objects.get(id=item)
-                nobj=Product_Details_Dispatch()
-                nobj.__dict__ = oobj.__dict__.copy()
-                nobj.dispatch_id = Dispatch.objects.get(id=dispatch.pk)
 
-                Product_Details.objects.filter(id=item).update(product_dispatch_id=nobj.pk)
+                dispatch_pro=Product_Details_Dispatch()
 
+                dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+                dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                # dispatch_pro.product_name = product_name
+                dispatch_pro.quantity = oobj.quantity
+                dispatch_pro.type_of_scale = oobj.type_of_scale
+                dispatch_pro.model_of_purchase = oobj.model_of_purchase
+                dispatch_pro.sub_model = oobj.sub_model
+                dispatch_pro.sub_sub_model = oobj.sub_sub_model
+                dispatch_pro.serial_no_scale = oobj.serial_no_scale
+                dispatch_pro.brand = oobj.brand
+                dispatch_pro.capacity = oobj.capacity
+                dispatch_pro.unit = oobj.unit
+                dispatch_pro.value_of_goods = oobj.value_of_goods
+                dispatch_pro.dispatch_id = Dispatch.objects.get(id=dispatch.pk)
+                dispatch_pro.save()
 
+                #aaao
 
-
-
-
-
-
-
-
+                # nobj.__dict__ = oobj.__dict__.copy()
+                Product_Details.objects.filter(id=item).update(product_dispatch_id=dispatch_pro.pk)
 
 
         item2.channel_of_dispatch = channel_of_dispatch
