@@ -361,10 +361,12 @@ $(function() {
   <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Dispatch ID </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Customer Name </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Contact No </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Dispatched by </center></div>
+                    <div class="col-xl-1 col-md-1 mb-1"><center> Dispatch ID </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Customer Name </center></div>|
+                    <div class="col-xl-2 col-md-2 mb-1"><center> Company Name </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Contact No </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Email-ID </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Dispatched by </center></div>
                     <!--<div class="col-xl-3 col-md-1 mb-1"><center> Feedback Given </center></div>-->
 
 
@@ -383,10 +385,12 @@ $(function() {
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.pk }}</center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.second_person }} </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.second_contact_no }} </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.dispatch_by }} </center></div>
+                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.pk }}</center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.second_person }} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>{% if list.crm_no.company_name != None and list.crm_no.company_name != '' %}{{list.crm_no.company_name}}{% else %}{% endif %}</center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.second_contact_no }} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>{% if list.crm_no.customer_email_id != None and list.crm_no.customer_email_id != '' %}{{list.crm_no.customer_email_id}}{% else %}{% endif %} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center>{% if list.dispatch_by != None and list.dispatch_by != '' %}{{list.dispatch_by}}{% else %}{% endif %} </center></div>
                     <!--<div class="col-xl-3 col-md-1 mb-1"><center>{{ list.dispatch_by }} </center></div>-->
 
 

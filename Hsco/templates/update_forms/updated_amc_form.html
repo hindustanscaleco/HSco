@@ -210,7 +210,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
     <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-    <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" id="myText3" disabled value="{{amc_list.crm_no.company_name}}">
+    <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" id="myText3" disabled value="{% if amc_list.crm_no.company_name != None and amc_list.crm_no.company_name != '' %}{{amc_list.crm_no.company_name}}{% else %}{% endif %}">
   </div>
   </div>
 
@@ -270,7 +270,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="type_of_scale" placeholder="Type of Scale" class="form-control"  type="text" id="myText8" disabled value="{{amc_list.type_of_scale}}">
+  <input  name="type_of_scale" required placeholder="Type of Scale" class="form-control"  type="text" id="myText8" disabled value="{{amc_list.type_of_scale}}">
     </div>
   </div>
 
@@ -363,20 +363,13 @@ function myFunction() {
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Contract Amount
-
-
-
-
-
-
-
+  <label class="col-md-2 control-label">Contract Amount *
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="contract_amount" placeholder="Contract Amount" class="form-control"  type="text" id="myText11" disabled value="{{amc_list.contract_amount}}">
+  <input  name="contract_amount" required placeholder="Contract Amount" class="form-control"  type="text" id="myText11" disabled value="{{amc_list.contract_amount}}">
 
 
      </div>
@@ -462,7 +455,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_1" placeholder="Report 1" class="form-control"  type="text" id="myText16" disabled value="{{amc_list.repot_1}}">
+  <input  name="repot_1" placeholder="Report 1" class="form-control"  type="text" id="myText16" disabled value="{% if amc_list.repot_1 != None and amc_list.repot_1 != '' %}{{amc_list.repot_1}}{% else %}{% endif %}">
     </div>
   </div>
 
@@ -493,7 +486,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_2" placeholder="Report 2" class="form-control"  type="text" id="myText18" disabled value="{{amc_list.repot_2}}">
+  <input  name="repot_2" placeholder="Report 2" class="form-control"  type="text" id="myText18" disabled value="{% if amc_list.repot_2 != None and amc_list.repot_2 != '' %}{{amc_list.repot_2}}{% else %}{% endif %}">
     </div>
   </div>
 
@@ -522,7 +515,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_3" placeholder="Report 3" class="form-control"  type="text" id="myText20" disabled value="{{amc_list.repot_3}}">
+  <input  name="repot_3" placeholder="Report 3" class="form-control"  type="text" id="myText20" disabled value="{% if amc_list.repot_3 != None and amc_list.repot_3 != '' %}{{amc_list.repot_3}}{% else %}{% endif %}">
     </div>
   </div>
 
@@ -554,7 +547,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="repot_4" placeholder="Report 4" class="form-control"  type="text" id="myText22" disabled value="{{amc_list.repot_4}}">
+  <input name="repot_4" placeholder="Report 4" class="form-control"  type="text" id="myText22" disabled value="{% if amc_list.repot_4 != None and amc_list.repot_4 != '' %}{{amc_list.repot_4}}{% else %}{% endif %}">
     </div>
   </div>
 

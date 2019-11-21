@@ -375,60 +375,60 @@ display:none;
                 </div>
               </div>
 
-        <div style="cursor: pointer; " onclick="choice1('Finally Collected')" class="col-xl-2 col-md-3 mb-12">
-              <div class="card shadow" style="    background: linear-gradient(40deg,rgba(69,202,252,.9),rgba(48,63,159,.9))">
-                <div class="card-body row" style="padding-left: 45px;color: white; font-weight: 600; font-size: 16px;  height: 130px;">
 
-                    <center><p> <br>
- Finally Collected.&nbsp;<br> ({{rep5}})</p></center>
+       <div class="col-xl-3 col-md-3 mb-12" >
+           <div onclick="choice1('Repaired but not collected')" class="card shadow" style=" cursor: pointer; background: linear-gradient(40deg,rgba(255,110,196,.9),rgba(120,115,245,.9))">
+               <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 14px;  height: 12%;">
 
-                    </div>
-
-                </div>
-              </div>
-
-        <div class="col-xl-3 col-md-3 mb-12" >
-              <div onclick="choice1('Repaired but not collected')" class="card shadow" style=" cursor: pointer; background: linear-gradient(40deg,rgba(255,110,196,.9),rgba(120,115,245,.9))">
-                <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 14px;  height: 12%;">
-
-                    <center>
-                        <p>
+                   <center>
+                       <p>
 
                           Repaired but not collected.({{rep4}})
                         </p>
-                        </center>
+                   </center>
 
-                    </div>
+               </div>
 
-                </div>
-            <div onclick="choice1('4days')" class="card shadow" style="cursor: pointer; float:left; width:50%;  background: linear-gradient(40deg,rgba(255,110,196,.9),rgba(120,115,245,.9))">
-                <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 14px;  height: 15px;">
+           </div>
+           <div onclick="choice1('4days')" class="card shadow" style="cursor: pointer; float:left; width:50%;  background: linear-gradient(40deg,rgba(255,110,196,.9),rgba(120,115,245,.9))">
+               <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 14px;  height: 15px;">
 
-                    <center>
-                        <p>
+                   <center>
+                       <p>
 
                           4 Days ({{rep4_4d}})
                         </p>
-                        </center>
+                   </center>
 
-                    </div>
+               </div>
 
-                </div>
-            <div onclick="choice1('10days')" class="card shadow" style="cursor: pointer; float:left; width:50%; background: linear-gradient(40deg,rgba(255,110,196,.9),rgba(120,115,245,.9))">
-                <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 14px;  height: 12px;">
+           </div>
+           <div onclick="choice1('10days')" class="card shadow" style="cursor: pointer; float:left; width:50%; background: linear-gradient(40deg,rgba(255,110,196,.9),rgba(120,115,245,.9))">
+               <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 14px;  height: 12px;">
 
-                    <center>
-                        <p>
+                   <center>
+                       <p>
 
                           10 Days  ({{rep4_10d}})
                         </p>
-                        </center>
+                   </center>
 
-                    </div>
+               </div>
 
-                </div>
-              </div>
-        </div>
+           </div>
+       </div>
+       <div style="cursor: pointer; " onclick="choice1('Finally Collected')" class="col-xl-2 col-md-3 mb-12">
+           <div class="card shadow" style="    background: linear-gradient(40deg,rgba(69,202,252,.9),rgba(48,63,159,.9))">
+               <div class="card-body row" style="padding-left: 45px;color: white; font-weight: 600; font-size: 16px;  height: 130px;">
+
+                   <center><p> <br>
+                       Finally Collected.&nbsp;<br> ({{rep5}})</p></center>
+
+               </div>
+
+           </div>
+       </div>
+   </div>
 
 
 
@@ -490,10 +490,10 @@ display:none;
 
                     <div class="col-xl-1 col-md-2 mb-1"><center> Reparing No. </center> </div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Customer Name </center></div>|
+                    <div class="col-xl-2 col-md-2 mb-1"><center> Company Name </center></div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Contact No. </center></div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Customer Email </center></div>|
-                    <div class="col-xl-3 col-md-2 mb-1"><center> Current Stage </center> </div>|
-                    <div class="col-xl-1 col-md-2 mb-1"><center> Taken by </center> </div>
+                    <div class="col-xl-2 col-md-2 mb-1"><center> Current Stage </center> </div>
                     </div>
 
 
@@ -515,10 +515,10 @@ display:none;
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto;">
                     <div class="col-xl-1 col-md-1 mb-1"><center> {{list.pk}} </center> </div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_person}}</center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {% if list.crm_no.company_name != None and list.crm_no.company_name != '' %}{{list.crm_no.company_name}}{% else %}{% endif %}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_contact_no}} </center> </div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.crm_no.customer_email_id}} </center> </div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.current_stage}} </center> </div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center> {{list.taken_by}} </center> </div>
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.current_stage}} </center> </div>
                     </div>
 
                 </div>

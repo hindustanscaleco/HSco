@@ -316,7 +316,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company name" class="form-control" id="myText4"  type="text" disabled value="{{customer_id.company_name}}">
+  <input  name="company_name" placeholder="Company name" class="form-control" id="myText4"  type="text" disabled value="{% if customer_id.company_name != None and customer_id.company_name != '' %}{{customer_id.company_name}}{% else %}{% endif %}">
 
 
      </div>
@@ -910,6 +910,7 @@ tr:nth-child(even) {
   </div>
   </div>
 </div>
+
 
    <!-- End of Page Wrapper -->
 

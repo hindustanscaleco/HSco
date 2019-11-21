@@ -428,6 +428,9 @@ def update_amc_form(request,update_id):
             item2.visit_4 = visit_4
             item.save(update_fields=['visit_4'])
 
+        item.repot_1 = repot_1
+        item.repot_2 = repot_2
+        item.repot_3 = repot_3
         item.repot_4 = repot_4
         item.save(update_fields=['contract_amount','type_of_scale','serial_no_scale',
                                  'contract_valid_in_years','contract_amount','contract_no_reporting_breakdown','contract_start_date',
