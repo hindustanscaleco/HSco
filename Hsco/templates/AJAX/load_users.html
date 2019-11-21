@@ -59,12 +59,11 @@
                 <div class="card-body row" style="padding: 10px;color: black; font-weight: 600; font-size: 12px; height: 35px; ">
 
 
-
-                    <div class="col-xl-2 col-md-1 mb-1" style="margin-left: -14px;"><center> Customer Name </center></div>
+                    <div class="col-xl-1 col-md-1 mb-1 "><center class="">  Purchase ID </center></div>
+                    <div class="col-xl-2 col-md-1 mb-1"><center class="border-left-primary"> Customer Name </center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary"> Company Name </center></div>
-                    <div class="col-xl-1 col-md-1 mb-1 "><center class="border-left-primary">  Purchase ID </center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">  Contact No. </center> </div>
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">   Sales Person </center> </div>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">  Email ID </center> </div>
                     <div class="col-xl-1 col-md-1 mb-1 "><center class="border-left-primary"> Feedback  </center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary"> <p>Stars</p> </center>
                     </div>
@@ -87,12 +86,11 @@
 
 
                     <div class="col-xl-12 col-md-11 mb-1" style="font-size:10px;">Dispatch Id: {% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned}}{% endif %} </div>
-
-                    <div class="col-xl-2 col-md-1 mb-1"> {{ list1.crm_no.customer_name }}</div>
+                    <div class="col-xl-1 col-md-1 mb-1">{{ list1.pk}} </div>
+                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary"> {{ list1.second_person }}</div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.company_name}} </div>
-                    <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{{ list1.pk}} </div>
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.crm_no.contact_no}} </div>
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.sales_person}} </div>
+                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.second_contact_no}} </div>
+                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{% if list1.crm_no.customer_email_id != None and list1.crm_no.customer_email_id != '' %}{{list1.crm_no.customer_email_id}}{% else %}{% endif %} </div>
                     <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{% if list1.feedback_form_filled %} YES {% else %} NO {% endif %}</div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">
                          {% for avg in  list1.feedback_stars|rjust:'5'  %}
