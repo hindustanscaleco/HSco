@@ -450,10 +450,19 @@ def update_dispatch_details(request,update_id):
         # item.third_contact_no=third_contact_no
         item.second_person=customer_name   #new4
         item.second_contact_no=contact_no   #new5
-        if date_of_dispatch != '':
-            item.date_of_dispatch = date_of_dispatch
+        # if date_of_dispatch != '':
+        #     item.date_of_dispatch = date_of_dispatch
+        #     item.save(update_fields=['date_of_dispatch'])
+        from datetime import datetime
+
+        datetime.today().strftime('%Y-%m-%d')
+        if dispatch_by != None:
+            item.dispatch_by = dispatch_by
+            item.date_of_dispatch = datetime.today().strftime('%Y-%m-%d')
             item.save(update_fields=['date_of_dispatch'])
-        item.dispatch_by = dispatch_by
+            item.save(update_fields=['dispatch_by', ]),
+
+
         item.packed_by = packed_by
         item.hamal_name = hamal_name
         item.no_bundles = no_bundles
@@ -536,7 +545,7 @@ def update_dispatch_details(request,update_id):
 
         item.save(update_fields=['second_person','third_person','second_contact_no','third_contact_no', ]),
         item.save(update_fields=['second_person','second_contact_no', ])
-        item.save(update_fields=['dispatch_by', ]),
+
         item.save(update_fields=['packed_by', ]),
         item.save(update_fields=['hamal_name', ]),
         item.save(update_fields=['no_bundles', ]),

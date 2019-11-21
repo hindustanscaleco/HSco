@@ -202,6 +202,10 @@ def add_purchase_details(request):
 
             dispatch.second_person = customer_name  # new1
             dispatch.second_contact_no = contact_no  # new2
+            dispatch.second_company_name = company_name  # new2
+            dispatch.company_email = customer_email_id
+            dispatch.company_address = address  # new2
+            dispatch.channel_of_dispatch = channel_of_dispatch   # new2
             dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
             dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
             # dispatch.customer_email = customer_email_id
@@ -559,6 +563,59 @@ def update_customer_details(request,id):
         item2.channel_of_sales = channel_of_sales
         item2.industry = industry
         # item2.value_of_goods = value_of_goods
+
+        if item2.channel_of_dispatch =='Franchisee Store' and channel_of_dispatch != 'Franchisee Store':
+            dispatch = Dispatch()
+
+            if Customer_Details.objects.filter(customer_name=customer_name,
+                                               contact_no=contact_no).count() > 0:
+
+                dispatch.crm_no = Customer_Details.objects.filter(customer_name=customer_name,
+                                                                  contact_no=contact_no).first()
+
+            else:
+                dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
+
+            dispatch.second_person = customer_name  # new1
+            dispatch.second_contact_no = contact_no  # new2
+            dispatch.second_company_name = company_name  # new2
+            dispatch.company_email = customer_email_id
+            dispatch.company_address = address  # new2
+            dispatch.channel_of_dispatch = channel_of_dispatch  # new2
+            dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
+            dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            # dispatch.customer_email = customer_email_id
+            # dispatch.customer_name = customer_name
+            # dispatch.company_name = company_name
+            # dispatch.customer_address = address
+
+            dispatch.save()
+            current_stage_in_db = Dispatch.objects.get(id=dispatch.pk).current_stage  # updatestage1
+            if (current_stage_in_db == '' or current_stage_in_db == None):
+                Dispatch.objects.filter(id=dispatch.pk).update(current_stage='dispatch q')
+
+            # dispatch2 = Dispatch.objects.get(id=dispatch.pk)
+            # dispatch2.dispatch_id = dispatch.pk
+            # dispatch2.save(update_fields=['dispatch_id'])
+            customer_id = Purchase_Details.objects.get(id=item2.pk)
+            customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
+            customer_id.save(update_fields=['dispatch_id_assigned'])
+
+
+
+            # nobj.__dict__ = oobj.__dict__.copy()
+
+
+
+
+
+
+
+
+
+
+
+
         item2.channel_of_dispatch = channel_of_dispatch
         item2.notes = notes
         # item2.feedback_form_filled = feedback_form_filled
@@ -695,9 +752,29 @@ def add_product_details(request,id):
             dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
             dispatch_pro.quantity = quantity
             dispatch_pro.type_of_scale = type_of_scale
-            dispatch_pro.model_of_purchase = model_of_purchase
-            dispatch_pro.sub_model = sub_model
-            dispatch_pro.sub_sub_model = sub_sub_model
+
+            if model_of_purchase != None and model_of_purchase != '':
+
+                dispatch_pro.model_of_purchase = model_of_purchase
+
+                dispatch_pro.sub_model = sub_model
+                dispatch_pro.sub_sub_model = sub_sub_model
+            elif model_of_purchase1 != None and model_of_purchase1 != '':
+
+                dispatch_pro.model_of_purchase = model_of_purchase1
+
+                dispatch_pro.sub_model = sub_model1
+                dispatch_pro.sub_sub_model = sub_sub_model1
+
+            elif model_of_purchase2 != None and model_of_purchase2 != '':
+
+                dispatch_pro.model_of_purchase = model_of_purchase2
+
+                dispatch_pro.sub_model = sub_model2
+                dispatch_pro.sub_sub_model = sub_sub_model2
+            # dispatch_pro.model_of_purchase = model_of_purchase
+            # dispatch_pro.sub_model = sub_model
+            # dispatch_pro.sub_sub_model = sub_sub_model
             dispatch_pro.serial_no_scale = serial_no_scale
             dispatch_pro.brand = brand
             dispatch_pro.capacity = capacity

@@ -627,7 +627,7 @@ def repairing_module_home(request):
         if check_admin_roles(request):     #For ADMIN
             repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.group,user_id__is_deleted=False,user_id__modules_assigned__icontains="'Repairing Module'").order_by('-id')
         else:  #For EMPLOYEE
-            repair_list = Repairing_after_sales_service.objects.filter(Q(id=request.user.id)|Q(taken_by=None) | Q(taken_by='')).order_by('-id')
+            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='')) | Q(taken_by=request.user.name)).order_by('-id')
             # repair_list2 = Repairing_after_sales_service.objects.filter(Q(taken_by='')).order_by('-id')
             # repair_list = Repairing_after_sales_service.objects.filter(taken_by=request.user.name,).order_by('-id')
         # repair_list = Repairing_after_sales_service.objects.all()

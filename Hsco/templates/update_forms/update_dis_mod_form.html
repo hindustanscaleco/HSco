@@ -151,7 +151,7 @@ function myFunction() {
     document.getElementById("myText2").disabled = false;
     document.getElementById("myText3").disabled = false;
     document.getElementById("myText4").disabled = false;
-    document.getElementById("myText5").disabled = false;
+    document.getElementById("myText5").disabled = true;
     document.getElementById("myText6").disabled = false;
     document.getElementById("myText7").disabled = false;
     document.getElementById("myText8").disabled = false;
@@ -361,7 +361,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-<input  name="dispatch_by" placeholder="Dispatched By" id="myText6" disabled class="form-control" value="{{dispatch_item.dispatch_by}}" type="text" list="dispat_list">
+<input  name="dispatch_by" placeholder="Dispatched By" id="myText6" disabled class="form-control" value="{% if dispatch_item.dispatch_by == None %}{% else %}{{dispatch_item.dispatch_by}}{% endif %}" type="text" list="dispat_list">
     <datalist style="height:20px;" id="dispat_list">
       {% for item in user_list %}
 
@@ -387,7 +387,7 @@ function myFunction() {
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
 
       <input  name="packed_by" placeholder="Packed by
-" class="form-control" id="myText7" disabled value="{{dispatch_item.packed_by}}" type="text" list="packed_list">
+" class="form-control" id="myText7" disabled value="{% if dispatch_item.packed_by == None %}{% else %}{{dispatch_item.packed_by}}{% endif %}" type="text" list="packed_list">
         <datalist style="height:20px;" id="packed_list">
       {% for item in user_list %}
 
@@ -411,7 +411,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="hamal_name" placeholder="Hamal Name" class="form-control" id="myText8" type="text" disabled value="{{dispatch_item.hamal_name}}">
+  <input  name="hamal_name" placeholder="Hamal Name" class="form-control" id="myText8" type="text" disabled value="{% if dispatch_item.hamal_name == None %}{% else %}{{dispatch_item.hamal_name}}{% endif %}">
     </div>
   </div>
   </div>
@@ -445,7 +445,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-car faicons"></i></span>
-  <input  name="transport_name" placeholder="Transport Name" class="form-control" id="myText10" type="text" disabled value="{{dispatch_item.transport_name}}">
+  <input  name="transport_name" placeholder="Transport Name" class="form-control" id="myText10" type="text" disabled value="{% if dispatch_item.transport_name == None %}{% else %}{{dispatch_item.transport_name}}{% endif %}">
     </div>
   </div>
   </div>
@@ -527,42 +527,39 @@ function myFunction() {
 
 
 
-<div class="form-group row">
+<!--<div class="form-group row">-->
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
 
 
-<br>
+<!--<br>-->
 
-  <label class="col-md-2 control-label">Dispatched Goods
+  <!--<label class="col-md-2 control-label">Dispatched Goods-->
 
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-       <div class="repeatable">
-        <table style="border: 1px solid grey; width: 150%;">
-            <tr style="border: none;">
-                <td style="border: none; ">
-                    <input type="text" name="userInput[]"  class="item_name form-control"/>
-                </td>
-            </tr>
-        </table>
-           <button class="repeat btn btn-primary" style="font-size: 18px; margin-left: 5%;">Add </button>
-           <button id="submitList" type="button" class="btn btn-primary">  Submit List</button>
-
-
-    </div>
+<!--</label>-->
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+       <!--<div class="repeatable">-->
+        <!--<table style="border: 1px solid grey; width: 150%;">-->
+            <!--<tr style="border: none;">-->
+                <!--<td style="border: none; ">-->
+                    <!--<input type="text" name="userInput[]"  class="item_name form-control"/>-->
+                <!--</td>-->
+            <!--</tr>-->
+        <!--</table>-->
+           <!--<button class="repeat btn btn-primary" style="font-size: 18px; margin-left: 5%;">Add </button>-->
+           <!--<button id="submitList" type="button" class="btn btn-primary">  Submit List</button>-->
 
 
-
-
-
-    </div>
-  </div>
+    <!--</div>-->
 
 
 
+
+
+    <!--</div>-->
+  <!--</div>-->
 
 
 
@@ -572,19 +569,22 @@ function myFunction() {
 
 
 
-  <label class="col-md-2 control-label">Output here
 
 
 
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <input name="user" placeholder="Notes" id="aa" class="form-control" type="text">
-    </div>
-  </div>
+  <!--<label class="col-md-2 control-label">Output here-->
 
-</div>
+
+
+<!--</label>-->
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
+  <!--<input name="user" placeholder="Notes" id="aa" class="form-control" type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+<!--</div>-->
 
 
 
