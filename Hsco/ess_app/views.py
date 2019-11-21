@@ -84,7 +84,7 @@ def ess_home(request):
     if request.user.role == 'Super Admin':
         leave_req_list = Employee_Leave.objects.filter(user_id__is_deleted=False,)
     elif request.user.role == 'Manager' or request.user.role == 'Admin':
-        leave_req_list = Employee_Leave.objects.filter(user_id__group__icontains=request.user.group, user_id__is_deleted=False)
+        leave_req_list = Employee_Leave.objects.filter(user_id__group__icontains=request.user.name, user_id__is_deleted=False)
 
     if request.method == 'POST' and 'list[]' in request.POST:
         user_id = request.POST.get('user_id')
