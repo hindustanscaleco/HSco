@@ -607,7 +607,7 @@ def update_customer_details(request,id):
                 oobj=Product_Details.objects.get(id=item)
                 nobj=Product_Details_Dispatch()
                 nobj.__dict__ = oobj.__dict__.copy()
-                nobj.dispatch_id = dispatch.pk
+                nobj.dispatch_id = Dispatch.objects.get(id=dispatch.pk)
 
                 Product_Details.objects.filter(id=item).update(product_dispatch_id=nobj.pk)
 
