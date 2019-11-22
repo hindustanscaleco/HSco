@@ -365,13 +365,13 @@ def add_onsite_aftersales_service(request):
             crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
             try:
                 send_mail('Feedback Form',
-                      'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_onrepairing/' + str(
+                      'Click on the link to give feedback http://139.59.76.87/feedback_onrepairing/' + str(
                           request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
                       [crm_no.customer_email_id])
             except:
                 pass
 
-            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_onrepairing/' + str(
+            message = 'Click on the link to give feedback http://139.59.76.87/feedback_onrepairing/' + str(
                 request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
@@ -384,13 +384,13 @@ def add_onsite_aftersales_service(request):
 
             try:
                 send_mail('Feedback Form',
-                      'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_onrepairing/' + str(
+                      'Click on the link to give feedback http://139.59.76.87/feedback_onrepairing/' + str(
                           request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
                       [item.customer_email_id])
             except:
                 pass
 
-            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_onrepairing/' + str(
+            message = 'Click on the link to give feedback http://139.59.76.87/feedback_onrepairing/' + str(
                 request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
@@ -1052,4 +1052,6 @@ def onsitevisit_app_graph(request,user_id):
             'rep_feedback': rep_feedback,
         }
         return render(request,"graphs/onsitevisit_app_graph.html",context)
+
+
 

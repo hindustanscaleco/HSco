@@ -144,11 +144,11 @@ def add_amc_after_sales(request):
             crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),
                                                            Q(contact_no=contact_no)).first()
 
-            send_mail('Feedback Form', 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_amc/' + str(
+            send_mail('Feedback Form', 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
                 request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
                       [crm_no.customer_email_id])
 
-            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_amc/' + str(
+            message = 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
                 request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
@@ -161,11 +161,11 @@ def add_amc_after_sales(request):
 
 
         else:
-            send_mail('Feedback Form', 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_amc/' + str(
+            send_mail('Feedback Form', 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
                 request.user.pk) + '/' + str(item.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
                       [item.customer_email_id])
 
-            message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_amc/' + str(
+            message = 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
                 request.user.pk) + '/' + str(item.id) + '/' + str(item2.id)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"

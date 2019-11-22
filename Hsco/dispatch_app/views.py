@@ -157,9 +157,9 @@ def add_dispatch_details(request):
         if (current_stage_in_db == 'dispatch but lr not updated') and (lr_no != '' or lr_no != None):
             Dispatch.objects.filter(id=item2.pk).update(current_stage='dispatch completed')
 
-        # send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
+        # send_mail('Feedback Form','Click on the link to give feedback http://139.59.76.87/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
-        # message = 'Click on the link to give feedback http://vikka.pythonanywhere.com/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
+        # message = 'Click on the link to give feedback http://139.59.76.87/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id)
         #
         #
         # url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
