@@ -406,15 +406,20 @@ def update_amc_form(request,update_id):
             item.second_company_name = company_name  # new2
             item2.company_name = company_name
             item2.save(update_fields=['company_name'])
+            item2.save(update_fields=['second_company_name', ]),
         if address != '':
             item2.address = address
 
             item.company_address = address  # new2
             item2.save(update_fields=['address'])
+            item2.save(update_fields=['company_address', ]),
+
         if customer_email_id != '':
             item2.customer_email_id = customer_email_id
             item.company_email = customer_email_id  # new2
             item2.save(update_fields=['customer_email_id'])
+            item2.save(update_fields=['company_email', ]),
+
         # item.amcno = amcno
         item.customer_name = customer_name
         item.company_name = company_name
@@ -458,10 +463,7 @@ def update_amc_form(request,update_id):
                                  'contract_end_date','repot_1','repot_2','repot_3','repot_4','second_person','third_person',
                                  'second_contact_no','third_contact_no',])
         item.save(update_fields=['second_person','second_contact_no', ])
-        item2.save(update_fields=['second_company_name', ]),
-        item2.save(update_fields=['company_address', ]),
-        item2.save(update_fields=['company_email', ]),
-        item2.save(update_fields=['second_company_name', ]),
+
         item2.save(update_fields=['company_address', ]),
         item2.save(update_fields=['company_email', ]),
 
