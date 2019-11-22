@@ -233,7 +233,7 @@ def add_purchase_details(request):
 
 
 
-        # send_mail('Feedback Form','Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
+        # send_mail('Feedback Form','Click on the link to give feedback http://139.59.76.87/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
         if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(user_id=site_user_id)).count() > 0:
             Employee_Analysis_date.objects.filter(user_id=site_user_id,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + 0.0)
@@ -278,7 +278,7 @@ def add_purchase_details(request):
             try:
                 message = 'Dear ' + str(crm_no.customer_name) + '. Thanks for purchasing your scale from HSCo. ' \
                                                            'Your Purchase ID is ' + str(item2.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                                                                                               ' avail exciting offers in the future Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/' \
+                                                                                               ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
                           + str(request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
                 send_mail('Feedback Form',
                           message, settings.EMAIL_HOST_USER,
@@ -290,7 +290,7 @@ def add_purchase_details(request):
 
             message = 'Dear '+str(crm_no.customer_name)+'. Thanks for purchasing your scale from HSCo. ' \
                       'Your Purchase ID is '+str(item2.pk)+'. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                      ' avail exciting offers in the future Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/'+ str(request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
+                      ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/'+ str(request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
@@ -304,7 +304,7 @@ def add_purchase_details(request):
             try:
                 message = 'Dear '+item.customer_name+'. Thanks for purchasing your scale from HSCo. ' \
                       'Your Purchase ID is '+str(item2.pk)+'. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                      ' avail exciting offers in the future Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/' \
+                      ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
                       + str(request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
                 send_mail('Feedback Form',
@@ -316,7 +316,7 @@ def add_purchase_details(request):
 
             message = 'Dear '+item.customer_name+'. Thanks for purchasing your scale from HSCo. ' \
                       'Your Purchase ID is '+item2.pk+'. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                      ' avail exciting offers in the future Click on the link to give feedback http://vikka.pythonanywhere.com/feedback_purchase/' \
+                      ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
                       + str(request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
 
