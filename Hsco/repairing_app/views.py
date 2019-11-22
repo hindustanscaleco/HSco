@@ -98,13 +98,18 @@ def add_repairing_details(request):
             item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).first()
             item3 = Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).first()
             if company_name != '':
+                item2.second_company_name = company_name  # new2
+
                 item3.company_name = company_name
                 item3.save(update_fields=['company_name'])
             if address != '':
                 item3.address = address
+
+                item2.company_address = address  # new2
                 item3.save(update_fields=['address'])
             if customer_email_id != '':
                 item3.customer_email_id = customer_email_id
+                item2.company_email = customer_email_id  # new2
                 item3.save(update_fields=['customer_email_id'])
 
         else:
@@ -113,11 +118,14 @@ def add_repairing_details(request):
 
             item.customer_name = customer_name
             if company_name != '':
+                item2.second_company_name = company_name  # new2
                 item.company_name = company_name
             if address != '':
                 item.address = address
+                item2.company_address = address  # new2
             item.contact_no = contact_no
             if customer_email_id != '':
+                item2.company_email = customer_email_id  # new2
                 item.customer_email_id = customer_email_id
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -427,17 +435,6 @@ def update_repairing_details(request,id):
         item.contact_no = contact_no
         item.save(update_fields=['customer_name', 'contact_no'])  # new3
 
-        if company_name != '':
-            item.company_name = company_name
-            item.save(update_fields=['company_name'])
-        if address != '':
-            item.address = address
-            item.save(update_fields=['address'])
-
-        if customer_email_id != '':
-            item.customer_email_id = customer_email_id
-            item.save(update_fields=['customer_email_id'])
-
 
 
         # repairingnumber = request.POST.get('repairingnumber')
@@ -468,6 +465,20 @@ def update_repairing_details(request,id):
 
         # item2.repairingnumber = repairingnumber
         item2.crm_no = Customer_Details.objects.get(id=item.pk)
+        if company_name != '':
+            item2.second_company_name = company_name  # new2
+
+            item.company_name = company_name
+            item.save(update_fields=['company_name'])
+        if address != '':
+            item.address = address
+
+            item2.company_address = address  # new2
+            item.save(update_fields=['address'])
+        if customer_email_id != '':
+            item.customer_email_id = customer_email_id
+            item2.company_email = customer_email_id  # new2
+            item.save(update_fields=['customer_email_id'])
 
         # item2.previous_repairing_number = previous_repairing_number
         # item2.today_date = today_date
@@ -512,11 +523,12 @@ def update_repairing_details(request,id):
         # item2.third_contact_no=third_contact_no
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired
-        if taken_by != '' or taken_by != None:
-            item2.taken_by = taken_by
-            item2.user_id = SiteUser.objects.get(name=taken_by)
-            item2.save(update_fields=['taken_by',]),
-            item2.save(update_fields=['user_id', ]),
+        if item2.taken_by == None or item2.taken_by=='':
+            if taken_by != '' or taken_by != None:
+                item2.taken_by = taken_by
+                item2.user_id = SiteUser.objects.get(name=taken_by)
+                item2.save(update_fields=['taken_by',]),
+                item2.save(update_fields=['user_id', ]),
 
         if repaired_by != None:
             item2.repaired_by = informed_by
@@ -543,6 +555,9 @@ def update_repairing_details(request,id):
 
         # item2.save(update_fields=['informed_by', ]),
         item2.save(update_fields=['confirmed_estimate', ]),
+        item2.save(update_fields=['second_company_name', ]),
+        item2.save(update_fields=['company_address', ]),
+        item2.save(update_fields=['company_email', ]),
         item2.save(update_fields=['repaired_by','taken_by', ]),
         # item2.save(update_fields=['feedback_given', ])
         # item2.save(update_fields=['current_stage', ])

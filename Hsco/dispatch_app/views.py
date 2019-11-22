@@ -83,25 +83,35 @@ def add_dispatch_details(request):
                                                            contact_no=contact_no).first()
             item3 = Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).first()
             if company_name != '':
+                item2.second_company_name = company_name  # new2
+
                 item3.company_name = company_name
                 item3.save(update_fields=['company_name'])
             if address != '':
                 item3.address = address
+
+                item2.company_address = address  # new2
                 item3.save(update_fields=['address'])
             if customer_email_id != '':
                 item3.customer_email_id = customer_email_id
+                item2.company_email = customer_email_id  # new2
                 item3.save(update_fields=['customer_email_id'])
 
         else:
 
             item.customer_name = customer_name
+            item.contact_no = contact_no
+            item.customer_name = customer_name
             if company_name != '':
+                item2.second_company_name = company_name  # new2
                 item.company_name = company_name
             if address != '':
                 item.address = address
-            if customer_email_id != '':
-                item.customer_email_id = customer_email_id
+                item2.company_address = address  # new2
             item.contact_no = contact_no
+            if customer_email_id != '':
+                item2.company_email = customer_email_id  # new2
+                item.customer_email_id = customer_email_id
 
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -401,10 +411,10 @@ def update_dispatch_details(request,update_id):
 
     if request.method == 'POST' or request.method=='FILES':
         contact_no = request.POST.get('contact_no')
-        customer_email = request.POST.get('customer_email_id')
+        customer_email_id = request.POST.get('customer_email_id')
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
-        customer_address = request.POST.get('customer_address')
+        address = request.POST.get('customer_address')
 
         item2 = customer_id
         item2.customer_name = customer_name
@@ -414,12 +424,12 @@ def update_dispatch_details(request,update_id):
         if company_name != '':
             item2.company_name = company_name
             item2.save(update_fields=['company_name'])
-        if customer_address != '':
-            item2.address = customer_address
+        if address != '':
+            item2.address = address
             item2.save(update_fields=['address'])
 
-        if customer_email != '':
-            item2.customer_email_id = customer_email
+        if customer_email_id != '':
+            item2.customer_email_id = customer_email_id
             item2.save(update_fields=['customer_email_id'])
 
 
@@ -442,6 +452,20 @@ def update_dispatch_details(request,update_id):
         notes = request.POST.get('notes')
 
         item = Dispatch.objects.get(id=update_id)
+        if company_name != '':
+            item.second_company_name = company_name  # new2
+
+            item2.company_name = company_name
+            item2.save(update_fields=['company_name'])
+        if address != '':
+            item2.address = address
+
+            item.company_address = address  # new2
+            item2.save(update_fields=['address'])
+        if customer_email_id != '':
+            item2.customer_email_id = customer_email_id
+            item.company_email = customer_email_id  # new2
+            item2.save(update_fields=['customer_email_id'])
 
         # item.dispatch_id = dispatch_id
         # item.second_person=second_person
@@ -554,6 +578,9 @@ def update_dispatch_details(request,update_id):
         item.save(update_fields=['photo_lr_no', ]),
         item.save(update_fields=['channel_of_dispatch', ]),
         item.save(update_fields=['notes', ]),
+        item2.save(update_fields=['second_company_name', ]),
+        item2.save(update_fields=['company_address', ]),
+        item2.save(update_fields=['company_email', ]),
         dispatch_item = Dispatch.objects.get(id=update_id)
         product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
 

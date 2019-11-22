@@ -251,10 +251,14 @@ def restamping_after_sales_service(request):
 
             item.customer_name = customer_name
             if company_name != '':
+                item2.second_company_name = company_name  # new2
                 item.company_name = company_name
             if address != '':
                 item.address = address
+                item2.company_address = address  # new2
+            item.contact_no = contact_no
             if customer_email_id != '':
+                item2.company_email = customer_email_id  # new2
                 item.customer_email_id = customer_email_id
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -467,16 +471,21 @@ def update_restamping_details(request,id):
         # new_serial_no = request.POST.get('new_serial_no')
         # brand = request.POST.get('brand')
         scale_delivery_date = request.POST.get('scale_delivery_date')
-
-
-
-
-
-
-
-
         item = personal_id
+        if company_name != '':
+            item.second_company_name = company_name  # new2
 
+            item2.company_name = company_name
+            item2.save(update_fields=['company_name'])
+        if address != '':
+            item2.address = address
+
+            item.company_address = address  # new2
+            item2.save(update_fields=['address'])
+        if customer_email_id != '':
+            item2.customer_email_id = customer_email_id
+            item.company_email = customer_email_id  # new2
+            item2.save(update_fields=['customer_email_id'])
         # item.restampingno = restampingno
         # item.address = address
         # item.total_amount = total_amount
@@ -505,6 +514,9 @@ def update_restamping_details(request,id):
         # item.save(update_fields=['new_serial_no', ]),
         # item.save(update_fields=['brand', ]),
         item.save(update_fields=['scale_delivery_date','second_person','second_contact_no', ]),
+        item.save(update_fields=['second_company_name', ]),
+        item.save(update_fields=['company_address', ]),
+        item.save(update_fields=['company_email', ]),
 
         personal_id = Restamping_after_sales_service.objects.get(id=id)
         restamp_product_list = Restamping_Product.objects.filter(restamping_id=id)

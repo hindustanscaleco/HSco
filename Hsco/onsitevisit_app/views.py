@@ -268,10 +268,14 @@ def add_onsite_aftersales_service(request):
             item.contact_no = contact_no
 
             if company_name != '':
+                item2.second_company_name = company_name  # new2
                 item.company_name = company_name
             if address != '':
                 item.address = address
+                item2.company_address = address  # new2
+            item.contact_no = contact_no
             if customer_email_id != '':
+                item2.company_email = customer_email_id  # new2
                 item.customer_email_id = customer_email_id
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -414,6 +418,10 @@ def add_onsite_product(request,id):
         type_of_machine = request.POST.get('type_of_machine')
         model = request.POST.get('model')
         sub_model = request.POST.get('sub_model')
+        model1 = request.POST.get('model1')
+        sub_model1 = request.POST.get('sub_model1')
+        model2 = request.POST.get('model2')
+        sub_model2 = request.POST.get('sub_model2')
         capacity = request.POST.get('capacity')
         problem_in_scale = request.POST.get('problem_in_scale')
         components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
@@ -424,8 +432,24 @@ def add_onsite_product(request,id):
 
         item.onsite_repairing_id_id = onsite_id
         item.type_of_machine = type_of_machine
-        item.model = model
-        item.sub_model = sub_model
+        item.type_of_machine = type_of_machine
+        if model != None and model != '':
+            item.model = model
+
+            item.sub_model = sub_model
+
+        elif model1 != None and model1 != '':
+
+            item.model = model1
+
+            item.sub_model = sub_model1
+
+
+        elif model2 != None and model2 != '':
+
+            item.model = model2
+
+            item.sub_model = sub_model2
         item.capacity = capacity
         item.problem_in_scale = problem_in_scale
         item.components_replaced_in_warranty = components_replaced_in_warranty
@@ -621,7 +645,20 @@ def update_onsite_details(request,id):
 
 
         item = onsite_id
+        if company_name != '':
+            item2.second_company_name = company_name  # new2
 
+            item.company_name = company_name
+            item.save(update_fields=['company_name'])
+        if customer_address != '':
+            item.address = customer_address
+
+            item2.company_address = customer_address  # new2
+            item.save(update_fields=['customer_address'])
+        if customer_email != '':
+            item.customer_email_id = customer_email
+            item2.company_email = customer_email  # new2
+            item.save(update_fields=['customer_email'])
         # item.repairingno = repairingno
         # item.second_person=second_person
         # item.third_person=third_person
@@ -672,6 +709,9 @@ def update_onsite_details(request,id):
         item.save(update_fields=['complaint_assigned_on', ]),
         item.save(update_fields=['time_taken_destination_return_office_min', ]),
         item.save(update_fields=['notes','second_person','second_contact_no',]),
+        item2.save(update_fields=['second_company_name', ]),
+        item2.save(update_fields=['company_address', ]),
+        item2.save(update_fields=['company_email', ]),
         # item.save(update_fields=['feedback_given', ]),
         onsite_id = Onsite_aftersales_service.objects.get(id=id)
 

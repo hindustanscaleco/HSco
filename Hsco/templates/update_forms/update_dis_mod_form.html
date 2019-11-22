@@ -224,7 +224,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="customer_email_id" placeholder="Customer Email ID" class="form-control" type="text" id="myText" disabled value="{% if dispatch_item.crm_no.customer_email_id != None and dispatch_item.crm_no.customer_email_id != '' %}{{dispatch_item.crm_no.customer_email_id}}{% else %}{% endif %}">
+  <input  name="customer_email_id" placeholder="Customer Email ID" class="form-control" type="text" id="myText" disabled value="{% if dispatch_item.company_email != None and dispatch_item.company_email != '' %}{{dispatch_item.company_email}}{% else %}{% endif %}">
     </div>
   </div>
 
@@ -241,7 +241,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company name" class="form-control"  type="text" id="myText3" disabled value="{% if dispatch_item.crm_no.company_name != None and dispatch_item.crm_no.company_name != '' %}{{dispatch_item.crm_no.company_name}}{% else %}{% endif %}">
+  <input name="company_name" placeholder="Company name" class="form-control"  type="text" id="myText3" disabled value="{% if dispatch_item.second_company_name != None and dispatch_item.second_company_name != '' %}{{dispatch_item.second_company_name}}{% else %}{% endif %}">
     </div>
   </div>
 
@@ -252,7 +252,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<input name="customer_address" class="form-control" id="myText4" disabled value="{{dispatch_item.crm_no.address}}"/>    </div>
+<input name="customer_address" class="form-control" id="myText4" disabled value="{{dispatch_item.company_address}}"/>    </div>
   </div>
 
 </div>
