@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 
 
 from .models import Customer_Details
+from .models import type_purchase,main_model,sub_model,sub_sub_model
 
 
 def add_customer_details(request):
@@ -24,5 +25,25 @@ def add_customer_details(request):
 
 
     return render(request,'forms/cust_details_form.html',)
+
+
+
+def load_models(request):
+    category_id = request.GET.get('item_id')
+    subcat = main_model.objects.filter(type_purchase=category_id)
+    return render(request, 'AJAX_dropdowns/subcat-dropdown.html', {'subcat': subcat})
+
+def load_sub_models(request):
+    category_id = request.GET.get('item_id')
+    subcat = sub_model.objects.filter(main_model=category_id)
+    return render(request, 'AJAX_dropdowns/subcat-dropdown.html', {'subcat': subcat})
+
+
+def load_sub_sub_models(request):
+    category_id = request.GET.get('item_id')
+    subcat = sub_sub_model.objects.filter(sub_model=category_id)
+    return render(request, 'AJAX_dropdowns/subcat-dropdown.html', {'subcat': subcat})
+
+
 
 
