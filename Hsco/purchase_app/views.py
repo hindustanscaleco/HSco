@@ -671,7 +671,7 @@ def add_product_details(request,id):
     purchase = Purchase_Details.objects.get(id=id)
     purchase_id = purchase.id
 
-    type_of_purchase_list =type_purchase.objects.all()
+    type_of_purchase_list =type_purchase.objects.all() #1
     if 'purchase_id' in request.session:
         request.session['product_saved'] = False
 
@@ -790,7 +790,7 @@ def add_product_details(request,id):
     context = {
         'form': form,
         'purchase_id': purchase_id,
-        'type_purchase': type_of_purchase_list,
+        'type_purchase': type_of_purchase_list,  #2
     }
     return render(request,'dashboardnew/add_product.html',context)
 

@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from _datetime import datetime
 
 from customer_app.models import Customer_Details
+from customer_app.models import type_purchase
 
 from ess_app.models import Employee_Analysis_month
 
@@ -413,10 +414,12 @@ def add_onsite_aftersales_service(request):
 def add_onsite_product(request,id):
     onsite_id = Onsite_aftersales_service.objects.get(id=id).id
     crm_id = Onsite_aftersales_service.objects.get(id=id).crm_no
+    type_of_purchase_list =type_purchase.objects.all() #1
+
     print(onsite_id)
     if request.method == 'POST' or request.method == 'FILES':
-        type_of_machine = request.POST.get('type_of_machine')
-        model = request.POST.get('model')
+        type_of_machine = request.POST.get('type_of_scale')
+        model = request.POST.get('model_of_purchase')
         sub_model = request.POST.get('sub_model')
         model1 = request.POST.get('model1')
         sub_model1 = request.POST.get('sub_model1')
@@ -482,6 +485,8 @@ def add_onsite_product(request,id):
         return redirect('/update_onsite_details/'+str(id))
     context = {
         'onsite_id': onsite_id,
+        'type_purchase': type_of_purchase_list,  # 2
+
     }
     return render(request,"forms/onsite_product.html",context)
 

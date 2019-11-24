@@ -8,3 +8,4 @@ admin.site.register(type_purchase)
 admin.site.register(main_model)
 admin.site.register(sub_model)
 admin.site.register(sub_sub_model)
+
