@@ -299,11 +299,6 @@ function myFunction() {
   </div>
   <label class="col-md-2 control-label">Complaint Received By *
 
-
-
-
-
-
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -517,9 +512,22 @@ function myFunction() {
   <input name="complaint_assigned_on" placeholder="Complain Assigned On" class="form-control" id="datePicker" type="text" disabled value="{{onsite_id.complaint_assigned_on}}">
     </div>
   </div>
-</div>
+</div>  
 
 <div class="form-group row">
+
+
+       <label class="col-md-2 control-label">Complain Assigned To
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+      <input name="complaint_assigned_on" placeholder="Complain Assigned On" class="form-control"  type="text" disabled value="{{onsite_id.complaint_assigned_to}}">
+    </div>
+  </div>
 
   <label class="col-md-2 control-label">Time Taken to Reach Destination and Return to office in Minutes
 
@@ -533,7 +541,9 @@ function myFunction() {
           class="form-control" id="myText15" type="text" disabled value="{{onsite_id.time_taken_destination_return_office_min}}">
     </div>
   </div>
+</div>
 
+<div class="form-group row">
 
   <label class="col-md-2 control-label">Notes
 
