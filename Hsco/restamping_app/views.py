@@ -42,7 +42,7 @@ def restamping_manager(request):
                 restamp_list = Restamping_after_sales_service.objects.filter(
                     user_id__group__icontains=request.user.name, user_id__is_deleted=False,crm_no__contact_no=contact).order_by('-id')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__contact_no=contact).order_by('-id')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_contact_no=contact).order_by('-id')
 
             # restamp_list = Restamping_after_sales_service.objects.filter(mobile_no=contact)
             context = {
@@ -80,12 +80,12 @@ def restamping_manager(request):
 
         elif 'submit5' in request.POST:
             company = request.POST.get('company')
-            restamp_list = Restamping_after_sales_service.objects.filter(company_name=company)
+            # restamp_list = Restamping_after_sales_service.objects.filter(second_company_name=company)
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,crm_no__company_name=company).order_by('-id')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_company_name=company).order_by('-id')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__company_name=company).order_by('-id')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_company_name=company).order_by('-id')
             context = {
                 'restamp_list': restamp_list,
                 'search_msg': 'Search result for Company Name: ' + company,

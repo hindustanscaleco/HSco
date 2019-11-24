@@ -210,7 +210,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
     <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-    <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" id="myText3" disabled value="{% if amc_list.second_company_name != None and amc_list.second_company_name != '' %}{{amc_list.second_company_name}}{% else %}{% endif %}">
+    <input  name="company_name" placeholder="Company Name" class="form-control"  type="text" id="myText3" disabled value="{% if amc_list.second_company_name != None or amc_list.second_company_name != '' %}{{amc_list.second_company_name}}{% else %}{% endif %}">
   </div>
   </div>
 
@@ -243,7 +243,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
       <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-      <input name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  type="email" id="myText5" disabled value="{% if amc_list.second_company_name != None and amc_list.second_company_name != '' %}{{amc_list.second_company_name}}{% else %}{% endif %}">
+      <input name="customer_email_id" placeholder="Customer E-mail id" class="form-control"  type="email" id="myText5" disabled value="{% if amc_list.company_email != None or amc_list.company_email != '' %}{{amc_list.company_email}}{% else %}{% endif %}">
     </div>
   </div>
 </div>

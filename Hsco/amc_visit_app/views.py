@@ -406,19 +406,19 @@ def update_amc_form(request,update_id):
             item.second_company_name = company_name  # new2
             item2.company_name = company_name
             item2.save(update_fields=['company_name'])
-            item2.save(update_fields=['second_company_name', ]),
+            item.save(update_fields=['second_company_name', ]),
         if address != '':
             item2.address = address
 
             item.company_address = address  # new2
             item2.save(update_fields=['address'])
-            item2.save(update_fields=['company_address', ]),
+            item.save(update_fields=['company_address', ]),
 
         if customer_email_id != '':
             item2.customer_email_id = customer_email_id
             item.company_email = customer_email_id  # new2
             item2.save(update_fields=['customer_email_id'])
-            item2.save(update_fields=['company_email', ]),
+            item.save(update_fields=['company_email', ]),
 
         # item.amcno = amcno
         item.customer_name = customer_name
@@ -438,21 +438,26 @@ def update_amc_form(request,update_id):
         item.contract_start_date = contract_start_date
         item.contract_end_date = contract_end_date
 
-        if visit_1 != '':
-            item2.visit_1 = visit_1
-            item.save(update_fields=['visit_1'])
+
+
+        if visit_1 != None and visit_1 != '' :
+            item.visit_1 = visit_1
+            item.save(update_fields=['visit_1',])
+            print("visit_1")
+            print(visit_1)
+
         item2.repot_1 = repot_1
         if visit_2 != '':
-            item2.visit_2 = visit_2
-            item.save(update_fields=['visit_2'])
+            item.visit_2 = visit_2
+            item.save(update_fields=['visit_2',])
         item2.repot_2 = repot_2
         if visit_3 != '':
-            item2.visit_3 = visit_3
-            item.save(update_fields=['visit_3'])
+            item.visit_3 = visit_3
+            item.save(update_fields=['visit_3',])
         item2.repot_3 = repot_3
         if visit_4 != '':
-            item2.visit_4 = visit_4
-            item.save(update_fields=['visit_4'])
+            item.visit_4 = visit_4
+            item.save(update_fields=['visit_4',])
 
         item.repot_1 = repot_1
         item.repot_2 = repot_2
@@ -464,8 +469,8 @@ def update_amc_form(request,update_id):
                                  'second_contact_no','third_contact_no',])
         item.save(update_fields=['second_person','second_contact_no', ])
 
-        item2.save(update_fields=['company_address', ]),
-        item2.save(update_fields=['company_email', ]),
+        # item2.save(update_fields=['company_address', ]),
+        # item2.save(update_fields=['company_email', ]),
 
         return redirect('/amc_views')
     context={
