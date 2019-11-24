@@ -9,6 +9,7 @@ from Hsco import settings
 from customer_app.models import Customer_Details
 
 from ess_app.models import Employee_Analysis_date
+from customer_app.models import type_purchase
 
 from purchase_app.views import check_admin_roles
 from user_app.models import SiteUser
@@ -303,10 +304,12 @@ def restamping_after_sales_service(request):
 
 def restamping_product(request,id):
     restamping_id = Restamping_after_sales_service.objects.get(id=id).id
+    type_of_purchase_list =type_purchase.objects.all() #1
 
     if request.method=='POST':
         # product_to_stampped = request.POST.get('product_to_stampped')
-        scale_type = request.POST.get('scale_type')
+        scale_type = request.POST.get('type_of_scale')
+        model = request.POST.get('model_of_purchase')
         sub_model = request.POST.get('sub_model')
         capacity = request.POST.get('capacity')
         old_serial_no = request.POST.get('old_serial_no')
@@ -319,6 +322,7 @@ def restamping_product(request,id):
 
         # item.product_to_stampped = product_to_stampped
         item.scale_type = scale_type
+        item.model=model
         item.sub_model = sub_model
         item.capacity = capacity
         item.old_serial_no = old_serial_no
@@ -383,6 +387,8 @@ def restamping_product(request,id):
         return redirect('/update_restamping_details/'+str(id))
     context = {
         'restamping_id': restamping_id,
+        'type_purchase': type_of_purchase_list,  # 2
+
     }
     return render(request,'dashboardnew/restamping_product.html',context)
 
