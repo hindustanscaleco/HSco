@@ -31,20 +31,32 @@ class type_purchase(models.Model):
     name= models.CharField(max_length=120)
     entry_timedate = models.DateTimeField(default=timezone.now, )
 
+    def __str__(self):
+        return self.name
+
 class main_model(models.Model):
     name= models.CharField(max_length=120)
     type_purchase = models.ForeignKey(type_purchase,on_delete=models.CASCADE)
     entry_timedate = models.DateTimeField(default=timezone.now, )
+
+    def __str__(self):
+        return self.name
 
 class sub_model(models.Model):
     name= models.CharField(max_length=120)
     main_model = models.ForeignKey(main_model,on_delete=models.CASCADE)
     entry_timedate = models.DateTimeField(default=timezone.now, )
 
+    def __str__(self):
+        return self.name
+
 class sub_sub_model(models.Model):
     name= models.CharField(max_length=120)
     sub_model = models.ForeignKey(sub_model,on_delete=models.CASCADE)
     entry_timedate = models.DateTimeField(default=timezone.now, )
+
+    def __str__(self):
+        return self.name
 
 
 
