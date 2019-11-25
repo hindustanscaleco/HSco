@@ -287,23 +287,10 @@ def repair_product(request,id):
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item.type_of_machine = type_of_machine
-        if model != None and model != '':
-            item.model = model
+        # if model != None and model != '':
+        item.model = model
 
-            item.sub_model = sub_model
-
-        elif model1 != None and model1 != '':
-
-            item.model = model1
-
-            item.sub_model = sub_model1
-
-
-        elif model2 != None and model2 != '':
-
-            item.model = model2
-
-            item.sub_model = sub_model2
+        item.sub_model = sub_model
 
         item.problem_in_scale = problem_in_scale
         item.components_replaced_in_warranty = components_replaced_in_warranty
@@ -359,7 +346,7 @@ def repair_product(request,id):
             total_reparing_done_today=F("total_reparing_done_today") + cost)
         if is_last_product_yes == 'on':
             return redirect('/update_repairing_details/'+str(id))
-        elif is_last_product_no == 'on':
+        elif is_last_product_yes == 'off':
             return redirect('/repair_product/'+str(id))
     # if request.method == 'POST' and 'components_replaced_popup' in request.POST and 'components_replaced_popup_iw' not in request.POST:
     #     replaced_name=request.POST.get('components_replaced_popup')
