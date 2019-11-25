@@ -651,19 +651,23 @@ def update_onsite_details(request,id):
 
         item = onsite_id
         if company_name != '':
-            item2.second_company_name = company_name  # new2
+            item.second_company_name = company_name  # new2
 
-            item.company_name = company_name
-            item.save(update_fields=['company_name'])
+            item2.company_name = company_name
+            item2.save(update_fields=['company_name'])
+            item.save(update_fields=['second_company_name', ]),
+
         if customer_address != '':
-            item.address = customer_address
+            item2.address = customer_address
 
-            item2.company_address = customer_address  # new2
-            item.save(update_fields=['customer_address'])
+            item.company_address = customer_address  # new2
+            item2.save(update_fields=['address'])
+            item.save(update_fields=['company_address', ]),
         if customer_email != '':
-            item.customer_email_id = customer_email
-            item2.company_email = customer_email  # new2
-            item.save(update_fields=['customer_email'])
+            item2.customer_email_id = customer_email
+            item.company_email = customer_email  # new2
+            item.save(update_fields=['company_email'])
+            item2.save(update_fields=['customer_email_id', ]),
         # item.repairingno = repairingno
         # item.second_person=second_person
         # item.third_person=third_person
@@ -714,9 +718,7 @@ def update_onsite_details(request,id):
         item.save(update_fields=['complaint_assigned_on', ]),
         item.save(update_fields=['time_taken_destination_return_office_min', ]),
         item.save(update_fields=['notes','second_person','second_contact_no',]),
-        item2.save(update_fields=['second_company_name', ]),
-        item2.save(update_fields=['company_address', ]),
-        item2.save(update_fields=['company_email', ]),
+
         # item.save(update_fields=['feedback_given', ]),
         onsite_id = Onsite_aftersales_service.objects.get(id=id)
 
