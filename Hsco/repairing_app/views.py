@@ -532,7 +532,7 @@ def update_repairing_details(request,id):
                 item2.save(update_fields=['user_id', ]),
 
         if repaired_by != None:
-            item2.repaired_by = informed_by
+            item2.repaired_by = repaired_by
             item2.repaired_date = datetime.today().strftime('%Y-%m-%d')
             item2.save(update_fields=['repaired_by'])
             item2.save(update_fields=['repaired_date', ]),

@@ -237,7 +237,6 @@ def add_onsite_aftersales_service(request):
         visiting_charges_told_customer = request.POST.get('visiting_charges_told_customer')
         total_cost = 0.0
         complaint_assigned_to = request.POST.get('complaint_assigned_to')
-        complaint_assigned_on = request.POST.get('complaint_assigned_on')
         time_taken_destination_return_office_min = request.POST.get('time_taken_destination_return_office_min')
         notes = request.POST.get('notes')
         # feedback_given = request.POST.get('feedback_given')
@@ -280,6 +279,7 @@ def add_onsite_aftersales_service(request):
                 item.customer_email_id = customer_email_id
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+
             item.save()
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
@@ -293,7 +293,8 @@ def add_onsite_aftersales_service(request):
         item2.second_contact_no = contact_no  # new2
         item2.previous_repairing_number = previous_repairing_number
         item2.in_warranty = in_warranty
-        item2.date_of_complaint_received = date_of_complaint_received
+        if date_of_complaint_received != None and date_of_complaint_received != '':
+            item2.date_of_complaint_received = date_of_complaint_received
         item2.complaint_received_by = complaint_received_by
         item2.nearest_railwaystation = nearest_railwaystation
         item2.train_line = train_line
@@ -301,13 +302,16 @@ def add_onsite_aftersales_service(request):
 
         item2.visiting_charges_told_customer = float(visiting_charges_told_customer)
         item2.total_cost = 0.0
-        item2.complaint_assigned_to = complaint_assigned_to
-        item2.complaint_assigned_on = complaint_assigned_on
+        # item2.complaint_assigned_to = complaint_assigned_to
         item2.time_taken_destination_return_office_min = time_taken_destination_return_office_min
         item2.notes = notes
         item2.feedback_given = False
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        if complaint_assigned_to != None and complaint_assigned_to != '':
+            item2.complaint_assigned_to = complaint_assigned_to
+            item2.complaint_assigned_on = datetime.today().strftime('%Y-%m-%d')
+
 
         item2.save()
         current_stage_in_db = Onsite_aftersales_service.objects.get(id=item2.pk).current_stage  # updatestage2
@@ -586,29 +590,26 @@ def update_onsite_details(request,id):
         feedback = None
     print(onsite_product_list)
     if request.method == 'POST' or request.method == 'FILES':
-        contact_no = request.POST.get('contact_no')
-        customer_email = request.POST.get('customer_email_id')
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
-        customer_address = request.POST.get('customer_address')
+        address = request.POST.get('customer_address')
+        contact_no = request.POST.get('contact_no')
+        customer_email_id = request.POST.get('customer_email_id')
 
         item2 = customer_id
-
         item2.customer_name = customer_name
-        # item2.address = customer_address
-        item2.contact_no = contact_no
-        item2.save(update_fields=['customer_name','contact_no'])  #new3
-
         if company_name != '':
             item2.company_name = company_name
             item2.save(update_fields=['company_name'])
-        if customer_address != '':
-            item2.address = customer_address
+        if address != '':
+            item2.address = address
             item2.save(update_fields=['address'])
 
-        if customer_email != '':
-            item2.customer_email_id = customer_email
+        if customer_email_id != '':
+            item2.customer_email_id = customer_email_id
             item2.save(update_fields=['customer_email_id'])
+        item2.contact_no = contact_no
+        item2.save(update_fields=['customer_name','contact_no'])  #new3
 
         # repairingno = request.POST.get('repairingno')
         # customer_no = request.POST.get('customer_no')
@@ -651,19 +652,24 @@ def update_onsite_details(request,id):
 
         item = onsite_id
         if company_name != '':
-            item2.second_company_name = company_name  # new2
+            item.second_company_name = company_name  # new2
+            item2.company_name = company_name
+            item2.save(update_fields=['company_name'])
+            item.save(update_fields=['second_company_name', ]),
+        if address != '':
+            item2.address = address
 
-            item.company_name = company_name
-            item.save(update_fields=['company_name'])
-        if customer_address != '':
-            item.address = customer_address
+            item.company_address = address  # new2
+            item2.save(update_fields=['address'])
+            item.save(update_fields=['company_address', ]),
 
-            item2.company_address = customer_address  # new2
-            item.save(update_fields=['customer_address'])
-        if customer_email != '':
-            item.customer_email_id = customer_email
-            item2.company_email = customer_email  # new2
-            item.save(update_fields=['customer_email'])
+        if customer_email_id != '':
+            item2.customer_email_id = customer_email_id
+            item.company_email = customer_email_id  # new2
+            item2.save(update_fields=['customer_email_id'])
+            item.save(update_fields=['company_email', ]),
+
+
         # item.repairingno = repairingno
         # item.second_person=second_person
         # item.third_person=third_person
@@ -678,22 +684,28 @@ def update_onsite_details(request,id):
         item.in_warranty = in_warranty
         # item.customer_email_id = customer_email_id
         # item.date_of_complaint_received = date_of_complaint_received
-        item.customer_address = customer_address
+        item.customer_address = address
         item.complaint_received_by = complaint_received_by
         item.nearest_railwaystation = nearest_railwaystation
         item.train_line = train_line
         # item.products_to_be_repaired = products_to_be_repaired
         item.visiting_charges_told_customer = visiting_charges_told_customer
         # item.total_cost = total_cost
-        item.complaint_assigned_to = complaint_assigned_to
+        # item.complaint_assigned_to = complaint_assigned_to
         item.complaint_assigned_on = complaint_assigned_on
         item.time_taken_destination_return_office_min = time_taken_destination_return_office_min
         item.notes = notes
         # item.feedback_given = feedback_given
         item.assigned_to = assigned_to
 
+        if complaint_assigned_to != None and complaint_assigned_to != '':
+            item.complaint_assigned_to = complaint_assigned_to
+            item.complaint_assigned_on = datetime.today().strftime('%Y-%m-%d')
+            item.save(update_fields=['complaint_assigned_to'])
+            item.save(update_fields=['complaint_assigned_on', ]),
+
         #item.save(update_fields=['onsite_repairing_id_id', ]),
-        item.save(update_fields=['assigned_to', ]),
+        # item.save(update_fields=['assigned_to', ]),
         # item.save(update_fields=['repairingno', ]),
         # item.save(update_fields=['customer_name', ]),
         # item.save(update_fields=['company_name', ]),
@@ -710,13 +722,10 @@ def update_onsite_details(request,id):
         # item.save(update_fields=['products_to_be_repaired', ]),
         item.save(update_fields=['visiting_charges_told_customer', ]),
         # item.save(update_fields=['total_cost', ]),
-        item.save(update_fields=['complaint_assigned_to', ]),
-        item.save(update_fields=['complaint_assigned_on', ]),
+        # item.save(update_fields=['complaint_assigned_to', ]),
+        # item.save(update_fields=['complaint_assigned_on', ]),
         item.save(update_fields=['time_taken_destination_return_office_min', ]),
         item.save(update_fields=['notes','second_person','second_contact_no',]),
-        item2.save(update_fields=['second_company_name', ]),
-        item2.save(update_fields=['company_address', ]),
-        item2.save(update_fields=['company_email', ]),
         # item.save(update_fields=['feedback_given', ]),
         onsite_id = Onsite_aftersales_service.objects.get(id=id)
 
