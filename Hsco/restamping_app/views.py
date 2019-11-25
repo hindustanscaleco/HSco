@@ -9,6 +9,7 @@ from Hsco import settings
 from customer_app.models import Customer_Details
 
 from ess_app.models import Employee_Analysis_date
+from customer_app.models import type_purchase
 
 from purchase_app.views import check_admin_roles
 from user_app.models import SiteUser
@@ -42,7 +43,7 @@ def restamping_manager(request):
                 restamp_list = Restamping_after_sales_service.objects.filter(
                     user_id__group__icontains=request.user.name, user_id__is_deleted=False,crm_no__contact_no=contact).order_by('-id')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__contact_no=contact).order_by('-id')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_contact_no=contact).order_by('-id')
 
             # restamp_list = Restamping_after_sales_service.objects.filter(mobile_no=contact)
             context = {
@@ -80,12 +81,12 @@ def restamping_manager(request):
 
         elif 'submit5' in request.POST:
             company = request.POST.get('company')
-            restamp_list = Restamping_after_sales_service.objects.filter(company_name=company)
+            # restamp_list = Restamping_after_sales_service.objects.filter(second_company_name=company)
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,crm_no__company_name=company).order_by('-id')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_company_name=company).order_by('-id')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__company_name=company).order_by('-id')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_company_name=company).order_by('-id')
             context = {
                 'restamp_list': restamp_list,
                 'search_msg': 'Search result for Company Name: ' + company,
@@ -303,10 +304,12 @@ def restamping_after_sales_service(request):
 
 def restamping_product(request,id):
     restamping_id = Restamping_after_sales_service.objects.get(id=id).id
+    type_of_purchase_list =type_purchase.objects.all() #1
 
     if request.method=='POST':
         # product_to_stampped = request.POST.get('product_to_stampped')
-        scale_type = request.POST.get('scale_type')
+        scale_type = request.POST.get('type_of_scale')
+        model = request.POST.get('model_of_purchase')
         sub_model = request.POST.get('sub_model')
         capacity = request.POST.get('capacity')
         old_serial_no = request.POST.get('old_serial_no')
@@ -319,6 +322,7 @@ def restamping_product(request,id):
 
         # item.product_to_stampped = product_to_stampped
         item.scale_type = scale_type
+        item.model=model
         item.sub_model = sub_model
         item.capacity = capacity
         item.old_serial_no = old_serial_no
@@ -383,6 +387,8 @@ def restamping_product(request,id):
         return redirect('/update_restamping_details/'+str(id))
     context = {
         'restamping_id': restamping_id,
+        'type_purchase': type_of_purchase_list,  # 2
+
     }
     return render(request,'dashboardnew/restamping_product.html',context)
 

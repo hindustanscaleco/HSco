@@ -11,6 +11,8 @@ from ess_app.models import Employee_Leave
 from django.db.models import Q, F, Min
 from django.db.models import Sum
 from ess_app.models import Employee_Analysis_date
+
+from customer_app.models import type_purchase,main_model,sub_model,sub_sub_model
 from .models import  Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
 from _datetime import datetime
@@ -668,6 +670,8 @@ def update_customer_details(request,id):
 def add_product_details(request,id):
     purchase = Purchase_Details.objects.get(id=id)
     purchase_id = purchase.id
+
+    type_of_purchase_list =type_purchase.objects.all() #1
     if 'purchase_id' in request.session:
         request.session['product_saved'] = False
 
@@ -682,16 +686,6 @@ def add_product_details(request,id):
         type_of_scale = request.POST.get('type_of_scale')
         sub_model = request.POST.get('sub_model')
         sub_sub_model = request.POST.get('sub_sub_model')
-
-        model_of_purchase1 = request.POST.get('model_of_purchase1')
-
-        sub_model1 = request.POST.get('sub_model1')
-        sub_sub_model1 = request.POST.get('sub_sub_model1')
-
-        model_of_purchase2 = request.POST.get('model_of_purchase2')
-
-        sub_model2 = request.POST.get('sub_model2')
-        sub_sub_model2 = request.POST.get('sub_sub_model2')
 
 
         serial_no_scale = request.POST.get('serial_no_scale')
@@ -711,25 +705,13 @@ def add_product_details(request,id):
         item.quantity = quantity
 
         item.type_of_scale = type_of_scale
-        if model_of_purchase != None and model_of_purchase != '':
+        # if model_of_purchase != None and model_of_purchase != '':
 
-            item.model_of_purchase = model_of_purchase
+        item.model_of_purchase = model_of_purchase
 
-            item.sub_model = sub_model
-            item.sub_sub_model = sub_sub_model
-        elif model_of_purchase1 != None and model_of_purchase1 != '':
+        item.sub_model = sub_model
+        item.sub_sub_model = sub_sub_model
 
-            item.model_of_purchase = model_of_purchase1
-
-            item.sub_model = sub_model1
-            item.sub_sub_model = sub_sub_model1
-
-        elif model_of_purchase2 != None and model_of_purchase2 != '':
-
-            item.model_of_purchase = model_of_purchase2
-
-            item.sub_model = sub_model2
-            item.sub_sub_model = sub_sub_model2
         item.serial_no_scale = serial_no_scale
         item.brand = brand
         item.capacity = capacity
@@ -768,25 +750,13 @@ def add_product_details(request,id):
             dispatch_pro.quantity = quantity
             dispatch_pro.type_of_scale = type_of_scale
 
-            if model_of_purchase != None and model_of_purchase != '':
+            # if model_of_purchase != None and model_of_purchase != '':
 
-                dispatch_pro.model_of_purchase = model_of_purchase
+            dispatch_pro.model_of_purchase = model_of_purchase
 
-                dispatch_pro.sub_model = sub_model
-                dispatch_pro.sub_sub_model = sub_sub_model
-            elif model_of_purchase1 != None and model_of_purchase1 != '':
+            dispatch_pro.sub_model = sub_model
+            dispatch_pro.sub_sub_model = sub_sub_model
 
-                dispatch_pro.model_of_purchase = model_of_purchase1
-
-                dispatch_pro.sub_model = sub_model1
-                dispatch_pro.sub_sub_model = sub_sub_model1
-
-            elif model_of_purchase2 != None and model_of_purchase2 != '':
-
-                dispatch_pro.model_of_purchase = model_of_purchase2
-
-                dispatch_pro.sub_model = sub_model2
-                dispatch_pro.sub_sub_model = sub_sub_model2
             # dispatch_pro.model_of_purchase = model_of_purchase
             # dispatch_pro.sub_model = sub_model
             # dispatch_pro.sub_sub_model = sub_sub_model
@@ -820,6 +790,7 @@ def add_product_details(request,id):
     context = {
         'form': form,
         'purchase_id': purchase_id,
+        'type_purchase': type_of_purchase_list,  #2
     }
     return render(request,'dashboardnew/add_product.html',context)
 
@@ -1231,6 +1202,37 @@ def check_admin_roles(request):
         return True
     else:
         return False
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

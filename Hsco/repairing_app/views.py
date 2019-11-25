@@ -9,6 +9,8 @@ from user_app.models import SiteUser
 from customer_app.models import Customer_Details
 
 from purchase_app.views import check_admin_roles
+
+from customer_app.models import type_purchase
 from .forms import Repairing_Feedback_Form
 from .models import Repairing_after_sales_service, Repairing_Product, Repairing_Feedback,Component_Replaced
 from django.core.mail import send_mail
@@ -260,16 +262,14 @@ def add_repairing_details(request):
 def repair_product(request,id):
     repair_id = Repairing_after_sales_service.objects.get(id=id).id
     user_id = Repairing_after_sales_service.objects.get(id=id).user_id
+    type_of_purchase_list =type_purchase.objects.all() #1
     components_replaced_popup = []
 
     if request.method=='POST' and 'components_replaced_popup_iw' not in request.POST and 'components_replaced_popup' not in request.POST:
-        type_of_machine = request.POST.get('type_of_machine')
-        model = request.POST.get('model')
+        type_of_machine = request.POST.get('type_of_scale')
+        model = request.POST.get('model_of_purchase')
         sub_model = request.POST.get('sub_model')
-        model1 = request.POST.get('model1')
-        sub_model1 = request.POST.get('sub_model1')
-        model2 = request.POST.get('model2')
-        sub_model2 = request.POST.get('sub_model2')
+
 
         problem_in_scale = request.POST.get('problem_in_scale')
         components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
@@ -287,23 +287,10 @@ def repair_product(request,id):
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
         item.type_of_machine = type_of_machine
-        if model != None and model != '':
-            item.model = model
+        # if model != None and model != '':
+        item.model = model
 
-            item.sub_model = sub_model
-
-        elif model1 != None and model1 != '':
-
-            item.model = model1
-
-            item.sub_model = sub_model1
-
-
-        elif model2 != None and model2 != '':
-
-            item.model = model2
-
-            item.sub_model = sub_model2
+        item.sub_model = sub_model
 
         item.problem_in_scale = problem_in_scale
         item.components_replaced_in_warranty = components_replaced_in_warranty
@@ -359,7 +346,7 @@ def repair_product(request,id):
             total_reparing_done_today=F("total_reparing_done_today") + cost)
         if is_last_product_yes == 'on':
             return redirect('/update_repairing_details/'+str(id))
-        elif is_last_product_no == 'on':
+        elif is_last_product_yes == 'off':
             return redirect('/repair_product/'+str(id))
     # if request.method == 'POST' and 'components_replaced_popup' in request.POST and 'components_replaced_popup_iw' not in request.POST:
     #     replaced_name=request.POST.get('components_replaced_popup')
@@ -398,6 +385,7 @@ def repair_product(request,id):
 
     context = {
         'repair_id': repair_id,
+        'type_purchase': type_of_purchase_list,  # 2
     }
     return render(request,'dashboardnew/repair_product.html',context)
 
