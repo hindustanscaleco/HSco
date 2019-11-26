@@ -180,16 +180,12 @@ Format : (company name)
 
 <div class="form-group row">
     <label class="col-md-2 control-label">Mobile No *
-
-
-
-
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" required placeholder="Phone Number" value="{{cust_list.contact_no}}" class="form-control"  type="text">
+  <input  name="contact_no" required placeholder="Phone Number" onkeypress="return isNumber(event)" maxlength="10" minlength="10"  value="{{cust_list.contact_no}}" class="form-control"  type="text">
     </div>
   </div>
 

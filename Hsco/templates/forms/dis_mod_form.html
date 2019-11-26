@@ -226,8 +226,7 @@ Format : (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="customer_no" placeholder="Contact number
-" class="form-control" required type="text">
+  <input  name="customer_no" placeholder="Contact number" onkeypress="return isNumber(event)" maxlength="10" minlength="10"  class="form-control" required type="text">
     </div>
   </div>
 </div>
