@@ -147,10 +147,12 @@ def add_amc_after_sales(request):
 
             crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),
                                                            Q(contact_no=contact_no)).first()
-
-            send_mail('Feedback Form', 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
-                request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
-                      [crm_no.customer_email_id])
+            try:
+                send_mail('Feedback Form', 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
+                    request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                          [crm_no.customer_email_id])
+            except:
+                print('exception')
 
             message = 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
                 request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id)
@@ -165,9 +167,12 @@ def add_amc_after_sales(request):
 
 
         else:
-            send_mail('Feedback Form', 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
-                request.user.pk) + '/' + str(item.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
-                      [item.customer_email_id])
+            try:
+                send_mail('Feedback Form', 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
+                    request.user.pk) + '/' + str(item.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                          [item.customer_email_id])
+            except:
+                pass
 
             message = 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
                 request.user.pk) + '/' + str(item.id) + '/' + str(item2.id)
