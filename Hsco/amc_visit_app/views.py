@@ -348,7 +348,7 @@ def amc_views(request):
 
         else:  #For EMPLOYEE
             manager = SiteUser.objects.get(id=request.user.pk).manager
-            amc_list = Amc_After_Sales.objects.filter(Q(user_id__manager=manager,user_id__is_deleted=False)| Q(user_id__name__icontains=request.user.name)).order_by('-id')
+            amc_list = Amc_After_Sales.objects.filter(Q(user_id__manager=manager)| Q(user_id__name__icontains=request.user.name)).order_by('-id')
         # amc_list = Amc_After_Sales.objects.all()
 
         context = {
