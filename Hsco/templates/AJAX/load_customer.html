@@ -26,7 +26,7 @@
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" value="{{cust_list.company_name}}" class="form-control"  type="text">
+  <input  name="company_name" placeholder="Company Name" value="{% if cust_list.company_name != None and cust_list.company_name != '' %}{{cust_list.company_name}}{% else %}{% endif %}" class="form-control"  type="text">
 
 
      </div>

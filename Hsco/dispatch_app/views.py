@@ -434,13 +434,6 @@ def update_dispatch_details(request,update_id):
             item2.save(update_fields=['customer_email_id'])
 
 
-
-        # dispatch_id = request.POST.get('dispatch_id')
-        # second_person=request.POST.get('second_person')
-        # third_person=request.POST.get('third_person')
-        # second_contact_no=request.POST.get('second_contact_no')
-        # third_contact_no=request.POST.get('third_contact_no')
-
         date_of_dispatch = request.POST.get('date_of_dispatch')
         dispatch_by = request.POST.get('dispatch_by')
         packed_by = request.POST.get('packed_by')
@@ -454,21 +447,22 @@ def update_dispatch_details(request,update_id):
 
         try:
             print("purchase_id")
-            print("purchase_id")
-            print("purchase_id")
-            print("purchase_id")
+
             purchase_id=Purchase_Details.objects.get(dispatch_id_assigned=update_id)
 
-            print(purchase_id)
-            print(purchase_id)
             purchase_id.second_person = customer_name
             purchase_id.second_contact_no = contact_no
-            purchase_id.save(update_fields=['second_person', 'second_contact_no', ])
+            channel_of_dispatch = request.POST.get('channel_of_dispatch')
+            purchase_id.save(update_fields=['second_person', 'second_contact_no','channel_of_dispatch' ])
+
+
 
             if company_name != '':
                 purchase_id.second_company_name = company_name  # new2
 
                 purchase_id.save(update_fields=['second_company_name'])
+
+
             if address != '':
 
                 purchase_id.company_address = address  # new2

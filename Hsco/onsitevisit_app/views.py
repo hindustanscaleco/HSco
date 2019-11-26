@@ -125,13 +125,32 @@ def onsite_views(request):
     else:
         context={}
         if check_admin_roles(request):     #For ADMIN
+
             onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Onsite Repairing Module').order_by('-id')
+            stage1 = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False, current_stage='Onsite repairing request is raised').values(
+                'current_stage').annotate(dcount=Count('current_stage'))
+            stage2 = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,
+                current_stage='Onsite repairing request is assigned').values(
+                'current_stage').annotate(dcount=Count('current_stage'))
+
+            stage3 = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,
+                current_stage='Onsite repairing request is completed').values(
+                'current_stage').annotate(dcount=Count('current_stage'))
         else:  #For EMPLOYEE
             onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+            stage1 = Onsite_aftersales_service.objects.filter(user_id=request.user.pk, current_stage='Onsite repairing request is raised').values(
+                'current_stage').annotate(dcount=Count('current_stage'))
+            stage2 = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,
+                current_stage='Onsite repairing request is assigned').values(
+                'current_stage').annotate(dcount=Count('current_stage'))
+
+            stage3 = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,
+                current_stage='Onsite repairing request is completed').values(
+                'current_stage').annotate(dcount=Count('current_stage'))
         # onsite_list = Onsite_aftersales_service.objects.all()
 
-        stage1 = Onsite_aftersales_service.objects.filter(Q(current_stage='Onsite repairing request is raised')).values(
-            'current_stage').annotate(dcount=Count('current_stage'))
+
+
         x = stage1
         if not x:
             x = None
@@ -149,9 +168,7 @@ def onsite_views(request):
 
             pass
 
-        stage2 = Onsite_aftersales_service.objects.filter(
-            Q(current_stage='Onsite repairing request is assigned')).values(
-            'current_stage').annotate(dcount=Count('current_stage'))
+
         x = stage2
         # if x['current_stage'] == 'Scale is collected but estimate is not given':
         if not x:
@@ -169,9 +186,7 @@ def onsite_views(request):
         except:
             pass
 
-        stage3 = Onsite_aftersales_service.objects.filter(
-            Q(current_stage='Onsite repairing request is completed')).values(
-            'current_stage').annotate(dcount=Count('current_stage'))
+
         x = stage3
         if not x:
             x = None
@@ -254,12 +269,16 @@ def add_onsite_aftersales_service(request):
             item3 = Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).first()
             if company_name != '':
                 item3.company_name = company_name
+                item2.second_company_name = company_name  # new2
                 item3.save(update_fields=['company_name'])
             if address != '':
                 item3.address = address
                 item3.save(update_fields=['address'])
+                item2.company_address = address  # new2
             if customer_email_id != '':
                 item3.customer_email_id = customer_email_id
+                item2.company_email = customer_email_id  # new2
+
                 item3.save(update_fields=['customer_email_id'])
 
         else:
@@ -567,6 +586,20 @@ def update_onsite_details(request,id):
     customer_id = Onsite_aftersales_service.objects.get(id=id).crm_no
 
     customer_id = Customer_Details.objects.get(id=customer_id)
+    if request.user.role == 'Super Admin':
+        user_list=SiteUser.objects.filter(Q(id=request.user.id) | Q(group__icontains=request.user.name),modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
+
+    elif request.user.role == 'Admin':
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(admin=request.user.name),
+                                            modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
+    elif request.user.role == 'Manager':
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=request.user.name),
+                                            modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
+    else: #display colleague
+
+        list_group = SiteUser.objects.get(id=request.user.id).manager
+        user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=list_group),
+                                            modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
     try:
         feedback = Onsite_Feedback.objects.get(onsite_repairing_id=onsite_id.pk, customer_id=customer_id)
         print(feedback)
@@ -645,15 +678,15 @@ def update_onsite_details(request,id):
             item2.save(update_fields=['company_name'])
             item.save(update_fields=['second_company_name', ]),
 
-        if customer_address != '':
-            item2.address = customer_address
+        if address != '':
+            item2.address = address
 
-            item.company_address = customer_address  # new2
+            item.company_address = address  # new2
             item2.save(update_fields=['address'])
             item.save(update_fields=['company_address', ]),
-        if customer_email != '':
-            item2.customer_email_id = customer_email
-            item.company_email = customer_email  # new2
+        if customer_email_id != '':
+            item2.customer_email_id = customer_email_id
+            item.company_email = customer_email_id  # new2
             item.save(update_fields=['company_email'])
             item2.save(update_fields=['customer_email_id', ]),
         # item.repairingno = repairingno
@@ -731,6 +764,7 @@ def update_onsite_details(request,id):
         'onsite_product_list':onsite_product_list,
         'employee_list':employee_list,
         'feedback': feedback,
+        'user_list': user_list,
     }
 
     return render(request,'update_forms/update_onsite_rep_form.html',context)
