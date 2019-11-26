@@ -181,7 +181,7 @@ Format : (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input name="contact_no" required placeholder="Contact No." class="form-control"  type="text">
+  <input name="contact_no" onkeypress="return isNumber(event)" maxlength="10" minlength="10"  required placeholder="Contact No." class="form-control"  type="text">
     </div>
   </div>
   <label class="col-md-2 control-label">Customer E-mail id

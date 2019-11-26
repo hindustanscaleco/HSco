@@ -46,7 +46,7 @@ var myLineChart = new Chart(ctx, {
       pointHoverBorderColor: "rgba(78, 115, 223, 1)",
       pointHitRadius: 10,
       pointBorderWidth: 2,
-      data: [0, 1000, 500, 15000, 10000, 20000, 15000, 25000, 2000, 30000, 25000, 40000],
+      data: [0, 1000, 500, 15000, 10000, 20000, 15000, 25000, 2000, 30000, 25000, 400],
     }],
   },
   options: {
@@ -116,3 +116,12 @@ var myLineChart = new Chart(ctx, {
     }
   }
 });
+
+
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
