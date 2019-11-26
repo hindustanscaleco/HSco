@@ -379,7 +379,11 @@ a:hover {
                     <div class="col-xl-2 col-md-1 mb-1"><center class="border-left-primary"> Customer Name </center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary"> Company Name </center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">  Contact No. </center> </div>
+                           {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary"> Entered By </center> </div>
+                    {% else %}
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">  Email ID </center> </div>
+             {% endif %}
                     <div class="col-xl-1 col-md-1 mb-1 "><center class="border-left-primary"> Feedback  </center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary"> <p>Stars</p> </center>
                     </div>
@@ -406,7 +410,12 @@ a:hover {
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary"> {{ list1.second_person }}</div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.second_company_name}} </div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.second_contact_no}} </div>
+                                  {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
+
+                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{list1.user_id.profile_name}}</div>
+                    {% else %}
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{% if list1.company_email != None and list1.company_email != '' %}{{list1.company_email}}{% else %}{% endif %} </div>
+                         {% endif %}
                     <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{% if list1.feedback_form_filled %} YES {% else %} NO {% endif %}</div>
                     <div class="col-xl-2 col-md-1 mb-1 border-left-primary">
                          {% for avg in  list1.feedback_stars|rjust:'5'  %}
