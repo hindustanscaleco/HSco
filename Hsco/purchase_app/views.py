@@ -436,7 +436,7 @@ def view_customer_details(request):
             return render(request, 'dashboardnew/cm.html', context)
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
-            cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name,user_id__is_deleted=True,user_id__modules_assigned__icontains='Customer Module')).order_by('-id')
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=True,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
         else:  # For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 
@@ -448,7 +448,7 @@ def view_customer_details(request):
         return render(request, 'dashboardnew/cm.html', context)
     else:
         if check_admin_roles(request):  # For ADMIN
-            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
+            cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module')).order_by('-id')
         else:  # For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 
