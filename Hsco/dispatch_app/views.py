@@ -329,16 +329,16 @@ def dispatch_view(request):
                 'current_stage').annotate(dcount=Count('current_stage'))
 
         else:  #For EMPLOYEE
-            manager=SiteUser.objects.get(id=request.user.pk).manager
-            dispatch_list = Dispatch.objects.filter(user_id__manager=manager).order_by('-id')
+            admin=SiteUser.objects.get(id=request.user.pk).admin
+            dispatch_list = Dispatch.objects.filter(Q(user_id__admin=admin)|Q(dispatch_by=request.user.name)).order_by('-id')
 
-            stage1 = Dispatch.objects.filter(user_id__manager=manager,current_stage='dispatch q').values('current_stage').annotate(
+            stage1 = Dispatch.objects.filter((Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))&Q(current_stage='dispatch q')).values('current_stage').annotate(
                 dcount=Count('current_stage'))
 
-            stage2 = Dispatch.objects.filter(user_id__manager=manager,current_stage='dispatch but lr not updated').values(
+            stage2 = Dispatch.objects.filter((Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))&Q(current_stage='dispatch but lr not updated')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
 
-            stage3 = Dispatch.objects.filter(user_id__manager=manager,current_stage='dispatch completed').values(
+            stage3 = Dispatch.objects.filter((Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))&Q(current_stage='dispatch completed')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
 
         # dispatch_list = Dispatch.objects.all()

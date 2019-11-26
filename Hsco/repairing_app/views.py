@@ -658,18 +658,19 @@ def repairing_module_home(request):
     else:
         if check_admin_roles(request):     #For ADMIN
             repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains="'Repairing Module'").order_by('-id')
+
+            res = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='') |Q(user_id__name=request.user.name)|Q(taken_by=request.user.name)) | Q(user_id__group__icontains=request.user.name)).values(
+                'current_stage').annotate(
+                dcount=Count('current_stage'))
         else:  #For EMPLOYEE
-            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='')) | Q(taken_by=request.user.name)).order_by('-id')
+            repair_list = Repairing_after_sales_service.objects.filter(Q(taken_by=None) | Q(taken_by='') | Q(taken_by=request.user.name)).order_by('-id')
+
+            res = Repairing_after_sales_service.objects.filter(Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)).values('current_stage').annotate(
+                dcount=Count('current_stage'))
             # repair_list2 = Repairing_after_sales_service.objects.filter(Q(taken_by='')).order_by('-id')
             # repair_list = Repairing_after_sales_service.objects.filter(taken_by=request.user.name,).order_by('-id')
         # repair_list = Repairing_after_sales_service.objects.all()
-        if check_admin_roles(request):     #For ADMIN
-            res = Repairing_after_sales_service.objects.filter(
-                (Q(taken_by=None) | Q(taken_by='')) | Q(user_id__manager=request.user.name)| Q(user_id__admin=request.user.name)| Q(user_id__super_admin=request.user.name)).values('current_stage').annotate(
-                dcount=Count('current_stage'))
-        else:
-            res = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by=''))| Q(taken_by=request.user.name)).values('current_stage').annotate(
-            dcount=Count('current_stage'))
+
         context = {
             'repair_list': repair_list,
         }
