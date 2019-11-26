@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from purchase_app.models import Product_Details
 from django.db.models import Sum, Min, Q, Count, F
 from django.shortcuts import render, redirect
 from django.db import connection
@@ -9,6 +9,8 @@ from user_app.models import SiteUser
 from customer_app.models import Customer_Details
 
 from purchase_app.views import check_admin_roles
+
+from purchase_app.models import Purchase_Details
 from .models import Dispatch, Product_Details_Dispatch
 from django.core.mail import send_mail
 from Hsco import settings
@@ -797,123 +799,27 @@ def load_dispatch_stages_list(request):
     return render(request, 'AJAX/load_dispatch_stage.html', context)
 
 
-def edit_dispatch_product(request,id):
-    purchase = Product_Details.objects.get(id=product_id_rec)
-    purchase_id = Purchase_Details.objects.get(id=purchase.purchase_id)
-    # dispatch_id_assigned = str(purchase_id.dispatch_id_assigned)
-    try:
-        dispatch_id_assigned = str(purchase.dispatch_id_assigned)
-    except:
-        dispatch_id_assigned=None
-    product_id = Product_Details.objects.get(id=product_id_rec)
+def edit_dispatch_product(request,product_id_rec):
+
+    pro_dispatch=Product_Details_Dispatch.objects.get(id=product_id_rec)
+
     if request.method == 'POST':
-        quantity = request.POST.get('quantity')
-        model_of_purchase = request.POST.get('model_of_purchase')
-        type_of_scale = request.POST.get('type_of_scale')
-        sub_model = request.POST.get('sub_model')
-        sub_sub_model = request.POST.get('sub_sub_model')
+
         serial_no_scale = request.POST.get('serial_no_scale')
-        brand = request.POST.get('brand')
-        capacity = request.POST.get('capacity')
-        unit = request.POST.get('unit')
-        # sales_person = request.POST.get('sales_person')
-        value_of_goods = request.POST.get('value_of_goods')
-        # purchase_type = request.POST.get('purchase_type')
 
-        cost2 = purchase.value_of_goods
-
-        Purchase_Details.objects.filter(id=purchase_id.pk).update(value_of_goods=F("value_of_goods") - cost2)
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
-        # if cost2 > 0.0:
-        Employee_Analysis_month.objects.filter(user_id=purchase_id.user_id,
-                                               entry_date__month=product_id.entry_timedate.month,
-                                               year=product_id.entry_timedate.year).update(
-            total_sales_done=F("total_sales_done") - cost2)
-
-        Employee_Analysis_date.objects.filter(user_id=purchase_id.user_id,
-                                              entry_date__month=product_id.entry_timedate.month,
-                                              year=product_id.entry_timedate.year).update(
-            total_sales_done_today=F("total_sales_done_today") - cost2)
+        if serial_no_scale != None and serial_no_scale!= '':
+            Product_Details_Dispatch.objects.filter(id=product_id_rec).update(serial_no_scale=serial_no_scale)
+            try:
+                Product_Details.objects.get(product_dispatch_id=product_id_rec).update(serial_no_scale=serial_no_scale)
+            except:
+                pass
 
 
 
-
-
-        item = product_id
-
-        item.quantity = quantity
-        item.type_of_scale = type_of_scale
-        item.model_of_purchase = model_of_purchase
-        item.sub_model = sub_model
-        item.sub_sub_model = sub_sub_model
-        item.serial_no_scale = serial_no_scale
-        item.brand = brand
-        item.capacity = capacity
-        item.unit = unit
-        item.value_of_goods = value_of_goods
-        # item.purchase_id_id = purchase_id
-        # item.sales_person = sales_person
-        # item.purchase_type = purchase_type
-        # item.user_id = SiteUser.objects.get(id=request.user.pk)
-        # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item.save(update_fields=['quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
-                                 'serial_no_scale', 'brand', 'capacity', 'unit','value_of_goods',
-                                 ])
-
-        Purchase_Details.objects.filter(id=purchase_id.pk).update(
-            value_of_goods=F("value_of_goods") + value_of_goods)
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
-
-        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
-                                               entry_date__month=purchase_id.entry_timedate.month,
-                                               year=purchase_id.entry_timedate.year).update(
-            total_sales_done=F("total_sales_done") + value_of_goods)
-
-        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
-                                              entry_date__month=purchase_id.entry_timedate.month,
-                                              year=purchase_id.entry_timedate.year).update(
-            total_sales_done_today=F("total_sales_done_today") + value_of_goods)
-
-
-        if dispatch_id_assigned != '' or dispatch_id_assigned != None:
-            if product_id.product_dispatch_id != '' or product_id.product_dispatch_id != None:
-                dispatch_pro = Product_Details_Dispatch.objects.get(id=product_id.product_dispatch_id.pk)
-
-                # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
-                # dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
-                # dispatch_pro.product_name = product_name
-                dispatch_pro.quantity = quantity
-                dispatch_pro.type_of_scale = type_of_scale
-                dispatch_pro.model_of_purchase = model_of_purchase
-                dispatch_pro.sub_model = sub_model
-                dispatch_pro.sub_sub_model = sub_sub_model
-                dispatch_pro.serial_no_scale = serial_no_scale
-                dispatch_pro.brand = brand
-                dispatch_pro.capacity = capacity
-                dispatch_pro.unit = unit
-                dispatch_pro.value_of_goods = value_of_goods
-
-                # dispatch_pro.dispatch_id = dispatch_id
-                # dispatch_pro.sales_person = sales_person
-                # dispatch_pro.purchase_type = purchase_type
-                dispatch_pro.save(
-                    update_fields=['quantity', 'type_of_scale','value_of_goods', 'model_of_purchase', 'sub_model',
-                                   'sub_sub_model',
-                                   'serial_no_scale', 'brand', 'capacity', 'unit',
-                                   ])
-
-        # try:
-        #     # dispatch_id = Dispatch.objects.get(id=dispatch_id_assigned)
-        #
-        # except:
-        #     pass
-
-        return redirect('/update_customer_details/' + str(purchase_id.id))
+        return redirect('/edit_dispatch_product/'+product_id_rec)
 
     context = {
-        'product_id': product_id,
+        'product_id': pro_dispatch,
     }
 
     return render(request,'edit_product/dispatch_product.html',context)
