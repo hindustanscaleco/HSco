@@ -389,7 +389,6 @@ def update_dispatch_details(request,update_id):
     product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
     # customer_id = Dispatch.objects.get(id=update_id).crm_no
 
-
     customer_id = Customer_Details.objects.get(id=dispatch_item.crm_no)
 
     if request.user.role == 'Super Admin':
@@ -453,20 +452,42 @@ def update_dispatch_details(request,update_id):
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
 
+        try:
+            purchase_id=Purchase_Details.objects.get(dispatch_id_assigned=id)
+            if company_name != '':
+                purchase_id.second_company_name = company_name  # new2
+
+                purchase_id.save(update_fields=['second_company_name'])
+            if address != '':
+
+                purchase_id.company_address = address  # new2
+
+                purchase_id.save(update_fields=['company_address'])
+            if customer_email_id != '':
+
+                purchase_id.company_email = customer_email_id  # new2
+                purchase_id.save(update_fields=['company_email'])
+
+        except:
+            pass
+
         item = Dispatch.objects.get(id=update_id)
         if company_name != '':
             item.second_company_name = company_name  # new2
 
             item2.company_name = company_name
             item2.save(update_fields=['company_name'])
+            item.save(update_fields=['second_company_name'])
         if address != '':
             item2.address = address
 
             item.company_address = address  # new2
             item2.save(update_fields=['address'])
+            item.save(update_fields=['company_address'])
         if customer_email_id != '':
             item2.customer_email_id = customer_email_id
             item.company_email = customer_email_id  # new2
+            item.save(update_fields=['company_email'])
             item2.save(update_fields=['customer_email_id'])
 
         # item.dispatch_id = dispatch_id
@@ -580,9 +601,9 @@ def update_dispatch_details(request,update_id):
         item.save(update_fields=['photo_lr_no', ]),
         item.save(update_fields=['channel_of_dispatch', ]),
         item.save(update_fields=['notes', ]),
-        item2.save(update_fields=['second_company_name', ]),
-        item2.save(update_fields=['company_address', ]),
-        item2.save(update_fields=['company_email', ]),
+        item.save(update_fields=['second_company_name', ]),
+        item.save(update_fields=['company_address', ]),
+        item.save(update_fields=['company_email', ]),
         dispatch_item = Dispatch.objects.get(id=update_id)
         product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
 
@@ -810,13 +831,13 @@ def edit_dispatch_product(request,product_id_rec):
         if serial_no_scale != None and serial_no_scale!= '':
             Product_Details_Dispatch.objects.filter(id=product_id_rec).update(serial_no_scale=serial_no_scale)
             try:
-                Product_Details.objects.get(product_dispatch_id=product_id_rec).update(serial_no_scale=serial_no_scale)
+                Product_Details.objects.filter(product_dispatch_id=product_id_rec).update(serial_no_scale=serial_no_scale)
             except:
                 pass
 
 
 
-        return redirect('/edit_dispatch_product/'+product_id_rec)
+        return redirect('/edit_dispatch_product/'+str(product_id_rec))
 
     context = {
         'product_id': pro_dispatch,

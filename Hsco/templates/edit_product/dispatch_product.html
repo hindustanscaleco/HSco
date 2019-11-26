@@ -232,7 +232,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="type_of_scale" disabled placeholder="Type of Machine" id="myText" value="{{product_id.type_of_scale}}" class="form-control" list="type_of_scale">
+    <input  type="text" name="type_of_scale" readonly placeholder="Type of Machine" id="myText" value="{{product_id.type_of_scale}}" class="form-control" list="type_of_scale">
       <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
     <datalist style="height:20px;" id="type_of_scale">
     <option value = "Digital"></option>
@@ -255,7 +255,7 @@ function myFunction() {
     <select class="editableBox" required name="model_of_purchase" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
       <option value="{{product_id.model_of_purchase}}" selected="selected">Select</option>
     </select>
-    <input class="timeTextBox" value="{{product_id.model_of_purchase}}" disabled id="myText2" name="model_of_purchase" maxlength="30"/>
+    <input class="timeTextBox" value="{{product_id.model_of_purchase}}" readonly id="myText2" name="model_of_purchase" maxlength="30"/>
 </div>
   </div>
 
@@ -271,7 +271,7 @@ function myFunction() {
     <select class="editableBoxa" required id="stateSel" size="1" name="sub_model" style="border: 1px solid grey; border-radius: 5px;">
 <option value="{{product_id.sub_model}}" selected="selected">Select</option>
     </select>
-    <input class="timeTextBoxa" value="{{product_id.sub_model}}" disabled id="myText3" name="sub_model" maxlength="30"/>
+    <input class="timeTextBoxa" value="{{product_id.sub_model}}" readonly id="myText3" name="sub_model" maxlength="30"/>
 </div>
   </div>
   <label class="col-md-2 control-label">Sub Sub Model *
@@ -283,7 +283,7 @@ function myFunction() {
     <select class="editableBoxaa" required id="districtSel" size="1" name="sub_sub_model" style="border: 1px solid grey; border-radius: 5px;">
 <option value="{{product_id.sub_sub_model}}" selected="selected">Select</option>
     </select>
-    <input class="timeTextBoxaa" value="{{product_id.sub_sub_model}}" disabled id="myText4" name="sub_sub_model" maxlength="30"/>
+    <input class="timeTextBoxaa" value="{{product_id.sub_sub_model}}" readonly id="myText4" name="sub_sub_model" maxlength="30"/>
 
 </div>
   </div>
@@ -301,7 +301,7 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
 
-    <input  type="text" name="brand" disabled placeholder="Brand" id="myText6" value="{{product_id.brand}}" class="form-control" list="components_replaced">
+    <input  type="text" name="brand" readonly placeholder="Brand" id="myText6" value="{{product_id.brand}}" class="form-control" list="components_replaced">
     <datalist style="height:20px;" id="components_replaced">
     <option value = "HSCo"></option>
 
@@ -316,7 +316,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupCont+-ainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="capacity" disabled placeholder="Components Replaced" id="myText7" value="{{product_id.capacity}}" class="form-control"  type="text">
+  <input  name="capacity" readonly placeholder="Components Replaced" id="myText7" value="{{product_id.capacity}}" class="form-control"  type="text">
     </div>
   </div>
 </div>
@@ -329,7 +329,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="unit" disabled placeholder="unit" id="myText8" list="unit" value="{{product_id.unit}}" class="form-control" type="text">
+  <input  name="unit" readonly placeholder="unit" id="myText8" list="unit" value="{{product_id.unit}}" class="form-control" type="text">
       <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
         <datalist style="height:20px;" id="unit">
     <option value = "gm"></option>
@@ -354,7 +354,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods" required placeholder="Rate x quantity" id="myText11" value="{{product_id.value_of_goods}}" disabled class="form-control" step="0.2" type="number">
+  <input  name="value_of_goods" readonly placeholder="Rate x quantity" id="myText11" value="{{product_id.value_of_goods}}" disabled class="form-control" step="0.2" type="number">
     </div>
   </div>
 
@@ -389,7 +389,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="quantity" disabled placeholder="Quantity
+  <input  name="quantity" readonly placeholder="Quantity
 
 
 " class="form-control" id="myText9" value="{{product_id.quantity}}" type="text">
