@@ -50,6 +50,8 @@ class Repairing_after_sales_service(models.Model):
     reparing_done_sms_count = models.IntegerField(default=0)
     late_mark_sms_count = models.IntegerField(default=0)
     final_del_sms_count = models.IntegerField(default=0)
+    is_last_product_added = models.BooleanField(default=False,)
+
 
 
 

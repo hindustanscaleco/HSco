@@ -370,6 +370,7 @@ a:hover {
                   <center> <p>list of deleted users</p></center>
                     {% endif %}
         <div class="row" id="id_manager_view">
+
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 10px;color: black; font-weight: 600; font-size: 12px; height: auto; ">
@@ -385,7 +386,7 @@ a:hover {
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="">  Email ID </center> </div>
              {% endif %}
                     <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Sales Person  </center></div>
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class=""> <p>Stars</p> </center>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Feedback</center>
                     </div>
 
                 </div>
@@ -397,8 +398,8 @@ a:hover {
 <br>
 <br>
  <center><p>{{search_msg}}</p></center>
+
             {% for list1 in customer_list %}
-            <!--<a href="/update_customer_details/{{list1.pk}}" style="color: black; font-size: 12px;" >-->
 <div style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';" class="col-xl-12 col-md-12 mb-12">
     <a class="card shadow" >
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; min-height: 55px;">
@@ -417,7 +418,7 @@ a:hover {
                     <div class="col-xl-2 col-md-1 mb-1 "><center>{% if list1.company_email != None and list1.company_email != '' %}{{list1.company_email}}{% else %}{% endif %}</center> </div>
                          {% endif %}
                     <div class="col-xl-2 col-md-1 mb-1 "><center>{{list1.sales_person}}</center><i aria-hidden="true" style="color: yellow; font-size: 12px;"></i></div>
-                    <div class="col-xl-1 col-md-1 mb-1 ">
+                    <div class="col-xl-2 col-md-1 mb-1 ">
                          {% for avg in  list1.feedback_stars|rjust:'5'  %}
 							{% if forloop.counter <= list1.feedback_stars %}
 									<i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>

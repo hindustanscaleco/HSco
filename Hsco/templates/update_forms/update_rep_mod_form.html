@@ -790,8 +790,11 @@ function myFunction() {
 
 <br>
 <center>
-                      <a href="/repair_product/{{repair_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
+    {% if repair_id.is_last_product_added %}
 
+{% else %}
+    <a href="/repair_product/{{repair_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
+{% endif %}
 </center>
 
           <br>

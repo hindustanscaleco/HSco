@@ -269,70 +269,6 @@ def add_purchase_details(request):
             ead.year = datetime.now().year
             ead.save()
 
-
-
-        if Customer_Details.objects.filter(Q(customer_name=customer_name),
-                                           Q(contact_no=contact_no)).count() > 0:
-            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),
-                                                     Q(contact_no=contact_no)).first()
-
-
-            try:
-                message = 'Dear ' + str(crm_no.customer_name) + '. Thanks for purchasing your scale from HSCo. ' \
-                                                           'Your Purchase ID is ' + str(item2.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                                                                                               ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
-                          + str(request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
-                send_mail('Feedback Form',
-                          message, settings.EMAIL_HOST_USER,
-                          [crm_no.customer_email_id])
-                print("send mail!!")
-            except:
-                print("exception occured!!")
-                pass
-
-            message = 'Dear '+str(crm_no.customer_name)+'. Thanks for purchasing your scale from HSCo. ' \
-                      'Your Purchase ID is '+str(item2.pk)+'. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                      ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/'+ str(request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
-
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-            payload = ""
-            headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-            x = response.text
-            print(x)
-
-        else:
-            try:
-                message = 'Dear '+item.customer_name+'. Thanks for purchasing your scale from HSCo. ' \
-                      'Your Purchase ID is '+str(item2.pk)+'. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                      ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
-                      + str(request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
-
-                send_mail('Feedback Form',
-                          message, settings.EMAIL_HOST_USER,
-                          [item.customer_email_id])
-
-            except:
-                pass
-
-            message = 'Dear '+item.customer_name+'. Thanks for purchasing your scale from HSCo. ' \
-                      'Your Purchase ID is '+item2.pk+'. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                      ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
-                      + str(request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
-
-
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-            payload = ""
-            headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-            x = response.text
-            print("else wala x")
-            print(x)
-
-
-
         return redirect('/add_product_details/'+str(item2.pk))
 
 
@@ -448,7 +384,7 @@ def view_customer_details(request):
         return render(request, 'dashboardnew/cm.html', context)
     else:
         if check_admin_roles(request):  # For ADMIN
-            cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module')).order_by('-id')
+            cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
         else:  # For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 
@@ -693,6 +629,8 @@ def add_product_details(request,id):
         capacity = request.POST.get('capacity')
         unit = request.POST.get('unit')
         value_of_goods = request.POST.get('value_of_goods')
+        is_last_product_yes = request.POST.get('is_last_product_yes')
+
         # sales_person = request.POST.get('sales_person')
         # purchase_type = request.POST.get('purchase_type')
         if value_of_goods == '' or value_of_goods == None:
@@ -725,6 +663,40 @@ def add_product_details(request,id):
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save()
+
+        if is_last_product_yes == 'yes':
+            # ret = send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
+            Purchase_Details.objects.filter(id=id).update(is_last_product_added=True)
+
+            try:
+                message = 'Dear ' + str(purchase.crm_no.customer_name) + '. Thanks for purchasing your scale from HSCo. ' \
+                                                                'Your Purchase ID is ' + str(
+                    purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
+                                ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
+                          + str(request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(purchase.id) 
+                send_mail('Feedback Form',
+                          message, settings.EMAIL_HOST_USER,
+                          [purchase.company_email])
+                print("send mail!!")
+            except:
+                print("exception occured!!")
+                pass
+
+            message = 'Dear ' + str(purchase.second_person) + '. Thanks for purchasing your scale from HSCo. ' \
+                                                            'Your Purchase ID is ' + str(
+                purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
+                            ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' + str(
+                request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(purchase.id)
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+            print(x)
+
+
 
 
 
@@ -781,10 +753,14 @@ def add_product_details(request,id):
 
 
             request.session['product_saved'] = True
+        if is_last_product_yes == 'yes':
+            return redirect('/update_customer_details/'+str(purchase_id))
+        elif is_last_product_yes == 'no':
+            return redirect('/add_product_details/'+str(purchase_id))
 
 
 
-        return redirect('/update_customer_details/'+str(purchase_id))
+
 
 
     context = {
@@ -1185,9 +1161,11 @@ def load_users(request):
 
         return render(request, 'AJAX/load_users.html', context)
     else:
-        if check_admin_roles(request):     #For ADMIN
-            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
-        else:  #For EMPLOYEE
+        if check_admin_roles(request):  # For ADMIN
+            cust_list = Purchase_Details.objects.filter(
+                Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+                user_id__is_deleted=False, user_id__modules_assigned__icontains='Customer Module').order_by('-id')
+        else:  # For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
 
         context = {

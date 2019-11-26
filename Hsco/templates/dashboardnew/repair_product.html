@@ -417,8 +417,8 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
-  YES:<input  name="is_last_product_yes" placeholder="Is deleted" class="form-control" type="radio">
-  NO:<input  name="is_last_product_yes" placeholder="Is deleted" class="form-control" type="radio">
+  YES:<input  name="is_last_product_yes" value="yes" placeholder="Is deleted" class="form-control" type="radio">
+  NO:<input  name="is_last_product_yes" value="no" placeholder="Is deleted" class="form-control" type="radio">
 
     </div>
   </div>
@@ -655,6 +655,7 @@ function isOneChecked() {
     // for the one you want as in && chx[i].name == 'choose'
     // Return true from the function on first match of a checked item
     if (chx[i].type == 'radio' && chx[i].checked) {
+    alert("Are you sure it's last product?\n you will not be able to add product again.");
       return true;
     }
   }
