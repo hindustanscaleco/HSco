@@ -317,13 +317,32 @@ def dispatch_view(request):
             return render(request, "manager/dispatch_view.html", context)
     else:
         if check_admin_roles(request):     #For ADMIN
-            dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,).order_by('-id')
+            dispatch_list = Dispatch.objects.filter(Q(user_id__pk=request.user.pk) | (Q(user_id__group__icontains=request.user.name)& Q(user_id__is_deleted=False))).order_by('-id')
+
+            stage1 = Dispatch.objects.filter((Q(user_id__pk=request.user.pk) & Q(current_stage='dispatch q'))|(Q(user_id__group__icontains=request.user.name)& Q(user_id__is_deleted=False)& Q(current_stage='dispatch q')) ).values('current_stage').annotate(
+                dcount=Count('current_stage'))
+
+            stage2 = Dispatch.objects.filter((Q(user_id__pk=request.user.pk) & Q(current_stage='dispatch but lr not updated'))|(Q(user_id__group__icontains=request.user.name)& Q(user_id__is_deleted=False)& Q(current_stage='dispatch but lr not updated'))).values(
+                'current_stage').annotate(dcount=Count('current_stage'))
+
+            stage3 = Dispatch.objects.filter((Q(user_id__pk=request.user.pk) & Q(current_stage='dispatch completed'))|(Q(user_id__group__icontains=request.user.name)& Q(user_id__is_deleted=False)& Q(current_stage='dispatch completed'))).values(
+                'current_stage').annotate(dcount=Count('current_stage'))
+
         else:  #For EMPLOYEE
             manager=SiteUser.objects.get(id=request.user.pk).manager
             dispatch_list = Dispatch.objects.filter(user_id__manager=manager).order_by('-id')
+
+            stage1 = Dispatch.objects.filter(user_id__manager=manager,current_stage='dispatch q').values('current_stage').annotate(
+                dcount=Count('current_stage'))
+
+            stage2 = Dispatch.objects.filter(user_id__manager=manager,current_stage='dispatch but lr not updated').values(
+                'current_stage').annotate(dcount=Count('current_stage'))
+
+            stage3 = Dispatch.objects.filter(user_id__manager=manager,current_stage='dispatch completed').values(
+                'current_stage').annotate(dcount=Count('current_stage'))
+
         # dispatch_list = Dispatch.objects.all()
-        stage1 = Dispatch.objects.filter(current_stage='dispatch q').values('current_stage').annotate(
-            dcount=Count('current_stage'))
+
         x = stage1
         if not x:
             x = None
@@ -340,7 +359,6 @@ def dispatch_view(request):
 
             pass
 
-        stage2 = Dispatch.objects.filter(Q(current_stage='dispatch but lr not updated')).values('current_stage').annotate(dcount=Count('current_stage'))
         x = stage2
         # if x['current_stage'] == 'Scale is collected but estimate is not given':
         if not x:
@@ -358,8 +376,7 @@ def dispatch_view(request):
         except:
             pass
 
-        stage3 = Dispatch.objects.filter(Q(current_stage='dispatch completed')).values(
-            'current_stage').annotate(dcount=Count('current_stage'))
+
         x = stage3
         if not x:
             x = None

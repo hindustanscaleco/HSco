@@ -123,12 +123,37 @@ def restamping_manager(request):
             'none':None,
         }
         if check_admin_roles(request):     #For ADMIN
-            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains="'Restamping Module'").order_by('-id')
+            restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains="'Restamping Module'")).order_by('-id')
+
+            stage1 = Restamping_after_sales_service.objects.filter((Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False))&
+                Q(current_stage='Scales in Restamping Queue')).values('current_stage').annotate(
+                dcount=Count('current_stage'))
+
+            stage2 = Restamping_after_sales_service.objects.filter((Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False))&
+                Q(current_stage='Restamping is done but scale is not collected')).values(
+                'current_stage').annotate(dcount=Count('current_stage'))
+
+            stage3 = Restamping_after_sales_service.objects.filter((Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False))&
+                Q(current_stage='Restamping done and scale also collected')).values(
+                'current_stage').annotate(dcount=Count('current_stage'))
+
         else:  #For EMPLOYEE
-            restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+            restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)).order_by('-id')
+
+            stage1 = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)&
+                Q(current_stage='Scales in Restamping Queue')).values('current_stage').annotate(
+                dcount=Count('current_stage'))
+
+
+            stage2 = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)&
+                Q(current_stage='Restamping is done but scale is not collected')).values(
+                'current_stage').annotate(dcount=Count('current_stage'))
+
+            stage3 = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)&
+                Q(current_stage='Restamping done and scale also collected')).values(
+                'current_stage').annotate(dcount=Count('current_stage'))
         # restamp_list = Restamping_after_sales_service.objects.all()
 
-        stage1 = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),Q(current_stage='Scales in Restamping Queue')).values('current_stage').annotate(dcount=Count('current_stage'))
         x = stage1
         if not x:
             x = None
@@ -145,8 +170,7 @@ def restamping_manager(request):
 
             pass
 
-        stage2 = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),Q(current_stage='Restamping is done but scale is not collected')).values(
-            'current_stage').annotate(dcount=Count('current_stage'))
+
         x = stage2
         # if x['current_stage'] == 'Scale is collected but estimate is not given':
         if not x:
@@ -164,8 +188,7 @@ def restamping_manager(request):
         except:
             pass
 
-        stage3 = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),Q(current_stage='Restamping done and scale also collected')).values(
-            'current_stage').annotate(dcount=Count('current_stage'))
+
         x = stage3
         if not x:
             x = None

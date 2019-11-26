@@ -126,15 +126,15 @@ def onsite_views(request):
         context={}
         if check_admin_roles(request):     #For ADMIN
 
-            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Onsite Repairing Module').order_by('-id')
-            stage1 = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False, current_stage='Onsite repairing request is raised').values(
+            onsite_list = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Onsite Repairing Module')).order_by('-id')
+            stage1 = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False, current_stage='Onsite repairing request is raised')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
-            stage2 = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,
-                current_stage='Onsite repairing request is assigned').values(
+            stage2 = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False,
+                current_stage='Onsite repairing request is assigned')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
 
-            stage3 = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,
-                current_stage='Onsite repairing request is completed').values(
+            stage3 = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False,
+                current_stage='Onsite repairing request is completed')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
         else:  #For EMPLOYEE
             onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk).order_by('-id')
