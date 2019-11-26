@@ -46,9 +46,9 @@ def onsite_views(request):
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,crm_no__contact_no=contact).order_by('-id')
+                                                                       user_id__is_deleted=False,second_contact_no=contact).order_by('-id')
             else:  # For EMPLOYEE
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__contact_no=contact).order_by('-id')
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,second_contact_no=contact).order_by('-id')
             # onsite_list = Onsite_aftersales_service.objects.filter(phone_no=contact)
             context = {
                 'onsite_list': onsite_list,
@@ -60,9 +60,9 @@ def onsite_views(request):
             email = request.POST.get('email')
             if check_admin_roles(request):  # For ADMIN
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,crm_no__customer_email_id=email).order_by('-id')
+                                                                       user_id__is_deleted=False,company_email=email).order_by('-id')
             else:  # For EMPLOYEE
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__customer_email_id=email).order_by('-id')
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,company_email=email).order_by('-id')
             # onsite_list = Onsite_aftersales_service.objects.filter(customer_email_id=email)
             context = {
                 'onsite_list': onsite_list,
@@ -73,9 +73,9 @@ def onsite_views(request):
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,crm_no__customer_name=customer).order_by('-id')
+                                                                       user_id__is_deleted=False,second_person=customer).order_by('-id')
             else:  # For EMPLOYEE
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__customer_name=customer).order_by('-id')
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,second_person=customer).order_by('-id')
             # onsite_list = Onsite_aftersales_service.objects.filter(customer_name=customer)
             context = {
                 'onsite_list': onsite_list,
@@ -87,9 +87,9 @@ def onsite_views(request):
             company = request.POST.get('company')
             if check_admin_roles(request):  # For ADMIN
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,crm_no__company_name=company).order_by('-id')
+                                                                       user_id__is_deleted=False,second_company_name=company).order_by('-id')
             else:  # For EMPLOYEE
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__company_name=company).order_by('-id')
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,second_company_name=company).order_by('-id')
             # onsite_list = Onsite_aftersales_service.objects.filter(company_name=company)
             context = {
                 'onsite_list': onsite_list,

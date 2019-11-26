@@ -41,9 +41,9 @@ def restamping_manager(request):
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,contact_no__icontains=contact).order_by('-id')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-id')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,contact_no__icontains=contact).order_by('-id')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-id')
 
             # restamp_list = Restamping_after_sales_service.objects.filter(mobile_no=contact)
             context = {
@@ -70,9 +70,9 @@ def restamping_manager(request):
             restamp_list = Restamping_after_sales_service.objects.filter(name=customer)
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,customer_name__icontains=customer).order_by('-id')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_person__icontains=customer).order_by('-id')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,customer_name__icontains=customer).order_by('-id')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-id')
             context = {
                 'restamp_list': restamp_list,
                 'search_msg': 'Search result for Customer Name: ' + customer,

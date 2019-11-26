@@ -251,9 +251,9 @@ def amc_views(request):
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
                 amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
-                                                          user_id__is_deleted=False,contact_no__icontains=contact).order_by('-id')
+                                                          user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-id')
             else:  # For EMPLOYEE
-                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,contact_no__icontains=contact).order_by('-id')
+                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-id')
             # amc_list = Amc_After_Sales.objects.filter(customer_no=contact)
             context = {
                 'amc_list': amc_list,
@@ -278,9 +278,9 @@ def amc_views(request):
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
                 amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
-                                                          user_id__is_deleted=False,customer_name__icontains=customer).order_by('-id')
+                                                          user_id__is_deleted=False,second_person__icontains=customer).order_by('-id')
             else:  # For EMPLOYEE
-                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,customer_name__icontains=customer).order_by('-id')
+                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-id')
 
             # dispatch_list = Amc_After_Sales.objects.filter(customer_name=customer)
             context = {
