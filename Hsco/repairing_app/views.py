@@ -657,7 +657,7 @@ def repairing_module_home(request):
             return render(request, 'dashboardnew/repairing_module_home.html', context)
     else:
         if check_admin_roles(request):     #For ADMIN
-            repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains="'Repairing Module'").order_by('-id')
+            repair_list = Repairing_after_sales_service.objects.filter((Q(user_id__name=request.user.name)|Q(taken_by=request.user.name)|Q(user_id__group__icontains=request.user.name)),user_id__is_deleted=False,user_id__modules_assigned__icontains="'Repairing Module'").order_by('-id')
 
             res = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='') |Q(user_id__name=request.user.name)|Q(taken_by=request.user.name)) | Q(user_id__group__icontains=request.user.name)).values(
                 'current_stage').annotate(
