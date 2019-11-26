@@ -421,42 +421,28 @@ def add_onsite_product(request,id):
     type_of_purchase_list =type_purchase.objects.all() #1
 
     print(onsite_id)
-    if request.method == 'POST' or request.method == 'FILES':
+    if request.method == 'POST':
         type_of_machine = request.POST.get('type_of_scale')
         model = request.POST.get('model_of_purchase')
         sub_model = request.POST.get('sub_model')
-        model1 = request.POST.get('model1')
-        sub_model1 = request.POST.get('sub_model1')
-        model2 = request.POST.get('model2')
-        sub_model2 = request.POST.get('sub_model2')
+
         capacity = request.POST.get('capacity')
         problem_in_scale = request.POST.get('problem_in_scale')
         components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
         components_replaced = request.POST.get('components_replaced')
         cost = request.POST.get('cost')
 
+
+
         item = Onsite_Products()
 
         item.onsite_repairing_id_id = onsite_id
         item.type_of_machine = type_of_machine
-        item.type_of_machine = type_of_machine
-        if model != None and model != '':
-            item.model = model
+        # item.type_of_machine = type_of_machine
+        item.model = model
 
-            item.sub_model = sub_model
+        item.sub_model = sub_model
 
-        elif model1 != None and model1 != '':
-
-            item.model = model1
-
-            item.sub_model = sub_model1
-
-
-        elif model2 != None and model2 != '':
-
-            item.model = model2
-
-            item.sub_model = sub_model2
         item.capacity = capacity
         item.problem_in_scale = problem_in_scale
         item.components_replaced_in_warranty = components_replaced_in_warranty
