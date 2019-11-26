@@ -2,7 +2,7 @@ from django.db.models import Q, F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from customer_app.models import Customer_Details
+from customer_app.models import Customer_Details,type_purchase
 
 from purchase_app.views import check_admin_roles
 from user_app.models import SiteUser
@@ -20,6 +20,7 @@ import datetime
 
 def add_amc_after_sales(request):
     cust_sugg = Customer_Details.objects.all()
+    type_purchase2 = type_purchase.objects.all()
     if request.method == 'POST':
         address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
@@ -180,7 +181,8 @@ def add_amc_after_sales(request):
 
         return redirect('/amc_views')
     context = {
-        'cust_sugg': cust_sugg
+        'type_purchase': type_purchase2,
+        'cust_sugg': cust_sugg,
     }
     return render(request,'forms/amc_form.html', context)
 
