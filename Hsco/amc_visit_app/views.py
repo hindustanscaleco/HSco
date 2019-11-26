@@ -61,18 +61,18 @@ def add_amc_after_sales(request):
 
                 item3.company_name = company_name
                 item3.save(update_fields=['company_name'])
-                item2.save(update_fields=['second_company_name'])
+                # item2.save(update_fields=['second_company_name'])
             if address != '':
                 item3.address = address
 
                 item2.company_address = address  # new2
                 item3.save(update_fields=['address'])
-                item2.save(update_fields=['company_address'])
+                # item2.save(update_fields=['company_address'])
             if customer_email_id != '':
                 item3.customer_email_id = customer_email_id
                 item2.company_email = customer_email_id  # new2
                 item3.save(update_fields=['customer_email_id'])
-                item2.save(update_fields=['company_email'])
+                # item2.save(update_fields=['company_email'])
 
         else:
             item.customer_name = customer_name
