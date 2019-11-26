@@ -443,12 +443,6 @@ def update_customer_details(request,id):
         item.save(update_fields=['customer_name','contact_no'])  #new3
 
 
-
-
-
-
-
-
         date_of_purchase = request.POST.get('date_of_purchase')
         # second_person=request.POST.get('second_person')
         # third_person=request.POST.get('third_person')
@@ -569,6 +563,14 @@ def update_customer_details(request,id):
                 Product_Details.objects.filter(id=item).update(product_dispatch_id=dispatch_pro.pk)
 
 
+        if item2.channel_of_dispatch != 'Franchisee Store' and channel_of_dispatch == 'Franchisee Store':
+            customer_id = Purchase_Details.objects.get(id=item2.pk)
+            customer_id.dispatch_id_assigned = None  # str(dispatch.pk + 00000)
+            customer_id.save(update_fields=['dispatch_id_assigned'])
+            Dispatch.objects.get(id=item2.dispatch_id_assigned.pk).delete()
+
+
+
         item2.channel_of_dispatch = channel_of_dispatch
         item2.notes = notes
         # item2.feedback_form_filled = feedback_form_filled
@@ -666,14 +668,39 @@ def add_product_details(request,id):
 
         if is_last_product_yes == 'yes':
             # ret = send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
-            Purchase_Details.objects.filter(id=id).update(is_last_product_added=True)
+            Purchase_Details.objects.filter(id=id).update(is_last_product=True)
+
+            product_list = ''' '''
+            pro_lis=  Product_Details.objects.filter(purchase_id_id=purchase_id)
+
+            for idx,item in enumerate(pro_lis):
+                # for it in item:
+
+                email_body_text = (
+                    u"\nSr. No.: {},"
+                    "\tModel: {},"
+                    "\tSub Model: {}"
+                    "\tbrand: {}"
+                    "\tcapacity: {}"
+                    "\tCost: {}"
+
+                ).format(
+                    idx+1,
+                    item.type_of_scale,
+                    item.sub_model,
+                    item.brand,
+                    item.capacity,
+                    item.value_of_goods,
+                )
+                product_list=product_list+''+ str(email_body_text)
+
 
             try:
                 message = 'Dear ' + str(purchase.crm_no.customer_name) + '. Thanks for purchasing your scale from HSCo. ' \
                                                                 'Your Purchase ID is ' + str(
                     purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
                                 ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
-                          + str(request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(purchase.id) 
+                          + str(request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(purchase.id) +'\nHere is the list of product you purchased:\n'+ product_list
                 send_mail('Feedback Form',
                           message, settings.EMAIL_HOST_USER,
                           [purchase.company_email])
@@ -695,8 +722,6 @@ def add_product_details(request,id):
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
             print(x)
-
-
 
 
 

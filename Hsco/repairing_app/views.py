@@ -327,6 +327,52 @@ def repair_product(request,id):
         if is_last_product_yes == 'yes':
             ret = send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
             Repairing_after_sales_service.objects.filter(id=id).update(is_last_product_added=True)
+            product_list = ''' '''
+            pro_lis = Repairing_Product.objects.filter(repairing_id_id=rep.pk)
+
+            for idx, item in enumerate(pro_lis):
+                # for it in item:
+
+                email_body_text = (
+                    u"\nSr. No.: {},"
+                    "\tModel: {},"
+                    "\tSub Model: {}"
+                    "\tproblem in scale: {}"
+                    "\tReplaced scale serial no.: {}"
+                    "\tCost: {}"
+
+                ).format(
+                    idx + 1,
+                    item.type_of_scale,
+                    item.sub_model,
+                    item.problem_in_scale,
+                    item.Replaced_scale_serial_no,
+                    item.cost,
+                )
+                product_list = product_list + '' + str(email_body_text)
+
+                # if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
+                # crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
+                try:
+                    send_mail('Feedback Form',
+                          'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                              request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.id) +'\nHere is a list of Products:\n'+product_list
+                              ,settings.EMAIL_HOST_USER,
+                          [rep.crm_no.company_email])
+                except:
+                    pass
+
+                message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                    request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.id)
+
+                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + rep.crm_no.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+                payload = ""
+                headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+                response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                x = response.text
+
+
 
                 # pass
                 # item.is_last_product = False
