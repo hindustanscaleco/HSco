@@ -141,7 +141,9 @@ EMAIL_PORT = 587
 # EMAIL_HOST_USER = 'harshkumarpathak01@gmail.com'
 # EMAIL_HOST_PASSWORD = 'ipv6netuser'
 
+# EMAIL_HOST_USER = 'website.hindustanscale.com@gmail.com'
 EMAIL_HOST_USER = 'leosagarfcb10@gmail.com'
+# EMAIL_HOST_PASSWORD = 'Hsco123456789@'
 EMAIL_HOST_PASSWORD = 'leosagar10'
 
 

@@ -226,7 +226,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" placeholder="Contact No" required class="form-control"  type="number" pattern="[789][0291]" disabled id="myText4" value="{{purchase_id_id.second_contact_no}}">
+  <input  name="contact_no" placeholder="Contact No" required class="form-control"  type="text" onkeypress="return isNumber(event)" maxlength="10" minlength="10"  pattern="[789][0291]" disabled id="myText4" value="{{purchase_id_id.second_contact_no}}">
 
     </div>
   </div>
@@ -475,7 +475,11 @@ function myFunction() {
 </fieldset>
 </form>
                       <center>
-          <a href="/add_product_details/{{purchase_id_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
+                          {% if purchase_id_id.is_last_product %}
+                          {% else %}
+                                    <a href="/add_product_details/{{purchase_id_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
+
+                          {% endif %}
             </center>
 <br>
                 <style>

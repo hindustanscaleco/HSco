@@ -238,7 +238,7 @@ Format : (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" required placeholder="Phone Number" class="form-control"  type="text">
+  <input name="contact_no" required placeholder="Phone Number" onkeypress="return isNumber(event)" maxlength="10" minlength="10"  class="form-control"  type="text">
     </div>
   </div>
 
@@ -412,7 +412,7 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="informed_on" placeholder="Informed On" class="form-control" type="date">
+  <input  name="informed_on" readonly placeholder="Informed On" class="form-control" type="date">
     </div>
   </div>
 </div>

@@ -370,22 +370,23 @@ a:hover {
                   <center> <p>list of deleted users</p></center>
                     {% endif %}
         <div class="row" id="id_manager_view">
+
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
-                <div class="card-body row" style="padding: 10px;color: black; font-weight: 600; font-size: 12px; height: 35px; ">
+                <div class="card-body row" style="padding: 10px;color: black; font-weight: 600; font-size: 12px; height: auto; ">
 
 
                     <div class="col-xl-1 col-md-1 mb-1 "><center class="">  Purchase ID </center></div>
-                    <div class="col-xl-2 col-md-1 mb-1"><center class="border-left-primary"> Customer Name </center></div>
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary"> Company Name </center></div>
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">  Contact No. </center> </div>
+                    <div class="col-xl-2 col-md-1 mb-1"><center class=""> Customer Name </center></div>
+                    <div class="col-xl-1 col-md-1 mb-1 "><center class=""> Company Name </center></div>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class="">  Contact No. </center> </div>
                            {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary"> Entered By </center> </div>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Entered By </center> </div>
                     {% else %}
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">  Email ID </center> </div>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class="">  Email ID </center> </div>
              {% endif %}
-                    <div class="col-xl-1 col-md-1 mb-1 "><center class="border-left-primary"> Feedback  </center></div>
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary"> <p>Stars</p> </center>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Sales Person  </center></div>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Feedback</center>
                     </div>
 
                 </div>
@@ -397,8 +398,8 @@ a:hover {
 <br>
 <br>
  <center><p>{{search_msg}}</p></center>
+
             {% for list1 in customer_list %}
-            <!--<a href="/update_customer_details/{{list1.pk}}" style="color: black; font-size: 12px;" >-->
 <div style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';" class="col-xl-12 col-md-12 mb-12">
     <a class="card shadow" >
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; min-height: 55px;">
@@ -406,18 +407,18 @@ a:hover {
 
 
                     <div class="col-xl-12 col-md-11 mb-1" style="font-size:10px;">Dispatch Id: {% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned}}{% endif %} </div>
-                    <div class="col-xl-1 col-md-1 mb-1">{{ list1.pk}} </div>
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary"> {{ list1.second_person }}</div>
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.second_company_name}} </div>
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{ list1.second_contact_no}} </div>
+                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list1.pk}}</center> </div>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center>{{ list1.second_person }}</center></div>
+                    <div class="col-xl-1 col-md-1 mb-1"><center> {% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</center></div>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center>{{ list1.second_contact_no}}</center> </div>
                                   {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
 
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{{list1.user_id.profile_name}}</div>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center>{{list1.user_id.profile_name}}</center></div>
                     {% else %}
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">{% if list1.company_email != None and list1.company_email != '' %}{{list1.company_email}}{% else %}{% endif %} </div>
+                    <div class="col-xl-2 col-md-1 mb-1 "><center>{% if list1.company_email != None and list1.company_email != '' %}{{list1.company_email}}{% else %}{% endif %}</center> </div>
                          {% endif %}
-                    <div class="col-xl-1 col-md-1 mb-1 border-left-primary">{% if list1.feedback_form_filled %} YES {% else %} NO {% endif %}</div>
-                    <div class="col-xl-2 col-md-1 mb-1 border-left-primary">
+                    <div class="col-xl-2 col-md-1 mb-1 "><center>{{list1.sales_person}}</center><i aria-hidden="true" style="color: yellow; font-size: 12px;"></i></div>
+                    <div class="col-xl-2 col-md-1 mb-1 ">
                          {% for avg in  list1.feedback_stars|rjust:'5'  %}
 							{% if forloop.counter <= list1.feedback_stars %}
 									<i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>

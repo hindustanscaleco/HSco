@@ -215,7 +215,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="contact_no" placeholder="Customer Number" maxlength="10" class="form-control" id="myText5" type="text" disabled value="{{onsite_id.second_contact_no}}">
+  <input name="contact_no" placeholder="Customer Number" onkeypress="return isNumber(event)" maxlength="10" minlength="10"  class="form-control" id="myText5" type="text" disabled value="{{onsite_id.second_contact_no}}">
     </div>
   </div>
 

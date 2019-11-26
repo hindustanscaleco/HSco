@@ -34,6 +34,7 @@ class Purchase_Details(models.Model):   #cleaned
     dispatch_id_assigned = models.ForeignKey(Dispatch,on_delete=models.CASCADE,null=True,blank=True)  #remaining make forenkey of this with Dispatch module
     entry_timedate = models.DateField(default=datetime.date.today)
     feedback_stars=models.FloatField(default=0.0)
+    is_last_product = models.BooleanField(default=False)
 
     def __int__(self):
         return self.id

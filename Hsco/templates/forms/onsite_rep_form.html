@@ -189,9 +189,7 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input type="number" required name="contact_no" placeholder="Phone number
-
-" class="form-control">
+  <input type="text" required name="contact_no" onkeypress="return isNumber(event)" maxlength="10" minlength="10"  placeholder="Phone number" class="form-control">
     </div>
   </div>
 

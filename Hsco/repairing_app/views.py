@@ -152,14 +152,18 @@ def add_repairing_details(request):
         # item2.products_to_be_repaired = products_to_be_repaired
 
         item2.total_cost = 0.0
-        if informed_on != '':
-            item2.informed_on = informed_on
+        if informed_by != '' and informed_by!= None:
+            item2.informed_on = datetime.today().strftime('%Y-%m-%d')
 
-        item2.informed_by = informed_by
+            item2.informed_by = informed_by
+        if repaired_by != '' and repaired_by!= None:
+            item2.repaired_date = datetime.today().strftime('%Y-%m-%d')
+
+            item2.repaired_by = repaired_by
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired
         item2.delivery_by = delivery_by
-        item2.repaired_by = repaired_by
+        # item2.repaired_by = repaired_by
         item2.feedback_given = False
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -207,44 +211,44 @@ def add_repairing_details(request):
             ead.save()
 
 
-        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
-            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
-            try:
-                send_mail('Feedback Form',
-                      'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                          request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
-                      [crm_no.customer_email_id])
-            except:
-                pass
-
-            message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
-
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-            payload = ""
-            headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-            x = response.text
-        else:
-            try:
-
-                send_mail('Feedback Form',
-                      'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                          request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
-                      [item.customer_email_id])
-            except:
-                pass
-
-            message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
-
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-            payload = ""
-            headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-            x = response.text
+        # if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
+        #     crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
+        #     try:
+        #         send_mail('Feedback Form',
+        #               'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+        #                   request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+        #               [crm_no.customer_email_id])
+        #     except:
+        #         pass
+        #
+        #     message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+        #         request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
+        #
+        #     url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+        #     payload = ""
+        #     headers = {'content-type': 'application/x-www-form-urlencoded'}
+        #
+        #     response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        #     x = response.text
+        # else:
+        #     try:
+        #
+        #         send_mail('Feedback Form',
+        #               'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+        #                   request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+        #               [item.customer_email_id])
+        #     except:
+        #         pass
+        #
+        #     message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+        #         request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+        #
+        #     url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+        #     payload = ""
+        #     headers = {'content-type': 'application/x-www-form-urlencoded'}
+        #
+        #     response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        #     x = response.text
 
 
 
@@ -280,7 +284,7 @@ def repair_product(request,id):
         cost = request.POST.get('cost')
         in_warranty = request.POST.get('in_warranty')
         is_last_product_yes = request.POST.get('is_last_product_yes')
-        is_last_product_no = request.POST.get('is_last_product_no')
+        # is_last_product_no = request.POST.get('is_last_product_no')
 
         item=Repairing_Product()
         item.user_id = SiteUser.objects.get(id=request.user.pk)
@@ -303,7 +307,7 @@ def repair_product(request,id):
         print("is_last_product_yes")
         print(is_last_product_yes)
         print("is_last_product_no")
-        print(is_last_product_no)
+        # print(is_last_product_no)
         # if is_last_product_yes == None:
         #     item.is_last_product = False
         # else:
@@ -317,9 +321,59 @@ def repair_product(request,id):
         if (current_stage_in_db == '' or current_stage_in_db == None ) and (sub_model !='' or sub_model != None):
             Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Scale is collected but estimate is not given',stage_update_timedate = timezone.now())
             # item2.save(update_fields=['stage_update_timedate', ])
-            rep = Repairing_after_sales_service.objects.get(id=id)
-            if is_last_product_yes == 'on':
-                ret = send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
+
+        rep = Repairing_after_sales_service.objects.get(id=id)
+
+        if is_last_product_yes == 'yes':
+            ret = send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
+            Repairing_after_sales_service.objects.filter(id=id).update(is_last_product_added=True)
+            product_list = ''' '''
+            pro_lis = Repairing_Product.objects.filter(repairing_id_id=rep.pk)
+
+            for idx, item in enumerate(pro_lis):
+                # for it in item:
+
+                email_body_text = (
+                    u"\nSr. No.: {},"
+                    "\tModel: {},"
+                    "\tSub Model: {}"
+                    "\tproblem in scale: {}"
+                    "\tReplaced scale serial no.: {}"
+                    "\tCost: {}"
+
+                ).format(
+                    idx + 1,
+                    item.type_of_scale,
+                    item.sub_model,
+                    item.problem_in_scale,
+                    item.Replaced_scale_serial_no,
+                    item.cost,
+                )
+                product_list = product_list + '' + str(email_body_text)
+
+                # if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
+                # crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
+                try:
+                    send_mail('Feedback Form',
+                          'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                              request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.id) +'\nHere is a list of Products:\n'+product_list
+                              ,settings.EMAIL_HOST_USER,
+                          [rep.crm_no.company_email])
+                except:
+                    pass
+
+                message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                    request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.id)
+
+                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + rep.crm_no.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+                payload = ""
+                headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+                response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                x = response.text
+
+
+
                 # pass
                 # item.is_last_product = False
             # else:
@@ -344,9 +398,11 @@ def repair_product(request,id):
         Employee_Analysis_date.objects.filter(user_id=user_id, entry_date__month=datetime.now().month,
                                               year=datetime.now().year).update(
             total_reparing_done_today=F("total_reparing_done_today") + cost)
-        if is_last_product_yes == 'on':
+
+
+        if is_last_product_yes == 'yes':
             return redirect('/update_repairing_details/'+str(id))
-        elif is_last_product_yes == 'off':
+        elif is_last_product_yes == 'no':
             return redirect('/repair_product/'+str(id))
     # if request.method == 'POST' and 'components_replaced_popup' in request.POST and 'components_replaced_popup_iw' not in request.POST:
     #     replaced_name=request.POST.get('components_replaced_popup')
@@ -486,11 +542,32 @@ def update_repairing_details(request,id):
                 current_stage='Repaired but not collected')
             item2.stage_update_timedate = timezone.now()
             item2.save(update_fields=['stage_update_timedate', ])
+            try:
+                send_mail('Feedback Form',
+                          'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                              request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                          [item.customer_email_id])
+            except:
+                pass
+
+            message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+
+
 
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage4
         if current_stage_in_db == 'Repaired but not collected' and delivery_date != '':
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Finally Collected')
+
+
             item2.stage_update_timedate = timezone.now()
             item2.save(update_fields=['stage_update_timedate', ])
 
@@ -500,11 +577,19 @@ def update_repairing_details(request,id):
         #     item2.informed_on = informed_on
         #     item2.save(update_fields=['informed_on', ]),
         #
-        if informed_by != None:
-            item2.informed_by = informed_by
+        if informed_by != '' and informed_by!= None:
             item2.informed_on = datetime.today().strftime('%Y-%m-%d')
+
+            item2.informed_by = informed_by
             item2.save(update_fields=['informed_on'])
             item2.save(update_fields=['informed_by', ]),
+        if repaired_by != '' and repaired_by!= None:
+            item2.repaired_by = repaired_by
+            item2.repaired_date = datetime.today().strftime('%Y-%m-%d')
+            item2.save(update_fields=['repaired_by'])
+            item2.save(update_fields=['repaired_date', ]),
+
+
         item2.second_person=customer_name
         # item2.third_person=third_person
         item2.second_contact_no=contact_no
@@ -518,11 +603,8 @@ def update_repairing_details(request,id):
                 item2.save(update_fields=['taken_by',]),
                 item2.save(update_fields=['user_id', ]),
 
-        if repaired_by != None:
-            item2.repaired_by = repaired_by
-            item2.repaired_date = datetime.today().strftime('%Y-%m-%d')
-            item2.save(update_fields=['repaired_by'])
-            item2.save(update_fields=['repaired_date', ]),
+
+
 
         if delivery_by != None:
             item2.delivery_by = informed_by
@@ -657,19 +739,20 @@ def repairing_module_home(request):
             return render(request, 'dashboardnew/repairing_module_home.html', context)
     else:
         if check_admin_roles(request):     #For ADMIN
-            repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains="'Repairing Module'").order_by('-id')
+            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='') |Q(user_id__name=request.user.name)|Q(taken_by=request.user.name)| Q(user_id__group__icontains=request.user.name))&Q(user_id__is_deleted=False)&Q(user_id__modules_assigned__icontains="'Repairing Module'")).order_by('-id')
+
+            res = Repairing_after_sales_service.objects.filter(Q(taken_by=None) | Q(taken_by='') |Q(user_id__name=request.user.name)|Q(taken_by=request.user.name) | Q(user_id__group__icontains=request.user.name)).values(
+                'current_stage').annotate(
+                dcount=Count('current_stage'))
         else:  #For EMPLOYEE
-            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='')) | Q(taken_by=request.user.name)).order_by('-id')
+            repair_list = Repairing_after_sales_service.objects.filter(Q(taken_by=None) | Q(taken_by='') | Q(taken_by=request.user.name)).order_by('-id')
+
+            res = Repairing_after_sales_service.objects.filter(Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)).values('current_stage').annotate(
+                dcount=Count('current_stage'))
             # repair_list2 = Repairing_after_sales_service.objects.filter(Q(taken_by='')).order_by('-id')
             # repair_list = Repairing_after_sales_service.objects.filter(taken_by=request.user.name,).order_by('-id')
         # repair_list = Repairing_after_sales_service.objects.all()
-        if check_admin_roles(request):     #For ADMIN
-            res = Repairing_after_sales_service.objects.filter(
-                (Q(taken_by=None) | Q(taken_by='')) | Q(user_id__manager=request.user.name)| Q(user_id__admin=request.user.name)| Q(user_id__super_admin=request.user.name)).values('current_stage').annotate(
-                dcount=Count('current_stage'))
-        else:
-            res = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by=''))| Q(taken_by=request.user.name)).values('current_stage').annotate(
-            dcount=Count('current_stage'))
+
         context = {
             'repair_list': repair_list,
         }
@@ -677,6 +760,7 @@ def repairing_module_home(request):
         ini_time_for_now = datetime.now()
 
         new_final_time = ini_time_for_now - timedelta(days=4)
+
         res_4d = Repairing_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),Q(stage_update_timedate=new_final_time),Q(current_stage='Repaired but not collected')).values('current_stage').annotate(dcount=Count('current_stage'))
         try:
             x = res_4d
@@ -949,9 +1033,9 @@ def edit_product(request,id):
             Repairing_after_sales_service.objects.filter(id=repairing_id.pk).update(
                 current_stage='Estimate is given but Estimate is not confirmed', stage_update_timedate=timezone.now())
 
-        current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage1
+        current_stage_in_db = Repairing_after_sales_service.objects.get(id=repairing_id.pk).current_stage  # updatestage1
         if (current_stage_in_db == '' or current_stage_in_db == None) and (sub_model != '' or sub_model != None):
-            Repairing_after_sales_service.objects.filter(id=id).update(
+            Repairing_after_sales_service.objects.filter(id=repairing_id.pk).update(
                 current_stage='Scale is collected but estimate is not given', stage_update_timedate = timezone.now())
             # rep=Repairing_after_sales_service.objects.get(id=reparing_id)
             # send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, reparing_id, '1')
@@ -1156,15 +1240,39 @@ def load_reparing_stages_list(request,):
 
 
         new_final_time = ini_time_for_now - timedelta(days=4)
-        repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time),
-                                                              Q(current_stage='Repaired but not collected'))
+
+        if check_admin_roles(request):  # For ADMIN
+
+
+            repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time)&(Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)| Q(
+                user_id__group__icontains=request.user.name)) & Q(current_stage='Repaired but not collected'))
+        else:  # For EMPLOYEE
+
+            repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time)&(Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)) & Q(current_stage='Repaired but not collected'))
         # repair_list = Repairing_after_sales_service.objects.filter(current_stage=selected_stage)
     elif selected_stage == '10days':
         new_final_time = ini_time_for_now - timedelta(days=10)
-        repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time),
-                                                                   Q(current_stage='Repaired but not collected'))
+        if check_admin_roles(request):  # For ADMIN
+
+
+            repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time)&(Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)| Q(
+                user_id__group__icontains=request.user.name)) & Q(current_stage='Repaired but not collected'))
+        else:  # For EMPLOYEE
+
+            repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time)&(Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)) & Q(current_stage='Repaired but not collected'))
     else:
-        repair_list = Repairing_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),current_stage=selected_stage)
+        if check_admin_roles(request):  # For ADMIN
+
+
+            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)| Q(
+                user_id__group__icontains=request.user.name)) & Q(current_stage=selected_stage))
+        else:  # For EMPLOYEE
+
+
+            repair_list = Repairing_after_sales_service.objects.filter((
+                Q(taken_by=None) | Q(taken_by='') | Q(taken_by=request.user.name))& Q(current_stage=selected_stage))
+    # else:
+    #     repair_list = Repairing_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),current_stage=selected_stage)
 
     context = {
         'repair_list': repair_list,
@@ -1257,23 +1365,38 @@ def send_sms(request,name,phone,email,repair_id,item_id):
     if msg_id == '1':
         message = 'Scale Submit SMS & E-mail'
         Repairing_after_sales_service.objects.filter(id=id).update(scale_sub_sms_count=F("scale_sub_sms_count")+1)
-        send_mail('Scale Submit - HSCo','Hello '+name+message, settings.EMAIL_HOST_USER,[email])
+        try:
+            send_mail('Scale Submit - HSCo','Hello '+name+message, settings.EMAIL_HOST_USER,[email])
+        except:
+            pass
     elif msg_id == '2':
         message = 'Estimate inform SMS & E-mail'
         Repairing_after_sales_service.objects.filter(id=id).update(estimate_informed_sms_count=F("estimate_informed_sms_count") + 1)
-        send_mail('Estimate inform - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+        try:
+            send_mail('Estimate inform - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+        except:
+            pass
     elif msg_id == '3':
         message = 'Reparing done SMS & E-mail'
         Repairing_after_sales_service.objects.filter(id=id).update(reparing_done_sms_count=F("reparing_done_sms_count") + 1)
-        send_mail('Reparing done - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+        try:
+            send_mail('Reparing done - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+        except:
+            pass
     elif msg_id == '4':
         message = 'Late Mark SMS & E-mail'
         Repairing_after_sales_service.objects.filter(id=id).update(late_mark_sms_count=F("late_mark_sms_count") + 1)
-        send_mail('Late Mark - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+        try:
+            send_mail('Late Mark - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+        except:
+            pass
     elif msg_id == '5':
         message = 'Your scale has been collected. Thanks for choosing HSCo as your service partner. Please leave a feedback'
         Repairing_after_sales_service.objects.filter(id=id).update(final_del_sms_count=F("final_del_sms_count") + 1)
-        send_mail('Final Delivery - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+        try:
+            send_mail('Final Delivery - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+        except:
+            pass
 
 
     url = "http://smshorizon.co.in/api/sendsms.php?user=" + user + "&apikey=" + api + "&mobile=" + mobile + "&message=" + message + "&senderid=" + senderid + "&type=txt"

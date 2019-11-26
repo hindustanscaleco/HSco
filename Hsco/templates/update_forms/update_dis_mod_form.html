@@ -266,7 +266,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="contact_no" placeholder="Contact No" required class="form-control"  type="text" id="myText16" disabled value="{{dispatch_item.second_contact_no}}">
+  <input  name="contact_no" placeholder="Contact No" onkeypress="return isNumber(event)" maxlength="10" minlength="10"  required class="form-control"  type="text" id="myText16" disabled value="{{dispatch_item.second_contact_no}}">
     </div>
   </div>
 

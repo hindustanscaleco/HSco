@@ -64,10 +64,7 @@
 
 {% else %}
 
-             <div class="row">
-
-
-
+            <div class="row">
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto;">
@@ -77,12 +74,13 @@
                     <div class="col-xl-2 col-md-2 mb-1"><center> Customer Name </center></div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Company Name </center></div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Contact No. </center></div>|
-                    <div class="col-xl-2 col-md-2 mb-1"><center> Customer Email </center></div>|
-                    <div class="col-xl-2 col-md-2 mb-1"><center> Current Stage </center> </div>
+                    {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Entered By </center> </div>|
+                    {% else %}
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class="">  Email ID </center> </div>|
+                    {% endif %}
+                    <div class="col-xl-2 col-md-2 mb-1"><center> Taken By </center> </div>
                     </div>
-
-
-
                 </div>
               </div>
 
@@ -92,18 +90,22 @@
 <br>
 
                 <div id="id_subcat" class="row">
+ <center><p>{{search_msg}}</p></center>
 
-
-         {% for list in repair_list %}
-                  <div style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
+                {% for list in repair_list %}
+              <div style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto;">
                     <div class="col-xl-1 col-md-1 mb-1"><center> {{list.pk}} </center> </div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_person}}</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {% if list.crm_no.company_name != None and list.crm_no.company_name != '' %}{{list.crm_no.company_name}}{% else %}{% endif %}</center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_contact_no}} </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.crm_no.customer_email_id}} </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.current_stage}} </center> </div>
+                    {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
+                    <div class="col-xl-2 col-md-1 mb-1 "><center>{{list.user_id.profile_name}}</center></div>|
+                    {% else %}
+                    <div class="col-xl-2 col-md-1 mb-1 ">{% if list.company_email != None and list.company_email != '' %}{{list.company_email}}{% else %}{% endif %} </div>|
+                    {% endif %}
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.taken_by}} </center> </div>
                     </div>
 
                 </div>
@@ -111,6 +113,7 @@
                 {% endfor %}
 
             </div>
+
 
 
   {% endif %}
