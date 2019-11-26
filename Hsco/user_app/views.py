@@ -123,6 +123,7 @@ def create_admin(request):
         item.ifsc_code = ifsc_code
         item.photo = photo
         item.salary_slip = salary_slip
+        item.password_text = request.POST.get('password')
         item.super_admin = SiteUser.objects.get(role='Super Admin').name
         item.set_password(request.POST.get('password'))
 
@@ -197,6 +198,7 @@ def create_manager(request):
         item.ifsc_code = ifsc_code
         item.photo = photo
         item.salary_slip = salary_slip
+        item.password_text = request.POST.get('password')
         item.super_admin = SiteUser.objects.get(role='Super Admin').name
         # if admin != '---------':
         #     item.admin = admin
@@ -297,7 +299,7 @@ def create_employee(request):
             item.group = group
             item.manager = manager
 
-
+        item.password_text = request.POST.get('password')
         item.set_password(request.POST.get('password'))
 
         item.save()
@@ -452,10 +454,11 @@ def update_admin(request,id):
         item.ifsc_code = ifsc_code
         item.photo = photo
         item.salary_slip = salary_slip
+        item.password_text = request.POST.get('password')
 
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.save(update_fields=['password_text','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/admin_list/')
     context = {
         'form': form,
@@ -500,9 +503,10 @@ def update_manager(request,id):
         item.ifsc_code = ifsc_code
         item.photo = photo
         item.salary_slip = salary_slip
+        item.password_text = request.POST.get('password')
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.save(update_fields=['password_text','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/manager_list/')
     context = {
         'form': form,
@@ -548,9 +552,10 @@ def update_employee(request,id):
         item.ifsc_code = ifsc_code
         item.photo = photo
         item.salary_slip = salary_slip
+        item.password_text = request.POST.get('password')
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.save(update_fields=['password_text','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/employee_list/')
     context = {
         'form': form,

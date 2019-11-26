@@ -227,7 +227,7 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-      <select id="id_subcat2" required onchange="choice_sub_model(this)" class="form-control">
+      <select id="id_subcat2" onchange="choice_sub_model(this)" class="form-control">
 
 
   </select>
@@ -414,7 +414,21 @@ function choice1(select) {
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
     $("#id_subcat").html(data);
-    alert("Model loaded sucessfully!");
+
+    if ($('#id_subcat option').length > 1)
+    {
+    $('#id_subcat').attr('required', '');
+    $('#id_subcat2').attr('required', '');
+    $('#id_subcat22').attr('required', '');
+    }
+    else{
+    $('#id_subcat').removeAttr('required');
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+    }
+
+
+
         }
       });
 }
@@ -429,7 +443,21 @@ $("#model_of_purchase").val(select.options[select.selectedIndex].text);
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
     $("#id_subcat2").html(data);
-    alert("Sub Model loaded sucessfully!");
+
+       if ($('#id_subcat2 option').length > 1)
+    {
+    $('#id_subcat2').attr('required', '');
+    $('#id_subcat22').attr('required', '');
+
+    alert("required of 22");
+    }
+    else{
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+    alert("removed of 22");
+    }
+
+
         }
       });
 }
@@ -445,7 +473,18 @@ $("#sub_model").val(select.options[select.selectedIndex].text);
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
     $("#id_subcat22").html(data);
-    alert("Sub Sub Model loaded sucessfully!");
+
+     if ($('#id_subcat22 option').length > 1)
+    {
+    $('#id_subcat22').attr('required', '');
+
+    }
+    else{
+    $('#id_subcat22').removeAttr('required');
+
+    }
+
+
         }
       });
 }

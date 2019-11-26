@@ -31,12 +31,15 @@ def add_customer_details(request):
 def load_models(request):
     category_id = request.GET.get('item_id')
     subcat = main_model.objects.filter(type_purchase=category_id)
-    return render(request, 'AJAX_dropdowns/subcat-dropdown.html', {'subcat': subcat})
+    subcat_count = main_model.objects.filter(type_purchase=category_id).count()
+    return render(request, 'AJAX_dropdowns/subcat-dropdown.html', {'subcat': subcat,'subcat_count':subcat_count})
 
 def load_sub_models(request):
     category_id = request.GET.get('item_id')
+
     subcat = sub_model.objects.filter(main_model=category_id)
-    return render(request, 'AJAX_dropdowns/subcat-dropdown.html', {'subcat': subcat})
+
+    return render(request, 'AJAX_dropdowns/subcat-dropdown.html', {'subcat': subcat,})
 
 
 def load_sub_sub_models(request):

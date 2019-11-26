@@ -229,19 +229,13 @@ function myFunction() {
 
 <div class="form-group row">
    <label class="col-md-2 control-label">Scale Type *
-
-
-
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-        <div class="wrapper">
-    <select class="editableBox" name="scale_type" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
-      <option value="{{restamping_product_id.scale_type}}" selected="selected">Select</option>
-    </select>
-    <input required class="timeTextBox" disabled id="myText" value="{{restamping_product_id.scale_type}}" name="scale_type" maxlength="30"/>
-</div>
-
+    <div class="col-md-4 inputGroupCont+-ainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+    <input type="text" name="scale_type" disabled placeholder="Type of Machine" id="myText" value="{{restamping_product_id.scale_type}}" class="form-control" list="type_of_scale">
+    </div>
   </div>
 
  <label class="col-md-2 control-label">Sub Model *
@@ -250,13 +244,11 @@ function myFunction() {
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-    <div class="wrapper">
-    <select class="editableBoxa" name="sub_model" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
-<option value="{{restamping_product_id.sub_model}}" selected="selected">Select</option>
-    </select>
-    <input required class="timeTextBoxa" name="sub_model" disabled id="myText2" value="{{restamping_product_id.sub_model}}" maxlength="5"/>
-</div>
+      <div class="col-md-4 inputGroupCont+-ainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="sub_model" disabled placeholder="Sub Model" id="myText3" value="{{restamping_product_id.sub_model}}" class="form-control"  type="text">
+    </div>
   </div>
 
 </div>
