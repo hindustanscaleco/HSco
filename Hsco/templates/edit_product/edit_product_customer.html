@@ -229,15 +229,10 @@ function myFunction() {
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
+    <div class="col-md-4 inputGroupCont+-ainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" name="type_of_scale" disabled placeholder="Type of Machine" id="myText" value="{{product_id.type_of_scale}}" class="form-control" list="type_of_scale">
-      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-    <datalist style="height:20px;" id="type_of_scale">
-    <option value = "Digital"></option>
-    <option value = "Mechanical"></option>
-    </datalist>
+    <input type="text" name="type_of_scale" disabled placeholder="Type of Machine" id="myText" value="{{product_id.type_of_scale}}" class="form-control" list="type_of_scale">
     </div>
   </div>
 
@@ -250,13 +245,11 @@ function myFunction() {
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-<div class="wrapper">
-    <select class="editableBox" required name="state" name="model_of_purchase" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
-      <option value="{{product_id.model_of_purchase}}" selected="selected">Select</option>
-    </select>
-    <input class="timeTextBox" value="{{product_id.model_of_purchase}}" disabled id="myText2" name="model_of_purchase" maxlength="30"/>
-</div>
+      <div class="col-md-4 inputGroupCont+-ainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="model_of_purchase" disabled placeholder="Model of Purchase" id="myText2" value="{{product_id.model_of_purchase}}" class="form-control"  type="text">
+    </div>
   </div>
 
 </div>
@@ -266,30 +259,24 @@ function myFunction() {
 
 
 </label>
-  <div class="col-md-4 inputGroupContainer">
-    <div class="wrapper">
-    <select class="editableBoxa" required name="countrya" id="stateSel" size="1" name="sub_model" style="border: 1px solid grey; border-radius: 5px;">
-<option value="{{product_id.sub_model}}" selected="selected">Select</option>
-    </select>
-    <input class="timeTextBoxa" value="{{product_id.sub_model}}" disabled id="myText3" name="sub_model" maxlength="30"/>
-</div>
+      <div class="col-md-4 inputGroupCont+-ainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="sub_model" disabled placeholder="Sub Model" id="myText3" value="{{product_id.sub_model}}" class="form-control"  type="text">
+    </div>
   </div>
+
+
   <label class="col-md-2 control-label">Sub Sub Model *
 
 
 </label>
-  <div class="col-md-4 inputGroupContainer">
-   <div class="wrapper">
-    <select class="editableBoxaa" required id="districtSel" size="1" name="district" name="sub_sub_model" style="border: 1px solid grey; border-radius: 5px;">
-<option value="{{product_id.sub_sub_model}}" selected="selected">Select</option>
-    </select>
-    <input class="timeTextBoxaa" value="{{product_id.sub_sub_model}}" disabled id="myText4" name="sub_sub_model" maxlength="30"/>
-
-</div>
+      <div class="col-md-4 inputGroupCont+-ainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="sub_sub_model" disabled placeholder="Model of Purchase" id="myText4" value="{{product_id.sub_sub_model}}" class="form-control"  type="text">
+    </div>
   </div>
-
-
-
 </div>
 
               <div class="form-group row">
