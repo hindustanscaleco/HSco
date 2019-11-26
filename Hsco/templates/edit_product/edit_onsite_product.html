@@ -230,15 +230,10 @@ function myFunction() {
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
+    <div class="col-md-4 inputGroupCont+-ainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input  type="text" required name="type_of_machine" disabled id="myText" value="{{onsite_id.type_of_machine}}" list="type_of_scale"placeholder="Type of Machine" class="form-control" >
-  <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-    <datalist style="height:20px;" id="type_of_scale">
-    <option value = "Digital"></option>
-    <option value = "Mechanical"></option>
-    </datalist>
+    <input type="text" name="type_of_machine" disabled placeholder="Type of Machine" id="myText" value="{{onsite_id.type_of_machine}}" class="form-control" list="type_of_scale">
     </div>
   </div>
 
@@ -248,14 +243,11 @@ function myFunction() {
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-        <div class="wrapper">
-    <select class="editableBox" name="model" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">
-      <option value="{{onsite_id.model}}" selected="selected">Select</option>
-    </select>
-    <input class="timeTextBox" name="model" disabled id="myText2" value="{{onsite_id.model}}" name="scale_type" maxlength="30"/>
-</div>
-
+      <div class="col-md-4 inputGroupCont+-ainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="model" disabled placeholder="Model of Purchase" id="myText2" value="{{onsite_id.model}}" class="form-control"  type="text">
+    </div>
   </div>
 </div>
 
@@ -268,13 +260,11 @@ function myFunction() {
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
-    <div class="wrapper">
-    <select class="editableBoxa" name="sub_model" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
-<option value="{{onsite_id.sub_model}}" selected="selected">Select</option>
-    </select>
-    <input class="timeTextBoxa" name="sub_model" disabled id="myText3" value="{{onsite_id.sub_model}}" maxlength="5"/>
-</div>
+      <div class="col-md-4 inputGroupCont+-ainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="sub_model" disabled placeholder="Sub Model" id="myText3" value="{{onsite_id.sub_model}}" class="form-control"  type="text">
+    </div>
   </div>
                 <label class="col-md-2 control-label">Cost
 
