@@ -452,7 +452,8 @@ def update_dispatch_details(request,update_id):
 
             purchase_id.second_person = customer_name
             purchase_id.second_contact_no = contact_no
-            channel_of_dispatch = request.POST.get('channel_of_dispatch')
+            purchase_id.channel_of_dispatch = channel_of_dispatch
+            # channel_of_dispatch = request.POST.get('channel_of_dispatch')
             purchase_id.save(update_fields=['second_person', 'second_contact_no','channel_of_dispatch' ])
 
 
