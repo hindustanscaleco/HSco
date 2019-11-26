@@ -547,16 +547,55 @@ def update_dispatch_details(request,update_id):
         current_stage_in_db = Dispatch.objects.get(id=update_id).current_stage  # updatestage3
         if (current_stage_in_db == 'dispatch but lr not updated') and (lr_no != '' and lr_no != None):
             Dispatch.objects.filter(id=update_id).update(current_stage='dispatch completed')
-            msg = "Dear "+customer_name+", Your goods have been successfully dispatched through "+transport_name+", having LR Number "+lr_no+". Please track the details on the transporters website"
-            send_mail('Dispatch Done - HSCo',
-                      msg, settings.EMAIL_HOST_USER,
-                      [Dispatch.objects.get(id=update_id).crm_no.customer_email_id])
+            product_list = ''' '''
+            pro_lis = Product_Details_Dispatch.objects.filter(dispatch_id=dispatch_item.pk)
+
+            for idx, item in enumerate(pro_lis):
+                # for it in item:
+
+                email_body_text = (
+                    u"\nSr. No.: {},"
+                    "\tModel: {},"
+                    "\tSub Model: {}"
+                    "\tbrand: {}"
+                    "\tcapacity: {}"
+                    "\tCost: {}"
+
+                ).format(
+                    idx + 1,
+                    item.type_of_scale,
+                    item.sub_model,
+                    item.brand,
+                    item.capacity,
+                    item.value_of_goods,
+                )
+                product_list = product_list + '' + str(email_body_text)
+
+            try:
+                msg = "Dear " + customer_name + ", Your goods have been successfully dispatched through" \
+                                                " " + transport_name + ", having LR Number " + lr_no + ". Please track the" \
+                                                                                                       " details on the transporters website"+'\nHere is the list of product dispatched:\n' + product_list
+                send_mail('Feedback Form',
+                          msg, settings.EMAIL_HOST_USER,
+                          [dispatch_item.company_email])
+                print("send mail!!")
+            except:
+                print("exception occured!!")
+                pass
+
+            msg = "Dear " + customer_name + ", Your goods have been successfully dispatched through " + transport_name + ", having LR Number " + lr_no + ". Please track the details on the transporters website"
+
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
+
+
+
+
+
 
         if (current_stage_in_db == 'dispatch q') and (dispatch_by != '' and dispatch_by != None):
             Dispatch.objects.filter(id=update_id).update(current_stage='dispatch but lr not updated')
