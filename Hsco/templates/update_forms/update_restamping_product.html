@@ -192,8 +192,8 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 <script>
 function myFunction() {
 
-  var x = document.getElementById("myText9");
-  var y = document.getElementById("myText10");
+  var x = document.getElementById("myText10");
+  var y = document.getElementById("myText11");
   if (x.style.display === "none") {
     x.style.display = "block";
     y.style.display = "none";
@@ -238,6 +238,20 @@ function myFunction() {
     </div>
   </div>
 
+
+       <label class="col-md-2 control-label">Models *
+</label>
+
+    <div class="col-md-4 inputGroupCont+-ainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+    <input type="text" name="model_of_purchase" disabled placeholder="Models" id="myText2" value="{{restamping_product_id.model_of_purchase}}" class="form-control" list="type_of_scale">
+    </div>
+  </div>
+
+</div>
+                <div class="form-group row">
+
  <label class="col-md-2 control-label">Sub Model *
 
 
@@ -263,7 +277,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-desc faicons"></i></span>
-    <input  type="text" name="new_sr_no" id="myText3" disabled placeholder="New Serial No" class="form-control" value="{{restamping_product_id.new_sr_no}}" >
+    <input  type="text" name="new_sr_no" id="myText4" disabled placeholder="New Serial No" class="form-control" value="{{restamping_product_id.new_sr_no}}" >
 
     </div>
   </div>
@@ -277,7 +291,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
-    <input required type="text" name="old_serial_no" disabled id="myText4" value="{{restamping_product_id.old_serial_no}}" placeholder="Old Serial No" class="form-control" >
+    <input required type="text" name="old_serial_no" disabled id="myText5" value="{{restamping_product_id.old_serial_no}}" placeholder="Old Serial No" class="form-control" >
 
     </div>
   </div>
@@ -298,7 +312,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-institution faicons"></i></span>
-    <input  type="text" name="brand" disabled id="myText5" value="{{restamping_product_id.brand}}" placeholder="Brand" class="form-control" >
+    <input  type="text" name="brand" disabled id="myText6" value="{{restamping_product_id.brand}}" placeholder="Brand" class="form-control" >
 
     </div>
   </div>
@@ -309,7 +323,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input required name="amount" disabled id="myText6" value="{{restamping_product_id.amount}}" placeholder="Amount" class="form-control"  type="text">
+  <input required name="amount" disabled id="myText7" value="{{restamping_product_id.amount}}" placeholder="Amount" class="form-control"  type="text">
     </div>
   </div>
 
@@ -327,7 +341,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>
-    <input required type="text" name="capacity" disabled id="myText7" value="{{restamping_product_id.capacity}}" placeholder="Capacity" class="form-control" >
+    <input required type="text" name="capacity" disabled id="myText8" value="{{restamping_product_id.capacity}}" placeholder="Capacity" class="form-control" >
 
     </div>
   </div>
@@ -336,7 +350,7 @@ function myFunction() {
     <select class="editableBoxaa" style="display:none" id="districtSel" size="1" name="district" style="border: 1px solid grey; border-radius: 5px;">
 <option value="" selected="selected">Select</option>
     </select>
-    <input class="timeTextBoxaa" style="display:none" id="myText8" maxlength="30"/>
+    <input class="timeTextBoxaa" style="display:none" id="myText9" maxlength="30"/>
 
 </div>
   </div>
@@ -347,10 +361,10 @@ function myFunction() {
     <div class="col-md-12 ">
       <br>
     <center>
-        <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" id="myText10" type="reset" style="">Edit</button>
+        <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" id="myText11" type="reset" style="">Edit</button>
         <br>
         <br>
-        <button style="display:none; background-color: #FC6E20;" id="myText9" type="submit" value="Submit" class="btn btn-primary">Save</button>
+        <button style="display:none; background-color: #FC6E20;" id="myText10" type="submit" value="Submit" class="btn btn-primary">Save</button>
       </center>
     </div>
             </form>
