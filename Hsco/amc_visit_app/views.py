@@ -332,7 +332,7 @@ def amc_views(request):
             return render(request, "manager/amc_view.html",context )
     else:
         if check_admin_roles(request):     #For ADMIN
-            amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False).order_by('-id')
+            amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,user_id__name__icontains=request.user.name,user_id__is_deleted=False).order_by('-id')
         else:  #For EMPLOYEE
             manager = SiteUser.objects.get(id=request.user.pk).manager
             amc_list = Amc_After_Sales.objects.filter(user_id__manager=manager,user_id__is_deleted=False).order_by('-id')
