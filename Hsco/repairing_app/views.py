@@ -592,9 +592,9 @@ def repairing_module_home(request):
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
                 repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,contact_no__icontains=contact).order_by('-id')
+                                                                           user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-id')
             else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,contact_no__icontains=contact).order_by('-id')
+                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-id')
             # repair_list = Repairing_after_sales_service.objects.filter(phone_no=contact)
             context = {
                 'repair_list': repair_list,
@@ -619,9 +619,9 @@ def repairing_module_home(request):
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
                 repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,customer_name__icontains=customer).order_by('-id')
+                                                                           user_id__is_deleted=False,second_person__icontains=customer).order_by('-id')
             else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,customer_name__icontains=customer).order_by('-id')
+                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-id')
             # repair_list = Repairing_after_sales_service.objects.filter(name=customer)
             context = {
                 'repair_list': repair_list,
@@ -633,9 +633,9 @@ def repairing_module_home(request):
             company = request.POST.get('company')
             if check_admin_roles(request):  # For ADMIN
                 repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,company_name__icontains=company).order_by('-id')
+                                                                           user_id__is_deleted=False,second_company_name__icontains=company).order_by('-id')
             else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,company_name__icontains=company).order_by('-id')
+                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-id')
             # repair_list = Repairing_after_sales_service.objects.filter(company_name=company)
             context = {
                 'repair_list': repair_list,

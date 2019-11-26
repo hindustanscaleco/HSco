@@ -2,7 +2,7 @@ from django.db.models import Q, F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from customer_app.models import Customer_Details
+from customer_app.models import Customer_Details,type_purchase
 
 from purchase_app.views import check_admin_roles
 from user_app.models import SiteUser
@@ -20,6 +20,7 @@ import datetime
 
 def add_amc_after_sales(request):
     cust_sugg = Customer_Details.objects.all()
+    type_purchase2 = type_purchase.objects.all()
     if request.method == 'POST':
         address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
@@ -60,15 +61,18 @@ def add_amc_after_sales(request):
 
                 item3.company_name = company_name
                 item3.save(update_fields=['company_name'])
+                # item2.save(update_fields=['second_company_name'])
             if address != '':
                 item3.address = address
 
                 item2.company_address = address  # new2
                 item3.save(update_fields=['address'])
+                # item2.save(update_fields=['company_address'])
             if customer_email_id != '':
                 item3.customer_email_id = customer_email_id
                 item2.company_email = customer_email_id  # new2
                 item3.save(update_fields=['customer_email_id'])
+                # item2.save(update_fields=['company_email'])
 
         else:
             item.customer_name = customer_name
@@ -82,7 +86,7 @@ def add_amc_after_sales(request):
             if address != '':
                 item.address = address
                 item2.company_address = address  # new2
-            item.contact_no = contact_no
+            item.second_contact_no = contact_no
             if customer_email_id != '':
                 item2.company_email = customer_email_id  # new2
                 item.customer_email_id = customer_email_id
@@ -180,7 +184,8 @@ def add_amc_after_sales(request):
 
         return redirect('/amc_views')
     context = {
-        'cust_sugg': cust_sugg
+        'type_purchase': type_purchase2,
+        'cust_sugg': cust_sugg,
     }
     return render(request,'forms/amc_form.html', context)
 
@@ -249,9 +254,9 @@ def amc_views(request):
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
                 amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
-                                                          user_id__is_deleted=False,contact_no__icontains=contact).order_by('-id')
+                                                          user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-id')
             else:  # For EMPLOYEE
-                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,contact_no__icontains=contact).order_by('-id')
+                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-id')
             # amc_list = Amc_After_Sales.objects.filter(customer_no=contact)
             context = {
                 'amc_list': amc_list,
@@ -276,9 +281,9 @@ def amc_views(request):
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
                 amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
-                                                          user_id__is_deleted=False,customer_name__icontains=customer).order_by('-id')
+                                                          user_id__is_deleted=False,second_person__icontains=customer).order_by('-id')
             else:  # For EMPLOYEE
-                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,customer_name__icontains=customer).order_by('-id')
+                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-id')
 
             # dispatch_list = Amc_After_Sales.objects.filter(customer_name=customer)
             context = {
@@ -329,11 +334,16 @@ def amc_views(request):
             }
             return render(request, "manager/amc_view.html",context )
     else:
-        if check_admin_roles(request):     #For ADMIN
-            amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=False).order_by('-id')
+        if request.user.role == 'Admin' or request.user.role == 'Super Admin':     #For ADMIN
+            amc_list = Amc_After_Sales.objects.filter(Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False) | Q(user_id__name__icontains=request.user.name)).order_by('-id')
+        elif request.user.role == 'Manager':
+            admin = SiteUser.objects.get(id=request.user.pk).admin
+            amc_list = Amc_After_Sales.objects.filter(Q(user_id__admin=admin, user_id__is_deleted=False)| Q(user_id__name__icontains=request.user.name)).order_by(
+                '-id')
+
         else:  #For EMPLOYEE
             manager = SiteUser.objects.get(id=request.user.pk).manager
-            amc_list = Amc_After_Sales.objects.filter(user_id__manager=manager,user_id__is_deleted=False).order_by('-id')
+            amc_list = Amc_After_Sales.objects.filter(Q(user_id__manager=manager,user_id__is_deleted=False)| Q(user_id__name__icontains=request.user.name)).order_by('-id')
         # amc_list = Amc_After_Sales.objects.all()
 
         context = {

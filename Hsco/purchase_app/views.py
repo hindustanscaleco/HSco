@@ -398,9 +398,9 @@ def view_customer_details(request):
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
-                                                            user_id__is_deleted=False,customer_name__icontains=customer).order_by('-id')
+                                                            user_id__is_deleted=False,second_person__icontains=customer).order_by('-id')
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,customer_name__icontains=customer).order_by('-id')
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-id')
             # cust_list = Customer_Details.objects.filter(customer_name=customer)
             context = {
                 'customer_list': cust_list,
@@ -412,9 +412,9 @@ def view_customer_details(request):
             company = request.POST.get('company')
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
-                                                            user_id__is_deleted=False,company_name__icontains=company).order_by('-id')
+                                                            user_id__is_deleted=False,second_company_name__icontains=company).order_by('-id')
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,company_name__icontains=company).order_by('-id')
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-id')
             # cust_list = Customer_Details.objects.filter(company_name=company)
             context = {
                 'customer_list': cust_list,
