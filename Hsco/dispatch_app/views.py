@@ -453,7 +453,18 @@ def update_dispatch_details(request,update_id):
         notes = request.POST.get('notes')
 
         try:
-            purchase_id=Purchase_Details.objects.get(dispatch_id_assigned=id)
+            print("purchase_id")
+            print("purchase_id")
+            print("purchase_id")
+            print("purchase_id")
+            purchase_id=Purchase_Details.objects.get(dispatch_id_assigned=update_id)
+
+            print(purchase_id)
+            print(purchase_id)
+            purchase_id.second_person = customer_name
+            purchase_id.second_contact_no = contact_no
+            purchase_id.save(update_fields=['second_person', 'second_contact_no', ])
+
             if company_name != '':
                 purchase_id.second_company_name = company_name  # new2
 
