@@ -696,7 +696,7 @@ def add_product_details(request,id):
 
 
             try:
-                message = 'Dear ' + str(purchase.crm_no.customer_name) + '. Thanks for purchasing your scale from HSCo. ' \
+                message = 'Dear ' + str(purchase.crm_no.customer_name) + ', Thanks for purchasing your scale from HSCo. ' \
                                                                 'Your Purchase ID is ' + str(
                     purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
                                 ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
@@ -709,7 +709,7 @@ def add_product_details(request,id):
                 print("exception occured!!")
                 pass
 
-            message = 'Dear ' + str(purchase.second_person) + '. Thanks for purchasing your scale from HSCo. ' \
+            message = 'Dear ' + str(purchase.second_person) + ', Thanks for purchasing your scale from HSCo. ' \
                                                             'Your Purchase ID is ' + str(
                 purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
                             ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' + str(
