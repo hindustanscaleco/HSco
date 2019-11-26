@@ -280,9 +280,15 @@ Format : (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="type_of_scale" required placeholder="Type of Scale
+    <select id="divselector" required name="type_of_scale" onchange="choice1(this)" class="form-control">
+       <option value="">Select Scale Type</option>
 
-" class="form-control"  type="text">
+    {% for item in type_purchase %}
+  <option value="{{item.name}}">{{item.name}}</option>
+
+   {% endfor %}
+
+  </select>
     </div>
   </div>
 

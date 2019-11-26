@@ -42,6 +42,7 @@ class Restamping_Product(models.Model):
     # customer_email_id = models.EmailField(max_length=90,null=True, blank=True)
     # product_to_stampped = models.CharField(max_length=150, null=True, blank=True)
     scale_type = models.CharField(max_length=150, null=True, blank=True)
+    model_of_purchase = models.CharField(max_length=150, null=True, blank=True)
     sub_model = models.CharField(max_length=150, null=True, blank=True)
     capacity = models.CharField(max_length=150, null=True, blank=True)
     old_serial_no = models.CharField(max_length=150, null=True, blank=True)

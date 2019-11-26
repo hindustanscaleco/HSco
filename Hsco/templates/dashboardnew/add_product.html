@@ -181,7 +181,7 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-      <select id="divselector" required name="type_of_scale" onchange="choice1(this)" class="form-control">
+      <select id="divselector" required onchange="choice1(this)" class="form-control">
        <option value="">Select Scale Type</option>
 
     {% for item in type_purchase %}
@@ -203,7 +203,7 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-      <select id="id_subcat" required name="model_of_purchase" onchange="choice_model(this)" class="form-control">
+      <select id="id_subcat" required onchange="choice_model(this)" class="form-control">
 
 
   </select>
@@ -227,7 +227,7 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-      <select id="id_subcat2" required name="sub_model" onchange="choice_sub_model(this)" class="form-control">
+      <select id="id_subcat2" required onchange="choice_sub_model(this)" class="form-control">
 
 
   </select>
@@ -244,7 +244,7 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-      <select required id="id_subcat22" name="sub_sub_model" onchange="choice_sub_sub_model(this)" class="form-control">
+      <select required id="id_subcat22" onchange="choice_sub_sub_model(this)" class="form-control">
 
 
 
@@ -372,6 +372,14 @@ color:;
 
                 </div>
             <br>
+
+
+  <input type="hidden" value="" id="type_of_scale" name="type_of_scale">
+  <input type="hidden" value="" id="model_of_purchase" name="model_of_purchase">
+  <input type="hidden" value="" id="sub_model" name="sub_model">
+  <input type="hidden" value="" id="sub_sub_model" name="sub_sub_model">
+
+
 <center>
     <button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Submit</button>
 
@@ -390,9 +398,14 @@ color:;
     </div>
   </div>
 
+
 <script>
 function choice1(select) {
      //alert(select.options[select.selectedIndex].value);
+
+
+       $("#type_of_scale").val(select.options[select.selectedIndex].text);
+
     $.ajax({                       // initialize an AJAX request
         url: "/load_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
         data: {
@@ -406,6 +419,7 @@ function choice1(select) {
       });
 }
 function choice_model(select) {
+$("#model_of_purchase").val(select.options[select.selectedIndex].text);
      //alert(select.options[select.selectedIndex].value);
     $.ajax({                       // initialize an AJAX request
         url: "/load_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
@@ -421,6 +435,7 @@ function choice_model(select) {
 }
 
 function choice_sub_model(select) {
+$("#sub_model").val(select.options[select.selectedIndex].text);
      //alert(select.options[select.selectedIndex].value);
     $.ajax({                       // initialize an AJAX request
         url: "/load_sub_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
@@ -434,6 +449,14 @@ function choice_sub_model(select) {
         }
       });
 }
+
+function choice_sub_sub_model(select) {
+$("#sub_sub_model").val(select.options[select.selectedIndex].text);
+
+}
+
+
+
   </script>
 
 
