@@ -284,20 +284,20 @@ $(function() {
                      </div>
 {% else %}
 
-                                   <div class="col-xl-12 col-md-2 col-mb-8 row">
-                         <div class="col-xl-4 col-md-2 col-mb-8">
-<p>Done</p>
-                     </div>
-                     <div class="col-xl-3 col-md-2 col-mb-8">
-                         <label class="switch ">
-  <input name="Done" type="checkbox" checked onchange="toggleCheckbox(this)">
-  <span class="slider round"></span>
-</label>
-                     </div>
-                     <div class="col-xl-5 col-md-2 col-mb-8">
-                         <p> Pending</p>
-                     </div>
-                     </div>
+                                   <!--<div class="col-xl-12 col-md-2 col-mb-8 row">-->
+                         <!--<div class="col-xl-4 col-md-2 col-mb-8">-->
+<!--<p>Done</p>-->
+                     <!--</div>-->
+                     <!--<div class="col-xl-3 col-md-2 col-mb-8">-->
+                         <!--<label class="switch ">-->
+  <!--<input name="Done" type="checkbox" checked onchange="toggleCheckbox(this)">-->
+  <!--<span class="slider round"></span>-->
+<!--</label>-->
+                     <!--</div>-->
+                     <!--<div class="col-xl-5 col-md-2 col-mb-8">-->
+                         <!--<p> Pending</p>-->
+                     <!--</div>-->
+                     <!--</div>-->
 
 
 
@@ -367,13 +367,9 @@ $(function() {
                     <div class="col-xl-2 col-md-1 mb-1"><center> Customer Name </center></div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Company Name </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> Contact No </center></div>|
-                    {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
                     <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Entered By </center> </div>|
-                    {% else %}
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class="border-left-primary">  Email ID </center> </div>
-                    {% endif %}
+
                     <div class="col-xl-2 col-md-1 mb-1"><center> Dispatched by </center></div>
-                    <!--<div class="col-xl-3 col-md-1 mb-1"><center> Feedback Given </center></div>-->
 
 
                 </div>
