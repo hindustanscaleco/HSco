@@ -514,8 +514,19 @@ display:none;
 
                 {% for list in repair_list %}
               <div style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto;">
+                  {% if list.current_stage == 'Scale is collected but estimate is not given' %}
+              <div class="card shadow" style="border: 2px solid rgba(120,115,245,.9);" >
+                  {% elif list.current_stage == 'Estimate is given but Estimate is not confirmed' %}
+              <div class="card shadow" style="border: 2px solid rgba(5,255,163,.9);" >
+                  {% elif list.current_stage == 'Estimate is confirmed but not repaired' %}
+              <div class="card shadow" style="border: 2px solid rgba(252,98,98,.9);" >
+                  {% elif list.current_stage == 'Repaired but not collected' %}
+              <div class="card shadow" style="border: 2px solid rgba(255,110,196,5.5);" >
+                  {% elif list.current_stage == 'Finally Collected' %}
+              <div class="card shadow" style="border: 2px solid rgba(69,202,252,.9);" >
+                                  {% endif %}
+
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto; ">
                     <div class="col-xl-1 col-md-1 mb-1"><center> {{list.pk}} </center> </div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_person}}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</center></div>|

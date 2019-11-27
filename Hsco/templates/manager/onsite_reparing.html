@@ -427,7 +427,18 @@ $(function() {
                       {% for list in onsite_list %}
 
 <div style="cursor:pointer;" onclick="location.href='/update_onsite_details/{{list.pk}}'" class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
+
+
+               {% if list.current_stage == 'Onsite repairing request is raised' %}
+              <div class="card shadow" style="border: 2px solid rgba(120,115,245,.9);" >
+                  {% elif list.current_stage == 'Onsite repairing request is assigned' %}
+              <div class="card shadow" style="border: 2px solid rgba(5,255,163,.9);" >
+                  {% elif list.current_stage == 'Onsite repairing request is completed' %}
+              <div class="card shadow" style="border: 2px solid rgba(252,98,98,.9);" >
+                  {% else %}
+              <div class="card shadow" style="border: 2px solid black;" >
+                  {% endif %}
+
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: auto;">
                     <div class="col-xl-1 col-md-1 mb-1"><center> {{list.pk}} </center> </div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.second_person }} </center></div>|
@@ -453,6 +464,7 @@ $(function() {
 </div>
 
         </div>
+
 </div>
 
 

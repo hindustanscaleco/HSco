@@ -365,7 +365,7 @@ def repair_product(request,id):
                 message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
                     request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.id)
 
-                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + rep.crm_no.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + rep.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
                 payload = ""
                 headers = {'content-type': 'application/x-www-form-urlencoded'}
 
@@ -541,7 +541,9 @@ def update_repairing_details(request,id):
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Repaired but not collected')
             item2.stage_update_timedate = timezone.now()
+            item2.repaired = repaired
             item2.save(update_fields=['stage_update_timedate', ])
+            item2.save(update_fields=['repaired'])
             try:
                 send_mail('Feedback Form',
                           'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
@@ -561,15 +563,24 @@ def update_repairing_details(request,id):
             x = response.text
 
 
+        if delivery_by != None and delivery_by !='' and delivery_by != 'None':
+            item2.delivery_by = delivery_by
+            item2.delivery_date = datetime.today().strftime('%Y-%m-%d')
+            item2.save(update_fields=['delivery_by'])
+            item2.save(update_fields=['delivery_date', ])
 
-        current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage4
-        if current_stage_in_db == 'Repaired but not collected' and delivery_date != '':
-            Repairing_after_sales_service.objects.filter(id=id).update(
-                current_stage='Finally Collected')
+            current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage4
+            if current_stage_in_db == 'Repaired but not collected' and item2.delivery_date != '' and item2.delivery_date != None:
+                Repairing_after_sales_service.objects.filter(id=id).update(
+                    current_stage='Finally Collected')
+                print(
+                    current_stage_in_db,delivery_date,
+
+                )
 
 
-            item2.stage_update_timedate = timezone.now()
-            item2.save(update_fields=['stage_update_timedate', ])
+                item2.stage_update_timedate = timezone.now()
+                item2.save(update_fields=['stage_update_timedate', ])
 
         # item2.total_cost = total_cost
         # if informed_on != '':
@@ -577,13 +588,13 @@ def update_repairing_details(request,id):
         #     item2.informed_on = informed_on
         #     item2.save(update_fields=['informed_on', ]),
         #
-        if informed_by != '' and informed_by!= None:
+        if informed_by != '' and informed_by!= None and informed_by != 'None':
             item2.informed_on = datetime.today().strftime('%Y-%m-%d')
 
             item2.informed_by = informed_by
             item2.save(update_fields=['informed_on'])
             item2.save(update_fields=['informed_by', ]),
-        if repaired_by != '' and repaired_by!= None:
+        if repaired_by != '' and repaired_by!= None and repaired_by != 'None':
             item2.repaired_by = repaired_by
             item2.repaired_date = datetime.today().strftime('%Y-%m-%d')
             item2.save(update_fields=['repaired_by'])
@@ -596,8 +607,8 @@ def update_repairing_details(request,id):
         # item2.third_contact_no=third_contact_no
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired
-        if item2.taken_by == None or item2.taken_by=='':
-            if taken_by != '' or taken_by != None:
+        if item2.taken_by == None or item2.taken_by==''and item2.taken_by != 'None':
+            if taken_by != '' or taken_by != None and taken_by != 'None':
                 item2.taken_by = taken_by
                 item2.user_id = SiteUser.objects.get(name=taken_by)
                 item2.save(update_fields=['taken_by',]),
@@ -606,11 +617,7 @@ def update_repairing_details(request,id):
 
 
 
-        if delivery_by != None:
-            item2.delivery_by = informed_by
-            item2.delivery_date = datetime.today().strftime('%Y-%m-%d')
-            item2.save(update_fields=['delivery_by'])
-            item2.save(update_fields=['delivery_date', ]),
+
         # item2.feedback_given = feedback_given
         # item2.current_stage = current_stage
 
