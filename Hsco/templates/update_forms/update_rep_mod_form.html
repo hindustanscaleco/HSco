@@ -570,12 +570,12 @@ function myFunction() {
                    <input name="taken_by" placeholder="Taken By" disabled class="form-control" id="myText22" required type="text" value="{{repair_id.taken_by}}">
 
       {% else %}
-             <input name="taken_by" placeholder="Taken By" disabled class="form-control" id="myText22" required type="text" list="taken_by">
-      <datalist style="height:20px;" id="taken_by">
+      <select name="taken_by">
+  <option value="">Select</option>
+  <option value="{{user.name}}">{{user.name}}</option>
+</select>
+             <!--<input name="taken_by" placeholder="Taken By" disabled class="form-control" id="myText22" required type="text" list="taken_by">-->
 
-      <option value="{{user.name}}">
-
-    </datalist>
       {% endif %}
 
     </div>
@@ -592,12 +592,17 @@ function myFunction() {
         <input name="taken_by" placeholder="Taken By" disabled class="form-control" required id="myText22" type="text" value="{{repair_id.taken_by}}">
 
       {% else %}
-        <input name="taken_by" placeholder="Taken By" disabled class="form-control" required id="myText22" type="text" list="taken_by">
-      <datalist style="height:20px;" id="taken_by">
-        {% for item in user_list %}
-      <option value="{{item.name}}">
-    {% endfor %}
-    </datalist>
+        <!--<input name="taken_by" placeholder="Taken By" disabled class="form-control" required id="myText22" type="text" list="taken_by">-->
+
+                <select required disabled class="form-control" id="myText22" name="taken_by">
+  <option value="">Select</option>
+                    {% for item in user_list %}
+
+  <option value="{{item.name}}">{{item.name}}</option>
+                        {% endfor %}
+
+</select>
+
       {% endif %}
 
 

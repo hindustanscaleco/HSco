@@ -466,7 +466,17 @@ function myFunction() {
     <div class="col-md-12 ">
       <br>
     <center>
-        <button style="background-color: #FC6E20;" onclick="myFunction()" id="myText20" class="btn btn-primary" type="reset" style="">Edit</button>
+{% if not purchase_id_id.dispatch_id_assigned %}
+        <button style="background-color: #FC6E20;" onclick="myFunction()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
+
+                                          {% endif %}
+
+          {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None  %}
+        <button style="background-color: #FC6E20;" onclick="myFunction()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
+                                  {% endif %}
+
+
+
         <br>
         <br>
         <button style="display:none; background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
@@ -477,9 +487,18 @@ function myFunction() {
                       <center>
                           {% if purchase_id_id.is_last_product %}
                           {% else %}
+                                    {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None  %}
+
                                     <a href="/add_product_details/{{purchase_id_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
 
                           {% endif %}
+                          {% endif %}
+
+                          {% if not purchase_id_id.dispatch_id_assigned %}
+                                                              <a href="/add_product_details/{{purchase_id_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
+
+                                                    {% endif %}
+
             </center>
 <br>
                 <style>
@@ -542,7 +561,19 @@ tr:nth-child(even) {
               </div>
 
           <br>
-          <br><center> <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a></center>
+          <br><center>
+                            {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None  %}
+
+                  <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
+
+                  {% endif %}
+
+                                            {% if not purchase_id_id.dispatch_id_assigned %}
+                  <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
+
+                  {% endif %}
+
+              </center>
       </div>
                     <br>
 
