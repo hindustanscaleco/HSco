@@ -492,12 +492,14 @@ display:none;
                     <div class="col-xl-2 col-md-2 mb-1"><center> Customer Name </center></div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Company Name </center></div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Contact No. </center></div>|
-                    {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
+
                     <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Entered By </center> </div>|
+
+                    {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
+                    <div class="col-xl-2 col-md-2 mb-1"><center> Taken By </center> </div>
                     {% else %}
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="">  Email ID </center> </div>|
                     {% endif %}
-                    <div class="col-xl-2 col-md-2 mb-1"><center> Taken By </center> </div>
                     </div>
                 </div>
               </div>
@@ -518,12 +520,15 @@ display:none;
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_person}}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_contact_no}} </center> </div>|
-                    {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
+
                     <div class="col-xl-2 col-md-1 mb-1 "><center>{{list.user_id.profile_name}}</center></div>|
+
+                    {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.taken_by}} </center> </div>
                     {% else %}
                     <div class="col-xl-2 col-md-1 mb-1 ">{% if list.company_email != None and list.company_email != '' %}{{list.company_email}}{% else %}{% endif %} </div>|
                     {% endif %}
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.taken_by}} </center> </div>
+
                     </div>
 
                 </div>
