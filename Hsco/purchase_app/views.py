@@ -696,15 +696,55 @@ def add_product_details(request,id):
 
 
             try:
-                message = 'Dear ' + str(purchase.crm_no.customer_name) + ', Thanks for purchasing your scale from HSCo. ' \
-                                                                'Your Purchase ID is ' + str(
+
+                import smtplib
+
+
+
+                sent_from = settings.EMAIL_HOST_USER
+                to = [purchase.company_email]
+                subject = 'Feedback Form - HSCo'
+                message = 'Dear ' + str(
+                    purchase.crm_no.customer_name) + ', Thanks for purchasing your scale from HSCo. ' \
+                                                     'Your Purchase ID is ' + str(
                     purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                                ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
-                          + str(request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(purchase.id) +'\nHere is the list of product you purchased:\n'+ product_list
-                send_mail('Feedback Form',
-                          message, settings.EMAIL_HOST_USER,
-                          [purchase.company_email])
-                print("send mail!!")
+                                   ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
+                          + str(request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(
+                    purchase.id) + '\nHere is the list of product you purchased:\n' + product_list
+                body = message
+
+                email_text = """\
+                From: %s
+                To: %s
+                Subject: %s
+
+                %s
+                """ % (sent_from,purchase.company_email, subject, body)
+
+                try:
+                    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+                    server.ehlo()
+                    server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+                    server.sendmail(sent_from, to, email_text)
+                    server.close()
+
+                    print('Email sent!')
+                except:
+                    print('Something went wrong...')
+
+
+
+
+
+
+
+
+
+
+                # send_mail('Feedback Form',
+                #           message, settings.EMAIL_HOST_USER,
+                #           [purchase.company_email])
+                # print("send mail!!")
             except:
                 print("exception occured!!")
                 pass
