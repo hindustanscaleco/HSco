@@ -347,7 +347,7 @@ def dispatch_view(request):
                 (Q(user_id__admin=admin) | Q(dispatch_by=request.user.name) | Q(user_id__name=admin)) & Q(
                     current_stage='dispatch completed')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
-            
+
 
         else:  #For EMPLOYEE
             admin=SiteUser.objects.get(id=request.user.pk).admin
