@@ -343,7 +343,7 @@ def repair_product(request,id):
 
                 ).format(
                     idx + 1,
-                    item.type_of_scale,
+                    item.type_of_machine,
                     item.sub_model,
                     item.problem_in_scale,
                     item.Replaced_scale_serial_no,
