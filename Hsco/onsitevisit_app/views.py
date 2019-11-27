@@ -261,10 +261,10 @@ def add_onsite_aftersales_service(request):
 
 
         item = Customer_Details()
-        if Customer_Details.objects.filter(Q(customer_email_id=customer_email_id),
+        if Customer_Details.objects.filter(Q(customer_name=customer_name),
                                            Q(contact_no=contact_no)).count() > 0:
 
-            item2.crm_no = Customer_Details.objects.filter(Q(customer_email_id=customer_email_id),
+            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),
                                                            Q(contact_no=contact_no)).first()
             item3 = Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).first()
             if company_name != '':
