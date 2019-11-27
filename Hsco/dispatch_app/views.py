@@ -328,10 +328,9 @@ def dispatch_view(request):
             stage3 = Dispatch.objects.filter((Q(user_id__pk=request.user.pk) & Q(current_stage='dispatch completed'))|(Q(user_id__group__icontains=request.user.name)& Q(user_id__is_deleted=False)& Q(current_stage='dispatch completed'))).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
 
-        elif request.user.role == 'Admin' or request.user.role == 'Manager':
-            admin = SiteUser.objects.get(id=request.user.pk).admin
-            dispatch_list = Dispatch.objects.filter(
-                Q(user_id__admin=admin) | Q(dispatch_by=request.user.name) | Q(user_id__name=admin)).order_by('-id')
+        elif request.user.role == 'Admin' :
+            admin = SiteUser.objects.get(id=request.user.pk).name
+            dispatch_list = Dispatch.objects.filter(Q(user_id__admin=admin) | Q(dispatch_by=request.user.name) | Q(user_id__name=admin)).order_by('-id')
 
             stage1 = Dispatch.objects.filter(
                 (Q(user_id__admin=admin) | Q(dispatch_by=request.user.name) | Q(user_id__name=admin)) & Q(
@@ -349,18 +348,31 @@ def dispatch_view(request):
                 'current_stage').annotate(dcount=Count('current_stage'))
 
 
-        else:  #For EMPLOYEE
+        elif request.user.role == 'Manager' :  #For EMPLOYEE
             admin=SiteUser.objects.get(id=request.user.pk).admin
-            dispatch_list = Dispatch.objects.filter(Q(user_id__admin=admin)|Q(dispatch_by=request.user.name)|Q(dispatch_by=request.user.name)).order_by('-id')
+            dispatch_list = Dispatch.objects.filter(Q(dispatch_by=None)|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name)).order_by('-id')
 
-            stage1 = Dispatch.objects.filter((Q(user_id__admin=admin)|Q(dispatch_by=request.user.name)|Q(user_id__name=admin))&Q(current_stage='dispatch q')).values('current_stage').annotate(
+            stage1 = Dispatch.objects.filter((Q(dispatch_by=None)|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))&Q(current_stage='dispatch q')).values('current_stage').annotate(
                 dcount=Count('current_stage'))
 
-            stage2 = Dispatch.objects.filter((Q(user_id__admin=admin)|Q(dispatch_by=request.user.name)|Q(user_id__name=admin))&Q(current_stage='dispatch but lr not updated')).values(
+            stage2 = Dispatch.objects.filter((Q(dispatch_by=None)|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))&Q(current_stage='dispatch but lr not updated')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
 
-            stage3 = Dispatch.objects.filter((Q(user_id__admin=admin)|Q(dispatch_by=request.user.name)|Q(user_id__name=admin))&Q(current_stage='dispatch completed')).values(
+            stage3 = Dispatch.objects.filter((Q(dispatch_by=None)|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))&Q(current_stage='dispatch completed')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
+        elif request.user.role == 'Employee' :  #For EMPLOYEE
+            admin=SiteUser.objects.get(id=request.user.pk).admin
+            dispatch_list = Dispatch.objects.filter(Q(dispatch_by=request.user.name)|Q(dispatch_by=None) & Q(user_id__admin=admin)).order_by('-id')
+
+            stage1 = Dispatch.objects.filter((Q(dispatch_by=request.user.name)|Q(dispatch_by=None)) & Q(user_id__admin=admin)&Q(current_stage='dispatch q')).values('current_stage').annotate(
+                dcount=Count('current_stage'))
+
+            stage2 = Dispatch.objects.filter((Q(dispatch_by=request.user.name)|Q(dispatch_by=None)) & Q(user_id__admin=admin)&Q(current_stage='dispatch but lr not updated')).values(
+                'current_stage').annotate(dcount=Count('current_stage'))
+
+            stage3 = Dispatch.objects.filter((Q(dispatch_by=request.user.name)|Q(dispatch_by=None)) & Q(user_id__admin=admin)&Q(current_stage='dispatch completed')).values(
+                'current_stage').annotate(dcount=Count('current_stage'))
+
 
         # dispatch_list = Dispatch.objects.all()
 
@@ -547,7 +559,7 @@ def update_dispatch_details(request,update_id):
         from datetime import datetime
 
         datetime.today().strftime('%Y-%m-%d')
-        if dispatch_by != None:
+        if dispatch_by != None and dispatch_by != 'None' and dispatch_by != '':
             item.dispatch_by = dispatch_by
             item.date_of_dispatch = datetime.today().strftime('%Y-%m-%d')
             item.save(update_fields=['date_of_dispatch'])
@@ -566,7 +578,7 @@ def update_dispatch_details(request,update_id):
 
 
         current_stage_in_db = Dispatch.objects.get(id=update_id).current_stage  # updatestage3
-        if (current_stage_in_db == 'dispatch but lr not updated') and (lr_no != '' and lr_no != None):
+        if (current_stage_in_db == 'dispatch but lr not updated') and (lr_no != '' and lr_no != None and lr_no!= 'None'):
             Dispatch.objects.filter(id=update_id).update(current_stage='dispatch completed')
             product_list = ''' '''
             pro_lis = Product_Details_Dispatch.objects.filter(dispatch_id=dispatch_item.pk)
@@ -673,8 +685,7 @@ def update_dispatch_details(request,update_id):
 
         # item.save(update_fields=['dispatch_id', ]),
 
-        item.save(update_fields=['second_person','third_person','second_contact_no','third_contact_no', ]),
-        item.save(update_fields=['second_person','second_contact_no', ])
+        item.save(update_fields=['second_person','second_contact_no', ]),
 
         item.save(update_fields=['packed_by', ]),
         item.save(update_fields=['hamal_name', ]),
@@ -895,21 +906,55 @@ def load_dispatch_done_manager(request,):
 def load_dispatch_stages_list(request):
     selected_stage = request.GET.get('selected_stage')
 
-    if check_admin_roles(request):  # For ADMIN
-
+    if request.user.role == 'Super Admin':  # For ADMIN
+        # dispatch_list = Dispatch.objects.filter(Q(user_id__pk=request.user.pk) | (
+        #             Q(user_id__group__icontains=request.user.name) & Q(user_id__is_deleted=False))).order_by('-id')
 
         dispatch_list = Dispatch.objects.filter((Q(user_id__pk=request.user.pk) & Q(current_stage='dispatch q')) | (
                     Q(user_id__group__icontains=request.user.name) & Q(user_id__is_deleted=False) & Q(
-                current_stage=selected_stage)))
+                current_stage=selected_stage))).order_by('-id')
+
+
+    elif request.user.role == 'Admin':
+        admin = SiteUser.objects.get(id=request.user.pk).name
+        # dispatch_list = Dispatch.objects.filter(
+        #     Q(user_id__admin=admin) | Q(dispatch_by=request.user.name) | Q(user_id__name=admin)).order_by('-id')
+
+        dispatch_list = Dispatch.objects.filter(
+            (Q(user_id__admin=admin) | Q(dispatch_by=request.user.name) | Q(user_id__name=admin)) & Q(
+                current_stage=selected_stage)).order_by('-id')
 
 
 
-    else:  # For EMPLOYEE
+    elif request.user.role == 'Manager':  # For EMPLOYEE
+        admin = SiteUser.objects.get(id=request.user.pk).admin
+        # dispatch_list = Dispatch.objects.filter(
+        #     Q(dispatch_by=None) | Q(user_id__admin=admin) | Q(dispatch_by=request.user.name)).order_by('-id')
+
+        dispatch_list = Dispatch.objects.filter((Q(dispatch_by=None) | Q(user_id__admin=admin) | Q(dispatch_by=request.user.name)) & Q(current_stage=selected_stage)).order_by('-id')
+
+    elif request.user.role == 'Employee':  # For EMPLOYEE
         admin = SiteUser.objects.get(id=request.user.pk).admin
 
 
-        dispatch_list = Dispatch.objects.filter(
-            (Q(user_id__admin=admin) | Q(dispatch_by=request.user.name)) & Q(current_stage=selected_stage))
+        dispatch_list = Dispatch.objects.filter((Q(dispatch_by=request.user.name) | Q(dispatch_by=None)) & Q(user_id__admin=admin) & Q(current_stage=selected_stage)).order_by('-id')
+
+
+    # if check_admin_roles(request):  # For ADMIN
+    #
+    #
+    #     dispatch_list = Dispatch.objects.filter((Q(user_id__pk=request.user.pk) & Q(current_stage='dispatch q')) | (
+    #                 Q(user_id__group__icontains=request.user.name) & Q(user_id__is_deleted=False) & Q(
+    #             current_stage=selected_stage)))
+    #
+    #
+    #
+    # else:  # For EMPLOYEE
+    #     admin = SiteUser.objects.get(id=request.user.pk).admin
+    #
+    #
+    #     dispatch_list = Dispatch.objects.filter(
+    #         (Q(user_id__admin=admin) | Q(dispatch_by=request.user.name)) & Q(current_stage=selected_stage))
 
     # if check_admin_roles(request):  # For ADMIN
     #     dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.name,
