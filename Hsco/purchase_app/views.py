@@ -702,7 +702,7 @@ def add_product_details(request,id):
 
 
                 sent_from = settings.EMAIL_HOST_USER
-                to = ['me@gmail.com', 'bill@gmail.com']
+                to = [purchase.company_email]
                 subject = 'Feedback Form - HSCo'
                 message = 'Dear ' + str(
                     purchase.crm_no.customer_name) + ', Thanks for purchasing your scale from HSCo. ' \
@@ -719,7 +719,7 @@ def add_product_details(request,id):
                 Subject: %s
 
                 %s
-                """ % (sent_from, ", ".join(purchase.company_email), subject, body)
+                """ % (sent_from,purchase.company_email, subject, body)
 
                 try:
                     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
