@@ -910,7 +910,7 @@ def load_dispatch_stages_list(request):
         # dispatch_list = Dispatch.objects.filter(Q(user_id__pk=request.user.pk) | (
         #             Q(user_id__group__icontains=request.user.name) & Q(user_id__is_deleted=False))).order_by('-id')
 
-        dispatch_list = Dispatch.objects.filter((Q(user_id__pk=request.user.pk) & Q(current_stage='dispatch q')) | (
+        dispatch_list = Dispatch.objects.filter((Q(user_id__pk=request.user.pk) & Q(current_stage=selected_stage)) | (
                     Q(user_id__group__icontains=request.user.name) & Q(user_id__is_deleted=False) & Q(
                 current_stage=selected_stage))).order_by('-id')
 
