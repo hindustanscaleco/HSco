@@ -658,7 +658,7 @@ def update_onsite_details(request,id):
         current_stage_in_db = Onsite_aftersales_service.objects.get(
             id=id).current_stage  # updatestage2
 
-        if (current_stage_in_db == 'Onsite repairing request is raised') and (complaint_assigned_to != '' or complaint_assigned_to != None):
+        if (current_stage_in_db == 'Onsite repairing request is raised') and (complaint_assigned_to != '' and complaint_assigned_to != None and  complaint_assigned_to != 'None'):
             Onsite_aftersales_service.objects.filter(id=id).update(
                 current_stage='Onsite repairing request is assigned')
 
