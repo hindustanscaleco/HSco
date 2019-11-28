@@ -387,8 +387,6 @@ function myFunction() {
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="informed_by" placeholder="Informed By" class="form-control" id="myText8" type="text" disabled value="{{repair_id.informed_by}}" list="inf_by">
             <datalist style="height:20px;" id="inf_by">
-                      <option value="{{user.name}}">
-
         {% for item in user_list %}
       <option value="{{item.name}}">
     {% endfor %}
@@ -461,8 +459,6 @@ function myFunction() {
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input name="repaired_by" placeholder="Repaired By" class="form-control" id="myText14" disabled value="{{repair_id.repaired_by}}" list="repe_by">
          <datalist style="height:20px;" id="repe_by">
-                   <option value="{{user.name}}">
-
         {% for item in user_list %}
       <option value="{{item.name}}">
     {% endfor %}
@@ -499,7 +495,7 @@ function myFunction() {
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input name="delivery_by" placeholder="Delivery By" class="form-control"  type="text" id="myText16" disabled value="{{repair_id.delivery_by}}" list="del_by">
       <datalist style="height:20px;" id="del_by">
-      <option value="{{user.name}}">
+          
         {% for item in user_list %}
       <option value="{{item.name}}">
     {% endfor %}
