@@ -474,7 +474,7 @@ def add_onsite_product(request,id):
 
         current_stage_in_db = Onsite_aftersales_service.objects.get(
             id=id).current_stage  # updatestage2
-        if (current_stage_in_db == '' or current_stage_in_db == None) and (problem_in_scale != '' or problem_in_scale != None):
+        if (current_stage_in_db == '' or current_stage_in_db == None) and (problem_in_scale != '' and problem_in_scale != None and problem_in_scale != 'None'):
             Onsite_aftersales_service.objects.filter(id=id).update(
                 current_stage='Onsite repairing request is raised')
         # if (current_stage_in_db == 'Scales in Restamping Queue') and (new_sr_no != '' or new_sr_no != None):
@@ -602,9 +602,7 @@ def update_onsite_details(request,id):
                                             modules_assigned__icontains='Onsite Repairing Module', is_deleted=False)
     try:
         feedback = Onsite_Feedback.objects.get(onsite_repairing_id=onsite_id.pk, customer_id=customer_id)
-        print(feedback)
-        print(id)
-        print(customer_id.pk)
+
     except:
         feedback = None
     print(onsite_product_list)
@@ -655,10 +653,9 @@ def update_onsite_details(request,id):
         # feedback_given = request.POST.get('feedback_given')
         assigned_to = request.POST.get('assigned_to')
 
-        current_stage_in_db = Onsite_aftersales_service.objects.get(
-            id=id).current_stage  # updatestage2
+        current_stage_in_db = Onsite_aftersales_service.objects.get(id=id).current_stage  # updatestage2
 
-        if (current_stage_in_db == 'Onsite repairing request is raised') and (complaint_assigned_to != '' or complaint_assigned_to != None):
+        if (current_stage_in_db == 'Onsite repairing request is raised' and complaint_assigned_to != '' and complaint_assigned_to != None and  complaint_assigned_to != 'None'):
             Onsite_aftersales_service.objects.filter(id=id).update(
                 current_stage='Onsite repairing request is assigned')
 
@@ -717,7 +714,7 @@ def update_onsite_details(request,id):
         # item.feedback_given = feedback_given
         item.assigned_to = assigned_to
 
-        if complaint_assigned_to != None and complaint_assigned_to != '':
+        if complaint_assigned_to != None and complaint_assigned_to != '' and complaint_assigned_to != 'None' :
             item.complaint_assigned_to = complaint_assigned_to
             item.complaint_assigned_on = datetime.today().strftime('%Y-%m-%d')
             item.save(update_fields=['complaint_assigned_to'])
