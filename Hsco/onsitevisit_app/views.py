@@ -385,44 +385,44 @@ def add_onsite_aftersales_service(request):
             ead.save()
 
 
-        if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
-            crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
-            try:
-                send_mail('Feedback Form',
-                      'Click on the link to give feedback http://139.59.76.87/feedback_onrepairing/' + str(
-                          request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
-                      [crm_no.customer_email_id])
-            except:
-                pass
-
-            message = 'Click on the link to give feedback http://139.59.76.87/feedback_onrepairing/' + str(
-                request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
-
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-            payload = ""
-            headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-            x = response.text
-        else:
-
-            try:
-                send_mail('Feedback Form',
-                      'Click on the link to give feedback http://139.59.76.87/feedback_onrepairing/' + str(
-                          request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
-                      [item.customer_email_id])
-            except:
-                pass
-
-            message = 'Click on the link to give feedback http://139.59.76.87/feedback_onrepairing/' + str(
-                request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
-
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-            payload = ""
-            headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-            x = response.text
+        # if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
+        #     crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
+        #     try:
+        #         send_mail('Feedback Form',
+        #               'Click on the link to give feedback http://139.59.76.87/feedback_onrepairing/' + str(
+        #                   request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+        #               [crm_no.customer_email_id])
+        #     except:
+        #         pass
+        #
+        #     message = 'Click on the link to give feedback http://139.59.76.87/feedback_onrepairing/' + str(
+        #         request.user.pk) + '/' + str(crm_no.pk) + '/' + str(item2.id)
+        #
+        #     url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+        #     payload = ""
+        #     headers = {'content-type': 'application/x-www-form-urlencoded'}
+        #
+        #     response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        #     x = response.text
+        # else:
+        #
+        #     try:
+        #         send_mail('Feedback Form',
+        #               'Click on the link to give feedback http://139.59.76.87/feedback_onrepairing/' + str(
+        #                   request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+        #               [item.customer_email_id])
+        #     except:
+        #         pass
+        #
+        #     message = 'Click on the link to give feedback http://139.59.76.87/feedback_onrepairing/' + str(
+        #         request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+        #
+        #     url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+        #     payload = ""
+        #     headers = {'content-type': 'application/x-www-form-urlencoded'}
+        #
+        #     response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        #     x = response.text
 
 
         return redirect('/add_onsite_product/'+str(item2.pk))
@@ -552,10 +552,10 @@ def update_onsite_product(request,id):
         item.save(update_fields=['cost', ]),
 
         current_stage_in_db = Onsite_aftersales_service.objects.get(
-            id=id).current_stage  # updatestage2
+            id=onsite).current_stage  # updatestage2
         if (current_stage_in_db == '' or current_stage_in_db == None) and (
                 problem_in_scale != '' or problem_in_scale != None):
-            Onsite_aftersales_service.objects.filter(id=id).update(
+            Onsite_aftersales_service.objects.filter(id=onsite).update(
                 current_stage='Onsite repairing request is raised')
 
 
@@ -573,7 +573,7 @@ def update_onsite_product(request,id):
 
 
 
-        return redirect('/update_onsite_details/'+str(id))
+        return redirect('/update_onsite_details/'+str(onsite))
     context = {
         'onsite_id': onsite_id,
     }
@@ -655,6 +655,10 @@ def update_onsite_details(request,id):
 
         current_stage_in_db = Onsite_aftersales_service.objects.get(id=id).current_stage  # updatestage2
 
+        print("complaint_assigned_to")
+        print("complaint_assigned_to")
+        print("complaint_assigned_to")
+        print(complaint_assigned_to)
         if (current_stage_in_db == 'Onsite repairing request is raised' and complaint_assigned_to != '' and complaint_assigned_to != None and  complaint_assigned_to != 'None'):
             Onsite_aftersales_service.objects.filter(id=id).update(
                 current_stage='Onsite repairing request is assigned')
@@ -664,6 +668,34 @@ def update_onsite_details(request,id):
                 time_taken_destination_return_office_min != '' or time_taken_destination_return_office_min != None):
             Onsite_aftersales_service.objects.filter(id=id).update(
                 current_stage='Onsite repairing request is completed')
+
+            msg='Dear '+customer_name+',Thank you for selecting HSCo. Your Onsite Repairing No '+str(onsite_id.id)+' has been successfully' \
+                ' resolved. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love to hear your' \
+                ' feedback to help us improve our customer experience, just click on the link below:\n http://139.59.76.87/feedback_onrepairing/'\
+                + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.id)+' If you feel ' \
+                'that your complaint has not been resolved please contact our customer service team on 7045922251'
+
+            try:
+                send_mail('Onsite-Reparing Feedback - HSCo',msg,
+                          settings.EMAIL_HOST_USER,
+                          [customer_email_id])
+            except:
+                pass
+
+            message = 'Dear ' + customer_name + ',Thank you for selecting HSCo. Your Onsite Repairing No ' + str(
+                onsite_id.id) + ' has been successfully' \
+                            ' resolved. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love to hear your' \
+                            ' feedback to help us improve our customer experience, just click on the link below:\n http://139.59.76.87/feedback_onrepairing/' \
+                  + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.id) + ' If you feel ' \
+                                                                                              'that your complaint has not been resolved please contact our customer service team on 7045922251'
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+
 
 
         item = onsite_id

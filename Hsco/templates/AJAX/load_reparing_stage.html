@@ -18,7 +18,7 @@
                     <div class="col-xl-2 col-md-1 mb-1"><center> {% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_contact_no}} </center> </div>|
 
-                    <div class="col-xl-2 col-md-1 mb-1 "><center>{{list.user_id.profile_name}}</center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1 "><center>{{list.entered_by}}</center></div>|
 
                     {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.taken_by}} </center> </div>

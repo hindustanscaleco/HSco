@@ -31,7 +31,7 @@ class Onsite_aftersales_service(models.Model):
     company_address = models.CharField(max_length=120,null=True,blank=True)
     nearest_railwaystation = models.CharField(max_length=30, null=True, blank=True)
     train_line = models.CharField(max_length=30, null=True, blank=True)
-    current_stage = models.CharField(default='Onsite repairing request is raised',max_length=50,null=True,blank=True)
+    current_stage = models.CharField(max_length=50,null=True,blank=True)
     date_of_complaint_received = models.DateField(null=True, blank=True)
     # products_to_be_repaired = models.CharField(max_length=30, null=True, blank=True)
     visiting_charges_told_customer = models.FloatField(default=0.0, null=True, blank=True)

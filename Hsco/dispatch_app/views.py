@@ -605,10 +605,16 @@ def update_dispatch_details(request,update_id):
                 product_list = product_list + '' + str(email_body_text)
 
             try:
-                msg = "Dear " + customer_name + ", Your goods have been successfully dispatched through" \
-                                                " " + transport_name + ", having LR Number " + lr_no + ". Please track the" \
-                                                                                                       " details on the transporters website"+'\nHere is the list of product dispatched:\n' + product_list
-                send_mail('Feedback Form',
+                pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).pk
+                msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through" \
+                " " + transport_name + ", having LR Number " + lr_no + ". Please track the" \
+                " details on the transporters website"+'\nHere is the list of product dispatched:\n' + product_list
+
+                msg ='Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase having ID '+pur_id+'' \
+                     ' is dispatch from our end with Dispatch ID ' + str(
+                item.pk) + '  & LR No ' + lr_no + ' by  ' + transport_name +'. For more details contact us on - 7045922252 \n Dispatch Details:\n'+product_list
+
+                send_mail('Dispatched, Your Hsco Purchase is Dispatched from our end',
                           msg, settings.EMAIL_HOST_USER,
                           [dispatch_item.company_email])
                 print("send mail!!")
@@ -616,7 +622,12 @@ def update_dispatch_details(request,update_id):
                 print("exception occured!!")
                 pass
 
-            msg = "Dear " + customer_name + ", Your goods have been successfully dispatched through " + transport_name + ", having LR Number " + lr_no + ". Please track the details on the transporters website"
+            # msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through " + transport_name + ", having LR Number " + lr_no + ". Please track the details on the transporters website"
+            pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).pk
+
+            msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase having ID '+pur_id+'' \
+                                            'is dispatch from our end with Dispatch ID ' + str(
+                item.pk) + ' & LR No ' + lr_no + ' by  ' + transport_name + '. For more details contact us on - 7045922252'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
