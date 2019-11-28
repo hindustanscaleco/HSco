@@ -145,6 +145,7 @@ def add_repairing_details(request):
         item2.taken_by = taken_by
         item2.second_person = customer_name  # new1
         item2.second_contact_no = contact_no  # new2
+        item2.entered_by = request.user.name  # new2
         # item2.second_person=second_person
         # item2.third_person=third_person
         # item2.second_contact_no=second_contact_no
@@ -351,19 +352,27 @@ def repair_product(request,id):
                 )
                 product_list = product_list + '' + str(email_body_text)
 
+                msg_old= 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                              request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.id) +'\nHere is a list of Products:\n'+product_list
+                msg='Dear '+rep.second_person+',Thank you for selecting HSCo. Your Scales have been successfully ' \
+                    'received at our Repairing Center. Your Repairing No is '+str(rep.pk)+'. Please use this Unique ID for further communication. For any ' \
+                    'further details please contact our customer service team on 7045922251 \n Product Details:\n'+product_list
                 # if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
                 # crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
                 try:
-                    send_mail('Feedback Form',
-                          'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                              request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.id) +'\nHere is a list of Products:\n'+product_list
+                    send_mail('Feedback Form',msg
+
                               ,settings.EMAIL_HOST_USER,
-                          [rep.crm_no.company_email])
+                          [rep.company_email])
                 except:
                     pass
 
-                message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                message_old = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
                     request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.id)
+
+                message = 'Dear '+rep.second_person+', Thank you for selecting HSCo. Your Scales have been successfully ' \
+                          'received at our Repairing Center. Your Repairing No is '+str(rep.pk)+'. Please use this Unique ID for ' \
+                          'further communication. For any further details please contact our customer service team on 7045922251'
 
                 url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + rep.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
                 payload = ""
@@ -536,6 +545,64 @@ def update_repairing_details(request,id):
             item2.stage_update_timedate = timezone.now()
             item2.save(update_fields=['stage_update_timedate',])
 
+            product_list = ''' '''
+            pro_lis = Repairing_Product.objects.filter(repairing_id_id=id)
+
+            for idx, item2 in enumerate(pro_lis):
+                # for it in item:
+
+                email_body_text = (
+                    u"\nSr. No.: {},"
+                    "\tModel: {},"
+                    "\tSub Model: {}"
+                    "\tComponents replaced: {}"
+                    "\tComponents Replaced In Warranty: {}"
+
+
+                ).format(
+                    idx + 1,
+                    item2.type_of_machine,
+                    item2.sub_model,
+                    item2.components_replaced,
+                    item2.components_replaced_in_warranty,
+
+                )
+                product_list = product_list + '' + str(email_body_text)
+
+            try:
+                msg='Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                              request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+                msg='Dear '+customer_name+',Thank you for selecting HSCo. The Estimate for Your ' \
+                    'Repairing No '+str(repair_id.pk)+' is  '+str(repair_id.total_cost)+' For any further details please contact our customer ' \
+                    'service team on 7045922251 Estimate Details:\n'+product_list
+                send_mail('Feedback Form',msg
+                          , settings.EMAIL_HOST_USER,
+                          [item.customer_email_id])
+            except:
+                pass
+
+            message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+
+            message='Dear '+customer_name+',Thank you for selecting HSCo. The Estimate for Your ' \
+                    'Repairing No '+str(repair_id.pk)+' is  '+str(repair_id.total_cost)+'/- For any further details please contact our customer ' \
+                    'service team on 7045922251'
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+
+
+
+
+
+
+
+
+
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage4
         if current_stage_in_db == 'Estimate is confirmed but not repaired' and repaired == 'Yes':
             Repairing_after_sales_service.objects.filter(id=id).update(
@@ -545,15 +612,20 @@ def update_repairing_details(request,id):
             item2.save(update_fields=['stage_update_timedate', ])
             item2.save(update_fields=['repaired'])
             try:
-                send_mail('Feedback Form',
-                          'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                              request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                send_mail('Your Repairing Done - HSCo',
+                          ' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.pk)+' is resolved.'
+                          ' Please collect your Scales within the next 3 days.For any further details please contact '
+                          'our customer service team on 7045922251', settings.EMAIL_HOST_USER,
                           [item.customer_email_id])
             except:
                 pass
 
             message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
                 request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+
+            message=' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.pk)+' is resolved. ' \
+                    'Please collect your Scales within the next 3 days.For any further details please contact our ' \
+                    'customer service team on 7045922251'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
@@ -581,6 +653,40 @@ def update_repairing_details(request,id):
 
                 item2.stage_update_timedate = timezone.now()
                 item2.save(update_fields=['stage_update_timedate', ])
+
+                try:
+                    send_mail('Scale Collected - HSCo',
+                              ' Dear ' + customer_name + ',Thank you for selecting HSCo. Your Scale with Repairing No ' + str(
+                                  repair_id.pk) + ' has been ' \
+                          'Successfully Collected. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love ' \
+                          'to hear your feedback to help us improve our customer experience,just click on the link below:\n ' \
+                                                  ' http://139.59.76.87/feedback_repairing/'
+                + str(request.user.pk) + '/' + str(repair_id.crm_no.pk) + '/' + str(repair_id.id)+'\n If you ' \
+                          'feel that your complaint has not been resolved please contact our customer service team on 7045922251', settings.EMAIL_HOST_USER,
+                              [item.customer_email_id])
+                except:
+                    pass
+
+                message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                    request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+
+                message = ' Dear ' + customer_name + ',Thank you for selecting HSCo. Your Scale with Repairing No ' + str(
+                                  repair_id.pk) + ' has been ' \
+                          'Successfully Collected. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love ' \
+                          'to hear your feedback to help us improve our customer experience,just click on the link below:\n ' \
+                                                  ' http://139.59.76.87/feedback_repairing/'
+                + str(request.user.pk) + '/' + str(repair_id.crm_no.pk) + '/' + str(repair_id.id)+'\n If you ' \
+                          'feel that your complaint has not been resolved please contact our customer service team on 7045922251'
+
+                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+                payload = ""
+                headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+                response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                x = response.text
+
+
+
 
         # item2.total_cost = total_cost
         # if informed_on != '':
@@ -752,9 +858,10 @@ def repairing_module_home(request):
                 'current_stage').annotate(
                 dcount=Count('current_stage'))
         else:  #For EMPLOYEE
-            repair_list = Repairing_after_sales_service.objects.filter(Q(taken_by=None) | Q(taken_by='') | Q(taken_by=request.user.name)).order_by('-id')
+            admin = SiteUser.objects.get(id=request.user.pk).admin
+            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name)|Q(taken_by=None) | Q(taken_by=''))&Q(user_id__admin=admin)).order_by('-id')
 
-            res = Repairing_after_sales_service.objects.filter(Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)).values('current_stage').annotate(
+            res = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name)|Q(taken_by=None) | Q(taken_by=''))&Q(user_id__admin=admin)).values('current_stage').annotate(
                 dcount=Count('current_stage'))
             # repair_list2 = Repairing_after_sales_service.objects.filter(Q(taken_by='')).order_by('-id')
             # repair_list = Repairing_after_sales_service.objects.filter(taken_by=request.user.name,).order_by('-id')
@@ -1274,10 +1381,11 @@ def load_reparing_stages_list(request,):
             repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)| Q(
                 user_id__group__icontains=request.user.name)) & Q(current_stage=selected_stage))
         else:  # For EMPLOYEE
-
-
+            admin = SiteUser.objects.get(id=request.user.pk).admin
             repair_list = Repairing_after_sales_service.objects.filter((
-                Q(taken_by=None) | Q(taken_by='') | Q(taken_by=request.user.name))& Q(current_stage=selected_stage))
+                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)) & Q(current_stage=selected_stage)).order_by(
+                '-id')
+
     # else:
     #     repair_list = Repairing_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),current_stage=selected_stage)
 
@@ -1302,13 +1410,18 @@ def load_reparing_manager(request):
         return render(request, 'AJAX/load_reparing_manager.html', context)
     else:
         if check_admin_roles(request):  # For ADMIN
-            repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,
-                                                                       user_id__modules_assigned__icontains="'Repairing Module'").order_by(
-                '-id')
+            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='') | Q(
+                user_id__name=request.user.name) | Q(taken_by=request.user.name) | Q(
+                user_id__group__icontains=request.user.name)) & Q(user_id__is_deleted=False) & Q(
+                user_id__modules_assigned__icontains="'Repairing Module'")).order_by('-id')
+
         else:  # For EMPLOYEE
-            repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
-        # repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+
+            admin = SiteUser.objects.get(id=request.user.pk).admin
+            repair_list = Repairing_after_sales_service.objects.filter(
+                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)).order_by(
+                '-id')
+
 
         context = {
             'repair_list': repair_list,
@@ -1342,21 +1455,8 @@ def load_prev_rep(request):
 from django.http import JsonResponse
 def send_sms(request,name,phone,email,repair_id,item_id):
     msg_id = None
-    # if phone == None:
-    #     msg_id = request.GET.get('item_id')
-    #     name = request.GET.get('name')
-    #     phone = request.GET.get('phone')
-    #     email = request.GET.get('email')
-    #     id = request.GET.get('id')
-    #     print("name")
-    #     print(name)
-    #     print(name)
-    # elif request.GET == None:
     msg_id =item_id
     name = name
-    print("name55555")
-    print(name)
-    print(name)
     phone =phone
     email = email
     id = repair_id
@@ -1370,38 +1470,54 @@ def send_sms(request,name,phone,email,repair_id,item_id):
 
     api = 'PF8MzCBOGTopfpYFlSZT'
     if msg_id == '1':
-        message = 'Scale Submit SMS & E-mail'
+        message = 'Dear '+name+',Thank you for selecting HSCo. Your Scales have been successfully ' \
+                  'received at our Repairing Center. Your Repairing No is '+str(repair_id)+'. Please use this Unique ID for further communication.' \
+                  'For any further details please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(scale_sub_sms_count=F("scale_sub_sms_count")+1)
         try:
-            send_mail('Scale Submit - HSCo','Hello '+name+message, settings.EMAIL_HOST_USER,[email])
+            send_mail('Scale Submit - HSCo', message, settings.EMAIL_HOST_USER,[email])
         except:
             pass
     elif msg_id == '2':
-        message = 'Estimate inform SMS & E-mail'
+        rep_id = Repairing_after_sales_service.objects.filter(id=id)
+        message = 'Dear '+name+',Thank you for selecting HSCo. The Estimate for Your' \
+                  ' Repairing No '+str(repair_id)+' is  '+str(rep_id.total_cost)+'/- For any further details please contact our ' \
+                  'customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(estimate_informed_sms_count=F("estimate_informed_sms_count") + 1)
         try:
-            send_mail('Estimate inform - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+            send_mail('Reparing Estimate - HSCo',  message, settings.EMAIL_HOST_USER, [email])
         except:
             pass
     elif msg_id == '3':
-        message = 'Reparing done SMS & E-mail'
+        message = 'Dear '+name+', Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id)+' is resolved.' \
+                  ' Please collect your Scales within the next 3 days.For any further details please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(reparing_done_sms_count=F("reparing_done_sms_count") + 1)
         try:
-            send_mail('Reparing done - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+            send_mail('Reparing done - HSCo', message, settings.EMAIL_HOST_USER, [email])
         except:
             pass
     elif msg_id == '4':
-        message = 'Late Mark SMS & E-mail'
+        message = 'Dear '+name+',Thank you for selecting HSCo. Your Repairing No '+str(repair_id)+' has been Overdue ' \
+                  'with us for more than 3 days. Please Collect it without fail today before 8 pm else we will scrap it.' \
+                  ' We will not be liable for any claims thereafter. Consider this as your final reminder.for more information ' \
+                  'contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(late_mark_sms_count=F("late_mark_sms_count") + 1)
         try:
-            send_mail('Late Mark - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+            send_mail('Late Mark - HSCo', message, settings.EMAIL_HOST_USER, [email])
         except:
             pass
     elif msg_id == '5':
-        message = 'Your scale has been collected. Thanks for choosing HSCo as your service partner. Please leave a feedback'
+        rep_id=Repairing_after_sales_service.objects.filter(id=id)
+        message = ' Dear ' + name + ',Thank you for selecting HSCo. Your Scale with Repairing No ' + str(
+            repair_id) + ' has been ' \
+                            'Successfully Collected. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love ' \
+                            'to hear your feedback to help us improve our customer experience,just click on the link below:\n ' \
+                            ' http://139.59.76.87/feedback_repairing/'
+        + str(request.user.pk) + '/' + str(rep_id.crm_no.pk) + '/' + str(rep_id.pk) + '\n If you ' \
+                                                                                            'feel that your complaint has not been resolved please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(final_del_sms_count=F("final_del_sms_count") + 1)
         try:
-            send_mail('Final Delivery - HSCo', 'Hello ' + name + message, settings.EMAIL_HOST_USER, [email])
+            send_mail('Final Delivery - HSCo', message, settings.EMAIL_HOST_USER, [email])
         except:
             pass
 

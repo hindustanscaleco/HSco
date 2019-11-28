@@ -64,7 +64,7 @@
 {% else %}
 
 
-        <div class="row">
+               <div class="row">
    {% if deleted %}
                   <center> <p>list of deleted users</p></center>
                     {% endif %}
@@ -106,7 +106,7 @@
     <br>
       <div class="row" id="id_subcat">
            <center><p>{{search_msg}}</p></center>
-                    {% for list in onsite_list %}
+                      {% for list in onsite_list %}
 
 <div style="cursor:pointer;" onclick="location.href='/update_onsite_details/{{list.pk}}'" class="col-xl-12 col-md-12 mb-12">
 
@@ -147,7 +147,12 @@
 
         </div>
 
-            </div>
+</div>
+
+
+
+
+<br>
 
 
   {% endif %}

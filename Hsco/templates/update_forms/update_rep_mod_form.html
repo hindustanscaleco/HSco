@@ -656,7 +656,7 @@ function myFunction() {
        <hr>
 <div class="row" style="margin-left: 10%;">
 
-        <div class="col-xl-2 col-md-3 mb-12">
+        <div class="col-xl-3 col-md-3 mb-12">
               <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,5.5),rgba(120,115,245,.9))">
                 <div class="card-body row" style="padding-left: 20px;color: white; font-weight: 600; font-size: 16px; height: auto;">
 
@@ -667,7 +667,7 @@ function myFunction() {
                 </div>
               </div>
 
-        <div class="col-xl-2 col-md-3 mb-12">
+        <div class="col-xl-4 col-md-3 mb-12">
               <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">
                 <div class="card-body row" style="padding-left: 25px; color: white; font-weight: 600; font-size: 16px;  height: auto;">
                  <center>Total Sent: {{repair_id.estimate_informed_sms_count}}</center>
@@ -678,7 +678,7 @@ function myFunction() {
                 </div>
               </div>
 
-            <div class="col-xl-2 col-md-3 mb-12">
+            <div class="col-xl-3 col-md-3 mb-12">
               <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
                 <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 16px;  height: auto;">
 
@@ -689,7 +689,63 @@ function myFunction() {
                 </div>
               </div>
 
-        <div class="col-xl-2 col-md-3 mb-12">
+          <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,5.5),rgba(120,115,245,.9))">
+                <div class="card-body row" style="color: white; font-weight: 400; font-size: 14px; height: auto;">
+
+                  <center> Dear {{repair_id.second_person}},
+Thank you for selecting HSCo. Your Scales have been successfully received at our Repairing Center. Your Repairing No is {{repair_id.pk}}. Please use this Unique ID for further communication.
+For any further details please contact our customer service team on 7045922251 </center>
+
+                    </div>
+
+                </div>
+              </div>
+
+        <div class="col-xl-4 col-md-3 mb-12">
+              <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">
+                <div class="card-body row" style=" color: white; font-weight: 400; font-size: 14px;  height: auto;">
+                 <center> Dear {{repair_id.second_person}},
+Thank you for selecting HSCo. The Estimate for Your Repairing No {{repair_id.pk}} is  {{repair_id.total_cost}}/-
+For any further details please contact our customer service team on 7045922251</center>
+
+
+                    </div>
+
+                </div>
+              </div>
+
+            <div class="col-xl-3 col-md-3 mb-12">
+              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
+                <div class="card-body row" style="color: white; font-weight: 400; font-size: 14px;  height: auto;">
+
+                   <center> Dear {{repair_id.second_person}},
+Thank you for selecting HSCo. Your Repairing Complaint No {{repair_id.pk}} is resolved. Please collect your Scales within the next 3 days.
+For any further details please contact our customer service team on 7045922251</center>
+
+                    </div>
+
+                </div>
+              </div>
+
+        <div class="col-xl-3 col-md-3 mb-12">
+                  <center> <button onclick="send_sms('1')" style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
+        </div>
+
+ <div class="col-xl-4 col-md-3 mb-12">
+                  <center> <button onclick="send_sms('2')" style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
+        </div>
+       <div class="col-xl-3 col-md-3 mb-12">
+                  <center> <button onclick="send_sms('3')" style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
+        </div>
+
+
+        </div>
+       <br>
+
+          <div class="row" style="margin-left:10%;">
+
+                    <div class="col-xl-5 col-md-3 mb-12">
               <div class="card shadow" style="    background: linear-gradient(40deg,rgba(69,202,252,.9),rgba(48,63,159,.9))">
                 <div class="card-body row" style="padding-left: 45px;color: white; font-weight: 600; font-size: 16px;  height: auto;">
 
@@ -700,7 +756,7 @@ function myFunction() {
                 </div>
               </div>
 
-        <div class="col-xl-2 col-md-3 mb-12" >
+        <div class="col-xl-5 col-md-3 mb-12" >
               <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,.9),rgba(120,115,245,.9))">
                 <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 14px;  height: auto;">
 
@@ -711,60 +767,34 @@ function myFunction() {
 
                 </div>
               </div>
-        </div>
-       <br>
 
-          <div class="row" style="margin-left: 10%;">
+          </div>
 
-        <div class="col-xl-2 col-md-3 mb-12">
-              <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,5.5),rgba(120,115,245,.9))">
-                <div class="card-body row" style="padding-left: 20px;color: white; font-weight: 600; font-size: 16px; height: 130px;">
-
-                  <center> Scale Submit SMS </center>
-
-                    </div>
-
-                </div>
-              </div>
-
-        <div class="col-xl-2 col-md-3 mb-12">
-              <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">
-                <div class="card-body row" style="padding-left: 25px; color: white; font-weight: 600; font-size: 16px;  height: 130px;">
-                 <center> Estimate inform SMS</center>
+              <div class="row" style="margin-left:10%;">
 
 
-                    </div>
 
-                </div>
-              </div>
-
-            <div class="col-xl-2 col-md-3 mb-12">
-              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
-                <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 16px;  height: 130px;">
-
-                   <center>Reparing done SMS</center>
-
-                    </div>
-
-                </div>
-              </div>
-
-        <div class="col-xl-2 col-md-3 mb-12">
+        <div class="col-xl-5 col-md-3 mb-12">
               <div class="card shadow" style="    background: linear-gradient(40deg,rgba(69,202,252,.9),rgba(48,63,159,.9))">
-                <div class="card-body row" style="padding-left: 45px;color: white; font-weight: 600; font-size: 16px;  height: 130px;">
+                <div class="card-body row" style="color: white; font-weight: 400; font-size: 14px;  height: auto;">
 
-                    <center>Late Mark SMS</center>
+                    <center>Dear {{repair_id.second_person}},
+Thank you for selecting HSCo. Your Repairing No {{repair_id.pk}} has been Overdue with us for more than 3 days. Please Collect it without fail today before 8 pm else we will scrap it. We will not be liable for any claims thereafter. Consider this as your final reminder.
+for more information contact our customer service team on 7045922251</center>
 
                     </div>
 
                 </div>
               </div>
 
-        <div class="col-xl-2 col-md-3 mb-12" >
+        <div class="col-xl-5 col-md-3 mb-12" >
               <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,.9),rgba(120,115,245,.9))">
-                <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 14px;  height: 130px;">
+                <div class="card-body row" style="color: white; font-weight: 600; font-size: 14px;  height: auto;">
 
-                    <center>Final Delivery SMS
+                    <center>Dear {{repair_id.second_person}},
+Thank you for selecting HSCo. Your Scale with Repairing No {{repair_id.pk}} has been Successfully Collected. We hope that your Repairing Complaint was resolved to your satisfaction.WE'd love to hear your feedback to help us improve our customer experience,just click on the link
+                        below http://139.59.76.87/feedback_repairing/{{user.pk}}/{{repair_id.crm_no.pk}}/{{repair_id.pk}}
+If you feel that your complaint has not been resolved please contact our customer service team on 7045922251
                         </center>
 
                     </div>
@@ -775,20 +805,11 @@ function myFunction() {
 <br>
    <div class="row" style="margin-left: 10%;">
 
-        <div class="col-xl-2 col-md-3 mb-12">
-                  <center> <button onclick="send_sms('1')" style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
-        </div>
 
- <div class="col-xl-2 col-md-3 mb-12">
-                  <center> <button onclick="send_sms('2')" style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
-        </div>
-       <div class="col-xl-2 col-md-3 mb-12">
-                  <center> <button onclick="send_sms('3')" style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
-        </div>
-       <div class="col-xl-2 col-md-3 mb-12">
+       <div class="col-xl-5 col-md-3 mb-12">
                   <center> <button onclick="send_sms('4')" style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
         </div>
-       <div class="col-xl-2 col-md-3 mb-12">
+       <div class="col-xl-5 col-md-3 mb-12">
                   <center> <button onclick="send_sms('5')" style="background-color: #FC6E20;" class="btn btn-primary">Send SMS & Email</button></center>
         </div>
         </div>
