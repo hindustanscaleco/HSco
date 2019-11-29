@@ -570,8 +570,8 @@ def update_repairing_details(request,id):
                 product_list = product_list + '' + str(email_body_text)
 
             try:
-                msg='Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                              request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+                # msg='Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                #               request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
                 msg='Dear '+customer_name+',Thank you for selecting HSCo. The Estimate for Your ' \
                     'Repairing No '+str(repair_id.pk)+' is  '+str(repair_id.total_cost)+' For any further details please contact our customer ' \
                     'service team on 7045922251 Estimate Details:\n'+product_list
@@ -581,8 +581,8 @@ def update_repairing_details(request,id):
             except:
                 pass
 
-            message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+            # message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+            #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
             message='Dear '+customer_name+',Thank you for selecting HSCo. The Estimate for Your ' \
                     'Repairing No '+str(repair_id.pk)+' is  '+str(repair_id.total_cost)+'/- For any further details please contact our customer ' \
@@ -620,8 +620,8 @@ def update_repairing_details(request,id):
             except:
                 pass
 
-            message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+            # message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+            #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
             message=' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.pk)+' is resolved. ' \
                     'Please collect your Scales within the next 3 days.For any further details please contact our ' \
@@ -660,22 +660,20 @@ def update_repairing_details(request,id):
                                   repair_id.pk) + ' has been ' \
                           'Successfully Collected. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love ' \
                           'to hear your feedback to help us improve our customer experience,just click on the link below:\n ' \
-                                                  ' http://139.59.76.87/feedback_repairing/'
-                + str(request.user.pk) + '/' + str(repair_id.crm_no.pk) + '/' + str(repair_id.id)+'\n If you ' \
+                                                  ' http://139.59.76.87/feedback_repairing/'+ str(request.user.pk) + '/' + str(repair_id.crm_no.pk) + '/' + str(repair_id.id)+'\n If you ' \
                           'feel that your complaint has not been resolved please contact our customer service team on 7045922251', settings.EMAIL_HOST_USER,
                               [item.customer_email_id])
                 except:
                     pass
-
-                message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                    request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
+                #
+                # message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
                 message = ' Dear ' + customer_name + ',Thank you for selecting HSCo. Your Scale with Repairing No ' + str(
                                   repair_id.pk) + ' has been ' \
                           'Successfully Collected. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love ' \
                           'to hear your feedback to help us improve our customer experience,just click on the link below:\n ' \
-                                                  ' http://139.59.76.87/feedback_repairing/'
-                + str(request.user.pk) + '/' + str(repair_id.crm_no.pk) + '/' + str(repair_id.id)+'\n If you ' \
+                                                  ' http://139.59.76.87/feedback_repairing/'+str(request.user.pk) + '/' + str(repair_id.crm_no.pk) + '/' + str(repair_id.id)+'\n If you ' \
                           'feel that your complaint has not been resolved please contact our customer service team on 7045922251'
 
                 url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
@@ -699,12 +697,12 @@ def update_repairing_details(request,id):
 
             item2.informed_by = informed_by
             item2.save(update_fields=['informed_on'])
-            item2.save(update_fields=['informed_by', ]),
+            item2.save(update_fields=['informed_by', ])
         if repaired_by != '' and repaired_by!= None and repaired_by != 'None':
             item2.repaired_by = repaired_by
             item2.repaired_date = datetime.today().strftime('%Y-%m-%d')
             item2.save(update_fields=['repaired_by'])
-            item2.save(update_fields=['repaired_date', ]),
+            item2.save(update_fields=['repaired_date', ])
 
 
         item2.second_person=customer_name
@@ -713,12 +711,12 @@ def update_repairing_details(request,id):
         # item2.third_contact_no=third_contact_no
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired
-        if item2.taken_by == None or item2.taken_by==''and item2.taken_by != 'None':
-            if taken_by != '' or taken_by != None and taken_by != 'None':
-                item2.taken_by = taken_by
-                item2.user_id = SiteUser.objects.get(name=taken_by)
-                item2.save(update_fields=['taken_by',]),
-                item2.save(update_fields=['user_id', ]),
+        # if item2.taken_by == None or item2.taken_by==''and item2.taken_by != 'None':
+        if taken_by != '' or taken_by != None and taken_by != 'None':
+            item2.taken_by = taken_by
+            item2.user_id = SiteUser.objects.get(name=taken_by)
+            item2.save(update_fields=['taken_by',])
+            item2.save(update_fields=['user_id', ])
 
 
 
@@ -737,11 +735,11 @@ def update_repairing_details(request,id):
 
 
         # item2.save(update_fields=['informed_by', ]),
-        item2.save(update_fields=['confirmed_estimate', ]),
-        item2.save(update_fields=['second_company_name', ]),
-        item2.save(update_fields=['company_address', ]),
-        item2.save(update_fields=['company_email', ]),
-        item2.save(update_fields=['repaired_by','taken_by', ]),
+        item2.save(update_fields=['confirmed_estimate', ])
+        item2.save(update_fields=['second_company_name', ])
+        item2.save(update_fields=['company_address', ])
+        item2.save(update_fields=['company_email', ])
+        item2.save(update_fields=['repaired_by','taken_by', ])
         # item2.save(update_fields=['feedback_given', ])
         # item2.save(update_fields=['current_stage', ])
         item2.save(update_fields=['second_person','second_contact_no', ])
