@@ -52,6 +52,7 @@ class Repairing_after_sales_service(models.Model):
     final_del_sms_count = models.IntegerField(default=0)
     is_last_product_added = models.BooleanField(default=False,)
     entered_by = models.CharField(max_length=120,null=True,blank=True)
+    feedback_link = models.URLField(max_length=200, null=True, blank=True)
 
 
 

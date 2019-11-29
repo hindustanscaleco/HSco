@@ -35,6 +35,7 @@ class Purchase_Details(models.Model):   #cleaned
     entry_timedate = models.DateField(default=datetime.date.today)
     feedback_stars=models.FloatField(default=0.0)
     is_last_product = models.BooleanField(default=False)
+    feedback_link = models.URLField(max_length=200, null=True, blank=True)
 
     def __int__(self):
         return self.id
