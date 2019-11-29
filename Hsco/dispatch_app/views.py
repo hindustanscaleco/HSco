@@ -583,7 +583,7 @@ def update_dispatch_details(request,update_id):
             product_list = ''' '''
             pro_lis = Product_Details_Dispatch.objects.filter(dispatch_id=dispatch_item.pk)
 
-            for idx, item in enumerate(pro_lis):
+            for idx, item2 in enumerate(pro_lis):
                 # for it in item:
 
                 email_body_text = (
@@ -596,21 +596,21 @@ def update_dispatch_details(request,update_id):
 
                 ).format(
                     idx + 1,
-                    item.type_of_scale,
-                    item.sub_model,
-                    item.brand,
-                    item.capacity,
-                    item.value_of_goods,
+                    item2.type_of_scale,
+                    item2.sub_model,
+                    item2.brand,
+                    item2.capacity,
+                    item2.value_of_goods,
                 )
                 product_list = product_list + '' + str(email_body_text)
 
             try:
                 pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).pk
-                msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through" \
-                " " + transport_name + ", having LR Number " + lr_no + ". Please track the" \
-                " details on the transporters website"+'\nHere is the list of product dispatched:\n' + product_list
+                # msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through" \
+                # " " + transport_name + ", having LR Number " + lr_no + ". Please track the" \
+                # " details on the transporters website"+'\nHere is the list of product dispatched:\n' + product_list
 
-                msg ='Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase having ID '+pur_id+'' \
+                msg ='Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase having ID '+str(pur_id)+'' \
                      ' is dispatch from our end with Dispatch ID ' + str(
                 item.pk) + '  & LR No ' + lr_no + ' by  ' + transport_name +'. For more details contact us on - 7045922252 \n Dispatch Details:\n'+product_list
 
@@ -625,7 +625,7 @@ def update_dispatch_details(request,update_id):
             # msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through " + transport_name + ", having LR Number " + lr_no + ". Please track the details on the transporters website"
             pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).pk
 
-            msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase having ID '+pur_id+'' \
+            msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase having ID '+str(pur_id)+'' \
                                             'is dispatch from our end with Dispatch ID ' + str(
                 item.pk) + ' & LR No ' + lr_no + ' by  ' + transport_name + '. For more details contact us on - 7045922252'
 
@@ -646,6 +646,7 @@ def update_dispatch_details(request,update_id):
             dispatch_by_id=SiteUser.objects.get(name=dispatch_by).id
 
             value_of_goods=Product_Details_Dispatch.objects.filter(dispatch_id=update_id).aggregate(Sum('value_of_goods'))
+
             total_amt=value_of_goods['value_of_goods__sum']
 
             if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
