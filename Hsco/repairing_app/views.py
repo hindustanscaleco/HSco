@@ -595,7 +595,8 @@ def update_repairing_details(request,id):
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
 
-
+            Repairing_after_sales_service.objects.filter(id=id).update(
+                estimate_informed_sms_count=F("estimate_informed_sms_count") + 1)
 
 
 
@@ -633,6 +634,8 @@ def update_repairing_details(request,id):
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
+            Repairing_after_sales_service.objects.filter(id=id).update(
+                reparing_done_sms_count=F("reparing_done_sms_count") + 1)
 
 
         if delivery_by != None and delivery_by !='' and delivery_by != 'None':
@@ -849,10 +852,20 @@ def repairing_module_home(request):
             }
             return render(request, 'dashboardnew/repairing_module_home.html', context)
     else:
-        if request.user.role =='Super Admin' or request.user.role =='Admin':     #For ADMIN
+        if request.user.role =='Super Admin':     #For ADMIN
             repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='') |Q(user_id__name=request.user.name)|Q(taken_by=request.user.name)| Q(user_id__group__icontains=request.user.name))&Q(user_id__is_deleted=False)&Q(user_id__modules_assigned__icontains="'Repairing Module'")).order_by('-id')
 
             res = Repairing_after_sales_service.objects.filter(Q(taken_by=None) | Q(taken_by='') |Q(user_id__name=request.user.name)|Q(taken_by=request.user.name) | Q(user_id__group__icontains=request.user.name)).values(
+                'current_stage').annotate(
+                dcount=Count('current_stage'))
+        elif request.user.role =='Admin':
+            admin = SiteUser.objects.get(id=request.user.pk).name
+            repair_list = Repairing_after_sales_service.objects.filter(
+                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)|Q()).order_by(
+                '-id')
+
+            res = Repairing_after_sales_service.objects.filter(
+                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)).values(
                 'current_stage').annotate(
                 dcount=Count('current_stage'))
         elif request.user.role =='Manager':
@@ -1521,8 +1534,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
             repair_id) + ' has been ' \
                             'Successfully Collected. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love ' \
                             'to hear your feedback to help us improve our customer experience,just click on the link below:\n ' \
-                            ' http://139.59.76.87/feedback_repairing/'
-        + str(request.user.pk) + '/' + str(rep_id.crm_no.pk) + '/' + str(rep_id.pk) + '\n If you ' \
+                            ' http://139.59.76.87/feedback_repairing/'+ str(request.user.pk) + '/' + str(rep_id.crm_no.pk) + '/' + str(rep_id.pk) + '\n If you ' \
                                                                                             'feel that your complaint has not been resolved please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(final_del_sms_count=F("final_del_sms_count") + 1)
         try:
