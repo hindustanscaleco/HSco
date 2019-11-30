@@ -704,13 +704,13 @@ def add_product_details(request,id):
                 sent_from = settings.EMAIL_HOST_USER
                 to = [purchase.company_email]
                 subject = 'Your HSCo Purchase'
-                message_old = 'Dear ' + str(
-                    purchase.crm_no.customer_name) + ', Thanks for purchasing your scale from HSCo. ' \
-                                                     'Your Purchase ID is ' + str(
-                    purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                                   ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
-                          + str(request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(
-                    purchase.id) + '\nHere is the list of product you purchased:\n' + product_list
+                # message_old = 'Dear ' + str(
+                #     purchase.crm_no.customer_name) + ', Thanks for purchasing your scale from HSCo. ' \
+                #                                      'Your Purchase ID is ' + str(
+                #     purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
+                #                    ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
+                #           + str(request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(
+                #     purchase.id) + '\nHere is the list of product you purchased:\n' + product_list
 
 
                 message= 'Dear ' + str(
@@ -720,7 +720,7 @@ def add_product_details(request,id):
                 purchase.pk) + '.' \
                          ' Please use this ID\'s fo further communication. WE\'d love to hear your feedback to help us improve' \
                        ' our customer experience furthermore also stand a chance to win exciting prizes just click on the link' \
-                         ' below: \n http://139.59.76.87/feedback_purchase ' + str(request.user.pk) + '/' + str(
+                         ' below: \n http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
                 purchase.crm_no.pk) + '/' + str(
                 purchase.id) + '\n For more details contact us on - 7045922250 \n Order Details:\n '+ product_list
 
@@ -765,11 +765,11 @@ def add_product_details(request,id):
                 print("exception occured!!")
                 pass
 
-            message_old = 'Dear ' + str(purchase.second_person) + ', Thanks for purchasing your scale from HSCo. ' \
-                                                            'Your Purchase ID is ' + str(
-                purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                            ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' + str(
-                request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(purchase.id)
+            # message_old = 'Dear ' + str(purchase.second_person) + ', Thanks for purchasing your scale from HSCo. ' \
+            #                                                 'Your Purchase ID is ' + str(
+            #     purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
+            #                 ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' + str(
+            #     request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(purchase.id)
 
             message = 'Dear ' + str(
                 purchase.second_person) + ', Thank you for purchasing from HSCo, Your Customer ID is ' + str(
@@ -777,9 +777,8 @@ def add_product_details(request,id):
                                       ' Your Purchase ID is ' + str(
                 purchase.pk) + '.Please use this IDs fo further communication. WE\'d love to hear your feedback to help us ' \
                                'improve our customer experience furthermore also stand a chance to win exciting prizes just click on the link ' \
-                               'below: \n http://139.59.76.87/feedback_purchase ' + str(request.user.pk) + '/' + str(
-                purchase.crm_no.pk) + '/' + str(
-                purchase.id) + ' For more details contact us on - 7045922250'
+                               'below: \n http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
+                purchase.crm_no.pk) + '/' + str(purchase.id) + ' For more details contact us on - 7045922250'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
@@ -1199,30 +1198,31 @@ def edit_product_customer(request,product_id_rec):
 
         if dispatch_id_assigned != '' or dispatch_id_assigned != None:
             if product_id.product_dispatch_id != '' or product_id.product_dispatch_id != None:
-                dispatch_pro = Product_Details_Dispatch.objects.get(id=product_id.product_dispatch_id.pk)
+                if Product_Details_Dispatch.objects.filter(id=product_id.product_dispatch_id).count()>0:
+                    dispatch_pro = Product_Details_Dispatch.objects.get(id=product_id.product_dispatch_id.pk)
 
-                # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
-                # dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
-                # dispatch_pro.product_name = product_name
-                dispatch_pro.quantity = quantity
-                dispatch_pro.type_of_scale = type_of_scale
-                dispatch_pro.model_of_purchase = model_of_purchase
-                dispatch_pro.sub_model = sub_model
-                dispatch_pro.sub_sub_model = sub_sub_model
-                dispatch_pro.serial_no_scale = serial_no_scale
-                dispatch_pro.brand = brand
-                dispatch_pro.capacity = capacity
-                dispatch_pro.unit = unit
-                dispatch_pro.value_of_goods = value_of_goods
+                    # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+                    # dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                    # dispatch_pro.product_name = product_name
+                    dispatch_pro.quantity = quantity
+                    dispatch_pro.type_of_scale = type_of_scale
+                    dispatch_pro.model_of_purchase = model_of_purchase
+                    dispatch_pro.sub_model = sub_model
+                    dispatch_pro.sub_sub_model = sub_sub_model
+                    dispatch_pro.serial_no_scale = serial_no_scale
+                    dispatch_pro.brand = brand
+                    dispatch_pro.capacity = capacity
+                    dispatch_pro.unit = unit
+                    dispatch_pro.value_of_goods = value_of_goods
 
-                # dispatch_pro.dispatch_id = dispatch_id
-                # dispatch_pro.sales_person = sales_person
-                # dispatch_pro.purchase_type = purchase_type
-                dispatch_pro.save(
-                    update_fields=['quantity', 'type_of_scale','value_of_goods', 'model_of_purchase', 'sub_model',
-                                   'sub_sub_model',
-                                   'serial_no_scale', 'brand', 'capacity', 'unit',
-                                   ])
+                    # dispatch_pro.dispatch_id = dispatch_id
+                    # dispatch_pro.sales_person = sales_person
+                    # dispatch_pro.purchase_type = purchase_type
+                    dispatch_pro.save(
+                        update_fields=['quantity', 'type_of_scale','value_of_goods', 'model_of_purchase', 'sub_model',
+                                       'sub_sub_model',
+                                       'serial_no_scale', 'brand', 'capacity', 'unit',
+                                       ])
 
         # try:
         #     # dispatch_id = Dispatch.objects.get(id=dispatch_id_assigned)
