@@ -47,10 +47,21 @@ td {
   border: 1px solid black;
   padding: 3px;
 }
+@page {
+      size: A6;
+}
+
+
 	</style>
 
 </head>
 <body>
+<br>
+<center>
+
+<input class="btn btn-primary" type="button" onclick="printDiv('printableArea')" value="Print" />
+</center>
+<div  id="printableArea">
 <div class="row" style="padding: 20px; border-bottom: 1px solid black;">
     <div class="col-xl-8 col-md-8 "><h2 style="font-size: 45px;">HINDUSTAN SCALE COMPANY</h2>
 	A one stop shop for all your weighing needs<br>
@@ -112,6 +123,20 @@ td {
 </center>
 
 
+
+</div>
+<script>
+	function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+</script>
 </div>
 
 </body>
