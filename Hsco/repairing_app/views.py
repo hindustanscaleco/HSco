@@ -595,7 +595,8 @@ def update_repairing_details(request,id):
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
 
-
+            Repairing_after_sales_service.objects.filter(id=id).update(
+                estimate_informed_sms_count=F("estimate_informed_sms_count") + 1)
 
 
 
@@ -633,6 +634,8 @@ def update_repairing_details(request,id):
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
+            Repairing_after_sales_service.objects.filter(id=id).update(
+                reparing_done_sms_count=F("reparing_done_sms_count") + 1)
 
 
         if delivery_by != None and delivery_by !='' and delivery_by != 'None':
@@ -1521,8 +1524,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
             repair_id) + ' has been ' \
                             'Successfully Collected. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love ' \
                             'to hear your feedback to help us improve our customer experience,just click on the link below:\n ' \
-                            ' http://139.59.76.87/feedback_repairing/'
-        + str(request.user.pk) + '/' + str(rep_id.crm_no.pk) + '/' + str(rep_id.pk) + '\n If you ' \
+                            ' http://139.59.76.87/feedback_repairing/'+ str(request.user.pk) + '/' + str(rep_id.crm_no.pk) + '/' + str(rep_id.pk) + '\n If you ' \
                                                                                             'feel that your complaint has not been resolved please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(final_del_sms_count=F("final_del_sms_count") + 1)
         try:
