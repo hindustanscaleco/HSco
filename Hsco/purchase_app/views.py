@@ -704,13 +704,13 @@ def add_product_details(request,id):
                 sent_from = settings.EMAIL_HOST_USER
                 to = [purchase.company_email]
                 subject = 'Your HSCo Purchase'
-                message_old = 'Dear ' + str(
-                    purchase.crm_no.customer_name) + ', Thanks for purchasing your scale from HSCo. ' \
-                                                     'Your Purchase ID is ' + str(
-                    purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                                   ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
-                          + str(request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(
-                    purchase.id) + '\nHere is the list of product you purchased:\n' + product_list
+                # message_old = 'Dear ' + str(
+                #     purchase.crm_no.customer_name) + ', Thanks for purchasing your scale from HSCo. ' \
+                #                                      'Your Purchase ID is ' + str(
+                #     purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
+                #                    ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
+                #           + str(request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(
+                #     purchase.id) + '\nHere is the list of product you purchased:\n' + product_list
 
 
                 message= 'Dear ' + str(
@@ -765,11 +765,11 @@ def add_product_details(request,id):
                 print("exception occured!!")
                 pass
 
-            message_old = 'Dear ' + str(purchase.second_person) + ', Thanks for purchasing your scale from HSCo. ' \
-                                                            'Your Purchase ID is ' + str(
-                purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                            ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' + str(
-                request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(purchase.id)
+            # message_old = 'Dear ' + str(purchase.second_person) + ', Thanks for purchasing your scale from HSCo. ' \
+            #                                                 'Your Purchase ID is ' + str(
+            #     purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
+            #                 ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' + str(
+            #     request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(purchase.id)
 
             message = 'Dear ' + str(
                 purchase.second_person) + ', Thank you for purchasing from HSCo, Your Customer ID is ' + str(
@@ -777,9 +777,8 @@ def add_product_details(request,id):
                                       ' Your Purchase ID is ' + str(
                 purchase.pk) + '.Please use this IDs fo further communication. WE\'d love to hear your feedback to help us ' \
                                'improve our customer experience furthermore also stand a chance to win exciting prizes just click on the link ' \
-                               'below: \n http://139.59.76.87/feedback_purchase ' + str(request.user.pk) + '/' + str(
-                purchase.crm_no.pk) + '/' + str(
-                purchase.id) + ' For more details contact us on - 7045922250'
+                               'below: \n http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
+                purchase.crm_no.pk) + '/' + str(purchase.id) + ' For more details contact us on - 7045922250'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
