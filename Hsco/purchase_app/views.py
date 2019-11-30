@@ -720,7 +720,7 @@ def add_product_details(request,id):
                 purchase.pk) + '.' \
                          ' Please use this ID\'s fo further communication. WE\'d love to hear your feedback to help us improve' \
                        ' our customer experience furthermore also stand a chance to win exciting prizes just click on the link' \
-                         ' below: \n http://139.59.76.87/feedback_purchase ' + str(request.user.pk) + '/' + str(
+                         ' below: \n http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
                 purchase.crm_no.pk) + '/' + str(
                 purchase.id) + '\n For more details contact us on - 7045922250 \n Order Details:\n '+ product_list
 
