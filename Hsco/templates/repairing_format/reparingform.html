@@ -1,22 +1,22 @@
 <html>
 <head>
-	<title>
-		HSCO
-	</title>
-		  {% load static %}
+  <title>
+    HSCO
+  </title>
+      {% load static %}
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-	<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
 
-	<style>
-		  * {
+  <style>
+      * {
     font-family: 'Poppins';
     font-size: 1.09em;
 
@@ -47,12 +47,16 @@ td {
   border: 1px solid black;
   padding: 3px;
 }
-@page {
-      size: A6;
-}
 
 
-	</style>
+ @media print and (width: 10.5cm) and (height: 14.8cm) {
+    @page {
+       margin: 3cm;
+    }
+ }
+
+
+  </style>
 
 </head>
 <body>
@@ -64,7 +68,7 @@ td {
 <div  id="printableArea">
 <div class="row" style="padding: 20px; border-bottom: 1px solid black;">
     <div class="col-xl-8 col-md-8 "><h2 style="font-size: 45px;">HINDUSTAN SCALE COMPANY</h2>
-	A one stop shop for all your weighing needs<br>
+  A one stop shop for all your weighing needs<br>
 <i class="fa fa-phone" style="font-size:24px"></i> &nbsp; +<b>91-7045922251</b><br>
 <i class="fa fa-envelope-o" style="font-size:24px"></i> &nbsp;<b>hsc@hindustanscale.com</b> &nbsp; <br>
 <i class="fa fa-globe" style="font-size:24px"></i> &nbsp;<b>www.hindustanscale.com</b>
@@ -78,55 +82,55 @@ td {
 </div>
 </div>
 
-	<div class="row" style="padding: 30px;">
-		<div class="col-xl-9 col-md-9 ">
-			<p style="float: left;">Sr. No.: {{ data.pk }}</p>
-		</div>
-		<div class="col-xl-3 col-md-3 ">
-			<p>Date: {{ data.entry_timedate }}</p>
-		</div>
-	</div>
+  <div class="row" style="padding: 30px;">
+    <div class="col-xl-9 col-md-9 ">
+      <p style="float: left;">Sr. No.: {{ data.pk }}</p>
+    </div>
+    <div class="col-xl-3 col-md-3 ">
+      <p>Date: {{ data.entry_timedate }}</p>
+    </div>
+  </div>
 <center>
 <table>
-	<tr >
-		<td style="width: 40%;padding: 20px;">Name</td>
-		<td>
-			{{ data.second_person }}
-		</td>
-	</tr>
+  <tr >
+    <td style="width: 40%;padding: 20px;">Name</td>
+    <td>
+      {{ data.second_person }}
+    </td>
+  </tr>
 
-		<tr>
-		<td  style="padding: 20px;">Make And Model</td>
-		<td>
-			{% for item in product_list %}
-				{{ forloop.counter }} )
-				{{ item.model }}
-				,{{ item.sub_model }} <br>
-				{% endfor %}
-		</td>
-	</tr>
+    <tr>
+    <td  style="padding: 20px;">Make And Model</td>
+    <td>
+      {% for item in product_list %}
+        {{ forloop.counter }} )
+        {{ item.model }}
+        ,{{ item.sub_model }} <br>
+        {% endfor %}
+    </td>
+  </tr>
 </table>
-	<div style="padding-left: 240px; padding-right: 240px; text-align: left; font-size: 25px;">
-	<p>
-		<br>
-		<br>
-			1- दुरुस्तीसाठी कोणतीही हमी नाही. कार्यशाळेतून बाहेर जाण्यापूर्वी आपल्या पूर्ण समाधानानुसार स्केल तपासा.<br> <br>
-	2- <u>  कृपया तीन दिवसात स्केल गोळा करा. </u> त्या कालावधीनंतर आम्ही तशाच जबाबदार नाही<br> <br>
-	3- <u>  कृपया डिलिवरीच्या वेळी ही पावती घेऊन या. </u> प्राप्त झाल्यानंतर स्केल गोळा केल्यावर रु. 50 वर अतिरिक्त शुल्क आकारले जाईल<br> <br>
-	</p>
-	</div>
+  <div style="padding-left: 240px; padding-right: 240px; text-align: left; font-size: 25px;">
+  <p>
+    <br>
+    <br>
+      1- दुरुस्तीसाठी कोणतीही हमी नाही. कार्यशाळेतून बाहेर जाण्यापूर्वी आपल्या पूर्ण समाधानानुसार स्केल तपासा.<br> <br>
+  2- <u>  कृपया तीन दिवसात स्केल गोळा करा. </u> त्या कालावधीनंतर आम्ही तशाच जबाबदार नाही<br> <br>
+  3- <u>  कृपया डिलिवरीच्या वेळी ही पावती घेऊन या. </u> प्राप्त झाल्यानंतर स्केल गोळा केल्यावर रु. 50 वर अतिरिक्त शुल्क आकारले जाईल<br> <br>
+  </p>
+  </div>
 <div class="container" style=" position: absolute;bottom: 0px;">
   <div class="row">
 <div class="col-xl-12 col-md-12" style="font-size: 20px;"><hr>HINDUSTAN SCALE COMPANY, 186/188 Janjikar Street, Crawford Market, Mumbai - 400003</div>
 </div>
-	</div>
+  </div>
 </center>
 
 
 
 </div>
 <script>
-	function printDiv(divName) {
+  function printDiv(divName) {
      var printContents = document.getElementById(divName).innerHTML;
      var originalContents = document.body.innerHTML;
 
