@@ -24,6 +24,17 @@ class LoginForm(forms.Form):
                  'name': 'mobile',
              }))
 
+    employee_number = forms.IntegerField(
+         widget=forms.TextInput(
+             attrs={
+                 'type': 'text',
+                 'onkeypress':"return isNumber(event)",
+                 'class': 'form-control',
+                 'placeholder': "Employee Number",
+                 'name': 'employee_number',
+             }))
+
+
     password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
@@ -35,7 +46,7 @@ class LoginForm(forms.Form):
 
     class Meta:
         model = SiteUser
-        fields = ( 'mobile', 'password')
+        fields = ( 'mobile', 'password','employee_number')
 
 
     def clean(self):

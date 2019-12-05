@@ -104,8 +104,6 @@ def create_admin(request):
         photo = request.FILES.get('photo')
         salary_slip = request.FILES.get('salary_slip')
 
-
-
         item=SiteUser()
 
 
