@@ -99,6 +99,8 @@ class SiteUser(AbstractBaseUser):
     details = models.CharField(max_length=250, null=True, blank=True)
     pancard = models.CharField(max_length=20, null=True, blank=True)
     aadhar_card = models.CharField(max_length=20, null=True, blank=True)
+    employee_number = models.CharField(max_length=20,unique=True, null=True, blank=True)
+
     # bank details
     bank_name = models.CharField(max_length=60, null=True, blank=True)
     branch_name = models.CharField(max_length=20, null=True, blank=True)
