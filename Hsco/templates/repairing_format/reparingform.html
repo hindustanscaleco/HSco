@@ -1,28 +1,32 @@
-<!DOCTYPE html>
+
 <html>
 <head>
-	  {% load static %}
-	<title></title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    HSCO
+  </title>
+  {% load static %}
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
 
-<style type="text/css">
-
-  * {
-  font-family: 'Montserrat';
+  <style>
+      * {
+    font-family: 'Poppins';
+    font-size: 0.99em;
 
   }
 
   table {
   border-collapse: collapse;
-  width: 60%;
-  font-size: 12px;
+  width: 85%;
+  font-size: 18px;
   border-color: black;
   color: black;
 
@@ -45,244 +49,99 @@ td {
   padding: 3px;
 }
 
-.alignL {
-  text-align: left; padding-left: 15px;
-  color: black;
-  font-weight: 600;
-  font-size: 12px;
-}
 
-.alignR {
-  text-align: right; padding-right: 10px;
-}
-
-@media print {
-  body * {
-    visibility: hidden;
-  }
-  #section-to-print, #section-to-print * {
-    visibility: visible;
-  }
-  #section-to-print {
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-  .no-print, .no-print *
-    {
-        display: none !important;
+ @media print and (width: 10.5cm) and (height: 14.8cm) {
+    @page {
+       margin: 3cm;
     }
-}
+ }
 
 
-</style>
-  <!-- Page Wrapper -->
+  </style>
 
-    <!-- Sidebar -->
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-
-      <!-- Main Content -->
-
-
-        <!-- Topbar -->
-		  <!-- End of Topbar -->
-
-<style type="text/css">
-*{
-font-family: 'Montserrat', sans-serif;
-font-size: 1.07em;
-
-}
-  /* Full-width input fields */
-.qfinp {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 5px 0;
-  display: inline-block;
-
-border-radius: 10px;
-border:3px solid #696969;
-overflow: hidden;
-
-}
-
-.form-control {
-width: 50%;
-  padding: 10px;
-  margin: 2px 0px 12px 0px;
-  display: inline-block;
-  float:right;
-border:1.5px solid #696969;
-border-radius: 5px;
-
-}
-
-.fname {
-width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-border:3px solid #696969;
-border-radius: 10px;
-
-}
-
-.drop {
-  width: 58%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-border:3px solid #696969;
-border-radius: 10px;
-}
-
-
-.qfinp:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
-
-
-}
-@media screen and (max-width: 600px) {
-  .qfinp {
-    width: 100%;
-    margin-top: 0;
-  }
-
-
-
-
-  .form-control {
- width: 100%;
-    margin-top: 0;
-
-}
-
-.fname {
- width: 100%;
-    margin-top: 0;
-
-
-
-}
-
-.drop {
-width: 100%;
-    margin-top: 0;
-}
-
-
-
-
-
-</style>
 </head>
-<body id="section-to-print">
+<body>
 
-<style>
+<div  id="printableArea" style="margin-left: 25%; margin-right: 25%;">
+<div class="row" style="padding: 5px; border-bottom: 1px solid black;">
+    <div class="col-xl-8 col-md-8 "><h2 style="font-size: 20px; font-weight: 900;">HINDUSTAN SCALE COMPANY</h2>
+    <span style="font-size: 11px;"> A one stop shop for all your weighing needs </span> <br>
+<i class="fa fa-phone" style="font-size:13px"></i> <span style="font-size: 11px;"> &nbsp; +<b>91-7045922251</b></span><br>
+<i class="fa fa-envelope-o" style="font-size:13px"></i>  <span style="font-size: 11px;">&nbsp;<b>hsc@hindustanscale.com</b> &nbsp; </span> <br>
+<i class="fa fa-globe" style="font-size:13px"></i> <span style="font-size: 11px;"> &nbsp;<b>www.hindustanscale.com</b> </b>
+</div>
+
+<div class="col-xl-4 col-md-4 ">
+
+<img src="{% static 'images/hsco_logo.jpg' %}" class="img-rounded" width="200" height="120" style="float: right;">
 
 
-.mainDiv {
-width: auto;
-border: 1px solid black;
-}
-</style>
+</div>
+</div>
+
+  <div class="row" style="padding: 10px;">
+    <div class="col-xl-8 col-md-8 ">
+      <p style="float: left;">Sr. No.:  {{ data.pk }} </p>
+    </div>
+    <div class="col-xl-4 col-md-4 ">
+      <p>Date: {{ data.entry_timedate }}</p>
+    </div>
+  </div>
 <center>
-<br>
-		<button onclick="fun2()" class="btn btn-primary no-print">Print this page</button>
-<br>
-	<br>
-<div  class="mainDiv">
+<table>
+  <tr >
+    <td style="width: 45%;padding: 10px;">Name</td>
+    <td>
+      {{ data.second_person }}
+    </td>
+  </tr>
 
+    <tr>
+    <td  style="padding: 10px;">Make And Model</td>
+    <td>
+     {% for item in product_list %}
+        {{ forloop.counter }} )
+        {{ item.model }}
+        ,{{ item.sub_model }} <br>
+        {% endfor %}
+    </td>
+  </tr>
+</table>
+  <div style="padding-left: 50px; padding-right: 50px; text-align: left; font-size: 17px;">
+  <p>
+    <br>
 
-<div class="container">
-  <div class="row">
-    <div class="col-xl-7 col-md-7 "><h2 style="font-size: 35px;">HINDUSTAN SCALE COMPANY</h2>
-	A one stop shop for all your weighing needs<br>
-<i class="fa fa-phone" style="font-size:24px"></i> &nbsp; +<b>91-7045922251</b><br>
-<i class="fa fa-envelope-o" style="font-size:24px"></i> &nbsp;<b>hsc@hindustanscale.com</b> &nbsp; <br>
-<i class="fa fa-globe" style="font-size:24px"></i> &nbsp;<b>www.hindustanscale.com</b>
-</div>
+      1- दुरुस्तीसाठी कोणतीही हमी नाही. कार्यशाळेतून बाहेर जाण्यापूर्वी आपल्या पूर्ण समाधानानुसार स्केल तपासा.<br> <br>
+  2- <u>  कृपया तीन दिवसात स्केल गोळा करा. </u> त्या कालावधीनंतर आम्ही तशाच जबाबदार नाही<br> <br>
+  3- <u>  कृपया डिलिवरीच्या वेळी ही पावती घेऊन या. </u> प्राप्त झाल्यानंतर स्केल गोळा केल्यावर रु. 50 वर अतिरिक्त शुल्क आकारले जाईल<br> <br>
 
-<div class="col-xl-5 col-md-5 ">
-
-<img src="{% static 'images/hsco_logo.jpg' %}" class="img-rounded" alt="Cinque Terre" width="250" height="130" style="float: right;">
-
-	
-</div>
-<hr>
-</div>
-
-
-</div>
-<div class="container div2">
-  <div class="row" >
-<div class="col-xl-6 col-md-6">Sr No: {{ data.pk }}</div>
-<div class="col-md-6 col-xl-6">Date:{{ data.entry_timedate }}</div>
-
-    <div class="col-xl-12">
-	<table border=1 style="width: 100%;">
-		<tr>
-			<td style="width: 50%;"><b>Name:</b></td>
-			<td>&nbsp; {{ data.second_person }}</td>
-		</tr>
-		<tr>	<td><b>Make and Model:</b></td>
-			<td>
-			{% for item in product_list %}
-				{{ forloop.counter }} )
-				{{ item.model }}
-				,{{ item.sub_model }} <br>
-				{% endfor %}
-			</td>
-		</tr>
-	</table>
-	1- दुरुस्तीसाठी कोणतीही हमी नाही. कार्यशाळेतून बाहेर जाण्यापूर्वी आपल्या पूर्ण समाधानानुसार स्केल तपासा.<br>
-	2- कृपया तीन दिवसात स्केल गोळा करा. त्या कालावधीनंतर आम्ही तशाच जबाबदार नाही<br>
-	3- कृपया डिलिवरीच्या वेळी ही पावती घेऊन या. प्राप्त झाल्यानंतर स्केल गोळा केल्यावर रु. 50 वर अतिरिक्त शुल्क आकारले जाईल<br>
-	</div>
-</div>
-</div>
-<div class="container">
-  <div class="row">
-<div class="col-xl-12 col-md-12"><hr>HINDUSTAN SCALE COMPANY, 186/188 Janjikar Street, Crawford Market, Mumbai - 400003</div>
-</div>
-	</div>
-	</form>
-</div>
-</center>
-<center>
-<br>
-<div class="mainDiv">
-	<br>
-<div class="container div2">
-<!--<img src="{% static 'images/reparingproduct.jpg' %}" class="img-rounded" alt="Cinque Terre" width="750" height="300">-->
+  <br>
+<img src="{% static 'images/l.png' %}" style="width: 100%;">
 
 	<hr>
-  1-  There is no warranty for repairing. Please check the scale to your full satisfaction before leaving the workshop.<br>
-2-  Please collect the scale within 3 days. We are not responsible for the scales after that period<br>
-3-  Please bring this Receipt at the time of delivery. INR 50 will be charged extra if scale is collected without Receipt.<br>
-1-  मरम्मत के लिए कोई वारंटी नहीं है। कार्यशाला छोड़ने से पहले कृपया अपनी पूरी संतुष्टि के पैमाने को जांचें।<br>
-2-  कृपया 3 दिनों के भीतर तराजू को लेना। हम उस अवधि के बाद तराजू के लिए ज़िम्मेदार नहीं हैं<br>
-3-  तराजू लेते समय इस रसीद को लाओ। रसीद के बिना 50 रुपये अतिरिक्त शुल्क लिया जाएगा।
+
+<span style="font-size: 11px;">HINDUSTAN SCALE COMPANY, 186/188 Janjikar Street, Crawford Market, Mumbai - 400003</span>
+  </p>
 
 
 </div>
-	<br>
-	</div>
 
 </center>
+
 
 
 <script>
-function fun2() {
-  window.print();
+  function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
 }
 </script>
 
-<br>
 </body>
 </html>
