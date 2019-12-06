@@ -20,19 +20,19 @@ class LoginForm(forms.Form):
                  'type': 'text',
                  'onkeypress':"return isNumber(event)",
                  'class': 'form-control',
-                 'placeholder': "Enter Mobile Number",
+                 'placeholder': "Enter Employee Number",
                  'name': 'mobile',
              }))
 
-    employee_number = forms.IntegerField(
-         widget=forms.TextInput(
-             attrs={
-                 'type': 'text',
-                 'onkeypress':"return isNumber(event)",
-                 'class': 'form-control',
-                 'placeholder': "Employee Number",
-                 'name': 'employee_number',
-             }))
+    # employee_number = forms.IntegerField(
+    #      widget=forms.TextInput(
+    #          attrs={
+    #              'type': 'text',
+    #              'onkeypress':"return isNumber(event)",
+    #              'class': 'form-control',
+    #              'placeholder': "Employee Number",
+    #              'name': 'employee_number',
+    #          }))
 
 
     password = forms.CharField(
@@ -52,7 +52,7 @@ class LoginForm(forms.Form):
     def clean(self):
         mobile = self.cleaned_data.get('mobile')
         password = self.cleaned_data.get('password')
-        user = authenticate(mobile=mobile, password=password)
+        user = authenticate(employee_number=mobile, password=password)
         if not user or not user.is_active:
             raise forms.ValidationError("Incorrect Mobile Number or Password. Please try again !!!")
         return self.cleaned_data

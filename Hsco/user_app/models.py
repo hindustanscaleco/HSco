@@ -119,7 +119,7 @@ class SiteUser(AbstractBaseUser):
 
     objects = SiteUserManager()
 
-    USERNAME_FIELD = 'employee_number'
+    USERNAME_FIELD = 'mobile'
     REQUIRED_FIELDS = ['email',]
 
     def __str__(self):
