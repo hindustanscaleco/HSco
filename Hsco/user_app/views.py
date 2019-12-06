@@ -25,7 +25,7 @@ class LoginView(FormView):
             if request.session.has_key('registered_mobile'):
                 mobile = request.session['registered_mobile']
                 password = request.session['user_password']
-                user = authenticate(request, employee_number=mobile, password=password)
+                user = authenticate(request, mobile=mobile, password=password)
                 if user is not None:
                     login(request, user)
                     request.session['registered_mobile'] = mobile
@@ -40,7 +40,7 @@ class LoginView(FormView):
         if request.session.has_key('registered_mobile'):
             mobile = request.session['registered_mobile']
             password = request.session['user_password']
-            user = authenticate(request, employee_number=mobile, password=password)
+            user = authenticate(request, mobile=mobile, password=password)
             if user is not None:
                 login(request, user)
                 request.session['registered_mobile'] = mobile
@@ -54,7 +54,7 @@ class LoginView(FormView):
             password = form.cleaned_data.get('password')
             print("NormalOGIN" + str(mobile))
             print("NormalOGIN" + str(password))
-            user = authenticate(request, employee_number=mobile, password=password)
+            user = authenticate(request, mobile=mobile, password=password)
             # print("NormalOGIN"+str(user))
             if user is not None:
                 login(request, user)
