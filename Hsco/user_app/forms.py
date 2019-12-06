@@ -18,7 +18,6 @@ class LoginForm(forms.Form):
          widget=forms.TextInput(
              attrs={
                  'type': 'text',
-                 'onkeypress':"return isNumber(event)",
                  'class': 'form-control',
                  'placeholder': "Enter Employee Number",
                  'name': 'mobile',
