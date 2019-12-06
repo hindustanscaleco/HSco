@@ -18,6 +18,7 @@ class LoginForm(forms.Form):
          widget=forms.TextInput(
              attrs={
                  'type': 'text',
+                 'onkeypress':"return isNumber(event)",
                  'class': 'form-control',
                  'placeholder': "Enter Employee Number",
                  'name': 'mobile',
@@ -45,13 +46,13 @@ class LoginForm(forms.Form):
 
     class Meta:
         model = SiteUser
-        fields = ( 'mobile', 'password','employee_number')
+        fields = ( 'mobile', 'password')
 
 
     def clean(self):
         mobile = self.cleaned_data.get('mobile')
         password = self.cleaned_data.get('password')
-        user = authenticate(employee_number=mobile, password=password)
+        user = authenticate(mobile=mobile, password=password)
         if not user or not user.is_active:
             raise forms.ValidationError("Incorrect Mobile Number or Password. Please try again !!!")
         return self.cleaned_data
