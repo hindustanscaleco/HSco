@@ -1044,7 +1044,7 @@ def final_repairing_report_module(request):
             repairing_data.append(list(i))
 
         cursor.execute(
-            "SELECT " + repair_product_string + " from repairing_app_repairing_product AS PRODUCT , repairing_app_repairing_after_sales_service AS REP where PRODUCT.repairing_id_id = REP.id and PRODUCT.entry_timedate between'" + repair_start_date + "' and '" + repair_end_date + "';")
+            "SELECT " + (repair_product_string) + " from repairing_app_repairing_product  PRODUCT , repairing_app_repairing_after_sales_service  REP where PRODUCT.repairing_id_id = REP.id and PRODUCT.entry_timedate between'" + repair_start_date + "' and '" + repair_end_date + "';")
         row = cursor.fetchall()
         final_row_product = [list(x) for x in row]
         repairing_data = []
