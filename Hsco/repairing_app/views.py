@@ -1185,13 +1185,13 @@ def edit_product(request,id):
         item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
         item.in_warranty = in_warranty
 
+
         if in_warranty.lower() == 'yes':
+            # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") - item.cost)
             item.cost = 0.0
         else:
             item.cost = cost
-
-
-
+            Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + cost)
 
         item.save(update_fields=['type_of_machine', ]),
         item.save(update_fields=['model', ]),
@@ -1206,7 +1206,6 @@ def edit_product(request,id):
         item.save(update_fields=['in_warranty', ]),
 
 
-        Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + cost)
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
 
