@@ -860,11 +860,11 @@ def repairing_module_home(request):
                 dcount=Count('current_stage'))
         elif request.user.role =='Admin':
             admin = SiteUser.objects.get(id=request.user.pk).name
-            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)).order_by(
+            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by=''))).order_by(
                 '-id')
 
             res = Repairing_after_sales_service.objects.filter(
-                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)).values(
+                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) ).values(
                 'current_stage').annotate(
                 dcount=Count('current_stage'))
         elif request.user.role =='Manager':
@@ -1436,7 +1436,7 @@ def load_reparing_manager(request):
 
         elif request.user.role =='Admin':
             admin = SiteUser.objects.get(id=request.user.pk).name
-            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)).order_by(
+            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by=''))).order_by(
                 '-id')
 
         elif request.user.role =='Manager':
