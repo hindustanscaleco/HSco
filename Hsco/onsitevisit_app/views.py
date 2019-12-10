@@ -846,7 +846,7 @@ def final_report_onsite(request):
 
     with connection.cursor() as cursor:
         cursor.execute("SELECT  " + onsite_repair_product_string + " from onsitevisit_app_onsite_products , onsitevisit_app_onsite_aftersales_service"
-                                             "  where onsitevisit_app_onsite_products.onsite_repairing_id_id = onsitevisit_app_onsite_aftersales_service.id and onsitevisit_app_onsite_products.entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
+                                             "  where onsitevisit_app_onsite_products.onsite_repairing_id_id = onsitevisit_app_onsite_aftersales_service.id and onsitevisit_app_onsite_products.entry_date between '" + repair_start_date + "' and '" + repair_end_date + "';")
         row = cursor.fetchall()
 
         print(row)

@@ -911,7 +911,7 @@ def final_report(request):
             list3.append(list(i))
 
         cursor.execute("SELECT  " + string_product + " from purchase_app_product_details , purchase_app_purchase_details"
-                                             "  where purchase_app_product_details.purchase_id_id = purchase_app_purchase_details.id and purchase_app_product_details.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+                                             "  where purchase_app_product_details.purchase_id_id = purchase_app_purchase_details.id and purchase_app_product_details.entry_date between '" + start_date + "' and '" + end_date + "';")
         row = cursor.fetchall()
 
         final_row_product = [list(x) for x in row]

@@ -67,7 +67,7 @@ class Onsite_Products(models.Model):
     components_replaced_in_warranty = models.CharField(max_length=90, null=True, blank=True)
     components_replaced = models.CharField(max_length=90, null=True, blank=True)
     cost = models.FloatField(default=0.0,)
-    entry_timedate = models.DateTimeField(default=timezone.now, )
+    entry_date = models.DateTimeField(default=timezone.now, )
 
     def __int__(self):
         return self.onsite_repairing_id
