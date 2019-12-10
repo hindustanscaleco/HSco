@@ -57,7 +57,7 @@ class Product_Details(models.Model):
     unit = models.CharField(max_length=30,null=True,blank=True)
     amount = models.FloatField(default=0.0,)
 
-    entry_date = models.DateTimeField(default=timezone.now,)
+    entry_timedate = models.DateTimeField(default=timezone.now,)
 
     def __int__(self):
         return self.purchase_id

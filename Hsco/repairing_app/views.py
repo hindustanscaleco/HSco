@@ -314,7 +314,10 @@ def repair_product(request,id):
         # else:
         #     item.is_last_product = True
 
-        item.cost = cost
+        if in_warranty.lower() == 'yes':
+            item.cost = 0.0
+        else:
+            item.cost = cost
 
         item.save()
 
@@ -737,6 +740,7 @@ def update_repairing_details(request,id):
         item2.save(update_fields=['confirmed_estimate', ])
         item2.save(update_fields=['second_company_name', ])
         item2.save(update_fields=['company_address', ])
+        item2.save(update_fields=['repaired', ])
         item2.save(update_fields=['company_email', ])
         item2.save(update_fields=['repaired_by','taken_by', ])
         # item2.save(update_fields=['feedback_given', ])
@@ -1040,7 +1044,7 @@ def final_repairing_report_module(request):
             repairing_data.append(list(i))
 
         cursor.execute(
-            "SELECT " + repair_product_string + " from repairing_app_repairing_product , repairing_app_repairing_after_sales_service where repairing_app_repairing_product.repairing_id_id = repairing_app_repairing_after_sales_service.id and repairing_app_repairing_product.entry_date between'" + repair_start_date + "' and '" + repair_end_date + "';")
+            "SELECT " + repair_product_string + " from repairing_app_repairing_product AS PRODUCT , repairing_app_repairing_after_sales_service AS REP where PRODUCT.repairing_id_id = REP.id and PRODUCT.entry_timedate between'" + repair_start_date + "' and '" + repair_end_date + "';")
         row = cursor.fetchall()
         final_row_product = [list(x) for x in row]
         repairing_data = []
@@ -1181,8 +1185,10 @@ def edit_product(request,id):
         item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
         item.in_warranty = in_warranty
 
-        item.cost = cost
-
+        if in_warranty.lower() == 'yes':
+            item.cost = 0.0
+        else:
+            item.cost = cost
 
 
 

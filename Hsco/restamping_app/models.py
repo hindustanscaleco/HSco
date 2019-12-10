@@ -39,7 +39,7 @@ class Restamping_Product(models.Model):
     amount = models.FloatField(default=0.0, null=True, blank=True)
     new_sr_no = models.CharField(max_length=80, null=True, blank=True)
     brand = models.CharField(max_length=50, null=True, blank=True)
-    entry_date = models.DateField(default=datetime.date.today)
+    entry_timedate = models.DateField(default=datetime.date.today)
 
 
     def __int__(self):
