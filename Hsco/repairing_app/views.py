@@ -648,10 +648,6 @@ def update_repairing_details(request,id):
             if current_stage_in_db == 'Repaired but not collected' and item2.delivery_date != '' and item2.delivery_date != None:
                 Repairing_after_sales_service.objects.filter(id=id).update(
                     current_stage='Finally Collected')
-                print(
-                    current_stage_in_db,delivery_date,
-
-                )
 
 
                 item2.stage_update_timedate = timezone.now()
@@ -757,7 +753,6 @@ def update_repairing_details(request,id):
         }
         return render(request, 'update_forms/update_rep_mod_form.html', context)
 
-    print(repair_list)
     context={
         'repair_list': repair_list,
         'repair_id': repair_id,
