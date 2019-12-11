@@ -610,7 +610,7 @@ def final_report_restamping(request):
             repairing_data.append(list(i))
 
         cursor.execute(
-            "SELECT " + repair_product_string + " from restamping_app_restamping_product , restamping_app_restamping_after_sales_service where restamping_app_restamping_product.restamping_id_id = restamping_app_restamping_after_sales_service.id and restamping_app_restamping_product.entry_timedate between'" + restamp_start_date + "' and '" + restamp_end_date + "';")
+            "SELECT " + repair_product_string + " from restamping_app_restamping_product PRODUCT , restamping_app_restamping_after_sales_service RESTAMP where PRODUCT.restamping_id_id = RESTAMP.id and PRODUCT.entry_timedate between'" + restamp_start_date + "' and '" + restamp_end_date + "';")
         row = cursor.fetchall()
         final_row_product = [list(x) for x in row]
         repairing_data = []

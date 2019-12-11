@@ -536,11 +536,13 @@ def update_repairing_details(request,id):
             item2.company_email = customer_email_id  # new2
             item.save(update_fields=['customer_email_id'])
 
-        # item2.previous_repairing_number = previous_repairing_number
-        # item2.today_date = today_date
+        if item2.repaired == 'Yes':
 
-        # item2.location = location
-        # item2.products_to_be_repaired = products_to_be_repaired
+            Employee_Analysis_date.objects.filter(user_id=repair_id.user_id,
+                                                  entry_date__month=repair_id.entry_timedate.month,
+                                                  year=repair_id.entry_timedate.year).update(
+                avg_time_to_repair_single_scale_today= (repair_id.repaired_date - repair_id.entry_timedate ).days)
+
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage3
         if current_stage_in_db == 'Estimate is given but Estimate is not confirmed' and confirmed_estimate == 'Yes':
             Repairing_after_sales_service.objects.filter(id=id).update(
@@ -612,9 +614,11 @@ def update_repairing_details(request,id):
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Repaired but not collected')
             item2.stage_update_timedate = timezone.now()
+
             item2.repaired = repaired
             item2.save(update_fields=['stage_update_timedate', ])
             item2.save(update_fields=['repaired'])
+
             try:
                 send_mail('Your Repairing Done - HSCo',
                           ' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.pk)+' is resolved.'
@@ -1044,7 +1048,7 @@ def final_repairing_report_module(request):
             repairing_data.append(list(i))
 
         cursor.execute(
-            "SELECT " + repair_product_string + " from repairing_app_repairing_product AS PRODUCT , repairing_app_repairing_after_sales_service AS REP where PRODUCT.repairing_id_id = REP.id and PRODUCT.entry_timedate between'" + repair_start_date + "' and '" + repair_end_date + "';")
+            "SELECT " + (repair_product_string) + " from repairing_app_repairing_product  PRODUCT , repairing_app_repairing_after_sales_service  REP where PRODUCT.repairing_id_id = REP.id and PRODUCT.entry_timedate between'" + repair_start_date + "' and '" + repair_end_date + "';")
         row = cursor.fetchall()
         final_row_product = [list(x) for x in row]
         repairing_data = []
@@ -1185,13 +1189,13 @@ def edit_product(request,id):
         item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
         item.in_warranty = in_warranty
 
+
         if in_warranty.lower() == 'yes':
+            # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") - item.cost)
             item.cost = 0.0
         else:
             item.cost = cost
-
-
-
+            Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + cost)
 
         item.save(update_fields=['type_of_machine', ]),
         item.save(update_fields=['model', ]),
@@ -1206,11 +1210,8 @@ def edit_product(request,id):
         item.save(update_fields=['in_warranty', ]),
 
 
-        Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + cost)
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
-
-
 
         Employee_Analysis_month.objects.filter(user_id=user_id,
                                                entry_date__month=product_id.entry_timedate.month,
