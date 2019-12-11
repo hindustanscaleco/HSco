@@ -703,11 +703,11 @@ def update_repairing_details(request,id):
             item2.save(update_fields=['repaired_by'])
             item2.save(update_fields=['repaired_date', ])
 
-        # if item2.repaired == 'Yes'and item2.repaired_date != 'No' and item2.repaired_date != ' ':
-        #     Employee_Analysis_date.objects.filter(user_id=repair_id.user_id,
-        #                                           entry_date__month=repair_id.entry_timedate.month,
-        #                                           year=repair_id.entry_timedate.year).update(
-        #         avg_time_to_repair_single_scale_today= (repair_id.repaired_date - repair_id.entry_timedate ).days)
+        if item2.repaired == 'Yes'and item2.repaired_date != 'No' and type(item2.repaired_date) != str:
+            Employee_Analysis_date.objects.filter(user_id=repair_id.user_id,
+                                                  entry_date__month=repair_id.entry_timedate.month,
+                                                  year=repair_id.entry_timedate.year).update(
+                avg_time_to_repair_single_scale_today= (repair_id.repaired_date - repair_id.entry_timedate ).days)
 
         item2.second_person=customer_name
         # item2.third_person=third_person
