@@ -4,9 +4,6 @@ from .models import Stock_System
 from .forms import StockRegisterForm
 
 
-
-
-
 # def stock_system_form(request):
 #     stock_form = StockRegisterForm(request.POST or None)
 #     if request.method =='POST':

@@ -18,11 +18,10 @@ from Hsco import settings
 import datetime
 import requests
 import json
-from datetime import datetime
 from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 from django.db.models import Count
 from django.db.models import Q
-from datetime import datetime, timedelta
+from datetime import date,datetime, timedelta
 
 def add_repairing_details(request):
     cust_sugg=Customer_Details.objects.all()
@@ -536,12 +535,6 @@ def update_repairing_details(request,id):
             item2.company_email = customer_email_id  # new2
             item.save(update_fields=['customer_email_id'])
 
-        if item2.repaired == 'Yes':
-
-            Employee_Analysis_date.objects.filter(user_id=repair_id.user_id,
-                                                  entry_date__month=repair_id.entry_timedate.month,
-                                                  year=repair_id.entry_timedate.year).update(
-                avg_time_to_repair_single_scale_today= (repair_id.repaired_date - repair_id.entry_timedate ).days)
 
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage3
         if current_stage_in_db == 'Estimate is given but Estimate is not confirmed' and confirmed_estimate == 'Yes':
@@ -710,6 +703,11 @@ def update_repairing_details(request,id):
             item2.save(update_fields=['repaired_by'])
             item2.save(update_fields=['repaired_date', ])
 
+        # if item2.repaired == 'Yes'and item2.repaired_date != 'No' and item2.repaired_date != ' ':
+        #     Employee_Analysis_date.objects.filter(user_id=repair_id.user_id,
+        #                                           entry_date__month=repair_id.entry_timedate.month,
+        #                                           year=repair_id.entry_timedate.year).update(
+        #         avg_time_to_repair_single_scale_today= (repair_id.repaired_date - repair_id.entry_timedate ).days)
 
         item2.second_person=customer_name
         # item2.third_person=third_person
