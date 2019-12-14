@@ -568,14 +568,19 @@ def update_restamping_details(request,id):
 def report_restamping(request):
     if request.method == 'POST' or None:
         selected_list = request.POST.getlist('checks[]')
+        selected_product_list = request.POST.getlist('products[]')
         repair_start_date = request.POST.get('date1')
         repair_end_date = request.POST.get('date2')
         repair_string = ','.join(selected_list)
+        repair_product_string = ','.join(selected_product_list)
 
         request.session['start_date'] = repair_start_date
         request.session['repair_end_date'] = repair_end_date
         request.session['repair_string'] = repair_string
         request.session['selected_list'] = selected_list
+
+        request.session['selected_product_list'] = selected_product_list
+        request.session['repair_product_string'] = repair_product_string
         return redirect('/final_report_restamping/')
     return render(request, "report/report_restamping_form.html",)
 
@@ -584,16 +589,36 @@ def final_report_restamping(request):
     restamp_end_date = str(request.session.get('repair_end_date'))
     restamp_string = request.session.get('repair_string')
     selected_list = request.session.get('selected_list')
+    repair_product_string = request.session.get('repair_product_string')
+    selected_product_list = request.session.get('selected_product_list')
+
+    for n, i in enumerate(selected_list):
+        if i == 'restamping_app_restamping_after_sales_service.id':
+            selected_list[n] = 'Restamping ID'
+        if i == 'crm_no_id':
+            selected_list[n] = 'Customer No'
+        if i == 'today_date':
+            selected_list[n] = 'Entry Date'
 
     with connection.cursor() as cursor:
-        cursor.execute(
-            "SELECT  " + restamp_string + " from restamping_app_restamping_after_sales_service , customer_app_customer_details"
-                                         "  where restamping_app_restamping_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + restamp_start_date + "' and '" + restamp_end_date + "';")
+
+        cursor.execute("SELECT "+restamp_string+" from restamping_app_restamping_after_sales_service , customer_app_customer_details where restamping_app_restamping_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + restamp_start_date + "' and '" + restamp_end_date + "';")
         row = cursor.fetchall()
         final_row = [list(x) for x in row]
         repairing_data = []
         for i in row:
             repairing_data.append(list(i))
+
+        cursor.execute(
+            "SELECT " + repair_product_string + " from restamping_app_restamping_product PRODUCT , restamping_app_restamping_after_sales_service RESTAMP where PRODUCT.restamping_id_id = RESTAMP.id and PRODUCT.entry_timedate between'" + restamp_start_date + "' and '" + restamp_end_date + "';")
+        row = cursor.fetchall()
+        final_row_product = [list(x) for x in row]
+        repairing_data = []
+        for i in row:
+            repairing_data.append(list(i))
+
+        print("selected_list")
+        print(selected_list)
 
     try:
         del request.session['repair_start_date']
@@ -605,7 +630,9 @@ def final_report_restamping(request):
 
     context = {
         'final_row': final_row,
+        'final_row_product': final_row_product,
         'selected_list': selected_list,
+        'selected_product_list': selected_product_list,
     }
     return render(request,"report/final_report_restamp_mod_form.html",context)
 

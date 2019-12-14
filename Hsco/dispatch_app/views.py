@@ -199,7 +199,13 @@ def final_report_dis_mod(request):
     end_date = request.session.get('end_date')
     string = request.session.get('string')
     selected_list = request.session.get('selected_list')
-
+    for n, i in enumerate(selected_list):
+        if i == 'dispatch_app_dispatch.id':
+            selected_list[n] = 'Dispatch ID'
+        if i == 'crm_no_id':
+            selected_list[n] = 'Customer No'
+        if i == 'today_date':
+            selected_list[n] = 'Entry Date'
     try:
         del request.session['start_date']
         del request.session['end_date']

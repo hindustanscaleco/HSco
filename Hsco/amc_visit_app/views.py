@@ -214,6 +214,13 @@ def final_report_amc(request):
     string =        request.session.get('string')
     selected_list = request.session.get('selected_list')
 
+    for n, i in enumerate(selected_list):
+        if i == 'amc_visit_app_amc_after_sales.id':
+            selected_list[n] = 'AMC NO'
+        if i == 'crm_no_id':
+            selected_list[n] = 'Customer No'
+        if i == 'today_date':
+            selected_list[n] = 'Entry Date'
 
     with connection.cursor() as cursor:
         cursor.execute(
