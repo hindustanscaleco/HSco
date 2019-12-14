@@ -657,7 +657,7 @@ def add_product_details(request,id):
         item.capacity = capacity
         item.unit = unit
         # item.unit = unit
-        item.value_of_goods = value_of_goods
+        item.amount = value_of_goods
         item.purchase_id_id = purchase_id
 
         # item.sales_person = sales_person
@@ -690,7 +690,7 @@ def add_product_details(request,id):
                     item.sub_model,
                     item.brand,
                     item.capacity,
-                    item.value_of_goods,
+                    item.amount,
                 )
                 product_list=product_list+''+ str(email_body_text)
 
@@ -1136,10 +1136,10 @@ def edit_product_customer(request,product_id_rec):
         capacity = request.POST.get('capacity')
         unit = request.POST.get('unit')
         # sales_person = request.POST.get('sales_person')
-        value_of_goods = request.POST.get('value_of_goods')
+        amount = request.POST.get('value_of_goods')
         # purchase_type = request.POST.get('purchase_type')
 
-        cost2 = purchase.value_of_goods
+        cost2 = purchase.amount
 
         Purchase_Details.objects.filter(id=purchase_id.pk).update(value_of_goods=F("value_of_goods") - cost2)
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
@@ -1170,30 +1170,30 @@ def edit_product_customer(request,product_id_rec):
         item.brand = brand
         item.capacity = capacity
         item.unit = unit
-        item.value_of_goods = value_of_goods
+        item.amount = amount
         # item.purchase_id_id = purchase_id
         # item.sales_person = sales_person
         # item.purchase_type = purchase_type
         # item.user_id = SiteUser.objects.get(id=request.user.pk)
         # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save(update_fields=['quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
-                                 'serial_no_scale', 'brand', 'capacity', 'unit','value_of_goods',
+                                 'serial_no_scale', 'brand', 'capacity', 'unit','amount',
                                  ])
 
         Purchase_Details.objects.filter(id=purchase_id.pk).update(
-            value_of_goods=F("value_of_goods") + value_of_goods)
+            value_of_goods=F("value_of_goods") + amount)
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
 
         Employee_Analysis_month.objects.filter(user_id=request.user.pk,
                                                entry_date__month=purchase_id.entry_timedate.month,
                                                year=purchase_id.entry_timedate.year).update(
-            total_sales_done=F("total_sales_done") + value_of_goods)
+            total_sales_done=F("total_sales_done") + amount)
 
         Employee_Analysis_date.objects.filter(user_id=request.user.pk,
                                               entry_date__month=purchase_id.entry_timedate.month,
                                               year=purchase_id.entry_timedate.year).update(
-            total_sales_done_today=F("total_sales_done_today") + value_of_goods)
+            total_sales_done_today=F("total_sales_done_today") + amount)
 
 
         if dispatch_id_assigned != '' or dispatch_id_assigned != None:
@@ -1213,7 +1213,7 @@ def edit_product_customer(request,product_id_rec):
                     dispatch_pro.brand = brand
                     dispatch_pro.capacity = capacity
                     dispatch_pro.unit = unit
-                    dispatch_pro.value_of_goods = value_of_goods
+                    dispatch_pro.value_of_goods = amount
 
                     # dispatch_pro.dispatch_id = dispatch_id
                     # dispatch_pro.sales_person = sales_person
