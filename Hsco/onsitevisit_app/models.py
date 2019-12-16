@@ -49,6 +49,7 @@ class Onsite_aftersales_service(models.Model):
     assigned_by = models.CharField(max_length=30, null=True, blank=True)
     done_on = models.DateTimeField(default=timezone.now,)
     feedback_link = models.URLField(max_length=200, null=True, blank=True)
+    onsite_no = models.BigIntegerField(null=True,blank=True)
 
 
     def __int__(self):

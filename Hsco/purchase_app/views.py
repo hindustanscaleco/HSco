@@ -289,7 +289,6 @@ def view_customer_details(request):
     message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
 
 
-
     if request.method == 'POST' and 'deleted' not in request.POST:
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')

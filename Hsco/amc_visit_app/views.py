@@ -115,6 +115,8 @@ def add_amc_after_sales(request):
         item2.contract_no_reporting_breakdown = contract_no_reporting_breakdown
         item2.contract_start_date = contract_start_date
         item2.contract_end_date = contract_end_date
+        item2.amc_no = Amc_After_Sales.objects.latest('amc_no').amc_no+1
+
         if visit_1 != '':
             item2.visit_1 = visit_1
         item2.repot_1 = repot_1
