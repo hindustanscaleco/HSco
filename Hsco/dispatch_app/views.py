@@ -145,7 +145,10 @@ def add_dispatch_details(request):
         item2.photo_lr_no = photo_lr_no
         item2.channel_of_dispatch = channel_of_dispatch
         item2.notes = notes
-        item2.dispatch_no = Dispatch.objects.latest('id').dispatch_no+1
+        if Dispatch.objects.all().count()==0:
+            item2.dispatch_no = 1
+        else:
+            item2.dispatch_no = Dispatch.objects.latest('id').dispatch_no+1
 
         item2.save()
 
