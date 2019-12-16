@@ -36,6 +36,7 @@ class Dispatch(models.Model):
     current_stage = models.CharField(max_length=50,null=True,blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now,)
     feedback_link = models.URLField(max_length=200,null=True,blank=True)
+    dispatch_no = models.BigIntegerField(null=True,blank=True)
 
 
     def __str__(self):
