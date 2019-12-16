@@ -311,7 +311,7 @@ def restamping_after_sales_service(request):
         # item2.brand = brand
         item2.total_amount = 0.0
         # item2.scale_delivery_date = scale_delivery_date
-        item2.restamping_no = Restamping_after_sales_service.objects.latest('restamping_no').restamping_no+1
+        item2.restamping_no = Restamping_after_sales_service.objects.latest('id').restamping_no+1
 
 
         item2.save()
