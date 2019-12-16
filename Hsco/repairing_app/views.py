@@ -208,7 +208,7 @@ def add_repairing_details(request):
             ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
             ead.month = datetime.now().month
-            ead.year = datetime.now().yearr
+            ead.year = datetime.now().year
             ead.save()
 
 
@@ -314,10 +314,10 @@ def repair_product(request,id):
         # else:
         #     item.is_last_product = True
 
-        if in_warranty.lower() == 'yes':
-            item.cost = 0.0
-        else:
-            item.cost = cost
+        # if in_warranty.lower() == 'yes':
+        #     item.cost = 0.0
+        # else:
+        item.cost = cost
 
         item.save()
 
@@ -1189,12 +1189,12 @@ def edit_product(request,id):
         item.in_warranty = in_warranty
 
 
-        if in_warranty.lower() == 'yes':
-            # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") - item.cost)
-            item.cost = 0.0
-        else:
-            item.cost = cost
-            Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + cost)
+        # if in_warranty.lower() == 'yes':
+        #     # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") - item.cost)
+        #     item.cost = 0.0
+        # else:
+        item.cost = cost
+        Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + cost)
 
         item.save(update_fields=['type_of_machine', ]),
         item.save(update_fields=['model', ]),
