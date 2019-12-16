@@ -45,6 +45,7 @@ class Amc_After_Sales(models.Model):
     avg_feedback = models.FloatField(default=0.0)
     entry_timedate = models.DateTimeField(default=timezone.now,)
     feedback_link = models.URLField(max_length=200, null=True, blank=True)
+    amc_no = models.BigIntegerField(null=True,blank=True)
 
     #for future use
     # visit_1 = models.DateField(default=datetime.date.today, null=True, blank=True)
