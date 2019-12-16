@@ -178,6 +178,8 @@ def add_purchase_details(request):
         item2.feedback_form_filled = False
         # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item2.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no+1
+
         item2.save()
 
         try:

@@ -67,7 +67,6 @@ def add_repairing_details(request):
 
 
         # repairingnumber = request.POST.get('repairingnumber')
-        repairing_no = request.POST.get('repairing_no')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
         today_date = request.POST.get('today_date')
@@ -137,7 +136,7 @@ def add_repairing_details(request):
             except:
                 pass
 
-        item2.repairing_no = repairing_no
+        item2.repairing_no = Repairing_after_sales_service.objects.latest('repairing_no').repairing_no+1
         item2.previous_repairing_number = previous_repairing_number
         item2.in_warranty = in_warranty
         item2.today_date = today_date
@@ -209,7 +208,7 @@ def add_repairing_details(request):
             ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
             ead.month = datetime.now().month
-            ead.year = datetime.now().year
+            ead.year = datetime.now().yearr
             ead.save()
 
 
