@@ -331,7 +331,7 @@ def add_onsite_aftersales_service(request):
             item2.complaint_assigned_to = complaint_assigned_to
             item2.complaint_assigned_on = datetime.today().strftime('%Y-%m-%d')
 
-        item2.onsite_no = Onsite_aftersales_service.objects.latest('onsite_no').onsite_no+1
+        item2.onsite_no = Onsite_aftersales_service.objects.latest('id').onsite_no+1
 
         item2.save()
         current_stage_in_db = Onsite_aftersales_service.objects.get(id=item2.pk).current_stage  # updatestage2
