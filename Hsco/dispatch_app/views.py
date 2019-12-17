@@ -384,6 +384,7 @@ def dispatch_view(request):
                 'current_stage').annotate(dcount=Count('current_stage'))
 
 
+
         # dispatch_list = Dispatch.objects.all()
 
         x = stage1

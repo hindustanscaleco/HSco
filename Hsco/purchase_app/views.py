@@ -212,6 +212,10 @@ def add_purchase_details(request):
             dispatch.channel_of_dispatch = channel_of_dispatch   # new2
             dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
             dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            if Dispatch.objects.all().count() == 0:
+                dispatch.dispatch_no = 1
+            else:
+                dispatch.dispatch_no = Dispatch.objects.latest('id').dispatch_no + 1
             # dispatch.customer_email = customer_email_id
             # dispatch.customer_name = customer_name
             # dispatch.company_name = company_name
@@ -519,6 +523,10 @@ def update_customer_details(request,id):
             dispatch.channel_of_dispatch = channel_of_dispatch  # new2
             dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
             dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            if Dispatch.objects.all().count() == 0:
+                dispatch.dispatch_no = 1
+            else:
+                dispatch.dispatch_no = Dispatch.objects.latest('id').dispatch_no + 1
             # dispatch.customer_email = customer_email_id
             # dispatch.customer_name = customer_name
             # dispatch.company_name = company_name
