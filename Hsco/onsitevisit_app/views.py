@@ -674,10 +674,10 @@ def update_onsite_details(request,id):
             Onsite_aftersales_service.objects.filter(id=id).update(
                 current_stage='Onsite repairing request is completed')
 
-            msg='Dear '+customer_name+',Thank you for selecting HSCo. Your Onsite Repairing No '+str(onsite_id.id)+' has been successfully' \
+            msg='Dear '+customer_name+',Thank you for selecting HSCo. Your Onsite Repairing No '+str(onsite_id.onsite_no)+' has been successfully' \
                 ' resolved. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love to hear your' \
                 ' feedback to help us improve our customer experience, just click on the link below:\n http://139.59.76.87/feedback_onrepairing/'\
-                + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.id)+' If you feel ' \
+                + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.onsite_no)+' If you feel ' \
                 'that your complaint has not been resolved please contact our customer service team on 7045922251'
 
             try:
@@ -688,10 +688,10 @@ def update_onsite_details(request,id):
                 pass
 
             message = 'Dear ' + customer_name + ',Thank you for selecting HSCo. Your Onsite Repairing No ' + str(
-                onsite_id.id) + ' has been successfully' \
+                onsite_id.onsite_no) + ' has been successfully' \
                             ' resolved. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love to hear your' \
                             ' feedback to help us improve our customer experience, just click on the link below:\n http://139.59.76.87/feedback_onrepairing/' \
-                  + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.id) + ' If you feel ' \
+                  + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.onsite_no) + ' If you feel ' \
                                                                                               'that your complaint has not been resolved please contact our customer service team on 7045922251'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"

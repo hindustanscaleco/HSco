@@ -356,9 +356,9 @@ def repair_product(request,id):
                 product_list = product_list + '' + str(email_body_text)
 
                 msg_old= 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                              request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.id) +'\nHere is a list of Products:\n'+product_list
+                              request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.repairing_no) +'\nHere is a list of Products:\n'+product_list
                 msg='Dear '+rep.second_person+',Thank you for selecting HSCo. Your Scales have been successfully ' \
-                    'received at our Repairing Center. Your Repairing No is '+str(rep.pk)+'. Please use this Unique ID for further communication. For any ' \
+                    'received at our Repairing Center. Your Repairing No is '+str(rep.repairing_no)+'. Please use this Unique ID for further communication. For any ' \
                     'further details please contact our customer service team on 7045922251 \n Product Details:\n'+product_list
                 # if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
                 # crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
@@ -371,10 +371,10 @@ def repair_product(request,id):
                     pass
 
                 message_old = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                    request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.id)
+                    request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.repairing_no)
 
                 message = 'Dear '+rep.second_person+', Thank you for selecting HSCo. Your Scales have been successfully ' \
-                          'received at our Repairing Center. Your Repairing No is '+str(rep.pk)+'. Please use this Unique ID for ' \
+                          'received at our Repairing Center. Your Repairing No is '+str(rep.repairing_no)+'. Please use this Unique ID for ' \
                           'further communication. For any further details please contact our customer service team on 7045922251'
 
                 url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + rep.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
