@@ -155,13 +155,13 @@ def add_amc_after_sales(request):
                                                            Q(contact_no=contact_no)).first()
             try:
                 send_mail('Feedback Form', 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
-                    request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                    request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.amc_no), settings.EMAIL_HOST_USER,
                           [crm_no.customer_email_id])
             except:
                 print('exception')
 
             message = 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
-                request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id)
+                request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.amc_no)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
@@ -175,13 +175,13 @@ def add_amc_after_sales(request):
         else:
             try:
                 send_mail('Feedback Form', 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
-                    request.user.pk) + '/' + str(item.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                    request.user.pk) + '/' + str(item.id) + '/' + str(item2.amc_no), settings.EMAIL_HOST_USER,
                           [item.customer_email_id])
             except:
                 pass
 
             message = 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
-                request.user.pk) + '/' + str(item.id) + '/' + str(item2.id)
+                request.user.pk) + '/' + str(item.id) + '/' + str(item2.amc_no)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""

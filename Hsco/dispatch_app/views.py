@@ -325,6 +325,20 @@ def dispatch_view(request):
                 'search_msg': 'Search result for CRM No. : ' + crm,
             }
             return render(request, "manager/dispatch_view.html", context)
+        elif  'submit7' in request.POST:
+            dispatch_no = request.POST.get('dispatch_no')
+            if check_admin_roles(request):  # For ADMIN
+                dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.name,
+                                                        user_id__is_deleted=False,dispatch_no__icontains=dispatch_no).order_by('-id')
+            else:  # For EMPLOYEE
+                dispatch_list = Dispatch.objects.filter(user_id=request.user.pk,dispatch_no__icontains=dispatch_no).order_by('-id')
+            # dispatch_list = Dispatch.objects.filter(company_name=company)
+            context = {
+                'dispatch_list': dispatch_list,
+                'search_msg': 'Search result for Dispatch No: ' + dispatch_no,
+            }
+            return render(request, "manager/dispatch_view.html", context)
+
     else:
         if request.user.role == 'Super Admin':     #For ADMIN
             dispatch_list = Dispatch.objects.filter(Q(user_id__pk=request.user.pk) | (Q(user_id__group__icontains=request.user.name)& Q(user_id__is_deleted=False))).order_by('-id')
@@ -623,7 +637,7 @@ def update_dispatch_details(request,update_id):
 
                 msg ='Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase having ID '+str(pur_id)+'' \
                      ' is dispatch from our end with Dispatch ID ' + str(
-                item.pk) + '  & LR No ' + lr_no + ' by  ' + transport_name +'. For more details contact us on - 7045922252 \n Dispatch Details:\n'+product_list
+                item.dispatch_no) + '  & LR No ' + lr_no + ' by  ' + transport_name +'. For more details contact us on - 7045922252 \n Dispatch Details:\n'+product_list
 
                 send_mail('Dispatched, Your Hsco Purchase is Dispatched from our end',
                           msg, settings.EMAIL_HOST_USER,
@@ -634,11 +648,11 @@ def update_dispatch_details(request,update_id):
                 pass
 
             # msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through " + transport_name + ", having LR Number " + lr_no + ". Please track the details on the transporters website"
-            pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).pk
+            pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).purchase_no
 
             msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase having ID '+str(pur_id)+'' \
                                             'is dispatch from our end with Dispatch ID ' + str(
-                item.pk) + ' & LR No ' + lr_no + ' by  ' + transport_name + '. For more details contact us on - 7045922252'
+                item.dispatch_no) + ' & LR No ' + lr_no + ' by  ' + transport_name + '. For more details contact us on - 7045922252'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
