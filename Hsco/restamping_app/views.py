@@ -106,6 +106,34 @@ def restamping_manager(request):
                 'search_msg': 'Search result for CRM No. : ' + crm,
             }
             return render(request, "manager/restamping_manager.html", context)
+        elif 'submit7' in request.POST:
+            email_id = request.POST.get('email_id')
+            # restamp_list = Restamping_after_sales_service.objects.filter(second_company_name=company)
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,company_email__icontains=email_id).order_by('-id')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,company_email__icontains=email_id).order_by('-id')
+            context = {
+                'restamp_list': restamp_list,
+                'search_msg': 'Search result for Email Id: ' + email_id,
+            }
+            return render(request, "manager/restamping_manager.html", context)
+        elif 'submit8' in request.POST:
+            restamping_no = request.POST.get('restamping_no')
+            # restamp_list = Restamping_after_sales_service.objects.filter(second_company_name=company)
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,restamping_no__icontains=restamping_no).order_by('-id')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,restamping_no__icontains=restamping_no).order_by('-id')
+            context = {
+                'restamp_list': restamp_list,
+                'search_msg': 'Search result for Restamping No: ' + restamping_no,
+            }
+            return render(request, "manager/restamping_manager.html", context)
+
+
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
             restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.name, user_id__is_deleted=True,user_id__modules_assigned__icontains='Restamping Module').order_by('-id')

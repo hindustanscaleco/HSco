@@ -242,7 +242,6 @@ def add_onsite_aftersales_service(request):
         # second_contact_no = request.POST.get('second_contact_no')
         # third_contact_no = request.POST.get('third_contact_no')
         previous_repairing_number = request.POST.get('previous_repairing_number')
-        in_warranty = request.POST.get('in_warranty')
         date_of_complaint_received = request.POST.get('date_of_complaint_received')
         complaint_received_by = request.POST.get('complaint_received_by')
         nearest_railwaystation = request.POST.get('nearest_railwaystation')
@@ -311,7 +310,6 @@ def add_onsite_aftersales_service(request):
         item2.second_person = customer_name  # new1
         item2.second_contact_no = contact_no  # new2
         item2.previous_repairing_number = previous_repairing_number
-        item2.in_warranty = in_warranty
         if date_of_complaint_received != None and date_of_complaint_received != '':
             item2.date_of_complaint_received = date_of_complaint_received
         item2.complaint_received_by = complaint_received_by
@@ -451,6 +449,7 @@ def add_onsite_product(request,id):
         components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
         components_replaced = request.POST.get('components_replaced')
         cost = request.POST.get('cost')
+        in_warranty = request.POST.get('in_warranty')
 
 
 
@@ -471,6 +470,8 @@ def add_onsite_product(request,id):
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.crm_no = Customer_Details.objects.get(id=crm_id)
+        item.in_warranty = in_warranty
+
         item.save()
 
         current_stage_in_db = Onsite_aftersales_service.objects.get(
@@ -514,6 +515,7 @@ def update_onsite_product(request,id):
         components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
         components_replaced = request.POST.get('components_replaced')
         cost = request.POST.get('cost')
+        in_warranty = request.POST.get('in_warranty')
 
         cost2 = onsite_id.cost
 
@@ -540,6 +542,8 @@ def update_onsite_product(request,id):
         item.components_replaced_in_warranty = components_replaced_in_warranty
         item.components_replaced = components_replaced
         item.cost = cost
+        item.in_warranty = in_warranty
+
         # item.user_id = SiteUser.objects.get(id=request.user.pk)
         # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         # item.crm_no = Customer_Details.objects.get(id=crm_id)
@@ -551,6 +555,7 @@ def update_onsite_product(request,id):
         item.save(update_fields=['components_replaced', ]),
         item.save(update_fields=['components_replaced_in_warranty', ]),
         item.save(update_fields=['cost', ]),
+        item.save(update_fields=['in_warranty', ]),
 
         current_stage_in_db = Onsite_aftersales_service.objects.get(
             id=onsite).current_stage  # updatestage2
@@ -636,7 +641,6 @@ def update_onsite_details(request,id):
         # second_contact_no=request.POST.get('second_contact_no')
         # third_contact_no=request.POST.get('third_contact_no')
         previous_repairing_number = request.POST.get('previous_repairing_number')
-        in_warranty = request.POST.get('in_warranty')
         # customer_email_id = request.POST.get('customer_email_id')
         # date_of_complaint_received = request.POST.get('date_of_complaint_received')
         # customer_address = request.POST.get('customer_address')
@@ -730,7 +734,6 @@ def update_onsite_details(request,id):
         item.company_name = company_name
         # item.customer_no = customer_no
         item.previous_repairing_number = previous_repairing_number
-        item.in_warranty = in_warranty
         # item.customer_email_id = customer_email_id
         # item.date_of_complaint_received = date_of_complaint_received
         item.customer_address = address
@@ -760,7 +763,6 @@ def update_onsite_details(request,id):
         # item.save(update_fields=['company_name', ]),
         # item.save(update_fields=['customer_no', ]),
         item.save(update_fields=['previous_repairing_number', ]),
-        item.save(update_fields=['in_warranty', ]),
         # item.save(update_fields=['phone_no', ]),
         # item.save(update_fields=['customer_email_id', ]),
         # item.save(update_fields=['date_of_complaint_received', ]),

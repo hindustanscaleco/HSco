@@ -19,7 +19,6 @@ class Onsite_aftersales_service(models.Model):
     # company_name = models.CharField(max_length=80, null=True, blank=True)
     # customer_no = models.CharField(max_length=13, null=True, blank=True)
     previous_repairing_number = models.CharField(max_length=30, null=True, blank=True)
-    in_warranty = models.CharField(default='NO', max_length=30, choices=choices, null=True, blank=True)
     # phone_no = models.CharField(max_length=13, null=True, blank=True)
     # customer_email_id = models.EmailField(max_length=255, null=True, blank=True)
     second_person = models.CharField(max_length=80,null=True,blank=True)
@@ -69,6 +68,7 @@ class Onsite_Products(models.Model):
     components_replaced = models.CharField(max_length=90, null=True, blank=True)
     cost = models.FloatField(default=0.0,)
     entry_timedate = models.DateTimeField(default=timezone.now, )
+    in_warranty = models.CharField(default='NO', max_length=30, choices=choices, null=True, blank=True)
 
     def __int__(self):
         return self.onsite_repairing_id
