@@ -94,6 +94,7 @@ def add_amc_after_sales(request):
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
+
             item.save()
 
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
@@ -115,7 +116,10 @@ def add_amc_after_sales(request):
         item2.contract_no_reporting_breakdown = contract_no_reporting_breakdown
         item2.contract_start_date = contract_start_date
         item2.contract_end_date = contract_end_date
-        item2.amc_no = Amc_After_Sales.objects.latest('amc_no').amc_no+1
+        if Amc_After_Sales.objects.all().count() == 0:
+            item2.amc_no = 1
+        else:
+            item2.amc_no = Amc_After_Sales.objects.latest('id').amc_no + 1
 
         if visit_1 != '':
             item2.visit_1 = visit_1
@@ -347,6 +351,29 @@ def amc_views(request):
                 'search_msg': 'Search result for CRM No. : ' + crm,
             }
             return render(request, "manager/amc_view.html",context )
+        elif  'submit7' in request.POST:
+            amc_no = request.POST.get('amc_no')
+            if check_admin_roles(request):  # For ADMIN
+                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
+                                                          user_id__is_deleted=False,
+                                                          amc_no__icontains=amc_no).order_by('-id')
+            else:  # For EMPLOYEE
+                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,amc_no__icontains=amc_no).order_by('-id')
+
+            # dispatch_list = Amc_After_Sales.objects.filter(customer_name=customer)
+            context = {
+                'amc_list': amc_list,
+                'search_msg': 'Search result for AMC No: ' + amc_no,
+            }
+            return render(request, "manager/amc_view.html", context)
+
+
+            # dispatch_list = Amc_After_Sales.objects.filter(company_name=company)
+            # context = {
+            #     'amc_list': amc_list,
+            # }
+            # return render(request, "manager/amc_view.html",context )
+
     else:
         if request.user.role == 'Admin' or request.user.role == 'Super Admin':     #For ADMIN
             amc_list = Amc_After_Sales.objects.filter(Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False) | Q(user_id__name__icontains=request.user.name)).order_by('-id')
