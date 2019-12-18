@@ -564,7 +564,7 @@ def update_customer_details(request,id):
                 dispatch_pro.brand = oobj.brand
                 dispatch_pro.capacity = oobj.capacity
                 dispatch_pro.unit = oobj.unit
-                dispatch_pro.value_of_goods = oobj.value_of_goods
+                dispatch_pro.value_of_goods = oobj.amount
                 dispatch_pro.dispatch_id = Dispatch.objects.get(id=dispatch.pk)
                 dispatch_pro.save()
 
