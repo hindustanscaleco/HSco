@@ -8,7 +8,7 @@ from user_app.models import SiteUser
 class Dispatch(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
-    crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
+    crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE,null=True,blank=True)
     # dispatch_id = models.CharField(max_length=8,null=True,blank=True,unique=True) #combination of PK and 00000000(8)
     # customer_no = models.CharField(max_length=30,null=True,blank=True)
     # customer_email = models.CharField(max_length=30,null=True,blank=True)

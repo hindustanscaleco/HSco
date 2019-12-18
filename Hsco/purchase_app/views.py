@@ -179,6 +179,22 @@ def add_purchase_details(request):
         # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.purchase_no = Purchase_Details.objects.latest('id').purchase_no+1
+        # request.session['new_repeat_purchase'] = new_repeat_purchase
+        # request.session['second_person'] = customer_name
+        # request.session['second_contact_no'] = contact_no
+        # request.session['date_of_purchase'] = date_of_purchase
+        # request.session['product_purchase_date'] = product_purchase_date
+        # request.session['sales_person'] = sales_person
+        # request.session['user_id'] = SiteUser.objects.get(id=site_user_id)
+        # request.session['bill_no'] = bill_no
+        # request.session['upload_op_file'] = upload_op_file
+        # request.session['po_number'] = po_number
+        # request.session['channel_of_sales'] = channel_of_sales
+        # request.session['industry'] = industry
+        # request.session['value_of_goods'] = 0.0
+        # request.session['channel_of_dispatch'] = channel_of_dispatch
+        # request.session['notes'] = notes
+        # request.session['feedback_form_filled'] = False
 
         item2.save()
 

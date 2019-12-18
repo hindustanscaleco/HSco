@@ -12,7 +12,7 @@ choices = (('NO', 'NO'),
 class Purchase_Details(models.Model):   #cleaned
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
-    crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
+    crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE,null=True,blank=True)
     date_of_purchase = models.DateField(default=datetime.date.today,null=True,blank=True)
     bill_no = models.CharField(max_length=30,null=True,blank=True)
     second_person = models.CharField(max_length=80,null=True,blank=True)
