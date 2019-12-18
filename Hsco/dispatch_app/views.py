@@ -630,7 +630,7 @@ def update_dispatch_details(request,update_id):
                 product_list = product_list + '' + str(email_body_text)
 
             try:
-                pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).pk
+                pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).purchase_no
                 # msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through" \
                 # " " + transport_name + ", having LR Number " + lr_no + ". Please track the" \
                 # " details on the transporters website"+'\nHere is the list of product dispatched:\n' + product_list
