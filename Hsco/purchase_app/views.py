@@ -391,6 +391,20 @@ def view_customer_details(request):
                 'search_msg': 'Search result for CRM No. : ' + crm,
             }
             return render(request, 'dashboardnew/cm.html', context)
+        elif  'submit7' in request.POST:
+            purchase_no = request.POST.get('purchase_no')
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
+                                                            user_id__is_deleted=False,purchase_no__icontains=purchase_no).order_by('-id')
+            else:  # For EMPLOYEE
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,purchase_no__icontains=purchase_no).order_by('-id')
+            # cust_list = Customer_Details.objects.filter(company_name=company)
+            context = {
+                'customer_list': cust_list,
+                'search_msg': 'Search result for Purchase No: ' + purchase_no,
+            }
+            return render(request, 'dashboardnew/cm.html', context)
+
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
             cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=True,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
@@ -896,7 +910,8 @@ def report(request):
         end_date = request.POST.get('date2')
         string = ','.join(selected_list)
         string_product = ','.join(selected_product_list)
-        print(selected_list)
+
+
         request.session['start_date'] = start_date
         request.session['end_date'] = end_date
         request.session['string'] = string
@@ -914,7 +929,8 @@ def final_report(request):
     string_product = request.session.get('string_product')
     selected_list = request.session.get('selected_list')
     selected_product_list = request.session.get('selected_product_list')
-
+    final_row_product = []
+    final_row=[]
 
     for n, i in enumerate(selected_list):
         if i == 'purchase_app_purchase_details.id':
@@ -927,24 +943,26 @@ def final_report(request):
             selected_list[n] = 'Customer Name'
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT  "+string+" from purchase_app_purchase_details , customer_app_customer_details"
-                                "  where purchase_app_purchase_details.crm_no_id = customer_app_customer_details.id and entry_timedate between '"+start_date+"' and '"+end_date+"';")
-        row = cursor.fetchall()
+        if string!='':
+            cursor.execute("SELECT  "+string+" from purchase_app_purchase_details , customer_app_customer_details"
+                                    "  where purchase_app_purchase_details.crm_no_id = customer_app_customer_details.id and entry_timedate between '"+start_date+"' and '"+end_date+"';")
+            row = cursor.fetchall()
 
 
-        final_row= [list(x) for x in row]
-        list3=[]
-        for i in row:
-            list3.append(list(i))
+            final_row= [list(x) for x in row]
+            list3=[]
+            for i in row:
+                list3.append(list(i))
 
-        cursor.execute("SELECT  " + (string_product) + " from purchase_app_product_details PRODUCT, purchase_app_purchase_details PURCHASE"
-                                             "  where PRODUCT.purchase_id_id = PURCHASE.id and PRODUCT.entry_timedate between '" + start_date + "' and '" + end_date + "';")
-        row = cursor.fetchall()
+        if string_product!='':
+            cursor.execute("SELECT  " + (string_product) + " from purchase_app_product_details PRODUCT, purchase_app_purchase_details PURCHASE"
+                                                 "  where PRODUCT.purchase_id_id = PURCHASE.id and PRODUCT.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+            row = cursor.fetchall()
 
-        final_row_product = [list(x) for x in row]
-        list3 = []
-        for i in row:
-            list3.append(list(i))
+            final_row_product = [list(x) for x in row]
+            list3 = []
+            for i in row:
+                list3.append(list(i))
 
 
 
