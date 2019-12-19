@@ -826,7 +826,8 @@ def final_report_onsite(request):
     repair_string = request.session.get('repair_string')
     onsite_repair_product_string = request.session.get('onsite_repair_product_string')
     selected_product_list = request.session.get('selected_product_list')
-
+    final_row=[]
+    final_row_product=[]
 
 
     selected_list = request.session.get('selected_list')
@@ -838,25 +839,26 @@ def final_report_onsite(request):
         if i == 'today_date':
             selected_list[n] = 'Entry Date'
     with connection.cursor() as cursor:
-        cursor.execute("SELECT  " + repair_string + " from onsitevisit_app_onsite_aftersales_service , customer_app_customer_details where onsitevisit_app_onsite_aftersales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
-        row = cursor.fetchall()
+        if repair_string!= '':
+            cursor.execute("SELECT  " + repair_string + " from onsitevisit_app_onsite_aftersales_service , customer_app_customer_details where onsitevisit_app_onsite_aftersales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
+            row = cursor.fetchall()
 
-        print(row)
-        final_row = [list(x) for x in row]
-        repairing_data = []
-        for i in row:
-            repairing_data.append(list(i))
+            print(row)
+            final_row = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
 
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT  " + (onsite_repair_product_string) + " from onsitevisit_app_onsite_products PRODUCT, onsitevisit_app_onsite_aftersales_service ONSITE"
-                                             "  where PRODUCT.onsite_repairing_id_id = ONSITE.id and PRODUCT.entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
-        row = cursor.fetchall()
+        if onsite_repair_product_string != '':
+            cursor.execute("SELECT  " + (onsite_repair_product_string) + " from onsitevisit_app_onsite_products PRODUCT, onsitevisit_app_onsite_aftersales_service ONSITE"
+                                                 "  where PRODUCT.onsite_repairing_id_id = ONSITE.id and PRODUCT.entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
+            row = cursor.fetchall()
 
-        print(row)
-        final_row_product = [list(x) for x in row]
-        repairing_data = []
-        for i in row:
-            repairing_data.append(list(i))
+            print(row)
+            final_row_product = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
     try:
         del request.session['repair_start_date']
         del request.session['repair_end_date']
