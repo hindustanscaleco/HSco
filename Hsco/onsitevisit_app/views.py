@@ -677,7 +677,7 @@ def update_onsite_details(request,id):
             msg='Dear '+customer_name+',Thank you for selecting HSCo. Your Onsite Repairing No '+str(onsite_id.onsite_no)+' has been successfully' \
                 ' resolved. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love to hear your' \
                 ' feedback to help us improve our customer experience, just click on the link below:\n http://139.59.76.87/feedback_onrepairing/'\
-                + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.onsite_no)+' If you feel ' \
+                + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.pk)+' If you feel ' \
                 'that your complaint has not been resolved please contact our customer service team on 7045922251'
 
             try:
@@ -691,7 +691,7 @@ def update_onsite_details(request,id):
                 onsite_id.onsite_no) + ' has been successfully' \
                             ' resolved. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love to hear your' \
                             ' feedback to help us improve our customer experience, just click on the link below:\n http://139.59.76.87/feedback_onrepairing/' \
-                  + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.onsite_no) + ' If you feel ' \
+                  + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.pk) + ' If you feel ' \
                                                                                               'that your complaint has not been resolved please contact our customer service team on 7045922251'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"

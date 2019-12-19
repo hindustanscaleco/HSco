@@ -758,12 +758,12 @@ def add_product_details(request,id):
                     purchase.second_person) + ',' \
                          ' Thank you for purchasing from HSCo,Your Customer ID is ' + str(
                 purchase.crm_no.pk) + ' and Your Purchase ID is ' + str(
-                purchase.pk) + '.' \
+                purchase.purchase_no) + '.' \
                          ' Please use this ID\'s fo further communication. WE\'d love to hear your feedback to help us improve' \
                        ' our customer experience furthermore also stand a chance to win exciting prizes just click on the link' \
                          ' below: \n http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
                 purchase.crm_no.pk) + '/' + str(
-                purchase.purchase_no) + '\n For more details contact us on - 7045922250 \n Order Details:\n '+ product_list
+                purchase.id) + '\n For more details contact us on - 7045922250 \n Order Details:\n '+ product_list
 
 
 
@@ -816,10 +816,10 @@ def add_product_details(request,id):
                 purchase.second_person) + ', Thank you for purchasing from HSCo, Your Customer ID is ' + str(
                 purchase.crm_no.pk) + ' and ' \
                                       ' Your Purchase ID is ' + str(
-                purchase.pk) + '.Please use this IDs fo further communication. WE\'d love to hear your feedback to help us ' \
+                purchase.purchase_no) + '.Please use this IDs fo further communication. WE\'d love to hear your feedback to help us ' \
                                'improve our customer experience furthermore also stand a chance to win exciting prizes just click on the link ' \
                                'below: \n http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
-                purchase.crm_no.pk) + '/' + str(purchase.purchase_no) + ' For more details contact us on - 7045922250'
+                purchase.crm_no.pk) + '/' + str(purchase.pk) + ' For more details contact us on - 7045922250'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""

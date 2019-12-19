@@ -356,7 +356,7 @@ def repair_product(request,id):
                 product_list = product_list + '' + str(email_body_text)
 
                 msg_old= 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                              request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.repairing_no) +'\nHere is a list of Products:\n'+product_list
+                              request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.pk) +'\nHere is a list of Products:\n'+product_list
                 msg='Dear '+rep.second_person+',Thank you for selecting HSCo. Your Scales have been successfully ' \
                     'received at our Repairing Center. Your Repairing No is '+str(rep.repairing_no)+'. Please use this Unique ID for further communication. For any ' \
                     'further details please contact our customer service team on 7045922251 \n Product Details:\n'+product_list
@@ -371,7 +371,7 @@ def repair_product(request,id):
                     pass
 
                 message_old = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                    request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.repairing_no)
+                    request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.pk)
 
                 message = 'Dear '+rep.second_person+', Thank you for selecting HSCo. Your Scales have been successfully ' \
                           'received at our Repairing Center. Your Repairing No is '+str(rep.repairing_no)+'. Please use this Unique ID for ' \
@@ -584,7 +584,7 @@ def update_repairing_details(request,id):
             #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
             message='Dear '+customer_name+',Thank you for selecting HSCo. The Estimate for Your ' \
-                    'Repairing No '+str(repair_id.pk)+' is  '+str(repair_id.total_cost)+'/- For any further details please contact our customer ' \
+                    'Repairing No '+str(repair_id.repairing_no)+' is  '+str(repair_id.total_cost)+'/- For any further details please contact our customer ' \
                     'service team on 7045922251'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
@@ -625,7 +625,7 @@ def update_repairing_details(request,id):
             # message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
             #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
-            message=' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.pk)+' is resolved. ' \
+            message=' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.repairing_no)+' is resolved. ' \
                     'Please collect your Scales within the next 3 days.For any further details please contact our ' \
                     'customer service team on 7045922251'
 
