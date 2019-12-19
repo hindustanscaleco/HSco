@@ -205,6 +205,7 @@ $(function() {
      <option value="d4">Search By Customer Name</option>
      <option value="d5">Search By Company Name</option>
      <option value="d6">Search By CRM No.</option>
+     <option value="d7">Search By Purchase No.</option>
      <!--<option value="d7">Search By CRM Number Range</option>-->
   </select>
 </div>
@@ -285,7 +286,13 @@ $(function() {
       &nbsp; &nbsp;
       <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
 </form>
+                       <form method="POST">{% csrf_token%}
 
+    <div id="d7" class="divs d7">
+      <input type="text" name="purchase_no" placeholder="Purchase No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
+</form>
                                <!--<form method="POST">{% csrf_token%}-->
 
   <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
