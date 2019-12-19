@@ -620,7 +620,8 @@ def final_report_restamping(request):
     selected_list = request.session.get('selected_list')
     repair_product_string = request.session.get('repair_product_string')
     selected_product_list = request.session.get('selected_product_list')
-
+    final_row = []
+    final_row_product = []
     for n, i in enumerate(selected_list):
         if i == 'restamping_app_restamping_after_sales_service.id':
             selected_list[n] = 'Restamping ID'
@@ -631,20 +632,24 @@ def final_report_restamping(request):
 
     with connection.cursor() as cursor:
 
-        cursor.execute("SELECT "+restamp_string+" from restamping_app_restamping_after_sales_service , customer_app_customer_details where restamping_app_restamping_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + restamp_start_date + "' and '" + restamp_end_date + "';")
-        row = cursor.fetchall()
-        final_row = [list(x) for x in row]
-        repairing_data = []
-        for i in row:
-            repairing_data.append(list(i))
+        if restamp_string != '':
 
-        cursor.execute(
-            "SELECT " + repair_product_string + " from restamping_app_restamping_product PRODUCT , restamping_app_restamping_after_sales_service RESTAMP where PRODUCT.restamping_id_id = RESTAMP.id and PRODUCT.entry_timedate between'" + restamp_start_date + "' and '" + restamp_end_date + "';")
-        row = cursor.fetchall()
-        final_row_product = [list(x) for x in row]
-        repairing_data = []
-        for i in row:
-            repairing_data.append(list(i))
+            cursor.execute("SELECT "+restamp_string+" from restamping_app_restamping_after_sales_service , customer_app_customer_details where restamping_app_restamping_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + restamp_start_date + "' and '" + restamp_end_date + "';")
+            row = cursor.fetchall()
+            final_row = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+
+        if repair_product_string != '':
+
+            cursor.execute(
+                "SELECT " + repair_product_string + " from restamping_app_restamping_product PRODUCT , restamping_app_restamping_after_sales_service RESTAMP where PRODUCT.restamping_id_id = RESTAMP.id and PRODUCT.entry_timedate between'" + restamp_start_date + "' and '" + restamp_end_date + "';")
+            row = cursor.fetchall()
+            final_row_product = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
 
         print("selected_list")
         print(selected_list)
