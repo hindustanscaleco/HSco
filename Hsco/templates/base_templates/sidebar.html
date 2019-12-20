@@ -52,9 +52,10 @@
             {% if request.user.is_authenticated and 'Customer Module' in user.modules_assigned %}
 
       <li class="nav-item ">
-        <a class="nav-link" href="/view_customer_details/">
+        {% if request.user.role == 'Employee' %}<a class="nav-link" href="/customer_employee_sales_graph/{{request.user.id}}"><span>Purchase</span></a>
+        {% else %}<a class="nav-link" href="/view_customer_details/"><span>Purchase</span></a> {% endif %}
           <!-- <i class="fas fa-fw fa-plus"></i> -->
-          <span>Purchase</span></a>
+
           <!--<i class="fas fa-fw fa-plus"></i>-->
       </li>
                             {% endif %}
@@ -62,9 +63,10 @@
             {% if request.user.is_authenticated and "'Repairing Module'" in user.modules_assigned %}
 
         <li class="nav-item ">
-        <a class="nav-link" href="/repairing_module_home/">
+        {% if request.user.role == 'Employee' %}<a class="nav-link" href="/repairing_employee_graph/{{request.user.id}}"><span>Repairing</span></a>
+        {% else %}<a class="nav-link" href="/repairing_module_home/"><span>Repairing</span></a>{% endif %}
           <!--<i class="fas fa-clipboard-list"></i>-->
-          <span>Repairing</span></a>
+
       </li>
                                     {% endif %}
 
@@ -74,9 +76,10 @@
 
 
 <li class="nav-item ">
-        <a class="nav-link" href="/restamping_manager/">
+        {% if request.user.role == 'Employee' %}<a class="nav-link" href="/restamping_employee_graph/{{request.user.id}}"><span>Restamping</span></a>
+        {% else %}<a class="nav-link" href="/restamping_manager/"><span>Restamping</span></a>{% endif %}
           <!--<i class="fas fa-clipboard-list"></i>-->
-          <span>Restamping</span></a>
+
       </li>
                             {% endif %}
 
@@ -84,9 +87,10 @@
                     {% if request.user.is_authenticated and 'Dispatch Module' in user.modules_assigned %}
 
        <li class="nav-item ">
-        <a class="nav-link" href="/dispatch_view/">
+        {% if request.user.role == 'Employee' %}<a class="nav-link" href="/dispatch_employee_graph/{{request.user.id}}"><span>Dispatch</span></a>
+        {% else %}<a class="nav-link" href="/dispatch_view/"><span>Dispatch</span></a>{% endif %}
           <!--<i class="fas fa-clipboard-list"></i>-->
-          <span>Dispatch</span></a>
+
       </li>
                     {% endif %}
 
@@ -102,9 +106,10 @@
                     {% if request.user.is_authenticated and 'Onsite Repairing Module' in user.modules_assigned %}
 
           <li class="nav-item ">
-        <a class="nav-link" href="/onsite_views/">
+      {% if request.user.role == 'Employee' %}<a class="nav-link" href="/onsitevisit_app_graph/{{request.user.id}}"><span>Onsite Repairing</span></a>
+        {% else %}<a class="nav-link" href="/onsite_views/"><span>Onsite Repairing</span></a>{% endif %}
           <!--<i class="fas fa-fw fa-chart-area"></i>-->
-          <span>Onsite Repairing</span></a>
+
       </li>
                     {% endif %}
 

@@ -175,13 +175,13 @@ def add_amc_after_sales(request):
         else:
             try:
                 send_mail('Feedback Form', 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
-                    request.user.pk) + '/' + str(item.id) + '/' + str(item2.amc_no), settings.EMAIL_HOST_USER,
+                    request.user.pk) + '/' + str(item.id) + '/' + str(item2.pk), settings.EMAIL_HOST_USER,
                           [item.customer_email_id])
             except:
                 pass
 
             message = 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
-                request.user.pk) + '/' + str(item.id) + '/' + str(item2.amc_no)
+                request.user.pk) + '/' + str(item.id) + '/' + str(item2.pk)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""

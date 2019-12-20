@@ -50,11 +50,13 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <!-- Page Heading -->
+
+          {% if request.user.role == 'Employee' %}
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Onsite Repairing Module Graph</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <h1 class="h3 mb-0 text-gray-800">Dispatch Module Graph</h1>
+            <a href="/onsite_views/" style="background-color: #FC6E20;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"> View Onsite Repairing </a>
           </div>
+            {% endif %}
 
           <div class="row">
 
@@ -79,7 +81,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
       </div>
             <div class="col-xl-2 col-md-4 col-mb-4">
-              <button type="submit" name="submit1" class="btn btn-primary">Submit</button>
+              <button type="submit" name="submit1" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
       </div>
 
       </div>
@@ -121,6 +123,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
           <!-- Content Row -->
           <div class="row">
+                      {% if request.user.role != 'Employee' %}
 
             <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-4 col-md-6 mb-4">
@@ -195,7 +198,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
                           <br>
                           <center> <button style="background-color: #FC6E20;" class="btn btn-primary"> Submit</button> </center>
                         </div>
-
+{% endif %}
 
 </div>
 
