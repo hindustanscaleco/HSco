@@ -10,8 +10,7 @@ class Repairing_ProductDetailsInline(admin.TabularInline):
     model = Repairing_Product
 
 class Repairing_after_sales_serviceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'second_company_name', 'second_contact_no', 'entry_timedate', 'user_id', 'entered_by',)
-    list_filter = ('id',)
+    list_display = ('repairing_no', 'id', 'second_company_name', 'second_contact_no',  'user_id', 'entered_by',)
 
     inlines = [
         Repairing_FeedbackDetailsInline,
@@ -19,7 +18,14 @@ class Repairing_after_sales_serviceAdmin(admin.ModelAdmin):
 
     ]
 
+class Repairing_ProductAdmin(admin.ModelAdmin):
+
+    list_display = ('repairing_id','id')
+
+    search_fields = ('repairing_id','id')
+
+
 admin.site.register(Repairing_after_sales_service,Repairing_after_sales_serviceAdmin)
-admin.site.register(Repairing_Product)
+admin.site.register(Repairing_Product, Repairing_ProductAdmin)
 admin.site.register(Repairing_Feedback)
 admin.site.register(Component_Replaced)
