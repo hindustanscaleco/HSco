@@ -52,20 +52,31 @@ class LoginView(FormView):
         else:
             employee_number = form.cleaned_data.get('mobile')
             password = form.cleaned_data.get('password')
-            try:
-                mobile=SiteUser.objects.get(employee_number=employee_number).mobile
-                user = authenticate(request, mobile=mobile, password=password)
-                if user is not None:
-                    login(request, user)
-                    request.session['registered_mobile'] = mobile
-                    request.session['user_password'] = password
-                    registered_mobile = request.session['registered_mobile']
-                    print(request.session['user_password'])
+            # try:
+            #     mobile=SiteUser.objects.get(employee_number=employee_number).mobile
+            #     user = authenticate(request, mobile=mobile, password=password)
+            #     if user is not None:
+            #         login(request, user)
+            #         request.session['registered_mobile'] = mobile
+            #         request.session['user_password'] = password
+            #         registered_mobile = request.session['registered_mobile']
+            #         print(request.session['user_password'])
+            #
+            #         return redirect('/dashboard/')
+            #
+            # except:
+            #     pass
 
-                    return redirect('/dashboard/')
+            # mobile = SiteUser.objects.get(employee_number=employee_number).mobile
+            user = authenticate(request, mobile=employee_number, password=password)
+            if user is not None:
+                login(request, user)
+                request.session['registered_mobile'] = employee_number
+                request.session['user_password'] = password
+                registered_mobile = request.session['registered_mobile']
+                print(request.session['user_password'])
 
-            except:
-                pass
+                return redirect('/dashboard/')
 
             # print("NormalOGIN"+str(user))
 
