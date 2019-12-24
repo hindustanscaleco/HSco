@@ -148,7 +148,7 @@ def add_dispatch_details(request):
         if Dispatch.objects.all().count()==0:
             item2.dispatch_no = 1
         else:
-            item2.dispatch_no = Dispatch.objects.latest('id').dispatch_no+1
+            item2.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no+1
 
         item2.save()
 

@@ -136,7 +136,7 @@ def add_repairing_details(request):
             except:
                 pass
 
-        item2.repairing_no = Repairing_after_sales_service.objects.latest('id').repairing_no+1
+        item2.repairing_no = Repairing_after_sales_service.objects.latest('repairing_no').repairing_no+1
         item2.previous_repairing_number = previous_repairing_number
         item2.in_warranty = in_warranty
         item2.today_date = today_date
