@@ -50,20 +50,25 @@ class LoginView(FormView):
                     next = '/dashboard/'
                 return redirect(next)
         else:
-            mobile = form.cleaned_data.get('mobile')
+            employee_number = form.cleaned_data.get('mobile')
             password = form.cleaned_data.get('password')
-            print("NormalOGIN" + str(mobile))
-            print("NormalOGIN" + str(password))
-            user = authenticate(request, mobile=mobile, password=password)
-            # print("NormalOGIN"+str(user))
-            if user is not None:
-                login(request, user)
-                request.session['registered_mobile'] = mobile
-                request.session['user_password'] = password
-                registered_mobile = request.session['registered_mobile']
-                print(request.session['user_password'])
+            try:
+                mobile=SiteUser.objects.get(employee_number=employee_number).mobile
+                user = authenticate(request, mobile=mobile, password=password)
+                if user is not None:
+                    login(request, user)
+                    request.session['registered_mobile'] = mobile
+                    request.session['user_password'] = password
+                    registered_mobile = request.session['registered_mobile']
+                    print(request.session['user_password'])
 
-                return redirect('/dashboard/')
+                    return redirect('/dashboard/')
+
+            except:
+                pass
+
+            # print("NormalOGIN"+str(user))
+
 
         return super(LoginView, self).form_invalid(form)
 
