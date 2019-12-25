@@ -966,7 +966,6 @@ def manager_repairing_module_home(request):
     }
     return render(request,'dashboardnew/manager_repairing_module_home.html',context)
 
-
 def repairing_analytics(request):
     mon = datetime.now().month
     this_month = Employee_Analysis_month.objects.all().values('entry_date').annotate(data_sum=Sum('total_reparing_done'))
@@ -1282,7 +1281,7 @@ def repairing_employee_graph(request,user_id):
     #current month
     target_achieved =  obj.reparing_target_achived_till_now
     this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                     'total_reparing_done_today')
+                                                                                                     'total_reparing_done_today').order_by('entry_date')
 
     this_lis_date = []
     this_lis_sum = []
@@ -1295,7 +1294,7 @@ def repairing_employee_graph(request,user_id):
 
     mon = (datetime.now().month) - 1
     previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                     'total_reparing_done_today')
+                                                                                                     'total_reparing_done_today').order_by('entry_date')
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -1307,7 +1306,7 @@ def repairing_employee_graph(request,user_id):
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values('entry_date',
-                                                                                                     'total_reparing_done_today')
+                                                                                                     'total_reparing_done_today').order_by('entry_date')
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -1329,7 +1328,7 @@ def repairing_employee_graph(request,user_id):
     else:
 
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date',
-                                                                                                     'total_reparing_done_today')
+                                                                                                     'total_reparing_done_today').order_by('entry_date')
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -1587,7 +1586,6 @@ def send_sms(request,name,phone,email,repair_id,item_id):
 #     return render(request,'dashboardnew/repair_product.html',context)
 
 
-
 def repairing_form(request,id):
     data=Repairing_after_sales_service.objects.get(id=id)
     product_list=Repairing_Product.objects.filter(repairing_id=id)
@@ -1596,6 +1594,7 @@ def repairing_form(request,id):
         'product_list':product_list,
     }
     return render(request,'repairing_format/reparingform.html',context)
+
 #
 # def repairing_form_back(request):
 #     return render(request,'repairing_form/reparingformback.html')

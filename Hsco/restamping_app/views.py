@@ -677,7 +677,7 @@ def restamping_employee_graph(request,user_id):
     #current month
     mon = datetime.now().month
     this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                         'total_restamping_done_today')
+                                                                                                         'total_restamping_done_today').order_by('entry_date')
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
@@ -688,7 +688,7 @@ def restamping_employee_graph(request,user_id):
     # previous month sales
     mon = (datetime.now().month) - 1
     previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                         'total_restamping_done_today')
+                                                                                                         'total_restamping_done_today').order_by('entry_date')
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -700,7 +700,7 @@ def restamping_employee_graph(request,user_id):
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values('entry_date',
-                                                                                                         'total_restamping_done_today')
+                                                                                                         'total_restamping_done_today').order_by('entry_date')
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -722,7 +722,7 @@ def restamping_employee_graph(request,user_id):
     else:
 
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values(
-            'entry_date', 'total_restamping_done_today')
+            'entry_date', 'total_restamping_done_today').order_by('entry_date')
         lis_date = []
         lis_sum = []
         for i in qs:
