@@ -52,10 +52,10 @@ class LoginForm(forms.Form):
     def clean(self):
         mobile = self.cleaned_data.get('mobile')
         password = self.cleaned_data.get('password')
-        try:
-            mobile = SiteUser.objects.get(employee_number=mobile).mobile
-        except:
-            pass
+        # try:
+        #     mobile = SiteUser.objects.get(employee_number=mobile).mobile
+        # except:
+        #     pass
 
         user = authenticate(mobile=mobile, password=password)
         if not user or not user.is_active:
