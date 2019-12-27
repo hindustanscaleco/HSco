@@ -21,7 +21,7 @@
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto;">
 
-                    <div class="col-xl-4 col-md-1 mb-1"><center> {{ list.user_id }} </center></div>|
+                    <div class="col-xl-4 col-md-1 mb-1"><center> {{ list.name }} </center></div>|
                     <div class="col-xl-4 col-md-1 mb-1"><center>{{ list.total_dispatch_done }} </center></div>|
                     <div class="col-xl-3 col-md-1 mb-1"><center>{{ list.avg_time_dispatch_form_to_done }} </center></div>
 
@@ -80,7 +80,7 @@
                   {% endif %}
                   <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
 
-                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.pk }}</center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.dispatch_no }}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.second_person }} </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center>{% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.second_contact_no }} </center></div>|

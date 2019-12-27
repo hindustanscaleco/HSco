@@ -230,7 +230,7 @@ function myFunction() {
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">:
-       <label class="col-md-2 control-label">{{repair_id.pk}}
+       <label class="col-md-2 control-label">{{repair_id.repairing_no}}
 
 
 </label>
@@ -437,12 +437,13 @@ function myFunction() {
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
       <select disabled id="myText13" name="repaired" class="form-control">
 {% if repair_id.repaired == 'No' %}
-  <option value="No">No</option>
-  <option value="Yes">Yes</option>
-  {% else %}
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
+  <option name="repaired" value="No">No</option>
+  <option name="repaired" value="Yes">Yes</option>
+  {% elif repair_id.repaired == 'Yes' %}
+          <option name="repaired" value="Yes">Yes</option>
+          <option name="repaired" value="No">No</option>
  {% endif %}
+
 </select>
 
   <!--<input type="text" name="repaired" placeholder="Repaired" class="form-control" id="myText12"  disabled value="{{repair_id.repaired}}">-->

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'amc_visit_app',
     'notif_dec_app',
     'purchase_app',
+    'stock_system',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +80,7 @@ DATABASES = {
      'ENGINE': 'django.db.backends.mysql',
     'NAME': 'hsco_db',
     'USER': 'root',
-    'PASSWORD': '',
+    'PASSWORD': 'sagar123',
     'HOST': '127.0.0.1',
     'PORT': '3306',
     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",

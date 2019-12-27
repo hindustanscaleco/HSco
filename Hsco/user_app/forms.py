@@ -14,15 +14,26 @@ class SiteUser_Form(forms.ModelForm):
 
 class LoginForm(forms.Form):
 
-    mobile = forms.IntegerField(validators=[phone_regex],
+    mobile = forms.IntegerField(
          widget=forms.TextInput(
              attrs={
                  'type': 'text',
                  'onkeypress':"return isNumber(event)",
                  'class': 'form-control',
-                 'placeholder': "Enter Mobile Number",
+                 'placeholder': "Enter Employee Number",
                  'name': 'mobile',
              }))
+
+    # employee_number = forms.IntegerField(
+    #      widget=forms.TextInput(
+    #          attrs={
+    #              'type': 'text',
+    #              'onkeypress':"return isNumber(event)",
+    #              'class': 'form-control',
+    #              'placeholder': "Employee Number",
+    #              'name': 'employee_number',
+    #          }))
+
 
     password = forms.CharField(
         widget=forms.PasswordInput(
@@ -41,6 +52,11 @@ class LoginForm(forms.Form):
     def clean(self):
         mobile = self.cleaned_data.get('mobile')
         password = self.cleaned_data.get('password')
+        # try:
+        #     mobile = SiteUser.objects.get(employee_number=mobile).mobile
+        # except:
+        #     pass
+
         user = authenticate(mobile=mobile, password=password)
         if not user or not user.is_active:
             raise forms.ValidationError("Incorrect Mobile Number or Password. Please try again !!!")

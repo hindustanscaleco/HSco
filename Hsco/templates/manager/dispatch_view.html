@@ -166,6 +166,7 @@ $(function() {
      <option value="d4">Search By Customer Name</option>
      <option value="d5">Search By Company Name</option>
      <option value="d6">Search By CRM No.</option>
+     <option value="d7">Search By Dispatch No.</option>
      <!--<option value="d7">Search By CRM Number Range</option>-->
   </select>
 </div>
@@ -234,6 +235,13 @@ $(function() {
       <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
       <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
+</form>
+                                          <form method="POST">{% csrf_token%}
+
+    <div id="d7" class="divs d7">
+      <input type="text" name="dispatch_no" placeholder="Dispatch No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
 </form>
 
                                <!--<form method="POST">{% csrf_token%}-->
@@ -364,9 +372,10 @@ $(function() {
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
                     <div class="col-xl-1 col-md-1 mb-1"><center> Dispatch ID </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center> Dispatch ID </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> Customer Name </center></div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Company Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Contact No </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center> Contact No </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Entered By </center> </div>|
 
                     <div class="col-xl-2 col-md-1 mb-1"><center> Dispatched by </center></div>
@@ -396,10 +405,11 @@ $(function() {
                   {% endif %}
                   <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
 
-                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.pk }}</center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.entry_timedate|date:'Y-m-d' }}</center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.dispatch_no }}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.second_person }} </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center>{% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.second_contact_no }} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.second_contact_no }} </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1 ">{{list.user_id.profile_name}}</div>|
 
                     <div class="col-xl-2 col-md-1 mb-1"><center>{% if list.dispatch_by != None and list.dispatch_by != '' %}{{list.dispatch_by}}{% else %}{% endif %} </center></div>

@@ -26,9 +26,9 @@ def restamping_manager(request):
             end_date = request.POST.get('date2')
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-restamping_no')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-restamping_no')
 
             # restamp_list = Restamping_after_sales_service.objects.filter(entry_timedate__range=[start_date, end_date])
             context = {
@@ -41,9 +41,9 @@ def restamping_manager(request):
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-id')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-restamping_no')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-id')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-restamping_no')
 
             # restamp_list = Restamping_after_sales_service.objects.filter(mobile_no=contact)
             context = {
@@ -56,9 +56,9 @@ def restamping_manager(request):
             email = request.POST.get('email')
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,company_email__icontains=email).order_by('-id')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,company_email__icontains=email).order_by('-restamping_no')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-id')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-restamping_no')
             # restamp_list = Restamping_after_sales_service.objects.filter(customer_email_id=email)
             context = {
                 'restamp_list': restamp_list,
@@ -70,9 +70,9 @@ def restamping_manager(request):
             restamp_list = Restamping_after_sales_service.objects.filter(name=customer)
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_person__icontains=customer).order_by('-id')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_person__icontains=customer).order_by('-restamping_no')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-id')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-restamping_no')
             context = {
                 'restamp_list': restamp_list,
                 'search_msg': 'Search result for Customer Name: ' + customer,
@@ -84,9 +84,9 @@ def restamping_manager(request):
             # restamp_list = Restamping_after_sales_service.objects.filter(second_company_name=company)
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_company_name__icontains=company).order_by('-id')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_company_name__icontains=company).order_by('-restamping_no')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-id')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-restamping_no')
             context = {
                 'restamp_list': restamp_list,
                 'search_msg': 'Search result for Company Name: ' + company,
@@ -96,9 +96,9 @@ def restamping_manager(request):
             crm = request.POST.get('crm')
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,crm_no__pk=crm).order_by('-restamping_no')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-restamping_no')
             restamp_list = Restamping_after_sales_service.objects.filter(crn_number=crm)
 
             context = {
@@ -106,11 +106,39 @@ def restamping_manager(request):
                 'search_msg': 'Search result for CRM No. : ' + crm,
             }
             return render(request, "manager/restamping_manager.html", context)
+        elif 'submit7' in request.POST:
+            email_id = request.POST.get('email_id')
+            # restamp_list = Restamping_after_sales_service.objects.filter(second_company_name=company)
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,company_email__icontains=email_id).order_by('-restamping_no')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,company_email__icontains=email_id).order_by('-restamping_no')
+            context = {
+                'restamp_list': restamp_list,
+                'search_msg': 'Search result for Email Id: ' + email_id,
+            }
+            return render(request, "manager/restamping_manager.html", context)
+        elif 'submit8' in request.POST:
+            restamping_no = request.POST.get('restamping_no')
+            # restamp_list = Restamping_after_sales_service.objects.filter(second_company_name=company)
+            if check_admin_roles(request):  # For ADMIN
+                restamp_list = Restamping_after_sales_service.objects.filter(
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,restamping_no__icontains=restamping_no).order_by('-restamping_no')
+            else:  # For EMPLOYEE
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,restamping_no__icontains=restamping_no).order_by('-restamping_no')
+            context = {
+                'restamp_list': restamp_list,
+                'search_msg': 'Search result for Restamping No: ' + restamping_no,
+            }
+            return render(request, "manager/restamping_manager.html", context)
+
+
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
-            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.name, user_id__is_deleted=True,user_id__modules_assigned__icontains='Restamping Module').order_by('-id')
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.name, user_id__is_deleted=True,user_id__modules_assigned__icontains='Restamping Module').order_by('-restamping_no')
         else:  # For EMPLOYEE
-            restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-restamping_no')
         # restamp_list = Restamping_after_sales_service.objects.all()
 
         context = {
@@ -123,7 +151,7 @@ def restamping_manager(request):
             'none':None,
         }
         if check_admin_roles(request):     #For ADMIN
-            restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains="'Restamping Module'")).order_by('-id')
+            restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains="'Restamping Module'")).order_by('-restamping_no')
 
             stage1 = Restamping_after_sales_service.objects.filter((Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False))&
                 Q(current_stage='Scales in Restamping Queue')).values('current_stage').annotate(
@@ -138,7 +166,7 @@ def restamping_manager(request):
                 'current_stage').annotate(dcount=Count('current_stage'))
 
         else:  #For EMPLOYEE
-            restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)).order_by('-id')
+            restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)).order_by('-restamping_no')
 
             stage1 = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)&
                 Q(current_stage='Scales in Restamping Queue')).values('current_stage').annotate(
@@ -311,6 +339,7 @@ def restamping_after_sales_service(request):
         # item2.brand = brand
         item2.total_amount = 0.0
         # item2.scale_delivery_date = scale_delivery_date
+        item2.restamping_no = Restamping_after_sales_service.objects.latest('restamping_no').restamping_no+1
 
 
         item2.save()
@@ -568,14 +597,19 @@ def update_restamping_details(request,id):
 def report_restamping(request):
     if request.method == 'POST' or None:
         selected_list = request.POST.getlist('checks[]')
+        selected_product_list = request.POST.getlist('products[]')
         repair_start_date = request.POST.get('date1')
         repair_end_date = request.POST.get('date2')
         repair_string = ','.join(selected_list)
+        repair_product_string = ','.join(selected_product_list)
 
         request.session['start_date'] = repair_start_date
         request.session['repair_end_date'] = repair_end_date
         request.session['repair_string'] = repair_string
         request.session['selected_list'] = selected_list
+
+        request.session['selected_product_list'] = selected_product_list
+        request.session['repair_product_string'] = repair_product_string
         return redirect('/final_report_restamping/')
     return render(request, "report/report_restamping_form.html",)
 
@@ -584,16 +618,41 @@ def final_report_restamping(request):
     restamp_end_date = str(request.session.get('repair_end_date'))
     restamp_string = request.session.get('repair_string')
     selected_list = request.session.get('selected_list')
+    repair_product_string = request.session.get('repair_product_string')
+    selected_product_list = request.session.get('selected_product_list')
+    final_row = []
+    final_row_product = []
+    for n, i in enumerate(selected_list):
+        if i == 'restamping_app_restamping_after_sales_service.id':
+            selected_list[n] = 'Restamping ID'
+        if i == 'crm_no_id':
+            selected_list[n] = 'Customer No'
+        if i == 'today_date':
+            selected_list[n] = 'Entry Date'
 
     with connection.cursor() as cursor:
-        cursor.execute(
-            "SELECT  " + restamp_string + " from restamping_app_restamping_after_sales_service , customer_app_customer_details"
-                                         "  where restamping_app_restamping_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + restamp_start_date + "' and '" + restamp_end_date + "';")
-        row = cursor.fetchall()
-        final_row = [list(x) for x in row]
-        repairing_data = []
-        for i in row:
-            repairing_data.append(list(i))
+
+        if restamp_string != '':
+
+            cursor.execute("SELECT "+restamp_string+" from restamping_app_restamping_after_sales_service , customer_app_customer_details where restamping_app_restamping_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + restamp_start_date + "' and '" + restamp_end_date + "';")
+            row = cursor.fetchall()
+            final_row = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+
+        if repair_product_string != '':
+
+            cursor.execute(
+                "SELECT " + repair_product_string + " from restamping_app_restamping_product PRODUCT , restamping_app_restamping_after_sales_service RESTAMP where PRODUCT.restamping_id_id = RESTAMP.id and PRODUCT.entry_timedate between'" + restamp_start_date + "' and '" + restamp_end_date + "';")
+            row = cursor.fetchall()
+            final_row_product = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+
+        print("selected_list")
+        print(selected_list)
 
     try:
         del request.session['repair_start_date']
@@ -605,7 +664,9 @@ def final_report_restamping(request):
 
     context = {
         'final_row': final_row,
+        'final_row_product': final_row_product,
         'selected_list': selected_list,
+        'selected_product_list': selected_product_list,
     }
     return render(request,"report/final_report_restamp_mod_form.html",context)
 
@@ -616,7 +677,7 @@ def restamping_employee_graph(request,user_id):
     #current month
     mon = datetime.now().month
     this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                         'total_restamping_done_today')
+                                                                                                         'total_restamping_done_today').order_by('entry_date')
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
@@ -627,7 +688,7 @@ def restamping_employee_graph(request,user_id):
     # previous month sales
     mon = (datetime.now().month) - 1
     previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                         'total_restamping_done_today')
+                                                                                                         'total_restamping_done_today').order_by('entry_date')
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -639,7 +700,7 @@ def restamping_employee_graph(request,user_id):
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values('entry_date',
-                                                                                                         'total_restamping_done_today')
+                                                                                                         'total_restamping_done_today').order_by('entry_date')
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -661,7 +722,7 @@ def restamping_employee_graph(request,user_id):
     else:
 
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values(
-            'entry_date', 'total_restamping_done_today')
+            'entry_date', 'total_restamping_done_today').order_by('entry_date')
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -810,7 +871,7 @@ def load_restamping_manager(request):
                 '-id')
 
         else:  # For EMPLOYEE
-            restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)).order_by('-id')
+            restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)).order_by('-restamping_no')
 
 
         context = {
@@ -838,7 +899,7 @@ def load_restamping_stages_list(request,):
 
         restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk) &
                                                                Q(current_stage=selected_stage))
-    # restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),current_stage=selected_stage).order_by('-id')
+    # restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),current_stage=selected_stage).order_by('-restamping_no')
 
     context = {
         'restamp_list': restamp_list,

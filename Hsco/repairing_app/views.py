@@ -18,11 +18,10 @@ from Hsco import settings
 import datetime
 import requests
 import json
-from datetime import datetime
 from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 from django.db.models import Count
 from django.db.models import Q
-from datetime import datetime, timedelta
+from datetime import date,datetime, timedelta
 
 def add_repairing_details(request):
     cust_sugg=Customer_Details.objects.all()
@@ -137,6 +136,7 @@ def add_repairing_details(request):
             except:
                 pass
 
+        item2.repairing_no = Repairing_after_sales_service.objects.latest('repairing_no').repairing_no+1
         item2.previous_repairing_number = previous_repairing_number
         item2.in_warranty = in_warranty
         item2.today_date = today_date
@@ -314,6 +314,9 @@ def repair_product(request,id):
         # else:
         #     item.is_last_product = True
 
+        # if in_warranty.lower() == 'yes':
+        #     item.cost = 0.0
+        # else:
         item.cost = cost
 
         item.save()
@@ -353,9 +356,9 @@ def repair_product(request,id):
                 product_list = product_list + '' + str(email_body_text)
 
                 msg_old= 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                              request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.id) +'\nHere is a list of Products:\n'+product_list
+                              request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.pk) +'\nHere is a list of Products:\n'+product_list
                 msg='Dear '+rep.second_person+',Thank you for selecting HSCo. Your Scales have been successfully ' \
-                    'received at our Repairing Center. Your Repairing No is '+str(rep.pk)+'. Please use this Unique ID for further communication. For any ' \
+                    'received at our Repairing Center. Your Repairing No is '+str(rep.repairing_no)+'. Please use this Unique ID for further communication. For any ' \
                     'further details please contact our customer service team on 7045922251 \n Product Details:\n'+product_list
                 # if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
                 # crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
@@ -368,10 +371,10 @@ def repair_product(request,id):
                     pass
 
                 message_old = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                    request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.id)
+                    request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.pk)
 
                 message = 'Dear '+rep.second_person+', Thank you for selecting HSCo. Your Scales have been successfully ' \
-                          'received at our Repairing Center. Your Repairing No is '+str(rep.pk)+'. Please use this Unique ID for ' \
+                          'received at our Repairing Center. Your Repairing No is '+str(rep.repairing_no)+'. Please use this Unique ID for ' \
                           'further communication. For any further details please contact our customer service team on 7045922251'
 
                 url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + rep.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
@@ -533,11 +536,7 @@ def update_repairing_details(request,id):
             item2.company_email = customer_email_id  # new2
             item.save(update_fields=['customer_email_id'])
 
-        # item2.previous_repairing_number = previous_repairing_number
-        # item2.today_date = today_date
 
-        # item2.location = location
-        # item2.products_to_be_repaired = products_to_be_repaired
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage3
         if current_stage_in_db == 'Estimate is given but Estimate is not confirmed' and confirmed_estimate == 'Yes':
             Repairing_after_sales_service.objects.filter(id=id).update(
@@ -585,7 +584,7 @@ def update_repairing_details(request,id):
             #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
             message='Dear '+customer_name+',Thank you for selecting HSCo. The Estimate for Your ' \
-                    'Repairing No '+str(repair_id.pk)+' is  '+str(repair_id.total_cost)+'/- For any further details please contact our customer ' \
+                    'Repairing No '+str(repair_id.repairing_no)+' is  '+str(repair_id.total_cost)+'/- For any further details please contact our customer ' \
                     'service team on 7045922251'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
@@ -609,9 +608,11 @@ def update_repairing_details(request,id):
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Repaired but not collected')
             item2.stage_update_timedate = timezone.now()
+
             item2.repaired = repaired
             item2.save(update_fields=['stage_update_timedate', ])
             item2.save(update_fields=['repaired'])
+
             try:
                 send_mail('Your Repairing Done - HSCo',
                           ' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.pk)+' is resolved.'
@@ -624,7 +625,7 @@ def update_repairing_details(request,id):
             # message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
             #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
-            message=' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.pk)+' is resolved. ' \
+            message=' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.repairing_no)+' is resolved. ' \
                     'Please collect your Scales within the next 3 days.For any further details please contact our ' \
                     'customer service team on 7045922251'
 
@@ -648,10 +649,6 @@ def update_repairing_details(request,id):
             if current_stage_in_db == 'Repaired but not collected' and item2.delivery_date != '' and item2.delivery_date != None:
                 Repairing_after_sales_service.objects.filter(id=id).update(
                     current_stage='Finally Collected')
-                print(
-                    current_stage_in_db,delivery_date,
-
-                )
 
 
                 item2.stage_update_timedate = timezone.now()
@@ -707,6 +704,11 @@ def update_repairing_details(request,id):
             item2.save(update_fields=['repaired_by'])
             item2.save(update_fields=['repaired_date', ])
 
+        if item2.repaired == 'Yes'and item2.repaired_date != 'No' and type(item2.repaired_date) != str:
+            Employee_Analysis_date.objects.filter(user_id=repair_id.user_id,
+                                                  entry_date__month=repair_id.entry_timedate.month,
+                                                  year=repair_id.entry_timedate.year).update(
+                avg_time_to_repair_single_scale_today= (repair_id.repaired_date - repair_id.entry_timedate ).days)
 
         item2.second_person=customer_name
         # item2.third_person=third_person
@@ -741,6 +743,7 @@ def update_repairing_details(request,id):
         item2.save(update_fields=['confirmed_estimate', ])
         item2.save(update_fields=['second_company_name', ])
         item2.save(update_fields=['company_address', ])
+        item2.save(update_fields=['repaired', ])
         item2.save(update_fields=['company_email', ])
         item2.save(update_fields=['repaired_by','taken_by', ])
         # item2.save(update_fields=['feedback_given', ])
@@ -757,7 +760,6 @@ def update_repairing_details(request,id):
         }
         return render(request, 'update_forms/update_rep_mod_form.html', context)
 
-    print(repair_list)
     context={
         'repair_list': repair_list,
         'repair_id': repair_id,
@@ -775,9 +777,9 @@ def repairing_module_home(request):
             end_date = request.POST.get('date2')
             if check_admin_roles(request):  # For ADMIN
                 repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
+                                                                           user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-repairing_no')
             else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
+                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-repairing_no')
             # repair_list = Repairing_after_sales_service.objects.filter(entry_timedate__range=[start_date, end_date])
             context = {
                 'repair_list': repair_list,
@@ -788,9 +790,9 @@ def repairing_module_home(request):
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
                 repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-id')
+                                                                           user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-repairing_no')
             else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-id')
+                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-repairing_no')
             # repair_list = Repairing_after_sales_service.objects.filter(phone_no=contact)
             context = {
                 'repair_list': repair_list,
@@ -802,9 +804,9 @@ def repairing_module_home(request):
             email = request.POST.get('email')
             if check_admin_roles(request):  # For ADMIN
                 repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,company_email__icontains=email).order_by('-id')
+                                                                           user_id__is_deleted=False,company_email__icontains=email).order_by('-repairing_no')
             else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-id')
+                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-repairing_no')
             # repair_list = Repairing_after_sales_service.objects.filter(customer_email_id=email)
             context = {
                 'repair_list': repair_list,
@@ -815,9 +817,9 @@ def repairing_module_home(request):
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
                 repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,second_person__icontains=customer).order_by('-id')
+                                                                           user_id__is_deleted=False,second_person__icontains=customer).order_by('-repairing_no')
             else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-id')
+                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-repairing_no')
             # repair_list = Repairing_after_sales_service.objects.filter(name=customer)
             context = {
                 'repair_list': repair_list,
@@ -829,9 +831,9 @@ def repairing_module_home(request):
             company = request.POST.get('company')
             if check_admin_roles(request):  # For ADMIN
                 repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,second_company_name__icontains=company).order_by('-id')
+                                                                           user_id__is_deleted=False,second_company_name__icontains=company).order_by('-repairing_no')
             else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-id')
+                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-repairing_no')
             # repair_list = Repairing_after_sales_service.objects.filter(company_name=company)
             context = {
                 'repair_list': repair_list,
@@ -842,9 +844,9 @@ def repairing_module_home(request):
             crm = request.POST.get('crm')
             if check_admin_roles(request):  # For ADMIN
                 repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
+                                                                           user_id__is_deleted=False,crm_no__pk=crm).order_by('-repairing_no')
             else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
+                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-repairing_no')
             # repair_list = Repairing_after_sales_service.objects.filter(crn_number=crm)
             context = {
                 'repair_list': repair_list,
@@ -853,40 +855,38 @@ def repairing_module_home(request):
             return render(request, 'dashboardnew/repairing_module_home.html', context)
     else:
         if request.user.role =='Super Admin':     #For ADMIN
-            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='') |Q(user_id__name=request.user.name)|Q(taken_by=request.user.name)| Q(user_id__group__icontains=request.user.name))&Q(user_id__is_deleted=False)&Q(user_id__modules_assigned__icontains="'Repairing Module'")).order_by('-id')
+            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='') |Q(user_id__name=request.user.name)|Q(taken_by=request.user.name)| Q(user_id__group__icontains=request.user.name))&Q(user_id__is_deleted=False)&Q(user_id__modules_assigned__icontains="'Repairing Module'")).order_by('-repairing_no')
 
             res = Repairing_after_sales_service.objects.filter(Q(taken_by=None) | Q(taken_by='') |Q(user_id__name=request.user.name)|Q(taken_by=request.user.name) | Q(user_id__group__icontains=request.user.name)).values(
                 'current_stage').annotate(
                 dcount=Count('current_stage'))
         elif request.user.role =='Admin':
-            admin = SiteUser.objects.get(id=request.user.pk).name
-            repair_list = Repairing_after_sales_service.objects.filter(
-                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)|Q()).order_by(
+            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')|Q(user_id__name=request.user.name))).order_by(
                 '-id')
 
             res = Repairing_after_sales_service.objects.filter(
-                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)).values(
+                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')|Q(user_id__name=request.user.name)) ).values(
                 'current_stage').annotate(
                 dcount=Count('current_stage'))
         elif request.user.role =='Manager':
             admin = SiteUser.objects.get(id=request.user.pk).admin
             repair_list = Repairing_after_sales_service.objects.filter(
-                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)).order_by(
+                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')|Q(user_id__name=request.user.name)) & Q(user_id__admin=admin)).order_by(
                 '-id')
 
             res = Repairing_after_sales_service.objects.filter(
-                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)).values(
+                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')|Q(user_id__name=request.user.name)) & Q(user_id__admin=admin)).values(
                 'current_stage').annotate(
                 dcount=Count('current_stage'))
 
         else:  #For EMPLOYEE
             admin = SiteUser.objects.get(id=request.user.pk).admin
-            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name)|Q(taken_by=None) | Q(taken_by=''))&Q(user_id__admin=admin)).order_by('-id')
+            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name)|Q(taken_by=None) | Q(taken_by=''))&Q(user_id__admin=admin)).order_by('-repairing_no')
 
             res = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name)|Q(taken_by=None) | Q(taken_by=''))&Q(user_id__admin=admin)).values('current_stage').annotate(
                 dcount=Count('current_stage'))
-            # repair_list2 = Repairing_after_sales_service.objects.filter(Q(taken_by='')).order_by('-id')
-            # repair_list = Repairing_after_sales_service.objects.filter(taken_by=request.user.name,).order_by('-id')
+            # repair_list2 = Repairing_after_sales_service.objects.filter(Q(taken_by='')).order_by('-repairing_no')
+            # repair_list = Repairing_after_sales_service.objects.filter(taken_by=request.user.name,).order_by('-repairing_no')
         # repair_list = Repairing_after_sales_service.objects.all()
 
         context = {
@@ -966,7 +966,6 @@ def manager_repairing_module_home(request):
     }
     return render(request,'dashboardnew/manager_repairing_module_home.html',context)
 
-
 def repairing_analytics(request):
     mon = datetime.now().month
     this_month = Employee_Analysis_month.objects.all().values('entry_date').annotate(data_sum=Sum('total_reparing_done'))
@@ -1025,7 +1024,8 @@ def final_repairing_report_module(request):
     repair_string = request.session.get('repair_string')
     repair_product_string = request.session.get('repair_product_string')
     selected_product_list = request.session.get('selected_product_list')
-
+    final_row = []
+    final_row_product = []
 
     selected_list = request.session.get('selected_list')
     for n, i in enumerate(selected_list):
@@ -1039,20 +1039,22 @@ def final_repairing_report_module(request):
 
     with connection.cursor() as cursor:
 
-        cursor.execute("SELECT "+repair_string+" from repairing_app_repairing_after_sales_service , customer_app_customer_details where repairing_app_repairing_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
-        row = cursor.fetchall()
-        final_row = [list(x) for x in row]
-        repairing_data = []
-        for i in row:
-            repairing_data.append(list(i))
+        if repair_string != '':
+            cursor.execute("SELECT "+repair_string+" from repairing_app_repairing_after_sales_service , customer_app_customer_details where repairing_app_repairing_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
+            row = cursor.fetchall()
+            final_row = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
 
-        cursor.execute(
-            "SELECT " + repair_product_string + " from repairing_app_repairing_product , repairing_app_repairing_after_sales_service where repairing_app_repairing_product.repairing_id_id = repairing_app_repairing_after_sales_service.id and repairing_app_repairing_product.entry_timedate between'" + repair_start_date + "' and '" + repair_end_date + "';")
-        row = cursor.fetchall()
-        final_row_product = [list(x) for x in row]
-        repairing_data = []
-        for i in row:
-            repairing_data.append(list(i))
+        if repair_product_string != '':
+            cursor.execute(
+                "SELECT " + (repair_product_string) + " from repairing_app_repairing_product  PRODUCT , repairing_app_repairing_after_sales_service  REP where PRODUCT.repairing_id_id = REP.id and PRODUCT.entry_timedate between'" + repair_start_date + "' and '" + repair_end_date + "';")
+            row = cursor.fetchall()
+            final_row_product = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
 
     try:
         del request.session['repair_start_date']
@@ -1188,11 +1190,13 @@ def edit_product(request,id):
         item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
         item.in_warranty = in_warranty
 
+
+        # if in_warranty.lower() == 'yes':
+        #     # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") - item.cost)
+        #     item.cost = 0.0
+        # else:
         item.cost = cost
-
-
-
-
+        Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + cost)
 
         item.save(update_fields=['type_of_machine', ]),
         item.save(update_fields=['model', ]),
@@ -1207,11 +1211,8 @@ def edit_product(request,id):
         item.save(update_fields=['in_warranty', ]),
 
 
-        Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + cost)
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
-
-
 
         Employee_Analysis_month.objects.filter(user_id=user_id,
                                                entry_date__month=product_id.entry_timedate.month,
@@ -1280,7 +1281,7 @@ def repairing_employee_graph(request,user_id):
     #current month
     target_achieved =  obj.reparing_target_achived_till_now
     this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                     'total_reparing_done_today')
+                                                                                                     'total_reparing_done_today').order_by('entry_date')
 
     this_lis_date = []
     this_lis_sum = []
@@ -1293,7 +1294,7 @@ def repairing_employee_graph(request,user_id):
 
     mon = (datetime.now().month) - 1
     previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                     'total_reparing_done_today')
+                                                                                                     'total_reparing_done_today').order_by('entry_date')
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -1305,7 +1306,7 @@ def repairing_employee_graph(request,user_id):
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values('entry_date',
-                                                                                                     'total_reparing_done_today')
+                                                                                                     'total_reparing_done_today').order_by('entry_date')
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -1327,7 +1328,7 @@ def repairing_employee_graph(request,user_id):
     else:
 
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date',
-                                                                                                     'total_reparing_done_today')
+                                                                                                     'total_reparing_done_today').order_by('entry_date')
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -1431,18 +1432,25 @@ def load_reparing_manager(request):
 
         return render(request, 'AJAX/load_reparing_manager.html', context)
     else:
-        if check_admin_roles(request):  # For ADMIN
-            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='') | Q(
-                user_id__name=request.user.name) | Q(taken_by=request.user.name) | Q(
-                user_id__group__icontains=request.user.name)) & Q(user_id__is_deleted=False) & Q(
-                user_id__modules_assigned__icontains="'Repairing Module'")).order_by('-id')
+        if request.user.role =='Super Admin':     #For ADMIN
+            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='') |Q(user_id__name=request.user.name)|Q(taken_by=request.user.name)| Q(user_id__group__icontains=request.user.name))
+                                                                       &Q(user_id__is_deleted=False)&Q(user_id__modules_assigned__icontains="'Repairing Module'")).order_by('-repairing_no')
 
-        else:  # For EMPLOYEE
+        elif request.user.role =='Admin':
+            admin = SiteUser.objects.get(id=request.user.pk).name
+            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by=''))).order_by('-repairing_no')
 
+        elif request.user.role =='Manager':
             admin = SiteUser.objects.get(id=request.user.pk).admin
             repair_list = Repairing_after_sales_service.objects.filter(
-                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)).order_by(
-                '-id')
+                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)).order_by('-repairing_no')
+
+
+        else:  #For EMPLOYEE
+            admin = SiteUser.objects.get(id=request.user.pk).admin
+            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name)|Q(taken_by=None) | Q(taken_by=''))&Q(user_id__admin=admin)).order_by('-repairing_no')
+
+
 
 
         context = {
@@ -1576,7 +1584,6 @@ def send_sms(request,name,phone,email,repair_id,item_id):
 #     return render(request,'dashboardnew/repair_product.html',context)
 
 
-
 def repairing_form(request,id):
     data=Repairing_after_sales_service.objects.get(id=id)
     product_list=Repairing_Product.objects.filter(repairing_id=id)
@@ -1585,6 +1592,7 @@ def repairing_form(request,id):
         'product_list':product_list,
     }
     return render(request,'repairing_format/reparingform.html',context)
+
 #
 # def repairing_form_back(request):
 #     return render(request,'repairing_form/reparingformback.html')

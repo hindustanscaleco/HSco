@@ -32,9 +32,9 @@ def onsite_views(request):
             end_date = request.POST.get('date2')
             if check_admin_roles(request):  # For ADMIN
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
+                                                                       user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-onsite_no')
             else:  # For EMPLOYEE
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-onsite_no')
 
             # onsite_list = Onsite_aftersales_service.objects.filter(entry_timedate__range=[start_date, end_date])
             context = {
@@ -46,9 +46,9 @@ def onsite_views(request):
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-id')
+                                                                       user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-onsite_no')
             else:  # For EMPLOYEE
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-id')
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-onsite_no')
             # onsite_list = Onsite_aftersales_service.objects.filter(phone_no=contact)
             context = {
                 'onsite_list': onsite_list,
@@ -60,9 +60,9 @@ def onsite_views(request):
             email = request.POST.get('email')
             if check_admin_roles(request):  # For ADMIN
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,company_email=email).order_by('-id')
+                                                                       user_id__is_deleted=False,company_email=email).order_by('-onsite_no')
             else:  # For EMPLOYEE
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,company_email=email).order_by('-id')
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,company_email=email).order_by('-onsite_no')
             # onsite_list = Onsite_aftersales_service.objects.filter(customer_email_id=email)
             context = {
                 'onsite_list': onsite_list,
@@ -73,9 +73,9 @@ def onsite_views(request):
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,second_person=customer).order_by('-id')
+                                                                       user_id__is_deleted=False,second_person=customer).order_by('-onsite_no')
             else:  # For EMPLOYEE
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,second_person=customer).order_by('-id')
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,second_person=customer).order_by('-onsite_no')
             # onsite_list = Onsite_aftersales_service.objects.filter(customer_name=customer)
             context = {
                 'onsite_list': onsite_list,
@@ -87,9 +87,9 @@ def onsite_views(request):
             company = request.POST.get('company')
             if check_admin_roles(request):  # For ADMIN
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,second_company_name=company).order_by('-id')
+                                                                       user_id__is_deleted=False,second_company_name=company).order_by('-onsite_no')
             else:  # For EMPLOYEE
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,second_company_name=company).order_by('-id')
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,second_company_name=company).order_by('-onsite_no')
             # onsite_list = Onsite_aftersales_service.objects.filter(company_name=company)
             context = {
                 'onsite_list': onsite_list,
@@ -100,9 +100,9 @@ def onsite_views(request):
             crm = request.POST.get('crm')
             if check_admin_roles(request):  # For ADMIN
                 onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
+                                                                       user_id__is_deleted=False,crm_no__pk=crm).order_by('-onsite_no')
             else:  # For EMPLOYEE
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-onsite_no')
             # onsite_list = Onsite_aftersales_service.objects.filter(crn_number=crm)
             context = {
                 'onsite_list': onsite_list,
@@ -111,9 +111,9 @@ def onsite_views(request):
             return render(request, "manager/onsite_reparing.html", context)
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
-            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=True,user_id__modules_assigned__icontains='Onsite Repairing Module').order_by('-id')
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=True,user_id__modules_assigned__icontains='Onsite Repairing Module').order_by('-onsite_no')
         else:  # For EMPLOYEE
-            onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk).order_by('-id')
+            onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk).order_by('-onsite_no')
         # onsite_list = Onsite_aftersales_service.objects.all()
 
         context = {
@@ -126,7 +126,7 @@ def onsite_views(request):
         context={}
         if check_admin_roles(request):     #For ADMIN
 
-            onsite_list = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Onsite Repairing Module')).order_by('-id')
+            onsite_list = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Onsite Repairing Module')).order_by('-onsite_no')
             stage1 = Onsite_aftersales_service.objects.filter((Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name))&Q(user_id__is_deleted=False, current_stage='Onsite repairing request is raised')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
             stage2 = Onsite_aftersales_service.objects.filter((Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name))&Q(user_id__is_deleted=False,
@@ -137,7 +137,7 @@ def onsite_views(request):
                 current_stage='Onsite repairing request is completed')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
         else:  #For EMPLOYEE
-            onsite_list = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk)|Q(complaint_assigned_to=request.user.name)).order_by('-id')
+            onsite_list = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk)|Q(complaint_assigned_to=request.user.name)).order_by('-onsite_no')
             stage1 = Onsite_aftersales_service.objects.filter((Q(user_id=request.user.pk)|Q(complaint_assigned_to=request.user.name))& Q(current_stage='Onsite repairing request is raised')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
             stage2 = Onsite_aftersales_service.objects.filter((Q(user_id=request.user.pk)|Q(complaint_assigned_to=request.user.name))& Q(
@@ -242,7 +242,6 @@ def add_onsite_aftersales_service(request):
         # second_contact_no = request.POST.get('second_contact_no')
         # third_contact_no = request.POST.get('third_contact_no')
         previous_repairing_number = request.POST.get('previous_repairing_number')
-        in_warranty = request.POST.get('in_warranty')
         date_of_complaint_received = request.POST.get('date_of_complaint_received')
         complaint_received_by = request.POST.get('complaint_received_by')
         nearest_railwaystation = request.POST.get('nearest_railwaystation')
@@ -311,7 +310,6 @@ def add_onsite_aftersales_service(request):
         item2.second_person = customer_name  # new1
         item2.second_contact_no = contact_no  # new2
         item2.previous_repairing_number = previous_repairing_number
-        item2.in_warranty = in_warranty
         if date_of_complaint_received != None and date_of_complaint_received != '':
             item2.date_of_complaint_received = date_of_complaint_received
         item2.complaint_received_by = complaint_received_by
@@ -331,6 +329,7 @@ def add_onsite_aftersales_service(request):
             item2.complaint_assigned_to = complaint_assigned_to
             item2.complaint_assigned_on = datetime.today().strftime('%Y-%m-%d')
 
+        item2.onsite_no = Onsite_aftersales_service.objects.latest('onsite_no').onsite_no+1
 
         item2.save()
         current_stage_in_db = Onsite_aftersales_service.objects.get(id=item2.pk).current_stage  # updatestage2
@@ -450,6 +449,7 @@ def add_onsite_product(request,id):
         components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
         components_replaced = request.POST.get('components_replaced')
         cost = request.POST.get('cost')
+        in_warranty = request.POST.get('in_warranty')
 
 
 
@@ -470,6 +470,8 @@ def add_onsite_product(request,id):
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.crm_no = Customer_Details.objects.get(id=crm_id)
+        item.in_warranty = in_warranty
+
         item.save()
 
         current_stage_in_db = Onsite_aftersales_service.objects.get(
@@ -513,6 +515,7 @@ def update_onsite_product(request,id):
         components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
         components_replaced = request.POST.get('components_replaced')
         cost = request.POST.get('cost')
+        in_warranty = request.POST.get('in_warranty')
 
         cost2 = onsite_id.cost
 
@@ -539,6 +542,8 @@ def update_onsite_product(request,id):
         item.components_replaced_in_warranty = components_replaced_in_warranty
         item.components_replaced = components_replaced
         item.cost = cost
+        item.in_warranty = in_warranty
+
         # item.user_id = SiteUser.objects.get(id=request.user.pk)
         # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         # item.crm_no = Customer_Details.objects.get(id=crm_id)
@@ -550,6 +555,7 @@ def update_onsite_product(request,id):
         item.save(update_fields=['components_replaced', ]),
         item.save(update_fields=['components_replaced_in_warranty', ]),
         item.save(update_fields=['cost', ]),
+        item.save(update_fields=['in_warranty', ]),
 
         current_stage_in_db = Onsite_aftersales_service.objects.get(
             id=onsite).current_stage  # updatestage2
@@ -635,7 +641,6 @@ def update_onsite_details(request,id):
         # second_contact_no=request.POST.get('second_contact_no')
         # third_contact_no=request.POST.get('third_contact_no')
         previous_repairing_number = request.POST.get('previous_repairing_number')
-        in_warranty = request.POST.get('in_warranty')
         # customer_email_id = request.POST.get('customer_email_id')
         # date_of_complaint_received = request.POST.get('date_of_complaint_received')
         # customer_address = request.POST.get('customer_address')
@@ -669,10 +674,10 @@ def update_onsite_details(request,id):
             Onsite_aftersales_service.objects.filter(id=id).update(
                 current_stage='Onsite repairing request is completed')
 
-            msg='Dear '+customer_name+',Thank you for selecting HSCo. Your Onsite Repairing No '+str(onsite_id.id)+' has been successfully' \
+            msg='Dear '+customer_name+',Thank you for selecting HSCo. Your Onsite Repairing No '+str(onsite_id.onsite_no)+' has been successfully' \
                 ' resolved. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love to hear your' \
                 ' feedback to help us improve our customer experience, just click on the link below:\n http://139.59.76.87/feedback_onrepairing/'\
-                + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.id)+' If you feel ' \
+                + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.pk)+' If you feel ' \
                 'that your complaint has not been resolved please contact our customer service team on 7045922251'
 
             try:
@@ -683,10 +688,10 @@ def update_onsite_details(request,id):
                 pass
 
             message = 'Dear ' + customer_name + ',Thank you for selecting HSCo. Your Onsite Repairing No ' + str(
-                onsite_id.id) + ' has been successfully' \
+                onsite_id.onsite_no) + ' has been successfully' \
                             ' resolved. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love to hear your' \
                             ' feedback to help us improve our customer experience, just click on the link below:\n http://139.59.76.87/feedback_onrepairing/' \
-                  + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.id) + ' If you feel ' \
+                  + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.pk) + ' If you feel ' \
                                                                                               'that your complaint has not been resolved please contact our customer service team on 7045922251'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
@@ -729,7 +734,6 @@ def update_onsite_details(request,id):
         item.company_name = company_name
         # item.customer_no = customer_no
         item.previous_repairing_number = previous_repairing_number
-        item.in_warranty = in_warranty
         # item.customer_email_id = customer_email_id
         # item.date_of_complaint_received = date_of_complaint_received
         item.customer_address = address
@@ -759,7 +763,6 @@ def update_onsite_details(request,id):
         # item.save(update_fields=['company_name', ]),
         # item.save(update_fields=['customer_no', ]),
         item.save(update_fields=['previous_repairing_number', ]),
-        item.save(update_fields=['in_warranty', ]),
         # item.save(update_fields=['phone_no', ]),
         # item.save(update_fields=['customer_email_id', ]),
         # item.save(update_fields=['date_of_complaint_received', ]),
@@ -823,7 +826,8 @@ def final_report_onsite(request):
     repair_string = request.session.get('repair_string')
     onsite_repair_product_string = request.session.get('onsite_repair_product_string')
     selected_product_list = request.session.get('selected_product_list')
-
+    final_row=[]
+    final_row_product=[]
 
 
     selected_list = request.session.get('selected_list')
@@ -835,25 +839,26 @@ def final_report_onsite(request):
         if i == 'today_date':
             selected_list[n] = 'Entry Date'
     with connection.cursor() as cursor:
-        cursor.execute("SELECT  " + repair_string + " from onsitevisit_app_onsite_aftersales_service , customer_app_customer_details where onsitevisit_app_onsite_aftersales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
-        row = cursor.fetchall()
+        if repair_string!= '':
+            cursor.execute("SELECT  " + repair_string + " from onsitevisit_app_onsite_aftersales_service , customer_app_customer_details where onsitevisit_app_onsite_aftersales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
+            row = cursor.fetchall()
 
-        print(row)
-        final_row = [list(x) for x in row]
-        repairing_data = []
-        for i in row:
-            repairing_data.append(list(i))
+            print(row)
+            final_row = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
 
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT  " + onsite_repair_product_string + " from onsitevisit_app_onsite_products , onsitevisit_app_onsite_aftersales_service"
-                                             "  where onsitevisit_app_onsite_products.onsite_repairing_id_id = onsitevisit_app_onsite_aftersales_service.id and onsitevisit_app_onsite_products.entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
-        row = cursor.fetchall()
+        if onsite_repair_product_string != '':
+            cursor.execute("SELECT  " + (onsite_repair_product_string) + " from onsitevisit_app_onsite_products PRODUCT, onsitevisit_app_onsite_aftersales_service ONSITE"
+                                                 "  where PRODUCT.onsite_repairing_id_id = ONSITE.id and PRODUCT.entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
+            row = cursor.fetchall()
 
-        print(row)
-        final_row_product = [list(x) for x in row]
-        repairing_data = []
-        for i in row:
-            repairing_data.append(list(i))
+            print(row)
+            final_row_product = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
     try:
         del request.session['repair_start_date']
         del request.session['repair_end_date']
@@ -1019,7 +1024,7 @@ def load_onsite_reparing_manager(request,):
 
         else:  # For EMPLOYEE
             onsite_list = Onsite_aftersales_service.objects.filter(
-                Q(user_id=request.user.pk) | Q(complaint_assigned_to=request.user.name)).order_by('-id')
+                Q(user_id=request.user.pk) | Q(complaint_assigned_to=request.user.name)).order_by('-onsite_no')
 
 
         context = {
@@ -1047,7 +1052,7 @@ def onsitevisit_app_graph(request,user_id):
     target_achieved = obj.onsitereparing_target_achived_till_now
     # current month
     this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                     'total_reparing_done_onsite_today')
+                                                                                                     'total_reparing_done_onsite_today').order_by('entry_date')
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
@@ -1058,7 +1063,7 @@ def onsitevisit_app_graph(request,user_id):
     # previous month sales
     mon = (datetime.now().month) - 1
     previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                         'total_reparing_done_onsite_today')
+                                                                                                         'total_reparing_done_onsite_today').order_by('entry_date')
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -1070,7 +1075,7 @@ def onsitevisit_app_graph(request,user_id):
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values(
-            'entry_date','total_reparing_done_onsite_today')
+            'entry_date','total_reparing_done_onsite_today').order_by('entry_date')
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -1092,7 +1097,7 @@ def onsitevisit_app_graph(request,user_id):
     else:
 
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date',
-                                                                                                                  'total_reparing_done_onsite_today')
+                                                                                                                  'total_reparing_done_onsite_today').order_by('entry_date')
         lis_date = []
         lis_sum = []
         for i in qs:

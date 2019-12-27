@@ -94,6 +94,7 @@ def add_amc_after_sales(request):
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
+
             item.save()
 
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
@@ -115,6 +116,11 @@ def add_amc_after_sales(request):
         item2.contract_no_reporting_breakdown = contract_no_reporting_breakdown
         item2.contract_start_date = contract_start_date
         item2.contract_end_date = contract_end_date
+        if Amc_After_Sales.objects.all().count() == 0:
+            item2.amc_no = 1
+        else:
+            item2.amc_no = Amc_After_Sales.objects.latest('id').amc_no + 1
+
         if visit_1 != '':
             item2.visit_1 = visit_1
         item2.repot_1 = repot_1
@@ -149,13 +155,13 @@ def add_amc_after_sales(request):
                                                            Q(contact_no=contact_no)).first()
             try:
                 send_mail('Feedback Form', 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
-                    request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                    request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.amc_no), settings.EMAIL_HOST_USER,
                           [crm_no.customer_email_id])
             except:
                 print('exception')
 
             message = 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
-                request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.id)
+                request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.amc_no)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
@@ -169,13 +175,13 @@ def add_amc_after_sales(request):
         else:
             try:
                 send_mail('Feedback Form', 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
-                    request.user.pk) + '/' + str(item.id) + '/' + str(item2.id), settings.EMAIL_HOST_USER,
+                    request.user.pk) + '/' + str(item.id) + '/' + str(item2.pk), settings.EMAIL_HOST_USER,
                           [item.customer_email_id])
             except:
                 pass
 
             message = 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
-                request.user.pk) + '/' + str(item.id) + '/' + str(item2.id)
+                request.user.pk) + '/' + str(item.id) + '/' + str(item2.pk)
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
@@ -214,6 +220,13 @@ def final_report_amc(request):
     string =        request.session.get('string')
     selected_list = request.session.get('selected_list')
 
+    for n, i in enumerate(selected_list):
+        if i == 'amc_visit_app_amc_after_sales.id':
+            selected_list[n] = 'AMC NO'
+        if i == 'crm_no_id':
+            selected_list[n] = 'Customer No'
+        if i == 'today_date':
+            selected_list[n] = 'Entry Date'
 
     with connection.cursor() as cursor:
         cursor.execute(
@@ -338,6 +351,29 @@ def amc_views(request):
                 'search_msg': 'Search result for CRM No. : ' + crm,
             }
             return render(request, "manager/amc_view.html",context )
+        elif  'submit7' in request.POST:
+            amc_no = request.POST.get('amc_no')
+            if check_admin_roles(request):  # For ADMIN
+                amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
+                                                          user_id__is_deleted=False,
+                                                          amc_no__icontains=amc_no).order_by('-id')
+            else:  # For EMPLOYEE
+                amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,amc_no__icontains=amc_no).order_by('-id')
+
+            # dispatch_list = Amc_After_Sales.objects.filter(customer_name=customer)
+            context = {
+                'amc_list': amc_list,
+                'search_msg': 'Search result for AMC No: ' + amc_no,
+            }
+            return render(request, "manager/amc_view.html", context)
+
+
+            # dispatch_list = Amc_After_Sales.objects.filter(company_name=company)
+            # context = {
+            #     'amc_list': amc_list,
+            # }
+            # return render(request, "manager/amc_view.html",context )
+
     else:
         if request.user.role == 'Admin' or request.user.role == 'Super Admin':     #For ADMIN
             amc_list = Amc_After_Sales.objects.filter(Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False) | Q(user_id__name__icontains=request.user.name)).order_by('-id')

@@ -50,20 +50,36 @@ class LoginView(FormView):
                     next = '/dashboard/'
                 return redirect(next)
         else:
-            mobile = form.cleaned_data.get('mobile')
+            employee_number = form.cleaned_data.get('mobile')
             password = form.cleaned_data.get('password')
-            print("NormalOGIN" + str(mobile))
-            print("NormalOGIN" + str(password))
-            user = authenticate(request, mobile=mobile, password=password)
-            # print("NormalOGIN"+str(user))
+            # try:
+            #     mobile=SiteUser.objects.get(employee_number=employee_number).mobile
+            #     user = authenticate(request, mobile=mobile, password=password)
+            #     if user is not None:
+            #         login(request, user)
+            #         request.session['registered_mobile'] = mobile
+            #         request.session['user_password'] = password
+            #         registered_mobile = request.session['registered_mobile']
+            #         print(request.session['user_password'])
+            #
+            #         return redirect('/dashboard/')
+            #
+            # except:
+            #     pass
+
+            # mobile = SiteUser.objects.get(employee_number=employee_number).mobile
+            user = authenticate(request, mobile=employee_number, password=password)
             if user is not None:
                 login(request, user)
-                request.session['registered_mobile'] = mobile
+                request.session['registered_mobile'] = employee_number
                 request.session['user_password'] = password
                 registered_mobile = request.session['registered_mobile']
                 print(request.session['user_password'])
 
                 return redirect('/dashboard/')
+
+            # print("NormalOGIN"+str(user))
+
 
         return super(LoginView, self).form_invalid(form)
 
@@ -100,10 +116,9 @@ def create_admin(request):
         account_no = request.POST.get('account_no')
         branch_name = request.POST.get('branch_name')
         ifsc_code = request.POST.get('ifsc_code')
+        employee_number = request.POST.get('employee_number')
         photo = request.FILES.get('photo')
         salary_slip = request.FILES.get('salary_slip')
-
-
 
         item=SiteUser()
 
@@ -119,6 +134,7 @@ def create_admin(request):
         item.date_of_joining = date_of_joining
         item.bank_name = bank_name
         item.account_number = account_no
+        item.employee_number = employee_number
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
@@ -165,6 +181,7 @@ def create_manager(request):
         date_of_joining = request.POST.get('date_of_joining')
         bank_name = request.POST.get('bank_name')
         account_no = request.POST.get('account_no')
+        employee_number = request.POST.get('employee_number')
         branch_name = request.POST.get('branch_name')
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.FILES.get('photo')
@@ -196,6 +213,7 @@ def create_manager(request):
         item.account_number = account_no
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
+        item.employee_number = employee_number
         item.photo = photo
         item.salary_slip = salary_slip
         item.password_text = request.POST.get('password')
@@ -260,6 +278,7 @@ def create_employee(request):
         is_deleted = False
         modules_assigned = request.POST.getlist('checks[]')
         date_of_joining = request.POST.get('date_of_joining')
+        employee_number = request.POST.get('employee_number')
         bank_name = request.POST.get('bank_name')
         account_no = request.POST.get('account_no')
         branch_name = request.POST.get('branch_name')
@@ -282,6 +301,7 @@ def create_employee(request):
         item.bank_name = bank_name
         item.account_number = account_no
         item.branch_name = branch_name
+        item.employee_number = employee_number
         item.ifsc_code = ifsc_code
         item.photo = photo
         item.salary_slip = salary_slip
@@ -429,6 +449,7 @@ def update_admin(request,id):
         group = request.POST.get('group')
         is_deleted = request.POST.get('is_deleted')
         modules_assigned = request.POST.getlist('checks[]')
+        employee_number = request.POST.get('employee_number')
         bank_name = request.POST.get('bank_name')
         account_no = request.POST.get('account_no')
         branch_name = request.POST.get('branch_name')
@@ -450,6 +471,7 @@ def update_admin(request,id):
         item.modules_assigned = modules_assigned
         item.bank_name = bank_name
         item.account_number = account_no
+        item.employee_number = employee_number
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
@@ -458,7 +480,7 @@ def update_admin(request,id):
 
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['password_text','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.save(update_fields=['password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/admin_list/')
     context = {
         'form': form,
@@ -477,6 +499,7 @@ def update_manager(request,id):
         name = request.POST.get('name')
         group = request.POST.get('group')
         is_deleted = request.POST.get('is_deleted')
+        employee_number = request.POST.get('employee_number')
         modules_assigned = request.POST.getlist('checks[]')
         bank_name = request.POST.get('bank_name')
         account_no = request.POST.get('account_no')
@@ -495,6 +518,7 @@ def update_manager(request,id):
         item.profile_name = name
         item.role = 'Manager'
         item.group = group
+        item.employee_number = employee_number
         item.is_deleted = is_deleted
         item.modules_assigned = modules_assigned
         item.bank_name = bank_name
@@ -506,7 +530,7 @@ def update_manager(request,id):
         item.password_text = request.POST.get('password')
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['password_text','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.save(update_fields=['password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/manager_list/')
     context = {
         'form': form,
@@ -530,6 +554,7 @@ def update_employee(request,id):
         bank_name = request.POST.get('bank_name')
         account_no = request.POST.get('account_no')
         branch_name = request.POST.get('branch_name')
+        employee_number = request.POST.get('employee_number')
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.POST.get('photo')
         salary_slip = request.FILES.get('salary_slip')
@@ -544,6 +569,7 @@ def update_employee(request,id):
         item.profile_name = name
         item.role = 'Employee'
         item.group = group
+        item.employee_number = employee_number
         item.is_deleted = is_deleted
         item.modules_assigned = modules_assigned
         item.bank_name = bank_name
@@ -555,7 +581,7 @@ def update_employee(request,id):
         item.password_text = request.POST.get('password')
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['password_text','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.save(update_fields=['password_text','mobile','email','employee_number', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/employee_list/')
     context = {
         'form': form,

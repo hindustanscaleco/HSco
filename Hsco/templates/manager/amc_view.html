@@ -97,6 +97,7 @@ $(function() {
      <option value="d4">Search By Customer Name</option>
      <option value="d5">Search By Company Name</option>
      <option value="d6">Search By CRM No.</option>
+     <option value="d7">Search By AMC No.</option>
   </select>
 </div>
 
@@ -168,25 +169,11 @@ $(function() {
       <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
     </form>
     <form method="POST">{% csrf_token %}
-  <div id="d7" class="divs d7 row" style="width: 50%;">
-      <div class="col-xl-4 col-md-4 col-mb-4">
-                <input type="text" placeholder="CRM No." class="form-control">
+            <div id="d7" class="divs d7">
+      <input type="text" name="amc_no" placeholder="AMC No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
 
-      </div>
-
-      <div class="col-xl-0 col-md-0 col-mb-0">
-                <p style="font-weight: 600;">_</p>
-
-      </div>
-
-      <div class="col-xl-4 col-md-4 col-mb-4">
-                <input type="text" placeholder="CEM No." class="form-control">
-
-      </div>
-      <div class="col-xl-2 col-md-2 col-mb-2">
-                <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
-
-      </div>
     </form>
 </div>
 
@@ -224,7 +211,7 @@ $(function() {
                 <div style="cursor: pointer; " onclick="location.href='/update_amc_form/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height:auto;">
-                    <div class="col-xl-1 col-md-1 mb-1"><center> {{ list.pk }}</center></div>
+                    <div class="col-xl-1 col-md-1 mb-1"><center> {{ list.amc_no }}</center></div>
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_person}}</center></div>
                     <div class="col-xl-2 col-md-1 mb-1">{% if list.company_email != None and list.company_email != '' %}{{list.company_email}}{% else %}{% endif %} </div>
                     <div class="col-xl-1 col-md-1 mb-1"><center>{% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %} </center></div>

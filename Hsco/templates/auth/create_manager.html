@@ -211,7 +211,7 @@ color:;
 </div>
         {% endif %}
 
-{% if request.user.is_authenticated and "'Repairing Module'" in user.modules_assigned %}
+{% if request.user.is_authenticated and 'Repairing Module' in user.modules_assigned %}
     <label class="col-md-2 control-label">Repairing Module
 
 
@@ -316,14 +316,14 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Date of joining *
+  <label class="col-md-2 control-label">Date of joining
 
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="date_of_joining" required class="form-control" type="date">
+  <input  name="date_of_joining"  class="form-control" type="date">
     </div>
   </div>
 
@@ -419,6 +419,15 @@ color:;
   <input  name="salary_slip" placeholder="Salary Slip" class="form-control"  type="file">
     </div>
   </div>
+
+   <label class="col-md-2 control-label">Employee Number *
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="employee_number" placeholder="Employee Number" class="form-control" type="text" required>
+  </div>
+    </div>
 </div>
 
 

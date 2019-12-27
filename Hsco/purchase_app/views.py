@@ -178,6 +178,24 @@ def add_purchase_details(request):
         item2.feedback_form_filled = False
         # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item2.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no+1
+        # request.session['new_repeat_purchase'] = new_repeat_purchase
+        # request.session['second_person'] = customer_name
+        # request.session['second_contact_no'] = contact_no
+        # request.session['date_of_purchase'] = date_of_purchase
+        # request.session['product_purchase_date'] = product_purchase_date
+        # request.session['sales_person'] = sales_person
+        # request.session['user_id'] = SiteUser.objects.get(id=site_user_id)
+        # request.session['bill_no'] = bill_no
+        # request.session['upload_op_file'] = upload_op_file
+        # request.session['po_number'] = po_number
+        # request.session['channel_of_sales'] = channel_of_sales
+        # request.session['industry'] = industry
+        # request.session['value_of_goods'] = 0.0
+        # request.session['channel_of_dispatch'] = channel_of_dispatch
+        # request.session['notes'] = notes
+        # request.session['feedback_form_filled'] = False
+
         item2.save()
 
         try:
@@ -210,6 +228,10 @@ def add_purchase_details(request):
             dispatch.channel_of_dispatch = channel_of_dispatch   # new2
             dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
             dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            if Dispatch.objects.all().count() == 0:
+                dispatch.dispatch_no = 1
+            else:
+                dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
             # dispatch.customer_email = customer_email_id
             # dispatch.customer_name = customer_name
             # dispatch.company_name = company_name
@@ -287,16 +309,15 @@ def view_customer_details(request):
     message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
 
 
-
     if request.method == 'POST' and 'deleted' not in request.POST:
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
-                                                            user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
+                                                            user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-purchase_no')
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-purchase_no')
             # cust_list = Customer_Details.objects.filter()
             context = {
                 'customer_list': cust_list,
@@ -307,9 +328,9 @@ def view_customer_details(request):
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
-                                                            user_id__is_deleted=False,contact_no__icontains=contact).order_by('-id')
+                                                            user_id__is_deleted=False,contact_no__icontains=contact).order_by('-purchase_no')
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,contact_no__icontains=contact).order_by('-id')
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,contact_no__icontains=contact).order_by('-purchase_no')
             # cust_list = Customer_Details.objects.filter(contact_no=contact)
             context = {
                 'customer_list': cust_list,
@@ -321,9 +342,9 @@ def view_customer_details(request):
             email = request.POST.get('email')
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
-                                                            user_id__is_deleted=False,company_email__icontains=email).order_by('-id')
+                                                            user_id__is_deleted=False,company_email__icontains=email).order_by('-purchase_no')
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-id')
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-purchase_no')
             # cust_list = Customer_Details.objects.filter(customer_email_id=email)
             context = {
                 'customer_list': cust_list,
@@ -334,9 +355,9 @@ def view_customer_details(request):
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
-                                                            user_id__is_deleted=False,second_person__icontains=customer).order_by('-id')
+                                                            user_id__is_deleted=False,second_person__icontains=customer).order_by('-purchase_no')
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-id')
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-purchase_no')
             # cust_list = Customer_Details.objects.filter(customer_name=customer)
             context = {
                 'customer_list': cust_list,
@@ -348,9 +369,9 @@ def view_customer_details(request):
             company = request.POST.get('company')
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
-                                                            user_id__is_deleted=False,second_company_name__icontains=company).order_by('-id')
+                                                            user_id__is_deleted=False,second_company_name__icontains=company).order_by('-purchase_no')
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-id')
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-purchase_no')
             # cust_list = Customer_Details.objects.filter(company_name=company)
             context = {
                 'customer_list': cust_list,
@@ -361,20 +382,34 @@ def view_customer_details(request):
             crm = request.POST.get('crm')
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
-                                                            user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
+                                                            user_id__is_deleted=False,crm_no__pk=crm).order_by('-purchase_no')
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-purchase_no')
             # cust_list = Customer_Details.objects.filter(crn_number=crm)
             context = {
                 'customer_list': cust_list,
                 'search_msg': 'Search result for CRM No. : ' + crm,
             }
             return render(request, 'dashboardnew/cm.html', context)
+        elif  'submit7' in request.POST:
+            purchase_no = request.POST.get('purchase_no')
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
+                                                            user_id__is_deleted=False,purchase_no__icontains=purchase_no).order_by('-purchase_no')
+            else:  # For EMPLOYEE
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,purchase_no__icontains=purchase_no).order_by('-purchase_no')
+            # cust_list = Customer_Details.objects.filter(company_name=company)
+            context = {
+                'customer_list': cust_list,
+                'search_msg': 'Search result for Purchase No: ' + purchase_no,
+            }
+            return render(request, 'dashboardnew/cm.html', context)
+
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
-            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=True,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=True,user_id__modules_assigned__icontains='Customer Module').order_by('-purchase_no')
         else:  # For EMPLOYEE
-            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
+            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-purchase_no')
 
         context = {
             'customer_list': cust_list,
@@ -384,9 +419,9 @@ def view_customer_details(request):
         return render(request, 'dashboardnew/cm.html', context)
     else:
         if check_admin_roles(request):  # For ADMIN
-            cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module').order_by('-id')
+            cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module').order_by('-purchase_no')
         else:  # For EMPLOYEE
-            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
+            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-purchase_no')
 
 
         context = {
@@ -455,9 +490,11 @@ def update_customer_details(request,id):
         po_number = request.POST.get('po_number')
         channel_of_sales = request.POST.get('channel_of_sales')
         industry = request.POST.get('industry')
+        industry = request.POST.get('industry')
         # value_of_goods = request.POST.get('value_of_goods')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
+        value_of_goods = request.POST.get('value_of_goods')
         # feedback_form_filled = request.POST.get('feedback_form_filled')
 
 
@@ -494,7 +531,7 @@ def update_customer_details(request,id):
         item2.po_number = po_number
         item2.channel_of_sales = channel_of_sales
         item2.industry = industry
-        # item2.value_of_goods = value_of_goods
+        item2.value_of_goods = value_of_goods
 
         if item2.channel_of_dispatch =='Franchisee Store' and channel_of_dispatch != 'Franchisee Store':
             dispatch = Dispatch()
@@ -516,6 +553,10 @@ def update_customer_details(request,id):
             dispatch.channel_of_dispatch = channel_of_dispatch  # new2
             dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
             dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            if Dispatch.objects.all().count() == 0:
+                dispatch.dispatch_no = 1
+            else:
+                dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
             # dispatch.customer_email = customer_email_id
             # dispatch.customer_name = customer_name
             # dispatch.company_name = company_name
@@ -553,7 +594,7 @@ def update_customer_details(request,id):
                 dispatch_pro.brand = oobj.brand
                 dispatch_pro.capacity = oobj.capacity
                 dispatch_pro.unit = oobj.unit
-                dispatch_pro.value_of_goods = oobj.value_of_goods
+                dispatch_pro.value_of_goods = oobj.amount
                 dispatch_pro.dispatch_id = Dispatch.objects.get(id=dispatch.pk)
                 dispatch_pro.save()
 
@@ -577,7 +618,7 @@ def update_customer_details(request,id):
         # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         # item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save(update_fields=['date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
-                                  'channel_of_sales','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email',
+                                  'channel_of_sales','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email','value_of_goods'
                                   ])  #new6
 
 
@@ -657,7 +698,7 @@ def add_product_details(request,id):
         item.capacity = capacity
         item.unit = unit
         # item.unit = unit
-        item.value_of_goods = value_of_goods
+        item.amount = value_of_goods
         item.purchase_id_id = purchase_id
 
         # item.sales_person = sales_person
@@ -690,7 +731,7 @@ def add_product_details(request,id):
                     item.sub_model,
                     item.brand,
                     item.capacity,
-                    item.value_of_goods,
+                    item.amount,
                 )
                 product_list=product_list+''+ str(email_body_text)
 
@@ -717,7 +758,7 @@ def add_product_details(request,id):
                     purchase.second_person) + ',' \
                          ' Thank you for purchasing from HSCo,Your Customer ID is ' + str(
                 purchase.crm_no.pk) + ' and Your Purchase ID is ' + str(
-                purchase.pk) + '.' \
+                purchase.purchase_no) + '.' \
                          ' Please use this ID\'s fo further communication. WE\'d love to hear your feedback to help us improve' \
                        ' our customer experience furthermore also stand a chance to win exciting prizes just click on the link' \
                          ' below: \n http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
@@ -775,10 +816,10 @@ def add_product_details(request,id):
                 purchase.second_person) + ', Thank you for purchasing from HSCo, Your Customer ID is ' + str(
                 purchase.crm_no.pk) + ' and ' \
                                       ' Your Purchase ID is ' + str(
-                purchase.pk) + '.Please use this IDs fo further communication. WE\'d love to hear your feedback to help us ' \
+                purchase.purchase_no) + '.Please use this IDs fo further communication. WE\'d love to hear your feedback to help us ' \
                                'improve our customer experience furthermore also stand a chance to win exciting prizes just click on the link ' \
                                'below: \n http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
-                purchase.crm_no.pk) + '/' + str(purchase.id) + ' For more details contact us on - 7045922250'
+                purchase.crm_no.pk) + '/' + str(purchase.pk) + ' For more details contact us on - 7045922250'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
@@ -869,7 +910,8 @@ def report(request):
         end_date = request.POST.get('date2')
         string = ','.join(selected_list)
         string_product = ','.join(selected_product_list)
-        print(selected_list)
+
+
         request.session['start_date'] = start_date
         request.session['end_date'] = end_date
         request.session['string'] = string
@@ -887,7 +929,8 @@ def final_report(request):
     string_product = request.session.get('string_product')
     selected_list = request.session.get('selected_list')
     selected_product_list = request.session.get('selected_product_list')
-
+    final_row_product = []
+    final_row=[]
 
     for n, i in enumerate(selected_list):
         if i == 'purchase_app_purchase_details.id':
@@ -900,24 +943,26 @@ def final_report(request):
             selected_list[n] = 'Customer Name'
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT  "+string+" from purchase_app_purchase_details , customer_app_customer_details"
-                                "  where purchase_app_purchase_details.crm_no_id = customer_app_customer_details.id and entry_timedate between '"+start_date+"' and '"+end_date+"';")
-        row = cursor.fetchall()
+        if string!='':
+            cursor.execute("SELECT  "+string+" from purchase_app_purchase_details , customer_app_customer_details"
+                                    "  where purchase_app_purchase_details.crm_no_id = customer_app_customer_details.id and entry_timedate between '"+start_date+"' and '"+end_date+"';")
+            row = cursor.fetchall()
 
 
-        final_row= [list(x) for x in row]
-        list3=[]
-        for i in row:
-            list3.append(list(i))
+            final_row= [list(x) for x in row]
+            list3=[]
+            for i in row:
+                list3.append(list(i))
 
-        cursor.execute("SELECT  " + string_product + " from purchase_app_product_details , purchase_app_purchase_details"
-                                             "  where purchase_app_product_details.purchase_id_id = purchase_app_purchase_details.id and purchase_app_product_details.entry_timedate between '" + start_date + "' and '" + end_date + "';")
-        row = cursor.fetchall()
+        if string_product!='':
+            cursor.execute("SELECT  " + (string_product) + " from purchase_app_product_details PRODUCT, purchase_app_purchase_details PURCHASE"
+                                                 "  where PRODUCT.purchase_id_id = PURCHASE.id and PRODUCT.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+            row = cursor.fetchall()
 
-        final_row_product = [list(x) for x in row]
-        list3 = []
-        for i in row:
-            list3.append(list(i))
+            final_row_product = [list(x) for x in row]
+            list3 = []
+            for i in row:
+                list3.append(list(i))
 
 
 
@@ -940,7 +985,7 @@ def final_report(request):
     return render(request,"dashboardnew/final_report.html",context)
 
 
-def manager_report(request):
+def manager_report(request) :
     employee_list = SiteUser.objects.all()
     context={
         'employee_list':employee_list,
@@ -994,7 +1039,7 @@ def customer_employee_sales_graph(request,user_id):
 
     mon = datetime.now().month
     this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                         'total_sales_done_today')
+                                                                                                         'total_sales_done_today').order_by('entry_date')
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
@@ -1005,7 +1050,7 @@ def customer_employee_sales_graph(request,user_id):
     #previous month sales
     mon = (datetime.now().month)-1
     previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                         'total_sales_done_today')
+                                                                                                         'total_sales_done_today').order_by('entry_date')
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -1017,7 +1062,7 @@ def customer_employee_sales_graph(request,user_id):
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values(
-            'entry_date','total_sales_done_today')
+            'entry_date','total_sales_done_today').order_by('entry_date')
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -1038,7 +1083,7 @@ def customer_employee_sales_graph(request,user_id):
     else:
 
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date',
-                                                                                                         'total_sales_done_today')
+                                                                                                         'total_sales_done_today').order_by('entry_date')
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -1136,10 +1181,10 @@ def edit_product_customer(request,product_id_rec):
         capacity = request.POST.get('capacity')
         unit = request.POST.get('unit')
         # sales_person = request.POST.get('sales_person')
-        value_of_goods = request.POST.get('value_of_goods')
+        amount = request.POST.get('value_of_goods')
         # purchase_type = request.POST.get('purchase_type')
 
-        cost2 = purchase.value_of_goods
+        cost2 = purchase.amount
 
         Purchase_Details.objects.filter(id=purchase_id.pk).update(value_of_goods=F("value_of_goods") - cost2)
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
@@ -1170,30 +1215,30 @@ def edit_product_customer(request,product_id_rec):
         item.brand = brand
         item.capacity = capacity
         item.unit = unit
-        item.value_of_goods = value_of_goods
+        item.amount = amount
         # item.purchase_id_id = purchase_id
         # item.sales_person = sales_person
         # item.purchase_type = purchase_type
         # item.user_id = SiteUser.objects.get(id=request.user.pk)
         # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save(update_fields=['quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
-                                 'serial_no_scale', 'brand', 'capacity', 'unit','value_of_goods',
+                                 'serial_no_scale', 'brand', 'capacity', 'unit','amount',
                                  ])
 
         Purchase_Details.objects.filter(id=purchase_id.pk).update(
-            value_of_goods=F("value_of_goods") + value_of_goods)
+            value_of_goods=F("value_of_goods") + amount)
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
 
         Employee_Analysis_month.objects.filter(user_id=request.user.pk,
                                                entry_date__month=purchase_id.entry_timedate.month,
                                                year=purchase_id.entry_timedate.year).update(
-            total_sales_done=F("total_sales_done") + value_of_goods)
+            total_sales_done=F("total_sales_done") + amount)
 
         Employee_Analysis_date.objects.filter(user_id=request.user.pk,
                                               entry_date__month=purchase_id.entry_timedate.month,
                                               year=purchase_id.entry_timedate.year).update(
-            total_sales_done_today=F("total_sales_done_today") + value_of_goods)
+            total_sales_done_today=F("total_sales_done_today") + amount)
 
 
         if dispatch_id_assigned != '' or dispatch_id_assigned != None:
@@ -1213,7 +1258,7 @@ def edit_product_customer(request,product_id_rec):
                     dispatch_pro.brand = brand
                     dispatch_pro.capacity = capacity
                     dispatch_pro.unit = unit
-                    dispatch_pro.value_of_goods = value_of_goods
+                    dispatch_pro.value_of_goods = amount
 
                     # dispatch_pro.dispatch_id = dispatch_id
                     # dispatch_pro.sales_person = sales_person
@@ -1255,9 +1300,9 @@ def load_users(request):
         if check_admin_roles(request):  # For ADMIN
             cust_list = Purchase_Details.objects.filter(
                 Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
-                user_id__is_deleted=False, user_id__modules_assigned__icontains='Customer Module').order_by('-id')
+                user_id__is_deleted=False, user_id__modules_assigned__icontains='Customer Module').order_by('-purchase_no')
         else:  # For EMPLOYEE
-            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-id')
+            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-purchase_no')
 
         context = {
             'customer_list': cust_list,

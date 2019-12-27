@@ -171,6 +171,9 @@ $(function() {
      <option value="d3">Search By Customer Name</option>
      <option value="d5">Search By Company Name</option>
      <option value="d6">Search By CRM No.</option>
+      <option value="d7">Search By Email Id</option>
+      <option value="d8">Search By Restamping No</option>
+
      <!--<option value="d7">Search By CRM Number Range</option>-->
   </select>
 </div>
@@ -243,28 +246,24 @@ $(function() {
       <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
 </form>
 
-                               <!--<form method="POST">{% csrf_token%}-->
+    <form method="POST" autocomplete="off">{% csrf_token%}
 
-  <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
-      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
-                <!--<input name="crm1" type="text" placeholder="CRM No." class="form-control">-->
+    <div id="d7" class="divs d7">
+      <input type="text" name="email_id" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
+</form>
 
-      <!--</div>-->
+    <form method="POST" autocomplete="off">{% csrf_token%}
 
-      <!--<div class="col-xl-0 col-md-0 col-mb-0">-->
-                <!--<p style="font-weight: 600;">_</p>-->
+    <div id="d8" class="divs d8">
+      <input type="text" name="restamping_no" placeholder="Restamping No" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit8" class="btn btn-primary">Search</button></div>
+</form>
 
-      <!--</div>-->
 
-      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
-                <!--<input name="crm2" type="text" placeholder="CRM No." class="form-control">-->
 
-      <!--</div>-->
-      <!--<div class="col-xl-2 col-md-2 col-mb-2">-->
-                <!--<button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>-->
-
-      <!--</div>-->
-                               <!--</form>-->
 </div>
 
 
@@ -393,12 +392,12 @@ $(function() {
               <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto;">
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Date </center></div>|
 
                     <div class="col-xl-1 col-md-1 mb-1"><center> Restamping No </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> Customer Name </center></div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Company Name </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> Contact No </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Email-ID </center></div>|
                     {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
                     <div class="col-xl-2 col-md-1 mb-1"><center> Entered By </center></div>
                     {% else %}
@@ -430,11 +429,12 @@ $(function() {
 
 
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto;">
-                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.pk }} </center></div>|
+                                        <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.entry_timedate|date:'Y-m-d'}} </center></div>|
+
+                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.restamping_no }} </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.second_person }} </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {% if list.second_company_name != None and list.second_company_name != '' %} {{list.second_company_name}}{% else %}{% endif %}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.second_contact_no }} </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {% if list.company_email != None and list.company_email != '' %}{{list.company_email}}{% else %}{% endif %}</center></div>|
                     {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
                     <div class="col-xl-2 col-md-1 mb-1"><center>{{list.user_id.profile_name}}</center></div>
                     {% else %}

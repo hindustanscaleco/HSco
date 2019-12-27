@@ -88,8 +88,8 @@
 
 
 
-                    <div class="col-xl-12 col-md-11 mb-1" style="font-size:10px;">Dispatch Id: {% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned}}{% endif %} </div>
-                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list1.pk}}</center> </div>
+                    <div class="col-xl-12 col-md-11 mb-1" style="font-size:10px;">Dispatch Id: {% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no}}{% endif %} </div>
+                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list1.purchase_no}}</center> </div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center>{{ list1.second_person }}</center></div>
                     <div class="col-xl-1 col-md-1 mb-1"><center> {% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center>{{ list1.second_contact_no}}</center> </div>

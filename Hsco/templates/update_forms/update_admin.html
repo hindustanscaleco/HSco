@@ -387,7 +387,7 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
 
-  <input  name="date_of_joining" required class="form-control" value="{{admin_id.date_of_joining|date:'Y-m-d'}}"  type="text" disabled>
+  <input  name="date_of_joining" required class="form-control" value="{{admin_id.date_of_joining|date:'Y-m-d'}}"  type="text">
     </div>
   </div>
 </div>
@@ -402,6 +402,15 @@ color:;
   <input  name="password" placeholder="Password" class="form-control" value="{{admin_id.password_text}}"  type="text" required>
     </div>
   </div>
+
+           <label class="col-md-2 control-label">Employee Number
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="employee_number" placeholder="Employee Number" class="form-control" value="{{admin_id.employee_number}}" type="text" required>
+  </div>
+    </div>
     </div>
 <center>
    <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Submit</button>

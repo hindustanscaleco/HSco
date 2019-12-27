@@ -60,23 +60,23 @@ class Employee_Leave(models.Model):
 class Employee_Analysis_month(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
-    is_employee_of_month = models.BooleanField(default=False)
+    is_employee_of_month = models.BooleanField(default=False,null=True, blank=True )
     #TARGETS_GIVEN
     sales_target_given = models.FloatField(default=0.0,null=True, blank=True )  # in amount
     reparing_target_given = models.FloatField(default=0.0,null=True, blank=True )  # in amount
     onsitereparing_target_given = models.FloatField(default=0.0,null=True, blank=True )  # in amount
     restamping_target_given = models.FloatField(default=0.0,null=True, blank=True )  # in amount
     #DONE_THIS_MONTH
-    total_sales_done = models.FloatField(default=0.0, )  # Customer module sales done in this month in amount
-    total_dispatch_done = models.FloatField(default=0.0, )  # Dispatch module dispatch done in this month
-    total_reparing_done = models.FloatField(default=0.0, )  # Reparing module Reparing done in this month in units
-    total_restamping_done = models.FloatField(default=0.0, )  # Restamping module restamping done in this month in unit
-    total_reparing_done_onsite = models.FloatField(default=0.0, )  # Reparing onsite module sales done in this month in amount
+    total_sales_done = models.FloatField(default=0.0,null=True, blank=True  )  # Customer module sales done in this month in amount
+    total_dispatch_done = models.FloatField(default=0.0,null=True, blank=True )  # Dispatch module dispatch done in this month
+    total_reparing_done = models.FloatField(default=0.0,null=True, blank=True  )  # Reparing module Reparing done in this month in units
+    total_restamping_done = models.FloatField(default=0.0,null=True, blank=True  )  # Restamping module restamping done in this month in unit
+    total_reparing_done_onsite = models.FloatField(default=0.0,null=True, blank=True  )  # Reparing onsite module sales done in this month in amount
     #AVERAGE
-    avg_time_to_repair_single_scale = models.FloatField(default=0.0, )  # Reparing module avg_time_to_repair_single_scale in this month
-    avg_time_to_give_estimate = models.FloatField(default=0.0, )  # Reparing module savg_time_to_give_estimate in this month
-    avg_time_dispatch_form_to_done = models.FloatField(default=0.0, )  # Reparing module avg_time_dispatch_form submit_to_done in this month
-    avg_time_collect_to_dispatch_restamping = models.FloatField(default=0.0, )  # Restamping module avg_time_collect_to_dispatch_restamping
+    avg_time_to_repair_single_scale = models.FloatField(default=0.0,null=True, blank=True )  # Reparing module avg_time_to_repair_single_scale in this month
+    avg_time_to_give_estimate = models.FloatField(default=0.0,null=True, blank=True  )  # Reparing module savg_time_to_give_estimate in this month
+    avg_time_dispatch_form_to_done = models.FloatField(default=0.0,null=True, blank=True )  # Reparing module avg_time_dispatch_form submit_to_done in this month
+    avg_time_collect_to_dispatch_restamping = models.FloatField(default=0.0,null=True, blank=True  )  # Restamping module avg_time_collect_to_dispatch_restamping
     #ACHIEVED_TILL_NOW
     sales_target_achived_till_now = models.FloatField(default=0.0, null=True, blank=True)
     reparing_target_achived_till_now = models.FloatField(default=0.0, null=True, blank=True)
@@ -105,16 +105,16 @@ class  Employee_Analysis_date(models.Model):
     manager_id = models.CharField(max_length=60, null=True, blank=True)
 
     # DONE_THIS_DATE
-    total_sales_done_today = models.FloatField(default=0.0, )  # Customer module sales done in this month in amount
-    total_dispatch_done_today = models.FloatField(default=0.0, )  # Dispatch module dispatch done in this month
-    total_reparing_done_today = models.FloatField(default=0.0, )  # Reparing module Reparing done in this month in units
-    total_restamping_done_today = models.FloatField(default=0.0, )  # Restamping module restamping done in this month in unit
-    total_reparing_done_onsite_today = models.FloatField(default=0.0, )  # Reparing onsite module sales done in this month in amount
+    total_sales_done_today = models.FloatField(default=0.0,null=True, blank=True  )  # Customer module sales done in this month in amount
+    total_dispatch_done_today = models.FloatField(default=0.0,null=True, blank=True  )  # Dispatch module dispatch done in this month
+    total_reparing_done_today = models.FloatField(default=0.0,null=True, blank=True  )  # Reparing module Reparing done in this month in units
+    total_restamping_done_today = models.FloatField(default=0.0,null=True, blank=True  )  # Restamping module restamping done in this month in unit
+    total_reparing_done_onsite_today = models.FloatField(default=0.0,null=True, blank=True  )  # Reparing onsite module sales done in this month in amount
     # AVERAGE
-    avg_time_to_repair_single_scale_today = models.FloatField(default=0.0, )  # Reparing module avg_time_to_repair_single_scale in this month
-    avg_time_to_give_estimate_today = models.FloatField(default=0.0, )  # Reparing module savg_time_to_give_estimate in this month
-    avg_time_dispatch_form_to_done_today = models.FloatField(default=0.0, )  # Reparing module avg_time_dispatch_form submit_to_done in this month
-    avg_time_collect_to_dispatch_restamping_today = models.FloatField(default=0.0, )  # Restamping module avg_time_collect_to_dispatch_restamping
+    avg_time_to_repair_single_scale_today = models.FloatField(default=0.0,null=True, blank=True  )  # Reparing module avg_time_to_repair_single_scale in this month
+    avg_time_to_give_estimate_today = models.FloatField(default=0.0,null=True, blank=True  )  # Reparing module savg_time_to_give_estimate in this month
+    avg_time_dispatch_form_to_done_today = models.FloatField(default=0.0,null=True, blank=True  )  # Reparing module avg_time_dispatch_form submit_to_done in this month
+    avg_time_collect_to_dispatch_restamping_today = models.FloatField(default=0.0,null=True, blank=True  )  # Restamping module avg_time_collect_to_dispatch_restamping
     # ACHIEVED_TILL_NOW
     sales_target_achived_till_now = models.FloatField(default=0.0, null=True, blank=True)
     reparing_target_achived_till_now = models.FloatField(default=0.0, null=True, blank=True)

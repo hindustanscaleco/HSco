@@ -51,10 +51,12 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
         <div class="container-fluid">
 
           <!-- Page Heading -->
+          {% if request.user.role == 'Employee' %}
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Repairing Module Graph</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <a href="/repairing_module_home/" style="background-color: #FC6E20;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"> View Repairing</a>
           </div>
+            {% endif %}
 
           <div class="row">
 
@@ -79,7 +81,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
       </div>
             <div class="col-xl-2 col-md-4 col-mb-4">
-              <button type="submit" name="submit1" class="btn btn-primary">Submit</button>
+              <button type="submit" style="background-color: #FC6E20;" name="submit1" class="btn btn-primary">Submit</button>
       </div>
 
       </div>
@@ -112,107 +114,6 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
 
 
-            <!--<div class="col-xl-12 col-lg-12" id="myDIVb" style="">-->
-                            <!--<form method="post">{% csrf_token %}-->
-
-              <!--<div id="d1" class="divs d1 row">-->
-
-      <!--<div class="col-xl-3 col-md-4 col-mb-4">-->
-                <!--<input type="date" name="date3" placeholder="Search 1" class="form-control">-->
-
-      <!--</div>-->
-
-      <!--<div class="col-xl-0 col-md-0 col-mb-0">-->
-                <!--<p style="font-weight: 600;">_</p>-->
-
-      <!--</div>-->
-
-      <!--<div class="col-xl-3 col-md-4 col-mb-4">-->
-                <!--<input type="date" name="date4" placeholder="Search 1" class="form-control">-->
-
-      <!--</div>-->
-<!--<div class="col-xl-2 col-md-4 col-mb-4">-->
-              <!--<button type="submit" name="submit2" class="btn btn-primary">Submit</button>-->
-      <!--</div>-->
-      <!--</div>-->
-                            <!--</form>-->
-              <!--<div class="card shadow mb-4">-->
-                <!--&lt;!&ndash; Card Header - Dropdown &ndash;&gt;-->
-                <!--<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">-->
-                  <!--<h6 class="m-0 font-weight-bold text-primary"> Average Time Taken To Solve A Problem</h6>-->
-                  <!--<div class="dropdown no-arrow">-->
-                    <!--<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-                      <!--<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>-->
-                    <!--</a>-->
-                    <!--<div class="dropdown-menu dropdown-menu-right shadow animated&#45;&#45;fade-in" aria-labelledby="dropdownMenuLink">-->
-                      <!--<div class="dropdown-header">Dropdown Header:</div>-->
-                      <!--<a class="dropdown-item" href="#">Action</a>-->
-                      <!--<a class="dropdown-item" href="#">Another action</a>-->
-                      <!--<div class="dropdown-divider"></div>-->
-                      <!--<a class="dropdown-item" href="#">Something else here</a>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash; Card Body &ndash;&gt;-->
-                <!--<div class="card-body">-->
-                  <!--<div class="chart-area">-->
-                    <!--<canvas id="myAreaChart2"></canvas>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-
-
-
-            <!--<div class="col-xl-12 col-lg-12" id="myDIVc" style="display: none;">-->
-              <!--<form method="post">{% csrf_token %}-->
-                            <!--<div id="d1" class="divs d1 row">-->
-
-      <!--<div class="col-xl-3 col-md-4 col-mb-4">-->
-                <!--<input type="date" name="date5" placeholder="Search 1" class="form-control">-->
-
-      <!--</div>-->
-
-      <!--<div class="col-xl-0 col-md-0 col-mb-0">-->
-                <!--<p style="font-weight: 600;">_</p>-->
-
-      <!--</div>-->
-
-      <!--<div class="col-xl-3 col-md-4 col-mb-4">-->
-                <!--<input type="date" name="date6" placeholder="Search 1" class="form-control">-->
-
-      <!--</div>-->
-<!--<div class="col-xl-2 col-md-4 col-mb-4">-->
-              <!--<button type="submit" name="submit2" class="btn btn-primary">Submit</button>-->
-      <!--</div>-->
-      <!--</div>-->
-<!--</form>-->
-              <!--<div class="card shadow mb-4">-->
-                <!--&lt;!&ndash; Card Header - Dropdown &ndash;&gt;-->
-                <!--<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">-->
-                  <!--<h6 class="m-0 font-weight-bold text-primary"> Average Time To Shift From One Stage To Another</h6>-->
-                  <!--<div class="dropdown no-arrow">-->
-                    <!--<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-                      <!--<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>-->
-                    <!--</a>-->
-                    <!--<div class="dropdown-menu dropdown-menu-right shadow animated&#45;&#45;fade-in" aria-labelledby="dropdownMenuLink">-->
-                      <!--<div class="dropdown-header">Dropdown Header:</div>-->
-                      <!--<a class="dropdown-item" href="#">Action</a>-->
-                      <!--<a class="dropdown-item" href="#">Another action</a>-->
-                      <!--<div class="dropdown-divider"></div>-->
-                      <!--<a class="dropdown-item" href="#">Something else here</a>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash; Card Body &ndash;&gt;-->
-                <!--<div class="card-body">-->
-                  <!--<div class="chart-area">-->
-                    <!--<canvas id="myAreaChart3"></canvas>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-
 
 
 
@@ -220,6 +121,8 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
           </div>
 
           <!-- Content Row -->
+                      {% if request.user.role != 'Employee' %}
+
           <div class="row">
 
             <!-- Earnings (Monthly) Card Example -->
@@ -298,44 +201,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
 
 </div>
-<!--<form name="myform" id="myForm" style="width: 40%;">-->
-
-
-<!--<div class="wrapper">-->
-    <!--<select class="editableBox" name="state" id="countySel" size="1" style="border: 1px solid grey; border-radius: 5px;">-->
-      <!--<option value="" selected="selected">Select</option>-->
-    <!--</select>-->
-    <!--<input class="timeTextBox" name="timebox" maxlength="5"/>-->
-<!--</div>-->
-
-
-<!--<br>-->
-<!--<br>-->
-
-
-  <!--<div class="wrapper">-->
-    <!--<select class="editableBoxa" name="countrya" id="stateSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">-->
-<!--<option value="" selected="selected">Select</option>-->
-    <!--</select>-->
-    <!--<input class="timeTextBoxa" name="timebox" maxlength="5"/>-->
-<!--</div>-->
-
-
-<!--<br>-->
-<!--<br>-->
-
-
-  <!--<div class="wrapper">-->
-    <!--<select class="editableBoxz" name="district" id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">-->
-<!--<option value="" selected="selected">Select</option>-->
-
-    <!--</select>-->
-    <!--<input class="timeTextBoxz" name="timebox" maxlength="5"/>-->
-<!--</div>-->
-
-
-
-<!--</form>-->
+    {% endif %}
 
 <div class="row">
                           <div class="col-xl-6 col-md-6 mb-4">

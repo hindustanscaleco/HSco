@@ -205,6 +205,7 @@ $(function() {
      <option value="d4">Search By Customer Name</option>
      <option value="d5">Search By Company Name</option>
      <option value="d6">Search By CRM No.</option>
+     <option value="d7">Search By Purchase No.</option>
      <!--<option value="d7">Search By CRM Number Range</option>-->
   </select>
 </div>
@@ -285,7 +286,13 @@ $(function() {
       &nbsp; &nbsp;
       <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
 </form>
+                       <form method="POST">{% csrf_token%}
 
+    <div id="d7" class="divs d7">
+      <input type="text" name="purchase_no" placeholder="Purchase No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
+</form>
                                <!--<form method="POST">{% csrf_token%}-->
 
   <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
@@ -375,13 +382,12 @@ a:hover {
               <div class="card shadow">
                 <div class="card-body row" style="padding: 10px;color: black; font-weight: 600; font-size: 12px; height: auto; ">
 
-
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class="">  Date </center> </div>
                     <div class="col-xl-1 col-md-1 mb-1 "><center class="">  Purchase ID </center></div>
                     <div class="col-xl-2 col-md-1 mb-1"><center class=""> Customer Name </center></div>
                     <div class="col-xl-1 col-md-1 mb-1 "><center class=""> Company Name </center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class="">  Contact No. </center> </div>
                     <!--<div class="col-xl-2 col-md-1 mb-1 "><center class=""> Entered By </center> </div>-->
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class="">  Email ID </center> </div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Sales Person  </center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Feedback</center>
                     </div>
@@ -402,15 +408,16 @@ a:hover {
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; min-height: 55px;">
 
 
+                    <div class="col-xl-2 col-md-1 mb-1" ><center>{{ list1.entry_timedate|date:'Y-m-d'}}</center> </div>
 
-                    <div class="col-xl-12 col-md-11 mb-1" style="font-size:10px;">Dispatch Id: {% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned}}{% endif %} </div>
-                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list1.pk}}</center> </div>
+                    <div class="col-xl-12 col-md-11 mb-1" style="height:10px; font-size:10px;">Dispatch Id: {% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %} </div>
+                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list1.purchase_no}}</center> </div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center>{{ list1.second_person }}</center></div>
                     <div class="col-xl-1 col-md-1 mb-1"><center> {% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</center></div>
                     <div class="col-xl-2 col-md-1 mb-1 "><center>{{ list1.second_contact_no}}</center> </div>
 
                     <!--<div class="col-xl-2 col-md-1 mb-1 "><center>{{list1.user_id.profile_name}}</center></div>-->
-                    <div class="col-xl-2 col-md-1 mb-1 "><center>{% if list1.company_email != None and list1.company_email != '' %}{{list1.company_email}}{% else %}{% endif %}</center> </div>
+                    <!--<div class="col-xl-2 col-md-1 mb-1 "><center>{% if list1.company_email != None and list1.company_email != '' %}{{list1.company_email}}{% else %}{% endif %}</center> </div>-->
                     <div class="col-xl-2 col-md-1 mb-1 "><center>{{list1.sales_person}}</center><i aria-hidden="true" style="color: yellow; font-size: 12px;"></i></div>
                     <div class="col-xl-2 col-md-1 mb-1 ">
                          {% for avg in  list1.feedback_stars|rjust:'5'  %}
