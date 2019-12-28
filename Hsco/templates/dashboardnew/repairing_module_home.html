@@ -487,7 +487,7 @@ display:none;
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto;">
 
-
+                    <div class="col-xl-2 col-md-1 mb-1 "><center class="">  Date </center> </div>|
                     <div class="col-xl-1 col-md-2 mb-1"><center> Repairing No. </center> </div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Customer Name </center></div>|
                     <div class="col-xl-2 col-md-2 mb-1"><center> Company Name </center></div>|
@@ -498,7 +498,6 @@ display:none;
                     {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
                     <div class="col-xl-2 col-md-2 mb-1"><center> Taken By </center> </div>
                     {% else %}
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class="">  Email ID </center> </div>|
                     {% endif %}
                     </div>
                 </div>
@@ -527,6 +526,8 @@ display:none;
                                   {% endif %}
 
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto; ">
+                                        <div class="col-xl-2 col-md-1 mb-1 ">{{list.entry_timedate|date:'Y-m-d'}}</div>|
+
                     <div class="col-xl-1 col-md-1 mb-1"><center> {{list.repairing_no}} </center> </div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_person}}</center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</center></div>|
@@ -536,8 +537,6 @@ display:none;
 
                     {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{list.taken_by}} </center> </div>
-                    {% else %}
-                    <div class="col-xl-2 col-md-1 mb-1 ">{% if list.company_email != None and list.company_email != '' %}{{list.company_email}}{% else %}{% endif %} </div>|
                     {% endif %}
 
                     </div>

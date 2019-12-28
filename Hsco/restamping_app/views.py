@@ -26,9 +26,9 @@ def restamping_manager(request):
             end_date = request.POST.get('date2')
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-restaming_no')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-restamping_no')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-restaming_no')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-restamping_no')
 
             # restamp_list = Restamping_after_sales_service.objects.filter(entry_timedate__range=[start_date, end_date])
             context = {
@@ -41,9 +41,9 @@ def restamping_manager(request):
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-restaming_no')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-restamping_no')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-restaming_no')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-restamping_no')
 
             # restamp_list = Restamping_after_sales_service.objects.filter(mobile_no=contact)
             context = {
@@ -56,9 +56,9 @@ def restamping_manager(request):
             email = request.POST.get('email')
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,company_email__icontains=email).order_by('-restaming_no')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,company_email__icontains=email).order_by('-restamping_no')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-restaming_no')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-restamping_no')
             # restamp_list = Restamping_after_sales_service.objects.filter(customer_email_id=email)
             context = {
                 'restamp_list': restamp_list,
@@ -70,9 +70,9 @@ def restamping_manager(request):
             restamp_list = Restamping_after_sales_service.objects.filter(name=customer)
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_person__icontains=customer).order_by('-restaming_no')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_person__icontains=customer).order_by('-restamping_no')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-restaming_no')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-restamping_no')
             context = {
                 'restamp_list': restamp_list,
                 'search_msg': 'Search result for Customer Name: ' + customer,
@@ -84,9 +84,9 @@ def restamping_manager(request):
             # restamp_list = Restamping_after_sales_service.objects.filter(second_company_name=company)
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_company_name__icontains=company).order_by('-restaming_no')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_company_name__icontains=company).order_by('-restamping_no')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-restaming_no')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-restamping_no')
             context = {
                 'restamp_list': restamp_list,
                 'search_msg': 'Search result for Company Name: ' + company,
@@ -96,9 +96,9 @@ def restamping_manager(request):
             crm = request.POST.get('crm')
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,crm_no__pk=crm).order_by('-restaming_no')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,crm_no__pk=crm).order_by('-restamping_no')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-restaming_no')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-restamping_no')
             restamp_list = Restamping_after_sales_service.objects.filter(crn_number=crm)
 
             context = {
@@ -111,9 +111,9 @@ def restamping_manager(request):
             # restamp_list = Restamping_after_sales_service.objects.filter(second_company_name=company)
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,company_email__icontains=email_id).order_by('-restaming_no')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,company_email__icontains=email_id).order_by('-restamping_no')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,company_email__icontains=email_id).order_by('-restaming_no')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,company_email__icontains=email_id).order_by('-restamping_no')
             context = {
                 'restamp_list': restamp_list,
                 'search_msg': 'Search result for Email Id: ' + email_id,
@@ -124,9 +124,9 @@ def restamping_manager(request):
             # restamp_list = Restamping_after_sales_service.objects.filter(second_company_name=company)
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,restamping_no__icontains=restamping_no).order_by('-restaming_no')
+                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,restamping_no__icontains=restamping_no).order_by('-restamping_no')
             else:  # For EMPLOYEE
-                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,restamping_no__icontains=restamping_no).order_by('-restaming_no')
+                restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk,restamping_no__icontains=restamping_no).order_by('-restamping_no')
             context = {
                 'restamp_list': restamp_list,
                 'search_msg': 'Search result for Restamping No: ' + restamping_no,
@@ -136,9 +136,9 @@ def restamping_manager(request):
 
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
-            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.name, user_id__is_deleted=True,user_id__modules_assigned__icontains='Restamping Module').order_by('-restaming_no')
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id__group__icontains=request.user.name, user_id__is_deleted=True,user_id__modules_assigned__icontains='Restamping Module').order_by('-restamping_no')
         else:  # For EMPLOYEE
-            restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-restaming_no')
+            restamp_list = Restamping_after_sales_service.objects.filter(user_id=request.user.pk).order_by('-restamping_no')
         # restamp_list = Restamping_after_sales_service.objects.all()
 
         context = {
@@ -151,7 +151,7 @@ def restamping_manager(request):
             'none':None,
         }
         if check_admin_roles(request):     #For ADMIN
-            restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains="'Restamping Module'")).order_by('-restaming_no')
+            restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains="'Restamping Module'")).order_by('-restamping_no')
 
             stage1 = Restamping_after_sales_service.objects.filter((Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False))&
                 Q(current_stage='Scales in Restamping Queue')).values('current_stage').annotate(
@@ -166,7 +166,7 @@ def restamping_manager(request):
                 'current_stage').annotate(dcount=Count('current_stage'))
 
         else:  #For EMPLOYEE
-            restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)).order_by('-restaming_no')
+            restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)).order_by('-restamping_no')
 
             stage1 = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)&
                 Q(current_stage='Scales in Restamping Queue')).values('current_stage').annotate(
@@ -871,7 +871,7 @@ def load_restamping_manager(request):
                 '-id')
 
         else:  # For EMPLOYEE
-            restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)).order_by('-restaming_no')
+            restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)).order_by('-restamping_no')
 
 
         context = {
@@ -899,7 +899,7 @@ def load_restamping_stages_list(request,):
 
         restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk) &
                                                                Q(current_stage=selected_stage))
-    # restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),current_stage=selected_stage).order_by('-restaming_no')
+    # restamp_list = Restamping_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),current_stage=selected_stage).order_by('-restamping_no')
 
     context = {
         'restamp_list': restamp_list,
