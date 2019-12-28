@@ -662,8 +662,6 @@ def add_product_details(request,id):
         type_of_scale = request.POST.get('type_of_scale')
         sub_model = request.POST.get('sub_model')
         sub_sub_model = request.POST.get('sub_sub_model')
-
-
         serial_no_scale = request.POST.get('serial_no_scale')
         brand = request.POST.get('brand')
         capacity = request.POST.get('capacity')
@@ -671,12 +669,8 @@ def add_product_details(request,id):
         value_of_goods = request.POST.get('value_of_goods')
         is_last_product_yes = request.POST.get('is_last_product_yes')
 
-        # sales_person = request.POST.get('sales_person')
-        # purchase_type = request.POST.get('purchase_type')
         if value_of_goods == '' or value_of_goods == None:
             value_of_goods=0.0
-
-
 
         item = Product_Details()
 
@@ -684,28 +678,20 @@ def add_product_details(request,id):
 
         item.type_of_scale = type_of_scale
         # if model_of_purchase != None and model_of_purchase != '':
-
         item.model_of_purchase = model_of_purchase
-
         item.sub_model = sub_model
         item.sub_sub_model = sub_sub_model
-
         item.serial_no_scale = serial_no_scale
         item.brand = brand
         item.capacity = capacity
         item.unit = unit
-        # item.unit = unit
         item.amount = value_of_goods
         item.purchase_id_id = purchase_id
-
-        # item.sales_person = sales_person
-        # item.purchase_type = purchase_type
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save()
 
         if is_last_product_yes == 'yes':
-            # ret = send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
             Purchase_Details.objects.filter(id=id).update(is_last_product=True)
 
             product_list = ''' '''
@@ -753,11 +739,10 @@ def add_product_details(request,id):
 
                 message= 'Dear ' + str(
                     purchase.second_person) + ',' \
-                         ' Thank you for purchasing from HSCo,Your Customer ID is ' + str(
-                purchase.crm_no.pk) + ' and Your Purchase ID is ' + str(
+                         ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
                 purchase.purchase_no) + '.' \
-                         ' Please use this ID\'s fo further communication. WE\'d love to hear your feedback to help us improve' \
-                       ' our customer experience furthermore also stand a chance to win exciting prizes just click on the link' \
+                         ' WE\'d love to hear your feedback to help us improve' \
+                       ' our customer experience. Please click on the link' \
                          ' below: \n http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
                 purchase.crm_no.pk) + '/' + str(
                 purchase.id) + '\n For more details contact us on - 7045922250 \n Order Details:\n '+ product_list
@@ -787,14 +772,6 @@ def add_product_details(request,id):
                     print('Something went wrong...')
 
 
-
-
-
-
-
-
-
-
                 # send_mail('Feedback Form',
                 #           message, settings.EMAIL_HOST_USER,
                 #           [purchase.company_email])
@@ -810,13 +787,15 @@ def add_product_details(request,id):
             #     request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(purchase.id)
 
             message = 'Dear ' + str(
-                purchase.second_person) + ', Thank you for purchasing from HSCo, Your Customer ID is ' + str(
-                purchase.crm_no.pk) + ' and ' \
-                                      ' Your Purchase ID is ' + str(
-                purchase.purchase_no) + '.Please use this IDs fo further communication. WE\'d love to hear your feedback to help us ' \
-                               'improve our customer experience furthermore also stand a chance to win exciting prizes just click on the link ' \
-                               'below: \n http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
-                purchase.crm_no.pk) + '/' + str(purchase.pk) + ' For more details contact us on - 7045922250'
+                purchase.second_person) + ',' \
+                                          ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
+                purchase.purchase_no) + '.' \
+                                        ' WE\'d love to hear your feedback to help us improve' \
+                                        ' our customer experience. Please click on the link' \
+                                        ' below: \n http://139.59.76.87/feedback_purchase/' + str(
+                request.user.pk) + '/' + str(
+                purchase.crm_no.pk) + '/' + str(
+                purchase.id) + '\n For more details contact us on - 7045922250'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
@@ -849,14 +828,9 @@ def add_product_details(request,id):
             dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
             dispatch_pro.quantity = quantity
             dispatch_pro.type_of_scale = type_of_scale
-
-            # if model_of_purchase != None and model_of_purchase != '':
-
             dispatch_pro.model_of_purchase = model_of_purchase
-
             dispatch_pro.sub_model = sub_model
             dispatch_pro.sub_sub_model = sub_sub_model
-
             # dispatch_pro.model_of_purchase = model_of_purchase
             # dispatch_pro.sub_model = sub_model
             # dispatch_pro.sub_sub_model = sub_sub_model
@@ -885,10 +859,6 @@ def add_product_details(request,id):
             return redirect('/update_customer_details/'+str(purchase_id))
         elif is_last_product_yes == 'no':
             return redirect('/add_product_details/'+str(purchase_id))
-
-
-
-
 
 
     context = {
@@ -1102,61 +1072,64 @@ def customer_employee_sales_graph(request,user_id):
 
 def feedback_purchase(request,user_id,customer_id,purchase_id):
     feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
-    if request.method == 'POST' :
-        knowledge_of_person = request.POST.get('knowledge_of_person')
-        timeliness_of_person = request.POST.get('timeliness_of_person')
-        price_of_product = request.POST.get('price_of_product')
-        overall_interaction = request.POST.get('overall_interaction')
-        about_hsco = request.POST.get('about_hsco')
-        any_suggestion = request.POST.get('any_suggestion')
+    if Purchase_Details.objects.get(id=purchase_id).feedback_form_filled:
+        return HttpResponse('Feedback Already Submitted.')
+    else:
+        if request.method == 'POST' :
+            knowledge_of_person = request.POST.get('knowledge_of_person')
+            timeliness_of_person = request.POST.get('timeliness_of_person')
+            price_of_product = request.POST.get('price_of_product')
+            overall_interaction = request.POST.get('overall_interaction')
+            about_hsco = request.POST.get('about_hsco')
+            any_suggestion = request.POST.get('any_suggestion')
 
-        item = Feedback()
-        item.knowledge_of_person = knowledge_of_person
-        item.timeliness_of_person = timeliness_of_person
-        item.price_of_product = price_of_product
-        item.overall_interaction = overall_interaction
-        item.about_hsco = about_hsco
-        item.any_suggestion = any_suggestion
-        item.user_id = SiteUser.objects.get(id=user_id)
-        item.customer_id = Customer_Details.objects.get(id=customer_id)
-        item.purchase_id = Purchase_Details.objects.get(id=purchase_id)
-        try:
-            item.save()
+            item = Feedback()
+            item.knowledge_of_person = knowledge_of_person
+            item.timeliness_of_person = timeliness_of_person
+            item.price_of_product = price_of_product
+            item.overall_interaction = overall_interaction
+            item.about_hsco = about_hsco
+            item.any_suggestion = any_suggestion
+            item.user_id = SiteUser.objects.get(id=user_id)
+            item.customer_id = Customer_Details.objects.get(id=customer_id)
+            item.purchase_id = Purchase_Details.objects.get(id=purchase_id)
+            try:
+                item.save()
 
-            purchase=Purchase_Details.objects.get(id=purchase_id)
-            purchase.feedback_stars= (float(knowledge_of_person)+float(timeliness_of_person)+float(price_of_product)+float(overall_interaction))/float(4.0)
-            purchase.feedback_form_filled= True
-            purchase.save(update_fields=['feedback_stars','feedback_form_filled'])
+                purchase=Purchase_Details.objects.get(id=purchase_id)
+                purchase.feedback_stars= (float(knowledge_of_person)+float(timeliness_of_person)+float(price_of_product)+float(overall_interaction))/float(4.0)
+                purchase.feedback_form_filled= True
+                purchase.save(update_fields=['feedback_stars','feedback_form_filled'])
 
-            if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
-                                                      Q(user_id=SiteUser.objects.get(id=user_id))).count() > 0:
-                Employee_Analysis_month.objects.filter(user_id=user_id, entry_date__month=datetime.now().month,
-                                                       year=datetime.now().year).update(
-                    start_rating_feedback_sales=(F("start_rating_feedback_sales") + Purchase_Details.objects.get(id=purchase_id).feedback_stars) / 2.0)
-                # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+                if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                          Q(user_id=SiteUser.objects.get(id=user_id))).count() > 0:
+                    Employee_Analysis_month.objects.filter(user_id=user_id, entry_date__month=datetime.now().month,
+                                                           year=datetime.now().year).update(
+                        start_rating_feedback_sales=(F("start_rating_feedback_sales") + Purchase_Details.objects.get(id=purchase_id).feedback_stars) / 2.0)
+                    # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
-                # ead.save(update_fields=['total_sales_done_today'])
+                    # ead.save(update_fields=['total_sales_done_today'])
 
-            else:
-                ead = Employee_Analysis_month()
-                ead.user_id = SiteUser.objects.get(id=user_id)
-                ead.start_rating_feedback_sales = Purchase_Details.objects.get(id=purchase_id).feedback_stars
-                # ead.total_dispatch_done = value_of_goods
-                ead.manager_id = SiteUser.objects.get(id=user_id).group
-                ead.month = datetime.now().month
-                ead.year = datetime.now().year
-                ead.save()
+                else:
+                    ead = Employee_Analysis_month()
+                    ead.user_id = SiteUser.objects.get(id=user_id)
+                    ead.start_rating_feedback_sales = Purchase_Details.objects.get(id=purchase_id).feedback_stars
+                    # ead.total_dispatch_done = value_of_goods
+                    ead.manager_id = SiteUser.objects.get(id=user_id).group
+                    ead.month = datetime.now().month
+                    ead.year = datetime.now().year
+                    ead.save()
 
-        except:
-            pass
+            except:
+                pass
 
 
 
-        return HttpResponse('Feedback Submitted!!! Thankyou For Your Response.')
-    context={
-        'feedback_form': feedback_form,
-    }
-    return render(request,"feedback/feedback_customer.html",context)
+            return HttpResponse('Feedback Submitted!!! Thankyou For Your Response.')
+        context={
+            'feedback_form': feedback_form,
+        }
+        return render(request,"feedback/feedback_customer.html",context)
 
 def edit_product_customer(request,product_id_rec):
     purchase = Product_Details.objects.get(id=product_id_rec)
