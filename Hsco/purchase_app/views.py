@@ -458,9 +458,6 @@ def update_customer_details(request,id):
 
     try:
         feedback = Feedback.objects.get(customer_id=customer_id.pk,purchase_id=id)
-        print(feedback)
-        print(id)
-        print(customer_id.pk)
     except:
         feedback = None
 

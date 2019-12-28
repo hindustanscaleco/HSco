@@ -695,7 +695,7 @@ function myFunction() {
                 <div class="card-body row" style="color: white; font-weight: 400; font-size: 14px; height: auto;">
 
                   <center> Dear {{repair_id.second_person}},
-Thank you for selecting HSCo. Your Scales have been successfully received at our Repairing Center. Your Repairing No is {{repair_id.pk}}. Please use this Unique ID for further communication.
+Thank you for selecting HSCo. Your Scales have been successfully received at our Repairing Center. Your Repairing No is {{repair_id.repairing_no}}. Please use this Unique ID for further communication.
 For any further details please contact our customer service team on 7045922251 </center>
 
                     </div>
@@ -707,7 +707,7 @@ For any further details please contact our customer service team on 7045922251 <
               <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">
                 <div class="card-body row" style=" color: white; font-weight: 400; font-size: 14px;  height: auto;">
                  <center> Dear {{repair_id.second_person}},
-Thank you for selecting HSCo. The Estimate for Your Repairing No {{repair_id.pk}} is  {{repair_id.total_cost}}/-
+Thank you for selecting HSCo. The Estimate for Your Repairing No {{repair_id.repairing_no}} is  {{repair_id.total_cost}}/-
 For any further details please contact our customer service team on 7045922251</center>
 
 
@@ -721,7 +721,7 @@ For any further details please contact our customer service team on 7045922251</
                 <div class="card-body row" style="color: white; font-weight: 400; font-size: 14px;  height: auto;">
 
                    <center> Dear {{repair_id.second_person}},
-Thank you for selecting HSCo. Your Repairing Complaint No {{repair_id.pk}} is resolved. Please collect your Scales within the next 3 days.
+Thank you for selecting HSCo. Your Repairing Complaint No {{repair_id.repairing_no}} is resolved. Please collect your Scales within the next 3 days.
 For any further details please contact our customer service team on 7045922251</center>
 
                     </div>
@@ -780,7 +780,7 @@ For any further details please contact our customer service team on 7045922251</
                 <div class="card-body row" style="color: white; font-weight: 400; font-size: 14px;  height: auto;">
 
                     <center>Dear {{repair_id.second_person}},
-Thank you for selecting HSCo. Your Repairing No {{repair_id.pk}} has been Overdue with us for more than 3 days. Please Collect it without fail today before 8 pm else we will scrap it. We will not be liable for any claims thereafter. Consider this as your final reminder.
+Thank you for selecting HSCo. Your Repairing No {{repair_id.repairing_no}} has been Overdue with us for more than 3 days. Please Collect it without fail today before 8 pm else we will scrap it. We will not be liable for any claims thereafter. Consider this as your final reminder.
 for more information contact our customer service team on 7045922251</center>
 
                     </div>
@@ -793,7 +793,7 @@ for more information contact our customer service team on 7045922251</center>
                 <div class="card-body row" style="color: white; font-weight: 600; font-size: 14px;  height: auto;">
 
                     <center>Dear {{repair_id.second_person}},
-Thank you for selecting HSCo. Your Scale with Repairing No {{repair_id.pk}} has been Successfully Collected. We hope that your Repairing Complaint was resolved to your satisfaction.WE'd love to hear your feedback to help us improve our customer experience,just click on the link
+Thank you for selecting HSCo. Your Scale with Repairing No {{repair_id.repairing_no}} has been Successfully Collected. We hope that your Repairing Complaint was resolved to your satisfaction.WE'd love to hear your feedback to help us improve our customer experience,just click on the link
                         below http://139.59.76.87/feedback_repairing/{{user.pk}}/{{repair_id.crm_no.pk}}/{{repair_id.pk}}
 If you feel that your complaint has not been resolved please contact our customer service team on 7045922251
                         </center>
