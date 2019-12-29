@@ -1039,19 +1039,18 @@ def final_repairing_report_module(request):
 
     with connection.cursor() as cursor:
 
-        if repair_string != '':
-            cursor.execute("SELECT "+repair_string+" from repairing_app_repairing_after_sales_service , customer_app_customer_details where repairing_app_repairing_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
+        if repair_product_string != '' and repair_string != '':
+
+            cursor.execute("SELECT " + (repair_product_string +","+ repair_string) + " from repairing_app_repairing_product  PRODUCT , repairing_app_repairing_after_sales_service "
+            "REP , customer_app_customer_details CRM where PRODUCT.repairing_id_id = REP.id and REP.crm_no_id = CRM.id and "
+            " PRODUCT.entry_timedate between'" + repair_start_date + "' and '" + repair_end_date + "';")
             row = cursor.fetchall()
-            final_row = [list(x) for x in row]
+            final_row_product = [list(x) for x in row]
             repairing_data = []
             for i in row:
                 repairing_data.append(list(i))
 
-        if repair_product_string != '':
-            cursor.execute(
-                "SELECT " + (repair_product_string) + " from repairing_app_repairing_product  PRODUCT , repairing_app_repairing_after_sales_service  REP where PRODUCT.repairing_id_id = REP.id and PRODUCT.entry_timedate between'" + repair_start_date + "' and '" + repair_end_date + "';")
-            row = cursor.fetchall()
-            final_row_product = [list(x) for x in row]
+            final_row = [list(x) for x in row]
             repairing_data = []
             for i in row:
                 repairing_data.append(list(i))
@@ -1067,10 +1066,12 @@ def final_repairing_report_module(request):
         pass
 
     context = {
+        'repair_start_date': repair_start_date,
+        'repair_end_date': repair_end_date,
         'final_row': final_row,
         'final_row_product': final_row_product,
-        'selected_list': selected_list,
-        'selected_product_list': selected_product_list,
+        # 'selected_list': selected_list,
+        'selected_product_list': selected_product_list+selected_list,
     }
     return render(request,'report/final_report_rep_mod_form.html',context)
 
