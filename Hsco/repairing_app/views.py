@@ -41,20 +41,6 @@ def add_repairing_details(request):
         user_list = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=list_group),
                                             modules_assigned__icontains="'Repairing Module'", is_deleted=False)
 
-        # import ast
-        #
-        # x = "[" + list_group + "]"
-        # x = ast.literal_eval(x)
-        # manager_list = []
-        # for item in x:
-        #     name = SiteUser.objects.filter(name__icontains=item)
-        #     for it in name:
-        #         if it.role == 'Manager':
-        #             if item not in manager_list:
-        #                 manager_list.append(item)
-        #
-        # user_list = SiteUser.objects.filter(group__icontains=manager_list,
-        #                                     modules_assigned__icontains='Repairing Module', is_deleted=False)
 
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
@@ -62,10 +48,6 @@ def add_repairing_details(request):
         address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
-
-
-
-
         # repairingnumber = request.POST.get('repairingnumber')
         previous_repairing_number = request.POST.get('previous_repairing_number')
         in_warranty = request.POST.get('in_warranty')
@@ -114,9 +96,6 @@ def add_repairing_details(request):
                 item3.save(update_fields=['customer_email_id'])
 
         else:
-
-
-
             item.customer_name = customer_name
             if company_name != '':
                 item2.second_company_name = company_name  # new2
@@ -386,12 +365,6 @@ def repair_product(request,id):
 
 
 
-                # pass
-                # item.is_last_product = False
-            # else:
-            #     ret=send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
-
-
         # current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  #updatestage2
 
         if current_stage_in_db == 'Scale is collected but estimate is not given' and float(cost) > 0.0:
@@ -491,17 +464,6 @@ def update_repairing_details(request,id):
         item.contact_no = contact_no
         item.save(update_fields=['customer_name', 'contact_no'])  # new3
 
-
-
-        # repairingnumber = request.POST.get('repairingnumber')
-        # previous_repairing_number = request.POST.get('previous_repairing_number')
-        # today_date = request.POST.get('today_date')
-        # location = request.POST.get('location')
-        # products_to_be_repaired = request.POST.get('products_to_be_repaired')
-        # second_person=request.POST.get('second_person')
-        # third_person=request.POST.get('third_person')
-        # second_contact_no=request.POST.get('second_contact_no')
-        # third_contact_no=request.POST.get('third_contact_no')
         total_cost = request.POST.get('total_cost')
         informed_on = request.POST.get('informed_on')
         informed_by = request.POST.get('informed_by')
@@ -514,8 +476,6 @@ def update_repairing_details(request,id):
         repaired_by = request.POST.get('repaired_by')
         # feedback_given = request.POST.get('feedback_given')
         # current_stage = request.POST.get('current_stage')
-
-
 
         item2 = repair_id
 
@@ -569,9 +529,8 @@ def update_repairing_details(request,id):
                 product_list = product_list + '' + str(email_body_text)
 
             try:
-                # msg='Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                #               request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
-                msg='Dear '+customer_name+',Thank you for selecting HSCo. The Estimate for Your ' \
+
+                msg='Dear '+customer_name+', The Estimate for Your ' \
                     'Repairing No '+str(repair_id.pk)+' is  '+str(repair_id.total_cost)+' For any further details please contact our customer ' \
                     'service team on 7045922251 Estimate Details:\n'+product_list
                 send_mail('Feedback Form',msg
@@ -583,7 +542,7 @@ def update_repairing_details(request,id):
             # message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
             #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
-            message='Dear '+customer_name+',Thank you for selecting HSCo. The Estimate for Your ' \
+            message='Dear '+customer_name+', The Estimate for Your ' \
                     'Repairing No '+str(repair_id.repairing_no)+' is  '+str(repair_id.total_cost)+'/- For any further details please contact our customer ' \
                     'service team on 7045922251'
 
@@ -614,8 +573,8 @@ def update_repairing_details(request,id):
             item2.save(update_fields=['repaired'])
 
             try:
-                send_mail('Your Repairing Done - HSCo',
-                          ' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.pk)+' is resolved.'
+                send_mail('Repairing Done - HSCo',
+                          ' Dear '+customer_name+', Your Repairing Complaint No '+str(repair_id.pk)+' is resolved.'
                           ' Please collect your Scales within the next 3 days.For any further details please contact '
                           'our customer service team on 7045922251', settings.EMAIL_HOST_USER,
                           [item.customer_email_id])
@@ -625,7 +584,7 @@ def update_repairing_details(request,id):
             # message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
             #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
-            message=' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.repairing_no)+' is resolved. ' \
+            message=' Dear '+customer_name+', Your Repairing Complaint No '+str(repair_id.repairing_no)+' is resolved. ' \
                     'Please collect your Scales within the next 3 days.For any further details please contact our ' \
                     'customer service team on 7045922251'
 
@@ -1039,19 +998,18 @@ def final_repairing_report_module(request):
 
     with connection.cursor() as cursor:
 
-        if repair_string != '':
-            cursor.execute("SELECT "+repair_string+" from repairing_app_repairing_after_sales_service , customer_app_customer_details where repairing_app_repairing_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
+        if repair_product_string != '' and repair_string != '':
+
+            cursor.execute("SELECT " + (repair_product_string +","+ repair_string) + " from repairing_app_repairing_product  PRODUCT , repairing_app_repairing_after_sales_service "
+            "REP , customer_app_customer_details CRM where PRODUCT.repairing_id_id = REP.id and REP.crm_no_id = CRM.id and "
+            " PRODUCT.entry_timedate between'" + repair_start_date + "' and '" + repair_end_date + "';")
             row = cursor.fetchall()
-            final_row = [list(x) for x in row]
+            final_row_product = [list(x) for x in row]
             repairing_data = []
             for i in row:
                 repairing_data.append(list(i))
 
-        if repair_product_string != '':
-            cursor.execute(
-                "SELECT " + (repair_product_string) + " from repairing_app_repairing_product  PRODUCT , repairing_app_repairing_after_sales_service  REP where PRODUCT.repairing_id_id = REP.id and PRODUCT.entry_timedate between'" + repair_start_date + "' and '" + repair_end_date + "';")
-            row = cursor.fetchall()
-            final_row_product = [list(x) for x in row]
+            final_row = [list(x) for x in row]
             repairing_data = []
             for i in row:
                 repairing_data.append(list(i))
@@ -1067,67 +1025,72 @@ def final_repairing_report_module(request):
         pass
 
     context = {
+        'repair_start_date': repair_start_date,
+        'repair_end_date': repair_end_date,
         'final_row': final_row,
         'final_row_product': final_row_product,
-        'selected_list': selected_list,
-        'selected_product_list': selected_product_list,
+        # 'selected_list': selected_list,
+        'selected_product_list': selected_product_list+selected_list,
     }
     return render(request,'report/final_report_rep_mod_form.html',context)
 
 def feedback_repairing(request,user_id,customer_id,repairing_id):
     feedback_form = Repairing_Feedback_Form(request.POST or None, request.FILES or None)
-    if request.method == 'POST':
-        satisfied_with_communication = request.POST.get('satisfied_with_communication')
-        speed_of_performance = request.POST.get('speed_of_performance')
-        price_of_reparing = request.POST.get('price_of_reparing')
-        overall_interaction = request.POST.get('overall_interaction')
-        about_hsco = request.POST.get('about_hsco')
-        any_suggestion = request.POST.get('any_suggestion')
+    if Repairing_after_sales_service.objects.get(id=repairing_id).feedback_given:
+        return HttpResponse('Feedback Already Submitted.')
+    else:
+        if request.method == 'POST':
+            satisfied_with_communication = request.POST.get('satisfied_with_communication')
+            speed_of_performance = request.POST.get('speed_of_performance')
+            price_of_reparing = request.POST.get('price_of_reparing')
+            overall_interaction = request.POST.get('overall_interaction')
+            about_hsco = request.POST.get('about_hsco')
+            any_suggestion = request.POST.get('any_suggestion')
 
-        item = Repairing_Feedback()
-        item.satisfied_with_communication = satisfied_with_communication
-        item.speed_of_performance = speed_of_performance
-        item.price_of_reparing = price_of_reparing
-        item.overall_interaction = overall_interaction
-        item.about_hsco = about_hsco
-        item.any_suggestion = any_suggestion
-        item.user_id = SiteUser.objects.get(id=user_id)
-        item.customer_id = Customer_Details.objects.get(id=customer_id)
-        item.repairing_id = Repairing_after_sales_service.objects.get(id=repairing_id)
-        try:
-            item.save()
+            item = Repairing_Feedback()
+            item.satisfied_with_communication = satisfied_with_communication
+            item.speed_of_performance = speed_of_performance
+            item.price_of_reparing = price_of_reparing
+            item.overall_interaction = overall_interaction
+            item.about_hsco = about_hsco
+            item.any_suggestion = any_suggestion
+            item.user_id = SiteUser.objects.get(id=user_id)
+            item.customer_id = Customer_Details.objects.get(id=customer_id)
+            item.repairing_id = Repairing_after_sales_service.objects.get(id=repairing_id)
+            try:
+                item.save()
 
-            repairing = Repairing_after_sales_service.objects.get(id=repairing_id)
-            repairing .avg_feedback = (float(satisfied_with_communication) + float(speed_of_performance) + float(price_of_reparing) + float(overall_interaction)) / float(4.0)
-            repairing.feedback_given = True
-            repairing.save(update_fields=['avg_feedback', 'feedback_given'])
+                repairing = Repairing_after_sales_service.objects.get(id=repairing_id)
+                repairing .avg_feedback = (float(satisfied_with_communication) + float(speed_of_performance) + float(price_of_reparing) + float(overall_interaction)) / float(4.0)
+                repairing.feedback_given = True
+                repairing.save(update_fields=['avg_feedback', 'feedback_given'])
 
 
-            if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
-                                                      Q(user_id=SiteUser.objects.get(id=user_id))).count() > 0:
-                Employee_Analysis_month.objects.filter(user_id=user_id, entry_date__month=datetime.now().month,
-                                                       year=datetime.now().year).update(
-                    start_rating_feedback_reparing=(F("start_rating_feedback_reparing") + Repairing_after_sales_service.objects.get(id=repairing_id).avg_feedback) / 2.0)
-                # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+                if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                          Q(user_id=SiteUser.objects.get(id=user_id))).count() > 0:
+                    Employee_Analysis_month.objects.filter(user_id=user_id, entry_date__month=datetime.now().month,
+                                                           year=datetime.now().year).update(
+                        start_rating_feedback_reparing=(F("start_rating_feedback_reparing") + Repairing_after_sales_service.objects.get(id=repairing_id).avg_feedback) / 2.0)
+                    # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
-                # ead.save(update_fields=['total_sales_done_today'])
+                    # ead.save(update_fields=['total_sales_done_today'])
 
-            else:
-                ead = Employee_Analysis_month()
-                ead.user_id = SiteUser.objects.get(id=user_id)
-                ead.start_rating_feedback_reparing = Repairing_after_sales_service.objects.get(id=repairing_id).avg_feedback
-                # ead.total_dispatch_done = value_of_goods
-                ead.manager_id = SiteUser.objects.get(id=user_id).group
-                ead.month = datetime.now().month
-                ead.year = datetime.now().year
-                ead.save()
-        except:
-            pass
-        return HttpResponse('Feedback Submitted!!!')
-    context = {
-        'feedback_form': feedback_form,
-    }
-    return render(request,'feedback/feedback_repairing.html',context)
+                else:
+                    ead = Employee_Analysis_month()
+                    ead.user_id = SiteUser.objects.get(id=user_id)
+                    ead.start_rating_feedback_reparing = Repairing_after_sales_service.objects.get(id=repairing_id).avg_feedback
+                    # ead.total_dispatch_done = value_of_goods
+                    ead.manager_id = SiteUser.objects.get(id=user_id).group
+                    ead.month = datetime.now().month
+                    ead.year = datetime.now().year
+                    ead.save()
+            except:
+                pass
+            return HttpResponse('Feedback Submitted!!!')
+        context = {
+            'feedback_form': feedback_form,
+        }
+        return render(request,'feedback/feedback_repairing.html',context)
 
 def edit_product(request,id):
     product_id = Repairing_Product.objects.get(id=id)
@@ -1500,9 +1463,9 @@ def send_sms(request,name,phone,email,repair_id,item_id):
 
     api = 'PF8MzCBOGTopfpYFlSZT'
     if msg_id == '1':
-        message = 'Dear '+name+',Thank you for selecting HSCo. Your Scales have been successfully ' \
-                  'received at our Repairing Center. Your Repairing No is '+str(repair_id)+'. Please use this Unique ID for further communication.' \
-                  'For any further details please contact our customer service team on 7045922251'
+        message = 'Dear '+name+', Your Scales has been ' \
+                  'received at our Repairing Center. Your Repairing No is '+str(repair_id)+'.' \
+                  ' For any further details please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(scale_sub_sms_count=F("scale_sub_sms_count")+1)
         try:
             send_mail('Scale Submit - HSCo', message, settings.EMAIL_HOST_USER,[email])
@@ -1519,7 +1482,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
         except:
             pass
     elif msg_id == '3':
-        message = 'Dear '+name+', Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id)+' is resolved.' \
+        message = 'Dear '+name+', Your Repairing Complaint No '+str(repair_id)+' is resolved.' \
                   ' Please collect your Scales within the next 3 days.For any further details please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(reparing_done_sms_count=F("reparing_done_sms_count") + 1)
         try:
