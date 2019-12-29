@@ -237,8 +237,7 @@ def restamping_manager(request):
             'restamp_list': restamp_list,
         }
         context.update(context2)
-        print(context)
-        print(context)
+
 
         return render(request, "manager/restamping_manager.html", context)
 
