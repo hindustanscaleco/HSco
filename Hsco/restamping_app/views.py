@@ -631,27 +631,46 @@ def final_report_restamping(request):
 
     with connection.cursor() as cursor:
 
-        if restamp_string != '':
+        if repair_product_string != '' and restamp_string != '':
 
-            cursor.execute("SELECT "+restamp_string+" from restamping_app_restamping_after_sales_service , customer_app_customer_details where restamping_app_restamping_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + restamp_start_date + "' and '" + restamp_end_date + "';")
-            row = cursor.fetchall()
-            final_row = [list(x) for x in row]
-            repairing_data = []
-            for i in row:
-                repairing_data.append(list(i))
-
-        if repair_product_string != '':
-
-            cursor.execute(
-                "SELECT " + repair_product_string + " from restamping_app_restamping_product PRODUCT , restamping_app_restamping_after_sales_service RESTAMP where PRODUCT.restamping_id_id = RESTAMP.id and PRODUCT.entry_timedate between'" + restamp_start_date + "' and '" + restamp_end_date + "';")
+            cursor.execute("SELECT " + (
+                        repair_product_string + "," + restamp_string) + " from restamping_app_restamping_product  PRODUCT , restamping_app_restamping_after_sales_service "
+                                                                       "REP , customer_app_customer_details CRM where PRODUCT.restamping_id_id = REP.id and REP.crm_no_id = CRM.id and "
+                                                                       " PRODUCT.entry_timedate between'" + restamp_start_date + "' and '" + restamp_end_date + "';")
             row = cursor.fetchall()
             final_row_product = [list(x) for x in row]
             repairing_data = []
             for i in row:
                 repairing_data.append(list(i))
 
-        print("selected_list")
-        print(selected_list)
+            final_row = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+
+    # with connection.cursor() as cursor:
+    #
+    #     if restamp_string != '':
+    #
+    #         cursor.execute("SELECT "+restamp_string+" from restamping_app_restamping_after_sales_service , customer_app_customer_details where restamping_app_restamping_after_sales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + restamp_start_date + "' and '" + restamp_end_date + "';")
+    #         row = cursor.fetchall()
+    #         final_row = [list(x) for x in row]
+    #         repairing_data = []
+    #         for i in row:
+    #             repairing_data.append(list(i))
+    #
+    #     if repair_product_string != '':
+    #
+    #         cursor.execute(
+    #             "SELECT " + repair_product_string + " from restamping_app_restamping_product PRODUCT , restamping_app_restamping_after_sales_service RESTAMP where PRODUCT.restamping_id_id = RESTAMP.id and PRODUCT.entry_timedate between'" + restamp_start_date + "' and '" + restamp_end_date + "';")
+    #         row = cursor.fetchall()
+    #         final_row_product = [list(x) for x in row]
+    #         repairing_data = []
+    #         for i in row:
+    #             repairing_data.append(list(i))
+    #
+    #     print("selected_list")
+    #     print(selected_list)
 
     try:
         del request.session['repair_start_date']
@@ -665,7 +684,7 @@ def final_report_restamping(request):
         'final_row': final_row,
         'final_row_product': final_row_product,
         'selected_list': selected_list,
-        'selected_product_list': selected_product_list,
+        'selected_product_list': selected_product_list+selected_list,
     }
     return render(request,"report/final_report_restamp_mod_form.html",context)
 

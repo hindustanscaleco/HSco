@@ -910,26 +910,43 @@ def final_report(request):
             selected_list[n] = 'Customer Name'
 
     with connection.cursor() as cursor:
-        if string!='':
-            cursor.execute("SELECT  "+string+" from purchase_app_purchase_details , customer_app_customer_details"
-                                    "  where purchase_app_purchase_details.crm_no_id = customer_app_customer_details.id and entry_timedate between '"+start_date+"' and '"+end_date+"';")
-            row = cursor.fetchall()
+        if string != '' and string_product != '':
 
+                cursor.execute("SELECT " + (string_product +","+ string) + " from purchase_app_product_details  PRODUCT , purchase_app_purchase_details "
+                 "REP , customer_app_customer_details CRM where PRODUCT.purchase_id_id = REP.id and REP.crm_no_id = CRM.id and "
+                " PRODUCT.entry_timedate between'" + start_date + "' and '" + end_date + "';")
+                row = cursor.fetchall()
+                final_row_product = [list(x) for x in row]
+                repairing_data = []
+                for i in row:
+                    repairing_data.append(list(i))
 
-            final_row= [list(x) for x in row]
-            list3=[]
-            for i in row:
-                list3.append(list(i))
+                final_row = [list(x) for x in row]
+                repairing_data = []
+                for i in row:
+                    repairing_data.append(list(i))
 
-        if string_product!='':
-            cursor.execute("SELECT  " + (string_product) + " from purchase_app_product_details PRODUCT, purchase_app_purchase_details PURCHASE"
-                                                 "  where PRODUCT.purchase_id_id = PURCHASE.id and PRODUCT.entry_timedate between '" + start_date + "' and '" + end_date + "';")
-            row = cursor.fetchall()
-
-            final_row_product = [list(x) for x in row]
-            list3 = []
-            for i in row:
-                list3.append(list(i))
+    # with connection.cursor() as cursor:
+    #     if string!='':
+    #         cursor.execute("SELECT  "+string+" from purchase_app_purchase_details , customer_app_customer_details"
+    #                                 "  where purchase_app_purchase_details.crm_no_id = customer_app_customer_details.id and entry_timedate between '"+start_date+"' and '"+end_date+"';")
+    #         row = cursor.fetchall()
+    #
+    #
+    #         final_row= [list(x) for x in row]
+    #         list3=[]
+    #         for i in row:
+    #             list3.append(list(i))
+    #
+    #     if string_product!='':
+    #         cursor.execute("SELECT  " + (string_product) + " from purchase_app_product_details PRODUCT, purchase_app_purchase_details PURCHASE"
+    #                                              "  where PRODUCT.purchase_id_id = PURCHASE.id and PRODUCT.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+    #         row = cursor.fetchall()
+    #
+    #         final_row_product = [list(x) for x in row]
+    #         list3 = []
+    #         for i in row:
+    #             list3.append(list(i))
 
 
 
@@ -947,7 +964,7 @@ def final_report(request):
         'final_row':final_row,
         'final_row_product':final_row_product,
         'selected_list':selected_list,
-        'selected_product_list':selected_product_list,
+        'selected_product_list':selected_product_list+selected_list,
     }
     return render(request,"dashboardnew/final_report.html",context)
 
