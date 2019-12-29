@@ -419,6 +419,7 @@ td {
                   <center> <p>list of deleted users</p></center>
                     {% endif %}
      <center><p>{{search_msg}}</p></center>
+        <div class="row" id="id_manager_view">
 
     <table>
         <tr style="background-color: gray; color: white;">
@@ -433,7 +434,7 @@ td {
         </tr>
                     {% for list1 in customer_list %}
 
-        <tr  onclick="location.href='/update_customer_details/{{list1.pk}}';">
+        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
                         <td>{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>
 
             <td>{{ list1.entry_timedate|date:'Y-m-d'}}</td>
@@ -457,8 +458,7 @@ td {
 
     </table>
 
-
-        <div class="row" id="id_manager_view">
+        </div>
 
 
 
@@ -467,16 +467,6 @@ td {
 <br>
 <br>
 
-
-                    <!--<div class="col-xl-2 col-md-1 mb-1 "><center>{{list1.user_id.profile_name}}</center></div>-->
-                    <!--<div class="col-xl-2 col-md-1 mb-1 "><center>{% if list1.company_email != None and list1.company_email != '' %}{{list1.company_email}}{% else %}{% endif %}</center> </div>-->
-
-
-
-
-
-                <!--</a>-->
-              </div>
 
 
             </div>
