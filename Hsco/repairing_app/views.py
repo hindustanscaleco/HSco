@@ -687,7 +687,7 @@ def update_repairing_details(request,id):
             item2.user_id = SiteUser.objects.get(profile_name=taken_by)
             item2.save(update_fields=['taken_by',])
             item2.save(update_fields=['user_id', ])
-            item2.save(update_fields=['notes    ', ])
+            item2.save(update_fields=['notes', ])
 
 
 
