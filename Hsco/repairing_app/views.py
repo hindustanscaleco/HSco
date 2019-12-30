@@ -947,14 +947,14 @@ def repairing_analytics(request):
     value = Employee_Analysis_month.objects.aggregate(Max('total_reparing_done'))
     print(value['total_reparing_done__max'])
     try:
-        value = Employee_Analysis_month.objects.get(total_sales_done=value['total_reparing_done__max'])
+        value = Employee_Analysis_month.objects.get(total_reparing_done=value['total_reparing_done__max'])
     except:
         pass
 
     value_low = Employee_Analysis_month.objects.aggregate(Min('total_reparing_done'))
     print(value_low['total_reparing_done__min'])
     try:
-        value_low = Employee_Analysis_month.objects.filter(total_sales_done=value_low['total_reparing_done__min']).order_by('id').first()
+        value_low = Employee_Analysis_month.objects.filter(total_reparing_done=value_low['total_reparing_done__min']).order_by('id').first()
     except:
         pass
     context = {
