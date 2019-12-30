@@ -838,27 +838,46 @@ def final_report_onsite(request):
             selected_list[n] = 'CRM No.'
         if i == 'today_date':
             selected_list[n] = 'Entry Date'
-    with connection.cursor() as cursor:
-        if repair_string!= '':
-            cursor.execute("SELECT  " + repair_string + " from onsitevisit_app_onsite_aftersales_service , customer_app_customer_details where onsitevisit_app_onsite_aftersales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
-            row = cursor.fetchall()
 
-            print(row)
+    with connection.cursor() as cursor:
+
+        if onsite_repair_product_string != '' and repair_string != '':
+
+            cursor.execute("SELECT " + (onsite_repair_product_string +","+ repair_string) + " from onsitevisit_app_onsite_products  PRODUCT , onsitevisit_app_onsite_aftersales_service "
+            "REP , customer_app_customer_details CRM where PRODUCT.onsite_repairing_id_id = REP.id and REP.crm_no_id = CRM.id and "
+            " PRODUCT.entry_timedate between'" + repair_start_date + "' and '" + repair_end_date + "';")
+            row = cursor.fetchall()
+            final_row_product = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+
             final_row = [list(x) for x in row]
             repairing_data = []
             for i in row:
                 repairing_data.append(list(i))
 
-        if onsite_repair_product_string != '':
-            cursor.execute("SELECT  " + (onsite_repair_product_string) + " from onsitevisit_app_onsite_products PRODUCT, onsitevisit_app_onsite_aftersales_service ONSITE"
-                                                 "  where PRODUCT.onsite_repairing_id_id = ONSITE.id and PRODUCT.entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
-            row = cursor.fetchall()
-
-            print(row)
-            final_row_product = [list(x) for x in row]
-            repairing_data = []
-            for i in row:
-                repairing_data.append(list(i))
+    # with connection.cursor() as cursor:
+    #     if repair_string!= '':
+    #         cursor.execute("SELECT  " + repair_string + " from onsitevisit_app_onsite_aftersales_service , customer_app_customer_details where onsitevisit_app_onsite_aftersales_service.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
+    #         row = cursor.fetchall()
+    #
+    #         print(row)
+    #         final_row = [list(x) for x in row]
+    #         repairing_data = []
+    #         for i in row:
+    #             repairing_data.append(list(i))
+    #
+    #     if onsite_repair_product_string != '':
+    #         cursor.execute("SELECT  " + (onsite_repair_product_string) + " from onsitevisit_app_onsite_products PRODUCT, onsitevisit_app_onsite_aftersales_service ONSITE"
+    #                                              "  where PRODUCT.onsite_repairing_id_id = ONSITE.id and PRODUCT.entry_timedate between '" + repair_start_date + "' and '" + repair_end_date + "';")
+    #         row = cursor.fetchall()
+    #
+    #         print(row)
+    #         final_row_product = [list(x) for x in row]
+    #         repairing_data = []
+    #         for i in row:
+    #             repairing_data.append(list(i))
     try:
         del request.session['repair_start_date']
         del request.session['repair_end_date']
@@ -872,76 +891,80 @@ def final_report_onsite(request):
     context = {
         'final_row': final_row,
         'selected_list': selected_list,
-        'selected_product_list': selected_product_list,
+        'selected_product_list': selected_product_list+selected_list,
         'final_row_product': final_row_product,
     }
     return render(request,'report/final_onsite_report.html',context)
 
 def feedback_onrepairing(request,user_id,customer_id,onsiterepairing_id):
     feedback_form = Onsite_Repairing_Feedback_Form(request.POST or None, request.FILES or None)
-    if request.method == 'POST':
-        backend_team = request.POST.get('backend_team')
-        onsite_worker = request.POST.get('onsite_worker')
-        speed_of_performance = request.POST.get('speed_of_performance')
-        price_of_reparing = request.POST.get('price_of_reparing')
-        overall_interaction = request.POST.get('overall_interaction')
-        about_hsco = request.POST.get('about_hsco')
-        any_suggestion = request.POST.get('any_suggestion')
+    if Onsite_aftersales_service.objects.get(id=onsiterepairing_id).feedback_given:
+        return HttpResponse('Feedback Already Submitted.')
+    else:
 
-        item = Onsite_Feedback()
-        item.backend_team = backend_team
-        item.onsite_worker = onsite_worker
-        item.speed_of_performance = speed_of_performance
-        item.price_of_reparing = price_of_reparing
-        item.overall_interaction = overall_interaction
-        item.about_hsco = about_hsco
-        item.any_suggestion = any_suggestion
-        item.user_id = SiteUser.objects.get(id=user_id)
-        item.customer_id = Customer_Details.objects.get(id=customer_id)
-        item.onsiterepairing_id = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
-        try:
-            item.save()
+        if request.method == 'POST':
+            backend_team = request.POST.get('backend_team')
+            onsite_worker = request.POST.get('onsite_worker')
+            speed_of_performance = request.POST.get('speed_of_performance')
+            price_of_reparing = request.POST.get('price_of_reparing')
+            overall_interaction = request.POST.get('overall_interaction')
+            about_hsco = request.POST.get('about_hsco')
+            any_suggestion = request.POST.get('any_suggestion')
 
-            onsiterepairing = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
-            onsiterepairing.avg_feedback = (float(backend_team) + float(onsite_worker) + float(speed_of_performance) + float(price_of_reparing) + float(overall_interaction)) / float(5.0)
-            onsiterepairing.feedback_given = True
-            onsiterepairing.save(update_fields=['avg_feedback', 'feedback_given'])
+            item = Onsite_Feedback()
+            item.backend_team = backend_team
+            item.onsite_worker = onsite_worker
+            item.speed_of_performance = speed_of_performance
+            item.price_of_reparing = price_of_reparing
+            item.overall_interaction = overall_interaction
+            item.about_hsco = about_hsco
+            item.any_suggestion = any_suggestion
+            item.user_id = SiteUser.objects.get(id=user_id)
+            item.customer_id = Customer_Details.objects.get(id=customer_id)
+            item.onsiterepairing_id = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
+            try:
+                item.save()
 
-            if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
-                                                      Q(user_id=SiteUser.objects.get(id=user_id))).count() > 0:
-                Employee_Analysis_month.objects.filter(user_id=user_id, entry_date__month=datetime.now().month,
-                                                       year=datetime.now().year).update(
-                    start_rating_feedback_onsite_reparing=(F(
-                        "start_rating_feedback_onsite_reparing") + Onsite_aftersales_service.objects.get(id=onsiterepairing_id).avg_feedback) / 2.0)
-                # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+                onsiterepairing = Onsite_aftersales_service.objects.get(id=onsiterepairing_id)
+                onsiterepairing.avg_feedback = (float(backend_team) + float(onsite_worker) + float(speed_of_performance) + float(price_of_reparing) + float(overall_interaction)) / float(5.0)
+                onsiterepairing.feedback_given = True
+                onsiterepairing.save(update_fields=['avg_feedback', 'feedback_given'])
 
-                # ead.save(update_fields=['total_sales_done_today'])
+                if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                          Q(user_id=SiteUser.objects.get(id=user_id))).count() > 0:
+                    Employee_Analysis_month.objects.filter(user_id=user_id, entry_date__month=datetime.now().month,
+                                                           year=datetime.now().year).update(
+                        start_rating_feedback_onsite_reparing=(F(
+                            "start_rating_feedback_onsite_reparing") + Onsite_aftersales_service.objects.get(id=onsiterepairing_id).avg_feedback) / 2.0)
+                    # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
-            else:
-                ead = Employee_Analysis_month()
-                ead.user_id = SiteUser.objects.get(id=user_id)
-                ead.start_rating_feedback_onsite_reparing = Onsite_aftersales_service.objects.get(id=onsiterepairing_id).avg_feedback
-                # ead.total_dispatch_done = value_of_goods
-                ead.manager_id = SiteUser.objects.get(id=user_id).group
-                ead.month = datetime.now().month
-                ead.year = datetime.now().year
-                ead.save()
+                    # ead.save(update_fields=['total_sales_done_today'])
+
+                else:
+                    ead = Employee_Analysis_month()
+                    ead.user_id = SiteUser.objects.get(id=user_id)
+                    ead.start_rating_feedback_onsite_reparing = Onsite_aftersales_service.objects.get(id=onsiterepairing_id).avg_feedback
+                    # ead.total_dispatch_done = value_of_goods
+                    ead.manager_id = SiteUser.objects.get(id=user_id).group
+                    ead.month = datetime.now().month
+                    ead.year = datetime.now().year
+                    ead.save()
 
 
 
-        except:
-            pass
-        # mon = datetime.now().month
+            except:
+                pass
+            # mon = datetime.now().month
 
-        # ess_id = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon )
-        #
-        #
-        # ess_id.start_rating_feedback_onsite_reparing = onsiterepairing.avg_feedback
-        return HttpResponse('Feedback Submitted!!!')
-    context = {
-        'feedback_form': feedback_form,
-    }
-    return render(request,"feedback/feedback_onrepairing.html",context)
+            # ess_id = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon )
+            #
+            #
+            # ess_id.start_rating_feedback_onsite_reparing = onsiterepairing.avg_feedback
+            return HttpResponse('Feedback Submitted!!!')
+        context = {
+            'feedback_form': feedback_form,
+        }
+        return render(request,"feedback/feedback_onrepairing.html",context)
 
 
 def load_onsite_reparing_stages_list(request,):
