@@ -388,7 +388,7 @@ function myFunction() {
   <input  name="informed_by" placeholder="Informed By" class="form-control" id="myText8" type="text" disabled value="{{repair_id.informed_by}}" list="inf_by">
             <datalist style="height:20px;" id="inf_by">
         {% for item in user_list %}
-      <option value="{{item.name}}">
+      <option value="{{item.profile_name}}">
     {% endfor %}
     </datalist>
     </div>
@@ -461,7 +461,7 @@ function myFunction() {
   <input name="repaired_by" placeholder="Repaired By" class="form-control" id="myText14" disabled value="{{repair_id.repaired_by}}" list="repe_by">
          <datalist style="height:20px;" id="repe_by">
         {% for item in user_list %}
-      <option value="{{item.name}}">
+      <option value="{{item.profile_name}}">
     {% endfor %}
     </datalist>
      </div>
@@ -498,7 +498,7 @@ function myFunction() {
       <datalist style="height:20px;" id="del_by">
 
         {% for item in user_list %}
-      <option value="{{item.name}}">
+      <option value="{{item.profile_name}}">
     {% endfor %}
     </datalist>
     </div>
@@ -574,7 +574,7 @@ function myFunction() {
       {% else %}
       <select name="taken_by">
   <option value="">Select</option>
-  <option value="{{user.name}}">{{user.name}}</option>
+  <option value="{{user.profile_name}}">{{user.profile_name}}</option>
 </select>
              <!--<input name="taken_by" placeholder="Taken By" disabled class="form-control" id="myText22" required type="text" list="taken_by">-->
 
@@ -600,7 +600,7 @@ function myFunction() {
   <option value="">Select</option>
                     {% for item in user_list %}
 
-  <option value="{{item.name}}">{{item.name}}</option>
+  <option value="{{item.profile_name}}">{{item.profile_name}}</option>
                         {% endfor %}
 
 </select>
@@ -619,11 +619,23 @@ function myFunction() {
 
 
   </div>
+      <div class="form-group row">
+
+  <label class="col-md-2 control-label">Notes
 
 
 
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
+<input name="notes" value="{{repair_id.notes}}" placeholder="Notes" class="form-control">
+</div>
+
+</div>
 
 
+</div>
 
 
 

@@ -53,6 +53,7 @@ def add_repairing_details(request):
         in_warranty = request.POST.get('in_warranty')
         today_date = request.POST.get('today_date')
         location = request.POST.get('location')
+        notes = request.POST.get('notes')
         taken_by = request.POST.get('taken_by')
         # second_person = request.POST.get('second_person')
         # third_person = request.POST.get('third_person')
@@ -122,6 +123,7 @@ def add_repairing_details(request):
 
         item2.location = location
         item2.taken_by = taken_by
+        item2.notes = notes
         item2.second_person = customer_name  # new1
         item2.second_contact_no = contact_no  # new2
         item2.entered_by = request.user.name  # new2
@@ -145,6 +147,7 @@ def add_repairing_details(request):
         item2.delivery_by = delivery_by
         # item2.repaired_by = repaired_by
         item2.feedback_given = False
+        item2.notes = notes
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         # item2.current_stage = current_stage
@@ -474,6 +477,8 @@ def update_repairing_details(request,id):
         delivery_date = request.POST.get('delivery_date')
         delivery_by = request.POST.get('delivery_by')
         repaired_by = request.POST.get('repaired_by')
+        notes = request.POST.get('notes')
+
         # feedback_given = request.POST.get('feedback_given')
         # current_stage = request.POST.get('current_stage')
 
@@ -675,12 +680,14 @@ def update_repairing_details(request,id):
         # item2.third_contact_no=third_contact_no
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired
+        item2.notes = notes
         # if item2.taken_by == None or item2.taken_by==''and item2.taken_by != 'None':
         if taken_by != '' or taken_by != None and taken_by != 'None':
             item2.taken_by = taken_by
-            item2.user_id = SiteUser.objects.get(name=taken_by)
+            item2.user_id = SiteUser.objects.get(profile_name=taken_by)
             item2.save(update_fields=['taken_by',])
             item2.save(update_fields=['user_id', ])
+            item2.save(update_fields=['notes    ', ])
 
 
 

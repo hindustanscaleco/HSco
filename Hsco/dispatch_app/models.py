@@ -32,7 +32,7 @@ class Dispatch(models.Model):
     lr_no = models.CharField(max_length=30,null=True,blank=True)
     photo_lr_no = models.ImageField(upload_to='',null=True,blank=True)
     channel_of_dispatch = models.CharField(max_length=30,null=True,blank=True)
-    notes = models.CharField(max_length=30,null=True,blank=True)
+    notes = models.CharField(max_length=300,null=True,blank=True)
     current_stage = models.CharField(max_length=50,null=True,blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now,)
     feedback_link = models.URLField(max_length=200,null=True,blank=True)

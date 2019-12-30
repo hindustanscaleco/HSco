@@ -363,10 +363,10 @@ function myFunction() {
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
 <input  name="dispatch_by" placeholder="Dispatched By" id="myText6" disabled class="form-control" value="{% if dispatch_item.dispatch_by == None %}{% else %}{{dispatch_item.dispatch_by}}{% endif %}" type="text" list="dispat_list">
     <datalist style="height:20px;" id="dispat_list">
-        <option value = "{{user.name}}"></option>
+        <option value = "{{user.profile_name}}"></option>
       {% for item in user_list %}
 
-      <option value = "{{item.name}}"></option>
+      <option value = "{{item.profile_name}}"></option>
     {% endfor %}
     </datalist>
 
@@ -392,7 +392,7 @@ function myFunction() {
         <datalist style="height:20px;" id="packed_list">
       {% for item in user_list %}
 
-      <option value = "{{item.name}}"></option>
+      <option value = "{{item.profile_name}}"></option>
     {% endfor %}
     </datalist>
 
