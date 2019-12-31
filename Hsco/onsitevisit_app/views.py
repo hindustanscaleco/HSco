@@ -1003,7 +1003,7 @@ def onsite_analytics(request,):
     value = Employee_Analysis_month.objects.aggregate(Max('total_reparing_done_onsite'))
     print(value['total_reparing_done_onsite__max'])
     try:
-        value = Employee_Analysis_month.objects.get(total_sales_done=value['total_reparing_done_onsite__max'])
+        value = Employee_Analysis_month.objects.get(total_reparing_done_onsite=value['total_reparing_done_onsite__max'])
     except:
         pass
 
@@ -1011,7 +1011,7 @@ def onsite_analytics(request,):
     print(value_low['total_reparing_done_onsite__min'])
     try:
         value_low = Employee_Analysis_month.objects.filter(
-            total_sales_done=value_low['total_reparing_done_onsite__min']).order_by('id').first()
+            total_reparing_done_onsite=value_low['total_reparing_done_onsite__min']).order_by('id').first()
     except:
         pass
     context = {
