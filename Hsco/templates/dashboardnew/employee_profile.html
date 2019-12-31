@@ -208,93 +208,90 @@ color:;
 
 
   <label class="col-md-2 control-label ">Purchase Module</label>
-
+{% if 'Customer Module' in user_id.modules_assigned %}
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
 
-    <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Customer Module" {% if 'Customer Module' in user_id.modules_assigned %}checked{% endif %} id="customCheck1"   >
+    <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Customer Module" checked id="customCheck1"   >
 
   <label class="custom-control-label"  for="customCheck1"></label>
   </div>
 </div>
+{% endif %}
 
-
-
+{% if "'Repairing Module'" in user_id.modules_assigned %}
     <label class="col-md-2 control-label">Repairing Module
-
-
-
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Repairing Module" {% if "'Repairing Module'" in user_id.modules_assigned %}checked{% endif %} id="customCheck2">
+  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Repairing Module" checked id="customCheck2">
   <label class="custom-control-label" for="customCheck2"></label>
   </div>
 
-
 </div>
+      {% endif %}
+
 </div>
 
 
 
 <div class="form-group row">
-
+{% if 'Restamping Module' in user_id.modules_assigned %}
   <label class="col-md-2 control-label">Restamping Module
 
 </label>
 
   <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Restamping Module" {% if 'Restamping Module' in user_id.modules_assigned %}checked{% endif %} id="customCheck3">
+  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Restamping Module" checked id="customCheck3">
   <label class="custom-control-label" for="customCheck3"></label>
   </div>
 </div>
+{% endif %}
 
+    {% if 'Dispatch Module' in user_id.modules_assigned %}
     <label class="col-md-2 control-label">Dispatch Module
-
-
-
-
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Dispatch Module" {% if 'Dispatch Module' in user_id.modules_assigned %}checked{% endif %} id="customCheck4">
+  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Dispatch Module" checked id="customCheck4">
   <label class="custom-control-label" for="customCheck4"></label>
   </div>
 
 </div>
+    {% endif %}
 </div>
 
 
 
 <div class="form-group row">
+    {% if 'AMC Module' in user_id.modules_assigned %}
   <label class="col-md-2 control-label">AMC Module
 
 
 </label>
   <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]"  disabled value="AMC Module" {% if 'AMC Module' in user_id.modules_assigned %}checked{% endif %} id="customCheck5">
+  <input type="checkbox" class="custom-control-input" name="checks[]"  disabled value="AMC Module" checked id="customCheck5">
   <label class="custom-control-label" for="customCheck5"></label>
   </div>
   </div>
+    {% endif %}
+    {% if 'Onsite Repairing Module' in user_id.modules_assigned %}
     <label class="col-md-2 control-label">Onsite Repairing Module
-
-
-
-
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Onsite Repairing Module" {% if 'Onsite Repairing Module' in user_id.modules_assigned %}checked{% endif %} id="customCheck6">
+  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Onsite Repairing Module" checked id="customCheck6">
   <label class="custom-control-label" for="customCheck6"></label>
   </div>
 </div>
+    {% endif %}
 </div>
 
 
@@ -491,9 +488,10 @@ color:;
                      </form>
 
 <br>
-                     {% if salary_slip.url %}
+                     {% if  salary_slip %}
                      Salary Slip For Month "{{salary_date}}" Found!! Click button to download.
          <button style="background-color: #FC6E20; width: 15%; " onclick="location.href='{{salary_slip.url}}'" class="form-control"> Download </button>
+
                      {% endif %}
 
 
