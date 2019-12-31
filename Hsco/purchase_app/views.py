@@ -155,7 +155,7 @@ def add_purchase_details(request):
             except:
                 print("Unexpected error:", sys.exc_info()[0])
                 pass
-        site_user_id=SiteUser.objects.get(name=sales_person).pk
+        site_user_id=SiteUser.objects.get(profile_name=sales_person).pk
         # item2.crm_no = Customer_Details.objects.get(id=item.pk)
         item2.new_repeat_purchase = new_repeat_purchase
         item2.second_person=customer_name  #new1
@@ -925,7 +925,11 @@ def final_report(request):
                 repairing_data = []
                 for i in row:
                     repairing_data.append(list(i))
-
+                print(final_row_product)
+                print(final_row)
+                print(final_row)
+                print(final_row)
+                print(final_row)
     # with connection.cursor() as cursor:
     #     if string!='':
     #         cursor.execute("SELECT  "+string+" from purchase_app_purchase_details , customer_app_customer_details"
@@ -1042,7 +1046,7 @@ def customer_employee_sales_graph(request,user_id):
         previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
         previous_lis_sum.append(x['total_sales_done_today'])
 
-    if request.method=='POST':
+    if request.method=='POST' :
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values(
@@ -1074,8 +1078,6 @@ def customer_employee_sales_graph(request,user_id):
             x=i
             lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
             lis_sum.append(x['total_sales_done_today'])
-
-
         context={
             'final_list':lis_date,
             'final_list2':lis_sum,

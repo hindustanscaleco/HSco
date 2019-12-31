@@ -327,7 +327,7 @@ Format : (company name)
     <datalist style="height:20px;" id="dispat_list">
       {% for item in user_list %}
 
-      <option value = "{{item.name}}"></option>
+      <option value = "{{item.profile_name}}"></option>
     {% endfor %}
     </datalist>
 
@@ -350,7 +350,7 @@ Format : (company name)
         <datalist style="height:20px;" id="packed_list">
       {% for item in user_list %}
 
-      <option value = "{{item.name}}"></option>
+      <option value = "{{item.profile_name}}"></option>
     {% endfor %}
     </datalist>
     </div>
