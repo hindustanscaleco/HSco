@@ -1503,6 +1503,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
         except:
             pass
     elif msg_id == '4':
+        print('late mark sms')
         message = 'Dear '+name+', Your Repairing No '+str(repair_id)+' has been Overdue ' \
                   'with us for more than 3 days. Please Collect it without fail today before 8 pm else we will scrap it.' \
                   ' We will not be liable for any claims thereafter. For more information ' \
