@@ -1485,7 +1485,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
         except:
             pass
     elif msg_id == '2':
-        rep_id = Repairing_after_sales_service.objects.filter(id=id)
+        rep_id = Repairing_after_sales_service.objects.get(id=id)
         message = 'Dear '+name+',Thank you for selecting HSCo. The Estimate for Your' \
                   ' Repairing No '+str(repair_id)+' is  '+str(rep_id.total_cost)+'/- For any further details please contact our ' \
                   'customer service team on 7045922251'
@@ -1503,9 +1503,9 @@ def send_sms(request,name,phone,email,repair_id,item_id):
         except:
             pass
     elif msg_id == '4':
-        message = 'Dear '+name+',Thank you for selecting HSCo. Your Repairing No '+str(repair_id)+' has been Overdue ' \
+        message = 'Dear '+name+', Your Repairing No '+str(repair_id)+' has been Overdue ' \
                   'with us for more than 3 days. Please Collect it without fail today before 8 pm else we will scrap it.' \
-                  ' We will not be liable for any claims thereafter. Consider this as your final reminder.for more information ' \
+                  ' We will not be liable for any claims thereafter. For more information ' \
                   'contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(late_mark_sms_count=F("late_mark_sms_count") + 1)
         try:
