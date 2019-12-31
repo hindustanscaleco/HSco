@@ -39,7 +39,7 @@ class Onsite_aftersales_service(models.Model):
     complaint_assigned_on = models.DateField( null=True, blank=True)
     complaint_received_by = models.CharField(max_length=30, null=True, blank=True)
     time_taken_destination_return_office_min = models.CharField(max_length=30, null=True, blank=True)
-    notes = models.CharField(max_length=90, null=True, blank=True)
+    notes = models.CharField(max_length=300, null=True, blank=True)
     feedback_given = models.BooleanField(default=False)
     avg_feedback = models.FloatField(default=0.0)
     entry_timedate = models.DateTimeField(default=timezone.now,)

@@ -363,7 +363,7 @@ Format : (company name)
   <input  name="informed_by" placeholder="Informed By" class="form-control"  type="text" list="inform_by">
       <datalist style="height:20px;" id="inform_by">
         {% for item in user_list %}
-      <option value="{{item.name}}">
+      <option value="{{item.profile_name}}">
     {% endfor %}
     </datalist>
     </div>
@@ -496,6 +496,16 @@ Format : (company name)
 
     {% endif %}
 
+  <label class="col-md-2 control-label">Notes
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
+<textarea name="notes" placeholder="Notes" class="form-control"></textarea>
+</div>
 
 </div>
 

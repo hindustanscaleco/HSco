@@ -27,7 +27,7 @@ class Purchase_Details(models.Model):   #cleaned
     industry = models.CharField(max_length=80,null=True,blank=True)
     value_of_goods = models.FloatField(default=0.0,null=True,blank=True)
     channel_of_dispatch = models.CharField(max_length=100,null=True,blank=True)
-    notes = models.CharField(max_length=100,null=True,blank=True)
+    notes = models.CharField(max_length=300,null=True,blank=True)
     feedback_form_filled = models.BooleanField(default=False)
     sales_person = models.CharField(max_length=30, null=True, blank=True)
     new_repeat_purchase = models.CharField(max_length=10, null=True, blank=True)

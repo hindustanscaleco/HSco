@@ -326,11 +326,11 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user-times faicons"></i></span>
-  <input  name="complaint_received_by" placeholder="Complaint Received By" class="form-control" value="{{user.name}}" type="text" list="complaint_list">
+  <input  name="complaint_received_by" placeholder="Complaint Received By" class="form-control" value="{{user.profile_name}}" type="text" list="complaint_list">
     <datalist style="height:20px;" id="complaint_list">
       {% for item in user_list %}
 
-      <option value = "{{item.name}}"></option>
+      <option value = "{{item.profile_name}}"></option>
     {% endfor %}
     </datalist>
 
@@ -610,7 +610,7 @@ Format : (company name)
     <datalist style="height:20px;" id="type_of_scale">
       {% for item in user_list %}
 
-      <option value = "{{item.name}}"></option>
+      <option value = "{{item.profile_name}}"></option>
     {% endfor %}
     </datalist>
     </div>

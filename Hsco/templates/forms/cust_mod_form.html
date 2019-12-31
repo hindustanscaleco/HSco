@@ -302,10 +302,10 @@ Format : (company name)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="sales_person" placeholder="Sales Person" value="{{ user.name }}" required class="form-control" list="channel101" type="text">
+  <input name="sales_person" placeholder="Sales Person" value="{{ user.profile_name }}" required class="form-control" list="channel101" type="text">
     <datalist style="height:20px;" id="channel101">
       {% for item in sales_person_sugg %}
-      <option value="{{item.name}}"></option>
+      <option value="{{item.profile_name}}"></option>
     {% endfor %}
     </datalist>
     </div>
