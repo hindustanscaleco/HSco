@@ -58,7 +58,7 @@ class Repairing_after_sales_service(models.Model):
 
     repairing_start_timedate = models.DateTimeField(default=timezone.now, blank=True)
     repairing_done_timedate = models.DateTimeField(null=True,blank=True)
-
+    repairing_time_calculated = models.BooleanField(default=False)
 
     def __int__(self):
         return self.pk

@@ -675,20 +675,34 @@ def update_repairing_details(request,id):
             item2.save(update_fields=['repaired_by'])
             item2.save(update_fields=['repaired_date',])
             item2.save(update_fields=['repairing_done_timedate',])
+        if repair_id.repairing_time_calculated == False:
+            if item2.repaired_date != None :
+                user_name = SiteUser.objects.get(profile_name=repair_id.repaired_by)
+                total_time = repair_id.repairing_done_timedate - repair_id.repairing_start_timedate
+                total_hours = total_time.total_seconds() // 3600        #for 24 hours (total hours for a single repair)
 
-        # if item2.repaired_date != None :
-        #     total_time = repair_id.repairing_done_timedate - repair_id.repairing_start_timedate
-        #     total_hours = total_time.total_seconds() // 3600        #for 24 hours (total hours for a single repair)
-        #     total_days = (total_time.total_seconds() // 3600) / 24          #total days for a single repair
-        #     final_time_hours = total_hours - (total_days*14)
-        #     print(total_time)
-        #     print(total_hours)
-        #     print(total_days)
-        #     print(final_time_hours)
-        #     Employee_Analysis_date.objects.filter(user_id=repair_id.user_id,
-        #                                           entry_date__month=repair_id.entry_timedate.month,
-        #                                           year=repair_id.entry_timedate.year).update(
-        #         avg_time_to_repair_single_scale_today= (repair_id.repaired_date - repair_id.entry_timedate ).days)
+                # total_days = (total_time.total_seconds() // 3600) / 24          #total days for a single repair
+                # final_time_hours = total_hours - (total_days*14)
+                daily_reparing_count = Repairing_after_sales_service.objects.filter(repaired_by=user_name.profile_name,entry_timedate=repair_id.entry_timedate).count()
+                monthly_reparing_count = Repairing_after_sales_service.objects.filter(repaired_by=user_name.profile_name,entry_timedate__month=repair_id.entry_timedate.month).count()
+
+                Employee_Analysis_date.objects.filter(user_id=user_name.id,
+                                                      entry_date=repair_id.entry_timedate,
+                                                  year=repair_id.entry_timedate.year).update(
+                    avg_time_to_repair_single_scale_today=F("avg_time_to_repair_single_scale_today")+ total_hours)
+
+                
+                Employee_Analysis_date.objects.filter(user_id=user_name.id,
+                                                      entry_date=repair_id.entry_timedate,
+                                                      year=repair_id.entry_timedate.year).update(
+                    avg_time_to_repair_single_scale_today=F("avg_time_to_repair_single_scale_today") / daily_reparing_count)
+
+                Employee_Analysis_month.objects.filter(user_id=user_name.id,
+                                                       entry_date__month=repair_id.entry_timedate.month,
+                                                       year=repair_id.entry_timedate.year).update(
+                    avg_time_to_repair_single_scale=F("avg_time_to_repair_single_scale") + total_hours)
+                item2.repairing_time_calculated = True
+                item2.save(update_fields=['repairing_time_calculated',])
 
         item2.second_person=customer_name
         # item2.third_person=third_person
@@ -722,12 +736,12 @@ def update_repairing_details(request,id):
 
 
         # item2.save(update_fields=['informed_by', ]),
-        item2.save(update_fields=['confirmed_estimate', ])
-        item2.save(update_fields=['second_company_name', ])
-        item2.save(update_fields=['company_address', ])
-        item2.save(update_fields=['repaired', ])
-        item2.save(update_fields=['company_email', ])
-        item2.save(update_fields=['repaired_by','taken_by', ])
+        item2.save(update_fields=['confirmed_estimate',])
+        item2.save(update_fields=['second_company_name',])
+        item2.save(update_fields=['company_address',])
+        item2.save(update_fields=['repaired',])
+        item2.save(update_fields=['company_email',])
+        item2.save(update_fields=['repaired_by','taken_by',])
         # item2.save(update_fields=['feedback_given', ])
         # item2.save(update_fields=['current_stage', ])
         item2.save(update_fields=['second_person','second_contact_no', ])
@@ -741,7 +755,6 @@ def update_repairing_details(request,id):
             'customer_id': customer_id,
         }
         return render(request, 'update_forms/update_rep_mod_form.html', context)
-
     context={
         'repair_list': repair_list,
         'repair_id': repair_id,
