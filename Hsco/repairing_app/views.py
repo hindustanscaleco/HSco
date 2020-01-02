@@ -691,7 +691,7 @@ def update_repairing_details(request,id):
                                                   year=repair_id.entry_timedate.year).update(
                     avg_time_to_repair_single_scale_today=F("avg_time_to_repair_single_scale_today")+ total_hours)
 
-                
+
                 Employee_Analysis_date.objects.filter(user_id=user_name.id,
                                                       entry_date=repair_id.entry_timedate,
                                                       year=repair_id.entry_timedate.year).update(
@@ -701,6 +701,12 @@ def update_repairing_details(request,id):
                                                        entry_date__month=repair_id.entry_timedate.month,
                                                        year=repair_id.entry_timedate.year).update(
                     avg_time_to_repair_single_scale=F("avg_time_to_repair_single_scale") + total_hours)
+
+                Employee_Analysis_date.objects.filter(user_id=user_name.id,
+                                                      entry_date=repair_id.entry_timedate,
+                                                      year=repair_id.entry_timedate.year).update(
+                    avg_time_to_repair_single_scale_today=F(
+                        "avg_time_to_repair_single_scale_today") / monthly_reparing_count)
                 item2.repairing_time_calculated = True
                 item2.save(update_fields=['repairing_time_calculated',])
 
