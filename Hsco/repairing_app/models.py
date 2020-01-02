@@ -56,6 +56,8 @@ class Repairing_after_sales_service(models.Model):
     repairing_no = models.BigIntegerField(null=True,blank=True)
     notes = models.CharField(max_length=300,null=True,blank=True)
 
+    repairing_start_timedate = models.DateTimeField(default=timezone.now, blank=True)
+    repairing_done_timedate = models.DateTimeField(null=True,blank=True)
 
 
     def __int__(self):

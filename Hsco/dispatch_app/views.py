@@ -641,7 +641,7 @@ def update_dispatch_details(request,update_id):
 
                 send_mail('Dispatched, Your Hsco Purchase is Dispatched from our end',
                           msg, settings.EMAIL_HOST_USER,
-                          [dispatch_item.company_email])
+                          [dispatch_item.company_email,])
                 print("send mail!!")
             except:
                 print("exception occured!!")
