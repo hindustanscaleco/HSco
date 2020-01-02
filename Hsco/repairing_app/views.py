@@ -136,12 +136,12 @@ def add_repairing_details(request):
         item2.total_cost = 0.0
         if informed_by != '' and informed_by!= None:
             item2.informed_on = datetime.today().strftime('%Y-%m-%d')
-
             item2.informed_by = informed_by
+
         if repaired_by != '' and repaired_by!= None:
             item2.repaired_date = datetime.today().strftime('%Y-%m-%d')
-
             item2.repaired_by = repaired_by
+            item2.repairing_done_timedate = timezone.now()
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired
         item2.delivery_by = delivery_by
@@ -352,7 +352,7 @@ def repair_product(request,id):
                     send_mail('Feedback Form',msg
 
                               ,settings.EMAIL_HOST_USER,
-                          [rep.company_email])
+                          [rep.company_email,])
                 except:
                     pass
 
@@ -545,7 +545,7 @@ def update_repairing_details(request,id):
                     'service team on 7045922251 Estimate Details:\n'+product_list
                 send_mail('Feedback Form',msg
                           , settings.EMAIL_HOST_USER,
-                          [item.customer_email_id])
+                          [item.customer_email_id,])
             except:
                 pass
 
@@ -587,7 +587,7 @@ def update_repairing_details(request,id):
                           ' Dear '+customer_name+', Your Repairing Complaint No '+str(repair_id.repairing_no)+' is resolved.'
                           ' Please collect your Scales within the next 3 days.For any further details please contact '
                           'our customer service team on 7045922251', settings.EMAIL_HOST_USER,
-                          [item.customer_email_id])
+                          [item.customer_email_id,])
             except:
                 pass
 
@@ -631,7 +631,7 @@ def update_repairing_details(request,id):
                           'to hear your feedback to help us improve our customer experience,just click on the link below:\n ' \
                                                   ' http://139.59.76.87/feedback_repairing/'+ str(request.user.pk) + '/' + str(repair_id.crm_no.pk) + '/' + str(repair_id.id)+'\n If you ' \
                           'feel that your complaint has not been resolved please contact our customer service team on 7045922251', settings.EMAIL_HOST_USER,
-                              [item.customer_email_id])
+                              [item.customer_email_id,])
                 except:
                     pass
                 #
@@ -670,14 +670,25 @@ def update_repairing_details(request,id):
         if repaired_by != '' and repaired_by!= None and repaired_by != 'None':
             item2.repaired_by = repaired_by
             item2.repaired_date = datetime.today().strftime('%Y-%m-%d')
-            item2.save(update_fields=['repaired_by'])
-            item2.save(update_fields=['repaired_date', ])
+            item2.repairing_done_timedate = timezone.now()
 
-        if item2.repaired == 'Yes'and item2.repaired_date != None and type(item2.repaired_date) != str:
-            Employee_Analysis_date.objects.filter(user_id=repair_id.user_id,
-                                                  entry_date__month=repair_id.entry_timedate.month,
-                                                  year=repair_id.entry_timedate.year).update(
-                avg_time_to_repair_single_scale_today= (repair_id.repaired_date - repair_id.entry_timedate ).days)
+            item2.save(update_fields=['repaired_by'])
+            item2.save(update_fields=['repaired_date',])
+            item2.save(update_fields=['repairing_done_timedate',])
+
+        # if item2.repaired_date != None :
+        #     total_time = repair_id.repairing_done_timedate - repair_id.repairing_start_timedate
+        #     total_hours = total_time.total_seconds() // 3600        #for 24 hours (total hours for a single repair)
+        #     total_days = (total_time.total_seconds() // 3600) / 24          #total days for a single repair
+        #     final_time_hours = total_hours - (total_days*14)
+        #     print(total_time)
+        #     print(total_hours)
+        #     print(total_days)
+        #     print(final_time_hours)
+        #     Employee_Analysis_date.objects.filter(user_id=repair_id.user_id,
+        #                                           entry_date__month=repair_id.entry_timedate.month,
+        #                                           year=repair_id.entry_timedate.year).update(
+        #         avg_time_to_repair_single_scale_today= (repair_id.repaired_date - repair_id.entry_timedate ).days)
 
         item2.second_person=customer_name
         # item2.third_person=third_person
@@ -1481,7 +1492,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
                   ' For any further details please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(scale_sub_sms_count=F("scale_sub_sms_count")+1)
         try:
-            send_mail('Scale Submit - HSCo', message, settings.EMAIL_HOST_USER,[email])
+            send_mail('Scale Submit - HSCo', message, settings.EMAIL_HOST_USER,[email,])
         except:
             pass
     elif msg_id == '2':
@@ -1491,7 +1502,8 @@ def send_sms(request,name,phone,email,repair_id,item_id):
                   'customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(estimate_informed_sms_count=F("estimate_informed_sms_count") + 1)
         try:
-            send_mail('Reparing Estimate - HSCo',  message, settings.EMAIL_HOST_USER, [email])
+            send_mail('Reparing Estimate - HSCo',  message, settings.EMAIL_HOST_USER, [email,])
+
         except:
             pass
     elif msg_id == '3':
@@ -1499,7 +1511,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
                   ' Please collect your Scales within the next 3 days.For any further details please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(reparing_done_sms_count=F("reparing_done_sms_count") + 1)
         try:
-            send_mail('Reparing done - HSCo', message, settings.EMAIL_HOST_USER, [email])
+            send_mail('Reparing done - HSCo', message, settings.EMAIL_HOST_USER, [email,])
         except:
             pass
     elif msg_id == '4':
@@ -1510,7 +1522,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
                   'contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(late_mark_sms_count=F("late_mark_sms_count") + 1)
         try:
-            send_mail('Late Mark - HSCo', message, settings.EMAIL_HOST_USER, [email])
+            send_mail('Late Mark - HSCo', message, settings.EMAIL_HOST_USER, [email,])
         except:
             pass
     elif msg_id == '5':
@@ -1523,7 +1535,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
                   'contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(final_del_sms_count=F("final_del_sms_count") + 1)
         try:
-            send_mail('Scale Collected - HSCo', message, settings.EMAIL_HOST_USER, [email])
+            send_mail('Scale Collected - HSCo', message, settings.EMAIL_HOST_USER, [email,])
         except:
             pass
 

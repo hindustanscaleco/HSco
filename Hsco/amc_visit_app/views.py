@@ -156,7 +156,7 @@ def add_amc_after_sales(request):
             try:
                 send_mail('Feedback Form', 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
                     request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.amc_no), settings.EMAIL_HOST_USER,
-                          [crm_no.customer_email_id])
+                          [crm_no.customer_email_id,])
             except:
                 print('exception')
 
@@ -176,7 +176,7 @@ def add_amc_after_sales(request):
             try:
                 send_mail('Feedback Form', 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
                     request.user.pk) + '/' + str(item.id) + '/' + str(item2.pk), settings.EMAIL_HOST_USER,
-                          [item.customer_email_id])
+                          [item.customer_email_id,])
             except:
                 pass
 

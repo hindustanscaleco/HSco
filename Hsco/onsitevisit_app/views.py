@@ -683,7 +683,7 @@ def update_onsite_details(request,id):
             try:
                 send_mail('Onsite-Reparing Feedback - HSCo',msg,
                           settings.EMAIL_HOST_USER,
-                          [customer_email_id])
+                          [customer_email_id,])
             except:
                 pass
 
