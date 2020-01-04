@@ -474,32 +474,69 @@ display:none;
 <br>
 
 
-<div id="id_manager_view"  style="min-height: 15vw;">
+                <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
 
-        <div class="row">
-              <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto;">
 
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class="">  Date </center> </div>|
-                    <div class="col-xl-1 col-md-2 mb-1"><center> Repairing No. </center> </div>|
-                    <div class="col-xl-2 col-md-2 mb-1"><center> Customer Name </center></div>|
-                    <div class="col-xl-2 col-md-2 mb-1"><center> Company Name </center></div>|
-                    <div class="col-xl-2 col-md-2 mb-1"><center> Contact No. </center></div>|
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  border-color: black;
+  color: black;
 
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Entered By </center> </div>|
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+
+
+<div class="row" id="id_manager_view"  style="min-height: 15vw;">
+           <table>
+                    <tr style="background-color: gray; color: white;">
+
+                    <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Date </center> </td>
+                    <td style="border: 0px solid gray;">Repairing No. </td>
+                    <td style="border: 0px solid gray;">Customer Name</td>
+                    <td style="border: 0px solid gray;">Company Name</td>
+                    <td style="border: 0px solid gray;">Contact No.</td>
+
+                    <td style="border: 0px solid gray;"><center class=""> Entered By </center> </td>
 
                     {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
-                    <div class="col-xl-2 col-md-2 mb-1"><center> Taken By </center> </div>
+                    <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;"><center> Taken By </center> </td>
                     {% else %}
                     {% endif %}
-                    </div>
-                </div>
+                </tr>
+              </table>
               </div>
-
-        </div>
-
-
 <br>
 
                 <div id="id_subcat" class="row">
