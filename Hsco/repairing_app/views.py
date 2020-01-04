@@ -76,121 +76,62 @@ def add_repairing_details(request):
         repaired_by = request.POST.get('repaired_by')
 
 
-        item = Customer_Details()
-        item2  = Repairing_after_sales_service()
-        if Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).count() > 0:
+        # item = Customer_Details()
+        # item2  = Repairing_after_sales_service()
+        try:
+            del request.session['company_name']
+            del request.session['address']
+            del request.session['customer_email_id']
+            del request.session['repairing_no']
+            del request.session['previous_repairing_number']
+            del request.session['in_warranty']
+            del request.session['today_date']
+            del request.session['location']
+            del request.session['taken_by']
+            del request.session['notes']
+            del request.session['second_person']
+            del request.session['second_contact_no']
+            del request.session['entered_by']
+            del request.session['total_cost']
+            del request.session['informed_on']
+            del request.session['informed_by']
+            del request.session['repaired_date']
+            del request.session['repaired_by']
+            del request.session['confirmed_estimate']
+            del request.session['repaired']
+            del request.session['delivery_by']
+            del request.session['feedback_given']
+        except:
+            pass
+        request.session['company_name'] = company_name
+        request.session['address'] = address
+        request.session['customer_email_id'] = customer_email_id
 
-            # item2.crm_no= Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).first()
-            request.session['crm_no'] = Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).first()
-            item3 = Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).first()
-            if company_name != '':
-                request.session['second_company_name'] = company_name  # new2
-                # item2.second_company_name = company_name
-                item3.company_name = company_name
-                item3.save(update_fields=['company_name'])
-            if address != '':
-                item3.address = address
-                request.session['company_address'] = address        # new2
-                # item2.company_address = address
-                item3.save(update_fields=['address'])
-            if customer_email_id != '':
-                request.session['company_email'] = customer_email_id        # new2
-                # item2.company_email = customer_email_id  # new2
-                item3.customer_email_id = customer_email_id
-                item3.save(update_fields=['customer_email_id'])
+        request.session['repairing_no'] = Repairing_after_sales_service.objects.latest('repairing_no').repairing_no + 1
+        request.session['previous_repairing_number'] = previous_repairing_number
+        request.session['in_warranty'] = in_warranty
+        request.session['today_date'] = today_date
+        request.session['location'] = location
+        request.session['taken_by'] = taken_by
+        request.session['notes'] = notes
+        request.session['second_person'] = customer_name
+        request.session['second_contact_no'] = contact_no
+        request.session['entered_by'] = request.user.name
+        request.session['total_cost'] = 0.0
 
-        else:
-            item.customer_name = customer_name
-            if company_name != '':
-                request.session['second_company_name'] = company_name  # new2
-                # item.company_name = company_name
-            if address != '':
-                request.session['company_address'] = address  # new2
-                # item.address = address
-            item.contact_no = contact_no
-            if customer_email_id != '':
-                request.session['customer_email_id'] = customer_email_id  # new2
-                # item.customer_email_id = customer_email_id
-            # item.user_id = SiteUser.objects.get(id=request.user.pk)
-            # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-            try:
-                item.save()
-                request.session['crm_no'] = Customer_Details.objects.get(id=item.pk)
-            except:
-                pass
+        request.session['informed_on'] = datetime.today().strftime('%Y-%m-%d')
+        request.session['informed_by'] = informed_by
 
-        # item2.current_stage = current_stage
-        item2.repairing_no = Repairing_after_sales_service.objects.latest('repairing_no').repairing_no + 1
-        item2.previous_repairing_number = previous_repairing_number
-        item2.in_warranty = in_warranty
-        item2.today_date = today_date
+        request.session['repaired_date'] = datetime.today().strftime('%Y-%m-%d')
+        request.session['repaired_by'] = repaired_by
+        # request.session['repairing_done_timedate'] = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        item2.location = location
-        item2.taken_by = taken_by
-        item2.second_person = customer_name  # new1
-        item2.second_contact_no = contact_no  # new2
-        item2.entered_by = request.user.name  # new2
-        # item2.second_person=second_person
-        # item2.third_person=third_person
-        # item2.second_contact_no=second_contact_no
-        # item2.third_contact_no=third_contact_no
-        # item2.products_to_be_repaired = products_to_be_repaired
-        item2.total_cost = 0.0
-        if informed_by != '' and informed_by != None:
-            item2.informed_on = datetime.today().strftime('%Y-%m-%d')
-            item2.informed_by = informed_by
-
-        if repaired_by != '' and repaired_by != None:
-            item2.repaired_date = datetime.today().strftime('%Y-%m-%d')
-            item2.repaired_by = repaired_by
-            item2.repairing_done_timedate = timezone.now()
-        item2.confirmed_estimate = confirmed_estimate
-        item2.repaired = repaired
-        item2.delivery_by = delivery_by
-        # item2.repaired_by = repaired_by
-        item2.feedback_given = False
-        item2.notes = notes
-        item2.user_id = SiteUser.objects.get(id=request.user.pk)
-        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-
-
-        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
-                                                 Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
-                                                  year=datetime.now().year).update(
-                total_reparing_done_today=F("total_reparing_done_today") + total_cost)
-            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
-
-            # ead.save(update_fields=['total_sales_done_today'])
-
-        else:
-            ead = Employee_Analysis_date()
-            ead.user_id = SiteUser.objects.get(id=request.user.pk)
-            ead.total_reparing_done_today = total_cost
-            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
-
-            ead.month = datetime.now().month
-            ead.year = datetime.now().year
-            ead.save()
-
-        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
-                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
-                                                   year=datetime.now().year).update(
-                total_reparing_done=F("total_reparing_done") + total_cost)
-            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
-
-            # ead.save(update_fields=['total_sales_done_today'])
-
-        else:
-            ead = Employee_Analysis_month()
-            ead.user_id = SiteUser.objects.get(id=request.user.pk)
-            ead.total_reparing_done = total_cost
-            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
-
-            ead.month = datetime.now().month
-            ead.year = datetime.now().year
-            ead.save()
+        request.session['confirmed_estimate'] = confirmed_estimate
+        request.session['repaired'] = repaired
+        request.session['delivery_by'] = delivery_by
+        request.session['feedback_given'] = False
+        # request.session['user_id'] = SiteUser.objects.get(id=request.user.pk)
+        # request.session['manager_id'] = SiteUser.objects.get(id=request.user.pk).group
 
 
         # if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
@@ -298,7 +239,59 @@ def repair_product(request,id):
         # else:
         item.cost = cost
 
-        item2 = request.session.get('repairing_no')
+        item2 = Repairing_after_sales_service()
+        print(request.session.get('company_name'))
+        print(request.session.get('second_contact_no'))
+        print(Customer_Details.objects.filter(customer_name='',contact_no='7757860524').count())
+        print(Customer_Details.objects.filter(customer_name=request.session.get('second_person'),contact_no=request.session.get('second_contact_no')).count())
+        if Customer_Details.objects.filter(customer_name=request.session.get('second_person'),contact_no=request.session.get('second_contact_no')).count() > 0:
+
+            item2.crm_no= Customer_Details.objects.filter(contact_no=request.session.get('second_contact_no')).first()
+            print(item2.crm_no)
+            print(item2.crm_no)
+            print(item2.crm_no)
+            print(item2.crm_no)
+
+            # request.session['crm_no'] = Customer_Details.objects.filter(customer_name=request.session.get('second_company_name'),contact_no=request.session.get('second_contact_no')).first()
+            item3 = Customer_Details.objects.filter(customer_name=request.session.get('second_person'), contact_no=request.session.get('second_contact_no')).first()
+            if request.session.get('company_name') != '' and request.session.get('company_name') != None:
+                # request.session.get('second_company_name') = company_name  # new2
+                item2.second_company_name = request.session.get('company_name')
+                item3.company_name = request.session.get('company_name')
+                item3.save(update_fields=['company_name'])
+            if request.session.get('address')  != '' and request.session.get('address')  != None:
+                item3.address = request.session.get('address')
+                # request.session['company_address'] = address        # new2
+                item2.company_address = request.session.get('address')
+                item3.save(update_fields=['address'])
+            if request.session.get('customer_email_id') != '' and request.session.get('customer_email_id') != None:
+                # request.session['company_email'] = customer_email_id        # new2
+                item2.company_email = request.session.get('customer_email_id')   # new2
+                item3.customer_email_id = request.session.get('customer_email_id')
+                item3.save(update_fields=['customer_email_id'])
+
+        else:
+            new_cust = Customer_Details()
+
+            new_cust.customer_name = request.session.get('second_person')
+            if request.session.get('company_name') != '':
+                # request.session['second_company_name'] = company_name  # new2
+                new_cust.company_name = request.session.get('company_name')
+            if request.session.get('address') != '':
+                # request.session['company_address'] = address  # new2
+                new_cust.address = request.session.get('address')
+            item.contact_no = request.session.get('second_contact_no')
+            if request.session.get('customer_email_id') != '':
+                # request.session['customer_email_id'] = customer_email_id  # new2
+                new_cust.customer_email_id = request.session.get('customer_email_id')
+            # item.user_id = SiteUser.objects.get(id=request.user.pk)
+            # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            try:
+                new_cust.save()
+                item2.crm_no = Customer_Details.objects.get(id=new_cust.pk)
+            except:
+                pass
+
         item2.repairing_no = request.session.get('repairing_no')
         item2.previous_repairing_number = request.session.get('previous_repairing_number')
         item2.in_warranty = request.session.get('in_warranty')
@@ -311,7 +304,7 @@ def repair_product(request,id):
         item2.second_contact_no = request.session.get('second_contact_no')  # new2
         item2.entered_by = request.session.get('entered_by') # new2
 
-        item2.total_cost = 0.0
+        total_cost = 0.0
         if request.session.get('informed_by') != '' and request.session.get('informed_by') != None:
             item2.informed_on = request.session.get('informed_on')
             item2.informed_by = request.session.get('informed_by')
@@ -332,15 +325,54 @@ def repair_product(request,id):
         item2.confirmed_estimate = request.session.get('confirmed_estimate')
         item2.repaired = request.session.get('repaired')
         item2.delivery_by = request.session.get('delivery_by')
-        item2.crm_no = request.session.get('crm_no')
         # item2.repaired_by = repaired_by
         item2.feedback_given = request.session.get('feedback_given')
         item2.notes = request.session.get('notes')
+        item2.repairing_start_timedate = timezone.now()
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save()
 
         item.save()
+
+        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
+                                                 Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+                                                  year=datetime.now().year).update(
+                total_reparing_done_today=F("total_reparing_done_today") + total_cost)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_date()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_reparing_done_today = item.total_cost
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+                                                   year=datetime.now().year).update(
+                total_reparing_done=F("total_reparing_done") + total_cost)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_month()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_reparing_done = total_cost
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
 
         user_id = Repairing_after_sales_service.objects.get(id=id).user_id
 
@@ -352,8 +384,8 @@ def repair_product(request,id):
         rep = Repairing_after_sales_service.objects.get(id=id)
 
         if is_last_product_yes == 'yes':
-            ret = send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
-            Repairing_after_sales_service.objects.filter(id=id).update(is_last_product_added=True)
+            ret = send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, item2.pk, '1')
+            Repairing_after_sales_service.objects.filter(id=item2.pk).update(is_last_product_added=True)
             product_list = ''' '''
             pro_lis = Repairing_Product.objects.filter(repairing_id_id=rep.pk)
 
@@ -717,7 +749,7 @@ def update_repairing_details(request,id):
             item2.save(update_fields=['repaired_date',])
             item2.save(update_fields=['repairing_done_timedate',])
         if repair_id.repairing_time_calculated == False:
-            if item2.repaired_date != None :
+            if item2.repaired_date != None and item2.repaired_by != None :
                 user_name = SiteUser.objects.get(profile_name=repair_id.repaired_by)
 
                 total_time = repair_id.repairing_done_timedate - repair_id.repairing_start_timedate
@@ -1500,6 +1532,7 @@ def load_customer(request):
     cust_id = request.GET.get('item_id')
 
     cust_list = Customer_Details.objects.get(id=cust_id)
+    # serialize_cust_list = CustomerSerializer(cust_list)
     # cust_list = CustomerSerializer.objects.get(id=cust_id)
     context = {
         'cust_list': cust_list,
