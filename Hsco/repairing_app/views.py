@@ -753,11 +753,14 @@ def update_repairing_details(request,id):
         item2.notes = notes
         # if item2.taken_by == None or item2.taken_by==''and item2.taken_by != 'None':
         if taken_by != '' or taken_by != None and taken_by != 'None':
+            item2.repairing_start_timedate = timezone.now()
+
             item2.taken_by = taken_by
             item2.user_id = SiteUser.objects.get(profile_name=taken_by)
             item2.save(update_fields=['taken_by',])
             item2.save(update_fields=['user_id', ])
             item2.save(update_fields=['notes', ])
+            item2.save(update_fields=['repairing_start_timedate', ])
 
 
         # item2.feedback_given = feedback_given

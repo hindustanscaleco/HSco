@@ -474,6 +474,7 @@ display:none;
 <br>
 
 
+
                 <style>
                 .border_class {
                 border:1px solid black;
@@ -516,9 +517,10 @@ td {
 
             </style>
 
+ <center><p>{{search_msg}}</p></center>
 
 
-<div class="row" id="id_manager_view"  style="min-height: 15vw;">
+<div class="" id="id_manager_view"  style="min-height: 15vw;">
            <table>
                     <tr style="background-color: gray; color: white;">
 
@@ -535,46 +537,46 @@ td {
                     {% else %}
                     {% endif %}
                 </tr>
-              </table>
-              </div>
-<br>
+           </table>
 
-                <div id="id_subcat" class="row">
- <center><p>{{search_msg}}</p></center>
 
-                {% for list in repair_list %}
-              <div style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
-                  {% if list.current_stage == 'Scale is collected but estimate is not given' %}
-              <div class="card shadow" style="border: 2px solid rgba(120,115,245,.9);" >
-                  {% elif list.current_stage == 'Estimate is given but Estimate is not confirmed' %}
-              <div class="card shadow" style="border: 2px solid rgba(5,255,163,.9);" >
-                  {% elif list.current_stage == 'Estimate is confirmed but not repaired' %}
-              <div class="card shadow" style="border: 2px solid rgba(252,98,98,.9);" >
-                  {% elif list.current_stage == 'Repaired but not collected' %}
-              <div class="card shadow" style="border: 2px solid rgba(255,110,196,5.5);" >
-                  {% elif list.current_stage == 'Finally Collected' %}
-              <div class="card shadow" style="border: 2px solid rgba(69,202,252,.9);" >
-                                  {% endif %}
+                <div id="id_subcat">
+                <table>
+                    <tr style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';">
+<!--                {% for list in repair_list %}-->
 
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto; ">
-                                        <div class="col-xl-2 col-md-1 mb-1 ">{{list.entry_timedate|date:'Y-m-d'}}</div>|
+<!--                  {% if list.current_stage == 'Scale is collected but estimate is not given' %}-->
+<!--              <div class="card shadow" style="border: 2px solid rgba(120,115,245,.9);" >-->
+<!--                  {% elif list.current_stage == 'Estimate is given but Estimate is not confirmed' %}-->
+<!--              <div class="card shadow" style="border: 2px solid rgba(5,255,163,.9);" >-->
+<!--                  {% elif list.current_stage == 'Estimate is confirmed but not repaired' %}-->
+<!--              <div class="card shadow" style="border: 2px solid rgba(252,98,98,.9);" >-->
+<!--                  {% elif list.current_stage == 'Repaired but not collected' %}-->
+<!--              <div class="card shadow" style="border: 2px solid rgba(255,110,196,5.5);" >-->
+<!--                  {% elif list.current_stage == 'Finally Collected' %}-->
+<!--              <div class="card shadow" style="border: 2px solid rgba(69,202,252,.9);" >-->
+<!--                                  {% endif %}-->
 
-                    <div class="col-xl-1 col-md-1 mb-1"><center> {{list.repairing_no}} </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_person}}</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_contact_no}} </center> </div>|
+<!--                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto; ">-->
+                                       <td style="width: 8%;">{{list.entry_timedate|date:'Y-m-d'}}</td>
 
-                    <div class="col-xl-2 col-md-1 mb-1 "><center>{{list.entered_by}}</center></div>|
+                    <td style="width: 15%;">{{list.repairing_no}}  </td>
+                    <td style="width: 18%;">{{list.second_person}}</td>
+                    <td style="width: 20%;">{% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</td>
+                    <td style="width: 15%;">{{list.second_contact_no}} </center> </td>
+
+                    <td style="width: 12%;">{{list.entered_by}}</td>
 
                     {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.taken_by}} </center> </div>
+                    <td style="width: 12%;"> {{list.taken_by}}  </td>
                     {% endif %}
 
-                    </div>
+               </tr>
+               {% endfor %}
+           </table>
 
-                </div>
-              </div>
-                {% endfor %}
+        </div>
+        </div>
 
             </div>
 
