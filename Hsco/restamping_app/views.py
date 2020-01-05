@@ -324,30 +324,41 @@ def restamping_after_sales_service(request):
 
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        # item2.crm_no_id = item.pk
-        # item2.restampingno = restampingno
-        # item2.customer_no = customer_no
+
         item2.second_person = customer_name  # new1
         item2.second_contact_no = contact_no  # new2
-        # item2.second_person=second_person
-        # item2.third_person=third_person
-        # item2.second_contact_no=second_contact_no
-        # item2.third_contact_no=third_contact_no
+
         item2.today_date = today_date
-        # item2.new_serial_no = new_serial_no
-        # item2.brand = brand
+
         item2.total_amount = 0.0
-        # item2.scale_delivery_date = scale_delivery_date
         item2.restamping_no = Restamping_after_sales_service.objects.latest('restamping_no').restamping_no+1
 
+        try:
+            del request.session['company_name']
+            del request.session['customer_name']
+            del request.session['address']
+            del request.session['contact_no']
+            del request.session['customer_email_id']
+            del request.session['today_date']
 
+        except:
+            pass
+        request.session['second_person'] = customer_name
+        request.session['second_contact_no'] = contact_no
+        request.session['today_date'] = today_date
+
+        request.session['repairing_no'] = Restamping_after_sales_service.objects.latest('repairing_no').repairing_no + 1
+
+
+        # request.session['item2'] = item2
+        latest_restamp_id = Restamping_after_sales_service.objects.latest('id').id + 1
         item2.save()
 
 
 
 
 
-        return redirect('/restamping_product/'+str(item2.pk))
+        return redirect('/restamping_product/'+str(latest_restamp_id))
     context={
         'cust_sugg':cust_sugg
     }
