@@ -1,6 +1,8 @@
 from datetime import datetime
+
+from django.utils import timezone
 from purchase_app.models import Product_Details
-from django.db.models import Sum, Min, Q, Count, F
+from django.db.models import Sum, Min, Q, Count, F, Avg
 from django.shortcuts import render, redirect
 from django.db import connection
 # Create your views here.
@@ -585,10 +587,42 @@ def update_dispatch_details(request,update_id):
 
         datetime.today().strftime('%Y-%m-%d')
         if dispatch_by != None and dispatch_by != 'None' and dispatch_by != '':
+            item.dispatch_done_timedate = timezone.now()
             item.dispatch_by = dispatch_by
             item.date_of_dispatch = datetime.today().strftime('%Y-%m-%d')
+            item.save(update_fields=['dispatch_done_timedate'])
             item.save(update_fields=['date_of_dispatch'])
             item.save(update_fields=['dispatch_by', ]),
+
+        if dispatch_item.dispatch_time_calculated == False:
+            if dispatch_item.date_of_dispatch != None:
+                user_name = SiteUser.objects.get(profile_name=dispatch_item.dispatch_by)
+                total_time = dispatch_item.dispatch_done_timedate - dispatch_item.dispatch_start_timedate
+                total_hours = total_time.total_seconds() // 3600  # for 24 hours (total hours for a single repair)
+                dispatch_item.total_dispatch_time = total_hours
+                dispatch_item.save(update_fields=['total_dispatch_time'])
+                # total_days = (total_time.total_seconds() // 3600) / 24          #total days for a single repair
+                # final_time_hours = total_hours - (total_days*14)
+                avg_daily = Dispatch.objects.filter(dispatch_by=user_name.profile_name,
+                                                                         entry_timedate=dispatch_item.entry_timedate).aggregate(
+                    Avg('total_dispatch_time'))
+                print(avg_daily)
+                Employee_Analysis_date.objects.filter(user_id=user_name.id,
+                                                      entry_date=dispatch_item.entry_timedate,
+                                                      year=dispatch_item.entry_timedate.year).update(
+                    avg_time_dispatch_form_to_done_today=avg_daily['total_dispatch_time__avg'])
+
+                avg_monthly = Dispatch.objects.filter(dispatch_by=user_name.profile_name,
+                                                                           entry_timedate__month=dispatch_item.entry_timedate.month).aggregate(
+                    Avg('total_dispatch_time'))
+
+                Employee_Analysis_month.objects.filter(user_id=user_name.id,
+                                                       entry_date__month=dispatch_item.entry_timedate.month,
+                                                       year=dispatch_item.entry_timedate.year).update(
+                    avg_time_dispatch_form_to_done=avg_monthly['total_dispatch_time__avg'])
+
+                dispatch_item.dispatch_time_calculated = True
+                dispatch_item.save(update_fields=['dispatch_time_calculated', ])
 
 
         item.packed_by = packed_by
@@ -599,8 +633,7 @@ def update_dispatch_details(request,update_id):
         item.photo_lr_no = photo_lr_no
         item.channel_of_dispatch = channel_of_dispatch
         item.notes = notes
-
-
+        item.dispatch_start_timedate = timezone.now()
 
         current_stage_in_db = Dispatch.objects.get(id=update_id).current_stage  # updatestage3
         if (current_stage_in_db == 'dispatch but lr not updated') and (lr_no != '' and lr_no != None and lr_no!= 'None'):
@@ -713,16 +746,9 @@ def update_dispatch_details(request,update_id):
                 ead.save()
 
 
-
-
-
-
-
-
-
         # item.save(update_fields=['dispatch_id', ]),
 
-        item.save(update_fields=['second_person','second_contact_no', ]),
+        item.save(update_fields=['second_person','second_contact_no', 'dispatch_done_timedate']),
 
         item.save(update_fields=['packed_by', ]),
         item.save(update_fields=['hamal_name', ]),

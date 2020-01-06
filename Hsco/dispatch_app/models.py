@@ -38,6 +38,11 @@ class Dispatch(models.Model):
     feedback_link = models.URLField(max_length=200,null=True,blank=True)
     dispatch_no = models.BigIntegerField(null=True,blank=True)
 
+    dispatch_start_timedate = models.DateTimeField(null=True, blank=True)
+    dispatch_done_timedate = models.DateTimeField(null=True,blank=True)
+    total_dispatch_time  = models.FloatField(default=0.0)
+    dispatch_time_calculated = models.BooleanField(default=False)
+
 
     def __str__(self):
         return str(self.pk)
