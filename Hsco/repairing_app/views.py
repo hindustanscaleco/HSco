@@ -1326,8 +1326,11 @@ def repairing_employee_graph(request,user_id):
 
     print(user_id)
     mon = datetime.now().month
+    try:
+        obj = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon)
+    except:
+        pass
 
-    obj = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon)
     try:
         obj.reparing_target_achived_till_now = (obj.total_reparing_done/obj.reparing_target_given)*100
     except:
