@@ -27,7 +27,7 @@
                     <td> {{list.reparing_target_given}} </td>
                     <td> {{list.reparing_target_given}} </td>
                     <td> Need some value </td>
-                     <div class="col-xl-2 col-md-1 mb-1">
+                     <td>
                          {% for avg in  list1.start_rating_feedback_reparing|rjust:'5'  %}
               {% if forloop.counter <= list1.start_rating_feedback_reparing %}
                   <i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
@@ -36,7 +36,7 @@
               {% endif %}
             {% endfor %}
 
-                    </div>
+                     </td>>
 </tr>
 </table>
                 {% endfor %}
@@ -47,13 +47,13 @@
 <table>
                     <tr style="background-color: gray; color: white;">
 
-                    <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Date </center> </td>
-                    <td style="border: 0px solid gray;">Repairing No. </td>
-                    <td style="border: 0px solid gray;">Customer Name</td>
-                    <td style="border: 0px solid gray;">Company Name</td>
-                    <td style="border: 0px solid gray;">Contact No.</td>
+                    <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Date </center> </td>
+                    <td style=" width: 15%; border: 0px solid gray;">Repairing No. </td>
+                    <td style=" width: 18%; border: 0px solid gray;">Customer Name</td>
+                    <td style=" width: 20%; border: 0px solid gray;">Company Name</td>
+                    <td style=" width: 15%; border: 0px solid gray;">Contact No.</td>
 
-                    <td style="border: 0px solid gray;"><center class=""> Entered By </center> </td>
+                    <td style=" width: 12%; border: 0px solid gray;"><center class=""> Entered By </center> </td>
 
                     {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
                     <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;"><center> Taken By </center> </td>
@@ -68,37 +68,22 @@
 
                 {% for list in repair_list %}
               <tr style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
-                  {% if list.current_stage == 'Scale is collected but estimate is not given' %}
-              <div class="card shadow" style="border: 2px solid rgba(120,115,245,.9);" >
-                  {% elif list.current_stage == 'Estimate is given but Estimate is not confirmed' %}
-              <div class="card shadow" style="border: 2px solid rgba(5,255,163,.9);" >
-                  {% elif list.current_stage == 'Estimate is confirmed but not repaired' %}
-              <div class="card shadow" style="border: 2px solid rgba(252,98,98,.9);" >
-                  {% elif list.current_stage == 'Repaired but not collected' %}
-              <div class="card shadow" style="border: 2px solid rgba(255,110,196,5.5);" >
-                  {% elif list.current_stage == 'Finally Collected' %}
-              <div class="card shadow" style="border: 2px solid rgba(69,202,252,.9);" >
-                                  {% endif %}
 
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto; ">
-                                        <td>{{list.entry_timedate|date:'Y-m-d'}}</td>
 
-                    <td>{{list.repairing_no}}  </td>
-                    <td>{{list.second_person}}</td>
-                    <td>{% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</td>
-                    <td>{{list.second_contact_no}} </center> </td>
 
-                    <td>{{list.entered_by}}</td>
+                                        <td style="width: 8%;">{{list.entry_timedate|date:'Y-m-d'}}</td>
+
+                    <td style="width: 15%;">{{list.repairing_no}}  </td>
+                    <td style="width: 18%;">{{list.second_person}}</td>
+                    <td style="width: 20%;">{% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</td>
+                    <td style="width: 15%;">{{list.second_contact_no}} </center> </td>
+
+                    <td style="width: 12%;">{{list.entered_by}}</td>
 
                     {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
                     <td> {{list.taken_by}}  </td>
                     {% endif %}
-                </div>
-              </div>
-              </div>
-              </div>
-              </div>
-              </div>
+
 
                 {% endfor %}
               </tr>
