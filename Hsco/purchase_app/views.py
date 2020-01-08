@@ -77,7 +77,7 @@ def add_purchase_details(request):
 
         list_group = SiteUser.objects.get(id=request.user.id).manager
         sales_person_sugg = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=list_group),
-                                            modules_assigned__icontains='Customer Module', is_deleted=False )
+                                            modules_assigned__icontains='Customer Module', is_deleted=False)
 
 
 
@@ -260,7 +260,7 @@ def add_purchase_details(request):
         # send_mail('Feedback Form','Click on the link to give feedback http://139.59.76.87/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
         if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(user_id=site_user_id)).count() > 0:
-            Employee_Analysis_date.objects.filter(user_id=site_user_id,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + 0.0)
+            Employee_Analysis_date.objects.filter(user_id=site_user_id,entry_date=datetime.now().date(),year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + 0.0)
             # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
             # ead.save(update_fields=['total_sales_done_today'])
@@ -816,7 +816,7 @@ def add_product_details(request,id):
             total_sales_done=F("total_sales_done") + value_of_goods)
 
         Employee_Analysis_date.objects.filter(user_id=purchase.user_id,
-                                              entry_date__month=datetime.now().month,
+                                              entry_date=datetime.now().date(),
                                               year=datetime.now().year).update(
             total_sales_done_today=F("total_sales_done_today") + value_of_goods)
 
@@ -1185,7 +1185,7 @@ def edit_product_customer(request,product_id_rec):
             total_sales_done=F("total_sales_done") - cost2)
 
         Employee_Analysis_date.objects.filter(user_id=purchase_id.user_id,
-                                              entry_date__month=product_id.entry_timedate.month,
+                                              entry_date=product_id.entry_timedate,
                                               year=product_id.entry_timedate.year).update(
             total_sales_done_today=F("total_sales_done_today") - cost2)
 
@@ -1274,16 +1274,12 @@ def edit_product_customer(request,product_id_rec):
 
 def load_users(request):
     selected = request.GET.get('loc_id')
-
     if selected=='true':
         user_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module')
-        # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
-
         context = {
             'user_list': user_list,
             'manager': True,
         }
-
         return render(request, 'AJAX/load_users.html', context)
     else:
         if check_admin_roles(request):  # For ADMIN

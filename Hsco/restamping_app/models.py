@@ -22,6 +22,11 @@ class Restamping_after_sales_service(models.Model):
     current_stage= models.CharField(max_length=50,null=True,blank=True)
     restamping_no = models.BigIntegerField(null=True,blank=True)
 
+    restamping_start_timedate = models.DateTimeField(null=True, blank=True)
+    restamping_done_timedate = models.DateTimeField(null=True, blank=True)
+    total_restamping_time = models.FloatField(default=0.0)
+    restamping_time_calculated = models.BooleanField(default=False)
+
     def __int__(self):
         return self.id
 

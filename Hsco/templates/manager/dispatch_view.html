@@ -322,7 +322,47 @@ $(function() {
                 </div>
 
             </div>
+ <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
 
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
 
 
 <div class="row" style="margin-left: 25%;">
@@ -364,37 +404,30 @@ $(function() {
 
 
 
-<div id="id_manager_view" style="min-height: 26vw;">
-
-        <div class="row">
-
-  <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-1 col-md-1 mb-1"><center> Dispatch ID </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center> Dispatch ID </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Customer Name </center></div>|
-                    <div class="col-xl-2 col-md-2 mb-1"><center> Company Name </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center> Contact No </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Entered By </center> </div>|
-
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Dispatched by </center></div>
+<div id="id_manager_view" style="min-height: 15vw;">
+                           <center><p>{{search_msg}}</p></center>
 
 
-                </div>
-              </div>
-            </div>
+    <table>
+        <tr style="background-color: gray; color: white;">
 
+                    <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray; width: 10%;"> Date </center></td>
+                    <td style="border: 0px solid gray; width: 10%;"> Dispatch ID </td>
+                    <td style="border: 0px solid gray; width: 20%;"> Customer Name </td>
+                    <td style="border: 0px solid gray; width: 20%;"> Company Name </td>
+                    <td style="border: 0px solid gray; width: 10%;"> Contact No </td>
+                    <td style="border: 0px solid gray; width: 15%;"> Entered By  </td>
+                    <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray; width: 15%;"> Dispatched by </td>
+</tr>
+   </table>
 
-</div>
-<br>
+         <div id="id_subcat">
 
-         <div id="id_subcat" class="row">
-              <center><p>{{search_msg}}</p></center>
+                <table>
 {% for list in dispatch_list %}
-                <div style="cursor: pointer; " onclick="location.href='/update_dispatch_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
+                <tr style="cursor: pointer; " onclick="location.href='/update_dispatch_details/{{list.id}}';" class="">
 
-  {% if list.current_stage == 'dispatch q' %}
+<!--   {% if list.current_stage == 'dispatch q' %}
               <div class="card shadow" style="border: 2px solid rgba(120,115,245,.9);" >
                   {% elif list.current_stage == 'dispatch but lr not updated' %}
               <div class="card shadow" style="border: 2px solid rgba(5,255,163,.9);" >
@@ -402,42 +435,31 @@ $(function() {
               <div class="card shadow" style="border: 2px solid rgba(252,98,98,.9);" >
                   {% else %}
               <div class="card shadow" style="border: 2px solid black;" >
-                  {% endif %}
-                  <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 13px; height: 35px;">
+                  {% endif %} -->
 
-                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.entry_timedate|date:'Y-m-d' }}</center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.dispatch_no }}</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>{{ list.second_person }} </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>{% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list.second_contact_no }} </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1 ">{{list.user_id.profile_name}}</div>|
+                    <td style="width: 10%;">{{ list.entry_timedate|date:'Y-m-d' }}</td>
+                    <td style=" width: 10%;">{{ list.dispatch_no }}</td>
+                    <td style=" width: 20%;">{{ list.second_person }}</td>
+                    <td style=" width: 20%;">{% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</td>
+                    <td style=" width: 10%;">{{ list.second_contact_no }} </td>
+                    <td style=" width: 15%;">{{list.user_id.profile_name}}</td>
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center>{% if list.dispatch_by != None and list.dispatch_by != '' %}{{list.dispatch_by}}{% else %}{% endif %} </center></div>
+                    <td style=" width: 15%;"><center>{% if list.dispatch_by != None and list.dispatch_by != '' %}{{list.dispatch_by}}{% else %}{% endif %} </center></td>
                     <!--<div class="col-xl-3 col-md-1 mb-1"><center>{{ list.dispatch_by }} </center></div>-->
 
 
 
-                    </div>
-
-                </div>
-              </div>
+      </tr>
   {% endfor %}
-            </div>
+  </table>
 
-
-
-
-        </div>
 </div>
 
 
+</div>
+        </div>
 
 
-<br>
-
-
-
-  </div>
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->

@@ -9,9 +9,9 @@ from user_app.models import SiteUser
 
 
 class Repairing_after_sales_service(models.Model):
-    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE, null=True, blank=True)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
-    crm_no = models.ForeignKey(Customer_Details, on_delete=models.CASCADE)
+    crm_no = models.ForeignKey(Customer_Details, on_delete=models.CASCADE, null=True, blank=True)
     # repairingnumber = models.CharField(max_length=40,null=True,blank=True) #combination of pk and 'rep'
     previous_repairing_number = models.BigIntegerField(default=0,null=True,blank=True)
     # date_of_purchase = models.DateField(default=datetime.date.today,null=True,blank=True)
@@ -56,9 +56,10 @@ class Repairing_after_sales_service(models.Model):
     repairing_no = models.BigIntegerField(null=True,blank=True)
     notes = models.CharField(max_length=300,null=True,blank=True)
 
-    repairing_start_timedate = models.DateTimeField(default=timezone.now, blank=True)
+    repairing_start_timedate = models.DateTimeField(null=True, blank=True)
     repairing_done_timedate = models.DateTimeField(null=True,blank=True)
-
+    total_repairing_time  = models.FloatField(default=0.0)
+    repairing_time_calculated = models.BooleanField(default=False)
 
     def __int__(self):
         return self.pk

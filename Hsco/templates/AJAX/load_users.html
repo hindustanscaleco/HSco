@@ -1,127 +1,84 @@
   {% if manager %}
-<div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
 
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-
-
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Employee Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Sales </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Target Given </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <p>Stars</p> </center>
-                    </div>
+    <table>
+        <tr style="background-color: gray; color: white;">
 
 
 
-                </div>
-              </div>
-            </div>
+                    <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;"> Employee Name </td>
+                    <td style="border: 0px solid gray;">Sales </td>
+                    <td style="border: 0px solid gray;">Target Given </td>
+                    <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Stars</td>
 
-            <br>
-            <br>
 
+</tr>
 
 
             {% for list1 in user_list %}
-                <div style="cursor: pointer; " onclick="location.href='/customer_employee_sales_graph/{{list1.user_id}}';" class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow" >
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; min-height: auto;">
+                <tr style="cursor: pointer; " onclick="location.href='/customer_employee_sales_graph/{{list1.user_id}}';">
 
-                    <div class="col-xl-3 col-md-1 mb-1"><center> {{ list1.user_id.name }}</center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1 "><center> {{ list1.total_sales_done}} </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1 "><center> {{ list1.sales_target_given}} </center></div>|
 
-                    <div class="col-xl-2 col-md-1 mb-1 "><center>
+                    <td> {{ list1.user_id.name }}</td>
+                    <td> {{ list1.total_sales_done}} </td>
+                    <td> {{ list1.sales_target_given}} </td>
+
+                    <td>
                          {% for avg in  list1.start_rating_feedback_sales|rjust:'5'  %}
-							{% if forloop.counter <= list1.start_rating_feedback_sales %}
-									<i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
-							{% else %}
-									<i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
-							{% endif %}
-						{% endfor %}
-</center>
-                    </div>
-
-
-                    </div>
-
-
-
-                </div>
-              </div>
+              {% if forloop.counter <= list1.start_rating_feedback_sales %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
+              {% endif %}
             {% endfor %}
+</td>
+
+
+
+
+
+</tr>
+            {% endfor %}
+</table>
 
 {% else %}
 
-      <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 10px;color: black; font-weight: 600; font-size: 12px; height: auto; ">
 
+    <table>
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Dispatch Id</td>
+            <td style="border: 0px solid gray;">Date </td>
+            <td style="border: 0px solid gray;"> Purchase ID</td>
+            <td style="border: 0px solid gray;">Customer Name</td>
+            <td style="border: 0px solid gray;"> Company Name </td>
+            <td style="border: 0px solid gray;">Contact No.</td>
+            <td style="border: 0px solid gray;">Sales Person  </td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Feedback</td>
+        </tr>
+                    {% for list1 in customer_list %}
 
-                    <div class="col-xl-1 col-md-1 mb-1 "><center class="">  Purchase ID </center></div>
-                    <div class="col-xl-2 col-md-1 mb-1"><center class=""> Customer Name </center></div>
-                    <div class="col-xl-1 col-md-1 mb-1 "><center class=""> Company Name </center></div>
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class="">  Contact No. </center> </div>
-                           {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Entered By </center> </div>
-                    {% else %}
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class="">  Email ID </center> </div>
-             {% endif %}
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Sales Person  </center></div>
-                    <div class="col-xl-2 col-md-1 mb-1 "><center class=""> Feedback</center>
-                    </div>
+        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+                        <td>{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>
 
-                </div>
-              </div>
-            </div>
+            <td>{{ list1.entry_timedate|date:'Y-m-d'}}</td>
+            <td>{{ list1.purchase_no}}</td>
+            <td>{{ list1.second_person }}</td>
+            <td>{% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</td>
+            <td>{{ list1.second_contact_no}}</td>
+            <td>{{list1.sales_person}}</td>
+            <td>
+                       {% for avg in  list1.feedback_stars|rjust:'5'  %}
+              {% if forloop.counter <= list1.feedback_stars %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
+              {% endif %}
+            {% endfor %}
+            </td>
 
+        </tr>
+                          {% endfor %}
 
-
-<br>
-<br>
-
-            {% for list1 in customer_list %}
-<div style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';" class="col-xl-12 col-md-12 mb-12">
-    <a class="card shadow" >
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; min-height: 55px;">
-
-
-
-                    <div class="col-xl-12 col-md-11 mb-1" style="font-size:10px;">Dispatch Id: {% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no}}{% endif %} </div>
-                    <div class="col-xl-1 col-md-1 mb-1"><center>{{ list1.purchase_no}}</center> </div>
-                    <div class="col-xl-2 col-md-1 mb-1 "><center>{{ list1.second_person }}</center></div>
-                    <div class="col-xl-1 col-md-1 mb-1"><center> {% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</center></div>
-                    <div class="col-xl-2 col-md-1 mb-1 "><center>{{ list1.second_contact_no}}</center> </div>
-                                  {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
-
-                    <div class="col-xl-2 col-md-1 mb-1 "><center>{{list1.user_id.profile_name}}</center></div>
-                    {% else %}
-                    <div class="col-xl-2 col-md-1 mb-1 "><center>{% if list1.company_email != None and list1.company_email != '' %}{{list1.company_email}}{% else %}{% endif %}</center> </div>
-                         {% endif %}
-                    <div class="col-xl-2 col-md-1 mb-1 "><center>{{list1.sales_person}}</center><i aria-hidden="true" style="color: yellow; font-size: 12px;"></i></div>
-                    <div class="col-xl-2 col-md-1 mb-1 ">
-                         {% for avg in  list1.feedback_stars|rjust:'5'  %}
-							{% if forloop.counter <= list1.feedback_stars %}
-									<i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
-							{% else %}
-									<i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
-							{% endif %}
-						{% endfor %}
-
-                    </div>
-
-
-                    </div>
-
-              </a>
-
-                </div>
-                <!--</a>-->
-                  {% endfor %}
-
-
-
+    </table>
 
 
 

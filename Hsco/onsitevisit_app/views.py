@@ -255,133 +255,55 @@ def add_onsite_aftersales_service(request):
         notes = request.POST.get('notes')
         # feedback_given = request.POST.get('feedback_given')
 
+        try:
+            del request.session['company_name']
+            del request.session['address']
+            del request.session['customer_email_id']
+            del request.session['second_person']
+            del request.session['previous_repairing_number']
+            del request.session['second_contact_no']
+            del request.session['total_cost']
+            del request.session['feedback_given']
+            del request.session['date_of_complaint_received']
+            del request.session['complaint_received_by']
+            del request.session['nearest_railwaystation']
+            del request.session['train_line']
+            del request.session['products_to_be_repaired']
+            del request.session['visiting_charges_told_customer']
+            del request.session['notes']
+            del request.session['feedback_given']
+            del request.session['complaint_assigned_to']
+            del request.session['complaint_assigned_on']
+            del request.session['onsite_no']
 
-        item2 = Onsite_aftersales_service()
+        except:
+            pass
+        request.session['company_name'] = company_name
+        request.session['address'] = address
+        request.session['customer_email_id'] = customer_email_id
 
+        request.session['previous_repairing_number'] = previous_repairing_number
 
-        item = Customer_Details()
-        if Customer_Details.objects.filter(Q(customer_name=customer_name),
-                                           Q(contact_no=contact_no)).count() > 0:
+        request.session['second_person'] = customer_name
+        request.session['second_contact_no'] = contact_no
+        request.session['total_cost'] = 0.0
 
-            item2.crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),
-                                                           Q(contact_no=contact_no)).first()
-            item3 = Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).first()
-            if company_name != '':
-                item3.company_name = company_name
-                item2.second_company_name = company_name  # new2
-                item3.save(update_fields=['company_name'])
-            if address != '':
-                item3.address = address
-                item3.save(update_fields=['address'])
-                item2.company_address = address  # new2
-            if customer_email_id != '':
-                item3.customer_email_id = customer_email_id
-                item2.company_email = customer_email_id  # new2
-
-                item3.save(update_fields=['customer_email_id'])
-
-        else:
-
-            item.customer_name = customer_name
-            item.contact_no = contact_no
-
-            if company_name != '':
-                item2.second_company_name = company_name  # new2
-                item.company_name = company_name
-            if address != '':
-                item.address = address
-                item2.company_address = address  # new2
-            item.contact_no = contact_no
-            if customer_email_id != '':
-                item2.company_email = customer_email_id  # new2
-                item.customer_email_id = customer_email_id
-            # item.user_id = SiteUser.objects.get(id=request.user.pk)
-            # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-
-            item.save()
-            item2.crm_no = Customer_Details.objects.get(id=item.pk)
-
-
-        # item2.repairingno = repairingno
-        # item2.second_person=second_person
-        # item2.third_person=third_person
-        # item2.second_contact_no=second_contact_no
-        # item2.third_contact_no=third_contact_no
-        item2.second_person = customer_name  # new1
-        item2.second_contact_no = contact_no  # new2
-        item2.previous_repairing_number = previous_repairing_number
+        # request.session['repairing_done_timedate'] = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        request.session['feedback_given'] = False
         if date_of_complaint_received != None and date_of_complaint_received != '':
-            item2.date_of_complaint_received = date_of_complaint_received
-        item2.complaint_received_by = complaint_received_by
-        item2.nearest_railwaystation = nearest_railwaystation
-        item2.train_line = train_line
-        item2.products_to_be_repaired = products_to_be_repaired
-
-        item2.visiting_charges_told_customer = float(visiting_charges_told_customer)
-        item2.total_cost = 0.0
-        # item2.complaint_assigned_to = complaint_assigned_to
-        item2.time_taken_destination_return_office_min = time_taken_destination_return_office_min
-        item2.notes = notes
-        item2.feedback_given = False
-        item2.user_id = SiteUser.objects.get(id=request.user.pk)
-        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            request.session['date_of_complaint_received'] = date_of_complaint_received
+        request.session['complaint_received_by'] = complaint_received_by
+        request.session['nearest_railwaystation'] = nearest_railwaystation
+        request.session['train_line'] = train_line
+        request.session['products_to_be_repaired'] = products_to_be_repaired
+        request.session['visiting_charges_told_customer'] = float(visiting_charges_told_customer)
+        request.session['time_taken_destination_return_office_min'] = time_taken_destination_return_office_min
+        request.session['notes'] = notes
+        request.session['feedback_given'] = False
         if complaint_assigned_to != None and complaint_assigned_to != '':
-            item2.complaint_assigned_to = complaint_assigned_to
-            item2.complaint_assigned_on = datetime.today().strftime('%Y-%m-%d')
-
-        item2.onsite_no = Onsite_aftersales_service.objects.latest('onsite_no').onsite_no+1
-
-        item2.save()
-        current_stage_in_db = Onsite_aftersales_service.objects.get(id=item2.pk).current_stage  # updatestage2
-
-        if (current_stage_in_db == 'Onsite repairing request is raised') and (
-                complaint_assigned_to != '' or complaint_assigned_to != None):
-            Onsite_aftersales_service.objects.filter(id=item2.pk).update(
-                current_stage='Onsite repairing request is assigned')
-
-        if (current_stage_in_db == 'Onsite repairing request is assigned') and (
-                time_taken_destination_return_office_min != '' or time_taken_destination_return_office_min != None):
-            Onsite_aftersales_service.objects.filter(id=item2.pk).update(
-                current_stage='Onsite repairing request is completed')
-
-        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
-                                                 Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
-                                                  year=datetime.now().year).update(
-                total_reparing_done_onsite_today=F("total_reparing_done_onsite_today") + total_cost)
-            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
-
-
-            # ead.save(update_fields=['total_sales_done_today'])
-
-        else:
-            ead = Employee_Analysis_date()
-            ead.user_id = SiteUser.objects.get(id=request.user.pk)
-            ead.total_reparing_done_onsite_today = total_cost
-            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
-
-            ead.month = datetime.now().month
-            ead.year = datetime.now().year
-            ead.save()
-
-        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
-                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
-                                                   year=datetime.now().year).update(
-                total_reparing_done=F("total_reparing_done_onsite") + total_cost)
-            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
-
-            # ead.save(update_fields=['total_sales_done_today'])
-
-        else:
-            ead = Employee_Analysis_month()
-            ead.user_id = SiteUser.objects.get(id=request.user.pk)
-            ead.total_reparing_done_onsite = total_cost
-            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
-
-            ead.month = datetime.now().month
-            ead.year = datetime.now().year
-            ead.save()
+            request.session['complaint_assigned_to'] = complaint_assigned_to
+            request.session['complaint_assigned_on'] = datetime.today().strftime('%Y-%m-%d')
+        request.session['onsite_no'] = Onsite_aftersales_service.objects.latest('onsite_no').onsite_no + 1
 
 
         # if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
@@ -422,9 +344,10 @@ def add_onsite_aftersales_service(request):
         #
         #     response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
         #     x = response.text
+        latest_onsite_no = Onsite_aftersales_service.objects.latest('id').id + 1
 
 
-        return redirect('/add_onsite_product/'+str(item2.pk))
+        return redirect('/add_onsite_product/'+str(latest_onsite_no))
     context={
         'cust_sugg':cust_sugg,
         'user_list':user_list,
@@ -434,8 +357,8 @@ def add_onsite_aftersales_service(request):
     return render(request, 'forms/onsite_rep_form.html',context)
 
 def add_onsite_product(request,id):
-    onsite_id = Onsite_aftersales_service.objects.get(id=id).id
-    crm_id = Onsite_aftersales_service.objects.get(id=id).crm_no
+    onsite_id = Onsite_aftersales_service.objects.latest('id').id + 1
+    # crm_id = Onsite_aftersales_service.objects.get(id=id).crm_no
     type_of_purchase_list =type_purchase.objects.all() #1
 
     print(onsite_id)
@@ -469,13 +392,136 @@ def add_onsite_product(request,id):
         item.cost = cost
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item.crm_no = Customer_Details.objects.get(id=crm_id)
+        # item.crm_no = Customer_Details.objects.get(id=crm_id)
         item.in_warranty = in_warranty
 
-        item.save()
+        item2 = Onsite_aftersales_service()
+        if Customer_Details.objects.filter(customer_name=request.session.get('second_person'),contact_no=request.session.get('second_contact_no')).count() > 0:
 
-        current_stage_in_db = Onsite_aftersales_service.objects.get(
-            id=id).current_stage  # updatestage2
+            item2.crm_no= Customer_Details.objects.filter(contact_no=request.session.get('second_contact_no')).first()
+
+            item3 = Customer_Details.objects.filter(customer_name=request.session.get('second_person'), contact_no=request.session.get('second_contact_no')).first()
+            if request.session.get('company_name') != '' and request.session.get('company_name') != None:
+                # request.session.get('second_company_name') = company_name  # new2
+                item2.second_company_name = request.session.get('company_name')
+                item3.company_name = request.session.get('company_name')
+                item3.save(update_fields=['company_name'])
+            if request.session.get('address')  != '' and request.session.get('address')  != None:
+                item3.address = request.session.get('address')
+                # request.session['company_address'] = address        # new2
+                item2.company_address = request.session.get('address')
+                item3.save(update_fields=['address'])
+            if request.session.get('customer_email_id') != '' and request.session.get('customer_email_id') != None:
+                # request.session['company_email'] = customer_email_id        # new2
+                item2.company_email = request.session.get('customer_email_id')   # new2
+                item3.customer_email_id = request.session.get('customer_email_id')
+                item3.save(update_fields=['customer_email_id'])
+
+        else:
+            new_cust = Customer_Details()
+
+            new_cust.customer_name = request.session.get('second_person')
+            if request.session.get('company_name') != '':
+                # request.session['second_company_name'] = company_name  # new2
+                new_cust.company_name = request.session.get('company_name')
+            if request.session.get('address') != '':
+                # request.session['company_address'] = address  # new2
+                new_cust.address = request.session.get('address')
+            new_cust.contact_no = request.session.get('second_contact_no')
+            if request.session.get('customer_email_id') != '':
+                # request.session['customer_email_id'] = customer_email_id  # new2
+                new_cust.customer_email_id = request.session.get('customer_email_id')
+            # item.user_id = SiteUser.objects.get(id=request.user.pk)
+            # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            try:
+                new_cust.save()
+                item2.crm_no = Customer_Details.objects.get(id=new_cust.pk)
+            except:
+                pass
+
+
+        if request.session.get('complaint_assigned_to') != None and request.session.get('complaint_assigned_to') != '':
+            item2.complaint_assigned_to = request.session.get('complaint_assigned_to')
+            item2.complaint_assigned_on = datetime.today().strftime('%Y-%m-%d')
+
+        item2.onsite_no = request.session.get('onsite_no')
+
+        item2.second_person = request.session.get('second_person')
+        # customer_name  # new1
+        item2.second_contact_no = request.session.get('second_contact_no')  # new2
+        item2.previous_repairing_number =  request.session.get('previous_repairing_number')
+        if request.session.get('date_of_complaint_received') != None and request.session.get('date_of_complaint_received') != '':
+            item2.date_of_complaint_received =  request.session.get('date_of_complaint_received')
+
+        item2.complaint_received_by =  request.session.get('complaint_received_by')
+        item2.nearest_railwaystation =  request.session.get('nearest_railwaystation')
+        item2.train_line =  request.session.get('train_line')
+        item2.products_to_be_repaired = request.session.get('products_to_be_repaired')
+
+        item2.visiting_charges_told_customer = request.session.get('visiting_charges_told_customer')
+        item2.total_cost = 0.0
+        # item2.complaint_assigned_to = complaint_assigned_to
+        item2.time_taken_destination_return_office_min = request.session.get('time_taken_destination_return_office_min')
+        item2.notes = request.session.get('notes')
+        item2.feedback_given = request.session.get('feedback_given')
+        item2.user_id = SiteUser.objects.get(id=request.user.pk)
+        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        total_cost = 0.0
+
+        item2.save()
+
+        item.save()
+        current_stage_in_db = Onsite_aftersales_service.objects.get(id=item2.pk).current_stage  # updatestage2
+
+        if (current_stage_in_db == 'Onsite repairing request is raised') and (
+                request.session.get('complaint_assigned_to')  != '' or request.session.get('complaint_assigned_to')  != None):
+            Onsite_aftersales_service.objects.filter(id=item2.pk).update(
+                current_stage='Onsite repairing request is assigned')
+
+        if (current_stage_in_db == 'Onsite repairing request is assigned') and (
+                request.session.get('time_taken_destination_return_office_min')  != '' or request.session.get('time_taken_destination_return_office_min') != None):
+            Onsite_aftersales_service.objects.filter(id=item2.pk).update(
+                current_stage='Onsite repairing request is completed')
+
+        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
+                                                 Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date=datetime.now().date(),
+                                                  year=datetime.now().year).update(
+                total_reparing_done_onsite_today=F("total_reparing_done_onsite_today") + total_cost)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_date()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_reparing_done_onsite_today = total_cost
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+                                                   year=datetime.now().year).update(
+                total_reparing_done_onsite=F("total_reparing_done_onsite") + total_cost)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_month()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_reparing_done_onsite = total_cost
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
+        current_stage_in_db = Onsite_aftersales_service.objects.get(id=id).current_stage  # updatestage2
         if (current_stage_in_db == '' or current_stage_in_db == None) and (problem_in_scale != '' and problem_in_scale != None and problem_in_scale != 'None'):
             Onsite_aftersales_service.objects.filter(id=id).update(
                 current_stage='Onsite repairing request is raised')
@@ -484,14 +530,6 @@ def add_onsite_product(request,id):
         #         current_stage='Restamping is done but scale is not collected')
 
 
-        Onsite_aftersales_service.objects.filter(id=id).update(total_cost=F("total_cost") + cost)
-        Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
-                                               year=datetime.now().year).update(
-            total_reparing_done=F("total_reparing_done_onsite") + cost)
-
-        Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
-                                              year=datetime.now().year).update(
-            total_reparing_done_today=F("total_reparing_done_onsite_today") + cost)
 
         return redirect('/update_onsite_details/'+str(id))
     context = {
@@ -524,12 +562,12 @@ def update_onsite_product(request,id):
         Employee_Analysis_month.objects.filter(user_id=request.user.pk,
                                                entry_date__month=onsite_id.entry_timedate.month,
                                                year=onsite_id.entry_timedate.year).update(
-            total_reparing_done=F("total_reparing_done_onsite") - cost2)
+            total_reparing_done_onsite=F("total_reparing_done_onsite") - cost2)
 
         Employee_Analysis_date.objects.filter(user_id=request.user.pk,
-                                              entry_date__month=onsite_id.entry_timedate.month,
+                                              entry_date=onsite_id.entry_timedate,
                                               year=onsite_id.entry_timedate.year).update(
-            total_reparing_done_today=F("total_reparing_done_onsite_today") - cost2)
+            total_reparing_done_onsite_today=F("total_reparing_done_onsite_today") - cost2)
 
         item = Onsite_Products.objects.get(id=id)
 
@@ -570,12 +608,12 @@ def update_onsite_product(request,id):
         Employee_Analysis_month.objects.filter(user_id=request.user.pk,
                                                entry_date__month=onsite_id.entry_timedate.month,
                                                year=onsite_id.entry_timedate.year).update(
-            total_reparing_done=F("total_reparing_done_onsite") + cost)
+            total_reparing_done_onsite=F("total_reparing_done_onsite") + cost)
 
         Employee_Analysis_date.objects.filter(user_id=request.user.pk,
-                                              entry_date__month=onsite_id.entry_timedate.month,
+                                              entry_date=onsite_id.entry_timedate,
                                               year=onsite_id.entry_timedate.year).update(
-            total_reparing_done_today=F("total_reparing_done_onsite_today") + cost)
+            total_reparing_done_onsite_today=F("total_reparing_done_onsite_today") + cost)
 
 
 

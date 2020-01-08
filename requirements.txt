@@ -13,3 +13,4 @@ urllib3==1.24.2
 getip2==1.6
 django-colorfield==0.1.15
 pymysql==0.9.3
+djangorestframework==3.11.0

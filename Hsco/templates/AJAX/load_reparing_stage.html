@@ -1,52 +1,56 @@
-   {% for list in repair_list %}
-              <div style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
-                  {% if list.current_stage == 'Scale is collected but estimate is not given' %}
-              <div class="card shadow" style="border: 2px solid rgba(120,115,245,.9);" >
-                  {% elif list.current_stage == 'Estimate is given but Estimate is not confirmed' %}
-              <div class="card shadow" style="border: 2px solid rgba(5,255,163,.9);" >
-                  {% elif list.current_stage == 'Estimate is confirmed but not repaired' %}
-              <div class="card shadow" style="border: 2px solid rgba(252,98,98,.9);" >
-                  {% elif list.current_stage == 'Repaired but not collected' %}
-              <div class="card shadow" style="border: 2px solid rgba(255,110,196,5.5);" >
-                  {% elif list.current_stage == 'Finally Collected' %}
-              <div class="card shadow" style="border: 2px solid rgba(69,202,252,.9);" >
-                                  {% endif %}
+<table>
+     <tr style="background-color: gray; color: white;">
 
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: auto; ">
-                    <div class="col-xl-1 col-md-1 mb-1"><center> {{list.repairing_no}} </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_person}}</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.second_contact_no}} </center> </div>|
+                    <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Date </center> </td>
+                    <td style=" width: 15%; border: 0px solid gray;">Repairing No. </td>
+                    <td style=" width: 18%; border: 0px solid gray;">Customer Name</td>
+                    <td style=" width: 20%; border: 0px solid gray;">Company Name</td>
+                    <td style=" width: 15%; border: 0px solid gray;">Contact No.</td>
 
-                    <div class="col-xl-2 col-md-1 mb-1 "><center>{{list.entered_by}}</center></div>|
+                    <td style=" width: 12%; border: 0px solid gray;"><center class=""> Entered By </center> </td>
 
                     {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.taken_by}} </center> </div>
+                    <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;"><center> Taken By </center> </td>
                     {% else %}
-                    <div class="col-xl-2 col-md-1 mb-1 ">{% if list.company_email != None and list.company_email != '' %}{{list.company_email}}{% else %}{% endif %} </div>|
+                    {% endif %}
+                </tr>
+</table>
+
+{% for list in repair_list %}
+   <table>
+
+              <tr style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
+<!--                  {% if list.current_stage == 'Scale is collected but estimate is not given' %}-->
+<!--              <div style="border: 2px solid rgba(120,115,245,.9);" >-->
+<!--                  {% elif list.current_stage == 'Estimate is given but Estimate is not confirmed' %}-->
+<!--              <div style="border: 2px solid rgba(5,255,163,.9);" >-->
+<!--                  {% elif list.current_stage == 'Estimate is confirmed but not repaired' %}-->
+<!--              <div style="border: 2px solid rgba(252,98,98,.9);" >-->
+<!--                  {% elif list.current_stage == 'Repaired but not collected' %}-->
+<!--              <div style="border: 2px solid rgba(255,110,196,5.5);" >-->
+<!--                  {% elif list.current_stage == 'Finally Collected' %}-->
+
+<!--                                  {% endif %}-->
+
+
+                                        <td style="width: 8%;">{{list.entry_timedate|date:'Y-m-d'}}</td>
+
+                    <td style="width: 15%;">{{list.repairing_no}}  </td>
+                    <td style="width: 18%;">{{list.second_person}}</td>
+                    <td style="width: 20%;">{% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</td>
+                    <td style="width: 15%;">{{list.second_contact_no}} </center> </td>
+
+                    <td style="width: 12%;">{{list.entered_by}}</td>
+
+                    {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
+                    <td style="width: 12%;"> {{list.taken_by}}  </td>
                     {% endif %}
 
-                    </div>
+              <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
 
-                </div>
-              </div>
+                    </tr>
+   </table>
                 {% endfor %}
-
-            </div>
-
-
-
-
-
-
-        </div>
-</div>
-
-
-
-
-
-
-  </div>
-
-
