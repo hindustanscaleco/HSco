@@ -342,104 +342,105 @@ def restamping_product(request,id):
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.restamping_id_id = restamping_id
 
-        item2 = Restamping_after_sales_service()
+        if Restamping_after_sales_service.objects.get(id=restamping_id).count() > 0 :
+            item2 = Restamping_after_sales_service()
 
-        # if Customer_Details.objects.filter(customer_name=customer_name,
-        #                                    contact_no=contact_no).count() > 0:
-        #
-        #     item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,
-        #                                                    contact_no=contact_no).first()
-        #     item3 = Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).first()
-        #     if company_name != '':
-        #         item3.company_name = company_name
-        #         item3.save(update_fields=['company_name'])
-        #     if address != '':
-        #         item3.address = address
-        #         item3.save(update_fields=['address'])
-        #     if customer_email_id != '':
-        #         item3.customer_email_id = customer_email_id
-        #         item3.save(update_fields=['customer_email_id'])
-        #
-        # else:
-        #
-        #     item.customer_name = customer_name
-        #
-        #
-        #     item.contact_no = contact_no
-        #
-        #     item.customer_name = customer_name
-        #     if company_name != '':
-        #         item2.second_company_name = company_name  # new2
-        #         new_cust.company_name = company_name
-        #     if address != '':
-        #         new_cust.address = address
-        #         item2.company_address = address  # new2
-        #     new_cust.contact_no = contact_no
-        #     if customer_email_id != '':
-        #         item2.company_email = customer_email_id  # new2
-        #         new_cust.customer_email_id = customer_email_id
-        #     # item.user_id = SiteUser.objects.get(id=request.user.pk)
-        #     # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        #     try:
-        #         new_cust.save()
-        #         item2.crm_no = Customer_Details.objects.get(id=item.pk)
-        #     except:
-        #         pass
-        if Customer_Details.objects.filter(customer_name=request.session.get('second_person'),contact_no=request.session.get('second_contact_no')).count() > 0:
+            # if Customer_Details.objects.filter(customer_name=customer_name,
+            #                                    contact_no=contact_no).count() > 0:
+            #
+            #     item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,
+            #                                                    contact_no=contact_no).first()
+            #     item3 = Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).first()
+            #     if company_name != '':
+            #         item3.company_name = company_name
+            #         item3.save(update_fields=['company_name'])
+            #     if address != '':
+            #         item3.address = address
+            #         item3.save(update_fields=['address'])
+            #     if customer_email_id != '':
+            #         item3.customer_email_id = customer_email_id
+            #         item3.save(update_fields=['customer_email_id'])
+            #
+            # else:
+            #
+            #     item.customer_name = customer_name
+            #
+            #
+            #     item.contact_no = contact_no
+            #
+            #     item.customer_name = customer_name
+            #     if company_name != '':
+            #         item2.second_company_name = company_name  # new2
+            #         new_cust.company_name = company_name
+            #     if address != '':
+            #         new_cust.address = address
+            #         item2.company_address = address  # new2
+            #     new_cust.contact_no = contact_no
+            #     if customer_email_id != '':
+            #         item2.company_email = customer_email_id  # new2
+            #         new_cust.customer_email_id = customer_email_id
+            #     # item.user_id = SiteUser.objects.get(id=request.user.pk)
+            #     # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            #     try:
+            #         new_cust.save()
+            #         item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            #     except:
+            #         pass
+            if Customer_Details.objects.filter(customer_name=request.session.get('second_person'),contact_no=request.session.get('second_contact_no')).count() > 0:
 
-            item2.crm_no= Customer_Details.objects.filter(contact_no=request.session.get('second_contact_no')).first()
+                item2.crm_no= Customer_Details.objects.filter(contact_no=request.session.get('second_contact_no')).first()
 
-            item3 = Customer_Details.objects.filter(customer_name=request.session.get('second_person'), contact_no=request.session.get('second_contact_no')).first()
-            if request.session.get('company_name') != '' and request.session.get('company_name') != None:
-                # request.session.get('second_company_name') = company_name  # new2
-                item2.second_company_name = request.session.get('company_name')
-                item3.company_name = request.session.get('company_name')
-                item3.save(update_fields=['company_name'])
-            if request.session.get('address')  != '' and request.session.get('address')  != None:
-                item3.address = request.session.get('address')
-                # request.session['company_address'] = address        # new2
-                item2.company_address = request.session.get('address')
-                item3.save(update_fields=['address'])
-            if request.session.get('customer_email_id') != '' and request.session.get('customer_email_id') != None:
-                # request.session['company_email'] = customer_email_id        # new2
-                item2.company_email = request.session.get('customer_email_id')   # new2
-                item3.customer_email_id = request.session.get('customer_email_id')
-                item3.save(update_fields=['customer_email_id'])
+                item3 = Customer_Details.objects.filter(customer_name=request.session.get('second_person'), contact_no=request.session.get('second_contact_no')).first()
+                if request.session.get('company_name') != '' and request.session.get('company_name') != None:
+                    # request.session.get('second_company_name') = company_name  # new2
+                    item2.second_company_name = request.session.get('company_name')
+                    item3.company_name = request.session.get('company_name')
+                    item3.save(update_fields=['company_name'])
+                if request.session.get('address')  != '' and request.session.get('address')  != None:
+                    item3.address = request.session.get('address')
+                    # request.session['company_address'] = address        # new2
+                    item2.company_address = request.session.get('address')
+                    item3.save(update_fields=['address'])
+                if request.session.get('customer_email_id') != '' and request.session.get('customer_email_id') != None:
+                    # request.session['company_email'] = customer_email_id        # new2
+                    item2.company_email = request.session.get('customer_email_id')   # new2
+                    item3.customer_email_id = request.session.get('customer_email_id')
+                    item3.save(update_fields=['customer_email_id'])
 
-        else:
-            new_cust = Customer_Details()
+            else:
+                new_cust = Customer_Details()
 
-            new_cust.customer_name = request.session.get('second_person')
-            if request.session.get('company_name') != '':
-                # request.session['second_company_name'] = company_name  # new2
-                new_cust.company_name = request.session.get('company_name')
-            if request.session.get('address') != '':
-                # request.session['company_address'] = address  # new2
-                new_cust.address = request.session.get('address')
-            new_cust.contact_no = request.session.get('second_contact_no')
-            if request.session.get('customer_email_id') != '':
-                # request.session['customer_email_id'] = customer_email_id  # new2
-                new_cust.customer_email_id = request.session.get('customer_email_id')
-            # item.user_id = SiteUser.objects.get(id=request.user.pk)
-            # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-            try:
-                new_cust.save()
-                item2.crm_no = Customer_Details.objects.get(id=new_cust.pk)
-            except:
-                pass
+                new_cust.customer_name = request.session.get('second_person')
+                if request.session.get('company_name') != '':
+                    # request.session['second_company_name'] = company_name  # new2
+                    new_cust.company_name = request.session.get('company_name')
+                if request.session.get('address') != '':
+                    # request.session['company_address'] = address  # new2
+                    new_cust.address = request.session.get('address')
+                new_cust.contact_no = request.session.get('second_contact_no')
+                if request.session.get('customer_email_id') != '':
+                    # request.session['customer_email_id'] = customer_email_id  # new2
+                    new_cust.customer_email_id = request.session.get('customer_email_id')
+                # item.user_id = SiteUser.objects.get(id=request.user.pk)
+                # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                try:
+                    new_cust.save()
+                    item2.crm_no = Customer_Details.objects.get(id=new_cust.pk)
+                except:
+                    pass
 
 
-        item2.restamping_no = Restamping_after_sales_service.objects.latest('restamping_no').restamping_no + 1
+            item2.restamping_no = Restamping_after_sales_service.objects.latest('restamping_no').restamping_no + 1
 
-        item2.restamping_no = request.session.get('restamping_no')
-        item2.second_person = request.session.get('second_person')
-        item2.second_contact_no = request.session.get('second_contact_no')
-        item2.today_date = request.session.get('today_date')
-        item2.user_id = SiteUser.objects.get(id=request.user.pk)
-        item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item2.total_amount = 0.0
-        item2.restamping_start_timedate = timezone.now()
-        item2.save()
+            item2.restamping_no = request.session.get('restamping_no')
+            item2.second_person = request.session.get('second_person')
+            item2.second_contact_no = request.session.get('second_contact_no')
+            item2.today_date = request.session.get('today_date')
+            item2.user_id = SiteUser.objects.get(id=request.user.pk)
+            item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            item2.total_amount = 0.0
+            item2.restamping_start_timedate = timezone.now()
+            item2.save()
 
         item.save()
 
