@@ -454,6 +454,7 @@ td {
 </tr>
 
 </table>
+
 <div id="id_subcat">
            <table>
 
@@ -472,7 +473,7 @@ td {
 
 <!--                  {% endif %}-->
                     {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
-                    <td style="width: 7%;">{{ list.entry_timedate|date:'Y-m-d' }} </td>
+                    <td style="width: 7%;">{{list.entry_timedate|date:'Y-m-d'}} </td>
                     <td style="width: 10%;"> {{list.onsite_no}} </td>
                     <td style="width: 20%;">{{ list.second_person }} </td>
                     <td style="width: 15%;"> {% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</td>
@@ -497,9 +498,10 @@ td {
                   <td style="width: 15%;">{{list.current_stage}} </td>
                               {% else %}
                     {% endif %}
-                </div>
-              </div>
-</div>
+
+                <!--</div>-->
+              <!--</div>-->
+<!--</div>-->
 </tr>
           {% endfor %}
 
