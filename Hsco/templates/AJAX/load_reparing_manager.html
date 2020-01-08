@@ -18,7 +18,6 @@
 
 
 
-
                 {% for list in user_list%}
               <tr style="cursor: pointer; " onclick="location.href='/repairing_employee_graph/{{list.user_id}}';" class="col-xl-12 col-md-12 mb-12">
 
@@ -35,11 +34,10 @@
                   <i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
               {% endif %}
             {% endfor %}
-
-                     </td>>
-</tr>
+                     </td>
+</tr>{% endfor %}
 </table>
-                {% endfor %}
+
 
 
 
