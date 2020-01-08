@@ -594,37 +594,34 @@ def update_dispatch_details(request,update_id):
             item.save(update_fields=['date_of_dispatch'])
             item.save(update_fields=['dispatch_by', ]),
 
-        if dispatch_item.dispatch_time_calculated == False:
-            if dispatch_item.date_of_dispatch != None:
-                user_name = SiteUser.objects.get(profile_name=dispatch_item.dispatch_by)
-                total_time = dispatch_item.dispatch_done_timedate - dispatch_item.dispatch_start_timedate
-                total_hours = total_time.total_seconds() // 3600  # for 24 hours (total hours for a single repair)
-                dispatch_item.total_dispatch_time = total_hours
-                dispatch_item.save(update_fields=['total_dispatch_time'])
-                # total_days = (total_time.total_seconds() // 3600) / 24          #total days for a single repair
-                # final_time_hours = total_hours - (total_days*14)
-                avg_daily = Dispatch.objects.filter(dispatch_by=user_name.profile_name,
-                                                                         entry_timedate=dispatch_item.entry_timedate).aggregate(
-                    Avg('total_dispatch_time'))
-                print(avg_daily)
-                Employee_Analysis_date.objects.filter(user_id=user_name.id,
-                                                      entry_date=dispatch_item.entry_timedate,
-                                                      year=dispatch_item.entry_timedate.year).update(
-                    avg_time_dispatch_form_to_done_today=avg_daily['total_dispatch_time__avg'])
+            if dispatch_item.dispatch_time_calculated == False:
+                if dispatch_item.date_of_dispatch != None:
+                    user_name = SiteUser.objects.get(profile_name=dispatch_item.dispatch_by)
+                    total_time = dispatch_item.dispatch_done_timedate - dispatch_item.dispatch_start_timedate
+                    total_hours = total_time.total_seconds() // 3600  # for 24 hours (total hours for a single repair)
+                    dispatch_item.total_dispatch_time = total_hours
+                    dispatch_item.save(update_fields=['total_dispatch_time'])
+                    # total_days = (total_time.total_seconds() // 3600) / 24          #total days for a single repair
+                    # final_time_hours = total_hours - (total_days*14)
+                    avg_daily = Dispatch.objects.filter(dispatch_by=user_name.profile_name,
+                                                                             entry_timedate=dispatch_item.entry_timedate).aggregate(Avg('total_dispatch_time'))
 
-                avg_monthly = Dispatch.objects.filter(dispatch_by=user_name.profile_name,
-                                                                           entry_timedate__month=dispatch_item.entry_timedate.month).aggregate(
-                    Avg('total_dispatch_time'))
+                    Employee_Analysis_date.objects.filter(user_id=user_name.id,
+                                                          entry_date=dispatch_item.entry_timedate,
+                                                          year=dispatch_item.entry_timedate.year).update(
+                        avg_time_dispatch_form_to_done_today=avg_daily['total_dispatch_time__avg'])
 
-                Employee_Analysis_month.objects.filter(user_id=user_name.id,
-                                                       entry_date__month=dispatch_item.entry_timedate.month,
-                                                       year=dispatch_item.entry_timedate.year).update(
-                    avg_time_dispatch_form_to_done=avg_monthly['total_dispatch_time__avg'])
+                    avg_monthly = Dispatch.objects.filter(dispatch_by=user_name.profile_name,
+                                                          entry_timedate__month=dispatch_item.entry_timedate.month,
+                                                          entry_timedate__year=dispatch_item.entry_timedate.year).aggregate(Avg('total_dispatch_time'))
 
-                dispatch_item.dispatch_time_calculated = True
-                dispatch_item.save(update_fields=['dispatch_time_calculated', ])
+                    Employee_Analysis_month.objects.filter(user_id=user_name.id,
+                                                           entry_date__month=dispatch_item.entry_timedate.month,
+                                                           year=dispatch_item.entry_timedate.year).update(
+                        avg_time_dispatch_form_to_done=avg_monthly['total_dispatch_time__avg'])
 
-
+                    dispatch_item.dispatch_time_calculated = True
+                    dispatch_item.save(update_fields=['dispatch_time_calculated', ])
         item.packed_by = packed_by
         item.hamal_name = hamal_name
         item.no_bundles = no_bundles
@@ -693,10 +690,6 @@ def update_dispatch_details(request,update_id):
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
-
-
-
-
 
 
         if (current_stage_in_db == 'dispatch q') and (dispatch_by != '' and dispatch_by != None):

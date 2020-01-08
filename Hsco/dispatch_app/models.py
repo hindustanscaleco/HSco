@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.utils import timezone
 from customer_app.models import Customer_Details
@@ -34,7 +36,7 @@ class Dispatch(models.Model):
     channel_of_dispatch = models.CharField(max_length=30,null=True,blank=True)
     notes = models.CharField(max_length=300,null=True,blank=True)
     current_stage = models.CharField(max_length=50,null=True,blank=True)
-    entry_timedate = models.DateTimeField(default=timezone.now,)
+    entry_timedate = models.DateField(default=datetime.date.today,null=True,blank=True)
     feedback_link = models.URLField(max_length=200,null=True,blank=True)
     dispatch_no = models.BigIntegerField(null=True,blank=True)
 

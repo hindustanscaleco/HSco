@@ -1,10 +1,12 @@
 from datetime import datetime
 
 from django.db import connection
-from django.db.models import Min, Sum, Q, F, Count
+from django.db.models import Min, Sum, Q, F, Count, Avg
 from django.shortcuts import render, redirect
 
 from django.core.mail import send_mail
+from django.utils import timezone
+
 from Hsco import settings
 from customer_app.models import Customer_Details
 
@@ -436,7 +438,7 @@ def restamping_product(request,id):
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.total_amount = 0.0
-
+        item2.restamping_start_timedate = timezone.now()
         item2.save()
 
         item.save()
@@ -445,12 +447,13 @@ def restamping_product(request,id):
 
         current_stage_in_db = Restamping_after_sales_service.objects.get(
             id=id).current_stage  # updatestage2
-        if (current_stage_in_db == '' or current_stage_in_db == None) and (sub_model != '' or sub_model != None):
-            Restamping_after_sales_service.objects.filter(id=id).update(
-                current_stage='Scales in Restamping Queue')
         if (current_stage_in_db == 'Scales in Restamping Queue') and (new_sr_no != '' or new_sr_no != None):
             Restamping_after_sales_service.objects.filter(id=id).update(
                 current_stage='Restamping is done but scale is not collected')
+        if (current_stage_in_db == '' or current_stage_in_db == None) and (sub_model != '' or sub_model != None):
+            Restamping_after_sales_service.objects.filter(id=id).update(
+                current_stage='Scales in Restamping Queue')
+
 
         if Employee_Analysis_date.objects.filter(user_id=request.user.pk,entry_date=datetime.now().date(),year = datetime.now().year).count() > 0:
             Employee_Analysis_date.objects.filter(user_id=request.user.pk,entry_date=datetime.now().date(),year = datetime.now().year).update(total_restamping_done_today=F("total_restamping_done_today") + amount)
@@ -540,6 +543,9 @@ def restamping_analytics(request):
 def update_restamping_details(request,id):
     personal_id = Restamping_after_sales_service.objects.get(id=id)
     restamp_product_list = Restamping_Product.objects.filter(restamping_id=id)
+    latest_restamp_product = Restamping_Product.objects.filter(restamping_id=id).last()
+
+
     # customer_id = Restamping_after_sales_service.objects.get(id=id).crm_no
     customer_id = Customer_Details.objects.get(id=personal_id.crm_no)
 
@@ -612,11 +618,46 @@ def update_restamping_details(request,id):
         current_stage_in_db = Restamping_after_sales_service.objects.get(
             id=id).current_stage  # updatestage2
 
-        if (current_stage_in_db == 'Restamping is done but scale is not collected') and (
-                scale_delivery_date != '' or scale_delivery_date != None):
+        if (current_stage_in_db == 'Restamping is done but scale is not collected') and (scale_delivery_date != '' or scale_delivery_date != None):
             Restamping_after_sales_service.objects.filter(id=id).update(
                 current_stage='Restamping done and scale also collected')
+            item.restamping_done_timedate = timezone.now()
+            item.save(update_fields=['restamping_done_timedate', ]),
 
+        if (current_stage_in_db == 'Scales in Restamping Queue') and (latest_restamp_product.new_sr_no != '' or latest_restamp_product.new_sr_no != None):
+            Restamping_after_sales_service.objects.filter(id=id).update(
+                current_stage='Restamping is done but scale is not collected')
+        if (current_stage_in_db == '' or current_stage_in_db == None) and (latest_restamp_product.sub_model != '' or latest_restamp_product.sub_model != None):
+            Restamping_after_sales_service.objects.filter(id=id).update(
+                current_stage='Scales in Restamping Queue')
+
+        if personal_id.restamping_time_calculated == False:
+            if personal_id.scale_delivery_date != None and personal_id.scale_delivery_date != None :
+                user_id = SiteUser.objects.get(id=request.user.id)
+
+                total_time = personal_id.restamping_done_timedate - personal_id.restamping_start_timedate
+                total_hours = total_time.total_seconds() // 3600        #for 24 hours (total hours for a single repair)
+                personal_id.total_restamping_time = total_hours
+                personal_id.save(update_fields=['total_restamping_time'])
+                # total_days = (total_time.total_seconds() // 3600) / 24          #total days for a single repair
+                # final_time_hours = total_hours - (total_days*14)
+                avg_daily = Restamping_after_sales_service.objects.filter(user_id_id=user_id,entry_timedate=personal_id.entry_timedate).aggregate(Avg('total_restamping_time'))
+
+                Employee_Analysis_date.objects.filter(user_id=user_id.id,
+                                                      entry_date=personal_id.entry_timedate,
+                                                  year=personal_id.entry_timedate.year).update(
+                    avg_time_collect_to_dispatch_restamping_today=avg_daily['total_restamping_time__avg'])
+
+                avg_monthly = Restamping_after_sales_service.objects.filter(user_id_id=user_id,entry_timedate__month=personal_id.entry_timedate.month).aggregate(Avg('total_restamping_time'))
+
+                Employee_Analysis_month.objects.filter(user_id=user_id.id,
+                                                       entry_date__month=personal_id.entry_timedate.month,
+                                                       year=personal_id.entry_timedate.year).update(
+                    avg_time_collect_to_dispatch_restamping=avg_monthly['total_restamping_time__avg'])
+
+
+                personal_id.restamping_time_calculated = True
+                personal_id.save(update_fields=['restamping_time_calculated',])
 
         # item.save(update_fields=['total_amount', ]),
         # item.save(update_fields=['new_serial_no', ]),
