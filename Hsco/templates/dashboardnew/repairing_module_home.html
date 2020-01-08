@@ -545,17 +545,17 @@ td {
                     <tr style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';">
                 {% for list in repair_list %}
 
-                  {% if list.current_stage == 'Scale is collected but estimate is not given' %}
-             <tr style="cursor: pointer; border: 2px solid rgba(120,115,245,.9);" onclick="location.href='/update_repairing_details/{{list.id}}';">
+<!--                  {% if list.current_stage == 'Scale is collected but estimate is not given' %}-->
+<!--             <tr style="cursor: pointer; border: 2px solid rgba(120,115,245,.9);" onclick="location.href='/update_repairing_details/{{list.id}}';">-->
 
 <!--              <div class="card shadow" style="" >-->
-                  {% elif list.current_stage == 'Estimate is given but Estimate is not confirmed' %}
+<!--                  {% elif list.current_stage == 'Estimate is given but Estimate is not confirmed' %}-->
 <!--              <div class="card shadow" style="border: 2px solid rgba(5,255,163,.9);" >-->
-                  {% elif list.current_stage == 'Estimate is confirmed but not repaired' %}
+<!--                  {% elif list.current_stage == 'Estimate is confirmed but not repaired' %}-->
 <!--              <div class="card shadow" style="border: 2px solid rgba(252,98,98,.9);" >-->
-                  {% elif list.current_stage == 'Repaired but not collected' %}
+<!--                  {% elif list.current_stage == 'Repaired but not collected' %}-->
 <!--              <div class="card shadow" style="border: 2px solid rgba(255,110,196,5.5);" >-->
-                  {% elif list.current_stage == 'Finally Collected' %}
+<!--                  {% elif list.current_stage == 'Finally Collected' %}-->
 <!--              <div class="card shadow" style="border: 2px solid rgba(69,202,252,.9);" >-->
                                   {% endif %}
 
