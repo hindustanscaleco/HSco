@@ -521,7 +521,7 @@ td {
 
                 <div id="id_manager_view" >
 
-<div class="" id="id_subcat" style="min-height: 15vw;">
+<!--<div class="" id="id_subcat" style="min-height: 15vw;">-->
 <table>
                     <tr style="background-color: gray; color: white;">
 
@@ -566,7 +566,7 @@ td {
               </tr>
 
            </table>
-</div>
+<!--</div>-->
         </div>
         </div>
             </div>
@@ -599,7 +599,7 @@ td {
 
         },
         success: function (data) {
-           $("#id_subcat").html(data);
+           $("#id_manager_view").html(data);
         }
       });
 }
@@ -617,7 +617,7 @@ value = select.checked;
           'loc_id':value,
         },
         success: function (data) {
-           $("#id_subcat").html(data);
+           $("#id_manager_view").html(data);
         }
       });
 }
