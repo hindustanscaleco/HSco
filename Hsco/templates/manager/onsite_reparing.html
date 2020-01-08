@@ -462,15 +462,15 @@ td {
 <tr style="cursor:pointer;" onclick="location.href='/update_onsite_details/{{list.pk}}';"class="col-xl-12 col-md-12 mb-12">
 
 
-               {% if list.current_stage == 'Onsite repairing request is raised' %}
-              <div class="card shadow" style="border: 2px solid rgba(120,115,245,.9);" >
-                  {% elif list.current_stage == 'Onsite repairing request is assigned' %}
-              <div class="card shadow" style="border: 2px solid rgba(5,255,163,.9);" >
-                  {% elif list.current_stage == 'Onsite repairing request is completed' %}
-              <div class="card shadow" style="border: 2px solid rgba(252,98,98,.9);" >
-                  {% else %}
+<!--               {% if list.current_stage == 'Onsite repairing request is raised' %}-->
+<!--              <div class="card shadow" style="border: 2px solid rgba(120,115,245,.9);" >-->
+<!--                  {% elif list.current_stage == 'Onsite repairing request is assigned' %}-->
+<!--              <div class="card shadow" style="border: 2px solid rgba(5,255,163,.9);" >-->
+<!--                  {% elif list.current_stage == 'Onsite repairing request is completed' %}-->
+<!--              <div class="card shadow" style="border: 2px solid rgba(252,98,98,.9);" >-->
+<!--                  {% else %}-->
 
-                  {% endif %}
+<!--                  {% endif %}-->
                     {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
                     <td style="width: 7%;">{{ list.entry_timedate|date:'Y-m-d' }} </td>
                     <td style="width: 10%;"> {{list.onsite_no}} </td>

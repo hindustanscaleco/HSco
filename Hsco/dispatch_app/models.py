@@ -75,7 +75,7 @@ class Product_Despatched(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
     dispatch_id = models.ForeignKey(Dispatch,on_delete=models.CASCADE, null=True, blank=True)
-    value = models.CharField(max_length=120, null=True,blank=True)
+    value = models.CharField(max_length=120, null=True, blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now, )
 
     def __int__(self):
