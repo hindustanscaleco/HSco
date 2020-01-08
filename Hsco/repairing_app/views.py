@@ -440,7 +440,7 @@ def repair_product(request,id):
 
         # current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  #updatestage2
 
-        if current_stage_in_db == 'Scale is collected but estimate is not given' and float(cost) > 0.0:
+        if current_stage_in_db == 'Scale is collected but estimate is not given' :
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Estimate is given but Estimate is not confirmed',stage_update_timedate = timezone.now())
 
@@ -732,7 +732,7 @@ def update_repairing_details(request,id):
             item2.save(update_fields=['repaired_by'])
             item2.save(update_fields=['repaired_date',])
             item2.save(update_fields=['repairing_done_timedate',])
-        if repair_id.repairing_time_calculated == False:
+        if repair_id.repairing_time_calculated == False and repair_id.repairing_start_timedate != None and repair_id.repairing_done_timedate != None:
             if item2.repaired_date != None and item2.repaired_by != None :
                 user_name = SiteUser.objects.get(profile_name=repair_id.repaired_by)
 

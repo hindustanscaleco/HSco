@@ -631,7 +631,7 @@ def update_restamping_details(request,id):
             Restamping_after_sales_service.objects.filter(id=id).update(
                 current_stage='Scales in Restamping Queue')
 
-        if personal_id.restamping_time_calculated == False:
+        if personal_id.restamping_time_calculated == False and personal_id.restamping_start_timedate != None and personal_id.restamping_done_timedate != None:
             if personal_id.scale_delivery_date != None and personal_id.scale_delivery_date != None :
                 user_id = SiteUser.objects.get(id=request.user.id)
 

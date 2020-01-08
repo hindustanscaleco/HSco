@@ -594,7 +594,7 @@ def update_dispatch_details(request,update_id):
             item.save(update_fields=['date_of_dispatch'])
             item.save(update_fields=['dispatch_by', ]),
 
-            if dispatch_item.dispatch_time_calculated == False:
+            if dispatch_item.dispatch_time_calculated == False and dispatch_item.dispatch_start_timedate != None and dispatch_item.dispatch_done_timedate != None:
                 if dispatch_item.date_of_dispatch != None:
                     user_name = SiteUser.objects.get(profile_name=dispatch_item.dispatch_by)
                     total_time = dispatch_item.dispatch_done_timedate - dispatch_item.dispatch_start_timedate
