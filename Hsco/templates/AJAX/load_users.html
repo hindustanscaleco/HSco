@@ -15,14 +15,14 @@
 
 
             {% for list1 in user_list %}
-                <tr style="cursor: pointer; " onclick="location.href='/customer_employee_sales_graph/{{list1.user_id}}';" class="col-xl-12 col-md-12 mb-12">
+                <tr style="cursor: pointer; " onclick="location.href='/customer_employee_sales_graph/{{list1.user_id}}';">
 
 
                     <td> {{ list1.user_id.name }}</td>
                     <td> {{ list1.total_sales_done}} </td>
                     <td> {{ list1.sales_target_given}} </td>
 
-                    <div class="col-xl-2 col-md-1 mb-1 "><center>
+                    <td>
                          {% for avg in  list1.start_rating_feedback_sales|rjust:'5'  %}
               {% if forloop.counter <= list1.start_rating_feedback_sales %}
                   <i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
@@ -30,8 +30,7 @@
                   <i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
               {% endif %}
             {% endfor %}
-</center>
-                    </div>
+</td>
 
 
 
