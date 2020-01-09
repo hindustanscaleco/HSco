@@ -46,15 +46,15 @@ td {
 {% for list in dispatch_list %}
                 <tr style="cursor: pointer; " onclick="location.href='/update_dispatch_details/{{list.id}}';" class="">
 
-<!--{% if list.current_stage == 'dispatch q' %}-->
-<!--              <div class="card shadow" style="border: 2px solid rgba(120,115,245,.9);" >-->
-<!--                  {% elif list.current_stage == 'dispatch but lr not updated' %}-->
-<!--              <div class="card shadow" style="border: 2px solid rgba(5,255,163,.9);" >-->
-<!--                  {% elif list.current_stage == 'dispatch completed' %}-->
-<!--              <div class="card shadow" style="border: 2px solid rgba(252,98,98,.9);" >-->
-<!--                  {% else %}-->
-<!--              <div class="card shadow" style="border: 2px solid black;" >-->
-<!--                  {% endif %}-->
+{% if list.current_stage == 'dispatch q' %}
+              <tr style="cursor: pointer;border: 2px solid rgba(120,115,245,.9); " onclick="location.href='/update_repairing_details/{{list.id}}';" class	="col-xl-12 col-md-12 mb-12">
+                  {% elif list.current_stage == 'dispatch but lr not updated' %}
+              <tr style="cursor: pointer; border: 2px solid rgba(5,255,163,.9);" onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
+                  {% elif list.current_stage == 'dispatch completed' %}
+              <tr style="cursor: pointer;border: 2px solid rgba(252,98,98,.9); " onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
+                  {% else %}
+              <div class="card shadow" style="border: 2px solid black;" >
+                  {% endif %}
 
 
                     <td style="width: 10%;">{{ list.entry_timedate|date:'Y-m-d' }}</td>

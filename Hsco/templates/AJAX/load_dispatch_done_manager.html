@@ -44,7 +44,7 @@ td {
 
 {% if manager %}
 <table>
-        <tr style="background-color: gray; color: white;">dispatch_view
+        <tr style="background-color: gray; color: white;">
                     <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;"> Name </td>
                     <td style="border: 0px solid gray;"> Dispatched This Month </td>
                     <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;"> Avg Time(Form to Done) </td>
@@ -59,7 +59,7 @@ td {
 
                     <td> {{ list.user_id.name }} </td>
                     <td>{{ list.total_dispatch_done }} </td>
-                    <td>{{ list.avg_time_dispatch_form_to_done }} </td>
+                    <td>{{ list.avg_time_dispatch_form_to_done | floatformat}} hrs </td>
 
 
 
