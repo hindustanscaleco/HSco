@@ -342,7 +342,7 @@ def restamping_product(request,id):
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.restamping_id_id = restamping_id
 
-        if Restamping_after_sales_service.objects.get(id=restamping_id).count() > 0 :
+        if Restamping_after_sales_service.objects.filter(id=restamping_id).count() == 0 :
             item2 = Restamping_after_sales_service()
 
             # if Customer_Details.objects.filter(customer_name=customer_name,
@@ -441,7 +441,8 @@ def restamping_product(request,id):
             item2.total_amount = 0.0
             item2.restamping_start_timedate = timezone.now()
             item2.save()
-
+        else:
+            pass
         item.save()
 
         Restamping_after_sales_service.objects.filter(id=id).update(total_amount=F("total_amount") + amount)
