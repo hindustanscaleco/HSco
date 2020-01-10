@@ -568,6 +568,12 @@ def update_repairing_details(request,id):
 
 
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage3
+        if current_stage_in_db == 'Scale is collected but estimate is not given'  and (informed_by != None or informed_by!=""):
+            Repairing_after_sales_service.objects.filter(id=id).update(
+                current_stage='Estimate is given but Estimate is not confirmed', stage_update_timedate=timezone.now())
+            item2.stage_update_timedate = timezone.now()
+            item2.save(update_fields=['stage_update_timedate',])
+
         if current_stage_in_db == 'Estimate is given but Estimate is not confirmed' and confirmed_estimate == 'Yes':
             Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Estimate is confirmed but not repaired')
             item2.stage_update_timedate = timezone.now()
@@ -1224,9 +1230,6 @@ def edit_product(request,id):
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=repairing_id.pk).current_stage  # updatestage2
 
 
-        if current_stage_in_db == 'Scale is collected but estimate is not given' and float(cost) > 0.0:
-            Repairing_after_sales_service.objects.filter(id=repairing_id.pk).update(
-                current_stage='Estimate is given but Estimate is not confirmed', stage_update_timedate=timezone.now())
 
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=repairing_id.pk).current_stage  # updatestage1
         if (current_stage_in_db == '' or current_stage_in_db == None) and (sub_model != '' or sub_model != None):
