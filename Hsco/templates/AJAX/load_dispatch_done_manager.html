@@ -47,9 +47,11 @@ td {
         <tr style="background-color: gray; color: white;">
                     <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;"> Name </td>
                     <td style="border: 0px solid gray;"> Dispatched This Month </td>
-                    <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;"> Avg Time(Form to Done) </td>
+                    <td style="border: 0px solid gray;"> Avg Time(Form to Done) </td>
+                                <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Month/Year</td>
 
 
+s
 </tr>
 
              <div id="id_subcat" class="row">
@@ -60,6 +62,7 @@ td {
                     <td> {{ list.user_id.name }} </td>
                     <td>{{ list.total_dispatch_done }} </td>
                     <td>{{ list.avg_time_dispatch_form_to_done | floatformat}} hrs </td>
+    <td>{{list.entry_timedate.month}}/{{list.entry_timedate.year}}</td>
 
 
 
