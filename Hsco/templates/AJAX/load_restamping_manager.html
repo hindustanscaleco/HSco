@@ -7,7 +7,8 @@
 
                     <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;"> Name </td>
                     <td style="border: 0px solid gray;">Restamping This Month </td>
-                    <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;"> Avg Time(Form to Done) </td>
+                    <td style="border: 0px solid gray;"> Avg Time(Form to Done) </td>
+                    <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Month/Year</td>
 </tr>
 
 
@@ -19,6 +20,7 @@
                     <td> {{ list.user_id.name }} </td>
                     <td>{{ list.total_restamping_done}} </td>
                     <td>{{list.avg_time_collect_to_dispatch_restamping}} hrs </td>
+    <td>{{list.entry_timedate.month}}/{{list.entry_timedate.year}}</td>
 
 </tr>
 
