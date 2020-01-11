@@ -200,8 +200,8 @@ def repair_product(request,id):
 
 
         problem_in_scale = request.POST.get('problem_in_scale')
-        components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
-        components_replaced = request.POST.get('components_replaced')
+        components_replaced_in_warranty = request.POST.getlist('components_replaced_in_warranty')
+        components_replaced = request.POST.getlist('components_replaced')
         replaced_scale_given = request.POST.get('replaced_scale_given')
         Replaced_scale_serial_no = request.POST.get('Replaced_scale_serial_no')
         deposite_taken_for_replaced_scale = request.POST.get('deposite_taken_for_replaced_scale')
@@ -209,7 +209,11 @@ def repair_product(request,id):
         in_warranty = request.POST.get('in_warranty')
         is_last_product_yes = request.POST.get('is_last_product_yes')
         # is_last_product_no = request.POST.get('is_last_product_no')
-
+        print(components_replaced)
+        print(components_replaced_in_warranty)
+        print(components_replaced_in_warranty)
+        print(components_replaced_in_warranty)
+        print(components_replaced_in_warranty)
         item=Repairing_Product()
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -1201,9 +1205,9 @@ def edit_product(request,id):
         model = request.POST.get('model')
         sub_model = request.POST.get('sub_model')
         problem_in_scale = request.POST.get('problem_in_scale')
-        components_replaced_in_warranty = request.POST.getlist('components_replaced_in_warranty]')
+        components_replaced_in_warranty = request.POST.getlist('components_replaced_in_warranty')
         components_replaced = request.POST.getlist('components_replaced')
-         
+
         replaced_scale_given = request.POST.get('replaced_scale_given')
         Replaced_scale_serial_no = request.POST.get('Replaced_scale_serial_no')
         deposite_taken_for_replaced_scale = request.POST.get('deposite_taken_for_replaced_scale')
