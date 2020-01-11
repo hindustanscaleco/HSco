@@ -267,6 +267,7 @@ function myFunction() {
   <input  name="sub_model" disabled placeholder="Sub Model" id="myText4" value="{{product_id.sub_model}}" class="form-control"  type="text">
     </div>
   </div>
+
 </div>
 
 
@@ -294,33 +295,16 @@ function myFunction() {
     <option value = "Others"></option>
     </datalist>    </div>
   </div>
-
-    <label class="col-md-2 control-label">Components Replaced in Waranty(if scale in Waranty)
-
-
-
+    <label class="col-md-2 control-label">Replaced Scale given *
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-<input  type="text" name="components_replaced_in_warranty" disabled placeholder="Components Replaced IW" id="myText6" value="{{product_id.components_replaced_in_warranty}}" class="form-control" list="components_replaced_in_warranty">
-      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-    <datalist style="height:20px;" id="components_replaced_in_warranty">
-    <option value = "Display"></option>
-    <option value = "Touch Pad"></option>
-    <option value = "LED"></option>
-    <option value = "Transformer"></option>
-    <option value = "Battery"></option>
-    <option value = "Switch"></option>
-    <option value = "Main Cord wire"></option>
-    <option value = "Main Circuit Board"></option>
-    <option value = "SMPS"></option>
-    <option value = "Load Cell"></option>
-    <option value = "Misc"></option>
-    </datalist>
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="replaced_scale_given" required disabled placeholder="Replaced Scale given" id="myText8" value="{{product_id.replaced_scale_given}}" class="form-control"  type="text">
     </div>
   </div>
+
 
 </div>
 
@@ -334,35 +318,156 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>-->
 
-    <input  type="text" name="components_replaced" disabled placeholder="Components Replaced" id="myText7" value="{{product_id.components_replaced}}" class="form-control" list="components_replaced">
-      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-    <datalist style="height:20px;" id="components_replaced">
-    <option value = "Display"></option>
-    <option value = "Touch Pad"></option>
-    <option value = "LED"></option>
-    <option value = "Transformer"></option>
-    <option value = "Battery"></option>
-    <option value = "Switch"></option>
-    <option value = "Main Cord wire"></option>
-    <option value = "Main Circuit Board"></option>
-    <option value = "SMPS"></option>
-    <option value = "Load Cell"></option>
-    <option value = "Misc"></option>
-    </datalist>
+<!--    <input  type="text" name="components_replaced" disabled placeholder="Components Replaced" id="myText7" value="{{product_id.components_replaced}}" class="form-control" list="components_replaced">-->
+<!--      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
+      {% if 'Display' in product_id.components_replaced %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Display" checked> Display</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Display"> Display</div><br>
+      {% endif %}
+
+    {% if 'Touch Pad' in product_id.components_replaced %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Touch Pad" checked> Touch Pad</div><br>
+            {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Touch Pad"> Touch Pad</div><br>
+      {% endif %}
+
+            {% if 'LED' in product_id.components_replaced %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="LED" checked> LED</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="LED"> LED</div><br>
+      {% endif %}
+
+            {% if 'Transformer' in product_id.components_replaced %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Transformer" checked> Transformer</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Transformer"> Transformer</div><br>
+      {% endif %}
+
+            {% if 'Battery' in product_id.components_replaced %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Battery" checked> Battery</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Battery"> Battery</div><br>
+      {% endif %}
+
+            {% if 'Switch' in product_id.components_replaced %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Switch" checked> Switch</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Switch"> Switch</div><br>
+      {% endif %}
+
+            {% if 'Main Cord wire' in product_id.components_replaced %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Main Cord wire" checked> Main Cord wire</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Main Cord wire"> Main Cord wire</div><br>
+      {% endif %}
+
+            {% if 'Main Circuit Board<' in product_id.components_replaced %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Main Circuit Board" checked> Main Circuit Board</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Main Circuit Board"> Main Circuit Board</div><br>
+      {% endif %}
+
+            {% if 'SMPS' in product_id.components_replaced %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="SMPS" checked> SMPS</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="SMPS"> SMPS</div><br>
+      {% endif %}
+
+            {% if 'Load Cell' in product_id.components_replaced %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Load Cell" checked> Load Cell</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Load Cell"> Load Cell</div><br>
+      {% endif %}
+
+            {% if 'Misc' in product_id.components_replaced %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Misc" checked> Misc</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Misc"> Misc</div><br>
+            {% endif %}
+
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Replaced Scale given *
+ <label class="col-md-2 control-label">Components Replaced in Waranty(if scale in Waranty)
+
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="replaced_scale_given" required disabled placeholder="Replaced Scale given" id="myText8" value="{{product_id.replaced_scale_given}}" class="form-control"  type="text">
-    </div>
-  </div>
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>-->
+
+<!--    <input  type="text" name="components_replaced_in_warranty" disabled placeholder="Components Replaced" id="myText7" value="{{product_id.components_replaced_in_warranty}}" class="form-control" list="components_replaced_in_warranty">-->
+<!--      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
+      {% if 'Display' in product_id.components_replaced_in_warranty %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Display" checked> Display</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Display"> Display</div><br>
+      {% endif %}
+
+    {% if 'Touch Pad' in product_id.components_replaced_in_warranty %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Touch Pad" checked> Touch Pad</div><br>
+            {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Touch Pad" > Touch Pad</div><br>
+      {% endif %}
+
+            {% if 'LED' in product_id.components_replaced_in_warranty %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="LED" checked> LED</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="LED"> LED</div><br>
+      {% endif %}
+
+            {% if 'Transformer' in product_id.components_replaced_in_warranty %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Transformer" checked> Transformer</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Transformer"> Transformer</div><br>
+      {% endif %}
+
+            {% if 'Battery' in product_id.components_replaced_in_warranty %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Battery" checked> Battery</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Battery"> Battery</div><br>
+      {% endif %}
+
+            {% if 'Switch' in product_id.components_replaced_in_warranty %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Switch" checked> Switch</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Switch"> Switch</div><br>
+      {% endif %}
+
+            {% if 'Main Cord wire' in product_id.components_replaced_in_warranty %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Main Cord wire" checked> Main Cord wire</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Main Cord wire"> Main Cord wire</div><br>
+      {% endif %}
+
+            {% if 'Main Circuit Board<' in product_id.components_replaced_in_warranty %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Main Circuit Board" checked> Main Circuit Board</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Main Circuit Board"> Main Circuit Board</div><br>
+      {% endif %}
+
+            {% if 'SMPS' in product_id.components_replaced_in_warranty %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="SMPS" checked> SMPS</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="SMPS"> SMPS</div><br>
+      {% endif %}
+
+            {% if 'Load Cell' in product_id.components_replaced_in_warranty %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Load Cell" checked> Load Cell</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Load Cell"> Load Cell</div><br>
+      {% endif %}
+
+            {% if 'Misc' in product_id.components_replaced_in_warranty %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Misc" checked> Misc</div><br>
+      {% else %}
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Misc"> Misc</div><br>
+            {% endif %}
+
+    </div>  </div>
 
 </div>
 
