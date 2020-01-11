@@ -1201,8 +1201,9 @@ def edit_product(request,id):
         model = request.POST.get('model')
         sub_model = request.POST.get('sub_model')
         problem_in_scale = request.POST.get('problem_in_scale')
-        components_replaced = request.POST.get('components_replaced')
-        components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
+        components_replaced_in_warranty = request.POST.getlist('components_replaced_in_warranty]')
+        components_replaced = request.POST.getlist('components_replaced')
+         
         replaced_scale_given = request.POST.get('replaced_scale_given')
         Replaced_scale_serial_no = request.POST.get('Replaced_scale_serial_no')
         deposite_taken_for_replaced_scale = request.POST.get('deposite_taken_for_replaced_scale')
