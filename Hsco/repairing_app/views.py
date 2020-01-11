@@ -189,7 +189,7 @@ def add_repairing_details(request):
     return render(request,'forms/rep_mod_form.html',context)
 
 def repair_product(request,id):
-    repair_id = Repairing_after_sales_service.objects.latest('id').id + 1
+    # repair_id = Repairing_after_sales_service.objects.latest('id').id + 1
     type_of_purchase_list =type_purchase.objects.all() #1
     components_replaced_popup = []
 
@@ -200,8 +200,8 @@ def repair_product(request,id):
 
 
         problem_in_scale = request.POST.get('problem_in_scale')
-        components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
-        components_replaced = request.POST.get('components_replaced')
+        components_replaced_in_warranty = request.POST.getlist('components_replaced_in_warranty')
+        components_replaced = request.POST.getlist('components_replaced')
         replaced_scale_given = request.POST.get('replaced_scale_given')
         Replaced_scale_serial_no = request.POST.get('Replaced_scale_serial_no')
         deposite_taken_for_replaced_scale = request.POST.get('deposite_taken_for_replaced_scale')
@@ -209,7 +209,11 @@ def repair_product(request,id):
         in_warranty = request.POST.get('in_warranty')
         is_last_product_yes = request.POST.get('is_last_product_yes')
         # is_last_product_no = request.POST.get('is_last_product_no')
-
+        print(components_replaced)
+        print(components_replaced_in_warranty)
+        print(components_replaced_in_warranty)
+        print(components_replaced_in_warranty)
+        print(components_replaced_in_warranty)
         item=Repairing_Product()
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -226,7 +230,7 @@ def repair_product(request,id):
         item.replaced_scale_given = replaced_scale_given
         item.Replaced_scale_serial_no = Replaced_scale_serial_no
         item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
-        item.repairing_id_id = repair_id
+        item.repairing_id_id = id
         item.in_warranty = in_warranty
         # print(is_last_product_no)
         # if is_last_product_yes == None:
@@ -239,7 +243,7 @@ def repair_product(request,id):
         # else:
         item.cost = cost
 
-        if Repairing_after_sales_service.objects.filter(id=repair_id).count() == 0 :
+        if Repairing_after_sales_service.objects.filter(id=id).count() == 0 :
             item2 = Repairing_after_sales_service()
 
             if Customer_Details.objects.filter(customer_name=request.session.get('second_person'),contact_no=request.session.get('second_contact_no')).count() > 0:
@@ -378,8 +382,8 @@ def repair_product(request,id):
         rep = Repairing_after_sales_service.objects.get(id=id)
 
         if is_last_product_yes == 'yes':
-            ret = send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, item2.pk, '1')
-            Repairing_after_sales_service.objects.filter(id=item2.pk).update(is_last_product_added=True)
+            ret = send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
+            Repairing_after_sales_service.objects.filter(id=id).update(is_last_product_added=True)
             product_list = ''' '''
             pro_lis = Repairing_Product.objects.filter(repairing_id_id=rep.pk)
 
@@ -493,7 +497,7 @@ def repair_product(request,id):
 
 
     context = {
-        'repair_id': repair_id,
+        'repair_id': id,
         'type_purchase': type_of_purchase_list,  # 2
     }
     return render(request,'dashboardnew/repair_product.html',context)
@@ -1201,8 +1205,9 @@ def edit_product(request,id):
         model = request.POST.get('model')
         sub_model = request.POST.get('sub_model')
         problem_in_scale = request.POST.get('problem_in_scale')
-        components_replaced = request.POST.get('components_replaced')
-        components_replaced_in_warranty = request.POST.get('components_replaced_in_warranty')
+        components_replaced_in_warranty = request.POST.getlist('components_replaced_in_warranty')
+        components_replaced = request.POST.getlist('components_replaced')
+
         replaced_scale_given = request.POST.get('replaced_scale_given')
         Replaced_scale_serial_no = request.POST.get('Replaced_scale_serial_no')
         deposite_taken_for_replaced_scale = request.POST.get('deposite_taken_for_replaced_scale')
