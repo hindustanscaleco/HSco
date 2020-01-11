@@ -178,13 +178,20 @@ def add_dispatch_details(request):
         # x = response.text
 
 
-        return redirect('/dispatch_view')
+        return redirect('/dispatch_product')
 
     context = {
         'cust_sugg': cust_sugg,
         'user_list': user_list,
     }
     return render(request,'forms/dis_mod_form.html',context)
+
+def dispatch_product(request):
+    return render(request,"edit_product/dispatch_add_product.html")
+
+def edit_product_from_dispatch(request):
+    return render(request,"edit_product/edit_product_from_dispatch.html")
+
 
 def report_dis_mod(request):
     if request.method =='POST':
