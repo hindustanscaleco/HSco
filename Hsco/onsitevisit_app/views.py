@@ -357,11 +357,10 @@ def add_onsite_aftersales_service(request):
     return render(request, 'forms/onsite_rep_form.html',context)
 
 def add_onsite_product(request,id):
-    onsite_id = Onsite_aftersales_service.objects.latest('id').id + 1
+    # onsite_id = Onsite_aftersales_service.objects.latest('id').id + 1
     # crm_id = Onsite_aftersales_service.objects.get(id=id).crm_no
     type_of_purchase_list =type_purchase.objects.all() #1
 
-    print(onsite_id)
     if request.method == 'POST':
         type_of_machine = request.POST.get('type_of_scale')
         model = request.POST.get('model_of_purchase')
@@ -378,7 +377,7 @@ def add_onsite_product(request,id):
 
         item = Onsite_Products()
 
-        item.onsite_repairing_id_id = onsite_id
+        item.onsite_repairing_id_id = id
         item.type_of_machine = type_of_machine
         # item.type_of_machine = type_of_machine
         item.model = model
@@ -395,7 +394,7 @@ def add_onsite_product(request,id):
         # item.crm_no = Customer_Details.objects.get(id=crm_id)
         item.in_warranty = in_warranty
 
-        if Onsite_aftersales_service.objects.filter(id=onsite_id).count() == 0 :
+        if Onsite_aftersales_service.objects.filter(id=id).count() == 0 :
 
             item2 = Onsite_aftersales_service()
             if Customer_Details.objects.filter(customer_name=request.session.get('second_person'),contact_no=request.session.get('second_contact_no')).count() > 0:
@@ -535,7 +534,7 @@ def add_onsite_product(request,id):
 
         return redirect('/update_onsite_details/'+str(id))
     context = {
-        'onsite_id': onsite_id,
+        'onsite_id': id,
         'type_purchase': type_of_purchase_list,  # 2
 
     }
