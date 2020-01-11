@@ -1066,9 +1066,10 @@ def onsite_analytics(request,):
 
 def load_onsite_reparing_manager(request,):
     selected = request.GET.get('loc_id')
-
+    current_month = datetime.now().month
+    current_year = datetime.now().year
     if selected=='true':
-        user_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Onsite Repairing Module')
+        user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,entry_date__year=current_year,manager_id__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Onsite Repairing Module')
         # dispatch_list = Employee_Analysis_month.objects.filter(user_id__group=str(request.user.name))
 
         context = {

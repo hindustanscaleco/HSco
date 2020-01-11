@@ -207,6 +207,7 @@ function myFunction() {
     document.getElementById("myText16").disabled = false;
     document.getElementById("myText17").disabled = true;
     document.getElementById("myText18").disabled = true;
+        document.getElementById("myText28").disabled = false;
 <!--    document.getElementById("myText19").disabled = false;-->
 <!--    document.getElementById("myText20").disabled = false;-->
     <!--document.getElementById("myText21").disabled = true;-->
@@ -214,6 +215,8 @@ function myFunction() {
     document.getElementById("myText23").disabled = false;
     document.getElementById("myText24").disabled = false;
     <!--document.getElementById("myText25").disabled = false;-->
+    document.getElementById("myText26").disabled = false;
+    document.getElementById("myText27").disabled = false;
     <!--document.getElementById("button").disabled = false;-->
     document.getElementById("myText19").style.display = "block";
 }
@@ -591,12 +594,12 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
             {% if repair_id.taken_by %}
-        <input name="taken_by" placeholder="Taken By" disabled class="form-control" required id="myText22" type="text" value="{{repair_id.taken_by}}">
+        <input name="taken_by" placeholder="Taken By" disabled class="form-control" required id="myText26" type="text" value="{{repair_id.taken_by}}">
 
       {% else %}
         <!--<input name="taken_by" placeholder="Taken By" disabled class="form-control" required id="myText22" type="text" list="taken_by">-->
 
-                <select required disabled class="form-control" id="myText22" name="taken_by">
+                <select required disabled class="form-control" id="myText27" name="taken_by">
   <option value="">Select</option>
                     {% for item in user_list %}
 
@@ -629,7 +632,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
-<input name="notes" value="{{repair_id.notes}}" placeholder="Notes" class="form-control">
+<input name="notes" value="{{repair_id.notes}}" id="myText28" placeholder="Notes" class="form-control" disabled>
 </div>
 
 </div>
