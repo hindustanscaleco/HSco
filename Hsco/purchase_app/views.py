@@ -1273,9 +1273,14 @@ def edit_product_customer(request,product_id_rec):
     return render(request,'edit_product/edit_product_customer.html',context)
 
 def load_users(request):
+    current_month = datetime.now().month
+    current_year = datetime.now().year
+
     selected = request.GET.get('loc_id')
     if selected=='true':
-        user_list = Employee_Analysis_month.objects.filter(manager_id__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module')
+        user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,entry_date__year=current_year,
+                   manager_id__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module')
+
         context = {
             'user_list': user_list,
             'manager': True,
