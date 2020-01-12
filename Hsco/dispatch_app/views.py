@@ -21,6 +21,8 @@ import json
 from ess_app.models import Employee_Analysis_month
 from ess_app.models import Employee_Analysis_date
 
+from customer_app.models import type_purchase
+from purchase_app.forms import Product_Details_Form
 
 
 def add_dispatch_details(request):
@@ -178,7 +180,7 @@ def add_dispatch_details(request):
         # x = response.text
 
 
-        return redirect('/dispatch_product')
+        return redirect('/dispatch_product/'+str(item2.pk))
 
     context = {
         'cust_sugg': cust_sugg,
@@ -186,8 +188,72 @@ def add_dispatch_details(request):
     }
     return render(request,'forms/dis_mod_form.html',context)
 
-def dispatch_product(request):
-    return render(request,"edit_product/dispatch_add_product.html")
+def dispatch_product(request,id):
+    # purchase = Purchase_Details.objects.get(id=id)
+    dispatch = Dispatch.objects.get(id=id)
+    type_of_purchase_list = type_purchase.objects.all()  # 1
+    if 'purchase_id' in request.session:
+        request.session['product_saved'] = False
+
+    form = Product_Details_Form(request.POST or None)
+    if request.method == 'POST':
+        quantity = request.POST.get('quantity')
+        model_of_purchase = request.POST.get('model_of_purchase')
+        type_of_scale = request.POST.get('type_of_scale')
+        sub_model = request.POST.get('sub_model')
+        sub_sub_model = request.POST.get('sub_sub_model')
+        serial_no_scale = request.POST.get('serial_no_scale')
+        brand = request.POST.get('brand')
+        capacity = request.POST.get('capacity')
+        unit = request.POST.get('unit')
+        value_of_goods = request.POST.get('value_of_goods')
+        is_last_product_yes = request.POST.get('is_last_product_yes')
+
+        if value_of_goods == '' or value_of_goods == None:
+            value_of_goods = 0.0
+
+        item = Product_Details_Dispatch()
+
+        item.quantity = quantity
+
+        item.type_of_scale = type_of_scale
+        # if model_of_purchase != None and model_of_purchase != '':
+        item.model_of_purchase = model_of_purchase
+        item.sub_model = sub_model
+        item.sub_sub_model = sub_sub_model
+        item.serial_no_scale = serial_no_scale
+        item.brand = brand
+        item.capacity = capacity
+        item.unit = unit
+        item.amount = value_of_goods
+        item.dispatch_id_id = dispatch.pk
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item.save()
+
+        Employee_Analysis_month.objects.filter(user_id=dispatch.user_id,
+                                               entry_date__month=datetime.now().month,
+                                               year=datetime.now().year).update(
+            total_dispatch_done=F("total_dispatch_done") + value_of_goods)
+        Employee_Analysis_date.objects.filter(user_id=dispatch.user_id,
+                                              entry_date=datetime.now().date(),
+                                              year=datetime.now().year).update(
+            total_dispatch_done_today=F("total_dispatch_done_today") + value_of_goods)
+
+
+        if 'purchase_id' in request.session:
+            request.session['product_saved'] = True
+        if is_last_product_yes == 'yes':
+            return redirect('/update_dispatch_details/' + str(dispatch.pk))
+        elif is_last_product_yes == 'no':
+            return redirect('/dispatch_product/' + str(dispatch.pk))
+    context = {
+        'form': form,
+        'type_purchase': type_of_purchase_list,  # 2
+
+    }
+
+    return render(request,"edit_product/dispatch_add_product.html", context)
 
 def edit_product_from_dispatch(request):
     return render(request,"edit_product/edit_product_from_dispatch.html")
@@ -383,27 +449,27 @@ def dispatch_view(request):
 
         elif request.user.role == 'Manager' :  #For EMPLOYEE
             admin=SiteUser.objects.get(id=request.user.pk).admin
-            dispatch_list = Dispatch.objects.filter(Q(dispatch_by=None)|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name)).order_by('-dispatch_no')
+            dispatch_list = Dispatch.objects.filter(Q(dispatch_by=None)|Q(dispatch_by='')|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name)).order_by('-dispatch_no')
 
-            stage1 = Dispatch.objects.filter((Q(dispatch_by=None)|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))&Q(current_stage='dispatch q')).values('current_stage').annotate(
+            stage1 = Dispatch.objects.filter((Q(dispatch_by=None)|Q(dispatch_by='')|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))&Q(current_stage='dispatch q')).values('current_stage').annotate(
                 dcount=Count('current_stage'))
 
-            stage2 = Dispatch.objects.filter((Q(dispatch_by=None)|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))&Q(current_stage='dispatch but lr not updated')).values(
+            stage2 = Dispatch.objects.filter((Q(dispatch_by=None)|Q(dispatch_by='')|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))&Q(current_stage='dispatch but lr not updated')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
 
-            stage3 = Dispatch.objects.filter((Q(dispatch_by=None)|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))&Q(current_stage='dispatch completed')).values(
+            stage3 = Dispatch.objects.filter((Q(dispatch_by=None)|Q(dispatch_by='')|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))&Q(current_stage='dispatch completed')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
         elif request.user.role == 'Employee' :  #For EMPLOYEE
             admin=SiteUser.objects.get(id=request.user.pk).admin
-            dispatch_list = Dispatch.objects.filter(Q(dispatch_by=request.user.name)|Q(dispatch_by=None) & Q(user_id__admin=admin)).order_by('-dispatch_no')
+            dispatch_list = Dispatch.objects.filter(Q(dispatch_by=request.user.name)|Q(dispatch_by=None)|Q(dispatch_by='') & Q(user_id__admin=admin)).order_by('-dispatch_no')
 
-            stage1 = Dispatch.objects.filter((Q(dispatch_by=request.user.name)|Q(dispatch_by=None)) & Q(user_id__admin=admin)&Q(current_stage='dispatch q')).values('current_stage').annotate(
+            stage1 = Dispatch.objects.filter((Q(dispatch_by=request.user.name)|Q(dispatch_by=None)|Q(dispatch_by='')) & Q(user_id__admin=admin)&Q(current_stage='dispatch q')).values('current_stage').annotate(
                 dcount=Count('current_stage'))
 
-            stage2 = Dispatch.objects.filter((Q(dispatch_by=request.user.name)|Q(dispatch_by=None)) & Q(user_id__admin=admin)&Q(current_stage='dispatch but lr not updated')).values(
+            stage2 = Dispatch.objects.filter((Q(dispatch_by=request.user.name)|Q(dispatch_by=None)|Q(dispatch_by='')) & Q(user_id__admin=admin)&Q(current_stage='dispatch but lr not updated')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
 
-            stage3 = Dispatch.objects.filter((Q(dispatch_by=request.user.name)|Q(dispatch_by=None)) & Q(user_id__admin=admin)&Q(current_stage='dispatch completed')).values(
+            stage3 = Dispatch.objects.filter((Q(dispatch_by=request.user.name)|Q(dispatch_by=None)|Q(dispatch_by='')) & Q(user_id__admin=admin)&Q(current_stage='dispatch completed')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
 
 
@@ -834,6 +900,7 @@ def dispatch_employee_graph(request,user_id):
     mon = datetime.now().month
     this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
                                                                                                          'total_dispatch_done_today').order_by('entry_date')
+
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
@@ -845,6 +912,7 @@ def dispatch_employee_graph(request,user_id):
     mon = (datetime.now().month) - 1
     previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
                                                                                                          'total_dispatch_done_today').order_by('entry_date')
+
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -884,27 +952,7 @@ def dispatch_employee_graph(request,user_id):
             x = i
             lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
             lis_sum.append(x['total_dispatch_done_today'])
-        print(lis_date)
-        print(lis_sum)
 
-        # user_id=request.user.pk
-        # currentMonth = datetime.now().month
-        # currentYear = datetime.now().year
-        # list_sales=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('month')
-        # list_sales_month=Employee_Analysis_month.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-        # # list_sales=Employee_Analysis.objects.filter(year=currentYear,user_id=user_id).values_list('total_sales_done')
-        # print(list(list_sales_month))
-        # print(list(list_sales))
-        # final_list=[]
-        # final_list2=[]
-        # for item in list_sales:
-        #     final_list.append(item[0])
-        #
-        # for item in list_sales_month:
-        #     final_list2.append(item[0])
-        #
-        # print(final_list)
-        # print(final_list2)
         context = {
             'final_list': lis_date,
             'final_list2': lis_sum,
@@ -916,8 +964,6 @@ def dispatch_employee_graph(request,user_id):
             # 'feeback': feeback,
         }
         return render(request,"graphs/dispatch_employee_graph.html",context)
-
-
 
 def load_dispatch_done(request,):
     selected = request.GET.get('loc_id')
@@ -995,13 +1041,13 @@ def load_dispatch_stages_list(request):
         # dispatch_list = Dispatch.objects.filter(
         #     Q(dispatch_by=None) | Q(user_id__admin=admin) | Q(dispatch_by=request.user.name)).order_by('-dispatch_no')
 
-        dispatch_list = Dispatch.objects.filter((Q(dispatch_by=None) | Q(user_id__admin=admin) | Q(dispatch_by=request.user.name)) & Q(current_stage=selected_stage)).order_by('-dispatch_no')
+        dispatch_list = Dispatch.objects.filter((Q(dispatch_by=None)| Q(dispatch_by='') | Q(user_id__admin=admin) | Q(dispatch_by=request.user.name)) & Q(current_stage=selected_stage)).order_by('-dispatch_no')
 
     elif request.user.role == 'Employee':  # For EMPLOYEE
         admin = SiteUser.objects.get(id=request.user.pk).admin
 
 
-        dispatch_list = Dispatch.objects.filter((Q(dispatch_by=request.user.name) | Q(dispatch_by=None)) & Q(user_id__admin=admin) & Q(current_stage=selected_stage)).order_by('-dispatch_no')
+        dispatch_list = Dispatch.objects.filter((Q(dispatch_by=request.user.name) | Q(dispatch_by=None)| Q(dispatch_by='')) & Q(user_id__admin=admin) & Q(current_stage=selected_stage)).order_by('-dispatch_no')
 
 
     # if check_admin_roles(request):  # For ADMIN
@@ -1033,25 +1079,62 @@ def load_dispatch_stages_list(request):
     context.update(context)
     return render(request, 'AJAX/load_dispatch_stage.html', context)
 
+def edit_dispatch_product(request,id):
 
-def edit_dispatch_product(request,product_id_rec):
-
-    pro_dispatch=Product_Details_Dispatch.objects.get(id=product_id_rec)
+    pro_dispatch=Product_Details_Dispatch.objects.get(id=id)
 
     if request.method == 'POST':
-
+        quantity = request.POST.get('quantity')
+        model_of_purchase = request.POST.get('model_of_purchase')
+        type_of_scale = request.POST.get('type_of_scale')
+        sub_model = request.POST.get('sub_model')
+        sub_sub_model = request.POST.get('sub_sub_model')
         serial_no_scale = request.POST.get('serial_no_scale')
+        brand = request.POST.get('brand')
+        capacity = request.POST.get('capacity')
+        unit = request.POST.get('unit')
+        amount = request.POST.get('value_of_goods')
+        # purchase_type = request.POST.get('purchase_type')
 
-        if serial_no_scale != None and serial_no_scale!= '':
-            Product_Details_Dispatch.objects.filter(id=product_id_rec).update(serial_no_scale=serial_no_scale)
-            try:
-                Product_Details.objects.filter(product_dispatch_id=product_id_rec).update(serial_no_scale=serial_no_scale)
-            except:
-                pass
+        cost2 = pro_dispatch.value_of_goods
 
+        Employee_Analysis_month.objects.filter(user_id=pro_dispatch.user_id,
+                                               entry_date__month=pro_dispatch.entry_timedate.month,
+                                               year=pro_dispatch.entry_timedate.year).update(
+            total_dispatch_done=F("total_dispatch_done") - cost2)
 
+        Employee_Analysis_date.objects.filter(user_id=pro_dispatch.user_id,
+                                              entry_date=pro_dispatch.entry_timedate,
+                                              year=pro_dispatch.entry_timedate.year).update(
+            total_dispatch_done_today=F("total_dispatch_done_today") - cost2)
 
-        return redirect('/edit_dispatch_product/'+str(product_id_rec))
+        item = pro_dispatch
+
+        item.quantity = quantity
+        item.type_of_scale = type_of_scale
+        item.model_of_purchase = model_of_purchase
+        item.sub_model = sub_model
+        item.sub_sub_model = sub_sub_model
+        item.serial_no_scale = serial_no_scale
+        item.brand = brand
+        item.capacity = capacity
+        item.unit = unit
+        item.value_of_goods = amount
+        item.save(update_fields=['quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
+                                 'serial_no_scale', 'brand', 'capacity', 'unit','value_of_goods',
+                                 ])
+
+        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+                                               entry_date__month=pro_dispatch.entry_timedate.month,
+                                               year=pro_dispatch.entry_timedate.year).update(
+            total_dispatch_done=F("total_dispatch_done") + amount)
+
+        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+                                              entry_date__month=pro_dispatch.entry_timedate.month,
+                                              year=pro_dispatch.entry_timedate.year).update(
+            total_dispatch_done_today=F("total_dispatch_done_today") + amount)
+
+        return redirect('/update_dispatch_details/' + str(pro_dispatch.dispatch_id_id))
 
     context = {
         'product_id': pro_dispatch,

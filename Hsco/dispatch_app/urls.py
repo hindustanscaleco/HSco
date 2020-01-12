@@ -16,7 +16,7 @@ urlpatterns = [
     path('load_dispatch_done_manager/', load_dispatch_done_manager, name = 'load_dispatch_done_manager'),
     path('load_dispatch_stages_list/', load_dispatch_stages_list, name = 'load_dispatch_stages_list'),
     path('dispatch_analytics/', dispatch_analytics, name = 'dispatch_analytics'),
-    path('edit_dispatch_product/<int:product_id_rec>', edit_dispatch_product, name = 'edit_dispatch_product'),
-    path('dispatch_product/', dispatch_product, name = 'dispatch_product'),
-    path('edit_product_from_dispatch/', edit_product_from_dispatch, name = 'edit_product_from_dispatch'),
+    path('edit_dispatch_product/<int:id>', edit_dispatch_product, name = 'edit_dispatch_product'),
+    path('dispatch_product/<int:id>', dispatch_product, name = 'dispatch_product'),
+    path('edit_product_from_dispatch/<int:id>', edit_product_from_dispatch, name = 'edit_product_from_dispatch'),
 ]
