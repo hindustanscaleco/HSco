@@ -814,7 +814,7 @@ def add_product_details(request,id):
             Employee_Analysis_date.objects.filter(user_id=purchase.user_id,
                                                   entry_date=datetime.now().date(),
                                                   year=datetime.now().year).update(
-                total_dispatch_done_today=F("total_dispatch_done_today") + value_of_goods)
+                total_sales_done_today=F("total_sales_done_today") + value_of_goods)
             # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
             # ead.save(update_fields=['total_sales_done_today'])
@@ -822,7 +822,7 @@ def add_product_details(request,id):
         else:
             ead = Employee_Analysis_date()
             ead.user_id = SiteUser.objects.get(id=request.user.pk)
-            ead.total_dispatch_done_today = value_of_goods
+            ead.total_sales_done_today = value_of_goods
             ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
             ead.month = datetime.now().month
@@ -838,17 +838,17 @@ def add_product_details(request,id):
                 Employee_Analysis_month.objects.filter(user_id=purchase.user_id,
                                                        entry_date__month=datetime.now().month,
                                                        year=datetime.now().year).update(
-                    total_dispatch_done=0)
+                    total_sales_done=0)
             Employee_Analysis_month.objects.filter(user_id=purchase.user_id,
                                                    entry_date__month=datetime.now().month,
                                                    year=datetime.now().year).update(
-                total_dispatch_done=F("total_dispatch_done") + value_of_goods)
+                total_sales_done=F("total_sales_done") + value_of_goods)
 
 
         else:
             ead = Employee_Analysis_month()
             ead.user_id = SiteUser.objects.get(id=request.user.pk)
-            ead.total_dispatch_done = value_of_goods
+            ead.total_sales_done = value_of_goods
             ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
             ead.month = datetime.now().month
