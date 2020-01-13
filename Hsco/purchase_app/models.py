@@ -44,7 +44,7 @@ class Purchase_Details(models.Model):   #cleaned
 class Product_Details(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
-    purchase_id = models.ForeignKey(Purchase_Details,on_delete=models.CASCADE)
+    purchase_id = models.ForeignKey(Purchase_Details,on_delete=models.CASCADE, null=True, blank=True)
     product_dispatch_id = models.ForeignKey(Product_Details_Dispatch,on_delete=models.CASCADE,null=True, blank=True)
     # product_name = models.CharField(max_length=30,null=True,blank=True)
     quantity = models.CharField(max_length=30,null=True,blank=True)

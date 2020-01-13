@@ -2,7 +2,7 @@ from django.urls import path, include, re_path
 
 from .views import add_dispatch_details, report_dis_mod, dispatch_view, dispatch_logs, final_report_dis_mod, \
     update_dispatch_details, dispatch_employee_graph, load_dispatch_done, load_dispatch_done_manager, \
-    dispatch_analytics, load_dispatch_stages_list, edit_dispatch_product
+    dispatch_analytics, load_dispatch_stages_list, edit_dispatch_product,dispatch_product,edit_product_from_dispatch
 
 urlpatterns = [
     path('add_dispatch_details/', add_dispatch_details, name ='add_dispatch_details'),
@@ -16,5 +16,7 @@ urlpatterns = [
     path('load_dispatch_done_manager/', load_dispatch_done_manager, name = 'load_dispatch_done_manager'),
     path('load_dispatch_stages_list/', load_dispatch_stages_list, name = 'load_dispatch_stages_list'),
     path('dispatch_analytics/', dispatch_analytics, name = 'dispatch_analytics'),
-    path('edit_dispatch_product/<int:product_id_rec>', edit_dispatch_product, name = 'edit_dispatch_product'),
+    path('edit_dispatch_product/<int:id>', edit_dispatch_product, name = 'edit_dispatch_product'),
+    path('dispatch_product/<int:id>', dispatch_product, name = 'dispatch_product'),
+    path('edit_product_from_dispatch/<int:id>', edit_product_from_dispatch, name = 'edit_product_from_dispatch'),
 ]

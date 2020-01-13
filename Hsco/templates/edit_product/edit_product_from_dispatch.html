@@ -171,7 +171,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
           <script>
 function myFunction() {
 
-  var x = document.getElementById("myText11");
+  var x = document.getElementById("myText10");
   var y = document.getElementById("myText12");
   if (x.style.display === "none") {
     x.style.display = "block";
@@ -188,6 +188,7 @@ function myFunction() {
     document.getElementById("myText6").disabled = false;
     document.getElementById("myText7").disabled = false;
     document.getElementById("myText8").disabled = false;
+    document.getElementById("myText9").disabled = false;
     document.getElementById("myText9").disabled = false;
     document.getElementById("myText10").style.display = "block";
     document.getElementById("myText11").disabled = false;
@@ -208,7 +209,7 @@ function myFunction() {
 
 <center>
          <!-- Page Heading -->
-            <h1 class="h3 mb-0 text-gray-800"> Dispatch Product</h1>
+            <h1 class="h3 mb-0 text-gray-800"> Purchase Product</h1>
 </center>
 <br>
 <br>
@@ -287,7 +288,7 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
 
-    <input  type="text" name="brand" readonly placeholder="Brand" id="myText5" value="{{product_id.brand}}" class="form-control" list="components_replaced">
+    <input  type="text" name="brand" disabled placeholder="Brand" id="myText6" value="{{product_id.brand}}" class="form-control" list="components_replaced">
     <datalist style="height:20px;" id="components_replaced">
     <option value = "HSCo"></option>
 
@@ -302,7 +303,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupCont+-ainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="capacity" readonly placeholder="Components Replaced" id="myText6" value="{{product_id.capacity}}" class="form-control"  type="text">
+  <input  name="capacity" disabled placeholder="Components Replaced" id="myText7" value="{{product_id.capacity}}" class="form-control"  type="text">
     </div>
   </div>
 </div>
@@ -315,7 +316,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="unit" readonly placeholder="unit" id="myText7" list="unit" value="{{product_id.unit}}" class="form-control" type="text">
+  <input  name="unit" disabled placeholder="unit" id="myText8" list="unit" value="{{product_id.unit}}" class="form-control" type="text">
       <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
         <datalist style="height:20px;" id="unit">
     <option value = "gm"></option>
@@ -340,7 +341,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods" readonly placeholder="Rate x quantity" id="myText8" value="{{product_id.value_of_goods}}" disabled class="form-control" step="0.2" type="number">
+  <input  name="value_of_goods" required placeholder="Rate x quantity" id="myText11" value="{{product_id.amount}}" disabled class="form-control" step="0.2" type="number">
     </div>
   </div>
 
@@ -357,7 +358,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-<input  type="text" name="serial_no_scale" disabled placeholder="Serial No. on scale" id="myText9" value="{{product_id.serial_no_scale}}" class="form-control">
+<input  type="text" name="serial_no_scale" disabled placeholder="Serial No. on scale" id="myText5" value="{{product_id.serial_no_scale}}" class="form-control">
 
     </div>
   </div>
@@ -375,10 +376,10 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="quantity" readonly placeholder="Quantity
+  <input  name="quantity" disabled placeholder="Quantity
 
 
-" class="form-control" id="myText10" value="{{product_id.quantity}}" type="text">
+" class="form-control" id="myText9" value="{{product_id.quantity}}" type="text">
     </div>
 </div>
 </div>
@@ -394,7 +395,7 @@ function myFunction() {
         <button style=" background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" id="myText12" type="reset" style="">Edit</button>
         <br>
         <br>
-        <button style="display:none; background-color: #FC6E20;" id="myText11" type="submit" value="Submit" class="btn btn-primary">Save</button>
+        <button style="display:none; background-color: #FC6E20;" id="myText10" type="submit" value="Submit" class="btn btn-primary">Save</button>
       </center>
     </div>
 
