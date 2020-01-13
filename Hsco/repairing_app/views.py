@@ -209,11 +209,7 @@ def repair_product(request,id):
         in_warranty = request.POST.get('in_warranty')
         is_last_product_yes = request.POST.get('is_last_product_yes')
         # is_last_product_no = request.POST.get('is_last_product_no')
-        print(components_replaced)
-        print(components_replaced_in_warranty)
-        print(components_replaced_in_warranty)
-        print(components_replaced_in_warranty)
-        print(components_replaced_in_warranty)
+
         item=Repairing_Product()
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
