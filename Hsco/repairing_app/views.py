@@ -193,7 +193,7 @@ def repair_product(request,id):
     type_of_purchase_list =type_purchase.objects.all() #1
     components_replaced_popup = []
 
-    if request.method=='POST' and 'components_replaced_popup_iw' not in request.POST and 'components_replaced_popup' not in request.POST:
+    if request.method=='POST':
         type_of_machine = request.POST.get('type_of_scale')
         model = request.POST.get('model_of_purchase')
         sub_model = request.POST.get('sub_model')
@@ -404,39 +404,36 @@ def repair_product(request,id):
                 )
                 product_list = product_list + '' + str(email_body_text)
 
-                msg_old= 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                              request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.pk) +'\nHere is a list of Products:\n'+product_list
-                # msg='Dear '+rep.second_person+',Thank you for selecting HSCo. Your Scales have been successfully ' \
-                #     'received at our Repairing Center. Your Repairing No is '+str(rep.repairing_no)+'. Please use this Unique ID for further communication. For any ' \
-                #     'further details please contact our customer service team on 7045922251 \n Product Details:\n'+product_list
+            msg_old= 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                          request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.pk) +'\nHere is a list of Products:\n'+product_list
+            # msg='Dear '+rep.second_person+',Thank you for selecting HSCo. Your Scales have been successfully ' \
+            #     'received at our Repairing Center. Your Repairing No is '+str(rep.repairing_no)+'. Please use this Unique ID for further communication. For any ' \
+            #     'further details please contact our customer service team on 7045922251 \n Product Details:\n'+product_list
 
-                msg = 'Dear ' + rep.second_person + ', Your Scales has been ' \
-                                           'received at our Repairing Center. Your Repairing No is ' + str(rep.repairing_no) + '.' \
-                                          ' For any further details please contact our customer service team on 7045922251 \n Product Details:\n'+product_list
-                # if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
-                # crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
-                try:
-                    send_mail('Feedback Form',msg
+            msg = 'Dear ' + rep.second_person + ', Your Scales has been ' \
+                                       'received at our Repairing Center. Your Repairing No is ' + str(rep.repairing_no) + '.' \
+                                      ' For any further details please contact our customer service team on 7045922251 \n Product Details:\n'+product_list
+            # if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
+            # crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
+            try:
+                send_mail('Feedback Form',msg,settings.EMAIL_HOST_USER,[rep.company_email,])
+            except:
+                pass
 
-                              ,settings.EMAIL_HOST_USER,
-                          [rep.company_email,])
-                except:
-                    pass
+            message_old = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+                request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.pk)
 
-                message_old = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                    request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.pk)
+            message = 'Dear ' + rep.second_person + ', Your Scales has been ' \
+                                                'received at our Repairing Center. Your Repairing No is ' + str(
+                rep.repairing_no) + '.' \
+                                    ' For any further details please contact our customer service team on 7045922251'
 
-                message = 'Dear ' + rep.second_person + ', Your Scales has been ' \
-                                                    'received at our Repairing Center. Your Repairing No is ' + str(
-                    rep.repairing_no) + '.' \
-                                        ' For any further details please contact our customer service team on 7045922251'
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + rep.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + rep.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-                payload = ""
-                headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-                response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                x = response.text
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
 
 
 
@@ -1593,12 +1590,9 @@ def send_sms(request,name,phone,email,repair_id,item_id):
             pass
     elif msg_id == '5':
         rep_id=Repairing_after_sales_service.objects.get(id=id)
-        message = ' Dear ' + name + ',Thank you for selecting HSCo. Your Scale with Repairing No ' + str(
-            repair_id) + ' has been ' \
-                            'Collected. We\'d love ' \
-                            'to hear your feedback to help us improve our customer experience,just click on the link below:\n ' \
-                            ' http://139.59.76.87/feedback_repairing/'+ str(request.user.pk) + '/' + str(rep_id.crm_no.pk) + '/' + str(rep_id.pk) + '\n for more information ' \
-                  'contact our customer service team on 7045922251'
+        message = 'Dear ' + name + ',Your Repairing Complaint No ' + str(repair_id) +' is resolved. Plz collect your Scales within the next 3 days.' \
+                                                                                      'Contact our service team on 7045922251 \n click on the link below for feedback:\n ' \
+                            ' http://139.59.76.87/feedback_repairing/'+ str(request.user.pk) + '/' + str(rep_id.crm_no.pk) + '/' + str(rep_id.pk) + '\n'
         Repairing_after_sales_service.objects.filter(id=id).update(final_del_sms_count=F("final_del_sms_count") + 1)
         try:
             send_mail('Scale Collected - HSCo', message, settings.EMAIL_HOST_USER, [email,])
@@ -1651,34 +1645,3 @@ def repairing_form(request,id):
 #
 # def repairing_form_back(request):
 #     return render(request,'repairing_form/reparingformback.html')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
