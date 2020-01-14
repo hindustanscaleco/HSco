@@ -447,47 +447,10 @@ def repair_product(request,id):
 
         Component_Replaced.objects.filter(pk__in=components_replaced_popup).update(product_id=item.pk)
 
-
-
-
         if is_last_product_yes == 'yes':
             return redirect('/update_repairing_details/'+str(id))
         elif is_last_product_yes == 'no':
             return redirect('/repair_product/'+str(id))
-    # if request.method == 'POST' and 'components_replaced_popup' in request.POST and 'components_replaced_popup_iw' not in request.POST:
-    #     replaced_name=request.POST.get('components_replaced_popup')
-    #     in_waranty= False
-    #     item = Component_Replaced()
-    #     item.user_id=SiteUser.objects.get(id=request.user.pk)
-    #     #item.product_id=
-    #     item.replaced_name=replaced_name
-    #     item.in_waranty=in_waranty
-    #     item.save()
-    #     components_replaced_popup.append(item.pk)
-    #     components_replaced_popup_name.append(replaced_name)
-    #     context3 = {
-    #         'components_replaced_popup_name': components_replaced_popup_name,
-    #     }
-    #     context.update(context3)
-    #
-    # if request.method == 'POST' and 'components_replaced_popup_iw' in request.POST and 'components_replaced_popup' not in request.POST:
-    #     replaced_name=request.POST.get('components_replaced_popup_iw')
-    #     in_waranty=True
-    #     item = Component_Replaced()
-    #     item.user_id=SiteUser.objects.get(id=request.user.pk)
-    #     #item.product_id=
-    #     item.replaced_name=replaced_name
-    #     item.in_waranty=in_waranty
-    #     item.save()
-    #     components_replaced_popup.append(item.pk)
-    #     components_replaced_popup_iw_name.append(replaced_name)
-    #     context2={
-    #         'components_replaced_popup_iw': components_replaced_popup_iw_name,
-    #     }
-    #     context.update(context2)
-    #
-
-
 
     context = {
         'repair_id': id,
@@ -1560,7 +1523,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
             pass
     elif msg_id == '2':
         rep_id = Repairing_after_sales_service.objects.get(id=id)
-        message = 'Dear '+name+',Thank you for selecting HSCo. The Estimate for Your' \
+        message = 'Dear '+name+', The Estimate for Your' \
                   ' Repairing No '+str(repair_id)+' is  '+str(rep_id.total_cost)+'/- For any further details please contact our ' \
                   'customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(estimate_informed_sms_count=F("estimate_informed_sms_count") + 1)
