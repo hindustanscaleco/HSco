@@ -834,7 +834,7 @@ def add_product_details(request,id):
                                                   Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
             if Employee_Analysis_month.objects.get(user_id=purchase.user_id,
                                                    entry_date__month=datetime.now().month,
-                                                   year=datetime.now().year).total_dispatch_done == None:
+                                                   year=datetime.now().year).total_sales_done == None:
                 Employee_Analysis_month.objects.filter(user_id=purchase.user_id,
                                                        entry_date__month=datetime.now().month,
                                                        year=datetime.now().year).update(
