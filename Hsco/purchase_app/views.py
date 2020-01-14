@@ -901,9 +901,9 @@ def add_product_details(request,id):
 
             request.session['product_saved'] = True
         if is_last_product_yes == 'yes':
-            return redirect('/update_dispatch_details/'+str(purchase_id))
+            return redirect('/update_customer_details/'+str(purchase_id))
         elif is_last_product_yes == 'no':
-            return redirect('/dispatch_product/'+str(purchase_id))
+            return redirect('/add_product_details/'+str(purchase_id))
 
 
     context = {
