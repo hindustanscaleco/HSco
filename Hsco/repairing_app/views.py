@@ -598,7 +598,8 @@ def update_repairing_details(request,id):
 
 
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage4
-        if current_stage_in_db == 'Estimate is confirmed but not repaired' and (repaired_by != None or repaired_by!=""):
+        # if current_stage_in_db == 'Estimate is confirmed but not repaired' and (repaired_by != None or repaired_by!=""):
+        if (repaired_by != None or repaired_by!=""):
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Repaired but not collected')
             item2.stage_update_timedate = timezone.now()
@@ -667,7 +668,7 @@ def update_repairing_details(request,id):
                                   repair_id.repairing_no) + ' has been ' \
                           'Successfully Collected. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love ' \
                           'to hear your feedback to help us improve our customer experience,just click on the link below:\n ' \
-                                                  ' http://139.59.76.87/feedback_repairing/'+str(request.user.pk) + '/' + str(repair_id.crm_no.pk) + '/' + str(repair_id.id)+'\n If you ' \
+                                                  ' http://139.59.76.87/feedback_repairing/'+str(request.user.pk)+'/'+str(repair_id.crm_no.pk)+'/'+str(repair_id.id)+'\n If you ' \
                           'feel that your complaint has not been resolved please contact our customer service team on 7045922251'
 
                 url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
