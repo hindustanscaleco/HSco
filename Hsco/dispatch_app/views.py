@@ -231,53 +231,54 @@ def dispatch_product(request,id):
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save()
+        try:
+            user_name = SiteUser.objects.get(profile_name=dispatch.dispatch_by)
+            if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
+                                                     Q(user_id=user_name.id)).count() > 0:
+                Employee_Analysis_date.objects.filter(user_id=user_name.id,
+                                                      entry_date=datetime.now().date(),
+                                                      year=datetime.now().year).update(
+                    total_dispatch_done_today=F("total_dispatch_done_today") + value_of_goods)
+                # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
-        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
-                                                 Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            Employee_Analysis_date.objects.filter(user_id=dispatch.user_id,
-                                                  entry_date=datetime.now().date(),
-                                                  year=datetime.now().year).update(
-                total_dispatch_done_today=F("total_dispatch_done_today") + value_of_goods)
-            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+                # ead.save(update_fields=['total_sales_done_today'])
 
-            # ead.save(update_fields=['total_sales_done_today'])
+            else:
+                ead = Employee_Analysis_date()
+                ead.user_id = user_name
+                ead.total_dispatch_done_today = value_of_goods
+                ead.manager_id = user_name.group
 
-        else:
-            ead = Employee_Analysis_date()
-            ead.user_id = SiteUser.objects.get(id=request.user.pk)
-            ead.total_dispatch_done_today = value_of_goods
-            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                ead.month = datetime.now().month
+                ead.year = datetime.now().year
+                ead.save()
 
-            ead.month = datetime.now().month
-            ead.year = datetime.now().year
-            ead.save()
-
-
-        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
-                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            if Employee_Analysis_month.objects.get(user_id=dispatch.user_id,
-                                                   entry_date__month=datetime.now().month,
-                                                   year=datetime.now().year).total_dispatch_done == None:
-                Employee_Analysis_month.objects.filter(user_id=dispatch.user_id,
+            if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                      Q(user_id=user_name.id)).count() > 0:
+                if Employee_Analysis_month.objects.get(user_id=user_name.id,
+                                                       entry_date__month=datetime.now().month,
+                                                       year=datetime.now().year).total_dispatch_done == None:
+                    Employee_Analysis_month.objects.filter(user_id=user_name.id,
+                                                           entry_date__month=datetime.now().month,
+                                                           year=datetime.now().year).update(
+                        total_dispatch_done=0)
+                Employee_Analysis_month.objects.filter(user_id=user_name.id,
                                                        entry_date__month=datetime.now().month,
                                                        year=datetime.now().year).update(
-                    total_dispatch_done=0)
-            Employee_Analysis_month.objects.filter(user_id=dispatch.user_id,
-                                                   entry_date__month=datetime.now().month,
-                                                   year=datetime.now().year).update(
-                total_dispatch_done=F("total_dispatch_done") + value_of_goods)
+                    total_dispatch_done=F("total_dispatch_done") + value_of_goods)
 
 
-        else:
-            ead = Employee_Analysis_month()
-            ead.user_id = SiteUser.objects.get(id=request.user.pk)
-            ead.total_dispatch_done = value_of_goods
-            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            else:
+                ead = Employee_Analysis_month()
+                ead.user_id = user_name
+                ead.total_dispatch_done = value_of_goods
+                ead.manager_id = user_name.group
 
-            ead.month = datetime.now().month
-            ead.year = datetime.now().year
-            ead.save()
-
+                ead.month = datetime.now().month
+                ead.year = datetime.now().year
+                ead.save()
+        except:
+            pass
 
 
         if 'purchase_id' in request.session:
@@ -667,6 +668,7 @@ def update_dispatch_details(request,update_id):
             pass
 
         item = Dispatch.objects.get(id=update_id)
+
         if company_name != '':
             item.second_company_name = company_name  # new2
 
@@ -705,7 +707,6 @@ def update_dispatch_details(request,update_id):
             item.save(update_fields=['dispatch_done_timedate'])
             item.save(update_fields=['date_of_dispatch'])
             item.save(update_fields=['dispatch_by', ]),
-
             if dispatch_item.dispatch_time_calculated == False and dispatch_item.dispatch_start_timedate != None and dispatch_item.dispatch_done_timedate != None:
                 if dispatch_item.date_of_dispatch != None:
                     user_name = SiteUser.objects.get(profile_name=dispatch_item.dispatch_by)
@@ -806,14 +807,17 @@ def update_dispatch_details(request,update_id):
 
         if (current_stage_in_db == 'dispatch q') and (dispatch_by != '' and dispatch_by != None):
             Dispatch.objects.filter(id=update_id).update(current_stage='dispatch but lr not updated')
-            dispatch_by_id=SiteUser.objects.get(name=dispatch_by).id
 
             value_of_goods=Product_Details_Dispatch.objects.filter(dispatch_id=update_id).aggregate(Sum('value_of_goods'))
 
             total_amt=value_of_goods['value_of_goods__sum']
 
+
+            dispatch_by_id = SiteUser.objects.get(profile_name=dispatch_by).id
+
             if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
                                                      Q(user_id=dispatch_by_id)).count() > 0:
+
                 Employee_Analysis_date.objects.filter(user_id=dispatch_by_id, entry_date=datetime.now().date(),
                                                       year=datetime.now().year).update(
                     total_dispatch_done_today=F("total_dispatch_done_today") + total_amt)
