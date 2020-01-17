@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from customer_app.models import Customer_Details
 from django.utils import timezone
 from user_app.models import SiteUser
+from django.contrib.auth.decorators import login_required
 
 from customer_app.models import Customer_Details
 
@@ -24,6 +25,8 @@ from django.db.models import Q
 from datetime import date,datetime, timedelta
 from .serializers import CustomerSerializer
 
+
+@login_required(login_url='/')
 def add_repairing_details(request):
     cust_sugg=Customer_Details.objects.all()
     prev_rep_sugg=Repairing_after_sales_service.objects.all()
@@ -188,6 +191,8 @@ def add_repairing_details(request):
 
     return render(request,'forms/rep_mod_form.html',context)
 
+
+@login_required(login_url='/')
 def repair_product(request,id):
     # repair_id = Repairing_after_sales_service.objects.latest('id').id + 1
     type_of_purchase_list =type_purchase.objects.all() #1
@@ -458,6 +463,8 @@ def repair_product(request,id):
     }
     return render(request,'dashboardnew/repair_product.html',context)
 
+
+@login_required(login_url='/')
 def update_repairing_details(request,id):
     repair_id = Repairing_after_sales_service.objects.get(id=id)
     # customer_id = Repairing_after_sales_service.objects.get(id=id).crm_no
@@ -789,6 +796,8 @@ def update_repairing_details(request,id):
     }
     return render(request,'update_forms/update_rep_mod_form.html',context)
 
+
+@login_required(login_url='/')
 def repairing_module_home(request):
 
     if request.method == 'POST':
@@ -979,6 +988,8 @@ def repairing_module_home(request):
 
         return render(request, 'dashboardnew/repairing_module_home.html', context)
 
+
+@login_required(login_url='/')
 def manager_repairing_module_home(request):
     repair_employee_list = SiteUser.objects.all()
     context={
@@ -986,6 +997,8 @@ def manager_repairing_module_home(request):
     }
     return render(request,'dashboardnew/manager_repairing_module_home.html',context)
 
+
+@login_required(login_url='/')
 def repairing_analytics(request):
     mon = datetime.now().month
     this_month = Employee_Analysis_month.objects.all().values('entry_date').annotate(data_sum=Sum('total_reparing_done'))
@@ -1021,6 +1034,8 @@ def repairing_analytics(request):
     }
     return render(request,'analytics/repairing_analytics.html',context)
 
+
+@login_required(login_url='/')
 def repairing_report_module(request):
     if request.method == 'POST' or None:
         selected_list = request.POST.getlist('checks[]')
@@ -1038,6 +1053,8 @@ def repairing_report_module(request):
         return redirect('/final_repairing_report_module/')
     return render(request,'report/report_rep_mod_form.html',)
 
+
+@login_required(login_url='/')
 def final_repairing_report_module(request):
     repair_start_date = str(request.session.get('repair_start_date'))
     repair_end_date = str(request.session.get('repair_end_date'))
@@ -1095,6 +1112,8 @@ def final_repairing_report_module(request):
     }
     return render(request,'report/final_report_rep_mod_form.html',context)
 
+
+@login_required(login_url='/')
 def feedback_repairing(request,user_id,customer_id,repairing_id):
     feedback_form = Repairing_Feedback_Form(request.POST or None, request.FILES or None)
     if Repairing_after_sales_service.objects.get(id=repairing_id).feedback_given:
@@ -1153,6 +1172,8 @@ def feedback_repairing(request,user_id,customer_id,repairing_id):
         }
         return render(request,'feedback/feedback_repairing.html',context)
 
+
+@login_required(login_url='/')
 def edit_product(request,id):
     product_id = Repairing_Product.objects.get(id=id)
     repairing_id = Repairing_Product.objects.get(id=id).repairing_id
@@ -1258,6 +1279,8 @@ def edit_product(request,id):
 
     return render(request,'edit_product/edit_product_repair.html',context)
 
+
+@login_required(login_url='/')
 def repairing_employee_graph(request,user_id):
     # user_id=user_id
     currentMonth = datetime.now().month
@@ -1379,6 +1402,8 @@ def repairing_employee_graph(request,user_id):
         }
         return render(request,"graphs/repairing_employee_graph.html",context)
 
+
+@login_required(login_url='/')
 def load_reparing_stages_list(request,):
 
     selected_stage = request.GET.get('selected_stage')
@@ -1428,6 +1453,8 @@ def load_reparing_stages_list(request,):
     context.update(context)
     return render(request, 'AJAX/load_reparing_stage.html', context)
 
+
+@login_required(login_url='/')
 def load_reparing_manager(request):
     selected = request.GET.get('loc_id')
     current_month = datetime.now().month
@@ -1471,6 +1498,8 @@ def load_reparing_manager(request):
 
         return render(request, 'AJAX/load_reparing_manager.html', context)
 
+
+@login_required(login_url='/')
 def load_customer(request):
     cust_id = request.GET.get('item_id')
 
@@ -1484,6 +1513,8 @@ def load_customer(request):
 
     return render(request, 'AJAX/load_customer.html', context)
 
+
+@login_required(login_url='/')
 def load_prev_rep(request):
     rep_id = request.GET.get('item_id')
 
@@ -1496,6 +1527,8 @@ def load_prev_rep(request):
 
     return render(request, 'AJAX/load_prev_rep.html', context)
 from django.http import JsonResponse
+
+@login_required(login_url='/')
 def send_sms(request,name,phone,email,repair_id,item_id):
     msg_id = None
     msg_id =item_id
@@ -1582,6 +1615,8 @@ def send_sms(request,name,phone,email,repair_id,item_id):
     return JsonResponse(data)
 
 #
+#
+# @login_required(login_url='/')
 # def add_component_replaced(request,component_id):
 #     component_replaced_id = Repairing_Product.objects.get(id=component_id)
 #     if request.method == 'POST':
@@ -1597,6 +1632,8 @@ def send_sms(request,name,phone,email,repair_id,item_id):
 #     return render(request,'dashboardnew/repair_product.html',context)
 
 
+
+@login_required(login_url='/')
 def repairing_form(request,id):
     data=Repairing_after_sales_service.objects.get(id=id)
     product_list=Repairing_Product.objects.filter(repairing_id=id)
@@ -1607,5 +1644,7 @@ def repairing_form(request,id):
     return render(request,'repairing_format/reparingform.html',context)
 
 #
+#
+# @login_required(login_url='/')
 # def repairing_form_back(request):
 #     return render(request,'repairing_form/reparingformback.html')

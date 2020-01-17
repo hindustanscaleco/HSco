@@ -11,6 +11,8 @@ from ess_app.models import Employee_Leave
 from django.db.models import Q, F, Min
 from django.db.models import Sum
 from ess_app.models import Employee_Analysis_date
+from django.contrib.auth.decorators import login_required
+
 
 from customer_app.models import type_purchase,main_model,sub_model,sub_sub_model
 from .models import  Purchase_Details, Feedback, Product_Details
@@ -23,6 +25,7 @@ import json
 from django.db.models.functions import TruncMonth
 from django.db.models import Count
 
+@login_required(login_url='/')
 def add_purchase_details(request):
     if 'purchase_id' in request.session:
         if request.session.get('product_saved'):
@@ -304,6 +307,7 @@ def add_purchase_details(request):
     return render(request,'forms/cust_mod_form.html',context)
 
 
+@login_required(login_url='/')
 def view_customer_details(request):
     date_today= datetime.now().strftime('%Y-%m-%d')
     message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
@@ -431,6 +435,7 @@ def view_customer_details(request):
         return render(request,'dashboardnew/cm.html',context )
 
 
+@login_required(login_url='/')
 def update_customer_details(request,id):
     purchase_id_id = Purchase_Details.objects.get(id=id)
     customer_id = Purchase_Details.objects.get(id=id).crm_no
@@ -643,6 +648,7 @@ def update_customer_details(request,id):
     return render(request,'update_forms/update_cust_mod_form.html',context)
 
 
+@login_required(login_url='/')
 def add_product_details(request,id):
     purchase = Purchase_Details.objects.get(id=id)
     purchase_id = purchase.id
@@ -914,6 +920,7 @@ def add_product_details(request,id):
     return render(request,'dashboardnew/add_product.html',context)
 
 
+@login_required(login_url='/')
 def report(request):
     if request.method =='POST':
         selected_list = request.POST.getlist('checks[]')
@@ -934,6 +941,7 @@ def report(request):
     return render(request,"report/report_cust_mod_form.html",)
 
 
+@login_required(login_url='/')
 def final_report(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
@@ -1018,6 +1026,7 @@ def final_report(request):
     return render(request,"dashboardnew/final_report.html",context)
 
 
+@login_required(login_url='/')
 def manager_report(request) :
     employee_list = SiteUser.objects.all()
     context={
@@ -1025,9 +1034,11 @@ def manager_report(request) :
     }
     return render(request, 'dashboardnew/manager_report.html',context)
 
+@login_required(login_url='/')
 def feedbacka(request):
     return render(request, 'feedback/feedbacka.html')
 
+@login_required(login_url='/')
 def purchase_analytics(request):
     mon = datetime.now().month
     this_month = Employee_Analysis_month.objects.all().values('entry_date').annotate(data_sum=Sum('total_sales_done'))
@@ -1063,6 +1074,7 @@ def purchase_analytics(request):
     print(value_low)
     return render(request, 'analytics/purchase_analytics_new.html',context)
 
+@login_required(login_url='/')
 def customer_employee_sales_graph(request,user_id):
     #x=Employee_Analysis_date.objects.annotate(date=TruncMonth('entry_timedate')).values('date').annotate(c=Count('id')).values('date', 'c')
     #print(x)
@@ -1134,6 +1146,7 @@ def customer_employee_sales_graph(request,user_id):
         }
         return render(request,"graphs/sales_graph.html",context)
 
+@login_required(login_url='/')
 def feedback_purchase(request,user_id,customer_id,purchase_id):
     feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
     if Purchase_Details.objects.get(id=purchase_id).feedback_form_filled:
@@ -1195,6 +1208,7 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
         }
         return render(request,"feedback/feedback_customer.html",context)
 
+@login_required(login_url='/')
 def edit_product_customer(request,product_id_rec):
     purchase = Product_Details.objects.get(id=product_id_rec)
     purchase_id = Purchase_Details.objects.get(id=purchase.purchase_id)
@@ -1317,6 +1331,7 @@ def edit_product_customer(request,product_id_rec):
 
     return render(request,'edit_product/edit_product_customer.html',context)
 
+@login_required(login_url='/')
 def load_users(request):
     current_month = datetime.now().month
     current_year = datetime.now().year
@@ -1346,6 +1361,7 @@ def load_users(request):
 
         return render(request, 'AJAX/load_users.html', context)
 
+@login_required(login_url='/')
 def check_admin_roles(request):
     if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
         return True

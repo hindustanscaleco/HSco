@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from .models import Stock_System
 from .forms import StockRegisterForm
+from django.contrib.auth.decorators import login_required
 
 
 # def stock_system_form(request):

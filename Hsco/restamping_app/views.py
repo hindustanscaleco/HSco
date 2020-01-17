@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.contrib.auth.decorators import login_required
 
 from django.db import connection
 from django.db.models import Min, Sum, Q, F, Count, Avg
@@ -20,6 +21,8 @@ import requests
 import json
 from ess_app.models import Employee_Analysis_month
 
+
+@login_required(login_url='/')
 def restamping_manager(request):
 
     if request.method == 'POST' and 'deleted' not in request.POST:
@@ -244,6 +247,8 @@ def restamping_manager(request):
         return render(request, "manager/restamping_manager.html", context)
 
 
+
+@login_required(login_url='/')
 def restamping_after_sales_service(request):
     # form = Customer_Details_Form(request.POST or None, request.FILES or None)
     cust_sugg=Customer_Details.objects.all()
@@ -310,6 +315,8 @@ def restamping_after_sales_service(request):
     }
     return render(request, 'forms/restamping_form.html',context)
 
+
+@login_required(login_url='/')
 def restamping_product(request,id):
     restamping_id = Restamping_after_sales_service.objects.latest('id').id + 1
     type_of_purchase_list =type_purchase.objects.all() #1
@@ -501,6 +508,8 @@ def restamping_product(request,id):
 
 
 
+
+@login_required(login_url='/')
 def restamping_analytics(request):
     mon = datetime.now().month
     this_month = Employee_Analysis_month.objects.all().values('entry_date').annotate(
@@ -542,6 +551,8 @@ def restamping_analytics(request):
     # print(value_low)
     return render(request,'analytics/restamping_analytics.html',context)
 
+
+@login_required(login_url='/')
 def update_restamping_details(request,id):
     personal_id = Restamping_after_sales_service.objects.get(id=id)
     restamp_product_list = Restamping_Product.objects.filter(restamping_id=id)
@@ -687,6 +698,8 @@ def update_restamping_details(request,id):
 
     return render(request,'update_forms/update_restamping_form.html',context)
 
+
+@login_required(login_url='/')
 def report_restamping(request):
     if request.method == 'POST' or None:
         selected_list = request.POST.getlist('checks[]')
@@ -706,6 +719,8 @@ def report_restamping(request):
         return redirect('/final_report_restamping/')
     return render(request, "report/report_restamping_form.html",)
 
+
+@login_required(login_url='/')
 def final_report_restamping(request):
     restamp_start_date = str(request.session.get('repair_start_date'))
     restamp_end_date = str(request.session.get('repair_end_date'))
@@ -782,6 +797,8 @@ def final_report_restamping(request):
     }
     return render(request,"report/final_report_restamp_mod_form.html",context)
 
+
+@login_required(login_url='/')
 def restamping_employee_graph(request,user_id):
     from django.db.models import Sum
 
@@ -874,6 +891,8 @@ def restamping_employee_graph(request,user_id):
     return render(request, "graphs/restamping_employee_graph.html", context)
 
 
+
+@login_required(login_url='/')
 def update_restamping_product(request,id):
     restamping_product = Restamping_Product.objects.get(id=id)
     restamping_id = Restamping_Product.objects.get(id=id).restamping_id
@@ -958,6 +977,8 @@ def update_restamping_product(request,id):
 
 
 
+
+@login_required(login_url='/')
 def load_restamping_manager(request):
     selected = request.GET.get('loc_id')
     current_month = datetime.now().month
@@ -992,6 +1013,8 @@ def load_restamping_manager(request):
 
         return render(request, 'AJAX/load_restamping_manager.html', context)
 
+
+@login_required(login_url='/')
 def load_restamping_stages_list(request,):
 
     selected_stage = request.GET.get('selected_stage')

@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from user_app.models import SiteUser
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
+
 from Hsco import settings
 import requests
 import json

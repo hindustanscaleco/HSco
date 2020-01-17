@@ -3,6 +3,7 @@ from django.db.models import Sum, Min, Q, F, Count
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from _datetime import datetime
+from django.contrib.auth.decorators import login_required
 
 from customer_app.models import Customer_Details
 from customer_app.models import type_purchase
@@ -24,6 +25,7 @@ import requests
 import json
 
 
+@login_required(login_url='/')
 def onsite_views(request):
 
     if request.method=='POST' and 'deleted' not in request.POST:
@@ -209,6 +211,7 @@ def onsite_views(request):
         return render(request, "manager/onsite_reparing.html", context)
 
 
+@login_required(login_url='/')
 def add_onsite_aftersales_service(request):
     cust_sugg = Customer_Details.objects.all()
 
@@ -356,6 +359,7 @@ def add_onsite_aftersales_service(request):
 
     return render(request, 'forms/onsite_rep_form.html',context)
 
+@login_required(login_url='/')
 def add_onsite_product(request,id):
     # onsite_id = Onsite_aftersales_service.objects.latest('id').id + 1
     # crm_id = Onsite_aftersales_service.objects.get(id=id).crm_no
@@ -540,6 +544,7 @@ def add_onsite_product(request,id):
     }
     return render(request,"forms/onsite_product.html",context)
 
+@login_required(login_url='/')
 def update_onsite_product(request,id):
     onsite_id = Onsite_Products.objects.get(id=id)
     onsite = Onsite_aftersales_service.objects.get(id=onsite_id.onsite_repairing_id.pk).pk
@@ -624,6 +629,7 @@ def update_onsite_product(request,id):
     }
     return render(request,"edit_product/edit_onsite_product.html",context)
 
+@login_required(login_url='/')
 def update_onsite_details(request,id):
     onsite_id = Onsite_aftersales_service.objects.get(id=id)
     onsite_product_list = Onsite_Products.objects.filter(onsite_repairing_id=id)
@@ -840,6 +846,7 @@ def update_onsite_details(request,id):
 
     return render(request,'update_forms/update_onsite_rep_form.html',context)
 
+@login_required(login_url='/')
 def report_onsite(request):
     if request.method == 'POST' or None:
         selected_list = request.POST.getlist('checks[]')
@@ -859,6 +866,7 @@ def report_onsite(request):
         return redirect('/final_report_onsite/')
     return render(request,"report/report_onsite_rep_form.html",)
 
+@login_required(login_url='/')
 def final_report_onsite(request):
     repair_start_date = str(request.session.get('repair_start_date'))
     repair_end_date = str(request.session.get('repair_end_date'))
@@ -935,6 +943,7 @@ def final_report_onsite(request):
     }
     return render(request,'report/final_onsite_report.html',context)
 
+@login_required(login_url='/')
 def feedback_onrepairing(request,user_id,customer_id,onsiterepairing_id):
     feedback_form = Onsite_Repairing_Feedback_Form(request.POST or None, request.FILES or None)
     if Onsite_aftersales_service.objects.get(id=onsiterepairing_id).feedback_given:
@@ -1006,6 +1015,7 @@ def feedback_onrepairing(request,user_id,customer_id,onsiterepairing_id):
         return render(request,"feedback/feedback_onrepairing.html",context)
 
 
+@login_required(login_url='/')
 def load_onsite_reparing_stages_list(request,):
     selected = request.GET.get('loc_id')
     if check_admin_roles(request):  # For ADMIN
@@ -1026,6 +1036,7 @@ def load_onsite_reparing_stages_list(request,):
 
     return render(request, 'AJAX/load_onsite_reparing_stage.html', context)
 
+@login_required(login_url='/')
 def onsite_analytics(request,):
     mon = datetime.now().month
     this_month = Employee_Analysis_month.objects.all().values('entry_date').annotate(
@@ -1063,6 +1074,7 @@ def onsite_analytics(request,):
     }
     return render(request, 'analytics/onsite_analytics.html',context)
 
+@login_required(login_url='/')
 def load_onsite_reparing_manager(request,):
     selected = request.GET.get('loc_id')
     current_month = datetime.now().month
@@ -1098,6 +1110,7 @@ def load_onsite_reparing_manager(request,):
 
         return render(request, 'AJAX/load_onsite_reparing_manager.html', context)
 
+@login_required(login_url='/')
 def onsitevisit_app_graph(request,user_id):
     from django.db.models import Sum
     # user_id = request.user.pk
