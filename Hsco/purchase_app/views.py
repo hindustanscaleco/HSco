@@ -496,7 +496,7 @@ def update_customer_details(request,id):
         # value_of_goods = request.POST.get('value_of_goods')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
-        value_of_goods = request.POST.get('value_of_goods')
+        # value_of_goods = request.POST.get('value_of_goods')
         # feedback_form_filled = request.POST.get('feedback_form_filled')
 
 
@@ -533,7 +533,7 @@ def update_customer_details(request,id):
         item2.po_number = po_number
         item2.channel_of_sales = channel_of_sales
         item2.industry = industry
-        item2.value_of_goods = value_of_goods
+        # item2.value_of_goods = value_of_goods
 
         if item2.channel_of_dispatch =='Franchisee Store' and channel_of_dispatch != 'Franchisee Store':
             dispatch = Dispatch()
@@ -620,7 +620,7 @@ def update_customer_details(request,id):
         # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         # item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.save(update_fields=['date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
-                                  'channel_of_sales','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email','value_of_goods'
+                                  'channel_of_sales','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email',
                                   ])  #new6
 
 
