@@ -21,7 +21,6 @@ from django.contrib.auth.hashers import make_password
 # Application definition
 
 INSTALLED_APPS = [
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +38,7 @@ INSTALLED_APPS = [
     'notif_dec_app',
     'purchase_app',
     'stock_system',
+    'session_security',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'session_security.middleware.SessionSecurityMiddleware'
 ]
 AUTH_USER_MODEL = 'user_app.SiteUser'
 ROOT_URLCONF = 'Hsco.urls'
@@ -69,6 +70,9 @@ TEMPLATES = [
     },
 ]
 
+TEMPLATE_CONTEXT_PROCESSORS = [
+    'django.core.context_processors.request'
+]
 WSGI_APPLICATION = 'Hsco.wsgi.application'
 
 
@@ -149,6 +153,9 @@ EMAIL_HOST_PASSWORD = 'Hsco123456789@'
 # EMAIL_HOST_PASSWORD = 'Vikas@7786'
 # EMAIL_HOST_PASSWORD = 'leosagar10'
 
+SESSION_SECURITY_EXPIRE_AFTER=3600
+SESSION_SECURITY_WARN_AFTER = 3500
+SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
 user = 'HSCo'
 #user_test = 'vikka'

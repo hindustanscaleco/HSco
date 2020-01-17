@@ -636,8 +636,6 @@ def update_dispatch_details(request,update_id):
         notes = request.POST.get('notes')
 
         try:
-            print("purchase_id")
-
             purchase_id=Purchase_Details.objects.get(dispatch_id_assigned=update_id)
 
             purchase_id.second_person = customer_name
