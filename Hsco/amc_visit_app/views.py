@@ -1,6 +1,8 @@
 from django.db.models import Q, F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
 
 from customer_app.models import Customer_Details,type_purchase
 
@@ -18,6 +20,7 @@ import json
 import datetime
 
 
+@login_required(login_url='/')
 def add_amc_after_sales(request):
     cust_sugg = Customer_Details.objects.all()
     type_purchase2 = type_purchase.objects.all()
@@ -200,6 +203,7 @@ def add_amc_after_sales(request):
     }
     return render(request,'forms/amc_form.html', context)
 
+@login_required(login_url='/')
 def report_amc(request):
     if request.method =='POST':
         selected_list = request.POST.getlist('checks[]')
@@ -214,6 +218,7 @@ def report_amc(request):
         return redirect('/final_report_amc/')
     return render(request, "report/report_amc_form.html",)
 
+@login_required(login_url='/')
 def final_report_amc(request):
     start_date =    request.session.get('start_date')
     end_date =      request.session.get('end_date')
@@ -252,6 +257,7 @@ def final_report_amc(request):
     }
     return render(request,"report/amc_final_report.html",context)
 
+@login_required(login_url='/')
 def amc_views(request):
     if request.method=='POST' :
         if'submit1' in request.POST:
@@ -395,9 +401,11 @@ def amc_views(request):
         }
         return render(request, "manager/amc_view.html",context )
 
+@login_required(login_url='/')
 def amc_logs(request):
     return render(request,"logs/amc_logs.html")
 
+@login_required(login_url='/')
 def update_amc_form(request,update_id):
     amc_list=Amc_After_Sales.objects.get(id=update_id)
     customer_id = Amc_After_Sales.objects.get(id=update_id).crm_no
@@ -531,6 +539,7 @@ def update_amc_form(request,update_id):
 
     }
     return render(request,"update_forms/updated_amc_form.html",context)
+
 
 def feedback_amc(request,user_id,customer_id,amc_id):
     feedback_form = AMC_Feedback_Form(request.POST or None)

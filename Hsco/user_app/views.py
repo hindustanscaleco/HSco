@@ -6,10 +6,13 @@ from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 from django.views.generic import FormView
 from Hsco import settings
+from django.contrib.auth.decorators import login_required
+
 from .forms import SiteUser_Form, LoginForm, Password_reset_Form
 from .models import SiteUser
 import secrets
 import string
+
 
 class LoginView(FormView):
 
@@ -92,6 +95,7 @@ def logout_page(request):
         pass
     return redirect('/')
 
+
 def admin_list(request):
 
     admin_list = SiteUser.objects.filter(role='Admin',is_deleted=False)
@@ -152,6 +156,7 @@ def create_admin(request):
     }
     return render(request,"auth/create_admin.html",context)
 
+
 def manager_list(request):
     if request.user.role=='Super Admin':
         manager_list = SiteUser.objects.filter(role='Manager',group__icontains=request.user.name,is_deleted=False)
@@ -161,6 +166,7 @@ def manager_list(request):
         'manager_list':manager_list,
     }
     return render(request,"auth/manager_list.html",context)
+
 
 def create_manager(request):
     form = SiteUser_Form(request.POST or None, request.FILES or None)
@@ -236,6 +242,7 @@ def create_manager(request):
     }
     return render(request, "auth/create_manager.html", context)
 
+
 def employee_list(request):
     if request.user.role == 'Super Admin':
         employee_list = SiteUser.objects.filter(role='Employee',group__icontains=request.user.name,is_deleted=False)
@@ -247,6 +254,7 @@ def employee_list(request):
         'employee_list': employee_list,
     }
     return render(request,"auth/employee_list.html",context)
+
 
 def create_employee(request):
     form = SiteUser_Form(request.POST or None, request.FILES or None)
@@ -333,6 +341,8 @@ def create_employee(request):
     }
     return render(request,"auth/create_employee.html",context)
 
+
+
 def assign_man_to_admin(request):
     admin_list = SiteUser.objects.filter(role='Admin',is_deleted=False)
     manager_list = SiteUser.objects.filter(role='Manager',is_deleted=False)
@@ -352,6 +362,7 @@ def assign_man_to_admin(request):
         'manager_list': manager_list,
     }
     return render(request,"auth/assign_man_to_admin.html",context)
+
 
 def assign_emp_to_manager(request):
     employee_list = SiteUser.objects.filter(role='Employee',is_deleted=False)
@@ -375,6 +386,8 @@ def assign_emp_to_manager(request):
         'manager_list': manager_list,
     }
     return render(request,"auth/assign_emp_to_manager.html",context)
+
+
 
 def assign_module_to_emp(request):
 
@@ -488,6 +501,7 @@ def update_admin(request,id):
     }
     return render(request,"update_forms/update_admin.html",context)
 
+
 def update_manager(request,id):
     manager_id = SiteUser.objects.get(id=id)
     admin = SiteUser.objects.get(id=id).admin
@@ -590,6 +604,7 @@ def update_employee(request,id):
     }
     return render(request,"update_forms/update_employee.html",context)
 
+
 def forgotpassword(request):
     form = Password_reset_Form(request.POST or None)
 
@@ -612,6 +627,7 @@ def forgotpassword(request):
         'form': form
     }
     return render(request, 'auth/forgot_password.html', context)
+
 
 def load_modules(request):
     item_name=request.GET.get('item_name')
