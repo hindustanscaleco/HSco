@@ -18,7 +18,7 @@ class Purchase_Details(models.Model):   #cleaned
     second_person = models.CharField(max_length=80,null=True,blank=True)
     second_company_name = models.CharField(max_length=80,null=True,blank=True)
     company_email = models.CharField(max_length=80,null=True,blank=True)
-    company_address = models.CharField(max_length=120,null=True,blank=True)
+    company_address = models.CharField(max_length=250,null=True,blank=True)
     second_contact_no = models.CharField(max_length=80,null=True,blank=True)
     third_contact_no = models.CharField(max_length=80,null=True,blank=True)
     upload_op_file = models.FileField(upload_to='',null=True,blank=True)
