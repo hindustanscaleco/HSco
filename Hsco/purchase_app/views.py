@@ -439,7 +439,7 @@ def view_customer_details(request):
 def update_customer_details(request,id):
     purchase_id_id = Purchase_Details.objects.get(id=id)
     customer_id = Purchase_Details.objects.get(id=id).crm_no
-    customer_id = Customer_Details.objects.get(id=customer_id)
+    # customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
 
     if 'product_saved' in request.session:
