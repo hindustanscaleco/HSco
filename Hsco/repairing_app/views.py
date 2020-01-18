@@ -1113,7 +1113,7 @@ def final_repairing_report_module(request):
     return render(request,'report/final_report_rep_mod_form.html',context)
 
 
-@login_required(login_url='/')
+# @login_required(login_url='/')
 def feedback_repairing(request,user_id,customer_id,repairing_id):
     feedback_form = Repairing_Feedback_Form(request.POST or None, request.FILES or None)
     if Repairing_after_sales_service.objects.get(id=repairing_id).feedback_given:

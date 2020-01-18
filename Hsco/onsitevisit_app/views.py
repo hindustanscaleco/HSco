@@ -1110,7 +1110,7 @@ def load_onsite_reparing_manager(request,):
 
         return render(request, 'AJAX/load_onsite_reparing_manager.html', context)
 
-@login_required(login_url='/')
+# @login_required(login_url='/')
 def onsitevisit_app_graph(request,user_id):
     from django.db.models import Sum
     # user_id = request.user.pk

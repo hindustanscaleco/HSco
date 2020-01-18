@@ -1033,7 +1033,7 @@ def manager_report(request) :
     }
     return render(request, 'dashboardnew/manager_report.html',context)
 
-@login_required(login_url='/')
+# @login_required(login_url='/')
 def feedbacka(request):
     return render(request, 'feedback/feedbacka.html')
 
@@ -1073,7 +1073,7 @@ def purchase_analytics(request):
     print(value_low)
     return render(request, 'analytics/purchase_analytics_new.html',context)
 
-@login_required(login_url='/')
+# @login_required(login_url='/')
 def customer_employee_sales_graph(request,user_id):
     #x=Employee_Analysis_date.objects.annotate(date=TruncMonth('entry_timedate')).values('date').annotate(c=Count('id')).values('date', 'c')
     #print(x)
@@ -1145,7 +1145,7 @@ def customer_employee_sales_graph(request,user_id):
         }
         return render(request,"graphs/sales_graph.html",context)
 
-@login_required(login_url='/')
+# @login_required(login_url='/')
 def feedback_purchase(request,user_id,customer_id,purchase_id):
     feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
     if Purchase_Details.objects.get(id=purchase_id).feedback_form_filled:
