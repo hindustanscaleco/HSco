@@ -61,6 +61,8 @@ class Repairing_after_sales_service(models.Model):
     total_repairing_time  = models.FloatField(default=0.0)
     repairing_time_calculated = models.BooleanField(default=False)
 
+    ess_calculated = models.BooleanField(default=False)
+
     def __int__(self):
         return self.pk
 

@@ -1277,12 +1277,12 @@ def edit_product_customer(request,product_id_rec):
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
 
-        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+        Employee_Analysis_month.objects.filter(user_id=purchase_id.user_id,
                                                entry_date__month=purchase_id.entry_timedate.month,
                                                year=purchase_id.entry_timedate.year).update(
             total_sales_done=F("total_sales_done") + amount)
 
-        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+        Employee_Analysis_date.objects.filter(user_id=purchase_id.user_id,
                                               entry_date__month=purchase_id.entry_timedate.month,
                                               year=purchase_id.entry_timedate.year).update(
             total_sales_done_today=F("total_sales_done_today") + amount)
