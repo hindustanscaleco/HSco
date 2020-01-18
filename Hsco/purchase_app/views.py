@@ -222,7 +222,6 @@ def add_purchase_details(request):
 
             else:
                 dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
-
             dispatch.second_person = customer_name  # new1
             dispatch.second_contact_no = contact_no  # new2
             dispatch.second_company_name = company_name  # new2
@@ -775,7 +774,7 @@ def add_product_details(request,id):
 
                     print('Email sent!')
                 except:
-                    print('Something went wrong...')
+                    print('Something went wrong...Email not send!!!')
 
 
                 # send_mail('Feedback Form',
