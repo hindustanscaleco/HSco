@@ -606,7 +606,7 @@ def update_repairing_details(request,id):
 
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage4
         # if current_stage_in_db == 'Estimate is confirmed but not repaired' and (repaired_by != None or repaired_by!=""):
-        if (repaired_by != None or repaired_by!=""):
+        if (repaired_by != None and repaired_by!="" and repaired_by != 'None'):
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Repaired but not collected')
             item2.stage_update_timedate = timezone.now()
