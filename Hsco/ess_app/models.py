@@ -25,10 +25,10 @@ list_of_month=(
 class Defects_Warning(models.Model):
     user_id = models.ForeignKey(SiteUser,on_delete=models.CASCADE)
     # ess_id = models.ForeignKey(Ess, on_delete=models.CASCADE)
-    type = models.CharField(max_length=60) #value can be: Defect OR Warning
-    content = models.CharField(max_length=90,null=True,blank=True )
+    type = models.CharField(max_length=150) #value can be: Defect OR Warning
+    content = models.CharField(max_length=150,null=True,blank=True )
     entry_timedate = models.DateTimeField(default=timezone.now,)
-    given_by = models.CharField(max_length=90)
+    given_by = models.CharField(max_length=150)
     entry_date = models.DateField(default=datetime.date.today,)
 
 
@@ -43,7 +43,7 @@ class Employee_Leave(models.Model):
     reason=models.CharField(max_length=250,)
     is_approved =models.BooleanField(default=False,null=True, blank=True)     #YES Or NO
     in_process = models.BooleanField(default=True ,null=True, blank=True)      #Decide Later option for manager
-    leave_approved_by = models.CharField(max_length=60,null=True, blank=True)
+    leave_approved_by = models.CharField(max_length=150,null=True, blank=True)
     is_employee_of_month = models.BooleanField(default=False)
 
     entry_timedate = models.DateTimeField(default=timezone.now,)
