@@ -88,10 +88,10 @@ class Employee_Analysis_month(models.Model):
     month = models.CharField(max_length=20, null=True, blank=True,choices=list_of_month)    # extract month and year from date
     year = models.IntegerField(null=True, blank=True)    # extract month and year from date
     entry_date = models.DateField(default=datetime.date.today, )
-    start_rating_feedback_sales = models.FloatField(default=0.0, null=True, blank=True)
-    start_rating_feedback_reparing = models.FloatField(default=0.0, null=True, blank=True)
-    start_rating_feedback_amc = models.FloatField(default=0.0, null=True, blank=True)
-    start_rating_feedback_onsite_reparing = models.FloatField(default=0.0, null=True, blank=True)
+    start_rating_feedback_sales = models.DecimalField(default=0.0, null=True, blank=True, decimal_places=2, max_digits=18)
+    start_rating_feedback_reparing = models.DecimalField(default=0.0, null=True, blank=True, decimal_places=2, max_digits=18)
+    start_rating_feedback_amc = models.DecimalField(default=0.0, null=True, blank=True, decimal_places=2, max_digits=18)
+    start_rating_feedback_onsite_reparing = models.DecimalField(default=0.0, null=True, blank=True, decimal_places=2, max_digits=18)
 
     class Meta:
         unique_together = ('user_id','month','year')
