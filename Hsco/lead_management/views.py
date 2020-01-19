@@ -4,3 +4,4 @@ from django.shortcuts import render
 
 def lead_home (request):
     return render(request,'lead_management/lead_home.html',)
+
