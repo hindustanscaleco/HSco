@@ -447,7 +447,7 @@ Format : (company name)
   <input name="repaired_by" placeholder="Repaired By" class="form-control" id="myText22"  value="{{repair_id.repaired_by}}" list="rep_by">
    <datalist style="height:20px;" id="rep_by">
         {% for item in user_list %}
-      <option value="{{item.name}}">
+       <option value="{{item.profile_name}}">    </option>
     {% endfor %}
     </datalist>
      </div>

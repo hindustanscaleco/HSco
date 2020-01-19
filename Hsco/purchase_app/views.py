@@ -1033,7 +1033,7 @@ def manager_report(request) :
     }
     return render(request, 'dashboardnew/manager_report.html',context)
 
-@login_required(login_url='/')
+# @login_required(login_url='/')
 def feedbacka(request):
     return render(request, 'feedback/feedbacka.html')
 
@@ -1073,7 +1073,7 @@ def purchase_analytics(request):
     print(value_low)
     return render(request, 'analytics/purchase_analytics_new.html',context)
 
-@login_required(login_url='/')
+# @login_required(login_url='/')
 def customer_employee_sales_graph(request,user_id):
     #x=Employee_Analysis_date.objects.annotate(date=TruncMonth('entry_timedate')).values('date').annotate(c=Count('id')).values('date', 'c')
     #print(x)
@@ -1145,7 +1145,7 @@ def customer_employee_sales_graph(request,user_id):
         }
         return render(request,"graphs/sales_graph.html",context)
 
-@login_required(login_url='/')
+# @login_required(login_url='/')
 def feedback_purchase(request,user_id,customer_id,purchase_id):
     feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
     if Purchase_Details.objects.get(id=purchase_id).feedback_form_filled:
@@ -1277,12 +1277,12 @@ def edit_product_customer(request,product_id_rec):
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
 
-        Employee_Analysis_month.objects.filter(user_id=request.user.pk,
+        Employee_Analysis_month.objects.filter(user_id=purchase_id.user_id,
                                                entry_date__month=purchase_id.entry_timedate.month,
                                                year=purchase_id.entry_timedate.year).update(
             total_sales_done=F("total_sales_done") + amount)
 
-        Employee_Analysis_date.objects.filter(user_id=request.user.pk,
+        Employee_Analysis_date.objects.filter(user_id=purchase_id.user_id,
                                               entry_date__month=purchase_id.entry_timedate.month,
                                               year=purchase_id.entry_timedate.year).update(
             total_sales_done_today=F("total_sales_done_today") + amount)

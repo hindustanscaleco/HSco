@@ -575,7 +575,7 @@ function myFunction() {
                    <input name="taken_by" placeholder="Taken By" disabled class="form-control" id="myText22" required type="text" value="{{repair_id.taken_by}}">
 
       {% else %}
-      <select name="taken_by">
+      <select name="taken_by" class="form-control" disabled id="myText22">
   <option value="">Select</option>
   <option value="{{user.profile_name}}">{{user.profile_name}}</option>
 </select>

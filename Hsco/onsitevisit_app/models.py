@@ -50,7 +50,7 @@ class Onsite_aftersales_service(models.Model):
     feedback_link = models.URLField(max_length=200, null=True, blank=True)
     onsite_no = models.BigIntegerField(null=True,blank=True)
 
-
+    ess_calculated = models.BooleanField(default=False)
     def __int__(self):
         return self.id
 

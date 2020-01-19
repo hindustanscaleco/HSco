@@ -318,7 +318,7 @@ def restamping_after_sales_service(request):
 
 @login_required(login_url='/')
 def restamping_product(request,id):
-    restamping_id = Restamping_after_sales_service.objects.latest('id').id + 1
+    # restamping_id = Restamping_after_sales_service.objects.latest('id').id + 1
     type_of_purchase_list =type_purchase.objects.all() #1
 
     if request.method=='POST':
@@ -347,9 +347,9 @@ def restamping_product(request,id):
         # item.old_brand = old_brand
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item.restamping_id_id = restamping_id
+        item.restamping_id_id = id
 
-        if Restamping_after_sales_service.objects.filter(id=restamping_id).count() == 0 :
+        if Restamping_after_sales_service.objects.filter(id=id).count() == 0 :
             item2 = Restamping_after_sales_service()
 
             # if Customer_Details.objects.filter(customer_name=customer_name,
@@ -500,7 +500,7 @@ def restamping_product(request,id):
 
         return redirect('/update_restamping_details/'+str(id))
     context = {
-        'restamping_id': restamping_id,
+        'restamping_id': id,
         'type_purchase': type_of_purchase_list,  # 2
 
     }
@@ -925,13 +925,13 @@ def update_restamping_product(request,id):
 
         current_stage_in_db = Restamping_after_sales_service.objects.get(
             id=restamping_id).current_stage  # updatestage2
-        if (current_stage_in_db == '' or current_stage_in_db == None) and (sub_model != '' or sub_model != None):
+        if (current_stage_in_db == '' or current_stage_in_db == None) and (sub_model != '' and sub_model != None and sub_model != 'None'):
             Restamping_after_sales_service.objects.filter(id=restamping_id).update(
                 current_stage='Scales in Restamping Queue')
-        if (current_stage_in_db == 'Scales in Restamping Queue') and (new_sr_no != '' or new_sr_no != None):
+        if (current_stage_in_db == 'Scales in Restamping Queue') and (new_sr_no != '' and new_sr_no != None and new_sr_no != 'None'):
             Restamping_after_sales_service.objects.filter(id=restamping_id).update(
                 current_stage='Restamping is done but scale is not collected')
-        if (current_stage_in_db == 'Restamping is done but scale is not collected') and (new_sr_no != '' or new_sr_no != None):
+        if (current_stage_in_db == 'Restamping is done but scale is not collected') and (new_sr_no != '' and new_sr_no != None and new_sr_no != 'None'):
             Restamping_after_sales_service.objects.filter(id=restamping_id).update(
                 current_stage='Restamping is done but scale is not collected')
 
