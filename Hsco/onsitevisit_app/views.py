@@ -497,49 +497,51 @@ def add_onsite_product(request,id):
 
 
         if request.session.get('complaint_assigned_to') != None and request.session.get('complaint_assigned_to') != '':
+            new_onsite_id = Onsite_aftersales_service.objects.get(id=id)
+            if new_onsite_id.ess_calculated == False:
+                compliant_assign_user_id = SiteUser.objects.get(profile_name=request.session.get('complaint_assigned_to'))
 
-            compliant_assign_user_id = SiteUser.objects.get(profile_name=request.session.get('complaint_assigned_to'))
+                if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
+                                                         Q(user_id=compliant_assign_user_id)).count() > 0:
+                    Employee_Analysis_date.objects.filter(user_id=compliant_assign_user_id, entry_date=datetime.now().date(),
+                                                          year=datetime.now().year).update(
+                        total_reparing_done_onsite_today=F("total_reparing_done_onsite_today") + cost)
+                    # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
-            if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
-                                                     Q(user_id=compliant_assign_user_id)).count() > 0:
-                Employee_Analysis_date.objects.filter(user_id=compliant_assign_user_id, entry_date=datetime.now().date(),
-                                                      year=datetime.now().year).update(
-                    total_reparing_done_onsite_today=F("total_reparing_done_onsite_today") + cost)
-                # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+                    # ead.save(update_fields=['total_sales_done_today'])
 
-                # ead.save(update_fields=['total_sales_done_today'])
+                else:
+                    ead = Employee_Analysis_date()
+                    ead.user_id = compliant_assign_user_id
+                    ead.total_reparing_done_onsite_today = cost
+                    ead.manager_id = compliant_assign_user_id.group
 
-            else:
-                ead = Employee_Analysis_date()
-                ead.user_id = compliant_assign_user_id
-                ead.total_reparing_done_onsite_today = cost
-                ead.manager_id = compliant_assign_user_id.group
+                    ead.month = datetime.now().month
+                    ead.year = datetime.now().year
 
-                ead.month = datetime.now().month
-                ead.year = datetime.now().year
+                    ead.save()
 
-                ead.save()
+                if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                          Q(user_id=compliant_assign_user_id)).count() > 0:
+                    Employee_Analysis_month.objects.filter(user_id=compliant_assign_user_id, entry_date__month=datetime.now().month,
+                                                           year=datetime.now().year).update(
+                        total_reparing_done_onsite=F("total_reparing_done_onsite") + cost)
+                    # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
-            if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
-                                                      Q(user_id=compliant_assign_user_id)).count() > 0:
-                Employee_Analysis_month.objects.filter(user_id=compliant_assign_user_id, entry_date__month=datetime.now().month,
-                                                       year=datetime.now().year).update(
-                    total_reparing_done_onsite=F("total_reparing_done_onsite") + cost)
-                # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+                    # ead.save(update_fields=['total_sales_done_today'])
 
-                # ead.save(update_fields=['total_sales_done_today'])
+                else:
+                    ead = Employee_Analysis_month()
+                    ead.user_id = compliant_assign_user_id
+                    ead.total_reparing_done_onsite = cost
+                    ead.manager_id = compliant_assign_user_id.group
 
-            else:
-                ead = Employee_Analysis_month()
-                ead.user_id = compliant_assign_user_id
-                ead.total_reparing_done_onsite = cost
-                ead.manager_id = compliant_assign_user_id.group
+                    ead.month = datetime.now().month
+                    ead.year = datetime.now().year
+                    ead.save()
 
-                ead.month = datetime.now().month
-                ead.year = datetime.now().year
-                ead.save()
-
-
+                new_onsite_id.ess_calculated = True
+                new_onsite_id.save(update_fields=['ess_calculated', ]),
         # if (current_stage_in_db == 'Scales in Restamping Queue') and (new_sr_no != '' or new_sr_no != None):
         #     Onsite_aftersales_service.objects.filter(id=id).update(
         #         current_stage='Restamping is done but scale is not collected')
@@ -598,6 +600,7 @@ def update_onsite_product(request,id):
                                                       entry_date=onsite_id.entry_timedate,
                                                       year=onsite_id.entry_timedate.year).update(
                     total_reparing_done_onsite_today=F("total_reparing_done_onsite_today") + cost)
+
         item = Onsite_Products.objects.get(id=id)
 
         # item.onsite_repairing_id_id = onsite_id

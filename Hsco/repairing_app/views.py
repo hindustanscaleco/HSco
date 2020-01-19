@@ -338,45 +338,48 @@ def repair_product(request,id):
         Repairing_after_sales_service.objects.filter(id=id).update(total_cost=F("total_cost") + cost)
 
         if request.session.get('repaired_by') != '' and request.session.get('repaired_by') != None:
-            repaired_by_user_id = SiteUser.objects.get(profile_name=request.session.get('repaired_by'))
-            if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
-                                                     Q(user_id=repaired_by_user_id)).count() > 0:
-                Employee_Analysis_date.objects.filter(user_id=repaired_by_user_id, entry_date=datetime.now().date(),
-                                                      year=datetime.now().year).update(
-                    total_reparing_done_today=F("total_reparing_done_today") + cost)
-                # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+            new_repair_id = Repairing_after_sales_service.objects.get(id=id)
+            if new_repair_id.ess_calculated == False:
+                repaired_by_user_id = SiteUser.objects.get(profile_name=request.session.get('repaired_by'))
+                if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
+                                                         Q(user_id=repaired_by_user_id)).count() > 0:
+                    Employee_Analysis_date.objects.filter(user_id=repaired_by_user_id, entry_date=datetime.now().date(),
+                                                          year=datetime.now().year).update(
+                        total_reparing_done_today=F("total_reparing_done_today") + cost)
+                    # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
-                # ead.save(update_fields=['total_sales_done_today'])
+                    # ead.save(update_fields=['total_sales_done_today'])
 
-            else:
-                ead = Employee_Analysis_date()
-                ead.user_id = repaired_by_user_id
-                ead.total_reparing_done_today = cost
-                ead.manager_id = repaired_by_user_id.group
+                else:
+                    ead = Employee_Analysis_date()
+                    ead.user_id = repaired_by_user_id
+                    ead.total_reparing_done_today = cost
+                    ead.manager_id = repaired_by_user_id.group
 
-                ead.month = datetime.now().month
-                ead.year = datetime.now().year
-                ead.save()
+                    ead.month = datetime.now().month
+                    ead.year = datetime.now().year
+                    ead.save()
 
-            if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
-                                                  Q(user_id=repaired_by_user_id)).count() > 0:
-                Employee_Analysis_month.objects.filter(user_id=repaired_by_user_id, entry_date__month=datetime.now().month,
-                                                       year=datetime.now().year).update(
-                    total_reparing_done=F("total_reparing_done") + cost)
-                # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+                if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+                                                      Q(user_id=repaired_by_user_id)).count() > 0:
+                    Employee_Analysis_month.objects.filter(user_id=repaired_by_user_id, entry_date__month=datetime.now().month,
+                                                           year=datetime.now().year).update(
+                        total_reparing_done=F("total_reparing_done") + cost)
+                    # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
-                # ead.save(update_fields=['total_sales_done_today'])
+                    # ead.save(update_fields=['total_sales_done_today'])
 
-            else:
-                ead = Employee_Analysis_month()
-                ead.user_id = repaired_by_user_id
-                ead.total_reparing_done = cost
-                ead.manager_id = repaired_by_user_id.group
+                else:
+                    ead = Employee_Analysis_month()
+                    ead.user_id = repaired_by_user_id
+                    ead.total_reparing_done = cost
+                    ead.manager_id = repaired_by_user_id.group
 
-                ead.month = datetime.now().month
-                ead.year = datetime.now().year
-                ead.save()
-
+                    ead.month = datetime.now().month
+                    ead.year = datetime.now().year
+                    ead.save()
+                new_repair_id.ess_calculated = True
+                new_repair_id.save(update_fields=['ess_calculated', ])
 
         user_id = Repairing_after_sales_service.objects.get(id=id).user_id
 
