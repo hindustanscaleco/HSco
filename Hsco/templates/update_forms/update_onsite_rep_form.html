@@ -109,17 +109,17 @@ function myFunction() {
     x.style.display = "none";
     y.style.display = "block";
   }
-    document.getElementById("myText17").disabled = false;
+<!--    document.getElementById("myText17").disabled = false;-->
 
-  document.getElementById("myText").disabled = true;
-    document.getElementById("myText2").disabled = true;
+  document.getElementById("myText").disabled = false;
+    document.getElementById("myText2").disabled = false;
     document.getElementById("myText3").disabled = false;
     document.getElementById("myText4").disabled = false;
     document.getElementById("myText5").disabled = false;
     document.getElementById("myText6").disabled = false;
     document.getElementById("myText7").disabled = false;
     document.getElementById("myText8").disabled = false;
-    document.getElementById("myText9").disabled = false;
+<!--    document.getElementById("myText9").disabled = false;-->
     document.getElementById("myText10").disabled = true;
     document.getElementById("myText11").disabled = false;
     document.getElementById("myText12").disabled = false;
@@ -127,6 +127,7 @@ function myFunction() {
     document.getElementById("myText14").disabled = false;
     document.getElementById("myText15").disabled = false;
     document.getElementById("myText16").disabled = false;
+    document.getElementById("myText17").disabled = false;
     document.getElementById("myText18").disabled = false;
     document.getElementById("myText19").disabled = false;
     document.getElementById("myText20").disabled = true;
@@ -146,7 +147,7 @@ function myFunction() {
 <fieldset>
 
 <div class="form-group row">
-  <label class="col-md-2 control-label ">Onsite     Repairing Number *
+  <label class="col-md-2 control-label ">Onsite Repairing Number *
 
 
 
@@ -187,7 +188,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_name" placeholder="Customer Name" id="myText3" class="form-control"  type="text" disabled value="{{onsite_id.crm_no.customer_name}}">
+  <input  name="customer_name" placeholder="Customer Name" id="myText3" class="form-control" type="text" disabled value="{{onsite_id.crm_no.customer_name}}">
     </div>
   </div>
   <label class="col-md-2 control-label">Company Name
@@ -221,10 +222,6 @@ function myFunction() {
 
 
 	    <label class="col-md-2 control-label">Customer E-mail id
-
-
-
-
 </label>
 
     <div class="col-md-4 inputGroupContainer">
@@ -254,10 +251,6 @@ function myFunction() {
 
 <div class="form-group row">
   <label class="col-md-2 control-label">Previous Repairing number
-
-
-
-
 
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -565,7 +558,7 @@ function myFunction() {
  <div class="col-md-12 ">
       <br>
     <center>
-        <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" id="myText22" type="reset" >Edit</button>
+        <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" id="myText22" type="reset">Edit</button>
         <br>
         <br>
         <button style="display:none; background-color: #FC6E20;" id="myText21" type="submit" value="Submit" class="btn btn-primary">Save</button>
