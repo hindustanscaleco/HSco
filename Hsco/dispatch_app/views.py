@@ -150,6 +150,7 @@ def add_dispatch_details(request):
         item2.photo_lr_no = photo_lr_no
         item2.channel_of_dispatch = channel_of_dispatch
         item2.notes = notes
+        item2.dispatch_start_timedate = timezone.now()
         if Dispatch.objects.all().count()==0:
             item2.dispatch_no = 1
         else:
@@ -741,7 +742,6 @@ def update_dispatch_details(request,update_id):
         item.photo_lr_no = photo_lr_no
         item.channel_of_dispatch = channel_of_dispatch
         item.notes = notes
-        item.dispatch_start_timedate = timezone.now()
 
         current_stage_in_db = Dispatch.objects.get(id=update_id).current_stage  # updatestage3
         if (current_stage_in_db == 'dispatch but lr not updated') and (lr_no != '' and lr_no != None and lr_no!= 'None'):
