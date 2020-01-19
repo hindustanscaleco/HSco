@@ -479,6 +479,11 @@ def add_onsite_product(request,id):
         item.save()
         current_stage_in_db = Onsite_aftersales_service.objects.get(id=id).current_stage  # updatestage2
 
+        if (current_stage_in_db == '' or current_stage_in_db == None) and (
+                problem_in_scale != '' and problem_in_scale != None and problem_in_scale != 'None'):
+            Onsite_aftersales_service.objects.filter(id=id).update(
+                current_stage='Onsite repairing request is raised')
+
         if (current_stage_in_db == 'Onsite repairing request is raised') and (
                 request.session.get('complaint_assigned_to')  != '' or request.session.get('complaint_assigned_to')  != None):
             Onsite_aftersales_service.objects.filter(id=id).update(
@@ -490,11 +495,14 @@ def add_onsite_product(request,id):
                 current_stage='Onsite repairing request is completed')
 
 
+
         if request.session.get('complaint_assigned_to') != None and request.session.get('complaint_assigned_to') != '':
+
             compliant_assign_user_id = SiteUser.objects.get(profile_name=request.session.get('complaint_assigned_to'))
+
             if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
                                                      Q(user_id=compliant_assign_user_id)).count() > 0:
-                Employee_Analysis_date.objects.filter(user_id=request.user.pk, entry_date=datetime.now().date(),
+                Employee_Analysis_date.objects.filter(user_id=compliant_assign_user_id, entry_date=datetime.now().date(),
                                                       year=datetime.now().year).update(
                     total_reparing_done_onsite_today=F("total_reparing_done_onsite_today") + cost)
                 # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
@@ -509,11 +517,12 @@ def add_onsite_product(request,id):
 
                 ead.month = datetime.now().month
                 ead.year = datetime.now().year
+
                 ead.save()
 
             if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
                                                       Q(user_id=compliant_assign_user_id)).count() > 0:
-                Employee_Analysis_month.objects.filter(user_id=request.user.pk, entry_date__month=datetime.now().month,
+                Employee_Analysis_month.objects.filter(user_id=compliant_assign_user_id, entry_date__month=datetime.now().month,
                                                        year=datetime.now().year).update(
                     total_reparing_done_onsite=F("total_reparing_done_onsite") + cost)
                 # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
@@ -530,10 +539,7 @@ def add_onsite_product(request,id):
                 ead.year = datetime.now().year
                 ead.save()
 
-        current_stage_in_db = Onsite_aftersales_service.objects.get(id=id).current_stage  # updatestage2
-        if (current_stage_in_db == '' or current_stage_in_db == None) and (problem_in_scale != '' and problem_in_scale != None and problem_in_scale != 'None'):
-            Onsite_aftersales_service.objects.filter(id=id).update(
-                current_stage='Onsite repairing request is raised')
+
         # if (current_stage_in_db == 'Scales in Restamping Queue') and (new_sr_no != '' or new_sr_no != None):
         #     Onsite_aftersales_service.objects.filter(id=id).update(
         #         current_stage='Restamping is done but scale is not collected')
@@ -663,7 +669,6 @@ def update_onsite_details(request,id):
 
     except:
         feedback = None
-    print(onsite_product_list)
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
