@@ -708,13 +708,53 @@ def update_dispatch_details(request,update_id):
             item.save(update_fields=['dispatch_by', ]),
             if dispatch_item.dispatch_time_calculated == False and dispatch_item.dispatch_start_timedate != None and dispatch_item.dispatch_done_timedate != None:
                 if dispatch_item.date_of_dispatch != None:
-                    user_name = SiteUser.objects.get(profile_name=dispatch_item.dispatch_by)
-                    total_time = dispatch_item.dispatch_done_timedate - dispatch_item.dispatch_start_timedate
-                    total_hours = total_time.total_seconds() // 3600  # for 24 hours (total hours for a single repair)
-                    dispatch_item.total_dispatch_time = total_hours
-                    dispatch_item.save(update_fields=['total_dispatch_time'])
+                    date_format = "%Y-%m-%d %H:%M:%S"
+
+                    if dispatch_item.date_of_dispatch == dispatch_item.entry_timedate:
+                        total_time_taken = dispatch_item.dispatch_done_timedate - dispatch_item.dispatch_start_timedate
+                        time = total_time_taken.total_seconds() / 3600
+
+                        dispatch_item.total_dispatch_time = time
+                        dispatch_item.save(update_fields=['total_dispatch_time'])
+                    else:
+                        time1_format = dispatch_item.dispatch_start_timedate.strftime("%Y-%m-%d")
+                        start_day_time1 = datetime.strptime(str(time1_format) + ' 20:00:00', date_format)
+
+                        start_day_time2 = datetime.strptime(str(dispatch_item.dispatch_start_timedate)[:19], date_format)
+                        a = start_day_time1 - start_day_time2
+                        first_day_time = a.total_seconds() / 3600
+
+                        time2_format = dispatch_item.dispatch_done_timedate.strftime("%Y-%m-%d")
+
+                        end_day_time1 = datetime.strptime(str(time2_format) + ' 10:00:00', date_format)
+                        end_day_time2 = datetime.strptime(str(dispatch_item.dispatch_done_timedate)[:19], date_format)
+                        b = end_day_time2 - end_day_time1
+                        last_day_time = b.total_seconds() / 3600
+
+                        total_days = (dispatch_item.dispatch_done_timedate - dispatch_item.dispatch_start_timedate).days - 1
+                        total_days_time = total_days * 10
+                        total_time_taken = total_days_time + last_day_time + first_day_time
+                        print(total_days_time)
+                        print(total_days_time)
+                        print(total_days_time)
+                        print(last_day_time)
+                        print(last_day_time)
+                        print(first_day_time)
+                        print(first_day_time)
+                        print(total_time_taken)
+                        print(total_time_taken)
+                        print(total_time_taken)
+                        print('fsdjkl2')
+                        dispatch_item.total_dispatch_time = total_time_taken
+                        dispatch_item.save(update_fields=['total_dispatch_time'])
+                    # total_time = dispatch_item.dispatch_done_timedate - dispatch_item.dispatch_start_timedate
+                    # total_hours = total_time.total_seconds() // 3600  # for 24 hours (total hours for a single repair)
+                    # dispatch_item.total_dispatch_time = total_hours
+                    # dispatch_item.save(update_fields=['total_dispatch_time'])
                     # total_days = (total_time.total_seconds() // 3600) / 24          #total days for a single repair
                     # final_time_hours = total_hours - (total_days*14)
+                    user_name = SiteUser.objects.get(profile_name=dispatch_item.dispatch_by)
+
                     avg_daily = Dispatch.objects.filter(dispatch_by=user_name.profile_name,
                                                                              entry_timedate=dispatch_item.entry_timedate).aggregate(Avg('total_dispatch_time'))
 

@@ -478,39 +478,7 @@ def update_repairing_details(request,id):
     from datetime import datetime
     repair_id = Repairing_after_sales_service.objects.get(id=id)
 
-    # if repair_id.repaired_date == repair_id.entry_timedate:
-    #     total_time_taken =repair_id.repairing_done_timedate - repair_id.repairing_start_timedate
-    #     print(total_time_taken)
-    #     print(total_time_taken)
-    # else:
-    #     date_format = "%Y-%m-%d %H:%M:%S"
-    #     print(repair_id.repairing_start_timedate)
-    #     print(repair_id.entry_timedate)
-    #     time1_format = repair_id.repairing_start_timedate.strftime("%Y-%m-%d")
-    #     start_day_time1 = datetime.strptime(str(time1_format) + ' 20:00:00', date_format)
-    #
-    #     start_day_time2 = datetime.strptime(str(repair_id.repairing_start_timedate)[:19], date_format)
-    #     a = start_day_time1  - start_day_time2
-    #     first_day_time = a.total_seconds()/3600
-    #     print(first_day_time)
-    #     print(first_day_time)
-    #     print(first_day_time)
-    #     time2_format = repair_id.repairing_done_timedate.strftime("%Y-%m-%d")
-    #
-    #     end_day_time1 = datetime.strptime(str(time2_format) + ' 10:00:00', date_format)
-    #     end_day_time2 = datetime.strptime(str(repair_id.repairing_done_timedate)[:19], date_format)
-    #     b= end_day_time2 - end_day_time1
-    #     last_day_time = b.total_seconds()/3600
-    #     print(last_day_time)
-    #     print(last_day_time)
-    #     print(last_day_time)
-    #     total_days = (repair_id.repairing_done_timedate - repair_id.repairing_start_timedate).days-1
-    #     total_days_time =  total_days * 10
-    #     total_time_taken = total_days_time + last_day_time + first_day_time
-    #     print(total_time_taken)
-    #     print(total_time_taken)
-    #     print(total_time_taken)
-    #     print(total_time_taken)
+
     customer_id = Customer_Details.objects.get(id=repair_id.crm_no)
     repair_list = Repairing_Product.objects.filter(repairing_id=id)
 
@@ -796,14 +764,52 @@ def update_repairing_details(request,id):
 
         if repair_id.repairing_time_calculated == False and repair_id.repairing_start_timedate != None and repair_id.repairing_done_timedate != None:
             if item2.repaired_date != None and item2.repaired_by != None :
-                user_name = SiteUser.objects.get(profile_name=repair_id.repaired_by)
+                date_format = "%Y-%m-%d %H:%M:%S"
 
-                total_time = repair_id.repairing_done_timedate - repair_id.repairing_start_timedate
-                total_hours = total_time.total_seconds() // 3600        #for 24 hours (total hours for a single repair)
-                item2.total_repairing_time = total_hours
-                item2.save(update_fields=['total_repairing_time'])
+                if repair_id.repaired_date == repair_id.entry_timedate:
+                    total_time_taken = repair_id.repairing_done_timedate - repair_id.repairing_start_timedate
+                    time = total_time_taken.total_seconds() / 3600
+                    item2.total_repairing_time = time
+                    item2.save(update_fields=['total_repairing_time'])
+                else:
+                    time1_format = repair_id.repairing_start_timedate.strftime("%Y-%m-%d")
+                    start_day_time1 = datetime.strptime(str(time1_format) + ' 20:00:00', date_format)
+
+                    start_day_time2 = datetime.strptime(str(repair_id.repairing_start_timedate)[:19], date_format)
+                    a = start_day_time1 - start_day_time2
+                    first_day_time = a.total_seconds() / 3600
+
+                    time2_format = repair_id.repairing_done_timedate.strftime("%Y-%m-%d")
+
+                    end_day_time1 = datetime.strptime(str(time2_format) + ' 10:00:00', date_format)
+                    end_day_time2 = datetime.strptime(str(repair_id.repairing_done_timedate)[:19], date_format)
+                    b = end_day_time2 - end_day_time1
+                    last_day_time = b.total_seconds() / 3600
+
+                    total_days = (repair_id.repairing_done_timedate - repair_id.repairing_start_timedate).days - 1
+                    total_days_time = total_days * 10
+                    total_time_taken = total_days_time + last_day_time + first_day_time
+                    print(total_days_time)
+                    print(total_days_time)
+                    print(total_days_time)
+                    print(last_day_time)
+                    print(last_day_time)
+                    print(first_day_time)
+                    print(first_day_time)
+                    print(total_time_taken)
+                    print(total_time_taken)
+                    print(total_time_taken)
+                    print('fsdjkl2')
+                    item2.total_repairing_time = total_time_taken
+                    item2.save(update_fields=['total_repairing_time'])
+
+                # total_time = repair_id.repairing_done_timedate - repair_id.repairing_start_timedate
+                # total_hours = total_time.total_seconds() // 3600        #for 24 hours (total hours for a single repair)
+
                 # total_days = (total_time.total_seconds() // 3600) / 24          #total days for a single repair
                 # final_time_hours = total_hours - (total_days*14)
+                user_name = SiteUser.objects.get(profile_name=repair_id.repaired_by)
+
                 avg_daily = Repairing_after_sales_service.objects.filter(repaired_by=user_name.profile_name,entry_timedate=repair_id.entry_timedate).aggregate(Avg('total_repairing_time'))
 
                 Employee_Analysis_date.objects.filter(user_id=user_name.id,
