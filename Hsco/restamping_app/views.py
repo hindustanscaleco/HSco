@@ -925,13 +925,13 @@ def update_restamping_product(request,id):
 
         current_stage_in_db = Restamping_after_sales_service.objects.get(
             id=restamping_id).current_stage  # updatestage2
-        if (current_stage_in_db == '' or current_stage_in_db == None) and (sub_model != '' or sub_model != None):
+        if (current_stage_in_db == '' or current_stage_in_db == None) and (sub_model != '' and sub_model != None and sub_model != 'None'):
             Restamping_after_sales_service.objects.filter(id=restamping_id).update(
                 current_stage='Scales in Restamping Queue')
-        if (current_stage_in_db == 'Scales in Restamping Queue') and (new_sr_no != '' or new_sr_no != None):
+        if (current_stage_in_db == 'Scales in Restamping Queue') and (new_sr_no != '' and new_sr_no != None and new_sr_no != 'None'):
             Restamping_after_sales_service.objects.filter(id=restamping_id).update(
                 current_stage='Restamping is done but scale is not collected')
-        if (current_stage_in_db == 'Restamping is done but scale is not collected') and (new_sr_no != '' or new_sr_no != None):
+        if (current_stage_in_db == 'Restamping is done but scale is not collected') and (new_sr_no != '' and new_sr_no != None and new_sr_no != 'None'):
             Restamping_after_sales_service.objects.filter(id=restamping_id).update(
                 current_stage='Restamping is done but scale is not collected')
 

@@ -326,7 +326,7 @@ def view_customer_details(request):
                 'customer_list': cust_list,
                 'search_msg': 'Search result for date range: '+start_date+' TO '+end_date,
             }
-            return render(request, 'dashboardnew/lead_home.html', context)
+            return render(request, 'dashboardnew/cm.html', context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
@@ -339,7 +339,7 @@ def view_customer_details(request):
                 'customer_list': cust_list,
                 'search_msg': 'Search result for Customer Contact No: ' + contact,
             }
-            return render(request, 'dashboardnew/lead_home.html', context)
+            return render(request, 'dashboardnew/cm.html', context)
 
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
@@ -353,7 +353,7 @@ def view_customer_details(request):
                 'customer_list': cust_list,
                 'search_msg': 'Search result for Customer Email ID: ' + email,
             }
-            return render(request, 'dashboardnew/lead_home.html', context)
+            return render(request, 'dashboardnew/cm.html', context)
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
@@ -366,7 +366,7 @@ def view_customer_details(request):
                 'customer_list': cust_list,
                 'search_msg': 'Search result for Customer Name: ' +customer,
             }
-            return render(request, 'dashboardnew/lead_home.html', context)
+            return render(request, 'dashboardnew/cm.html', context)
 
         elif  'submit5' in request.POST:
             company = request.POST.get('company')
@@ -380,7 +380,7 @@ def view_customer_details(request):
                 'customer_list': cust_list,
                 'search_msg': 'Search result for Company Name: ' + company,
             }
-            return render(request, 'dashboardnew/lead_home.html', context)
+            return render(request, 'dashboardnew/cm.html', context)
         elif request.method=='POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
             if check_admin_roles(request):  # For ADMIN
@@ -393,7 +393,7 @@ def view_customer_details(request):
                 'customer_list': cust_list,
                 'search_msg': 'Search result for CRM No. : ' + crm,
             }
-            return render(request, 'dashboardnew/lead_home.html', context)
+            return render(request, 'dashboardnew/cm.html', context)
         elif  'submit7' in request.POST:
             purchase_no = request.POST.get('purchase_no')
             if check_admin_roles(request):  # For ADMIN
@@ -406,7 +406,7 @@ def view_customer_details(request):
                 'customer_list': cust_list,
                 'search_msg': 'Search result for Purchase No: ' + purchase_no,
             }
-            return render(request, 'dashboardnew/lead_home.html', context)
+            return render(request, 'dashboardnew/cm.html', context)
 
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
@@ -419,7 +419,7 @@ def view_customer_details(request):
             'message': message_list,
             'deleted': True,
         }
-        return render(request, 'dashboardnew/lead_home.html', context)
+        return render(request, 'dashboardnew/cm.html', context)
     else:
         if check_admin_roles(request):  # For ADMIN
             cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module').order_by('-purchase_no')
@@ -431,7 +431,7 @@ def view_customer_details(request):
             'customer_list': cust_list,
             'message': message_list,
         }
-        return render(request,'dashboardnew/lead_home.html',context )
+        return render(request,'dashboardnew/cm.html',context )
 
 
 @login_required(login_url='/')
