@@ -478,39 +478,7 @@ def update_repairing_details(request,id):
     from datetime import datetime
     repair_id = Repairing_after_sales_service.objects.get(id=id)
 
-    # if repair_id.repaired_date == repair_id.entry_timedate:
-    #     total_time_taken =repair_id.repairing_done_timedate - repair_id.repairing_start_timedate
-    #     print(total_time_taken)
-    #     print(total_time_taken)
-    # else:
-    #     date_format = "%Y-%m-%d %H:%M:%S"
-    #     print(repair_id.repairing_start_timedate)
-    #     print(repair_id.entry_timedate)
-    #     time1_format = repair_id.repairing_start_timedate.strftime("%Y-%m-%d")
-    #     start_day_time1 = datetime.strptime(str(time1_format) + ' 20:00:00', date_format)
-    #
-    #     start_day_time2 = datetime.strptime(str(repair_id.repairing_start_timedate)[:19], date_format)
-    #     a = start_day_time1  - start_day_time2
-    #     first_day_time = a.total_seconds()/3600
-    #     print(first_day_time)
-    #     print(first_day_time)
-    #     print(first_day_time)
-    #     time2_format = repair_id.repairing_done_timedate.strftime("%Y-%m-%d")
-    #
-    #     end_day_time1 = datetime.strptime(str(time2_format) + ' 10:00:00', date_format)
-    #     end_day_time2 = datetime.strptime(str(repair_id.repairing_done_timedate)[:19], date_format)
-    #     b= end_day_time2 - end_day_time1
-    #     last_day_time = b.total_seconds()/3600
-    #     print(last_day_time)
-    #     print(last_day_time)
-    #     print(last_day_time)
-    #     total_days = (repair_id.repairing_done_timedate - repair_id.repairing_start_timedate).days-1
-    #     total_days_time =  total_days * 10
-    #     total_time_taken = total_days_time + last_day_time + first_day_time
-    #     print(total_time_taken)
-    #     print(total_time_taken)
-    #     print(total_time_taken)
-    #     print(total_time_taken)
+
     customer_id = Customer_Details.objects.get(id=repair_id.crm_no)
     repair_list = Repairing_Product.objects.filter(repairing_id=id)
 
@@ -796,14 +764,52 @@ def update_repairing_details(request,id):
 
         if repair_id.repairing_time_calculated == False and repair_id.repairing_start_timedate != None and repair_id.repairing_done_timedate != None:
             if item2.repaired_date != None and item2.repaired_by != None :
-                user_name = SiteUser.objects.get(profile_name=repair_id.repaired_by)
+                date_format = "%Y-%m-%d %H:%M:%S"
 
-                total_time = repair_id.repairing_done_timedate - repair_id.repairing_start_timedate
-                total_hours = total_time.total_seconds() // 3600        #for 24 hours (total hours for a single repair)
-                item2.total_repairing_time = total_hours
-                item2.save(update_fields=['total_repairing_time'])
+                if repair_id.repaired_date == repair_id.entry_timedate:
+                    total_time_taken = repair_id.repairing_done_timedate - repair_id.repairing_start_timedate
+                    time = total_time_taken.total_seconds() / 3600
+                    item2.total_repairing_time = time
+                    item2.save(update_fields=['total_repairing_time'])
+                else:
+                    time1_format = repair_id.repairing_start_timedate.strftime("%Y-%m-%d")
+                    start_day_time1 = datetime.strptime(str(time1_format) + ' 20:00:00', date_format)
+
+                    start_day_time2 = datetime.strptime(str(repair_id.repairing_start_timedate)[:19], date_format)
+                    a = start_day_time1 - start_day_time2
+                    first_day_time = a.total_seconds() / 3600
+
+                    time2_format = repair_id.repairing_done_timedate.strftime("%Y-%m-%d")
+
+                    end_day_time1 = datetime.strptime(str(time2_format) + ' 10:00:00', date_format)
+                    end_day_time2 = datetime.strptime(str(repair_id.repairing_done_timedate)[:19], date_format)
+                    b = end_day_time2 - end_day_time1
+                    last_day_time = b.total_seconds() / 3600
+
+                    total_days = (repair_id.repairing_done_timedate - repair_id.repairing_start_timedate).days - 1
+                    total_days_time = total_days * 10
+                    total_time_taken = total_days_time + last_day_time + first_day_time
+                    print(total_days_time)
+                    print(total_days_time)
+                    print(total_days_time)
+                    print(last_day_time)
+                    print(last_day_time)
+                    print(first_day_time)
+                    print(first_day_time)
+                    print(total_time_taken)
+                    print(total_time_taken)
+                    print(total_time_taken)
+                    print('fsdjkl2')
+                    item2.total_repairing_time = total_time_taken
+                    item2.save(update_fields=['total_repairing_time'])
+
+                # total_time = repair_id.repairing_done_timedate - repair_id.repairing_start_timedate
+                # total_hours = total_time.total_seconds() // 3600        #for 24 hours (total hours for a single repair)
+
                 # total_days = (total_time.total_seconds() // 3600) / 24          #total days for a single repair
                 # final_time_hours = total_hours - (total_days*14)
+                user_name = SiteUser.objects.get(profile_name=repair_id.repaired_by)
+
                 avg_daily = Repairing_after_sales_service.objects.filter(repaired_by=user_name.profile_name,entry_timedate=repair_id.entry_timedate).aggregate(Avg('total_repairing_time'))
 
                 Employee_Analysis_date.objects.filter(user_id=user_name.id,
@@ -1406,55 +1412,53 @@ def repairing_employee_graph(request,user_id):
 
     mon = datetime.now().month
 
+    target_achieved = 0.0
+    avg_time = 0.0
     try:
-        obj = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon)
-
-    except:
-        pass
-
-    try:
-        obj.reparing_target_achived_till_now = (obj.total_reparing_done/obj.reparing_target_given)*100
+        obj = Employee_Analysis_month.objects.get(user_id=user_id, entry_date__month=mon)
+        obj.reparing_target_achived_till_now = (obj.total_reparing_done / obj.reparing_target_given) * 100
         obj.save(update_fields=['reparing_target_achived_till_now'])
-
+        target_achieved = obj.reparing_target_achived_till_now
+        avg_time = obj.avg_time_to_repair_single_scale
     except:
         pass
-    #current month
-    target_achieved =  obj.reparing_target_achived_till_now
-    avg_time =  obj.avg_time_to_repair_single_scale
 
-    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                     'total_reparing_done_today').order_by('entry_date')
+    this_month = Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=mon)\
+        .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
 
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
         x = i
-        this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        this_lis_sum.append(x['total_reparing_done_today'])
+        this_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        this_lis_sum.append(x['data_sum'])
+        print(this_lis_sum)
+        print(this_lis_sum)
 
     # previous month sales
 
     mon = (datetime.now().month) - 1
-    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                     'total_reparing_done_today').order_by('entry_date')
+    previous_month = Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=mon)\
+        .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
         x = i
-        previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        previous_lis_sum.append(x['total_reparing_done_today'])
+        previous_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        previous_lis_sum.append(x['data_sum'])
 
     if request.method == 'POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values('entry_date',
-                                                                                                     'total_reparing_done_today').order_by('entry_date')
+
+        qs=Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__range=(start_date, end_date))\
+        .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
-            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['total_reparing_done_today'])
+            lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
 
 
         context = {
@@ -1470,14 +1474,14 @@ def repairing_employee_graph(request,user_id):
         return render(request, "graphs/repairing_employee_graph.html", context)
     else:
 
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date',
-                                                                                                     'total_reparing_done_today').order_by('entry_date')
+        qs = Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
+        .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
         lis_date = []
         lis_sum = []
         for i in qs:
             x=i
-            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['total_reparing_done_today'])
+            lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
 
         context={
             'final_list':lis_date,

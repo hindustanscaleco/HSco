@@ -627,15 +627,15 @@ def update_restamping_details(request,id):
         item.second_contact_no=contact_no   #new5
         if scale_delivery_date != '':
             item.scale_delivery_date = scale_delivery_date
-
+            item.restamping_done_timedate = timezone.now()
+            item.save(update_fields=['restamping_done_timedate', ]),
         current_stage_in_db = Restamping_after_sales_service.objects.get(
             id=id).current_stage  # updatestage2
 
         if (current_stage_in_db == 'Restamping is done but scale is not collected') and (scale_delivery_date != '' or scale_delivery_date != None):
             Restamping_after_sales_service.objects.filter(id=id).update(
                 current_stage='Restamping done and scale also collected')
-            item.restamping_done_timedate = timezone.now()
-            item.save(update_fields=['restamping_done_timedate', ]),
+
 
         if (current_stage_in_db == 'Scales in Restamping Queue') and (latest_restamp_product.new_sr_no != '' or latest_restamp_product.new_sr_no != None):
             Restamping_after_sales_service.objects.filter(id=id).update(
@@ -647,11 +647,41 @@ def update_restamping_details(request,id):
         if personal_id.restamping_time_calculated == False and personal_id.restamping_start_timedate != None and personal_id.restamping_done_timedate != None:
             if personal_id.scale_delivery_date != None and personal_id.scale_delivery_date != None :
                 user_id = SiteUser.objects.get(id=request.user.id)
+                date_format = "%Y-%m-%d %H:%M:%S"
 
-                total_time = personal_id.restamping_done_timedate - personal_id.restamping_start_timedate
-                total_hours = total_time.total_seconds() // 3600        #for 24 hours (total hours for a single repair)
-                personal_id.total_restamping_time = total_hours
-                personal_id.save(update_fields=['total_restamping_time'])
+                if personal_id.scale_delivery_date == personal_id.entry_timedate:
+                    total_time_taken = personal_id.restamping_done_timedate - personal_id.restamping_start_timedate
+                    time = total_time_taken.total_seconds() / 3600
+
+                    personal_id.total_restamping_time = time
+                    personal_id.save(update_fields=['total_restamping_time'])
+                else:
+                    time1_format = personal_id.restamping_start_timedate.strftime("%Y-%m-%d")
+                    start_day_time1 = datetime.strptime(str(time1_format) + ' 20:00:00', date_format)
+
+                    start_day_time2 = datetime.strptime(str(personal_id.restamping_start_timedate)[:19], date_format)
+                    a = start_day_time1 - start_day_time2
+
+                    first_day_time = a.total_seconds() / 3600
+
+                    time2_format = personal_id.restamping_done_timedate.strftime("%Y-%m-%d")
+
+                    end_day_time1 = datetime.strptime(str(time2_format) + ' 10:00:00', date_format)
+                    end_day_time2 = datetime.strptime(str(personal_id.restamping_done_timedate)[:19], date_format)
+                    b = end_day_time2 - end_day_time1
+                    last_day_time = b.total_seconds() / 3600
+
+                    total_days = (personal_id.restamping_done_timedate - personal_id.restamping_start_timedate).days - 1
+                    total_days_time = total_days * 10
+                    total_time_taken = total_days_time + last_day_time + first_day_time
+
+                    personal_id.total_restamping_time = total_time_taken
+                    personal_id.save(update_fields=['total_restamping_time'])
+
+                # total_time = personal_id.restamping_done_timedate - personal_id.restamping_start_timedate
+                # total_hours = total_time.total_seconds() // 3600        #for 24 hours (total hours for a single repair)
+                # personal_id.total_restamping_time = total_hours
+                # personal_id.save(update_fields=['total_restamping_time'])
                 # total_days = (total_time.total_seconds() // 3600) / 24          #total days for a single repair
                 # final_time_hours = total_hours - (total_days*14)
                 avg_daily = Restamping_after_sales_service.objects.filter(user_id_id=user_id,entry_timedate=personal_id.entry_timedate).aggregate(Avg('total_restamping_time'))

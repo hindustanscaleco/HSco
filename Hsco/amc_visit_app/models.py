@@ -26,7 +26,7 @@ class Amc_After_Sales(models.Model):
     type_of_scale = models.CharField(max_length=30,null=True,blank=True)
     second_company_name = models.CharField(max_length=80,null=True,blank=True)
     company_email = models.CharField(max_length=80,null=True,blank=True)
-    company_address = models.CharField(max_length=120,null=True,blank=True)
+    company_address = models.CharField(max_length=250,null=True,blank=True)
     serial_no_scale = models.CharField(max_length=80,null=True,blank=True)
     contract_valid_in_years = models.CharField(max_length=30,null=True,blank=True)
     contract_amount = models.FloatField(default=0.0,null=True,blank=True)

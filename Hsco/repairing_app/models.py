@@ -26,7 +26,7 @@ class Repairing_after_sales_service(models.Model):
     current_stage = models.CharField(max_length=150,null=True,blank=True)
     second_company_name = models.CharField(max_length=150,null=True,blank=True)
     company_email = models.CharField(max_length=150,null=True,blank=True)
-    company_address = models.CharField(max_length=150,null=True,blank=True)
+    company_address = models.CharField(max_length=250,null=True,blank=True)
     second_person = models.CharField(max_length=150,null=True,blank=True)
     third_person = models.CharField(max_length=150,null=True,blank=True)
     second_contact_no = models.CharField(max_length=150,null=True,blank=True)
@@ -56,8 +56,8 @@ class Repairing_after_sales_service(models.Model):
     repairing_no = models.BigIntegerField(null=True,blank=True)
     notes = models.CharField(max_length=300,null=True,blank=True)
 
-    repairing_start_timedate = models.DateTimeField(null=True, blank=True)
-    repairing_done_timedate = models.DateTimeField(null=True,blank=True)
+    repairing_start_timedate = models.DateTimeField(null=True, blank=True, auto_now=False, auto_now_add=False)
+    repairing_done_timedate = models.DateTimeField(null=True,blank=True, auto_now=False, auto_now_add=False)
     total_repairing_time  = models.FloatField(default=0.0)
     repairing_time_calculated = models.BooleanField(default=False)
 
