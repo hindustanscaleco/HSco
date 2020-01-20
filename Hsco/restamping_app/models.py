@@ -14,7 +14,7 @@ class Restamping_after_sales_service(models.Model):
     third_contact_no = models.CharField(max_length=150,null=True,blank=True)
     second_company_name = models.CharField(max_length=150,null=True,blank=True)
     company_email = models.CharField(max_length=150,null=True,blank=True)
-    company_address = models.CharField(max_length=150,null=True,blank=True)
+    company_address = models.CharField(max_length=250,null=True,blank=True)
     today_date = models.DateField(default=datetime.date.today, blank=True)
     total_amount = models.FloatField(default=0.0, null=True, blank=True)
     scale_delivery_date = models.DateField(null=True, blank=True)

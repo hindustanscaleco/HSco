@@ -1082,37 +1082,41 @@ def customer_employee_sales_graph(request,user_id):
     #this month sales
 
     mon = datetime.now().month
-    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                         'total_sales_done_today').order_by('entry_date')
+
+    # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
+    #                                                                                                      'total_sales_done_today').order_by('entry_date')
+    this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
+        .values('entry_timedate').annotate(data_sum=Sum('value_of_goods'))
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
         x = i
-        this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        this_lis_sum.append(x['total_sales_done_today'])
+        this_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        this_lis_sum.append(x['data_sum'])
 
     #previous month sales
     mon = (datetime.now().month)-1
-    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                         'total_sales_done_today').order_by('entry_date')
+    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=mon)\
+        .values('entry_timedate').annotate(data_sum=Sum('value_of_goods'))
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
         x = i
-        previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        previous_lis_sum.append(x['total_sales_done_today'])
+        previous_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        previous_lis_sum.append(x['data_sum'])
 
     if request.method=='POST' :
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values(
-            'entry_date','total_sales_done_today').order_by('entry_date')
+
+        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__range=(start_date, end_date))\
+        .values('entry_timedate').annotate(data_sum=Sum('value_of_goods'))
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
-            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['total_sales_done_today'])
+            lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
         context = {
             'final_list': lis_date,
             'final_list2': lis_sum,
@@ -1126,14 +1130,14 @@ def customer_employee_sales_graph(request,user_id):
         return render(request, "graphs/sales_graph.html", context)
     else:
 
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date',
-                                                                                                         'total_sales_done_today').order_by('entry_date')
+        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
+        .values('entry_timedate').annotate(data_sum=Sum('value_of_goods'))
         lis_date = []
         lis_sum = []
         for i in qs:
             x=i
-            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['total_sales_done_today'])
+            lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
         context={
             'final_list':lis_date,
             'final_list2':lis_sum,

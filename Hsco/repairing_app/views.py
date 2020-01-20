@@ -1412,55 +1412,53 @@ def repairing_employee_graph(request,user_id):
 
     mon = datetime.now().month
 
+    target_achieved = 0.0
+    avg_time = 0.0
     try:
-        obj = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon)
-
-    except:
-        pass
-
-    try:
-        obj.reparing_target_achived_till_now = (obj.total_reparing_done/obj.reparing_target_given)*100
+        obj = Employee_Analysis_month.objects.get(user_id=user_id, entry_date__month=mon)
+        obj.reparing_target_achived_till_now = (obj.total_reparing_done / obj.reparing_target_given) * 100
         obj.save(update_fields=['reparing_target_achived_till_now'])
-
+        target_achieved = obj.reparing_target_achived_till_now
+        avg_time = obj.avg_time_to_repair_single_scale
     except:
         pass
-    #current month
-    target_achieved =  obj.reparing_target_achived_till_now
-    avg_time =  obj.avg_time_to_repair_single_scale
 
-    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                     'total_reparing_done_today').order_by('entry_date')
+    this_month = Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=mon)\
+        .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
 
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
         x = i
-        this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        this_lis_sum.append(x['total_reparing_done_today'])
+        this_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        this_lis_sum.append(x['data_sum'])
+        print(this_lis_sum)
+        print(this_lis_sum)
 
     # previous month sales
 
     mon = (datetime.now().month) - 1
-    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                     'total_reparing_done_today').order_by('entry_date')
+    previous_month = Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=mon)\
+        .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
         x = i
-        previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        previous_lis_sum.append(x['total_reparing_done_today'])
+        previous_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        previous_lis_sum.append(x['data_sum'])
 
     if request.method == 'POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values('entry_date',
-                                                                                                     'total_reparing_done_today').order_by('entry_date')
+
+        qs=Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__range=(start_date, end_date))\
+        .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
-            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['total_reparing_done_today'])
+            lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
 
 
         context = {
@@ -1476,14 +1474,14 @@ def repairing_employee_graph(request,user_id):
         return render(request, "graphs/repairing_employee_graph.html", context)
     else:
 
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date',
-                                                                                                     'total_reparing_done_today').order_by('entry_date')
+        qs = Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
+        .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
         lis_date = []
         lis_sum = []
         for i in qs:
             x=i
-            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['total_reparing_done_today'])
+            lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
 
         context={
             'final_list':lis_date,
