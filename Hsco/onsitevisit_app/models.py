@@ -27,7 +27,7 @@ class Onsite_aftersales_service(models.Model):
     third_contact_no = models.CharField(max_length=150,null=True,blank=True)
     second_company_name = models.CharField(max_length=150,null=True,blank=True)
     company_email = models.CharField(max_length=150,null=True,blank=True)
-    company_address = models.CharField(max_length=120,null=True,blank=True)
+    company_address = models.CharField(max_length=250,null=True,blank=True)
     nearest_railwaystation = models.CharField(max_length=150, null=True, blank=True)
     train_line = models.CharField(max_length=150, null=True, blank=True)
     current_stage = models.CharField(max_length=150,null=True,blank=True)
