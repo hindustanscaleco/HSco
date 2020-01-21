@@ -66,7 +66,7 @@ class Product_Details_Dispatch(models.Model):
     unit = models.CharField(max_length=150,null=True,blank=True)
     # sales_person = models.CharField(max_length=30,null=True,blank=True)
     new_repeat_purchase = models.CharField(max_length=150,null=True,blank=True)
-    value_of_goods = models.FloatField(default=0.0, )
+    value_of_goods = models.FloatField(default=0.0, null=True,blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now, )
 
 
