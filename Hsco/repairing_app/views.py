@@ -545,7 +545,7 @@ def update_repairing_details(request,id):
 
 
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage3
-        if current_stage_in_db == 'Scale is collected but estimate is not given'  and (informed_by != None or informed_by!=""):
+        if current_stage_in_db == 'Scale is collected but estimate is not given'  and (informed_by != None and informed_by!="" and informed_by!="None"):
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Estimate is given but Estimate is not confirmed', stage_update_timedate=timezone.now())
             item2.stage_update_timedate = timezone.now()
@@ -789,17 +789,7 @@ def update_repairing_details(request,id):
                     total_days = (repair_id.repairing_done_timedate - repair_id.repairing_start_timedate).days - 1
                     total_days_time = total_days * 10
                     total_time_taken = total_days_time + last_day_time + first_day_time
-                    print(total_days_time)
-                    print(total_days_time)
-                    print(total_days_time)
-                    print(last_day_time)
-                    print(last_day_time)
-                    print(first_day_time)
-                    print(first_day_time)
-                    print(total_time_taken)
-                    print(total_time_taken)
-                    print(total_time_taken)
-                    print('fsdjkl2')
+
                     item2.total_repairing_time = total_time_taken
                     item2.save(update_fields=['total_repairing_time'])
 
@@ -835,8 +825,10 @@ def update_repairing_details(request,id):
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired
         item2.notes = notes
-        # if item2.taken_by == None or item2.taken_by==''and item2.taken_by != 'None':
-        if taken_by != '' or taken_by != None and taken_by != 'None':
+        if taken_by != '' and taken_by != None and taken_by != 'None':
+            print(taken_by)
+            print(taken_by)
+            print(taken_by)
             item2.repairing_start_timedate = timezone.now()
 
             item2.taken_by = taken_by
@@ -983,7 +975,7 @@ def repairing_module_home(request):
                 dcount=Count('current_stage'))
         elif request.user.role =='Admin':
             repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name)| Q(user_id__group__icontains=request.user.name)|Q(user_id__name=request.user.name))).order_by(
-                '-id')
+                '-repairing_no')
 
             res = Repairing_after_sales_service.objects.filter(
                 (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')|Q(user_id__name=request.user.name)) ).values(
@@ -993,7 +985,7 @@ def repairing_module_home(request):
             admin = SiteUser.objects.get(id=request.user.pk).admin
             repair_list = Repairing_after_sales_service.objects.filter(
                 (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')|Q(user_id__name=request.user.name)) & Q(user_id__admin=admin)).order_by(
-                '-id')
+                '-repairing_no')
 
             res = Repairing_after_sales_service.objects.filter(
                 (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')|Q(user_id__name=request.user.name)) & Q(user_id__admin=admin)).values(
@@ -1436,10 +1428,15 @@ def repairing_employee_graph(request,user_id):
         print(this_lis_sum)
 
     # previous month sales
+    mon = (datetime.now().month)
+    if mon == 1 :
+        previous_mon = 12
+    else:
+        previous_mon = (datetime.now().month) - 1
 
-    mon = (datetime.now().month) - 1
-    previous_month = Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=mon)\
+    previous_month = Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=previous_mon)\
         .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
+    print(previous_month)
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -1537,7 +1534,7 @@ def load_reparing_stages_list(request,):
             admin = SiteUser.objects.get(id=request.user.pk).admin
             repair_list = Repairing_after_sales_service.objects.filter((
                 (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)) & Q(current_stage=selected_stage)).order_by(
-                '-id')
+                '-repairing_no')
 
     # else:
     #     repair_list = Repairing_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),current_stage=selected_stage)
