@@ -1095,8 +1095,12 @@ def customer_employee_sales_graph(request,user_id):
         this_lis_sum.append(x['data_sum'])
 
     #previous month sales
-    mon = (datetime.now().month)-1
-    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=mon)\
+    mon = (datetime.now().month)
+    if mon == 1:
+        previous_mon = 12
+    else:
+        previous_mon = (datetime.now().month) - 1
+    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=previous_mon)\
         .values('entry_timedate').annotate(data_sum=Sum('value_of_goods'))
     previous_lis_date = []
     previous_lis_sum = []

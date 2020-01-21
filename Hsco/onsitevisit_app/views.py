@@ -1197,8 +1197,12 @@ def onsitevisit_app_graph(request,user_id):
         this_lis_sum.append(x['total_reparing_done_onsite_today'])
 
     # previous month sales
-    mon = (datetime.now().month) - 1
-    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
+    mon = (datetime.now().month)
+    if mon == 1:
+        previous_mon = 12
+    else:
+        previous_mon = (datetime.now().month) - 1
+    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=previous_mon).values('entry_date',
                                                                                                          'total_reparing_done_onsite_today').order_by('entry_date')
     previous_lis_date = []
     previous_lis_sum = []
