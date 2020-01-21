@@ -391,6 +391,7 @@ def repair_product(request,id):
         rep = Repairing_after_sales_service.objects.get(id=id)
 
         if is_last_product_yes == 'yes':
+            cust = Customer_Details.objects.get(id=rep.crm_no)
             ret = send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
             Repairing_after_sales_service.objects.filter(id=id).update(is_last_product_added=True)
             product_list = ''' '''
@@ -429,9 +430,19 @@ def repair_product(request,id):
             # if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
             # crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
             try:
-                send_mail('Feedback Form',msg,settings.EMAIL_HOST_USER,[rep.company_email,])
+                send_mail('HSCo',
+                          ' Dear ' + item.customer_name + ',Thank you for selecting HSCo. Your Scales have been successfully received at our repairing center.'
+                                                         'Your Repairing No is' + str(
+                              rep.repairing_no) + '.Please ' \
+                                                  'use this Unique ID for further communication.\n' \
+                                                  'For any further details please contact our customer service team on 7045922251:\n ' \
+                                                  ' Product Details: \n' + product_list,
+                          settings.EMAIL_HOST_USER,
+                          [item.company_email, ])
             except:
                 pass
+
+
 
             message_old = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
                 request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.pk)
@@ -582,9 +593,9 @@ def update_repairing_details(request,id):
 
             try:
 
-                msg='Dear '+customer_name+', The Estimate for Your ' \
-                    'Repairing No '+str(repair_id.repairing_no)+' is  '+str(repair_id.total_cost)+' For any further details please contact our customer ' \
-                    'service team on 7045922251 Estimate Details:\n'+product_list
+                msg='Dear '+customer_name+',Thank you for selecting HSCo. The Estimate for Your ' \
+                    'Repairing No '+str(repair_id.repairing_no)+' is  '+str(repair_id.total_cost)+'.\n For any further details please contact our customer ' \
+                    'service team on 7045922251. \n Estimate Details:'+product_list
                 send_mail('Feedback Form',msg
                           , settings.EMAIL_HOST_USER,
                           [item.customer_email_id,])
@@ -627,7 +638,7 @@ def update_repairing_details(request,id):
 
             try:
                 send_mail('Repairing Done - HSCo',
-                          ' Dear '+customer_name+', Your Repairing Complaint No '+str(repair_id.repairing_no)+' is resolved.'
+                          ' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.repairing_no)+' is resolved.'
                           ' Please collect your Scales within the next 3 days.For any further details please contact '
                           'our customer service team on 7045922251', settings.EMAIL_HOST_USER,
                           [item.customer_email_id,])

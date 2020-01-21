@@ -816,7 +816,7 @@ def update_dispatch_details(request,update_id):
                 # " " + transport_name + ", having LR Number " + lr_no + ". Please track the" \
                 # " details on the transporters website"+'\nHere is the list of product dispatched:\n' + product_list
 
-                msg ='Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase having ID '+str(pur_id)+'' \
+                msg ='Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
                      ' is dispatched from our end with Dispatch ID ' + str(
                 item.dispatch_no) + ' & LR No '+ lr_no +' by ' + transport_name +'. For more details contact us on - 7045922252 \n Dispatch Details:\n'+product_list
 
@@ -831,7 +831,7 @@ def update_dispatch_details(request,update_id):
             # msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through " + transport_name + ", having LR Number " + lr_no + ". Please track the details on the transporters website"
             pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).purchase_no
 
-            msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase having ID '+str(pur_id)+'' \
+            msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
                                             ' is dispatched from our end with Dispatch ID ' + str(
                 item.dispatch_no) + ' & LR No ' + lr_no + ' by ' + transport_name + '. For more details contact us on - 7045922252'
 
