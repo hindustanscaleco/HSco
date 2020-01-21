@@ -835,14 +835,14 @@ def restamping_employee_graph(request,user_id):
 
     #current month
     mon = datetime.now().month
-    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                         'total_restamping_done_today').order_by('entry_date')
+    this_month = Restamping_after_sales_service.objects.filter(user_id=SiteUser.objects.get(id=user_id).id,entry_timedate__month=datetime.now().month)\
+        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
         x = i
-        this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        this_lis_sum.append(x['total_restamping_done_today'])
+        this_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        this_lis_sum.append(x['data_sum'])
 
     # previous month sales
     mon = (datetime.now().month)
@@ -850,26 +850,27 @@ def restamping_employee_graph(request,user_id):
         previous_mon = 12
     else:
         previous_mon = (datetime.now().month) - 1
-    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=previous_mon).values('entry_date',
-                                                                                                         'total_restamping_done_today').order_by('entry_date')
+    previous_month = Restamping_after_sales_service.objects.filter(user_id=SiteUser.objects.get(id=user_id).id,entry_timedate__month=previous_mon)\
+        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
         x = i
-        previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        previous_lis_sum.append(x['total_restamping_done_today'])
+        previous_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        previous_lis_sum.append(x['data_sum'])
 
     if request.method == 'POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values('entry_date',
-                                                                                                         'total_restamping_done_today').order_by('entry_date')
+
+        qs = Restamping_after_sales_service.objects.filter(user_id=SiteUser.objects.get(id=user_id).id,entry_date__range=(start_date, end_date))\
+        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
-            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['total_restamping_done_today'])
+            lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
 
         context = {
             'final_list': lis_date,
@@ -884,14 +885,14 @@ def restamping_employee_graph(request,user_id):
         return render(request, "graphs/restamping_employee_graph.html", context)
     else:
 
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values(
-            'entry_date', 'total_restamping_done_today').order_by('entry_date')
+        qs = Restamping_after_sales_service.objects.filter(user_id=SiteUser.objects.get(id=user_id).id,entry_timedate__month=datetime.now().month)\
+        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
-            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['total_restamping_done_today'])
+            lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
 
 
         # user_id=request.user.pk

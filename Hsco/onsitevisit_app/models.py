@@ -42,7 +42,7 @@ class Onsite_aftersales_service(models.Model):
     notes = models.CharField(max_length=300, null=True, blank=True)
     feedback_given = models.BooleanField(default=False)
     avg_feedback = models.FloatField(default=0.0)
-    entry_timedate = models.DateTimeField(default=timezone.now,)
+    entry_timedate = models.DateField(default=datetime.date.today,null=True,blank=True)
     is_done = models.BooleanField(default=False)
     assigned_to = models.CharField(max_length=150, null=True, blank=True)
     assigned_by = models.CharField(max_length=150, null=True, blank=True)
