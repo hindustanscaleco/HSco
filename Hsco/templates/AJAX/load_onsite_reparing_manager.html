@@ -24,8 +24,8 @@
 
 
                     <td>  {{list.user_id.name}} </td>
-                    <td> {{list.total_reparing_done_onsite}} </td>
-                    <td> {{list.repairing_target_achieved}} </td>
+                    <td> {{list.total_reparing_done_onsite| floatformat}} </td>
+                    <td> {{list.repairing_target_achieved| floatformat}} </td>
 
                        <td>
                          {% for avg in  list.start_rating_feedback_onsite_reparing|rjust:'5'  %}

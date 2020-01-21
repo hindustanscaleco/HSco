@@ -60,7 +60,7 @@ s
                 <tr style="cursor: pointer; " onclick="location.href='/dispatch_employee_graph/{{list.user_id}}';" class="col-xl-12 col-md-12 mb-12">
 
                     <td> {{ list.user_id.name }} </td>
-                    <td>{{ list.total_dispatch_done }} </td>
+                    <td>{{ list.total_dispatch_done| floatformat }} </td>
                     <td>{{ list.avg_time_dispatch_form_to_done | floatformat}} hrs </td>
     <td>{{list.entry_timedate.month}}/{{list.entry_timedate.year}}</td>
 

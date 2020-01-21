@@ -1104,7 +1104,6 @@ def repairing_analytics(request):
         this_lis_date.append(x['entry_date'].strftime("%B-%Y"))
         this_lis_sum.append(x['data_sum'])
 
-    from django.db.models import Max
     # Generates a "SELECT MAX..." query
     value = Employee_Analysis_month.objects.aggregate(Max('total_reparing_done'))
     print(value['total_reparing_done__max'])
@@ -1520,10 +1519,10 @@ def load_reparing_stages_list(request,):
 
 
             repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time)&(Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)| Q(
-                user_id__group__icontains=request.user.name)) & Q(current_stage='Repaired but not collected'))
+                user_id__group__icontains=request.user.name)) & Q(current_stage='Repaired but not collected')).order_by('repairing_no')
         else:  # For EMPLOYEE
 
-            repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time)&(Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)) & Q(current_stage='Repaired but not collected'))
+            repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time)&(Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)) & Q(current_stage='Repaired but not collected')).order_by('repairing_no')
         # repair_list = Repairing_after_sales_service.objects.filter(current_stage=selected_stage)
     elif selected_stage == '10days':
         new_final_time = ini_time_for_now - timedelta(days=10)
@@ -1531,16 +1530,17 @@ def load_reparing_stages_list(request,):
 
 
             repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time)&(Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)| Q(
-                user_id__group__icontains=request.user.name)) & Q(current_stage='Repaired but not collected'))
+                user_id__group__icontains=request.user.name)) & Q(current_stage='Repaired but not collected')).order_by('repairing_no')
         else:  # For EMPLOYEE
 
-            repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time)&(Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)) & Q(current_stage='Repaired but not collected'))
+            repair_list = Repairing_after_sales_service.objects.filter(Q(stage_update_timedate=new_final_time)&(Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)) & Q(current_stage='Repaired but not collected')).order_by('repairing_no')
     else:
         if check_admin_roles(request):  # For ADMIN
 
 
             repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='')| Q(taken_by=request.user.name)| Q(
-                user_id__group__icontains=request.user.name)) & Q(current_stage=selected_stage))
+                user_id__group__icontains=request.user.name)) & Q(current_stage=selected_stage)).order_by(
+                '-repairing_no')
         else:  # For EMPLOYEE
             admin = SiteUser.objects.get(id=request.user.pk).admin
             repair_list = Repairing_after_sales_service.objects.filter((

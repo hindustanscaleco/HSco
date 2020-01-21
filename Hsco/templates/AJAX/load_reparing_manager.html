@@ -24,9 +24,9 @@
               <tr style="cursor: pointer; " onclick="location.href='/repairing_employee_graph/{{list.user_id}}';" class="col-xl-12 col-md-12 mb-12">
 
                      <td> {{list.user_id.name}}</td>
-                    <td> {{list.total_reparing_done}} </td>
-                    <td> {{list.reparing_target_given}} </td>
-                    <td> {{list.avg_time_to_repair_single_scale}} hrs</td>
+                    <td> {{list.total_reparing_done| floatformat}} </td>
+                    <td> {{list.reparing_target_given| floatformat}} </td>
+                    <td> {{list.avg_time_to_repair_single_scale| floatformat}} hrs</td>
                     <td> Need some value </td>
                      <td>
                          {% for avg in  list1.start_rating_feedback_reparing|rjust:'5'  %}
