@@ -1187,37 +1187,42 @@ def onsitevisit_app_graph(request,user_id):
     avg_time =  obj.avg_time_to_repair_single_scale
 
     # current month
-    this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                     'total_reparing_done_onsite_today').order_by('entry_date')
+    this_month = Onsite_aftersales_service.objects.filter(complaint_assigned_to=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
+        .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
         x = i
-        this_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        this_lis_sum.append(x['total_reparing_done_onsite_today'])
+        this_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        this_lis_sum.append(x['data_sum'])
 
     # previous month sales
-    mon = (datetime.now().month) - 1
-    previous_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
-                                                                                                         'total_reparing_done_onsite_today').order_by('entry_date')
+    mon = (datetime.now().month)
+    if mon == 1:
+        previous_mon = 12
+    else:
+        previous_mon = (datetime.now().month) - 1
+    previous_month = Onsite_aftersales_service.objects.filter(complaint_assigned_to=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=previous_mon)\
+        .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
         x = i
-        previous_lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-        previous_lis_sum.append(x['total_reparing_done_onsite_today'])
+        previous_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        previous_lis_sum.append(x['data_sum'])
 
     if request.method == 'POST':
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__range=(start_date, end_date)).values(
-            'entry_date','total_reparing_done_onsite_today').order_by('entry_date')
+        qs = Onsite_aftersales_service.objects.filter(complaint_assigned_to=SiteUser.objects.get(id=user_id).profile_name,entry_date__range=(start_date, end_date)) \
+            .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
+
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
-            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['total_reparing_done_onsite_today'])
+            lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
 
         context = {
             'final_list': lis_date,
@@ -1232,14 +1237,14 @@ def onsitevisit_app_graph(request,user_id):
         return render(request, "graphs/onsitevisit_app_graph.html", context)
     else:
 
-        qs = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=datetime.now().month).values('entry_date',
-                                                                                                                  'total_reparing_done_onsite_today').order_by('entry_date')
+        qs = Onsite_aftersales_service.objects.filter(complaint_assigned_to=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
+        .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
         lis_date = []
         lis_sum = []
         for i in qs:
             x = i
-            lis_date.append(x['entry_date'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['total_reparing_done_onsite_today'])
+            lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lis_sum.append(x['data_sum'])
         print(lis_date)
         print(lis_sum)
 
