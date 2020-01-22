@@ -611,7 +611,8 @@ def update_dispatch_details(request,update_id):
         item2 = customer_id
         item2.customer_name = customer_name
         item2.contact_no = contact_no
-        item2.save(update_fields=['customer_name','contact_no'])  #new3
+        if customer_id.contact_no != item2.contact_no or customer_id.customer_name != item2.customer_name :
+            item2.save(update_fields=['customer_name','contact_no'])  #new3
 
         if company_name != '':
             item2.company_name = company_name
@@ -734,17 +735,7 @@ def update_dispatch_details(request,update_id):
                         total_days = (dispatch_item.dispatch_done_timedate - dispatch_item.dispatch_start_timedate).days - 1
                         total_days_time = total_days * 10
                         total_time_taken = total_days_time + last_day_time + first_day_time
-                        print(total_days_time)
-                        print(total_days_time)
-                        print(total_days_time)
-                        print(last_day_time)
-                        print(last_day_time)
-                        print(first_day_time)
-                        print(first_day_time)
-                        print(total_time_taken)
-                        print(total_time_taken)
-                        print(total_time_taken)
-                        print('fsdjkl2')
+
                         dispatch_item.total_dispatch_time = total_time_taken
                         dispatch_item.save(update_fields=['total_dispatch_time'])
                     # total_time = dispatch_item.dispatch_done_timedate - dispatch_item.dispatch_start_timedate
@@ -784,7 +775,7 @@ def update_dispatch_details(request,update_id):
         item.notes = notes
 
         current_stage_in_db = Dispatch.objects.get(id=update_id).current_stage  # updatestage3
-        if (current_stage_in_db == 'dispatch but lr not updated') and (lr_no != '' and lr_no != None and lr_no!= 'None'):
+        if (current_stage_in_db == 'dispatch but lr not updated') and (lr_no != '' and lr_no != None and lr_no!= 'None') and lr_no != dispatch_item.lr_no:
             Dispatch.objects.filter(id=update_id).update(current_stage='dispatch completed')
             product_list = ''' '''
             pro_lis = Product_Details_Dispatch.objects.filter(dispatch_id=dispatch_item.pk)
@@ -818,7 +809,7 @@ def update_dispatch_details(request,update_id):
 
                 msg ='Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
                      ' is dispatched from our end with Dispatch ID ' + str(
-                item.dispatch_no) + ' & LR No '+ lr_no +' by ' + transport_name +'. For more details contact us on - 7045922252 \n Dispatch Details:\n'+product_list
+                item.dispatch_no) + ' and LR No '+ lr_no +' by ' + transport_name +'. For more details contact us on - 7045922252 \n Dispatch Details:\n'+product_list
 
                 send_mail('Dispatched, Your Hsco Purchase is Dispatched from our end',
                           msg, settings.EMAIL_HOST_USER,
@@ -829,11 +820,14 @@ def update_dispatch_details(request,update_id):
                 pass
 
             # msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through " + transport_name + ", having LR Number " + lr_no + ". Please track the details on the transporters website"
-            pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).purchase_no
+            try:
+                pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).purchase_no
+            except:
+                pur_id = Dispatch.objects.get(id=update_id)
 
             msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
-                                            ' is dispatched from our end with Dispatch ID ' + str(
-                item.dispatch_no) + ' & LR No ' + lr_no + ' by ' + transport_name + '. For more details contact us on - 7045922252'
+                                            ' is dispatch from our end with Dispatch ID ' \
+                  + str(item.dispatch_no)+ ' and LR No ' + lr_no + ' by ' + transport_name + '. For more details contact us on - 7045922252'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""

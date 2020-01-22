@@ -573,7 +573,8 @@ def update_restamping_details(request,id):
 
         item2.contact_no = contact_no
         item2.customer_name = customer_name
-        item2.save(update_fields=['customer_name', 'contact_no']) #new3
+        if customer_id.contact_no != item2.contact_no or customer_id.customer_name != item2.customer_name :
+            item2.save(update_fields=['customer_name', 'contact_no']) #new3
 
 
         if company_name != '':
