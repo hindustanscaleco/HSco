@@ -233,7 +233,8 @@ def repair_product(request,id):
         item.Replaced_scale_serial_no = Replaced_scale_serial_no
         item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
         item.repairing_id_id = id
-        item.in_warranty = in_warranty
+        if in_warranty != '' or in_warranty != None:
+            item.in_warranty = in_warranty
         # print(is_last_product_no)
         # if is_last_product_yes == None:
         #     item.is_last_product = False
@@ -392,7 +393,7 @@ def repair_product(request,id):
 
         if is_last_product_yes == 'yes':
             cust = Customer_Details.objects.get(id=rep.crm_no)
-            ret = send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
+            # ret = send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, id, '1')
             Repairing_after_sales_service.objects.filter(id=id).update(is_last_product_added=True)
             product_list = ''' '''
             pro_lis = Repairing_Product.objects.filter(repairing_id_id=rep.pk)
@@ -418,15 +419,15 @@ def repair_product(request,id):
                 )
                 product_list = product_list + '' + str(email_body_text)
 
-            msg_old= 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                          request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.pk) +'\nHere is a list of Products:\n'+product_list
+                # msg_old= 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+            #               request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.pk) +'\nHere is a list of Products:\n'+product_list
             # msg='Dear '+rep.second_person+',Thank you for selecting HSCo. Your Scales have been successfully ' \
             #     'received at our Repairing Center. Your Repairing No is '+str(rep.repairing_no)+'. Please use this Unique ID for further communication. For any ' \
             #     'further details please contact our customer service team on 7045922251 \n Product Details:\n'+product_list
 
-            msg = 'Dear ' + rep.second_person + ', Your Scales has been ' \
-                                       'received at our Repairing Center. Your Repairing No is ' + str(rep.repairing_no) + '.' \
-                                      ' For any further details please contact our customer service team on 7045922251 \n Product Details:\n'+product_list
+            # msg = 'Dear ' + rep.second_person + ', Your Scales has been ' \
+            #                            'received at our Repairing Center. Your Repairing No is ' + str(rep.repairing_no) + '.' \
+            #                           ' For any further details please contact our customer service team on 7045922251 \n Product Details:\n'+product_list
             # if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
             # crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
             try:
@@ -444,21 +445,23 @@ def repair_product(request,id):
 
 
 
-            message_old = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
-                request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.pk)
+            # message_old = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
+            #     request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.pk)
+            repair_id = Repairing_after_sales_service.objects.get(id=id)
+            if repair_id.first_message_send == False:
+                message = 'Dear ' + rep.second_person + ', Your Scales has been ' \
+                                                    'received at our Repairing Center. Your Repairing No is ' + str(
+                    rep.repairing_no) + '.' \
+                                        ' For any further details please contact our customer service team on 7045922251'
 
-            message = 'Dear ' + rep.second_person + ', Your Scales has been ' \
-                                                'received at our Repairing Center. Your Repairing No is ' + str(
-                rep.repairing_no) + '.' \
-                                    ' For any further details please contact our customer service team on 7045922251'
+                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + rep.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+                payload = ""
+                headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + rep.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-            payload = ""
-            headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-            x = response.text
-
+                response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                x = response.text
+                repair_id.first_message_send = True
+                repair_id.save(update_fields=['first_message_send', ])
 
 
         # current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  #updatestage2
@@ -519,7 +522,8 @@ def update_repairing_details(request,id):
 
         item.customer_name = customer_name
         item.contact_no = contact_no
-        item.save(update_fields=['customer_name', 'contact_no'])  # new3
+        if customer_id.contact_no != item.contact_no or customer_id.customer_name != item.customer_name :
+            item.save(update_fields=['customer_name', 'contact_no'])  # new3
 
         informed_on = request.POST.get('informed_on')
         informed_by = request.POST.get('informed_by')
@@ -556,13 +560,13 @@ def update_repairing_details(request,id):
 
 
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage3
-        if current_stage_in_db == 'Scale is collected but estimate is not given'  and (informed_by != None and informed_by!="" and informed_by!="None"):
+        if current_stage_in_db == 'Scale is collected but estimate is not given'  and (informed_by != None and informed_by!="" and informed_by!="None") and informed_by !=repair_id.informed_by:
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Estimate is given but Estimate is not confirmed', stage_update_timedate=timezone.now())
             item2.stage_update_timedate = timezone.now()
             item2.save(update_fields=['stage_update_timedate',])
 
-        if current_stage_in_db == 'Estimate is given but Estimate is not confirmed' and confirmed_estimate == 'Yes':
+        if current_stage_in_db == 'Estimate is given but Estimate is not confirmed' and confirmed_estimate == 'Yes' and confirmed_estimate !=repair_id.confirmed_estimate:
             Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Estimate is confirmed but not repaired')
             item2.stage_update_timedate = timezone.now()
             item2.save(update_fields=['stage_update_timedate',])
@@ -627,7 +631,7 @@ def update_repairing_details(request,id):
 
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage4
         # if current_stage_in_db == 'Estimate is confirmed but not repaired' and (repaired_by != None or repaired_by!=""):
-        if (repaired_by != None and repaired_by!="" and repaired_by != 'None'):
+        if (repaired_by != None and repaired_by!="" and repaired_by != 'None') and repaired_by !=repair_id.repaired_by:
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Repaired but not collected')
             item2.stage_update_timedate = timezone.now()
@@ -662,7 +666,7 @@ def update_repairing_details(request,id):
                 reparing_done_sms_count=F("reparing_done_sms_count") + 1)
 
 
-        if delivery_by != None and delivery_by !='' and delivery_by != 'None':
+        if delivery_by != None and delivery_by !='' and delivery_by != 'None' and delivery_by !=repair_id.delivery_by :
             item2.delivery_by = delivery_by
             item2.delivery_date = datetime.today().strftime('%Y-%m-%d')
             item2.save(update_fields=['delivery_by'])
@@ -694,10 +698,10 @@ def update_repairing_details(request,id):
 
                 message = ' Dear ' + customer_name + ',Thank you for selecting HSCo. Your Scale with Repairing No ' + str(
                                   repair_id.repairing_no) + ' has been ' \
-                          'Successfully Collected. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love ' \
-                          'to hear your feedback to help us improve our customer experience,just click on the link below:\n ' \
-                                                  ' http://139.59.76.87/feedback_repairing/'+str(request.user.pk)+'/'+str(repair_id.crm_no.pk)+'/'+str(repair_id.id)+'\n If you ' \
-                          'feel that your complaint has not been resolved please contact our customer service team on 7045922251'
+                          'Successfully Resolved and Collected. We will love ' \
+                          'to hear your feedback to help us improve our customer experience. Please click on the link below:\n ' \
+                                                  ' http://139.59.76.87/feedback_repairing/'+str(request.user.pk)+'/'+str(repair_id.crm_no.pk)+'/'+str(repair_id.id)+'\n ' \
+                          'Contact our customer service team on 7045922251'
 
                 url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
                 payload = ""
@@ -715,7 +719,7 @@ def update_repairing_details(request,id):
         #     item2.informed_on = informed_on
         #     item2.save(update_fields=['informed_on', ]),
         #
-        if informed_by != '' and informed_by!= None and informed_by != 'None':
+        if informed_by != '' and informed_by!= None and informed_by != 'None' and informed_by !=repair_id.informed_by:
             item2.informed_on = datetime.today().strftime('%Y-%m-%d')
 
             item2.informed_by = informed_by
@@ -837,9 +841,7 @@ def update_repairing_details(request,id):
         item2.repaired = repaired
         item2.notes = notes
         if taken_by != '' and taken_by != None and taken_by != 'None':
-            print(taken_by)
-            print(taken_by)
-            print(taken_by)
+
             item2.repairing_start_timedate = timezone.now()
 
             item2.taken_by = taken_by
@@ -1649,7 +1651,6 @@ def send_sms(request,name,phone,email,repair_id,item_id):
     repair_id = Repairing_after_sales_service.objects.get(id=id).repairing_no
     api = 'PF8MzCBOGTopfpYFlSZT'
     if msg_id == '1':
-
         message = 'Dear '+name+', Your Scales has been ' \
                   'received at our Repairing Center. Your Repairing No is '+str(repair_id)+'.' \
                   ' For any further details please contact our customer service team on 7045922251'

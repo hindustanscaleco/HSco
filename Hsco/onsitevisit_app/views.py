@@ -692,7 +692,8 @@ def update_onsite_details(request,id):
             item2.customer_email_id = customer_email_id
             item2.save(update_fields=['customer_email_id'])
         item2.contact_no = contact_no
-        item2.save(update_fields=['customer_name','contact_no'])  #new3
+        if customer_id.contact_no != item2.contact_no or customer_id.customer_name != item2.customer_name :
+            item2.save(update_fields=['customer_name','contact_no'])  #new3
 
         # repairingno = request.POST.get('repairingno')
         # customer_no = request.POST.get('customer_no')

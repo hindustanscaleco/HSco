@@ -59,9 +59,10 @@ class Repairing_after_sales_service(models.Model):
     repairing_start_timedate = models.DateTimeField(null=True, blank=True, auto_now=False, auto_now_add=False)
     repairing_done_timedate = models.DateTimeField(null=True,blank=True, auto_now=False, auto_now_add=False)
     total_repairing_time  = models.FloatField(default=0.0)
-    repairing_time_calculated = models.BooleanField(default=False)
 
+    repairing_time_calculated = models.BooleanField(default=False)
     ess_calculated = models.BooleanField(default=False)
+    first_message_send = models.BooleanField(default=False)
 
     def __int__(self):
         return self.pk

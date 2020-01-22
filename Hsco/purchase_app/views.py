@@ -476,7 +476,8 @@ def update_customer_details(request,id):
 
         item.customer_name = customer_name
         item.contact_no = contact_no
-        item.save(update_fields=['customer_name','contact_no'])  #new3
+        if customer_id.contact_no != item.contact_no or customer_id.customer_name != item.customer_name :
+            item.save(update_fields=['customer_name','contact_no'])  #new3
 
 
         date_of_purchase = request.POST.get('date_of_purchase')
@@ -746,7 +747,7 @@ def add_product_details(request,id):
                     purchase.second_person) + ',' \
                          ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
                 purchase.purchase_no) + '.' \
-                         ' WE\'d love to hear your feedback to help us improve' \
+                         ' Ww will love to hear your feedback to help us improve' \
                        ' our customer experience. Please click on the link' \
                          ' below: \n http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
                 purchase.crm_no.pk) + '/' + str(
@@ -795,7 +796,7 @@ def add_product_details(request,id):
                 purchase.second_person) + ',' \
                                           ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
                 purchase.purchase_no) + '.' \
-                                        ' WE\'d love to hear your feedback to help us improve' \
+                                        ' WE will love to hear your feedback to help us improve' \
                                         ' our customer experience. Please click on the link' \
                                         ' below: \n http://139.59.76.87/feedback_purchase/' + str(
                 request.user.pk) + '/' + str(
