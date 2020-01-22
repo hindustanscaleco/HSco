@@ -1180,11 +1180,11 @@ def onsitevisit_app_graph(request,user_id):
     overall_interaction = Onsite_Feedback.objects.filter(user_id=user_id).aggregate(Avg('overall_interaction'))
     speed_of_performance = Onsite_Feedback.objects.filter(user_id=user_id).aggregate(Avg('speed_of_performance'))
 
-    backend_team_avg = backend_team['backend_team__avg']
-    price_of_reparing_avg = price_of_reparing['price_of_reparing__avg']
-    overall_interaction_avg = overall_interaction['overall_interaction__avg']
-    onsite_worker_avg = onsite_worker['onsite_worker__avg']
-    speed_of_performance_avg = speed_of_performance['speed_of_performance__avg']
+    backend_team_avg = f"{backend_team['backend_team__avg']:.3g}"
+    price_of_reparing_avg = f"{price_of_reparing['price_of_reparing__avg']:.3g}"
+    overall_interaction_avg = f"{overall_interaction['overall_interaction__avg']:.3g}"
+    onsite_worker_avg = f"{onsite_worker['onsite_worker__avg']:.3g}"
+    speed_of_performance_avg = f"{speed_of_performance['speed_of_performance__avg']:.3g}"
     mon = datetime.now().month
 
     print(user_id)
