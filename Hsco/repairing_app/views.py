@@ -1413,6 +1413,15 @@ def repairing_employee_graph(request,user_id):
 
     from django.db.models import Sum
     rep_feedback = Repairing_Feedback.objects.filter(user_id=user_id)
+    satisfied_with_communication = Repairing_Feedback.objects.filter(user_id=user_id).aggregate(Avg('satisfied_with_communication'))
+    speed_of_performance= Repairing_Feedback.objects.filter(user_id=user_id).aggregate(Avg('speed_of_performance'))
+    price_of_reparing = Repairing_Feedback.objects.filter(user_id=user_id).aggregate(Avg('price_of_reparing'))
+    overall_interaction = Repairing_Feedback.objects.filter(user_id=user_id).aggregate(Avg('overall_interaction'))
+
+    speed_of_performance_avg = speed_of_performance['speed_of_performance__avg']
+    price_of_reparing_avg = price_of_reparing['price_of_reparing__avg']
+    overall_interaction_avg = overall_interaction['overall_interaction__avg']
+    satisfied_with_communication_avg = satisfied_with_communication['satisfied_with_communication__avg']
 
     mon = datetime.now().month
 
@@ -1436,8 +1445,6 @@ def repairing_employee_graph(request,user_id):
         x = i
         this_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
         this_lis_sum.append(x['data_sum'])
-        print(this_lis_sum)
-        print(this_lis_sum)
 
     # previous month sales
     mon = (datetime.now().month)
@@ -1448,7 +1455,6 @@ def repairing_employee_graph(request,user_id):
 
     previous_month = Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=previous_mon)\
         .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
-    print(previous_month)
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -1478,7 +1484,10 @@ def repairing_employee_graph(request,user_id):
             'this_lis_date': this_lis_date,
             'this_lis_sum': this_lis_sum,
             'rep_feedback': rep_feedback,
-            'avg_time': avg_time,
+            'satisfied_with_communication_avg': satisfied_with_communication_avg,
+            'speed_of_performance_avg': speed_of_performance_avg,
+            'price_of_reparing_avg': price_of_reparing_avg,
+            'overall_interaction_avg': overall_interaction_avg,
         }
         return render(request, "graphs/repairing_employee_graph.html", context)
     else:
@@ -1502,6 +1511,10 @@ def repairing_employee_graph(request,user_id):
             'target_achieved': target_achieved,
             'rep_feedback': rep_feedback,
             'avg_time': avg_time,
+            'satisfied_with_communication_avg': satisfied_with_communication_avg,
+            'speed_of_performance_avg': speed_of_performance_avg,
+            'price_of_reparing_avg': price_of_reparing_avg,
+            'overall_interaction_avg': overall_interaction_avg,
             # 'feeback': feeback,
         }
         return render(request,"graphs/repairing_employee_graph.html",context)
