@@ -1090,6 +1090,11 @@ def customer_employee_sales_graph(request,user_id):
     timeliness_of_person_avg = timeliness_of_person['timeliness_of_person__avg']
     overall_interaction_avg = overall_interaction['overall_interaction__avg']
     price_of_product_avg = price_of_product['price_of_product__avg']
+
+    print(knowledge_of_person_avg)
+    print(timeliness_of_person_avg)
+    print(overall_interaction_avg)
+    print(price_of_product_avg)
     mon = datetime.now().month
 
     # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
