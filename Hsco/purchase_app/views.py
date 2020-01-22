@@ -8,7 +8,7 @@ from dispatch_app.models import Product_Details_Dispatch
 from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
 from purchase_app.forms import Purchase_Details_Form, Feedback_Form
 from ess_app.models import Employee_Leave
-from django.db.models import Q, F, Min
+from django.db.models import Q, F, Min, Avg
 from django.db.models import Sum
 from ess_app.models import Employee_Analysis_date
 from django.contrib.auth.decorators import login_required
@@ -1081,7 +1081,15 @@ def customer_employee_sales_graph(request,user_id):
 
     feeback = Feedback.objects.filter(user_id=user_id)
     #this month sales
+    knowledge_of_person = Feedback.objects.filter(user_id=user_id).aggregate(Avg('knowledge_of_person'))
+    timeliness_of_person = Feedback.objects.filter(user_id=user_id).aggregate(Avg('timeliness_of_person'))
+    price_of_product = Feedback.objects.filter(user_id=user_id).aggregate(Avg('price_of_product'))
+    overall_interaction = Feedback.objects.filter(user_id=user_id).aggregate(Avg('overall_interaction'))
 
+    knowledge_of_person_avg = knowledge_of_person['knowledge_of_person__avg']
+    timeliness_of_person_avg = timeliness_of_person['timeliness_of_person__avg']
+    overall_interaction_avg = overall_interaction['overall_interaction__avg']
+    price_of_product_avg = price_of_product['price_of_product__avg']
     mon = datetime.now().month
 
     # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
@@ -1131,6 +1139,10 @@ def customer_employee_sales_graph(request,user_id):
             'this_lis_date': this_lis_date,
             'this_lis_sum': this_lis_sum,
             'feeback': feeback,
+            'knowledge_of_person_avg': knowledge_of_person_avg,
+            'timeliness_of_person_avg': timeliness_of_person_avg,
+            'price_of_product_avg': price_of_product_avg,
+            'overall_interaction_avg': overall_interaction_avg,
         }
         return render(request, "graphs/sales_graph.html", context)
     else:
@@ -1151,6 +1163,10 @@ def customer_employee_sales_graph(request,user_id):
             'this_lis_date': this_lis_date,
             'this_lis_sum': this_lis_sum,
             'feeback': feeback,
+            'knowledge_of_person_avg': knowledge_of_person_avg,
+            'timeliness_of_person_avg': timeliness_of_person_avg,
+            'price_of_product_avg': price_of_product_avg,
+            'overall_interaction_avg': overall_interaction_avg,
         }
         return render(request,"graphs/sales_graph.html",context)
 
