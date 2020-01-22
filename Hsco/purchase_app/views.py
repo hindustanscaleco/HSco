@@ -1086,15 +1086,12 @@ def customer_employee_sales_graph(request,user_id):
     price_of_product = Feedback.objects.filter(user_id=user_id).aggregate(Avg('price_of_product'))
     overall_interaction = Feedback.objects.filter(user_id=user_id).aggregate(Avg('overall_interaction'))
 
-    knowledge_of_person_avg = knowledge_of_person['knowledge_of_person__avg']
-    timeliness_of_person_avg = timeliness_of_person['timeliness_of_person__avg']
-    overall_interaction_avg = overall_interaction['overall_interaction__avg']
-    price_of_product_avg = price_of_product['price_of_product__avg']
+    knowledge_of_person_avg = f"{knowledge_of_person['knowledge_of_person__avg']:.3g}"
+    timeliness_of_person_avg = f"{timeliness_of_person['timeliness_of_person__avg']:.3g}"
+    overall_interaction_avg = f"{overall_interaction['overall_interaction__avg']:.3g}"
+    price_of_product_avg = f"{price_of_product['price_of_product__avg']:.3g}"
 
-    print(knowledge_of_person_avg)
-    print(timeliness_of_person_avg)
-    print(overall_interaction_avg)
-    print(price_of_product_avg)
+
     mon = datetime.now().month
 
     # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',

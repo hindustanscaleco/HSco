@@ -1418,10 +1418,10 @@ def repairing_employee_graph(request,user_id):
     price_of_reparing = Repairing_Feedback.objects.filter(user_id=user_id).aggregate(Avg('price_of_reparing'))
     overall_interaction = Repairing_Feedback.objects.filter(user_id=user_id).aggregate(Avg('overall_interaction'))
 
-    speed_of_performance_avg = speed_of_performance['speed_of_performance__avg']
-    price_of_reparing_avg = price_of_reparing['price_of_reparing__avg']
-    overall_interaction_avg = overall_interaction['overall_interaction__avg']
-    satisfied_with_communication_avg = satisfied_with_communication['satisfied_with_communication__avg']
+    speed_of_performance_avg = f"{speed_of_performance['speed_of_performance__avg']:.3g}"
+    price_of_reparing_avg = f"{price_of_reparing['price_of_reparing__avg']:.3g}"
+    overall_interaction_avg = f"{overall_interaction['overall_interaction__avg']:.3g}"
+    satisfied_with_communication_avg = f"{satisfied_with_communication['satisfied_with_communication__avg']:.3g}"
 
     mon = datetime.now().month
 
