@@ -225,28 +225,28 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
 
                         <b>Knowledge : </b>{% for avg in knowledge_of_person_avg|rjust:'5'  %}
-{% if forloop.counter <= knowledge_of_person_avg|floatformat %}
+{% if forloop.counter <= knowledge_of_person_avg %}
 									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
 							{% else %}
 									<i class="fa fa-star" aria-hidden="true"></i>
 							{% endif %}
         						{% endfor %} <br>
                   <b>Timeliness : </b>{% for avg in timeliness_of_person_avg|rjust:'5'  %}
-{% if forloop.counter <= timeliness_of_person_avg|floatformat %}
+{% if forloop.counter <= timeliness_of_person_avg  %}
 									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
 							{% else %}
 									<i class="fa fa-star" aria-hidden="true"></i>
 							{% endif %}
         						{% endfor %}  <br>
                   <b>Price Of Product : </b>{% for avg in overall_interaction_avg|rjust:'5'  %}
-{% if forloop.counter <= overall_interaction_avg|floatformat %}
+{% if forloop.counter <= overall_interaction_avg  %}
 									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
 							{% else %}
 									<i class="fa fa-star" aria-hidden="true"></i>
 							{% endif %}
         						{% endfor %}   <br>
                   <b>Over All Interaction : </b>{% for avg in price_of_product_avg|rjust:'5'  %}
-{% if forloop.counter <= price_of_product_avg|floatformat %}
+{% if forloop.counter <= price_of_product_avg  %}
 									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
 							{% else %}
 									<i class="fa fa-star" aria-hidden="true"></i>
