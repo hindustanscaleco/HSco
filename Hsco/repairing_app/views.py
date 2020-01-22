@@ -462,7 +462,8 @@ def repair_product(request,id):
                 x = response.text
                 repair_id.first_message_send = True
                 repair_id.save(update_fields=['first_message_send', ])
-
+                Repairing_after_sales_service.objects.filter(id=id).update(
+                    scale_sub_sms_count=F("scale_sub_sms_count") + 1)
 
         # current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  #updatestage2
 
@@ -643,7 +644,7 @@ def update_repairing_details(request,id):
             try:
                 send_mail('Repairing Done - HSCo',
                           ' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.repairing_no)+' is resolved.'
-                          ' Please collect your Scales within the next 3 days.For any further details please contact '
+                          ' Please collect your Scales within the next 3 days.Consider this as your final reminder.For any further details please contact '
                           'our customer service team on 7045922251', settings.EMAIL_HOST_USER,
                           [item.customer_email_id,])
             except:
@@ -653,7 +654,7 @@ def update_repairing_details(request,id):
             #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
             message=' Dear '+customer_name+', Your Repairing Complaint No '+str(repair_id.repairing_no)+' is resolved. ' \
-                    'Please collect your Scales within the next 3 days.For any further details please contact our ' \
+                    'Please collect your Scales within the next 3 days.Consider this as your final reminder.For any further details please contact our ' \
                     'customer service team on 7045922251'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
@@ -709,9 +710,8 @@ def update_repairing_details(request,id):
 
                 response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
                 x = response.text
-
-
-
+                Repairing_after_sales_service.objects.filter(id=id).update(
+                    final_del_sms_count=F("final_del_sms_count") + 1)
 
         # item2.total_cost = total_cost
         # if informed_on != '':
@@ -1672,7 +1672,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
             pass
     elif msg_id == '3':
         message = 'Dear '+name+', Your Repairing Complaint No '+str(repair_id)+' is resolved.' \
-                  ' Please collect your Scales within the next 3 days.For any further details please contact our customer service team on 7045922251'
+                  ' Please collect your Scales within the next 3 days. Consider this as your final reminder.For any further details please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(reparing_done_sms_count=F("reparing_done_sms_count") + 1)
         try:
             send_mail('Reparing done - HSCo', message, settings.EMAIL_HOST_USER, [email,])
@@ -1691,9 +1691,11 @@ def send_sms(request,name,phone,email,repair_id,item_id):
             pass
     elif msg_id == '5':
         rep_id=Repairing_after_sales_service.objects.get(id=id)
-        message = 'Dear ' + name + ',Your Repairing Complaint No ' + str(repair_id) +' is resolved. Plz collect your Scales within the next 3 days.' \
-                                                                                      'Contact our service team on 7045922251 \n click on the link below for feedback:\n ' \
-                            ' http://139.59.76.87/feedback_repairing/'+ str(request.user.pk) + '/' + str(rep_id.crm_no.pk) + '/' + str(rep_id.pk) + '\n'
+        message = ' Dear ' + name + ',Thank you for selecting HSCo. Your Scale with Repairing No ' + str(repair_id) + ' has been ' \
+                                      'Successfully Resolved and Collected. We will love ' \
+                                      'to hear your feedback to help us improve our customer experience. Please click on the link below:\n ' \
+                                      ' http://139.59.76.87/feedback_repairing/' + str(request.user.pk) + '/' + str(rep_id.crm_no.pk)\
+        + '/' + str(rep_id.pk) + '\n ' +'Contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(final_del_sms_count=F("final_del_sms_count") + 1)
         try:
             send_mail('Scale Collected - HSCo', message, settings.EMAIL_HOST_USER, [email,])
