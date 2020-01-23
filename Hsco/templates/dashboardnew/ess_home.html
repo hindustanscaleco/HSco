@@ -75,15 +75,18 @@ color:;
 
         <!-- Begin Page Content -->
         <div class="container-fluid" >
+                                  {% if request.user.role != 'Super Admin' %}
+
             <form action="" method="POST"> {% csrf_token %}
 
 
 <center>
   <div style="width: 70%;" class="row">
-    <h3 style="color: black;" class="col-xl-12 col-md-12">Applied Holidays *</h3>
+    <h3 style="color: black;" class="col-xl-12 col-md-12">Apply For Leave</h3>
 <br>
 <br>
 <br>
+
 {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Employee' %}
    <input type="date" required name="from" class="col-xl-3 col-md-4 form-control" style="width: 50%">
    &nbsp;  - &nbsp;
@@ -93,12 +96,15 @@ color:;
       &nbsp; &nbsp;
       {% endif %}
   </div>
+
 <br>
 
 
 
 </center>
                    </form>
+                    {% endif %}
+
 <br>
 
      <style>
@@ -128,10 +134,15 @@ color:;
 
 
 
+                                  {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager' %}
 
            <div class="row">
+                            <div class="col-xl-12 col-md-12 mb-12">
 
-
+<center>
+    <h3 style="color: black;" class="col-xl-12 col-md-12">Applied Holidays *</h3>
+</center>
+                            </div>
 {% for item in leave_req_list %}
              <div class="col-xl-12 col-md-12 mb-12">
                  {% if item.is_approved %}
@@ -195,6 +206,7 @@ color:;
 
 {% endfor %}
 </div>
+            {% endif %}
 <script>
             function myFunction(){
                 document.getElementById('timer').style.color = '#ADFF2F'

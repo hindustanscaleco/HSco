@@ -13,6 +13,8 @@ from ess_app.models import Employee_Analysis_month
 from user_app.models import SiteUser
 
 from purchase_app.views import check_admin_roles
+
+from ess_app.models import Defects_Warning
 from .forms import add_Onsite_aftersales_service_form
 
 from .forms import Onsite_Repairing_Feedback_Form
@@ -1223,7 +1225,7 @@ def onsitevisit_app_graph(request,user_id):
         previous_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
         previous_lis_sum.append(x['data_sum'])
 
-    if request.method == 'POST':
+    if request.method == 'POST' and 'date1' in request.POST:
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         qs = Onsite_aftersales_service.objects.filter(complaint_assigned_to=SiteUser.objects.get(id=user_id).profile_name,entry_date__range=(start_date, end_date)) \
@@ -1252,6 +1254,32 @@ def onsitevisit_app_graph(request,user_id):
             'speed_of_performance_avg': speed_of_performance_avg,
         }
         return render(request, "graphs/onsitevisit_app_graph.html", context)
+    elif request.method=='POST' and 'defect_submit' in request.POST:
+        defect = request.POST.get('defect')
+
+        def_obj = Defects_Warning()
+
+
+        if defect != None or defect != '' or defect != 'None':
+            def_obj.content = defect
+            def_obj.type = 'defect'
+
+        def_obj.user_id = SiteUser.objects.get(id=user_id)
+        def_obj.given_by = SiteUser.objects.get(id=request.user.id).profile_name
+        def_obj.save()
+        return HttpResponse('Defect Submitted!!!')
+    elif request.method=='POST' and 'warning_submit' in request.POST:
+        warning = request.POST.get('warning')
+
+        def_obj = Defects_Warning()
+
+        if warning != None or warning != '' or warning != 'None':
+            def_obj.content = warning
+            def_obj.type = 'warning'
+        def_obj.user_id = SiteUser.objects.get(id=user_id)
+        def_obj.given_by = SiteUser.objects.get(id=request.user.id).profile_name
+        def_obj.save()
+        return HttpResponse('Warning Submitted!!!')
     else:
 
         qs = Onsite_aftersales_service.objects.filter(complaint_assigned_to=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
