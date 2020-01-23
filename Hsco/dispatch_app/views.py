@@ -778,6 +778,10 @@ def update_dispatch_details(request,update_id):
         item.notes = notes
 
         current_stage_in_db = Dispatch.objects.get(id=update_id).current_stage  # updatestage3
+        # if (current_stage_in_db == 'dispatch q') and (dispatch_by != '' or dispatch_by != None) and dispatch_by != dispatch_item.dispatch_by :
+        #     Dispatch.objects.filter(id=item2.pk).update(current_stage='dispatch but lr not updated')
+        #
+
         if (current_stage_in_db == 'dispatch but lr not updated') and (lr_no != '' and lr_no != None and lr_no!= 'None') and lr_no != dispatch_item.lr_no:
             Dispatch.objects.filter(id=update_id).update(current_stage='dispatch completed')
             product_list = ''' '''
@@ -840,7 +844,7 @@ def update_dispatch_details(request,update_id):
             x = response.text
 
 
-        if (current_stage_in_db == 'dispatch q') and (dispatch_by != '' and dispatch_by != None):
+        if (current_stage_in_db == 'dispatch q') and (dispatch_by != '' and dispatch_by != None) and dispatch_by != dispatch_item.dispatch_by  :
             Dispatch.objects.filter(id=update_id).update(current_stage='dispatch but lr not updated')
 
             value_of_goods=Product_Details_Dispatch.objects.filter(dispatch_id=update_id).aggregate(Sum('value_of_goods'))
