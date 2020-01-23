@@ -1437,7 +1437,7 @@ def repairing_employee_graph(request,user_id):
     except:
         pass
 
-    this_month = Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=mon)\
+    this_month = Repairing_after_sales_service.objects.filter(taken_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=mon)\
         .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
 
     this_lis_date = []
@@ -1454,7 +1454,7 @@ def repairing_employee_graph(request,user_id):
     else:
         previous_mon = (datetime.now().month) - 1
 
-    previous_month = Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=previous_mon)\
+    previous_month = Repairing_after_sales_service.objects.filter(taken_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=previous_mon)\
         .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
     previous_lis_date = []
     previous_lis_sum = []
@@ -1467,7 +1467,7 @@ def repairing_employee_graph(request,user_id):
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
 
-        qs=Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__range=(start_date, end_date))\
+        qs=Repairing_after_sales_service.objects.filter(taken_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__range=(start_date, end_date))\
         .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
         lis_date = []
         lis_sum = []
@@ -1519,7 +1519,7 @@ def repairing_employee_graph(request,user_id):
         return HttpResponse('Warning Submitted!!!')
     else:
 
-        qs = Repairing_after_sales_service.objects.filter(repaired_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
+        qs = Repairing_after_sales_service.objects.filter(taken_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
         .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
         lis_date = []
         lis_sum = []
