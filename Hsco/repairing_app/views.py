@@ -1297,10 +1297,8 @@ def edit_product(request,id):
         cost2 = product_id.cost
 
         if cost != None or '':
-            Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") - cost2)
-            Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + cost)
             if Repairing_after_sales_service.objects.get(id=repairing_id).repaired_by != None or '':
-                repaired_by =  Repairing_after_sales_service.objects.get(id=repairing_id).repaired_by
+                repaired_by =  Repairing_after_sales_service.objects.get(id=repairing_id).informed_by
                 repaired_by_user_id = SiteUser.objects.get(profile_name=repaired_by)
 
                 Employee_Analysis_month.objects.filter(user_id=repaired_by_user_id,
@@ -1321,7 +1319,8 @@ def edit_product(request,id):
                                                       entry_date=product_id.entry_timedate,
                                                       year=product_id.entry_timedate.year).update(
                     total_reparing_done_today=F("total_reparing_done_today") + cost)
-
+            Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") - cost2)
+            Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + cost)
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=repairing_id.pk).current_stage  # updatestage2
 
 
