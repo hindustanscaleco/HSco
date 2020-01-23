@@ -84,8 +84,13 @@ def add_ess_details(request):
 
 def ess_home(request):
     context={}
+    print(request.user.role)
     if request.user.role == 'Super Admin':
         leave_req_list = Employee_Leave.objects.filter(user_id__is_deleted=False,)
+        print(leave_req_list)
+        print(leave_req_list)
+        print(leave_req_list)
+        print(leave_req_list)
         context={
             'leave_req_list': leave_req_list
         }
@@ -113,7 +118,7 @@ def ess_home(request):
             item2.save(update_fields=['is_approved'])
             item2.save(update_fields=['in_process'])
 
-    if request.method == 'POST'and not 'list[]  ' in request.POST:
+    if request.method == 'POST'and 'from' in request.POST:
         from_date = request.POST.get('from')
         to = request.POST.get('to')
         reason = request.POST.get('reason')

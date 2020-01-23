@@ -131,23 +131,30 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
           <!-- Content Row -->
 
-                    <div class="row">
             {% if request.user.role != 'Employee' %}
+                        <form method="post" autocomplete="off">{% csrf_token %}
+
+                                                <div class="row">
 
                 <div class="col-xl-6 col-md-6 mb-4">
-                          <input class="form-control" placeholder="Defect">
+                          <input name="defect" class="form-control" placeholder="Defect">
                           <br>
-                          <center> <button name="defect" type="submit" style="background-color: #FC6E20;" class="btn btn-primary"> Submit</button> </center>
+                          <center> <button name="defect_submit" type="submit" style="background-color: #FC6E20;" class="btn btn-primary"> Submit</button> </center>
                         </div>
+
 
                         <div class="col-xl-6 col-md-6 mb-4">
-                          <input class="form-control" placeholder="Warning">
+                          <input name="warning" class="form-control" placeholder="Warning">
                           <br>
-                          <center> <button name="warning" type="submit" style="background-color: #FC6E20;" class="btn btn-primary"> Submit</button> </center>
+                          <center> <button name="warning_submit" type="submit" style="background-color: #FC6E20;" class="btn btn-primary"> Submit</button> </center>
                         </div>
+
+            </div>
+                                                                                        </form>
+
             {% endif %}
 
-</div>
+
 <div class="row">
                           <div class="col-xl-6 col-md-6 mb-4">
 
