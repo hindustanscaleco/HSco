@@ -135,7 +135,7 @@
                           {% if request.user.role != 'Super Admin' %}
 
                           <a class="collapse-item" href="/employee_profile/{{request.user.id}}">My Profile</a>
-                          <a class="collapse-item" href="/ess_home/">Apply For Leave</a>
+                          <a class="collapse-item" href="/ess_home/">Leaves Section</a>
                            {% endif %}
               {% endif %}
             <!--<a class="collapse-item" href="/employee_profile/">Profile</a>-->
@@ -143,8 +143,12 @@
 
               {% if user.role == 'Admin' or user.role == 'Super Admin' or user.role == 'Manager'  %}
             <a class="collapse-item" href="/ess_all_user/">All Employee</a>
-                                        <a class="collapse-item" href="/ess_home/">Approve Leaves</a>
               {% endif %}
+                            {% if user.role == 'Super Admin' %}
+                                                      <a class="collapse-item" href="/ess_home/">Approve Leaves</a>
+
+              {% endif %}
+
               {% endif %}
             <!--<a class="collapse-item" href="/add_ess_details/">ESS form</a>-->
 
