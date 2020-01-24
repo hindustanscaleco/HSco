@@ -389,7 +389,8 @@ def repair_product(request,id):
         current_stage_in_db=Repairing_after_sales_service.objects.get(id=id).current_stage #updatestage1
         if (current_stage_in_db == '' or current_stage_in_db == None ) and (sub_model !='' or sub_model != None):
             Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Scale is collected but estimate is not given',stage_update_timedate = timezone.now())
-            # item2.save(update_fields=['stage_update_timedate', ])
+            item2.first_stage_timedate = timezone.now()
+            item2.save(update_fields=['first_stage_timedate', ])
 
         rep = Repairing_after_sales_service.objects.get(id=id)
 
@@ -547,18 +548,18 @@ def update_repairing_details(request,id):
         # item2.repairingnumber = repairingnumber
         item.crm_no = Customer_Details.objects.get(id=item.pk)
         if company_name != '':
-            item2.second_company_name = company_name  # new2
+            repair_id.second_company_name = company_name  # new2
 
             item.company_name = company_name
             item.save(update_fields=['company_name'])
         if address != '':
             item.address = address
 
-            item2.company_address = address  # new2
+            repair_id.company_address = address  # new2
             item.save(update_fields=['address'])
         if customer_email_id != '':
             item.customer_email_id = customer_email_id
-            item2.company_email = customer_email_id  # new2
+            repair_id.company_email = customer_email_id  # new2
             item.save(update_fields=['customer_email_id'])
 
 
@@ -566,13 +567,17 @@ def update_repairing_details(request,id):
         if current_stage_in_db == 'Scale is collected but estimate is not given'  and (informed_by != None and informed_by!="" and informed_by!="None") and informed_by !=repair_id.informed_by:
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Estimate is given but Estimate is not confirmed', stage_update_timedate=timezone.now())
-            item2.stage_update_timedate = timezone.now()
-            item2.save(update_fields=['stage_update_timedate',])
+            repair_id.stage_update_timedate = timezone.now()
+            repair_id.second_stage_timedate = timezone.now()
+            repair_id.save(update_fields=['stage_update_timedate',])
+            repair_id.save(update_fields=['second_stage_timedate',])
 
         if current_stage_in_db == 'Estimate is given but Estimate is not confirmed' and confirmed_estimate == 'Yes' and confirmed_estimate !=repair_id.confirmed_estimate:
             Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Estimate is confirmed but not repaired')
-            item2.stage_update_timedate = timezone.now()
-            item2.save(update_fields=['stage_update_timedate',])
+            repair_id.stage_update_timedate = timezone.now()
+            repair_id.third_stage_timedate = timezone.now()
+            repair_id.save(update_fields=['stage_update_timedate',])
+            repair_id.save(update_fields=['third_stage_timedate',])
 
             product_list = ''' '''
             pro_lis = Repairing_Product.objects.filter(repairing_id_id=id)
@@ -637,11 +642,13 @@ def update_repairing_details(request,id):
         if (repaired_by != None and repaired_by!="" and repaired_by != 'None') and repaired_by !=repair_id.repaired_by:
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Repaired but not collected')
-            item2.stage_update_timedate = timezone.now()
+            repair_id.stage_update_timedate = timezone.now()
+            repair_id.fourth_stage_timedate = timezone.now()
 
-            item2.repaired = repaired
-            item2.save(update_fields=['stage_update_timedate', ])
-            item2.save(update_fields=['repaired'])
+            repair_id.repaired = repaired
+            repair_id.save(update_fields=['stage_update_timedate', ])
+            repair_id.save(update_fields=['fourth_stage_timedate', ])
+            repair_id.save(update_fields=['repaired'])
 
             try:
                 send_mail('Repairing Done - HSCo',
@@ -670,10 +677,10 @@ def update_repairing_details(request,id):
 
 
         if delivery_by != None and delivery_by !='' and delivery_by != 'None' and delivery_by !=repair_id.delivery_by :
-            item2.delivery_by = delivery_by
-            item2.delivery_date = datetime.today().strftime('%Y-%m-%d')
-            item2.save(update_fields=['delivery_by'])
-            item2.save(update_fields=['delivery_date', ])
+            repair_id.delivery_by = delivery_by
+            repair_id.delivery_date = datetime.today().strftime('%Y-%m-%d')
+            repair_id.save(update_fields=['delivery_by'])
+            repair_id.save(update_fields=['delivery_date', ])
 
             current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage4
             if current_stage_in_db == 'Repaired but not collected' and item2.delivery_date != '' and item2.delivery_date != None:
@@ -681,8 +688,10 @@ def update_repairing_details(request,id):
                     current_stage='Finally Collected')
 
 
-                item2.stage_update_timedate = timezone.now()
-                item2.save(update_fields=['stage_update_timedate', ])
+                repair_id.stage_update_timedate = timezone.now()
+                repair_id.fifth_stage_timedate = timezone.now()
+                repair_id.save(update_fields=['stage_update_timedate', ])
+                repair_id.save(update_fields=['fifth_stage_timedate', ])
 
                 try:
                     send_mail('Scale Collected - HSCo',
@@ -722,21 +731,21 @@ def update_repairing_details(request,id):
         #     item2.save(update_fields=['informed_on', ]),
         #
         if informed_by != '' and informed_by!= None and informed_by != 'None' and informed_by !=repair_id.informed_by:
-            item2.informed_on = datetime.today().strftime('%Y-%m-%d')
+            repair_id.informed_on = datetime.today().strftime('%Y-%m-%d')
 
-            item2.informed_by = informed_by
-            item2.save(update_fields=['informed_on'])
-            item2.save(update_fields=['informed_by', ])
+            repair_id.informed_by = informed_by
+            repair_id.save(update_fields=['informed_on'])
+            repair_id.save(update_fields=['informed_by', ])
         if repaired_by != '' and repaired_by!= None and repaired_by != 'None':
-            item2.repaired_by = repaired_by
-            item2.repaired_date = datetime.today().strftime('%Y-%m-%d')
-            item2.repairing_done_timedate = timezone.now()
+            repair_id.repaired_by = repaired_by
+            repair_id.repaired_date = datetime.today().strftime('%Y-%m-%d')
+            repair_id.repairing_done_timedate = timezone.now()
 
-            item2.save(update_fields=['repaired_by'])
-            item2.save(update_fields=['repaired_date',])
-            item2.save(update_fields=['repairing_done_timedate',])
+            repair_id.save(update_fields=['repaired_by'])
+            repair_id.save(update_fields=['repaired_date',])
+            repair_id.save(update_fields=['repairing_done_timedate',])
             if repair_id.ess_calculated == False:
-                repaired_by_user_id = SiteUser.objects.get(profile_name=repaired_by)
+                repaired_by_user_id = SiteUser.objects.get(profile_name=taken_by)
                 if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
                                                          Q(user_id=repaired_by_user_id)).count() > 0:
                     Employee_Analysis_date.objects.filter(user_id=repaired_by_user_id, entry_date=datetime.now().date(),
@@ -815,16 +824,16 @@ def update_repairing_details(request,id):
 
                 # total_days = (total_time.total_seconds() // 3600) / 24          #total days for a single repair
                 # final_time_hours = total_hours - (total_days*14)
-                user_name = SiteUser.objects.get(profile_name=repair_id.repaired_by)
+                user_name = SiteUser.objects.get(profile_name=repair_id.taken_by)
 
-                avg_daily = Repairing_after_sales_service.objects.filter(repaired_by=user_name.profile_name,entry_timedate=repair_id.entry_timedate).aggregate(Avg('total_repairing_time'))
+                avg_daily = Repairing_after_sales_service.objects.filter(taken_by=user_name.profile_name,entry_timedate=repair_id.entry_timedate).aggregate(Avg('total_repairing_time'))
 
                 Employee_Analysis_date.objects.filter(user_id=user_name.id,
                                                       entry_date=repair_id.entry_timedate,
                                                   year=repair_id.entry_timedate.year).update(
                     avg_time_to_repair_single_scale_today=avg_daily['total_repairing_time__avg'])
 
-                avg_monthly = Repairing_after_sales_service.objects.filter(repaired_by=user_name.profile_name,entry_timedate__month=repair_id.entry_timedate.month).aggregate(Avg('total_repairing_time'))
+                avg_monthly = Repairing_after_sales_service.objects.filter(taken_by=user_name.profile_name,entry_timedate__month=repair_id.entry_timedate.month).aggregate(Avg('total_repairing_time'))
 
                 Employee_Analysis_month.objects.filter(user_id=user_name.id,
                                                        entry_date__month=repair_id.entry_timedate.month,
@@ -844,14 +853,14 @@ def update_repairing_details(request,id):
         item2.notes = notes
         if taken_by != '' and taken_by != None and taken_by != 'None':
 
-            item2.repairing_start_timedate = timezone.now()
+            repair_id.repairing_start_timedate = timezone.now()
 
-            item2.taken_by = taken_by
-            item2.user_id = SiteUser.objects.get(profile_name=taken_by)
-            item2.save(update_fields=['taken_by',])
-            item2.save(update_fields=['user_id', ])
-            item2.save(update_fields=['notes', ])
-            item2.save(update_fields=['repairing_start_timedate', ])
+            repair_id.taken_by = taken_by
+            repair_id.user_id = SiteUser.objects.get(profile_name=taken_by)
+            repair_id.save(update_fields=['taken_by',])
+            repair_id.save(update_fields=['user_id', ])
+            repair_id.save(update_fields=['notes', ])
+            repair_id.save(update_fields=['repairing_start_timedate', ])
 
 
         # item2.feedback_given = feedback_given
@@ -867,15 +876,15 @@ def update_repairing_details(request,id):
 
 
         # item2.save(update_fields=['informed_by', ]),
-        item2.save(update_fields=['confirmed_estimate',])
-        item2.save(update_fields=['second_company_name',])
-        item2.save(update_fields=['company_address',])
-        item2.save(update_fields=['repaired',])
-        item2.save(update_fields=['company_email',])
-        item2.save(update_fields=['repaired_by','taken_by',])
+        repair_id.save(update_fields=['confirmed_estimate',])
+        repair_id.save(update_fields=['second_company_name',])
+        repair_id.save(update_fields=['company_address',])
+        repair_id.save(update_fields=['repaired',])
+        repair_id.save(update_fields=['company_email',])
+        repair_id.save(update_fields=['repaired_by','taken_by',])
         # item2.save(update_fields=['feedback_given', ])
         # item2.save(update_fields=['current_stage', ])
-        item2.save(update_fields=['second_person','second_contact_no', ])
+        repair_id.save(update_fields=['second_person','second_contact_no', ])
         repair_id = Repairing_after_sales_service.objects.get(id=id)
         customer_id = Repairing_after_sales_service.objects.get(id=id).crm_no
         customer_id = Customer_Details.objects.get(id=customer_id)
@@ -1275,7 +1284,7 @@ def feedback_repairing(request,user_id,customer_id,repairing_id):
 def edit_product(request,id):
     product_id = Repairing_Product.objects.get(id=id)
     repairing_id = Repairing_Product.objects.get(id=id).repairing_id
-    user_id=Repairing_after_sales_service.objects.get(id=repairing_id).user_id
+    # user_id=Repairing_after_sales_service.objects.get(id=repairing_id).user_id
     if request.method == 'POST':
         type_of_machine = request.POST.get('type_of_machine')
         model = request.POST.get('model')
@@ -1297,8 +1306,10 @@ def edit_product(request,id):
         cost2 = product_id.cost
 
         if cost != None or '':
-            if Repairing_after_sales_service.objects.get(id=repairing_id).repaired_by != None or '':
-                repaired_by =  Repairing_after_sales_service.objects.get(id=repairing_id).informed_by
+            rep = Repairing_after_sales_service.objects.get(id=repairing_id)
+
+            if rep.taken_by != None or  rep.taken_by != 'None' or  rep.taken_by != '' :
+                repaired_by =  Repairing_after_sales_service.objects.get(id=repairing_id).taken_by
                 repaired_by_user_id = SiteUser.objects.get(profile_name=repaired_by)
 
                 Employee_Analysis_month.objects.filter(user_id=repaired_by_user_id,
