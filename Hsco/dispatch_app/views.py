@@ -782,66 +782,66 @@ def update_dispatch_details(request,update_id):
         #     Dispatch.objects.filter(id=item2.pk).update(current_stage='dispatch but lr not updated')
         #
 
-        if (current_stage_in_db == 'dispatch but lr not updated') and (lr_no != '' and lr_no != None and lr_no!= 'None') and lr_no != dispatch_item.lr_no:
+        if (current_stage_in_db == 'dispatch but lr not updated') and (lr_no != '' and lr_no != None and lr_no!= 'None') :
             Dispatch.objects.filter(id=update_id).update(current_stage='dispatch completed')
             product_list = ''' '''
             pro_lis = Product_Details_Dispatch.objects.filter(dispatch_id=dispatch_item.pk)
+            if lr_no != dispatch_item.lr_no:
 
-            for idx, item2 in enumerate(pro_lis):
-                # for it in item:
+                for idx, item2 in enumerate(pro_lis):
+                    # for it in item:
 
-                email_body_text = (
-                    u"\nSr. No.: {},"
-                    "\tModel: {},"
-                    "\tSub Model: {}"
-                    "\tbrand: {}"
-                    "\tcapacity: {}"
-                    "\tCost: {}"
+                    email_body_text = (
+                        u"\nSr. No.: {},"
+                        "\tModel: {},"
+                        "\tSub Model: {}"
+                        "\tbrand: {}"
+                        "\tcapacity: {}"
+                        "\tCost: {}"
 
-                ).format(
-                    idx + 1,
-                    item2.type_of_scale,
-                    item2.sub_model,
-                    item2.brand,
-                    item2.capacity,
-                    item2.value_of_goods,
-                )
-                product_list = product_list + '' + str(email_body_text)
+                    ).format(
+                        idx + 1,
+                        item2.type_of_scale,
+                        item2.sub_model,
+                        item2.brand,
+                        item2.capacity,
+                        item2.value_of_goods,
+                    )
+                    product_list = product_list + '' + str(email_body_text)
 
-            try:
-                pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).purchase_no
-                # msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through" \
-                # " " + transport_name + ", having LR Number " + lr_no + ". Please track the" \
-                # " details on the transporters website"+'\nHere is the list of product dispatched:\n' + product_list
+                try:
+                    pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).purchase_no
+                    # msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through" \
+                    # " " + transport_name + ", having LR Number " + lr_no + ". Please track the" \
+                    # " details on the transporters website"+'\nHere is the list of product dispatched:\n' + product_list
 
-                msg ='Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
-                     ' is dispatched from our end with Dispatch ID ' + str(
-                item.dispatch_no) + ' and LR No '+ lr_no +' by ' + transport_name +'. For more details contact us on - 7045922252 \n Dispatch Details:\n'+product_list
+                    msg ='Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
+                         ' is dispatched from our end with Dispatch ID ' + str(
+                    item.dispatch_no) + ' and LR No '+ lr_no +' by ' + transport_name +'. For more details contact us on - 7045922252 \n Dispatch Details:\n'+product_list
 
-                send_mail('Dispatched, Your Hsco Purchase is Dispatched from our end',
-                          msg, settings.EMAIL_HOST_USER,
-                          [dispatch_item.company_email,])
-                print("send mail!!")
-            except:
-                print("exception occured!!")
-                pass
+                    send_mail('Dispatched, Your Hsco Purchase is Dispatched from our end',
+                              msg, settings.EMAIL_HOST_USER,
+                              [dispatch_item.company_email,])
+                    print("send mail!!")
+                except:
+                    print("exception occured!!")
+                    pass
 
-            # msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through " + transport_name + ", having LR Number " + lr_no + ". Please track the details on the transporters website"
-            try:
-                pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).purchase_no
-            except:
-                pur_id = Dispatch.objects.get(id=update_id)
+                # msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through " + transport_name + ", having LR Number " + lr_no + ". Please track the details on the transporters website"
+                try:
+                    pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).purchase_no
+                except:
+                    pur_id = Dispatch.objects.get(id=update_id)
+                msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
+                                                ' is dispatch from our end with Dispatch ID ' \
+                      + str(item.dispatch_no)+ ' and LR No ' + lr_no + ' by ' + transport_name + '. For more details contact us on - 7045922252'
 
-            msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
-                                            ' is dispatch from our end with Dispatch ID ' \
-                  + str(item.dispatch_no)+ ' and LR No ' + lr_no + ' by ' + transport_name + '. For more details contact us on - 7045922252'
+                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                payload = ""
+                headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
-            payload = ""
-            headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-            x = response.text
+                response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                x = response.text
 
 
         if (current_stage_in_db == 'dispatch q') and (dispatch_by != '' and dispatch_by != None) and dispatch_by != dispatch_item.dispatch_by  :
