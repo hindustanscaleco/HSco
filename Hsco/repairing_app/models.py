@@ -64,6 +64,13 @@ class Repairing_after_sales_service(models.Model):
     ess_calculated = models.BooleanField(default=False)
     first_message_send = models.BooleanField(default=False)
 
+    first_stage_timedate = models.DateTimeField(null=True,blank=True)
+    second_stage_timedate = models.DateTimeField(null=True,blank=True)
+    third_stage_timedate = models.DateTimeField(null=True,blank=True)
+    fourth_stage_timedate = models.DateTimeField(null=True,blank=True)
+    fifth_stage_timedate = models.DateTimeField(null=True,blank=True)
+
+
     def __int__(self):
         return self.pk
 
