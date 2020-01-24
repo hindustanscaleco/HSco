@@ -545,7 +545,7 @@ def update_repairing_details(request,id):
         item2 = repair_id
 
         # item2.repairingnumber = repairingnumber
-        item2.crm_no = Customer_Details.objects.get(id=item.pk)
+        item.crm_no = Customer_Details.objects.get(id=item.pk)
         if company_name != '':
             item2.second_company_name = company_name  # new2
 
