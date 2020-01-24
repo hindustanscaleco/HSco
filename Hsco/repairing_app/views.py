@@ -389,7 +389,8 @@ def repair_product(request,id):
         current_stage_in_db=Repairing_after_sales_service.objects.get(id=id).current_stage #updatestage1
         if (current_stage_in_db == '' or current_stage_in_db == None ) and (sub_model !='' or sub_model != None):
             Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Scale is collected but estimate is not given',stage_update_timedate = timezone.now())
-            # item2.save(update_fields=['stage_update_timedate', ])
+            item2.first_stage_timedate = timezone.now()
+            item2.save(update_fields=['first_stage_timedate', ])
 
         rep = Repairing_after_sales_service.objects.get(id=id)
 
@@ -567,12 +568,16 @@ def update_repairing_details(request,id):
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Estimate is given but Estimate is not confirmed', stage_update_timedate=timezone.now())
             repair_id.stage_update_timedate = timezone.now()
+            repair_id.second_stage_timedate = timezone.now()
             repair_id.save(update_fields=['stage_update_timedate',])
+            repair_id.save(update_fields=['second_stage_timedate',])
 
         if current_stage_in_db == 'Estimate is given but Estimate is not confirmed' and confirmed_estimate == 'Yes' and confirmed_estimate !=repair_id.confirmed_estimate:
             Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Estimate is confirmed but not repaired')
             repair_id.stage_update_timedate = timezone.now()
+            repair_id.third_stage_timedate = timezone.now()
             repair_id.save(update_fields=['stage_update_timedate',])
+            repair_id.save(update_fields=['third_stage_timedate',])
 
             product_list = ''' '''
             pro_lis = Repairing_Product.objects.filter(repairing_id_id=id)
@@ -638,9 +643,11 @@ def update_repairing_details(request,id):
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Repaired but not collected')
             repair_id.stage_update_timedate = timezone.now()
+            repair_id.fourth_stage_timedate = timezone.now()
 
             repair_id.repaired = repaired
             repair_id.save(update_fields=['stage_update_timedate', ])
+            repair_id.save(update_fields=['fourth_stage_timedate', ])
             repair_id.save(update_fields=['repaired'])
 
             try:
@@ -682,7 +689,9 @@ def update_repairing_details(request,id):
 
 
                 repair_id.stage_update_timedate = timezone.now()
+                repair_id.fifth_stage_timedate = timezone.now()
                 repair_id.save(update_fields=['stage_update_timedate', ])
+                repair_id.save(update_fields=['fifth_stage_timedate', ])
 
                 try:
                     send_mail('Scale Collected - HSCo',
