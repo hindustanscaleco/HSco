@@ -230,6 +230,8 @@ def add_purchase_details(request):
             dispatch.company_email = customer_email_id
             dispatch.company_address = address  # new2
             dispatch.channel_of_dispatch = channel_of_dispatch   # new2
+            if notes != None or notes != 'None' or notes != '':
+                dispatch.notes = notes   # new2
             dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
             dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
             if Dispatch.objects.all().count() == 0:
