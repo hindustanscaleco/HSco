@@ -1430,7 +1430,7 @@ def repairing_employee_graph(request,user_id):
     price_of_reparing = Repairing_Feedback.objects.filter(user_id=user_id).aggregate(Avg('price_of_reparing'))
     overall_interaction = Repairing_Feedback.objects.filter(user_id=user_id).aggregate(Avg('overall_interaction'))
 
-    if speed_of_performance!= None or price_of_reparing!= None or overall_interaction!=None or satisfied_with_communication != None:
+    if speed_of_performance!= '' or price_of_reparing!= '' or overall_interaction!= 'None' or satisfied_with_communication != '':
         speed_of_performance_avg = round(speed_of_performance['speed_of_performance__avg'])
         price_of_reparing_avg = round(price_of_reparing['price_of_reparing__avg'])
         overall_interaction_avg = round(overall_interaction['overall_interaction__avg'])
