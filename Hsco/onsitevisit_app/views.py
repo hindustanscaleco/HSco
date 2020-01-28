@@ -1188,6 +1188,14 @@ def onsitevisit_app_graph(request,user_id):
         overall_interaction_avg = round(overall_interaction['overall_interaction__avg'])
         onsite_worker_avg = round(onsite_worker['onsite_worker__avg'])
         speed_of_performance_avg = round(speed_of_performance['speed_of_performance__avg'])
+        context={
+            'backend_team_avg': backend_team_avg,
+            'onsite_worker_avg': onsite_worker_avg,
+            'price_of_reparing_avg': price_of_reparing_avg,
+            'overall_interaction_avg': overall_interaction_avg,
+            'speed_of_performance_avg': speed_of_performance_avg,
+        }
+        context.update(context)
     except:
         pass
     mon = datetime.now().month
@@ -1250,11 +1258,7 @@ def onsitevisit_app_graph(request,user_id):
             'this_lis_sum': this_lis_sum,
             'target_achieved': target_achieved,
             'rep_feedback': rep_feedback,
-            'backend_team_avg': backend_team_avg,
-            'onsite_worker_avg': onsite_worker_avg,
-            'price_of_reparing_avg': price_of_reparing_avg,
-            'overall_interaction_avg': overall_interaction_avg,
-            'speed_of_performance_avg': speed_of_performance_avg,
+
         }
         return render(request, "graphs/onsitevisit_app_graph.html", context)
     elif request.method=='POST' and 'defect_submit' in request.POST:
@@ -1323,12 +1327,23 @@ def onsitevisit_app_graph(request,user_id):
             'this_lis_sum': this_lis_sum,
             'target_achieved': target_achieved,
             'rep_feedback': rep_feedback,
-            'backend_team_avg': backend_team_avg,
-            'onsite_worker_avg': onsite_worker_avg,
-            'price_of_reparing_avg': price_of_reparing_avg,
-            'overall_interaction_avg': overall_interaction_avg,
-            'speed_of_performance_avg': speed_of_performance_avg,
         }
+        try:
+            backend_team_avg = round(backend_team['backend_team__avg'])
+            price_of_reparing_avg = round(price_of_reparing['price_of_reparing__avg'])
+            overall_interaction_avg = round(overall_interaction['overall_interaction__avg'])
+            onsite_worker_avg = round(onsite_worker['onsite_worker__avg'])
+            speed_of_performance_avg = round(speed_of_performance['speed_of_performance__avg'])
+            context = {
+                'backend_team_avg': backend_team_avg,
+                'onsite_worker_avg': onsite_worker_avg,
+                'price_of_reparing_avg': price_of_reparing_avg,
+                'overall_interaction_avg': overall_interaction_avg,
+                'speed_of_performance_avg': speed_of_performance_avg,
+            }
+            context.update(context)
+        except:
+            pass
         return render(request,"graphs/onsitevisit_app_graph.html",context)
 
 

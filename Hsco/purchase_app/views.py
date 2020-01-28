@@ -1075,7 +1075,6 @@ def purchase_analytics(request):
         'value_low': value_low,
 
     }
-    print(value_low)
     return render(request, 'analytics/purchase_analytics_new.html',context)
 
 # @login_required(login_url='/')
@@ -1090,13 +1089,7 @@ def customer_employee_sales_graph(request,user_id):
     price_of_product = Feedback.objects.filter(user_id=user_id).aggregate(Avg('price_of_product'))
     overall_interaction = Feedback.objects.filter(user_id=user_id).aggregate(Avg('overall_interaction'))
 
-    try:
-        knowledge_of_person_avg = round(knowledge_of_person['knowledge_of_person__avg'])
-        timeliness_of_person_avg = round(timeliness_of_person['timeliness_of_person__avg'])
-        overall_interaction_avg = round(overall_interaction['overall_interaction__avg'])
-        price_of_product_avg = round(price_of_product['price_of_product__avg'])
-    except:
-        pass
+
 
 
     mon = datetime.now().month
@@ -1148,11 +1141,22 @@ def customer_employee_sales_graph(request,user_id):
             'this_lis_date': this_lis_date,
             'this_lis_sum': this_lis_sum,
             'feeback': feeback,
-            'knowledge_of_person_avg': knowledge_of_person_avg,
-            'timeliness_of_person_avg': timeliness_of_person_avg,
-            'price_of_product_avg': price_of_product_avg,
-            'overall_interaction_avg': overall_interaction_avg,
+
         }
+        try:
+            knowledge_of_person_avg = round(knowledge_of_person['knowledge_of_person__avg'])
+            timeliness_of_person_avg = round(timeliness_of_person['timeliness_of_person__avg'])
+            overall_interaction_avg = round(overall_interaction['overall_interaction__avg'])
+            price_of_product_avg = round(price_of_product['price_of_product__avg'])
+            context = {
+                'knowledge_of_person_avg': knowledge_of_person_avg,
+                'timeliness_of_person_avg': timeliness_of_person_avg,
+                'price_of_product_avg': price_of_product_avg,
+                'overall_interaction_avg': overall_interaction_avg,
+            }
+            context.update(context)
+        except:
+            pass
         return render(request, "graphs/sales_graph.html", context)
     elif request.method=='POST' and 'defect_submit' in request.POST:
         defect = request.POST.get('defect')
@@ -1199,11 +1203,22 @@ def customer_employee_sales_graph(request,user_id):
             'this_lis_date': this_lis_date,
             'this_lis_sum': this_lis_sum,
             'feeback': feeback,
-            'knowledge_of_person_avg': knowledge_of_person_avg,
-            'timeliness_of_person_avg': timeliness_of_person_avg,
-            'price_of_product_avg': price_of_product_avg,
-            'overall_interaction_avg': overall_interaction_avg,
+
         }
+        try:
+            knowledge_of_person_avg = round(knowledge_of_person['knowledge_of_person__avg'])
+            timeliness_of_person_avg = round(timeliness_of_person['timeliness_of_person__avg'])
+            overall_interaction_avg = round(overall_interaction['overall_interaction__avg'])
+            price_of_product_avg = round(price_of_product['price_of_product__avg'])
+            context = {
+                'knowledge_of_person_avg': knowledge_of_person_avg,
+                'timeliness_of_person_avg': timeliness_of_person_avg,
+                'price_of_product_avg': price_of_product_avg,
+                'overall_interaction_avg': overall_interaction_avg,
+            }
+            context.update(context)
+        except:
+            pass
         return render(request,"graphs/sales_graph.html",context)
 
 # @login_required(login_url='/')

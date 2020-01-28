@@ -1435,6 +1435,13 @@ def repairing_employee_graph(request,user_id):
         price_of_reparing_avg = price_of_reparing['price_of_reparing__avg']
         overall_interaction_avg = overall_interaction['overall_interaction__avg']
         satisfied_with_communication_avg = satisfied_with_communication['satisfied_with_communication__avg']
+        context={
+            'satisfied_with_communication_avg': satisfied_with_communication_avg,
+            'speed_of_performance_avg': speed_of_performance_avg,
+            'price_of_reparing_avg': price_of_reparing_avg,
+            'overall_interaction_avg': overall_interaction_avg,
+        }
+        context.update(context)
     except:
         pass
 
@@ -1500,10 +1507,7 @@ def repairing_employee_graph(request,user_id):
             'this_lis_date': this_lis_date,
             'this_lis_sum': this_lis_sum,
             'rep_feedback': rep_feedback,
-            'satisfied_with_communication_avg': satisfied_with_communication_avg,
-            'speed_of_performance_avg': speed_of_performance_avg,
-            'price_of_reparing_avg': price_of_reparing_avg,
-            'overall_interaction_avg': overall_interaction_avg,
+
         }
         return render(request, "graphs/repairing_employee_graph.html", context)
     elif request.method=='POST' and 'defect_submit' in request.POST:
@@ -1553,12 +1557,23 @@ def repairing_employee_graph(request,user_id):
             'target_achieved': target_achieved,
             'rep_feedback': rep_feedback,
             'avg_time': avg_time,
-            'satisfied_with_communication_avg': satisfied_with_communication_avg,
-            'speed_of_performance_avg': speed_of_performance_avg,
-            'price_of_reparing_avg': price_of_reparing_avg,
-            'overall_interaction_avg': overall_interaction_avg,
+            
             # 'feeback': feeback,
         }
+        try:
+            speed_of_performance_avg = speed_of_performance['speed_of_performance__avg']
+            price_of_reparing_avg = price_of_reparing['price_of_reparing__avg']
+            overall_interaction_avg = overall_interaction['overall_interaction__avg']
+            satisfied_with_communication_avg = satisfied_with_communication['satisfied_with_communication__avg']
+            context = {
+                'satisfied_with_communication_avg': satisfied_with_communication_avg,
+                'speed_of_performance_avg': speed_of_performance_avg,
+                'price_of_reparing_avg': price_of_reparing_avg,
+                'overall_interaction_avg': overall_interaction_avg,
+            }
+            context.update(context)
+        except:
+            pass
         return render(request,"graphs/repairing_employee_graph.html",context)
 
 
