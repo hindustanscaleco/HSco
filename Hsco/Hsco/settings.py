@@ -83,7 +83,7 @@ DATABASES = {
  'default': {
      'ENGINE': 'django.db.backends.mysql',
     'NAME': 'hsco_db',
-    'USER': 'root2',
+    'USER': 'root',
     'PASSWORD': '',
     'HOST': '127.0.0.1',
     'PORT': '3306',
@@ -152,7 +152,7 @@ EMAIL_HOST_PASSWORD = 'Hsco123456789@'
 # EMAIL_HOST_PASSWORD = 'Vikas@7786'
 # EMAIL_HOST_PASSWORD = 'leosagar10'
 
-SESSION_SECURITY_EXPIRE_AFTER=3600
+SESSION_SECURITY_EXPIRE_AFTER = 3600
 SESSION_SECURITY_WARN_AFTER = 3500
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 

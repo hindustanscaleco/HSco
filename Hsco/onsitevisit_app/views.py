@@ -1,11 +1,13 @@
 from django.db import connection
 from django.db.models import Sum, Min, Q, F, Count, Avg
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from _datetime import datetime
 from django.contrib.auth.decorators import login_required
 
-from customer_app.models import Customer_Details
+from customer_app.models import Customer_Details, Log
 from customer_app.models import type_purchase
 
 from ess_app.models import Employee_Analysis_month
@@ -26,6 +28,43 @@ from ess_app.models import Employee_Analysis_date
 import requests
 import json
 
+@receiver(pre_save, sender = Onsite_aftersales_service)
+def onsite_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        new_instance = Onsite_aftersales_service.objects.get(id=instance.id)
+        track = instance.tracker.changed()
+        print(new_instance.key)
+        print(instance.key)
+        if track:
+            old_list = []
+            for key,value in track.items():
+                print(new_instance.key)
+                print(instance.key)
+                if new_instance.key != instance.key:
+                    print(value)
+                    old_list.append('Old Value: ' + value)
+            print(old_list)
+            log = Log()
+
+            log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.module_name = 'Onsite Repairing Module'
+            log.action_type = 'Update'
+            log.table_name = 'Onsite_aftersales_service'
+            log.reference = 'Onsite No: '+str(new_instance.onsite_no)
+            log.action = old_list
+            log.save()
+        # else:
+        #     new_instance = Onsite_aftersales_service.objects.get(id=instance.id)
+        #     log = Log()
+        #     log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+        #     log.module_name = 'Onsite Repairing Module'
+        #     log.action_type = 'Insert'
+        #     log.table_name = 'Onsite_aftersales_service'
+        #     log.reference = 'Onsite No: ' + str(new_instance.onsite_no)
+        #     log.action = ''
+        #     log.save()
+    except:
+        pass
 
 @login_required(login_url='/')
 def onsite_views(request):
