@@ -70,8 +70,17 @@ class Log(models.Model):
     def __str__(self):
         return self.entered_by
 
+class Log(models.Model):
+    entered_by = models.CharField(max_length=120, null=True, blank=True)
+    module_name = models.CharField(max_length=120, null=True, blank=True)
+    action_type = models.CharField(max_length=120, null=True, blank=True)
+    table_name = models.CharField(max_length=120, null=True, blank=True)
+    reference = models.CharField(max_length=120, null=True, blank=True)
+    action = models.TextField( null=True, blank=True)
+    entry_timedate = models.DateTimeField(default=timezone.now, )
 
-
+    def __str__(self):
+        return self.entered_by
 
 
 
