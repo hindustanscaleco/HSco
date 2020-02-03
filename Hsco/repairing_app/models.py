@@ -6,6 +6,10 @@ from django.utils import timezone
 from customer_app.models import Customer_Details
 
 from user_app.models import SiteUser
+from model_utils import FieldTracker
+
+from customer_app.models import Log
+from django.db.models.signals import pre_save,post_save
 
 
 class Repairing_after_sales_service(models.Model):
@@ -70,10 +74,27 @@ class Repairing_after_sales_service(models.Model):
     fourth_stage_timedate = models.DateTimeField(null=True,blank=True)
     fifth_stage_timedate = models.DateTimeField(null=True,blank=True)
 
+    tracker = FieldTracker()
 
     def __int__(self):
         return self.pk
 
+# def repairing_log(sender ,**kwargs):
+#     if kwargs['created']:
+#         log = Log()
+#         print(kwargs)
+#         print(kwargs)
+#         print(kwargs)
+#         print(kwargs)
+#         print(kwargs)
+#         print(kwargs)
+#     if kwargs['update_fields'] != None:
+#         print(kwargs)
+#         print(kwargs)
+#         print(kwargs)
+#         print(kwargs)
+#
+# post_save.connect(repairing_log, sender = Repairing_after_sales_service)
 
 class Repairing_Product(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)

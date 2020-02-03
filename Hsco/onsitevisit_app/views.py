@@ -1346,5 +1346,7 @@ def onsitevisit_app_graph(request,user_id):
             pass
         return render(request,"graphs/onsitevisit_app_graph.html",context)
 
-
+@login_required(login_url='/')
+def onsite_repairing_logs(request):
+    return render(request,"logs/onsite_reparing_logs.html",)
 

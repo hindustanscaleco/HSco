@@ -58,6 +58,17 @@ class sub_sub_model(models.Model):
     def __str__(self):
         return self.name
 
+class Log(models.Model):
+    entered_by = models.CharField(max_length=120,null=True, blank=True)
+    module_name = models.CharField(max_length=120,null=True, blank=True)
+    action_type = models.CharField(max_length=120,null=True, blank=True)
+    reference = models.CharField(max_length=150,null=True, blank=True)
+    action = models.CharField(max_length=150,null=True, blank=True)
+    table_name = models.CharField(max_length=150,null=True, blank=True)
+    entry_timedate = models.DateTimeField(default=timezone.now, )
+
+    def __str__(self):
+        return self.entered_by
 
 
 

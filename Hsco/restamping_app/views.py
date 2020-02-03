@@ -1104,7 +1104,9 @@ def load_restamping_stages_list(request,):
     context.update(context)
     return render(request, 'AJAX/load_restamping_stage.html', context)
 
-
+@login_required(login_url='/')
+def restamping_logs(request):
+    return render(request,"logs/restamping_logs.html",)
 
 
 

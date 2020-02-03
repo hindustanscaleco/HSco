@@ -1,5 +1,6 @@
 import datetime
 from django.db import models
+from django.db.models.signals import post_save
 from django.utils import timezone
 from customer_app.models import Customer_Details
 from dispatch_app.models import Dispatch
@@ -40,6 +41,10 @@ class Purchase_Details(models.Model):   #cleaned
 
     def __int__(self):
         return self.id
+
+# def save_purchase_details(sender,instance, **kwargs):
+#
+# post_save.connect(save_purchase_details, sender = Purchase_Details)
 
 class Product_Details(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)

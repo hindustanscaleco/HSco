@@ -27,6 +27,7 @@ import json
 from django.db.models.functions import TruncMonth
 from django.db.models import Count
 
+
 @login_required(login_url='/')
 def add_purchase_details(request):
     if 'purchase_id' in request.session:
@@ -308,7 +309,6 @@ def add_purchase_details(request):
     }
 
     return render(request,'forms/cust_mod_form.html',context)
-
 
 @login_required(login_url='/')
 def view_customer_details(request):
@@ -1443,7 +1443,13 @@ def check_admin_roles(request):
     else:
         return False
 
+@login_required(login_url='/')
+def dispatch_logs(request):
+    return render(request,"logs/dispatch_logs.html",)
 
+@login_required(login_url='/')
+def purchase_logs(request):
+    return render(request,"logs/purchase_logs.html",)
 
 
 
