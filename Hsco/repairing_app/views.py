@@ -35,25 +35,11 @@ from django.core.signals import request_finished
 @receiver(pre_save, sender=Repairing_after_sales_service)
 def repairing_handler(sender, instance, update_fields=None, **kwargs):
     try:
-        print(instance)
-        print(instance)
-        print(instance)
-        from django.contrib.admin.models import LogEntry
-
-        logs = LogEntry.objects.all()  # or you can filter, etc.
-        for l in logs:
-        # perform action
-            print(l)
-        if instance.id == None:
-
-            #########for save action##########
-            new_instance = Repairing_after_sales_service.objects.get(id=instance.id)
-            print('new instance')
-            print(new_instance)
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
             log = Log()
-            print('something')
-            print('something')
-            print('something')
+
             log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
             log.module_name = 'Repairing Module'
             log.action_type = 'Insert'
@@ -64,21 +50,22 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
             # log.action = old_list
             log.save()
         elif instance.id != None or instance.id !='' or instance.id !='None':
-            print('nothing')
-            print(instance.id)
+
             #########for update action##########
+            old_instance = instance
             new_instance = Repairing_after_sales_service.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
 
-            # print('New Value:'+old_instance.informed_by)
-
-
-
-            # new_list = []
-            # for key in track:
-            #     new_list.append(key)
-            #     print('New value:'+str(key)+  old_instance.key)
+            new_list = []
+            for key in track:
+                new_list.append(key)
+                # print('New value:'+str(key)+  old_instance.key)
+            print(new_list)
+            print(new_list)
+            print(new_list)
+            for x in new_list:
+                print(old_instance.x)
             if  track:
 
                 old_list = []
