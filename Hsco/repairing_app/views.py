@@ -50,7 +50,7 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
             print('something')
             log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
             log.module_name = 'Repairing Module'
-            log.action_type = 'Save'
+            log.action_type = 'Insert'
             log.table_name = 'Repairing_after_sales_service'
 
             log.reference = 'Repairing No: ' + str(new_instance.repairing_no)
@@ -450,7 +450,6 @@ def repair_product(request,id):
                 new_repair_id.ess_calculated = True
                 new_repair_id.save(update_fields=['ess_calculated', ])
 
-        user_id = Repairing_after_sales_service.objects.get(id=id).user_id
 
         current_stage_in_db=Repairing_after_sales_service.objects.get(id=id).current_stage #updatestage1
         if (current_stage_in_db == '' or current_stage_in_db == None ) and (sub_model !='' or sub_model != None):
