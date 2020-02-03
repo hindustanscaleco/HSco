@@ -38,6 +38,12 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
         print(instance)
         print(instance)
         print(instance)
+        from django.contrib.admin.models import LogEntry
+
+        logs = LogEntry.objects.all()  # or you can filter, etc.
+        for l in logs:
+        # perform action
+            print(l)
         if instance.id == None:
 
             #########for save action##########
