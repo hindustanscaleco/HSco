@@ -114,10 +114,10 @@ class Repairing_Product(models.Model):
     is_last_product = models.BooleanField(default=False,)
     entry_timedate = models.DateField(default=datetime.date.today)
 
-
+    tracker = FieldTracker()
 
     def __int__(self):
-        return self.repairing_id
+        return self.pk
 
 class Repairing_Feedback(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)

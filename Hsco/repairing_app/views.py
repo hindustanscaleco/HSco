@@ -40,7 +40,8 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
             new_instance = instance
             log = Log()
 
-            log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.entered_by = instance.entered_by
+            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
             log.module_name = 'Repairing Module'
             log.action_type = 'Insert'
             log.table_name = 'Repairing_after_sales_service'
@@ -56,16 +57,21 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
             new_instance = Repairing_after_sales_service.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
 
-            new_list = []
-            for key in track:
-                new_list.append(key)
-                # print('New value:'+str(key)+  old_instance.key)
-            print(new_list)
-            print(new_list)
-            print(new_list)
-            for x in new_list:
-                print(old_instance.x)
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
             if  track:
 
                 old_list = []
@@ -74,7 +80,7 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
 
                 log = Log()
 
-                log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+                log.entered_by = new_instance.entered_by
                 log.module_name = 'Repairing Module'
                 log.action_type = 'Update'
                 log.table_name = 'Repairing_after_sales_service'
@@ -87,6 +93,77 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
 
     except:
         pass
+
+
+@receiver(pre_save, sender=Repairing_Product)
+def repairing_product_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None':
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            rep = Repairing_after_sales_service.objects.get(id=new_instance.repairing_id_id)
+
+            log.entered_by = rep.entered_by
+            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.module_name = 'Repairing Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Repairing_Product'
+
+            log.reference = 'Repairing No: ' + str(new_instance.repairing_id_id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id != '' or instance.id != 'None':
+            #########for update action##########
+            old_instance = instance
+            new_instance = Repairing_Product.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+            # with connection.cursor() as cursor:
+            # if new_string != '' :
+            #     print('something 1')
+            #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+            #     cursor.execute("SELECT " + (
+            #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+            #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if track:
+                old_list = []
+                print('something')
+                for key, value in track.items():
+                    # if value != None or value != '' or value != 'None':
+                    old_list.append('Old value: ' + key )
+
+                print(old_list).
+                0000000000000000000
+                log = Log()
+                print(new_instance)
+                print(new_instance.repairing_id)
+                rep = Repairing_after_sales_service.objects.get(id=new_instance.repairing_id_id)
+                print('yes')
+                log.entered_by = rep.entered_by
+
+                log.module_name = 'Repairing Module'
+                log.action_type = 'Update'
+                log.table_name = 'Repairing_Product'
+
+                log.reference = 'Repairing No: ' + str(new_instance.repairing_id_id) + ', Product id:' +str(new_instance.id)
+
+                log.action = old_list
+                log.save()
+
+
+    except:
+        pass
+
+
 @login_required(login_url='/')
 def add_repairing_details(request):
     cust_sugg=Customer_Details.objects.all()
