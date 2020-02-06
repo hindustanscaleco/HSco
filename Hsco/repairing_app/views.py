@@ -73,11 +73,9 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
                 #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
                 #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
             if  track:
-
                 old_list = []
                 for key, value in track.items():
                     old_list.append('Old value: ' + key + "=" + value)
-
                 log = Log()
 
                 log.entered_by = new_instance.entered_by
@@ -110,7 +108,7 @@ def repairing_product_handler(sender, instance, update_fields=None, **kwargs):
             log.action_type = 'Insert'
             log.table_name = 'Repairing_Product'
 
-            log.reference = 'Repairing No: ' + str(new_instance.repairing_id_id)
+            log.reference = 'Repairing No: ' + str(rep.repairing_no) + ', Product id:' + str(new_instance.id)
 
             # log.action = old_list
             log.save()
@@ -118,7 +116,8 @@ def repairing_product_handler(sender, instance, update_fields=None, **kwargs):
             #########for update action##########
             old_instance = instance
             new_instance = Repairing_Product.objects.get(id=instance.id)
-
+            print(new_instance.problem_in_scale)
+            print(instance.problem_in_scale)
             track = instance.tracker.changed()
             # string = ''
             # new_list = []
@@ -141,20 +140,15 @@ def repairing_product_handler(sender, instance, update_fields=None, **kwargs):
                     # if value != None or value != '' or value != 'None':
                     old_list.append('Old value: ' + key )
 
-                print(old_list).
-                0000000000000000000
                 log = Log()
-                print(new_instance)
-                print(new_instance.repairing_id)
                 rep = Repairing_after_sales_service.objects.get(id=new_instance.repairing_id_id)
-                print('yes')
                 log.entered_by = rep.entered_by
 
                 log.module_name = 'Repairing Module'
                 log.action_type = 'Update'
                 log.table_name = 'Repairing_Product'
 
-                log.reference = 'Repairing No: ' + str(new_instance.repairing_id_id) + ', Product id:' +str(new_instance.id)
+                log.reference = 'Repairing No: ' + str(rep.repairing_no) + ', Product id:' +str(new_instance.id)
 
                 log.action = old_list
                 log.save()

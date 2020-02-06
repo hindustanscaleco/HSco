@@ -67,8 +67,8 @@ class Log(models.Model):
     action = models.TextField( null=True, blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now, )
 
-    def __str__(self):
-        return self.entered_by
+    def __int__(self):
+        return self.pk
 
 
 

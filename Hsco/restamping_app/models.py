@@ -2,6 +2,7 @@ import datetime
 from django.db import models
 from customer_app.models import Customer_Details
 from user_app.models import SiteUser
+from model_utils import FieldTracker
 
 
 class Restamping_after_sales_service(models.Model):
@@ -26,6 +27,7 @@ class Restamping_after_sales_service(models.Model):
     restamping_done_timedate = models.DateTimeField(null=True, blank=True)
     total_restamping_time = models.FloatField(default=0.0)
     restamping_time_calculated = models.BooleanField(default=False)
+    tracker = FieldTracker()
 
     def __int__(self):
         return self.id

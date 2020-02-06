@@ -12,7 +12,7 @@ from django.db.models import Q, F, Min, Avg
 from django.db.models import Sum
 from ess_app.models import Employee_Analysis_date
 from django.contrib.auth.decorators import login_required
-
+from customer_app.models import Log
 
 from customer_app.models import type_purchase,main_model,sub_model,sub_sub_model
 
@@ -26,6 +26,131 @@ import requests
 import json
 from django.db.models.functions import TruncMonth
 from django.db.models import Count
+from django.db.models.signals import pre_save,post_save
+from django.dispatch import receiver
+
+@receiver(pre_save, sender=Purchase_Details)
+def repairing_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+
+            log.entered_by = instance.entered_by
+            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.module_name = 'Purchase Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Purchase_Details'
+
+            log.reference = 'Purchase No: ' + str(new_instance.purchase_no)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+
+            #########for update action##########
+            old_instance = instance
+            new_instance = Purchase_Details.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    print(key)
+                    print(value)
+                    old_list.append('Old value: ' + key )
+                print('something')
+                log = Log()
+
+                log.entered_by = new_instance.entered_by
+                log.module_name = 'Purchase Module'
+                log.action_type = 'Update'
+                log.table_name = 'Purchase_Details'
+
+                log.reference = 'Purchase No: '+str(new_instance.purchase_no)
+
+                log.action = old_list
+                log.save()
+
+
+    except:
+        pass
+
+@receiver(pre_save, sender=Product_Details)
+def repairing_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            purchase = Purchase_Details.objects.get(id=new_instance.purchase_id_id)
+
+            log.entered_by = purchase.entered_by
+            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.module_name = 'Purchase Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Product_Details'
+
+            log.reference = 'Purchase No: ' + str(purchase.purchase_no)+ ', Product id:' +str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+
+            #########for update action##########
+            old_instance = instance
+            new_instance = Product_Details.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    old_list.append('Old value: ' + key )
+                log = Log()
+                purchase = Purchase_Details.objects.get(id=new_instance.purchase_id_id)
+                log.entered_by = purchase.entered_by
+                log.module_name = 'Purchase Module'
+                log.action_type = 'Update'
+                log.table_name = 'Product_Details'
+                log.reference = 'Purchase No: '+str(purchase.purchase_no)+ ', Product id:' +str(new_instance.id)
+                log.action = old_list
+                log.save()
+
+
+    except:
+        pass
+
 
 
 @login_required(login_url='/')
@@ -185,6 +310,7 @@ def add_purchase_details(request):
         # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no+1
+        item2.entered_by = request.user.profile_name
         # request.session['new_repeat_purchase'] = new_repeat_purchase
         # request.session['second_person'] = customer_name
         # request.session['second_contact_no'] = contact_no
@@ -623,7 +749,9 @@ def update_customer_details(request,id):
         # item2.feedback_form_filled = feedback_form_filled
         # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         # item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item2.save(update_fields=['date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
+        item2.entered_by = request.user.profile_name
+
+        item2.save(update_fields=['entered_by','date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
                                   'channel_of_sales','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email',
                                   ])  #new6
 
