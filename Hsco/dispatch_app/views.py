@@ -676,7 +676,7 @@ def update_dispatch_details(request,update_id):
 
             if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
                                                      Q(user_id=dispatch_by_id)).count() > 0:
-                Employee_Analysis_date.objects.filter(user_id=dispatch_by_id, entry_date__month=datetime.now().month,
+                Employee_Analysis_date.objects.filter(user_id=dispatch_by_id, entry_date=datetime.now().date(),
                                                       year=datetime.now().year).update(
                     total_dispatch_done_today=F("total_dispatch_done_today") + total_amt)
                 # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
