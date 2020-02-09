@@ -5,6 +5,7 @@ from django.utils import timezone
 from customer_app.models import Customer_Details
 from user_app.models import SiteUser
 # from purchase_app.models import Product_Details
+from model_utils import FieldTracker
 
 
 class Dispatch(models.Model):
@@ -68,6 +69,7 @@ class Product_Details_Dispatch(models.Model):
     new_repeat_purchase = models.CharField(max_length=150,null=True,blank=True)
     value_of_goods = models.FloatField(default=0.0, null=True,blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now, )
+    tracker = FieldTracker()
 
 
     def __int__(self):
@@ -79,6 +81,7 @@ class Product_Despatched(models.Model):
     dispatch_id = models.ForeignKey(Dispatch,on_delete=models.CASCADE, null=True, blank=True)
     value = models.CharField(max_length=120, null=True, blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now, )
+    tracker = FieldTracker()
 
     def __int__(self):
         return self.dispatch_id

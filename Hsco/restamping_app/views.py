@@ -28,12 +28,13 @@ from django.dispatch import receiver
 from customer_app.models import Log
 
 @receiver(pre_save, sender=Restamping_after_sales_service)
-def repairing_handler(sender, instance, update_fields=None, **kwargs):
+def restamping_handler(sender, instance, update_fields=None, **kwargs):
     try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
+        if instance.id == None or instance.id == '' or instance.id == 'None':
             #########for insert action##########
             new_instance = instance
             log = Log()
+            print('somethibng')
 
             log.entered_by = instance.entered_by
             # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
@@ -46,11 +47,11 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
             # log.action = old_list
             log.save()
         elif instance.id != None or instance.id !='' or instance.id !='None':
-
+            print('somethibng')
             #########for update action##########
             old_instance = instance
             new_instance = Restamping_after_sales_service.objects.get(id=instance.id)
-
+            print('somethibng')
             track = instance.tracker.changed()
             # string = ''
             # new_list = []
@@ -70,8 +71,6 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
             if  track:
                 old_list = []
                 for key, value in track.items():
-                    print(key)
-                    print(value)
                     old_list.append('Old value: ' + key )
                 print('something')
                 log = Log()
@@ -91,21 +90,21 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
         pass
 
 @receiver(pre_save, sender=Restamping_Product)
-def repairing_handler(sender, instance, update_fields=None, **kwargs):
+def restamping_handler(sender, instance, update_fields=None, **kwargs):
     try:
         if instance.id == None or instance.id == '' or instance.id == 'None' :
             #########for insert action##########
             new_instance = instance
             log = Log()
-            purchase = Purchase_Details.objects.get(id=new_instance.purchase_id_id)
+            restamping = Restamping_after_sales_service.objects.get(id=new_instance.purchase_id_id)
 
-            log.entered_by = purchase.entered_by
+            log.entered_by = restamping.entered_by
             # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
-            log.module_name = 'Purchase Module'
+            log.module_name = 'Restamping Module'
             log.action_type = 'Insert'
-            log.table_name = 'Product_Details'
+            log.table_name = 'Restamping_Product'
 
-            log.reference = 'Purchase No: ' + str(purchase.purchase_no)+ ', Product id:' +str(new_instance.id)
+            log.reference = 'Restamping No: ' + str(restamping.restamping_no)+ ', Product id:' +str(new_instance.id)
 
             # log.action = old_list
             log.save()
@@ -113,7 +112,7 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
 
             #########for update action##########
             old_instance = instance
-            new_instance = Product_Details.objects.get(id=instance.id)
+            new_instance = Restamping_Product.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
             # string = ''
@@ -136,12 +135,12 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
                 for key, value in track.items():
                     old_list.append('Old value: ' + key )
                 log = Log()
-                purchase = Purchase_Details.objects.get(id=new_instance.purchase_id_id)
-                log.entered_by = purchase.entered_by
-                log.module_name = 'Purchase Module'
+                restamping = Restamping_after_sales_service.objects.get(id=new_instance.purchase_id_id)
+                log.entered_by = restamping.entered_by
+                log.module_name = 'Restamping Module'
                 log.action_type = 'Update'
-                log.table_name = 'Product_Details'
-                log.reference = 'Purchase No: '+str(purchase.purchase_no)+ ', Product id:' +str(new_instance.id)
+                log.table_name = 'Restamping_Product'
+                log.reference = 'Restamping No: '+str(restamping.restamping_no) + ', Product id:' +str(new_instance.id)
                 log.action = old_list
                 log.save()
 

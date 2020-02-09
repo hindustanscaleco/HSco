@@ -48,6 +48,7 @@ class Restamping_Product(models.Model):
     new_sr_no = models.CharField(max_length=150, null=True, blank=True)
     brand = models.CharField(max_length=150, null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
+    tracker = FieldTracker()
 
 
     def __int__(self):

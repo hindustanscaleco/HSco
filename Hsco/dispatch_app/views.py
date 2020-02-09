@@ -17,6 +17,8 @@ from purchase_app.views import check_admin_roles
 from purchase_app.models import Purchase_Details
 
 from ess_app.models import Defects_Warning
+
+from customer_app.models import Log
 from .models import Dispatch, Product_Details_Dispatch
 from django.core.mail import send_mail
 from Hsco import settings
@@ -27,6 +29,130 @@ from ess_app.models import Employee_Analysis_date
 
 from customer_app.models import type_purchase
 from purchase_app.forms import Product_Details_Form
+from django.db.models.signals import pre_save,post_save
+from django.dispatch import receiver
+from customer_app.models import Log
+
+@receiver(pre_save, sender=Dispatch)
+def dispatch_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None':
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            print('somethibng')
+
+            log.entered_by = instance.entered_by
+            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.module_name = 'Dispatch Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Dispatch'
+
+            log.reference = 'Dispatch No: ' + str(new_instance.dispatch_no)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            print('somethibng')
+            #########for update action##########
+            old_instance = instance
+            new_instance = Dispatch.objects.get(id=instance.id)
+            print('somethibng')
+            track = instance.tracker.changed()
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    old_list.append('Old value: ' + key )
+                print('something')
+                log = Log()
+
+                log.entered_by = new_instance.entered_by
+                log.module_name = 'Dispatch Module'
+                log.action_type = 'Update'
+                log.table_name = 'Dispatch'
+
+                log.reference = 'Dispatch No: '+str(new_instance.dispatch_no)
+
+                log.action = old_list
+                log.save()
+
+
+    except:
+        pass
+
+@receiver(pre_save, sender=Product_Details_Dispatch)
+def dispatch_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            dispatch = Product_Details_Dispatch.objects.get(id=new_instance.purchase_id_id)
+
+            log.entered_by = dispatch.entered_by
+            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.module_name = 'Restamping Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Product_Details_Dispatch'
+
+            log.reference = 'Dispatch No: ' + str(dispatch.dispatch_no)+ ', Product id:' +str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+
+            #########for update action##########
+            old_instance = instance
+            new_instance = Product_Details_Dispatch.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    old_list.append('Old value: ' + key )
+                log = Log()
+                dispatch = Dispatch.objects.get(id=new_instance.purchase_id_id)
+                log.entered_by = dispatch.entered_by
+                log.module_name = 'Restamping Module'
+                log.action_type = 'Update'
+                log.table_name = 'Product_Details_Dispatch'
+                log.reference = 'Dispatch No: '+str(dispatch.dispatch_no) + ', Product id:' +str(new_instance.id)
+                log.action = old_list
+                log.save()
+
+
+    except:
+        pass
 
 
 def add_dispatch_details(request):
@@ -519,7 +645,6 @@ def dispatch_view(request):
 
 
         # dispatch_list = Dispatch.objects.all()
-
         x = stage1
         if not x:
             x = None
