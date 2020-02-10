@@ -429,7 +429,6 @@ def repair_product(request,id):
             item2.previous_repairing_number = request.session.get('previous_repairing_number')
             item2.in_warranty = request.session.get('in_warranty')
             item2.today_date = request.session.get('today_date')
-
             item2.location = request.session.get('location')
             item2.taken_by = request.session.get('taken_by')
             item2.notes = request.session.get('notes')
@@ -980,6 +979,8 @@ def update_repairing_details(request,id):
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired
         item2.notes = notes
+        repair_id.save(update_fields=['notes', ])
+
         if taken_by != '' and taken_by != None and taken_by != 'None' and repair_id.taken_by != taken_by:
 
             repair_id.repairing_start_timedate = timezone.now()
@@ -988,7 +989,6 @@ def update_repairing_details(request,id):
             repair_id.user_id = SiteUser.objects.get(profile_name=taken_by)
             repair_id.save(update_fields=['taken_by',])
             repair_id.save(update_fields=['user_id', ])
-            repair_id.save(update_fields=['notes', ])
             repair_id.save(update_fields=['repairing_start_timedate', ])
 
 
