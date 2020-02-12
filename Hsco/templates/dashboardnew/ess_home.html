@@ -151,10 +151,10 @@ color:;
                     <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
                     <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
                     <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.reason}} </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;  {% if is_employee_of_month %}
+                    {% if is_employee_of_month %}<div class="col-xl-1 col-md-1 mb-1"> &nbsp;
                         <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
 
-                        {% endif %}</div>
+                        </div>{% endif %}
                         <div class="col-xl-2 col-md-1 mb-1">
 
                         </div>
