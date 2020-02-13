@@ -1638,7 +1638,7 @@ def repairing_employee_graph(request,user_id):
             'rep_feedback': rep_feedback,
 
         }
-        return render(request, "graphs/repairing_employee_graph2.html", context)
+        return render(request, "graphs/repairing_employee_graph.html", context)
     elif request.method=='POST' and 'defect_submit' in request.POST:
         defect = request.POST.get('defect')
 
@@ -1703,7 +1703,7 @@ def repairing_employee_graph(request,user_id):
             context.update(context)
         except:
             pass
-        return render(request,"graphs/repairing_employee_graph2.html",context)
+        return render(request,"graphs/repairing_employee_graph.html",context)
 
 
 @login_required(login_url='/')
