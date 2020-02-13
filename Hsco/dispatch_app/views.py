@@ -1152,7 +1152,7 @@ def dispatch_employee_graph(request,user_id):
             'this_lis_sum': this_lis_sum,
             # 'rep_feedback': rep_feedback,
         }
-        return render(request, "graphs/dispatch_employee_graph.html", context)
+        return render(request, "graphs/dispatch_employee_graph2.html", context)
     elif request.method=='POST' and 'defect_submit' in request.POST:
         defect = request.POST.get('defect')
 
@@ -1200,7 +1200,7 @@ def dispatch_employee_graph(request,user_id):
             # 'rep_feedback': rep_feedback,
             # 'feeback': feeback,
         }
-        return render(request,"graphs/dispatch_employee_graph.html",context)
+        return render(request,"graphs/dispatch_employee_graph2.html",context)
 
 def load_dispatch_done(request,):
     selected = request.GET.get('loc_id')

@@ -1423,7 +1423,7 @@ def onsitevisit_app_graph(request,user_id):
             'rep_feedback': rep_feedback,
 
         }
-        return render(request, "graphs/onsitevisit_app_graph.html", context)
+        return render(request, "graphs/onsitevisit_app_graph2.html", context)
     elif request.method=='POST' and 'defect_submit' in request.POST:
         defect = request.POST.get('defect')
 
@@ -1507,7 +1507,7 @@ def onsitevisit_app_graph(request,user_id):
             context.update(context)
         except:
             pass
-        return render(request,"graphs/onsitevisit_app_graph.html",context)
+        return render(request,"graphs/onsitevisit_app_graph2.html",context)
 
 @login_required(login_url='/')
 def onsite_repairing_logs(request):

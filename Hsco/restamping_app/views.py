@@ -1011,7 +1011,7 @@ def restamping_employee_graph(request,user_id):
             # 'rep_feedback': rep_feedback,
             # 'feeback': feeback,
         }
-        return render(request, "graphs/restamping_employee_graph.html", context)
+        return render(request, "graphs/restamping_employee_graph2.html", context)
     elif request.method=='POST' and 'defect_submit' in request.POST:
         defect = request.POST.get('defect')
 
@@ -1078,7 +1078,7 @@ def restamping_employee_graph(request,user_id):
             # 'target_achieved': target_achieved,
             # 'feeback': feeback,
         }
-    return render(request, "graphs/restamping_employee_graph.html", context)
+    return render(request, "graphs/restamping_employee_graph2.html", context)
 
 
 
