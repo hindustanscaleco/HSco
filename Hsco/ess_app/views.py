@@ -86,11 +86,7 @@ def ess_home(request):
     context={}
     print(request.user.role)
     if request.user.role == 'Super Admin':
-        leave_req_list = Employee_Leave.objects.filter(user_id__is_deleted=False,)
-        print(leave_req_list)
-        print(leave_req_list)
-        print(leave_req_list)
-        print(leave_req_list)
+        leave_req_list = Employee_Leave.objects.filter(user_id__is_deleted=False,).order_by('-id'   )
         context={
             'leave_req_list': leave_req_list
         }

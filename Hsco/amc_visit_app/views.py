@@ -18,6 +18,71 @@ from Hsco import settings
 import requests
 import json
 import datetime
+from django.db.models.signals import pre_save,post_save
+from django.dispatch import receiver
+from customer_app.models import Log
+
+@receiver(pre_save, sender=Amc_After_Sales)
+def amc_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None':
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            print('somethibng')
+
+            log.entered_by = instance.entered_by
+            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.module_name = 'AMC Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Amc_After_Sales'
+
+            log.reference = 'Amc No: ' + str(new_instance.amc_no)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            print('somethibng')
+            #########for update action##########
+            old_instance = instance
+            new_instance = Amc_After_Sales.objects.get(id=instance.id)
+            print('somethibng')
+            track = instance.tracker.changed()
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    old_list.append('Old value: ' + key )
+                print('something')
+                log = Log()
+
+                log.entered_by = new_instance.entered_by
+                log.module_name = 'AMC Module'
+                log.action_type = 'Update'
+                log.table_name = 'Amc_After_Sales'
+
+                log.reference = 'Amc No: '+str(new_instance.amc_no)
+
+                log.action = old_list
+                log.save()
+
+
+    except:
+        pass
 
 
 @login_required(login_url='/')

@@ -6,6 +6,7 @@ from django.utils import timezone
 from customer_app.models import Customer_Details
 
 from user_app.models import SiteUser
+from model_utils import FieldTracker
 
 
 class Amc_After_Sales(models.Model):
@@ -46,6 +47,7 @@ class Amc_After_Sales(models.Model):
     entry_timedate = models.DateTimeField(default=timezone.now,)
     feedback_link = models.URLField(max_length=200, null=True, blank=True)
     amc_no = models.BigIntegerField(null=True,blank=True)
+    tracker = FieldTracker()
 
     #for future use
     # visit_1 = models.DateField(default=datetime.date.today, null=True, blank=True)

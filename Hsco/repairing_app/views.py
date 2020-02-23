@@ -14,6 +14,8 @@ from purchase_app.views import check_admin_roles
 from customer_app.models import type_purchase
 
 from ess_app.models import Defects_Warning
+
+from customer_app.models import Log
 from .forms import Repairing_Feedback_Form
 from .models import Repairing_after_sales_service, Repairing_Product, Repairing_Feedback,Component_Replaced
 from django.core.mail import send_mail
@@ -26,6 +28,134 @@ from django.db.models import Count
 from django.db.models import Q
 from datetime import date,datetime, timedelta
 from .serializers import CustomerSerializer
+from django.db.models.signals import pre_save,post_save
+from django.dispatch import receiver
+from django.core.signals import request_finished
+
+@receiver(pre_save, sender=Repairing_after_sales_service)
+def repairing_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+
+            log.entered_by = instance.entered_by
+            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.module_name = 'Repairing Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Repairing_after_sales_service'
+
+            log.reference = 'Repairing No: ' + str(new_instance.repairing_no)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+
+            #########for update action##########
+            old_instance = instance
+            new_instance = Repairing_after_sales_service.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    old_list.append('Old value: ' + key + "=" + value)
+                log = Log()
+
+                log.entered_by = new_instance.entered_by
+                log.module_name = 'Repairing Module'
+                log.action_type = 'Update'
+                log.table_name = 'Repairing_after_sales_service'
+
+                log.reference = 'Repairing No: '+str(new_instance.repairing_no)
+
+                log.action = old_list
+                log.save()
+
+
+    except:
+        pass
+
+
+@receiver(pre_save, sender=Repairing_Product)
+def repairing_product_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None':
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            rep = Repairing_after_sales_service.objects.get(id=new_instance.repairing_id_id)
+
+            log.entered_by = rep.entered_by
+            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.module_name = 'Repairing Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Repairing_Product'
+
+            log.reference = 'Repairing No: ' + str(rep.repairing_no) + ', Product id:' + str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id != '' or instance.id != 'None':
+            #########for update action##########
+            old_instance = instance
+            new_instance = Repairing_Product.objects.get(id=instance.id)
+            print(new_instance.problem_in_scale)
+            print(instance.problem_in_scale)
+            track = instance.tracker.changed()
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+            # with connection.cursor() as cursor:
+            # if new_string != '' :
+            #     print('something 1')
+            #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+            #     cursor.execute("SELECT " + (
+            #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+            #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if track:
+                old_list = []
+                print('something')
+                for key, value in track.items():
+                    # if value != None or value != '' or value != 'None':
+                    old_list.append('Old value: ' + key )
+
+                log = Log()
+                rep = Repairing_after_sales_service.objects.get(id=new_instance.repairing_id_id)
+                log.entered_by = rep.entered_by
+
+                log.module_name = 'Repairing Module'
+                log.action_type = 'Update'
+                log.table_name = 'Repairing_Product'
+
+                log.reference = 'Repairing No: ' + str(rep.repairing_no) + ', Product id:' +str(new_instance.id)
+
+                log.action = old_list
+                log.save()
+
+
+    except:
+        pass
 
 
 @login_required(login_url='/')
@@ -299,7 +429,6 @@ def repair_product(request,id):
             item2.previous_repairing_number = request.session.get('previous_repairing_number')
             item2.in_warranty = request.session.get('in_warranty')
             item2.today_date = request.session.get('today_date')
-
             item2.location = request.session.get('location')
             item2.taken_by = request.session.get('taken_by')
             item2.notes = request.session.get('notes')
@@ -384,7 +513,6 @@ def repair_product(request,id):
                 new_repair_id.ess_calculated = True
                 new_repair_id.save(update_fields=['ess_calculated', ])
 
-        user_id = Repairing_after_sales_service.objects.get(id=id).user_id
 
         current_stage_in_db=Repairing_after_sales_service.objects.get(id=id).current_stage #updatestage1
         if (current_stage_in_db == '' or current_stage_in_db == None ) and (sub_model !='' or sub_model != None):
@@ -851,6 +979,8 @@ def update_repairing_details(request,id):
         item2.confirmed_estimate = confirmed_estimate
         item2.repaired = repaired
         item2.notes = notes
+        repair_id.save(update_fields=['notes', ])
+
         if taken_by != '' and taken_by != None and taken_by != 'None' and repair_id.taken_by != taken_by:
 
             repair_id.repairing_start_timedate = timezone.now()
@@ -859,7 +989,6 @@ def update_repairing_details(request,id):
             repair_id.user_id = SiteUser.objects.get(profile_name=taken_by)
             repair_id.save(update_fields=['taken_by',])
             repair_id.save(update_fields=['user_id', ])
-            repair_id.save(update_fields=['notes', ])
             repair_id.save(update_fields=['repairing_start_timedate', ])
 
 
@@ -1790,6 +1919,10 @@ def send_sms(request,name,phone,email,repair_id,item_id):
 
     return JsonResponse(data)
 
+@login_required(login_url='/')
+def repairing_logs(request):
+    return render(request,"logs/repairing_logs.html",)
+
 #
 #
 # @login_required(login_url='/')
@@ -1824,3 +1957,11 @@ def repairing_form(request,id):
 # @login_required(login_url='/')
 # def repairing_form_back(request):
 #     return render(request,'repairing_form/reparingformback.html')
+
+# @receiver(request_finished)
+# def my_callback(sender, **kwargs):
+#     print("Request finished!")
+
+
+
+

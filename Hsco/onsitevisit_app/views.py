@@ -1,11 +1,13 @@
 from django.db import connection
 from django.db.models import Sum, Min, Q, F, Count, Avg
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from _datetime import datetime
 from django.contrib.auth.decorators import login_required
 
-from customer_app.models import Customer_Details
+from customer_app.models import Customer_Details, Log
 from customer_app.models import type_purchase
 
 from ess_app.models import Employee_Analysis_month
@@ -25,7 +27,168 @@ from ess_app.models import Employee_Analysis_month
 from ess_app.models import Employee_Analysis_date
 import requests
 import json
+from django.db.models.signals import pre_save,post_save
+from django.dispatch import receiver
+from customer_app.models import Log
 
+@receiver(pre_save, sender=Onsite_aftersales_service)
+def dispatch_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None':
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            print('somethibng')
+
+            log.entered_by = instance.entered_by
+            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.module_name = 'Onsite Repairing Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Onsite_aftersales_service'
+
+            log.reference = 'Onsite No: ' + str(new_instance.onsite_no)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            print('somethibng')
+            #########for update action##########
+            old_instance = instance
+            new_instance = Onsite_aftersales_service.objects.get(id=instance.id)
+            print('somethibng')
+            track = instance.tracker.changed()
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    old_list.append('Old value: ' + key )
+                print('something')
+                log = Log()
+
+                log.entered_by = new_instance.entered_by
+                log.module_name = 'Onsite Repairing Module'
+                log.action_type = 'Update'
+                log.table_name = 'Onsite_aftersales_service'
+
+                log.reference = 'Onsite No: '+str(new_instance.onsite_no)
+
+                log.action = old_list
+                log.save()
+
+
+    except:
+        pass
+
+@receiver(pre_save, sender=Onsite_Products)
+def dispatch_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            dispatch = Onsite_Products.objects.get(id=new_instance.purchase_id_id)
+
+            log.entered_by = dispatch.entered_by
+            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.module_name = 'Onsite Repairing Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Onsite_Products'
+
+            log.reference = 'Onsite No: ' + str(dispatch.onsite_no)+ ', Product id:' +str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+
+            #########for update action##########
+            old_instance = instance
+            new_instance = Onsite_Products.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    old_list.append('Old value: ' + key )
+                log = Log()
+                onsite = Onsite_aftersales_service.objects.get(id=new_instance.purchase_id_id)
+                log.entered_by = onsite.entered_by
+                log.module_name = 'Onsite Repairing Module'
+                log.action_type = 'Update'
+                log.table_name = 'Onsite_Products'
+                log.reference = 'Onsite No: '+str(onsite.onsite_no) + ', Product id:' +str(new_instance.id)
+                log.action = old_list
+                log.save()
+
+
+    except:
+        pass
+
+@receiver(pre_save, sender = Onsite_aftersales_service)
+def onsite_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        new_instance = Onsite_aftersales_service.objects.get(id=instance.id)
+        track = instance.tracker.changed()
+        print(new_instance.key)
+        print(instance.key)
+        if track:
+            old_list = []
+            for key,value in track.items():
+                print(new_instance.key)
+                print(instance.key)
+                if new_instance.key != instance.key:
+                    print(value)
+                    old_list.append('Old Value: ' + value)
+            print(old_list)
+            log = Log()
+
+            log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.module_name = 'Onsite Repairing Module'
+            log.action_type = 'Update'
+            log.table_name = 'Onsite_aftersales_service'
+            log.reference = 'Onsite No: '+str(new_instance.onsite_no)
+            log.action = old_list
+            log.save()
+        # else:
+        #     new_instance = Onsite_aftersales_service.objects.get(id=instance.id)
+        #     log = Log()
+        #     log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+        #     log.module_name = 'Onsite Repairing Module'
+        #     log.action_type = 'Insert'
+        #     log.table_name = 'Onsite_aftersales_service'
+        #     log.reference = 'Onsite No: ' + str(new_instance.onsite_no)
+        #     log.action = ''
+        #     log.save()
+    except:
+        pass
 
 @login_required(login_url='/')
 def onsite_views(request):
@@ -1346,5 +1509,7 @@ def onsitevisit_app_graph(request,user_id):
             pass
         return render(request,"graphs/onsitevisit_app_graph.html",context)
 
-
+@login_required(login_url='/')
+def onsite_repairing_logs(request):
+    return render(request,"logs/onsite_reparing_logs.html",)
 

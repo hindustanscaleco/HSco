@@ -1,10 +1,12 @@
 import datetime
 from django.db import models
+from django.db.models.signals import post_save
 from django.utils import timezone
 from customer_app.models import Customer_Details
 from dispatch_app.models import Dispatch
 from user_app.models import SiteUser
 from dispatch_app.models import Product_Details_Dispatch
+from model_utils import FieldTracker
 
 choices = (('NO', 'NO'),
     ('YES', 'YES'),)
@@ -37,9 +39,15 @@ class Purchase_Details(models.Model):   #cleaned
     is_last_product = models.BooleanField(default=False)
     feedback_link = models.URLField(max_length=200, null=True, blank=True)
     purchase_no = models.BigIntegerField(null=True,blank=True)
+    entered_by = models.CharField(blank= True, null=True, max_length=100)
+    tracker = FieldTracker()
 
     def __int__(self):
         return self.id
+
+# def save_purchase_details(sender,instance, **kwargs):
+#
+# post_save.connect(save_purchase_details, sender = Purchase_Details)
 
 class Product_Details(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
@@ -59,6 +67,7 @@ class Product_Details(models.Model):
     amount = models.FloatField(default=0.0,)
 
     entry_timedate = models.DateTimeField(default=timezone.now,)
+    tracker = FieldTracker()
 
     def __int__(self):
         return self.purchase_id

@@ -6,6 +6,7 @@ from django.utils import timezone
 from customer_app.models import Customer_Details
 
 from user_app.models import SiteUser
+from model_utils import FieldTracker
 
 choices = (('YES', 'YES'),
     ('NO', 'NO'),)
@@ -51,6 +52,9 @@ class Onsite_aftersales_service(models.Model):
     onsite_no = models.BigIntegerField(null=True,blank=True)
 
     ess_calculated = models.BooleanField(default=False)
+
+    tracker = FieldTracker()
+
     def __int__(self):
         return self.id
 

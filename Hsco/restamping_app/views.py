@@ -23,6 +23,131 @@ from .models import Restamping_after_sales_service, Restamping_Product
 import requests
 import json
 from ess_app.models import Employee_Analysis_month
+from django.db.models.signals import pre_save,post_save
+from django.dispatch import receiver
+from customer_app.models import Log
+
+@receiver(pre_save, sender=Restamping_after_sales_service)
+def restamping_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None':
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            print('somethibng')
+
+            log.entered_by = instance.entered_by
+            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.module_name = 'Restamping Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Restamping_after_sales_service'
+
+            log.reference = 'Restamping No: ' + str(new_instance.restamping_no)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            print('somethibng')
+            #########for update action##########
+            old_instance = instance
+            new_instance = Restamping_after_sales_service.objects.get(id=instance.id)
+            print('somethibng')
+            track = instance.tracker.changed()
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    old_list.append('Old value: ' + key )
+                print('something')
+                log = Log()
+
+                log.entered_by = new_instance.entered_by
+                log.module_name = 'Restamping Module'
+                log.action_type = 'Update'
+                log.table_name = 'Restamping_after_sales_service'
+
+                log.reference = 'Restamping No: '+str(new_instance.restamping_no)
+
+                log.action = old_list
+                log.save()
+
+
+    except:
+        pass
+
+@receiver(pre_save, sender=Restamping_Product)
+def restamping_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            restamping = Restamping_after_sales_service.objects.get(id=new_instance.purchase_id_id)
+
+            log.entered_by = restamping.entered_by
+            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.module_name = 'Restamping Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Restamping_Product'
+
+            log.reference = 'Restamping No: ' + str(restamping.restamping_no)+ ', Product id:' +str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+
+            #########for update action##########
+            old_instance = instance
+            new_instance = Restamping_Product.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    old_list.append('Old value: ' + key )
+                log = Log()
+                restamping = Restamping_after_sales_service.objects.get(id=new_instance.purchase_id_id)
+                log.entered_by = restamping.entered_by
+                log.module_name = 'Restamping Module'
+                log.action_type = 'Update'
+                log.table_name = 'Restamping_Product'
+                log.reference = 'Restamping No: '+str(restamping.restamping_no) + ', Product id:' +str(new_instance.id)
+                log.action = old_list
+                log.save()
+
+
+    except:
+        pass
+
 
 
 @login_required(login_url='/')
@@ -1104,7 +1229,9 @@ def load_restamping_stages_list(request,):
     context.update(context)
     return render(request, 'AJAX/load_restamping_stage.html', context)
 
-
+@login_required(login_url='/')
+def restamping_logs(request):
+    return render(request,"logs/restamping_logs.html",)
 
 
 

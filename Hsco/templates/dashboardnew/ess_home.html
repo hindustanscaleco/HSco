@@ -149,25 +149,25 @@ color:;
               <div class="card shadow border-approve">
                     <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
                     <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;  {% if is_employee_of_month %}
+                    <div class="col-xl-2 col-md-2 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.reason}} </center></div>|
+                    {% if is_employee_of_month %}<div class="col-xl-1 col-md-1 mb-1"> &nbsp;
                         <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
 
-                        {% endif %}</div>
-                        <div class="col-xl-2 col-md-1 mb-1">
+                        </div>{% endif %}
 
-                        </div>
                     </div>
                 </div>
                   {% elif item.in_process %}
                   <div class="card shadow border-process">
                         <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
                     <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;  {% if is_employee_of_month %}
+                    <div class="col-xl-2 col-md-2 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.reason}} </center></div>|
+                   {% if is_employee_of_month %} <div class="col-xl-1 col-md-1 mb-1"> &nbsp;
                         <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
 
-                        {% endif %}</div>
+                        </div>{% endif %}
                         <div class="col-xl-2 col-md-1 mb-1">
                                <form method="post">{% csrf_token %}
                       <button style="background-color: #FC6E20;" name="list[]" value="no" id="no" type="submit"  class="no_button"><i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i></button>
@@ -182,14 +182,15 @@ color:;
                       <div class="card shadow border-disapprove">
                             <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
                     <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;
-                        {% if is_employee_of_month %}
+                    <div class="col-xl-2 col-md-2 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.reason}} </center></div>|
+                    {% if is_employee_of_month %}<div class="col-xl-1 col-md-1 mb-1"> &nbsp;
+
                         <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
 
-                        {% endif %}
 
-                    </div>
+
+                    </div>{% endif %}
                         <div class="col-xl-2 col-md-1 mb-1">
                              <form method="post">{% csrf_token %}
 &nbsp; <input type="hidden"  name="user_id" value="{{item.pk}}">
