@@ -40,7 +40,7 @@ class Employee_Leave(models.Model):
     # ess_id=models.ForeignKey(Ess, on_delete=models.CASCADE)
     requested_leave_date_from= models.DateField(default=datetime.date.today, blank=True)
     requested_leave_date_to= models.DateField(default=datetime.date.today, blank=True)
-    reason=models.CharField(max_length=250,)
+    reason=models.CharField(max_length=150,)
     is_approved =models.BooleanField(default=False,null=True, blank=True)     #YES Or NO
     in_process = models.BooleanField(default=True ,null=True, blank=True)      #Decide Later option for manager
     leave_approved_by = models.CharField(max_length=150,null=True, blank=True)

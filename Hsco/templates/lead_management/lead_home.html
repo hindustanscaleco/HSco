@@ -33,7 +33,7 @@
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-	{% include 'base_templates/sidebar.html' %}
+  {% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -46,7 +46,7 @@
 
 
         <!-- Topbar -->
-	{% include 'base_templates/navbar_for_dashboard.html' %}
+  {% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -170,6 +170,10 @@ input:checked + .slider:before {
 }
 .divs{
 display:none;
+}
+
+.card-body{
+font-size: 12px;
 }
 </style>
 
@@ -369,7 +373,7 @@ $(function() {
 
         <div style="cursor: pointer; " onclick="choice1('Scale is collected but estimate is not given')" class="col-xl-1 col-md-3 mb-12">
               <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,5.5),rgba(120,115,245,.9))">
-                <div class="card-body row" style="padding-left: 20px; color: white; font-weight: 600; font-size: 14px; height: 130px;">
+                <div class="card-body row" style="padding-left: 20px; color: white; font-weight: 600; font-size: 12px; height: 180px;">
                   <center> <br>Not Yet Initiated <br> ( ) </center>
                     </div>
                 </div>
@@ -377,7 +381,7 @@ $(function() {
 
         <div style="cursor: pointer; " onclick="choice1('Estimate is given but Estimate is not confirmed')" class="col-xl-1 col-md-3 mb-12">
               <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">
-                <div class="card-body row" style="padding-left: 17px; color: white; font-weight: 600; font-size: 14px;  height: 130px;">
+                <div class="card-body row" style="padding-left: 17px; color: white; font-weight: 600; font-size: 12px;  height: 180px;">
                  <center> <br> Customer Called&nbsp;<br> ( )</center>
 
 
@@ -388,9 +392,9 @@ $(function() {
 
             <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">
               <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
-                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 14px;  height: 130px;">
+                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 12px;  height: 180px;">
 
-                   <center><p> <br> PI Sent & Follow-up <br>&nbsp; ( ) </p></center>
+                   <center><p> <br> PI Sent & Follow-up <br>&nbsp; ( ) <br> &nbsp; ( )</p></center>
 
                     </div>
 
@@ -399,9 +403,9 @@ $(function() {
 
             <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">
               <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
-                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 12px;  height: 130px;">
+                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 12px;  height: 180px;">
 
-                   <center><p style="margin-top:07px"> PO Issued - Payment not done <br>&nbsp; ( ) </p></center>
+                   <center><p style="margin-top:07px"> PO Issued - Payment not done <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>
 
                     </div>
 
@@ -410,9 +414,9 @@ $(function() {
 
              <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">
               <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
-                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 12px;  height: 130px;">
+                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 12px;  height: 180px;">
 
-                   <center><p> PO Issued - Payment Done - Dispatch Pending <br>&nbsp; ( ) </p></center>
+                   <center><p> PO Issued - Payment Done - Dispatch Pending <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>
 
                     </div>
 
@@ -421,30 +425,9 @@ $(function() {
 
                  <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">
               <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
-                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 14px;  height: 130px;">
+                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 12px;  height: 180px;">
 
-                   <center><p style="margin-top:10 px;"> Dispatch Done - Closed <br>&nbsp; ( ) </p></center>
-
-                    </div>
-
-                </div>
-              </div>
-
-                       <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">
-              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
-                <div class="card-body row" style="padding-left:34px; color: white; font-weight: 600; font-size: 16px;  height: 130px;">
-
-                   <center><p style="margin-top:25px"> Lost <br>&nbsp; ( ) </p></center>
-
-                    </div>
-
-                </div>
-              </div>
-                       <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">
-              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
-                <div class="card-body row" style="padding-left:20px; color: white; font-weight: 600; font-size: 14px;  height: 130px;">
-
-                   <center><p style="margin-top:14px"> Not Relevant <br>&nbsp; ( ) </p></center>
+                   <center><p style="margin-top:10 px;"> Dispatch Done - Closed <br>&nbsp; ( ) <br> &nbsp; ( ) </p></center>
 
                     </div>
 
@@ -453,21 +436,42 @@ $(function() {
 
                        <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">
               <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
-                <div class="card-body row" style="padding-left:20px; color: white; font-weight: 600; font-size: 14px;  height: 130px;">
+                <div class="card-body row" style="padding-left:34px; color: white; font-weight: 600; font-size: 16px;  height: 180px;">
 
-                   <center><p style="margin-top:28px"> Archieve <br>&nbsp; ( ) </p></center>
+                   <center><p style="margin-top:25px"> Lost <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>
 
                     </div>
 
                 </div>
               </div>
+                       <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">
+              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
+                <div class="card-body row" style="padding-left:20px; color: white; font-weight: 600; font-size: 12px;  height: 180px;">
+
+                   <center><p style="margin-top:14px"> Not Relevant <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>
+
+                    </div>
+
+                </div>
+              </div>
+
+<!--                       <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
+<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
+<!--                <div class="card-body row" style="padding-left:20px; color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
+
+<!--                   <center><p style="margin-top:28px"> Archieve <br>&nbsp; ( ) </p></center>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--              </div>-->
 
 
                        <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">
               <div class="card shadow" style="background: linear-gradient(40deg,rgba(69,202,252,.9),rgba(48,63,159,.9))">
-                <div class="card-body row" style="padding-left:15px; color: white; font-weight: 600; font-size: 13px;  height: 130px;">
+                <div class="card-body row" style="padding-left:15px; color: white; font-weight: 600; font-size: 13px;  height: 180px;">
 
-                   <center><p style="margin-top:30px"> Postponed <br>&nbsp; ( ) </p></center>
+                   <center><p style="margin-top:30px"> Postponed <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>
 
                     </div>
 
@@ -512,7 +516,7 @@ a:hover {
   table {
   border-collapse: collapse;
   width: 100%;
-  font-size: 14px;
+  font-size: 12px;
   border-color: black;
   color: black;
 
@@ -575,12 +579,12 @@ td {
             <td>{{list1.sales_person}}</td>
             <td>
                        {% for avg in  list1.feedback_stars|rjust:'5'  %}
-							{% if forloop.counter <= list1.feedback_stars %}
-									<i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
-							{% else %}
-									<i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
-							{% endif %}
-						{% endfor %}
+              {% if forloop.counter <= list1.feedback_stars %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
+              {% endif %}
+            {% endfor %}
             </td>
 
         </tr>
