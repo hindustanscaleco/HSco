@@ -1285,7 +1285,7 @@ def customer_employee_sales_graph(request,user_id):
             context.update(context)
         except:
             pass
-        return render(request, "graphs/sales_graph.html", context)
+        return render(request, "graphs/sales_graph2.html", context)
     elif request.method=='POST' and 'defect_submit' in request.POST:
         defect = request.POST.get('defect')
 
@@ -1347,7 +1347,7 @@ def customer_employee_sales_graph(request,user_id):
             context.update(context)
         except:
             pass
-        return render(request,"graphs/sales_graph.html",context)
+        return render(request,"graphs/sales_graph2.html",context)
 
 # @login_required(login_url='/')
 def feedback_purchase(request,user_id,customer_id,purchase_id):
