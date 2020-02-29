@@ -1276,13 +1276,13 @@ def customer_employee_sales_graph(request,user_id):
             timeliness_of_person_avg = round(timeliness_of_person['timeliness_of_person__avg'])
             overall_interaction_avg = round(overall_interaction['overall_interaction__avg'])
             price_of_product_avg = round(price_of_product['price_of_product__avg'])
-            context = {
+            context23 = {
                 'knowledge_of_person_avg': knowledge_of_person_avg,
                 'timeliness_of_person_avg': timeliness_of_person_avg,
                 'price_of_product_avg': price_of_product_avg,
                 'overall_interaction_avg': overall_interaction_avg,
             }
-            context.update(context)
+            context.update(context23)
         except:
             pass
         return render(request, "graphs/sales_graph2.html", context)
@@ -1338,13 +1338,13 @@ def customer_employee_sales_graph(request,user_id):
             timeliness_of_person_avg = round(timeliness_of_person['timeliness_of_person__avg'])
             overall_interaction_avg = round(overall_interaction['overall_interaction__avg'])
             price_of_product_avg = round(price_of_product['price_of_product__avg'])
-            context = {
+            context2 = {
                 'knowledge_of_person_avg': knowledge_of_person_avg,
                 'timeliness_of_person_avg': timeliness_of_person_avg,
                 'price_of_product_avg': price_of_product_avg,
                 'overall_interaction_avg': overall_interaction_avg,
             }
-            context.update(context)
+            context.update(context2)
         except:
             pass
         return render(request,"graphs/sales_graph2.html",context)
