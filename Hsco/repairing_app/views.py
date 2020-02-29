@@ -1628,7 +1628,7 @@ def repairing_employee_graph(request,user_id):
             lis_sum.append(x['data_sum'])
 
 
-        context = {
+        context2 = {
             'final_list': lis_date,
             'final_list2': lis_sum,
             'previous_lis_date': previous_lis_date,
@@ -1638,6 +1638,7 @@ def repairing_employee_graph(request,user_id):
             'rep_feedback': rep_feedback,
 
         }
+        context.update(context2)
         return render(request, "graphs/repairing_employee_graph.html", context)
     elif request.method=='POST' and 'defect_submit' in request.POST:
         defect = request.POST.get('defect')
@@ -1694,13 +1695,13 @@ def repairing_employee_graph(request,user_id):
             price_of_reparing_avg = price_of_reparing['price_of_reparing__avg']
             overall_interaction_avg = overall_interaction['overall_interaction__avg']
             satisfied_with_communication_avg = satisfied_with_communication['satisfied_with_communication__avg']
-            context = {
+            context22 = {
                 'satisfied_with_communication_avg': satisfied_with_communication_avg,
                 'speed_of_performance_avg': speed_of_performance_avg,
                 'price_of_reparing_avg': price_of_reparing_avg,
                 'overall_interaction_avg': overall_interaction_avg,
             }
-            context.update(context)
+            context.update(context22)
         except:
             pass
         return render(request,"graphs/repairing_employee_graph.html",context)
