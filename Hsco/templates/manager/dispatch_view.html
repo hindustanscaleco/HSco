@@ -458,6 +458,26 @@ td {
 
 </div>
         </div>
+          <div class="pagination">
+    <span class="step-links">
+        {% if dispatch_list.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ dispatch_list.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ dispatch_list.number }} of {{ dispatch_list.paginator.num_pages }}.
+        </span>
+
+        {% if restamp_list.has_next %}
+            <a href="?page={{ dispatch_list.next_page_number }}">next</a>
+            <a href="?page={{ dispatch_list.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+          </div>
+      </div>
+    </div>
+  </div>
 
 
   <!-- End of Page Wrapper -->

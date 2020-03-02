@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.db.models import Q, F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -331,8 +332,14 @@ def amc_views(request):
             if check_admin_roles(request):  # For ADMIN
                 amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
                                                           user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-id')
+                paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                amc_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-id')
+                paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                amc_list = paginator.get_page(page)
             # amc_list = Amc_After_Sales.objects.filter()
             context = {
                 'amc_list': amc_list,
@@ -344,8 +351,14 @@ def amc_views(request):
             if check_admin_roles(request):  # For ADMIN
                 amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
                                                           user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-id')
+                paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                amc_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-id')
+                paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                amc_list = paginator.get_page(page)
             # amc_list = Amc_After_Sales.objects.filter(customer_no=contact)
             context = {
                 'amc_list': amc_list,
@@ -358,8 +371,14 @@ def amc_views(request):
             if check_admin_roles(request):  # For ADMIN
                 amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
                                                           user_id__is_deleted=False,company_email__icontains=email).order_by('-id')
+                paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                amc_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-id')
+                paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                amc_list = paginator.get_page(page)
             # dispatch_list = Amc_After_Sales.objects.filter(customer_email_id=email)
             context = {
                 'amc_list': amc_list,
@@ -371,8 +390,14 @@ def amc_views(request):
             if check_admin_roles(request):  # For ADMIN
                 amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
                                                           user_id__is_deleted=False,second_person__icontains=customer).order_by('-id')
+                paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                amc_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-id')
+                paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                amc_list = paginator.get_page(page)
 
             # dispatch_list = Amc_After_Sales.objects.filter(customer_name=customer)
             context = {
@@ -387,8 +412,14 @@ def amc_views(request):
                 amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
                                                           user_id__is_deleted=False,
                                                           second_company_name__icontains=company).order_by('-id')
+                paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                amc_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-id')
+                paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                amc_list = paginator.get_page(page)
 
             # dispatch_list = Amc_After_Sales.objects.filter(customer_name=customer)
             context = {
@@ -408,8 +439,14 @@ def amc_views(request):
             if check_admin_roles(request):  # For ADMIN
                 amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
                                                           user_id__is_deleted=False,crm_no__pk=crm).order_by('-id')
+                paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                amc_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-id')
+                paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                amc_list = paginator.get_page(page)
             # amc_list = Amc_After_Sales.objects.all()
 
             # context = {
@@ -428,8 +465,14 @@ def amc_views(request):
                 amc_list = Amc_After_Sales.objects.filter(user_id__group__icontains=request.user.name,
                                                           user_id__is_deleted=False,
                                                           amc_no__icontains=amc_no).order_by('-id')
+                paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                amc_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk,amc_no__icontains=amc_no).order_by('-id')
+                paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                amc_list = paginator.get_page(page)
 
             # dispatch_list = Amc_After_Sales.objects.filter(customer_name=customer)
             context = {
@@ -448,15 +491,24 @@ def amc_views(request):
     else:
         if request.user.role == 'Admin' or request.user.role == 'Super Admin':     #For ADMIN
             amc_list = Amc_After_Sales.objects.filter(Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False) | Q(user_id__name__icontains=request.user.name)).order_by('-id')
+            paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            amc_list = paginator.get_page(page)
         elif request.user.role == 'Manager':
             admin = SiteUser.objects.get(id=request.user.pk).admin
             amc_list = Amc_After_Sales.objects.filter(Q(user_id__admin=admin, user_id__is_deleted=False)| Q(user_id__name__icontains=request.user.name)|Q(user_id__name=admin)).order_by(
                 '-id')
+            paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            amc_list = paginator.get_page(page)
 
         else:  #For EMPLOYEE
             admin = SiteUser.objects.get(id=request.user.pk).admin
 
             amc_list = Amc_After_Sales.objects.filter(Q(user_id__admin=admin)| Q(user_id__name=request.user.name)|Q(user_id__name=admin)).order_by('-id')
+            paginator = Paginator(amc_list, 15)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            amc_list = paginator.get_page(page)
 
         # amc_list = Amc_After_Sales.objects.all()
 
