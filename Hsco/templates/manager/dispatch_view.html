@@ -469,7 +469,7 @@ td {
             Page {{ dispatch_list.number }} of {{ dispatch_list.paginator.num_pages }}.
         </span>
 
-        {% if restamp_list.has_next %}
+        {% if dispatch_list.has_next %}
             <a href="?page={{ dispatch_list.next_page_number }}">next</a>
             <a href="?page={{ dispatch_list.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
