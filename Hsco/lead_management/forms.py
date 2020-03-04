@@ -100,8 +100,8 @@ class Customer_detailForm(forms.ModelForm):
                                         choices=stage,
                                         attrs={
                                             'default': "automatic",
-                                            'class': 'btn btn-primary',
-                                            'style': 'background-color: #FC6E20;'
+                                            'class': 'btn btn-outline-primary',
+
                                         }
                                     ))
 
@@ -253,8 +253,9 @@ class Customer_detailForm(forms.ModelForm):
             choices=auto_manual_email,
             attrs={
                 'default':"automatic",
-                'class':'btn btn-primary',
-                'style':'background-color: #FC6E20;'
+                'class':'btn btn-outline-primary',
+
+
             }
         ))
 

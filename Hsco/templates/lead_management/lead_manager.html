@@ -77,11 +77,11 @@
                   <div class="row no-gutters align-items-right">
 
 
- <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Lead </button></a>
-                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Share</button></a>
-                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
-<a style="padding: 2px;" href="//"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
- <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
+<!-- <a style="padding: 2px;" href="{% url 'view_lead' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Lead </button></a>-->
+<!--                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Share</button></a>-->
+<!--                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>-->
+<!--<a style="padding: 2px;" href="//"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>-->
+<!-- <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>-->
 
 
 
@@ -321,20 +321,9 @@ $(function() {
 {% if request.user.is_authenticated %}
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
                      <div class="col-xl-12 col-md-2 col-mb-8 row">
-                         <div class="col-xl-4 col-md-2 col-mb-8">
-    <p> Manager</p>
-                     </div>
-                     <div class="col-xl-3 col-md-2 col-mb-8">
-                         <label class="switch ">
 
-  <input name="deleted" type="checkbox" checked onchange="toggleCheckbox2(this)">
-  <span class="slider round"></span>
-</label>
-                     </div>
-                     <div class="col-xl-5 col-md-2 col-mb-8">
-                         <p>Employee</p>
+<a href="{% url 'lead_home' %}"><button type="button" class="btn btn-primary" style="background-color:#FC6E20; ">Employee</button></a>
 
-                     </div>
                      </div>
 {% else %}
                      {% endif %}
