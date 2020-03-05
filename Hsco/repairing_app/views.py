@@ -34,7 +34,7 @@ from django.dispatch import receiver
 from django.core.signals import request_finished
 
 @receiver(pre_save, sender=Repairing_after_sales_service)
-def repairing_handler(sender, instance, update_fields=None, **kwargs):
+def repairing_main_handler(sender, instance, update_fields=None, **kwargs):
     try:
         if instance.id == None or instance.id == '' or instance.id == 'None' :
             #########for insert action##########
@@ -76,7 +76,8 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
             if  track:
                 old_list = []
                 for key, value in track.items():
-                    old_list.append('Old value: ' + key + "=" + value)
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
 
                 log.entered_by = new_instance.entered_by
@@ -89,13 +90,12 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
                 log.action = old_list
                 log.save()
 
-
     except:
         pass
 
 
 @receiver(pre_save, sender=Repairing_Product)
-def repairing_product_handler(sender, instance, update_fields=None, **kwargs):
+def repairing_products_handler(sender, instance, update_fields=None, **kwargs):
     try:
         if instance.id == None or instance.id == '' or instance.id == 'None':
             #########for insert action##########
@@ -109,7 +109,7 @@ def repairing_product_handler(sender, instance, update_fields=None, **kwargs):
             log.action_type = 'Insert'
             log.table_name = 'Repairing_Product'
 
-            log.reference = 'Repairing No: ' + str(rep.repairing_no) + ', Product id:' + str(new_instance.id)
+            log.reference = 'Repairing No: ' + str(rep.repairing_no)
 
             # log.action = old_list
             log.save()
@@ -117,8 +117,6 @@ def repairing_product_handler(sender, instance, update_fields=None, **kwargs):
             #########for update action##########
             old_instance = instance
             new_instance = Repairing_Product.objects.get(id=instance.id)
-            print(new_instance.problem_in_scale)
-            print(instance.problem_in_scale)
             track = instance.tracker.changed()
             # string = ''
             # new_list = []
@@ -136,11 +134,9 @@ def repairing_product_handler(sender, instance, update_fields=None, **kwargs):
             #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
             if track:
                 old_list = []
-                print('something')
                 for key, value in track.items():
-                    # if value != None or value != '' or value != 'None':
-                    old_list.append('Old value: ' + key )
-
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
                 rep = Repairing_after_sales_service.objects.get(id=new_instance.repairing_id_id)
                 log.entered_by = rep.entered_by
@@ -1972,7 +1968,12 @@ def send_sms(request,name,phone,email,repair_id,item_id):
 
 @login_required(login_url='/')
 def repairing_logs(request):
-    return render(request,"logs/repairing_logs.html",)
+    repairing_logs = Log.objects.filter(module_name='Repairing Module')
+    context = {
+        'repairing_logs': repairing_logs,
+
+    }
+    return render(request,"logs/repairing_logs.html",context)
 
 #
 #
