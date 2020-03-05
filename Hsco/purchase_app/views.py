@@ -29,16 +29,21 @@ from django.db.models.functions import TruncMonth
 from django.db.models import Count
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
+def loggedin_name(request):
+    if request.user.is_authenticated:
+        name = SiteUser.objects.get(id=request.user.id).name
+        print(name)
+        return name
 
 @receiver(pre_save, sender=Purchase_Details)
-def repairing_handler(sender, instance, update_fields=None, **kwargs):
+def purchase_handler(sender, instance, update_fields=None, **kwargs):
     try:
         if instance.id == None or instance.id == '' or instance.id == 'None' :
             #########for insert action##########
             new_instance = instance
             log = Log()
 
-            log.entered_by = instance.entered_by
+            log.entered_by = loggedin_name()
             # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
             log.module_name = 'Purchase Module'
             log.action_type = 'Insert'
@@ -73,13 +78,11 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
             if  track:
                 old_list = []
                 for key, value in track.items():
-                    print(key)
-                    print(value)
-                    old_list.append('Old value: ' + key )
-                print('something')
+                    if value != '' and str(value) != getattr(instance,key):
+                        old_list.append(key +':Old value= '+str(value) + ', New value='+getattr(instance,key) )
                 log = Log()
-
-                log.entered_by = new_instance.entered_by
+                print(loggedin_name)
+                log.entered_by = loggedin_name()
                 log.module_name = 'Purchase Module'
                 log.action_type = 'Update'
                 log.table_name = 'Purchase_Details'
@@ -94,7 +97,7 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
         pass
 
 @receiver(pre_save, sender=Product_Details)
-def repairing_handler(sender, instance, update_fields=None, **kwargs):
+def purchase_product_handler(sender, instance, update_fields=None, **kwargs):
     try:
         if instance.id == None or instance.id == '' or instance.id == 'None' :
             #########for insert action##########
@@ -102,13 +105,13 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
             log = Log()
             purchase = Purchase_Details.objects.get(id=new_instance.purchase_id_id)
 
-            log.entered_by = purchase.entered_by
+            log.entered_by = loggedin_name()
             # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
             log.module_name = 'Purchase Module'
             log.action_type = 'Insert'
             log.table_name = 'Product_Details'
 
-            log.reference = 'Purchase No: ' + str(purchase.purchase_no)+ ', Product id:' +str(new_instance.id)
+            log.reference = 'Purchase No: ' + str(purchase.purchase_no)
 
             # log.action = old_list
             log.save()
@@ -137,10 +140,12 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
             if  track:
                 old_list = []
                 for key, value in track.items():
-                    old_list.append('Old value: ' + key )
+                    if value != '' and str(value) != getattr(instance,key):
+                        old_list.append(key +':Old value= '+str(value) + ', New value='+getattr(instance,key) )
+                    # old_list.append('Old value: ' + key )
                 log = Log()
                 purchase = Purchase_Details.objects.get(id=new_instance.purchase_id_id)
-                log.entered_by = purchase.entered_by
+                log.entered_by = loggedin_name()
                 log.module_name = 'Purchase Module'
                 log.action_type = 'Update'
                 log.table_name = 'Product_Details'
@@ -1631,8 +1636,12 @@ def dispatch_logs(request):
 
 @login_required(login_url='/')
 def purchase_logs(request):
-    return render(request,"logs/purchase_logs.html",)
+    purchase_logs = Log.objects.filter(module_name='Purchase Module')
+    context={
+    'purchase_logs': purchase_logs,
 
+    }
+    return render(request,"logs/purchase_logs.html",context)
 
 
 

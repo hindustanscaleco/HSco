@@ -83,7 +83,7 @@
  <a href="#"><button style="background-color: #FC6E20; margin-top: 3px;" name="deleted" type="submit" class="btn btn-primary" >Deleted User</button></a>
 </form>
 
- <a style="padding: 2px;" href="/user_lottgs/"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
+ <a style="padding: 2px;" href="/purchase_logs/"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
  <a style="padding: 2px;" href="/report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
  <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Purchase </button></a>
 {% else %}
@@ -474,8 +474,8 @@ td {
             <div class="pagination">
     <span class="step-links">
         {% if customer_list.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ customer_list.previous_page_number }}">previous</a>
+            <a href="?page=1"  class="btn btn-primary">&laquo; First</a>&nbsp;&nbsp;
+            <a href="?page={{ customer_list.previous_page_number }}" class="btn btn-primary">Previous</a>&nbsp;
         {% endif %}
 
         <span class="current">
@@ -483,8 +483,9 @@ td {
         </span>
 
         {% if customer_list.has_next %}
-            <a href="?page={{ customer_list.next_page_number }}">next</a>
-            <a href="?page={{ customer_list.paginator.num_pages }}">last &raquo;</a>
+        &nbsp;
+            <a href="?page={{ customer_list.next_page_number }}" class="btn btn-primary">Next</a>&nbsp;&nbsp;
+            <a href="?page={{ customer_list.paginator.num_pages }}" class="btn btn-primary">Last &raquo;</a>
         {% endif %}
     </span>
             </div>
