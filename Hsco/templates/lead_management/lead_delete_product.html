@@ -599,31 +599,6 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td></tr>
 
 
-
-<!--                    {% for list1 in customer_list %}-->
-
-<!--        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">-->
-<!--                        <td>{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>-->
-
-<!--            <td>{{ list1.entry_timedate|date:'Y-m-d'}}</td>-->
-<!--            <td>{{ list1.purchase_no}}</td>-->
-<!--            <td>{{ list1.second_person }}</td>-->
-<!--            <td>{% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</td>-->
-<!--            <td>{{ list1.second_contact_no}}</td>-->
-<!--            <td>{{list1.sales_person}}</td>-->
-<!--            <td>-->
-<!--                       {% for avg in  list1.feedback_stars|rjust:'5'  %}-->
-<!--              {% if forloop.counter <= list1.feedback_stars %}-->
-<!--                  <i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>-->
-<!--              {% else %}-->
-<!--                  <i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>-->
-<!--              {% endif %}-->
-<!--            {% endfor %}-->
-<!--            </td>-->
-
-<!--        </tr>-->
-<!--                          {% endfor %}-->
-
     </table>
 
         </div>
