@@ -33,7 +33,7 @@
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-	{% include 'base_templates/sidebar.html' %}
+  {% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -46,7 +46,7 @@
 
 
         <!-- Topbar -->
-	{% include 'base_templates/navbar_for_dashboard.html' %}
+  {% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -59,7 +59,7 @@
 
                 <div class="card-body" style="padding: 2px;">
                   <div class="row no-gutters align-items-right">
-<h1 class="h3 mb-0 text-gray-800 ">Purchase Module</h1>
+<h1 class="h3 mb-0 text-gray-800 ">Lead Management</h1>
 
 
                 </div>
@@ -68,28 +68,21 @@
 
 
 
-                 <div class="col-xl-6 col-md-9 mb-9 ">
+                 <div class="col-xl-1 col-md-9 mb-9 ">
+                 </div>
+                 <div class="col-xl-5 col-md-9 mb-9 ">
 
 
                 <div class="card-body" style="padding: 2px;">
                   <div class="row no-gutters align-items-right">
 
-     {% if request.user.is_authenticated %}
-{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
-<a style="padding: 2px; " href="/purchase_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
 
+<!-- <a style="padding: 2px;" href="{% url 'view_lead' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Lead </button></a>-->
+<!--                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Share</button></a>-->
+<!--                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>-->
+<!--<a style="padding: 2px;" href="//"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>-->
+<!-- <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>-->
 
-<form method="POST" ion="">{%csrf_token%}
- <a href="#"><button style="background-color: #FC6E20; margin-top: 3px;" name="deleted" type="submit" class="btn btn-primary" >Deleted User</button></a>
-</form>
-
- <a style="padding: 2px;" href="/user_lottgs/"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
- <a style="padding: 2px;" href="/report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
- <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Purchase </button></a>
-{% else %}
- <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Purchase </button></a>
-{% endif %}
-{% endif %}
 
 
 
@@ -178,6 +171,10 @@ input:checked + .slider:before {
 .divs{
 display:none;
 }
+
+.card-body{
+font-size: 12px;
+}
 </style>
 
 
@@ -210,7 +207,7 @@ $(function() {
   </select>
 </div>
 
-<br>
+
                 </div>
 
 
@@ -324,19 +321,9 @@ $(function() {
 {% if request.user.is_authenticated %}
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
                      <div class="col-xl-12 col-md-2 col-mb-8 row">
-                         <div class="col-xl-4 col-md-2 col-mb-8">
-    <p> Manager</p>
-                     </div>
-                     <div class="col-xl-3 col-md-2 col-mb-8">
-                         <label class="switch ">
-  <input name="deleted" type="checkbox" checked onchange="toggleCheckbox2(this)">
-  <span class="slider round"></span>
-</label>
-                     </div>
-                     <div class="col-xl-5 col-md-2 col-mb-8">
-                         <p>Employee</p>
 
-                     </div>
+<a href="{% url 'lead_home' %}"><button type="button" class="btn btn-primary" style="background-color:#FC6E20; ">Employee</button></a>
+
                      </div>
 {% else %}
                      {% endif %}
@@ -347,6 +334,45 @@ $(function() {
                 </div>
 
             </div>
+            <br>
+            <div class="row">
+                            <div  class="col-xl-2 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+  <select id="divsort" class="form-control">
+     <option value="d0">Sort by Month </option>
+     <option value="d1">Sort by March  </option>
+     <option value="d2">Sort by  </option>
+     <option value="d3">Sort by  </option>
+     <option value="d4">Sort by  </option>
+     <option value="d5">Sort by  </option>
+     <option value="d6">Sort by  </option>
+     <option value="d7">Sort by  </option>
+  </select>
+</div>
+                            </div>
+
+
+                <div  class="col-xl-2 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+  <select id="divyear" class="form-control">
+     <option value="d0">Sort by Year </option>
+     <option value="d1">Sort by 2019  </option>
+     <option value="d2">Sort by  </option>
+     <option value="d3">Sort by  </option>
+     <option value="d4">Sort by  </option>
+     <option value="d5">Sort by  </option>
+     <option value="d6">Sort by  </option>
+     <option value="d7">Sort by  </option>
+  </select>
+</div>
+                            </div>
+
+
+                </div>
+
+
+
+
 
 
                <style>
@@ -383,7 +409,7 @@ a:hover {
   table {
   border-collapse: collapse;
   width: 100%;
-  font-size: 14px;
+  font-size: 12px;
   border-color: black;
   color: black;
 
@@ -423,38 +449,13 @@ td {
 
     <table>
         <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Dispatch Id</td>
-            <td style="border: 0px solid gray;">Date </td>
-            <td style="border: 0px solid gray;"> Purchase ID</td>
-            <td style="border: 0px solid gray;">Customer Name</td>
-            <td style="border: 0px solid gray;"> Company Name </td>
-            <td style="border: 0px solid gray;">Contact No.</td>
-            <td style="border: 0px solid gray;">Sales Person  </td>
-            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Feedback</td>
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No</td>
+            <td style="border: 0px solid gray;">Employee Name</td>
+            <td style="border: 0px solid gray;">Lead Convertion</td>
+            <td style="border: 0px solid gray;">Lost</td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Postpond</td>
         </tr>
-                    {% for list1 in customer_list %}
 
-        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
-                        <td>{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>
-
-            <td>{{ list1.entry_timedate|date:'Y-m-d'}}</td>
-            <td>{{ list1.purchase_no}}</td>
-            <td>{{ list1.second_person }}</td>
-            <td>{% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</td>
-            <td>{{ list1.second_contact_no}}</td>
-            <td>{{list1.sales_person}}</td>
-            <td>
-                       {% for avg in  list1.feedback_stars|rjust:'5'  %}
-							{% if forloop.counter <= list1.feedback_stars %}
-									<i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
-							{% else %}
-									<i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
-							{% endif %}
-						{% endfor %}
-            </td>
-
-        </tr>
-                          {% endfor %}
 
     </table>
 
@@ -463,42 +464,22 @@ td {
 
 
 
+
+<br>
 <br>
 
 
 
-
-
-
-
-            <div class="pagination">
-    <span class="step-links">
-        {% if customer_list.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ customer_list.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ customer_list.number }} of {{ customer_list.paginator.num_pages }}.
-        </span>
-
-        {% if customer_list.has_next %}
-            <a href="?page={{ customer_list.next_page_number }}">next</a>
-            <a href="?page={{ customer_list.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
             </div>
-        </div>
-              </div>
 
+
+
+        </div>
 </div>
 <br>
-
   </div>
-
   <!-- End of Page Wrapper -->
   </div>
-
 
 
   <!-- Scroll to Top Button-->

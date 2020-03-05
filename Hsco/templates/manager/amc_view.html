@@ -228,7 +228,7 @@ td {
 
 
 
-<div class="row" id="id_manager_view" style="min-height: 26vw;">
+<div class="row" id="id_manager_view" style="min-height: 14vw;">
 
 
     <table>
@@ -243,8 +243,7 @@ td {
 </tr>
 
 
-<br>
-<br>
+
              <center><p>{{search_msg}}</p></center>
                   {% for list in amc_list %}
 
@@ -273,23 +272,37 @@ td {
 
 </tr>
                   {% endfor %}
-
 </table>
+</div>
+            <br>
+            <br>
+    <div class="pagination">
+    <span class="step-links">
+        {% if amc_list.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ amc_list.previous_page_number }}">previous</a>
+        {% endif %}
 
+        <span class="current">
+            Page {{ amc_list.number }} of {{ amc_list.paginator.num_pages }}.
+        </span>
 
+        {% if amc_list.has_next %}
+            <a href="?page={{ amc_list.next_page_number }}">next</a>
+            <a href="?page={{ amc_list.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+    </div>
 
-
-        </div>
 </div>
 
 
 
 
-<br>
 
+      </div>
 
-  </div>
-  <!-- End of Page Wrapper -->
+        <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">

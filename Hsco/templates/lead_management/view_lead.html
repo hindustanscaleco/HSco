@@ -266,16 +266,7 @@ color:;
                             </div>
                              </div>
 
-{% if form.current_stage=="Lost" %}
-                            <label class="col-md-2 control-label">Reason for lost stage :</label>
-                              <div class="col-md-5 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.owner_of_opportunity }}
-                            </div>
-                             </div>
-                                {% else %}
-                                {% endif %}
+
 
 </div>
 
@@ -309,7 +300,7 @@ color:;
                          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Add Product">
 <div class="col-xl-2 col-lg-2">
 </div>
-                         <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Delete Product">
+                             <a href="{% url 'lead_delete_product' %}">   <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Delete Product"></a>
 <div class="col-xl-2 col-lg-2">
 </div>
                          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="History of Record">
@@ -431,11 +422,11 @@ tr:nth-child(even) {
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="myDIV4" style="display: none; height: auto;">
-                     <form  method='POST' id="xyzform" enctype="multipart/form-data" >{% csrf_token %}
+                    <a  method='POST' id="xyzform" enctype="multipart/form-data" >{% csrf_token %}</a>
 
 
 
-                              <label class="col-md-10 control-label">Whatsapp:</label><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"> <input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
+                    <label class="col-md-10 control-label">Whatsapp:</label> <a href="{% url 'lead_follow_up_histroy' %}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp<input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
                                 <br> <br>{{ form.whatsapp2 }}
 
 
@@ -464,7 +455,7 @@ tr:nth-child(even) {
                <table style="font-size: 14px;">
   <tr>
     <td>Product Code:</td>
-      <td colspan="5">Product Image</td>
+      <td colspan="5" style="text-align: center;">Product Image</td>
 
   </tr><tr>
     <td>HSN Code:</td>
