@@ -32,5 +32,12 @@ def stock_accpet_goods(request):
 def stock_accpet_goods_list(request):
     return render(request,'stock_management_system/stock_accpet_goods_list.html')
 
+def stock_transaction_history_list(request):
+    return render(request,'stock_management_system/stock_transaction_history_list.html')
+
 def stock_transaction_history(request):
-    return render(request,'stock_management_system/stock_transaction_history.html')
+    form = GodownForm()
+    context={
+        'form':form
+    }
+    return render(request, 'stock_management_system/stock_transaction_history.html',context)
