@@ -30,13 +30,14 @@ stage = [
 
 
 
-class Customer_detailForm(forms.ModelForm):
+class Customer_detail_disabledForm(forms.ModelForm):
     customer_name = forms.CharField(max_length=80, required=True,
        widget=forms.TextInput(
            attrs={
                'type': 'text',
                'placeholder': "Customer Name",
                'class': 'form-control',
+               'disabled':'disabled',
            }
        ))
 
@@ -49,6 +50,7 @@ class Customer_detailForm(forms.ModelForm):
                'type': 'text',
                'placeholder': "Company Name",
                'class': 'form-control',
+               'disabled': 'disabled',
            }
        ))
 
@@ -58,6 +60,7 @@ class Customer_detailForm(forms.ModelForm):
                'type': 'text',
                'placeholder': "Customer Name",
                'class': 'form-control',
+               'disabled': 'disabled',
            }
        ))
 
@@ -67,6 +70,7 @@ class Customer_detailForm(forms.ModelForm):
                'type': 'email',
                'placeholder': "Customer Email ID",
                'class': 'form-control',
+               'disabled': 'disabled',
            }
        ))
 
@@ -76,6 +80,7 @@ class Customer_detailForm(forms.ModelForm):
                'type': 'textarea',
                'placeholder': "Address",
                'class': 'form-control',
+               'disabled': 'disabled',
 
            }
        ))
@@ -86,6 +91,7 @@ class Customer_detailForm(forms.ModelForm):
                'type': 'text',
                'placeholder': "Industry",
                'class': 'form-control',
+               'disabled': 'disabled',
            }
        ))
 
@@ -95,6 +101,7 @@ class Customer_detailForm(forms.ModelForm):
                'type': 'text',
                'placeholder': "Customer GST Number",
                'class': 'form-control',
+               'disabled': 'disabled',
            }
        ))
 
@@ -119,22 +126,22 @@ class Deal_detailForm(forms.ModelForm):
                                         }
                                     ))
 
-    new_existing_customer = forms.CharField(max_length=80, required=True,
+    whatsapp2 = forms.CharField(max_length=80, required=True,
                                     widget=forms.TextInput(
                                         attrs={
                                             'type': 'text',
-                                            'placeholder': "Person",
+                                            'placeholder': "Whatsapp",
                                             'class': 'form-control',
                                         }
                                     ))
 
 
 
-    requirement = forms.CharField(max_length=80, required=True,
+    whatsappcontent = forms.CharField(max_length=80, required=True,
                                     widget=forms.Textarea(
                                         attrs={
-                                            'type': 'date',
-                                            'placeholder': "Requirement",
+                                            'type': 'text',
+                                            'placeholder': "Content",
                                             'class': 'form-control',
                                         }
                                     ))
@@ -142,7 +149,7 @@ class Deal_detailForm(forms.ModelForm):
 
 
 
-    channel = forms.CharField(max_length=80, required=True,
+    new_existing_customer = forms.CharField(max_length=80, required=True,
                                             widget=forms.TextInput(
                                                 attrs={
                                                     'type': 'text',
@@ -160,28 +167,32 @@ class Deal_detailForm(forms.ModelForm):
                                              }
                                          ))
 
-    upload_requirement_file = forms.CharField(max_length=80,
+    channel = forms.CharField(max_length=80, required=True,
                               widget=forms.TextInput(
                                   attrs={
-                                      'type': 'file',
+                                      'type': 'text',
+                                      'placeholder': "Channel",
                                       'class': 'form-control',
                                   }
                               ))
 
-    owner_of_opportunity = forms.CharField(max_length=80, required=True,
+    requirement = forms.CharField(max_length=80, required=True,
                                   widget=forms.TextInput(
                                       attrs={
                                           'type': 'text',
-                                          'placeholder': "Owner",
+                                          'placeholder': "Requirement",
                                           'class': 'form-control',
                                       }
                                   ))
-    class Meta:
-        model = Deal_details_section
-        fields = "__all__"
 
-
-class Pi_sectionForm(forms.ModelForm):
+    upload_requirement_file = forms.CharField(max_length=80, required=True,
+                                              widget=forms.TextInput(
+                                                  attrs={
+                                                      'type': 'file',
+                                                      'placeholder': "FILE",
+                                                      'class': 'form-control',
+                                                  }
+                                              ))
 
     owner_of_opportunity = forms.CharField(max_length=80, required=True,
                                            widget=forms.TextInput(
@@ -191,12 +202,6 @@ class Pi_sectionForm(forms.ModelForm):
                                                    'class': 'form-control',
                                                }
                                            ))
-
-
-
-
-
-
     discount = forms.CharField(max_length=80, required=True,
        widget=forms.TextInput(
            attrs={

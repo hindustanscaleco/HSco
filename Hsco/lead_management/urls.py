@@ -1,7 +1,7 @@
 from django.urls import path, include, re_path
 
 from .views import lead_home,view_lead,lead_report,lead_manager_view,lead_follow_up_histroy,lead_delete_product,lead_analytics ,\
-    lead_employee_graph
+    lead_employee_graph,update_view_lead
 
 urlpatterns = [
     path('lead_home/',lead_home , name ='lead_home'),
@@ -12,5 +12,6 @@ urlpatterns = [
     path('lead_delete_product/',lead_delete_product , name ='lead_delete_product'),
     path('lead_analytics/',lead_analytics , name ='lead_analytics'),
     path('lead_employee_graph/',lead_employee_graph , name ='lead_employee_graph'),
+    path('update_view_lead/<int:id>',update_view_lead , name ='update_view_lead'),
 
 ]

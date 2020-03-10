@@ -552,26 +552,19 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Stage</td>
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">PI Amount</td>
         </tr>
-                    {% for list1 in customer_list %}
+                    {% for list in lead_list %}
 
-        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
-                        <td>{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>
+        <tr style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
 
-            <td>{{ list1.entry_timedate|date:'Y-m-d'}}</td>
-            <td>{{ list1.purchase_no}}</td>
-            <td>{{ list1.second_person }}</td>
-            <td>{% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</td>
-            <td>{{ list1.second_contact_no}}</td>
-            <td>{{list1.sales_person}}</td>
-            <td>
-                       {% for avg in  list1.feedback_stars|rjust:'5'  %}
-              {% if forloop.counter <= list1.feedback_stars %}
-                  <i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
-              {% else %}
-                  <i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
-              {% endif %}
-            {% endfor %}
-            </td>
+            <td>{{ list.srno}}</td>
+            <td>{{ list.entry_timedate|date:'Y-m-d'}}</td>
+            <td>{{ list.customer_name}}</td>
+            <td>{{ list.contact_no }}</td>
+            <td>{{ list.company_name }}</td>
+            <td>{{ list.customer_email_id}}</td>
+            <td>{{list.sales_person}}</td>
+            <td>{{list.sales_person}}</td>
+            <td>{{list.sales_person}}</td>
 
         </tr>
                           {% endfor %}

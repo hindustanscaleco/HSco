@@ -1,6 +1,5 @@
 import datetime
 import uuid
-
 from django.db import models
 from django.utils import timezone
 
@@ -14,6 +13,8 @@ class Customer_Details(models.Model):
     address = models.CharField(max_length=250,null=True,blank=True)
     contact_no = models.CharField(max_length=30,)
     customer_email_id = models.EmailField(max_length=80,null=True,blank=True)
+    customer_gst_no = models.CharField(max_length=15,null=True,blank=True)
+    customer_industry = models.CharField(max_length=80,null=True,blank=True)
 
     class Meta:
         unique_together = ('customer_name','contact_no')

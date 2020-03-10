@@ -76,6 +76,67 @@ color:;
 
 </style>
 
+          <script>
+$(document).ready(function(){
+
+    $(".editableBox").change(function(){
+        $(".timeTextBox").val($(".editableBox option:selected").html());
+    });
+});
+
+$(document).ready(function(){
+
+    $(".editableBoxa").change(function(){
+        $(".timeTextBoxa").val($(".editableBoxa option:selected").html());
+    });
+});
+
+
+$(document).ready(function(){
+
+    $(".editableBoxz").change(function(){
+        $(".timeTextBoxz").val($(".editableBoxz option:selected").html());
+    });
+});
+</script>
+  <script> function disable() {
+  document.getElementById("name").disabled = true;
+  }
+
+  function enable() {
+   document.getElementById("name").disabled = false;
+  }
+
+var form = document.getElementById("contact_form");
+var elements = form.elements;
+for (var i = 0, len = elements.length; i < len; ++i) {
+    elements[i].disabled = true;
+}
+</script>
+
+          <script>
+function myFunction() {
+
+  var x = document.getElementById("Mytext1");
+  var y = document.getElementById("Mytext2");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.display = "none";
+  } else {
+    x.style.display = "none";
+    y.style.display = "block";
+  }
+    document.getElementById("customer_name").disabled = false;
+    document.getElementById("company_name").disabled = false;
+    document.getElementById("contact_no").disabled = false;
+    document.getElementById("customer_email_id").disabled = false;
+    document.getElementById("address").disabled = false;
+    document.getElementById("customer_industry").disabled = false;
+    document.getElementById("customer_gst_no").disabled = false;
+    document.getElementById("Mytext1").style.display = "block";
+}
+</script>
+
 
 
         <!-- Begin Page Content -->
@@ -103,7 +164,7 @@ color:;
                                   <div class="col-md-3 inputGroupContainer">
                                   <div class="input-group">
                                   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.customer_name }}
+                                      {{ form.customer_name }}
                           </div>
                         </div>
 
@@ -112,7 +173,7 @@ color:;
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.company_name }}
+                                  {{ form.company_name }}
                             </div>
                              </div>
                           </div>
@@ -123,7 +184,7 @@ color:;
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.contact_no }}
+                                  {{ form.contact_no }}
                             </div>
                           </div>
 
@@ -131,7 +192,7 @@ color:;
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.customer_email_id }}
+                                  {{ form.customer_email_id }}
                    </div>
                              </div>
                           </div>
@@ -143,7 +204,7 @@ color:;
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.customer_industry }}
+                                  {{ form.customer_industry }}
                             </div>
                              </div>
 
@@ -151,7 +212,7 @@ color:;
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.address }}
+                                  {{ form.address }}
                             </div>
                             </div>
 
@@ -163,7 +224,7 @@ color:;
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.customer_gst_no }}
+                                  {{ form.customer_gst_no }}
                             </div>
                              </div>
                           </div>
@@ -172,7 +233,9 @@ color:;
 
 <center>
 
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
+     <button type="reset" style="background-color: #FC6E20;" onclick="myFunction()" id="Mytext2" class="btn btn-primary">Edit</button>
+    <br>
+     <button type="submit" style="background-color: #FC6E20; display:none;" id="Mytext1" class="btn btn-primary">Save</button>
 </center>
 
 </form>
@@ -202,7 +265,7 @@ color:;
                                   <div class="col-md-5 inputGroupContainer">
                                   <div class="input-group">
 <!--                                  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>-->
-                                {{ form2.current_stage }}
+                                {{ form.current_stage }}
                           </div>
                         </div>
 
@@ -211,7 +274,7 @@ color:;
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form2.new_existing_customer }}
+                                {{ form.new_existing_customer }}
                             </div>
                              </div>
                           </div>
@@ -222,7 +285,7 @@ color:;
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form2.date_of_initiation }}
+                                {{ form.date_of_initiation }}
                             </div>
                           </div>
 
@@ -230,7 +293,7 @@ color:;
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form2.channel }}
+                                {{ form.channel }}
                    </div>
                              </div>
                           </div>
@@ -242,7 +305,7 @@ color:;
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form2.requirement }}
+                                {{ form.requirement }}
                             </div>
                              </div>
 
@@ -250,7 +313,7 @@ color:;
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form2.upload_requirement_file }}
+                                {{ form.upload_requirement_file }}
                             </div>
                             </div>
 
@@ -262,7 +325,7 @@ color:;
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form2.owner_of_opportunity }}
+                                {{ form.owner_of_opportunity }}
                             </div>
                              </div>
 
@@ -272,7 +335,8 @@ color:;
 
 <center>
 
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
+     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Save</button>
+
 </center>
 
 </form>

@@ -1,14 +1,9 @@
 from django.db import models
 from django.utils import timezone
+from customer_app.models import Customer_Details
 
-class Customer_details_section(models.Model):
-    customer_name = models.CharField(max_length=60,null=True,blank=True)
-    company_name = models.CharField(max_length=120,null=True,blank=True)
-    customer_no = models.CharField(max_length=12,null=True,blank=True)
-    customer_email_id = models.CharField(max_length=12,null=True,blank=True)
-    address = models.CharField(max_length=120,null=True,blank=True)
-    industry = models.CharField(max_length=120,null=True,blank=True)
-    customer_gst_no = models.CharField(max_length=50,null=True,blank=True)
+class Deal_details_section(models.Model):
+    Customer_Details = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
     current_stage = models.CharField(max_length=50,null=True,blank=True)
     new_existing_customer = models.CharField(max_length=50,null=True,blank=True)
     date_of_initiation = models.DateTimeField(default=timezone.now,)
@@ -16,6 +11,10 @@ class Customer_details_section(models.Model):
     requirement = models.CharField(max_length=80,null=True,blank=True)
     upload_requirement_file = models.CharField(max_length=80,null=True,blank=True)
     owner_of_opportunity = models.CharField(max_length=80,null=True,blank=True)
+
+
+
+class Pi_section(models.Model):
     discount = models.CharField(max_length=80,null=True,blank=True)
     upload_pi_file = models.FileField(null=True,blank=True)
     select_pi_template = models.CharField(max_length=50, null=True, blank=True)
