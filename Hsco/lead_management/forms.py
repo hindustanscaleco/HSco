@@ -1,5 +1,5 @@
 from django import forms
-from .models import Deal_details_section
+from .models import Lead
 import sys
 sys.path.append("..")
 from customer_app.models import Customer_Details
@@ -177,7 +177,7 @@ class Deal_detailForm(forms.ModelForm):
                                       }
                                   ))
     class Meta:
-        model = Deal_details_section
+        model = Lead
         fields = "__all__"
 
 
@@ -320,5 +320,5 @@ class Pi_sectionForm(forms.ModelForm):
                                              }
                                          ))
     class Meta:
-        model = Deal_details_section
+        model = Lead
         fields = "__all__"

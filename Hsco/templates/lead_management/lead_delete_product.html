@@ -563,49 +563,41 @@ td {
                   <center> <p>list of deleted users</p></center>
                     {% endif %}
      <center><p>{{search_msg}}</p></center>
+    <form method="POST">{% csrf_token %}
+
         <div class="row" id="id_manager_view">
 
     <table>
         <tr style="background-color: gray; color: white;">
             <td style="border: 0px solid gray;"><label class="checkbox">
-      <input type="checkbox" value="">Option 1
+      Option 1
     </label></td>
             <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
+            <td style="border: 0px solid gray;">Category</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Category</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Category</td>
 
         </tr>
 
 
-
-        <tr>
+{% for lead in leads %}
             <td style="border: 0px solid gray;"><label class="checkbox">
-      <input type="checkbox" value="">Option 1
+      <input type="checkbox" value="{{lead.id}}" name="check[]" >
     </label></td>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td></tr>
-
-
-        <tr>
-            <td style="border: 0px solid gray;"><label class="checkbox">
-      <input type="checkbox" value="">Option 1
-    </label></td>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td></tr>
-
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{lead.scale_type}}</td>
+            <td style="border: 0px solid gray;">{{lead.main_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{lead.sub_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{lead.sub_sub_category}}</td></tr>
+            {% endfor %}
 
     </table>
 
         </div>
     <br>
     <center>
-<button type="button" class="btn btn-danger">Delete</button>
+<button type="submit" class="btn btn-danger">Delete</button>
 </center>
+</form>
 
 
 
