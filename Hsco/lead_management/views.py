@@ -11,15 +11,19 @@ from .models import Lead, Lead_Product
 # Create your views here.
 
 def lead_home(request):
-    lead_list = Customer_Details.objects.all()
-
+    lead_list = Lead.objects.all()
+    if Lead.objects.all().count() == 0:
+        latest_lead_id = 1
+    else:
+        latest_lead_id = Lead.objects.latest('id').id + 1
     context={
         'lead_list':lead_list,
+        'latest_lead_id':latest_lead_id,
     }
     return render(request,'lead_management/lead_home.html',context)
 
 
-def add_lead_product(request):
+def add_lead_product(request,id):
     type_of_purchase_list =type_purchase.objects.all() #1
 
     if request.method == 'POST' or request.method=='FILES':
@@ -42,6 +46,7 @@ def add_lead_product(request):
 
         item = Lead_Product()
 
+        item.lead_id = Lead.objects.get(id=id)
         item.scale_type = type_purchase.objects.get(id=scale_type).name
         item.main_category = main_model.objects.get(id=main_category).name
         item.sub_category = sub_model.objects.get(id=sub_category).name
@@ -69,7 +74,11 @@ def add_lead_product(request):
     }
     return render(request,'lead_management/add_lead_product.html',context)
 
-def view_lead(request):
+def add_lead(request,id):
+    if Lead.objects.all().count() == 0:
+        latest_lead_id = 1
+    else:
+        latest_lead_id = Lead.objects.latest('id').id + 1
     form = Customer_detailForm()
     form2 = Deal_detailForm()
     if request.method == 'POST' or request.method=='FILES':
@@ -114,8 +123,9 @@ def view_lead(request):
     context={
         'form':form,
         'form2':form2,
+        'latest_lead_id':latest_lead_id,
     }
-    return render(request, 'lead_management/view_lead.html',context)
+    return render(request, 'lead_management/add_lead.html',context)
 
 def update_view_lead(request,id):
     lead_id = Customer_Details.objects.get(id=id)
