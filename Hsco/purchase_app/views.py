@@ -29,11 +29,7 @@ from django.db.models.functions import TruncMonth
 from django.db.models import Count
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
-def loggedin_name(request):
-    if request.user.is_authenticated:
-        name = SiteUser.objects.get(id=request.user.id).name
-        print(name)
-        return name
+
 
 @receiver(pre_save, sender=Purchase_Details)
 def purchase_handler(sender, instance, update_fields=None, **kwargs):
@@ -43,8 +39,7 @@ def purchase_handler(sender, instance, update_fields=None, **kwargs):
             new_instance = instance
             log = Log()
 
-            log.entered_by = loggedin_name()
-            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            log.entered_by = new_instance.log_entered_by
             log.module_name = 'Purchase Module'
             log.action_type = 'Insert'
             log.table_name = 'Purchase_Details'
@@ -81,8 +76,7 @@ def purchase_handler(sender, instance, update_fields=None, **kwargs):
                     if value != '' and str(value) != getattr(instance,key):
                         old_list.append(key +':Old value= '+str(value) + ', New value='+getattr(instance,key) )
                 log = Log()
-                print(loggedin_name)
-                log.entered_by = loggedin_name()
+                log.entered_by = instance.log_entered_by
                 log.module_name = 'Purchase Module'
                 log.action_type = 'Update'
                 log.table_name = 'Purchase_Details'
@@ -105,7 +99,7 @@ def purchase_product_handler(sender, instance, update_fields=None, **kwargs):
             log = Log()
             purchase = Purchase_Details.objects.get(id=new_instance.purchase_id_id)
 
-            log.entered_by = loggedin_name()
+            log.entered_by = new_instance.log_entered_by
             # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
             log.module_name = 'Purchase Module'
             log.action_type = 'Insert'
@@ -145,7 +139,7 @@ def purchase_product_handler(sender, instance, update_fields=None, **kwargs):
                     # old_list.append('Old value: ' + key )
                 log = Log()
                 purchase = Purchase_Details.objects.get(id=new_instance.purchase_id_id)
-                log.entered_by = loggedin_name()
+                log.entered_by = instance.log_entered_by
                 log.module_name = 'Purchase Module'
                 log.action_type = 'Update'
                 log.table_name = 'Product_Details'
@@ -316,7 +310,7 @@ def add_purchase_details(request):
         # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no+1
-        item2.entered_by = request.user.profile_name
+        item2.log_entered_by = request.user.profile_name
         # request.session['new_repeat_purchase'] = new_repeat_purchase
         # request.session['second_person'] = customer_name
         # request.session['second_contact_no'] = contact_no
@@ -808,9 +802,9 @@ def update_customer_details(request,id):
         # item2.feedback_form_filled = feedback_form_filled
         # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         # item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item2.entered_by = request.user.profile_name
+        item2.log_entered_by = request.user.profile_name
 
-        item2.save(update_fields=['entered_by','date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
+        item2.save(update_fields=['log_entered_by','date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
                                   'channel_of_sales','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email',
                                   ])  #new6
 
@@ -886,6 +880,8 @@ def add_product_details(request,id):
         item.purchase_id_id = purchase_id
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item.log_entered_by = request.user.name
+
         item.save()
 
         if is_last_product_yes == 'yes':
@@ -1472,6 +1468,7 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
 
 @login_required(login_url='/')
 def edit_product_customer(request,product_id_rec):
+
     purchase = Product_Details.objects.get(id=product_id_rec)
     purchase_id = Purchase_Details.objects.get(id=purchase.purchase_id)
     # dispatch_id_assigned = str(purchase_id.dispatch_id_assigned)
@@ -1526,12 +1523,13 @@ def edit_product_customer(request,product_id_rec):
         item.capacity = capacity
         item.unit = unit
         item.amount = amount
+        item.log_entered_by = request.user.name
         # item.purchase_id_id = purchase_id
         # item.sales_person = sales_person
         # item.purchase_type = purchase_type
         # item.user_id = SiteUser.objects.get(id=request.user.pk)
         # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item.save(update_fields=['quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
+        item.save(update_fields=['log_entered_by','quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
                                  'serial_no_scale', 'brand', 'capacity', 'unit','amount',
                                  ])
 
@@ -1630,13 +1628,14 @@ def check_admin_roles(request):
     else:
         return False
 
-@login_required(login_url='/')
-def dispatch_logs(request):
-    return render(request,"logs/dispatch_logs.html",)
+
 
 @login_required(login_url='/')
 def purchase_logs(request):
     purchase_logs = Log.objects.filter(module_name='Purchase Module')
+    paginator = Paginator(purchase_logs, 15)  # Show 25 contacts per page
+    page = request.GET.get('page')
+    purchase_logs = paginator.get_page(page)
     context={
     'purchase_logs': purchase_logs,
 

@@ -229,6 +229,24 @@ $(function() {
 
         </div>
 </div>
+            <div class="pagination">
+    <span class="step-links">
+        {% if purchase_logs.has_previous %}
+            <a href="?page=1"  class="btn btn-primary">&laquo; First</a>&nbsp;&nbsp;
+            <a href="?page={{ purchase_logs.previous_page_number }}" class="btn btn-primary">Previous</a>&nbsp;
+        {% endif %}
+
+        <span class="current">
+            Page {{ purchase_logs.number }} of {{ purchase_logs.paginator.num_pages }}.
+        </span>
+
+        {% if purchase_logs.has_next %}
+        &nbsp;
+            <a href="?page={{ purchase_logs.next_page_number }}" class="btn btn-primary">Next</a>&nbsp;&nbsp;
+            <a href="?page={{ purchase_logs.paginator.num_pages }}" class="btn btn-primary">Last &raquo;</a>
+        {% endif %}
+    </span>
+            </div>
 
 
 

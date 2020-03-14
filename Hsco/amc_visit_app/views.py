@@ -30,9 +30,8 @@ def amc_handler(sender, instance, update_fields=None, **kwargs):
             #########for insert action##########
             new_instance = instance
             log = Log()
-            print('somethibng')
 
-            log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
             # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
             log.module_name = 'AMC Module'
             log.action_type = 'Insert'
@@ -43,11 +42,9 @@ def amc_handler(sender, instance, update_fields=None, **kwargs):
             # log.action = old_list
             log.save()
         elif instance.id != None or instance.id !='' or instance.id !='None':
-            print('somethibng')
             #########for update action##########
             old_instance = instance
             new_instance = Amc_After_Sales.objects.get(id=instance.id)
-            print('somethibng')
             track = instance.tracker.changed()
             # string = ''
             # new_list = []
@@ -67,11 +64,11 @@ def amc_handler(sender, instance, update_fields=None, **kwargs):
             if  track:
                 old_list = []
                 for key, value in track.items():
-                    old_list.append('Old value: ' + key )
-                print('something')
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
 
-                log.entered_by = new_instance.entered_by
+                log.entered_by = instance.log_entered_by
                 log.module_name = 'AMC Module'
                 log.action_type = 'Update'
                 log.table_name = 'Amc_After_Sales'
@@ -185,6 +182,7 @@ def add_amc_after_sales(request):
         item2.contract_no_reporting_breakdown = contract_no_reporting_breakdown
         item2.contract_start_date = contract_start_date
         item2.contract_end_date = contract_end_date
+        item2.log_entered_by = request.user.name
         if Amc_After_Sales.objects.all().count() == 0:
             item2.amc_no = 1
         else:
@@ -520,7 +518,16 @@ def amc_views(request):
 
 @login_required(login_url='/')
 def amc_logs(request):
-    return render(request,"logs/amc_logs.html")
+    amc_logs = Log.objects.filter(module_name='AMC Module')
+
+    paginator = Paginator(amc_logs, 15)  # Show 25 contacts per page
+    page = request.GET.get('page')
+    amc_logs = paginator.get_page(page)
+    context = {
+        'amc_logs': amc_logs,
+
+    }
+    return render(request,"logs/amc_logs.html",context)
 
 @login_required(login_url='/')
 def update_amc_form(request,update_id):
@@ -641,7 +648,8 @@ def update_amc_form(request,update_id):
         item.repot_2 = repot_2
         item.repot_3 = repot_3
         item.repot_4 = repot_4
-        item.save(update_fields=['contract_amount','type_of_scale','serial_no_scale',
+        item.log_entered_by = request.user.name
+        item.save(update_fields=['log_entered_by','contract_amount','type_of_scale','serial_no_scale',
                                  'contract_valid_in_years','contract_amount','contract_no_reporting_breakdown','contract_start_date',
                                  'contract_end_date','repot_1','repot_2','repot_3','repot_4','second_person','third_person',
                                  'second_contact_no','third_contact_no',])

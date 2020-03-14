@@ -74,11 +74,11 @@ def add_lead_product(request,id):
     }
     return render(request,'lead_management/add_lead_product.html',context)
 
-def add_lead(request,id):
+def add_lead(request):
     if Lead.objects.all().count() == 0:
         latest_lead_id = 1
     else:
-        latest_lead_id = Lead.objects.latest('id').id + 1
+        latest_lead_id = Lead.objects.latest('id').id
     form = Customer_detailForm()
     form2 = Deal_detailForm()
     if request.method == 'POST' or request.method=='FILES':

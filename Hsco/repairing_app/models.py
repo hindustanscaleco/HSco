@@ -73,6 +73,7 @@ class Repairing_after_sales_service(models.Model):
     third_stage_timedate = models.DateTimeField(null=True,blank=True)
     fourth_stage_timedate = models.DateTimeField(null=True,blank=True)
     fifth_stage_timedate = models.DateTimeField(null=True,blank=True)
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
     tracker = FieldTracker()
 
@@ -113,6 +114,7 @@ class Repairing_Product(models.Model):
     in_warranty = models.CharField(default='NO',max_length=150,null=True,blank=True)
     is_last_product = models.BooleanField(default=False,)
     entry_timedate = models.DateField(default=datetime.date.today)
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
     tracker = FieldTracker()
 

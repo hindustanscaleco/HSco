@@ -5,7 +5,7 @@ from .views import lead_home,add_lead,lead_report,lead_manager_view,lead_follow_
 
 urlpatterns = [
     path('lead_home/',lead_home , name ='lead_home'),
-    path('add_lead/<int:id>',add_lead , name ='add_lead'),
+    path('add_lead/',add_lead , name ='add_lead'),
     path('lead_report/',lead_report , name ='lead_report'),
     path('lead_manager_view/',lead_manager_view , name ='lead_manager_view'),
     path('lead_follow_up_histroy/',lead_follow_up_histroy , name ='lead_follow_up_histroy'),

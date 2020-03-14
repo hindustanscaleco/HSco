@@ -65,12 +65,11 @@ class Log(models.Model):
     action_type = models.CharField(max_length=120, null=True, blank=True)
     table_name = models.CharField(max_length=120, null=True, blank=True)
     reference = models.CharField(max_length=120, null=True, blank=True)
-    action = models.TextField( null=True, blank=True)
+    action = models.CharField( null=True, blank=True, max_length=300)
     entry_timedate = models.DateTimeField(default=timezone.now, )
+
+    class Meta:
+        unique_together = ('entered_by', 'module_name', 'action_type','table_name','reference','action')
 
     def __int__(self):
         return self.pk
-
-
-
-
