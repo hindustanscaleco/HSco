@@ -95,21 +95,61 @@ def add_lead(request):
         date_of_initiation = request.POST.get('date_of_initiation')
         channel = request.POST.get('channel')
         requirement = request.POST.get('requirement')
-        upload_requirement_file = request.POST.get('upload_requirement_file')
+        upload_requirement_file = request.FILES.get('upload_requirement_file')
         owner_of_opportunity = request.POST.get('owner_of_opportunity')
 
 
 
-        item = Customer_Details()
         item2 = Lead()
+        if Customer_Details.objects.filter(customer_name=customer_name,
+                                           contact_no=contact_no).count() > 0:
 
-        item.customer_name = customer_name
-        item.company_name = company_name
-        item.address = address
-        item.contact_no = contact_no
-        item.customer_industry = customer_industry
-        item.customer_email_id = customer_email_id
-        item.customer_gst_no = customer_gst_no
+            item2.customer_id = Customer_Details.objects.filter(contact_no=contact_no).first()
+
+            item3 = Customer_Details.objects.filter(customer_name=customer_name,
+                                                    contact_no=contact_no).first()
+            if company_name != '' and company_name != None:
+                item3.company_name = company_name
+                item3.save(update_fields=['company_name'])
+            if address != '' and address != None:
+                item3.address = address
+                item3.save(update_fields=['address'])
+            if customer_email_id != '' and customer_email_id != None:
+                item3.customer_email_id = customer_email_id
+                item3.save(update_fields=['customer_email_id'])
+            if customer_gst_no != '' and customer_gst_no != None:
+                item3.customer_gst_no = customer_gst_no
+                item3.save(update_fields=['customer_gst_no'])
+            if customer_industry != '' and customer_industry != None:
+                item3.customer_industry = customer_industry
+                item3.save(update_fields=['customer_industry'])
+        else:
+            new_cust = Customer_Details()
+
+            new_cust.customer_name = customer_name
+            if company_name != '':
+                new_cust.company_name = company_name
+            if address != '':
+                new_cust.address = address
+            new_cust.contact_no = contact_no
+            if customer_email_id != '':
+                new_cust.customer_email_id = customer_email_id
+            if customer_gst_no != '':
+                new_cust.customer_gst_no = customer_gst_no
+            if customer_industry != '':
+                new_cust.customer_industry = customer_industry
+            try:
+                new_cust.save()
+                item2.customer_id = Customer_Details.objects.get(id=new_cust.pk)
+            except:
+                pass
+        # item.customer_name = customer_name
+        # item.company_name = company_name
+        # item.address = address
+        # item.contact_no = contact_no
+        # item.customer_industry = customer_industry
+        # item.customer_email_id = customer_email_id
+        # item.customer_gst_no = customer_gst_no
 
         item2.current_stage = current_stage
         item2.new_existing_customer = new_existing_customer
@@ -118,8 +158,8 @@ def add_lead(request):
         item2.requirement = requirement
         item2.upload_requirement_file = upload_requirement_file
         item2.owner_of_opportunity = owner_of_opportunity
-
-        item.save()
+        item2.save()
+        # item.save()
     context={
         'form':form,
         'form2':form2,

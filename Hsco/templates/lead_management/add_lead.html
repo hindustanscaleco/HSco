@@ -81,6 +81,7 @@ color:;
         <!-- Begin Page Content -->
      <div class="container-fluid">
 
+                     <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
 
          <div class="col-xl-12 col-lg-12">
@@ -95,7 +96,6 @@ color:;
                 </div>
                 <!-- Card Body -->
 <div class="card-body" id="myDIV" style="display: none; height:auto;">
-                     <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
 
                           <div class="form-group row">
@@ -175,7 +175,7 @@ color:;
      <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
 </center>
 
-</form>
+
                           </div>
 
 
@@ -194,7 +194,6 @@ color:;
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="myDIV2" style="display: none; height: auto;">
-                     <form  method='POST' id="Deal_detail_sectionForm" enctype="multipart/form-data" >{% csrf_token %}
 
 
                               <div class="form-group row">
@@ -275,323 +274,322 @@ color:;
      <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
 </center>
 
-</form>
                           </div>
 
 
               </div>
             </div>
-
-          <div class="col-xl-12 col-lg-12">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction3();return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">PI Section</h6>
-                  <div class="dropdown no-arrow">
-                  </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body" id="myDIV3" style="display: none; height:auto;">
-                     <form  method='POST' id="buynsellForm" enctype="multipart/form-data" >{% csrf_token %}
-                         <div class="row">
-                             <div class="col-xl-2 col-lg-2">
-</div>
-                        <a href="/add_lead_product/{{latest_lead_id}}"> <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Add Product"></a>
-<div class="col-xl-2 col-lg-2">
-</div>
-                             <a href="{% url 'lead_delete_product' %}">   <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Delete Product"></a>
-<div class="col-xl-2 col-lg-2">
-</div>
-                         <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="History of Record">
-                         </div>
-<br>
-
-                         <style>
-table {
-  font-family: arial, sans-serif;
-  width: 100%;
-}
-
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 5px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-</style>
-                          <div class="card shadow">
-<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
-    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
-               <table style="font-size: 14px;">
-  <tr>
-    <td>Product Code:</td>
-      <td colspan="5">Product Image</td>
-
-  </tr><tr>
-    <td>HSN Code:</td>
-</tr>
-<tr>
-    <td>Sub Sub Model</td>
-</tr>
-<tr>
-    <td>Quantity</td>
-               </tr>
-
-<tr>
-    <td>Product Description</td>
-               </tr>
-
-<tr>
-    <td>Rate :</td>
-
-  </tr>
-</table>
-              </div>
-                          </div>
-                         <br>
-
-                              <div class="form-group row">
-                              <label class="col-md-2 control-label">Discount:</label>
-                                  <div class="col-md-3 inputGroupContainer">
-                                  <div class="input-group">
-                                  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.discount }}
-                          </div>
-                        </div>
-
-
-                                <label class="col-md-2 control-label">Upload PI File:</label>
-                              <div class="col-md-3 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.upload_pi_file }}
-                            </div>
-                             </div>
-                          </div>
-
-
-                            <div class="form-group row">
-                                <label class="col-md-2 control-label">Select PI Template :</label>
-                              <div class="col-md-3 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.select_pi_template }}
-                            </div>
-                          </div>
-
-                                <label class="col-md-2 control-label">Call:</label>
-                              <div class="col-md-3 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.call }}
-                   </div>
-                             </div>
-                          </div>
-<br>
-<div class="row">
-                                                         <label class="col-md-2 control-label">Medium of Selection:</label>
-
-    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp  {{ form.email  }} <div class="col-xl-2 col-lg-2"></div> <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form.whatsapp  }} <div class="col-xl-2 col-lg-2"></div>   <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form.call2  }}
-</div>
-
-
-
-                         <center>
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
-</center>
-
 </form>
-                          </div>
+          <!--<div class="col-xl-12 col-lg-12">-->
+              <!--<div class="card shadow mb-4">-->
+                <!--&lt;!&ndash; Card Header - Dropdown &ndash;&gt;-->
+                <!--<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">-->
+          <!--<input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction3();return change(this);" />-->
+                  <!--<h6 class="m-0 font-weight-bold text-primary">PI Section</h6>-->
+                  <!--<div class="dropdown no-arrow">-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--&lt;!&ndash; Card Body &ndash;&gt;-->
+                <!--<div class="card-body" id="myDIV3" style="display: none; height:auto;">-->
+                     <!--<form  method='POST' id="buynsellForm" enctype="multipart/form-data" >{% csrf_token %}-->
+                         <!--<div class="row">-->
+                             <!--<div class="col-xl-2 col-lg-2">-->
+<!--</div>-->
+                        <!--<a href="/add_lead_product/{{latest_lead_id}}"> <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Add Product"></a>-->
+<!--<div class="col-xl-2 col-lg-2">-->
+<!--</div>-->
+                             <!--<a href="{% url 'lead_delete_product' %}">   <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Delete Product"></a>-->
+<!--<div class="col-xl-2 col-lg-2">-->
+<!--</div>-->
+                         <!--<input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="History of Record">-->
+                         <!--</div>-->
+<!--<br>-->
 
-                  </div>
-                </div>
+                         <!--<style>-->
+<!--table {-->
+  <!--font-family: arial, sans-serif;-->
+  <!--width: 100%;-->
+<!--}-->
 
+<!--td, th {-->
+  <!--border: 1px solid #dddddd;-->
+  <!--text-align: left;-->
+  <!--padding: 5px;-->
+<!--}-->
 
-        <div class="col-xl-12 col-lg-12">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction4();return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Follow-up Section</h6>
-                  <div class="dropdown no-arrow">
-                  </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body" id="myDIV4" style="display: none; height: auto;">
-                    <a  method='POST' id="xyzform" enctype="multipart/form-data" >{% csrf_token %}</a>
+<!--tr:nth-child(even) {-->
+  <!--background-color: #dddddd;-->
+<!--}-->
+<!--</style>-->
+                          <!--<div class="card shadow">-->
+<!--<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">-->
+    <!--&lt;!&ndash;<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>&ndash;&gt;-->
+               <!--<table style="font-size: 14px;">-->
+  <!--<tr>-->
+    <!--<td>Product Code:</td>-->
+      <!--<td colspan="5">Product Image</td>-->
 
+  <!--</tr><tr>-->
+    <!--<td>HSN Code:</td>-->
+<!--</tr>-->
+<!--<tr>-->
+    <!--<td>Sub Sub Model</td>-->
+<!--</tr>-->
+<!--<tr>-->
+    <!--<td>Quantity</td>-->
+               <!--</tr>-->
 
+<!--<tr>-->
+    <!--<td>Product Description</td>-->
+               <!--</tr>-->
 
-                    <label class="col-md-10 control-label">Whatsapp:</label> <a href="{% url 'lead_follow_up_histroy' %}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp<input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
-                                <br> <br>{{ form.whatsapp2 }}
+<!--<tr>-->
+    <!--<td>Rate :</td>-->
 
+  <!--</tr>-->
+<!--</table>-->
+              <!--</div>-->
+                          <!--</div>-->
+                         <!--<br>-->
 
-<br>
-                                <label class="col-md-2 control-label">Content:</label>
-
-                                {{ form.whatsappcontent }}
-
-<br>
-<div class="row">
-                            <label class="col-md-2 control-label">Medium of Selection:</label>
-
-    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp  {{ form.email  }} <div class="col-xl-2 col-lg-2"></div> <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form.whatsapp  }} <div class="col-xl-2 col-lg-2"></div>   <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form.call2  }}
-</div>
-<br>
-<center>
-<input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="Add Product">
-    {{form.email_auto_manual}}
-
-</center>
-
-                         <br>
-                         <div class="card shadow">
-<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
-    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
-               <table style="font-size: 14px;">
-  <tr>
-    <td>Product Code:</td>
-      <td colspan="5" style="text-align: center;">Product Image</td>
-
-  </tr><tr>
-    <td>HSN Code:</td>
-</tr>
-<tr>
-    <td>Sub Sub Model</td>
-</tr>
-<tr>
-    <td>Quantity</td>
-               </tr>
-
-<tr>
-    <td>Product Description</td>
-               </tr>
-
-<tr>
-    <td>Rate :</td>
-
-  </tr>
-</table>
-              </div>
-                          </div>
-
-                         <br>
-                         <div class="card shadow">
-<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
-    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
-               <table style="font-size: 14px;">
-  <tr>
-    <td>Product Code:</td>
-      <td colspan="5">Product Image</td>
-
-  </tr><tr>
-    <td>HSN Code:</td>
-</tr>
-<tr>
-    <td>Sub Sub Model</td>
-</tr>
-<tr>
-    <td>Quantity</td>
-               </tr>
-
-<tr>
-    <td>Product Description</td>
-               </tr>
-
-<tr>
-    <td>Rate :</td>
-
-  </tr>
-</table>
-              </div>
-                          </div>
+                              <!--<div class="form-group row">-->
+                              <!--<label class="col-md-2 control-label">Discount:</label>-->
+                                  <!--<div class="col-md-3 inputGroupContainer">-->
+                                  <!--<div class="input-group">-->
+                                  <!--<span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>-->
+                                <!--{{ form.discount }}-->
+                          <!--</div>-->
+                        <!--</div>-->
 
 
+                                <!--<label class="col-md-2 control-label">Upload PI File:</label>-->
+                              <!--<div class="col-md-3 inputGroupContainer">-->
+                              <!--<div class="input-group">-->
+                              <!--<span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>-->
+                                <!--{{ form.upload_pi_file }}-->
+                            <!--</div>-->
+                             <!--</div>-->
+                          <!--</div>-->
 
 
-                         <br>
+                            <!--<div class="form-group row">-->
+                                <!--<label class="col-md-2 control-label">Select PI Template :</label>-->
+                              <!--<div class="col-md-3 inputGroupContainer">-->
+                              <!--<div class="input-group">-->
+                              <!--<span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>-->
+                                <!--{{ form.select_pi_template }}-->
+                            <!--</div>-->
+                          <!--</div>-->
 
-<center>
+                                <!--<label class="col-md-2 control-label">Call:</label>-->
+                              <!--<div class="col-md-3 inputGroupContainer">-->
+                              <!--<div class="input-group">-->
+                              <!--<span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>-->
+                                <!--{{ form.call }}-->
+                   <!--</div>-->
+                             <!--</div>-->
+                          <!--</div>-->
+<!--<br>-->
+<!--<div class="row">-->
+                                                         <!--<label class="col-md-2 control-label">Medium of Selection:</label>-->
 
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Send</button>
-</center>
-
-</form>
-                          </div>
-              </div>
-            </div>
+    <!--<label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp  {{ form.email  }} <div class="col-xl-2 col-lg-2"></div> <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form.whatsapp  }} <div class="col-xl-2 col-lg-2"></div>   <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form.call2  }}-->
+<!--</div>-->
 
 
 
-        <div class="col-xl-12 col-lg-12">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;"  value="+" onclick="myFunction5();return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Payment Details Form</h6>
-                  <div class="dropdown no-arrow">
-                  </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body" id="myDIV5" style="display: none; height:auto;">
-<form  method='POST' id="abc" enctype="multipart/form-data" >{% csrf_token %}
+                         <!--<center>-->
+     <!--<button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>-->
+<!--</center>-->
+
+<!--</form>-->
+                          <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
 
 
-                              <div class="form-group row">
-                              <label class="col-md-2 control-label">Payment Channel:</label>
-                                  <div class="col-md-3 inputGroupContainer">
-                                  <div class="input-group">
-                                {{ form.payment_channel }}
-                          </div>
-                        </div>
-
-
-                                <label class="col-md-2 control-label">Payment Receipt</label>
-                              <div class="col-md-3 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.payment_receipt }}
-                            </div>
-                             </div>
-                          </div>
-
-
-                            <div class="form-group row">
-                                <label class="col-md-2 control-label">Payment Received Date</label>
-                              <div class="col-md-3 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.payment_received_date }}
-                            </div>
-                          </div>
-
-                                <label class="col-md-2 control-label">Upload PO File:</label>
-                              <div class="col-md-3 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.upload_po_file }}
-                   </div>
-                             </div>
-                          </div>
-
-
-                            <div class="form-group row">
-
-                                   <label class="col-md-2 control-label">Notes</label>
-                              <div class="col-md-3 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.notes }}
-                            </div>
-                             </div>
+        <!--<div class="col-xl-12 col-lg-12">-->
+              <!--<div class="card shadow mb-4">-->
+                <!--&lt;!&ndash; Card Header - Dropdown &ndash;&gt;-->
+                <!--<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">-->
+          <!--<input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction4();return change(this);" />-->
+                  <!--<h6 class="m-0 font-weight-bold text-primary">Follow-up Section</h6>-->
+                  <!--<div class="dropdown no-arrow">-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--&lt;!&ndash; Card Body &ndash;&gt;-->
+                <!--<div class="card-body" id="myDIV4" style="display: none; height: auto;">-->
+                    <!--<a  method='POST' id="xyzform" enctype="multipart/form-data" >{% csrf_token %}</a>-->
 
 
 
-                          </div>
+                    <!--<label class="col-md-10 control-label">Whatsapp:</label> <a href="{% url 'lead_follow_up_histroy' %}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp<input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">-->
+                                <!--<br> <br>{{ form.whatsapp2 }}-->
+
+
+<!--<br>-->
+                                <!--<label class="col-md-2 control-label">Content:</label>-->
+
+                                <!--{{ form.whatsappcontent }}-->
+
+<!--<br>-->
+<!--<div class="row">-->
+                            <!--<label class="col-md-2 control-label">Medium of Selection:</label>-->
+
+    <!--<label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp  {{ form.email  }} <div class="col-xl-2 col-lg-2"></div> <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form.whatsapp  }} <div class="col-xl-2 col-lg-2"></div>   <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form.call2  }}-->
+<!--</div>-->
+<!--<br>-->
+<!--<center>-->
+<!--<input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="Add Product">-->
+    <!--{{form.email_auto_manual}}-->
+
+<!--</center>-->
+
+                         <!--<br>-->
+                         <!--<div class="card shadow">-->
+<!--<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">-->
+    <!--&lt;!&ndash;<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>&ndash;&gt;-->
+               <!--<table style="font-size: 14px;">-->
+  <!--<tr>-->
+    <!--<td>Product Code:</td>-->
+      <!--<td colspan="5" style="text-align: center;">Product Image</td>-->
+
+  <!--</tr><tr>-->
+    <!--<td>HSN Code:</td>-->
+<!--</tr>-->
+<!--<tr>-->
+    <!--<td>Sub Sub Model</td>-->
+<!--</tr>-->
+<!--<tr>-->
+    <!--<td>Quantity</td>-->
+               <!--</tr>-->
+
+<!--<tr>-->
+    <!--<td>Product Description</td>-->
+               <!--</tr>-->
+
+<!--<tr>-->
+    <!--<td>Rate :</td>-->
+
+  <!--</tr>-->
+<!--</table>-->
+              <!--</div>-->
+                          <!--</div>-->
+
+                         <!--<br>-->
+                         <!--<div class="card shadow">-->
+<!--<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">-->
+    <!--&lt;!&ndash;<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>&ndash;&gt;-->
+               <!--<table style="font-size: 14px;">-->
+  <!--<tr>-->
+    <!--<td>Product Code:</td>-->
+      <!--<td colspan="5">Product Image</td>-->
+
+  <!--</tr><tr>-->
+    <!--<td>HSN Code:</td>-->
+<!--</tr>-->
+<!--<tr>-->
+    <!--<td>Sub Sub Model</td>-->
+<!--</tr>-->
+<!--<tr>-->
+    <!--<td>Quantity</td>-->
+               <!--</tr>-->
+
+<!--<tr>-->
+    <!--<td>Product Description</td>-->
+               <!--</tr>-->
+
+<!--<tr>-->
+    <!--<td>Rate :</td>-->
+
+  <!--</tr>-->
+<!--</table>-->
+              <!--</div>-->
+                          <!--</div>-->
+
+
+
+
+                         <!--<br>-->
+
+<!--<center>-->
+
+     <!--<button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Send</button>-->
+<!--</center>-->
+
+<!--</form>-->
+                          <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+
+
+        <!--<div class="col-xl-12 col-lg-12">-->
+              <!--<div class="card shadow mb-4">-->
+                <!--&lt;!&ndash; Card Header - Dropdown &ndash;&gt;-->
+                <!--<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">-->
+          <!--<input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;"  value="+" onclick="myFunction5();return change(this);" />-->
+                  <!--<h6 class="m-0 font-weight-bold text-primary">Payment Details Form</h6>-->
+                  <!--<div class="dropdown no-arrow">-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--&lt;!&ndash; Card Body &ndash;&gt;-->
+                <!--<div class="card-body" id="myDIV5" style="display: none; height:auto;">-->
+<!--<form  method='POST' id="abc" enctype="multipart/form-data" >{% csrf_token %}-->
+
+
+                              <!--<div class="form-group row">-->
+                              <!--<label class="col-md-2 control-label">Payment Channel:</label>-->
+                                  <!--<div class="col-md-3 inputGroupContainer">-->
+                                  <!--<div class="input-group">-->
+                                <!--{{ form.payment_channel }}-->
+                          <!--</div>-->
+                        <!--</div>-->
+
+
+                                <!--<label class="col-md-2 control-label">Payment Receipt</label>-->
+                              <!--<div class="col-md-3 inputGroupContainer">-->
+                              <!--<div class="input-group">-->
+                              <!--<span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>-->
+                                <!--{{ form.payment_receipt }}-->
+                            <!--</div>-->
+                             <!--</div>-->
+                          <!--</div>-->
+
+
+                            <!--<div class="form-group row">-->
+                                <!--<label class="col-md-2 control-label">Payment Received Date</label>-->
+                              <!--<div class="col-md-3 inputGroupContainer">-->
+                              <!--<div class="input-group">-->
+                              <!--<span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>-->
+                                <!--{{ form.payment_received_date }}-->
+                            <!--</div>-->
+                          <!--</div>-->
+
+                                <!--<label class="col-md-2 control-label">Upload PO File:</label>-->
+                              <!--<div class="col-md-3 inputGroupContainer">-->
+                              <!--<div class="input-group">-->
+                              <!--<span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>-->
+                                <!--{{ form.upload_po_file }}-->
+                   <!--</div>-->
+                             <!--</div>-->
+                          <!--</div>-->
+
+
+                            <!--<div class="form-group row">-->
+
+                                   <!--<label class="col-md-2 control-label">Notes</label>-->
+                              <!--<div class="col-md-3 inputGroupContainer">-->
+                              <!--<div class="input-group">-->
+                              <!--<span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>-->
+                                <!--{{ form.notes }}-->
+                            <!--</div>-->
+                             <!--</div>-->
+
+
+
+                          <!--</div>-->
 
 
 
@@ -599,15 +597,15 @@ tr:nth-child(even) {
 
 
 
-<center>
-<button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button>
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Save</button>
-</center>
+<!--<center>-->
+<!--<button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button>-->
+     <!--<button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Save</button>-->
+<!--</center>-->
 
-</form>
-                          </div>
-              </div>
-            </div>
+<!--</form>-->
+                          <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
 
 
 

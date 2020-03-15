@@ -9,7 +9,7 @@ class Lead(models.Model):
     date_of_initiation = models.DateTimeField(default=timezone.now,)
     channel = models.CharField(max_length=50,null=True,blank=True)
     requirement = models.CharField(max_length=80,null=True,blank=True)
-    upload_requirement_file = models.CharField(max_length=80,null=True,blank=True)
+    upload_requirement_file = models.FileField(upload_to='lead_requirement_file/',null=True,blank=True)
     owner_of_opportunity = models.CharField(max_length=80,null=True,blank=True)
 
     def __int__(self):
