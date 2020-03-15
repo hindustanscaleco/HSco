@@ -159,6 +159,7 @@ def add_lead(request):
         item2.upload_requirement_file = upload_requirement_file
         item2.owner_of_opportunity = owner_of_opportunity
         item2.save()
+        return redirect('/update_view_lead/'+str(item2.id))
         # item.save()
     context={
         'form':form,
@@ -168,19 +169,10 @@ def add_lead(request):
     return render(request, 'lead_management/add_lead.html',context)
 
 def update_view_lead(request,id):
-    lead_id = Customer_Details.objects.get(id=id)
-    initial_data = {
-        'customer_name': lead_id.customer_name,
-        'company_name': lead_id.company_name,
-        'contact_no': lead_id.contact_no,
-        'customer_email_id': lead_id.customer_email_id,
-        'address': lead_id.address,
-        'customer_industry': lead_id.customer_industry,
-        'customer_gst_no': lead_id.customer_gst_no,
-    }
-    form = Customer_detail_disabledForm(initial=initial_data)
+    lead_id = Lead.objects.get(id=id)
+
     context={
-        'form':form
+        'lead_id':lead_id
     }
 
     return render(request, 'lead_management/update_view_lead.html',context)
