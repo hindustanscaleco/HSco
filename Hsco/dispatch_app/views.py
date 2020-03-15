@@ -57,6 +57,8 @@ def dispatch_handler(sender, instance, update_fields=None, **kwargs):
             old_instance = instance
             new_instance = Dispatch.objects.get(id=instance.id)
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:
@@ -119,6 +121,8 @@ def dispatch_productss_handler(sender, instance, update_fields=None, **kwargs):
             new_instance = Product_Details_Dispatch.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:

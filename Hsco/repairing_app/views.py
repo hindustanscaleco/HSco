@@ -59,6 +59,8 @@ def repairing_main_handler(sender, instance, update_fields=None, **kwargs):
             new_instance = Repairing_after_sales_service.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:
@@ -119,6 +121,8 @@ def repairing_products_handler(sender, instance, update_fields=None, **kwargs):
             old_instance = instance
             new_instance = Repairing_Product.objects.get(id=instance.id)
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:

@@ -55,6 +55,8 @@ def onsite_handler(sender, instance, update_fields=None, **kwargs):
             old_instance = instance
             new_instance = Onsite_aftersales_service.objects.get(id=instance.id)
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:
@@ -117,6 +119,8 @@ def onsite_product_handler(sender, instance, update_fields=None, **kwargs):
             new_instance = Onsite_Products.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:

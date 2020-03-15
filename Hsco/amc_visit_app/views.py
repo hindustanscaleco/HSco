@@ -46,6 +46,8 @@ def amc_handler(sender, instance, update_fields=None, **kwargs):
             old_instance = instance
             new_instance = Amc_After_Sales.objects.get(id=instance.id)
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:

@@ -55,6 +55,8 @@ def purchase_handler(sender, instance, update_fields=None, **kwargs):
             new_instance = Purchase_Details.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:
@@ -116,6 +118,8 @@ def purchase_product_handler(sender, instance, update_fields=None, **kwargs):
             new_instance = Product_Details.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:
