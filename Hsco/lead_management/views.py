@@ -143,13 +143,7 @@ def add_lead(request):
                 item2.customer_id = Customer_Details.objects.get(id=new_cust.pk)
             except:
                 pass
-        # item.customer_name = customer_name
-        # item.company_name = company_name
-        # item.address = address
-        # item.contact_no = contact_no
-        # item.customer_industry = customer_industry
-        # item.customer_email_id = customer_email_id
-        # item.customer_gst_no = customer_gst_no
+
 
         item2.current_stage = current_stage
         item2.new_existing_customer = new_existing_customer
@@ -170,9 +164,87 @@ def add_lead(request):
 
 def update_view_lead(request,id):
     lead_id = Lead.objects.get(id=id)
+    customer_id = Customer_Details.objects.get(id=lead_id.customer_id)
+    customer_initial_data = {
+        'customer_name': customer_id.customer_name,
+        'company_name': customer_id.company_name,
+        'contact_no': customer_id.contact_no,
+        'customer_email_id': customer_id.customer_email_id,
+        'address': customer_id.address,
+        'customer_industry': customer_id.customer_industry,
+        'customer_gst_no': customer_id.customer_gst_no,
+    }
+    deal_details_initial_data = {
+        'current_stage': lead_id.current_stage,
+        'new_existing_customer': lead_id.new_existing_customer,
+        'date_of_initiation': lead_id.date_of_initiation,
+        'channel': lead_id.channel,
+        'requirement': lead_id.requirement,
+        'upload_requirement_file': lead_id.upload_requirement_file,
+        'owner_of_opportunity': lead_id.owner_of_opportunity,
+    }
+    form = Customer_detailForm(initial=customer_initial_data)
+    form2 = Deal_detailForm(initial=deal_details_initial_data)
 
+    if request.method == 'POST' or request.method == 'FILES':
+        customer_name = request.POST.get('customer_name')
+        company_name = request.POST.get('company_name')
+        address = request.POST.get('address')
+        contact_no = request.POST.get('contact_no')
+        customer_industry = request.POST.get('customer_email_id')
+        customer_email_id = request.POST.get('customer_email_id')
+        customer_gst_no = request.POST.get('customer_gst_no')
+
+        current_stage = request.POST.get('current_stage')
+        new_existing_customer = request.POST.get('new_existing_customer')
+        date_of_initiation = request.POST.get('date_of_initiation')
+        channel = request.POST.get('channel')
+        requirement = request.POST.get('requirement')
+        upload_requirement_file = request.FILES.get('upload_requirement_file')
+        owner_of_opportunity = request.POST.get('owner_of_opportunity')
+
+        item2 = Lead.objects.get(id=id)
+
+
+
+        item3 = Customer_Details.objects.get(id=lead_id.customer_id)
+
+        if customer_name != '' and customer_name != None:
+            item3.customer_name = customer_name
+            item3.save(update_fields=['customer_name'])
+        if contact_no != '' and contact_no != None:
+            item3.contact_no = contact_no
+            item3.save(update_fields=['contact_no'])
+        if company_name != '' and company_name != None:
+            item3.company_name = company_name
+            item3.save(update_fields=['company_name'])
+        if address != '' and address != None:
+            item3.address = address
+            item3.save(update_fields=['address'])
+        if customer_email_id != '' and customer_email_id != None:
+            item3.customer_email_id = customer_email_id
+            item3.save(update_fields=['customer_email_id'])
+        if customer_gst_no != '' and customer_gst_no != None:
+            item3.customer_gst_no = customer_gst_no
+            item3.save(update_fields=['customer_gst_no'])
+        if customer_industry != '' and customer_industry != None:
+            item3.customer_industry = customer_industry
+            item3.save(update_fields=['customer_industry'])
+
+        item2.current_stage = current_stage
+        item2.new_existing_customer = new_existing_customer
+        item2.date_of_initiation = date_of_initiation
+        item2.channel = channel
+        item2.requirement = requirement
+        item2.upload_requirement_file = upload_requirement_file
+        item2.owner_of_opportunity = owner_of_opportunity
+        item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
+                                  'requirement','upload_requirement_file','owner_of_opportunity',])
+        return redirect('/update_view_lead/'+str(id))
     context={
-        'lead_id':lead_id
+        'form':form,
+        'form2':form2,
+        'lead_id':lead_id,
     }
 
     return render(request, 'lead_management/update_view_lead.html',context)
