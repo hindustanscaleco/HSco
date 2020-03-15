@@ -143,6 +143,7 @@ function myFunction() {
      <div class="container-fluid">
 
 
+                     <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
          <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
@@ -156,7 +157,6 @@ function myFunction() {
                 </div>
                 <!-- Card Body -->
 <div class="card-body" id="myDIV" style="display: none; height:auto;">
-                     <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
 
                           <div class="form-group row">
@@ -238,7 +238,7 @@ function myFunction() {
      <button type="submit" style="background-color: #FC6E20; display:none;" id="Mytext1" class="btn btn-primary">Save</button>
 </center>
 
-</form>
+
                           </div>
 
 
@@ -257,7 +257,6 @@ function myFunction() {
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="myDIV2" style="display: none; height: auto;">
-                     <form  method='POST' id="Deal_detail_sectionForm" enctype="multipart/form-data" >{% csrf_token %}
 
 
                               <div class="form-group row">
@@ -265,7 +264,7 @@ function myFunction() {
                                   <div class="col-md-5 inputGroupContainer">
                                   <div class="input-group">
 <!--                                  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>-->
-                                {{ form.current_stage }}
+                                {{ form2.current_stage }}
                           </div>
                         </div>
 
@@ -274,7 +273,7 @@ function myFunction() {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.new_existing_customer }}
+                                {{ form2.new_existing_customer }}
                             </div>
                              </div>
                           </div>
@@ -285,7 +284,7 @@ function myFunction() {
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.date_of_initiation }}
+                                {{ form2.date_of_initiation}}
                             </div>
                           </div>
 
@@ -293,7 +292,7 @@ function myFunction() {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.channel }}
+                                {{ form2.channel }}
                    </div>
                              </div>
                           </div>
@@ -305,7 +304,7 @@ function myFunction() {
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.requirement }}
+                                {{ form2.requirement }}
                             </div>
                              </div>
 
@@ -313,7 +312,11 @@ function myFunction() {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.upload_requirement_file }}
+                                {{ form2.upload_requirement_file}}
+                                  <!--{% if lead_id.upload_requirement_file %}-->
+                                  <!--<a href="{{ lead_id.upload_requirement_file.url }}" class="btn btn-primary">Old File</a>-->
+                                  <!--{% endif %}-->
+                                  <!---->
                             </div>
                             </div>
 
@@ -325,7 +328,7 @@ function myFunction() {
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.owner_of_opportunity }}
+                                {{ form2.owner_of_opportunity }}
                             </div>
                              </div>
 
@@ -339,13 +342,12 @@ function myFunction() {
 
 </center>
 
-</form>
                           </div>
 
 
               </div>
             </div>
-
+                     </form>
           <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->

@@ -133,7 +133,7 @@ class Deal_detailForm(forms.ModelForm):
     requirement = forms.CharField(max_length=80, required=True,
                                     widget=forms.Textarea(
                                         attrs={
-                                            'type': 'date',
+                                            'type': 'file',
                                             'placeholder': "Requirement",
                                             'class': 'form-control',
                                         }
@@ -151,8 +151,9 @@ class Deal_detailForm(forms.ModelForm):
                                                 }
                                             ))
 
-    date_of_initiation = forms.CharField(max_length=80, required=False,
-                                         widget=forms.TextInput(
+    date_of_initiation = forms.DateField( required=True,
+                                         widget=forms.DateInput(
+
                                              attrs={
                                                  'type': 'date',
                                                  'placeholder': "Date of Initiation",
@@ -160,7 +161,7 @@ class Deal_detailForm(forms.ModelForm):
                                              }
                                          ))
 
-    upload_requirement_file = forms.CharField(max_length=80,
+    upload_requirement_file = forms.CharField(max_length=80,required=False,
                               widget=forms.TextInput(
                                   attrs={
                                       'type': 'file',
