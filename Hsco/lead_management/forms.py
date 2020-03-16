@@ -43,7 +43,7 @@ class Customer_detailForm(forms.ModelForm):
 
 
 
-    company_name = forms.CharField(max_length=80, required=True,
+    company_name = forms.CharField(max_length=80, required=False,
        widget=forms.TextInput(
            attrs={
                'type': 'text',
@@ -61,7 +61,7 @@ class Customer_detailForm(forms.ModelForm):
            }
        ))
 
-    customer_email_id = forms.CharField(max_length=80, required=True,
+    customer_email_id = forms.CharField(max_length=80, required=False,
        widget=forms.TextInput(
            attrs={
                'type': 'email',
@@ -89,7 +89,7 @@ class Customer_detailForm(forms.ModelForm):
            }
        ))
 
-    customer_gst_no = forms.CharField(max_length=80, required=True,
+    customer_gst_no = forms.CharField(max_length=80, required=False,
        widget=forms.TextInput(
            attrs={
                'type': 'text',
@@ -153,6 +153,7 @@ class Deal_detailForm(forms.ModelForm):
 
     date_of_initiation = forms.DateField( required=True,
                                          widget=forms.DateInput(
+
                                              attrs={
                                                  'type': 'date',
                                                  'placeholder': "Date of Initiation",
@@ -168,7 +169,7 @@ class Deal_detailForm(forms.ModelForm):
                                   }
                               ))
 
-    owner_of_opportunity = forms.CharField(max_length=80, required=True,
+    owner_of_opportunity = forms.CharField(max_length=80, required=False,
                                   widget=forms.TextInput(
                                       attrs={
                                           'type': 'text',

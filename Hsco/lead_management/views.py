@@ -279,3 +279,6 @@ def lead_analytics(request):
 
 def lead_employee_graph(request):
     return render(request,'lead_management/lead_employee_graph.html')
+
+def lead_pi_form(request):
+    return render(request,'lead_management/lead_pi_form.html')
