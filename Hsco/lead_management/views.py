@@ -3,10 +3,11 @@ from django.shortcuts import render, redirect
 from customer_app.models import type_purchase
 
 from customer_app.models import sub_model, main_model, sub_sub_model
-from .forms import Deal_detailForm,Customer_detailForm
+from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
-from .models import Lead, Lead_Product
+from .models import Lead, Lead_Product, Pi_section
+
 
 # Create your views here.
 
@@ -163,8 +164,9 @@ def add_lead(request):
     return render(request, 'lead_management/add_lead.html',context)
 
 def update_view_lead(request,id):
-    lead_pi_products = Lead_Product.objects.filter(lead_id=id)
     lead_id = Lead.objects.get(id=id)
+
+    lead_pi_products = Lead_Product.objects.filter(lead_id=id)
     customer_id = Customer_Details.objects.get(id=lead_id.customer_id)
     customer_initial_data = {
         'customer_name': customer_id.customer_name,
@@ -186,69 +188,148 @@ def update_view_lead(request,id):
     }
     form = Customer_detailForm(initial=customer_initial_data)
     form2 = Deal_detailForm(initial=deal_details_initial_data)
+    form3 = Pi_sectionForm()
+
+    context = {
+        'form': form,
+        'form2': form2,
+        'form3': form3,
+        'lead_id': lead_id,
+        'lead_pi_products': lead_pi_products,
+    }
+    if Pi_section.objects.filter(lead_id=id).count() > 0:
+        pi_id = Pi_section.objects.get(lead_id=id)
+        print(pi_id.call2)
+        print(pi_id.call2)
+        print(pi_id.call2)
+        pi_initial_data = {
+            'discount': pi_id.discount,
+            'upload_pi_file': pi_id.upload_pi_file,
+            'select_pi_template': pi_id.select_pi_template,
+            'call': pi_id.call,
+            'email': pi_id.email,
+            'whatsapp': pi_id.whatsapp,
+            'call2': pi_id.call2,
+            'payment_channel': pi_id.payment_channel,
+            'payment_receipt': pi_id.payment_receipt,
+            'upload_po_file': pi_id.upload_po_file,
+            'payment_received_date': pi_id.payment_received_date,
+            'notes': pi_id.notes,
+        }
+        form3 = Pi_sectionForm(initial=pi_initial_data)
+        context = {
+            'form': form,
+            'form2': form2,
+            'form3': form3,
+            'lead_id': lead_id,
+            'lead_pi_products': lead_pi_products,
+        }
+        context.update(context)
+    else:
+        pass
 
     if request.method == 'POST' or request.method == 'FILES':
-        customer_name = request.POST.get('customer_name')
-        company_name = request.POST.get('company_name')
-        address = request.POST.get('address')
-        contact_no = request.POST.get('contact_no')
-        customer_industry = request.POST.get('customer_email_id')
-        customer_email_id = request.POST.get('customer_email_id')
-        customer_gst_no = request.POST.get('customer_gst_no')
+        if  'submit1' in request.POST:
+            customer_name = request.POST.get('customer_name')
+            company_name = request.POST.get('company_name')
+            address = request.POST.get('address')
+            contact_no = request.POST.get('contact_no')
+            customer_industry = request.POST.get('customer_email_id')
+            customer_email_id = request.POST.get('customer_email_id')
+            customer_gst_no = request.POST.get('customer_gst_no')
 
-        current_stage = request.POST.get('current_stage')
-        new_existing_customer = request.POST.get('new_existing_customer')
-        date_of_initiation = request.POST.get('date_of_initiation')
-        channel = request.POST.get('channel')
-        requirement = request.POST.get('requirement')
-        upload_requirement_file = request.FILES.get('upload_requirement_file')
-        owner_of_opportunity = request.POST.get('owner_of_opportunity')
+            current_stage = request.POST.get('current_stage')
+            new_existing_customer = request.POST.get('new_existing_customer')
+            date_of_initiation = request.POST.get('date_of_initiation')
+            channel = request.POST.get('channel')
+            requirement = request.POST.get('requirement')
+            upload_requirement_file = request.FILES.get('upload_requirement_file')
+            owner_of_opportunity = request.POST.get('owner_of_opportunity')
 
-        item2 = Lead.objects.get(id=id)
+            item2 = Lead.objects.get(id=id)
 
 
 
-        item3 = Customer_Details.objects.get(id=lead_id.customer_id)
+            item3 = Customer_Details.objects.get(id=lead_id.customer_id)
 
-        if customer_name != '' and customer_name != None:
-            item3.customer_name = customer_name
-            item3.save(update_fields=['customer_name'])
-        if contact_no != '' and contact_no != None:
-            item3.contact_no = contact_no
-            item3.save(update_fields=['contact_no'])
-        if company_name != '' and company_name != None:
-            item3.company_name = company_name
-            item3.save(update_fields=['company_name'])
-        if address != '' and address != None:
-            item3.address = address
-            item3.save(update_fields=['address'])
-        if customer_email_id != '' and customer_email_id != None:
-            item3.customer_email_id = customer_email_id
-            item3.save(update_fields=['customer_email_id'])
-        if customer_gst_no != '' and customer_gst_no != None:
-            item3.customer_gst_no = customer_gst_no
-            item3.save(update_fields=['customer_gst_no'])
-        if customer_industry != '' and customer_industry != None:
-            item3.customer_industry = customer_industry
-            item3.save(update_fields=['customer_industry'])
+            if customer_name != '' and customer_name != None:
+                item3.customer_name = customer_name
+                item3.save(update_fields=['customer_name'])
+            if contact_no != '' and contact_no != None:
+                item3.contact_no = contact_no
+                item3.save(update_fields=['contact_no'])
+            if company_name != '' and company_name != None:
+                item3.company_name = company_name
+                item3.save(update_fields=['company_name'])
+            if address != '' and address != None:
+                item3.address = address
+                item3.save(update_fields=['address'])
+            if customer_email_id != '' and customer_email_id != None:
+                item3.customer_email_id = customer_email_id
+                item3.save(update_fields=['customer_email_id'])
+            if customer_gst_no != '' and customer_gst_no != None:
+                item3.customer_gst_no = customer_gst_no
+                item3.save(update_fields=['customer_gst_no'])
+            if customer_industry != '' and customer_industry != None:
+                item3.customer_industry = customer_industry
+                item3.save(update_fields=['customer_industry'])
 
-        item2.current_stage = current_stage
-        item2.new_existing_customer = new_existing_customer
-        item2.date_of_initiation = date_of_initiation
-        item2.channel = channel
-        item2.requirement = requirement
-        item2.upload_requirement_file = upload_requirement_file
-        item2.owner_of_opportunity = owner_of_opportunity
-        item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
-                                  'requirement','upload_requirement_file','owner_of_opportunity',])
-        return redirect('/update_view_lead/'+str(id))
-    context={
-        'form':form,
-        'form2':form2,
-        'lead_id':lead_id,
-        'lead_pi_products':lead_pi_products,
-    }
+            item2.current_stage = current_stage
+            item2.new_existing_customer = new_existing_customer
+            item2.date_of_initiation = date_of_initiation
+            item2.channel = channel
+            item2.requirement = requirement
+            item2.upload_requirement_file = upload_requirement_file
+            item2.owner_of_opportunity = owner_of_opportunity
+            item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
+                                      'requirement','upload_requirement_file','owner_of_opportunity',])
+            return redirect('/update_view_lead/'+str(id))
 
+        elif 'submit2' in request.POST:
+            discount = request.POST.get('discount')
+            upload_pi_file = request.FILES.get('upload_pi_file')
+            select_pi_template = request.FILES.get('select_pi_template')
+            call = request.POST.get('call')
+            email = request.POST.get('email')
+            whatsapp = request.POST.get('whatsapp')
+            call2 = request.POST.get('call2')
+            if call2 == 'on':
+                call2 = 'True'
+            else:
+                call2 = 'False'
+            if email == 'on':
+                email = 'True'
+            else:
+                email = 'False'
+            if whatsapp == 'on':
+                whatsapp = 'True'
+            else:
+                whatsapp = 'False'
+            if Pi_section.objects.filter(lead_id=id).count() > 0:
+
+                item2 = Pi_section.objects.filter(lead_id=id).first()
+
+                item2.discount = discount
+                item2.upload_pi_file = upload_pi_file
+                item2.select_pi_template = select_pi_template
+                item2.call = call
+                item2.email = email
+                item2.whatsapp = whatsapp
+                item2.call2 = call2
+
+                item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call',
+                                        'email', 'whatsapp','call2'  ])
+            else :
+                item2 = Pi_section()
+                item2.discount = discount
+                item2.upload_pi_file = upload_pi_file
+                item2.select_pi_template = select_pi_template
+                item2.call = call
+                item2.email = email
+                item2.whatsapp = whatsapp
+                item2.call2 = call2
+                item2.lead_id = Lead.objects.get(id=id)
+                item2.save()
     return render(request, 'lead_management/update_view_lead.html',context)
 
 

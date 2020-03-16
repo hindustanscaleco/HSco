@@ -313,10 +313,10 @@ function myFunction() {
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form2.upload_requirement_file}}
-                                  <!--{% if lead_id.upload_requirement_file %}-->
-                                  <!--<a href="{{ lead_id.upload_requirement_file.url }}" class="btn btn-primary">Old File</a>-->
-                                  <!--{% endif %}-->
-                                  <!---->
+                                  {% if lead_id.upload_requirement_file %}
+                                  <a href="{{ lead_id.upload_requirement_file.url }}" class="btn btn-primary">Old File</a>
+                                  {% endif %}
+
                             </div>
                             </div>
 
@@ -338,7 +338,7 @@ function myFunction() {
 
 <center>
 
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Save</button>
+     <button name="submit1" type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Save</button>
 
 </center>
 
@@ -359,7 +359,6 @@ function myFunction() {
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="myDIV3" style="display: none; height:auto;">
-                     <form  method='POST' id="buynsellForm" enctype="multipart/form-data" >{% csrf_token %}
                          <div class="row">
                              <div class="col-xl-2 col-lg-2">
 </div>
@@ -389,7 +388,7 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 </style>
-                 {% for product in lead_pi_products %}          <img height="100px" width="100px" src="{{ product.product_image.url }}">
+                 {% for product in lead_pi_products %}
 
                           <div class="card shadow">
 
@@ -428,13 +427,14 @@ tr:nth-child(even) {
                {% endfor %}
 
                          <br>
+                     <form  method='POST'  enctype="multipart/form-data" >{% csrf_token %}
 
                               <div class="form-group row">
                               <label class="col-md-2 control-label">Discount:</label>
                                   <div class="col-md-3 inputGroupContainer">
                                   <div class="input-group">
                                   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.discount }}
+                                {{ form3.discount }}
                           </div>
                         </div>
 
@@ -443,7 +443,10 @@ tr:nth-child(even) {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.upload_pi_file }}
+                                {{ form3.upload_pi_file }}
+                                  {% if form3.upload_pi_file %}
+                                  <a href="/{{ form3.upload_pi_file.url }}/" class="btn btn-primary">Old File</a>
+                                   {% endif %}
                             </div>
                              </div>
                           </div>
@@ -454,15 +457,17 @@ tr:nth-child(even) {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.select_pi_template }}
-                            </div>
+                                {{ form3.select_pi_template }}
+                                    {% if form3.select_pi_template %}
+                                  <a href="/{{ form3.select_pi_template.url }}/" class="btn btn-primary">Old File</a>
+                                   {% endif %}                            </div>
                           </div>
 
                                 <label class="col-md-2 control-label">Call:</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.call }}
+                                {{ form3.call }}
                    </div>
                              </div>
                           </div>
@@ -470,13 +475,13 @@ tr:nth-child(even) {
 <div class="row">
                                                          <label class="col-md-2 control-label">Medium of Selection:</label>
 
-    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp  {{ form.email  }} <div class="col-xl-2 col-lg-2"></div> <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form.whatsapp  }} <div class="col-xl-2 col-lg-2"></div>   <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form.call2  }}
+    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp  {{ form3.email  }} <div class="col-xl-2 col-lg-2"></div> <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form3.whatsapp  }} <div class="col-xl-2 col-lg-2"></div>   <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form3.call2  }}
 </div>
 
 
 
                          <center>
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
+     <button type="submit" name="submit2" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
 </center>
 
 </form>

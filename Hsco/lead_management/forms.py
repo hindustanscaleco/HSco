@@ -184,19 +184,6 @@ class Deal_detailForm(forms.ModelForm):
 
 class Pi_sectionForm(forms.ModelForm):
 
-    owner_of_opportunity = forms.CharField(max_length=80, required=True,
-                                           widget=forms.TextInput(
-                                               attrs={
-                                                   'type': 'Text',
-                                                   'placeholder': "Owner of Opportunity",
-                                                   'class': 'form-control',
-                                               }
-                                           ))
-
-
-
-
-
 
     discount = forms.CharField(max_length=80, required=True,
        widget=forms.TextInput(
@@ -207,61 +194,54 @@ class Pi_sectionForm(forms.ModelForm):
            }
        ))
 
-    upload_pi_file = forms.CharField(max_length=80, required=True,
-       widget=forms.TextInput(
+    upload_pi_file = forms.FileField(required=False,
+       widget=forms.FileInput(
            attrs={
-               'type': 'text',
+               'type': 'file',
                'placeholder': "Upload PI File",
                'class': 'form-control',
            }
        ))
 
-    select_pi_template = forms.CharField(max_length=80, required=True,
-       widget=forms.TextInput(
+    select_pi_template = forms.FileField(required=False,
+       widget=forms.FileInput(
            attrs={
-               'type': 'date',
+               'type': 'file',
                'placeholder': "Select PI Template",
                'class': 'form-control',
            }
        ))
 
-    call = forms.CharField(max_length=80, required=True,
-       widget=forms.Textarea(
-           attrs={
-               'type': 'text',
-               'placeholder': "Call",
-               'class': 'form-control',
-           }
-       ))
-    email = forms.CheckboxInput(
+    call = forms.CharField(required=False,
+        widget=forms.Textarea(
+            attrs={
+                'type':'text',
+                'id':'call',
+            })
+        )
+    email = forms.BooleanField(required=False,
+        widget=forms.TextInput(
             attrs={
                 'type':'checkbox',
                 'id':'email',
-                'value':'email',
-                'class': 'form-control',
-            }
+            })
         )
-
-
-    whatsapp = forms.CheckboxInput(
+    whatsapp = forms.BooleanField(required=False,
+        widget=forms.TextInput(
             attrs={
                 'type':'checkbox',
                 'id':'whatsapp',
-                'value':'whatsapp',
-                'class': 'form-control',
-            }
+            })
         )
-
-
-
-    call2 = forms.CheckboxInput(
+    call2 = forms.BooleanField(required=False,
+        widget=forms.TextInput(
             attrs={
-                'type':'checkbox',
-                'id':'call',
-                'value':'call',
-                'class': 'form-control',
-            }
-        )
+                'type': 'checkbox',
+                'id': 'call2',
+            })
+    )
+
+
 
 
 
