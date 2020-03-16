@@ -363,10 +363,10 @@ function myFunction() {
                          <div class="row">
                              <div class="col-xl-2 col-lg-2">
 </div>
-                         <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Add Product">
+                         <a href="/add_lead_product/{{lead_id.id}}"><input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Add Product"></a>
 <div class="col-xl-2 col-lg-2">
 </div>
-                             <a href="{% url 'lead_delete_product' %}">   <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Delete Product"></a>
+                             <a href="/lead_delete_product/{{lead_id.id}}">   <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Delete Product"></a>
 <div class="col-xl-2 col-lg-2">
 </div>
                          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="History of Record">
@@ -389,35 +389,44 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 </style>
+                 {% for product in lead_pi_products %}          <img height="100px" width="100px" src="{{ product.product_image.url }}">
+
                           <div class="card shadow">
+
 <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
     <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
-               <table style="font-size: 14px;">
+    <table style="font-size: 14px;">
   <tr>
-    <td>Product Code:</td>
-      <td colspan="5">Product Image</td>
+    <td>Product Code: {{ product.hsn_code }}</td>
+      <td rowspan="5">Product Image:
+          {% if product.product_image %}
+          <img height="100px" width="100px" src="{{ product.product_image.url }}">
+      {% endif %}</td>
 
   </tr><tr>
-    <td>HSN Code:</td>
+    <td>HSN Code: {{ product.hsn_code }}</td>
 </tr>
 <tr>
-    <td>Sub Sub Model</td>
+    <td>Sub Sub Model: {{ product.sub_sub_category }}</td>
 </tr>
 <tr>
-    <td>Quantity</td>
+    <td>Quantity: {{ product.models }}</td>
                </tr>
 
 <tr>
-    <td>Product Description</td>
+    <td>Product Description: {{ product.product_desc }}</td>
                </tr>
 
 <tr>
-    <td>Rate :</td>
+    <td>Rate : {{ product.models }}</td>
 
   </tr>
 </table>
               </div>
+
                           </div>
+               {% endfor %}
+
                          <br>
 
                               <div class="form-group row">

@@ -65,9 +65,9 @@ def add_lead_product(request,id):
 
         item.save()
         if is_last_product_yes == 'yes':
-            return redirect('/view_lead/')
+            return redirect('/update_view_lead/'+str(id))
         elif is_last_product_yes == 'no':
-            return redirect('/add_lead_product/')
+            return redirect('/add_lead_product/'+str(id))
     context={
         'type_purchase': type_of_purchase_list,  # 2
 
@@ -163,6 +163,7 @@ def add_lead(request):
     return render(request, 'lead_management/add_lead.html',context)
 
 def update_view_lead(request,id):
+    lead_pi_products = Lead_Product.objects.filter(lead_id=id)
     lead_id = Lead.objects.get(id=id)
     customer_id = Customer_Details.objects.get(id=lead_id.customer_id)
     customer_initial_data = {
@@ -245,6 +246,7 @@ def update_view_lead(request,id):
         'form':form,
         'form2':form2,
         'lead_id':lead_id,
+        'lead_pi_products':lead_pi_products,
     }
 
     return render(request, 'lead_management/update_view_lead.html',context)
@@ -261,8 +263,8 @@ def lead_manager_view(request):
 def lead_follow_up_histroy(request):
     return render(request,'lead_management/lead_history.html')
 
-def lead_delete_product(request):
-    leads = Lead_Product.objects.all().order_by('-id')
+def lead_delete_product(request,id):
+    leads = Lead_Product.objects.filter(lead_id=id).order_by('-id')
     if request.method == 'POST' or request.method=='FILES':
         delete_id = request.POST.getlist('check[]')
         for i in delete_id:
