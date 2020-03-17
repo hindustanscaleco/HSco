@@ -16,6 +16,27 @@ payment_channel = [
 ]
 
 
+industory_dropdown = [
+        ('Energy industry','Energy industry'),
+        ('Chemicals','Chemicals'),
+        ('Industrial Metals ','Industrial Metals '),
+        ('Gold/Gems and precious Metals ','Gold/Gems and precious Metals '),
+        ('Home and Heavy Construction companies ','Home and Heavy Construction companies '),
+        ('Electrical and Electronic Manufacturers','Electrical and Electronic Manufacturers'),
+        ('Industrial Transportation','Industrial Transportation'),
+        ('Agriculture','Agriculture'),
+        ('Poultry/Livestock','Poultry/Livestock'),
+        ('Healthcare Equipment and Services','Healthcare Equipment and Services'),
+        ('Textiles','Textiles'),
+        ('Hotels','Hotels'),
+        ('Grocery/Retail','Grocery/Retail'),
+        ('Bakery','Bakery'),
+        ('Supplier','Supplier'),
+        ('BNI','BNI'),
+        ('Online Promotion','Online Promotion'),
+]
+
+
 stage = [
     ('Not Yet Initiated','Not Yet Initiated'),
     ('Customer Called','Customer Called'),
@@ -102,6 +123,8 @@ class Customer_detail_disabledForm(forms.ModelForm):
                'placeholder': "Customer GST Number",
                'class': 'form-control',
                'disabled': 'disabled',
+               'maxlength':'15',
+               'minlength':'15',
            }
        ))
 
