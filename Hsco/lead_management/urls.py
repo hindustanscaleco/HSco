@@ -17,6 +17,6 @@ urlpatterns = [
     path('lead_employee_graph/',lead_employee_graph , name ='lead_employee_graph'),
     path('update_view_lead/<int:id>',update_view_lead , name ='update_view_lead'),
     path('lead_pi_form/',lead_pi_form , name ='lead_pi_form'),
-    path('pi_section_history/',pi_section_history , name ='pi_section_history'),
+    path('pi_section_history/<int:id>',pi_section_history , name ='pi_section_history'),
 
 ]

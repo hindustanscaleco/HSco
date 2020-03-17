@@ -1,5 +1,5 @@
 from django import forms
-from .models import Lead
+from .models import Lead, Pi_product
 import sys
 sys.path.append("..")
 from customer_app.models import Customer_Details
@@ -332,5 +332,5 @@ class Pi_sectionForm(forms.ModelForm):
                                              }
                                          ))
     class Meta:
-        model = Lead
+        model = Pi_product
         fields = "__all__"

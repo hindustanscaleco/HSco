@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-from lead_management.models import Lead
 
 
 class Stock_System(models.Model):
@@ -19,7 +18,7 @@ class Stock_System(models.Model):
     def __str__(self):
         return str(self.pk)
 
-class Lead_Product(models.Model):
+class Product(models.Model):
     # lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
     scale_type = models.CharField(max_length=150, null=True, blank=True)
     main_category = models.CharField(max_length=150, null=True, blank=True)
@@ -39,3 +38,4 @@ class Lead_Product(models.Model):
 
     def __int__(self):
         return self.id
+
