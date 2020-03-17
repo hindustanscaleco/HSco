@@ -453,7 +453,7 @@ tr:nth-child(even) {
 
 
                             <div class="form-group row">
-                                <label class="col-md-2 control-label">Select PI Template :</label>
+                                              <label class="col-md-2 control-label">Select PI Template :</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
@@ -462,15 +462,32 @@ tr:nth-child(even) {
                                   <a href="/{{ form3.select_pi_template.url }}/" class="btn btn-primary">Old File</a>
                                    {% endif %}                            </div>
                           </div>
+                            </div>
+
+                            <div class="form-group row" id="myDiv_call" style="display: none;">
+
 
                                 <label class="col-md-2 control-label">Call:</label>
-                              <div class="col-md-3 inputGroupContainer">
+                              <div class="col-md-6 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form3.call }}
                    </div>
                              </div>
                           </div>
+
+
+                         <script>
+function myFunction_call() {
+  var x = document.getElementById("myDiv_call");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
+
+
 <br>
 <div class="row">
                                                          <label class="col-md-2 control-label">Medium of Selection:</label>

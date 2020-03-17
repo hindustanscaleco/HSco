@@ -338,6 +338,10 @@ def update_view_lead(request,id):
 def lead_report(request):
     return render(request,'lead_management/report_lead.html')
 
+
+def select_product(request):
+    return render(request,'lead_management/select_product.html')
+
 def lead_manager_view(request):
     return render(request,'lead_management/lead_manager.html')
 

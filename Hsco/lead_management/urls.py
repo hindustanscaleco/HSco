@@ -1,11 +1,13 @@
 from django.urls import path, include, re_path
 
-from .views import lead_home,add_lead,lead_report,lead_manager_view,lead_follow_up_histroy,lead_delete_product,lead_analytics ,\
-    lead_employee_graph,update_view_lead, add_lead_product,lead_pi_form
+from .views import lead_home, add_lead, lead_report, lead_manager_view, lead_follow_up_histroy, lead_delete_product, \
+    lead_analytics, \
+    lead_employee_graph, update_view_lead, add_lead_product, lead_pi_form, select_product
 
 urlpatterns = [
     path('lead_home/',lead_home , name ='lead_home'),
     path('add_lead/',add_lead , name ='add_lead'),
+    path('select_product/',select_product , name ='select_product'),
     path('lead_report/',lead_report , name ='lead_report'),
     path('lead_manager_view/',lead_manager_view , name ='lead_manager_view'),
     path('lead_follow_up_histroy/',lead_follow_up_histroy , name ='lead_follow_up_histroy'),
