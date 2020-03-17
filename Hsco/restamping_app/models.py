@@ -27,6 +27,8 @@ class Restamping_after_sales_service(models.Model):
     restamping_done_timedate = models.DateTimeField(null=True, blank=True)
     total_restamping_time = models.FloatField(default=0.0)
     restamping_time_calculated = models.BooleanField(default=False)
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
+
     tracker = FieldTracker()
 
     def __int__(self):
@@ -48,6 +50,8 @@ class Restamping_Product(models.Model):
     new_sr_no = models.CharField(max_length=150, null=True, blank=True)
     brand = models.CharField(max_length=150, null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
+
     tracker = FieldTracker()
 
 

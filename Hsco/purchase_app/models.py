@@ -39,7 +39,7 @@ class Purchase_Details(models.Model):   #cleaned
     is_last_product = models.BooleanField(default=False)
     feedback_link = models.URLField(max_length=200, null=True, blank=True)
     purchase_no = models.BigIntegerField(null=True,blank=True)
-    entered_by = models.CharField(blank= True, null=True, max_length=100)
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
     tracker = FieldTracker()
 
     def __int__(self):
@@ -65,6 +65,7 @@ class Product_Details(models.Model):
     capacity = models.CharField(max_length=30,null=True,blank=True)
     unit = models.CharField(max_length=30,null=True,blank=True)
     amount = models.FloatField(default=0.0,)
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
     entry_timedate = models.DateTimeField(default=timezone.now,)
     tracker = FieldTracker()

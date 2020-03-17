@@ -47,6 +47,8 @@ class Amc_After_Sales(models.Model):
     entry_timedate = models.DateTimeField(default=timezone.now,)
     feedback_link = models.URLField(max_length=200, null=True, blank=True)
     amc_no = models.BigIntegerField(null=True,blank=True)
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
+
     tracker = FieldTracker()
 
     #for future use

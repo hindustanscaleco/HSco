@@ -41,9 +41,8 @@ def dispatch_handler(sender, instance, update_fields=None, **kwargs):
             #########for insert action##########
             new_instance = instance
             log = Log()
-            print('somethibng')
 
-            log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
             # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
             log.module_name = 'Dispatch Module'
             log.action_type = 'Insert'
@@ -54,12 +53,12 @@ def dispatch_handler(sender, instance, update_fields=None, **kwargs):
             # log.action = old_list
             log.save()
         elif instance.id != None or instance.id !='' or instance.id !='None':
-            print('somethibng')
             #########for update action##########
             old_instance = instance
             new_instance = Dispatch.objects.get(id=instance.id)
-            print('somethibng')
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:
@@ -78,11 +77,11 @@ def dispatch_handler(sender, instance, update_fields=None, **kwargs):
             if  track:
                 old_list = []
                 for key, value in track.items():
-                    old_list.append('Old value: ' + key )
-                print('something')
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
 
-                log.entered_by = new_instance.entered_by
+                log.entered_by = instance.log_entered_by
                 log.module_name = 'Dispatch Module'
                 log.action_type = 'Update'
                 log.table_name = 'Dispatch'
@@ -97,21 +96,21 @@ def dispatch_handler(sender, instance, update_fields=None, **kwargs):
         pass
 
 @receiver(pre_save, sender=Product_Details_Dispatch)
-def dispatch_handler(sender, instance, update_fields=None, **kwargs):
+def dispatch_productss_handler(sender, instance, update_fields=None, **kwargs):
     try:
         if instance.id == None or instance.id == '' or instance.id == 'None' :
             #########for insert action##########
             new_instance = instance
+            dispatch = Dispatch.objects.get(id=new_instance.dispatch_id_id)
             log = Log()
-            dispatch = Product_Details_Dispatch.objects.get(id=new_instance.purchase_id_id)
 
-            log.entered_by = dispatch.entered_by
+            log.entered_by = new_instance.log_entered_by
             # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
-            log.module_name = 'Restamping Module'
+
+            log.module_name = 'Dispatch Module'
             log.action_type = 'Insert'
             log.table_name = 'Product_Details_Dispatch'
-
-            log.reference = 'Dispatch No: ' + str(dispatch.dispatch_no)+ ', Product id:' +str(new_instance.id)
+            log.reference = 'Dispatch No: ' + str(dispatch.dispatch_no)
 
             # log.action = old_list
             log.save()
@@ -122,6 +121,8 @@ def dispatch_handler(sender, instance, update_fields=None, **kwargs):
             new_instance = Product_Details_Dispatch.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:
@@ -140,17 +141,20 @@ def dispatch_handler(sender, instance, update_fields=None, **kwargs):
             if  track:
                 old_list = []
                 for key, value in track.items():
-                    old_list.append('Old value: ' + key )
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                dispatch = Dispatch.objects.get(id=new_instance.dispatch_id_id)
+
                 log = Log()
-                dispatch = Dispatch.objects.get(id=new_instance.purchase_id_id)
-                log.entered_by = dispatch.entered_by
-                log.module_name = 'Restamping Module'
+
+                log.entered_by = instance.log_entered_by
+
+                log.module_name = 'Dispatch Module'
                 log.action_type = 'Update'
                 log.table_name = 'Product_Details_Dispatch'
                 log.reference = 'Dispatch No: '+str(dispatch.dispatch_no) + ', Product id:' +str(new_instance.id)
                 log.action = old_list
                 log.save()
-
 
     except:
         pass
@@ -285,7 +289,7 @@ def add_dispatch_details(request):
             item2.dispatch_no = 1
         else:
             item2.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no+1
-
+        item2.log_entered_by = request.user.name
         item2.save()
 
         current_stage_in_db = Dispatch.objects.get(id=item2.pk).current_stage  # updatestage1
@@ -361,6 +365,8 @@ def dispatch_product(request,id):
         item.dispatch_id_id = dispatch.pk
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item.log_entered_by = request.user.name
+
         item.save()
         try:
             user_name = SiteUser.objects.get(profile_name=dispatch.dispatch_by)
@@ -1077,20 +1083,23 @@ def update_dispatch_details(request,update_id):
 
 
         # item.save(update_fields=['dispatch_id', ]),
+        item.log_entered_by = request.user.name
 
-        item.save(update_fields=['second_person','second_contact_no', 'dispatch_done_timedate']),
+        item.save(update_fields=['second_person','second_contact_no', 'dispatch_done_timedate','log_entered_by','packed_by',
+                                 'hamal_name','no_bundles','transport_name','lr_no','photo_lr_no','channel_of_dispatch',
+                                 'notes','second_company_name','company_address','company_email',]),
 
-        item.save(update_fields=['packed_by', ]),
-        item.save(update_fields=['hamal_name', ]),
-        item.save(update_fields=['no_bundles', ]),
-        item.save(update_fields=['transport_name', ]),
-        item.save(update_fields=['lr_no', ]),
-        item.save(update_fields=['photo_lr_no', ]),
-        item.save(update_fields=['channel_of_dispatch', ]),
-        item.save(update_fields=['notes', ]),
-        item.save(update_fields=['second_company_name', ]),
-        item.save(update_fields=['company_address', ]),
-        item.save(update_fields=['company_email', ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
         dispatch_item = Dispatch.objects.get(id=update_id)
         product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
 
@@ -1116,9 +1125,6 @@ def update_dispatch_details(request,update_id):
     #     'product_list':product_list,
     # }
     # return render(request, "update_forms/update_dis_mod_form.html",context)
-
-def dispatch_logs(request):
-    return render(request,"logs/dispatch_logs.html",)
 
 def dispatch_analytics(request):
     mon = datetime.now().month
@@ -1373,6 +1379,7 @@ def load_dispatch_stages_list(request):
     context.update(context)
     return render(request, 'AJAX/load_dispatch_stage.html', context)
 
+@login_required(login_url='/')
 def edit_dispatch_product(request,id):
 
     pro_dispatch=Product_Details_Dispatch.objects.get(id=id)
@@ -1414,7 +1421,8 @@ def edit_dispatch_product(request,id):
         item.capacity = capacity
         item.unit = unit
         item.value_of_goods = amount
-        item.save(update_fields=['quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
+        item.log_entered_by = request.user.name
+        item.save(update_fields=['log_entered_by','quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
                                  'serial_no_scale', 'brand', 'capacity', 'unit','value_of_goods',
                                  ])
 
@@ -1435,6 +1443,19 @@ def edit_dispatch_product(request,id):
     }
 
     return render(request,'edit_product/dispatch_product.html',context)
+
+@login_required(login_url='/')
+def dispatch_logs(request):
+    dispatch_logs = Log.objects.filter(module_name='Dispatch Module')
+    paginator = Paginator(dispatch_logs, 15)  # Show 25 contacts per page
+    page = request.GET.get('page')
+    dispatch_logs = paginator.get_page(page)
+    context = {
+        'dispatch_logs': dispatch_logs,
+
+    }
+    return render(request,"logs/dispatch_logs.html",context)
+
 
 
 

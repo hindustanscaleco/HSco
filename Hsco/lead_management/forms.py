@@ -1,5 +1,9 @@
 from django import forms
-from .models import Customer_details_section
+from .models import Lead
+import sys
+sys.path.append("..")
+from customer_app.models import Customer_Details
+
 
 auto_manual_email = [
     ('Automatic', 'Automatic'),
@@ -12,6 +16,32 @@ payment_channel = [
 ]
 
 
+industory_dropdown = [
+        ('Energy industry','Energy industry'),
+        ('Chemicals','Chemicals'),
+        ('Industrial Metals ','Industrial Metals '),
+        ('Gold/Gems and precious Metals ','Gold/Gems and precious Metals '),
+        ('Home and Heavy Construction companies ','Home and Heavy Construction companies '),
+        ('Electrical and Electronic Manufacturers','Electrical and Electronic Manufacturers'),
+        ('Industrial Transportation','Industrial Transportation'),
+        ('Agriculture','Agriculture'),
+        ('Poultry/Livestock','Poultry/Livestock'),
+        ('Healthcare Equipment and Services','Healthcare Equipment and Services'),
+        ('Textiles','Textiles'),
+        ('Hotels','Hotels'),
+        ('Grocery/Retail','Grocery/Retail'),
+        ('Bakery','Bakery'),
+        ('Supplier','Supplier'),
+        ('BNI','BNI'),
+        ('Online Promotion','Online Promotion'),
+]
+
+
+customer_exist_new = [
+    ('New','New'),
+    ('Existing','Existing'),
+]
+
 stage = [
     ('Not Yet Initiated','Not Yet Initiated'),
     ('Customer Called','Customer Called'),
@@ -23,7 +53,6 @@ stage = [
     ('Not Relevant','Not Relevant'),
     ('Postponed','Postponed'),
 ]
-
 
 
 
@@ -40,7 +69,7 @@ class Customer_detailForm(forms.ModelForm):
 
 
 
-    company_name = forms.CharField(max_length=80, required=True,
+    company_name = forms.CharField(max_length=80, required=False,
        widget=forms.TextInput(
            attrs={
                'type': 'text',
@@ -49,7 +78,7 @@ class Customer_detailForm(forms.ModelForm):
            }
        ))
 
-    customer_number = forms.CharField(max_length=80, required=True,
+    contact_no = forms.CharField(max_length=80, required=True,
        widget=forms.TextInput(
            attrs={
                'type': 'text',
@@ -58,7 +87,7 @@ class Customer_detailForm(forms.ModelForm):
            }
        ))
 
-    customer_email_id = forms.CharField(max_length=80, required=True,
+    customer_email_id = forms.CharField(max_length=80, required=False,
        widget=forms.TextInput(
            attrs={
                'type': 'email',
@@ -77,8 +106,9 @@ class Customer_detailForm(forms.ModelForm):
            }
        ))
 
-    industry = forms.CharField(max_length=80, required=True,
-       widget=forms.TextInput(
+    customer_industry = forms.CharField(max_length=80, required=True,
+    widget=forms.Select(
+        choices=industory_dropdown,
            attrs={
                'type': 'text',
                'placeholder': "Industry",
@@ -86,15 +116,27 @@ class Customer_detailForm(forms.ModelForm):
            }
        ))
 
-    customer_gst_no = forms.CharField(max_length=80, required=True,
+    customer_gst_no = forms.CharField(max_length=15, min_length=15, required=False,
        widget=forms.TextInput(
            attrs={
                'type': 'text',
                'placeholder': "Customer GST Number",
                'class': 'form-control',
+
            }
        ))
 
+
+    class Meta:
+        model = Customer_Details
+        fields = "__all__"
+
+
+
+
+
+
+class Deal_detailForm(forms.ModelForm):
     current_stage = forms.CharField(max_length=80, required=True,
                                     widget=forms.Select(
                                         choices=stage,
@@ -105,22 +147,23 @@ class Customer_detailForm(forms.ModelForm):
                                         }
                                     ))
 
-    whatsapp2 = forms.CharField(max_length=80, required=True,
-                                    widget=forms.TextInput(
+    new_existing_customer = forms.CharField(max_length=80, required=True,
+                                    widget=forms.Select(
+                                        choices=customer_exist_new,
                                         attrs={
                                             'type': 'text',
-                                            'placeholder': "Whatsapp",
+                                            'placeholder': "Person",
                                             'class': 'form-control',
                                         }
                                     ))
 
 
 
-    whatsappcontent = forms.CharField(max_length=80, required=True,
+    requirement = forms.CharField(max_length=80, required=True,
                                     widget=forms.Textarea(
                                         attrs={
-                                            'type': 'text',
-                                            'placeholder': "Content",
+                                            'type': 'file',
+                                            'placeholder': "Requirement",
                                             'class': 'form-control',
                                         }
                                     ))
@@ -128,17 +171,18 @@ class Customer_detailForm(forms.ModelForm):
 
 
 
-    new_existing_customer = forms.CharField(max_length=80, required=True,
+    channel = forms.CharField(max_length=80, required=True,
                                             widget=forms.TextInput(
                                                 attrs={
                                                     'type': 'text',
-                                                    'placeholder': "New/Existing Customer",
+                                                    'placeholder': "Channel",
                                                     'class': 'form-control',
                                                 }
                                             ))
 
-    date_of_initiation = forms.CharField(max_length=80, required=True,
-                                         widget=forms.TextInput(
+    date_of_initiation = forms.DateField( required=True,
+                                         widget=forms.DateInput(
+
                                              attrs={
                                                  'type': 'date',
                                                  'placeholder': "Date of Initiation",
@@ -146,41 +190,30 @@ class Customer_detailForm(forms.ModelForm):
                                              }
                                          ))
 
-    channel = forms.CharField(max_length=80, required=True,
+    upload_requirement_file = forms.CharField(max_length=80,required=False,
                               widget=forms.TextInput(
                                   attrs={
-                                      'type': 'text',
-                                      'placeholder': "Channel",
+                                      'type': 'file',
                                       'class': 'form-control',
                                   }
                               ))
 
-    requirement = forms.CharField(max_length=80, required=True,
+    owner_of_opportunity = forms.CharField(max_length=80, required=False,
                                   widget=forms.TextInput(
                                       attrs={
                                           'type': 'text',
-                                          'placeholder': "Requirement",
+                                          'placeholder': "Owner",
                                           'class': 'form-control',
                                       }
                                   ))
+    class Meta:
+        model = Lead
+        fields = "__all__"
 
-    upload_requirement_file = forms.CharField(max_length=80, required=True,
-                                              widget=forms.TextInput(
-                                                  attrs={
-                                                      'type': 'file',
-                                                      'placeholder': "FILE",
-                                                      'class': 'form-control',
-                                                  }
-                                              ))
 
-    owner_of_opportunity = forms.CharField(max_length=80, required=True,
-                                           widget=forms.TextInput(
-                                               attrs={
-                                                   'type': 'Text',
-                                                   'placeholder': "Owner of Opportunity",
-                                                   'class': 'form-control',
-                                               }
-                                           ))
+class Pi_sectionForm(forms.ModelForm):
+
+
     discount = forms.CharField(max_length=80, required=True,
        widget=forms.TextInput(
            attrs={
@@ -190,61 +223,56 @@ class Customer_detailForm(forms.ModelForm):
            }
        ))
 
-    upload_pi_file = forms.CharField(max_length=80, required=True,
-       widget=forms.TextInput(
+    upload_pi_file = forms.FileField(required=False,
+       widget=forms.FileInput(
            attrs={
-               'type': 'text',
+               'type': 'file',
                'placeholder': "Upload PI File",
                'class': 'form-control',
            }
        ))
 
-    select_pi_template = forms.CharField(max_length=80, required=True,
-       widget=forms.TextInput(
+    select_pi_template = forms.FileField(required=False,
+       widget=forms.FileInput(
            attrs={
-               'type': 'date',
+               'type': 'file',
                'placeholder': "Select PI Template",
                'class': 'form-control',
            }
        ))
 
-    call = forms.CharField(max_length=80, required=True,
-       widget=forms.Textarea(
-           attrs={
-               'type': 'text',
-               'placeholder': "Call",
-               'class': 'form-control',
-           }
-       ))
-    email = forms.CheckboxInput(
+    call = forms.CharField(required=False,
+        widget=forms.Textarea(
+            attrs={
+                'type':'text',
+                'id':'call',
+            })
+        )
+    email = forms.BooleanField(required=False,
+        widget=forms.TextInput(
             attrs={
                 'type':'checkbox',
                 'id':'email',
-                'value':'email',
-                'class': 'form-control',
-            }
+            })
         )
-
-
-    whatsapp = forms.CheckboxInput(
+    whatsapp = forms.BooleanField(required=False,
+        widget=forms.TextInput(
             attrs={
                 'type':'checkbox',
                 'id':'whatsapp',
-                'value':'whatsapp',
-                'class': 'form-control',
-            }
+            })
         )
-
-
-
-    call2 = forms.CheckboxInput(
+    call2 = forms.BooleanField(required=False,
+        widget=forms.TextInput(
             attrs={
-                'type':'checkbox',
-                'id':'call',
-                'value':'call',
-                'class': 'form-control',
-            }
-        )
+                'type': 'checkbox',
+                'id': 'call2',
+                'onclick' : 'myFunction_call()',
+                'calss' : 'form-control',
+            })
+    )
+
+
 
 
 
@@ -304,5 +332,5 @@ class Customer_detailForm(forms.ModelForm):
                                              }
                                          ))
     class Meta:
-        model = Customer_details_section
+        model = Lead
         fields = "__all__"

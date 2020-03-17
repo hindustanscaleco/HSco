@@ -33,15 +33,14 @@ from django.dispatch import receiver
 from customer_app.models import Log
 
 @receiver(pre_save, sender=Onsite_aftersales_service)
-def dispatch_handler(sender, instance, update_fields=None, **kwargs):
+def onsite_handler(sender, instance, update_fields=None, **kwargs):
     try:
         if instance.id == None or instance.id == '' or instance.id == 'None':
             #########for insert action##########
             new_instance = instance
             log = Log()
-            print('somethibng')
 
-            log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
             # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
             log.module_name = 'Onsite Repairing Module'
             log.action_type = 'Insert'
@@ -52,12 +51,12 @@ def dispatch_handler(sender, instance, update_fields=None, **kwargs):
             # log.action = old_list
             log.save()
         elif instance.id != None or instance.id !='' or instance.id !='None':
-            print('somethibng')
             #########for update action##########
             old_instance = instance
             new_instance = Onsite_aftersales_service.objects.get(id=instance.id)
-            print('somethibng')
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:
@@ -76,11 +75,11 @@ def dispatch_handler(sender, instance, update_fields=None, **kwargs):
             if  track:
                 old_list = []
                 for key, value in track.items():
-                    old_list.append('Old value: ' + key )
-                print('something')
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
 
-                log.entered_by = new_instance.entered_by
+                log.entered_by = instance.log_entered_by
                 log.module_name = 'Onsite Repairing Module'
                 log.action_type = 'Update'
                 log.table_name = 'Onsite_aftersales_service'
@@ -95,21 +94,21 @@ def dispatch_handler(sender, instance, update_fields=None, **kwargs):
         pass
 
 @receiver(pre_save, sender=Onsite_Products)
-def dispatch_handler(sender, instance, update_fields=None, **kwargs):
+def onsite_product_handler(sender, instance, update_fields=None, **kwargs):
     try:
         if instance.id == None or instance.id == '' or instance.id == 'None' :
             #########for insert action##########
             new_instance = instance
-            log = Log()
-            dispatch = Onsite_Products.objects.get(id=new_instance.purchase_id_id)
+            onsite = Onsite_aftersales_service.objects.get(id=new_instance.onsite_repairing_id)
 
-            log.entered_by = dispatch.entered_by
+            log = Log()
+            log.entered_by = new_instance.log_entered_by
             # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
             log.module_name = 'Onsite Repairing Module'
             log.action_type = 'Insert'
             log.table_name = 'Onsite_Products'
 
-            log.reference = 'Onsite No: ' + str(dispatch.onsite_no)+ ', Product id:' +str(new_instance.id)
+            log.reference = 'Onsite No: ' + str(onsite.onsite_no)
 
             # log.action = old_list
             log.save()
@@ -120,6 +119,8 @@ def dispatch_handler(sender, instance, update_fields=None, **kwargs):
             new_instance = Onsite_Products.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:
@@ -138,10 +139,12 @@ def dispatch_handler(sender, instance, update_fields=None, **kwargs):
             if  track:
                 old_list = []
                 for key, value in track.items():
-                    old_list.append('Old value: ' + key )
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                onsite = Onsite_aftersales_service.objects.get(id=new_instance.onsite_repairing_id)
                 log = Log()
-                onsite = Onsite_aftersales_service.objects.get(id=new_instance.purchase_id_id)
-                log.entered_by = onsite.entered_by
+
+                log.entered_by = instance.log_entered_by
                 log.module_name = 'Onsite Repairing Module'
                 log.action_type = 'Update'
                 log.table_name = 'Onsite_Products'
@@ -153,43 +156,6 @@ def dispatch_handler(sender, instance, update_fields=None, **kwargs):
     except:
         pass
 
-@receiver(pre_save, sender = Onsite_aftersales_service)
-def onsite_handler(sender, instance, update_fields=None, **kwargs):
-    try:
-        new_instance = Onsite_aftersales_service.objects.get(id=instance.id)
-        track = instance.tracker.changed()
-        print(new_instance.key)
-        print(instance.key)
-        if track:
-            old_list = []
-            for key,value in track.items():
-                print(new_instance.key)
-                print(instance.key)
-                if new_instance.key != instance.key:
-                    print(value)
-                    old_list.append('Old Value: ' + value)
-            print(old_list)
-            log = Log()
-
-            log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
-            log.module_name = 'Onsite Repairing Module'
-            log.action_type = 'Update'
-            log.table_name = 'Onsite_aftersales_service'
-            log.reference = 'Onsite No: '+str(new_instance.onsite_no)
-            log.action = old_list
-            log.save()
-        # else:
-        #     new_instance = Onsite_aftersales_service.objects.get(id=instance.id)
-        #     log = Log()
-        #     log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
-        #     log.module_name = 'Onsite Repairing Module'
-        #     log.action_type = 'Insert'
-        #     log.table_name = 'Onsite_aftersales_service'
-        #     log.reference = 'Onsite No: ' + str(new_instance.onsite_no)
-        #     log.action = ''
-        #     log.save()
-    except:
-        pass
 
 @login_required(login_url='/')
 def onsite_views(request):
@@ -686,10 +652,11 @@ def add_onsite_product(request,id):
             item2.feedback_given = request.session.get('feedback_given')
             item2.user_id = SiteUser.objects.get(id=request.user.pk)
             item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-
+            item2.log_entered_by = request.user.name
             item2.save()
         else:
             pass
+        item.log_entered_by = request.user.name
         item.save()
         current_stage_in_db = Onsite_aftersales_service.objects.get(id=id).current_stage  # updatestage2
 
@@ -827,19 +794,21 @@ def update_onsite_product(request,id):
         item.components_replaced = components_replaced
         item.cost = cost
         item.in_warranty = in_warranty
+        item.log_entered_by = request.user.name
 
         # item.user_id = SiteUser.objects.get(id=request.user.pk)
         # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         # item.crm_no = Customer_Details.objects.get(id=crm_id)
-        item.save(update_fields=['type_of_machine', ]),
-        item.save(update_fields=['model', ]),
-        item.save(update_fields=['sub_model', ]),
-        item.save(update_fields=['capacity', ]),
-        item.save(update_fields=['problem_in_scale', ]),
-        item.save(update_fields=['components_replaced', ]),
-        item.save(update_fields=['components_replaced_in_warranty', ]),
-        item.save(update_fields=['cost', ]),
-        item.save(update_fields=['in_warranty', ]),
+        item.save(update_fields=['type_of_machine','model','sub_model','capacity','problem_in_scale','components_replaced',
+                                 'components_replaced_in_warranty','cost','in_warranty','log_entered_by',  ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[]),
+        # item.save(update_fields=[]),
+        # item.save(update_fields=[ ]),
 
         current_stage_in_db = Onsite_aftersales_service.objects.get(
             id=onsite).current_stage  # updatestage2
@@ -1021,7 +990,7 @@ def update_onsite_details(request,id):
         item.notes = notes
         # item.feedback_given = feedback_given
         item.assigned_to = assigned_to
-
+        item.log_entered_by = request.user.name
         if complaint_assigned_to != None and complaint_assigned_to != '' and complaint_assigned_to != 'None' :
             item.complaint_assigned_to = complaint_assigned_to
             item.complaint_assigned_on = datetime.today().strftime('%Y-%m-%d')
@@ -1080,21 +1049,23 @@ def update_onsite_details(request,id):
         # item.save(update_fields=['customer_name', ]),
         # item.save(update_fields=['company_name', ]),
         # item.save(update_fields=['customer_no', ]),
-        item.save(update_fields=['previous_repairing_number', ]),
+        item.save(update_fields=['previous_repairing_number','complaint_received_by','nearest_railwaystation','train_line',
+                                 'visiting_charges_told_customer','time_taken_destination_return_office_min',
+                                 'notes','second_person','second_contact_no','log_entered_by',]),
         # item.save(update_fields=['phone_no', ]),
         # item.save(update_fields=['customer_email_id', ]),
         # item.save(update_fields=['date_of_complaint_received', ]),
         # item.save(update_fields=['customer_address', ]),
-        item.save(update_fields=['complaint_received_by', ]),
-        item.save(update_fields=['nearest_railwaystation', ]),
-        item.save(update_fields=['train_line', ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
+        # item.save(update_fields=[ ]),
         # item.save(update_fields=['products_to_be_repaired', ]),
-        item.save(update_fields=['visiting_charges_told_customer', ]),
+        # item.save(update_fields=[ ]),
         # item.save(update_fields=['total_cost', ]),
         # item.save(update_fields=['complaint_assigned_to', ]),
         # item.save(update_fields=['complaint_assigned_on', ]),
-        item.save(update_fields=['time_taken_destination_return_office_min', ]),
-        item.save(update_fields=['notes','second_person','second_contact_no',]),
+        # item.save(update_fields=[]),
+        # item.save(update_fields=[]),
 
         # item.save(update_fields=['feedback_given', ]),
         onsite_id = Onsite_aftersales_service.objects.get(id=id)
@@ -1560,5 +1531,13 @@ def onsitevisit_app_graph(request,user_id):
 
 @login_required(login_url='/')
 def onsite_repairing_logs(request):
-    return render(request,"logs/onsite_reparing_logs.html",)
+    onsite_repairing_logs = Log.objects.filter(module_name='Onsite Repairing Module')
+    paginator = Paginator(onsite_repairing_logs, 15)  # Show 25 contacts per page
+    page = request.GET.get('page')
+    onsite_repairing_logs = paginator.get_page(page)
+    context = {
+        'onsite_repairing_logs': onsite_repairing_logs,
+
+    }
+    return render(request,"logs/onsite_reparing_logs.html",context)
 

@@ -1,0 +1,751 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+<style>
+    * {
+    font-family: 'Poppins';
+}
+
+</style>
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+  {% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+
+        <!-- Topbar -->
+  {% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid ">
+
+          <!-- Page Heading -->
+            <div class="row">
+           <div class="col-xl-6 col-md-3 mb-3 ">
+
+
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+<h1 class="h3 mb-0 text-gray-800 ">Follow-Up History</h1>
+
+
+                </div>
+              </div>
+            </div>
+
+
+
+                 <div class="col-xl-1 col-md-9 mb-9 ">
+                 </div>
+                 <div class="col-xl-5 col-md-9 mb-9 ">
+
+
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+
+
+<!-- <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Lead </button></a>-->
+<!--                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Share</button></a>-->
+<!--                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>-->
+<!--<a style="padding: 2px;" href="//"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>-->
+<!-- <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>-->
+
+
+
+
+
+
+                </div>
+              </div>
+
+
+
+
+            </div>
+
+
+
+                </div>
+
+
+
+<br>
+
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
+
+                        <style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: green;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.divs{
+display:none;
+}
+
+.card-body{
+font-size: 12px;
+}
+</style>
+
+
+
+            <script>
+//$( document ).ready(function() {
+  //      $('.divs').hide();});
+$(function() {
+  $('#divselector').change(function(){
+    $('.divs').hide();
+    $('#' + $(this).val()).show();
+  });
+});
+            </script>
+                    <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
+            <div class="row">
+
+                <div  class="col-xl-3 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+<!--  <select id="divselector" class="form-control">-->
+<!--     <option value="d0">Select Search Type</option>-->
+<!--     <option value="d1">Search By Date Range</option>-->
+<!--     <option value="d2">Search By Mobile Number</option>-->
+<!--     <option value="d3">Search By Email Id</option>-->
+<!--     <option value="d4">Search By Customer Name</option>-->
+<!--     <option value="d5">Search By Company Name</option>-->
+<!--     <option value="d6">Search By CRM No.</option>-->
+<!--     <option value="d7">Search By Purchase No.</option>-->
+<!--     &lt;!&ndash;<option value="d7">Search By CRM Number Range</option>&ndash;&gt;-->
+<!--  </select>-->
+</div>
+
+
+                </div>
+
+
+                <div  class="col-xl-6 col-md-6 col-mb-8">
+
+
+<div class="output">
+                                                              <form method="POST" autocomplete="off">{% csrf_token%}
+  <div id="d1" class="divs d1 row">
+
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date1" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date2" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
+
+      </div>
+                               </form>
+
+
+  <div id="d2" class="divs d2">
+      <form method="POST" >{% csrf_token%}
+      <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Search</button>
+  </form>
+  </div>
+
+
+
+
+  <div id="d3" class="divs d3">
+      <form method="POST">{% csrf_token%}
+      <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+
+      <button style="background-color: #FC6E20;" name="submit3" class="btn btn-primary">Search</button>
+          </form>
+  </div>
+
+
+
+<!--    <div id="d4" class="divs d4">-->
+<!--        <form method="POST">{% csrf_token%}-->
+<!--      <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">-->
+<!--      &nbsp; &nbsp;-->
+<!--      <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button>-->
+<!--    </form>-->
+<!--    </div>-->
+
+<!--                               <form method="POST">{% csrf_token%}-->
+<!--  <div id="d5" class="divs d5">-->
+<!--      <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">-->
+<!--      &nbsp; &nbsp;-->
+<!--      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button></div>-->
+<!--</form>-->
+
+<!--                               <form method="POST">{% csrf_token%}-->
+
+<!--    <div id="d6" class="divs d6">-->
+<!--      <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">-->
+<!--      &nbsp; &nbsp;-->
+<!--      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>-->
+<!--</form>-->
+<!--                       <form method="POST">{% csrf_token%}-->
+
+<!--    <div id="d7" class="divs d7">-->
+<!--      <input type="text" name="purchase_no" placeholder="Purchase No." class="form-control" style="width: 25%;float: left;">-->
+<!--      &nbsp; &nbsp;-->
+<!--      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>-->
+<!--</form>-->
+                               <!--<form method="POST">{% csrf_token%}-->
+
+  <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
+      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
+                <!--<input name="crm1" type="text" placeholder="CRM No." class="form-control">-->
+
+      <!--</div>-->
+
+      <!--<div class="col-xl-0 col-md-0 col-mb-0">-->
+                <!--<p style="font-weight: 600;">_</p>-->
+
+      <!--</div>-->
+
+      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
+                <!--<input name="crm2" type="text" placeholder="CRM No." class="form-control">-->
+
+      <!--</div>-->
+      <!--<div class="col-xl-2 col-md-2 col-mb-2">-->
+                <!--<button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>-->
+
+      <!--</div>-->
+                               <!--</form>-->
+</div>
+                </div>
+
+<!--                                 <div class="col-xl-3 col-md-2 col-mb-8 row" style="color: black;">-->
+
+
+<!--{% if request.user.is_authenticated %}-->
+<!--{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}-->
+<!--                     <div class="col-xl-12 col-md-2 col-mb-8 row">-->
+<!--                         <div class="col-xl-4 col-md-2 col-mb-8">-->
+<!--    <p> Manager</p>-->
+<!--                     </div>-->
+<!--                     <div class="col-xl-3 col-md-2 col-mb-8">-->
+<!--                         <label class="switch ">-->
+<!--  <input name="deleted" type="checkbox" checked onchange="toggleCheckbox2(this)">-->
+<!--  <span class="slider round"></span>-->
+<!--</label>-->
+<!--                     </div>-->
+<!--                     <div class="col-xl-5 col-md-2 col-mb-8">-->
+<!--                         <p>Employee</p>-->
+
+<!--                     </div>-->
+<!--                     </div>-->
+<!--{% else %}-->
+<!--                     {% endif %}-->
+<!--                     {% endif %}-->
+
+
+
+<!--                </div>-->
+
+<!--            </div>-->
+<!--            <br>-->
+<!--            <div class="row">-->
+<!--                            <div  class="col-xl-2 col-md-3 col-mb-3">-->
+<!--                    <div class="button dropdown">-->
+<!--  <select id="divsort" class="form-control">-->
+<!--     <option value="d0">Sort by Sale person </option>-->
+<!--     <option value="d1">Sort by Employee  </option>-->
+<!--     <option value="d2">Sort by  </option>-->
+<!--     <option value="d3">Sort by  </option>-->
+<!--     <option value="d4">Sort by  </option>-->
+<!--     <option value="d5">Sort by  </option>-->
+<!--     <option value="d6">Sort by  </option>-->
+<!--     <option value="d7">Sort by  </option>-->
+<!--  </select>-->
+<!--</div>-->
+<!--                            </div>-->
+
+
+<!--                </div>-->
+
+
+
+
+
+<!--<br>-->
+<!--               <div class="row" style="margin-left: 12%;">-->
+
+<!--        <div style="cursor: pointer; " onclick="choice1('Scale is collected but estimate is not given')" class="col-xl-1 col-md-3 mb-12">-->
+<!--              <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,5.5),rgba(120,115,245,.9))">-->
+<!--                <div class="card-body row" style="padding-left: 20px; color: white; font-weight: 600; font-size: 12px; height: 180px;">-->
+<!--                  <center> <br>Not Yet Initiated <br> ( ) </center>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--              </div>-->
+
+<!--        <div style="cursor: pointer; " onclick="choice1('Estimate is given but Estimate is not confirmed')" class="col-xl-1 col-md-3 mb-12">-->
+<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">-->
+<!--                <div class="card-body row" style="padding-left: 17px; color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
+<!--                 <center> <br> Customer Called&nbsp;<br> ( )</center>-->
+
+
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--              </div>-->
+
+<!--            <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
+<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
+<!--                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
+
+<!--                   <center><p> <br> PI Sent & Follow-up <br>&nbsp; ( ) <br> &nbsp; ( )</p></center>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--              </div>-->
+
+<!--            <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
+<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
+<!--                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
+
+<!--                   <center><p style="margin-top:07px"> PO Issued - Payment not done <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--              </div>-->
+
+<!--             <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
+<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
+<!--                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
+
+<!--                   <center><p> PO Issued - Payment Done - Dispatch Pending <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--              </div>-->
+
+<!--                 <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
+<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
+<!--                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
+
+<!--                   <center><p style="margin-top:10 px;"> Dispatch Done - Closed <br>&nbsp; ( ) <br> &nbsp; ( ) </p></center>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--              </div>-->
+
+<!--                       <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
+<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
+<!--                <div class="card-body row" style="padding-left:34px; color: white; font-weight: 600; font-size: 16px;  height: 180px;">-->
+
+<!--                   <center><p style="margin-top:25px"> Lost <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--              </div>-->
+<!--                       <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
+<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
+<!--                <div class="card-body row" style="padding-left:20px; color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
+
+<!--                   <center><p style="margin-top:14px"> Not Relevant <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--              </div>-->
+
+<!--                       <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
+<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
+<!--                <div class="card-body row" style="padding-left:20px; color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
+
+<!--                   <center><p style="margin-top:28px"> Archieve <br>&nbsp; ( ) </p></center>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--              </div>-->
+
+
+<!--                       <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
+<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(69,202,252,.9),rgba(48,63,159,.9))">-->
+<!--                <div class="card-body row" style="padding-left:15px; color: white; font-weight: 600; font-size: 13px;  height: 180px;">-->
+
+<!--                   <center><p style="margin-top:30px"> Postponed <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--              </div>-->
+
+
+
+   </div>
+
+               <style>
+        .border-right-primarya {
+        border-right: 4px solid blue;
+        }
+        .border-left-primarya {
+        border-left: 4px solid blue;
+        }
+    </style>
+<style>
+  .border-left-primary {
+    border-left: .09rem solid #4e73df!important;
+    font-size: 12px;
+
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+</style>
+
+                        <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+
+<div style="min-height: 26vw;">
+
+        {% if deleted %}
+                  <center> <p>list of deleted users</p></center>
+                    {% endif %}
+     <center><p>{{search_msg}}</p></center>
+        <div class="row" id="id_manager_view">
+
+    <table>
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No</td>
+            <td style="border: 0px solid gray;">Date</td>
+            <td style="border-radius: 0px 15px 0px 0px; border:0px solid gray;">Medium</td>
+
+        </tr>
+<!--                    {% for list1 in customer_list %}-->
+
+<!--        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">-->
+<!--                        <td>{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>-->
+
+<!--            <td>{{ list1.entry_timedate|date:'Y-m-d'}}</td>-->
+<!--            <td>{{ list1.purchase_no}}</td>-->
+<!--            <td>{{ list1.second_person }}</td>-->
+<!--            <td>{% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</td>-->
+<!--            <td>{{ list1.second_contact_no}}</td>-->
+<!--            <td>{{list1.sales_person}}</td>-->
+<!--            <td>-->
+<!--                       {% for avg in  list1.feedback_stars|rjust:'5'  %}-->
+<!--              {% if forloop.counter <= list1.feedback_stars %}-->
+<!--                  <i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>-->
+<!--              {% else %}-->
+<!--                  <i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>-->
+<!--              {% endif %}-->
+<!--            {% endfor %}-->
+<!--            </td>-->
+
+<!--        </tr>-->
+<!--                          {% endfor %}-->
+
+    </table>
+
+        </div>
+
+
+
+
+
+<br>
+<br>
+
+
+
+            </div>
+
+
+
+        </div>
+</div>
+<br>
+  </div>
+  <!-- End of Page Wrapper -->
+  </div>
+
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+             <script>
+
+        function toggleCheckbox(select) {
+value = select.checked;
+
+    $.ajax({
+        url: "/load_dispatch_done/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_subcat").html(data);
+        }
+      });
+}
+        function toggleCheckbox2(select) {
+value = !select.checked;
+
+    $.ajax({
+        url: "/load_users/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+    </script>
+    <!--<div class="row" style="width: 100%; margin-top: 20%;">-->
+
+        <!--{% if request.user.is_authenticated %}-->
+<!--{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}-->
+                <!--<div class="col-xl-3 col-md-3 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col ">-->
+ <!--<a href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"Add Purchase</button></a>-->
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+
+
+
+        <!--<div class="col-xl-3 col-md-3 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col ">-->
+                        <!--<form method="POST" ion="">{%csrf_token%}-->
+ <!--<a href="#"><button name="deleted" type="submit" class="btn btn-primary">Deleted User</button></a>-->
+                              <!--</form>-->
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+
+                <!--<div class="col-xl-3 col-md-12 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col mr-2">-->
+                        <!--<a href="/user_logs/"> <button style="background-color: #FC6E20;" class="btn btn-primary"Log</button></a>&nbsp; &nbsp;-->
+                        <!--<a href="/report/"> <button style="background-color: #FC6E20;" class="btn btn-primary"Report</button></a>&nbsp;-->
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+
+        <!--&lt;!&ndash; Earnings (Monthly) Card Example &ndash;&gt;-->
+            <!--<div class="col-xl-3 col-md-12 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col mr-2">-->
+                        <!--<a href="/purchase_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary"Analytics</button></a>-->
+
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+<!--{% else %}-->
+          <!--<div class="col-xl-3 col-md-3 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col ">-->
+ <!--<a href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"Add Purchase</button></a>-->
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+<!--{% endif %}-->
+<!--{% endif %}-->
+
+
+          <!--</div>-->
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
+</body>
+
+</html>

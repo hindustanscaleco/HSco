@@ -52,6 +52,7 @@ class Onsite_aftersales_service(models.Model):
     onsite_no = models.BigIntegerField(null=True,blank=True)
 
     ess_calculated = models.BooleanField(default=False)
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
     tracker = FieldTracker()
 
@@ -73,6 +74,9 @@ class Onsite_Products(models.Model):
     cost = models.FloatField(default=0.0,)
     entry_timedate = models.DateTimeField(default=timezone.now, )
     in_warranty = models.CharField(default='NO', max_length=150, choices=choices, null=True, blank=True)
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
+
+    tracker = FieldTracker()
 
     def __int__(self):
         return self.onsite_repairing_id

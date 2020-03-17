@@ -76,12 +76,74 @@ color:;
 
 </style>
 
+          <script>
+$(document).ready(function(){
+
+    $(".editableBox").change(function(){
+        $(".timeTextBox").val($(".editableBox option:selected").html());
+    });
+});
+
+$(document).ready(function(){
+
+    $(".editableBoxa").change(function(){
+        $(".timeTextBoxa").val($(".editableBoxa option:selected").html());
+    });
+});
+
+
+$(document).ready(function(){
+
+    $(".editableBoxz").change(function(){
+        $(".timeTextBoxz").val($(".editableBoxz option:selected").html());
+    });
+});
+</script>
+  <script> function disable() {
+  document.getElementById("name").disabled = true;
+  }
+
+  function enable() {
+   document.getElementById("name").disabled = false;
+  }
+
+var form = document.getElementById("contact_form");
+var elements = form.elements;
+for (var i = 0, len = elements.length; i < len; ++i) {
+    elements[i].disabled = true;
+}
+</script>
+
+          <script>
+function myFunction() {
+
+  var x = document.getElementById("Mytext1");
+  var y = document.getElementById("Mytext2");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.display = "none";
+  } else {
+    x.style.display = "none";
+    y.style.display = "block";
+  }
+    document.getElementById("customer_name").disabled = false;
+    document.getElementById("company_name").disabled = false;
+    document.getElementById("contact_no").disabled = false;
+    document.getElementById("customer_email_id").disabled = false;
+    document.getElementById("address").disabled = false;
+    document.getElementById("customer_industry").disabled = false;
+    document.getElementById("customer_gst_no").disabled = false;
+    document.getElementById("Mytext1").style.display = "block";
+}
+</script>
+
 
 
         <!-- Begin Page Content -->
      <div class="container-fluid">
 
 
+                     <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
          <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
@@ -95,15 +157,14 @@ color:;
                 </div>
                 <!-- Card Body -->
 <div class="card-body" id="myDIV" style="display: none; height:auto;">
-                     <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
 
                           <div class="form-group row">
                               <label class="col-md-2 control-label">Customer Name:</label>
                                   <div class="col-md-3 inputGroupContainer">
                                   <div class="input-group">
-                                  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.customer_name }}
+                                  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+                                      {{ form.customer_name }}
                           </div>
                         </div>
 
@@ -111,8 +172,8 @@ color:;
                                 <label class="col-md-2 control-label">Company Name:</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.company_name }}
+                              <span class="input-group-addon icon-border"><i class="fa fa-industry faicons"></i></span>
+                                  {{ form.company_name }}
                             </div>
                              </div>
                           </div>
@@ -122,16 +183,16 @@ color:;
                                 <label class="col-md-2 control-label">Customer Number</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.customer_number }}
+                              <span class="input-group-addon icon-border"><i class="fa fa-mobile faicons"></i></span>
+                                  {{ form.contact_no }}
                             </div>
                           </div>
 
                                 <label class="col-md-2 control-label">Customer Email ID</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.customer_email_id }}
+                              <span class="input-group-addon icon-border"><i class="fa fa-at faicons"></i></span>
+                                  {{ form.customer_email_id }}
                    </div>
                              </div>
                           </div>
@@ -142,16 +203,16 @@ color:;
                                    <label class="col-md-2 control-label">Industry</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.industry }}
+                              <span class="input-group-addon icon-border"><i class="fa fa-industry faicons"></i></span>
+                                  {{ form.customer_industry }}
                             </div>
                              </div>
 
                                 <label class="col-md-2 control-label">Address</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.address }}
+                              <span class="input-group-addon icon-border"><i class="fa fa-home faicons" aria-hidden="true"></i></span>
+                                  {{ form.address }}
                             </div>
                             </div>
 
@@ -162,8 +223,8 @@ color:;
                                 <label class="col-md-2 control-label">Customer GST No</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.customer_gst_no }}
+                              <span class="input-group-addon icon-border"><i class="fa fa-user faicons" aria-hidden="true"></i></span>
+                                  {{ form.customer_gst_no }}
                             </div>
                              </div>
                           </div>
@@ -172,10 +233,12 @@ color:;
 
 <center>
 
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
+     <button type="reset" style="background-color: #FC6E20;" onclick="myFunction()" id="Mytext2" class="btn btn-primary">Edit</button>
+    <br>
+     <button type="submit" style="background-color: #FC6E20; display:none;" id="Mytext1" class="btn btn-primary">Save</button>
 </center>
 
-</form>
+
                           </div>
 
 
@@ -194,7 +257,6 @@ color:;
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="myDIV2" style="display: none; height: auto;">
-                     <form  method='POST' id="Deal_detail_sectionForm" enctype="multipart/form-data" >{% csrf_token %}
 
 
                               <div class="form-group row">
@@ -202,7 +264,7 @@ color:;
                                   <div class="col-md-5 inputGroupContainer">
                                   <div class="input-group">
 <!--                                  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>-->
-                                {{ form.current_stage }}
+                                {{ form2.current_stage }}
                           </div>
                         </div>
 
@@ -211,7 +273,7 @@ color:;
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.new_existing_customer }}
+                                {{ form2.new_existing_customer }}
                             </div>
                              </div>
                           </div>
@@ -221,16 +283,16 @@ color:;
                                 <label class="col-md-2 control-label">Date of Initiation:</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.date_of_initiation }}
+                              <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons" aria-hidden="true"></i></span>
+                                {{ form2.date_of_initiation}}
                             </div>
                           </div>
 
                                 <label class="col-md-2 control-label">Channel:</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.channel }}
+                              <span class="input-group-addon icon-border"><i class="fa fa-upload faicons"></i></span>
+                                {{ form2.channel }}
                    </div>
                              </div>
                           </div>
@@ -241,16 +303,20 @@ color:;
                                    <label class="col-md-2 control-label">Requirement</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.requirement }}
+                              <span class="input-group-addon icon-border"><i class="fa fa-check-square faicons"></i></span>
+                                {{ form2.requirement }}
                             </div>
                              </div>
 
                                 <label class="col-md-2 control-label">Upload Requirement File :</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.upload_requirement_file }}
+                              <span class="input-group-addon icon-border"><i class="fa fa-file-word-o" aria-hidden="true"></i></span>
+                                {{ form2.upload_requirement_file}}
+                                  {% if lead_id.upload_requirement_file %}
+                                  <a href="{{ lead_id.upload_requirement_file.url }}" class="btn btn-primary">Old File</a>
+                                  {% endif %}
+
                             </div>
                             </div>
 
@@ -262,7 +328,7 @@ color:;
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.owner_of_opportunity }}
+                                {{ form2.owner_of_opportunity }}
                             </div>
                              </div>
 
@@ -272,16 +338,16 @@ color:;
 
 <center>
 
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
+     <button name="submit1" type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Save</button>
+
 </center>
 
-</form>
                           </div>
 
 
               </div>
             </div>
-
+                     </form>
           <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
@@ -293,17 +359,16 @@ color:;
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="myDIV3" style="display: none; height:auto;">
-                     <form  method='POST' id="buynsellForm" enctype="multipart/form-data" >{% csrf_token %}
                          <div class="row">
                              <div class="col-xl-2 col-lg-2">
 </div>
-                         <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Add Product">
+                         <a href="/add_lead_product/{{lead_id.id}}"><input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Add Product"></a>
 <div class="col-xl-2 col-lg-2">
 </div>
-                             <a href="{% url 'lead_delete_product' %}">   <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Delete Product"></a>
+                             <a href="/lead_delete_product/{{lead_id.id}}">   <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Delete Product"></a>
 <div class="col-xl-2 col-lg-2">
 </div>
-                         <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="History of Record">
+                             <a href="/Pi_section_histroy/"> <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="History of Record"></a>
                          </div>
 <br>
 
@@ -323,43 +388,53 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 </style>
+                 {% for product in lead_pi_products %}
+
                           <div class="card shadow">
+
 <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
     <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
-               <table style="font-size: 14px;">
+    <table style="font-size: 14px;">
   <tr>
-    <td>Product Code:</td>
-      <td colspan="5">Product Image</td>
+    <td>Product Code: {{ product.hsn_code }}</td>
+      <td rowspan="5">Product Image:
+          {% if product.product_image %}
+          <img height="100px" width="100px" src="{{ product.product_image.url }}">
+      {% endif %}</td>
 
   </tr><tr>
-    <td>HSN Code:</td>
+    <td>HSN Code: {{ product.hsn_code }}</td>
 </tr>
 <tr>
-    <td>Sub Sub Model</td>
+    <td>Sub Sub Model: {{ product.sub_sub_category }}</td>
 </tr>
 <tr>
-    <td>Quantity</td>
+    <td>Quantity: {{ product.models }}</td>
                </tr>
 
 <tr>
-    <td>Product Description</td>
+    <td>Product Description: {{ product.product_desc }}</td>
                </tr>
 
 <tr>
-    <td>Rate :</td>
+    <td>Rate : {{ product.models }}</td>
 
   </tr>
 </table>
               </div>
+
                           </div>
+               {% endfor %}
+
                          <br>
+                     <form  method='POST'  enctype="multipart/form-data" >{% csrf_token %}
 
                               <div class="form-group row">
                               <label class="col-md-2 control-label">Discount:</label>
                                   <div class="col-md-3 inputGroupContainer">
                                   <div class="input-group">
-                                  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.discount }}
+                                  <span class="input-group-addon icon-border"><i class="fa fa-percent faicons"></i></span>
+                                {{ form3.discount }}
                           </div>
                         </div>
 
@@ -367,41 +442,66 @@ tr:nth-child(even) {
                                 <label class="col-md-2 control-label">Upload PI File:</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.upload_pi_file }}
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.upload_pi_file }}
+                                  {% if form3.upload_pi_file %}
+                                  <a href="/{{ form3.upload_pi_file.url }}/" class="btn btn-primary">Old File</a>
+                                   {% endif %}
                             </div>
                              </div>
                           </div>
 
 
                             <div class="form-group row">
-                                <label class="col-md-2 control-label">Select PI Template :</label>
+                                              <label class="col-md-2 control-label">Select PI Template :</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.select_pi_template }}
-                            </div>
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.select_pi_template }}
+                                    {% if form3.select_pi_template %}
+                                  <a href="/{{ form3.select_pi_template.url }}/" class="btn btn-primary">Old File</a>
+                                   {% endif %}                            </div>
                           </div>
+                            </div>
+
+                            <div class="form-group row" id="myDiv_call" style="display: none;">
+
 
                                 <label class="col-md-2 control-label">Call:</label>
-                              <div class="col-md-3 inputGroupContainer">
+                              <div class="col-md-6 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.call }}
+                                {{ form3.call }}
                    </div>
                              </div>
                           </div>
+
+
+                         <script>
+function myFunction_call() {
+  var x = document.getElementById("myDiv_call");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
+
+
 <br>
+
+
+
 <div class="row">
                                                          <label class="col-md-2 control-label">Medium of Selection:</label>
 
-    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp  {{ form.email  }} <div class="col-xl-2 col-lg-2"></div> <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form.whatsapp  }} <div class="col-xl-2 col-lg-2"></div>   <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form.call2  }}
+    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp  {{ form3.email  }} <div class="col-xl-2 col-lg-2"></div> <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form3.whatsapp  }} <div class="col-xl-2 col-lg-2"></div>   <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form3.call2  }}
 </div>
 
 
 
                          <center>
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
+     <button type="submit" name="submit2" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
 </center>
 
 </form>
@@ -426,7 +526,7 @@ tr:nth-child(even) {
 
 
 
-                    <label class="col-md-10 control-label">Whatsapp:</label> <a href="{% url 'lead_follow_up_histroy' %}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp<input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
+                    <label class="col-md-10 control-label">Whatsapp:</label> <a href="{% url 'lead_follow_up_histroy' %}"> <a href="/lead_follow_up_histroy/"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp<input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
                                 <br> <br>{{ form.whatsapp2 }}
 
 

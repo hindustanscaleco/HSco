@@ -71,18 +71,18 @@ $(function() {
             <div class="row">
 
                 <div  class="col-xl-3 col-md-3 col-mb-3">
-                    <div class="button dropdown">
-  <select id="divselector" class="form-control">
-     <option value="d0">Select Search Type</option>
-     <option value="d1">Search By Date Range</option>
-     <option value="d2">Search By Mobile Number</option>
-     <option value="d3">Search By Email Id</option>
-     <option value="d4">Search By Customer Name</option>
-     <option value="d5">Search By Company Name</option>
-     <option value="d6">Search By CRM No.</option>
-     <option value="d7">Search By CRM Number Range</option>
-  </select>
-</div>
+                    <!--<div class="button dropdown">-->
+  <!--<select id="divselector" class="form-control">-->
+     <!--<option value="d0">Select Search Type</option>-->
+     <!--<option value="d1">Search By Date Range</option>-->
+     <!--<option value="d2">Search By Mobile Number</option>-->
+     <!--<option value="d3">Search By Email Id</option>-->
+     <!--<option value="d4">Search By Customer Name</option>-->
+     <!--<option value="d5">Search By Company Name</option>-->
+     <!--<option value="d6">Search By CRM No.</option>-->
+     <!--<option value="d7">Search By CRM Number Range</option>-->
+  <!--</select>-->
+<!--</div>-->
 <br>
                 </div>
                 <div  class="col-xl-8 col-md-8 col-mb-8">
@@ -186,11 +186,11 @@ $(function() {
 
 
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center>  Time / Date </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Company Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> User Name </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Activity </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> <p>Stars</p> </center>
+                    <div class="col-xl-2 col-md-1 mb-1"><center>  Entered By </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center> Action Type </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Table Name </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Reference </center></div>|
+                    <div class="col-xl-4 col-md-1 mb-1"><center> Action </center></div>|
                     </div>
 
 
@@ -203,218 +203,48 @@ $(function() {
 
 <br>
 <br>
+        <div class="row">
+                    {% for log in purchase_logs %}
 
                 <div class="col-xl-12 col-md-12 mb-12">
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center> 11:45 - 20/04/2019 </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>Company Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Harsh Pathak </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>  Customer form updated</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i> </center>
-
-
-                    </div>
+                           <div class="col-xl-2 col-md-1 mb-1"><center>  {{log.entered_by}} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center> {{log.action_type}} </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{log.table_name}} </center></div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{log.reference}} </center></div>|
+                    <div class="col-xl-4 col-md-1 mb-1"><center> {{log.action}} </center></div>|
 
 
 
                 </div>
               </div>
             </div>
-                <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                    {% endfor %}
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center> 11:45 - 20/04/2019 </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>Company Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Harsh Pathak </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>  Customer form updated</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i> </center>
-
-
-                    </div>
-
-
-
-                </div>
-              </div>
-            </div>
-                <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-2 col-md-1 mb-1"><center> 11:45 - 20/04/2019 </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>Company Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Harsh Pathak </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>  Customer form updated</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i> </center>
-
-
-                    </div>
-
-
-
-                </div>
-              </div>
-            </div>
-                <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-2 col-md-1 mb-1"><center> 11:45 - 20/04/2019 </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>Company Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Harsh Pathak </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>  Customer form updated</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i> </center>
-
-
-                    </div>
-
-
-
-                </div>
-              </div>
-            </div>
-                <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-2 col-md-1 mb-1"><center> 11:45 - 20/04/2019 </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>Company Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Harsh Pathak </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>  Customer form updated</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i> </center>
-
-
-                    </div>
-
-
-
-                </div>
-              </div>
-            </div>
-                <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-2 col-md-1 mb-1"><center> 11:45 - 20/04/2019 </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>Company Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Harsh Pathak </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>  Customer form updated</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i> </center>
-
-
-                    </div>
-
-
-
-                </div>
-              </div>
-            </div>
-                <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-2 col-md-1 mb-1"><center> 11:45 - 20/04/2019 </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>Company Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Harsh Pathak </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>  Customer form updated</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i> </center>
-
-
-                    </div>
-
-
-
-                </div>
-              </div>
-            </div>
-                <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-2 col-md-1 mb-1"><center> 11:45 - 20/04/2019 </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>Company Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Harsh Pathak </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>  Customer form updated</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i> </center>
-
-
-                    </div>
-
-
-
-                </div>
-              </div>
-            </div>
-                <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                    <div class="col-xl-2 col-md-1 mb-1"><center> 11:45 - 20/04/2019 </center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>Company Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Harsh Pathak </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>  Customer form updated</center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i> </center>
-
-
-                    </div>
-
-
-
-                </div>
-              </div>
-            </div>
 
 
         </div>
 </div>
+            <div class="pagination">
+    <span class="step-links">
+        {% if purchase_logs.has_previous %}
+            <a href="?page=1"  class="btn btn-primary">&laquo; First</a>&nbsp;&nbsp;
+            <a href="?page={{ purchase_logs.previous_page_number }}" class="btn btn-primary">Previous</a>&nbsp;
+        {% endif %}
+
+        <span class="current">
+            Page {{ purchase_logs.number }} of {{ purchase_logs.paginator.num_pages }}.
+        </span>
+
+        {% if purchase_logs.has_next %}
+        &nbsp;
+            <a href="?page={{ purchase_logs.next_page_number }}" class="btn btn-primary">Next</a>&nbsp;&nbsp;
+            <a href="?page={{ purchase_logs.paginator.num_pages }}" class="btn btn-primary">Last &raquo;</a>
+        {% endif %}
+    </span>
+            </div>
 
 
 
@@ -430,7 +260,7 @@ $(function() {
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col ">
-<button style="background-color: #FC6E20;" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Go back</button>                    </div>
+<button onclick="location.href='/view_customer_details'" style="background-color: #FC6E20;" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Go back</button>                    </div>
 
                   </div>
                 </div>
@@ -445,7 +275,7 @@ $(function() {
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <button style="background-color: #FC6E20;" class="btn btn-primary"><i class="fa fa-file" aria-hidden="true"></i>
+                        <button onclick="location.href='/report/'" style="background-color: #FC6E20;" class="btn btn-primary"><i class="fa fa-file" aria-hidden="true"></i>
  Report</button>
 
                     </div>

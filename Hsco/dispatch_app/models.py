@@ -45,6 +45,9 @@ class Dispatch(models.Model):
     dispatch_done_timedate = models.DateTimeField(null=True,blank=True)
     total_dispatch_time  = models.FloatField(default=0.0)
     dispatch_time_calculated = models.BooleanField(default=False)
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
+
+    tracker = FieldTracker()
 
 
     def __str__(self):
@@ -70,7 +73,9 @@ class Product_Details_Dispatch(models.Model):
     value_of_goods = models.FloatField(default=0.0, null=True,blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now, )
     tracker = FieldTracker()
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
+    tracker = FieldTracker()
 
     def __int__(self):
         return self.dispatch_id

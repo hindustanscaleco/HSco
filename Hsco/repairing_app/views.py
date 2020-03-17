@@ -7,6 +7,7 @@ from customer_app.models import Customer_Details
 from django.utils import timezone
 from user_app.models import SiteUser
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 from customer_app.models import Customer_Details
 
@@ -34,15 +35,15 @@ from django.dispatch import receiver
 from django.core.signals import request_finished
 
 @receiver(pre_save, sender=Repairing_after_sales_service)
-def repairing_handler(sender, instance, update_fields=None, **kwargs):
+def repairing_main_handler(sender, instance, update_fields=None, **kwargs):
     try:
         if instance.id == None or instance.id == '' or instance.id == 'None' :
             #########for insert action##########
             new_instance = instance
             log = Log()
 
-            log.entered_by = instance.entered_by
-            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            # log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
             log.module_name = 'Repairing Module'
             log.action_type = 'Insert'
             log.table_name = 'Repairing_after_sales_service'
@@ -58,6 +59,8 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
             new_instance = Repairing_after_sales_service.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:
@@ -76,10 +79,11 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
             if  track:
                 old_list = []
                 for key, value in track.items():
-                    old_list.append('Old value: ' + key + "=" + value)
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
 
-                log.entered_by = new_instance.entered_by
+                log.entered_by = instance.log_entered_by
                 log.module_name = 'Repairing Module'
                 log.action_type = 'Update'
                 log.table_name = 'Repairing_after_sales_service'
@@ -89,13 +93,12 @@ def repairing_handler(sender, instance, update_fields=None, **kwargs):
                 log.action = old_list
                 log.save()
 
-
     except:
         pass
 
 
 @receiver(pre_save, sender=Repairing_Product)
-def repairing_product_handler(sender, instance, update_fields=None, **kwargs):
+def repairing_products_handler(sender, instance, update_fields=None, **kwargs):
     try:
         if instance.id == None or instance.id == '' or instance.id == 'None':
             #########for insert action##########
@@ -103,13 +106,13 @@ def repairing_product_handler(sender, instance, update_fields=None, **kwargs):
             log = Log()
             rep = Repairing_after_sales_service.objects.get(id=new_instance.repairing_id_id)
 
-            log.entered_by = rep.entered_by
-            # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
+            # log.entered_by = rep.entered_by
+            log.entered_by = new_instance.log_entered_by
             log.module_name = 'Repairing Module'
             log.action_type = 'Insert'
             log.table_name = 'Repairing_Product'
 
-            log.reference = 'Repairing No: ' + str(rep.repairing_no) + ', Product id:' + str(new_instance.id)
+            log.reference = 'Repairing No: ' + str(rep.repairing_no)
 
             # log.action = old_list
             log.save()
@@ -117,9 +120,9 @@ def repairing_product_handler(sender, instance, update_fields=None, **kwargs):
             #########for update action##########
             old_instance = instance
             new_instance = Repairing_Product.objects.get(id=instance.id)
-            print(new_instance.problem_in_scale)
-            print(instance.problem_in_scale)
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:
@@ -134,17 +137,15 @@ def repairing_product_handler(sender, instance, update_fields=None, **kwargs):
             #     cursor.execute("SELECT " + (
             #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
             #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+
             if track:
                 old_list = []
-                print('something')
                 for key, value in track.items():
-                    # if value != None or value != '' or value != 'None':
-                    old_list.append('Old value: ' + key )
-
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
                 rep = Repairing_after_sales_service.objects.get(id=new_instance.repairing_id_id)
-                log.entered_by = rep.entered_by
-
+                log.entered_by = instance.log_entered_by
                 log.module_name = 'Repairing Module'
                 log.action_type = 'Update'
                 log.table_name = 'Repairing_Product'
@@ -153,7 +154,6 @@ def repairing_product_handler(sender, instance, update_fields=None, **kwargs):
 
                 log.action = old_list
                 log.save()
-
 
     except:
         pass
@@ -464,9 +464,11 @@ def repair_product(request,id):
             item2.repairing_start_timedate = timezone.now()
             item2.user_id = SiteUser.objects.get(id=request.user.pk)
             item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            item2.log_entered_by = request.user.name
             item2.save()
         else:
             pass
+        item.log_entered_by = request.user.name
         item.save()
         Repairing_after_sales_service.objects.filter(id=id).update(total_cost=F("total_cost") + cost)
 
@@ -676,6 +678,17 @@ def update_repairing_details(request,id):
 
         # item2.repairingnumber = repairingnumber
         item.crm_no = Customer_Details.objects.get(id=item.pk)
+        item2.second_person = customer_name
+        # item2.third_person=third_person
+        item2.second_contact_no = contact_no
+        # item2.third_contact_no=third_contact_no
+        item2.confirmed_estimate = confirmed_estimate
+        item2.repaired = repaired
+        item2.notes = notes
+        item2.log_entered_by = request.user.name
+        repair_id.save(update_fields=['log_entered_by', 'notes', 'confirmed_estimate', 'second_company_name',
+                                      'company_address', 'repaired', 'company_email', 'repaired_by', 'taken_by',
+                                      'second_person', 'second_contact_no', ])
         if company_name != '':
             repair_id.second_company_name = company_name  # new2
 
@@ -690,6 +703,7 @@ def update_repairing_details(request,id):
             item.customer_email_id = customer_email_id
             repair_id.company_email = customer_email_id  # new2
             item.save(update_fields=['customer_email_id'])
+
 
 
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage3
@@ -973,14 +987,8 @@ def update_repairing_details(request,id):
                 item2.repairing_time_calculated = True
                 item2.save(update_fields=['repairing_time_calculated',])
 
-        item2.second_person=customer_name
-        # item2.third_person=third_person
-        item2.second_contact_no=contact_no
-        # item2.third_contact_no=third_contact_no
-        item2.confirmed_estimate = confirmed_estimate
-        item2.repaired = repaired
-        item2.notes = notes
-        repair_id.save(update_fields=['notes', ])
+
+
 
         if taken_by != '' and taken_by != None and taken_by != 'None' and repair_id.taken_by != taken_by:
 
@@ -1006,15 +1014,17 @@ def update_repairing_details(request,id):
 
 
         # item2.save(update_fields=['informed_by', ]),
-        repair_id.save(update_fields=['confirmed_estimate',])
-        repair_id.save(update_fields=['second_company_name',])
-        repair_id.save(update_fields=['company_address',])
-        repair_id.save(update_fields=['repaired',])
-        repair_id.save(update_fields=['company_email',])
-        repair_id.save(update_fields=['repaired_by','taken_by',])
+
+        # repair_id.save(update_fields=[ ])
+        # repair_id.save(update_fields=[])
+        # repair_id.save(update_fields=[])
+        # repair_id.save(update_fields=[])
+        # repair_id.save(update_fields=[])
+        # repair_id.save(update_fields=[])
+        # repair_id.save(update_fields=[])
         # item2.save(update_fields=['feedback_given', ])
         # item2.save(update_fields=['current_stage', ])
-        repair_id.save(update_fields=['second_person','second_contact_no', ])
+        # repair_id.save(update_fields=[ ])
         repair_id = Repairing_after_sales_service.objects.get(id=id)
         customer_id = Repairing_after_sales_service.objects.get(id=id).crm_no
         customer_id = Customer_Details.objects.get(id=customer_id)
@@ -1523,6 +1533,7 @@ def edit_product(request,id):
             # send_sms(request, rep.second_person, rep.second_contact_no, rep.crm_no.customer_email_id, reparing_id, '1')
 
         item = product_id
+
         item.type_of_machine = type_of_machine
         item.model = model
         item.sub_model = sub_model
@@ -1539,6 +1550,7 @@ def edit_product(request,id):
         #     item.cost = 0.0
         # else:
         item.cost = cost
+        item.log_entered_by = request.user.name
 
         item.save(update_fields=['type_of_machine', ]),
         item.save(update_fields=['model', ]),
@@ -1551,6 +1563,7 @@ def edit_product(request,id):
         item.save(update_fields=['deposite_taken_for_replaced_scale', ]),
         item.save(update_fields=['cost', ]),
         item.save(update_fields=['in_warranty', ]),
+        item.save(update_fields=['log_entered_by', ]),
 
 
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
@@ -1972,7 +1985,16 @@ def send_sms(request,name,phone,email,repair_id,item_id):
 
 @login_required(login_url='/')
 def repairing_logs(request):
-    return render(request,"logs/repairing_logs.html",)
+    repairing_logs = Log.objects.filter(module_name='Repairing Module')
+    paginator = Paginator(repairing_logs, 15)  # Show 25 contacts per page
+    page = request.GET.get('page')
+    repairing_logs = paginator.get_page(page)
+
+    context = {
+        'repairing_logs': repairing_logs,
+
+    }
+    return render(request,"logs/repairing_logs.html",context)
 
 #
 #

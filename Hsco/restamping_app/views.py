@@ -36,7 +36,7 @@ def restamping_handler(sender, instance, update_fields=None, **kwargs):
             log = Log()
             print('somethibng')
 
-            log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
             # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
             log.module_name = 'Restamping Module'
             log.action_type = 'Insert'
@@ -47,12 +47,12 @@ def restamping_handler(sender, instance, update_fields=None, **kwargs):
             # log.action = old_list
             log.save()
         elif instance.id != None or instance.id !='' or instance.id !='None':
-            print('somethibng')
             #########for update action##########
             old_instance = instance
             new_instance = Restamping_after_sales_service.objects.get(id=instance.id)
-            print('somethibng')
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:
@@ -71,11 +71,11 @@ def restamping_handler(sender, instance, update_fields=None, **kwargs):
             if  track:
                 old_list = []
                 for key, value in track.items():
-                    old_list.append('Old value: ' + key )
-                print('something')
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
 
-                log.entered_by = new_instance.entered_by
+                log.entered_by = instance.log_entered_by
                 log.module_name = 'Restamping Module'
                 log.action_type = 'Update'
                 log.table_name = 'Restamping_after_sales_service'
@@ -90,15 +90,14 @@ def restamping_handler(sender, instance, update_fields=None, **kwargs):
         pass
 
 @receiver(pre_save, sender=Restamping_Product)
-def restamping_handler(sender, instance, update_fields=None, **kwargs):
+def restamping_product_handler(sender, instance, update_fields=None, **kwargs):
     try:
         if instance.id == None or instance.id == '' or instance.id == 'None' :
             #########for insert action##########
             new_instance = instance
             log = Log()
-            restamping = Restamping_after_sales_service.objects.get(id=new_instance.purchase_id_id)
-
-            log.entered_by = restamping.entered_by
+            restamping = Restamping_after_sales_service.objects.get(id=new_instance.restamping_id_id)
+            log.entered_by = new_instance.log_entered_by
             # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
             log.module_name = 'Restamping Module'
             log.action_type = 'Insert'
@@ -115,6 +114,8 @@ def restamping_handler(sender, instance, update_fields=None, **kwargs):
             new_instance = Restamping_Product.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
             # string = ''
             # new_list = []
             # for key in track:
@@ -133,10 +134,11 @@ def restamping_handler(sender, instance, update_fields=None, **kwargs):
             if  track:
                 old_list = []
                 for key, value in track.items():
-                    old_list.append('Old value: ' + key )
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
-                restamping = Restamping_after_sales_service.objects.get(id=new_instance.purchase_id_id)
-                log.entered_by = restamping.entered_by
+                restamping = Restamping_after_sales_service.objects.get(id=new_instance.restamping_id_id)
+                log.entered_by = instance.log_entered_by
                 log.module_name = 'Restamping Module'
                 log.action_type = 'Update'
                 log.table_name = 'Restamping_Product'
@@ -635,9 +637,11 @@ def restamping_product(request,id):
             item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
             item2.total_amount = 0.0
             item2.restamping_start_timedate = timezone.now()
+            item2.log_entered_by = request.user.profile_name
             item2.save()
         else:
             pass
+        item.log_entered_by = request.user.name
         item.save()
 
         Restamping_after_sales_service.objects.filter(id=id).update(total_amount=F("total_amount") + amount)
@@ -894,7 +898,9 @@ def update_restamping_details(request,id):
         # item.save(update_fields=['total_amount', ]),
         # item.save(update_fields=['new_serial_no', ]),
         # item.save(update_fields=['brand', ]),
-        item.save(update_fields=['scale_delivery_date','second_person','second_contact_no', ]),
+        item.log_entered_by = request.user.name
+
+        item.save(update_fields=['log_entered_by','scale_delivery_date','second_person','second_contact_no', ]),
         item.save(update_fields=['second_company_name', ]),
         item.save(update_fields=['company_address', ]),
         item.save(update_fields=['company_email', ]),
@@ -1197,12 +1203,14 @@ def update_restamping_product(request,id):
         item.old_serial_no = old_serial_no
         item.brand = brand
         item.amount = amount
+        item.log_entered_by = request.user.name
+
         # item.user_id = SiteUser.objects.get(id=request.user.pk)
         # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
 
 
-        item.save(update_fields=['scale_type','sub_model','capacity','old_serial_no','brand',
+        item.save(update_fields=['log_entered_by','scale_type','sub_model','capacity','old_serial_no','brand',
                                  'amount','new_sr_no', ])
 
 
@@ -1291,7 +1299,15 @@ def load_restamping_stages_list(request,):
 
 @login_required(login_url='/')
 def restamping_logs(request):
-    return render(request,"logs/restamping_logs.html",)
+    restamping_logs = Log.objects.filter(module_name='Restamping Module')
+    paginator = Paginator(restamping_logs, 15)  # Show 25 contacts per page
+    page = request.GET.get('page')
+    restamping_logs = paginator.get_page(page)
+    context = {
+        'restamping_logs': restamping_logs,
+
+    }
+    return render(request,"logs/restamping_logs.html",context)
 
 
 
