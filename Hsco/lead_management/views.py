@@ -280,8 +280,12 @@ def lead_report(request):
     return render(request,'lead_management/report_lead.html')
 
 
-def select_product(request):
-    return render(request,'lead_management/select_product.html')
+def select_product(request,id):
+    lead_id = Lead.objects.get(id=id)
+    context={
+        'lead_id':lead_id,
+    }
+    return render(request,'lead_management/select_product.html', context)
 
 def lead_manager_view(request):
     return render(request,'lead_management/lead_manager.html')
@@ -289,7 +293,7 @@ def lead_manager_view(request):
 def lead_follow_up_histroy(request):
     return render(request,'lead_management/lead_history.html')
 
-def Pi_section_histroy(request):
+def pi_section_history(request):
     return render(request,'lead_management/lead_history.html')
 
 def lead_delete_product(request,id):
