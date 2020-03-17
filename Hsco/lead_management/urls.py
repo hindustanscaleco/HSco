@@ -17,5 +17,6 @@ urlpatterns = [
     path('add_lead_product/<int:id>',add_lead_product , name ='add_lead_product'),
     path('update_view_lead/<int:id>',update_view_lead , name ='update_view_lead'),
     path('lead_pi_form/',lead_pi_form , name ='lead_pi_form'),
+    path('Pi_section_histroy/',Pi_section_histroy , name ='Pi_section_histroy'),
 
 ]

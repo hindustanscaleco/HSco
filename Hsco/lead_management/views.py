@@ -13,6 +13,7 @@ from .models import Lead, Lead_Product, Pi_section
 
 def lead_home(request):
     lead_list = Lead.objects.all()
+    cust_sugg = Customer_Details.objects.all()
     if Lead.objects.all().count() == 0:
         latest_lead_id = 1
     else:
@@ -20,6 +21,7 @@ def lead_home(request):
     context={
         'lead_list':lead_list,
         'latest_lead_id':latest_lead_id,
+        'cust_sugg':cust_sugg,
     }
     return render(request,'lead_management/lead_home.html',context)
 
@@ -346,6 +348,9 @@ def lead_manager_view(request):
     return render(request,'lead_management/lead_manager.html')
 
 def lead_follow_up_histroy(request):
+    return render(request,'lead_management/lead_history.html')
+
+def Pi_section_histroy(request):
     return render(request,'lead_management/lead_history.html')
 
 def lead_delete_product(request,id):

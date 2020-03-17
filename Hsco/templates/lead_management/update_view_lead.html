@@ -368,7 +368,7 @@ function myFunction() {
                              <a href="/lead_delete_product/{{lead_id.id}}">   <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Delete Product"></a>
 <div class="col-xl-2 col-lg-2">
 </div>
-                         <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="History of Record">
+                             <a href="/Pi_section_histroy/"> <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="History of Record"></a>
                          </div>
 <br>
 
@@ -489,6 +489,9 @@ function myFunction_call() {
 
 
 <br>
+
+
+
 <div class="row">
                                                          <label class="col-md-2 control-label">Medium of Selection:</label>
 
@@ -523,7 +526,7 @@ function myFunction_call() {
 
 
 
-                    <label class="col-md-10 control-label">Whatsapp:</label> <a href="{% url 'lead_follow_up_histroy' %}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp<input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
+                    <label class="col-md-10 control-label">Whatsapp:</label> <a href="{% url 'lead_follow_up_histroy' %}"> <a href="/lead_follow_up_histroy/"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp<input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
                                 <br> <br>{{ form.whatsapp2 }}
 
 
