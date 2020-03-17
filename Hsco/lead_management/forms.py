@@ -16,6 +16,32 @@ payment_channel = [
 ]
 
 
+industory_dropdown = [
+        ('Energy industry','Energy industry'),
+        ('Chemicals','Chemicals'),
+        ('Industrial Metals ','Industrial Metals '),
+        ('Gold/Gems and precious Metals ','Gold/Gems and precious Metals '),
+        ('Home and Heavy Construction companies ','Home and Heavy Construction companies '),
+        ('Electrical and Electronic Manufacturers','Electrical and Electronic Manufacturers'),
+        ('Industrial Transportation','Industrial Transportation'),
+        ('Agriculture','Agriculture'),
+        ('Poultry/Livestock','Poultry/Livestock'),
+        ('Healthcare Equipment and Services','Healthcare Equipment and Services'),
+        ('Textiles','Textiles'),
+        ('Hotels','Hotels'),
+        ('Grocery/Retail','Grocery/Retail'),
+        ('Bakery','Bakery'),
+        ('Supplier','Supplier'),
+        ('BNI','BNI'),
+        ('Online Promotion','Online Promotion'),
+]
+
+
+customer_exist_new = [
+    ('New','New'),
+    ('Existing','Existing'),
+]
+
 stage = [
     ('Not Yet Initiated','Not Yet Initiated'),
     ('Customer Called','Customer Called'),
@@ -81,7 +107,8 @@ class Customer_detailForm(forms.ModelForm):
        ))
 
     customer_industry = forms.CharField(max_length=80, required=True,
-       widget=forms.TextInput(
+    widget=forms.Select(
+        choices=industory_dropdown,
            attrs={
                'type': 'text',
                'placeholder': "Industry",
@@ -89,12 +116,13 @@ class Customer_detailForm(forms.ModelForm):
            }
        ))
 
-    customer_gst_no = forms.CharField(max_length=80, required=False,
+    customer_gst_no = forms.CharField(max_length=15, min_length=15, required=False,
        widget=forms.TextInput(
            attrs={
                'type': 'text',
                'placeholder': "Customer GST Number",
                'class': 'form-control',
+
            }
        ))
 
@@ -120,7 +148,8 @@ class Deal_detailForm(forms.ModelForm):
                                     ))
 
     new_existing_customer = forms.CharField(max_length=80, required=True,
-                                    widget=forms.TextInput(
+                                    widget=forms.Select(
+                                        choices=customer_exist_new,
                                         attrs={
                                             'type': 'text',
                                             'placeholder': "Person",
@@ -146,7 +175,7 @@ class Deal_detailForm(forms.ModelForm):
                                             widget=forms.TextInput(
                                                 attrs={
                                                     'type': 'text',
-                                                    'placeholder': "New/Existing Customer",
+                                                    'placeholder': "Channel",
                                                     'class': 'form-control',
                                                 }
                                             ))
@@ -238,6 +267,7 @@ class Pi_sectionForm(forms.ModelForm):
             attrs={
                 'type': 'checkbox',
                 'id': 'call2',
+                'onclick':'myFunction()'
             })
     )
 
