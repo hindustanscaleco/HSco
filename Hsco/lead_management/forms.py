@@ -88,7 +88,7 @@ class Customer_detailForm(forms.ModelForm):
        widget=forms.TextInput(
            attrs={
                'type': 'text',
-               'placeholder': "Customer Name",
+               'placeholder': "Contact No",
                'class': 'form-control',
            }
        ))
@@ -277,10 +277,6 @@ class Pi_sectionForm(forms.ModelForm):
                 'calss' : 'form-control',
             })
     )
-
-
-
-
 
     email_auto_manual = forms.CharField(
         widget=forms.Select(
