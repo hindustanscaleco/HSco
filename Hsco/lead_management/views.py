@@ -315,3 +315,6 @@ def lead_employee_graph(request):
 
 def lead_pi_form(request):
     return render(request,'lead_management/lead_pi_form.html')
+
+def alpha_pi_form(request):
+    return render(request,'lead_management/alpha_pi_template.html')
