@@ -34,23 +34,3 @@ class Pi_section(models.Model):
     def __int__(self):
         return self.customer_name
 
-class Lead_Product(models.Model):
-    lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
-    scale_type = models.CharField(max_length=150, null=True, blank=True)
-    main_category = models.CharField(max_length=150, null=True, blank=True)
-    sub_category = models.CharField(max_length=150, null=True, blank=True)
-    sub_sub_category = models.CharField(max_length=150, null=True, blank=True)
-    hsn_code = models.CharField(max_length=150, null=True, blank=True)
-    product_image = models.ImageField(upload_to='lead_product_image/', blank=True, null=True)
-    max_capacity = models.CharField(max_length=150, null=True, blank=True)
-    accuracy = models.CharField(max_length=150, null=True, blank=True)
-    platform_size = models.CharField(max_length=150, null=True, blank=True)
-    product_desc = models.CharField(max_length=250, null=True, blank=True)
-    product_brochure = models.FileField(upload_to='', blank=True, null=True)
-    product_document = models.FileField(upload_to='', blank=True, null=True)
-    cost_price = models.FloatField( null=True, blank=True)
-    selling_price = models.FloatField( null=True, blank=True)
-    carton_size = models.CharField(max_length=150, null=True, blank=True)
-
-    def __int__(self):
-        return self.id

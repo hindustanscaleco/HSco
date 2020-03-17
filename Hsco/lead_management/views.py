@@ -1,12 +1,10 @@
 from django.shortcuts import render, redirect
 
-from customer_app.models import type_purchase
 
-from customer_app.models import sub_model, main_model, sub_sub_model
 from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
-from .models import Lead, Lead_Product, Pi_section
+from .models import Lead, Pi_section
 
 
 # Create your views here.
@@ -26,56 +24,6 @@ def lead_home(request):
     return render(request,'lead_management/lead_home.html',context)
 
 
-def add_lead_product(request,id):
-    type_of_purchase_list =type_purchase.objects.all() #1
-
-    if request.method == 'POST' or request.method=='FILES':
-        scale_type = request.POST.get('scale_type')
-        main_category = request.POST.get('main_category')
-        sub_category = request.POST.get('sub_category')
-        sub_sub_category = request.POST.get('sub_sub_category')
-        hsn_code = request.POST.get('hsn_code')
-        product_image = request.POST.get('product_image')
-        max_capacity = request.POST.get('max_capacity')
-        accuracy = request.POST.get('accuracy')
-        platform_size = request.POST.get('platform_size')
-        product_desc = request.POST.get('product_desc')
-        product_brochure = request.POST.get('product_brochure')
-        product_document = request.POST.get('product_document')
-        cost_price = request.POST.get('cost_price')
-        selling_price = request.POST.get('selling_price')
-        carton_size = request.POST.get('carton_size')
-        is_last_product_yes = request.POST.get('is_last_product_yes')
-
-        item = Lead_Product()
-
-        item.lead_id = Lead.objects.get(id=id)
-        item.scale_type = type_purchase.objects.get(id=scale_type).name
-        item.main_category = main_model.objects.get(id=main_category).name
-        item.sub_category = sub_model.objects.get(id=sub_category).name
-        item.sub_sub_category = sub_sub_model.objects.get(id=sub_sub_category).name
-        item.hsn_code = hsn_code
-        item.product_image = product_image
-        item.max_capacity = max_capacity
-        item.accuracy = accuracy
-        item.platform_size = platform_size
-        item.product_desc = product_desc
-        item.product_brochure = product_brochure
-        item.product_document = product_document
-        item.cost_price = cost_price
-        item.selling_price = selling_price
-        item.carton_size = carton_size
-
-        item.save()
-        if is_last_product_yes == 'yes':
-            return redirect('/update_view_lead/'+str(id))
-        elif is_last_product_yes == 'no':
-            return redirect('/add_lead_product/'+str(id))
-    context={
-        'type_purchase': type_of_purchase_list,  # 2
-
-    }
-    return render(request,'lead_management/add_lead_product.html',context)
 
 def add_lead(request):
     if Lead.objects.all().count() == 0:
@@ -168,7 +116,7 @@ def add_lead(request):
 def update_view_lead(request,id):
     lead_id = Lead.objects.get(id=id)
 
-    lead_pi_products = Lead_Product.objects.filter(lead_id=id)
+    # lead_pi_products = Lead_Product.objects.filter(lead_id=id)
     customer_id = Customer_Details.objects.get(id=lead_id.customer_id)
     customer_initial_data = {
         'customer_name': customer_id.customer_name,
@@ -197,13 +145,9 @@ def update_view_lead(request,id):
         'form2': form2,
         'form3': form3,
         'lead_id': lead_id,
-        'lead_pi_products': lead_pi_products,
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
         pi_id = Pi_section.objects.get(lead_id=id)
-        print(pi_id.call2)
-        print(pi_id.call2)
-        print(pi_id.call2)
         pi_initial_data = {
             'discount': pi_id.discount,
             'upload_pi_file': pi_id.upload_pi_file,
@@ -224,7 +168,6 @@ def update_view_lead(request,id):
             'form2': form2,
             'form3': form3,
             'lead_id': lead_id,
-            'lead_pi_products': lead_pi_products,
         }
         context.update(context)
     else:
@@ -286,7 +229,6 @@ def update_view_lead(request,id):
             item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
                                       'requirement','upload_requirement_file','owner_of_opportunity',])
             return redirect('/update_view_lead/'+str(id))
-
         elif 'submit2' in request.POST:
             discount = request.POST.get('discount')
             upload_pi_file = request.FILES.get('upload_pi_file')
@@ -334,11 +276,12 @@ def update_view_lead(request,id):
                 item2.save()
     return render(request, 'lead_management/update_view_lead.html',context)
 
-
-
-
 def lead_report(request):
     return render(request,'lead_management/report_lead.html')
+
+
+def select_product(request):
+    return render(request,'lead_management/select_product.html')
 
 def lead_manager_view(request):
     return render(request,'lead_management/lead_manager.html')
@@ -350,13 +293,13 @@ def Pi_section_histroy(request):
     return render(request,'lead_management/lead_history.html')
 
 def lead_delete_product(request,id):
-    leads = Lead_Product.objects.filter(lead_id=id).order_by('-id')
+    # leads = Lead_Product.objects.filter(lead_id=id).order_by('-id')
     if request.method == 'POST' or request.method=='FILES':
         delete_id = request.POST.getlist('check[]')
-        for i in delete_id:
-            Lead_Product.objects.filter(id=i).delete()
+        # for i in delete_id:
+        #     Lead_Product.objects.filter(id=i).delete()
     context={
-        'leads':leads,
+        # 'leads':leads,
     }
     return render(request,'lead_management/lead_delete_product.html',context)
 

@@ -267,7 +267,8 @@ class Pi_sectionForm(forms.ModelForm):
             attrs={
                 'type': 'checkbox',
                 'id': 'call2',
-                'onclick':'myFunction()'
+                'onclick' : 'myFunction_call()',
+                'calss' : 'form-control',
             })
     )
 
