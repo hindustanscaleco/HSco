@@ -3,7 +3,7 @@ from django.urls import path, include, re_path
 
 from .views import lead_home, add_lead, lead_report, lead_manager_view, lead_follow_up_histroy, lead_delete_product, \
     lead_analytics, \
-    lead_employee_graph, update_view_lead, lead_pi_form, select_product, pi_section_history
+    lead_employee_graph, update_view_lead, lead_pi_form, select_product, pi_section_history,alpha_pi_form
 
 urlpatterns = [
     path('lead_home/',lead_home , name ='lead_home'),
@@ -18,5 +18,6 @@ urlpatterns = [
     path('update_view_lead/<int:id>',update_view_lead , name ='update_view_lead'),
     path('lead_pi_form/',lead_pi_form , name ='lead_pi_form'),
     path('pi_section_history/<int:id>',pi_section_history , name ='pi_section_history'),
+    path('alpha_pi_form/',alpha_pi_form , name ='alpha_pi_form'),
 
 ]

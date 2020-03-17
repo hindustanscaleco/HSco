@@ -36,6 +36,12 @@ industory_dropdown = [
         ('Online Promotion','Online Promotion'),
 ]
 
+select_pi_template = [
+    ('Proforma Invoice Hindustan Sales and Consultancy','Proforma Invoice Hindustan Sales and Consultancy'),
+    ('HSI PI Format','HSI PI Format'),
+]
+
+
 
 customer_exist_new = [
     ('New','New'),
@@ -232,10 +238,10 @@ class Pi_sectionForm(forms.ModelForm):
            }
        ))
 
-    select_pi_template = forms.FileField(required=False,
-       widget=forms.FileInput(
+    select_pi_template = forms.CharField(required=False,
+       widget=forms.Select(choices=select_pi_template,
            attrs={
-               'type': 'file',
+               'type': 'text',
                'placeholder': "Select PI Template",
                'class': 'form-control',
            }
