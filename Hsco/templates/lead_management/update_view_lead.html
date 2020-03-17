@@ -378,13 +378,13 @@ function myFunction() {
                          <div class="row">
                              <div class="col-xl-2 col-lg-2">
 </div>
-                         <a href="/select_product/{{lead_id.id}}"><input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Add Product"></a>
+                         <a href="/select_productu/{{lead_id.id}}"><input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Add Product"></a>
 <div class="col-xl-2 col-lg-2">
 </div>
                              <a href="/lead_delete_product/{{lead_id.id}}">   <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Delete Product"></a>
 <div class="col-xl-2 col-lg-2">
 </div>
-                             <a href="/Pi_section_histroy/"> <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="History of Record"></a>
+                             <a href="/pi_section_history/{{lead_id.id}}"> <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="History of Record"></a>
                          </div>
 <br>
 
@@ -412,24 +412,22 @@ tr:nth-child(even) {
     <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
     <table style="font-size: 14px;">
   <tr>
-    <td>Product Code: {{ product.hsn_code }}</td>
+    <td>Product Code: {{ product.product_id.sub_sub_category }}</td>
       <td rowspan="5">Product Image:
-          {% if product.product_image %}
-          <img height="100px" width="100px" src="{{ product.product_image.url }}">
+          {% if product.product_id.product_image %}
+          <img height="100px" width="100px" src="{{ product.product_id.product_image.url }}">
       {% endif %}</td>
 
   </tr><tr>
-    <td>HSN Code: {{ product.hsn_code }}</td>
+    <td>HSN Code: {{ product.product_id.hsn_code }}</td>
 </tr>
+
 <tr>
-    <td>Sub Sub Model: {{ product.sub_sub_category }}</td>
-</tr>
-<tr>
-    <td>Quantity: {{ product.models }}</td>
+    <td>Quantity: {{ product.quantity }}</td>
                </tr>
 
 <tr>
-    <td>Product Description: {{ product.product_desc }}</td>
+    <td>Product Description: {{ product.product_id.product_desc }}</td>
                </tr>
 
 <tr>

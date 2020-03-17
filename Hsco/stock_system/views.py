@@ -4,7 +4,7 @@ from .models import Stock_System
 from .forms import StockRegisterForm
 from django.contrib.auth.decorators import login_required
 from customer_app.models import type_purchase
-from .models import Lead_Product
+from .models import Product
 from customer_app.models import sub_model, main_model, sub_sub_model
 
 # def stock_system_form(request):
@@ -78,7 +78,7 @@ class Stock_System_View(View):
 #         carton_size = request.POST.get('carton_size')
 #         is_last_product_yes = request.POST.get('is_last_product_yes')
 #
-#         item = Lead_Product()
+#         item = Product()
 #
 #         item.lead_id = Lead.objects.get(id=id)
 #         item.scale_type = type_purchase.objects.get(id=scale_type).name

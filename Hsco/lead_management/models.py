@@ -2,6 +2,11 @@ from django.db import models
 from django.utils import timezone
 from customer_app.models import Customer_Details
 
+# from stock_system.models import Product
+from stock_system.models import  Stock_System,Product
+from django.core.validators import URLValidator
+
+
 class Lead(models.Model):
     customer_id = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
     current_stage = models.CharField(max_length=50,null=True,blank=True)
@@ -32,5 +37,21 @@ class Pi_section(models.Model):
     notes = models.TextField(max_length=120, null=True,blank=True)
 
     def __int__(self):
-        return self.customer_name
+        return self.id
 
+class Pi_product(models.Model):
+    lead_id = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, blank=True)
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    quantity = models.FloatField(null=True, blank=True)
+    pf = models.CharField(max_length=80, null=True, blank=True)
+
+    def __int__(self):
+        return self.id
+
+class Pi_History(models.Model):
+    url = models.TextField(validators=[URLValidator()])
+    lead_id = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, blank=True)
+    pi_product_id = models.ForeignKey(Pi_product, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __int__(self):
+        return self.id

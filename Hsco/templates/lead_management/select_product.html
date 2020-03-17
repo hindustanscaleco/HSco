@@ -169,11 +169,11 @@ color:;
 <br>
 <br>
 
-            <form method="POST" action="" onsubmit="return isOneChecked();" >{% csrf_token %}
+            <form method="POST" action=""  >{% csrf_token %}
 
 <div class="form-group row">
 
-        <label class="col-md-2 control-label">Type of Scale *
+        <label class="col-md-2 control-label">HSN Code
 
 
 </label>
@@ -181,13 +181,11 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-      <select id="divselector" name="scale_type"  required onchange="choice1(this)" class="form-control">
-       <option value="">Select Scale Type</option>
-
-    {% for item in type_purchase %}
-  <option value="{{item.pk}}">{{item.name}}</option>
-
-   {% endfor %}
+      <select  name="hsn_code"    class="form-control">
+       <option value="">Select </option>
+{% for product in products %}
+  <option value="{{product.hsn_code}}">{{product.hsn_code }}</option>
+{% endfor %}
 
   </select>
 
@@ -195,7 +193,7 @@ color:;
      </div>
   </div>
 
-            <label class="col-md-2 control-label">Category *
+            <label class="col-md-2 control-label">Product Code
 
 
 </label>
@@ -203,8 +201,11 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-      <select id="id_subcat" name="main_category" required onchange="choice_model(this)" class="form-control">
-
+      <select  name="sub_sub_category"    class="form-control">
+       <option value="">Select </option>
+{% for product in products %}
+  <option value="{{product.sub_sub_category}}">{{product.sub_sub_category}}</option>
+{% endfor %}
 
   </select>
 
@@ -214,46 +215,6 @@ color:;
 </div>
 
 
-<div class="form-group row">
-
-
-
-
-                            <label class="col-md-2 control-label">Sub Category *
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-
-      <select id="id_subcat2" name="sub_category" onchange="choice_sub_model(this)" class="form-control">
-
-
-  </select>
-
-
-     </div>
-  </div>
-
-                            <label class="col-md-2 control-label">Sub Sub Category *
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-
-      <select required id="id_subcat22" name="sub_sub_category" onchange="choice_sub_sub_model(this)" class="form-control">
-
-
-
-  </select>
-
-
-     </div>
-  </div>
-</div>
 
 
 
@@ -271,7 +232,7 @@ color:;
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
 
-<input class="form-control" name="product_quantity" type="number">
+<input class="form-control" name="quantity" type="number">
 
      </div>
   </div>
@@ -285,13 +246,28 @@ color:;
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
 
-<input class="form-control" name="product_quantity" type="number">
+<input class="form-control" name="pf" type="number">
 
 
      </div>
   </div>
 </div>
 
+                                <div class="form-group row">
+
+
+                    <label class="col-md-2 control-label">Last Product ?
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
+  YES:<input  name="is_last_product_yes" value="yes" placeholder="Is deleted" class="form-control" type="radio">
+  NO:<input  name="is_last_product_yes" value="no" placeholder="Is deleted" class="form-control" type="radio">
+
+    </div>
+  </div>
+</div>
 
 
 

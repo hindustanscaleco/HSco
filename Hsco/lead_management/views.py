@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 
+from customer_app.models import type_purchase
 
+from stock_system.models import Product
 from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
-from .models import Lead, Pi_section
+from .models import Lead, Pi_section, Pi_product, Pi_History
+from customer_app.models import sub_model, main_model, sub_sub_model
 
 
 # Create your views here.
@@ -116,7 +119,7 @@ def add_lead(request):
 def update_view_lead(request,id):
     lead_id = Lead.objects.get(id=id)
 
-    # lead_pi_products = Lead_Product.objects.filter(lead_id=id)
+    lead_pi_products = Pi_product.objects.filter(lead_id=id)
     customer_id = Customer_Details.objects.get(id=lead_id.customer_id)
     customer_initial_data = {
         'customer_name': customer_id.customer_name,
@@ -145,6 +148,7 @@ def update_view_lead(request,id):
         'form2': form2,
         'form3': form3,
         'lead_id': lead_id,
+        'lead_pi_products': lead_pi_products,
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
         pi_id = Pi_section.objects.get(lead_id=id)
@@ -168,6 +172,7 @@ def update_view_lead(request,id):
             'form2': form2,
             'form3': form3,
             'lead_id': lead_id,
+            'lead_pi_products': lead_pi_products,
         }
         context.update(context)
     else:
@@ -281,9 +286,34 @@ def lead_report(request):
 
 
 def select_product(request,id):
+    type_of_purchase_list =type_purchase.objects.all() #1
     lead_id = Lead.objects.get(id=id)
+    products = Product.objects.all()
+    if request.method == 'POST' or request.method == 'FILES':
+        sub_sub_category = request.POST.get('sub_sub_category')    #product code or sub_sub_category
+        hsn_code = request.POST.get('hsn_code')
+        pf = request.POST.get('pf')
+        quantity = request.POST.get('quantity')
+        is_last_product_yes = request.POST.get('is_last_product_yes')
+
+        item = Pi_product()
+        if sub_sub_category != '' :
+            item.product_id = Product.objects.get(sub_sub_category=sub_sub_category)
+        else:
+            item.product_id = Product.objects.get(hsn_code=hsn_code)
+        item.lead_id = Lead.objects.get(id=lead_id)
+        item.quantity = quantity
+        item.pf = pf
+
+        item.save()
+        if is_last_product_yes == 'yes':
+            return redirect('/update_view_lead/'+str(id))
+        elif is_last_product_yes == 'no':
+            return redirect('/select_product/'+str(id))
     context={
         'lead_id':lead_id,
+        'type_of_purchase_list':type_of_purchase_list,
+        'products':products,
     }
     return render(request,'lead_management/select_product.html', context)
 
@@ -291,19 +321,26 @@ def lead_manager_view(request):
     return render(request,'lead_management/lead_manager.html')
 
 def lead_follow_up_histroy(request):
-    return render(request,'lead_management/lead_history.html')
+    return render(request,'lead_management/lead_history.html',)
 
-def pi_section_history(request):
-    return render(request,'lead_management/lead_history.html')
+def pi_section_history(request,id):
+    lead_id = Lead.objects.get(id=id)
+    # lead_pi_id = Pi_section.objects.get(lead_id=id)
+    lead_pi_history = Pi_History.objects.filter(lead_id=id)
+    context = {
+        'lead_id': lead_id,
+        'lead_pi_history': lead_pi_history,
+    }
+    return render(request,'lead_management/lead_history.html',context)
 
 def lead_delete_product(request,id):
-    # leads = Lead_Product.objects.filter(lead_id=id).order_by('-id')
+    leads = Pi_product.objects.filter(lead_id=id).order_by('-id')
     if request.method == 'POST' or request.method=='FILES':
         delete_id = request.POST.getlist('check[]')
-        # for i in delete_id:
-        #     Lead_Product.objects.filter(id=i).delete()
+        for i in delete_id:
+            Pi_product.objects.filter(id=i).delete()
     context={
-        # 'leads':leads,
+        'leads':leads,
     }
     return render(request,'lead_management/lead_delete_product.html',context)
 
