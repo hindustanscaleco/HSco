@@ -1,12 +1,22 @@
+import datetime
+
+from django.core.files.base import ContentFile
+from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render, redirect
 
 from customer_app.models import type_purchase
 
-from customer_app.models import sub_model, main_model, sub_sub_model
+from stock_system.models import Product
+
+from Hsco import settings
 from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
 from .models import Lead, Lead_Product, Pi_section, IndiamartLeadDetails
+
+from .models import Lead, Pi_section, Pi_product, Pi_History
+from customer_app.models import sub_model, main_model, sub_sub_model
+
 
 
 # Create your views here.
@@ -85,6 +95,7 @@ def lead_home(request):
 
 
     lead_list = Lead.objects.all()
+    cust_sugg = Customer_Details.objects.all()
     if Lead.objects.all().count() == 0:
         latest_lead_id = 1
     else:
@@ -92,6 +103,7 @@ def lead_home(request):
     context={
         'lead_list':lead_list,
         'latest_lead_id':latest_lead_id,
+
         'lead_count':lead_count,
         'from_date':from_date,
         'to_date':to_date,
@@ -99,60 +111,13 @@ def lead_home(request):
         'error2':error2,
         'error_exist':error_exist,
 
+
+        'cust_sugg':cust_sugg,
+
     }
     return render(request,'lead_management/lead_home.html',context)
 
 
-def add_lead_product(request,id):
-    type_of_purchase_list =type_purchase.objects.all() #1
-
-    if request.method == 'POST' or request.method=='FILES':
-        scale_type = request.POST.get('scale_type')
-        main_category = request.POST.get('main_category')
-        sub_category = request.POST.get('sub_category')
-        sub_sub_category = request.POST.get('sub_sub_category')
-        hsn_code = request.POST.get('hsn_code')
-        product_image = request.POST.get('product_image')
-        max_capacity = request.POST.get('max_capacity')
-        accuracy = request.POST.get('accuracy')
-        platform_size = request.POST.get('platform_size')
-        product_desc = request.POST.get('product_desc')
-        product_brochure = request.POST.get('product_brochure')
-        product_document = request.POST.get('product_document')
-        cost_price = request.POST.get('cost_price')
-        selling_price = request.POST.get('selling_price')
-        carton_size = request.POST.get('carton_size')
-        is_last_product_yes = request.POST.get('is_last_product_yes')
-
-        item = Lead_Product()
-
-        item.lead_id = Lead.objects.get(id=id)
-        item.scale_type = type_purchase.objects.get(id=scale_type).name
-        item.main_category = main_model.objects.get(id=main_category).name
-        item.sub_category = sub_model.objects.get(id=sub_category).name
-        item.sub_sub_category = sub_sub_model.objects.get(id=sub_sub_category).name
-        item.hsn_code = hsn_code
-        item.product_image = product_image
-        item.max_capacity = max_capacity
-        item.accuracy = accuracy
-        item.platform_size = platform_size
-        item.product_desc = product_desc
-        item.product_brochure = product_brochure
-        item.product_document = product_document
-        item.cost_price = cost_price
-        item.selling_price = selling_price
-        item.carton_size = carton_size
-
-        item.save()
-        if is_last_product_yes == 'yes':
-            return redirect('/update_view_lead/'+str(id))
-        elif is_last_product_yes == 'no':
-            return redirect('/add_lead_product/'+str(id))
-    context={
-        'type_purchase': type_of_purchase_list,  # 2
-
-    }
-    return render(request,'lead_management/add_lead_product.html',context)
 
 def add_lead(request):
     if Lead.objects.all().count() == 0:
@@ -245,7 +210,7 @@ def add_lead(request):
 def update_view_lead(request,id):
     lead_id = Lead.objects.get(id=id)
 
-    lead_pi_products = Lead_Product.objects.filter(lead_id=id)
+    lead_pi_products = Pi_product.objects.filter(lead_id=id)
     customer_id = Customer_Details.objects.get(id=lead_id.customer_id)
     customer_initial_data = {
         'customer_name': customer_id.customer_name,
@@ -268,7 +233,6 @@ def update_view_lead(request,id):
     form = Customer_detailForm(initial=customer_initial_data)
     form2 = Deal_detailForm(initial=deal_details_initial_data)
     form3 = Pi_sectionForm()
-
     context = {
         'form': form,
         'form2': form2,
@@ -278,9 +242,6 @@ def update_view_lead(request,id):
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
         pi_id = Pi_section.objects.get(lead_id=id)
-        print(pi_id.call2)
-        print(pi_id.call2)
-        print(pi_id.call2)
         pi_initial_data = {
             'discount': pi_id.discount,
             'upload_pi_file': pi_id.upload_pi_file,
@@ -363,11 +324,10 @@ def update_view_lead(request,id):
             item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
                                       'requirement','upload_requirement_file','owner_of_opportunity',])
             return redirect('/update_view_lead/'+str(id))
-
         elif 'submit2' in request.POST:
             discount = request.POST.get('discount')
             upload_pi_file = request.FILES.get('upload_pi_file')
-            select_pi_template = request.FILES.get('select_pi_template')
+            select_pi_template = request.POST.get('select_pi_template')
             call = request.POST.get('call')
             email = request.POST.get('email')
             whatsapp = request.POST.get('whatsapp')
@@ -395,9 +355,908 @@ def update_view_lead(request,id):
                 item2.email = email
                 item2.whatsapp = whatsapp
                 item2.call2 = call2
-
                 item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call',
                                         'email', 'whatsapp','call2'  ])
+                if request.user.is_authenticated:
+                        todays_date = str(datetime.date.today())
+                        gst_no = str(lead_id.customer_id.customer_gst_no)
+                        text_content = ''
+                        subject = 'Support'
+                        html_content1 = '''<html>
+<head>
+  <title>
+    HSCO
+  </title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
+
+  <style>
+      * {
+    font-family: 'Poppins';
+    font-size: 0.99em;
+
+  }
+
+  table {
+  border-collapse: collapse;
+  width: 85%;
+  font-size: 18px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+}
+
+
+ @media print and (width: 10.5cm) and (height: 14.8cm) {
+    @page {
+       margin: 3cm;
+    }
+ }
+
+
+  </style>
+
+</head>
+<body>
+
+<div  id="printableArea" style="margin-left: 10%; margin-right: 10%;">
+<div class="row" style="padding: 5px; border-bottom: 5px solid black;">
+    <div class="col-xl-2 col-md-2 ">
+<img src="{% static 'images/hsco_logo.jpg' %}" class="img-rounded" width="200" height="120" style="float: right;">
+</div>
+    <div class="col-xl-1 col-md-1 ">
+    </div>
+    <div class="col-xl-4 col-md-4 ">
+        <center>Subject to Mumbai Jurisdiction</center><br>
+        <center><h3 style="font: italic bold 22px/30px Georgia, serif;">Proforma Invoice</h3></center>
+</div>
+    <div class="col-xl-1 col-md-1 ">
+    </div>
+    <div class="col-xl-4 col-md-4 ">
+        <p>Ph: 022-23423183, 7045922250/51/52<br>
+Manufacture Licence No. LM/MH/H004<br>
+Dealer Licence No. LD/MH/H004<br>
+Repairing Licence No. LR/MH/H004</p>
+</div>
+</div>
+
+
+        <div class="row">
+         <div class="col-md-12" style="padding:10px;">
+        <center><h1 style="font-weight:bold;"> Hindustan Scale Company</h1>
+        </center></div>
+        </div>
+        <div class="row">
+         <div class="col-md-12" style="padding:0px;">
+        <center><p style="font-weight:bold;"> A one stop shop for all your weighing needs<br><font color="#FC6E20" style="font-weight:bold;"> AN ISO 9001: 2015 CERTIFIED COMPANY</font></p>
+        </center></div>
+        </div>
+
+
+    <div class="row">
+         <div class="col-md-12" style="padding:10px;">
+        <center><p style="font-weight:bold;"> All kinds of Mechanical and Digital Weighing Scales, Weights & Measures.<br>
+        186/188 Janjikar Street, Near Crawford Market, Mumbai- 400003/<font color="#FC6E20">www.hindustanscale.com/hsc@hindustanscale.com</font></p>
+        </center></div>
+        </div>
+
+
+    <div class="row">
+         <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;"> Messrs</p>
+        </center></div>
+        <div class="col-md-5">
+             </div>
+        <div class="col-md-1">
+             </div>
+        <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;"> Date :</p>
+        </center></div>
+        <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;"> '''+todays_date+'''</p>
+                            </center></div>
+                            </div>
+                    
+                        
+                            <div class="row">
+                                 <div class="col-md-2">
+                                     <center><p style="font-weight:bold; float:left;"> Company Name</p>
+                                </center></div>
+                                <div class="col-md-5">
+                                     <center><p style="font-weight:bold; float:left; text-decoration: underline;"> '''+str(lead_id.customer_id.company_name)+'''</p>
+                                </center></div>
+                        
+                                <div class="col-md-1">
+                                     </div>
+                                <div class="col-md-2">
+                                     <center><p style="font-weight:bold; float:left;">PI Number:</p>
+                                </center></div>
+                                <div class="col-md-2">
+                                     <center><p style="font-weight:bold; float:left;"> '''+str(item2.id)+'''</p>
+                                </center></div>
+                                </div>
+                        
+                            <div class="row">
+                                 <div class="col-md-2">
+                                     <center><p style="font-weight:bold; float:left;">Contact Person</p>
+                                </center></div>
+                                <div class="col-md-5">
+                                     <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.customer_name)+'''</p>
+                                </center></div>
+                        
+                                <div class="col-md-1">
+                                     </div>
+                                <div class="col-md-2">
+                                     <center><p style="font-weight:bold; float:left;">Proforma Made By :</p>
+                                </center></div>
+                                <div class="col-md-2">
+                                     <center><p style="font-weight:bold; float:left;"> '''+str(request.user.name)+'''</p>
+                                </center></div>
+                                </div>
+
+
+                            <div class="row">
+                                 <div class="col-md-2">
+                                     <center><p style="font-weight:bold; float:left;">Address/State</p>
+                                </center></div>
+                                <div class="col-md-5">
+                                     <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.address)+'''</p>
+                                </center></div>
+                        
+                                <div class="col-md-1">
+                                     </div>
+                                <div class="col-md-2">
+                                     <center><p style="font-weight:bold; float:left;">Contact Number:</p>
+                                </center></div>
+                                <div class="col-md-2">
+                                     <center><p style="font-weight:bold; float:left;"> '''+str(request.user.mobile)+'''</p>
+                                </center></div>
+                                </div>
+                        
+                        
+                        
+                        
+                            <div class="row">
+                                 <div class="col-md-2">
+                                     <center><p style="font-weight:bold; float:left;">Phone</p>
+                                </center></div>
+                                <div class="col-md-5">
+                                     <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.contact_no)+'''</p>
+        </center></div>
+
+        <div class="col-md-1">
+             </div>
+        <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;">Customer GST Number: </p>
+        </center></div>
+        <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.customer_gst_no)+'''</p>
+        </center></div>
+        </div>
+
+
+
+
+<style>
+    .border_class {
+    border:1px solid black;
+    height:45px;
+    text-align:center;
+    vertical-align: middle;
+    line-height: 45px;
+    }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+
+<div style="min-height: 26vw;">
+
+        
+        <div class="row" id="id_manager_view">
+
+    <table>
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Quantity</td>
+            <td style="border: 0px solid gray;">HSN Code</td>
+            <td style="border: 0px solid gray;">Product Code</td>
+            <td style="border: 0px solid gray;">Product Image</td>
+            <td style="border: 0px solid gray;">Product Description</td>
+            <td style="border: 0px solid gray;">Rate</td>
+            <td style="border: 0px solid gray;">Total</td>
+        </tr>
+
+
+ <tr>
+        <td> &nbsp</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Total</td>
+        <td>INR</td>
+        </tr>
+
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Discount%</td>
+        <td>from PI form</td>
+        </tr>
+
+
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Net Total</td>
+        <td></td>
+        </tr>
+
+
+
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>P&F</td>
+        <td>from PI form</td>
+        </tr>
+
+
+
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>CGST @ 9%</td>
+        <td>from PI form</td>
+        </tr>
+
+
+
+
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>SGST @ 9%</td>
+        <td>from PI form</td>
+        </tr>
+
+
+
+
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>IGST @ 18%</td>
+        <td>from PI form</td>
+        </tr>
+
+
+
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Round Up</td>
+        <td>INR</td>
+        </tr>
+
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Grand Total</td>
+        <td>INR</td>
+        </tr>
+
+
+    </table>
+        </div>
+            </div>
+        <div class="row">
+            <div class="col-md-4" style="padding:10px;">
+                <p>GST ID - <b>27AACFH2329F1ZP</b><br>
+                    PAN Number - <b>AACFH2329F</b><br>
+                    TAN Number - <b>MUMH17092F</b></p>
+            </div>
+         <div class="col-md-3" style="padding:10px;">
+<img src="{% static 'images/okay.png' %}" style="width: 100%;">
+         </div>
+
+
+	         <div class="col-md-5" style="padding:10px;">
+<img src="{% static 'images/l.png' %}" style="width: 100%;">
+         </div>
+        </div>
+    <div class="row">
+            <div class="col-md-12" style="padding:10px;"><p>
+I/We hereby certify that my/our registration certificate under the Goods and Service Tax Laws is in force on the date of which the sale of goods specified in this “Proforma Invoice” is made by me/us and that the transaction of sale is covered <br><center>by this and has been effected by me/us and it shall be accounted for in the turnover of sales while filing of return and the due tax, if any, payable on the sale has been paid
+  </center> </p>     </div>
+        </div>
+</div>
+
+
+<div class="row">
+            <div class="col-md-6" style="padding-left: 40px;">
+<p>All prices are Ex-Workshop. Packing and forwarding is extra as indicated<br>
+                All products have an warranty of 1 year against any manufacturing defect unless stated<br>
+                There is no warranty for Loadcell, Battery and Mains Cord<br>
+                Damages due to transportation is out of the scope of warranty<br>
+                Payment is 50% advance with order and remaining 50% before Dispatch<br>
+                This offer is valid for the next 10 days <br>
+    Cheque should be in the name of "Hindustan Scale Co".</p></div>
+
+    <div class="col-md-6" style="padding-left: 40px;">
+<p>Bank details are as follows<br>
+                <b>DCB Bank<br>
+                Name – Hindustan Scale Co.<br>
+                Acct No – 01922412121947<br>
+                IFSC Code-DCBL0000019<br>
+                Type of account – Current Account <br>
+                Bank Name – DCB Bank<br>
+                    Address Mohamedali Road Branch</b></p></div>
+        </div>
+</div>
+
+	<hr>
+
+<span style="font-size: 11px;">HINDUSTAN SCALE COMPANY, 186/188 Janjikar Street, Crawford Market, Mumbai - 400003</span>
+  </p>
+
+
+</div>
+
+</center>
+
+
+
+<script>
+  function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+</script>
+
+</body>
+</html>'''
+                        msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER,
+                                                     ['sagarsingh27998@gmail.com',])
+                        html_content2 = '''
+                        
+<html>
+<head>
+  <title>
+    HSCO
+  </title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+      * {
+    font-family: 'Poppins';
+    font-size: 0.99em;
+
+  }
+
+  table {
+  border-collapse: collapse;
+  width: 85%;
+  font-size: 18px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+}
+
+
+ @media print and (width: 10.5cm) and (height: 14.8cm) {
+    @page {
+       margin: 3cm;
+    }
+ }
+
+
+  </style>
+
+</head>
+<body>
+
+<div  id="printableArea" style="margin-left: 10%; margin-right: 10%;">
+<div class="row" style="padding: 5px; border-bottom: 5px solid black;">
+    <div class="col-xl-2 col-md-2 ">
+<img src="{% static 'images/hsco_template2.jpg' %}" class="img-rounded" width="200" height="120" style="float: right;">
+</div>
+    <div class="col-xl-1 col-md-1 ">
+    </div>
+    <div class="col-xl-4 col-md-4 ">
+<!--        <center>Subject to Mumbai Jurisdiction</center><br>-->
+<!--        <center><h3 style="font: italic bold 22px/30px Georgia, serif;">Proforma Invoice</h3></center>-->
+</div>
+    <div class="col-xl-1 col-md-1 ">
+    </div>
+    <div class="col-xl-4 col-md-4 ">
+        <p>Ph: 022-23423183, 7045922250/51/52<br>
+Manufacture Licence No. LM/MH/H004<br>
+Dealer Licence No. LD/MH/H004<br>
+Repairing Licence No. LR/MH/H004</p>
+</div>
+</div>
+
+
+        <div class="row">
+         <div class="col-md-12" style="padding:10px;">
+        <center><h1 style="font-weight:bold;"> Hindustan Sales and Consultancy</h1>
+        </center></div>
+        </div>
+        <div class="row">
+         <div class="col-md-12" style="padding:0px;">
+        <center><p style="font-weight:bold;"> A one stop shop for all your weighing needs<br><font color="#FC6E20" style="font-weight:bold;"> AN ISO 9001: 2015 CERTIFIED COMPANY</font></p>
+        </center></div>
+        </div>
+
+
+    <div class="row">
+         <div class="col-md-12" style="padding:10px;">
+        <center><p style="font-weight:bold;"> All kinds of Mechanical and Digital Weighing Scales, Weights & Measures.<br>
+        186/188 Janjikar Street, Near Crawford Market, Mumbai- 400003/<font color="#FC6E20">www.hindustanscale.com/hsc@hindustanscale.com</font></p>
+        </center></div>
+        </div>
+
+
+    <div class="row">
+         <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;"> Messrs</p>
+        </center></div>
+        <div class="col-md-5">
+             </div>
+        <div class="col-md-1">
+             </div>
+        <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;"> Date :</p>
+        </center></div>
+        <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;"> </p>
+        </center></div>
+        </div>
+
+
+    <div class="row">
+         <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;"> Company Name</p>
+        </center></div>
+        <div class="col-md-5">
+             <center><p style="font-weight:bold; float:left; text-decoration: underline;"> </p>
+        </center></div>
+
+        <div class="col-md-1">
+             </div>
+        <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;">PI Number:</p>
+        </center></div>
+        <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;"> </p>
+        </center></div>
+        </div>
+
+    <div class="row">
+         <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;">Contact Person</p>
+        </center></div>
+        <div class="col-md-5">
+             <center><p style="font-weight:bold; float:left;"> </p>
+        </center></div>
+
+        <div class="col-md-1">
+             </div>
+        <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;">Proforma Made By :</p>
+        </center></div>
+        <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;"> </p>
+        </center></div>
+        </div>
+
+
+
+
+    <div class="row">
+         <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;">Address/State</p>
+        </center></div>
+        <div class="col-md-5">
+             <center><p style="font-weight:bold; float:left;"> </p>
+        </center></div>
+
+        <div class="col-md-1">
+             </div>
+        <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;">Contact Number:</p>
+        </center></div>
+        <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;"> </p>
+        </center></div>
+        </div>
+
+
+
+
+    <div class="row">
+         <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;">Phone</p>
+        </center></div>
+        <div class="col-md-5">
+             <center><p style="font-weight:bold; float:left;"> </p>
+        </center></div>
+
+        <div class="col-md-1">
+             </div>
+        <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;">Customer GST Number: </p>
+        </center></div>
+        <div class="col-md-2">
+             <center><p style="font-weight:bold; float:left;"> </p>
+        </center></div>
+        </div>
+
+
+
+
+<style>
+    .border_class {
+    border:1px solid black;
+    height:45px;
+    text-align:center;
+    vertical-align: middle;
+    line-height: 45px;
+    }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+
+<div style="min-height: 26vw;">
+
+        <div class="row" id="id_manager_view">
+
+    <table>
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Quantity</td>
+            <td style="border: 0px solid gray;">HSN Code</td>
+            <td style="border: 0px solid gray;">Product Description</td>
+            <td style="border: 0px solid gray;">Rate</td>
+            <td style="border: 0px solid gray;">Total</td>
+        </tr>
+
+
+ <tr>
+        <td> &nbsp</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Total</td>
+        <td>INR</td>
+        </tr>
+
+        <tr>
+        <td></td>
+
+        <td></td>
+        <td></td>
+        <td>Discount%</td>
+        <td>from PI form</td>
+        </tr>
+
+
+        <tr>
+        <td></td>
+
+        <td></td>
+        <td></td>
+        <td>Net Total</td>
+        <td></td>
+        </tr>
+
+
+
+        <tr>
+        <td></td>
+
+        <td></td>
+        <td> Delivery Chrages </td>
+        <td>P&F</td>
+        <td>from PI form</td>
+        </tr>
+
+
+
+        <tr>
+        <td></td>
+
+        <td></td>
+        <td></td>
+        <td>CGST @ 9%</td>
+        <td>from PI form</td>
+        </tr>
+
+
+
+
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>SGST @ 9%</td>
+        <td>from PI form</td>
+        </tr>
+
+
+
+
+        <tr>
+        <td></td>
+
+        <td></td>
+        <td></td>
+        <td>IGST @ 18%</td>
+        <td>from PI form</td>
+        </tr>
+
+
+
+        <tr>
+        <td></td>
+
+        <td></td>
+        <td></td>
+        <td>Round Up</td>
+        <td>INR</td>
+        </tr>
+
+        <tr>
+        <td></td>
+
+        <td></td>
+        <td></td>
+        <td>Grand Total</td>
+        <td>INR</td>
+        </tr>
+
+
+    </table>
+        </div>
+            </div>
+        <div class="row">
+            <div class="col-md-4" style="padding:10px;">
+                <p>GST ID - <b>27AACFH2329F1ZP</b><br>
+                    PAN Number - <b>AACFH2329F</b></p>
+            </div>
+         <div class="col-md-3" style="padding:10px;">
+<!--<img src="{% static 'images/okay.png' %}" style="width: 100%;">-->
+         </div>
+
+
+	         <div class="col-md-5" style="padding:10px;">
+<img src="{% static 'images/l.png' %}" style="width: 100%;">
+         </div>
+            #######################################################################################################################
+        </div>
+    <div class="row">
+            <div class="col-md-12" style="padding:10px; float:left; "><p>
+                This offer is valid for the next 10 days <br>
+                All prices are Ex-Workshop. Packing and forwarding is extra<br>
+                Cheque should be in the name of "Hindustan Sales and Consultancy"<br>
+                Bank details are as follows<br>
+ </p>     </div>
+        </div>
+
+
+
+<div class="row">
+    <div class="col-md-6" style="padding-left: 40px;">
+<p>Bank details are as follows<br>
+                <b>DCB Bank<br>
+                Name – Hindustan Scale Co.<br>
+                Acct No – 01922412121947<br>
+                IFSC Code-DCBL0000019<br>
+                Type of account – Current Account <br>
+                Bank Name – DCB Bank<br>
+                    Address Mohamedali Road Branch</b></p></div>
+        </div>
+</div>
+</div>
+
+	<hr>
+
+<!--<span style="font-size: 11px;">HINDUSTAN SCALE COMPANY, 186/188 Janjikar Street, Crawford Market, Mumbai - 400003</span>-->
+  </p>
+
+
+</div>
+
+</center>
+
+
+
+<script>
+  function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+</script>
+
+</body>
+</html>
+                        '''
+
+                        if email == 'True' and select_pi_template == '1':
+                            msg.attach_alternative(html_content1, "text/html")
+                            msg.send()
+                            history = Pi_History()
+                            file = ContentFile(html_content1)
+                            history.file.save('history.html', file, save=False)
+                            history.lead_id = Lead.objects.get(id=id)
+
+                            history.save()
+                        elif email == 'True' and select_pi_template == '2':
+                            msg.attach_alternative(html_content2, "text/html")
+                            msg.send()
+                            history = Pi_History()
+                            file = ContentFile(html_content2)
+                            history.file.save('history.html', file, save=False)
+                            history.lead_id = Lead.objects.get(id=id)
+
+                            history.save()
             else :
                 item2 = Pi_section()
                 item2.discount = discount
@@ -409,26 +1268,67 @@ def update_view_lead(request,id):
                 item2.call2 = call2
                 item2.lead_id = Lead.objects.get(id=id)
                 item2.save()
+
     return render(request, 'lead_management/update_view_lead.html',context)
-
-
-
 
 def lead_report(request):
     return render(request,'lead_management/report_lead.html')
+
+
+def select_product(request,id):
+    type_of_purchase_list =type_purchase.objects.all() #1
+    lead_id = Lead.objects.get(id=id)
+    products = Product.objects.all()
+    if request.method == 'POST' or request.method == 'FILES':
+        sub_sub_category = request.POST.get('sub_sub_category')    #product code or sub_sub_category
+        hsn_code = request.POST.get('hsn_code')
+        pf = request.POST.get('pf')
+        quantity = request.POST.get('quantity')
+        is_last_product_yes = request.POST.get('is_last_product_yes')
+
+        item = Pi_product()
+        if sub_sub_category != '' :
+            item.product_id = Product.objects.get(sub_sub_category=sub_sub_category)
+        else:
+            item.product_id = Product.objects.get(hsn_code=hsn_code)
+        item.lead_id = Lead.objects.get(id=lead_id)
+        item.quantity = quantity
+        item.pf = pf
+
+        item.save()
+        if is_last_product_yes == 'yes':
+            return redirect('/update_view_lead/'+str(id))
+        elif is_last_product_yes == 'no':
+            return redirect('/select_product/'+str(id))
+    context={
+        'lead_id':lead_id,
+        'type_of_purchase_list':type_of_purchase_list,
+        'products':products,
+    }
+    return render(request,'lead_management/select_product.html', context)
 
 def lead_manager_view(request):
     return render(request,'lead_management/lead_manager.html')
 
 def lead_follow_up_histroy(request):
-    return render(request,'lead_management/lead_history.html')
+    return render(request,'lead_management/lead_history.html',)
+
+def pi_section_history(request,id):
+    lead_id = Lead.objects.get(id=id)
+    # lead_pi_id = Pi_section.objects.get(lead_id=id)
+    lead_pi_history = Pi_History.objects.filter(lead_id=id)
+    context = {
+        'lead_id': lead_id,
+        'lead_pi_history': lead_pi_history,
+    }
+    return render(request,'lead_management/lead_history.html',context)
 
 def lead_delete_product(request,id):
-    leads = Lead_Product.objects.filter(lead_id=id).order_by('-id')
+    leads = Pi_product.objects.filter(lead_id=id).order_by('-id')
     if request.method == 'POST' or request.method=='FILES':
         delete_id = request.POST.getlist('check[]')
         for i in delete_id:
-            Lead_Product.objects.filter(id=i).delete()
+            Pi_product.objects.filter(id=i).delete()
     context={
         'leads':leads,
     }
@@ -442,3 +1342,6 @@ def lead_employee_graph(request):
 
 def lead_pi_form(request):
     return render(request,'lead_management/lead_pi_form.html')
+
+def alpha_pi_form(request):
+    return render(request,'lead_management/alpha_pi_template.html')

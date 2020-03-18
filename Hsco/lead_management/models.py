@@ -2,6 +2,11 @@ from django.db import models
 from django.utils import timezone
 from customer_app.models import Customer_Details
 
+# from stock_system.models import Product
+from stock_system.models import  Stock_System,Product
+from django.core.validators import URLValidator
+
+
 class Lead(models.Model):
     customer_id = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
     current_stage = models.CharField(max_length=50,null=True,blank=True)
@@ -19,7 +24,7 @@ class Pi_section(models.Model):
     lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
     discount = models.CharField(max_length=80,null=True,blank=True)
     upload_pi_file = models.FileField(null=True,blank=True)
-    select_pi_template = models.FileField(null=True, blank=True)
+    select_pi_template = models.CharField(max_length=45,null=True, blank=True)
     call = models.TextField(max_length=120, null=True,blank=True)
     email = models.BooleanField(default=False, null=True,blank=True)
     whatsapp = models.BooleanField(default=False, null=True,blank=True)
@@ -32,25 +37,21 @@ class Pi_section(models.Model):
     notes = models.TextField(max_length=120, null=True,blank=True)
 
     def __int__(self):
-        return self.customer_name
+        return self.id
 
-class Lead_Product(models.Model):
-    lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
-    scale_type = models.CharField(max_length=150, null=True, blank=True)
-    main_category = models.CharField(max_length=150, null=True, blank=True)
-    sub_category = models.CharField(max_length=150, null=True, blank=True)
-    sub_sub_category = models.CharField(max_length=150, null=True, blank=True)
-    hsn_code = models.CharField(max_length=150, null=True, blank=True)
-    product_image = models.ImageField(upload_to='lead_product_image/', blank=True, null=True)
-    max_capacity = models.CharField(max_length=150, null=True, blank=True)
-    accuracy = models.CharField(max_length=150, null=True, blank=True)
-    platform_size = models.CharField(max_length=150, null=True, blank=True)
-    product_desc = models.CharField(max_length=250, null=True, blank=True)
-    product_brochure = models.FileField(upload_to='', blank=True, null=True)
-    product_document = models.FileField(upload_to='', blank=True, null=True)
-    cost_price = models.FloatField( null=True, blank=True)
-    selling_price = models.FloatField( null=True, blank=True)
-    carton_size = models.CharField(max_length=150, null=True, blank=True)
+class Pi_product(models.Model):
+    lead_id = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, blank=True)
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    quantity = models.FloatField(null=True, blank=True)
+    pf = models.CharField(max_length=80, null=True, blank=True)
+
+    def __int__(self):
+        return self.id
+
+class Pi_History(models.Model):
+    file = models.FileField(null=True,blank=True, upload_to='pi_history_file/')
+    lead_id = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, blank=True)
+    # pi_product_id = models.ForeignKey(Pi_product, on_delete=models.CASCADE, null=True, blank=True)
 
     def __int__(self):
         return self.id

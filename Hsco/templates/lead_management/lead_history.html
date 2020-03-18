@@ -59,7 +59,7 @@
 
                 <div class="card-body" style="padding: 2px;">
                   <div class="row no-gutters align-items-right">
-<h1 class="h3 mb-0 text-gray-800 ">Follow-Up History</h1>
+<h1 class="h3 mb-0 text-gray-800 ">PI History</h1>
 
 
                 </div>
@@ -548,43 +548,23 @@ td {
 
 <div style="min-height: 26vw;">
 
-        {% if deleted %}
-                  <center> <p>list of deleted users</p></center>
-                    {% endif %}
-     <center><p>{{search_msg}}</p></center>
+
         <div class="row" id="id_manager_view">
 
     <table>
         <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No</td>
-            <td style="border: 0px solid gray;">Date</td>
-            <td style="border-radius: 0px 15px 0px 0px; border:0px solid gray;">Medium</td>
-
+            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Previous Templates</td>
         </tr>
-<!--                    {% for list1 in customer_list %}-->
+    {% for history in lead_pi_history %}
+        <tr>
+            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                {% if history.file %}
+                <!--<button onclick="myFunction()">Try it</button>-->
 
-<!--        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">-->
-<!--                        <td>{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>-->
-
-<!--            <td>{{ list1.entry_timedate|date:'Y-m-d'}}</td>-->
-<!--            <td>{{ list1.purchase_no}}</td>-->
-<!--            <td>{{ list1.second_person }}</td>-->
-<!--            <td>{% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</td>-->
-<!--            <td>{{ list1.second_contact_no}}</td>-->
-<!--            <td>{{list1.sales_person}}</td>-->
-<!--            <td>-->
-<!--                       {% for avg in  list1.feedback_stars|rjust:'5'  %}-->
-<!--              {% if forloop.counter <= list1.feedback_stars %}-->
-<!--                  <i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>-->
-<!--              {% else %}-->
-<!--                  <i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>-->
-<!--              {% endif %}-->
-<!--            {% endfor %}-->
-<!--            </td>-->
-
-<!--        </tr>-->
-<!--                          {% endfor %}-->
-
+                                  <a href="http://127.0.0.1:8000{{ history.file.url }}" class="btn btn-primary">Old File</a>
+                                   {% endif %}</td>
+        </tr>
+{% endfor %}
     </table>
 
         </div>
@@ -615,36 +595,6 @@ td {
     <i class="fas fa-angle-up"></i>
   </a>
 
-             <script>
-
-        function toggleCheckbox(select) {
-value = select.checked;
-
-    $.ajax({
-        url: "/load_dispatch_done/",
-        data: {
-          'loc_id':value,
-        },
-        success: function (data) {
-           $("#id_subcat").html(data);
-        }
-      });
-}
-        function toggleCheckbox2(select) {
-value = !select.checked;
-
-    $.ajax({
-        url: "/load_users/",
-        data: {
-          'loc_id':value,
-        },
-        success: function (data) {
-           $("#id_manager_view").html(data);
-        }
-      });
-}
-
-    </script>
     <!--<div class="row" style="width: 100%; margin-top: 20%;">-->
 
         <!--{% if request.user.is_authenticated %}-->

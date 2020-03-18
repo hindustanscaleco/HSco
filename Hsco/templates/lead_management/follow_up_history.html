@@ -54,23 +54,12 @@
 
           <!-- Page Heading -->
             <div class="row">
-           <div class="col-xl-5 col-md-3 mb-3 ">
+           <div class="col-xl-6 col-md-3 mb-3 ">
 
 
                 <div class="card-body" style="padding: 2px;">
                   <div class="row no-gutters align-items-right">
-<h1 class="h3 mb-0 text-gray-800 ">Lead Management</h1>
-
-
-                </div>
-              </div>
-            </div>
-                           <div class="col-xl-4 col-md-3 mb-3 ">
-
-
-                <div class="card-body" style="padding: 2px;">
-                  <div class="row no-gutters align-items-right">
-<h1 class="h3 mb-0 text-gray-800 ">Delete Product</h1>
+<h1 class="h3 mb-0 text-gray-800 ">Follow-Up History</h1>
 
 
                 </div>
@@ -563,41 +552,44 @@ td {
                   <center> <p>list of deleted users</p></center>
                     {% endif %}
      <center><p>{{search_msg}}</p></center>
-    <form method="POST">{% csrf_token %}
-
         <div class="row" id="id_manager_view">
 
     <table>
         <tr style="background-color: gray; color: white;">
-            <td style="border: 0px solid gray;"><label class="checkbox">
-      Option 1
-    </label></td>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Category</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Category</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Category</td>
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No</td>
+            <td style="border: 0px solid gray;">Date</td>
+            <td style="border-radius: 0px 15px 0px 0px; border:0px solid gray;">Medium</td>
 
         </tr>
+<!--                    {% for list1 in customer_list %}-->
 
+<!--        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">-->
+<!--                        <td>{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>-->
 
-{% for lead in leads %}
-            <td style="border: 0px solid gray;"><label class="checkbox">
-      <input type="checkbox" value="{{lead.id}}" name="check[]" >
-    </label></td>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{lead.product_id.scale_type}}</td>
-            <td style="border: 0px solid gray;">{{lead.product_id.main_category}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{lead.product_id.sub_category}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{lead.product_id.sub_sub_category}}</td></tr>
-            {% endfor %}
+<!--            <td>{{ list1.entry_timedate|date:'Y-m-d'}}</td>-->
+<!--            <td>{{ list1.purchase_no}}</td>-->
+<!--            <td>{{ list1.second_person }}</td>-->
+<!--            <td>{% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</td>-->
+<!--            <td>{{ list1.second_contact_no}}</td>-->
+<!--            <td>{{list1.sales_person}}</td>-->
+<!--            <td>-->
+<!--                       {% for avg in  list1.feedback_stars|rjust:'5'  %}-->
+<!--              {% if forloop.counter <= list1.feedback_stars %}-->
+<!--                  <i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>-->
+<!--              {% else %}-->
+<!--                  <i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>-->
+<!--              {% endif %}-->
+<!--            {% endfor %}-->
+<!--            </td>-->
+
+<!--        </tr>-->
+<!--                          {% endfor %}-->
 
     </table>
 
         </div>
-    <br>
-    <center>
-<button type="submit" class="btn btn-danger">Delete</button>
-</center>
-</form>
+
+
 
 
 

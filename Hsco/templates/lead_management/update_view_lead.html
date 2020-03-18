@@ -163,7 +163,7 @@ function myFunction() {
                               <label class="col-md-2 control-label">Customer Name:</label>
                                   <div class="col-md-3 inputGroupContainer">
                                   <div class="input-group">
-                                  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
                                       {{ form.customer_name }}
                           </div>
                         </div>
@@ -172,7 +172,7 @@ function myFunction() {
                                 <label class="col-md-2 control-label">Company Name:</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                              <span class="input-group-addon icon-border"><i class="fa fa-industry faicons"></i></span>
                                   {{ form.company_name }}
                             </div>
                              </div>
@@ -183,7 +183,7 @@ function myFunction() {
                                 <label class="col-md-2 control-label">Customer Number</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                              <span class="input-group-addon icon-border"><i class="fa fa-mobile faicons"></i></span>
                                   {{ form.contact_no }}
                             </div>
                           </div>
@@ -191,7 +191,7 @@ function myFunction() {
                                 <label class="col-md-2 control-label">Customer Email ID</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                              <span class="input-group-addon icon-border"><i class="fa fa-at faicons"></i></span>
                                   {{ form.customer_email_id }}
                    </div>
                              </div>
@@ -203,7 +203,7 @@ function myFunction() {
                                    <label class="col-md-2 control-label">Industry</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                              <span class="input-group-addon icon-border"><i class="fa fa-industry faicons"></i></span>
                                   {{ form.customer_industry }}
                             </div>
                              </div>
@@ -211,7 +211,7 @@ function myFunction() {
                                 <label class="col-md-2 control-label">Address</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                              <span class="input-group-addon icon-border"><i class="fa fa-home faicons" aria-hidden="true"></i></span>
                                   {{ form.address }}
                             </div>
                             </div>
@@ -223,7 +223,7 @@ function myFunction() {
                                 <label class="col-md-2 control-label">Customer GST No</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                              <span class="input-group-addon icon-border"><i class="fa fa-user faicons" aria-hidden="true"></i></span>
                                   {{ form.customer_gst_no }}
                             </div>
                              </div>
@@ -283,18 +283,34 @@ function myFunction() {
                                 <label class="col-md-2 control-label">Date of Initiation:</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                              <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons" aria-hidden="true"></i></span>
                                 {{ form2.date_of_initiation}}
                             </div>
                           </div>
 
                                 <label class="col-md-2 control-label">Channel:</label>
-                              <div class="col-md-3 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form2.channel }}
-                   </div>
-                             </div>
+                             <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+ <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+    <input type="text" required name="channel" placeholder="Channel of Sales" class="form-control" id="myText16" value="{{ lead_id.channel }}" list="channel10">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="channel10">
+      <option value="Phone"></option>
+      <option value="Whatsapp"></option>
+      <option value="ask"></option>
+      <option value="hsc"></option>
+      <option value="sales"></option>
+      <option value="Google"></option>
+      <option value="India Mart"></option>
+      <option value="Justdial"></option>
+      <option value="Website"></option>
+      <option value="Reference from Existing Customer"></option>
+      <option value="Existing Customer"></option>
+      <option value="BNI"></option>
+      <option value="Others"></option>
+    </datalist>
+    </div>
+  </div>
                           </div>
 
 
@@ -303,7 +319,7 @@ function myFunction() {
                                    <label class="col-md-2 control-label">Requirement</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                              <span class="input-group-addon icon-border"><i class="fa fa-check-square faicons"></i></span>
                                 {{ form2.requirement }}
                             </div>
                              </div>
@@ -311,7 +327,7 @@ function myFunction() {
                                 <label class="col-md-2 control-label">Upload Requirement File :</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                              <span class="input-group-addon icon-border"><i class="fa fa-file-word-o" aria-hidden="true"></i></span>
                                 {{ form2.upload_requirement_file}}
                                   {% if lead_id.upload_requirement_file %}
                                   <a href="{{ lead_id.upload_requirement_file.url }}" class="btn btn-primary">Old File</a>
@@ -362,13 +378,13 @@ function myFunction() {
                          <div class="row">
                              <div class="col-xl-2 col-lg-2">
 </div>
-                         <a href="/add_lead_product/{{lead_id.id}}"><input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Add Product"></a>
+                         <a href="/select_productu/{{lead_id.id}}"><input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Add Product"></a>
 <div class="col-xl-2 col-lg-2">
 </div>
                              <a href="/lead_delete_product/{{lead_id.id}}">   <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Delete Product"></a>
 <div class="col-xl-2 col-lg-2">
 </div>
-                         <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="History of Record">
+                             <a href="/pi_section_history/{{lead_id.id}}"> <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="History of Record"></a>
                          </div>
 <br>
 
@@ -396,24 +412,22 @@ tr:nth-child(even) {
     <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
     <table style="font-size: 14px;">
   <tr>
-    <td>Product Code: {{ product.hsn_code }}</td>
+    <td>Product Code: {{ product.product_id.sub_sub_category }}</td>
       <td rowspan="5">Product Image:
-          {% if product.product_image %}
-          <img height="100px" width="100px" src="{{ product.product_image.url }}">
+          {% if product.product_id.product_image %}
+          <img height="100px" width="100px" src="{{ product.product_id.product_image.url }}">
       {% endif %}</td>
 
   </tr><tr>
-    <td>HSN Code: {{ product.hsn_code }}</td>
+    <td>HSN Code: {{ product.product_id.hsn_code }}</td>
 </tr>
+
 <tr>
-    <td>Sub Sub Model: {{ product.sub_sub_category }}</td>
-</tr>
-<tr>
-    <td>Quantity: {{ product.models }}</td>
+    <td>Quantity: {{ product.quantity }}</td>
                </tr>
 
 <tr>
-    <td>Product Description: {{ product.product_desc }}</td>
+    <td>Product Description: {{ product.product_id.product_desc }}</td>
                </tr>
 
 <tr>
@@ -433,7 +447,7 @@ tr:nth-child(even) {
                               <label class="col-md-2 control-label">Discount:</label>
                                   <div class="col-md-3 inputGroupContainer">
                                   <div class="input-group">
-                                  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                  <span class="input-group-addon icon-border"><i class="fa fa-percent faicons"></i></span>
                                 {{ form3.discount }}
                           </div>
                         </div>
@@ -442,7 +456,7 @@ tr:nth-child(even) {
                                 <label class="col-md-2 control-label">Upload PI File:</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
                                 {{ form3.upload_pi_file }}
                                   {% if form3.upload_pi_file %}
                                   <a href="/{{ form3.upload_pi_file.url }}/" class="btn btn-primary">Old File</a>
@@ -453,25 +467,43 @@ tr:nth-child(even) {
 
 
                             <div class="form-group row">
-                                <label class="col-md-2 control-label">Select PI Template :</label>
+                                              <label class="col-md-2 control-label">Select PI Template :</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
                                 {{ form3.select_pi_template }}
-                                    {% if form3.select_pi_template %}
-                                  <a href="/{{ form3.select_pi_template.url }}/" class="btn btn-primary">Old File</a>
-                                   {% endif %}                            </div>
+                                                              </div>
                           </div>
+                            </div>
+
+                            <div class="form-group row" id="myDiv_call" style="display: none;">
+
 
                                 <label class="col-md-2 control-label">Call:</label>
-                              <div class="col-md-3 inputGroupContainer">
+                              <div class="col-md-6 inputGroupContainer">
                               <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form3.call }}
                    </div>
                              </div>
                           </div>
+
+
+                         <script>
+function myFunction_call() {
+  var x = document.getElementById("myDiv_call");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
+
+
 <br>
+
+
+
 <div class="row">
                                                          <label class="col-md-2 control-label">Medium of Selection:</label>
 
@@ -506,7 +538,7 @@ tr:nth-child(even) {
 
 
 
-                    <label class="col-md-10 control-label">Whatsapp:</label> <a href="{% url 'lead_follow_up_histroy' %}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp<input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
+                    <label class="col-md-10 control-label">Whatsapp:</label> <a href="{% url 'lead_follow_up_histroy' %}"> <a href="/lead_follow_up_histroy/"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp<input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
                                 <br> <br>{{ form.whatsapp2 }}
 
 

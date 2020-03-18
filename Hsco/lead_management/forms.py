@@ -1,5 +1,5 @@
 from django import forms
-from .models import Lead
+from .models import Lead, Pi_product
 import sys
 sys.path.append("..")
 from customer_app.models import Customer_Details
@@ -15,6 +15,39 @@ payment_channel = [
     ('Cash', 'Cash'),
 ]
 
+
+industory_dropdown = [
+        ('Energy industry','Energy industry'),
+        ('Chemicals','Chemicals'),
+        ('Industrial Metals ','Industrial Metals '),
+        ('Gold/Gems and precious Metals ','Gold/Gems and precious Metals '),
+        ('Home and Heavy Construction companies ','Home and Heavy Construction companies '),
+        ('Electrical and Electronic Manufacturers','Electrical and Electronic Manufacturers'),
+        ('Industrial Transportation','Industrial Transportation'),
+        ('Agriculture','Agriculture'),
+        ('Poultry/Livestock','Poultry/Livestock'),
+        ('Healthcare Equipment and Services','Healthcare Equipment and Services'),
+        ('Textiles','Textiles'),
+        ('Hotels','Hotels'),
+        ('Grocery/Retail','Grocery/Retail'),
+        ('Bakery','Bakery'),
+        ('Supplier','Supplier'),
+        ('BNI','BNI'),
+        ('Online Promotion','Online Promotion'),
+]
+
+select_pi_template = [
+    ('Select','Select'),
+    ('1','Proforma Invoice Hindustan Sales and Consultancy'),
+    ('2','HSI PI Format'),
+]
+
+
+
+customer_exist_new = [
+    ('New','New'),
+    ('Existing','Existing'),
+]
 
 stage = [
     ('Not Yet Initiated','Not Yet Initiated'),
@@ -56,7 +89,7 @@ class Customer_detailForm(forms.ModelForm):
        widget=forms.TextInput(
            attrs={
                'type': 'text',
-               'placeholder': "Customer Name",
+               'placeholder': "Contact No",
                'class': 'form-control',
            }
        ))
@@ -81,7 +114,8 @@ class Customer_detailForm(forms.ModelForm):
        ))
 
     customer_industry = forms.CharField(max_length=80, required=True,
-       widget=forms.TextInput(
+    widget=forms.Select(
+        choices=industory_dropdown,
            attrs={
                'type': 'text',
                'placeholder': "Industry",
@@ -89,12 +123,13 @@ class Customer_detailForm(forms.ModelForm):
            }
        ))
 
-    customer_gst_no = forms.CharField(max_length=80, required=False,
+    customer_gst_no = forms.CharField(max_length=15, min_length=15, required=False,
        widget=forms.TextInput(
            attrs={
                'type': 'text',
                'placeholder': "Customer GST Number",
                'class': 'form-control',
+
            }
        ))
 
@@ -120,7 +155,8 @@ class Deal_detailForm(forms.ModelForm):
                                     ))
 
     new_existing_customer = forms.CharField(max_length=80, required=True,
-                                    widget=forms.TextInput(
+                                    widget=forms.Select(
+                                        choices=customer_exist_new,
                                         attrs={
                                             'type': 'text',
                                             'placeholder': "Person",
@@ -146,7 +182,7 @@ class Deal_detailForm(forms.ModelForm):
                                             widget=forms.TextInput(
                                                 attrs={
                                                     'type': 'text',
-                                                    'placeholder': "New/Existing Customer",
+                                                    'placeholder': "Channel",
                                                     'class': 'form-control',
                                                 }
                                             ))
@@ -203,10 +239,10 @@ class Pi_sectionForm(forms.ModelForm):
            }
        ))
 
-    select_pi_template = forms.FileField(required=False,
-       widget=forms.FileInput(
+    select_pi_template = forms.CharField(required=False,
+       widget=forms.Select(choices=select_pi_template,
            attrs={
-               'type': 'file',
+               'type': 'text',
                'placeholder': "Select PI Template",
                'class': 'form-control',
            }
@@ -220,30 +256,28 @@ class Pi_sectionForm(forms.ModelForm):
             })
         )
     email = forms.BooleanField(required=False,
-        widget=forms.TextInput(
+        widget=forms.CheckboxInput(
             attrs={
                 'type':'checkbox',
                 'id':'email',
             })
         )
     whatsapp = forms.BooleanField(required=False,
-        widget=forms.TextInput(
+        widget=forms.CheckboxInput(
             attrs={
                 'type':'checkbox',
                 'id':'whatsapp',
             })
         )
     call2 = forms.BooleanField(required=False,
-        widget=forms.TextInput(
+        widget=forms.CheckboxInput(
             attrs={
                 'type': 'checkbox',
                 'id': 'call2',
+                'onclick' : 'myFunction_call()',
+                'calss' : 'form-control',
             })
     )
-
-
-
-
 
     email_auto_manual = forms.CharField(
         widget=forms.Select(
@@ -301,5 +335,5 @@ class Pi_sectionForm(forms.ModelForm):
                                              }
                                          ))
     class Meta:
-        model = Lead
+        model = Pi_product
         fields = "__all__"
