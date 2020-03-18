@@ -6,12 +6,84 @@ from customer_app.models import sub_model, main_model, sub_sub_model
 from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
-from .models import Lead, Lead_Product, Pi_section
+from .models import Lead, Lead_Product, Pi_section, IndiamartLeadDetails
 
 
 # Create your views here.
 
 def lead_home(request):
+    import requests
+    import json
+
+    mobile = '7045922250'
+    api = 'MTU4MzQ5OTg1NS42MTU2IzI5OTI4NzM='
+    last_date = IndiamartLeadDetails.objects.latest('to_date').to_date.strftime('%d-%b-%Y')
+    from_date = last_date
+    from datetime import datetime
+    to_date = datetime.today().strftime('%d-%b-%Y')
+    lead_count=0
+    error2 = None
+    error = None
+    error_exist = False
+
+    if request.method == 'POST':
+
+        url = "https://mapi.indiamart.com/wservce/enquiry/listing/GLUSR_MOBILE/" + mobile + "/GLUSR_MOBILE_KEY/" + api + "/Start_Time/" + from_date + "/End_Time/" + to_date + "/"
+        response = requests.get(url=url).json()
+        lead_count = len(response)
+
+        from_date =  request.POST.get('from_date_form')
+        to_date =  request.POST.get('to_date_form')
+        import time
+        conv = time.strptime(from_date, "%d-%b-%Y")
+        conv2 = time.strptime(to_date, "%d-%b-%Y")
+
+
+        if(lead_count>1):
+            for item in response:
+
+                item3 = Customer_Details()
+                item3.customer_name= item['SENDERNAME']
+                item3.company_name = item['GLUSR_USR_COMPANYNAME']
+                item3.address = item['ENQ_ADDRESS']
+                item3.customer_email_id = item['SENDEREMAIL']
+                item3.contact_no = item['MOB']
+                item3.customer_industry = ''
+                try:
+                    item3.save()
+                    item2 = Lead()
+                    item2.customer_id = Customer_Details.objects.get(id=item3.pk)
+                    item2.current_stage = 'Not Yet Initiated'
+                    item2.new_existing_customer = 'New'
+                    item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
+                    item2.channel = 'Indiamart'
+
+                    item2.requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
+                    try:
+                        item2.save()
+                    except Exception as e:
+                        error_exist = True
+                        error2 = e
+                except Exception as e:
+                    error_exist = True
+                    error = e
+
+            obj = IndiamartLeadDetails()
+            obj.from_date = time.strftime("%Y-%m-%d", conv)
+            obj.to_date = time.strftime("%Y-%m-%d", conv2)
+            obj.lead_count = lead_count
+            try:
+                obj.save()
+            except:
+                print("error")
+        else:
+            row_count = response[0]
+            error = row_count['Error_Message']
+            error_exist = True
+
+
+
+
     lead_list = Lead.objects.all()
     if Lead.objects.all().count() == 0:
         latest_lead_id = 1
@@ -20,6 +92,13 @@ def lead_home(request):
     context={
         'lead_list':lead_list,
         'latest_lead_id':latest_lead_id,
+        'lead_count':lead_count,
+        'from_date':from_date,
+        'to_date':to_date,
+        'error':error,
+        'error2':error2,
+        'error_exist':error_exist,
+
     }
     return render(request,'lead_management/lead_home.html',context)
 

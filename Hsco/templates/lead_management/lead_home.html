@@ -82,10 +82,32 @@
                       <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
 <a style="padding: 2px;" href="{% url 'lead_report' %}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
  <a style="padding: 2px;" href="{% url 'lead_analytics' %}"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
+                      <form action="" method="post">{% csrf_token %}
+                          <input type="hidden" name="from_date_form" value="{{from_date}}">
+                           <input type="hidden" name="to_date_form" value="{{to_date}}">
+                           <a style="padding: 2px;" href="{% url 'lead_analytics' %}"><button style="background-color: #FC6E20;" type="submit" class="btn btn-primary">Fetch Lead</button></a>
+
+                      </form>
                 </div>
               </div>
 
 
+
+
+
+
+
+    {% if lead_count > 1 %}
+
+
+                     <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Total Lead Fetched : </strong> {{lead_count}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+                     {% endif %}
 
 
             </div>
@@ -93,7 +115,15 @@
 
 
                 </div>
+ {% if error_exist %}
 
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error Fetching Lead From Indiamart : </strong> {{error}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
 
 
 <br>
