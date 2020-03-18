@@ -23,7 +23,7 @@ class Product(models.Model):
     scale_type = models.CharField(max_length=150, null=True, blank=True)
     main_category = models.CharField(max_length=150, null=True, blank=True)
     sub_category = models.CharField(max_length=150, null=True, blank=True)
-    sub_sub_category = models.CharField(max_length=150, null=True, blank=True)
+    sub_sub_category = models.CharField(max_length=150, null=True, blank=True)  #PRODUCT CODE
     hsn_code = models.CharField(max_length=150, null=True, blank=True)
     product_image = models.ImageField(upload_to='lead_product_image/', blank=True, null=True)
     max_capacity = models.CharField(max_length=150, null=True, blank=True)

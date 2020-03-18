@@ -211,6 +211,19 @@ def update_view_lead(request,id):
     lead_id = Lead.objects.get(id=id)
 
     lead_pi_products = Pi_product.objects.filter(lead_id=id)
+    print(lead_pi_products)
+    table = ''
+    try:
+        for product in lead_pi_products:
+            print(product)
+            row = '<tr> <td>'+ str(product.quantity) +' </td><td>'+ str(product.product_id.hsn_code)+'</td><td>'+ str(product.product_id.sub_sub_category)+'</td><td>'+str(product.product_id.product_image) +'</td><td>'+str(product.product_id.product_desc) +'</td><td></td><td></td>  </tr>'
+            print(row)
+            table+=row
+        print(table)
+    except:
+        pass
+
+    print(table)
     customer_id = Customer_Details.objects.get(id=lead_id.customer_id)
     customer_initial_data = {
         'customer_name': customer_id.customer_name,
@@ -624,15 +637,7 @@ td {
         </tr>
 
 
- <tr>
-        <td> &nbsp</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        </tr>
+ '''+table+'''
 
         <tr>
         <td></td>
@@ -814,7 +819,7 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 </body>
 </html>'''
                         msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER,
-                                                     ['liocause@gmail.com',])
+                                                     ['liocause@gmail.com','sagarsingh27998@gmail.com'])
                         html_content2 = '''
                         
 <html>
@@ -925,7 +930,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;"> Date :</p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;">'''+todays_date+''' </p>
         </center></div>
         </div>
 
@@ -935,7 +940,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;"> Company Name</p>
         </center></div>
         <div class="col-md-5">
-             <center><p style="font-weight:bold; float:left; text-decoration: underline;"> </p>
+             <center><p style="font-weight:bold; float:left; text-decoration: underline;">'''+str(lead_id.customer_id.company_name)+''' </p>
         </center></div>
 
         <div class="col-md-1">
@@ -944,7 +949,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">PI Number:</p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;">'''+str(item2.id)+''' </p>
         </center></div>
         </div>
 
@@ -953,7 +958,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">Contact Person</p>
         </center></div>
         <div class="col-md-5">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;">'''+str(lead_id.customer_id.customer_name)+''' </p>
         </center></div>
 
         <div class="col-md-1">
@@ -962,7 +967,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">Proforma Made By :</p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;">'''+str(request.user.name)+''' </p>
         </center></div>
         </div>
 
@@ -974,7 +979,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">Address/State</p>
         </center></div>
         <div class="col-md-5">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.address)+'''</p>
         </center></div>
 
         <div class="col-md-1">
@@ -983,7 +988,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">Contact Number:</p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;">'''+str(request.user.mobile)+'''</p>
         </center></div>
         </div>
 
@@ -995,7 +1000,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">Phone</p>
         </center></div>
         <div class="col-md-5">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.contact_no)+'''</p>
         </center></div>
 
         <div class="col-md-1">
@@ -1004,7 +1009,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">Customer GST Number: </p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;">'''+str(lead_id.customer_id.customer_gst_no)+''' </p>
         </center></div>
         </div>
 
@@ -1069,7 +1074,7 @@ td {
 
 
  <tr>
-        <td> &nbsp</td>
+        <td> </td>
         <td></td>
         <td></td>
         <td></td>
@@ -1109,7 +1114,7 @@ td {
         <td></td>
 
         <td></td>
-        <td> Delivery Chrages </td>
+        <td> Delivery Charges </td>
         <td>P&F</td>
         <td>from PI form</td>
         </tr>
