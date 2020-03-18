@@ -539,24 +539,24 @@ function myFunction_call() {
 
 
                     <label class="col-md-10 control-label">Whatsapp:</label> <a href="{% url 'lead_follow_up_histroy' %}"> <a href="/lead_follow_up_histroy/"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp<input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
-                                <br> <br>{{ form.whatsapp2 }}
+                                <br> <br>{{ form4.whatsappno }}
 
 
 <br>
                                 <label class="col-md-2 control-label">Content:</label>
 
-                                {{ form.whatsappcontent }}
+                                {{ form4.whatsapp2 }}
 
 <br>
 <div class="row">
                             <label class="col-md-2 control-label">Medium of Selection:</label>
 
-    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp  {{ form.email  }} <div class="col-xl-2 col-lg-2"></div> <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form.whatsapp  }} <div class="col-xl-2 col-lg-2"></div>   <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form.call2  }}
+    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp  {{ form3.email  }} <div class="col-xl-2 col-lg-2"></div> <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form3.whatsapp  }} <div class="col-xl-2 col-lg-2"></div>   <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form3.call2  }}
 </div>
 <br>
 <center>
 <input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="Add Product">
-    {{form.email_auto_manual}}
+    {{form4.email_auto_manual}}
 
 </center>
 

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Lead, Pi_product
+from .models import Lead, Pi_product, Follow_up_section
 import sys
 sys.path.append("..")
 from customer_app.models import Customer_Details
@@ -35,6 +35,13 @@ industory_dropdown = [
         ('BNI','BNI'),
         ('Online Promotion','Online Promotion'),
 ]
+
+auto_manual_email = [
+    ('Automatic', 'Automatic'),
+    ('Manual', 'Manual'),
+]
+
+
 
 select_pi_template = [
     ('Select','Select'),
@@ -334,6 +341,96 @@ class Pi_sectionForm(forms.ModelForm):
                                                  'class': 'form-control',
                                              }
                                          ))
+
+    email_auto_manual = forms.CharField(
+        widget=forms.Select(
+            choices=auto_manual_email,
+            attrs={
+                'default':"automatic",
+                'class':'btn btn-outline-primary',
+
+
+            }
+        ))
+
+
     class Meta:
         model = Pi_product
+        fields = "__all__"
+
+
+class Follow_up_sectionForm(forms.ModelForm):
+
+    call = forms.CharField(max_length=80, required=True,
+       widget=forms.Textarea(
+           attrs={
+               'type': 'text',
+               'placeholder': "Call",
+               'class': 'form-control',
+           }
+       ))
+    email = forms.CheckboxInput(
+            attrs={
+                'type':'checkbox',
+                'id':'email',
+                'value':'email',
+                'class': 'form-control',
+            }
+        )
+
+
+    whatsapp = forms.CheckboxInput(
+            attrs={
+                'type':'checkbox',
+                'id':'whatsapp',
+                'value':'whatsapp',
+                'class': 'form-control',
+            }
+        )
+
+
+
+    call2 = forms.CheckboxInput(
+            attrs={
+                'type':'checkbox',
+                'id':'call',
+                'value':'call',
+                'class': 'form-control',
+            }
+        )
+
+
+
+    email_auto_manual = forms.CharField(
+        widget=forms.Select(
+            choices=auto_manual_email,
+            attrs={
+                'default':"automatic",
+                'class':'btn btn-outline-primary',
+
+
+            }
+        ))
+
+    whatsapp2 = forms.CharField(max_length=80, required=True,
+                                         widget=forms.Textarea(
+                                             attrs={
+                                                 'type': 'text',
+                                                 'placeholder':'Notes',
+                                                 'class': 'form-control',
+                                             }
+                                         ))
+    whatsappno = forms.CharField(max_length=80, required=True,
+       widget=forms.TextInput(
+           attrs={
+               'type': 'text',
+               'placeholder': "Whatsapp No",
+               'class': 'form-control',
+           }
+       ))
+
+
+
+    class Meta:
+        model = Follow_up_section
         fields = "__all__"

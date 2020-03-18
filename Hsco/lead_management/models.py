@@ -57,6 +57,18 @@ class Pi_History(models.Model):
         return self.id
 
 
+class Follow_up_section(models.Model):
+    lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE,null=True,blank=True)
+    call = models.TextField(max_length=120, null=True, blank=True)
+    email = models.BooleanField(default=False)
+    whatsapp = models.CharField(max_length=120,null=True,blank=True)
+    whatsappno = models.CharField(max_length=120,null=True,blank=True)
+    auto_manual_email = models.CharField(default='Automatic', max_length=50, null=True, blank=True)
+
+    def __int__(self):
+        return self.id
+
+
 class IndiamartLeadDetails(models.Model):
     from_date = models.DateField()
     to_date = models.DateField()
