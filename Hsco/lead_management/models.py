@@ -49,9 +49,9 @@ class Pi_product(models.Model):
         return self.id
 
 class Pi_History(models.Model):
-    url = models.TextField(validators=[URLValidator()])
+    file = models.FileField(null=True,blank=True, upload_to='pi_history_file/')
     lead_id = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, blank=True)
-    pi_product_id = models.ForeignKey(Pi_product, on_delete=models.CASCADE, null=True, blank=True)
+    # pi_product_id = models.ForeignKey(Pi_product, on_delete=models.CASCADE, null=True, blank=True)
 
     def __int__(self):
         return self.id

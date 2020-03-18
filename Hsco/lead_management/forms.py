@@ -37,8 +37,9 @@ industory_dropdown = [
 ]
 
 select_pi_template = [
-    ('Proforma Invoice Hindustan Sales and Consultancy','Proforma Invoice Hindustan Sales and Consultancy'),
-    ('HSI PI Format','HSI PI Format'),
+    ('Select','Select'),
+    ('1','Proforma Invoice Hindustan Sales and Consultancy'),
+    ('2','HSI PI Format'),
 ]
 
 
@@ -255,21 +256,21 @@ class Pi_sectionForm(forms.ModelForm):
             })
         )
     email = forms.BooleanField(required=False,
-        widget=forms.TextInput(
+        widget=forms.CheckboxInput(
             attrs={
                 'type':'checkbox',
                 'id':'email',
             })
         )
     whatsapp = forms.BooleanField(required=False,
-        widget=forms.TextInput(
+        widget=forms.CheckboxInput(
             attrs={
                 'type':'checkbox',
                 'id':'whatsapp',
             })
         )
     call2 = forms.BooleanField(required=False,
-        widget=forms.TextInput(
+        widget=forms.CheckboxInput(
             attrs={
                 'type': 'checkbox',
                 'id': 'call2',

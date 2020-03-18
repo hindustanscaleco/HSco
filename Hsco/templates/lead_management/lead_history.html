@@ -557,7 +557,12 @@ td {
         </tr>
     {% for history in lead_pi_history %}
         <tr>
-            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><a href="{{history.url}}"> Template </a></td>
+            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                {% if history.file %}
+                <!--<button onclick="myFunction()">Try it</button>-->
+
+                                  <a href="http://127.0.0.1:8000{{ history.file.url }}" class="btn btn-primary">Old File</a>
+                                   {% endif %}</td>
         </tr>
 {% endfor %}
     </table>
@@ -590,36 +595,6 @@ td {
     <i class="fas fa-angle-up"></i>
   </a>
 
-             <script>
-
-        function toggleCheckbox(select) {
-value = select.checked;
-
-    $.ajax({
-        url: "/load_dispatch_done/",
-        data: {
-          'loc_id':value,
-        },
-        success: function (data) {
-           $("#id_subcat").html(data);
-        }
-      });
-}
-        function toggleCheckbox2(select) {
-value = !select.checked;
-
-    $.ajax({
-        url: "/load_users/",
-        data: {
-          'loc_id':value,
-        },
-        success: function (data) {
-           $("#id_manager_view").html(data);
-        }
-      });
-}
-
-    </script>
     <!--<div class="row" style="width: 100%; margin-top: 20%;">-->
 
         <!--{% if request.user.is_authenticated %}-->
