@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Lead, Lead_Product Pi_section, IndiamartLeadDetails
+from .models import Lead ,Pi_section, IndiamartLeadDetails
 
 from .models import Lead, Pi_section, Pi_product,Pi_History
 

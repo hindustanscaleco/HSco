@@ -12,7 +12,7 @@ from Hsco import settings
 from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
-from .models import Lead, Lead_Product, Pi_section, IndiamartLeadDetails
+from .models import Lead, Pi_section, IndiamartLeadDetails
 
 from .models import Lead, Pi_section, Pi_product, Pi_History
 from customer_app.models import sub_model, main_model, sub_sub_model

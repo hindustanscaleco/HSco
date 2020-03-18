@@ -97,7 +97,25 @@
 
 
 
-    {% if lead_count > 1 %}
+
+
+
+            </div>
+
+
+
+                </div>
+
+             {% if lead_count > 1 and error_exist %}
+             <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Already Fetched!!! </strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+                {% elif lead_count > 1 %}
 
 
                      <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -107,15 +125,9 @@
   </button>
 </div>
 
-                     {% endif %}
 
 
-            </div>
-
-
-
-                </div>
- {% if error_exist %}
+ {% elif error_exist %}
 
                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
   <strong>Error Fetching Lead From Indiamart : </strong> {{error}}
