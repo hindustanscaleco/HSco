@@ -16,3 +16,4 @@ pymysql==0.9.3
 djangorestframework==3.11.0
 django-session-security==2.6.5
 django-model-utils==4.0.0
+pdfkit==0.6.1

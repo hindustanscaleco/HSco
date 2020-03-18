@@ -1,20 +1,12 @@
 
+                        
 <html>
 <head>
   <title>
     HSCO
   </title>
-  {% load static %}
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-
 
   <style>
       * {
@@ -116,7 +108,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;"> Date :</p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;">2020-03-18 </p>
         </center></div>
         </div>
 
@@ -126,7 +118,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;"> Company Name</p>
         </center></div>
         <div class="col-md-5">
-             <center><p style="font-weight:bold; float:left; text-decoration: underline;"> </p>
+             <center><p style="font-weight:bold; float:left; text-decoration: underline;">Shree Dewasi Trading </p>
         </center></div>
 
         <div class="col-md-1">
@@ -135,7 +127,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">PI Number:</p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;">1 </p>
         </center></div>
         </div>
 
@@ -144,7 +136,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">Contact Person</p>
         </center></div>
         <div class="col-md-5">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;">ewew </p>
         </center></div>
 
         <div class="col-md-1">
@@ -153,9 +145,10 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">Proforma Made By :</p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;">sagarffdsf </p>
         </center></div>
         </div>
+
 
 
 
@@ -164,7 +157,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">Address/State</p>
         </center></div>
         <div class="col-md-5">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;"> Plot no: 18, Shop No: 1 and 2,  Sector 23, Janta Market,  Turbhe, Navi Mumbai 400705</p>
         </center></div>
 
         <div class="col-md-1">
@@ -173,7 +166,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">Contact Number:</p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;">9730644834</p>
         </center></div>
         </div>
 
@@ -185,7 +178,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">Phone</p>
         </center></div>
         <div class="col-md-5">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;"> 9820360578</p>
         </center></div>
 
         <div class="col-md-1">
@@ -194,7 +187,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">Customer GST Number: </p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> </p>
+             <center><p style="font-weight:bold; float:left;">None </p>
         </center></div>
         </div>
 
@@ -246,10 +239,6 @@ td {
 
 <div style="min-height: 26vw;">
 
-        {% if deleted %}
-                  <center> <p>list of deleted users</p></center>
-                    {% endif %}
-     <center><p>{{search_msg}}</p></center>
         <div class="row" id="id_manager_view">
 
     <table>
@@ -262,13 +251,7 @@ td {
         </tr>
 
 
- <tr>
-        <td> &nbsp</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        </tr>
+ 
 
         <tr>
         <td></td>
@@ -303,7 +286,7 @@ td {
         <td></td>
 
         <td></td>
-        <td> Delivery Chrages </td>
+        <td> Delivery Charges </td>
         <td>P&F</td>
         <td>from PI form</td>
         </tr>
@@ -396,11 +379,11 @@ td {
     <div class="col-md-6" style="padding-left: 40px;">
 <p>Bank details are as follows<br>
                 <b>DCB Bank<br>
-                Name â€“ Hindustan Scale Co.<br>
-                Acct No â€“ 01922412121947<br>
+                Name – Hindustan Scale Co.<br>
+                Acct No – 01922412121947<br>
                 IFSC Code-DCBL0000019<br>
-                Type of account â€“ Current Account <br>
-                Bank Name â€“ DCB Bank<br>
+                Type of account – Current Account <br>
+                Bank Name – DCB Bank<br>
                     Address Mohamedali Road Branch</b></p></div>
         </div>
 </div>
@@ -433,3 +416,4 @@ td {
 
 </body>
 </html>
+                        

@@ -1,5 +1,6 @@
 import datetime
 
+import pdfkit as pdfkit
 from django.core.files.base import ContentFile
 from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render, redirect
@@ -213,17 +214,17 @@ def update_view_lead(request,id):
     lead_pi_products = Pi_product.objects.filter(lead_id=id)
     print(lead_pi_products)
     table = ''
+    table2 = ''
     try:
         for product in lead_pi_products:
-            print(product)
-            row = '<tr> <td>'+ str(product.quantity) +' </td><td>'+ str(product.product_id.hsn_code)+'</td><td>'+ str(product.product_id.sub_sub_category)+'</td><td>'+str(product.product_id.product_image) +'</td><td>'+str(product.product_id.product_desc) +'</td><td></td><td></td>  </tr>'
-            print(row)
+            row = '<tr> <td>'+ str(product.quantity) +' </td><td>'+ str(product.product_id.hsn_code)+'</td><td>'+ str(product.product_id.sub_sub_category)+'</td><td><img src="'+str(product.product_id.product_image.url)+'" height="100" width="100"></td><td>'+str(product.product_id.product_desc) +'</td><td></td><td></td>  </tr>'
+            row2 = '<tr> <td>'+ str(product.quantity) +' </td><td>'+ str(product.product_id.hsn_code)+'</td><td>'+str(product.product_id.product_desc) +'</td><td></td><td></td>  </tr>'
             table+=row
-        print(table)
+            table2+=row2
+        print(row)
     except:
         pass
 
-    print(table)
     customer_id = Customer_Details.objects.get(id=lead_id.customer_id)
     customer_initial_data = {
         'customer_name': customer_id.customer_name,
@@ -1073,13 +1074,7 @@ td {
         </tr>
 
 
- <tr>
-        <td> </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        </tr>
+ '''+table2+'''
 
         <tr>
         <td></td>
@@ -1251,6 +1246,7 @@ td {
                             msg.send()
                             history = Pi_History()
                             file = ContentFile(html_content1)
+                            # pdfkit.from_file(file, 'out.pdf')
                             history.file.save('history.html', file, save=False)
                             history.lead_id = Lead.objects.get(id=id)
 
