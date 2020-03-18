@@ -13,7 +13,7 @@ class Lead(models.Model):
     new_existing_customer = models.CharField(max_length=50,null=True,blank=True)
     date_of_initiation = models.DateTimeField(default=timezone.now,)
     channel = models.CharField(max_length=50,null=True,blank=True)
-    requirement = models.CharField(max_length=80,null=True,blank=True)
+    requirement = models.TextField(null=True,blank=True)
     upload_requirement_file = models.FileField(upload_to='lead_requirement_file/',null=True,blank=True)
     owner_of_opportunity = models.CharField(max_length=80,null=True,blank=True)
 
@@ -55,3 +55,13 @@ class Pi_History(models.Model):
 
     def __int__(self):
         return self.id
+
+
+class IndiamartLeadDetails(models.Model):
+    from_date = models.DateField()
+    to_date = models.DateField()
+    lead_count = models.BigIntegerField()
+
+    class Meta:
+        unique_together = ('from_date','to_date','lead_count')
+
