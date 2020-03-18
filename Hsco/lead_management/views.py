@@ -727,7 +727,7 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 </body>
 </html>'''
                         msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER,
-                                                     ['sagarsingh27998@gmail.com',])
+                                                     ['liocause@gmail.com',])
                         html_content2 = '''
                         
 <html>
