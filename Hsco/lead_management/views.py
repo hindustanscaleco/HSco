@@ -1,6 +1,5 @@
 import datetime
 
-import pdfkit as pdfkit
 from django.core.files.base import ContentFile
 from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render, redirect
