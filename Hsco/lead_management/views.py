@@ -260,11 +260,7 @@ def update_view_lead(request,id):
         pi_initial_data = {
             'discount': pi_id.discount,
             'upload_pi_file': pi_id.upload_pi_file,
-            'select_pi_template': pi_id.select_pi_template,
             'call': pi_id.call,
-            'email': pi_id.email,
-            'whatsapp': pi_id.whatsapp,
-            'call2': pi_id.call2,
             'payment_channel': pi_id.payment_channel,
             'payment_receipt': pi_id.payment_receipt,
             'upload_po_file': pi_id.upload_po_file,
@@ -442,7 +438,7 @@ td {
 <div  id="printableArea" style="margin-left: 10%; margin-right: 10%;">
 <div class="row" style="padding: 5px; border-bottom: 5px solid black;">
     <div class="col-xl-2 col-md-2 ">
-<img src="{% static 'images/hsco_logo.jpg' %}" class="img-rounded" width="200" height="120" style="float: right;">
+<img src="/media/pi_history_file/hsco.jpg" class="img-rounded" width="200" height="120" style="float: right;">
 </div>
     <div class="col-xl-1 col-md-1 ">
     </div>
@@ -753,12 +749,12 @@ td {
                     TAN Number - <b>MUMH17092F</b></p>
             </div>
          <div class="col-md-3" style="padding:10px;">
-<img src="{% static 'images/okay.png' %}" style="width: 100%;">
+<img src="/media/pi_history_file/okay.png" style="width: 100%;">
          </div>
 
 
 	         <div class="col-md-5" style="padding:10px;">
-<img src="{% static 'images/l.png' %}" style="width: 100%;">
+<img src="/media/pi_history_file/l.png" style="width: 100%;">
          </div>
         </div>
     <div class="row">
@@ -879,7 +875,7 @@ td {
 <div  id="printableArea" style="margin-left: 10%; margin-right: 10%;">
 <div class="row" style="padding: 5px; border-bottom: 5px solid black;">
     <div class="col-xl-2 col-md-2 ">
-<img src="{% static 'images/hsco_template2.jpg' %}" class="img-rounded" width="200" height="120" style="float: right;">
+<img src="/media/pi_history_file/hsco_template2.jpg" class="img-rounded" width="200" height="120" style="float: right;">
 </div>
     <div class="col-xl-1 col-md-1 ">
     </div>
@@ -1177,12 +1173,12 @@ td {
                     PAN Number - <b>AACFH2329F</b></p>
             </div>
          <div class="col-md-3" style="padding:10px;">
-<!--<img src="{% static 'images/okay.png' %}" style="width: 100%;">-->
+<!--<img src="/media/pi_history_file/okay.png" style="width: 100%;">-->
          </div>
 
 
 	         <div class="col-md-5" style="padding:10px;">
-<img src="{% static 'images/l.png' %}" style="width: 100%;">
+<img src="/media/pi_history_file/l.png" style="width: 100%;">
          </div>
             #######################################################################################################################
         </div>
@@ -1246,7 +1242,7 @@ td {
                             history = Pi_History()
                             file = ContentFile(html_content1)
                             # pdfkit.from_file(file, 'out.pdf')
-                            history.file.save('history.html', file, save=False)
+                            history.file.save('ProformaInvoice.html', file, save=False)
                             history.lead_id = Lead.objects.get(id=id)
 
                             history.save()
@@ -1255,7 +1251,7 @@ td {
                             msg.send()
                             history = Pi_History()
                             file = ContentFile(html_content2)
-                            history.file.save('history.html', file, save=False)
+                            history.file.save('ProformaInvoice.html', file, save=False)
                             history.lead_id = Lead.objects.get(id=id)
 
                             history.save()
@@ -1318,7 +1314,7 @@ def lead_follow_up_histroy(request):
 def pi_section_history(request,id):
     lead_id = Lead.objects.get(id=id)
     # lead_pi_id = Pi_section.objects.get(lead_id=id)
-    lead_pi_history = Pi_History.objects.filter(lead_id=id)
+    lead_pi_history = Pi_History.objects.filter(lead_id=id).order_by('-id')
     context = {
         'lead_id': lead_id,
         'lead_pi_history': lead_pi_history,
