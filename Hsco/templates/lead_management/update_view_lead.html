@@ -539,7 +539,9 @@ function myFunction_call() {
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="myDIV4" style="display: none; height: auto;">
-                    <a  method='POST' id="xyzform" enctype="multipart/form-data" >{% csrf_token %}</a>
+                    <form action="" method='POST' enctype="multipart/form-data"  target="_blank">{% csrf_token %}
+
+
 
 
 
@@ -561,110 +563,13 @@ function myFunction_call() {
 <br>
 <center>
       {{form4.email_auto_manual}}
-<input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="Send">
 
 
 </center>
+
                     <br>
 
-                    <div class="card shadow" >
-                        <div class="card-body" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
-                            <center><h4><b>Product Fields To Show</b></h4></center>
-                            <br>
-                            <br>
-                            <form action="" method="post" >{% csrf_token %}
-<div  style="margin-left:10%;">
-<div class="form-group row">
 
-    <label class="col-md-2 control-label">Product Code :
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
-</div>
-  </div>
-
- <label class="col-md-2 control-label">HSN Code :
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" id="customCheck2">
-  <label class="custom-control-label" for="customCheck2"></label>
-</div>
-  </div>
-  </div>
-<div class="form-group row">
-
-    <label class="col-md-2 control-label">Sub Sub Model :
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" id="customCheck3">
-  <label class="custom-control-label" for="customCheck3"></label>
-</div>
-  </div>
-
- <label class="col-md-2 control-label">Platform Size :
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" id="customCheck8">
-  <label class="custom-control-label" for="customCheck8"></label>
-</div>
-  </div>
-  </div>
-<div class="form-group row">
-
-    <label class="col-md-2 control-label">Product Description :
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_desc" id="customCheck4">
-  <label class="custom-control-label" for="customCheck4"></label>
-</div>
-  </div>
-
- <label class="col-md-2 control-label">Price :
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" id="customCheck5">
-  <label class="custom-control-label" for="customCheck5"></label>
-</div>
-  </div>
-  </div>
-<div class="form-group row">
-
-    <label class="col-md-2 control-label">Product Image :
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_image" id="customCheck6">
-  <label class="custom-control-label" for="customCheck6"></label>
-</div>
-  </div>
-  </div>
-</div>
-                                <center>
-                                    <button style="background-color: #FC6E20;" class="btn btn-primary" type="submit" name="submit3" >Save</button>
-                                </center>
-                            </form>
-
-                        </div>
-
-                    </div>
 
 
 
@@ -715,8 +620,123 @@ function myFunction_call() {
                           </div>
 
                          <br>
+                         <center>
 
+                        <button name="submit5" style="background-color: #FC6E20;" class="btn btn-primary" type="submit">Send</button>
+                    </center>
+                          </form>
+                    <br>
+                    <br>
 
+  <div class="card shadow" >
+                        <div class="card-body" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+                            <center><h4><b>Product Fields To Show</b></h4></center>
+                            <br>
+                            <br>
+                            <form action="" method="post" >{% csrf_token %}
+<div  style="margin-left:10%;">
+<div class="form-group row">
+
+    <label class="col-md-2 control-label">Product Code :
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck1">
+  <label class="custom-control-label" for="customCheck1"></label>
+</div>
+  </div>
+
+ <label class="col-md-2 control-label">HSN Code :
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+       {% if 'hsn_code' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" checked id="customCheck2un">
+      {% else %}
+        <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" id="customCheck2">
+
+      {% endif %}
+  <label class="custom-control-label" for="customCheck2"></label>
+</div>
+  </div>
+  </div>
+<div class="form-group row">
+
+    <label class="col-md-2 control-label">Sub Sub Model :
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" id="customCheck3">
+  <label class="custom-control-label" for="customCheck3"></label>
+</div>
+  </div>
+
+ <label class="col-md-2 control-label">Platform Size :
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" id="customCheck8">
+  <label class="custom-control-label" for="customCheck8"></label>
+</div>
+  </div>
+  </div>
+<div class="form-group row">
+
+    <label class="col-md-2 control-label">Product Description :
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+    {% if 'product_desc' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_desc" checked id="customCheck42">
+    {% else %}
+      <input type="checkbox" class="custom-control-input" name="checks[]" value="product_desc" id="customCheck4">
+
+    {% endif %}
+  <label class="custom-control-label" for="customCheck4"></label>
+</div>
+  </div>
+
+ <label class="col-md-2 control-label">Price :
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" id="customCheck5">
+  <label class="custom-control-label" for="customCheck5"></label>
+</div>
+  </div>
+  </div>
+<div class="form-group row">
+
+    <label class="col-md-2 control-label">Product Image :
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_image" id="customCheck6">
+  <label class="custom-control-label" for="customCheck6"></label>
+</div>
+  </div>
+  </div>
+</div>
+                                <center>
+                                    <button style="background-color: #FC6E20;" class="btn btn-primary" type="submit" name="submit3" >Save</button>
+                                </center>
+                            </form>
+
+                        </div>
+
+                    </div>
 
 
 
@@ -728,6 +748,8 @@ function myFunction_call() {
 </center>
 
 </form>
+
+
 
                           </div>
               </div>

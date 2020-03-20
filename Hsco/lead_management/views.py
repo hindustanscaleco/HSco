@@ -211,6 +211,7 @@ def update_view_lead(request,id):
     lead_id = Lead.objects.get(id=id)
 
     lead_pi_products = Pi_product.objects.filter(lead_id=id)
+    hfu = History_followup.objects.filter(follow_up_section=id).last()
 
     followup_products_list = Followup_product.objects.filter(follow_up_section=Follow_up_section.objects.get(lead_id=id).id)
 
@@ -248,7 +249,7 @@ def update_view_lead(request,id):
     form = Customer_detailForm(initial=customer_initial_data)
     form2 = Deal_detailForm(initial=deal_details_initial_data)
     form3 = Pi_sectionForm()
-    form4 = Follow_up_sectionForm()
+    form4 = Follow_up_sectionForm(initial={'whatsappno':customer_id.contact_no,})
     context = {
         'form': form,
         'form2': form2,
@@ -257,6 +258,7 @@ def update_view_lead(request,id):
         'lead_id': lead_id,
         'lead_pi_products': lead_pi_products,
        'followup_products_list': followup_products_list,
+        'hfu':hfu.fields,
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
         pi_id = Pi_section.objects.get(lead_id=id)
@@ -1272,13 +1274,22 @@ td {
                 item2.save()
         elif 'submit3' in request.POST:
             selected_fields = request.POST.getlist('checks[]')
-            final_list =[]
-            for item in selected_fields:
+            hfu=History_followup.objects.filter(follow_up_section=id).last()
+            History_followup.objects.filter(id=hfu.id).update(fields=selected_fields)
+        elif 'submit5' in request.POST:
+            whatsappno= request.POST.get('whatsappno')
+            whatsapp2= request.POST.get('whatsapp2')
+            hfu = History_followup.objects.filter(follow_up_section=id).last()
+            selected_fields = hfu.fields
+            selected_fields2 = selected_fields.replace("'","").strip('][').split(', ')
+
+            final_list=[]
+            for item in selected_fields2:
                 pro_list=Product.objects.filter(id=1).values_list(item, flat=True)
                 for ite,lt in enumerate(pro_list):
-                    final_list = final_list+[lt]
-            print(final_list)
-            print("final_list")
+                    final_list = final_list+[item+' : '+str(lt)]
+
+            return redirect('https://api.whatsapp.com/send?phone=91'+whatsappno+'&text='+whatsapp2+str(final_list))
 
 
 
@@ -1298,10 +1309,7 @@ def select_product_followup(request,id):
         if 'product_id' in request.POST:
             is_last_product_yes = request.POST.get('is_last_product_yes')
             product_id = request.POST.get('product_id')
-            print(product_id)
-            print(product_id)
-            print(product_id)
-            print(product_id)
+
             hf = History_followup()
             hf.fields = ""
             hf.content = ""
@@ -1322,10 +1330,7 @@ def select_product_followup(request,id):
             type_of_scale = request.POST.get('type_of_scale')
             sub_model = request.POST.get('sub_model')
             sub_sub_model = request.POST.get('sub_sub_model')
-            print(model_of_purchase)
-            print(type_of_scale)
-            print(sub_model)
-            print(sub_sub_model)
+
             if (sub_sub_model == None or sub_sub_model == ""):
                 product_avail = Product.objects.filter(scale_type=type_of_scale, main_category=model_of_purchase,
                                                        sub_category=sub_model)
