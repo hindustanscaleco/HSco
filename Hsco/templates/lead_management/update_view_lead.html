@@ -673,15 +673,28 @@ function myFunction_call() {
 <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
     <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
                <table style="font-size: 14px;">
-
-                   {% for item in followup_products_list %}
-
   <tr>
     <td>Product Code:</td>
-      <td colspan="5" style="text-align: center;"> Product Image <label style="float:right;" class="custom-control-label" for="customCheck01"></label> <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck01"> </td>
+      <td colspan="5" style="text-align: center;"> Product Image  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck01"><label style="float:right;" class="custom-control-label" for="customCheck01"></label> src="{{item.product_id.product_image.url}}" </td>
+
+  </tr><tr>
+    <td>HSN Code:</td>
+</tr>
+<tr>
+    <td>Sub Sub Model</td>
+</tr>
+<tr>
+    <td>Quantity</td>
+               </tr>
+
+<tr>
+    <td>Product Description</td>
+               </tr>
+
+<tr>
+    <td>Rate :</td>
 
   </tr>
-
 </table>
               </div>
                           </div>
@@ -693,59 +706,29 @@ function myFunction_call() {
                <table style="font-size: 14px;">
   <tr>
     <td>Product Code:</td>
-      <td colspan="5">Product Image <label style="float:right;" class="custom-control-label" for="customCheck02"></label> <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck02"> src="{{item.product_id.product_image.url}}" </td>
+      <td colspan="5">Product Image  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck02"> <label style="float:right;" class="custom-control-label" for="customCheck02"></label>src="{{item.product_id.product_image.url}}" </td>
 
+  </tr><tr>
+    <td>HSN Code:</td>
 </tr>
 <tr>
-    <td>Sub Sub Model: {{item.product_id.sub_sub_category}} </td>
+    <td>Sub Sub Model</td>
 </tr>
 <tr>
-    <td>Platform Size: {{item.product_id.platform_size}} </td>
+    <td>Quantity</td>
                </tr>
 
 <tr>
-    <td>Product Description: {{item.product_id.product_desc}} </td>
+    <td>Product Description</td>
                </tr>
 
 <tr>
-    <td>Rate : {{item.product_id.cost_price}} </td>
+    <td>Rate :</td>
 
   </tr>
-                   {% endfor %}
 </table>
               </div>
                           </div>
-
-                         <br>
-<!--                         <div class="card shadow">-->
-<!--<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">-->
-<!--    &lt;!&ndash;<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>&ndash;&gt;-->
-<!--               <table style="font-size: 14px;">-->
-<!--  <tr>-->
-<!--    <td>Product Code:</td>-->
-<!--      <td colspan="5">Product Image</td>-->
-
-<!--  </tr><tr>-->
-<!--    <td>HSN Code:</td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td>Sub Sub Model</td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td>Quantity</td>-->
-<!--               </tr>-->
-
-<!--<tr>-->
-<!--    <td>Product Description</td>-->
-<!--               </tr>-->
-
-<!--<tr>-->
-<!--    <td>Rate :</td>-->
-
-<!--  </tr>-->
-<!--</table>-->
-<!--              </div>-->
-<!--                          </div>-->
 
 
 
