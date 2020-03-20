@@ -95,7 +95,7 @@ class History_followup(models.Model):
 
 
 class Followup_product(models.Model):
-    history_follow_up = models.ForeignKey(History_followup, on_delete=models.CASCADE, null=True, blank=True)
+    follow_up_section = models.ForeignKey(Follow_up_section,on_delete=models.CASCADE,null=True,blank=True)
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
 
 
