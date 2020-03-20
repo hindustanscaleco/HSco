@@ -572,7 +572,7 @@ function myFunction_call() {
                             <center><h4><b>Product Fields To Show</b></h4></center>
                             <br>
                             <br>
-                            <form>
+                            <form action="" method="post" >{% csrf_token %}
 <div  style="margin-left:10%;">
 <div class="form-group row">
 
@@ -592,7 +592,7 @@ function myFunction_call() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck2">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" id="customCheck2">
   <label class="custom-control-label" for="customCheck2"></label>
 </div>
   </div>
@@ -605,17 +605,17 @@ function myFunction_call() {
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck3">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" id="customCheck3">
   <label class="custom-control-label" for="customCheck3"></label>
 </div>
   </div>
 
- <label class="col-md-2 control-label">Quantity :
+ <label class="col-md-2 control-label">Platform Size :
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck8">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" id="customCheck8">
   <label class="custom-control-label" for="customCheck8"></label>
 </div>
   </div>
@@ -628,17 +628,17 @@ function myFunction_call() {
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck4">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_desc" id="customCheck4">
   <label class="custom-control-label" for="customCheck4"></label>
 </div>
   </div>
 
- <label class="col-md-2 control-label">Rate :
+ <label class="col-md-2 control-label">Price :
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck5">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" id="customCheck5">
   <label class="custom-control-label" for="customCheck5"></label>
 </div>
   </div>
@@ -651,13 +651,15 @@ function myFunction_call() {
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck6">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_image" id="customCheck6">
   <label class="custom-control-label" for="customCheck6"></label>
 </div>
   </div>
   </div>
 </div>
-                                <center><input type="button" value="Save" style="background-color: #FC6E20;" class="btn btn-primary"></center>
+                                <center>
+                                    <button style="background-color: #FC6E20;" class="btn btn-primary" type="submit" name="submit3" >Save</button>
+                                </center>
                             </form>
 
                         </div>
@@ -671,64 +673,49 @@ function myFunction_call() {
                          <br>
                          <div class="card shadow">
 <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
-    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
+
+
                <table style="font-size: 14px;">
-  <tr>
-    <td>Product Code:</td>
-      <td colspan="5" style="text-align: center;"> Product Image  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck01"><label style="float:right;" class="custom-control-label" for="customCheck01"></label> src="{{item.product_id.product_image.url}}" </td>
 
-  </tr><tr>
-    <td>HSN Code:</td>
-</tr>
-<tr>
-    <td>Sub Sub Model</td>
-</tr>
-<tr>
-    <td>Quantity</td>
-               </tr>
+                     {% for item in followup_products_list %}
 
-<tr>
-    <td>Product Description</td>
-               </tr>
+ <tr>
+    <td colspan="5" style="text-align: center;"><input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck01"><label class="custom-control-label" for="customCheck01">Select Product</label>
+</td>
 
-<tr>
-    <td>Rate :</td>
 
   </tr>
+  <tr>
+    <td>Product Code:</td>
+      <td colspan="5" style="text-align: center;"> Product Image   </td>
+
+  </tr>
+                   <tr>
+    <td>HSN Code: {{item.product_id.hsn_code}} </td>
+                   <td rowspan="5"><img height="150" width="150" src="{{item.product_id.product_image.url}}"></td>
+</tr>
+<tr>
+  <td>Sub Sub Model: {{item.product_id.sub_sub_category}} </td>
+</tr>
+<tr>
+   <td>Platform Size: {{item.product_id.platform_size}} </td>
+               </tr>
+
+<tr>
+   <td>Product Description: {{item.product_id.product_desc}} </td>
+               </tr>
+
+<tr>
+   <td>Rate : {{item.product_id.cost_price}} </td>
+
+  </tr>
+                   {% endfor %}
 </table>
               </div>
                           </div>
 
                          <br>
-                         <div class="card shadow">
-<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
-    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
-               <table style="font-size: 14px;">
-  <tr>
-    <td>Product Code:</td>
-      <td colspan="5">Product Image  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck02"> <label style="float:right;" class="custom-control-label" for="customCheck02"></label>src="{{item.product_id.product_image.url}}" </td>
 
-  </tr><tr>
-    <td>HSN Code:</td>
-</tr>
-<tr>
-    <td>Sub Sub Model</td>
-</tr>
-<tr>
-    <td>Quantity</td>
-               </tr>
-
-<tr>
-    <td>Product Description</td>
-               </tr>
-
-<tr>
-    <td>Rate :</td>
-
-  </tr>
-</table>
-              </div>
-                          </div>
 
 
 

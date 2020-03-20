@@ -1270,6 +1270,19 @@ td {
                 item2.call2 = call2
                 item2.lead_id = Lead.objects.get(id=id)
                 item2.save()
+        elif 'submit3' in request.POST:
+            selected_fields = request.POST.getlist('checks[]')
+            final_list =[]
+            for item in selected_fields:
+                pro_list=Product.objects.filter(id=1).values_list(item, flat=True)
+                for ite,lt in enumerate(pro_list):
+                    final_list = final_list+[lt]
+            print(final_list)
+            print("final_list")
+
+
+
+
 
     return render(request, 'lead_management/update_view_lead.html',context)
 
