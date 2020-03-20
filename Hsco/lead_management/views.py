@@ -211,7 +211,9 @@ def update_view_lead(request,id):
     lead_id = Lead.objects.get(id=id)
 
     lead_pi_products = Pi_product.objects.filter(lead_id=id)
-    print(lead_pi_products)
+
+    followup_products_list = Followup_product.objects.filter(follow_up_section=Follow_up_section.objects.get(lead_id=id).id)
+
     table = ''
     table2 = ''
     try:
@@ -254,6 +256,7 @@ def update_view_lead(request,id):
         'form4': form4,
         'lead_id': lead_id,
         'lead_pi_products': lead_pi_products,
+       'followup_products_list': followup_products_list,
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
         pi_id = Pi_section.objects.get(lead_id=id)
@@ -274,6 +277,7 @@ def update_view_lead(request,id):
             'form3': form3,
             'lead_id': lead_id,
             'lead_pi_products': lead_pi_products,
+
         }
         context.update(context2)
     else:
