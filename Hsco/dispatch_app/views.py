@@ -211,7 +211,7 @@ def add_dispatch_details(request):
         no_bundles = request.POST.get('no_bundles')
         transport_name = request.POST.get('transport_name')
         lr_no = request.POST.get('lr_no')
-        photo_lr_no = request.POST.get('photo_lr_no')
+        photo_lr_no = request.FILES.get('photo_lr_no')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
 
@@ -824,7 +824,7 @@ def update_dispatch_details(request,update_id):
         no_bundles = request.POST.get('no_bundles')
         transport_name = request.POST.get('transport_name')
         lr_no = request.POST.get('lr_no')
-        photo_lr_no = request.POST.get('photo_lr_no')
+        photo_lr_no = request.FILES.get('photo_lr_no')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
 
