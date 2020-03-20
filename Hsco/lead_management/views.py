@@ -12,7 +12,7 @@ from Hsco import settings
 from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm, Follow_up_sectionForm
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
-from .models import Lead, Pi_section, IndiamartLeadDetails
+from .models import Lead, Pi_section, IndiamartLeadDetails, History_followup, Follow_up_section, Followup_product
 
 from .models import Lead, Pi_section, Pi_product, Pi_History
 from customer_app.models import sub_model, main_model, sub_sub_model
@@ -268,14 +268,14 @@ def update_view_lead(request,id):
             'notes': pi_id.notes,
         }
         form3 = Pi_sectionForm(initial=pi_initial_data)
-        context = {
+        context2 = {
             'form': form,
             'form2': form2,
             'form3': form3,
             'lead_id': lead_id,
             'lead_pi_products': lead_pi_products,
         }
-        context.update(context)
+        context.update(context2)
     else:
         pass
 
@@ -1272,6 +1272,68 @@ td {
 def lead_report(request):
     return render(request,'lead_management/report_lead.html')
 
+def select_product_followup(request,id):
+    type_of_purchase_list =type_purchase.objects.all() #1
+    lead_id = Lead.objects.get(id=id)
+    products = Product.objects.all()
+    context={}
+    if request.method == 'POST' or request.method == 'FILES' :
+        if 'product_id' in request.POST:
+            is_last_product_yes = request.POST.get('is_last_product_yes')
+            product_id = request.POST.get('product_id')
+            print(product_id)
+            print(product_id)
+            print(product_id)
+            print(product_id)
+            hf = History_followup()
+            hf.fields = ""
+            hf.content = ""
+            hf.follow_up_section = Follow_up_section.objects.get(id=1)
+            hf.save()
+
+            follow_product = Followup_product()
+            follow_product.history_follow_up = History_followup.objects.get(id=hf.pk)
+            follow_product.product_id = Product.objects.get(id=product_id)
+            follow_product.save()
+
+            if is_last_product_yes == 'yes':
+                return redirect('/update_view_lead/' + str(id))
+            elif is_last_product_yes == 'no':
+                return redirect('/select_product_followup/' + str(id))
+        else:
+            model_of_purchase = request.POST.get('model_of_purchase')
+            type_of_scale = request.POST.get('type_of_scale')
+            sub_model = request.POST.get('sub_model')
+            sub_sub_model = request.POST.get('sub_sub_model')
+            print(model_of_purchase)
+            print(type_of_scale)
+            print(sub_model)
+            print(sub_sub_model)
+            if (sub_sub_model == None or sub_sub_model == ""):
+                product_avail = Product.objects.filter(scale_type=type_of_scale, main_category=model_of_purchase,
+                                                       sub_category=sub_model)
+            else:
+                product_avail = Product.objects.filter(scale_type=type_of_scale, main_category=model_of_purchase,
+                                                       sub_category=sub_model, sub_sub_category=sub_sub_model)
+
+            context23 = {
+                # 'lead_id': lead_id,
+                # 'type_purchase': type_of_purchase_list,
+                'product_avail': product_avail,
+            }
+            context.update(context23)
+
+
+
+
+
+    context2={
+        'lead_id':lead_id,
+        'type_purchase':type_of_purchase_list,
+        'products':products,
+    }
+    context.update(context2)
+    return render(request,'lead_management/select_product_followup.html', context)
 
 def select_product(request,id):
     type_of_purchase_list =type_purchase.objects.all() #1

@@ -555,8 +555,9 @@ function myFunction_call() {
 </div>
 <br>
 <center>
-<input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="Add Product">
-    {{form4.email_auto_manual}}
+      {{form4.email_auto_manual}}
+<input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="Send">
+
 
 </center>
 
@@ -629,7 +630,7 @@ function myFunction_call() {
 
 <center>
 
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Send</button>
+     <button type="submit" onclick="location.href='/select_product_followup/{{lead_id.pk}}'" style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button>
 </center>
 
 </form>
