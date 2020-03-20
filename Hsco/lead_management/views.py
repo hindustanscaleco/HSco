@@ -362,9 +362,9 @@ def update_view_lead(request,id):
             if Pi_section.objects.filter(lead_id=id).count() > 0:
 
                 item2 = Pi_section.objects.filter(lead_id=id).first()
-
                 item2.discount = discount
-                item2.upload_pi_file = upload_pi_file
+                if upload_pi_file != None  or '':
+                    item2.upload_pi_file = upload_pi_file
                 item2.select_pi_template = select_pi_template
                 item2.call = call
                 item2.email = email
@@ -374,7 +374,7 @@ def update_view_lead(request,id):
                                         'email', 'whatsapp','call2'  ])
                 if request.user.is_authenticated:
                         todays_date = str(datetime.date.today())
-                        gst_no = str(lead_id.customer_id.customer_gst_no)
+                        # gst_no = str(lead_id.customer_id.customer_gst_no)
                         text_content = ''
                         subject = 'Support'
                         html_content1 = '''<html>
