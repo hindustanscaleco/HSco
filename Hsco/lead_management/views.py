@@ -1280,10 +1280,10 @@ td {
             History_followup.objects.filter(id=hfu.id).update(fields=selected_fields)
         elif 'submit5' in request.POST:
             whatsappno= request.POST.get('whatsappno')
-            whatsapp2= request.POST.get('whatsapp2')
+            content= request.POST.get('content')
             hfu = History_followup.objects.filter(follow_up_section=id).last()
             selected_fields = hfu.fields
-            selected_fields2 = selected_fields.replace("'","").strip('][').split(', ')
+            selected_fields2 = selected_fields.replace("'","").strip('][').split(', ')  #convert string to list
 
             final_list=[]
             for item in selected_fields2:
@@ -1291,7 +1291,7 @@ td {
                 for ite,lt in enumerate(pro_list):
                     final_list = final_list+[item+' : '+str(lt)]
 
-            return redirect('https://api.whatsapp.com/send?phone=91'+whatsappno+'&text='+whatsapp2+str(final_list))
+            return redirect('https://api.whatsapp.com/send?phone=91'+whatsappno+'&text='+content+str(final_list))
 
 
 

@@ -71,6 +71,7 @@ class Follow_up_section(models.Model):
     is_email = models.BooleanField(default=False)
     is_whatsapp = models.BooleanField(default=False)
     is_call = models.BooleanField(default=False)
+    is_sms = models.BooleanField(default=False)
 
     whatsappno = models.CharField(max_length=120,null=True,blank=True)
     auto_manual_mode = models.CharField(default='Automatic', max_length=50, null=True, blank=True)
