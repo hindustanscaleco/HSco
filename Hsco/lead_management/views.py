@@ -9,7 +9,7 @@ from customer_app.models import type_purchase
 from stock_system.models import Product
 
 from Hsco import settings
-from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm, Follow_up_sectionForm
+from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm, Follow_up_sectionForm,Payment_detailsForm
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
 from .models import Lead, Pi_section, IndiamartLeadDetails, History_followup, Follow_up_section, Followup_product
@@ -250,11 +250,13 @@ def update_view_lead(request,id):
     form2 = Deal_detailForm(initial=deal_details_initial_data)
     form3 = Pi_sectionForm()
     form4 = Follow_up_sectionForm(initial={'whatsappno':customer_id.contact_no,})
+    form5 = Payment_detailsForm()
     context = {
         'form': form,
         'form2': form2,
         'form3': form3,
         'form4': form4,
+        'form5': form5,
         'lead_id': lead_id,
         'lead_pi_products': lead_pi_products,
        'followup_products_list': followup_products_list,
