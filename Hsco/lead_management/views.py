@@ -288,7 +288,7 @@ def update_view_lead(request,id):
         pass
 
     if request.method == 'POST' or request.method == 'FILES':
-        if  'submit1' in request.POST:
+        if 'submit1' in request.POST:
             customer_name = request.POST.get('customer_name')
             company_name = request.POST.get('company_name')
             address = request.POST.get('address')
@@ -304,6 +304,10 @@ def update_view_lead(request,id):
             requirement = request.POST.get('requirement')
             upload_requirement_file = request.FILES.get('upload_requirement_file')
             owner_of_opportunity = request.POST.get('owner_of_opportunity')
+            payment_channel = request.POST.get('payment_channel')
+            payment_receipt = request.POST.get('payment_receipt')
+            upload_pofile = request.POST.get('upload_pofile')
+            payment_received_date = request.POST.get('payment_received_date')
 
             item2 = Lead.objects.get(id=id)
 

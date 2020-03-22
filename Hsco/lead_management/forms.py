@@ -460,13 +460,6 @@ class Payment_detailsForm(forms.ModelForm):
                                              }
                                          ))
 
-    po_file = forms.CharField(max_length=80, required=True,
-                                         widget=forms.TextInput(
-                                             attrs={
-                                                 'type': 'date',
-                                                 'class': 'form-control',
-                                             }
-                                         ))
     notes = forms.CharField(max_length=80, required=True,
                                          widget=forms.Textarea(
                                              attrs={
