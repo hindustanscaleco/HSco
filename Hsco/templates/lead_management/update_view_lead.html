@@ -542,9 +542,6 @@ function myFunction_call() {
                     <form action="" method='POST' enctype="multipart/form-data"  target="_blank">{% csrf_token %}
 
 
-
-
-
                     <label class="col-md-10 control-label">Whatsapp:</label><a href="/lead_follow_up_histroy/"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp<input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
                                 <br> <br>{{ form4.whatsappno }}
 
@@ -552,7 +549,7 @@ function myFunction_call() {
 <br>
                                 <label class="col-md-2 control-label">Content:</label>
 
-                                {{ form4.whatsapp2 }}
+                                {{ form4.content }}
 
 <br>
 <div class="row">
@@ -563,18 +560,9 @@ function myFunction_call() {
 <br>
 <center>
       {{form4.email_auto_manual}}
-
-
 </center>
 
                     <br>
-
-
-
-
-
-
-
                          <br>
                          <div class="card shadow">
 <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
@@ -585,7 +573,7 @@ function myFunction_call() {
                      {% for item in followup_products_list %}
 
  <tr>
-    <td colspan="5" style="text-align: center;"><input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck01"><label class="custom-control-label" for="customCheck01">Select Product</label>
+    <td colspan="5" style="text-align: center;"><input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck{{forloop.counter}}"><label class="custom-control-label" for="customCheck{{forloop.counter}}">Select Product</label>
 </td>
 
 
