@@ -384,7 +384,6 @@ class Follow_up_sectionForm(forms.ModelForm):
         )
 
 
-
     email_auto_manual = forms.CharField(
         widget=forms.Select(
             choices=auto_manual_email,
