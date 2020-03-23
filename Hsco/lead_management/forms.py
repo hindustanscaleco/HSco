@@ -44,11 +44,22 @@ auto_manual_email = [
 
 
 select_pi_template = [
-    ('Select','Select'),
+    ('','Select'),
     ('1','Proforma Invoice Hindustan Sales and Consultancy'),
     ('2','HSI PI Format'),
 ]
 
+select_gst_type= [
+    ('','Select'),
+    ('CGST / SGST','CGST / SGST'),
+    ('IGST','IGST'),
+]
+
+discount_type= [
+    ('','Select'),
+    ('percent','%'),
+    ('rupee','₹'),
+]
 
 
 customer_exist_new = [
@@ -254,6 +265,24 @@ class Pi_sectionForm(forms.ModelForm):
                'class': 'form-control',
            }
        ))
+
+    select_gst_type = forms.CharField(required=False,
+       widget=forms.Select(choices=select_gst_type,
+             attrs={
+                 'type': 'text',
+                 'placeholder': "Select GST Type",
+                 'class': 'form-control',
+             }
+             ))
+
+    discount_type = forms.CharField(required=False,
+          widget=forms.Select(choices=discount_type,
+          attrs={
+              'type': 'text',
+              'placeholder': "Discount Type",
+              'class': 'form-control',
+          }
+          ))
 
     call = forms.CharField(required=False,
         widget=forms.Textarea(

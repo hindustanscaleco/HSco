@@ -450,10 +450,11 @@ tr:nth-child(even) {
                                   <div class="input-group">
                                   <span class="input-group-addon icon-border"><i class="fa fa-percent faicons"></i></span>
                                 {{ form3.discount }}
-                                      <select class="form-control" id="discount_type">
-                                      <option value="volvo">%</option>
-                                      <option value="saab">₹</option>
-                                      </select>
+                                {{ form3.discount_type }}
+                                      <!--<select class="form-control" id="discount_type">-->
+                                      <!--<option value="volvo">%</option>-->
+                                      <!--<option value="saab">₹</option>-->
+                                      <!--</select>-->
                           </div>
                         </div>
 
@@ -477,6 +478,14 @@ tr:nth-child(even) {
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
                                 {{ form3.select_pi_template }}
+                                                              </div>
+                          </div>
+
+                                         <label class="col-md-2 control-label">Select GST Type :</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.select_gst_type }}
                                                               </div>
                           </div>
                             </div>

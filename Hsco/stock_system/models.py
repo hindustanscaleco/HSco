@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
+from customer_app.models import type_purchase, main_model, sub_model, sub_sub_model
 
 
 class Stock_System(models.Model):
@@ -20,10 +21,10 @@ class Stock_System(models.Model):
 
 class Product(models.Model):
     # lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
-    scale_type = models.CharField(max_length=150, null=True, blank=True)
-    main_category = models.CharField(max_length=150, null=True, blank=True)
-    sub_category = models.CharField(max_length=150, null=True, blank=True)
-    sub_sub_category = models.CharField(max_length=150, null=True, blank=True)  #PRODUCT CODE
+    scale_type = models.ForeignKey(type_purchase, null=True, blank=True,on_delete=models.CASCADE)
+    main_category = models.ForeignKey(main_model, null=True, blank=True,on_delete=models.CASCADE)
+    sub_category = models.ForeignKey(sub_model, null=True, blank=True,on_delete=models.CASCADE)
+    sub_sub_category = models.ForeignKey(sub_sub_model, null=True, blank=True,on_delete=models.CASCADE)  #PRODUCT CODE
     hsn_code = models.CharField(max_length=150, null=True, blank=True)
     product_image = models.ImageField(upload_to='lead_product_image/', blank=True, null=True)
     max_capacity = models.CharField(max_length=150, null=True, blank=True)
