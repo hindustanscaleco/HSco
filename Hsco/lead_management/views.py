@@ -252,7 +252,7 @@ def update_view_lead(request,id):
     form2 = Deal_detailForm(initial=deal_details_initial_data)
     form3 = Pi_sectionForm()
     form4 = Follow_up_sectionForm(initial={'whatsappno':customer_id.contact_no,})
-    form6 = History_followupForm()
+    form6 = History_followupForm(request.POST or None)
     form5 = Payment_detailsForm()
     context = {
         'form': form,

@@ -117,6 +117,10 @@ class Followup_product(models.Model):
     selling_price = models.FloatField(null=True, blank=True)
     carton_size = models.CharField(max_length=150, null=True, blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now, )
+    # is_whatsapp_check = models.BooleanField(default=False, null=True,blank=True)
+    # is_call2_check = models.BooleanField(default=False, null=True,blank=True)
+    # email_check = models.BooleanField(default=False, null=True,blank=True)
+    # sms_check = models.BooleanField(default=False, null=True,blank=True)
 
 
 class IndiamartLeadDetails(models.Model):
