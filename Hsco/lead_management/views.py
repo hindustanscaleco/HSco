@@ -9,7 +9,9 @@ from customer_app.models import type_purchase
 from stock_system.models import Product
 
 from Hsco import settings
-from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm, Follow_up_sectionForm
+
+from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm, Follow_up_sectionForm, History_followupForm, Payment_detailsForm
+
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
 from .models import Lead, Pi_section, IndiamartLeadDetails, History_followup, Follow_up_section, Followup_product
@@ -213,7 +215,7 @@ def update_view_lead(request,id):
     lead_pi_products = Pi_product.objects.filter(lead_id=id)
     hfu = History_followup.objects.filter(follow_up_section=id).last()
 
-    followup_products_list = Followup_product.objects.filter(follow_up_section=Follow_up_section.objects.get(lead_id=id).id)
+    followup_products_list = Followup_product.objects.filter(lead_id=id)
 
     table = ''
     table2 = ''
@@ -249,15 +251,19 @@ def update_view_lead(request,id):
     form2 = Deal_detailForm(initial=deal_details_initial_data)
     form3 = Pi_sectionForm()
     form4 = Follow_up_sectionForm(initial={'whatsappno':customer_id.contact_no,})
+    form6 = History_followupForm()
+    form5 = Payment_detailsForm()
     context = {
         'form': form,
         'form2': form2,
         'form3': form3,
         'form4': form4,
+        'form5': form5,
         'lead_id': lead_id,
         'lead_pi_products': lead_pi_products,
        'followup_products_list': followup_products_list,
         'hfu':hfu.fields,
+        'form6':form6,
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
         pi_id = Pi_section.objects.get(lead_id=id)
@@ -286,7 +292,7 @@ def update_view_lead(request,id):
         pass
 
     if request.method == 'POST' or request.method == 'FILES':
-        if  'submit1' in request.POST:
+        if 'submit1' in request.POST:
             customer_name = request.POST.get('customer_name')
             company_name = request.POST.get('company_name')
             address = request.POST.get('address')
@@ -302,6 +308,10 @@ def update_view_lead(request,id):
             requirement = request.POST.get('requirement')
             upload_requirement_file = request.FILES.get('upload_requirement_file')
             owner_of_opportunity = request.POST.get('owner_of_opportunity')
+            payment_channel = request.POST.get('payment_channel')
+            payment_receipt = request.POST.get('payment_receipt')
+            upload_pofile = request.POST.get('upload_pofile')
+            payment_received_date = request.POST.get('payment_received_date')
 
             item2 = Lead.objects.get(id=id)
 
@@ -2190,10 +2200,10 @@ td {
             History_followup.objects.filter(id=hfu.id).update(fields=selected_fields)
         elif 'submit5' in request.POST:
             whatsappno= request.POST.get('whatsappno')
-            whatsapp2= request.POST.get('whatsapp2')
+            content= request.POST.get('content')
             hfu = History_followup.objects.filter(follow_up_section=id).last()
             selected_fields = hfu.fields
-            selected_fields2 = selected_fields.replace("'","").strip('][').split(', ')
+            selected_fields2 = selected_fields.replace("'","").strip('][').split(', ')  #convert string to list
 
             final_list=[]
             for item in selected_fields2:
@@ -2201,7 +2211,7 @@ td {
                 for ite,lt in enumerate(pro_list):
                     final_list = final_list+[item+' : '+str(lt)]
 
-            return redirect('https://api.whatsapp.com/send?phone=91'+whatsappno+'&text='+whatsapp2+str(final_list))
+            return redirect('https://api.whatsapp.com/send?phone=91'+whatsappno+'&text='+content+str(final_list))
 
 
 

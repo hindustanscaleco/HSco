@@ -551,39 +551,64 @@ function myFunction_call() {
                     <form action="" method='POST' enctype="multipart/form-data"  target="_blank">{% csrf_token %}
 
 
-
-
-
-                    <label class="col-md-10 control-label">Whatsapp:</label><a href="/lead_follow_up_histroy/"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp<input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
-                                <br> <br>{{ form4.whatsappno }}
-
-
-<br>
+                    <label class="col-md-10 control-label">Whatsapp:</label>
+                        <a href="/lead_follow_up_histroy/"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp
+                        <input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
+                                <br>
+                        <br>
+                        {{ form6.wa_no }}
+                        <br>
                                 <label class="col-md-2 control-label">Content:</label>
 
-                                {{ form4.whatsapp2 }}
+                                {{ form6.wa_msg }}
+                        <br>
+                        <hr>
+                        <hr>
 
-<br>
+                         <label class="col-md-2 control-label">Email Subject:</label>
+
+                                {{ form6.email_subject }}
+                        <br>
+                           <label class="col-md-2 control-label">Email Message:</label>
+
+                                {{ form6.email_msg }}
+                        <br>
+                        <hr>
+                        <hr>
+
+                            <br>
+                           <label class="col-md-2 control-label">Call Response:</label>
+
+                                {{ form6.call_response }}
+                        <br>
+                        <hr>
+                        <hr>
+                            <br>
+                           <label class="col-md-2 control-label">SMS Content:</label>
+
+                                {{ form6.sms_msg }}
+                        <br>
+                        <hr>
+                        <hr>
+
+
 <div class="row">
                             <label class="col-md-2 control-label">Medium of Selection:</label>
 
-    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp  {{ form3.email  }} <div class="col-xl-2 col-lg-2"></div> <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form3.whatsapp  }} <div class="col-xl-2 col-lg-2"></div>   <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form3.call2  }}
+    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp {{ form6.is_email  }}
+    <div class="col-xl-2 col-lg-2"></div>
+    <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form6.is_whatsapp  }}
+    <div class="col-xl-2 col-lg-2"></div>
+    <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_call  }}
+    <div class="col-xl-2 col-lg-2"></div>
+    <label class="form-check-label">SMS:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_sms  }}
 </div>
 <br>
 <center>
       {{form4.email_auto_manual}}
-
-
 </center>
 
                     <br>
-
-
-
-
-
-
-
                          <br>
                          <div class="card shadow">
 <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
@@ -594,7 +619,7 @@ function myFunction_call() {
                      {% for item in followup_products_list %}
 
  <tr>
-    <td colspan="5" style="text-align: center;"><input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck01"><label class="custom-control-label" for="customCheck01">Select Product</label>
+    <td colspan="5" style="text-align: center;"><input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck{{forloop.counter}}"><label class="custom-control-label" for="customCheck{{forloop.counter}}">Select Product</label>
 </td>
 
 
@@ -784,7 +809,7 @@ function myFunction_call() {
                               <label class="col-md-2 control-label">Payment Channel:</label>
                                   <div class="col-md-3 inputGroupContainer">
                                   <div class="input-group">
-                                {{ form.payment_channel }}
+                                {{ form5.payment_channel }}
                           </div>
                         </div>
 
@@ -793,7 +818,7 @@ function myFunction_call() {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.payment_receipt }}
+                                {{ form5.payment_receipt }}
                             </div>
                              </div>
                           </div>
@@ -804,7 +829,7 @@ function myFunction_call() {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.payment_received_date }}
+                                {{ form5.payment_received_date }}
                             </div>
                           </div>
 
@@ -812,7 +837,7 @@ function myFunction_call() {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.upload_po_file }}
+                                {{ form5.upload_pofile }}
                    </div>
                              </div>
                           </div>
@@ -824,7 +849,7 @@ function myFunction_call() {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.notes }}
+                                {{ form5.notes }}
                             </div>
                              </div>
 

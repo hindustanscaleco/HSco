@@ -1,9 +1,9 @@
 from django import forms
-from .models import Lead, Pi_section, Follow_up_section
+from .models import Lead, Pi_section, Follow_up_section, History_followup, Payment_details
+
 import sys
 sys.path.append("..")
 from customer_app.models import Customer_Details
-
 
 auto_manual_email = [
     ('Automatic', 'Automatic'),
@@ -15,6 +15,12 @@ payment_channel = [
     ('Cash', 'Cash'),
 ]
 
+
+payment_method = [
+    ('Cheque','Cheque'),
+    ('Card','Card'),
+    ('Cash','Cash')
+]
 
 industory_dropdown = [
         ('Energy industry','Energy industry'),
@@ -41,13 +47,12 @@ auto_manual_email = [
     ('Manual', 'Manual'),
 ]
 
-
-
 select_pi_template = [
     ('','Select'),
     ('1','Proforma Invoice Hindustan Sales and Consultancy'),
     ('2','HSI PI Format'),
 ]
+
 
 select_gst_type= [
     ('','Select'),
@@ -60,7 +65,6 @@ discount_type= [
     ('percent','%'),
     ('rupee','₹'),
 ]
-
 
 customer_exist_new = [
     ('New','New'),
@@ -79,8 +83,6 @@ stage = [
     ('Postponed','Postponed'),
 ]
 
-
-
 class Customer_detailForm(forms.ModelForm):
     customer_name = forms.CharField(max_length=80, required=True,
        widget=forms.TextInput(
@@ -88,11 +90,7 @@ class Customer_detailForm(forms.ModelForm):
                'type': 'text',
                'placeholder': "Customer Name",
                'class': 'form-control',
-           }
-       ))
-
-
-
+           }))
 
     company_name = forms.CharField(max_length=80, required=False,
        widget=forms.TextInput(
@@ -100,8 +98,7 @@ class Customer_detailForm(forms.ModelForm):
                'type': 'text',
                'placeholder': "Company Name",
                'class': 'form-control',
-           }
-       ))
+           }))
 
     contact_no = forms.CharField(max_length=80, required=True,
        widget=forms.TextInput(
@@ -109,8 +106,7 @@ class Customer_detailForm(forms.ModelForm):
                'type': 'text',
                'placeholder': "Contact No",
                'class': 'form-control',
-           }
-       ))
+           }))
 
     customer_email_id = forms.CharField(max_length=80, required=False,
        widget=forms.TextInput(
@@ -118,8 +114,7 @@ class Customer_detailForm(forms.ModelForm):
                'type': 'email',
                'placeholder': "Customer Email ID",
                'class': 'form-control',
-           }
-       ))
+           }))
 
     address = forms.CharField(max_length=100, required=True,
        widget=forms.TextInput(
@@ -128,8 +123,7 @@ class Customer_detailForm(forms.ModelForm):
                'placeholder': "Address",
                'class': 'form-control',
 
-           }
-       ))
+           }))
 
     customer_industry = forms.CharField(max_length=80, required=True,
     widget=forms.Select(
@@ -138,8 +132,7 @@ class Customer_detailForm(forms.ModelForm):
                'type': 'text',
                'placeholder': "Industry",
                'class': 'form-control',
-           }
-       ))
+           }))
 
     customer_gst_no = forms.CharField(max_length=15, min_length=15, required=False,
        widget=forms.TextInput(
@@ -147,16 +140,12 @@ class Customer_detailForm(forms.ModelForm):
                'type': 'text',
                'placeholder': "Customer GST Number",
                'class': 'form-control',
-
-           }
-       ))
+           }))
 
 
     class Meta:
         model = Customer_Details
         fields = "__all__"
-
-
 
 
 
@@ -353,7 +342,6 @@ class Pi_sectionForm(forms.ModelForm):
                                                   }
                                               ))
 
-
     payment_received_date = forms.CharField(max_length=80, required=True,
                                          widget=forms.TextInput(
                                              attrs={
@@ -387,47 +375,97 @@ class Pi_sectionForm(forms.ModelForm):
         model = Pi_section
         fields = "__all__"
 
+class History_followupForm(forms.ModelForm):
+    is_email = forms.CheckboxInput(
+        attrs={
+            'type': 'checkbox',
+            'id': 'is_email',
+            'class': 'form-control',
+        })
+
+    is_whatsapp = forms.CheckboxInput(
+        attrs={
+            'type': 'checkbox',
+            'id': 'is_whatsapp',
+            'class': 'form-control',
+        }
+    )
+
+    is_call = forms.CheckboxInput(
+        attrs={
+            'type': 'checkbox',
+            'id': 'is_call',
+            'class': 'form-control',
+        }
+    )
+    is_sms = forms.CheckboxInput(
+        attrs={
+            'type': 'checkbox',
+            'id': 'is_sms',
+            'class': 'form-control',
+        }
+    )
+    wa_no = forms.CharField(max_length=20, required=True,
+                                 widget=forms.TextInput(
+                                     attrs={
+                                         'type': 'text',
+                                         'placeholder': "Whatsapp No",
+                                         'class': 'form-control',
+                                     }
+                                 ))
+
+    wa_msg = forms.CharField(max_length=120, required=True,
+                             widget=forms.Textarea(
+                                 attrs={
+                                     'type': 'text',
+                                     'placeholder': "Emai Content",
+                                     'class': 'form-control',
+                                 }))
+    email_subject = forms.CharField(max_length=120, required=True,
+                                    widget=forms.TextInput(
+                                        attrs={
+                                            'type': 'text',
+                                            'placeholder': "Whatsapp Message",
+                                            'class': 'form-control',
+                                        }
+                                    ))
+    email_msg = forms.CharField(max_length=120, required=True,
+                                    widget=forms.Textarea(
+                                        attrs={
+                                            'type': 'text',
+                                            'placeholder': "Emai Content",
+                                            'class': 'form-control',
+                                        }))
+    call_response = forms.CharField(max_length=120, required=True,
+                                    widget=forms.Textarea(
+                                        attrs={
+                                            'type': 'text',
+                                            'placeholder': "Call Response",
+                                            'class': 'form-control',
+                                        }))
+    sms_msg = forms.CharField(max_length=120, required=True,
+                                    widget=forms.Textarea(
+                                        attrs={
+                                            'type': 'text',
+                                            'placeholder': "Call Response",
+                                            'class': 'form-control',
+                                        }))
+
+    class Meta:
+        model = History_followup
+        fields = "__all__"
+
+
 
 class Follow_up_sectionForm(forms.ModelForm):
 
-    call = forms.CharField(max_length=80, required=True,
+    subject = forms.CharField(max_length=80, required=True,
        widget=forms.Textarea(
            attrs={
                'type': 'text',
                'placeholder': "Call",
                'class': 'form-control',
-           }
-       ))
-    email = forms.CheckboxInput(
-            attrs={
-                'type':'checkbox',
-                'id':'email',
-                'value':'email',
-                'class': 'form-control',
-            }
-        )
-
-
-    whatsapp = forms.CheckboxInput(
-            attrs={
-                'type':'checkbox',
-                'id':'whatsapp',
-                'value':'whatsapp',
-                'class': 'form-control',
-            }
-        )
-
-
-
-    call2 = forms.CheckboxInput(
-            attrs={
-                'type':'checkbox',
-                'id':'call',
-                'value':'call',
-                'class': 'form-control',
-            }
-        )
-
+           }))
 
 
     email_auto_manual = forms.CharField(
@@ -436,19 +474,9 @@ class Follow_up_sectionForm(forms.ModelForm):
             attrs={
                 'default':"automatic",
                 'class':'btn btn-outline-primary',
-
-
             }
         ))
 
-    whatsapp2 = forms.CharField(max_length=80, required=True,
-                                         widget=forms.Textarea(
-                                             attrs={
-                                                 'type': 'text',
-                                                 'placeholder':'Notes',
-                                                 'class': 'form-control',
-                                             }
-                                         ))
     whatsappno = forms.CharField(max_length=80, required=True,
        widget=forms.TextInput(
            attrs={
@@ -462,4 +490,55 @@ class Follow_up_sectionForm(forms.ModelForm):
 
     class Meta:
         model = Follow_up_section
+        fields = "__all__"
+
+
+class Payment_detailsForm(forms.ModelForm):
+    payment_channel = forms.CharField(
+        widget=forms.Select(
+            choices=payment_method,
+            attrs={
+                'default':"automatic",
+                'class':'btn btn-outline-primary',
+            }
+        ))
+
+    payment_receipt = forms.CharField(max_length=80, required=True,
+                                              widget=forms.TextInput(
+                                                  attrs={
+                                                      'type': 'file',
+                                                      'placeholder': "FILE",
+                                                      'class': 'form-control',
+                                                  }
+                                              ))
+
+    upload_pofile = forms.CharField(max_length=80, required=True,
+                                              widget=forms.TextInput(
+                                                  attrs={
+                                                      'type': 'file',
+                                                      'placeholder': "FILE",
+                                                      'class': 'form-control',
+                                                  }
+                                              ))
+
+    payment_received_date = forms.CharField(max_length=80, required=True,
+                                         widget=forms.TextInput(
+                                             attrs={
+                                                 'type': 'date',
+                                                 'class': 'form-control',
+                                             }
+                                         ))
+
+    notes = forms.CharField(max_length=80, required=True,
+                                         widget=forms.Textarea(
+                                             attrs={
+                                                 'type': 'text',
+                                                 'placeholder':'Notes',
+                                                 'class': 'form-control',
+                                             }
+                                         ))
+
+
+    class Meta:
+        model = Payment_details
         fields = "__all__"
