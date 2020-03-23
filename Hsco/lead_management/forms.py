@@ -1,5 +1,5 @@
 from django import forms
-from .models import Lead, Pi_section, Follow_up_section
+from .models import Lead, Pi_section, Follow_up_section, History_followup
 import sys
 sys.path.append("..")
 from customer_app.models import Customer_Details
@@ -336,6 +336,87 @@ class Pi_sectionForm(forms.ModelForm):
         model = Pi_section
         fields = "__all__"
 
+class History_followupForm(forms.ModelForm):
+    is_email = forms.CheckboxInput(
+        attrs={
+            'type': 'checkbox',
+            'id': 'is_email',
+            'class': 'form-control',
+        })
+
+    is_whatsapp = forms.CheckboxInput(
+        attrs={
+            'type': 'checkbox',
+            'id': 'is_whatsapp',
+            'class': 'form-control',
+        }
+    )
+
+    is_call = forms.CheckboxInput(
+        attrs={
+            'type': 'checkbox',
+            'id': 'is_call',
+            'class': 'form-control',
+        }
+    )
+    is_sms = forms.CheckboxInput(
+        attrs={
+            'type': 'checkbox',
+            'id': 'is_sms',
+            'class': 'form-control',
+        }
+    )
+    wa_no = forms.CharField(max_length=20, required=True,
+                                 widget=forms.TextInput(
+                                     attrs={
+                                         'type': 'text',
+                                         'placeholder': "Whatsapp No",
+                                         'class': 'form-control',
+                                     }
+                                 ))
+
+    wa_msg = forms.CharField(max_length=120, required=True,
+                             widget=forms.Textarea(
+                                 attrs={
+                                     'type': 'text',
+                                     'placeholder': "Emai Content",
+                                     'class': 'form-control',
+                                 }))
+    email_subject = forms.CharField(max_length=120, required=True,
+                                    widget=forms.TextInput(
+                                        attrs={
+                                            'type': 'text',
+                                            'placeholder': "Whatsapp Message",
+                                            'class': 'form-control',
+                                        }
+                                    ))
+    email_msg = forms.CharField(max_length=120, required=True,
+                                    widget=forms.Textarea(
+                                        attrs={
+                                            'type': 'text',
+                                            'placeholder': "Emai Content",
+                                            'class': 'form-control',
+                                        }))
+    call_response = forms.CharField(max_length=120, required=True,
+                                    widget=forms.Textarea(
+                                        attrs={
+                                            'type': 'text',
+                                            'placeholder': "Call Response",
+                                            'class': 'form-control',
+                                        }))
+    sms_msg = forms.CharField(max_length=120, required=True,
+                                    widget=forms.Textarea(
+                                        attrs={
+                                            'type': 'text',
+                                            'placeholder': "Call Response",
+                                            'class': 'form-control',
+                                        }))
+
+    class Meta:
+        model = History_followup
+        fields = "__all__"
+
+
 
 class Follow_up_sectionForm(forms.ModelForm):
 
@@ -347,42 +428,6 @@ class Follow_up_sectionForm(forms.ModelForm):
                'class': 'form-control',
            }))
 
-    is_email = forms.CheckboxInput(
-            attrs={
-                'type':'checkbox',
-                'id':'email',
-
-                'class': 'form-control',
-            })
-
-    is_whatsapp = forms.CheckboxInput(
-            attrs={
-                'type':'checkbox',
-                'id':'whatsapp',
-
-                'class': 'form-control',
-            }
-        )
-
-
-
-    is_call = forms.CheckboxInput(
-            attrs={
-                'type':'checkbox',
-                'id':'call',
-
-                'class': 'form-control',
-            }
-        )
-    is_sms = forms.CheckboxInput(
-            attrs={
-                'type':'checkbox',
-                'id':'sms',
-
-                'class': 'form-control',
-            }
-        )
-
 
     email_auto_manual = forms.CharField(
         widget=forms.Select(
@@ -393,14 +438,6 @@ class Follow_up_sectionForm(forms.ModelForm):
             }
         ))
 
-    content = forms.CharField(max_length=80, required=True,
-         widget=forms.Textarea(
-             attrs={
-                 'type': 'text',
-                 'placeholder':'Notes',
-                 'class': 'form-control',
-             }
-         ))
     whatsappno = forms.CharField(max_length=80, required=True,
        widget=forms.TextInput(
            attrs={
