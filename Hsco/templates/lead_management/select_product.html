@@ -173,7 +173,7 @@ color:;
 
 <div class="form-group row">
 
-        <label class="col-md-2 control-label">HSN Code
+        <label class="col-md-2 control-label">Type of Scale *
 
 
 </label>
@@ -181,19 +181,22 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-      <select  name="hsn_code"    class="form-control">
-       <option value="">Select </option>
-{% for product in products %}
-  <option value="{{product.hsn_code}}">{{product.hsn_code }}</option>
-{% endfor %}
+      <select id="divselector" name="scale_type"  required onchange="choice1(this)" class="form-control">
+       <option value="">Select Scale Type</option>
+
+    {% for item in type_of_purchase_list %}
+  <option value="{{item.pk}}">{{item.name}}</option>
+
+   {% endfor %}
 
   </select>
+<input type="hidden" id="product_id" name="product_id" value="{{item.pk}}">
 
 
      </div>
   </div>
 
-            <label class="col-md-2 control-label">Product Code
+            <label class="col-md-2 control-label">Category *
 
 
 </label>
@@ -201,11 +204,8 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-      <select  name="sub_sub_category"    class="form-control">
-       <option value="">Select </option>
-{% for product in products %}
-  <option value="{{product.sub_sub_category}}">{{product.sub_sub_category}}</option>
-{% endfor %}
+      <select id="id_subcat" name="main_category" required onchange="choice_model(this)" class="form-control">
+
 
   </select>
 
@@ -213,6 +213,49 @@ color:;
      </div>
   </div>
 </div>
+
+
+<div class="form-group row">
+
+
+
+
+                            <label class="col-md-2 control-label">Sub Category *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+      <select id="id_subcat2" name="sub_category" onchange="choice_sub_model(this)" class="form-control">
+
+
+  </select>
+
+
+     </div>
+  </div>
+
+                            <label class="col-md-2 control-label">Sub Sub Category *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+      <select required id="id_subcat22" name="sub_sub_category" onchange="choice_sub_sub_model(this)" class="form-control">
+
+
+
+  </select>
+
+
+     </div>
+  </div>
+</div>
+
 
 
 
@@ -268,7 +311,6 @@ color:;
     </div>
   </div>
 </div>
-
 
 
 
