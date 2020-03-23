@@ -9,7 +9,9 @@ from customer_app.models import type_purchase
 from stock_system.models import Product
 
 from Hsco import settings
-from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm, Follow_up_sectionForm, History_followupForm
+
+from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm, Follow_up_sectionForm, History_followupForm, Payment_detailsForm
+
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
 from .models import Lead, Pi_section, IndiamartLeadDetails, History_followup, Follow_up_section, Followup_product
@@ -250,17 +252,19 @@ def update_view_lead(request,id):
     form2 = Deal_detailForm(initial=deal_details_initial_data)
     form3 = Pi_sectionForm()
     form4 = Follow_up_sectionForm(initial={'whatsappno':customer_id.contact_no,})
-    form5 = History_followupForm()
+    form6 = History_followupForm()
+    form5 = Payment_detailsForm()
     context = {
         'form': form,
         'form2': form2,
         'form3': form3,
         'form4': form4,
+        'form5': form5,
         'lead_id': lead_id,
         'lead_pi_products': lead_pi_products,
        'followup_products_list': followup_products_list,
         'hfu':hfu.fields,
-        'form5':form5,
+        'form6':form6,
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
         pi_id = Pi_section.objects.get(lead_id=id)
@@ -288,7 +292,7 @@ def update_view_lead(request,id):
         pass
 
     if request.method == 'POST' or request.method == 'FILES':
-        if  'submit1' in request.POST:
+        if 'submit1' in request.POST:
             customer_name = request.POST.get('customer_name')
             company_name = request.POST.get('company_name')
             address = request.POST.get('address')
@@ -304,6 +308,10 @@ def update_view_lead(request,id):
             requirement = request.POST.get('requirement')
             upload_requirement_file = request.FILES.get('upload_requirement_file')
             owner_of_opportunity = request.POST.get('owner_of_opportunity')
+            payment_channel = request.POST.get('payment_channel')
+            payment_receipt = request.POST.get('payment_receipt')
+            upload_pofile = request.POST.get('upload_pofile')
+            payment_received_date = request.POST.get('payment_received_date')
 
             item2 = Lead.objects.get(id=id)
 

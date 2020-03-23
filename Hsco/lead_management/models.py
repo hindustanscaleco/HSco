@@ -81,7 +81,7 @@ class Follow_up_section(models.Model):
 
 class Auto_followup_details(models.Model):
     follow_up_section = models.ForeignKey(Follow_up_section,on_delete=models.CASCADE,null=True,blank=True)
-    followup_date = models.DateTimeField(default=timezone.now, )
+    followup_date = models.DateTimeField(default=timezone.now,)
     is_followed = models.BooleanField(default=False)
     entry_timedate = models.DateTimeField(default=timezone.now,)
 
@@ -126,6 +126,23 @@ class IndiamartLeadDetails(models.Model):
     entry_timedate = models.DateTimeField(default=timezone.now, )
 
 
-    class Meta:
-        unique_together = ('from_date','to_date','lead_count')
+
+
+class Meta:
+    unique_together = ('from_date','to_date','lead_count')
+
+
+class Payment_details(models.Model):
+    lead_id = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, blank=True)
+    payment_channel = models.CharField(max_length=60, null=True, blank=True)
+    payment_receipt = models.FileField(null=True,blank=True)
+    payment_recived_date = models.DateTimeField(default=timezone.now)
+    upload_pofile = models.FileField(null=True,blank=True)
+    Payment_notes = models.TextField(max_length=120, null=True, blank=True)
+
+    def __int__(self):
+        return self.id
+
+
+
 

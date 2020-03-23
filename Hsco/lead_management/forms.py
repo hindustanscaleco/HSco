@@ -1,5 +1,6 @@
 from django import forms
-from .models import Lead, Pi_section, Follow_up_section, History_followup
+from .models import Lead, Pi_section, Follow_up_section, History_followup, Payment_details
+
 import sys
 sys.path.append("..")
 from customer_app.models import Customer_Details
@@ -12,6 +13,13 @@ auto_manual_email = [
 payment_channel = [
     ('Check Payment', 'Check Payment'),
     ('Cash', 'Cash'),
+]
+
+
+payment_method = [
+    ('Cheque','Cheque'),
+    ('Card','Card'),
+    ('Cash','Cash')
 ]
 
 industory_dropdown = [
@@ -451,4 +459,55 @@ class Follow_up_sectionForm(forms.ModelForm):
 
     class Meta:
         model = Follow_up_section
+        fields = "__all__"
+
+
+class Payment_detailsForm(forms.ModelForm):
+    payment_channel = forms.CharField(
+        widget=forms.Select(
+            choices=payment_method,
+            attrs={
+                'default':"automatic",
+                'class':'btn btn-outline-primary',
+            }
+        ))
+
+    payment_receipt = forms.CharField(max_length=80, required=True,
+                                              widget=forms.TextInput(
+                                                  attrs={
+                                                      'type': 'file',
+                                                      'placeholder': "FILE",
+                                                      'class': 'form-control',
+                                                  }
+                                              ))
+
+    upload_pofile = forms.CharField(max_length=80, required=True,
+                                              widget=forms.TextInput(
+                                                  attrs={
+                                                      'type': 'file',
+                                                      'placeholder': "FILE",
+                                                      'class': 'form-control',
+                                                  }
+                                              ))
+
+    payment_received_date = forms.CharField(max_length=80, required=True,
+                                         widget=forms.TextInput(
+                                             attrs={
+                                                 'type': 'date',
+                                                 'class': 'form-control',
+                                             }
+                                         ))
+
+    notes = forms.CharField(max_length=80, required=True,
+                                         widget=forms.Textarea(
+                                             attrs={
+                                                 'type': 'text',
+                                                 'placeholder':'Notes',
+                                                 'class': 'form-control',
+                                             }
+                                         ))
+
+
+    class Meta:
+        model = Payment_details
         fields = "__all__"
