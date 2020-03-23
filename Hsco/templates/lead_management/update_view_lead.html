@@ -542,26 +542,57 @@ function myFunction_call() {
                     <form action="" method='POST' enctype="multipart/form-data"  target="_blank">{% csrf_token %}
 
 
-                    <label class="col-md-10 control-label">Whatsapp:</label><a href="/lead_follow_up_histroy/"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp<input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
-                                <br> <br>{{ form5.wa_no }}
-
-
-<br>
+                    <label class="col-md-10 control-label">Whatsapp:</label>
+                        <a href="/lead_follow_up_histroy/"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp
+                        <input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
+                                <br>
+                        <br>
+                        {{ form6.wa_no }}
+                        <br>
                                 <label class="col-md-2 control-label">Content:</label>
 
-                                {{ form5.wa_msg }}
+                                {{ form6.wa_msg }}
+                        <br>
+                        <hr>
+                        <hr>
 
-<br>
+                         <label class="col-md-2 control-label">Email Subject:</label>
+
+                                {{ form6.email_subject }}
+                        <br>
+                           <label class="col-md-2 control-label">Email Message:</label>
+
+                                {{ form6.email_msg }}
+                        <br>
+                        <hr>
+                        <hr>
+
+                            <br>
+                           <label class="col-md-2 control-label">Call Response:</label>
+
+                                {{ form6.call_response }}
+                        <br>
+                        <hr>
+                        <hr>
+                            <br>
+                           <label class="col-md-2 control-label">SMS Content:</label>
+
+                                {{ form6.sms_msg }}
+                        <br>
+                        <hr>
+                        <hr>
+
+
 <div class="row">
                             <label class="col-md-2 control-label">Medium of Selection:</label>
 
-    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp {{ form5.is_email  }}
+    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp {{ form6.is_email  }}
     <div class="col-xl-2 col-lg-2"></div>
-    <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form5.is_whatsapp  }}
+    <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form6.is_whatsapp  }}
     <div class="col-xl-2 col-lg-2"></div>
-    <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form5.is_call  }}
+    <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_call  }}
     <div class="col-xl-2 col-lg-2"></div>
-    <label class="form-check-label">SMS:</label>&nbsp &nbsp &nbsp &nbsp{{ form5.is_sms  }}
+    <label class="form-check-label">SMS:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_sms  }}
 </div>
 <br>
 <center>
