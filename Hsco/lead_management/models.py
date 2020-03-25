@@ -41,6 +41,9 @@ class Pi_section(models.Model):
     notes = models.TextField(max_length=120, null=True,blank=True)
     cgst_sgst = models.FloatField(null=True,blank=True)
     igst = models.FloatField(null=True,blank=True)
+    net_total = models.FloatField(null=True,blank=True)
+    round_up_total = models.FloatField(null=True,blank=True)
+    grand_total = models.FloatField(null=True,blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now, )
 
 
@@ -130,10 +133,8 @@ class IndiamartLeadDetails(models.Model):
     entry_timedate = models.DateTimeField(default=timezone.now, )
 
 
-
-
-class Meta:
-    unique_together = ('from_date','to_date','lead_count')
+    class Meta:
+        unique_together = ('from_date','to_date','lead_count')
 
 
 class Payment_details(models.Model):

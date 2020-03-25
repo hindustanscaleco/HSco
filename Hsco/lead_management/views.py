@@ -219,15 +219,17 @@ def update_view_lead(request,id):
 
     table = ''
     table2 = ''
+    total = 0.0
     try:
         for product in lead_pi_products:
-            row = '<tr> <td>'+ str(product.quantity) +' </td><td>'+ str(product.product_id.hsn_code)+'</td><td>'+ str(product.product_id.sub_sub_category)+'</td><td><img src="'+str(product.product_id.product_image.url)+'" height="100" width="100"></td><td>'+str(product.product_id.product_desc) +'</td><td></td><td></td>  </tr>'
+            single_product_total = float(product.product_id.selling_price) * (product.quantity)
+            total += single_product_total
+            row = '<tr> <td>'+ str(product.quantity) +' </td><td>'+ str(product.product_id.hsn_code)+'</td><td>'+ str(product.product_id.sub_sub_category)+'</td><td><img src="'+str(product.product_id.product_image.url)+'" height="100" width="100"></td><td>'+str(product.product_id.product_desc) +'</td><td>'+str(product.product_id.selling_price) +'</td><td>'+str(single_product_total) +'</td>  </tr>'
             row2 = '<tr> <td>'+ str(product.quantity) +' </td><td>'+ str(product.product_id.hsn_code)+'</td><td>'+str(product.product_id.product_desc) +'</td><td></td><td></td>  </tr>'
             table+=row
             table2+=row2
     except:
         pass
-
     customer_id = Customer_Details.objects.get(id=lead_id.customer_id)
     customer_initial_data = {
         'customer_name': customer_id.customer_name,
@@ -262,7 +264,7 @@ def update_view_lead(request,id):
         'lead_id': lead_id,
         'lead_pi_products': lead_pi_products,
        'followup_products_list': followup_products_list,
-        'hfu':hfu.fields,
+        # 'hfu':hfu.fields,
         'form6':form6,
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
@@ -277,6 +279,7 @@ def update_view_lead(request,id):
             'payment_received_date': pi_id.payment_received_date,
             'notes': pi_id.notes,
             'select_gst_type': pi_id.select_gst_type,
+            'discount_type': pi_id.discount_type,
         }
         form3 = Pi_sectionForm(initial=pi_initial_data)
         context2 = {
@@ -292,7 +295,7 @@ def update_view_lead(request,id):
         pass
 
     if request.method == 'POST' or request.method == 'FILES':
-        if 'submit1' in request.POST:
+        if 'submit1' in request.POST:                                            #for customer and deal details section
             customer_name = request.POST.get('customer_name')
             company_name = request.POST.get('company_name')
             address = request.POST.get('address')
@@ -351,7 +354,7 @@ def update_view_lead(request,id):
             item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
                                       'requirement','upload_requirement_file','owner_of_opportunity',])
             return redirect('/update_view_lead/'+str(id))
-        elif 'submit2' in request.POST:
+        elif 'submit2' in request.POST:                                         #for pi section
             discount = request.POST.get('discount')
             upload_pi_file = request.FILES.get('upload_pi_file')
             select_pi_template = request.POST.get('select_pi_template')
@@ -386,7 +389,10 @@ def update_view_lead(request,id):
                 item2.call2 = call2
                 item2.select_gst_type = select_gst_type
                 item2.discount_type = discount_type
-
+                # if discount_type == 'percent':
+                #
+                # elif discount_type == 'rupee':
+                #     pass
                 item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call',
                                         'email', 'whatsapp','call2','select_gst_type','discount_type'  ])
 
@@ -664,7 +670,7 @@ td {
         <td></td>
         <td></td>
         <td>Total</td>
-        <td>INR</td>
+        <td>'''+str(total)+''' INR</td>
         </tr>
 
         <tr>
