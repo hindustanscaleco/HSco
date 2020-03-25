@@ -299,8 +299,7 @@ class Pi_sectionForm(forms.ModelForm):
             attrs={
                 'type': 'checkbox',
                 'id': 'call2',
-                'onclick' : 'myFunction_call()',
-                'calss' : 'form-control',
+                'onclick': 'myFunction_call()',
             })
     )
 
@@ -376,35 +375,42 @@ class Pi_sectionForm(forms.ModelForm):
         fields = "__all__"
 
 class History_followupForm(forms.ModelForm):
-    is_email = forms.CheckboxInput(
-        attrs={
-            'type': 'checkbox',
-            'id': 'is_email',
-            'class': 'form-control',
-        })
+    is_email = forms.BooleanField(required=False,
+                               widget=forms.CheckboxInput(
+                                    attrs={
+                                        'type': 'checkbox',
+                                        'onclick': 'hisFunction()',
 
-    is_whatsapp = forms.CheckboxInput(
-        attrs={
-            'type': 'checkbox',
-            'id': 'is_whatsapp',
-            'class': 'form-control',
-        }
-    )
+        }))
 
-    is_call = forms.CheckboxInput(
-        attrs={
-            'type': 'checkbox',
-            'id': 'is_call',
-            'class': 'form-control',
-        }
-    )
-    is_sms = forms.CheckboxInput(
-        attrs={
-            'type': 'checkbox',
-            'id': 'is_sms',
-            'class': 'form-control',
-        }
-    )
+
+    is_whatsapp = forms.BooleanField(required=False,
+                               widget=forms.CheckboxInput(
+                                   attrs={
+                                       'type': 'checkbox',
+                                       'onclick': 'yourFunction()',
+                                   })
+                               )
+
+    is_call = forms.BooleanField(required=False,
+                               widget=forms.CheckboxInput(
+                                    attrs={
+                                        'type': 'checkbox',
+                                        'id': 'is_call',
+                                        'onclick': 'herFunction()',
+                                    }
+                                ))
+
+    is_sms = forms.BooleanField(required=False,
+                               widget=forms.CheckboxInput(
+                                    attrs={
+                                        'type': 'checkbox',
+                                        'id': 'is_sms',
+                                        'onclick': 'whosFunction()',
+                                    }
+                                ))
+
+
     wa_no = forms.CharField(max_length=20, required=True,
                                  widget=forms.TextInput(
                                      attrs={
@@ -418,14 +424,14 @@ class History_followupForm(forms.ModelForm):
                              widget=forms.Textarea(
                                  attrs={
                                      'type': 'text',
-                                     'placeholder': "Emai Content",
+                                     'placeholder': "Content",
                                      'class': 'form-control',
                                  }))
     email_subject = forms.CharField(max_length=120, required=True,
                                     widget=forms.TextInput(
                                         attrs={
                                             'type': 'text',
-                                            'placeholder': "Whatsapp Message",
+                                            'placeholder': "Subject",
                                             'class': 'form-control',
                                         }
                                     ))
@@ -447,7 +453,7 @@ class History_followupForm(forms.ModelForm):
                                     widget=forms.Textarea(
                                         attrs={
                                             'type': 'text',
-                                            'placeholder': "Call Response",
+                                            'placeholder': "Content",
                                             'class': 'form-control',
                                         }))
 
@@ -483,6 +489,7 @@ class Follow_up_sectionForm(forms.ModelForm):
                'type': 'text',
                'placeholder': "Whatsapp No",
                'class': 'form-control',
+
            }
        ))
 

@@ -537,6 +537,7 @@ function myFunction_call() {
                 </div>
 
 
+
         <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
@@ -549,50 +550,65 @@ function myFunction_call() {
                 <!-- Card Body -->
                 <div class="card-body" id="myDIV4" style="display: none; height: auto;">
                     <form action="" method='POST' enctype="multipart/form-data"  target="_blank">{% csrf_token %}
-
-
-                    <label class="col-md-10 control-label">Whatsapp:</label>
+                        <div class="row">
+                        <div class="row col-md-10">
+                        </div>
+                            <div class="row col-md-2">
                         <a href="/lead_follow_up_histroy/"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp
-                        <input type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
+                        <input  type="button" onclick="" style="background-color: #FC6E20;" class="btn btn-primary" value="New">
+                            </div>
+                            </div>
+
+                        <div class="row col-md-12" style="margin-left:4%">
+                              <br>
+    <div class="col-md-5" id="my123" style="display: none;">
+    <label class="col-md-10 control-label">Whatsapp:</label>
                                 <br>
-                        <br>
+
                         {{ form6.wa_no }}
                         <br>
-                                <label class="col-md-2 control-label">Content:</label>
+                                <label class="col-md-5 control-label" style="float:left;">Content:</label>
 
                                 {{ form6.wa_msg }}
-                        <br>
-                        <hr>
-                        <hr>
 
-                         <label class="col-md-2 control-label">Email Subject:</label>
+</div>
+
+
+<div class="col-md-1"></div>
+<div class="col-md-5" id="myemail" style="display: none;">
+
+                         <label class="col-md-4 control-label">Email Subject:</label>
+    <br>
 
                                 {{ form6.email_subject }}
                         <br>
-                           <label class="col-md-2 control-label">Email Message:</label>
+                           <label class="col-md-4 control-label">Email Message:</label>
 
                                 {{ form6.email_msg }}
                         <br>
-                        <hr>
-                        <hr>
+</div>
+    </div>
 
                             <br>
-                           <label class="col-md-2 control-label">Call Response:</label>
 
+                        <div class="row col-md-12" style="margin-left:4%">
+                            <div class="col-md-5" id="mycall_follow_up" style="display: none;">
+                           <label class="col-md-4 control-label">Call Response:</label>
+<br>
                                 {{ form6.call_response }}
-                        <br>
-                        <hr>
-                        <hr>
-                            <br>
-                           <label class="col-md-2 control-label">SMS Content:</label>
-
+                            </div>
+                                <div class="col-md-1">
+                                </div>
+                                    <div class="col-md-5" id="mysms" style="display: none;">
+                           <label class="col-md-4 control-label">SMS Content:</label>
+<br>
                                 {{ form6.sms_msg }}
+                        </div>
+                        </div>
                         <br>
-                        <hr>
-                        <hr>
+                        <br>
 
-
-<div class="row">
+<div class="row col-md-12">
                             <label class="col-md-2 control-label">Medium of Selection:</label>
 
     <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp {{ form6.is_email  }}
@@ -608,10 +624,9 @@ function myFunction_call() {
       {{form4.email_auto_manual}}
 </center>
 
-                    <br>
-                         <br>
-                         <div class="card shadow">
-<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+
+                         <div class="">
+<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
 
 
                <table style="font-size: 14px;">
@@ -784,7 +799,50 @@ function myFunction_call() {
 </form>
 
 
+<script>
+function yourFunction() {
+  var x = document.getElementById("my123");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
 
+<script>
+function hisFunction() {
+  var x = document.getElementById("myemail");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
+
+<script>
+function herFunction() {
+  var x = document.getElementById("mycall_follow_up");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
+
+
+<script>
+function whosFunction() {
+  var x = document.getElementById("mysms");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
                           </div>
               </div>
             </div>
