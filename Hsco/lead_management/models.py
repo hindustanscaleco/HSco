@@ -78,8 +78,8 @@ class Follow_up_section(models.Model):
     lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE,null=True,blank=True)
     whatsappno = models.CharField(max_length=120,null=True,blank=True)
     auto_manual_mode = models.CharField(default='Automatic', max_length=50, null=True, blank=True)
-    fields = models.CharField(max_length=100)
-    email_subject = models.CharField(max_length=150)
+    fields = models.CharField(max_length=150,null=True, blank=True)
+    email_subject = models.CharField(max_length=150,null=True, blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now, )
 
 

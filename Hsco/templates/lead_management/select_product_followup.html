@@ -475,7 +475,7 @@ function choice1(select) {
      //alert(select.options[select.selectedIndex].value);
 
 
-       $("#type_of_scale").val(select.options[select.selectedIndex].text);
+       $("#type_of_scale").val(select.options[select.selectedIndex].value);
 
     $.ajax({                       // initialize an AJAX request
         url: "/load_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
@@ -504,7 +504,7 @@ function choice1(select) {
       });
 }
 function choice_model(select) {
-$("#model_of_purchase").val(select.options[select.selectedIndex].text);
+$("#model_of_purchase").val(select.options[select.selectedIndex].value);
      //alert(select.options[select.selectedIndex].value);
     $.ajax({                       // initialize an AJAX request
         url: "/load_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
@@ -534,7 +534,7 @@ $("#model_of_purchase").val(select.options[select.selectedIndex].text);
 }
 
 function choice_sub_model(select) {
-$("#sub_model").val(select.options[select.selectedIndex].text);
+$("#sub_model").val(select.options[select.selectedIndex].value);
      //alert(select.options[select.selectedIndex].value);
     $.ajax({                       // initialize an AJAX request
         url: "/load_sub_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
@@ -561,7 +561,7 @@ $("#sub_model").val(select.options[select.selectedIndex].text);
 }
 
 function choice_sub_sub_model(select) {
-$("#sub_sub_model").val(select.options[select.selectedIndex].text);
+$("#sub_sub_model").val(select.options[select.selectedIndex].value);
 
 }
 
