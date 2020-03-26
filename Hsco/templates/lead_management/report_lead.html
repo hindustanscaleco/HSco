@@ -94,29 +94,24 @@ color:;
       </div>
         <br>
 <fieldset>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
 <script>
-
-document.getElementById('select-all').onclick = select_all_function() {
-  var checkboxes = document.getElementsByName('vechicle');
-  for (var checkbox of checkboxes) {
-    checkbox.checked = this.checked;
-  }
-}
-
+$(document).ready(function () {
+    $("#ckbCheckAll").click(function () {
+        $(".checkBoxClass").prop('checked', $(this).prop('checked'));
+    });
+});
 </script>
 
 <div class="form-group row">
-     <label class="col-md-2 control-label ">Select All
+     <label class="col-md-2 control-label ">Select All</label>
+    <div class="custom-control custom-checkbox">
 
+<input type="checkbox" id="ckbCheckAll" class="custom-control-input"/>
+      <label class="custom-control-label" for="ckbCheckAll"></label>
+    </div>
 
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="chk[]"  id="customCheck1">
-  <label class="custom-control-label" onchange="select_all_function()" for="customCheck1"></label>
-</div>
-  </div>
 </div>
 <center>    <h5>Deal Details Section</h5> </center>
     <br>
@@ -131,7 +126,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck2">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck2">
   <label class="custom-control-label" for="customCheck2"></label>
 </div>
   </div>
@@ -141,7 +136,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck3">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck3">
   <label class="custom-control-label" for="customCheck3"></label>
 </div>
   </div>
@@ -154,7 +149,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
   <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck4">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck4">
   <label class="custom-control-label" for="customCheck4"></label>
 </div>
 
@@ -169,7 +164,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck5">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck5">
   <label class="custom-control-label" for="customCheck5"></label>
 </div>
   </div>
@@ -184,7 +179,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck6">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck6">
   <label class="custom-control-label" for="customCheck6"></label>
 </div>
   </div>
@@ -196,7 +191,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck7">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck7">
   <label class="custom-control-label" for="customCheck7"></label>
 </div>
   </div>
@@ -212,7 +207,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck8">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck8">
   <label class="custom-control-label" for="customCheck8"></label>
 </div>
   </div>
@@ -225,7 +220,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name=""  value="" id="customCheck9">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name=""  value="" id="customCheck9">
   <label class="custom-control-label" for="customCheck9"></label>
 </div>
   </div>
@@ -237,7 +232,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]"  value="" id="customCheck10">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]"  value="" id="customCheck10">
   <label class="custom-control-label" for="customCheck10"></label>
 </div>
   </div>
@@ -250,7 +245,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 </label>
   <div class="col-md-4 inputGroupContainer">
     <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck11">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck11">
   <label class="custom-control-label" for="customCheck11"></label>
 </div>
   </div>
@@ -263,7 +258,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck12">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck12">
   <label class="custom-control-label" for="customCheck12"></label>
 </div>
   </div>
@@ -273,7 +268,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck13">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck13">
   <label class="custom-control-label" for="customCheck13"></label>
 </div>
   </div>
@@ -291,7 +286,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck31">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck31">
   <label class="custom-control-label" for="customCheck6"></label>
 </div>
   </div>
@@ -308,7 +303,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck15">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck15">
   <label class="custom-control-label" for="customCheck15"></label>
 </div>
   </div>
@@ -317,7 +312,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 <label class="col-md-2 control-label">Company Name :</label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck16">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck16">
   <label class="custom-control-label" for="customCheck16"></label>
 </div>
   </div>
@@ -331,7 +326,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck17">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck17">
   <label class="custom-control-label" for="customCheck17"></label>
 </div>
   </div>
@@ -340,7 +335,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 <label class="col-md-2 control-label">Customer Email Id :</label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck18">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck18">
   <label class="custom-control-label" for="customCheck18"></label>
 </div>
   </div>
@@ -354,7 +349,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck19">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck19">
   <label class="custom-control-label" for="customCheck19"></label>
 </div>
   </div>
@@ -363,7 +358,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 <label class="col-md-2 control-label">Industry :</label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck20">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck20">
   <label class="custom-control-label" for="customCheck20"></label>
 </div>
   </div>
@@ -377,7 +372,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck21">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck21">
   <label class="custom-control-label" for="customCheck21"></label>
 </div>
   </div>
@@ -395,7 +390,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck22">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck22">
   <label class="custom-control-label" for="customCheck22"></label>
 </div>
   </div>
@@ -411,7 +406,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck23">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck23">
   <label class="custom-control-label" for="customCheck23"></label>
 </div>
   </div>
@@ -429,7 +424,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck24">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck24">
   <label class="custom-control-label" for="customCheck24"></label>
 </div>
   </div>
@@ -438,7 +433,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 <label class="col-md-2 control-label">Payment Recipe :</label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck25">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck25">
   <label class="custom-control-label" for="customCheck25"></label>
 </div>
   </div>
@@ -452,7 +447,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck26">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck26">
   <label class="custom-control-label" for="customCheck26"></label>
 </div>
   </div>
@@ -461,7 +456,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 <label class="col-md-2 control-label">Notes :</label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck27">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck27">
   <label class="custom-control-label" for="customCheck27"></label>
 </div>
   </div>
@@ -475,7 +470,7 @@ document.getElementById('select-all').onclick = select_all_function() {
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck28">
+  <input type="checkbox" class="custom-control-input checkBoxClass" name="checks[]" value="" id="customCheck28">
   <label class="custom-control-label" for="customCheck28"></label>
 </div>
   </div>
