@@ -2219,6 +2219,21 @@ td {
 
             final_list = []
 
+            selected_fields = Follow_up_section.objects.get(lead_id=id).fields
+            # hfu = History_followup.objects.filter(follow_up_section=id).last()
+            # selected_fields = hfu.fields
+            selected_fields2 = selected_fields.replace("'", "").strip('][').split(', ')  # convert string to list
+
+            for item in selected_fields2:
+                pro_list = Product.objects.filter(lead_id=id).values_list(item, flat=True)
+                for ite, lt in enumerate(pro_list):
+                    final_list = final_list + [item + ' : ' + str(lt)]
+
+            print("final_list")
+            print("final_list")
+            print("final_list")
+            print(final_list)
+
 
             history_follow= History_followup()
 
@@ -2244,9 +2259,11 @@ td {
 
 
                 for item in selected_fields2:
-                    pro_list = Product.objects.filter(id=1).values_list(item, flat=True)
+                    pro_list = Product.objects.filter(lead_id=id).values_list(item, flat=True)
                     for ite, lt in enumerate(pro_list):
                         final_list = final_list + [item + ' : ' + str(lt)]
+
+
 
 
             if(is_sms):
