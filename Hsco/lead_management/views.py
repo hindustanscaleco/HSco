@@ -2353,8 +2353,6 @@ def lead_analytics(request):
     return render(request,'lead_management/analytics.html')
 
 def lead_employee_graph(request,id):
-    # sd =Lead.objects.filter(owner_of_opportunity=id).values_list('id')
-    # print(sd)
     lead_conversion = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',lead_id__owner_of_opportunity=SiteUser.objects.get(id=id),entry_timedate__month=datetime.now().month)\
             .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
 
@@ -2381,7 +2379,6 @@ def lead_employee_graph(request,id):
                                                 lead_id__owner_of_opportunity=SiteUser.objects.get(id=id),
                                                 entry_timedate__month=datetime.now().month) \
         .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
-    print(lead_postponed)
     lead_postponed_date = []
     lead_postponed_sum = []
     for i in lead_postponed:
@@ -2397,6 +2394,51 @@ def lead_employee_graph(request,id):
         'lead_postponed_date': lead_postponed_date,
         'lead_postponed_sum': lead_postponed_sum,
     }
+    if request.method=='POST' and 'date1' in request.POST :
+        start_date = request.POST.get('date1')
+        lead_conversion = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
+            lead_id__owner_of_opportunity=SiteUser.objects.get(id=id), entry_timedate__month=datetime.strptime(start_date, '%Y-%m-%d').month) \
+            .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+
+        lead_conversion_date = []
+        lead_conversion_sum = []
+        for i in lead_conversion:
+            x = i
+            lead_conversion_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lead_conversion_sum.append(x['data_sum'])
+
+        lead_lost = Pi_section.objects.filter(lead_id__current_stage='Lost',
+                                              lead_id__owner_of_opportunity=SiteUser.objects.get(id=id),
+                                              entry_timedate__month=datetime.strptime(start_date, '%Y-%m-%d').month) \
+            .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+
+        lead_lost_date = []
+        lead_lost_sum = []
+        for i in lead_lost:
+            x = i
+            lead_lost_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lead_lost_sum.append(x['data_sum'])
+
+        lead_postponed = Pi_section.objects.filter(lead_id__current_stage='Postponed',
+                                                   lead_id__owner_of_opportunity=SiteUser.objects.get(id=id),
+                                                   entry_timedate__month=datetime.strptime(start_date, '%Y-%m-%d').month) \
+            .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+        lead_postponed_date = []
+        lead_postponed_sum = []
+        for i in lead_postponed:
+            x = i
+            lead_postponed_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lead_postponed_sum.append(x['data_sum'])
+        context = {
+
+            'lead_conversion_date': lead_conversion_date,
+            'lead_conversion_sum': lead_conversion_sum,
+            'lead_lost_date': lead_lost_date,
+            'lead_lost_sum': lead_lost_sum,
+            'lead_postponed_date': lead_postponed_date,
+            'lead_postponed_sum': lead_postponed_sum,
+        }
+
     return render(request,'lead_management/lead_employee_graph.html', context)
 
 def lead_pi_form(request):
