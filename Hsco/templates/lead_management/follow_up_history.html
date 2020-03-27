@@ -27,82 +27,6 @@
 }
 
 </style>
-</head>
-
-<body id="page-top">
-
-  <!-- Page Wrapper -->
-  <div id="wrapper">
-  {% include 'base_templates/sidebar.html' %}
-
-    <!-- Sidebar -->
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-      <!-- Main Content -->
-      <div id="content">
-
-
-        <!-- Topbar -->
-  {% include 'base_templates/navbar_for_dashboard.html' %}
-        <!-- End of Topbar -->
-
-        <!-- Begin Page Content -->
-        <div class="container-fluid ">
-
-          <!-- Page Heading -->
-            <div class="row">
-           <div class="col-xl-6 col-md-3 mb-3 ">
-
-
-                <div class="card-body" style="padding: 2px;">
-                  <div class="row no-gutters align-items-right">
-<h1 class="h3 mb-0 text-gray-800 ">Follow-Up History</h1>
-
-
-                </div>
-              </div>
-            </div>
-
-
-
-                 <div class="col-xl-1 col-md-9 mb-9 ">
-                 </div>
-                 <div class="col-xl-5 col-md-9 mb-9 ">
-
-
-                <div class="card-body" style="padding: 2px;">
-                  <div class="row no-gutters align-items-right">
-
-
-<!-- <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Lead </button></a>-->
-<!--                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Share</button></a>-->
-<!--                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>-->
-<!--<a style="padding: 2px;" href="//"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>-->
-<!-- <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>-->
-
-
-
-
-
-
-                </div>
-              </div>
-
-
-
-
-            </div>
-
-
-
-                </div>
-
-
-
-<br>
 
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
@@ -176,311 +100,9 @@ display:none;
 font-size: 12px;
 }
 </style>
+</head>
 
-
-
-            <script>
-//$( document ).ready(function() {
-  //      $('.divs').hide();});
-$(function() {
-  $('#divselector').change(function(){
-    $('.divs').hide();
-    $('#' + $(this).val()).show();
-  });
-});
-            </script>
-                    <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
-            <div class="row">
-
-                <div  class="col-xl-3 col-md-3 col-mb-3">
-                    <div class="button dropdown">
-<!--  <select id="divselector" class="form-control">-->
-<!--     <option value="d0">Select Search Type</option>-->
-<!--     <option value="d1">Search By Date Range</option>-->
-<!--     <option value="d2">Search By Mobile Number</option>-->
-<!--     <option value="d3">Search By Email Id</option>-->
-<!--     <option value="d4">Search By Customer Name</option>-->
-<!--     <option value="d5">Search By Company Name</option>-->
-<!--     <option value="d6">Search By CRM No.</option>-->
-<!--     <option value="d7">Search By Purchase No.</option>-->
-<!--     &lt;!&ndash;<option value="d7">Search By CRM Number Range</option>&ndash;&gt;-->
-<!--  </select>-->
-</div>
-
-
-                </div>
-
-
-                <div  class="col-xl-6 col-md-6 col-mb-8">
-
-
-<div class="output">
-                                                              <form method="POST" autocomplete="off">{% csrf_token%}
-  <div id="d1" class="divs d1 row">
-
-      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
-                <input name="date1" type="date" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
-                <p style="font-weight: 600;">_</p>
-
-      </div>
-
-      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
-                <input name="date2" type="date" placeholder="Search 1" class="form-control">
-
-      </div>
-      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
-                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
-
-      </div>
-                               </form>
-
-
-  <div id="d2" class="divs d2">
-      <form method="POST" >{% csrf_token%}
-      <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Search</button>
-  </form>
-  </div>
-
-
-
-
-  <div id="d3" class="divs d3">
-      <form method="POST">{% csrf_token%}
-      <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-
-      <button style="background-color: #FC6E20;" name="submit3" class="btn btn-primary">Search</button>
-          </form>
-  </div>
-
-
-
-<!--    <div id="d4" class="divs d4">-->
-<!--        <form method="POST">{% csrf_token%}-->
-<!--      <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">-->
-<!--      &nbsp; &nbsp;-->
-<!--      <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button>-->
-<!--    </form>-->
-<!--    </div>-->
-
-<!--                               <form method="POST">{% csrf_token%}-->
-<!--  <div id="d5" class="divs d5">-->
-<!--      <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">-->
-<!--      &nbsp; &nbsp;-->
-<!--      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button></div>-->
-<!--</form>-->
-
-<!--                               <form method="POST">{% csrf_token%}-->
-
-<!--    <div id="d6" class="divs d6">-->
-<!--      <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">-->
-<!--      &nbsp; &nbsp;-->
-<!--      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>-->
-<!--</form>-->
-<!--                       <form method="POST">{% csrf_token%}-->
-
-<!--    <div id="d7" class="divs d7">-->
-<!--      <input type="text" name="purchase_no" placeholder="Purchase No." class="form-control" style="width: 25%;float: left;">-->
-<!--      &nbsp; &nbsp;-->
-<!--      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>-->
-<!--</form>-->
-                               <!--<form method="POST">{% csrf_token%}-->
-
-  <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
-      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
-                <!--<input name="crm1" type="text" placeholder="CRM No." class="form-control">-->
-
-      <!--</div>-->
-
-      <!--<div class="col-xl-0 col-md-0 col-mb-0">-->
-                <!--<p style="font-weight: 600;">_</p>-->
-
-      <!--</div>-->
-
-      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
-                <!--<input name="crm2" type="text" placeholder="CRM No." class="form-control">-->
-
-      <!--</div>-->
-      <!--<div class="col-xl-2 col-md-2 col-mb-2">-->
-                <!--<button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>-->
-
-      <!--</div>-->
-                               <!--</form>-->
-</div>
-                </div>
-
-<!--                                 <div class="col-xl-3 col-md-2 col-mb-8 row" style="color: black;">-->
-
-
-<!--{% if request.user.is_authenticated %}-->
-<!--{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}-->
-<!--                     <div class="col-xl-12 col-md-2 col-mb-8 row">-->
-<!--                         <div class="col-xl-4 col-md-2 col-mb-8">-->
-<!--    <p> Manager</p>-->
-<!--                     </div>-->
-<!--                     <div class="col-xl-3 col-md-2 col-mb-8">-->
-<!--                         <label class="switch ">-->
-<!--  <input name="deleted" type="checkbox" checked onchange="toggleCheckbox2(this)">-->
-<!--  <span class="slider round"></span>-->
-<!--</label>-->
-<!--                     </div>-->
-<!--                     <div class="col-xl-5 col-md-2 col-mb-8">-->
-<!--                         <p>Employee</p>-->
-
-<!--                     </div>-->
-<!--                     </div>-->
-<!--{% else %}-->
-<!--                     {% endif %}-->
-<!--                     {% endif %}-->
-
-
-
-<!--                </div>-->
-
-<!--            </div>-->
-<!--            <br>-->
-<!--            <div class="row">-->
-<!--                            <div  class="col-xl-2 col-md-3 col-mb-3">-->
-<!--                    <div class="button dropdown">-->
-<!--  <select id="divsort" class="form-control">-->
-<!--     <option value="d0">Sort by Sale person </option>-->
-<!--     <option value="d1">Sort by Employee  </option>-->
-<!--     <option value="d2">Sort by  </option>-->
-<!--     <option value="d3">Sort by  </option>-->
-<!--     <option value="d4">Sort by  </option>-->
-<!--     <option value="d5">Sort by  </option>-->
-<!--     <option value="d6">Sort by  </option>-->
-<!--     <option value="d7">Sort by  </option>-->
-<!--  </select>-->
-<!--</div>-->
-<!--                            </div>-->
-
-
-<!--                </div>-->
-
-
-
-
-
-<!--<br>-->
-<!--               <div class="row" style="margin-left: 12%;">-->
-
-<!--        <div style="cursor: pointer; " onclick="choice1('Scale is collected but estimate is not given')" class="col-xl-1 col-md-3 mb-12">-->
-<!--              <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,5.5),rgba(120,115,245,.9))">-->
-<!--                <div class="card-body row" style="padding-left: 20px; color: white; font-weight: 600; font-size: 12px; height: 180px;">-->
-<!--                  <center> <br>Not Yet Initiated <br> ( ) </center>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--              </div>-->
-
-<!--        <div style="cursor: pointer; " onclick="choice1('Estimate is given but Estimate is not confirmed')" class="col-xl-1 col-md-3 mb-12">-->
-<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">-->
-<!--                <div class="card-body row" style="padding-left: 17px; color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
-<!--                 <center> <br> Customer Called&nbsp;<br> ( )</center>-->
-
-
-<!--                    </div>-->
-
-<!--                </div>-->
-<!--              </div>-->
-
-<!--            <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
-<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
-<!--                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
-
-<!--                   <center><p> <br> PI Sent & Follow-up <br>&nbsp; ( ) <br> &nbsp; ( )</p></center>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-<!--              </div>-->
-
-<!--            <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
-<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
-<!--                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
-
-<!--                   <center><p style="margin-top:07px"> PO Issued - Payment not done <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-<!--              </div>-->
-
-<!--             <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
-<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
-<!--                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
-
-<!--                   <center><p> PO Issued - Payment Done - Dispatch Pending <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-<!--              </div>-->
-
-<!--                 <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
-<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
-<!--                <div class="card-body row" style="padding-left:17px;color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
-
-<!--                   <center><p style="margin-top:10 px;"> Dispatch Done - Closed <br>&nbsp; ( ) <br> &nbsp; ( ) </p></center>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-<!--              </div>-->
-
-<!--                       <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
-<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
-<!--                <div class="card-body row" style="padding-left:34px; color: white; font-weight: 600; font-size: 16px;  height: 180px;">-->
-
-<!--                   <center><p style="margin-top:25px"> Lost <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-<!--              </div>-->
-<!--                       <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
-<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
-<!--                <div class="card-body row" style="padding-left:20px; color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
-
-<!--                   <center><p style="margin-top:14px"> Not Relevant <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-<!--              </div>-->
-
-<!--                       <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
-<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">-->
-<!--                <div class="card-body row" style="padding-left:20px; color: white; font-weight: 600; font-size: 12px;  height: 180px;">-->
-
-<!--                   <center><p style="margin-top:28px"> Archieve <br>&nbsp; ( ) </p></center>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-<!--              </div>-->
-
-
-<!--                       <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-1 col-md-3 mb-12">-->
-<!--              <div class="card shadow" style="background: linear-gradient(40deg,rgba(69,202,252,.9),rgba(48,63,159,.9))">-->
-<!--                <div class="card-body row" style="padding-left:15px; color: white; font-weight: 600; font-size: 13px;  height: 180px;">-->
-
-<!--                   <center><p style="margin-top:30px"> Postponed <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-<!--              </div>-->
-
-
-
-   </div>
+<body id="page-top">
 
                <style>
         .border-right-primarya {
@@ -544,67 +166,231 @@ td {
 
 
             </style>
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+  {% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
 
 
-<div style="min-height: 26vw;">
+        <!-- Topbar -->
+  {% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
 
-        {% if deleted %}
-                  <center> <p>list of deleted users</p></center>
-                    {% endif %}
-     <center><p>{{search_msg}}</p></center>
-        <div class="row" id="id_manager_view">
+        <!-- Begin Page Content -->
+        <div class="container-fluid ">
+
+          <!-- Page Heading -->
+
+           <div class="row">
+           <div class="col-xl-6 col-md-3 mb-3 ">
+
+
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+<h1 class="h3 mb-0 text-gray-800 ">Follow-Up History</h1>
+
+
+                </div>
+              </div>
+            </div>
+
+
+
+                </div>
+
+  <div class="row">
+  {% for item in obj_list %}
+
+
+
+
+ {% ifchanged item.entry_timedate.date %}
+
+           <div class="col-xl-12 col-lg-12">
 
     <table>
         <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No</td>
-            <td style="border: 0px solid gray;">Date</td>
-            <td style="border-radius: 0px 15px 0px 0px; border:0px solid gray;">Medium</td>
-
+            <td style=" border: 0px solid gray;"> {{ item.entry_timedate |date:'D d M Y' }}</td>
         </tr>
-<!--                    {% for list1 in customer_list %}-->
-
-<!--        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">-->
-<!--                        <td>{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>-->
-
-<!--            <td>{{ list1.entry_timedate|date:'Y-m-d'}}</td>-->
-<!--            <td>{{ list1.purchase_no}}</td>-->
-<!--            <td>{{ list1.second_person }}</td>-->
-<!--            <td>{% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</td>-->
-<!--            <td>{{ list1.second_contact_no}}</td>-->
-<!--            <td>{{list1.sales_person}}</td>-->
-<!--            <td>-->
-<!--                       {% for avg in  list1.feedback_stars|rjust:'5'  %}-->
-<!--              {% if forloop.counter <= list1.feedback_stars %}-->
-<!--                  <i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>-->
-<!--              {% else %}-->
-<!--                  <i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>-->
-<!--              {% endif %}-->
-<!--            {% endfor %}-->
-<!--            </td>-->
-
-<!--        </tr>-->
-<!--                          {% endfor %}-->
 
     </table>
 
         </div>
 
 
+ {% else %}
+
+            {% endifchanged %}
+
+        <div class="col-xl-12 col-lg-12">
+
+                <div class="card-body" id="myDIV4" style="height: auto;">
+
+
+  <div class="card shadow" >
+      <br>
+       <form action="" method='POST' enctype="multipart/form-data" >{% csrf_token %}
+
+
+                        <div class="row col-md-12" style="margin-left:4%">
+                              <br>
+<div class="col-md-6" id="my123">
+    <label class="col-md-12 control-label">Whatsapp Number :  {{ item.wa_no }}</label>
+                                <br>
+
+
+                        <br>
+                                <label class="col-md-12 control-label" style="float:left;">Whatsapp Content :  {{ item.wa_msg }}</label>
 
 
 
+</div>
+
+<div class="col-md-6" id="myemail" >
+
+                         <label class="col-md-12 control-label">Email Subject: {{ item.email_subject }}</label>
+    <br>
+
+
+                        <br>
+                           <label class="col-md-12 control-label">Email Message: {{ item.email_msg }}</label>
+
+
+                        <br>
+</div>
+    </div>
+
+                            <br>
+
+<div class="row col-md-12" style="margin-left:4%">
+        <div class="col-md-6" id="mycall_follow_up" >
+       <label class="col-md-4 control-label">Call Response: {{ item.call_response }}</label>
 <br>
+
+        </div>
+
+                <div class="col-md-6" id="mysms" >
+                           <label class="col-md-12 control-label">SMS Content: {{ item.sms_msg }}</label>
 <br>
 
+                        </div>
+  </div>
 
+                        <br>
+                        <br>
+
+<div class="row col-md-12">
+                            <label class="col-md-2 control-label">Medium of Selection:</label>
+    {% if item.is_email %}
+    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp
+
+    {% endif %}
+
+    <div class="col-xl-2 col-lg-2"></div>
+        {% if item.is_whatsapp %}
+    <label class="form-check-label">Whatsapp</label>&nbsp &nbsp&nbsp&nbsp
+      {% endif %}
+    <div class="col-xl-2 col-lg-2"></div>
+        {% if item.is_call %}
+    <label class="form-check-label">Call</label>&nbsp &nbsp &nbsp &nbsp
+      {% endif %}
+    <div class="col-xl-2 col-lg-2"></div>
+        {% if item.is_sms %}
+    <label class="form-check-label">SMS</label>&nbsp &nbsp &nbsp &nbsp
+      {% endif %}
+</div>
+
+<center>
+      {{form4.email_auto_manual}}
+</center>
+
+
+                         <div class="">
+<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+
+
+               <table style="font-size: 14px;">
+
+                     {% for item in followup_products_list %}
+
+ <tr>
+    <td colspan="5" style="text-align: center;"><input type="checkbox" class="custom-control-input" name="checks_pro[]" value="{{item.pk}}" id="customCheck{{forloop.counter}}"><label class="custom-control-label" for="customCheck{{forloop.counter}}">Select Product</label>
+</td>
+
+
+  </tr>
+
+  <tr>
+    <td>Product Code:</td>
+      <td colspan="5" style="text-align: center;"> Product Image   </td>
+
+  </tr>
+                   <tr>
+    <td>HSN Code: {{item.product_id.hsn_code}} </td>
+
+                   <td rowspan="5">
+                       {% if item.product_id.product_image %}
+                       <img height="150" width="150" src="{{item.product_id.product_image.url}}">
+                       {% endif %}
+                   </td>
+</tr>
+<tr>
+  <td>Sub Sub Model: {{item.product_id.sub_sub_category}} </td>
+</tr>
+<tr>
+   <td>Platform Size: {{item.product_id.platform_size}} </td>
+               </tr>
+
+<tr>
+   <td>Product Description: {{item.product_id.product_desc}} </td>
+               </tr>
+
+<tr>
+   <td>Rate : {{item.product_id.selling_price}} </td>
+
+  </tr>
+                   {% endfor %}
+</table>
+              </div>
+                          </div>
+
+                         <br>
+
+                          </form>
+
+
+
+                    </div>
+
+
+
+                         <br>
+
+
+</form>
+
+
+                          </div>
 
             </div>
 
 
+    {% endfor %}
+
+
+   </div>
+
 
         </div>
 </div>
-<br>
   </div>
   <!-- End of Page Wrapper -->
   </div>
@@ -615,119 +401,7 @@ td {
     <i class="fas fa-angle-up"></i>
   </a>
 
-             <script>
 
-        function toggleCheckbox(select) {
-value = select.checked;
-
-    $.ajax({
-        url: "/load_dispatch_done/",
-        data: {
-          'loc_id':value,
-        },
-        success: function (data) {
-           $("#id_subcat").html(data);
-        }
-      });
-}
-        function toggleCheckbox2(select) {
-value = !select.checked;
-
-    $.ajax({
-        url: "/load_users/",
-        data: {
-          'loc_id':value,
-        },
-        success: function (data) {
-           $("#id_manager_view").html(data);
-        }
-      });
-}
-
-    </script>
-    <!--<div class="row" style="width: 100%; margin-top: 20%;">-->
-
-        <!--{% if request.user.is_authenticated %}-->
-<!--{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}-->
-                <!--<div class="col-xl-3 col-md-3 mb-12">-->
-              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
-                <!--<div class="card-body" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col ">-->
- <!--<a href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"Add Purchase</button></a>-->
-                    <!--</div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-
-
-
-
-        <!--<div class="col-xl-3 col-md-3 mb-12">-->
-              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
-                <!--<div class="card-body" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col ">-->
-                        <!--<form method="POST" ion="">{%csrf_token%}-->
- <!--<a href="#"><button name="deleted" type="submit" class="btn btn-primary">Deleted User</button></a>-->
-                              <!--</form>-->
-                    <!--</div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-
-
-                <!--<div class="col-xl-3 col-md-12 mb-12">-->
-              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
-                <!--<div class="card-body" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col mr-2">-->
-                        <!--<a href="/user_logs/"> <button style="background-color: #FC6E20;" class="btn btn-primary"Log</button></a>&nbsp; &nbsp;-->
-                        <!--<a href="/report/"> <button style="background-color: #FC6E20;" class="btn btn-primary"Report</button></a>&nbsp;-->
-                    <!--</div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-
-
-        <!--&lt;!&ndash; Earnings (Monthly) Card Example &ndash;&gt;-->
-            <!--<div class="col-xl-3 col-md-12 mb-12">-->
-              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
-                <!--<div class="card-body" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col mr-2">-->
-                        <!--<a href="/purchase_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary"Analytics</button></a>-->
-
-                    <!--</div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-<!--{% else %}-->
-          <!--<div class="col-xl-3 col-md-3 mb-12">-->
-              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
-                <!--<div class="card-body" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col ">-->
- <!--<a href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"Add Purchase</button></a>-->
-                    <!--</div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-<!--{% endif %}-->
-<!--{% endif %}-->
-
-
-          <!--</div>-->
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>

@@ -99,7 +99,8 @@ class Auto_followup_details(models.Model):
 
 class History_followup(models.Model):
     follow_up_section = models.ForeignKey(Follow_up_section,on_delete=models.CASCADE,null=True,blank=True)
-    fields = models.CharField(max_length=100)
+    fields = models.CharField(max_length=120)
+    product_ids = models.CharField(max_length=100)
     is_email = models.BooleanField(default=False)
     is_whatsapp = models.BooleanField(default=False)
     is_call = models.BooleanField(default=False)
@@ -109,7 +110,7 @@ class History_followup(models.Model):
     email_subject = models.CharField(max_length=120)
     email_msg = models.TextField(max_length=120, null=True, blank=True)
     call_response = models.TextField(max_length=120, null=True, blank=True)
-    sms_msg = models.CharField(max_length=160)
+    sms_msg = models.TextField()
     entry_timedate = models.DateTimeField(default=timezone.now,)
 
 

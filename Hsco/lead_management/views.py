@@ -20,10 +20,12 @@ from .models import Lead, Pi_section, IndiamartLeadDetails, History_followup, Fo
 
 from .models import Lead, Pi_section, Pi_product, Pi_History
 from customer_app.models import sub_model, main_model, sub_sub_model
-
-
+import requests
+import json
 
 # Create your views here.
+from .utils import send_html_mail
+
 
 def lead_home(request):
     import requests
@@ -263,8 +265,8 @@ def update_view_lead(request,id):
     form = Customer_detailForm(initial=customer_initial_data)
     form2 = Deal_detailForm(initial=deal_details_initial_data)
     form3 = Pi_sectionForm()
-    form4 = Follow_up_sectionForm(initial={'whatsappno':customer_id.contact_no,})
-    form6 = History_followupForm(request.POST or None)
+    form4 = Follow_up_sectionForm(initial={'email_auto_manual':hfu.auto_manual_mode,})
+    form6 = History_followupForm(initial={'wa_no':hfu.whatsappno,'email_subject':hfu.email_subject})
     form5 = Payment_detailsForm()
     context = {
         'form': form,
@@ -276,6 +278,7 @@ def update_view_lead(request,id):
         'lead_pi_products': lead_pi_products,
        'followup_products_list': followup_products_list,
         'hfu':hfu.fields,
+        'hfu_id':hfu.id,
         'form6':form6,
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
@@ -2222,184 +2225,249 @@ td {
             context.update(context23)
 
         elif 'submit5' in request.POST:
-            fields = request.POST.get('fields')
+
             is_email = request.POST.get('is_email')
             is_whatsapp = request.POST.get('is_whatsapp')
             is_call = request.POST.get('is_call')
             is_sms = request.POST.get('is_sms')
             wa_msg = request.POST.get('wa_msg')
             wa_no = request.POST.get('wa_no')
+            email_auto_manual = request.POST.get('email_auto_manual')
             selected_products = request.POST.getlist('checks_pro[]')
-            
-            print("selected_products")
-            print(selected_products)
+            selected_fields = Follow_up_section.objects.get(lead_id=id).fields
 
-            final_list = []
+            if(len(selected_products)<1):
 
+                context22={
+                    'error':"No Product Selected\nPlease Select Products And Try Again",
+                    'error_exist':True,
+                }
+                context.update(context22)
+            elif(is_call!='on' and is_sms!='on' and is_whatsapp!='on' and is_email!='on' ):
 
+                context28 = {
+                    'error': "Please Select Atleast One Medium For Followup",
+                    'error_exist': True,
+                }
+                context.update(context28)
+            elif (len(selected_fields)<6):
 
-            history_follow= History_followup()
+                context28 = {
+                    'error': "Please Select Atleast One Product Field",
+                    'error_exist': True,
+                }
+                context.update(context28)
+            else:
 
+                final_list = []
+                Follow_up_section.objects.filter(lead_id=id).update(whatsappno=wa_no,)
+                Follow_up_section.objects.filter(lead_id=id).update(auto_manual_mode=email_auto_manual,)
 
-            if(is_email=='on'):
-                email_subject = request.POST.get('email_subject')
-                email_msg = request.POST.get('email_msg')
-                history_follow.is_email=True
-                history_follow.email_subject=email_subject
-                history_follow.email_msg=email_msg
-                table='''<html>
-<head>
-  <title>
-    HSCO
-  </title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-
-<body>
-
-<style>
-    .border_class {
-    border:1px solid black;
-    height:45px;
-    text-align:center;
-    vertical-align: middle;
-    line-height: 45px;
-    }
+                history_follow= History_followup()
+                history_follow.follow_up_section=Follow_up_section.objects.get(id=hfu.id)
 
 
-  table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 12px;
-  border-color: black;
-  color: black;
-
-
-
-}
-
-
-th {
-
-  font-size: 13px;
-    border: 1px solid black;
-    text-align: left;
-    padding:5px;
-
-}
-
-td {
-  border: 1px solid black;
-  padding: 3px;
-  font-size: 13px;
-  padding: 5px;
-  text-align: center;
-}
-
-
-            </style>
-
-                          <div class="card shadow">
-
-<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
-    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
-    <table style="font-size: 14px;">
-  <tr>
-    <td>Product Code: {{ product.product_id.sub_sub_category }}</td>
-      <td rowspan="5">Product Image:
-          {% if product.product_id.product_image %}
-          <img height="100px" width="100px" src="{{ product.product_id.product_image.url }}">
-      {% endif %}</td>
-
-  </tr><tr>
-    <td>HSN Code: {{ product.product_id.hsn_code }}</td>
-</tr>
-
-<tr>
-    <td>Quantity: {{ product.quantity }}</td>
-               </tr>
-
-<tr>
-    <td>Product Description: {{ product.product_id.product_desc }}</td>
-               </tr>
-
-<tr>
-    <td>Rate : {{ product.product_id.selling_price }}</td>
-
-  </tr>
-</table>
-              </div>
-
-                          </div>
-
-</body>
-</html>'''
-
-
-
-            if(is_whatsapp=='on'):
-
-                history_follow.is_whatsapp = True
-                history_follow.wa_msg = wa_msg
-                history_follow.wa_no = wa_no
-                selected_fields = Follow_up_section.objects.get(lead_id=id).fields
-                # hfu = History_followup.objects.filter(follow_up_section=id).last()
-                # selected_fields = hfu.fields
                 selected_fields2 = selected_fields.replace("'", "").strip('][').split(', ')  # convert string to list
+                history_follow.fields = selected_fields2
+                history_follow.product_ids = selected_products
 
-                length_of_list = 0
+                length_of_list = 1
                 count_list = 0
-                for item in selected_fields2:
-                    pro_list = Followup_product.objects.filter(lead_id=id).values_list(item, flat=True)
-                    list_pro=[]
-                    if(count_list==0):
-                        for ite, lt in enumerate(pro_list):
-                            final_list.append([item + ' : ' + str(lt)])
-                        count_list=count_list+1
-                    else:
 
+                html_head = '''<thead> '''
+                for item in selected_fields2:
+                    pro_list = Followup_product.objects.filter(lead_id=id,pk__in=selected_products).values_list(item, flat=True)
+                    list_pro = []
+                    if (count_list == 0):
                         for ite, lt in enumerate(pro_list):
+                            if (ite == 0):
+                                html_head = html_head + '''<th>''' + item + '''</th>'''
+                            final_list.append([item + ' : ' + str(lt)])
+                        count_list = count_list + 1
+                    else:
+                        for ite, lt in enumerate(pro_list):
+                            if (ite == 0):
+                                html_head = html_head + '''<th>''' + item + '''</th>'''
                             final_list[ite] = final_list[ite] + [item + ' : ' + str(lt)]
                             # final_list[ite].append(list_pro)
+                html_head = html_head + '''</thead> '''
+
+                html_rows = ''' '''
+                count = 1
+                sms_content=''' '''
+                for count_for,single in enumerate(final_list):
+                    html_rows = html_rows + '''<tr> '''
+                    count = count + 1
+                    sms_content=sms_content+''' Product #'''+str(count_for+1)+''':\n'''
+                    for item in single:
+                        sms_content = sms_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
+                        html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
+                    html_rows = html_rows + '''</tr>'''
+
+
+                if(is_email=='on'):
+                    email_subject = request.POST.get('email_subject')
+                    email_msg = request.POST.get('email_msg')
+                    history_follow.is_email=True
+                    history_follow.email_subject=email_subject
+                    history_follow.email_msg=email_msg
+                    Follow_up_section.objects.filter(lead_id=id).update(email_subject=email_subject, )
+
+                    html_content='''<html>
+    <head>
+      <title>
+        HSCO
+      </title>
+    
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+      <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    
+    <body>
+    
+    <style>
+        .border_class {
+        border:1px solid black;
+        height:45px;
+        text-align:center;
+        vertical-align: middle;
+        line-height: 45px;
+        }
+      table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 12px;
+      border-color: black;
+      color: black;
+    }
+    th {
+      font-size: 13px;
+        border: 1px solid black;
+        text-align: left;
+        padding:5px;
+    }
+    td {
+      border: 1px solid black;
+      padding: 3px;
+      font-size: 13px;
+      padding: 5px;
+      text-align: center;
+    }
+          </style>
+                              <div class="card shadow">
+    
+    <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+        <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
+        
+        <h4>'''+email_msg+'''</h4>
+        
+        <table style="font-size: 14px;">
+        
+        '''+html_head+''' 
+        
+    '''+html_rows+''' 
+    </table>
+                  </div>
+                              </div>
+    </body>
+    </html>'''
+
+                    send_html_mail(email_subject, html_content, settings.EMAIL_HOST_USER, [customer_id.customer_email_id, ])
+                    context28 = {
+                        'success': "Email Sent on email Id: "+customer_id.customer_email_id,
+                        'success_exist': True,
+                    }
+                    context.update(context28)
+
+
+                if(is_whatsapp=='on'):
+
+                    history_follow.is_whatsapp = True
+                    history_follow.wa_msg = wa_msg
+                    history_follow.wa_no = wa_no
+                    # selected_fields = Follow_up_section.objects.get(lead_id=id).fields
+                    # selected_fields2 = selected_fields.replace("'", "").strip('][').split(', ')  # convert string to list
+                    # length_of_list = 1
+                    # count_list = 0
+                    # html_head='''<tr> '''
+                    # for item in selected_fields2:
+                    #     pro_list = Followup_product.objects.filter(lead_id=id).values_list(item, flat=True)
+                    #     list_pro=[]
+                    #     if(count_list==0):
+                    #         for ite, lt in enumerate(pro_list):
+                    #             if(ite==0):
+                    #                 html_head =html_head+ '''<td>'''+item+'''</td>'''
+                    #             final_list.append([item + ' : ' + str(lt)])
+                    #         count_list=count_list+1
+                    #     else:
+                    #         for ite, lt in enumerate(pro_list):
+                    #             if (ite == 0):
+                    #                 html_head = html_head + '''<td>''' + item + '''</td>'''
+                    #             final_list[ite] = final_list[ite] + [item + ' : ' + str(lt)]
+                    #             # final_list[ite].append(list_pro)
+                    # html_head = html_head + '''</tr> '''
+                    #
+                    #
+                    # html_rows = ''' '''
+                    # count=1
+                    # for single in final_list:
+                    #     html_rows = html_rows+'''<tr> '''
+                    #     count=count+1
+                    #     for item in single:
+                    #         html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
+                    #     html_rows = html_rows + '''</tr>'''
+                    context28 = {
+                        'success_2': "WhatsApp Redirect Successful On WhatsApp No : " + wa_no,
+                        'success_exist_2': True,
+                    }
+                    context.update(context28)
 
 
 
-                    length_of_list=len(list_pro)
+
+
+                if(is_sms=='on'):
+                    sms_msg = request.POST.get('sms_msg')
+                    history_follow.is_sms = True
+                    history_follow.sms_msg = sms_msg+'\n'+sms_content
+                    print("sms_contentsms_content")
+                    print("sms_contentsms_content")
+                    print(sms_content)
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + customer_id.contact_no + "&message=" + sms_msg + "&senderid=" + settings.senderid + "&type=txt"
+                    payload = ""
+                    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    x = response.text
+                    print(x)
+                    context28 = {
+                        'success_4': "SMS Sent Successfully To : " + customer_id.contact_no,
+                        'success_exist_4': True,
+                    }
+                    context.update(context28)
 
 
 
 
+                if(is_call=='on'):
+                    call_response = request.POST.get('call_response')
+                    history_follow.is_call = True
+                    history_follow.call_response = call_response
+                    context28 = {
+                        'success_5': "Call Response Recorded Successfully" ,
+                        'success_exist_5': True,
+                    }
+                    context.update(context28)
 
+                history_follow.save()
 
-
-
-
-
-
-
-
-            if(is_sms=='on'):
-                sms_msg = request.POST.get('sms_msg')
-                history_follow.is_sms = True
-                history_follow.sms_msg = sms_msg
-
-
-            if(is_call=='on'):
-                call_response = request.POST.get('call_response')
-                history_follow.is_call = True
-                history_follow.call_response = call_response
-
-            history_follow.save()
-
-            if (is_whatsapp):
-                return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + str(final_list))
+                if (is_whatsapp):
+                    return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + str(final_list))
 
 
 
@@ -2523,8 +2591,14 @@ def select_product(request,id):
 def lead_manager_view(request):
     return render(request,'lead_management/lead_manager.html')
 
-def lead_follow_up_histroy(request):
-    return render(request,'lead_management/lead_history.html',)
+def lead_follow_up_histroy(request,follow_up_id):
+    obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
+
+    context={
+        'obj_list':obj_list,
+    }
+
+    return render(request,'lead_management/follow_up_history.html',context)
 
 def pi_section_history(request,id):
     lead_id = Lead.objects.get(id=id)
