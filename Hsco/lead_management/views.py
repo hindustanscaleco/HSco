@@ -129,6 +129,8 @@ def add_lead(request):
         latest_lead_id = 1
     else:
         latest_lead_id = Lead.objects.latest('id').id
+
+    cust_sugg = Customer_Details.objects.all()
     form = Customer_detailForm()
     form2 = Deal_detailForm()
     if request.method == 'POST' or request.method=='FILES':
@@ -214,6 +216,7 @@ def add_lead(request):
         'form':form,
         'form2':form2,
         'latest_lead_id':latest_lead_id,
+        'cust_sugg':cust_sugg,
     }
     return render(request, 'lead_management/add_lead.html',context)
 
