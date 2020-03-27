@@ -634,7 +634,7 @@ function myFunction_call() {
                      {% for item in followup_products_list %}
 
  <tr>
-    <td colspan="5" style="text-align: center;"><input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck{{forloop.counter}}"><label class="custom-control-label" for="customCheck{{forloop.counter}}">Select Product</label>
+    <td colspan="5" style="text-align: center;"><input type="checkbox" class="custom-control-input" name="checks_pro[]" value="" id="customCheck{{forloop.counter}}"><label class="custom-control-label" for="customCheck{{forloop.counter}}">Select Product</label>
 </td>
 
 
@@ -646,7 +646,11 @@ function myFunction_call() {
   </tr>
                    <tr>
     <td>HSN Code: {{item.product_id.hsn_code}} </td>
-                   <td rowspan="5"><img height="150" width="150" src="{{item.product_id.product_image.url}}"></td>
+                   <td rowspan="5">
+                       {% if item.product_id.product_image %}
+                       <img height="150" width="150" src="{{item.product_id.product_image.url}}">
+                       {% endif %}
+                   </td>
 </tr>
 <tr>
   <td>Sub Sub Model: {{item.product_id.sub_sub_category}} </td>
@@ -686,15 +690,20 @@ function myFunction_call() {
 <div  style="margin-left:10%;">
 <div class="form-group row">
 
-    <label class="col-md-2 control-label">Product Code :
+    <label class="col-md-2 control-label">Type Of Scale :
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
 
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1"></label>
+    {% if 'scale_type' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_type" checked id="customChec1un">
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_type" id="customChec1">
+
+      {% endif %}
+  <label class="custom-control-label" for="customChec1"></label>
 </div>
   </div>
 
@@ -721,7 +730,12 @@ function myFunction_call() {
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
+     {% if 'sub_sub_category' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" checked id="customCheck3un">
+      {% else %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" id="customCheck3">
+
+      {% endif %}
   <label class="custom-control-label" for="customCheck3"></label>
 </div>
   </div>
@@ -731,7 +745,12 @@ function myFunction_call() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
+        {% if 'platform_size' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" checked id="customCheck8un">
+      {% else %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" id="customCheck8">
+
+      {% endif %}
   <label class="custom-control-label" for="customCheck8"></label>
 </div>
   </div>
@@ -759,7 +778,12 @@ function myFunction_call() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
+         {% if 'cost_price' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" checked id="customCheck5un">
+      {% else %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" id="customCheck5">
+
+      {% endif %}
   <label class="custom-control-label" for="customCheck5"></label>
 </div>
   </div>
@@ -772,7 +796,11 @@ function myFunction_call() {
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_image" id="customCheck6">
+         {% if 'product_id_id__product_image' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_image" checked id="customCheck6un">
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_image" id="customCheck6">
+      {% endif %}
   <label class="custom-control-label" for="customCheck6"></label>
 </div>
   </div>
@@ -804,8 +832,12 @@ function yourFunction() {
   var x = document.getElementById("my123");
   if (x.style.display === "none") {
     x.style.display = "block";
+    $('#id_wa_no').attr('required', '');
+    $('#id_wa_msg').attr('required', '');
   } else {
     x.style.display = "none";
+    $('#id_wa_no').removeAttr('required');
+    $('#id_wa_msg').removeAttr('required');
   }
 }
 </script>
@@ -815,8 +847,12 @@ function hisFunction() {
   var x = document.getElementById("myemail");
   if (x.style.display === "none") {
     x.style.display = "block";
+    $('#id_email_subject').attr('required', '');
+    $('#id_email_msg').attr('required', '');
   } else {
     x.style.display = "none";
+        $('#id_email_subject').removeAttr('required');
+        $('#id_email_msg').removeAttr('required');
   }
 }
 </script>
@@ -826,8 +862,12 @@ function herFunction() {
   var x = document.getElementById("mycall_follow_up");
   if (x.style.display === "none") {
     x.style.display = "block";
+        $('#id_call_response').attr('required', '');
+
   } else {
     x.style.display = "none";
+            $('#id_call_response').removeAttr('required');
+
   }
 }
 </script>
@@ -838,8 +878,12 @@ function whosFunction() {
   var x = document.getElementById("mysms");
   if (x.style.display === "none") {
     x.style.display = "block";
+            $('#id_sms_msg').attr('required', '');
+
   } else {
     x.style.display = "none";
+                $('#id_sms_msg').removeAttr('required');
+
   }
 }
 </script>

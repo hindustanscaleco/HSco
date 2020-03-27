@@ -411,7 +411,7 @@ class History_followupForm(forms.ModelForm):
                                 ))
 
 
-    wa_no = forms.CharField(max_length=20, required=True,
+    wa_no = forms.CharField(max_length=20, required=False,
                                  widget=forms.TextInput(
                                      attrs={
                                          'type': 'text',
@@ -420,14 +420,14 @@ class History_followupForm(forms.ModelForm):
                                      }
                                  ))
 
-    wa_msg = forms.CharField(max_length=120, required=True,
+    wa_msg = forms.CharField(max_length=120, required=False,
                              widget=forms.Textarea(
                                  attrs={
                                      'type': 'text',
                                      'placeholder': "Content",
                                      'class': 'form-control',
                                  }))
-    email_subject = forms.CharField(max_length=120, required=True,
+    email_subject = forms.CharField(max_length=120, required=False,
                                     widget=forms.TextInput(
                                         attrs={
                                             'type': 'text',
@@ -435,21 +435,21 @@ class History_followupForm(forms.ModelForm):
                                             'class': 'form-control',
                                         }
                                     ))
-    email_msg = forms.CharField(max_length=120, required=True,
+    email_msg = forms.CharField(max_length=120, required=False,
                                     widget=forms.Textarea(
                                         attrs={
                                             'type': 'text',
                                             'placeholder': "Emai Content",
                                             'class': 'form-control',
                                         }))
-    call_response = forms.CharField(max_length=120, required=True,
+    call_response = forms.CharField(max_length=120, required=False,
                                     widget=forms.Textarea(
                                         attrs={
                                             'type': 'text',
                                             'placeholder': "Call Response",
                                             'class': 'form-control',
                                         }))
-    sms_msg = forms.CharField(max_length=120, required=True,
+    sms_msg = forms.CharField(max_length=120, required=False,
                                     widget=forms.Textarea(
                                         attrs={
                                             'type': 'text',
