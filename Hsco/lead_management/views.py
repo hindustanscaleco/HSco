@@ -94,8 +94,9 @@ def lead_home(request):
                 print("error")
         else:
             row_count = response[0]
-            error = row_count['Error_Message']
-            error_exist = True
+            if(row_count!=None):
+                error = row_count['Error_Message']
+                error_exist = True
 
 
 
@@ -130,6 +131,8 @@ def add_lead(request):
         latest_lead_id = 1
     else:
         latest_lead_id = Lead.objects.latest('id').id
+
+    cust_sugg = Customer_Details.objects.all()
     form = Customer_detailForm()
     form2 = Deal_detailForm()
     if request.method == 'POST' or request.method=='FILES':
@@ -201,15 +204,21 @@ def add_lead(request):
         item2.date_of_initiation = date_of_initiation
         item2.channel = channel
         item2.requirement = requirement
+        item2.owner_of_opportunity = SiteUser.objects.filter(profile_name=owner_of_opportunity).first()
         item2.upload_requirement_file = upload_requirement_file
-        item2.owner_of_opportunity = owner_of_opportunity
+
         item2.save()
+
+        fp=Follow_up_section()
+        fp.lead_id= Lead.objects.get(id=item2.pk)
+        fp.save()
         return redirect('/update_view_lead/'+str(item2.id))
         # item.save()
     context={
         'form':form,
         'form2':form2,
         'latest_lead_id':latest_lead_id,
+        'cust_sugg':cust_sugg,
     }
     return render(request, 'lead_management/add_lead.html',context)
 
@@ -217,7 +226,7 @@ def update_view_lead(request,id):
     lead_id = Lead.objects.get(id=id)
 
     lead_pi_products = Pi_product.objects.filter(lead_id=id)
-    hfu = History_followup.objects.filter(follow_up_section=id).last()
+    hfu = Follow_up_section.objects.filter(lead_id=id).last()
 
     followup_products_list = Followup_product.objects.filter(lead_id=id)
 
@@ -268,7 +277,7 @@ def update_view_lead(request,id):
         'lead_id': lead_id,
         'lead_pi_products': lead_pi_products,
        'followup_products_list': followup_products_list,
-        # 'hfu':hfu.fields,
+        'hfu':hfu.fields,
         'form6':form6,
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
@@ -2206,23 +2215,189 @@ td {
 
         elif 'submit3' in request.POST:
             selected_fields = request.POST.getlist('checks[]')
-            hfu=History_followup.objects.filter(follow_up_section=id).last()
-            History_followup.objects.filter(id=hfu.id).update(fields=selected_fields)
+            Follow_up_section.objects.filter(lead_id=id).update(fields=selected_fields)
+            hfu = Follow_up_section.objects.filter(lead_id=id).last()
+            context23 = {
+
+                'hfu': hfu.fields,
+            }
+            context.update(context23)
+
         elif 'submit5' in request.POST:
-            whatsappno= request.POST.get('whatsappno')
-            content= request.POST.get('content')
-            hfu = History_followup.objects.filter(follow_up_section=id).last()
-            selected_fields = hfu.fields
-            selected_fields2 = selected_fields.replace("'","").strip('][').split(', ')  #convert string to list
+            fields = request.POST.get('fields')
+            is_email = request.POST.get('is_email')
+            is_whatsapp = request.POST.get('is_whatsapp')
+            is_call = request.POST.get('is_call')
+            is_sms = request.POST.get('is_sms')
+            wa_msg = request.POST.get('wa_msg')
+            wa_no = request.POST.get('wa_no')
+            selected_products = request.POST.getlist('checks_pro[]')
+            
+            print("selected_products")
+            print(selected_products)
 
-            final_list=[]
-            for item in selected_fields2:
-                pro_list=Product.objects.filter(id=1).values_list(item, flat=True)
-                for ite,lt in enumerate(pro_list):
-                    final_list = final_list+[item+' : '+str(lt)]
+            final_list = []
 
-            return redirect('https://api.whatsapp.com/send?phone=91'+whatsappno+'&text='+content+str(final_list))
 
+
+            history_follow= History_followup()
+
+
+            if(is_email=='on'):
+                email_subject = request.POST.get('email_subject')
+                email_msg = request.POST.get('email_msg')
+                history_follow.is_email=True
+                history_follow.email_subject=email_subject
+                history_follow.email_msg=email_msg
+                table='''<html>
+<head>
+  <title>
+    HSCO
+  </title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
+<body>
+
+<style>
+    .border_class {
+    border:1px solid black;
+    height:45px;
+    text-align:center;
+    vertical-align: middle;
+    line-height: 45px;
+    }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+                          <div class="card shadow">
+
+<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
+    <table style="font-size: 14px;">
+  <tr>
+    <td style="border: solid gray; background-color: gray; color: white;">Product Code: </td>
+    <td style="border: solid gray; background-color: gray; color: white;">HSN Code:</td>
+    <td style="border: solid gray; background-color: gray; color: white;">Quantity:</td>
+    <td style="border: solid gray; background-color: gray; color: white;">Product Description: </td>
+      <td style="border: solid gray; background-color: gray; color: white;">Rate:</td>
+      <td style="border: solid gray; background-color: gray; color: white;">Product Images:</td>
+         
+
+  </tr>
+  <tr>
+  	<td>{{ product.product_id.sub_sub_category }}</td>
+  	<td>{{ product.product_id.hsn_code }}</td>
+  	<td>{{ product.quantity }}</td>
+  	<td>{{ product.product_id.product_desc }}</td>
+  	<td>{{ product.product_id.selling_price }}</td>
+  	<td>{{ product.product_id.product_image.url }}</td>
+  	
+  </tr>
+</table>
+              </div>
+
+                          </div>
+
+</body>
+</html>'''
+
+
+
+            if(is_whatsapp=='on'):
+
+                history_follow.is_whatsapp = True
+                history_follow.wa_msg = wa_msg
+                history_follow.wa_no = wa_no
+                selected_fields = Follow_up_section.objects.get(lead_id=id).fields
+                # hfu = History_followup.objects.filter(follow_up_section=id).last()
+                # selected_fields = hfu.fields
+                selected_fields2 = selected_fields.replace("'", "").strip('][').split(', ')  # convert string to list
+
+                length_of_list = 0
+                count_list = 0
+                for item in selected_fields2:
+                    pro_list = Followup_product.objects.filter(lead_id=id).values_list(item, flat=True)
+                    list_pro=[]
+                    if(count_list==0):
+                        for ite, lt in enumerate(pro_list):
+                            final_list.append([item + ' : ' + str(lt)])
+                        count_list=count_list+1
+                    else:
+
+                        for ite, lt in enumerate(pro_list):
+                            final_list[ite] = final_list[ite] + [item + ' : ' + str(lt)]
+                            # final_list[ite].append(list_pro)
+
+
+
+                    length_of_list=len(list_pro)
+
+
+
+
+
+
+
+
+
+
+
+
+
+            if(is_sms=='on'):
+                sms_msg = request.POST.get('sms_msg')
+                history_follow.is_sms = True
+                history_follow.sms_msg = sms_msg
+
+
+            if(is_call=='on'):
+                call_response = request.POST.get('call_response')
+                history_follow.is_call = True
+                history_follow.call_response = call_response
+
+            history_follow.save()
+
+            if (is_whatsapp):
+                return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + str(final_list))
 
 
 
@@ -2412,33 +2587,52 @@ def select_product_followup(request,id):
             is_last_product_yes = request.POST.get('is_last_product_yes')
             product_id = request.POST.get('product_id')
 
-            hf = History_followup()
-            hf.fields = ""
-            hf.content = ""
-            hf.follow_up_section = Follow_up_section.objects.get(id=1)
-            hf.save()
+            requested_product = Product.objects.get(id=product_id)
+            print("product_id")
+            print(product_id)
+            print(requested_product)
+            print("requested_product")
+            fol_pro=Followup_product()
+            fol_pro.product_id = requested_product
+            fol_pro.lead_id = Lead.objects.get(id=id)
+            fol_pro.scale_type = requested_product.scale_type
+            fol_pro.main_category = requested_product.main_category
+            fol_pro.sub_category = requested_product.sub_category
+            fol_pro.sub_sub_category = requested_product.sub_sub_category
+            fol_pro.hsn_code = requested_product.hsn_code
+            fol_pro.max_capacity = requested_product.max_capacity
+            fol_pro.accuracy = requested_product.accuracy
+            fol_pro.platform_size = requested_product.platform_size
+            fol_pro.product_desc = requested_product.product_desc
+            fol_pro.cost_price = requested_product.cost_price
+            fol_pro.selling_price = requested_product.selling_price
+            fol_pro.carton_size = requested_product.carton_size
+            fol_pro.save()
 
-            follow_product = Followup_product()
-            follow_product.history_follow_up = History_followup.objects.get(id=hf.pk)
-            follow_product.product_id = Product.objects.get(id=product_id)
-            follow_product.save()
 
             if is_last_product_yes == 'yes':
                 return redirect('/update_view_lead/' + str(id))
             elif is_last_product_yes == 'no':
                 return redirect('/select_product_followup/' + str(id))
         else:
-            model_of_purchase = request.POST.get('model_of_purchase')
-            type_of_scale = request.POST.get('type_of_scale')
-            sub_model = request.POST.get('sub_model')
-            sub_sub_model = request.POST.get('sub_sub_model')
+            model_of_purchase_str = request.POST.get('model_of_purchase')
+            type_of_scale_str = request.POST.get('type_of_scale')
+            sub_model_str = request.POST.get('sub_model')
+            sub_sub_model_str = request.POST.get('sub_sub_model')
+
+            print("model_of_purchase")
+            print(model_of_purchase_str)
+            print(type_of_scale_str)
+            print(sub_model_str)
+            print(sub_sub_model_str)
+            print("sub_sub_model")
 
             if (sub_sub_model == None or sub_sub_model == ""):
-                product_avail = Product.objects.filter(scale_type=type_of_scale, main_category=model_of_purchase,
-                                                       sub_category=sub_model)
+                product_avail = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale_str).name, main_category=main_model.objects.get(id=model_of_purchase_str).name,
+                                                       sub_category=sub_model.objects.get(id=sub_model_str).name)
             else:
-                product_avail = Product.objects.filter(scale_type=type_of_scale, main_category=model_of_purchase,
-                                                       sub_category=sub_model, sub_sub_category=sub_sub_model)
+                product_avail = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale_str).id, main_category=main_model.objects.get(id=model_of_purchase_str).id,
+                                                       sub_category=sub_model.objects.get(id=sub_model_str).id, sub_sub_category=sub_sub_model.objects.get(id=sub_sub_model_str).id)
 
             context23 = {
                 # 'lead_id': lead_id,
