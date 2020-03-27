@@ -92,8 +92,9 @@ def lead_home(request):
                 print("error")
         else:
             row_count = response[0]
-            error = row_count['Error_Message']
-            error_exist = True
+            if(row_count!=None):
+                error = row_count['Error_Message']
+                error_exist = True
 
 
 
@@ -199,8 +200,9 @@ def add_lead(request):
         item2.date_of_initiation = date_of_initiation
         item2.channel = channel
         item2.requirement = requirement
+        item2.owner_of_opportunity = SiteUser.objects.filter(profile_name=owner_of_opportunity).first()
         item2.upload_requirement_file = upload_requirement_file
-        item2.owner_of_opportunity = owner_of_opportunity
+
         item2.save()
         return redirect('/update_view_lead/'+str(item2.id))
         # item.save()
