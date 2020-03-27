@@ -2253,6 +2253,100 @@ td {
                 history_follow.is_email=True
                 history_follow.email_subject=email_subject
                 history_follow.email_msg=email_msg
+                table='''<html>
+<head>
+  <title>
+    HSCO
+  </title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
+<body>
+
+<style>
+    .border_class {
+    border:1px solid black;
+    height:45px;
+    text-align:center;
+    vertical-align: middle;
+    line-height: 45px;
+    }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+                          <div class="card shadow">
+
+<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
+    <table style="font-size: 14px;">
+  <tr>
+    <td>Product Code: {{ product.product_id.sub_sub_category }}</td>
+      <td rowspan="5">Product Image:
+          {% if product.product_id.product_image %}
+          <img height="100px" width="100px" src="{{ product.product_id.product_image.url }}">
+      {% endif %}</td>
+
+  </tr><tr>
+    <td>HSN Code: {{ product.product_id.hsn_code }}</td>
+</tr>
+
+<tr>
+    <td>Quantity: {{ product.quantity }}</td>
+               </tr>
+
+<tr>
+    <td>Product Description: {{ product.product_id.product_desc }}</td>
+               </tr>
+
+<tr>
+    <td>Rate : {{ product.product_id.selling_price }}</td>
+
+  </tr>
+</table>
+              </div>
+
+                          </div>
+
+</body>
+</html>'''
 
 
 
