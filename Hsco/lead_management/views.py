@@ -1,4 +1,6 @@
 from _datetime import datetime
+
+from django.db import connection
 from django.db.models import Sum
 
 from django.core.files.base import ContentFile
@@ -2244,7 +2246,6 @@ td {
                 }
                 context.update(context22)
             elif(is_call!='on' and is_sms!='on' and is_whatsapp!='on' and is_email!='on' ):
-
                 context28 = {
                     'error': "Please Select Atleast One Medium For Followup",
                     'error_exist': True,
@@ -2351,13 +2352,43 @@ td {
         text-align: left;
         padding:5px;
     }
-    td {
-      border: 1px solid black;
-      padding: 3px;
-      font-size: 13px;
-      padding: 5px;
-      text-align: center;
-    }
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+                          <div class="card shadow">
+
+<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
+    <table style="font-size: 14px;">
+  <tr>
+    <td style="border: solid gray; background-color: gray; color: white;">Product Code: </td>
+    <td style="border: solid gray; background-color: gray; color: white;">HSN Code:</td>
+    <td style="border: solid gray; background-color: gray; color: white;">Quantity:</td>
+    <td style="border: solid gray; background-color: gray; color: white;">Product Description: </td>
+      <td style="border: solid gray; background-color: gray; color: white;">Rate:</td>
+      <td style="border: solid gray; background-color: gray; color: white;">Product Images:</td>
+         
+
+  </tr>
+  <tr>
+    <td>{{ product.product_id.sub_sub_category }}</td>
+    <td>{{ product.product_id.hsn_code }}</td>
+    <td>{{ product.quantity }}</td>
+    <td>{{ product.product_id.product_desc }}</td>
+    <td>{{ product.product_id.selling_price }}</td>
+    <td>{{ product.product_id.product_image.url }}</td>
+    
+  </tr>
+</table>
+              </div>
           </style>
                               <div class="card shadow">
     
@@ -2475,7 +2506,177 @@ td {
     return render(request, 'lead_management/update_view_lead.html',context)
 
 def lead_report(request):
+    if request.method =='POST' :
+        selected_list = request.POST.getlist('checks[]')
+        start_date = request.POST.get('date1')
+        end_date = request.POST.get('date2')
+        string = ','.join(selected_list)
+
+        request.session['start_date'] = start_date
+        request.session['end_date'] = end_date
+        request.session['string'] = string
+        request.session['selected_list'] = selected_list
+        print(string)
+        print(string)
+        if 'submit1' in request.POST:
+            table_name = 'Customer Details Section'
+            request.session['table_name'] = table_name
+        elif 'submit2' in request.POST:
+            table_name = 'Deal Details Section'
+            request.session['table_name'] = table_name
+        elif 'submit3' in request.POST:
+            table_name = 'PI Section'
+            request.session['table_name'] = table_name
+        elif 'submit4' in request.POST:
+            table_name = 'Follow-up Section'
+            request.session['table_name'] = table_name
+        elif 'submit5' in request.POST:
+            table_name = 'Payment Details Form'
+            request.session['table_name'] = table_name
+        return redirect('/final_lead_report/')
     return render(request,'lead_management/report_lead.html')
+
+def final_lead_report(request):
+    table_name = request.session.get('table_name')
+    start_date = request.session.get('start_date')
+    end_date = request.session.get('end_date')
+    string = request.session.get('string')
+    selected_list = request.session.get('selected_list')
+    final_row_product = []
+    final_row=[]
+    context = {
+        'final_row': final_row,
+        'final_row_product': final_row_product,
+        'selected_list': selected_list,
+    }
+    if table_name == 'Customer Details Section':
+        # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+        with connection.cursor() as cursor:
+            if string != '' :
+                    cursor.execute("SELECT " +  string + " from customer_app_customer_details  PRODUCT  where "
+                    " entry_timedate between'" + start_date + "' and '" + end_date + "';")
+                    row = cursor.fetchall()
+                    final_row_product = [list(x) for x in row]
+                    repairing_data = []
+                    for i in row:
+                        repairing_data.append(list(i))
+
+                    final_row = [list(x) for x in row]
+                    repairing_data = []
+                    for i in row:
+                        repairing_data.append(list(i))
+
+        try:
+            del request.session['start_date']
+            del request.session['end_date']
+            del request.session['string']
+            del request.session['selected_list']
+        except:
+            pass
+    if table_name == 'Deal Details Section':
+
+        # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+        with connection.cursor() as cursor:
+            if string != '' :
+                    cursor.execute("SELECT " +  string + " from lead_management_lead  PRODUCT  where "
+                    " entry_timedate between '" + start_date + "' and '" + end_date + "';")
+                    row = cursor.fetchall()
+                    final_row_product = [list(x) for x in row]
+                    repairing_data = []
+                    for i in row:
+                        repairing_data.append(list(i))
+
+                    final_row = [list(x) for x in row]
+                    repairing_data = []
+                    for i in row:
+                        repairing_data.append(list(i))
+
+        try:
+            del request.session['start_date']
+            del request.session['end_date']
+            del request.session['string']
+            del request.session['selected_list']
+        except:
+            pass
+    if table_name == 'PI Section':
+        # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+        selected_list = ['lead_id','discount','discount_type','payment_channel','payment_received_date','notes','cgst_sgst','igst','grand_total','entry_timedate']
+
+
+        with connection.cursor() as cursor:
+
+            cursor.execute("SELECT lead_id_id,discount,discount_type,payment_channel,payment_received_date,notes,cgst_sgst,igst,grand_total,entry_timedate from lead_management_pi_section where entry_timedate between'" + start_date + "' and '" + end_date + "';")
+            row = cursor.fetchall()
+            final_row_product = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+
+            final_row = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+        try:
+            del request.session['start_date']
+            del request.session['end_date']
+            del request.session['string']
+            del request.session['selected_list']
+        except:
+            pass
+    if table_name == 'Follow-up Section':
+        # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT lead_id_id,discount,discount_type,payment_channel,payment_received_date,notes,cgst_sgst,igst,grand_total,entry_timedate from lead_management_pi_section where entry_timedate between'" + start_date + "' and '" + end_date + "';")
+            row = cursor.fetchall()
+            final_row_product = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+
+            final_row = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+
+        try:
+            del request.session['start_date']
+            del request.session['end_date']
+            del request.session['string']
+            del request.session['selected_list']
+        except:
+            pass
+    if table_name == 'Payment Details Form':
+        # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+        with connection.cursor() as cursor:
+            if string != '' :
+                    cursor.execute("SELECT " +  string + " from lead_management_payment_details  PRODUCT  where "
+                    " entry_timedate between'" + start_date + "' and '" + end_date + "';")
+                    row = cursor.fetchall()
+                    final_row_product = [list(x) for x in row]
+                    repairing_data = []
+                    for i in row:
+                        repairing_data.append(list(i))
+
+                    final_row = [list(x) for x in row]
+                    repairing_data = []
+                    for i in row:
+                        repairing_data.append(list(i))
+
+        try:
+            del request.session['start_date']
+            del request.session['end_date']
+            del request.session['string']
+            del request.session['selected_list']
+        except:
+            pass
+
+    context={
+        'final_row':final_row,
+        'final_row_product':final_row_product,
+        'selected_list':selected_list,
+    }
+    return render(request,"report/final_lead_report.html",context)
 
 def select_product_followup(request,id):
     type_of_purchase_list =type_purchase.objects.all() #1
@@ -2622,7 +2823,64 @@ def lead_delete_product(request,id):
     return render(request,'lead_management/lead_delete_product.html',context)
 
 def lead_analytics(request):
-    return render(request,'lead_management/analytics.html')
+    #this month lead
+    current_month_lead = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
+                                                entry_timedate__month=datetime.now().month) \
+        .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+    current_month_lead_date = []
+    current_month_lead_sum = []
+    for i in current_month_lead:
+        x = i
+        current_month_lead_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        current_month_lead_sum.append(x['data_sum'])
+
+    #previous month lead
+    mon = (datetime.now().month)
+    if mon == 1:
+        previous_mon = 12
+    else:
+        previous_mon = (datetime.now().month) - 1
+    previous_month_lead = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
+                                                   entry_timedate__month=previous_mon) \
+        .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+    previous_month_lead_date = []
+    previous_month_lead_sum = []
+    for i in previous_month_lead:
+        x = i
+        previous_month_lead_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        previous_month_lead_sum.append(x['data_sum'])
+    context = {
+        'current_month_lead_date': current_month_lead_date,
+        'current_month_lead_sum': current_month_lead_sum,
+        'previous_month_lead_date': previous_month_lead_date,
+        'previous_month_lead_sum': previous_month_lead_sum,
+
+    }
+    if request.method=='POST' and 'date1' in request.POST :
+        start_date = request.POST.get('date1')
+        lead_conversion = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
+                                                    entry_timedate__month=datetime.strptime(start_date, '%Y-%m-%d').month) \
+            .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+
+        lead_conversion_date = []
+        lead_conversion_sum = []
+        for i in lead_conversion:
+            x = i
+            lead_conversion_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lead_conversion_sum.append(x['data_sum'])
+
+
+        context = {
+            'current_month_lead_date': current_month_lead_date,
+            'current_month_lead_sum': current_month_lead_sum,
+            'previous_month_lead_date': previous_month_lead_date,
+            'previous_month_lead_sum': previous_month_lead_sum,
+            'lead_conversion_date': lead_conversion_date,
+            'lead_conversion_sum': lead_conversion_sum,
+
+        }
+
+    return render(request,'lead_management/lead_analytics.html',context)
 
 def lead_employee_graph(request,id):
     lead_conversion = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',lead_id__owner_of_opportunity=SiteUser.objects.get(id=id),entry_timedate__month=datetime.now().month)\
