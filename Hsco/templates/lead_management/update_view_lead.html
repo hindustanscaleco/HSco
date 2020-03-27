@@ -634,7 +634,7 @@ function myFunction_call() {
                      {% for item in followup_products_list %}
 
  <tr>
-    <td colspan="5" style="text-align: center;"><input type="checkbox" class="custom-control-input" name="checks_pro[]" value="" id="customCheck{{forloop.counter}}"><label class="custom-control-label" for="customCheck{{forloop.counter}}">Select Product</label>
+    <td colspan="5" style="text-align: center;"><input type="checkbox" class="custom-control-input" name="checks_pro[]" value="{{item.pk}}" id="customCheck{{forloop.counter}}"><label class="custom-control-label" for="customCheck{{forloop.counter}}">Select Product</label>
 </td>
 
 

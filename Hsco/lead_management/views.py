@@ -2214,6 +2214,12 @@ td {
         elif 'submit3' in request.POST:
             selected_fields = request.POST.getlist('checks[]')
             Follow_up_section.objects.filter(lead_id=id).update(fields=selected_fields)
+            hfu = Follow_up_section.objects.filter(lead_id=id).last()
+            context23 = {
+
+                'hfu': hfu.fields,
+            }
+            context.update(context23)
 
         elif 'submit5' in request.POST:
             fields = request.POST.get('fields')
@@ -2224,24 +2230,12 @@ td {
             wa_msg = request.POST.get('wa_msg')
             wa_no = request.POST.get('wa_no')
             selected_products = request.POST.getlist('checks_pro[]')
+            
+            print("selected_products")
+            print(selected_products)
 
             final_list = []
 
-            selected_fields = Follow_up_section.objects.get(lead_id=id).fields
-            # hfu = History_followup.objects.filter(follow_up_section=id).last()
-            # selected_fields = hfu.fields
-            selected_fields2 = selected_fields.replace("'", "").strip('][').split(', ')  # convert string to list
-
-            for item in selected_fields2:
-
-                pro_list = Followup_product.objects.filter(lead_id=id).values_list(item, flat=True)
-                for ite, lt in enumerate(pro_list):
-                    final_list = final_list + [item + ' : ' + str(lt)]
-
-            print("final_list")
-            print("final_list")
-            print("final_list")
-            print(final_list)
 
 
             history_follow= History_followup()
@@ -2266,11 +2260,33 @@ td {
                 # selected_fields = hfu.fields
                 selected_fields2 = selected_fields.replace("'", "").strip('][').split(', ')  # convert string to list
 
-
+                length_of_list = 0
+                count_list = 0
                 for item in selected_fields2:
-                    pro_list = Product.objects.filter(lead_id=id).values_list(item, flat=True)
-                    for ite, lt in enumerate(pro_list):
-                        final_list = final_list + [item + ' : ' + str(lt)]
+                    pro_list = Followup_product.objects.filter(lead_id=id).values_list(item, flat=True)
+                    list_pro=[]
+                    if(count_list==0):
+                        for ite, lt in enumerate(pro_list):
+                            final_list.append([item + ' : ' + str(lt)])
+                        count_list=count_list+1
+                    else:
+
+                        for ite, lt in enumerate(pro_list):
+                            final_list[ite] = final_list[ite] + [item + ' : ' + str(lt)]
+                            # final_list[ite].append(list_pro)
+
+
+
+                    length_of_list=len(list_pro)
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2290,6 +2306,8 @@ td {
 
             if (is_whatsapp):
                 return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + str(final_list))
+
+
 
 
     return render(request, 'lead_management/update_view_lead.html',context)
