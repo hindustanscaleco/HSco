@@ -2207,7 +2207,8 @@ td {
         elif 'submit3' in request.POST:
             selected_fields = request.POST.getlist('checks[]')
             Follow_up_section.objects.filter(lead_id=id).update(fields=selected_fields)
-        elif 'submit5' in request.POST:  #Follow up history entry
+
+        elif 'submit5' in request.POST:
             fields = request.POST.get('fields')
             is_email = request.POST.get('is_email')
             is_whatsapp = request.POST.get('is_whatsapp')
@@ -2225,7 +2226,8 @@ td {
             selected_fields2 = selected_fields.replace("'", "").strip('][').split(', ')  # convert string to list
 
             for item in selected_fields2:
-                pro_list = Product.objects.filter(lead_id=id).values_list(item, flat=True)
+
+                pro_list = Followup_product.objects.filter(lead_id=id).values_list(item, flat=True)
                 for ite, lt in enumerate(pro_list):
                     final_list = final_list + [item + ' : ' + str(lt)]
 
@@ -2238,18 +2240,18 @@ td {
             history_follow= History_followup()
 
 
-            if(is_email):
+            if(is_email=='on'):
                 email_subject = request.POST.get('email_subject')
                 email_msg = request.POST.get('email_msg')
-                history_follow.is_email=is_email
+                history_follow.is_email=True
                 history_follow.email_subject=email_subject
                 history_follow.email_msg=email_msg
 
 
 
-            if(is_whatsapp):
+            if(is_whatsapp=='on'):
 
-                history_follow.is_whatsapp = is_whatsapp
+                history_follow.is_whatsapp = True
                 history_follow.wa_msg = wa_msg
                 history_follow.wa_no = wa_no
                 selected_fields = Follow_up_section.objects.get(lead_id=id).fields
@@ -2266,27 +2268,21 @@ td {
 
 
 
-            if(is_sms):
+            if(is_sms=='on'):
                 sms_msg = request.POST.get('sms_msg')
-                history_follow.is_sms = is_sms
+                history_follow.is_sms = True
                 history_follow.sms_msg = sms_msg
 
 
-            if(is_call):
+            if(is_call=='on'):
                 call_response = request.POST.get('call_response')
-                history_follow.is_call = is_call
+                history_follow.is_call = True
                 history_follow.call_response = call_response
 
             history_follow.save()
 
             if (is_whatsapp):
                 return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + str(final_list))
-
-
-
-
-
-
 
 
     return render(request, 'lead_management/update_view_lead.html',context)

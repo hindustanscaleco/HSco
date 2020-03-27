@@ -697,10 +697,10 @@ function myFunction_call() {
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
 
-    {% if 'type_of_scale' in hfu %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="type_of_scale" checked id="customChec1un">
+    {% if 'scale_type' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_type" checked id="customChec1un">
       {% else %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="type_of_scale" id="customChec1">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_type" id="customChec1">
 
       {% endif %}
   <label class="custom-control-label" for="customChec1"></label>
@@ -796,11 +796,10 @@ function myFunction_call() {
 
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-         {% if 'product_image' in hfu %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_image" checked id="customCheck6un">
+         {% if 'product_id_id__product_image' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_image" checked id="customCheck6un">
       {% else %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_image" id="customCheck6">
-
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_image" id="customCheck6">
       {% endif %}
   <label class="custom-control-label" for="customCheck6"></label>
 </div>
@@ -833,8 +832,12 @@ function yourFunction() {
   var x = document.getElementById("my123");
   if (x.style.display === "none") {
     x.style.display = "block";
+    $('#id_wa_no').attr('required', '');
+    $('#id_wa_msg').attr('required', '');
   } else {
     x.style.display = "none";
+    $('#id_wa_no').removeAttr('required');
+    $('#id_wa_msg').removeAttr('required');
   }
 }
 </script>
@@ -844,8 +847,12 @@ function hisFunction() {
   var x = document.getElementById("myemail");
   if (x.style.display === "none") {
     x.style.display = "block";
+    $('#id_email_subject').attr('required', '');
+    $('#id_email_msg').attr('required', '');
   } else {
     x.style.display = "none";
+        $('#id_email_subject').removeAttr('required');
+        $('#id_email_msg').removeAttr('required');
   }
 }
 </script>
@@ -855,8 +862,12 @@ function herFunction() {
   var x = document.getElementById("mycall_follow_up");
   if (x.style.display === "none") {
     x.style.display = "block";
+        $('#id_call_response').attr('required', '');
+
   } else {
     x.style.display = "none";
+            $('#id_call_response').removeAttr('required');
+
   }
 }
 </script>
@@ -867,8 +878,12 @@ function whosFunction() {
   var x = document.getElementById("mysms");
   if (x.style.display === "none") {
     x.style.display = "block";
+            $('#id_sms_msg').attr('required', '');
+
   } else {
     x.style.display = "none";
+                $('#id_sms_msg').removeAttr('required');
+
   }
 }
 </script>
