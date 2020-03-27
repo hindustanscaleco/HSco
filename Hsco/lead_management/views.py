@@ -2312,27 +2312,23 @@ td {
     <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
     <table style="font-size: 14px;">
   <tr>
-    <td>Product Code: {{ product.product_id.sub_sub_category }}</td>
-      <td rowspan="5">Product Image:
-          {% if product.product_id.product_image %}
-          <img height="100px" width="100px" src="{{ product.product_id.product_image.url }}">
-      {% endif %}</td>
+    <td style="border: solid gray; background-color: gray; color: white;">Product Code: </td>
+    <td style="border: solid gray; background-color: gray; color: white;">HSN Code:</td>
+    <td style="border: solid gray; background-color: gray; color: white;">Quantity:</td>
+    <td style="border: solid gray; background-color: gray; color: white;">Product Description: </td>
+      <td style="border: solid gray; background-color: gray; color: white;">Rate:</td>
+      <td style="border: solid gray; background-color: gray; color: white;">Product Images:</td>
+         
 
-  </tr><tr>
-    <td>HSN Code: {{ product.product_id.hsn_code }}</td>
-</tr>
-
-<tr>
-    <td>Quantity: {{ product.quantity }}</td>
-               </tr>
-
-<tr>
-    <td>Product Description: {{ product.product_id.product_desc }}</td>
-               </tr>
-
-<tr>
-    <td>Rate : {{ product.product_id.selling_price }}</td>
-
+  </tr>
+  <tr>
+  	<td>{{ product.product_id.sub_sub_category }}</td>
+  	<td>{{ product.product_id.hsn_code }}</td>
+  	<td>{{ product.quantity }}</td>
+  	<td>{{ product.product_id.product_desc }}</td>
+  	<td>{{ product.product_id.selling_price }}</td>
+  	<td>{{ product.product_id.product_image.url }}</td>
+  	
   </tr>
 </table>
               </div>
