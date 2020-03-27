@@ -64,28 +64,42 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
           <!-- Page Heading -->
 
           <div class="d-sm-flex align-items-center justify-content-between">
-              <div class="dropdown col-md-2">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Months
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">Jan</a>
-    <a class="dropdown-item" href="#">Feb</a>
-    <a class="dropdown-item" href="#">Mar</a>
-  </div>
-</div>
+              <!--<div class="dropdown col-xl-2">-->
+  <!--<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+    <!--Months-->
+  <!--</button>-->
+  <!--<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+    <!--<a class="dropdown-item" href="#">Jan</a>-->
+    <!--<a class="dropdown-item" href="#">Feb</a>-->
+    <!--<a class="dropdown-item" href="#">Mar</a>-->
+  <!--</div>-->
+<!--</div>-->
 
-              <div class="dropdown col-md-2">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="123" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-Year
-  </button>
-  <div class="dropdown-menu" aria-labelledby="123">
-    <a class="dropdown-item" href="#">2019</a>
-    <a class="dropdown-item" href="#">2020</a>
-    <a class="dropdown-item" href="#">2021</a>
-  </div>
-</div>
-            <h1 class="h3 mb-0 text-gray-800" style="float:right;">Lead Analytics</h1>
+              <!--<div class="dropdown col-xl-2">-->
+  <!--<button class="btn btn-secondary dropdown-toggle" type="button" id="123" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--Year-->
+  <!--</button>-->
+  <!--<div class="dropdown-menu" aria-labelledby="123">-->
+    <!--<a class="dropdown-item" href="#">2019</a>-->
+    <!--<a class="dropdown-item" href="#">2020</a>-->
+    <!--<a class="dropdown-item" href="#">2021</a>-->
+  <!--</div>-->
+<!--</div>-->
+<form method="post" autocomplete="off">{% csrf_token %}
+
+                  <div id="d1" class="divs d1 row">
+
+      <div class="col-xl-9 col-md-4 col-mb-4">
+                <input type="date" name="date1" placeholder="Search 1" class="form-control">
+
+      </div>
+
+
+<div class="col-xl-2 col-md-4 col-mb-4">
+              <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Submit</button>
+      </div>
+      </div>
+                            </form>            <h1 class="h3 mb-0 text-gray-800" style="float:right;">Lead Graph</h1>
           </div>
             <br>
 
@@ -101,7 +115,7 @@ Year
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Leads Convertion </h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Leads Conversion </h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -161,7 +175,7 @@ Year
               <div class="card shadow mb-2">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Leads Postpond </h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Leads Postponed </h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdown11" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -240,7 +254,7 @@ td {
             <td style="border: 0px solid gray;">Employee Name</td>
             <td style="border: 0px solid gray;">Lead Convertion</td>
             <td style="border: 0px solid gray;">Lost</td>
-            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Postpond</td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Postponed</td>
         </tr>
 
 
@@ -400,10 +414,10 @@ var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
 
-    labels: {{this_lis_date|safe}},
+    labels: {{lead_conversion_date|safe}},
 
     datasets: [{
-      label: "Restamping",
+      label: "Lead Conversion",
       lineTension: 0.3,
       backgroundColor: "rgba(78, 115, 223, 0.05)",
       borderColor: "rgba(78, 115, 223, 1)",
@@ -415,7 +429,7 @@ var myLineChart = new Chart(ctx, {
       pointHoverBorderColor: "rgba(78, 115, 223, 1)",
       pointHitRadius: 10,
       pointBorderWidth: 2,
-      data: {{this_lis_sum}},
+      data: {{lead_conversion_sum}},
 
     }],
   },
@@ -493,6 +507,264 @@ var myLineChart = new Chart(ctx, {
 </script>
 
 
+<script>
+
+  // Set new default font family and font color to mimic Bootstrap's default styling
+Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontColor = '#858796';
+
+function number_format(number, decimals, dec_point, thousands_sep) {
+
+  // *     example: number_format(1234.56, 2, ',', ' ');
+  // *     return: '1 234,56'
+  number = (number + '').replace(',', '').replace(' ', '');
+  var n = !isFinite(+number) ? 0 : +number,
+    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+    s = '',
+    toFixedFix = function(n, prec) {
+      var k = Math.pow(10, prec);
+      return '' + Math.round(n * k) / k;
+    };
+  // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+  if (s[0].length > 3) {
+    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+  }
+  if ((s[1] || '').length < prec) {
+    s[1] = s[1] || '';
+    s[1] += new Array(prec - s[1].length + 1).join('0');
+  }
+  return s.join(dec);
+}
+
+// Area Chart Example
+var ctx = document.getElementById("myAreaChart2");
+var myLineChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+
+    labels: {{lead_lost_date|safe}},
+
+    datasets: [{
+      label: "Lead Conversion",
+      lineTension: 0.3,
+      backgroundColor: "rgba(78, 115, 223, 0.05)",
+      borderColor: "rgba(78, 115, 223, 1)",
+      pointRadius: 3,
+      pointBackgroundColor: "rgba(78, 115, 223, 1)",
+      pointBorderColor: "rgba(78, 115, 223, 1)",
+      pointHoverRadius: 3,
+      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+      pointHitRadius: 10,
+      pointBorderWidth: 2,
+      data: {{lead_lost_sum}},
+
+    }],
+  },
+
+
+
+  options: {
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        left: 10,
+        right: 25,
+        top: 25,
+        bottom: 0
+      }
+    },
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'date'
+        },
+        gridLines: {
+          display: false,
+          drawBorder: false
+        },
+        ticks: {
+          maxTicksLimit: 7
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          maxTicksLimit: 5,
+          padding: 10,
+          // Include a dollar sign in the ticks
+          callback: function(value, index, values) {
+            return '' + number_format(value);
+          }
+        },
+        gridLines: {
+          color: "rgb(234, 236, 244)",
+          zeroLineColor: "rgb(234, 236, 244)",
+          drawBorder: false,
+          borderDash: [2],
+          zeroLineBorderDash: [2]
+        }
+      }],
+    },
+    legend: {
+      display: false
+    },
+    tooltips: {
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      titleMarginBottom: 10,
+      titleFontColor: '#6e707e',
+      titleFontSize: 14,
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      intersect: false,
+      mode: 'index',
+      caretPadding: 10,
+      callbacks: {
+        label: function(tooltipItem, chart) {
+          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+          return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
+        }
+      }
+    }
+  }
+});
+
+</script>
+<script>
+
+  // Set new default font family and font color to mimic Bootstrap's default styling
+Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontColor = '#858796';
+
+function number_format(number, decimals, dec_point, thousands_sep) {
+
+  // *     example: number_format(1234.56, 2, ',', ' ');
+  // *     return: '1 234,56'
+  number = (number + '').replace(',', '').replace(' ', '');
+  var n = !isFinite(+number) ? 0 : +number,
+    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+    s = '',
+    toFixedFix = function(n, prec) {
+      var k = Math.pow(10, prec);
+      return '' + Math.round(n * k) / k;
+    };
+  // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+  if (s[0].length > 3) {
+    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+  }
+  if ((s[1] || '').length < prec) {
+    s[1] = s[1] || '';
+    s[1] += new Array(prec - s[1].length + 1).join('0');
+  }
+  return s.join(dec);
+}
+
+// Area Chart Example
+var ctx = document.getElementById("myAreaChart3");
+var myLineChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+
+    labels: {{lead_postponed_date|safe}},
+
+    datasets: [{
+      label: "Lead Conversion",
+      lineTension: 0.3,
+      backgroundColor: "rgba(78, 115, 223, 0.05)",
+      borderColor: "rgba(78, 115, 223, 1)",
+      pointRadius: 3,
+      pointBackgroundColor: "rgba(78, 115, 223, 1)",
+      pointBorderColor: "rgba(78, 115, 223, 1)",
+      pointHoverRadius: 3,
+      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+      pointHitRadius: 10,
+      pointBorderWidth: 2,
+      data: {{lead_postponed_sum}},
+
+    }],
+  },
+
+
+
+  options: {
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        left: 10,
+        right: 25,
+        top: 25,
+        bottom: 0
+      }
+    },
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'date'
+        },
+        gridLines: {
+          display: false,
+          drawBorder: false
+        },
+        ticks: {
+          maxTicksLimit: 7
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          maxTicksLimit: 5,
+          padding: 10,
+          // Include a dollar sign in the ticks
+          callback: function(value, index, values) {
+            return '' + number_format(value);
+          }
+        },
+        gridLines: {
+          color: "rgb(234, 236, 244)",
+          zeroLineColor: "rgb(234, 236, 244)",
+          drawBorder: false,
+          borderDash: [2],
+          zeroLineBorderDash: [2]
+        }
+      }],
+    },
+    legend: {
+      display: false
+    },
+    tooltips: {
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      titleMarginBottom: 10,
+      titleFontColor: '#6e707e',
+      titleFontSize: 14,
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      intersect: false,
+      mode: 'index',
+      caretPadding: 10,
+      callbacks: {
+        label: function(tooltipItem, chart) {
+          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+          return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
+        }
+      }
+    }
+  }
+});
+
+</script>
 
 </body>
 

@@ -1,6 +1,9 @@
+import datetime
+
 from django.db import models
 from django.utils import timezone
 from customer_app.models import Customer_Details
+from user_app.models import SiteUser
 
 # from stock_system.models import Product
 from stock_system.models import Product
@@ -9,13 +12,15 @@ from django.core.validators import URLValidator
 
 class Lead(models.Model):
     customer_id = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
+    owner_of_opportunity = models.ForeignKey(SiteUser,null=True,blank=True,on_delete=models.CASCADE)
     current_stage = models.CharField(max_length=50,null=True,blank=True)
     new_existing_customer = models.CharField(max_length=50,null=True,blank=True)
     date_of_initiation = models.DateTimeField(default=timezone.now,)
     channel = models.CharField(max_length=50,null=True,blank=True)
     requirement = models.TextField(null=True,blank=True)
     upload_requirement_file = models.FileField(upload_to='lead_requirement_file/',null=True,blank=True)
-    owner_of_opportunity = models.CharField(max_length=80,null=True,blank=True)
+    # owner_of_opportunity = models.CharField(max_length=80,null=True,blank=True)
+
     entry_timedate = models.DateTimeField(default=timezone.now, )
 
 
@@ -44,8 +49,8 @@ class Pi_section(models.Model):
     net_total = models.FloatField(null=True,blank=True)
     round_up_total = models.FloatField(null=True,blank=True)
     grand_total = models.FloatField(null=True,blank=True)
-    entry_timedate = models.DateTimeField(default=timezone.now, )
-
+    # entry_timedate = models.DateTimeField(default=timezone.now, )
+    entry_timedate = models.DateField(default=datetime.date.today)
 
     def __int__(self):
         return self.id
