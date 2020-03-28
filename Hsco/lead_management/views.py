@@ -1,4 +1,4 @@
-from _datetime import datetime
+from datetime import datetime
 
 from django.db import connection
 from django.db.models import Sum
@@ -366,7 +366,7 @@ def update_view_lead(request,id):
             item2.channel = channel
             item2.requirement = requirement
             item2.upload_requirement_file = upload_requirement_file
-            item2.owner_of_opportunity = owner_of_opportunity
+            item2.owner_of_opportunity = SiteUser.objects.get(profile_name=owner_of_opportunity)
             item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
                                       'requirement','upload_requirement_file','owner_of_opportunity',])
             return redirect('/update_view_lead/'+str(id))
@@ -413,7 +413,7 @@ def update_view_lead(request,id):
                                         'email', 'whatsapp','call2','select_gst_type','discount_type'  ])
 
                 if request.user.is_authenticated:
-                        todays_date = str(datetime.date.today())
+                        todays_date = str(datetime.now())
                         # gst_no = str(lead_id.customer_id.customer_gst_no)
                         text_content = ''
                         subject = 'Support'
@@ -1315,7 +1315,7 @@ td {
                 item2.lead_id = Lead.objects.get(id=id)
                 item2.save()
                 if request.user.is_authenticated:
-                    todays_date = str(datetime.date.today())
+                    todays_date = str(datetime.now())
                     # gst_no = str(lead_id.customer_id.customer_gst_no)
                     text_content = ''
                     subject = 'Support'
@@ -2600,12 +2600,16 @@ def final_lead_report(request):
             pass
     if table_name == 'PI Section':
         # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
-        selected_list = ['lead_id','discount','discount_type','payment_channel','payment_received_date','notes','cgst_sgst','igst','grand_total','entry_timedate']
+        selected_list = ['lead_id','discount','discount_type','payment_channel','payment_received_date','notes','cgst_sgst','igst','grand_total','entry_timedate'
+                         ,'quantity','P&F']
 
 
         with connection.cursor() as cursor:
 
-            cursor.execute("SELECT lead_id_id,discount,discount_type,payment_channel,payment_received_date,notes,cgst_sgst,igst,grand_total,entry_timedate from lead_management_pi_section where entry_timedate between'" + start_date + "' and '" + end_date + "';")
+            cursor.execute("SELECT PI.lead_id_id,discount,discount_type,payment_channel,payment_received_date,notes,cgst_sgst,igst,grand_total,PRODUCT.entry_timedate,"
+                           "quantity,pf "
+                           " from lead_management_pi_section PI, lead_management_pi_product PRODUCT where PRODUCT.lead_id_id = PI.lead_id_id and "
+                           "PRODUCT.entry_timedate between'" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
             final_row_product = [list(x) for x in row]
             repairing_data = []
@@ -2625,9 +2629,17 @@ def final_lead_report(request):
             pass
     if table_name == 'Follow-up Section':
         # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+        selected_list = ['lead_id', 'whatsappno', 'fields', 'email_subject','product_id', 'scale_type', 'main_category','sub_category', 'sub_sub_category',
+                         'hsn_code','max_capacity', 'accuracy', 'platform_size','product_desc','cost_price','selling_price','carton_size',
+                         'entry_timedate']
+
         with connection.cursor() as cursor:
+
             cursor.execute(
-                "SELECT lead_id_id,discount,discount_type,payment_channel,payment_received_date,notes,cgst_sgst,igst,grand_total,entry_timedate from lead_management_pi_section where entry_timedate between'" + start_date + "' and '" + end_date + "';")
+                "SELECT FOLLOW.lead_id_id,whatsappno,fields,email_subject,product_id_id,scale_type,main_category,sub_category,sub_sub_category,hsn_code,"
+                "max_capacity,accuracy,platform_size,product_desc,cost_price,selling_price,carton_size,PRODUCT.entry_timedate"
+                " from lead_management_follow_up_section FOLLOW, lead_management_followup_product PRODUCT where PRODUCT.lead_id_id = FOLLOW.lead_id_id and "
+                "PRODUCT.entry_timedate between'" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
             final_row_product = [list(x) for x in row]
             repairing_data = []
@@ -2790,7 +2802,41 @@ def select_product(request,id):
     return render(request,'lead_management/select_product.html', context)
 
 def lead_manager_view(request):
-    return render(request,'lead_management/lead_manager.html')
+    loggedin_user = SiteUser.objects.get(id=request.user.id).name
+    # u_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__super_admin=loggedin_user).values_list("lead_id__owner_of_opportunity").distinct()
+    # users_list = []
+    # for item in u_list:
+    #     for ite in item:
+    #         users_list.append(ite)
+    # print("users_list")
+    # print(users_list)
+    currentMonth = datetime.now().month
+
+    # for item in users_list:
+        # pi_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__id=item,lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending')\
+        #     .aggregate(Sum('grand_total'))
+    pi_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__super_admin=loggedin_user,entry_timedate__month=currentMonth).distinct().extra(select={
+        'converted': "select SUM(grand_total) from lead_management_pi_section PI, lead_management_lead LEAD ,user_app_siteuser USER"
+                     "where PI.lead_id_id = LEAD.id and LEAD.owner_of_opportunity_id = USER.id and super_admin='"+loggedin_user+"' and current_stage='PO Issued - Payment Done - Dispatch Pending'",
+        'lost': "select SUM(grand_total) from lead_management_pi_section PI, lead_management_lead LEAD where PI.lead_id_id = LEAD.id and current_stage='Lost'",
+        'postponed': "select SUM(grand_total) from lead_management_pi_section PI, lead_management_lead LEAD where PI.lead_id_id = LEAD.id and current_stage='Postponed'",
+
+    }).values_list('lead_id__owner_of_opportunity__profile_name', 'converted', 'lost', 'postponed')
+        # values_list('first_name', 'last_name', 'guide_like', 'news_like')
+    print("u_listu_list")
+    print("u_listu_list")
+    print(pi_list)
+    # for item in pi_list:
+    #     print("item")
+    #     print(item)
+    context={
+        'pi_list':pi_list,
+    }
+
+
+
+
+    return render(request,'lead_management/lead_manager.html',context)
 
 def lead_follow_up_histroy(request,follow_up_id):
     obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
@@ -2977,6 +3023,9 @@ def lead_pi_form(request):
 def alpha_pi_form(request):
     return render(request,'lead_management/alpha_pi_template.html')
 
+def report_2(request):
+    return render(request,'lead_management/report_2.html')
+
 
 
 def download_pi_image(request):
@@ -2984,3 +3033,4 @@ def download_pi_image(request):
 
 def download_pi_pdf(request):
     return render(request,'lead_management/download_pi_pdf.html')
+

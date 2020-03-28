@@ -79,37 +79,33 @@ color:;
         <!-- Begin Page Content -->
      <div class="container-fluid">
 <center><h1>Report</h1></center>
+<br>
+
                      <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
+
          <div class="col-xl-12 col-lg-12">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;"  value="+" onclick="myFunction(); return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Customer Details Section</h6>
-                  <div class="dropdown no-arrow">
-<!--                      <button onclick="myFunction6()">.</button>-->
-                  </div>
-                </div>
+
+          <div class="card-body" id="myDIV">
+
+
+                     <div class="form-group row">
+
+
+<label class="col-md-2 control-label">Select All</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_name" id="customCheck01">
+  <label class="custom-control-label" for="customCheck01"></label>
+</div>
+  </div>
+</div>
+
+                  <center> <h6 class="m-0 font-weight-bold text-primary">Customer Details Section</h6></center>
+                  <br>
+
                 <!-- Card Body -->
-<div class="card-body" id="myDIV" style="display: none; height:auto;">
-<div id="d1" class="divs d1 row">
-
-      <div class="col-xl-3 col-md-4 col-mb-4">
-                <input type="date" name="date1" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      <div class="col-xl-0 col-md-0 col-mb-0">
-                <p style="font-weight: 600;">_</p>
-
-      </div>
-
-      <div class="col-xl-3 col-md-4 col-mb-4">
-                <input type="date" name="date2" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      </div><br>
+<div class="card-body" id="myDIV">
 
 
                      <div class="form-group row">
@@ -194,78 +190,36 @@ color:;
   </div>
 </div>
 
-<center>
 
-     <button name="submit1" type="submit" style="background-color: #FC6E20;" id="Mytext2" class="btn btn-primary">Submit</button>
-</center>
-
-
-                          </div>
+                  <center> <h6 class="m-0 font-weight-bold text-primary">Deal Details Section</h6></center>
+                  <br>
 
 
-              </div>
-            </div>
-</form>
+                              <div class="form-group row">
 
-                              <form  method='POST'  enctype="multipart/form-data" >{% csrf_token %}
-           <div class="col-xl-12 col-lg-12">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction2(); return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Deal Details Section</h6>
-                  <div class="dropdown no-arrow">
-
-                  </div>
-                </div>
-                <!-- Card Body -->
-
-                <div class="card-body" id="myDIV2" style="display: none; height: auto;">
-                  <div id="d2" class="divs d1 row">
-
-      <div class="col-xl-3 col-md-4 col-mb-4">
-                <input type="date" name="date1" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      <div class="col-xl-0 col-md-0 col-mb-0">
-                <p style="font-weight: 600;">_</p>
-
-      </div>
-
-      <div class="col-xl-3 col-md-4 col-mb-4">
-                <input type="date" name="date2" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      </div><br>
-
-
-                              <!--<div class="form-group row">-->
-
-    <!--<label class="col-md-2 control-label">Enquiry Number :-->
+    <label class="col-md-2 control-label">Enquiry Number :
 
 
 
-<!--</label>-->
+</label>
 
-    <!--<div class="col-md-4 inputGroupContainer">-->
-<!--<div class="custom-control custom-checkbox">-->
-  <!--<input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck2">-->
-  <!--<label class="custom-control-label" for="customCheck2"></label>-->
-<!--</div>-->
-  <!--</div>-->
+    <div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck2">
+  <label class="custom-control-label" for="customCheck2"></label>
+</div>
+  </div>
 
- <!--<label class="col-md-2 control-label">PI Number :-->
+ <label class="col-md-2 control-label">PI Number :
 
-<!--</label>-->
-  <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="custom-control custom-checkbox">-->
-  <!--<input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck3">-->
-  <!--<label class="custom-control-label" for="customCheck3"></label>-->
-<!--</div>-->
-  <!--</div>-->
-  <!--</div>-->
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="" id="customCheck3">
+  <label class="custom-control-label" for="customCheck3"></label>
+</div>
+  </div>
+  </div>
 <div class="form-group row">
  <label class="col-md-2 control-label">Current Stage :
 
@@ -281,7 +235,7 @@ color:;
   </div>
 
 
- <label class="col-md-2 control-label">New/Existing Customer :
+ <label class="col-md-2 control-label">New/Existing Customer:
 
 
 
@@ -394,55 +348,15 @@ color:;
   </div>
 
 
+                  <center> <h6 class="m-0 font-weight-bold text-primary">PI Section</h6></center>
+                  <br>
 
-<center>
-
-     <button name="submit2" type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
-
-</center>
-
-                          </div>
-
-
-              </div>
-            </div>
-                              </form>
-
-                                       <form  method='POST'  enctype="multipart/form-data" >{% csrf_token %}
-          <div class="col-xl-12 col-lg-12">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction3();return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">PI Section</h6>
-                  <div class="dropdown no-arrow">
-                  </div>
-                </div>
                 <!-- Card Body -->
-                <div class="card-body" id="myDIV3" style="display: none; height:auto;">
-                                      <div id="d2" class="divs d1 row">
-
-      <div class="col-xl-3 col-md-4 col-mb-4">
-                <input type="date" name="date1" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      <div class="col-xl-0 col-md-0 col-mb-0">
-                <p style="font-weight: 600;">_</p>
-
-      </div>
-
-      <div class="col-xl-3 col-md-4 col-mb-4">
-                <input type="date" name="date2" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      </div><br>
 
                             <div class="form-group row">
 
 
-<label class="col-md-2 control-label">History</label>
+<label class="col-md-2 control-label">Histroy</label>
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
@@ -454,52 +368,14 @@ color:;
 
 
 
-                         <center>
-     <button type="submit" name="submit3" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
-</center>
 
-                          </div>
-
-                  </div>
-                </div>
-                                       </form>
-
-
-                              <form  method='POST'  enctype="multipart/form-data" >{% csrf_token %}
-        <div class="col-xl-12 col-lg-12">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction4();return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Follow-up Section</h6>
-                  <div class="dropdown no-arrow">
-                  </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body" id="myDIV4" style="display: none; height: auto;">
-                                          <div id="d2" class="divs d1 row">
-
-      <div class="col-xl-3 col-md-4 col-mb-4">
-                <input type="date" name="date1" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      <div class="col-xl-0 col-md-0 col-mb-0">
-                <p style="font-weight: 600;">_</p>
-
-      </div>
-
-      <div class="col-xl-3 col-md-4 col-mb-4">
-                <input type="date" name="date2" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      </div><br>
+                  <center> <h6 class="m-0 font-weight-bold text-primary">Follow-up Section</h6></center>
+                  <br>
 
                             <div class="form-group row">
 
 
-<label class="col-md-2 control-label">History</label>
+<label class="col-md-2 control-label">Histroy</label>
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
@@ -510,47 +386,12 @@ color:;
 </div>
 
 
-                         <center>
-     <button type="submit" name="submit4" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
-</center>
 
-</form>
-                          </div>
 
-                  </div>
-                </div>
 
-                                       <form  method='POST'  enctype="multipart/form-data" >{% csrf_token %}
-        <div class="col-xl-12 col-lg-12">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;"  value="+" onclick="myFunction5();return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Payment Details Form</h6>
-                  <div class="dropdown no-arrow">
-                  </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body" id="myDIV5" style="display: none; height:auto;">
-                                      <div id="d2" class="divs d1 row">
-
-      <div class="col-xl-3 col-md-4 col-mb-4">
-                <input type="date" name="date1" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      <div class="col-xl-0 col-md-0 col-mb-0">
-                <p style="font-weight: 600;">_</p>
-
-      </div>
-
-      <div class="col-xl-3 col-md-4 col-mb-4">
-                <input type="date" name="date2" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      </div><br>
-
+<center> <h6 class="m-0 font-weight-bold text-primary">Payment Details Form</h6></center>
+<br>
+<br>
 
 <div class="form-group row">
 
@@ -578,11 +419,11 @@ color:;
 <div class="form-group row">
 
 
-<label class="col-md-2 control-label">Payment received Date :</label>
+<label class="col-md-2 control-label">Payment received Date:</label>
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="payment_recived_date" id="customCheck26">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="payment_received_date" id="customCheck26">
   <label class="custom-control-label" for="customCheck26"></label>
 </div>
   </div>
@@ -591,7 +432,7 @@ color:;
 <label class="col-md-2 control-label">Notes :</label>
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="Payment_notes" id="customCheck27">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="notes" id="customCheck27">
   <label class="custom-control-label" for="customCheck27"></label>
 </div>
   </div>
@@ -615,14 +456,14 @@ color:;
 
 
 <center>
-     <button name="submit5" type="submit" value="submit5" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
+     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
 </center>
+<br>
 
-
+</form>
                           </div>
               </div>
             </div>
-                                       </form>
 
 
 
