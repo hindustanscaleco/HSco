@@ -319,7 +319,6 @@ def update_view_lead(request,id):
             customer_industry = request.POST.get('customer_email_id')
             customer_email_id = request.POST.get('customer_email_id')
             customer_gst_no = request.POST.get('customer_gst_no')
-
             current_stage = request.POST.get('current_stage')
             new_existing_customer = request.POST.get('new_existing_customer')
             date_of_initiation = request.POST.get('date_of_initiation')
