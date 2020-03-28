@@ -3010,3 +3010,15 @@ def lead_pi_form(request):
 
 def alpha_pi_form(request):
     return render(request,'lead_management/alpha_pi_template.html')
+
+def report_2(request):
+    return render(request,'lead_management/report_2.html')
+
+
+
+def download_pi_image(request):
+    return render(request,'lead_management/download_pi_image.html')
+
+def download_pi_pdf(request):
+    return render(request,'lead_management/download_pi_pdf.html')
+
