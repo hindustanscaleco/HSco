@@ -134,8 +134,9 @@ class Deal_detailForm(forms.ModelForm):
                                     widget=forms.Select(
                                         choices=stage,
                                         attrs={
-                                            'default': "automatic",
+                                            'default': "Not Yet Initiated','Not Yet Initiated",
                                             'class': 'btn btn-outline-primary',
+                                            'id': 'deal_stage',
 
                                         }
                                     ))
