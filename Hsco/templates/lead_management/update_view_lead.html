@@ -300,6 +300,23 @@ function myFunction() {
               </div>
             </div>
 
+                         <script>
+                                                         $(document).ready(function(){
+    $('#deal_stage').on('change', function() {
+      if ( this.value == 'Lost')
+      {
+        $("#lost_reason_label").show();
+        $("#lost_reason_div").show();
+      }
+      else
+      {
+        $("#lost_reason_label").hide();
+        $("#lost_reason_div").hide();
+      }
+    });
+});
+                         </script>
+
            <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
@@ -323,6 +340,20 @@ function myFunction() {
                           </div>
                         </div>
 
+
+
+                                            <label class="col-md-2 control-label" id="lost_reason_label" style="display: none;">Reason:</label>
+                              <div class="col-md-3 inputGroupContainer" id="lost_reason_div" style="display: none;">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                <input>
+                            </div>
+                                  </div>
+
+
+                              </div>
+
+                              <div class="form-group row">
 
                                 <label class="col-md-2 control-label">New/Existing Customer:</label>
                               <div class="col-md-3 inputGroupContainer">
@@ -425,6 +456,13 @@ function myFunction() {
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
           <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction3();return change(this);" />
                   <h6 class="m-0 font-weight-bold text-primary">PI Section</h6>
+
+
+
+
+
+
+
                   <div class="dropdown no-arrow">
                   </div>
                 </div>
@@ -566,6 +604,9 @@ function myFunction_call() {
     x.style.display = "none";
   }
 }
+
+
+
 </script>
 
 
@@ -583,6 +624,9 @@ function myFunction_call() {
 
                          <center>
      <button type="submit" name="submit2" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
+
+                             <button type="submit" onclick="download_pdf()" class="btn btn-primary" style="background-color: #FC6E20;">PDF</button>
+                             <button type="submit" onclick="download_image()" class="btn btn-primary" style="background-color: #FC6E20;">Image</button>
 </center>
 
 </form>
@@ -599,6 +643,9 @@ function myFunction_call() {
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
           <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction4();return change(this);" />
                   <h6 class="m-0 font-weight-bold text-primary">Follow-up Section</h6>
+
+
+
                   <div class="dropdown no-arrow">
                   </div>
                 </div>
@@ -663,14 +710,38 @@ function myFunction_call() {
                         <br>
                         <br>
 
+                        <script>
+                            $(document).ready(function(){
+    $('#purpose').on('change', function() {
+      if ( this.value == 'Manual')
+      {
+        $("#div_call").show();
+      }
+      else
+      {
+        $("#div_call").hide();
+      }
+    });
+});
+                        </script>
+
 <div class="row col-md-12">
+
+
+
+
                             <label class="col-md-2 control-label">Medium of Selection:</label>
 
     <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp {{ form6.is_email  }}
     <div class="col-xl-2 col-lg-2"></div>
     <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form6.is_whatsapp  }}
     <div class="col-xl-2 col-lg-2"></div>
+
+    <div id="div_call" style="display: none;">
+
     <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_call  }}
+    </div>
+
     <div class="col-xl-2 col-lg-2"></div>
     <label class="form-check-label">SMS:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_sms  }}
 </div>
@@ -949,9 +1020,22 @@ function whosFunction() {
               </div>
             </div>
 
+<script>
+$(document).ready(function(){
+    $('#deal_stage').on('change', function() {
+      if ( this.value == 'PO Issued - Payment Done - Dispatch Pending')
+      {
+        $("#payment_section").show();
+      }
+      else
+      {
+        $("#payment_section").hide();
+      }
+    });
+});
+</script>
 
-
-        <div class="col-xl-12 col-lg-12">
+        <div class="col-xl-12 col-lg-12" id="payment_section" style="display: none;">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -1183,7 +1267,17 @@ function change( el )
 }
   </script>
 
+  <script type="text/javascript">
+function download_pdf(){
+    var popupwin = window.open('/download_pi_pdf','anyname','width=1280,height=720,left=5,top=3');
+    setTimeout(function() { popupwin.close();}, 5000);
+}
 
+function download_image(){
+    var popupwin = window.open('/download_pi_image','anyname','width=1280,height=720,left=5,top=3');
+    setTimeout(function() { popupwin.close();}, 5000);
+}
+</script>
 
 </body>
 
