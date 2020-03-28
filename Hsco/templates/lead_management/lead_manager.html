@@ -68,46 +68,70 @@
 
 
 
-                 <div class="col-xl-1 col-md-9 mb-9 ">
-                 </div>
-                 <div class="col-xl-5 col-md-9 mb-9 ">
-
-
-                <div class="card-body" style="padding: 2px;">
-                  <div class="row no-gutters align-items-right">
-
-
-<!--                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Share</button></a>-->
-<!--                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>-->
-<!--<a style="padding: 2px;" href="//"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>-->
-<!-- <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>-->
-
-
-
-
 
 
                 </div>
-              </div>
-
-
-
-
-            </div>
-
-
-
-                </div>
-
-
-
-<br>
-
-<style>
-    .border-right-primary{border-right:.25rem solid #4e73df!important}
-</style>
 
                         <style>
+
+                                .border-right-primarya {
+        border-right: 4px solid blue;
+        }
+        .border-left-primarya {
+        border-left: 4px solid blue;
+        }
+
+          .border-left-primary {
+    border-left: .09rem solid #4e73df!important;
+    font-size: 12px;
+
+}
+
+a:hover {
+  text-decoration: none;
+}
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+                        <style>
+                            .border-right-primary{border-right:.25rem solid #4e73df!important}
 .switch {
   position: relative;
   display: inline-block;
@@ -289,28 +313,7 @@ $(function() {
       &nbsp; &nbsp;
       <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
 </form>
-                               <!--<form method="POST">{% csrf_token%}-->
 
-  <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
-      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
-                <!--<input name="crm1" type="text" placeholder="CRM No." class="form-control">-->
-
-      <!--</div>-->
-
-      <!--<div class="col-xl-0 col-md-0 col-mb-0">-->
-                <!--<p style="font-weight: 600;">_</p>-->
-
-      <!--</div>-->
-
-      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
-                <!--<input name="crm2" type="text" placeholder="CRM No." class="form-control">-->
-
-      <!--</div>-->
-      <!--<div class="col-xl-2 col-md-2 col-mb-2">-->
-                <!--<button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>-->
-
-      <!--</div>-->
-                               <!--</form>-->
 </div>
                 </div>
 
@@ -374,70 +377,6 @@ $(function() {
 
 
 
-               <style>
-        .border-right-primarya {
-        border-right: 4px solid blue;
-        }
-        .border-left-primarya {
-        border-left: 4px solid blue;
-        }
-    </style>
-<style>
-  .border-left-primary {
-    border-left: .09rem solid #4e73df!important;
-    font-size: 12px;
-
-}
-
-a:hover {
-  text-decoration: none;
-}
-
-</style>
-
-                        <style>
-                .border_class {
-                border:1px solid black;
-                height:45px;
-                text-align:center;
-                vertical-align: middle;
-                line-height: 45px;
-                }
-
-
-  table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 12px;
-  border-color: black;
-  color: black;
-
-
-
-}
-
-
-th {
-
-  font-size: 13px;
-    border: 1px solid black;
-    text-align: left;
-    padding:5px;
-
-}
-
-td {
-  border: 1px solid black;
-  padding: 3px;
-  font-size: 13px;
-  padding: 5px;
-  text-align: center;
-}
-
-
-            </style>
-
-
 <div style="min-height: 26vw;">
 
         {% if deleted %}
@@ -454,6 +393,19 @@ td {
             <td style="border: 0px solid gray;">Lost</td>
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Postpond</td>
         </tr>
+
+             {% for list1 in pi_list %}
+
+        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+
+            <td>{{ forloop.counter}}</td>
+            <td>{{ list1.0}}</td>
+            <td>{{ list1.1 }}</td>
+            <td>{{ list1.2}}</td>
+            <td>{{ list1.3}}</td>
+
+        </tr>
+                          {% endfor %}
 
 
     </table>
