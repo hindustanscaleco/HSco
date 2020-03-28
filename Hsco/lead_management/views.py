@@ -2981,3 +2981,6 @@ def alpha_pi_form(request):
 
 def download_pi_image(request):
     return render(request,'lead_management/download_pi_image.html')
+
+def download_pi_pdf(request):
+    return render(request,'lead_management/download_pi_pdf.html')
