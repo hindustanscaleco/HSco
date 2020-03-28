@@ -2791,34 +2791,48 @@ def select_product(request,id):
 
 def lead_manager_view(request):
     loggedin_user = SiteUser.objects.get(id=request.user.id).name
-    # u_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__super_admin=loggedin_user).values_list("lead_id__owner_of_opportunity").distinct()
-    # users_list = []
-    # for item in u_list:
-    #     for ite in item:
-    #         users_list.append(ite)
+    u_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__super_admin=loggedin_user).values_list("lead_id__owner_of_opportunity").distinct()
+    users_list = []
+    for item in u_list:
+        for ite in item:
+            users_list.append(ite)
     # print("users_list")
     # print(users_list)
     currentMonth = datetime.now().month
-
-    # for item in users_list:
+    result_list=[]
+    from itertools import chain
+    for item in users_list:
         # pi_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__id=item,lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending')\
         #     .aggregate(Sum('grand_total'))
-    pi_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__super_admin=loggedin_user,entry_timedate__month=currentMonth).distinct().extra(select={
-        'converted': "select SUM(grand_total) from lead_management_pi_section PI, lead_management_lead LEAD ,user_app_siteuser USER"
-                     "where PI.lead_id_id = LEAD.id and LEAD.owner_of_opportunity_id = USER.id and super_admin='"+loggedin_user+"' and current_stage='PO Issued - Payment Done - Dispatch Pending'",
-        'lost': "select SUM(grand_total) from lead_management_pi_section PI, lead_management_lead LEAD where PI.lead_id_id = LEAD.id and current_stage='Lost'",
-        'postponed': "select SUM(grand_total) from lead_management_pi_section PI, lead_management_lead LEAD where PI.lead_id_id = LEAD.id and current_stage='Postponed'",
+        pi_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__id=item,entry_timedate__month=currentMonth).distinct().extra(select={
+            'converted': "select SUM(grand_total) from lead_management_pi_section INNER JOIN lead_management_lead on "
+                         "lead_management_lead.id=lead_management_pi_section.lead_id_id INNER JOIN user_app_siteuser on "
+                         "user_app_siteuser.id=lead_management_lead.owner_of_opportunity_id where user_app_siteuser.id='"+str(item)+"' "
+                         "and lead_management_lead.current_stage = 'PO Issued - Payment Done - Dispatch Pending'",
+            'lost': "select SUM(grand_total) from lead_management_pi_section INNER JOIN lead_management_lead on "
+                         "lead_management_lead.id=lead_management_pi_section.lead_id_id INNER JOIN user_app_siteuser on "
+                         "user_app_siteuser.id=lead_management_lead.owner_of_opportunity_id where user_app_siteuser.id='" + str(
+                item) + "' "
+                        "and lead_management_lead.current_stage = 'Lost'",
+            'postponed': "select SUM(grand_total) from lead_management_pi_section INNER JOIN lead_management_lead on "
+                         "lead_management_lead.id=lead_management_pi_section.lead_id_id INNER JOIN user_app_siteuser on "
+                         "user_app_siteuser.id=lead_management_lead.owner_of_opportunity_id where user_app_siteuser.id='" + str(
+                item) + "' "
+                        "and lead_management_lead.current_stage = 'Postponed'",
 
-    }).values_list('lead_id__owner_of_opportunity__profile_name', 'converted', 'lost', 'postponed')
-        # values_list('first_name', 'last_name', 'guide_like', 'news_like')
-    print("u_listu_list")
-    print("u_listu_list")
-    print(pi_list)
+        }).values_list('lead_id__owner_of_opportunity__profile_name', 'converted', 'lost', 'postponed')
+        result_list.append(list(chain(pi_list,)))
+        print("u_listu_list")
+        print("u_listu_list")
+        print(pi_list)
+
+
+
     # for item in pi_list:
     #     print("item")
     #     print(item)
     context={
-        'pi_list':pi_list,
+        'pi_list':result_list,
     }
 
 
