@@ -2600,12 +2600,16 @@ def final_lead_report(request):
             pass
     if table_name == 'PI Section':
         # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
-        selected_list = ['lead_id','discount','discount_type','payment_channel','payment_received_date','notes','cgst_sgst','igst','grand_total','entry_timedate']
+        selected_list = ['lead_id','discount','discount_type','payment_channel','payment_received_date','notes','cgst_sgst','igst','grand_total','entry_timedate'
+                         ,'quantity','P&F']
 
 
         with connection.cursor() as cursor:
 
-            cursor.execute("SELECT lead_id_id,discount,discount_type,payment_channel,payment_received_date,notes,cgst_sgst,igst,grand_total,entry_timedate from lead_management_pi_section where entry_timedate between'" + start_date + "' and '" + end_date + "';")
+            cursor.execute("SELECT PI.lead_id_id,discount,discount_type,payment_channel,payment_received_date,notes,cgst_sgst,igst,grand_total,PRODUCT.entry_timedate,"
+                           "quantity,pf "
+                           " from lead_management_pi_section PI, lead_management_pi_product PRODUCT where PRODUCT.lead_id_id = PI.lead_id_id and "
+                           "PRODUCT.entry_timedate between'" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
             final_row_product = [list(x) for x in row]
             repairing_data = []
@@ -2625,9 +2629,17 @@ def final_lead_report(request):
             pass
     if table_name == 'Follow-up Section':
         # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+        selected_list = ['lead_id', 'whatsappno', 'fields', 'email_subject','product_id', 'scale_type', 'main_category','sub_category', 'sub_sub_category',
+                         'hsn_code','max_capacity', 'accuracy', 'platform_size','product_desc','cost_price','selling_price','carton_size',
+                         'entry_timedate']
+
         with connection.cursor() as cursor:
+
             cursor.execute(
-                "SELECT lead_id_id,discount,discount_type,payment_channel,payment_received_date,notes,cgst_sgst,igst,grand_total,entry_timedate from lead_management_pi_section where entry_timedate between'" + start_date + "' and '" + end_date + "';")
+                "SELECT FOLLOW.lead_id_id,whatsappno,fields,email_subject,product_id_id,scale_type,main_category,sub_category,sub_sub_category,hsn_code,"
+                "max_capacity,accuracy,platform_size,product_desc,cost_price,selling_price,carton_size,PRODUCT.entry_timedate"
+                " from lead_management_follow_up_section FOLLOW, lead_management_followup_product PRODUCT where PRODUCT.lead_id_id = FOLLOW.lead_id_id and "
+                "PRODUCT.entry_timedate between'" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
             final_row_product = [list(x) for x in row]
             repairing_data = []
