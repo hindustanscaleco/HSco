@@ -1169,11 +1169,7 @@ def final_report(request):
                 repairing_data = []
                 for i in row:
                     repairing_data.append(list(i))
-                print(final_row_product)
-                print(final_row)
-                print(final_row)
-                print(final_row)
-                print(final_row)
+
     # with connection.cursor() as cursor:
     #     if string!='':
     #         cursor.execute("SELECT  "+string+" from purchase_app_purchase_details , customer_app_customer_details"
