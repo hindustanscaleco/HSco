@@ -79,9 +79,7 @@ color:;
         <!-- Begin Page Content -->
      <div class="container-fluid">
 <center><h1>Report</h1></center>
-
                      <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
-
          <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
@@ -94,6 +92,24 @@ color:;
                 </div>
                 <!-- Card Body -->
 <div class="card-body" id="myDIV" style="display: none; height:auto;">
+<div id="d1" class="divs d1 row">
+
+      <div class="col-xl-3 col-md-4 col-mb-4">
+                <input type="date" name="date1" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div class="col-xl-3 col-md-4 col-mb-4">
+                <input type="date" name="date2" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      </div><br>
 
 
                      <div class="form-group row">
@@ -180,7 +196,7 @@ color:;
 
 <center>
 
-     <button type="submit" style="background-color: #FC6E20;" id="Mytext2" class="btn btn-primary">Submit</button>
+     <button name="submit1" type="submit" style="background-color: #FC6E20;" id="Mytext2" class="btn btn-primary">Submit</button>
 </center>
 
 
@@ -189,7 +205,9 @@ color:;
 
               </div>
             </div>
+</form>
 
+                              <form  method='POST'  enctype="multipart/form-data" >{% csrf_token %}
            <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
@@ -201,7 +219,26 @@ color:;
                   </div>
                 </div>
                 <!-- Card Body -->
+
                 <div class="card-body" id="myDIV2" style="display: none; height: auto;">
+                  <div id="d2" class="divs d1 row">
+
+      <div class="col-xl-3 col-md-4 col-mb-4">
+                <input type="date" name="date1" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div class="col-xl-3 col-md-4 col-mb-4">
+                <input type="date" name="date2" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      </div><br>
 
 
                               <div class="form-group row">
@@ -360,7 +397,7 @@ color:;
 
 <center>
 
-     <button name="submit1" type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
+     <button name="submit2" type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
 
 </center>
 
@@ -369,7 +406,9 @@ color:;
 
               </div>
             </div>
-                     </form>
+                              </form>
+
+                                       <form  method='POST'  enctype="multipart/form-data" >{% csrf_token %}
           <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
@@ -381,10 +420,29 @@ color:;
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="myDIV3" style="display: none; height:auto;">
+                                      <div id="d2" class="divs d1 row">
+
+      <div class="col-xl-3 col-md-4 col-mb-4">
+                <input type="date" name="date1" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div class="col-xl-3 col-md-4 col-mb-4">
+                <input type="date" name="date2" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      </div><br>
+
                             <div class="form-group row">
 
 
-<label class="col-md-2 control-label">Histroy</label>
+<label class="col-md-2 control-label">History</label>
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
@@ -397,17 +455,17 @@ color:;
 
 
                          <center>
-     <button type="submit" name="submit2" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
+     <button type="submit" name="submit3" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
 </center>
 
-</form>
                           </div>
 
                   </div>
                 </div>
+                                       </form>
 
 
-
+                              <form  method='POST'  enctype="multipart/form-data" >{% csrf_token %}
         <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
@@ -419,11 +477,29 @@ color:;
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="myDIV4" style="display: none; height: auto;">
-                    <form action="" method='POST' enctype="multipart/form-data"  target="_blank">{% csrf_token %}
+                                          <div id="d2" class="divs d1 row">
+
+      <div class="col-xl-3 col-md-4 col-mb-4">
+                <input type="date" name="date1" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div class="col-xl-3 col-md-4 col-mb-4">
+                <input type="date" name="date2" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      </div><br>
+
                             <div class="form-group row">
 
 
-<label class="col-md-2 control-label">Histroy</label>
+<label class="col-md-2 control-label">History</label>
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
@@ -435,7 +511,7 @@ color:;
 
 
                          <center>
-     <button type="submit" name="submit2" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
+     <button type="submit" name="submit4" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
 </center>
 
 </form>
@@ -444,6 +520,7 @@ color:;
                   </div>
                 </div>
 
+                                       <form  method='POST'  enctype="multipart/form-data" >{% csrf_token %}
         <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
@@ -455,7 +532,25 @@ color:;
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="myDIV5" style="display: none; height:auto;">
-<form  method='POST' id="abc" enctype="multipart/form-data" >{% csrf_token %}
+                                      <div id="d2" class="divs d1 row">
+
+      <div class="col-xl-3 col-md-4 col-mb-4">
+                <input type="date" name="date1" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div class="col-xl-3 col-md-4 col-mb-4">
+                <input type="date" name="date2" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      </div><br>
+
 
 <div class="form-group row">
 
@@ -487,7 +582,7 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="payment_received_date" id="customCheck26">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="payment_recived_date" id="customCheck26">
   <label class="custom-control-label" for="customCheck26"></label>
 </div>
   </div>
@@ -520,13 +615,14 @@ color:;
 
 
 <center>
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
+     <button name="submit5" type="submit" value="submit5" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
 </center>
 
-</form>
+
                           </div>
               </div>
             </div>
+                                       </form>
 
 
 

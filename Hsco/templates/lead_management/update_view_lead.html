@@ -98,6 +98,10 @@ $(document).ready(function(){
         $(".timeTextBoxz").val($(".editableBoxz option:selected").html());
     });
 });
+
+
+
+
 </script>
   <script> function disable() {
   document.getElementById("name").disabled = true;
@@ -139,6 +143,10 @@ function myFunction() {
 
 
 
+
+
+
+
         <!-- Begin Page Content -->
      <div class="container-fluid">
 
@@ -146,6 +154,53 @@ function myFunction() {
                      <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
          <div class="col-xl-12 col-lg-12">
+              {% if error_exist %}
+
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> {{error}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+                           {% if success_exist %}
+
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Sent : </strong> {{success}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+               {% if success_exist_2 %}
+
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Sent : </strong> {{success_2}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+               {% if success_exist_4 %}
+
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Sent : </strong> {{success_4}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+               {% if success_exist_5 %}
+
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Recorded : </strong> {{success_5}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+
+
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -549,12 +604,14 @@ function myFunction_call() {
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" id="myDIV4" style="display: none; height: auto;">
-                    <form action="" method='POST' enctype="multipart/form-data"  target="_blank">{% csrf_token %}
+                    <form action="" method='POST' enctype="multipart/form-data" >{% csrf_token %}
                         <div class="row">
                         <div class="row col-md-10">
                         </div>
                             <div class="row col-md-2">
-                        <a href="/lead_follow_up_histroy/"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp
+
+                        <a href="/lead_follow_up_histroy/{{hfu_id}}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp
+
 
                             </div>
                             </div>
@@ -621,6 +678,7 @@ function myFunction_call() {
 </div>
 <br>
 <center>
+
       {{form4.email_auto_manual}}
 </center>
 
@@ -639,6 +697,7 @@ function myFunction_call() {
 
 
   </tr>
+
   <tr>
     <td>Product Code:</td>
       <td colspan="5" style="text-align: center;"> Product Image   </td>
@@ -646,6 +705,7 @@ function myFunction_call() {
   </tr>
                    <tr>
     <td>HSN Code: {{item.product_id.hsn_code}} </td>
+
                    <td rowspan="5">
                        {% if item.product_id.product_image %}
                        <img height="150" width="150" src="{{item.product_id.product_image.url}}">
@@ -698,12 +758,12 @@ function myFunction_call() {
 <div class="custom-control custom-checkbox">
 
     {% if 'scale_type' in hfu %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_type" checked id="customChec1un">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_type" checked id="custoChec1">
       {% else %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_type" id="customChec1">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_type" id="custoChec1">
 
       {% endif %}
-  <label class="custom-control-label" for="customChec1"></label>
+  <label class="custom-control-label" for="custoChec1"></label>
 </div>
   </div>
 
@@ -713,12 +773,12 @@ function myFunction_call() {
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
        {% if 'hsn_code' in hfu %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" checked id="customCheck2un">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" checked id="custoCheck2">
       {% else %}
-        <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" id="customCheck2">
+        <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" id="custoCheck2">
 
       {% endif %}
-  <label class="custom-control-label" for="customCheck2"></label>
+  <label class="custom-control-label" for="custoCheck2"></label>
 </div>
   </div>
   </div>
@@ -731,12 +791,12 @@ function myFunction_call() {
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
      {% if 'sub_sub_category' in hfu %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" checked id="customCheck3un">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" checked id="custoCheck3">
       {% else %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" id="customCheck3">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" id="custoCheck3">
 
       {% endif %}
-  <label class="custom-control-label" for="customCheck3"></label>
+  <label class="custom-control-label" for="custoCheck3"></label>
 </div>
   </div>
 
@@ -746,12 +806,12 @@ function myFunction_call() {
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
         {% if 'platform_size' in hfu %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" checked id="customCheck8un">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" checked id="custoCheck8">
       {% else %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" id="customCheck8">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" id="custoCheck8">
 
       {% endif %}
-  <label class="custom-control-label" for="customCheck8"></label>
+  <label class="custom-control-label" for="custoCheck8"></label>
 </div>
   </div>
   </div>
@@ -764,12 +824,12 @@ function myFunction_call() {
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
     {% if 'product_desc' in hfu %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_desc" checked id="customCheck42">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_desc" checked id="custoCheck4">
     {% else %}
-      <input type="checkbox" class="custom-control-input" name="checks[]" value="product_desc" id="customCheck4">
+      <input type="checkbox" class="custom-control-input" name="checks[]" value="product_desc" id="custoCheck4">
 
     {% endif %}
-  <label class="custom-control-label" for="customCheck4"></label>
+  <label class="custom-control-label" for="custoCheck4"></label>
 </div>
   </div>
 
@@ -779,12 +839,12 @@ function myFunction_call() {
   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
          {% if 'cost_price' in hfu %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" checked id="customCheck5un">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" checked id="custoCheck5">
       {% else %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" id="customCheck5">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" id="custoCheck5">
 
       {% endif %}
-  <label class="custom-control-label" for="customCheck5"></label>
+  <label class="custom-control-label" for="custoCheck5"></label>
 </div>
   </div>
   </div>
@@ -797,17 +857,17 @@ function myFunction_call() {
     <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
          {% if 'product_id_id__product_image' in hfu %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_image" checked id="customCheck6un">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_image" checked id="custoCheck6">
       {% else %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_image" id="customCheck6">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_image" id="custoCheck6">
       {% endif %}
-  <label class="custom-control-label" for="customCheck6"></label>
+  <label class="custom-control-label" for="custoCheck6"></label>
 </div>
   </div>
   </div>
 </div>
                                 <center>
-                                    <button style="background-color: #FC6E20;" class="btn btn-primary" type="submit" name="submit3" >Save</button>
+                                    <button style="background-color: #FC6E20;" class="btn btn-primary" type="submit" name="submit3" target="_blank" >Save</button>
                                 </center>
                             </form>
 
