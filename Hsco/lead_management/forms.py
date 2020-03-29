@@ -219,6 +219,7 @@ class Deal_detailForm(forms.ModelForm):
                                           'type': 'text',
                                           'placeholder': "Owner",
                                           'class': 'form-control',
+                                          'disabled':'disabled',
                                       }
                                   ))
     class Meta:
