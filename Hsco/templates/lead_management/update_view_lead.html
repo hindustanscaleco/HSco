@@ -540,7 +540,7 @@ td, th {
 }
 
 tr:nth-child(even) {
-  background-color: #dddddd;
+  background-color: white;
 }
 </style>
                  {% for product in lead_pi_products %}
@@ -801,51 +801,47 @@ function myFunction_call() {
 
 
                          <div class="">
-<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; overflow: auto;">
 
 
-               <table style="font-size: 14px;">
+    <table>
+        <tr>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
 
-                     {% for item in followup_products_list %}
-
- <tr>
-    <td colspan="5" style="text-align: center;"><input type="checkbox" class="custom-control-input" name="checks_pro[]" value="{{item.pk}}" id="customCheck{{forloop.counter}}"><label class="custom-control-label" for="customCheck{{forloop.counter}}">Select Product</label>
-</td>
-
-
-  </tr>
-
-  <tr>
-    <td>Product Code:</td>
-      <td colspan="5" style="text-align: center;"> Product Image   </td>
-
-  </tr>
-                   <tr>
-    <td>HSN Code: {{item.product_id.hsn_code}} </td>
-
-                   <td rowspan="5">
-                       {% if item.product_id.product_image %}
+        </tr>
+        <tr>
+            {% for item in followup_products_list %}
+                     <td>
+                           {% if item.product_id.product_image %}
                        <img height="150" width="150" src="{{item.product_id.product_image.url}}">
                        {% endif %}
-                   </td>
-</tr>
-<tr>
-  <td>Sub Sub Model: {{item.product_id.sub_sub_category}} </td>
-</tr>
-<tr>
-   <td>Platform Size: {{item.product_id.platform_size}} </td>
-               </tr>
+                     </td>
+            {% endfor %}
 
-<tr>
-   <td>Product Description: {{item.product_id.product_desc}} </td>
-               </tr>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+        </tr>
+    </table>
 
-<tr>
-   <td>Rate : {{item.product_id.selling_price}} </td>
 
-  </tr>
-                   {% endfor %}
-</table>
               </div>
                           </div>
 
