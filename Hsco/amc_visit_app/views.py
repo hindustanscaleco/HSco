@@ -520,7 +520,7 @@ def amc_views(request):
 
 @login_required(login_url='/')
 def amc_logs(request):
-    amc_logs = Log.objects.filter(module_name='AMC Module')
+    amc_logs = Log.objects.filter(module_name='AMC Module').order_by('-id')
 
     paginator = Paginator(amc_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')

@@ -1446,7 +1446,7 @@ def edit_dispatch_product(request,id):
 
 @login_required(login_url='/')
 def dispatch_logs(request):
-    dispatch_logs = Log.objects.filter(module_name='Dispatch Module')
+    dispatch_logs = Log.objects.filter(module_name='Dispatch Module').order_by('-id')
     paginator = Paginator(dispatch_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')
     dispatch_logs = paginator.get_page(page)
