@@ -394,7 +394,8 @@ $(function() {
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Postpond</td>
         </tr>
 
-             {% for list1 in pi_list %}
+             {% for list12 in pi_list %}
+             {% for list1 in list12 %}
 
         <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
 
@@ -405,6 +406,7 @@ $(function() {
             <td>{{ list1.3}}</td>
 
         </tr>
+                          {% endfor %}
                           {% endfor %}
 
 
