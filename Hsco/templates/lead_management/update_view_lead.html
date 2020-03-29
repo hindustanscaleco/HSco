@@ -172,6 +172,7 @@ function myFunction() {
   </button>
 </div>
 {% endif %}
+
                {% if success_exist_2 %}
 
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -180,6 +181,26 @@ function myFunction() {
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
+
+             <script>
+             setTimeout(myFunction225, 3000);
+
+           function myFunction225(){
+
+            $.ajax({
+        url: "/update_view_lead/{{lead_id.id}}",
+        data: {
+          'loc_id':'value',
+        },
+        success: function (data) {
+
+        }
+      });
+           }
+
+
+
+             </script>
 {% endif %}
                {% if success_exist_4 %}
 
@@ -531,7 +552,7 @@ tr:nth-child(even) {
                {% endfor %}
 
                          <br>
-                     <form  method='POST'  enctype="multipart/form-data" >{% csrf_token %}
+                     <form  method='POST' enctype="multipart/form-data" >{% csrf_token %}
 
                               <div class="form-group row">
                               <label class="col-md-2 control-label">Discount:</label>
@@ -580,7 +601,9 @@ tr:nth-child(even) {
                           </div>
                             </div>
 
-                            <div class="form-group row" id="myDiv_call" style="display: none;">
+                         {% if lead_id.auto_manual_mode == 'Manual' %}
+
+                            <div class="form-group row" id="myDiv_call" >
 
 
                                 <label class="col-md-2 control-label">Call:</label>
@@ -590,7 +613,18 @@ tr:nth-child(even) {
                    </div>
                              </div>
                           </div>
+{% else %}
+                       <div class="form-group row" id="myDiv_cal" style="display: none;">
 
+
+                                <label class="col-md-2 control-label">Call:</label>
+                              <div class="col-md-6 inputGroupContainer">
+                              <div class="input-group">
+                                {{ form3.call }}
+                   </div>
+                             </div>
+                          </div>
+{% endif %}
 
                          <script>
 function myFunction_call() {
@@ -803,60 +837,59 @@ function myFunction_call() {
                          <br>
                          <center>
 
-                        <button name="submit5" style="background-color: #FC6E20;" class="btn btn-primary" type="submit">Send</button>
+<button name="submit5" style="background-color: #FC6E20;" class="btn btn-primary" type="submit" onclick="save_alert_form();">Send</button>
                     </center>
                           </form>
                     <br>
                     <br>
 
   <div class="card shadow" >
-                        <div class="card-body" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+                        <div class="card-body" style="padding: 10px;color: black; font-weight: 300; font-size: 14px;">
                             <center><h4><b>Product Fields To Show</b></h4></center>
                             <br>
-                            <br>
+
                             <form action="" method="post" >{% csrf_token %}
-<div  style="margin-left:10%;">
+
+<div style="margin-left:10%;">
+
+
 <div class="form-group row">
+    <div class="col-md-6 inputGroupContainer">
+        <div class="custom-control custom-checkbox">
 
-    <label class="col-md-2 control-label">Type Of Scale :
+            {% if 'scale_type' in hfu %}
+          <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_type" checked id="custoChec1">
+              {% else %}
+          <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_type" id="custoChec1">
 
-</label>
+              {% endif %}
+          <label class="custom-control-label col-md-3" for="custoChec1">Type Of Scale</label>
+        </div>
+         <br>
+        <div class="custom-control custom-checkbox">
+{% if 'main_category' in hfu %}
+<input type="checkbox" class="custom-control-input" name="checks[]" value="main_category" checked id="custCheck2">
+{% else %}
+<input type="checkbox" class="custom-control-input" name="checks[]" value="main_category" id="custCheck2">
 
-    <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
+{% endif %}
+<label class="custom-control-label col-md-3" for="custCheck2">Main Model</label>
 
-    {% if 'scale_type' in hfu %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_type" checked id="custoChec1">
-      {% else %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_type" id="custoChec1">
-
-      {% endif %}
-  <label class="custom-control-label" for="custoChec1"></label>
 </div>
-  </div>
-
- <label class="col-md-2 control-label">HSN Code :
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="custom-control custom-checkbox">
-       {% if 'hsn_code' in hfu %}
-  <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" checked id="custoCheck2">
+           <br>
+       <div class="custom-control custom-checkbox">
+         {% if 'sub_category' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_category" checked id="cstoCheck6">
       {% else %}
-        <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" id="custoCheck2">
-
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_category" id="cstoCheck6">
       {% endif %}
-  <label class="custom-control-label" for="custoCheck2"></label>
+  <label class="custom-control-label col-md-4" for="cstoCheck6">Sub Model</label>
 </div>
-  </div>
-  </div>
-<div class="form-group row">
 
-    <label class="col-md-2 control-label">Sub Sub Model :
+         <br>
+    </div>
 
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
+    <div class="col-md-6 inputGroupContainer">
 <div class="custom-control custom-checkbox">
      {% if 'sub_sub_category' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" checked id="custoCheck3">
@@ -864,78 +897,129 @@ function myFunction_call() {
   <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" id="custoCheck3">
 
       {% endif %}
-  <label class="custom-control-label" for="custoCheck3"></label>
+  <label class="custom-control-label col-md-4" for="custoCheck3">Sub Sub Model</label>
 </div>
-  </div>
-
- <label class="col-md-2 control-label">Platform Size :
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="custom-control custom-checkbox">
+ <br>
+        <div class="custom-control custom-checkbox">
         {% if 'platform_size' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" checked id="custoCheck8">
       {% else %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" id="custoCheck8">
 
       {% endif %}
-  <label class="custom-control-label" for="custoCheck8"></label>
+  <label class="custom-control-label col-md-4" for="custoCheck8">Platform Size</label>
 </div>
-  </div>
-  </div>
-<div class="form-group row">
-
-    <label class="col-md-2 control-label">Product Description :
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
+ <br>
+        <div class="custom-control custom-checkbox">
     {% if 'product_desc' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="product_desc" checked id="custoCheck4">
     {% else %}
       <input type="checkbox" class="custom-control-input" name="checks[]" value="product_desc" id="custoCheck4">
 
     {% endif %}
-  <label class="custom-control-label" for="custoCheck4"></label>
+  <label class="custom-control-label col-md-4" for="custoCheck4">Product Description</label>
 </div>
+ <br>
   </div>
+</div>
 
- <label class="col-md-2 control-label">Price :
 
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="custom-control custom-checkbox">
+<div class="form-group row">
+
+  <div class="col-md-6 inputGroupContainer">
+        <div class="custom-control custom-checkbox">
          {% if 'cost_price' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" checked id="custoCheck5">
       {% else %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" id="custoCheck5">
 
       {% endif %}
-  <label class="custom-control-label" for="custoCheck5"></label>
+  <label class="custom-control-label col-md-4" for="custoCheck5">Price</label>
 </div>
-  </div>
-  </div>
-<div class="form-group row">
-
-    <label class="col-md-2 control-label">Product Image :
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-<div class="custom-control custom-checkbox">
+       <br>
+      <div class="custom-control custom-checkbox">
          {% if 'product_id_id__product_image' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_image" checked id="custoCheck6">
       {% else %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_image" id="custoCheck6">
       {% endif %}
-  <label class="custom-control-label" for="custoCheck6"></label>
+  <label class="custom-control-label col-md-4" for="custoCheck6">Product Image</label>
 </div>
+
+ <br>
+        <div class="custom-control custom-checkbox">
+        {% if 'hsn_code' in hfu %}
+        <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" checked id="custoCheck2">
+        {% else %}
+        <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" id="custoCheck2">
+
+        {% endif %}
+        <label class="custom-control-label col-md-3" for="custoCheck2">HSN Code</label>
+        </div>
+
+       <br>
   </div>
+
+      <div class="col-md-6 inputGroupContainer">
+        <div class="custom-control custom-checkbox">
+         {% if 'max_capacity' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="max_capacity" checked id="custoCheck56">
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="max_capacity" id="custoCheck56">
+
+      {% endif %}
+  <label class="custom-control-label col-md-4" for="custoCheck56">Max Capacity</label>
+</div>
+       <br>
+      <div class="custom-control custom-checkbox">
+         {% if 'accuracy' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="accuracy" checked id="custoCheck67">
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="accuracy" id="custoCheck67">
+      {% endif %}
+  <label class="custom-control-label col-md-4" for="custoCheck67">Accuracy</label>
+</div>
+       <br>
+       <div class="custom-control custom-checkbox">
+         {% if 'product_brochure' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_brochure" checked id="cstoCheck68">
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_brochure" id="cstoCheck68">
+      {% endif %}
+  <label class="custom-control-label col-md-4" for="cstoCheck68">Product Brochure Link</label>
+</div>
+       <br>
   </div>
+</div>
+
+<div class="form-group row">
+
+  <div class="col-md-8 inputGroupContainer">
+        <div class="custom-control custom-checkbox">
+         {% if 'product_id_id__product_document' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_document" checked id="custoCheck52">
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_document" id="custoCheck52">
+
+      {% endif %}
+  <label class="custom-control-label col-md-6" for="custoCheck52">Product Document Link</label>
+</div>
+       <br>
+      <div class="custom-control custom-checkbox">
+         {% if 'carton_size' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="carton_size" checked id="custoCheck63">
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="carton_size" id="custoCheck63">
+      {% endif %}
+  <label class="custom-control-label col-md-4" for="custoCheck63">Carton Size</label>
+</div>
+       <br>
+
+  </div>
+                                </div>
 </div>
                                 <center>
-                                    <button style="background-color: #FC6E20;" class="btn btn-primary" type="submit" name="submit3" target="_blank" >Save</button>
+                                    <button style="background-color: #FC6E20;" class="btn btn-primary" type="submit" name="submit3">Save</button>
                                 </center>
                             </form>
 
@@ -957,7 +1041,10 @@ function myFunction_call() {
 
 <script>
 function yourFunction() {
+
   var x = document.getElementById("my123");
+
+
   if (x.style.display === "none") {
     x.style.display = "block";
     $('#id_wa_no').attr('required', '');
@@ -1019,27 +1106,14 @@ function whosFunction() {
               </div>
             </div>
 
-<script>
-$(document).ready(function(){
-    $('#deal_stage').on('change', function() {
-      if ( this.value == 'PO Issued - Payment Done - Dispatch Pending')
-      {
-        $("#payment_section").show();
-      }
-      else
-      {
-        $("#payment_section").hide();
-      }
-    });
-});
-</script>
 
-        <div class="col-xl-12 col-lg-12" id="payment_section" style="display: none;">
+        {% if lead_id.current_stage == 'PO Issued - Payment Done - Dispatch Pending' or lead_id.current_stage == 'Dispatch Done - Closed' %}
+        <div class="col-xl-12 col-lg-12" id="payment_section" >
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
           <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;"  value="+" onclick="myFunction5();return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Payment Details Form</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Payment Details Section</h6>
                   <div class="dropdown no-arrow">
                   </div>
                 </div>
@@ -1114,8 +1188,7 @@ $(document).ready(function(){
                           </div>
               </div>
             </div>
-
-
+        {% endif %}
 
         <!-- /.container-fluid -->
       </div>
@@ -1275,8 +1348,12 @@ function download_image(){
     var popupwin = window.open('/download_pi_image','anyname','width=1280,height=720,left=5,top=3');
     setTimeout(function() { popupwin.close();}, 5000);
 }
-</script>
 
+
+
+
+</script>
+<!-- + {{wa_no}} + '&text=' + {{wa_msg}}+'\n'+{{sms_content}}' -->
 </body>
 
 </html>

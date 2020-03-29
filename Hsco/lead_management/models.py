@@ -86,7 +86,7 @@ class Follow_up_section(models.Model):
     lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE,null=True,blank=True)
     whatsappno = models.CharField(max_length=120,null=True,blank=True)
     auto_manual_mode = models.CharField(default='Automatic', max_length=50, null=True, blank=True)
-    fields = models.CharField(max_length=150,null=True, blank=True)
+    fields = models.TextField(null=True, blank=True)
     email_subject = models.CharField(max_length=150,null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
 
@@ -94,16 +94,11 @@ class Follow_up_section(models.Model):
     def __int__(self):
         return self.id
 
-class Auto_followup_details(models.Model):
-    follow_up_section = models.ForeignKey(Follow_up_section,on_delete=models.CASCADE,null=True,blank=True)
-    followup_date = models.DateTimeField(default=timezone.now,)
-    is_followed = models.BooleanField(default=False)
-    # entry_timedate = models.DateTimeField(default=timezone.now,)
-    entry_timedate = models.DateField(default=datetime.date.today)
+
 
 class History_followup(models.Model):
     follow_up_section = models.ForeignKey(Follow_up_section,on_delete=models.CASCADE,null=True,blank=True)
-    fields = models.CharField(max_length=120)
+    fields = models.TextField(null=True, blank=True)
     product_ids = models.CharField(max_length=100)
     is_email = models.BooleanField(default=False)
     is_whatsapp = models.BooleanField(default=False)
@@ -118,6 +113,12 @@ class History_followup(models.Model):
     # entry_timedate = models.DateTimeField(default=timezone.now,)
     entry_timedate = models.DateField(default=datetime.date.today)
 
+class Auto_followup_details(models.Model):
+    follow_up_history = models.ForeignKey(History_followup,on_delete=models.CASCADE,null=True,blank=True)
+    followup_date = models.DateTimeField(default=timezone.now,)
+    is_followed = models.BooleanField(default=False)
+    # entry_timedate = models.DateTimeField(default=timezone.now,)
+    entry_timedate = models.DateField(default=datetime.date.today)
 
 
 class Followup_product(models.Model):
