@@ -226,7 +226,7 @@ color:;
 
 </label>
 
-  <div class="col-md-4 inputGroupContainer">da
+  <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
   <input type="checkbox" class="custom-control-input" name="checks[]" value="Restamping Module" {% if 'Restamping Module' in employee_id.modules_assigned %}checked{% endif %} id="customCheck3">
   <label class="custom-control-label" for="customCheck3"></label>
@@ -285,6 +285,21 @@ color:;
      {% endif %}
 </div>
 
+<div class="form-group row">
+    {% if 'Lead Module' in manager_id.modules_assigned %}
+  <label class="col-md-2 control-label">Lead Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Lead Module" {% if 'Lead Module' in employee_id.modules_assigned %}checked{% endif %} id="customCheck7">
+  <label class="custom-control-label" for="customCheck7"></label>
+  </div>
+  </div>
+ {% endif %}
+
+</div>
 
 
   </div>

@@ -429,7 +429,7 @@ $(function() {
         <div style="cursor: pointer; " onclick="choice1('Scale is collected but estimate is not given')" class="col-xl-1 col-md-3 mb-12">
               <div class="card shadow" style="  background: rgba(120,115,245,.9)">
                 <div class="card-body row" style="padding-left: 20px; color: white; font-weight: 600; font-size: 12px; height: 135px;">
-                  <center> <br>Not Yet Initiated <br> ( ) </center>
+                  <center> <br>Not Yet Initiated <br> ( {{not_yet_stage}} ) </center>
                     </div>
                 </div>
               </div>
@@ -438,7 +438,7 @@ $(function() {
         <div style="cursor: pointer; " onclick="choice1('Estimate is given but Estimate is not confirmed')" class="col-xl-1 col-md-3 mb-12">
               <div class="card shadow" style="background: #7FA998 !important;">
                 <div class="card-body row" style="padding-left: 20px; color: white; font-weight: 600; font-size: 12px;  height: 135px;">
-                 <center> <br> Customer Called&nbsp;<br> ( )</center>
+                 <center> <br> Customer Called&nbsp;<br> ( {{cust_called_stage}}  )</center>
                     </div>
                 </div>
               </div>
@@ -447,7 +447,7 @@ $(function() {
               <div class="card shadow" style="background: #12CAD6">
                 <div class="card-body row" style="padding-left:22px;color: white; font-weight: 600; font-size: 12px;  height: 135px;">
 
-                   <center><p style="margin-top:10px;"> PI Sent & Follow-up <br>&nbsp; ( ) <br> &nbsp; ( )</p></center>
+                   <center><p style="margin-top:10px;"> PI Sent & Follow-up <br>&nbsp; ( {{pi_sent_stage}} ) </p></center>
 
                     </div>
 
@@ -458,7 +458,7 @@ $(function() {
               <div class="card shadow" style="background: rgba(252,98,98,.9)">
                 <div class="card-body row" style="padding-left:20px;color: white; font-weight: 600; font-size: 12px;  height: 135px;">
 
-                   <center><p style="margin-top:0px;"> PO Issued - Payment not done <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>
+                   <center><p style="margin-top:0px;"> PO Issued - Payment not done <br>&nbsp; ( {{po_no_payment}}) </p></center>
 
                     </div>
 
@@ -469,7 +469,7 @@ $(function() {
               <div class="card shadow" style="background: #015668">
                 <div class="card-body row" style="padding-left:20px;color: white; font-weight: 600; font-size: 11px;  height: 135px;">
 
-                   <center><p style="margin-top:0px;"> PO Issued - Payment Done - Dispatch Pending <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>
+                   <center><p style="margin-top:0px;"> PO Issued - Payment Done - Dispatch Pending <br>&nbsp; ({{po_payment_done}}) </p></center>
 
                     </div>
 
@@ -480,7 +480,7 @@ $(function() {
               <div class="card shadow" style="background: #8B2F97">
                 <div class="card-body row" style="padding-left:20px;color: white; font-weight: 600; font-size: 12px;  height: 135px;">
 
-                   <center><p style="margin-top:0 px;"> Dispatch Done - Closed <br>&nbsp; ( ) <br> &nbsp; ( ) </p></center>
+                   <center><p style="margin-top:0 px;"> Dispatch Done - Closed <br>&nbsp; ( {{dispatch_done_stage}}) </p></center>
 
                     </div>
 
@@ -492,7 +492,7 @@ $(function() {
               <div class="card shadow" style="background: rgba(214,186,277,.9)">
                 <div class="card-body row" style="padding-left:40px; color: white; font-weight: 600; font-size: 13px;  height: 135px;">
 
-                   <center><p style="margin-top:15px"> Lost <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>
+                   <center><p style="margin-top:15px"> Lost <br>&nbsp; ({{lost_stage}} ) </p></center>
 
                     </div>
 
@@ -503,7 +503,7 @@ $(function() {
               <div class="card shadow" style="background: #fd5e53">
                 <div class="card-body row" style="padding-left:20px; color: white; font-weight: 600; font-size: 13px;  height: 135px;">
 
-                   <center><p style="margin-top:10px"> Not Relevant <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>
+                   <center><p style="margin-top:10px"> Not Relevant <br>&nbsp; ({{not_relevant_stage}} ) </p></center>
 
                     </div>
 
@@ -526,7 +526,7 @@ $(function() {
               <div class="card shadow" style="background: #ffba5a">
                 <div class="card-body row" style="padding-left:16px; color: white; font-weight: 600; font-size: 13px;  height: 135px;">
 
-                   <center><p style="margin-top:15px"> Postponed <br>&nbsp; ( )<br> &nbsp; ( ) </p></center>
+                   <center><p style="margin-top:15px"> Postponed <br>&nbsp; ({{postponed_stage}} ) </p></center>
 
                     </div>
 
@@ -648,6 +648,23 @@ td {
 <br>
 <br>
 
+            <div class="pagination">
+    <span class="step-links">
+        {% if lead_list.has_previous %}
+            <a class="btn btn-primary" href="?page=1">&laquo; first</a>
+            <a class="btn btn-primary" href="?page={{ lead_list.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ lead_list.number }} of {{ lead_list.paginator.num_pages }}.
+        </span>
+
+        {% if lead_list.has_next %}
+            <a class="btn btn-primary" href="?page={{ lead_list.next_page_number }}">next</a>
+            <a class="btn btn-primary" href="?page={{ lead_list.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+            </div>
 
 
             </div>
