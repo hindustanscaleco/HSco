@@ -815,8 +815,8 @@ def update_view_lead(request,id):
         'upload_requirement_file': lead_id.upload_requirement_file,
         'owner_of_opportunity': lead_id.owner_of_opportunity,
         'owner_of_opportunity_employee': lead_id.owner_of_opportunity,
-        # 'lost_reason': lead_id.lost_reason,
-        # 'postponed_reason': lead_id.postponed_reason,
+        'lost_reason': lead_id.lost_reason,
+        'postponed_reason': lead_id.postponed_reason,
     }
     form = Customer_detailForm(initial=customer_initial_data)
     form2 = Deal_detailForm(initial=deal_details_initial_data)
