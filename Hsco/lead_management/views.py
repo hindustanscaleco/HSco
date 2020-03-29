@@ -383,12 +383,6 @@ def update_view_lead(request,id):
     else:
         pass
 
-    if request.is_ajax():
-        wa_msg = request.session['wa_msg']
-        sms_content = request.session['wa_content']
-        wa_no = request.session['wa_no']
-        # load_wa(wa_no, wa_msg, sms_content)
-        return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
     if request.method == 'POST' or request.method == 'FILES':
         if 'submit1' in request.POST:                                            #for customer and deal details section
@@ -2305,6 +2299,18 @@ td {
             }
             context.update(context23)
 
+        elif 'submit56' in request.POST:
+            wa_msg = request.session['wa_msg']
+            sms_content = request.session['wa_content']
+            wa_no = request.session['wa_no']
+            try:
+                del request.session['wa_msg']
+                del request.session['wa_content']
+                del request.session['wa_no']
+            except:
+                pass
+            return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+
         elif 'submit5' in request.POST:
 
             is_email = request.POST.get('is_email')
@@ -2515,6 +2521,12 @@ td {
                     #     for item in single:
                     #         html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
                     #     html_rows = html_rows + '''</tr>'''
+                    try:
+                        del request.session['wa_msg']
+                        del request.session['wa_content']
+                        del request.session['wa_no']
+                    except:
+                        pass
 
                     request.session['wa_msg']=wa_msg
                     request.session['wa_content']=sms_content
