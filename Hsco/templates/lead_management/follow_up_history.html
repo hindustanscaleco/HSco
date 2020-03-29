@@ -244,10 +244,7 @@ td {
                               <br>
 <div class="col-md-6" id="my123">
     <label class="col-md-12 control-label">Whatsapp Number :  {{ item.wa_no }}</label>
-                                <br>
 
-
-                        <br>
                                 <label class="col-md-12 control-label" style="float:left;">Whatsapp Content :  {{ item.wa_msg }}</label>
 
 
@@ -257,10 +254,7 @@ td {
 <div class="col-md-6" id="myemail" >
 
                          <label class="col-md-12 control-label">Email Subject: {{ item.email_subject }}</label>
-    <br>
 
-
-                        <br>
                            <label class="col-md-12 control-label">Email Message: {{ item.email_msg }}</label>
 
 
@@ -268,7 +262,7 @@ td {
 </div>
     </div>
 
-                            <br>
+
 
 <div class="row col-md-12" style="margin-left:4%">
         <div class="col-md-6" id="mycall_follow_up" >
@@ -284,10 +278,8 @@ td {
                         </div>
   </div>
 
-                        <br>
-                        <br>
-
-<div class="row col-md-12">
+<div class="row col-md-12" style="margin-left:4%">
+    <div class="col-md-12" id="mymedium" >
                             <label class="col-md-2 control-label">Medium of Selection:</label>
     {% if item.is_email %}
     <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp
@@ -304,8 +296,9 @@ td {
       {% endif %}
     <div class="col-xl-2 col-lg-2"></div>
         {% if item.is_sms %}
-    <label class="form-check-label">SMS</label>&nbsp &nbsp &nbsp &nbsp
+    <label class="form-check-label">SMS</label>
       {% endif %}
+</div>
 </div>
 
 <center>
@@ -362,17 +355,12 @@ td {
               </div>
                           </div>
 
-                         <br>
-
                           </form>
 
 
 
                     </div>
 
-
-
-                         <br>
 
 
 </form>

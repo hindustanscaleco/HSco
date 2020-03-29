@@ -123,7 +123,7 @@ class SiteUser(AbstractBaseUser):
     REQUIRED_FIELDS = ['email',]
 
     def __str__(self):
-        return str(self.id)
+        return self.profile_name
 
 
 

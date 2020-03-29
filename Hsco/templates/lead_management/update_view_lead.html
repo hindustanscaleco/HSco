@@ -307,7 +307,7 @@ document.getElementById("submit56").click();
 
 
 <center>
-     <button type="submit" style="background-color: #FC6E20;" id="Mytext1" class="btn btn-primary">Save</button>
+     <button name="submit1" type="submit" style="background-color: #FC6E20;" id="Mytext1" class="btn btn-primary">Save</button>
 </center>
 
 
@@ -330,9 +330,41 @@ document.getElementById("submit56").click();
         $("#lost_reason_label").hide();
         $("#lost_reason_div").hide();
       }
+
+          if ( this.value == 'Postponed')
+      {
+        $("#postponed_lost_reason_label").show();
+        $("#postponed_lost_reason_label_div").show();
+      }
+      else
+      {
+        $("#postponed_lost_reason_label").hide();
+        $("#postponed_lost_reason_label_div").hide();
+      }
+
     });
 });
                          </script>
+
+                                       <script>
+                                                         $(document).ready(function(){
+    $('#deal_stage').on('change', function() {
+      if ( this.value == 'Postponed')
+      {
+        $("#postponed_lost_reason_label").show();
+        $("#postponed_lost_reason_label_div").show();
+      }
+      else
+      {
+        $("#postponed_lost_reason_label").hide();
+        $("#postponed_lost_reason_label_div").hide();
+      }
+    });
+});
+                         </script>
+
+
+
 
            <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
@@ -359,13 +391,7 @@ document.getElementById("submit56").click();
 
 
 
-                                            <label class="col-md-2 control-label" id="lost_reason_label" style="display: none;">Reason:</label>
-                              <div class="col-md-3 inputGroupContainer" id="lost_reason_div" style="display: none;">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                <input>
-                            </div>
-                                  </div>
+
 
 
                               </div>
@@ -419,13 +445,64 @@ document.getElementById("submit56").click();
 
                             <div class="form-group row">
 
-                                   <label class="col-md-2 control-label">Requirement</label>
+                                   <label class="col-md-2 control-label">Requirement :</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-check-square faicons"></i></span>
                                 {{ form2.requirement }}
                             </div>
                              </div>
+
+
+
+                                <label class="col-md-2 control-label" id="lost_reason_label" style="display: none;">Reason:</label>
+                              <div class="col-md-3 inputGroupContainer" id="lost_reason_div" style="display: none;">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form2.lost_reason }}
+                            </div>
+                                  </div>
+                                <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Reason:</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: none;">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form2.postponed_reason }}
+                            </div>
+                                  </div>
+
+
+                          </div>
+
+<div class="form-group row">
+                         {% if request.user.role == 'Employee' %}
+
+                                <label class="col-md-2 control-label">Owner of Opportunity :</label>
+                              <div class="col-md-5 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+<input type="text" required name="owner_of_opportunity" placeholder="Channel" value="{{lead_id.owner_of_opportunity}}" disabled class="form-control"  list="channel101">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="channel101">
+          {% for user in users %}
+      <option value="{{user.profile_name}}">{{user.profile_name}}</option>
+        {% endfor %}
+    </datalist>
+                            </div>
+                             </div>
+                    {% else %}
+                                <label class="col-md-2 control-label">Owner of Opportunity :</label>
+                              <div class="col-md-5 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+<input type="text" required name="owner_of_opportunity" placeholder="Owner" class="form-control" value="{{lead_id.owner_of_opportunity}}" list="channel102">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="channel102">
+                    {% for user in users %}
+      <option value="{{user.profile_name}}">{{user.profile_name}}</option>
+          {% endfor %}
+    </datalist>                            </div>
+                             </div>
+        {% endif %}
 
                                 <label class="col-md-2 control-label">Upload Requirement File :</label>
                               <div class="col-md-3 inputGroupContainer">
@@ -439,33 +516,22 @@ document.getElementById("submit56").click();
                             </div>
                             </div>
 
-                          </div>
-
-
-                            <div class="form-group row">
-                                <label class="col-md-2 control-label">Owner of Opportunity :</label>
-                              <div class="col-md-5 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form2.owner_of_opportunity }}
-                            </div>
-                             </div>
 
 
 
 </div>
+
+
+
 
 <center>
 
      <button name="submit1" type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Save</button>
 
 </center>
-
-                          </div>
-
-
               </div>
             </div>
+           </div>
                      </form>
           <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
@@ -511,7 +577,7 @@ td, th {
 }
 
 tr:nth-child(even) {
-  background-color: #dddddd;
+  background-color: white;
 }
 </style>
                  {% for product in lead_pi_products %}
@@ -785,51 +851,47 @@ function myFunction_call() {
 
 
                          <div class="">
-<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; overflow: auto;">
 
 
-               <table style="font-size: 14px;">
+    <table>
+        <tr>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
+            <td style="min-width: 200px;">Product Name</td>
 
-                     {% for item in followup_products_list %}
-
- <tr>
-    <td colspan="5" style="text-align: center;"><input type="checkbox" class="custom-control-input" name="checks_pro[]" value="{{item.pk}}" id="customCheck{{forloop.counter}}"><label class="custom-control-label" for="customCheck{{forloop.counter}}">Select Product</label>
-</td>
-
-
-  </tr>
-
-  <tr>
-    <td>Product Code:</td>
-      <td colspan="5" style="text-align: center;"> Product Image   </td>
-
-  </tr>
-                   <tr>
-    <td>HSN Code: {{item.product_id.hsn_code}} </td>
-
-                   <td rowspan="5">
-                       {% if item.product_id.product_image %}
+        </tr>
+        <tr>
+            {% for item in followup_products_list %}
+                     <td>
+                           {% if item.product_id.product_image %}
                        <img height="150" width="150" src="{{item.product_id.product_image.url}}">
                        {% endif %}
-                   </td>
-</tr>
-<tr>
-  <td>Sub Sub Model: {{item.product_id.sub_sub_category}} </td>
-</tr>
-<tr>
-   <td>Platform Size: {{item.product_id.platform_size}} </td>
-               </tr>
+                     </td>
+            {% endfor %}
 
-<tr>
-   <td>Product Description: {{item.product_id.product_desc}} </td>
-               </tr>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+            <td>Product Name</td>
+        </tr>
+    </table>
 
-<tr>
-   <td>Rate : {{item.product_id.selling_price}} </td>
 
-  </tr>
-                   {% endfor %}
-</table>
               </div>
                           </div>
 

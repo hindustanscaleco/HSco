@@ -177,7 +177,7 @@ class Deal_detailForm(forms.ModelForm):
     requirement = forms.CharField(max_length=80, required=True,
                                     widget=forms.Textarea(
                                         attrs={
-                                            'type': 'file',
+                                            'type': 'text',
                                             'placeholder': "Requirement",
                                             'class': 'form-control',
                                         }
@@ -221,9 +221,37 @@ class Deal_detailForm(forms.ModelForm):
                                           'class': 'form-control',
                                       }
                                   ))
+
+    owner_of_opportunity_employee = forms.CharField(max_length=80, required=False,
+                   widget=forms.TextInput(
+                       attrs={
+                           'type': 'text',
+                           'placeholder': "Owner",
+                           'class': 'form-control',
+                           'disabled': 'disabled',
+                       }
+                   ))
+
+    lost_reason = forms.CharField(max_length=80, required=False,
+                                    widget=forms.Textarea(
+                                        attrs={
+                                            'type': 'text',
+                                            'placeholder': "Reason",
+                                            'class': 'form-control',
+                                        }
+                                    ))
+    postponed_reason = forms.CharField(max_length=80, required=False,
+                                    widget=forms.Textarea(
+                                        attrs={
+                                            'type': 'text',
+                                            'placeholder': "Reason",
+                                            'class': 'form-control',
+                                        }
+                                    ))
     class Meta:
         model = Lead
         fields = "__all__"
+
 
 
 class Pi_sectionForm(forms.ModelForm):

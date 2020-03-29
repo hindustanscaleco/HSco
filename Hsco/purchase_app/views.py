@@ -1632,7 +1632,7 @@ def check_admin_roles(request):
 
 @login_required(login_url='/')
 def purchase_logs(request):
-    purchase_logs = Log.objects.filter(module_name='Purchase Module')
+    purchase_logs = Log.objects.filter(module_name='Purchase Module').order_by('-id')
     paginator = Paginator(purchase_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')
     purchase_logs = paginator.get_page(page)

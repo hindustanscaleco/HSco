@@ -1531,7 +1531,7 @@ def onsitevisit_app_graph(request,user_id):
 
 @login_required(login_url='/')
 def onsite_repairing_logs(request):
-    onsite_repairing_logs = Log.objects.filter(module_name='Onsite Repairing Module')
+    onsite_repairing_logs = Log.objects.filter(module_name='Onsite Repairing Module').order_by('-id')
     paginator = Paginator(onsite_repairing_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')
     onsite_repairing_logs = paginator.get_page(page)

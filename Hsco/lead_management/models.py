@@ -8,6 +8,7 @@ from user_app.models import SiteUser
 # from stock_system.models import Product
 from stock_system.models import Product
 from django.core.validators import URLValidator
+from model_utils import FieldTracker
 
 
 class Lead(models.Model):
@@ -18,12 +19,15 @@ class Lead(models.Model):
     date_of_initiation = models.DateTimeField(default=timezone.now,)
     channel = models.CharField(max_length=50,null=True,blank=True)
     requirement = models.TextField(null=True,blank=True)
+    lost_reason = models.CharField(blank= True, null=True, max_length=180)
+    postponed_reason = models.CharField(blank= True, null=True, max_length=180)
     upload_requirement_file = models.FileField(upload_to='lead_requirement_file/',null=True,blank=True)
     # owner_of_opportunity = models.CharField(max_length=80,null=True,blank=True)
 
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     entry_timedate = models.DateField(default=datetime.date.today)
-
+    tracker = FieldTracker()
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
     def __int__(self):
         return self.id
@@ -52,6 +56,9 @@ class Pi_section(models.Model):
     grand_total = models.FloatField(null=True,blank=True)
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     entry_timedate = models.DateField(default=datetime.date.today)
+    tracker = FieldTracker()
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
+
 
     def __int__(self):
         return self.id
@@ -63,6 +70,8 @@ class Pi_product(models.Model):
     pf = models.CharField(max_length=80, null=True, blank=True)
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     entry_timedate = models.DateField(default=datetime.date.today)
+    tracker = FieldTracker()
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
 
     def __int__(self):
@@ -74,6 +83,8 @@ class Pi_History(models.Model):
     # pi_product_id = models.ForeignKey(Pi_product, on_delete=models.CASCADE, null=True, blank=True)
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     entry_timedate = models.DateField(default=datetime.date.today)
+    tracker = FieldTracker()
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
 
     def __int__(self):
@@ -89,11 +100,22 @@ class Follow_up_section(models.Model):
     fields = models.TextField(null=True, blank=True)
     email_subject = models.CharField(max_length=150,null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
+    tracker = FieldTracker()
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
 
     def __int__(self):
         return self.id
 
+
+class Auto_followup_details(models.Model):
+    follow_up_section = models.ForeignKey(Follow_up_section,on_delete=models.CASCADE,null=True,blank=True)
+    followup_date = models.DateTimeField(default=timezone.now,)
+    is_followed = models.BooleanField(default=False)
+    # entry_timedate = models.DateTimeField(default=timezone.now,)
+    entry_timedate = models.DateField(default=datetime.date.today)
+    tracker = FieldTracker()
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
 
 class History_followup(models.Model):
@@ -113,12 +135,15 @@ class History_followup(models.Model):
     # entry_timedate = models.DateTimeField(default=timezone.now,)
     entry_timedate = models.DateField(default=datetime.date.today)
 
+
 class Auto_followup_details(models.Model):
     follow_up_history = models.ForeignKey(History_followup,on_delete=models.CASCADE,null=True,blank=True)
     followup_date = models.DateTimeField(default=timezone.now,)
     is_followed = models.BooleanField(default=False)
     # entry_timedate = models.DateTimeField(default=timezone.now,)
     entry_timedate = models.DateField(default=datetime.date.today)
+    tracker = FieldTracker()
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
 
 class Followup_product(models.Model):
@@ -142,7 +167,8 @@ class Followup_product(models.Model):
     # email_check = models.BooleanField(default=False, null=True,blank=True)
     # sms_check = models.BooleanField(default=False, null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
-
+    tracker = FieldTracker()
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
 class IndiamartLeadDetails(models.Model):
     from_date = models.DateField()
@@ -150,11 +176,12 @@ class IndiamartLeadDetails(models.Model):
     lead_count = models.BigIntegerField()
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     entry_timedate = models.DateField(default=datetime.date.today)
+    tracker = FieldTracker()
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
 
     class Meta:
         unique_together = ('from_date','to_date','lead_count')
-
 
 class Payment_details(models.Model):
     lead_id = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, blank=True)
@@ -164,6 +191,8 @@ class Payment_details(models.Model):
     upload_pofile = models.FileField(null=True,blank=True)
     Payment_notes = models.TextField(max_length=120, null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
+    tracker = FieldTracker()
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
     def __int__(self):
         return self.id

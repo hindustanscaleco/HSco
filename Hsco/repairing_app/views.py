@@ -1985,7 +1985,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
 
 @login_required(login_url='/')
 def repairing_logs(request):
-    repairing_logs = Log.objects.filter(module_name='Repairing Module')
+    repairing_logs = Log.objects.filter(module_name='Repairing Module').order_by('-id')
     paginator = Paginator(repairing_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')
     repairing_logs = paginator.get_page(page)
