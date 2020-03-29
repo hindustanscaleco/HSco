@@ -421,16 +421,36 @@ function myFunction() {
 
                           </div>
 
+<div class="form-group row">
+                         {% if request.user.role == 'Employee' %}
 
-                            <div class="form-group row">
                                 <label class="col-md-2 control-label">Owner of Opportunity :</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form2.owner_of_opportunity }}
+<input type="text" required name="owner_of_opportunity" placeholder="Channel" value="{{lead_id.owner_of_opportunity}}" disabled class="form-control"  list="channel101">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="channel101">
+          {% for user in users %}
+      <option value="{{user.profile_name}}">{{user.profile_name}}</option>
+        {% endfor %}
+    </datalist>
                             </div>
                              </div>
-
+                    {% else %}
+                                <label class="col-md-2 control-label">Owner of Opportunity :</label>
+                              <div class="col-md-5 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+<input type="text" required name="owner_of_opportunity" placeholder="Owner" class="form-control" value="{{lead_id.owner_of_opportunity}}" list="channel102">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="channel102">
+                    {% for user in users %}
+      <option value="{{user.profile_name}}">{{user.profile_name}}</option>
+          {% endfor %}
+    </datalist>                            </div>
+                             </div>
+        {% endif %}
 
 
 </div>
@@ -440,10 +460,6 @@ function myFunction() {
      <button name="submit1" type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Save</button>
 
 </center>
-
-                          </div>
-
-
               </div>
             </div>
                      </form>

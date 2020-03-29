@@ -672,6 +672,7 @@ def lead_home(request):
     return render(request,'lead_management/lead_home.html',context)
 
 def add_lead(request):
+    users = SiteUser.objects.all()
     if Lead.objects.all().count() == 0:
         latest_lead_id = 1
     else:
@@ -765,11 +766,13 @@ def add_lead(request):
         'form2':form2,
         'latest_lead_id':latest_lead_id,
         'cust_sugg':cust_sugg,
+        'users':users,
     }
     return render(request, 'lead_management/add_lead.html',context)
 
 def update_view_lead(request,id):
     lead_id = Lead.objects.get(id=id)
+    users = SiteUser.objects.all()
 
     lead_pi_products = Pi_product.objects.filter(lead_id=id)
     hfu = Follow_up_section.objects.filter(lead_id=id).last()
@@ -807,6 +810,7 @@ def update_view_lead(request,id):
         'requirement': lead_id.requirement,
         'upload_requirement_file': lead_id.upload_requirement_file,
         'owner_of_opportunity': lead_id.owner_of_opportunity,
+        'owner_of_opportunity_employee': lead_id.owner_of_opportunity,
     }
     form = Customer_detailForm(initial=customer_initial_data)
     form2 = Deal_detailForm(initial=deal_details_initial_data)
@@ -826,6 +830,7 @@ def update_view_lead(request,id):
         'hfu':hfu.fields,
         'hfu_id':hfu.id,
         'form6':form6,
+        'users':users,
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
         pi_id = Pi_section.objects.get(lead_id=id)
