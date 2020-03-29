@@ -310,9 +310,41 @@ function myFunction() {
         $("#lost_reason_label").hide();
         $("#lost_reason_div").hide();
       }
+
+          if ( this.value == 'Postponed')
+      {
+        $("#postponed_lost_reason_label").show();
+        $("#postponed_lost_reason_label_div").show();
+      }
+      else
+      {
+        $("#postponed_lost_reason_label").hide();
+        $("#postponed_lost_reason_label_div").hide();
+      }
+
     });
 });
                          </script>
+
+                                       <script>
+                                                         $(document).ready(function(){
+    $('#deal_stage').on('change', function() {
+      if ( this.value == 'Postponed')
+      {
+        $("#postponed_lost_reason_label").show();
+        $("#postponed_lost_reason_label_div").show();
+      }
+      else
+      {
+        $("#postponed_lost_reason_label").hide();
+        $("#postponed_lost_reason_label_div").hide();
+      }
+    });
+});
+                         </script>
+
+
+
 
            <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
@@ -339,13 +371,7 @@ function myFunction() {
 
 
 
-                                            <label class="col-md-2 control-label" id="lost_reason_label" style="display: none;">Reason:</label>
-                              <div class="col-md-3 inputGroupContainer" id="lost_reason_div" style="display: none;">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                <input>
-                            </div>
-                                  </div>
+
 
 
                               </div>
@@ -399,7 +425,7 @@ function myFunction() {
 
                             <div class="form-group row">
 
-                                   <label class="col-md-2 control-label">Requirement</label>
+                                   <label class="col-md-2 control-label">Requirement :</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-check-square faicons"></i></span>
@@ -407,17 +433,23 @@ function myFunction() {
                             </div>
                              </div>
 
-                                <label class="col-md-2 control-label">Upload Requirement File :</label>
-                              <div class="col-md-3 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-file-word-o" aria-hidden="true"></i></span>
-                                {{ form2.upload_requirement_file}}
-                                  {% if lead_id.upload_requirement_file %}
-                                  <a href="{{ lead_id.upload_requirement_file.url }}" class="btn btn-primary">Old File</a>
-                                  {% endif %}
 
+
+                                <label class="col-md-2 control-label" id="lost_reason_label" style="display: none;">Reason:</label>
+                              <div class="col-md-3 inputGroupContainer" id="lost_reason_div" style="display: none;">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form2.lost_reason }}
                             </div>
+                                  </div>
+                                <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Reason:</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: none;">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form2.postponed_reason }}
                             </div>
+                                  </div>
+
 
                           </div>
 
@@ -452,8 +484,25 @@ function myFunction() {
                              </div>
         {% endif %}
 
+                                <label class="col-md-2 control-label">Upload Requirement File :</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-file-word-o" aria-hidden="true"></i></span>
+                                {{ form2.upload_requirement_file}}
+                                  {% if lead_id.upload_requirement_file %}
+                                  <a href="{{ lead_id.upload_requirement_file.url }}" class="btn btn-primary">Old File</a>
+                                  {% endif %}
+
+                            </div>
+                            </div>
+
+
+
 
 </div>
+
+
+
 
 <center>
 

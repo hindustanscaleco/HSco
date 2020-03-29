@@ -697,6 +697,8 @@ def add_lead(request):
         requirement = request.POST.get('requirement')
         upload_requirement_file = request.FILES.get('upload_requirement_file')
         owner_of_opportunity = request.POST.get('owner_of_opportunity')
+        lost_reason = request.POST.get('lost_reason')
+        postponed_reason = request.POST.get('postponed_reason')
 
 
 
@@ -750,6 +752,8 @@ def add_lead(request):
         item2.date_of_initiation = date_of_initiation
         item2.channel = channel
         item2.requirement = requirement
+        item2.lost_reason = lost_reason
+        item2.postponed_reason = postponed_reason
         item2.owner_of_opportunity = SiteUser.objects.filter(profile_name=owner_of_opportunity).first()
         item2.upload_requirement_file = upload_requirement_file
         item2.log_entered_by = request.user.name
@@ -811,6 +815,8 @@ def update_view_lead(request,id):
         'upload_requirement_file': lead_id.upload_requirement_file,
         'owner_of_opportunity': lead_id.owner_of_opportunity,
         'owner_of_opportunity_employee': lead_id.owner_of_opportunity,
+        # 'lost_reason': lead_id.lost_reason,
+        # 'postponed_reason': lead_id.postponed_reason,
     }
     form = Customer_detailForm(initial=customer_initial_data)
     form2 = Deal_detailForm(initial=deal_details_initial_data)
@@ -875,6 +881,9 @@ def update_view_lead(request,id):
             requirement = request.POST.get('requirement')
             upload_requirement_file = request.FILES.get('upload_requirement_file')
             owner_of_opportunity = request.POST.get('owner_of_opportunity')
+            lost_reason = request.POST.get('lost_reason')
+            postponed_reason = request.POST.get('postponed_reason')
+
             payment_channel = request.POST.get('payment_channel')
             payment_receipt = request.POST.get('payment_receipt')
             upload_pofile = request.POST.get('upload_pofile')
@@ -915,11 +924,14 @@ def update_view_lead(request,id):
             item2.date_of_initiation = date_of_initiation
             item2.channel = channel
             item2.requirement = requirement
+            item2.lost_reason = lost_reason
+            item2.postponed_reason = postponed_reason
             item2.upload_requirement_file = upload_requirement_file
             item2.log_entered_by = request.user.name
             item2.owner_of_opportunity = SiteUser.objects.get(profile_name=owner_of_opportunity)
             item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
-                                      'requirement','upload_requirement_file','owner_of_opportunity','log_entered_by'])
+                                      'requirement','upload_requirement_file','owner_of_opportunity','log_entered_by',
+                                      'lost_reason','postponed_reason'])
             return redirect('/update_view_lead/'+str(id))
         elif 'submit2' in request.POST:                                         #for pi section
             discount = request.POST.get('discount')
