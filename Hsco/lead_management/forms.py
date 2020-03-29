@@ -219,9 +219,18 @@ class Deal_detailForm(forms.ModelForm):
                                           'type': 'text',
                                           'placeholder': "Owner",
                                           'class': 'form-control',
-                                          # 'disabled':'disabled',
                                       }
                                   ))
+
+    owner_of_opportunity_employee = forms.CharField(max_length=80, required=False,
+                   widget=forms.TextInput(
+                       attrs={
+                           'type': 'text',
+                           'placeholder': "Owner",
+                           'class': 'form-control',
+                           'disabled': 'disabled',
+                       }
+                   ))
 
     lost_reason = forms.CharField(max_length=80, required=False,
                                     widget=forms.Textarea(
@@ -242,6 +251,7 @@ class Deal_detailForm(forms.ModelForm):
     class Meta:
         model = Lead
         fields = "__all__"
+
 
 
 class Pi_sectionForm(forms.ModelForm):
