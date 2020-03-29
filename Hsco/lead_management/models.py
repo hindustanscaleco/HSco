@@ -19,6 +19,8 @@ class Lead(models.Model):
     date_of_initiation = models.DateTimeField(default=timezone.now,)
     channel = models.CharField(max_length=50,null=True,blank=True)
     requirement = models.TextField(null=True,blank=True)
+    lost_reason = models.CharField(blank= True, null=True, max_length=180)
+    postponed_reason = models.CharField(blank= True, null=True, max_length=180)
     upload_requirement_file = models.FileField(upload_to='lead_requirement_file/',null=True,blank=True)
     # owner_of_opportunity = models.CharField(max_length=80,null=True,blank=True)
 
@@ -56,6 +58,7 @@ class Pi_section(models.Model):
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
+
 
     def __int__(self):
         return self.id

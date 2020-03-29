@@ -177,7 +177,7 @@ class Deal_detailForm(forms.ModelForm):
     requirement = forms.CharField(max_length=80, required=True,
                                     widget=forms.Textarea(
                                         attrs={
-                                            'type': 'file',
+                                            'type': 'text',
                                             'placeholder': "Requirement",
                                             'class': 'form-control',
                                         }
@@ -219,9 +219,26 @@ class Deal_detailForm(forms.ModelForm):
                                           'type': 'text',
                                           'placeholder': "Owner",
                                           'class': 'form-control',
-                                          'disabled':'disabled',
+                                          # 'disabled':'disabled',
                                       }
                                   ))
+
+    lost_reason = forms.CharField(max_length=80, required=False,
+                                    widget=forms.Textarea(
+                                        attrs={
+                                            'type': 'text',
+                                            'placeholder': "Reason",
+                                            'class': 'form-control',
+                                        }
+                                    ))
+    postponed_reason = forms.CharField(max_length=80, required=False,
+                                    widget=forms.Textarea(
+                                        attrs={
+                                            'type': 'text',
+                                            'placeholder': "Reason",
+                                            'class': 'form-control',
+                                        }
+                                    ))
     class Meta:
         model = Lead
         fields = "__all__"
