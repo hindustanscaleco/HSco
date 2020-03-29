@@ -880,7 +880,9 @@ def update_view_lead(request,id):
 
 
             item3 = Customer_Details.objects.get(id=lead_id.customer_id)
-
+            print(item3)
+            print(item3)
+            print(item3)
             if customer_name != '' and customer_name != None:
                 item3.customer_name = customer_name
                 item3.save(update_fields=['customer_name'])
@@ -3598,7 +3600,7 @@ def download_pi_pdf(request):
     return render(request,'lead_management/download_pi_pdf.html')
 
 def lead_logs(request):
-    lead_logs = Log.objects.filter(module_name='Lead Module')
+    lead_logs = Log.objects.filter(module_name='Lead Module').order_by('-id')
     print(lead_logs)
     print(lead_logs)
     print(lead_logs)

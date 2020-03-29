@@ -1299,7 +1299,7 @@ def load_restamping_stages_list(request,):
 
 @login_required(login_url='/')
 def restamping_logs(request):
-    restamping_logs = Log.objects.filter(module_name='Restamping Module')
+    restamping_logs = Log.objects.filter(module_name='Restamping Module').order_by('-id')
     paginator = Paginator(restamping_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')
     restamping_logs = paginator.get_page(page)
