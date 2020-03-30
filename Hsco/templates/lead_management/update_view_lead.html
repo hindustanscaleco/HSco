@@ -18,9 +18,6 @@
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
-</head>
-<body>
-
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
@@ -41,6 +38,12 @@
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
+    <style>
+        *{
+        overflow-y: hidden;
+        overflow-x: hidden;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -1278,7 +1281,7 @@ function whosFunction() {
       <!-- End of Main Content -->
 
 
-<div id="content_content" style="background-color: white; ">
+<div id="content_content" style="background-color: white; margin-top: 50vh;">
 
 <div  id="html-content-holder" style=" margin-left: 5%; margin-right: 5%;">
 <div class="row" style="padding: 5px; border-bottom: 5px solid black;">
@@ -1663,7 +1666,9 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 <script type="text/javascript">
 let doc = new jsPDF('p','pt','a4');
 doc.addHTML(document.getElementById("content_content"),function() {
-    doc.save('html.pdf');
+<!--    doc.save('html.pdf');-->
+    	sessionStorage.setItem("doc", doc);
+
 });
 
 
