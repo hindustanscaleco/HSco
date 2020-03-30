@@ -780,6 +780,7 @@ def update_view_lead(request,id):
     lead_id = Lead.objects.get(id=id)
     users = SiteUser.objects.all()
 
+
     lead_pi_products = Pi_product.objects.filter(lead_id=id)
     hfu = Follow_up_section.objects.filter(lead_id=id).last()
 
@@ -869,7 +870,7 @@ def update_view_lead(request,id):
 
 
     if request.method == 'POST' or request.method == 'FILES':
-        if 'submit1' in request.POST:                                            #for customer and deal details section
+        if 'submit' in request.POST:
             customer_name = request.POST.get('customer_name')
             company_name = request.POST.get('company_name')
             address = request.POST.get('address')
@@ -877,29 +878,9 @@ def update_view_lead(request,id):
             customer_industry = request.POST.get('customer_email_id')
             customer_email_id = request.POST.get('customer_email_id')
             customer_gst_no = request.POST.get('customer_gst_no')
-            current_stage = request.POST.get('current_stage')
-            new_existing_customer = request.POST.get('new_existing_customer')
-            date_of_initiation = request.POST.get('date_of_initiation')
-            channel = request.POST.get('channel')
-            requirement = request.POST.get('requirement')
-            upload_requirement_file = request.FILES.get('upload_requirement_file')
-            owner_of_opportunity = request.POST.get('owner_of_opportunity')
-            lost_reason = request.POST.get('lost_reason')
-            postponed_reason = request.POST.get('postponed_reason')
-
-            payment_channel = request.POST.get('payment_channel')
-            payment_receipt = request.POST.get('payment_receipt')
-            upload_pofile = request.POST.get('upload_pofile')
-            payment_received_date = request.POST.get('payment_received_date')
-
-            item2 = Lead.objects.get(id=id)
-
-
 
             item3 = Customer_Details.objects.get(id=lead_id.customer_id)
-            print(item3)
-            print(item3)
-            print(item3)
+
             if customer_name != '' and customer_name != None:
                 item3.customer_name = customer_name
                 item3.save(update_fields=['customer_name'])
@@ -921,6 +902,26 @@ def update_view_lead(request,id):
             if customer_industry != '' and customer_industry != None:
                 item3.customer_industry = customer_industry
                 item3.save(update_fields=['customer_industry'])
+            return redirect('/update_view_lead/'+str(id))
+
+        if 'submit1' in request.POST:                                            #for customer and deal details section
+
+            new_existing_customer = request.POST.get('new_existing_customer')
+            date_of_initiation = request.POST.get('date_of_initiation')
+            channel = request.POST.get('channel')
+            requirement = request.POST.get('requirement')
+            upload_requirement_file = request.FILES.get('upload_requirement_file')
+            owner_of_opportunity = request.POST.get('owner_of_opportunity')
+            lost_reason = request.POST.get('lost_reason')
+            postponed_reason = request.POST.get('postponed_reason')
+            current_stage = request.POST.get('current_stage')
+
+            payment_channel = request.POST.get('payment_channel')
+            payment_receipt = request.POST.get('payment_receipt')
+            upload_pofile = request.POST.get('upload_pofile')
+            payment_received_date = request.POST.get('payment_received_date')
+
+            item2 = Lead.objects.get(id=id)
 
             item2.current_stage = current_stage
             item2.new_existing_customer = new_existing_customer
@@ -972,11 +973,42 @@ def update_view_lead(request,id):
                 item2.select_gst_type = select_gst_type
                 item2.discount_type = discount_type
                 item2.log_entered_by = request.user.name
-                # if discount_type == 'percent':
-                #
-                # elif discount_type == 'rupee':
-                #     pass
-                item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call',
+                try:
+                    total = Pi_product.objects.filter(lead_id=id).values('product_total_cost')
+                    total_cost = 0.0
+                    for x in total:
+                        total_cost += x['product_total_cost']
+                    item2.total_cost = total_cost
+
+
+                    product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
+                    pf_total = 0.0
+                    for x in product_pf:
+                        pf_total += float(x['pf'])
+                    item2.pf_total = pf_total
+                    if discount_type == 'percent' and discount != '' and discount != 0 and total_cost != '':
+                        total_discount = (float(total_cost) * float(discount))/100.0  #converting discount percentage to discount total
+                        net_total = float(total_cost) - float(total_discount)
+                        item2.net_total = net_total
+                        item2.cgst_sgst = (9.0 * net_total) / 100.0
+                        igst = (18.0 * net_total) / 100.0
+                        item2.igst = igst
+                        item2.round_up_total = round(net_total + pf_total + igst)
+                        item2.grand_total = item2.round_up_total
+                    elif discount_type == 'rupee' and discount != '' and discount != 0 and total_cost != '':
+                        net_total = float(total_cost) - float(discount)
+                        item2.net_total = net_total
+                        item2.cgst_sgst = (9.0 * net_total)/100.0
+                        igst = (18.0 * item2.net_total)/100.0
+                        item2.igst = igst
+                        item2.round_up_total = round(item2.net_total + pf_total + igst)
+                        item2.grand_total = item2.round_up_total
+                except:
+                    print("product not added or debugging needed")
+
+
+                item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call','net_total','cgst_sgst','igst',
+                                          'round_up_total','grand_total','total_cost','notes','pf_total',
                                         'email', 'whatsapp','call2','select_gst_type','discount_type','log_entered_by'  ])
 
                 if request.user.is_authenticated:
@@ -1881,6 +1913,40 @@ td {
                 item2.discount_type = discount_type
                 item2.lead_id = Lead.objects.get(id=id)
                 item2.log_entered_by = request.user.name
+                try:
+                    total = Pi_product.objects.filter(lead_id=id).values('product_total_cost')
+                    total_cost = 0.0
+                    for x in total:
+                        total_cost += x['product_total_cost']
+                    item2.total_cost = total_cost
+
+
+                    product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
+                    pf_total = 0.0
+                    for x in product_pf:
+                        pf_total += float(x['pf'])
+
+                    item2.pf_total = pf_total
+                    if discount_type == 'percent' and discount != '' and discount != 0 and total_cost != '':
+                        total_discount = (float(total_cost) * float(discount))/100.0  #converting discount percentage to discount total
+                        net_total = float(total_cost) - float(total_discount)
+                        item2.net_total = net_total
+                        item2.cgst_sgst = (9.0 * net_total) / 100.0
+                        igst = (18.0 * net_total) / 100.0
+                        item2.igst = igst
+                        item2.round_up_total = round(net_total + pf_total + igst)
+                        item2.grand_total = item2.round_up_total
+                    elif discount_type == 'rupee' and discount != '' and discount != 0 and total_cost != '':
+                        net_total = float(total_cost) - float(discount)
+                        item2.net_total = net_total
+                        item2.cgst_sgst = (9.0 * net_total)/100.0
+                        igst = (18.0 * item2.net_total)/100.0
+                        item2.igst = igst
+                        item2.round_up_total = round(item2.net_total + pf_total + igst)
+                        item2.grand_total = item2.round_up_total
+                except:
+                    print("product not added or debugging needed")
+
                 item2.save()
                 if request.user.is_authenticated:
                     todays_date = str(datetime.now())
@@ -3374,7 +3440,8 @@ def select_product(request,id):
         item.quantity = quantity
         item.pf = pf
         item.log_entered_by = request.user.name
-
+        if quantity != 'None' or quantity != '':
+            item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
         item.save()
         if is_last_product_yes == 'yes':
             return redirect('/update_view_lead/'+str(id))
@@ -3612,11 +3679,24 @@ def report_2(request):
 
 
 
-def download_pi_image(request):
+def download_pi_image(request,id):
     return render(request,'lead_management/download_pi_image.html')
 
-def download_pi_pdf(request):
-    return render(request,'lead_management/download_pi_pdf.html')
+def download_pi_pdf(request,id):
+    lead_id=Lead.objects.get(id=id)
+    todays_date = str(datetime.now().strftime("%Y-%m-%d"))
+    pi_id = Pi_section.objects.get(lead_id=id)
+    print(pi_id)
+    print(pi_id.discount_type)
+    print(pi_id.discount_type)
+    pi_products = Pi_product.objects.filter(lead_id=id)
+    context={
+        'lead_id':lead_id,
+        'todays_date':todays_date,
+        'pi_id':pi_id,
+        'pi_products':pi_products,
+    }
+    return render(request,'lead_management/download_pi_pdf.html',context)
 
 def lead_logs(request):
     lead_logs = Log.objects.filter(module_name='Lead Module').order_by('-id')

@@ -151,7 +151,6 @@ function myFunction() {
      <div class="container-fluid">
 
 
-                     <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
          <div class="col-xl-12 col-lg-12">
               {% if error_exist %}
@@ -233,6 +232,7 @@ document.getElementById("submit56").click();
         </form>
     </div>
 
+                     <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
                           <div class="form-group row">
                               <label class="col-md-2 control-label">Customer Name: *</label>
@@ -307,10 +307,10 @@ document.getElementById("submit56").click();
 
 
 <center>
-     <button name="submit1" type="submit" style="background-color: #FC6E20;" id="Mytext1" class="btn btn-primary">Save</button>
+     <button name="submit" type="submit" style="background-color: #FC6E20;" id="Mytext1" class="btn btn-primary">Save</button>
 </center>
 
-
+                     </form>
                           </div>
 
 
@@ -365,7 +365,7 @@ document.getElementById("submit56").click();
 
 
 
-
+            <form  method='POST' enctype="multipart/form-data" >{% csrf_token %}
            <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
@@ -667,7 +667,6 @@ tr:nth-child(even) {
                             </div>
 
                          {% if lead_id.auto_manual_mode == 'Manual' %}
-
                             <div class="form-group row" id="myDiv_call" >
 
 
@@ -1401,12 +1400,12 @@ function change( el )
 
   <script type="text/javascript">
 function download_pdf(){
-    var popupwin = window.open('/download_pi_pdf','anyname','width=1280,height=720,left=5,top=3');
+    var popupwin = window.open('/download_pi_pdf/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
     setTimeout(function() { popupwin.close();}, 5000);
 }
 
 function download_image(){
-    var popupwin = window.open('/download_pi_image','anyname','width=1280,height=720,left=5,top=3');
+    var popupwin = window.open('/download_pi_image/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
     setTimeout(function() { popupwin.close();}, 5000);
 }
 
