@@ -18,9 +18,6 @@
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
-</head>
-<body>
-
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
@@ -41,6 +38,12 @@
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
+    <style>
+        *{
+        overflow-y: hidden;
+        overflow-x: hidden;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -199,17 +202,14 @@ function myFunction() {
   </button>
 </div>
 
-             <script>
+<script>
+    setTimeout(myFunction225, 4000);
+    function myFunction225(){
+        var win = window.open('/update_view_lead/{{lead_id.pk}}', '_blank');
+        document.getElementById("submit56").click();
+    }
+</script>
 
-             setTimeout(myFunction225, 3000);
-
-           function myFunction225(){
-alert("Redirecting To Whatsapp Web");
-document.getElementById("submit56").click();
-
-           }
-
-             </script>
 {% endif %}
                {% if success_exist_4 %}
 
@@ -245,7 +245,7 @@ document.getElementById("submit56").click();
 
     <div class="form-group row" style="display:none;">
             <form  method='POST' enctype="multipart/form-data" target="_blank">{% csrf_token %}
-            <input name="tp" value="tp">
+            <input name="tp" value="{{lead_id.pk}}">
          <button name="submit56" id="submit56" type="submit" target="_blank">Send</button>
         </form>
     </div>
@@ -535,13 +535,7 @@ document.getElementById("submit56").click();
                             </div>
                             </div>
 
-
-
-
 </div>
-
-
-
 
 <center>
 
@@ -687,7 +681,8 @@ tr:nth-child(even) {
                           </div>
                             </div>
 
-                         {% if lead_id.auto_manual_mode == 'Manual' %}
+
+                      
                             <div class="form-group row" id="myDiv_call" >
 
 
@@ -698,18 +693,7 @@ tr:nth-child(even) {
                    </div>
                              </div>
                           </div>
-{% else %}
-                       <div class="form-group row" id="myDiv_cal" style="display: none;">
 
-
-                                <label class="col-md-2 control-label">Call:</label>
-                              <div class="col-md-6 inputGroupContainer">
-                              <div class="input-group">
-                                {{ form3.call }}
-                   </div>
-                             </div>
-                          </div>
-{% endif %}
 
                          <script>
 function myFunction_call() {
@@ -772,45 +756,32 @@ function myFunction_call() {
                         <div class="row col-md-10">
                         </div>
                             <div class="row col-md-2">
-
                         <a href="/lead_follow_up_histroy/{{hfu_id}}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp
-
-
                             </div>
                             </div>
-
                         <div class="row col-md-12" style="margin-left:4%">
                               <br>
     <div class="col-md-5" id="my123" style="display: none;">
     <label class="col-md-10 control-label">Whatsapp:</label>
                                 <br>
-
                         {{ form6.wa_no }}
                         <br>
                                 <label class="col-md-5 control-label" style="float:left;">Content:</label>
-
                                 {{ form6.wa_msg }}
-
 </div>
-
-
 <div class="col-md-1"></div>
 <div class="col-md-5" id="myemail" style="display: none;">
 
                          <label class="col-md-4 control-label">Email Subject:</label>
     <br>
-
                                 {{ form6.email_subject }}
                         <br>
                            <label class="col-md-4 control-label">Email Message:</label>
-
                                 {{ form6.email_msg }}
                         <br>
 </div>
     </div>
-
                             <br>
-
                         <div class="row col-md-12" style="margin-left:4%">
                             <div class="col-md-5" id="mycall_follow_up" style="display: none;">
                            <label class="col-md-4 control-label">Call Response:</label>
@@ -826,8 +797,6 @@ function myFunction_call() {
                         </div>
                         </div>
                         <br>
-                        <br>
-
                         <script>
                             $(document).ready(function(){
     $('#purpose').on('change', function() {
@@ -835,18 +804,19 @@ function myFunction_call() {
       {
         $("#div_call").show();
       }
-      else
+      if ( this.value == 'Select Mode')
+      {
+        $("#div_call").show();
+      }
+      if ( this.value == 'Automatic')
       {
         $("#div_call").hide();
       }
     });
 });
-                        </script>
+</script>
 
 <div class="row col-md-12">
-
-
-
 
                             <label class="col-md-2 control-label">Medium of Selection:</label>
 
@@ -855,10 +825,17 @@ function myFunction_call() {
     <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form6.is_whatsapp  }}
     <div class="col-xl-2 col-lg-2"></div>
 
-    <div id="div_call" style="display: none;">
-
+    {% if auto_manual_mode == 'Manual' %}
+       <div id="div_call" >
     <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_call  }}
     </div>
+    {% else %}
+       <div id="div_call" style="display: none;">
+    <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_call  }}
+    </div>
+    {% endif %}
+
+
 
     <div class="col-xl-2 col-lg-2"></div>
     <label class="form-check-label">SMS:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_sms  }}
@@ -873,42 +850,59 @@ function myFunction_call() {
                          <div class="">
 <div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; ">
 
-
     <table>
+
         <tr>
-            <td style="min-width: 200px;">Product Name</td>
-            <td style="min-width: 200px;">Product Name</td>
-            <td style="min-width: 200px;">Product Name</td>
-            <td style="min-width: 200px;">Product Name</td>
-            <td style="min-width: 200px;">Product Name</td>
-            <td style="min-width: 200px;">Product Name</td>
-            <td style="min-width: 200px;">Product Name</td>
-            <td style="min-width: 200px;">Product Name</td>
-            <td style="min-width: 200px;">Product Name</td>
-            <td style="min-width: 200px;">Product Name</td>
-            <td style="min-width: 200px;">Product Name</td>
+
+            <td style="min-width: 100px;">Product Selection</td>
+            <td style="min-width: 200px;">Scale Type</td>
+            <td style="min-width: 200px;">Main Model</td>
+            <td style="min-width: 200px;">Sub Model</td>
+            <td style="min-width: 200px;">Sub Sub Model</td>
+            <td style="min-width: 100px;">Hsn Code</td>
+            <td style="min-width: 200px;">Product Image</td>
+            <td style="min-width: 200px;">Max Capacity</td>
+            <td style="min-width: 200px;">Accuracy</td>
+            <td style="min-width: 200px;">Platform Size</td>
+            <td style="min-width: 200px;">Product Desc</td>
+            <td style="min-width: 200px;">Product Brochure</td>
+            <td style="min-width: 200px;">Product Document</td>
+            <td style="min-width: 100px;">Cost Price</td>
+            <td style="min-width: 100px;">Selling Price</td>
+            <td style="min-width: 100px;">Carton Size</td>
+
 
         </tr>
+
+
+          {% for item in followup_products_list %}
         <tr>
-            {% for item in followup_products_list %}
-                     <td>
-                           {% if item.product_id.product_image %}
+
+
+            <td ><input style="margin:40%;" type="checkbox" name="checks_pro[]" value="{{item.pk}}" ></td>
+            <td>{{item.scale_type}}</td>
+            <td>{{item.main_category}}</td>
+            <td>{{item.sub_category}}</td>
+            <td>{{item.sub_sub_category}}</td>
+            <td>{{item.hsn_code}}</td>
+            {% if item.product_id.product_image %}
+            <td>
                        <img height="150" width="150" src="{{item.product_id.product_image.url}}">
-                       {% endif %}
-                     </td>
-            {% endfor %}
+            </td>
+             {% endif %}
+            <td>{{item.max_capacity}}</td>
+            <td>{{item.accuracy}}</td>
+            <td>{{item.platform_size}}</td>
+            <td>{{item.product_desc}}</td>
+            <td>{{item.product_id.product_brochure}}</td>
+            <td>{{item.product_id.product_document}}</td>
+            <td>{{item.cost_price}}</td>
+            <td>{{item.selling_price}}</td>
+            <td>{{item.carton_size}}</td>
 
-            <td>Product Name</td>
-            <td>Product Name</td>
-            <td>Product Name</td>
-            <td>Product Name</td>
-            <td>Product Name</td>
-            <td>Product Name</td>
-            <td>Product Name</td>
-            <td>Product Name</td>
-            <td>Product Name</td>
-            <td>Product Name</td>
         </tr>
+           {% endfor %}
+
     </table>
 
 
@@ -1276,7 +1270,7 @@ function whosFunction() {
       <!-- End of Main Content -->
 
 
-<div id="content_content" style="background-color: white; ">
+<div id="content_content" style="background-color: white; margin-top: 50vh;">
 
 <div  id="html-content-holder" style=" margin-left: 5%; margin-right: 5%;">
 <div class="row" style="padding: 5px; border-bottom: 5px solid black;">
@@ -1661,7 +1655,9 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 <script type="text/javascript">
 let doc = new jsPDF('p','pt','a4');
 doc.addHTML(document.getElementById("content_content"),function() {
-    doc.save('html.pdf');
+<!--    doc.save('html.pdf');-->
+    	sessionStorage.setItem("doc", doc);
+
 });
 
 

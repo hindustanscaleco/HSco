@@ -163,8 +163,6 @@ def add_purchase_details(request):
         if request.session.get('product_saved'):
             pass
 
-            # request.session['product_saved'] = True
-
         else:
             prod_list=Product_Details.objects.all().values_list('purchase_id', flat=True)
             if request.session.get('purchase_id') not in prod_list:
@@ -177,29 +175,6 @@ def add_purchase_details(request):
         except:
             pass
     cust_sugg = Customer_Details.objects.all()
-    # sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name)
-    # if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
-    #     sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name,
-    #                                         modules_assigned__icontains='Customer Module', is_deleted=False)
-    #
-    #
-    # else:  # display colleague
-    #     list_group = SiteUser.objects.get(id=request.user.id).group
-    #     import ast
-    #
-    #     x = "[" + list_group + "]"
-    #     x = ast.literal_eval(x)
-    #     manager_list = []
-    #     for item in x:
-    #         name = SiteUser.objects.filter(name=item)
-    #         for i in name:
-    #             if i.role == 'Manager':
-    #                 if item not in manager_list:
-    #                     manager_list.append(item)
-    #
-    #     sales_person_sugg = SiteUser.objects.filter(group__icontains=manager_list,
-    #                                         modules_assigned__icontains='Customer Module', is_deleted=False)
-
     if request.user.role == 'Super Admin':
         sales_person_sugg=SiteUser.objects.filter(Q(id=request.user.id) | Q(group__icontains=request.user.name),modules_assigned__icontains='Customer Module', is_deleted=False)
 
@@ -230,10 +205,6 @@ def add_purchase_details(request):
         product_purchase_date = request.POST.get('product_purchase_date')
         bill_no = request.POST.get('bill_no')
         upload_op_file = request.FILES.get('upload_op_file')
-        # second_person = request.POST.get('second_person')
-        # third_person = request.POST.get('third_person')
-        # second_contact_no = request.POST.get('second_contact_no')
-        # third_contact_no = request.POST.get('third_contact_no')
         po_number = request.POST.get('po_number')
         channel_of_sales = request.POST.get('channel_of_sales')
         industry = request.POST.get('industry')
@@ -925,14 +896,6 @@ def add_product_details(request,id):
                 sent_from = settings.EMAIL_HOST_USER
                 to = [purchase.company_email]
                 subject = 'Your HSCo Purchase'
-                # message_old = 'Dear ' + str(
-                #     purchase.crm_no.customer_name) + ', Thanks for purchasing your scale from HSCo. ' \
-                #                                      'Your Purchase ID is ' + str(
-                #     purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                #                    ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
-                #           + str(request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(
-                #     purchase.id) + '\nHere is the list of product you purchased:\n' + product_list
-
 
                 message= 'Dear ' + str(
                     purchase.second_person) + ',' \
@@ -969,19 +932,10 @@ def add_product_details(request,id):
                     print('Something went wrong...Email not send!!!')
 
 
-                # send_mail('Feedback Form',
-                #           message, settings.EMAIL_HOST_USER,
-                #           [purchase.company_email])
-                # print("send mail!!")
             except:
                 print("exception occured!!")
                 pass
 
-            # message_old = 'Dear ' + str(purchase.second_person) + ', Thanks for purchasing your scale from HSCo. ' \
-            #                                                 'Your Purchase ID is ' + str(
-            #     purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-            #                 ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' + str(
-            #     request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(purchase.id)
 
             message = 'Dear ' + str(
                 purchase.second_person) + ',' \
@@ -1051,7 +1005,7 @@ def add_product_details(request,id):
             ead.month = datetime.now().month
             ead.year = datetime.now().year
             ead.save()
-        #
+
         # Employee_Analysis_month.objects.filter(user_id=purchase.user_id,
         #                                        entry_date__month=datetime.now().month,
         #                                        year=datetime.now().year).update(

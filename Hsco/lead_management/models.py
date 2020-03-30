@@ -57,6 +57,7 @@ class Pi_section(models.Model):
     round_up_total = models.FloatField(null=True,blank=True)
     grand_total = models.FloatField(null=True,blank=True)
     # entry_timedate = models.DateTimeField(default=timezone.now, )
+    is_entered_purchase = models.BooleanField(default=False)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
@@ -70,7 +71,7 @@ class Pi_product(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.FloatField(null=True, blank=True)
     pf = models.FloatField(null=True, blank=True)
-    # entry_timedate = models.DateTimeField(default=timezone.now, )
+
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
@@ -102,7 +103,7 @@ class Pi_History(models.Model):
 class Follow_up_section(models.Model):
     lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE,null=True,blank=True)
     whatsappno = models.CharField(max_length=120,null=True,blank=True)
-    auto_manual_mode = models.CharField(default='Automatic', max_length=50, null=True, blank=True)
+    auto_manual_mode = models.CharField(default='Select Mode', max_length=50, null=True, blank=True)
     fields = models.TextField(null=True, blank=True)
     email_subject = models.CharField(max_length=150,null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)

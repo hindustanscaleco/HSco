@@ -1,30 +1,20 @@
-import time
 from datetime import datetime
-
 from django.core.paginator import Paginator
 from django.db import connection
 from django.db.models import Sum, Q, Count
-
 from django.core.files.base import ContentFile
 from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render, redirect
-
 from customer_app.models import type_purchase
-
 from stock_system.models import Product
-
 from Hsco import settings
 from user_app.models import SiteUser
-
 from customer_app.models import Log
 from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm, Follow_up_sectionForm, History_followupForm, Payment_detailsForm
-
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
 from .models import Lead, Pi_section, IndiamartLeadDetails, History_followup, Follow_up_section, Followup_product, \
     Auto_followup_details, Payment_details
-
-
 from .models import Lead, Pi_section, Pi_product, Pi_History
 from customer_app.models import sub_model, main_model, sub_sub_model
 import requests
@@ -33,478 +23,11 @@ from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
 # Create your views here.
 from .utils import send_html_mail
-
-@receiver(pre_save, sender=Lead)
-def lead_handler(sender, instance, update_fields=None, **kwargs):
-    try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
-            new_instance = instance
-            log = Log()
-            # log.entered_by = instance.entered_by
-            log.entered_by = new_instance.log_entered_by
-            log.module_name = 'Lead Module'
-            log.action_type = 'Insert'
-            log.table_name = 'Lead'
-            log.reference = 'Lead No: ' + str(new_instance.id)
-
-            # log.action = old_list
-            log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
-            old_instance = instance
-            new_instance = Lead.objects.get(id=instance.id)
-
-            track = instance.tracker.changed()
-            if 'log_entered_by' in track :
-                del track['log_entered_by']
-            # string = ''
-            # new_list = []
-            # for key in track:
-            #     new_list.append(key)
-            #     string = string+str(key)+','
-            #     print('New value:'+str(key) + old_instance.key)
-
-
-            # with connection.cursor() as cursor:
-                # if new_string != '' :
-                #     print('something 1')
-                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
-                #     cursor.execute("SELECT " + (
-                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
-                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
-                old_list = []
-                for key, value in track.items():
-                    if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
-                log = Log()
-
-                log.entered_by = instance.log_entered_by
-                log.module_name = 'Lead Module'
-                log.action_type = 'Update'
-                log.table_name = 'Lead'
-
-                log.reference = 'Lead No: '+str(new_instance.id)
-
-                log.action = old_list
-                log.save()
-
-    except:
-        pass
-
-@receiver(pre_save, sender=Pi_section)
-def Pi_section_handler(sender, instance, update_fields=None, **kwargs):
-    try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
-            new_instance = instance
-            log = Log()
-            # log.entered_by = instance.entered_by
-            log.entered_by = new_instance.log_entered_by
-            log.module_name = 'Lead Module'
-            log.action_type = 'Insert'
-            log.table_name = 'Pi_section'
-            log.reference = 'Pi_section No: ' + str(new_instance.id)
-
-            # log.action = old_list
-            log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
-            old_instance = instance
-            new_instance = Lead.objects.get(id=instance.id)
-
-            track = instance.tracker.changed()
-            if 'log_entered_by' in track :
-                del track['log_entered_by']
-            # string = ''
-            # new_list = []
-            # for key in track:
-            #     new_list.append(key)
-            #     string = string+str(key)+','
-            #     print('New value:'+str(key) + old_instance.key)
-
-
-            # with connection.cursor() as cursor:
-                # if new_string != '' :
-                #     print('something 1')
-                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
-                #     cursor.execute("SELECT " + (
-                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
-                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
-                old_list = []
-                for key, value in track.items():
-                    if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
-                log = Log()
-
-                log.entered_by = instance.log_entered_by
-                log.module_name = 'Lead Module'
-                log.action_type = 'Update'
-                log.table_name = 'Pi_section'
-
-                log.reference = 'Pi_section No: '+str(new_instance.id)
-
-                log.action = old_list
-                log.save()
-
-    except:
-        pass
-
-@receiver(pre_save, sender=Pi_product)
-def pi_product_handler(sender, instance, update_fields=None, **kwargs):
-    try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
-            new_instance = instance
-            log = Log()
-            # log.entered_by = instance.entered_by
-            log.entered_by = new_instance.log_entered_by
-            log.module_name = 'Lead Module'
-            log.action_type = 'Insert'
-            log.table_name = 'Pi_product'
-            log.reference = 'Pi_product No: ' + str(new_instance.id)
-
-            # log.action = old_list
-            log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
-            old_instance = instance
-            new_instance = Lead.objects.get(id=instance.id)
-
-            track = instance.tracker.changed()
-            if 'log_entered_by' in track :
-                del track['log_entered_by']
-            # string = ''
-            # new_list = []
-            # for key in track:
-            #     new_list.append(key)
-            #     string = string+str(key)+','
-            #     print('New value:'+str(key) + old_instance.key)
-
-
-            # with connection.cursor() as cursor:
-                # if new_string != '' :
-                #     print('something 1')
-                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
-                #     cursor.execute("SELECT " + (
-                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
-                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
-                old_list = []
-                for key, value in track.items():
-                    if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
-                log = Log()
-
-                log.entered_by = instance.log_entered_by
-                log.module_name = 'Lead Module'
-                log.action_type = 'Update'
-                log.table_name = 'Pi_product'
-
-                log.reference = 'Pi_product No: '+str(new_instance.id)
-
-                log.action = old_list
-                log.save()
-
-    except:
-        pass
-
-@receiver(pre_save, sender=Pi_History)
-def Pi_History_handler(sender, instance, update_fields=None, **kwargs):
-    try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
-            new_instance = instance
-            log = Log()
-            # log.entered_by = instance.entered_by
-            log.entered_by = new_instance.log_entered_by
-            log.module_name = 'Lead Module'
-            log.action_type = 'Insert'
-            log.table_name = 'Pi_History'
-            log.reference = 'Pi_History No: ' + str(new_instance.id)
-
-            # log.action = old_list
-            log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
-            old_instance = instance
-            new_instance = Lead.objects.get(id=instance.id)
-
-            track = instance.tracker.changed()
-            if 'log_entered_by' in track :
-                del track['log_entered_by']
-            # string = ''
-            # new_list = []
-            # for key in track:
-            #     new_list.append(key)
-            #     string = string+str(key)+','
-            #     print('New value:'+str(key) + old_instance.key)
-
-
-            # with connection.cursor() as cursor:
-                # if new_string != '' :
-                #     print('something 1')
-                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
-                #     cursor.execute("SELECT " + (
-                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
-                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
-                old_list = []
-                for key, value in track.items():
-                    if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
-                log = Log()
-
-                log.entered_by = instance.log_entered_by
-                log.module_name = 'Lead Module'
-                log.action_type = 'Update'
-                log.table_name = 'Pi_History'
-
-                log.reference = 'Pi_History No: '+str(new_instance.id)
-
-                log.action = old_list
-                log.save()
-
-    except:
-        pass
-
-@receiver(pre_save, sender=Follow_up_section)
-def Follow_up_section_handler(sender, instance, update_fields=None, **kwargs):
-    try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
-            new_instance = instance
-            log = Log()
-            # log.entered_by = instance.entered_by
-            log.entered_by = new_instance.log_entered_by
-            log.module_name = 'Lead Module'
-            log.action_type = 'Insert'
-            log.table_name = 'Follow_up_section'
-            log.reference = 'Follow_up_section No: ' + str(new_instance.id)
-
-            # log.action = old_list
-            log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
-            old_instance = instance
-            new_instance = Lead.objects.get(id=instance.id)
-
-            track = instance.tracker.changed()
-            if 'log_entered_by' in track :
-                del track['log_entered_by']
-            # string = ''
-            # new_list = []
-            # for key in track:
-            #     new_list.append(key)
-            #     string = string+str(key)+','
-            #     print('New value:'+str(key) + old_instance.key)
-
-
-            # with connection.cursor() as cursor:
-                # if new_string != '' :
-                #     print('something 1')
-                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
-                #     cursor.execute("SELECT " + (
-                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
-                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
-                old_list = []
-                for key, value in track.items():
-                    if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
-                log = Log()
-
-                log.entered_by = instance.log_entered_by
-                log.module_name = 'Lead Module'
-                log.action_type = 'Update'
-                log.table_name = 'Follow_up_section'
-
-                log.reference = 'Follow_up_section No: '+str(new_instance.id)
-
-                log.action = old_list
-                log.save()
-
-    except:
-        pass
-
-@receiver(pre_save, sender=History_followup)
-def History_followup_handler(sender, instance, update_fields=None, **kwargs):
-    try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
-            new_instance = instance
-            log = Log()
-            # log.entered_by = instance.entered_by
-            log.entered_by = new_instance.log_entered_by
-            log.module_name = 'Lead Module'
-            log.action_type = 'Insert'
-            log.table_name = 'History_followup'
-            log.reference = 'History_followup No: ' + str(new_instance.id)
-
-            # log.action = old_list
-            log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
-            old_instance = instance
-            new_instance = Lead.objects.get(id=instance.id)
-
-            track = instance.tracker.changed()
-            if 'log_entered_by' in track :
-                del track['log_entered_by']
-            # string = ''
-            # new_list = []
-            # for key in track:
-            #     new_list.append(key)
-            #     string = string+str(key)+','
-            #     print('New value:'+str(key) + old_instance.key)
-
-
-            # with connection.cursor() as cursor:
-                # if new_string != '' :
-                #     print('something 1')
-                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
-                #     cursor.execute("SELECT " + (
-                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
-                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
-                old_list = []
-                for key, value in track.items():
-                    if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
-                log = Log()
-
-                log.entered_by = instance.log_entered_by
-                log.module_name = 'Lead Module'
-                log.action_type = 'Update'
-                log.table_name = 'History_followup'
-
-                log.reference = 'History_followup No: '+str(new_instance.id)
-
-                log.action = old_list
-                log.save()
-
-    except:
-        pass
-
-@receiver(pre_save, sender=Followup_product)
-def Followup_product_handler(sender, instance, update_fields=None, **kwargs):
-    try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
-            new_instance = instance
-            log = Log()
-            # log.entered_by = instance.entered_by
-            log.entered_by = new_instance.log_entered_by
-            log.module_name = 'Lead Module'
-            log.action_type = 'Insert'
-            log.table_name = 'Followup_product'
-            log.reference = 'Followup_product No: ' + str(new_instance.id)
-
-            # log.action = old_list
-            log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
-            old_instance = instance
-            new_instance = Lead.objects.get(id=instance.id)
-
-            track = instance.tracker.changed()
-            if 'log_entered_by' in track :
-                del track['log_entered_by']
-            # string = ''
-            # new_list = []
-            # for key in track:
-            #     new_list.append(key)
-            #     string = string+str(key)+','
-            #     print('New value:'+str(key) + old_instance.key)
-
-
-            # with connection.cursor() as cursor:
-                # if new_string != '' :
-                #     print('something 1')
-                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
-                #     cursor.execute("SELECT " + (
-                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
-                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
-                old_list = []
-                for key, value in track.items():
-                    if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
-                log = Log()
-
-                log.entered_by = instance.log_entered_by
-                log.module_name = 'Lead Module'
-                log.action_type = 'Update'
-                log.table_name = 'Followup_product'
-
-                log.reference = 'Followup_product No: '+str(new_instance.id)
-
-                log.action = old_list
-                log.save()
-
-    except:
-        pass
-
-@receiver(pre_save, sender=Payment_details)
-def Payment_details_handler(sender, instance, update_fields=None, **kwargs):
-    try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
-            new_instance = instance
-            log = Log()
-            # log.entered_by = instance.entered_by
-            log.entered_by = new_instance.log_entered_by
-            log.module_name = 'Lead Module'
-            log.action_type = 'Insert'
-            log.table_name = 'Payment_details'
-            log.reference = 'Payment_details No: ' + str(new_instance.id)
-
-            # log.action = old_list
-            log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
-            old_instance = instance
-            new_instance = Lead.objects.get(id=instance.id)
-
-            track = instance.tracker.changed()
-            if 'log_entered_by' in track :
-                del track['log_entered_by']
-            # string = ''
-            # new_list = []
-            # for key in track:
-            #     new_list.append(key)
-            #     string = string+str(key)+','
-            #     print('New value:'+str(key) + old_instance.key)
-
-
-            # with connection.cursor() as cursor:
-                # if new_string != '' :
-                #     print('something 1')
-                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
-                #     cursor.execute("SELECT " + (
-                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
-                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
-                old_list = []
-                for key, value in track.items():
-                    if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
-                log = Log()
-
-                log.entered_by = instance.log_entered_by
-                log.module_name = 'Lead Module'
-                log.action_type = 'Update'
-                log.table_name = 'Payment_details'
-
-                log.reference = 'Payment_details No: '+str(new_instance.id)
-
-                log.action = old_list
-                log.save()
-
-    except:
-        pass
+from purchase_app.models import Purchase_Details
+from dispatch_app.models import Dispatch
+from purchase_app.models import Product_Details
+
+from dispatch_app.models import Product_Details_Dispatch
 
 def lead_home(request):
     import requests
@@ -840,6 +363,7 @@ def update_view_lead(request,id):
         'hfu_id':hfu.id,
         'form6':form6,
         'users':users,
+        'auto_manual_mode':hfu.auto_manual_mode,
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
         pi_id = Pi_section.objects.get(lead_id=id)
@@ -875,9 +399,26 @@ def update_view_lead(request,id):
             company_name = request.POST.get('company_name')
             address = request.POST.get('address')
             contact_no = request.POST.get('contact_no')
-            customer_industry = request.POST.get('customer_email_id')
+            customer_industry = request.POST.get('customer_industry')
             customer_email_id = request.POST.get('customer_email_id')
             customer_gst_no = request.POST.get('customer_gst_no')
+            current_stage = request.POST.get('current_stage')
+            new_existing_customer = request.POST.get('new_existing_customer')
+            date_of_initiation = request.POST.get('date_of_initiation')
+            channel = request.POST.get('channel')
+            requirement = request.POST.get('requirement')
+            upload_requirement_file = request.FILES.get('upload_requirement_file')
+            owner_of_opportunity = request.POST.get('owner_of_opportunity')
+            lost_reason = request.POST.get('lost_reason')
+            postponed_reason = request.POST.get('postponed_reason')
+
+            payment_channel = request.POST.get('payment_channel')
+            payment_receipt = request.POST.get('payment_receipt')
+            upload_pofile = request.POST.get('upload_pofile')
+            payment_received_date = request.POST.get('payment_received_date')
+
+
+            item2 = Lead.objects.get(id=id)
 
             item3 = Customer_Details.objects.get(id=lead_id.customer_id)
 
@@ -923,6 +464,7 @@ def update_view_lead(request,id):
 
             item2 = Lead.objects.get(id=id)
 
+
             item2.current_stage = current_stage
             item2.new_existing_customer = new_existing_customer
             item2.date_of_initiation = date_of_initiation
@@ -936,6 +478,185 @@ def update_view_lead(request,id):
             item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
                                       'requirement','upload_requirement_file','owner_of_opportunity','log_entered_by',
                                       'lost_reason','postponed_reason'])
+            is_entered_purchase = Lead.objects.get(id=id).is_entered_purchase
+            if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
+                Lead.objects.filter(id=id).update(is_entered_purchase=True)
+                purchase_det = Purchase_Details()
+                purchase_det.second_company_name = company_name  # new2
+                purchase_det.company_address = address  # new2
+                purchase_det.company_email = customer_email_id  # new2
+                purchase_det.crm_no = Customer_Details.objects.get(id=item3.pk)
+                purchase_det.new_repeat_purchase = new_existing_customer
+                purchase_det.second_person = customer_name  # new1
+                purchase_det.second_contact_no = contact_no  # new2
+                purchase_det.date_of_purchase = item2.entry_timedate
+                purchase_det.product_purchase_date = item2.entry_timedate
+                purchase_det.sales_person = owner_of_opportunity
+                purchase_det.user_id = SiteUser.objects.get(profile_name=owner_of_opportunity)
+                # purchase_det.bill_no = bill_no
+                # purchase_det.upload_op_file = upload_op_file
+                # purchase_det.po_number = po_number
+                purchase_det.channel_of_sales = channel
+                purchase_det.industry = customer_industry
+                purchase_det.value_of_goods = 0.0
+                # purchase_det.channel_of_dispatch = channel_of_dispatch
+                purchase_det.notes = "Entry From Lead Module\n"
+                purchase_det.feedback_form_filled = False
+                purchase_det.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                purchase_det.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no + 1
+                purchase_det.log_entered_by = request.user.profile_name
+                purchase_det.save()
+
+                dispatch = Dispatch()
+                dispatch.crm_no = Customer_Details.objects.get(id=item3.pk)
+                dispatch.second_person = customer_name  # new1
+                dispatch.second_contact_no = contact_no  # new2
+                dispatch.second_company_name = company_name  # new2
+                dispatch.company_email = customer_email_id
+                dispatch.company_address = address  # new2
+                dispatch.notes = "Entry From Lead Module\n"  # new2
+                dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
+                dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                if Dispatch.objects.all().count() == 0:
+                    dispatch.dispatch_no = 1
+                else:
+                    dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
+                dispatch.save()
+
+                customer_id = Purchase_Details.objects.get(id=purchase_det.pk)
+                customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
+                customer_id.save(update_fields=['dispatch_id_assigned'])
+
+                pi_pro = Pi_product.objects.filter(lead_id=lead_id.pk)
+                for item in pi_pro:
+                    item_pro = Product_Details()
+
+                    item_pro.quantity = item.quantity
+
+                    item_pro.type_of_scale = item.scale_type
+                    item_pro.model_of_purchase = item.main_category
+                    item_pro.sub_model = item.sub_category
+                    item_pro.sub_sub_model = item.sub_sub_category
+                    item_pro.brand = 'HSCO'
+                    item_pro.capacity = item.max_capacity
+                    item_pro.unit = 'Kg'
+                    item_pro.amount = (item.selling_price * item.quantity)
+                    item_pro.purchase_id_id = customer_id
+                    item_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+                    item_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                    item_pro.log_entered_by = request.user.name
+
+                    item_pro.save()
+
+
+                    dispatch_id = Dispatch.objects.get(id=dispatch.id)
+                    dispatch_pro = Product_Details_Dispatch()
+                    dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+                    dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                    dispatch_pro.quantity = item.quantity
+                    dispatch_pro.type_of_scale = item.scale_type
+                    dispatch_pro.model_of_purchase = item.main_category
+                    dispatch_pro.sub_model = item.sub_category
+                    dispatch_pro.sub_sub_model = item.sub_sub_category
+
+                    dispatch_pro.brand = 'HSCO'
+                    dispatch_pro.capacity = item.max_capacity
+                    dispatch_pro.unit = 'Kg'
+                    dispatch_pro.dispatch_id = dispatch_id
+                    dispatch_pro.value_of_goods = (item.selling_price * item.quantity)
+
+                    dispatch_pro.save()
+
+                    Product_Details.objects.filter(id=item_pro.pk).update(product_dispatch_id=dispatch_pro.pk)
+
+
+                Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
+
+                if True :
+                    Purchase_Details.objects.filter(id=id).update(is_last_product=True)
+
+                    product_list = ''' '''
+                    pro_lis = Product_Details.objects.filter(purchase_id_id=customer_id)
+
+                    for idx, item in enumerate(pro_lis):
+
+                        email_body_text = (
+                            u"\nSr. No.: {},"
+                            "\tModel: {},"
+                            "\tSub Model: {}"
+                            "\tbrand: {}"
+                            "\tcapacity: {}"
+                            "\tCost: {}"
+                        ).format(
+                            idx + 1,
+                            item.type_of_scale,
+                            item.sub_model,
+                            item.brand,
+                            item.capacity,
+                            item.amount,
+                        )
+                        product_list = product_list + '' + str(email_body_text)
+                    try:
+                        import smtplib
+                        sent_from = settings.EMAIL_HOST_USER
+                        to = [customer_id.company_email]
+                        subject = 'Your HSCo Purchase'
+
+                        message = 'Dear ' + str(
+                            customer_id.second_person) + ',' \
+                                                      ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
+                            customer_id.purchase_no) + '.' \
+                                                    ' Ww will love to hear your feedback to help us improve' \
+                                                    ' our customer experience. Please click on the link' \
+                                                    ' below: \n http://139.59.76.87/feedback_purchase/' + str(
+                            request.user.pk) + '/' + str(
+                            customer_id.crm_no.pk) + '/' + str(
+                            customer_id.id) + '\n For more details contact us on - 7045922250 \n Order Details:\n ' + product_list
+
+                        body = message
+
+                        email_text = """\
+                        From: %s
+                        To: %s
+                        Subject: %s
+    
+                        %s
+                        """ % (sent_from, customer_id.company_email, subject, body)
+
+                        try:
+                            server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+                            server.ehlo()
+                            server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+                            server.sendmail(sent_from, to, email_text)
+                            server.close()
+                            print('Email sent!')
+                        except:
+                            print('Something went wrong...Email not send!!!')
+
+                    except:
+                        print("exception occured!!")
+                        pass
+
+                    message = 'Dear ' + str(
+                        customer_id.second_person) + ',' \
+                                                  ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
+                        customer_id.purchase_no) + '.' \
+                                                ' WE will love to hear your feedback to help us improve' \
+                                                ' our customer experience. Please click on the link' \
+                                                ' below: \n http://139.59.76.87/feedback_purchase/' + str(
+                        request.user.pk) + '/' + str(
+                        customer_id.crm_no.pk) + '/' + str(
+                        customer_id.id) + '\n For more details contact us on - 7045922250'
+
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + customer_id.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+                    payload = ""
+                    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    x = response.text
+
+
+
             return redirect('/update_view_lead/'+str(id))
         elif 'submit2' in request.POST:                                         #for pi section
             discount = request.POST.get('discount')
@@ -2861,15 +2582,19 @@ td {
             context.update(context23)
 
         elif 'submit56' in request.POST:
-            wa_msg = request.session['wa_msg']
-            sms_content = request.session['wa_content']
-            wa_no = request.session['wa_no']
-            try:
-                del request.session['wa_msg']
-                del request.session['wa_content']
-                del request.session['wa_no']
-            except:
-                pass
+            if(request.session['wa_msg']):
+                wa_msg = request.session['wa_msg']
+                sms_content = request.session['wa_content']
+                wa_no = request.session['wa_no']
+                try:
+                    del request.session['wa_msg']
+                    del request.session['wa_content']
+                    del request.session['wa_no']
+                except:
+                    pass
+            else:
+                return render(request, 'lead_management/update_view_lead.html', context)
+
             return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
         elif 'submit5' in request.POST:
@@ -2901,6 +2626,13 @@ td {
 
                 context28 = {
                     'error': "Please Select Atleast One Product Field",
+                    'error_exist': True,
+                }
+                context.update(context28)
+            elif (email_auto_manual == 'Select Mode'):
+
+                context28 = {
+                    'error': "Please Select Follow Up Mode",
                     'error_exist': True,
                 }
                 context.update(context28)
@@ -2951,7 +2683,7 @@ td {
                     wa_content=wa_content+'''\nProduct No - '''+str(count_for+1)+''':\n______________________________________________________\n'''
                     for item in single:
                         sms_content = sms_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
-                        wa_content = wa_content +'''<br>'''+ item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
+                        wa_content = wa_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
                         html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
                     html_rows = html_rows + '''</tr>'''
 
@@ -3047,56 +2779,20 @@ td {
                     context.update(context28)
 
                 if(is_whatsapp=='on'):
-
                     history_follow.is_whatsapp = True
                     history_follow.wa_msg = wa_msg
                     history_follow.wa_no = wa_no
-                    # selected_fields = Follow_up_section.objects.get(lead_id=id).fields
-                    # selected_fields2 = selected_fields.replace("'", "").strip('][').split(', ')  # convert string to list
-                    # length_of_list = 1
-                    # count_list = 0
-                    # html_head='''<tr> '''
-                    # for item in selected_fields2:
-                    #     pro_list = Followup_product.objects.filter(lead_id=id).values_list(item, flat=True)
-                    #     list_pro=[]
-                    #     if(count_list==0):
-                    #         for ite, lt in enumerate(pro_list):
-                    #             if(ite==0):
-                    #                 html_head =html_head+ '''<td>'''+item+'''</td>'''
-                    #             final_list.append([item + ' : ' + str(lt)])
-                    #         count_list=count_list+1
-                    #     else:
-                    #         for ite, lt in enumerate(pro_list):
-                    #             if (ite == 0):
-                    #                 html_head = html_head + '''<td>''' + item + '''</td>'''
-                    #             final_list[ite] = final_list[ite] + [item + ' : ' + str(lt)]
-                    #             # final_list[ite].append(list_pro)
-                    # html_head = html_head + '''</tr> '''
-                    #
-                    #
-                    # html_rows = ''' '''
-                    # count=1
-                    # for single in final_list:
-                    #     html_rows = html_rows+'''<tr> '''
-                    #     count=count+1
-                    #     for item in single:
-                    #         html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
-                    #     html_rows = html_rows + '''</tr>'''
                     try:
                         del request.session['wa_msg']
                         del request.session['wa_content']
                         del request.session['wa_no']
                     except:
                         pass
-
                     request.session['wa_msg']=wa_msg
-                    request.session['wa_content']=sms_content
+                    request.session['wa_content']=wa_content
                     request.session['wa_no']=wa_no
                     context28 = {
                         'success_2': "WhatsApp Redirect Successful On WhatsApp No : " + wa_no,
-                        'wa_msg': wa_msg,
-                        'wa_content': sms_content,
-                        'wa_no': wa_no,
                         'success_exist_2': True,
                     }
                     context.update(context28)
@@ -3132,31 +2828,7 @@ td {
 
                 history_follow.save()
 
-
-                if (is_whatsapp):
-                    context28 = {
-                        'success_2': "WhatsApp Redirect Successful On WhatsApp No : " + wa_no,
-                        'success_exist_2': True,
-                    }
-                    context.update(context28)
-                    if(is_sms=='on'):
-                        context28 = {
-                            'success_4': "SMS Sent Successfully To : " + customer_id.contact_no,
-                            'success_exist_4': True,
-                        }
-                        context.update(context28)
-                    if(is_email=='on'):
-                        context28 = {
-                            'success': "Email Sent on email Id: " + customer_id.customer_email_id,
-                            'success_exist': True,
-                        }
-                        context.update(context28)
-                    return render(request, 'lead_management/update_view_lead.html', context)
-                    # load_wa(wa_no,wa_msg,sms_content)
-
-
     return render(request, 'lead_management/update_view_lead.html',context)
-
 
 def load_wa(wa_no,wa_msg,sms_content):
     return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
@@ -3433,9 +3105,9 @@ def select_product(request,id):
         sub_sub_category = request.POST.get('sub_sub_category')    #product code or sub_sub_category
 
         item = Pi_product()
-        if sub_sub_category != '' :
-            item.product_id = Product.objects.get( scale_type=type_of_scale ,main_category=main_category,
-                                                   sub_category=sub_category, sub_sub_category=sub_sub_category)
+        if sub_sub_category != '':
+            item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
+                                                  sub_category=sub_category, sub_sub_category=sub_sub_category)
         item.lead_id = Lead.objects.get(id=lead_id)
         item.quantity = quantity
         item.pf = pf
@@ -3444,15 +3116,15 @@ def select_product(request,id):
             item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
         item.save()
         if is_last_product_yes == 'yes':
-            return redirect('/update_view_lead/'+str(id))
+            return redirect('/update_view_lead/' + str(id))
         elif is_last_product_yes == 'no':
-            return redirect('/select_product/'+str(id))
-    context={
-        'lead_id':lead_id,
-        'type_of_purchase_list':type_of_purchase_list,
-        'products':products,
+            return redirect('/select_product/' + str(id))
+    context = {
+        'lead_id': lead_id,
+        'type_of_purchase_list': type_of_purchase_list,
+        'products': products,
     }
-    return render(request,'lead_management/select_product.html', context)
+    return render(request, 'lead_management/select_product.html', context)
 
 def lead_manager_view(request):
     loggedin_user = SiteUser.objects.get(id=request.user.id).name
@@ -3679,6 +3351,498 @@ def report_2(request):
 
 
 
+def download_pi_image(request):
+    return render(request,'lead_management/download_pi_image.html')
+
+def download_pi_pdf(request):
+    return render(request,'lead_management/download_pi_pdf.html')
+
+def lead_logs(request):
+    lead_logs = Log.objects.filter(module_name='Lead Module').order_by('-id')
+    print(lead_logs)
+    print(lead_logs)
+    print(lead_logs)
+    paginator = Paginator(lead_logs, 15)  # Show 25 contacts per page
+    page = request.GET.get('page')
+    lead_logs = paginator.get_page(page)
+
+    context={
+    'lead_logs': lead_logs,
+
+    }
+    return render(request,"logs/lead_logs.html",context)
+
+
+
+@receiver(pre_save, sender=Lead)
+def lead_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            # log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
+            log.module_name = 'Lead Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Lead'
+            log.reference = 'Lead No: ' + str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            #########for update action##########
+            old_instance = instance
+            new_instance = Lead.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                log = Log()
+
+                log.entered_by = instance.log_entered_by
+                log.module_name = 'Lead Module'
+                log.action_type = 'Update'
+                log.table_name = 'Lead'
+
+                log.reference = 'Lead No: '+str(new_instance.id)
+
+                log.action = old_list
+                log.save()
+
+    except:
+        pass
+
+@receiver(pre_save, sender=Pi_section)
+def Pi_section_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            # log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
+            log.module_name = 'Lead Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Pi_section'
+            log.reference = 'Pi_section No: ' + str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            #########for update action##########
+            old_instance = instance
+            new_instance = Lead.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                log = Log()
+
+                log.entered_by = instance.log_entered_by
+                log.module_name = 'Lead Module'
+                log.action_type = 'Update'
+                log.table_name = 'Pi_section'
+
+                log.reference = 'Pi_section No: '+str(new_instance.id)
+
+                log.action = old_list
+                log.save()
+
+    except:
+        pass
+
+@receiver(pre_save, sender=Pi_product)
+def pi_product_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            # log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
+            log.module_name = 'Lead Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Pi_product'
+            log.reference = 'Pi_product No: ' + str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            #########for update action##########
+            old_instance = instance
+            new_instance = Lead.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                log = Log()
+
+                log.entered_by = instance.log_entered_by
+                log.module_name = 'Lead Module'
+                log.action_type = 'Update'
+                log.table_name = 'Pi_product'
+
+                log.reference = 'Pi_product No: '+str(new_instance.id)
+
+                log.action = old_list
+                log.save()
+
+    except:
+        pass
+
+@receiver(pre_save, sender=Pi_History)
+def Pi_History_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            # log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
+            log.module_name = 'Lead Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Pi_History'
+            log.reference = 'Pi_History No: ' + str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            #########for update action##########
+            old_instance = instance
+            new_instance = Lead.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                log = Log()
+                log.entered_by = instance.log_entered_by
+                log.module_name = 'Lead Module'
+                log.action_type = 'Update'
+                log.table_name = 'Pi_History'
+
+                log.reference = 'Pi_History No: '+str(new_instance.id)
+
+                log.action = old_list
+                log.save()
+
+    except:
+        pass
+
+@receiver(pre_save, sender=Follow_up_section)
+def Follow_up_section_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            # log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
+            log.module_name = 'Lead Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Follow_up_section'
+            log.reference = 'Follow_up_section No: ' + str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            #########for update action##########
+            old_instance = instance
+            new_instance = Lead.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                log = Log()
+
+                log.entered_by = instance.log_entered_by
+                log.module_name = 'Lead Module'
+                log.action_type = 'Update'
+                log.table_name = 'Follow_up_section'
+
+                log.reference = 'Follow_up_section No: '+str(new_instance.id)
+
+                log.action = old_list
+                log.save()
+
+    except:
+        pass
+
+@receiver(pre_save, sender=History_followup)
+def History_followup_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            # log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
+            log.module_name = 'Lead Module'
+            log.action_type = 'Insert'
+            log.table_name = 'History_followup'
+            log.reference = 'History_followup No: ' + str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            #########for update action##########
+            old_instance = instance
+            new_instance = Lead.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                log = Log()
+
+                log.entered_by = instance.log_entered_by
+                log.module_name = 'Lead Module'
+                log.action_type = 'Update'
+                log.table_name = 'History_followup'
+
+                log.reference = 'History_followup No: '+str(new_instance.id)
+
+                log.action = old_list
+                log.save()
+
+    except:
+        pass
+
+@receiver(pre_save, sender=Followup_product)
+def Followup_product_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            # log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
+            log.module_name = 'Lead Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Followup_product'
+            log.reference = 'Followup_product No: ' + str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            #########for update action##########
+            old_instance = instance
+            new_instance = Lead.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                log = Log()
+
+                log.entered_by = instance.log_entered_by
+                log.module_name = 'Lead Module'
+                log.action_type = 'Update'
+                log.table_name = 'Followup_product'
+
+                log.reference = 'Followup_product No: '+str(new_instance.id)
+
+                log.action = old_list
+                log.save()
+
+    except:
+        pass
+
+@receiver(pre_save, sender=Payment_details)
+def Payment_details_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            # log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
+            log.module_name = 'Lead Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Payment_details'
+            log.reference = 'Payment_details No: ' + str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            #########for update action##########
+            old_instance = instance
+            new_instance = Lead.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                log = Log()
+
+                log.entered_by = instance.log_entered_by
+                log.module_name = 'Lead Module'
+                log.action_type = 'Update'
+                log.table_name = 'Payment_details'
+                log.reference = 'Payment_details No: '+str(new_instance.id)
+
+                log.action = old_list
+                log.save()
+
+    except:
+        pass
+
+
 def download_pi_image(request,id):
     return render(request,'lead_management/download_pi_image.html')
 
@@ -3697,18 +3861,3 @@ def download_pi_pdf(request,id):
         'pi_products':pi_products,
     }
     return render(request,'lead_management/download_pi_pdf.html',context)
-
-def lead_logs(request):
-    lead_logs = Log.objects.filter(module_name='Lead Module').order_by('-id')
-    print(lead_logs)
-    print(lead_logs)
-    print(lead_logs)
-    paginator = Paginator(lead_logs, 15)  # Show 25 contacts per page
-    page = request.GET.get('page')
-    lead_logs = paginator.get_page(page)
-
-    context={
-    'lead_logs': lead_logs,
-
-    }
-    return render(request,"logs/lead_logs.html",context)
