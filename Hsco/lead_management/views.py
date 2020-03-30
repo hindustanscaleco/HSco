@@ -543,7 +543,10 @@ def update_view_lead(request,id):
                     item_pro.brand = 'HSCO'
                     item_pro.capacity = item.product_id.max_capacity
                     item_pro.unit = 'Kg'
-                    item_pro.amount = item.product_total_cost
+                    if(item.product_total_cost == None or item.product_total_cost == '')
+                        item_pro.amount = 0.0
+                    else:
+                        item_pro.amount = item.product_total_cost
                     item_pro.purchase_id_id = customer_id
                     item_pro.user_id = SiteUser.objects.get(id=request.user.pk)
                     item_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
