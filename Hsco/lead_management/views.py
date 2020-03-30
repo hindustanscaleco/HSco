@@ -543,7 +543,7 @@ def update_view_lead(request,id):
                     item_pro.brand = 'HSCO'
                     item_pro.capacity = item.product_id.max_capacity
                     item_pro.unit = 'Kg'
-                    if(item.product_total_cost == None or item.product_total_cost == '')
+                    if(item.product_total_cost == None or item.product_total_cost == ''):
                         item_pro.amount = 0.0
                     else:
                         item_pro.amount = item.product_total_cost
@@ -569,7 +569,10 @@ def update_view_lead(request,id):
                     dispatch_pro.capacity = item.product_id.max_capacity
                     dispatch_pro.unit = 'Kg'
                     dispatch_pro.dispatch_id = dispatch_id
-                    dispatch_pro.value_of_goods = item.product_total_cost
+                    if (item.product_total_cost == None or item.product_total_cost == ''):
+                        dispatch_pro.value_of_goods = 0.0
+                    else:
+                        dispatch_pro.value_of_goods = item.product_total_cost
 
                     dispatch_pro.save()
 
