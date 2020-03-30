@@ -43,6 +43,7 @@ industory_dropdown = [
 ]
 
 auto_manual_email = [
+    ('Select Mode', 'Select Mode'),
     ('Automatic', 'Automatic'),
     ('Manual', 'Manual'),
 ]
@@ -336,7 +337,7 @@ class Pi_sectionForm(forms.ModelForm):
         widget=forms.Select(
             choices=auto_manual_email,
             attrs={
-                'default':"automatic",
+                'default':"Select Mode",
                 'class':'btn btn-outline-primary',
 
 
