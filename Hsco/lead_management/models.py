@@ -51,6 +51,8 @@ class Pi_section(models.Model):
     notes = models.TextField(max_length=120, null=True,blank=True)
     cgst_sgst = models.FloatField(null=True,blank=True)
     igst = models.FloatField(null=True,blank=True)
+    pf_total = models.FloatField(null=True,blank=True)
+    total_cost = models.FloatField(null=True,blank=True)
     net_total = models.FloatField(null=True,blank=True)
     round_up_total = models.FloatField(null=True,blank=True)
     grand_total = models.FloatField(null=True,blank=True)
@@ -68,21 +70,25 @@ class Pi_product(models.Model):
     lead_id = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, blank=True)
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.FloatField(null=True, blank=True)
-    pf = models.CharField(max_length=80, null=True, blank=True)
-    #entry_timedate = models.DateTimeField(default=timezone.now, )
+    pf = models.FloatField(null=True, blank=True)
+
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
-
+    product_total_cost = models.FloatField(null=True,blank=True)
 
     def __int__(self):
         return self.id
 
 class Pi_History(models.Model):
+    from datetime import datetime
     file = models.FileField(null=True,blank=True, upload_to='pi_history_file/')
     lead_id = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, blank=True)
     # pi_product_id = models.ForeignKey(Pi_product, on_delete=models.CASCADE, null=True, blank=True)
     # entry_timedate = models.DateTimeField(default=timezone.now, )
+    time = models.TimeField(default=datetime.time(datetime.now()))
+    import datetime
+
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)

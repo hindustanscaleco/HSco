@@ -1,28 +1,66 @@
-<!DOCTYPE html>
 <html>
 <head>
-	<title></title>
-	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <title>
+    HSCO
+  </title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
+
+  <style>
+      * {
+    font-family: 'Poppins';
+    font-size: 0.99em;
+
+  }
+
+  table {
+  border-collapse: collapse;
+  width: 85%;
+  font-size: 18px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+}
+
+
+ @media print and (width: 10.5cm) and (height: 14.8cm) {
+    @page {
+       margin: 3cm;
+    }
+ }
+
+
+  </style>
+
 </head>
 <body>
 
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
-
-<div id="content">
-
-<div  id="html-content-holder" style=" margin-left: 5%; margin-right: 5%;">
+<div  id="printableArea" style="margin-left: 10%; margin-right: 10%;">
 <div class="row" style="padding: 5px; border-bottom: 5px solid black;">
     <div class="col-xl-2 col-md-2 ">
 <img src="/media/pi_history_file/hsco.jpg" class="img-rounded" width="200" height="120" style="float: right;">
@@ -76,44 +114,44 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;"> Date :</p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> {{todays_date}}</p>
+             <center><p style="font-weight:bold; float:left;"> 2020-03-30 00:48:53.611397</p>
                             </center></div>
                             </div>
-
-
+                    
+                        
                             <div class="row">
                                  <div class="col-md-2">
                                      <center><p style="font-weight:bold; float:left;"> Company Name</p>
                                 </center></div>
                                 <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left; text-decoration: underline;"> {{lead_id.customer_id.company_name}}</p>
+                                     <center><p style="font-weight:bold; float:left; text-decoration: underline;"> 123.sagar.inc</p>
                                 </center></div>
-
+                        
                                 <div class="col-md-1">
                                      </div>
                                 <div class="col-md-2">
                                      <center><p style="font-weight:bold; float:left;">PI Number:</p>
                                 </center></div>
                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> {{pi_id.id}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> 4</p>
                                 </center></div>
                                 </div>
-
+                        
                             <div class="row">
                                  <div class="col-md-2">
                                      <center><p style="font-weight:bold; float:left;">Contact Person</p>
                                 </center></div>
                                 <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.customer_name}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> Harsh Yadav hhh</p>
                                 </center></div>
-
+                        
                                 <div class="col-md-1">
                                      </div>
                                 <div class="col-md-2">
                                      <center><p style="font-weight:bold; float:left;">Proforma Made By :</p>
                                 </center></div>
                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> {{request.user.name}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> Abhishek</p>
                                 </center></div>
                                 </div>
 
@@ -123,28 +161,28 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Address/State</p>
                                 </center></div>
                                 <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.address}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> Maharashtra</p>
                                 </center></div>
-
+                        
                                 <div class="col-md-1">
                                      </div>
                                 <div class="col-md-2">
                                      <center><p style="font-weight:bold; float:left;">Contact Number:</p>
                                 </center></div>
                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> {{request.user.mobile}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> 7757860524</p>
                                 </center></div>
                                 </div>
-
-
-
-
+                        
+                        
+                        
+                        
                             <div class="row">
                                  <div class="col-md-2">
                                      <center><p style="font-weight:bold; float:left;">Phone</p>
                                 </center></div>
                                 <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.contact_no}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> 9730644834</p>
         </center></div>
 
         <div class="col-md-1">
@@ -153,7 +191,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">Customer GST Number: </p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.customer_gst_no}}</p>
+             <center><p style="font-weight:bold; float:left;"> qdqdwqd552</p>
         </center></div>
         </div>
 
@@ -205,7 +243,7 @@ td {
 
 <div style="min-height: 26vw;">
 
-
+        
         <div class="row" id="id_manager_view">
 
     <table>
@@ -218,17 +256,10 @@ td {
             <td style="border: 0px solid gray;">Rate</td>
             <td style="border: 0px solid gray;">Total</td>
         </tr>
-{% for product in pi_products %}
-<tr>
-        <td>{{product.quantity}}</td>
-        <td>{{product.product_id.hsn_code}}</td>
-        <td>{{product.product_id.sub_sub_category}}</td>
-        {% if product.product_id.product_image %}<td><img style="height:40px; width:40px;" src="http://127.0.0.1:8000{{product.product_id.product_image.url}}"></td>{% endif %}
-        <td>{{product.product_id.product_desc}}</td>
-        <td>{{product.product_id.selling_price}}</td>
-        <td>{% widthratio product.product_id.selling_price 1 product.quantity %}</td>
-        </tr>
-{% endfor %}
+
+
+ <tr> <td>7778.0 </td><td>12345</td><td>Sub Sub Model</td><td><img src="/media/lead_product_image/X-Men_4.jpg" height="100" width="100"></td><td>20</td><td>2000.0</td><td>15556000.0</td>  </tr><tr> <td>80.0 </td><td>12345</td><td>Sub Sub Model</td><td><img src="/media/lead_product_image/X-Men_4.jpg" height="100" width="100"></td><td>20</td><td>2000.0</td><td>160000.0</td>  </tr><tr> <td>1.0 </td><td>12345</td><td>Sub Sub Model</td><td><img src="/media/lead_product_image/X-Men_4.jpg" height="100" width="100"></td><td>20</td><td>2000.0</td><td>2000.0</td>  </tr>
+
         <tr>
         <td></td>
         <td></td>
@@ -236,7 +267,7 @@ td {
         <td></td>
         <td></td>
         <td>Total</td>
-        <td>{{pi_id.total_cost}} INR</td>
+        <td>15718000.0 INR</td>
         </tr>
 
         <tr>
@@ -245,8 +276,8 @@ td {
         <td></td>
         <td></td>
         <td></td>
-        <td>Discount</td>
-        <td>{{pi_id.discount}}{% if pi_id.discount_type == "percent" %} % {% elif pi_id.discount_type == "rupee" %} INR {% else %} {% endif %}</td>
+        <td>Discount%</td>
+        <td>from PI form</td>
         </tr>
 
 
@@ -257,7 +288,7 @@ td {
         <td></td>
         <td></td>
         <td>Net Total</td>
-        <td>{{pi_id.net_total}}</td>
+        <td></td>
         </tr>
 
 
@@ -269,8 +300,9 @@ td {
         <td></td>
         <td></td>
         <td>P&F</td>
-        <td>{{pi_id.pf_total}} </td>
+        <td>from PI form</td>
         </tr>
+
 
 
         <tr>
@@ -280,7 +312,7 @@ td {
         <td></td>
         <td></td>
         <td>CGST @ 9%</td>
-        <td>{% if pi_id.select_gst_type == "CGST / SGST" %} {{pi_id.cgst_sgst}} {% endif %}</td>
+        <td>from PI form</td>
         </tr>
 
 
@@ -293,7 +325,7 @@ td {
         <td></td>
         <td></td>
         <td>SGST @ 9%</td>
-        <td>{% if pi_id.select_gst_type == "CGST / SGST" %} {{pi_id.cgst_sgst}} {% endif %}</td>
+        <td>from PI form</td>
         </tr>
 
 
@@ -306,7 +338,7 @@ td {
         <td></td>
         <td></td>
         <td>IGST @ 18%</td>
-        <td>{% if pi_id.select_gst_type == "IGST" %} {{pi_id.igst}} {% endif %}</td>
+        <td>from PI form</td>
         </tr>
 
 
@@ -318,7 +350,7 @@ td {
         <td></td>
         <td></td>
         <td>Round Up</td>
-        <td>{{pi_id.round_up_total}} INR</td>
+        <td>INR</td>
         </tr>
 
         <tr>
@@ -328,7 +360,7 @@ td {
         <td></td>
         <td></td>
         <td>Grand Total</td>
-        <td>{{pi_id.grand_total}} INR</td>
+        <td>INR</td>
         </tr>
 
 
@@ -346,13 +378,13 @@ td {
          </div>
 
 
-             <div class="col-md-5" style="padding:10px;">
+	         <div class="col-md-5" style="padding:10px;">
 <img src="/media/pi_history_file/l.png" style="width: 100%;">
          </div>
         </div>
     <div class="row">
             <div class="col-md-12" style="padding:10px;"><p>
-I/We hereby certify that my/our registration certificate under the Goods and Service Tax Laws is in force on the date of which the sale of goods specified in this ‚ÄúProforma Invoice‚Äù is made by me/us and that the transaction of sale is covered <br><center>by this and has been effected by me/us and it shall be accounted for in the turnover of sales while filing of return and the due tax, if any, payable on the sale has been paid
+I/We hereby certify that my/our registration certificate under the Goods and Service Tax Laws is in force on the date of which the sale of goods specified in this ìProforma Invoiceî is made by me/us and that the transaction of sale is covered <br><center>by this and has been effected by me/us and it shall be accounted for in the turnover of sales while filing of return and the due tax, if any, payable on the sale has been paid
   </center> </p>     </div>
         </div>
 </div>
@@ -371,32 +403,16 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
     <div class="col-md-6" style="padding-left: 40px;">
 <p>Bank details are as follows<br>
                 <b>DCB Bank<br>
-                Name ‚Äì Hindustan Scale Co.<br>
-                Acct No ‚Äì 01922412121947<br>
+                Name ñ Hindustan Scale Co.<br>
+                Acct No ñ 01922412121947<br>
                 IFSC Code-DCBL0000019<br>
-                Type of account ‚Äì Current Account <br>
-                Bank Name ‚Äì DCB Bank<br>
+                Type of account ñ Current Account <br>
+                Bank Name ñ DCB Bank<br>
                     Address Mohamedali Road Branch</b></p></div>
         </div>
 </div>
 
-    <hr>
-
-
-  <input id="btn-Preview-Image" type="button"
-        value="Preview"  style="visibility: hidden;">
-
-  <a id="btn-Convert-Html2Image" href="#" style="visibility: hidden;">
-    Download
-  </a>
-
-  <br/>
-
-
-  <div id="previewImage"></div>
-
-
-
+	<hr>
 
 <span style="font-size: 11px;">HINDUSTAN SCALE COMPANY, 186/188 Janjikar Street, Crawford Market, Mumbai - 400003</span>
   </p>
@@ -406,16 +422,20 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 
 </center>
 
-</div>
-
-<script type="text/javascript">
-let doc = new jsPDF('p','pt','a4');
-doc.addHTML(document.getElementById("content_content"),function() {
-    doc.save('html.pdf');
-});
 
 
+<script>
+  function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
 
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
 </script>
+
 </body>
 </html>

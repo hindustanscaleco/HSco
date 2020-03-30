@@ -351,6 +351,564 @@ def update_view_lead(request,id):
     form6 = History_followupForm(initial={'wa_no':hfu.whatsappno,'email_subject':hfu.email_subject})
     form5 = Payment_detailsForm()
 
+
+@receiver(pre_save, sender=Follow_up_section)
+def Follow_up_section_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            # log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
+            log.module_name = 'Lead Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Follow_up_section'
+            log.reference = 'Follow_up_section No: ' + str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            #########for update action##########
+            old_instance = instance
+            new_instance = Lead.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                log = Log()
+
+                log.entered_by = instance.log_entered_by
+                log.module_name = 'Lead Module'
+                log.action_type = 'Update'
+                log.table_name = 'Follow_up_section'
+
+                log.reference = 'Follow_up_section No: '+str(new_instance.id)
+
+                log.action = old_list
+                log.save()
+
+    except:
+        pass
+
+@receiver(pre_save, sender=History_followup)
+def History_followup_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            # log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
+            log.module_name = 'Lead Module'
+            log.action_type = 'Insert'
+            log.table_name = 'History_followup'
+            log.reference = 'History_followup No: ' + str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            #########for update action##########
+            old_instance = instance
+            new_instance = Lead.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                log = Log()
+
+                log.entered_by = instance.log_entered_by
+                log.module_name = 'Lead Module'
+                log.action_type = 'Update'
+                log.table_name = 'History_followup'
+
+                log.reference = 'History_followup No: '+str(new_instance.id)
+
+                log.action = old_list
+                log.save()
+
+    except:
+        pass
+
+@receiver(pre_save, sender=Followup_product)
+def Followup_product_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            # log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
+            log.module_name = 'Lead Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Followup_product'
+            log.reference = 'Followup_product No: ' + str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            #########for update action##########
+            old_instance = instance
+            new_instance = Lead.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                log = Log()
+
+                log.entered_by = instance.log_entered_by
+                log.module_name = 'Lead Module'
+                log.action_type = 'Update'
+                log.table_name = 'Followup_product'
+
+                log.reference = 'Followup_product No: '+str(new_instance.id)
+
+                log.action = old_list
+                log.save()
+
+    except:
+        pass
+
+@receiver(pre_save, sender=Payment_details)
+def Payment_details_handler(sender, instance, update_fields=None, **kwargs):
+    try:
+        if instance.id == None or instance.id == '' or instance.id == 'None' :
+            #########for insert action##########
+            new_instance = instance
+            log = Log()
+            # log.entered_by = instance.entered_by
+            log.entered_by = new_instance.log_entered_by
+            log.module_name = 'Lead Module'
+            log.action_type = 'Insert'
+            log.table_name = 'Payment_details'
+            log.reference = 'Payment_details No: ' + str(new_instance.id)
+
+            # log.action = old_list
+            log.save()
+        elif instance.id != None or instance.id !='' or instance.id !='None':
+            #########for update action##########
+            old_instance = instance
+            new_instance = Lead.objects.get(id=instance.id)
+
+            track = instance.tracker.changed()
+            if 'log_entered_by' in track :
+                del track['log_entered_by']
+            # string = ''
+            # new_list = []
+            # for key in track:
+            #     new_list.append(key)
+            #     string = string+str(key)+','
+            #     print('New value:'+str(key) + old_instance.key)
+
+
+            # with connection.cursor() as cursor:
+                # if new_string != '' :
+                #     print('something 1')
+                #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+                #     cursor.execute("SELECT " + (
+                #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+                #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+            if  track:
+                old_list = []
+                for key, value in track.items():
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                log = Log()
+
+                log.entered_by = instance.log_entered_by
+                log.module_name = 'Lead Module'
+                log.action_type = 'Update'
+                log.table_name = 'Payment_details'
+
+                log.reference = 'Payment_details No: '+str(new_instance.id)
+
+                log.action = old_list
+                log.save()
+
+    except:
+        pass
+
+def lead_home(request):
+    import requests
+    import json
+
+    mobile = '7045922250'
+    api = 'MTU4MzQ5OTg1NS42MTU2IzI5OTI4NzM='
+    last_date = IndiamartLeadDetails.objects.latest('to_date').to_date.strftime('%d-%b-%Y')
+    from_date = last_date
+    from datetime import datetime
+    to_date = datetime.today().strftime('%d-%b-%Y')
+    lead_count=0
+    error2 = None
+    error = None
+    error_exist = False
+
+    if request.method == 'POST':
+
+        url = "https://mapi.indiamart.com/wservce/enquiry/listing/GLUSR_MOBILE/" + mobile + "/GLUSR_MOBILE_KEY/" + api + "/Start_Time/" + from_date + "/End_Time/" + to_date + "/"
+        response = requests.get(url=url).json()
+        lead_count = len(response)
+
+        from_date =  request.POST.get('from_date_form')
+        to_date =  request.POST.get('to_date_form')
+        import time
+        conv = time.strptime(from_date, "%d-%b-%Y")
+        conv2 = time.strptime(to_date, "%d-%b-%Y")
+
+
+        if(lead_count>1):
+            for item in response:
+
+                item3 = Customer_Details()
+                item3.customer_name= item['SENDERNAME']
+                item3.company_name = item['GLUSR_USR_COMPANYNAME']
+                item3.address = item['ENQ_ADDRESS']
+                item3.customer_email_id = item['SENDEREMAIL']
+                item3.contact_no = item['MOB']
+                item3.customer_industry = ''
+                try:
+                    item3.save()
+                    item2 = Lead()
+                    item2.customer_id = Customer_Details.objects.get(id=item3.pk)
+                    item2.current_stage = 'Not Yet Initiated'
+                    item2.new_existing_customer = 'New'
+                    item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
+                    item2.channel = 'Indiamart'
+
+                    item2.requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
+                    try:
+                        item2.save()
+                    except Exception as e:
+                        error_exist = True
+                        error2 = e
+                except Exception as e:
+                    error_exist = True
+                    error = e
+
+            obj = IndiamartLeadDetails()
+            obj.from_date = time.strftime("%Y-%m-%d", conv)
+            obj.to_date = time.strftime("%Y-%m-%d", conv2)
+            obj.lead_count = lead_count
+            try:
+                obj.save()
+            except:
+                print("error")
+        else:
+            row_count = response[0]
+            if(row_count!=None):
+                error = row_count['Error_Message']
+                error_exist = True
+    else:
+        if request.user.role =='Super Admin':     #For ADMIN
+            lead_list = Lead.objects.all().order_by('-id')
+            paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            lead_list = paginator.get_page(page)
+        else:
+            admin = SiteUser.objects.get(id=request.user.pk).admin
+            lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).order_by('-id')
+            paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            lead_list = paginator.get_page(page)
+    cust_sugg = Customer_Details.objects.all()
+
+    context = {
+        'lead_list': lead_list,
+        'lead_count': lead_count,
+        'from_date': from_date,
+        'to_date': to_date,
+        'error': error,
+        'error2': error2,
+        'error_exist': error_exist,
+        'cust_sugg': cust_sugg,
+    }
+    if request.user.role == 'Super Admin':
+        total_stages = Lead.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
+    else:
+        admin = SiteUser.objects.get(id=request.user.pk).admin
+        total_stages = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).values('current_stage').annotate(dcount=Count('current_stage'))
+
+    for i in total_stages:
+        x = i
+        if x['current_stage'] == 'Not Yet Initiated':
+            not_yet_stage = x['dcount']
+            context1 = {
+                'not_yet_stage': not_yet_stage,
+            }
+            context.update(context1)
+        if x['current_stage'] == 'Dispatch Done - Closed':
+            dispatch_stage = x['dcount']
+            context2 = {
+                'dispatch_stage': dispatch_stage,
+            }
+            context.update(context2)
+        if x['current_stage'] == 'Customer Called':
+            cust_called_stage = x['dcount']
+            context3 = {
+                'cust_called_stage': cust_called_stage,
+            }
+            context.update(context3)
+        if x['current_stage'] == 'PO Issued - Payment not done':
+            po_no_payment = x['dcount']
+            context1 = {
+                'po_no_payment': po_no_payment,
+            }
+            context.update(context1)
+        if x['current_stage'] == 'PO Issued - Payment Done - Dispatch Pending':
+            po_payment_done = x['dcount']
+            context4 = {
+                'po_payment_done': po_payment_done,
+            }
+            context.update(context4)
+        if x['current_stage'] == 'Dispatch Done - Closed':
+            dispatch_done_stage = x['dcount']
+            context5= {
+                'dispatch_done_stage': dispatch_done_stage,
+            }
+            context.update(context5)
+        if x['current_stage'] == 'Lost':
+            lost_stage = x['dcount']
+            context6 = {
+                'lost_stage': lost_stage,
+            }
+            context.update(context6)
+        if x['current_stage'] == 'Not Relevant':
+            not_relevant_stage = x['dcount']
+            context7 = {
+                'not_relevant_stage': not_relevant_stage,
+            }
+            context.update(context7)
+        if x['current_stage'] == 'Postponed':
+            postponed_stage = x['dcount']
+            context8 = {
+                'postponed_stage': postponed_stage,
+            }
+            context.update(context8)
+        if x['current_stage'] == 'PI Sent & Follow-up':
+            pi_sent_stage = x['dcount']
+            context9 = {
+                'pi_sent_stage': pi_sent_stage,
+            }
+            context.update(context9)
+    # lead_list = Lead.objects.all()
+
+
+    return render(request,'lead_management/lead_home.html',context)
+
+def add_lead(request):
+    users = SiteUser.objects.all()
+    if Lead.objects.all().count() == 0:
+        latest_lead_id = 1
+    else:
+        latest_lead_id = Lead.objects.latest('id').id
+
+    cust_sugg = Customer_Details.objects.all()
+    form = Customer_detailForm()
+    form2 = Deal_detailForm()
+    if request.method == 'POST' or request.method=='FILES':
+        customer_name = request.POST.get('customer_name')
+        company_name = request.POST.get('company_name')
+        address = request.POST.get('address')
+        contact_no = request.POST.get('contact_no')
+        customer_industry = request.POST.get('customer_email_id')
+        customer_email_id = request.POST.get('customer_email_id')
+        customer_gst_no = request.POST.get('customer_gst_no')
+
+        current_stage = request.POST.get('current_stage')
+        new_existing_customer = request.POST.get('new_existing_customer')
+        date_of_initiation = request.POST.get('date_of_initiation')
+        channel = request.POST.get('channel')
+        requirement = request.POST.get('requirement')
+        upload_requirement_file = request.FILES.get('upload_requirement_file')
+        owner_of_opportunity = request.POST.get('owner_of_opportunity')
+        lost_reason = request.POST.get('lost_reason')
+        postponed_reason = request.POST.get('postponed_reason')
+
+
+
+        item2 = Lead()
+        if Customer_Details.objects.filter(customer_name=customer_name,
+                                           contact_no=contact_no).count() > 0:
+
+            item2.customer_id = Customer_Details.objects.filter(contact_no=contact_no).first()
+
+            item3 = Customer_Details.objects.filter(customer_name=customer_name,
+                                                    contact_no=contact_no).first()
+            if company_name != '' and company_name != None:
+                item3.company_name = company_name
+                item3.save(update_fields=['company_name'])
+            if address != '' and address != None:
+                item3.address = address
+                item3.save(update_fields=['address'])
+            if customer_email_id != '' and customer_email_id != None:
+                item3.customer_email_id = customer_email_id
+                item3.save(update_fields=['customer_email_id'])
+            if customer_gst_no != '' and customer_gst_no != None:
+                item3.customer_gst_no = customer_gst_no
+                item3.save(update_fields=['customer_gst_no'])
+            if customer_industry != '' and customer_industry != None:
+                item3.customer_industry = customer_industry
+                item3.save(update_fields=['customer_industry'])
+        else:
+            new_cust = Customer_Details()
+
+            new_cust.customer_name = customer_name
+            if company_name != '':
+                new_cust.company_name = company_name
+            if address != '':
+                new_cust.address = address
+            new_cust.contact_no = contact_no
+            if customer_email_id != '':
+                new_cust.customer_email_id = customer_email_id
+            if customer_gst_no != '':
+                new_cust.customer_gst_no = customer_gst_no
+            if customer_industry != '':
+                new_cust.customer_industry = customer_industry
+            try:
+                new_cust.save()
+                item2.customer_id = Customer_Details.objects.get(id=new_cust.pk)
+            except:
+                pass
+
+
+        item2.current_stage = current_stage
+        item2.new_existing_customer = new_existing_customer
+        item2.date_of_initiation = date_of_initiation
+        item2.channel = channel
+        item2.requirement = requirement
+        item2.lost_reason = lost_reason
+        item2.postponed_reason = postponed_reason
+        item2.owner_of_opportunity = SiteUser.objects.filter(profile_name=owner_of_opportunity).first()
+        item2.upload_requirement_file = upload_requirement_file
+        item2.log_entered_by = request.user.name
+
+        item2.save()
+
+        fp=Follow_up_section()
+        fp.lead_id= Lead.objects.get(id=item2.pk)
+        fp.save()
+        return redirect('/update_view_lead/'+str(item2.id))
+        # item.save()
+    context={
+        'form':form,
+        'form2':form2,
+        'latest_lead_id':latest_lead_id,
+        'cust_sugg':cust_sugg,
+        'users':users,
+    }
+    return render(request, 'lead_management/add_lead.html',context)
+
+def update_view_lead(request,id):
+    lead_id = Lead.objects.get(id=id)
+    users = SiteUser.objects.all()
+
+
+    lead_pi_products = Pi_product.objects.filter(lead_id=id)
+    hfu = Follow_up_section.objects.filter(lead_id=id).last()
+
+    followup_products_list = Followup_product.objects.filter(lead_id=id)
+
+    table = ''
+    table2 = ''
+    total = 0.0
+    try:
+        for product in lead_pi_products:
+            single_product_total = float(product.product_id.selling_price) * (product.quantity)
+            total += single_product_total
+            row = '<tr> <td>'+ str(product.quantity) +' </td><td>'+ str(product.product_id.hsn_code)+'</td><td>'+ str(product.product_id.sub_sub_category)+'</td><td><img src="'+str(product.product_id.product_image.url)+'" height="100" width="100"></td><td>'+str(product.product_id.product_desc) +'</td><td>'+str(product.product_id.selling_price) +'</td><td>'+str(single_product_total) +'</td>  </tr>'
+            row2 = '<tr> <td>'+ str(product.quantity) +' </td><td>'+ str(product.product_id.hsn_code)+'</td><td>'+str(product.product_id.product_desc) +'</td><td></td><td></td>  </tr>'
+            table+=row
+            table2+=row2
+    except:
+        pass
+    customer_id = Customer_Details.objects.get(id=lead_id.customer_id)
+    customer_initial_data = {
+        'customer_name': customer_id.customer_name,
+        'company_name': customer_id.company_name,
+        'contact_no': customer_id.contact_no,
+        'customer_email_id': customer_id.customer_email_id,
+        'address': customer_id.address,
+        'customer_industry': customer_id.customer_industry,
+        'customer_gst_no': customer_id.customer_gst_no,
+    }
+    deal_details_initial_data = {
+        'current_stage': lead_id.current_stage,
+        'new_existing_customer': lead_id.new_existing_customer,
+        'date_of_initiation': lead_id.date_of_initiation,
+        'channel': lead_id.channel,
+        'requirement': lead_id.requirement,
+        'upload_requirement_file': lead_id.upload_requirement_file,
+        'owner_of_opportunity': lead_id.owner_of_opportunity,
+        'owner_of_opportunity_employee': lead_id.owner_of_opportunity,
+        'lost_reason': lead_id.lost_reason,
+        'postponed_reason': lead_id.postponed_reason,
+    }
+    form = Customer_detailForm(initial=customer_initial_data)
+    form2 = Deal_detailForm(initial=deal_details_initial_data)
+    form3 = Pi_sectionForm()
+    form4 = Follow_up_sectionForm(initial={'email_auto_manual':hfu.auto_manual_mode,})
+    form6 = History_followupForm(initial={'wa_no':hfu.whatsappno,'email_subject':hfu.email_subject})
+    form5 = Payment_detailsForm()
     context = {
         'form': form,
         'form2': form2,
@@ -395,7 +953,7 @@ def update_view_lead(request,id):
 
 
     if request.method == 'POST' or request.method == 'FILES':
-        if 'submit1' in request.POST:                                            #for customer and deal details section
+        if 'submit' in request.POST:
             customer_name = request.POST.get('customer_name')
             company_name = request.POST.get('company_name')
             address = request.POST.get('address')
@@ -444,6 +1002,26 @@ def update_view_lead(request,id):
             if customer_industry != '' and customer_industry != None:
                 item3.customer_industry = customer_industry
                 item3.save(update_fields=['customer_industry'])
+            return redirect('/update_view_lead/'+str(id))
+
+        if 'submit1' in request.POST:                                            #for customer and deal details section
+
+            new_existing_customer = request.POST.get('new_existing_customer')
+            date_of_initiation = request.POST.get('date_of_initiation')
+            channel = request.POST.get('channel')
+            requirement = request.POST.get('requirement')
+            upload_requirement_file = request.FILES.get('upload_requirement_file')
+            owner_of_opportunity = request.POST.get('owner_of_opportunity')
+            lost_reason = request.POST.get('lost_reason')
+            postponed_reason = request.POST.get('postponed_reason')
+            current_stage = request.POST.get('current_stage')
+
+            payment_channel = request.POST.get('payment_channel')
+            payment_receipt = request.POST.get('payment_receipt')
+            upload_pofile = request.POST.get('upload_pofile')
+            payment_received_date = request.POST.get('payment_received_date')
+
+            item2 = Lead.objects.get(id=id)
 
 
             item2.current_stage = current_stage
@@ -675,11 +1253,42 @@ def update_view_lead(request,id):
                 item2.select_gst_type = select_gst_type
                 item2.discount_type = discount_type
                 item2.log_entered_by = request.user.name
-                # if discount_type == 'percent':
-                #
-                # elif discount_type == 'rupee':
-                #     pass
-                item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call',
+                try:
+                    total = Pi_product.objects.filter(lead_id=id).values('product_total_cost')
+                    total_cost = 0.0
+                    for x in total:
+                        total_cost += x['product_total_cost']
+                    item2.total_cost = total_cost
+
+
+                    product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
+                    pf_total = 0.0
+                    for x in product_pf:
+                        pf_total += float(x['pf'])
+                    item2.pf_total = pf_total
+                    if discount_type == 'percent' and discount != '' and discount != 0 and total_cost != '':
+                        total_discount = (float(total_cost) * float(discount))/100.0  #converting discount percentage to discount total
+                        net_total = float(total_cost) - float(total_discount)
+                        item2.net_total = net_total
+                        item2.cgst_sgst = (9.0 * net_total) / 100.0
+                        igst = (18.0 * net_total) / 100.0
+                        item2.igst = igst
+                        item2.round_up_total = round(net_total + pf_total + igst)
+                        item2.grand_total = item2.round_up_total
+                    elif discount_type == 'rupee' and discount != '' and discount != 0 and total_cost != '':
+                        net_total = float(total_cost) - float(discount)
+                        item2.net_total = net_total
+                        item2.cgst_sgst = (9.0 * net_total)/100.0
+                        igst = (18.0 * item2.net_total)/100.0
+                        item2.igst = igst
+                        item2.round_up_total = round(item2.net_total + pf_total + igst)
+                        item2.grand_total = item2.round_up_total
+                except:
+                    print("product not added or debugging needed")
+
+
+                item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call','net_total','cgst_sgst','igst',
+                                          'round_up_total','grand_total','total_cost','notes','pf_total',
                                         'email', 'whatsapp','call2','select_gst_type','discount_type','log_entered_by'  ])
 
                 if request.user.is_authenticated:
@@ -1584,6 +2193,40 @@ td {
                 item2.discount_type = discount_type
                 item2.lead_id = Lead.objects.get(id=id)
                 item2.log_entered_by = request.user.name
+                try:
+                    total = Pi_product.objects.filter(lead_id=id).values('product_total_cost')
+                    total_cost = 0.0
+                    for x in total:
+                        total_cost += x['product_total_cost']
+                    item2.total_cost = total_cost
+
+
+                    product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
+                    pf_total = 0.0
+                    for x in product_pf:
+                        pf_total += float(x['pf'])
+
+                    item2.pf_total = pf_total
+                    if discount_type == 'percent' and discount != '' and discount != 0 and total_cost != '':
+                        total_discount = (float(total_cost) * float(discount))/100.0  #converting discount percentage to discount total
+                        net_total = float(total_cost) - float(total_discount)
+                        item2.net_total = net_total
+                        item2.cgst_sgst = (9.0 * net_total) / 100.0
+                        igst = (18.0 * net_total) / 100.0
+                        item2.igst = igst
+                        item2.round_up_total = round(net_total + pf_total + igst)
+                        item2.grand_total = item2.round_up_total
+                    elif discount_type == 'rupee' and discount != '' and discount != 0 and total_cost != '':
+                        net_total = float(total_cost) - float(discount)
+                        item2.net_total = net_total
+                        item2.cgst_sgst = (9.0 * net_total)/100.0
+                        igst = (18.0 * item2.net_total)/100.0
+                        item2.igst = igst
+                        item2.round_up_total = round(item2.net_total + pf_total + igst)
+                        item2.grand_total = item2.round_up_total
+                except:
+                    print("product not added or debugging needed")
+
                 item2.save()
                 if request.user.is_authenticated:
                     todays_date = str(datetime.now())
@@ -3022,25 +3665,26 @@ def select_product(request,id):
         sub_sub_category = request.POST.get('sub_sub_category')    #product code or sub_sub_category
 
         item = Pi_product()
-        if sub_sub_category != '' :
-            item.product_id = Product.objects.get( scale_type=type_of_scale ,main_category=main_category,
-                                                   sub_category=sub_category, sub_sub_category=sub_sub_category)
+        if sub_sub_category != '':
+            item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
+                                                  sub_category=sub_category, sub_sub_category=sub_sub_category)
         item.lead_id = Lead.objects.get(id=lead_id)
         item.quantity = quantity
         item.pf = pf
         item.log_entered_by = request.user.name
-
+        if quantity != 'None' or quantity != '':
+            item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
         item.save()
         if is_last_product_yes == 'yes':
-            return redirect('/update_view_lead/'+str(id))
+            return redirect('/update_view_lead/' + str(id))
         elif is_last_product_yes == 'no':
-            return redirect('/select_product/'+str(id))
-    context={
-        'lead_id':lead_id,
-        'type_of_purchase_list':type_of_purchase_list,
-        'products':products,
+            return redirect('/select_product/' + str(id))
+    context = {
+        'lead_id': lead_id,
+        'type_of_purchase_list': type_of_purchase_list,
+        'products': products,
     }
-    return render(request,'lead_management/select_product.html', context)
+    return render(request, 'lead_management/select_product.html', context)
 
 def lead_manager_view(request):
     loggedin_user = SiteUser.objects.get(id=request.user.id).name
@@ -3498,7 +4142,6 @@ def Pi_History_handler(sender, instance, update_fields=None, **kwargs):
             #     string = string+str(key)+','
             #     print('New value:'+str(key) + old_instance.key)
 
-
             # with connection.cursor() as cursor:
                 # if new_string != '' :
                 #     print('something 1')
@@ -3512,7 +4155,6 @@ def Pi_History_handler(sender, instance, update_fields=None, **kwargs):
                     if value != '' and str(value) != getattr(instance, key):
                         old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
-
                 log.entered_by = instance.log_entered_by
                 log.module_name = 'Lead Module'
                 log.action_type = 'Update'
@@ -3734,7 +4376,6 @@ def Payment_details_handler(sender, instance, update_fields=None, **kwargs):
             #     string = string+str(key)+','
             #     print('New value:'+str(key) + old_instance.key)
 
-
             # with connection.cursor() as cursor:
                 # if new_string != '' :
                 #     print('something 1')
@@ -3753,7 +4394,6 @@ def Payment_details_handler(sender, instance, update_fields=None, **kwargs):
                 log.module_name = 'Lead Module'
                 log.action_type = 'Update'
                 log.table_name = 'Payment_details'
-
                 log.reference = 'Payment_details No: '+str(new_instance.id)
 
                 log.action = old_list
@@ -3761,3 +4401,24 @@ def Payment_details_handler(sender, instance, update_fields=None, **kwargs):
 
     except:
         pass
+
+def download_pi_image(request,id):
+    return render(request,'lead_management/download_pi_image.html')
+
+def download_pi_pdf(request,id):
+    lead_id=Lead.objects.get(id=id)
+    todays_date = str(datetime.now().strftime("%Y-%m-%d"))
+    pi_id = Pi_section.objects.get(lead_id=id)
+    print(pi_id)
+    print(pi_id.discount_type)
+    print(pi_id.discount_type)
+    pi_products = Pi_product.objects.filter(lead_id=id)
+    context={
+        'lead_id':lead_id,
+        'todays_date':todays_date,
+        'pi_id':pi_id,
+        'pi_products':pi_products,
+    }
+    return render(request,'lead_management/download_pi_pdf.html',context)
+
+               
