@@ -404,7 +404,7 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 
 <script type="text/javascript">
 let doc = new jsPDF('p','pt','a4');
-doc.addHTML(document.body,function() {
+doc.addHTML(document.getElementById("content_content"),function() {
     doc.save('html.pdf');
 });
 
