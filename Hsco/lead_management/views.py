@@ -391,7 +391,10 @@ def update_view_lead(request,id):
         context.update(context2)
     else:
         pass
-
+    pi_pro = Pi_product.objects.filter(lead_id=lead_id.pk)
+    for item in pi_pro:
+        print(item.product_id.scale_type)
+        print(item.product_id.scale_type)
 
     if request.method == 'POST' or request.method == 'FILES':
         if 'submit' in request.POST:
@@ -482,13 +485,13 @@ def update_view_lead(request,id):
             if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
                 Lead.objects.filter(id=id).update(is_entered_purchase=True)
                 purchase_det = Purchase_Details()
-                purchase_det.second_company_name = company_name  # new2
-                purchase_det.company_address = address  # new2
-                purchase_det.company_email = customer_email_id  # new2
-                purchase_det.crm_no = Customer_Details.objects.get(id=item3.pk)
+                purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
+                purchase_det.company_address = lead_id.customer_id.address  # new2
+                purchase_det.company_email = lead_id.customer_id.customer_email_id  # new2
+                purchase_det.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
                 purchase_det.new_repeat_purchase = new_existing_customer
-                purchase_det.second_person = customer_name  # new1
-                purchase_det.second_contact_no = contact_no  # new2
+                purchase_det.second_person = lead_id.customer_id.customer_name  # new1
+                purchase_det.second_contact_no = lead_id.customer_id.contact_no  # new2
                 purchase_det.date_of_purchase = item2.entry_timedate
                 purchase_det.product_purchase_date = item2.entry_timedate
                 purchase_det.sales_person = owner_of_opportunity
@@ -497,7 +500,7 @@ def update_view_lead(request,id):
                 # purchase_det.upload_op_file = upload_op_file
                 # purchase_det.po_number = po_number
                 purchase_det.channel_of_sales = channel
-                purchase_det.industry = customer_industry
+                purchase_det.industry = lead_id.customer_id.customer_industry
                 purchase_det.value_of_goods = 0.0
                 # purchase_det.channel_of_dispatch = channel_of_dispatch
                 purchase_det.notes = "Entry From Lead Module\n"
@@ -508,12 +511,12 @@ def update_view_lead(request,id):
                 purchase_det.save()
 
                 dispatch = Dispatch()
-                dispatch.crm_no = Customer_Details.objects.get(id=item3.pk)
-                dispatch.second_person = customer_name  # new1
-                dispatch.second_contact_no = contact_no  # new2
-                dispatch.second_company_name = company_name  # new2
-                dispatch.company_email = customer_email_id
-                dispatch.company_address = address  # new2
+                dispatch.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
+                dispatch.second_person = lead_id.customer_id.customer_name  # new1
+                dispatch.second_contact_no = lead_id.customer_id.contact_no  # new2
+                dispatch.second_company_name = lead_id.customer_id.company_name  # new2
+                dispatch.company_email = lead_id.customer_id.customer_email_id
+                dispatch.company_address = lead_id.customer_id.address  # new2
                 dispatch.notes = "Entry From Lead Module\n"  # new2
                 dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
                 dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -533,14 +536,14 @@ def update_view_lead(request,id):
 
                     item_pro.quantity = item.quantity
 
-                    item_pro.type_of_scale = item.scale_type
-                    item_pro.model_of_purchase = item.main_category
-                    item_pro.sub_model = item.sub_category
-                    item_pro.sub_sub_model = item.sub_sub_category
+                    item_pro.type_of_scale = item.product_id.scale_type
+                    item_pro.model_of_purchase = item.product_id.main_category
+                    item_pro.sub_model = item.product_id.sub_category
+                    item_pro.sub_sub_model = item.product_id.sub_sub_category
                     item_pro.brand = 'HSCO'
-                    item_pro.capacity = item.max_capacity
+                    item_pro.capacity = item.product_id.max_capacity
                     item_pro.unit = 'Kg'
-                    item_pro.amount = (item.selling_price * item.quantity)
+                    item_pro.amount = item.product_total_cost
                     item_pro.purchase_id_id = customer_id
                     item_pro.user_id = SiteUser.objects.get(id=request.user.pk)
                     item_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -554,16 +557,16 @@ def update_view_lead(request,id):
                     dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
                     dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
                     dispatch_pro.quantity = item.quantity
-                    dispatch_pro.type_of_scale = item.scale_type
-                    dispatch_pro.model_of_purchase = item.main_category
-                    dispatch_pro.sub_model = item.sub_category
-                    dispatch_pro.sub_sub_model = item.sub_sub_category
+                    dispatch_pro.type_of_scale = item.product_id.scale_type
+                    dispatch_pro.model_of_purchase = item.product_id.main_category
+                    dispatch_pro.sub_model = item.product_id.sub_category
+                    dispatch_pro.sub_sub_model = item.product_id.sub_sub_category
 
                     dispatch_pro.brand = 'HSCO'
-                    dispatch_pro.capacity = item.max_capacity
+                    dispatch_pro.capacity = item.product_id.max_capacity
                     dispatch_pro.unit = 'Kg'
                     dispatch_pro.dispatch_id = dispatch_id
-                    dispatch_pro.value_of_goods = (item.selling_price * item.quantity)
+                    dispatch_pro.value_of_goods = item.product_total_cost
 
                     dispatch_pro.save()
 

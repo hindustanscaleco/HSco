@@ -22,6 +22,8 @@ class Lead(models.Model):
     lost_reason = models.CharField(blank= True, null=True, max_length=180)
     postponed_reason = models.CharField(blank= True, null=True, max_length=180)
     upload_requirement_file = models.FileField(upload_to='lead_requirement_file/',null=True,blank=True)
+    is_entered_purchase = models.BooleanField(default=False)
+
     # owner_of_opportunity = models.CharField(max_length=80,null=True,blank=True)
 
     # entry_timedate = models.DateTimeField(default=timezone.now, )
@@ -57,7 +59,6 @@ class Pi_section(models.Model):
     round_up_total = models.FloatField(null=True,blank=True)
     grand_total = models.FloatField(null=True,blank=True)
     # entry_timedate = models.DateTimeField(default=timezone.now, )
-    is_entered_purchase = models.BooleanField(default=False)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
