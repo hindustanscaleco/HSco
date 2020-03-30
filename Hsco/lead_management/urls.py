@@ -24,8 +24,8 @@ urlpatterns = [
     path('alpha_pi_form/',alpha_pi_form , name ='alpha_pi_form'),
     path('report_2/',report_2 , name ='report_2'),
     path('final_lead_report/',final_lead_report , name ='final_lead_report'),
-    path('download_pi_image/',download_pi_image , name ='download_pi_image'),
-    path('download_pi_pdf/',download_pi_pdf , name ='download_pi_pdf'),
+    path('download_pi_image/<int:id>',download_pi_image , name ='download_pi_image'),
+    path('download_pi_pdf/<int:id>',download_pi_pdf , name ='download_pi_pdf'),
     path('lead_logs/',lead_logs , name ='lead_logs'),
 
 ]

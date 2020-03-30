@@ -76,7 +76,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;"> Date :</p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> '''+todays_date+'''</p>
+             <center><p style="font-weight:bold; float:left;"> {{todays_date}}</p>
                             </center></div>
                             </div>
 
@@ -86,7 +86,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;"> Company Name</p>
                                 </center></div>
                                 <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left; text-decoration: underline;"> '''+str(lead_id.customer_id.company_name)+'''</p>
+                                     <center><p style="font-weight:bold; float:left; text-decoration: underline;"> {{lead_id.customer_id.company_name}}</p>
                                 </center></div>
 
                                 <div class="col-md-1">
@@ -95,7 +95,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">PI Number:</p>
                                 </center></div>
                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> '''+str(item2.id)+'''</p>
+                                     <center><p style="font-weight:bold; float:left;"> {{pi_id.id}}</p>
                                 </center></div>
                                 </div>
 
@@ -104,7 +104,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Contact Person</p>
                                 </center></div>
                                 <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.customer_name)+'''</p>
+                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.customer_name}}</p>
                                 </center></div>
 
                                 <div class="col-md-1">
@@ -113,7 +113,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Proforma Made By :</p>
                                 </center></div>
                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> '''+str(request.user.name)+'''</p>
+                                     <center><p style="font-weight:bold; float:left;"> {{request.user.name}}</p>
                                 </center></div>
                                 </div>
 
@@ -123,7 +123,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Address/State</p>
                                 </center></div>
                                 <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.address)+'''</p>
+                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.address}}</p>
                                 </center></div>
 
                                 <div class="col-md-1">
@@ -132,7 +132,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Contact Number:</p>
                                 </center></div>
                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> '''+str(request.user.mobile)+'''</p>
+                                     <center><p style="font-weight:bold; float:left;"> {{request.user.mobile}}</p>
                                 </center></div>
                                 </div>
 
@@ -144,7 +144,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Phone</p>
                                 </center></div>
                                 <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.contact_no)+'''</p>
+                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.contact_no}}</p>
         </center></div>
 
         <div class="col-md-1">
@@ -153,7 +153,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;">Customer GST Number: </p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.customer_gst_no)+'''</p>
+             <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.customer_gst_no}}</p>
         </center></div>
         </div>
 
@@ -218,10 +218,17 @@ td {
             <td style="border: 0px solid gray;">Rate</td>
             <td style="border: 0px solid gray;">Total</td>
         </tr>
-
-
- '''+table+'''
-
+{% for product in pi_products %}
+<tr>
+        <td>{{product.quantity}}</td>
+        <td>{{product.product_id.hsn_code}}</td>
+        <td>{{product.product_id.sub_sub_category}}</td>
+        {% if product.product_id.product_image %}<td><img style="height:40px; width:40px;" src="http://127.0.0.1:8000{{product.product_id.product_image.url}}"></td>{% endif %}
+        <td>{{product.product_id.product_desc}}</td>
+        <td>{{product.product_id.selling_price}}</td>
+        <td>{% widthratio product.product_id.selling_price 1 product.quantity %}</td>
+        </tr>
+{% endfor %}
         <tr>
         <td></td>
         <td></td>
@@ -229,7 +236,7 @@ td {
         <td></td>
         <td></td>
         <td>Total</td>
-        <td>INR</td>
+        <td>{{pi_id.total_cost}} INR</td>
         </tr>
 
         <tr>
@@ -238,8 +245,8 @@ td {
         <td></td>
         <td></td>
         <td></td>
-        <td>Discount%</td>
-        <td>from PI form</td>
+        <td>Discount</td>
+        <td>{{pi_id.discount}}{% if pi_id.discount_type == "percent" %} % {% elif pi_id.discount_type == "rupee" %} INR {% else %} {% endif %}</td>
         </tr>
 
 
@@ -250,7 +257,7 @@ td {
         <td></td>
         <td></td>
         <td>Net Total</td>
-        <td></td>
+        <td>{{pi_id.net_total}}</td>
         </tr>
 
 
@@ -262,9 +269,8 @@ td {
         <td></td>
         <td></td>
         <td>P&F</td>
-        <td>from PI form</td>
+        <td>{{pi_id.pf_total}} </td>
         </tr>
-
 
 
         <tr>
@@ -274,7 +280,7 @@ td {
         <td></td>
         <td></td>
         <td>CGST @ 9%</td>
-        <td>from PI form</td>
+        <td>{% if pi_id.select_gst_type == "CGST / SGST" %} {{pi_id.cgst_sgst}} {% endif %}</td>
         </tr>
 
 
@@ -287,7 +293,7 @@ td {
         <td></td>
         <td></td>
         <td>SGST @ 9%</td>
-        <td>from PI form</td>
+        <td>{% if pi_id.select_gst_type == "CGST / SGST" %} {{pi_id.cgst_sgst}} {% endif %}</td>
         </tr>
 
 
@@ -300,7 +306,7 @@ td {
         <td></td>
         <td></td>
         <td>IGST @ 18%</td>
-        <td>from PI form</td>
+        <td>{% if pi_id.select_gst_type == "IGST" %} {{pi_id.igst}} {% endif %}</td>
         </tr>
 
 
@@ -312,7 +318,7 @@ td {
         <td></td>
         <td></td>
         <td>Round Up</td>
-        <td>INR</td>
+        <td>{{pi_id.round_up_total}} INR</td>
         </tr>
 
         <tr>
@@ -322,7 +328,7 @@ td {
         <td></td>
         <td></td>
         <td>Grand Total</td>
-        <td>INR</td>
+        <td>{{pi_id.grand_total}} INR</td>
         </tr>
 
 
