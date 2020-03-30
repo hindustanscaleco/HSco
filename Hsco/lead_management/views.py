@@ -1,3 +1,4 @@
+import time
 from datetime import datetime
 
 from django.core.paginator import Paginator
@@ -22,6 +23,7 @@ from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
 from .models import Lead, Pi_section, IndiamartLeadDetails, History_followup, Follow_up_section, Followup_product, \
     Auto_followup_details, Payment_details
+
 
 from .models import Lead, Pi_section, Pi_product, Pi_History
 from customer_app.models import sub_model, main_model, sub_sub_model
@@ -864,6 +866,7 @@ def update_view_lead(request,id):
         context.update(context2)
     else:
         pass
+
 
     if request.method == 'POST' or request.method == 'FILES':
         if 'submit1' in request.POST:                                            #for customer and deal details section
@@ -2791,6 +2794,18 @@ td {
             }
             context.update(context23)
 
+        elif 'submit56' in request.POST:
+            wa_msg = request.session['wa_msg']
+            sms_content = request.session['wa_content']
+            wa_no = request.session['wa_no']
+            try:
+                del request.session['wa_msg']
+                del request.session['wa_content']
+                del request.session['wa_no']
+            except:
+                pass
+            return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+
         elif 'submit5' in request.POST:
 
             is_email = request.POST.get('is_email')
@@ -2844,32 +2859,37 @@ td {
                 for item in selected_fields2:
                     pro_list = Followup_product.objects.filter(lead_id=id,pk__in=selected_products).values_list(item, flat=True)
                     list_pro = []
+                    item=item.replace('product_id_id__','').replace('_',' ').title().replace('Category','Model')
                     if (count_list == 0):
                         for ite, lt in enumerate(pro_list):
                             if (ite == 0):
-                                html_head = html_head + '''<th>''' + item + '''</th>'''
+                                html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
                             final_list.append([item + ' : ' + str(lt)])
                         count_list = count_list + 1
                     else:
                         for ite, lt in enumerate(pro_list):
                             if (ite == 0):
-                                html_head = html_head + '''<th>''' + item + '''</th>'''
+                                html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
                             final_list[ite] = final_list[ite] + [item + ' : ' + str(lt)]
                             # final_list[ite].append(list_pro)
                 html_head = html_head + '''</thead> '''
 
-                html_rows = ''' '''
+                html_rows = ''''''
                 count = 1
-                sms_content=''' '''
+                sms_content=''''''
+                wa_content=''''''
                 for count_for,single in enumerate(final_list):
                     html_rows = html_rows + '''<tr> '''
                     count = count + 1
-                    sms_content=sms_content+''' Product #'''+str(count_for+1)+''':\n'''
+                    sms_content=sms_content+'''\nProduct No-'''+str(count_for+1)+''':'''
+                    wa_content=wa_content+'''\nProduct No - '''+str(count_for+1)+''':\n______________________________________________________\n'''
                     for item in single:
                         sms_content = sms_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
+                        wa_content = wa_content +'''<br>'''+ item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
                         html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
                     html_rows = html_rows + '''</tr>'''
 
+                print(sms_content)
 
                 if(is_email=='on'):
                     email_subject = request.POST.get('email_subject')
@@ -2932,27 +2952,7 @@ td {
 
 <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
     <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
-    <table style="font-size: 14px;">
-  <tr>
-    <td style="border: solid gray; background-color: gray; color: white;">Product Code: </td>
-    <td style="border: solid gray; background-color: gray; color: white;">HSN Code:</td>
-    <td style="border: solid gray; background-color: gray; color: white;">Quantity:</td>
-    <td style="border: solid gray; background-color: gray; color: white;">Product Description: </td>
-      <td style="border: solid gray; background-color: gray; color: white;">Rate:</td>
-      <td style="border: solid gray; background-color: gray; color: white;">Product Images:</td>
-         
 
-  </tr>
-  <tr>
-    <td>{{ product.product_id.sub_sub_category }}</td>
-    <td>{{ product.product_id.hsn_code }}</td>
-    <td>{{ product.quantity }}</td>
-    <td>{{ product.product_id.product_desc }}</td>
-    <td>{{ product.product_id.selling_price }}</td>
-    <td>{{ product.product_id.product_image.url }}</td>
-    
-  </tr>
-</table>
               </div>
           </style>
                               <div class="card shadow">
@@ -2979,7 +2979,6 @@ td {
                         'success_exist': True,
                     }
                     context.update(context28)
-
 
                 if(is_whatsapp=='on'):
 
@@ -3017,23 +3016,30 @@ td {
                     #     for item in single:
                     #         html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
                     #     html_rows = html_rows + '''</tr>'''
+                    try:
+                        del request.session['wa_msg']
+                        del request.session['wa_content']
+                        del request.session['wa_no']
+                    except:
+                        pass
+
+                    request.session['wa_msg']=wa_msg
+                    request.session['wa_content']=sms_content
+                    request.session['wa_no']=wa_no
                     context28 = {
                         'success_2': "WhatsApp Redirect Successful On WhatsApp No : " + wa_no,
+                        'wa_msg': wa_msg,
+                        'wa_content': sms_content,
+                        'wa_no': wa_no,
                         'success_exist_2': True,
                     }
                     context.update(context28)
-
-
-
-
 
                 if(is_sms=='on'):
                     sms_msg = request.POST.get('sms_msg')
                     history_follow.is_sms = True
                     history_follow.sms_msg = sms_msg+'\n'+sms_content
-                    print("sms_contentsms_content")
-                    print("sms_contentsms_content")
-                    print(sms_content)
+
                     url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + customer_id.contact_no + "&message=" + sms_msg + "&senderid=" + settings.senderid + "&type=txt"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
@@ -3046,9 +3052,6 @@ td {
                         'success_exist_4': True,
                     }
                     context.update(context28)
-
-
-
 
                 if(is_call=='on'):
                     call_response = request.POST.get('call_response')
@@ -3063,13 +3066,34 @@ td {
 
                 history_follow.save()
 
+
                 if (is_whatsapp):
-                    return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + str(final_list))
-
-
+                    context28 = {
+                        'success_2': "WhatsApp Redirect Successful On WhatsApp No : " + wa_no,
+                        'success_exist_2': True,
+                    }
+                    context.update(context28)
+                    if(is_sms=='on'):
+                        context28 = {
+                            'success_4': "SMS Sent Successfully To : " + customer_id.contact_no,
+                            'success_exist_4': True,
+                        }
+                        context.update(context28)
+                    if(is_email=='on'):
+                        context28 = {
+                            'success': "Email Sent on email Id: " + customer_id.customer_email_id,
+                            'success_exist': True,
+                        }
+                        context.update(context28)
+                    return render(request, 'lead_management/update_view_lead.html', context)
+                    # load_wa(wa_no,wa_msg,sms_content)
 
 
     return render(request, 'lead_management/update_view_lead.html',context)
+
+
+def load_wa(wa_no,wa_msg,sms_content):
+    return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
 def lead_report(request):
     if request.method =='POST' :
@@ -3315,15 +3339,9 @@ def select_product_followup(request,id):
                                                        sub_category=sub_model.objects.get(id=sub_model_str).id, sub_sub_category=sub_sub_model.objects.get(id=sub_sub_model_str).id)
 
             context23 = {
-                # 'lead_id': lead_id,
-                # 'type_purchase': type_of_purchase_list,
                 'product_avail': product_avail,
             }
             context.update(context23)
-
-
-
-
 
     context2={
         'lead_id':lead_id,
@@ -3371,19 +3389,15 @@ def select_product(request,id):
 
 def lead_manager_view(request):
     loggedin_user = SiteUser.objects.get(id=request.user.id).name
-    u_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__super_admin=loggedin_user).values_list("lead_id__owner_of_opportunity").distinct()
+    u_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__admin=loggedin_user).values_list("lead_id__owner_of_opportunity").distinct()
     users_list = []
     for item in u_list:
         for ite in item:
             users_list.append(ite)
-    # print("users_list")
-    # print(users_list)
     currentMonth = datetime.now().month
     result_list=[]
     from itertools import chain
     for item in users_list:
-        # pi_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__id=item,lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending')\
-        #     .aggregate(Sum('grand_total'))
         pi_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__id=item,entry_timedate__month=currentMonth).distinct().extra(select={
             'converted': "select SUM(grand_total) from lead_management_pi_section INNER JOIN lead_management_lead on "
                          "lead_management_lead.id=lead_management_pi_section.lead_id_id INNER JOIN user_app_siteuser on "
@@ -3402,22 +3416,10 @@ def lead_manager_view(request):
 
         }).values_list('lead_id__owner_of_opportunity__profile_name', 'converted', 'lost', 'postponed')
         result_list.append(list(chain(pi_list,)))
-        print("u_listu_list")
-        print("u_listu_list")
-        print(pi_list)
 
-
-
-    # for item in pi_list:
-    #     print("item")
-    #     print(item)
     context={
         'pi_list':result_list,
     }
-
-
-
-
     return render(request,'lead_management/lead_manager.html',context)
 
 def lead_follow_up_histroy(request,follow_up_id):
