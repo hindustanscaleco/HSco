@@ -7,6 +7,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render, redirect
 from customer_app.models import type_purchase
 from stock_system.models import Product
+from django.contrib.auth.decorators import login_required
+
 from Hsco import settings
 from user_app.models import SiteUser
 from customer_app.models import Log
@@ -43,25 +45,204 @@ def lead_home(request):
     error2 = None
     error = None
     error_exist = False
+    context={}
 
     if request.method == 'POST':
+        if 'fetch_lead' in request.POST:
 
-        url = "https://mapi.indiamart.com/wservce/enquiry/listing/GLUSR_MOBILE/" + mobile + "/GLUSR_MOBILE_KEY/" + api + "/Start_Time/" + from_date + "/End_Time/" + to_date + "/"
-        response = requests.get(url=url).json()
-        lead_count = len(response)
+            url = "https://mapi.indiamart.com/wservce/enquiry/listing/GLUSR_MOBILE/" + mobile + "/GLUSR_MOBILE_KEY/" + api + "/Start_Time/" + from_date + "/End_Time/" + to_date + "/"
+            response = requests.get(url=url).json()
+            lead_count = len(response)
 
-        from_date =  request.POST.get('from_date_form')
-        to_date =  request.POST.get('to_date_form')
-        import time
-        conv = time.strptime(from_date, "%d-%b-%Y")
-        conv2 = time.strptime(to_date, "%d-%b-%Y")
+            from_date =  request.POST.get('from_date_form')
+            to_date =  request.POST.get('to_date_form')
+            import time
+            conv = time.strptime(from_date, "%d-%b-%Y")
+            conv2 = time.strptime(to_date, "%d-%b-%Y")
+
+        if 'sort_submit' in request.POST:
+            YEAR = request.POST.get('YEAR')
+            MONTH = request.POST.get('MONTH')
+            found = False
 
 
-        if(lead_count>1):
+            if request.user.role == 'Super Admin':  # For ADMIN
+                lead_list = Lead.objects.filter(entry_timedate__month = MONTH , entry_timedate__year = YEAR).order_by('-id')
+                lead_list_count = Lead.objects.filter(entry_timedate__month = MONTH , entry_timedate__year = YEAR).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+            else:
+                admin = SiteUser.objects.get(id=request.user.pk).admin
+                lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(entry_timedate__month = MONTH , entry_timedate__year = YEAR)).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(entry_timedate__month = MONTH , entry_timedate__year = YEAR)).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+            if(lead_list_count>0):
+                found = True
+            elif(lead_list_count<0):
+                found = False
+            context22={
+                'lead_list_count': found,
+            }
+            context.update(context22)
+
+        if 'submit1' in request.POST:
+            start_date = request.POST.get('date1')
+            end_date = request.POST.get('date2')
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Lead.objects.filter(user_id__group__icontains=request.user.name,
+                                                user_id__is_deleted=False,
+                                                entry_timedate__range=[start_date, end_date]).order_by('-customer_id')
+                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                cust_list = paginator.get_page(page)
+            else:  # For EMPLOYEE
+                cust_list = Lead.objects.filter(user_id=request.user.pk,
+                                                entry_timedate__range=[start_date, end_date]).order_by('-customer_id')
+                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                cust_list = paginator.get_page(page)
+            # cust_list = Customer_Details.objects.filter()
+            context = {
+                'customer_list': cust_list,
+                'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
+            }
+            return render(request, 'lead_management/lead_home.html', context)
+        elif 'submit2' in request.POST:
+            contact = request.POST.get('contact')
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Lead.objects.filter(user_id__group__icontains=request.user.name,
+                                                user_id__is_deleted=False, contact_no__icontains=contact).order_by(
+                    '-customer_id')
+                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                cust_list = paginator.get_page(page)
+            else:  # For EMPLOYEE
+                cust_list = Lead.objects.filter(user_id=request.user.pk, contact_no__icontains=contact).order_by(
+                    '-customer_id')
+                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                cust_list = paginator.get_page(page)
+            # cust_list = Customer_Details.objects.filter(contact_no=contact)
+            context = {
+                'customer_list': cust_list,
+                'search_msg': 'Search result for Customer Contact No: ' + contact,
+            }
+            return render(request, 'lead_management/lead_home.html', context)
+
+        elif 'submit3' in request.POST:
+            email = request.POST.get('email')
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Lead.objects.filter(user_id__group__icontains=request.user.name,
+                                                user_id__is_deleted=False, company_email__icontains=email).order_by(
+                    '-customer_id')
+                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                cust_list = paginator.get_page(page)
+            else:  # For EMPLOYEE
+                cust_list = Lead.objects.filter(user_id=request.user.pk, company_email__icontains=email).order_by(
+                    '-customer_id')
+                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                cust_list = paginator.get_page(page)
+            # cust_list = Customer_Details.objects.filter(customer_email_id=email)
+            context = {
+                'customer_list': cust_list,
+                'search_msg': 'Search result for Customer Email ID: ' + email,
+            }
+            return render(request, 'lead_management/lead_home.html', context)
+        elif 'submit4' in request.POST:
+            customer = request.POST.get('customer')
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Lead.objects.filter(user_id__group__icontains=request.user.name,
+                                                user_id__is_deleted=False, second_person__icontains=customer).order_by(
+                    '-customer_id')
+                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                cust_list = paginator.get_page(page)
+            else:  # For EMPLOYEE
+                cust_list = Lead.objects.filter(user_id=request.user.pk, second_person__icontains=customer).order_by(
+                    '-customer_id')
+                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                cust_list = paginator.get_page(page)
+            # cust_list = Customer_Details.objects.filter(customer_name=customer)
+            context = {
+                'customer_list': cust_list,
+                'search_msg': 'Search result for Customer Name: ' + customer,
+            }
+            return render(request, 'lead_management/lead_home.html', context)
+
+        elif 'submit5' in request.POST:
+            company = request.POST.get('company')
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Lead.objects.filter(user_id__group__icontains=request.user.name,
+                                                user_id__is_deleted=False,
+                                                second_company_name__icontains=company).order_by('-customer_id')
+                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                cust_list = paginator.get_page(page)
+            else:  # For EMPLOYEE
+                cust_list = Lead.objects.filter(user_id=request.user.pk,
+                                                second_company_name__icontains=company).order_by('-customer_id')
+                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                cust_list = paginator.get_page(page)
+            # cust_list = Customer_Details.objects.filter(company_name=company)
+            context = {
+                'customer_list': cust_list,
+                'search_msg': 'Search result for Company Name: ' + company,
+            }
+            return render(request, 'lead_management/lead_home.html', context)
+        elif request.method == 'POST' and 'submit6' in request.POST:
+            crm = request.POST.get('crm')
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Lead.objects.filter(user_id__group__icontains=request.user.name,
+                                                user_id__is_deleted=False, crm_no__pk=crm).order_by('-customer_id')
+                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                cust_list = paginator.get_page(page)
+            else:  # For EMPLOYEE
+                cust_list = Lead.objects.filter(user_id=request.user.pk, crm_no__pk=crm).order_by('-customer_id')
+                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                cust_list = paginator.get_page(page)
+            # cust_list = Customer_Details.objects.filter(crn_number=crm)
+            context = {
+                'customer_list': cust_list,
+                'search_msg': 'Search result for CRM No. : ' + crm,
+            }
+            return render(request, 'lead_management/lead_home.html', context)
+        elif 'submit7' in request.POST:
+            customer_id = request.POST.get('customer_id')
+            if check_admin_roles(request):  # For ADMIN
+                cust_list = Lead.objects.filter(user_id__group__icontains=request.user.name,
+                                                user_id__is_deleted=False, customer_id__icontains=customer_id).order_by(
+                    '-customer_id')
+                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                cust_list = paginator.get_page(page)
+            else:  # For EMPLOYEE
+                cust_list = Lead.objects.filter(user_id=request.user.pk, customer_id__icontains=customer_id).order_by(
+                    '-customer_id')
+                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                cust_list = paginator.get_page(page)
+            # cust_list = Customer_Details.objects.filter(company_name=company)
+            context = {
+                'customer_list': cust_list,
+                'search_msg': 'Search result for Sr no: ' + customer_id,
+            }
+            return render(request, 'lead_management/lead_home.html', context)
+
+
+        if (lead_count > 1):
             for item in response:
 
                 item3 = Customer_Details()
-                item3.customer_name= item['SENDERNAME']
+                item3.customer_name = item['SENDERNAME']
                 item3.company_name = item['GLUSR_USR_COMPANYNAME']
                 item3.address = item['ENQ_ADDRESS']
                 item3.customer_email_id = item['SENDEREMAIL']
@@ -94,26 +275,25 @@ def lead_home(request):
                 obj.save()
             except:
                 print("error")
-        else:
+        elif(lead_count<0):
             row_count = response[0]
-            if(row_count!=None):
+            if (row_count != None):
                 error = row_count['Error_Message']
                 error_exist = True
+    if request.user.role =='Super Admin':     #For ADMIN
+        lead_list = Lead.objects.all().order_by('-id')
+        paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+        page = request.GET.get('page')
+        lead_list = paginator.get_page(page)
     else:
-        if request.user.role =='Super Admin':     #For ADMIN
-            lead_list = Lead.objects.all().order_by('-id')
-            paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
-            page = request.GET.get('page')
-            lead_list = paginator.get_page(page)
-        else:
-            admin = SiteUser.objects.get(id=request.user.pk).admin
-            lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).order_by('-id')
-            paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
-            page = request.GET.get('page')
-            lead_list = paginator.get_page(page)
+        admin = SiteUser.objects.get(id=request.user.pk).admin
+        lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).order_by('-id')
+        paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+        page = request.GET.get('page')
+        lead_list = paginator.get_page(page)
     cust_sugg = Customer_Details.objects.all()
 
-    context = {
+    context23 = {
         'lead_list': lead_list,
         'lead_count': lead_count,
         'from_date': from_date,
@@ -123,6 +303,7 @@ def lead_home(request):
         'error_exist': error_exist,
         'cust_sugg': cust_sugg,
     }
+    context.update(context23)
     if request.user.role == 'Super Admin':
         total_stages = Lead.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
     else:
@@ -2602,6 +2783,8 @@ td {
 
             return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
+
+
         elif 'submit5' in request.POST:
 
             is_email = request.POST.get('is_email')
@@ -4040,3 +4223,11 @@ def download_pi_pdf(request,id):
         'pi_products':pi_products,
     }
     return render(request,'lead_management/download_pi_pdf.html',context)
+
+
+@login_required(login_url='/')
+def check_admin_roles(request):
+    if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
+        return True
+    else:
+        return False
