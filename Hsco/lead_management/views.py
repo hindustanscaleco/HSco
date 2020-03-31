@@ -65,51 +65,30 @@ def lead_home(request):
         if 'sort_submit' in request.POST:
             YEAR = request.POST.get('YEAR')
             MONTH = request.POST.get('MONTH')
-            found = ''
+            found = False
 
 
             if request.user.role == 'Super Admin':  # For ADMIN
                 lead_list = Lead.objects.filter(entry_timedate__month = MONTH , entry_timedate__year = YEAR).order_by('-id')
-                lead_list_count = lead_list.count()
+                lead_list_count = Lead.objects.filter(entry_timedate__month = MONTH , entry_timedate__year = YEAR).count()
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
-                if (lead_list_count > 0):
-                    found = True
-                    context22 = {
-                        'lead_list_count': found,
-                        'lead_list': lead_list,
-                    }
-                    context.update(context22)
-                elif (lead_list_count <= 0):
-                    found = True
-                    context22 = {
-                        'err': found,
-                        'lead_list': lead_list,
-
-                    }
-                    context.update(context22)
             else:
                 admin = SiteUser.objects.get(id=request.user.pk).admin
                 lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(entry_timedate__month = MONTH , entry_timedate__year = YEAR)).order_by('-id')
-                lead_list_count = lead_list.count()
+                lead_list_count = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(entry_timedate__month = MONTH , entry_timedate__year = YEAR)).count()
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
-                if (lead_list_count > 0):
-                    found = True
-                    context22 = {
-                        'lead_list_count': found,
-                        'lead_list': lead_list,
-                    }
-                    context.update(context22)
-                elif (lead_list_count <= 0):
-                    found = True
-                    context22 = {
-                        'err': found,
-                        'lead_list': lead_list,
-                    }
-                    context.update(context22)
+            if(lead_list_count>0):
+                found = True
+            elif(lead_list_count<0):
+                found = False
+            context22={
+                'lead_list_count': found,
+            }
+            context.update(context22)
 
         if 'submit1' in request.POST:
             start_date = request.POST.get('date1')
@@ -685,7 +664,6 @@ def update_view_lead(request,id):
             is_entered_purchase = Lead.objects.get(id=id).is_entered_purchase
             if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
                 Lead.objects.filter(id=id).update(is_entered_purchase=True)
-
                 purchase_det = Purchase_Details()
                 purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
                 purchase_det.company_address = lead_id.customer_id.address  # new2
@@ -711,7 +689,6 @@ def update_view_lead(request,id):
                 purchase_det.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no + 1
                 purchase_det.log_entered_by = request.user.profile_name
                 purchase_det.save()
-                Lead.objects.filter(id=id).update(purchase_id=Purchase_Details.objects.get(id=purchase_det.pk))
 
                 dispatch = Dispatch()
                 dispatch.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
@@ -2272,11 +2249,12 @@ td {
                     for count_for, single in enumerate(final_list):
                         html_rows = html_rows + '''<tr> '''
                         count = count + 1
-                        sms_content = sms_content + '''\nProduct No-''' + str(count_for + 1) + ''':\n'''
+                        sms_content = sms_content + '''\nProduct No-''' + str(count_for + 1) + ''':'''
                         wa_content = wa_content + '''\nProduct No - ''' + str(
                             count_for + 1) + ''':\n______________________________________________________\n'''
                         for item in single:
-                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + item.partition(":")[2] + '''\n'''
+                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + item.partition(":")[
+                                2] + '''\n'''
                             wa_content = wa_content + item.partition(":")[0] + ''' :''' + item.partition(":")[
                                 2] + '''\n'''
                             html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
@@ -2366,7 +2344,6 @@ td {
                         </body>
                         </html>'''
 
-                        history_follow.html_content=html_content
                         file = ContentFile(html_content)
                         history_follow.file.save('AutoFollowup.html', file, save=False)
 
@@ -2382,7 +2359,7 @@ td {
 
                     history_follow.save()
                     afd= Auto_followup_details()
-                    afd.follow_up_history = History_followup.objects.get(id=history_follow.id)
+                    afd.follow_up_history = History_followup.objects.get(id=history_follow)
                     afd.save()
                     context28 = {
                         'success_6': "Followup Will Be Done Automatically After Every 2 Days",
@@ -2597,10 +2574,10 @@ def select_product_followup(request,id):
             product_id = request.POST.get('product_id')
 
             requested_product = Product.objects.get(id=product_id)
-
+            print("product_id")
             print(product_id)
             print(requested_product)
-
+            print("requested_product")
             fol_pro=Followup_product()
             fol_pro.product_id = requested_product
             fol_pro.lead_id = Lead.objects.get(id=id)
@@ -2731,30 +2708,11 @@ def lead_manager_view(request):
     return render(request,'lead_management/lead_manager.html',context)
 
 def lead_follow_up_histroy(request,follow_up_id):
-    context={}
     obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
 
-    if request.method == 'POST':
-        if 'sub1' in request.POST:
-            delete_id = request.POST.get('delete_id')
-
-            Auto_followup_details.objects.filter(follow_up_history__pk=delete_id).delete()
-            History_followup.objects.filter(id=delete_id).update(is_auto_follow_deleted=True)
-            obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
-            Follow_up_section.objects.filter(id=History_followup.objects.get(id=delete_id).follow_up_section.pk).update(auto_manual_mode='Select Mode')
-            context2 = {
-                'obj_list': obj_list,
-                'is_deleted': True,
-                'msg': 'Auto Follow-up Cancelled Successfully',
-            }
-            context.update(context2)
-
-
-
-    context23={
+    context={
         'obj_list':obj_list,
     }
-    context.update(context23)
 
     return render(request,'lead_management/follow_up_history.html',context)
 
