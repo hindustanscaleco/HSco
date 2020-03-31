@@ -281,6 +281,9 @@ def lead_home(request):
                     item2.requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
                     try:
                         item2.save()
+                        fp = Follow_up_section()
+                        fp.lead_id = Lead.objects.get(id=item2.pk)
+                        fp.save()
                     except Exception as e:
                         error_exist = True
                         error2 = e
