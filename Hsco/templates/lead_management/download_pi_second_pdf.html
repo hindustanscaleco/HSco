@@ -379,26 +379,17 @@ td {
 
 <script type="text/javascript">
 let doc = new jsPDF('p','pt','a4');
-doc.addHTML(document.getElementById("content_content2"),function() {
+doc.addHTML(document.body,function() {
+
+
     doc.save('html.pdf');
+
+
 });
 
 
-
 </script>
 
-<script>
-  function printDiv(divName) {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
-
-     document.body.innerHTML = printContents;
-
-     window.print();
-
-     document.body.innerHTML = originalContents;
-}
-</script>
 
 </body>
 </html>
