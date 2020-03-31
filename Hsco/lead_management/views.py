@@ -905,11 +905,10 @@ def update_view_lead(request,id):
                 text_content = ''
                 subject = 'Support'
                 # pdf1 =
-                msg = EmailMultiAlternatives(subject,'fdsklfhsd' , settings.EMAIL_HOST_USER,
-                                             [lead_id.customer_id.customer_email_id])
+                msg = EmailMultiAlternatives(subject,'fdsklfhsd' , settings.EMAIL_HOST_USER,[lead_id.customer_id.customer_email_id])
                 if email == 'True' :
                     # msg.attach(pdf, history.file.read(), 'application/pdf')
-
+sex karo
                     msg.content_subtype = "application/pdf"  # Main content is now text/html
                     # msg.attach_file(history.file.url)
                     msg.attach('design.pdf', history.file.path, 'application/pdf')
