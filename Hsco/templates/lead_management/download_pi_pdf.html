@@ -12,8 +12,6 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
 </head>
 <body>
-
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 
@@ -226,7 +224,7 @@ td {
         {% if product.product_id.product_image %}<td><img style="height:40px; width:40px;" src="http://127.0.0.1:8000{{product.product_id.product_image.url}}"></td>{% endif %}
         <td>{{product.product_id.product_desc}}</td>
         <td>{{product.product_id.selling_price}}</td>
-        <td>{% widthratio product.product_id.selling_price 1 product.quantity %}</td>
+        <td>{{pi_id.total_cost}}</td>
         </tr>
 {% endfor %}
         <tr>
@@ -383,19 +381,6 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
     <hr>
 
 
-  <input id="btn-Preview-Image" type="button"
-        value="Preview"  style="visibility: hidden;">
-
-  <a id="btn-Convert-Html2Image" href="#" style="visibility: hidden;">
-    Download
-  </a>
-
-  <br/>
-
-
-  <div id="previewImage"></div>
-
-
 
 
 <span style="font-size: 11px;">HINDUSTAN SCALE COMPANY, 186/188 Janjikar Street, Crawford Market, Mumbai - 400003</span>
@@ -409,12 +394,15 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 </div>
 
 <script type="text/javascript">
+
 let doc = new jsPDF('p','pt','a4');
-doc.addHTML(document.getElementById("content_content"),function() {
+doc.addHTML(document.body,function() {
+
+
     doc.save('html.pdf');
+
+
 });
-
-
 
 </script>
 </body>
