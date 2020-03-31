@@ -1,4 +1,6 @@
 from datetime import datetime
+
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.paginator import Paginator
 from django.db import connection
 from django.db.models import Sum, Q, Count
@@ -92,42 +94,43 @@ def lead_home(request):
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Lead.objects.filter(user_id__group__icontains=request.user.name,
-                                                user_id__is_deleted=False,
-                                                entry_timedate__range=[start_date, end_date]).order_by('-customer_id')
+                cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
+                                                owner_of_opportunity__is_deleted=False,
+                                                entry_timedate__range=[start_date, end_date]).order_by('-id')
+
                 paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
-                cust_list = Lead.objects.filter(user_id=request.user.pk,
+                cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk,
                                                 entry_timedate__range=[start_date, end_date]).order_by('-customer_id')
                 paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter()
             context = {
-                'customer_list': cust_list,
+                'lead_list': cust_list,
                 'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
             }
             return render(request, 'lead_management/lead_home.html', context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Lead.objects.filter(user_id__group__icontains=request.user.name,
-                                                user_id__is_deleted=False, contact_no__icontains=contact).order_by(
-                    '-customer_id')
+                cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
+                                                owner_of_opportunity__is_deleted=False, customer_id__contact_no__icontains=contact).order_by(
+                    '-id')
                 paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
-                cust_list = Lead.objects.filter(user_id=request.user.pk, contact_no__icontains=contact).order_by(
-                    '-customer_id')
+                cust_list = Lead.objects.filter(owner_of_opportunity_id=request.user.pk, customer_id__contact_no__icontains=contact).order_by(
+                    '-id')
                 paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(contact_no=contact)
             context = {
-                'customer_list': cust_list,
+                'lead_list': cust_list,
                 'search_msg': 'Search result for Customer Contact No: ' + contact,
             }
             return render(request, 'lead_management/lead_home.html', context)
@@ -135,42 +138,42 @@ def lead_home(request):
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Lead.objects.filter(user_id__group__icontains=request.user.name,
-                                                user_id__is_deleted=False, company_email__icontains=email).order_by(
-                    '-customer_id')
+                cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
+                                                owner_of_opportunity__is_deleted=False, customer_id__customer_email_id__icontains=email).order_by(
+                    '-id')
                 paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
-                cust_list = Lead.objects.filter(user_id=request.user.pk, company_email__icontains=email).order_by(
-                    '-customer_id')
+                cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk, customer_id__customer_email_id__icontains=email).order_by(
+                    '-id')
                 paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(customer_email_id=email)
             context = {
-                'customer_list': cust_list,
+                'lead_list': cust_list,
                 'search_msg': 'Search result for Customer Email ID: ' + email,
             }
             return render(request, 'lead_management/lead_home.html', context)
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Lead.objects.filter(user_id__group__icontains=request.user.name,
-                                                user_id__is_deleted=False, second_person__icontains=customer).order_by(
-                    '-customer_id')
+                cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
+                                                owner_of_opportunity__is_deleted=False, customer_id__second_person__icontains=customer).order_by(
+                    '-id')
                 paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
-                cust_list = Lead.objects.filter(user_id=request.user.pk, second_person__icontains=customer).order_by(
-                    '-customer_id')
+                cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk, customer_id__second_person__icontains=customer).order_by(
+                    '-id')
                 paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(customer_name=customer)
             context = {
-                'customer_list': cust_list,
+                'lead_list': cust_list,
                 'search_msg': 'Search result for Customer Name: ' + customer,
             }
             return render(request, 'lead_management/lead_home.html', context)
@@ -178,62 +181,62 @@ def lead_home(request):
         elif 'submit5' in request.POST:
             company = request.POST.get('company')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Lead.objects.filter(user_id__group__icontains=request.user.name,
-                                                user_id__is_deleted=False,
-                                                second_company_name__icontains=company).order_by('-customer_id')
+                cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
+                                                owner_of_opportunity__is_deleted=False,
+                                                customer_id__company_name__icontains=company).order_by('-id')
                 paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
-                cust_list = Lead.objects.filter(user_id=request.user.pk,
-                                                second_company_name__icontains=company).order_by('-customer_id')
+                cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk,
+                                                customer_id__company_name__icontains=company).order_by('-id')
                 paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(company_name=company)
             context = {
-                'customer_list': cust_list,
+                'lead_list': cust_list,
                 'search_msg': 'Search result for Company Name: ' + company,
             }
             return render(request, 'lead_management/lead_home.html', context)
-        elif request.method == 'POST' and 'submit6' in request.POST:
-            crm = request.POST.get('crm')
-            if check_admin_roles(request):  # For ADMIN
-                cust_list = Lead.objects.filter(user_id__group__icontains=request.user.name,
-                                                user_id__is_deleted=False, crm_no__pk=crm).order_by('-customer_id')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
-            else:  # For EMPLOYEE
-                cust_list = Lead.objects.filter(user_id=request.user.pk, crm_no__pk=crm).order_by('-customer_id')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
-            # cust_list = Customer_Details.objects.filter(crn_number=crm)
-            context = {
-                'customer_list': cust_list,
-                'search_msg': 'Search result for CRM No. : ' + crm,
-            }
-            return render(request, 'lead_management/lead_home.html', context)
+        # elif 'submit6' in request.POST:
+        #     crm = request.POST.get('crm')
+        #     if check_admin_roles(request):  # For ADMIN
+        #         cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
+        #                                         owner_of_opportunity__is_deleted=False, crm_no__pk=crm).order_by('-id')
+        #         paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+        #         page = request.GET.get('page')
+        #         cust_list = paginator.get_page(page)
+        #     else:  # For EMPLOYEE
+        #         cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk, crm_no__pk=crm).order_by('-id')
+        #         paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+        #         page = request.GET.get('page')
+        #         cust_list = paginator.get_page(page)
+        #     # cust_list = Customer_Details.objects.filter(crn_number=crm)
+        #     context = {
+        #         'lead_list': cust_list,
+        #         'search_msg': 'Search result for CRM No. : ' + crm,
+        #     }
+        #     return render(request, 'lead_management/lead_home.html', context)
         elif 'submit7' in request.POST:
-            customer_id = request.POST.get('customer_id')
+            serial_no = request.POST.get('serial_no')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Lead.objects.filter(user_id__group__icontains=request.user.name,
-                                                user_id__is_deleted=False, customer_id__icontains=customer_id).order_by(
-                    '-customer_id')
+                cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
+                                                owner_of_opportunity__is_deleted=False, id__icontains=serial_no).order_by(
+                    '-id')
                 paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
-                cust_list = Lead.objects.filter(user_id=request.user.pk, customer_id__icontains=customer_id).order_by(
-                    '-customer_id')
+                cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk, id__icontains=serial_no).order_by(
+                    '-id')
                 paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(company_name=company)
             context = {
-                'customer_list': cust_list,
-                'search_msg': 'Search result for Sr no: ' + customer_id,
+                'lead_list': cust_list,
+                'search_msg': 'Search result for Sr no: ' + serial_no,
             }
             return render(request, 'lead_management/lead_home.html', context)
 
@@ -844,7 +847,9 @@ def update_view_lead(request,id):
 
 
             return redirect('/update_view_lead/'+str(id))
-        elif 'submit2' in request.POST:                                         #for pi section
+        elif 'submit2' in request.POST:
+
+            #for pi section
             discount = request.POST.get('discount')
             upload_pi_file = request.FILES.get('upload_pi_file')
             select_pi_template = request.POST.get('select_pi_template')
@@ -866,6 +871,36 @@ def update_view_lead(request,id):
                 whatsapp = 'True'
             else:
                 whatsapp = 'False'
+
+            pdf = request.FILES.get('pdf')
+            if pdf != None:
+                history = Pi_History()
+                history.file = pdf
+                history.lead_id = Lead.objects.get(id=id)
+                history.log_entered_by = request.user.profile_name
+                history.save()
+                text_content = ''
+                subject = 'Support'
+                # pdf1 =
+                msg = EmailMultiAlternatives(subject,'fdsklfhsd' , settings.EMAIL_HOST_USER,
+                                             [lead_id.customer_id.customer_email_id])
+                if email == 'True' :
+                    # msg.attach(pdf, history.file.read(), 'application/pdf')
+
+                    msg.content_subtype = "application/pdf"  # Main content is now text/html
+                    # msg.attach_file(history.file.url)
+                    msg.attach('design.pdf', history.file.path, 'application/pdf')
+                    print(history.file.path)
+                    # msg.attach_file(pdf)
+                    msg.send()
+                    # history = Pi_History()
+                    # file = ContentFile(html_content1)
+                    # # pdfkit.from_file(file, 'out.pdf')
+                    # history.file.save('ProformaInvoice.html', file, save=False)
+                    # history.lead_id = Lead.objects.get(id=id)
+                    #
+                    # history.save()
+
             if Pi_section.objects.filter(lead_id=id).count() > 0:
 
                 item2 = Pi_section.objects.filter(lead_id=id).first()
@@ -923,869 +958,11 @@ def update_view_lead(request,id):
                         # gst_no = str(lead_id.customer_id.customer_gst_no)
                         text_content = ''
                         subject = 'Support'
-                        html_content1 = '''<html>
-<head>
-  <title>
-    HSCO
-  </title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-
-
-  <style>
-      * {
-    font-family: 'Poppins';
-    font-size: 0.99em;
-
-  }
-
-  table {
-  border-collapse: collapse;
-  width: 85%;
-  font-size: 18px;
-  border-color: black;
-  color: black;
-
-
-
-}
-
-
-th {
-
-  font-size: 13px;
-    border: 1px solid black;
-    text-align: left;
-    padding:5px;
-
-}
-
-td {
-  border: 1px solid black;
-  padding: 3px;
-}
-
-
- @media print and (width: 10.5cm) and (height: 14.8cm) {
-    @page {
-       margin: 3cm;
-    }
- }
-
-
-  </style>
-
-</head>
-<body>
-
-<div  id="printableArea" style="margin-left: 10%; margin-right: 10%;">
-<div class="row" style="padding: 5px; border-bottom: 5px solid black;">
-    <div class="col-xl-2 col-md-2 ">
-<img src="/media/pi_history_file/hsco.jpg" class="img-rounded" width="200" height="120" style="float: right;">
-</div>
-    <div class="col-xl-1 col-md-1 ">
-    </div>
-    <div class="col-xl-4 col-md-4 ">
-        <center>Subject to Mumbai Jurisdiction</center><br>
-        <center><h3 style="font: italic bold 22px/30px Georgia, serif;">Proforma Invoice</h3></center>
-</div>
-    <div class="col-xl-1 col-md-1 ">
-    </div>
-    <div class="col-xl-4 col-md-4 ">
-        <p>Ph: 022-23423183, 7045922250/51/52<br>
-Manufacture Licence No. LM/MH/H004<br>
-Dealer Licence No. LD/MH/H004<br>
-Repairing Licence No. LR/MH/H004</p>
-</div>
-</div>
-
-
-        <div class="row">
-         <div class="col-md-12" style="padding:10px;">
-        <center><h1 style="font-weight:bold;"> Hindustan Scale Company</h1>
-        </center></div>
-        </div>
-        <div class="row">
-         <div class="col-md-12" style="padding:0px;">
-        <center><p style="font-weight:bold;"> A one stop shop for all your weighing needs<br><font color="#FC6E20" style="font-weight:bold;"> AN ISO 9001: 2015 CERTIFIED COMPANY</font></p>
-        </center></div>
-        </div>
-
-
-    <div class="row">
-         <div class="col-md-12" style="padding:10px;">
-        <center><p style="font-weight:bold;"> All kinds of Mechanical and Digital Weighing Scales, Weights & Measures.<br>
-        186/188 Janjikar Street, Near Crawford Market, Mumbai- 400003/<font color="#FC6E20">www.hindustanscale.com/hsc@hindustanscale.com</font></p>
-        </center></div>
-        </div>
-
-
-    <div class="row">
-         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> Messrs</p>
-        </center></div>
-        <div class="col-md-5">
-             </div>
-        <div class="col-md-1">
-             </div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> Date :</p>
-        </center></div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> '''+todays_date+'''</p>
-                            </center></div>
-                            </div>
-                    
-                        
-                            <div class="row">
-                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> Company Name</p>
-                                </center></div>
-                                <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left; text-decoration: underline;"> '''+str(lead_id.customer_id.company_name)+'''</p>
-                                </center></div>
-                        
-                                <div class="col-md-1">
-                                     </div>
-                                <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;">PI Number:</p>
-                                </center></div>
-                                <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> '''+str(item2.id)+'''</p>
-                                </center></div>
-                                </div>
-                        
-                            <div class="row">
-                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;">Contact Person</p>
-                                </center></div>
-                                <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.customer_name)+'''</p>
-                                </center></div>
-                        
-                                <div class="col-md-1">
-                                     </div>
-                                <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;">Proforma Made By :</p>
-                                </center></div>
-                                <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> '''+str(request.user.name)+'''</p>
-                                </center></div>
-                                </div>
-
-
-                            <div class="row">
-                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;">Address/State</p>
-                                </center></div>
-                                <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.address)+'''</p>
-                                </center></div>
-                        
-                                <div class="col-md-1">
-                                     </div>
-                                <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;">Contact Number:</p>
-                                </center></div>
-                                <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> '''+str(request.user.mobile)+'''</p>
-                                </center></div>
-                                </div>
-                        
-                        
-                        
-                        
-                            <div class="row">
-                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;">Phone</p>
-                                </center></div>
-                                <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.contact_no)+'''</p>
-        </center></div>
-
-        <div class="col-md-1">
-             </div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">Customer GST Number: </p>
-        </center></div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.customer_gst_no)+'''</p>
-        </center></div>
-        </div>
-
-
-
-
-<style>
-    .border_class {
-    border:1px solid black;
-    height:45px;
-    text-align:center;
-    vertical-align: middle;
-    line-height: 45px;
-    }
-
-
-  table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 12px;
-  border-color: black;
-  color: black;
-
-
-
-}
-
-
-th {
-
-  font-size: 13px;
-    border: 1px solid black;
-    text-align: left;
-    padding:5px;
-
-}
-
-td {
-  border: 1px solid black;
-  padding: 3px;
-  font-size: 13px;
-  padding: 5px;
-  text-align: center;
-}
-
-
-            </style>
-
-
-<div style="min-height: 26vw;">
-
-        
-        <div class="row" id="id_manager_view">
-
-    <table>
-        <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Quantity</td>
-            <td style="border: 0px solid gray;">HSN Code</td>
-            <td style="border: 0px solid gray;">Product Code</td>
-            <td style="border: 0px solid gray;">Product Image</td>
-            <td style="border: 0px solid gray;">Product Description</td>
-            <td style="border: 0px solid gray;">Rate</td>
-            <td style="border: 0px solid gray;">Total</td>
-        </tr>
-
-
- '''+table+'''
-
-        <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Total</td>
-        <td>'''+str(total)+''' INR</td>
-        </tr>
-
-        <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Discount%</td>
-        <td>from PI form</td>
-        </tr>
-
-
-        <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Net Total</td>
-        <td></td>
-        </tr>
-
-
-
-        <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>P&F</td>
-        <td>from PI form</td>
-        </tr>
-
-
-
-        <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>CGST @ 9%</td>
-        <td>from PI form</td>
-        </tr>
-
-
-
-
-        <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>SGST @ 9%</td>
-        <td>from PI form</td>
-        </tr>
-
-
-
-
-        <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>IGST @ 18%</td>
-        <td>from PI form</td>
-        </tr>
-
-
-
-        <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Round Up</td>
-        <td>INR</td>
-        </tr>
-
-        <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Grand Total</td>
-        <td>INR</td>
-        </tr>
-
-
-    </table>
-        </div>
-            </div>
-        <div class="row">
-            <div class="col-md-4" style="padding:10px;">
-                <p>GST ID - <b>27AACFH2329F1ZP</b><br>
-                    PAN Number - <b>AACFH2329F</b><br>
-                    TAN Number - <b>MUMH17092F</b></p>
-            </div>
-         <div class="col-md-3" style="padding:10px;">
-<img src="/media/pi_history_file/okay.png" style="width: 100%;">
-         </div>
-
-
-	         <div class="col-md-5" style="padding:10px;">
-<img src="/media/pi_history_file/l.png" style="width: 100%;">
-         </div>
-        </div>
-    <div class="row">
-            <div class="col-md-12" style="padding:10px;"><p>
-I/We hereby certify that my/our registration certificate under the Goods and Service Tax Laws is in force on the date of which the sale of goods specified in this “Proforma Invoice” is made by me/us and that the transaction of sale is covered <br><center>by this and has been effected by me/us and it shall be accounted for in the turnover of sales while filing of return and the due tax, if any, payable on the sale has been paid
-  </center> </p>     </div>
-        </div>
-</div>
-
-
-<div class="row">
-            <div class="col-md-6" style="padding-left: 40px;">
-<p>All prices are Ex-Workshop. Packing and forwarding is extra as indicated<br>
-                All products have an warranty of 1 year against any manufacturing defect unless stated<br>
-                There is no warranty for Loadcell, Battery and Mains Cord<br>
-                Damages due to transportation is out of the scope of warranty<br>
-                Payment is 50% advance with order and remaining 50% before Dispatch<br>
-                This offer is valid for the next 10 days <br>
-    Cheque should be in the name of "Hindustan Scale Co".</p></div>
-
-    <div class="col-md-6" style="padding-left: 40px;">
-<p>Bank details are as follows<br>
-                <b>DCB Bank<br>
-                Name – Hindustan Scale Co.<br>
-                Acct No – 01922412121947<br>
-                IFSC Code-DCBL0000019<br>
-                Type of account – Current Account <br>
-                Bank Name – DCB Bank<br>
-                    Address Mohamedali Road Branch</b></p></div>
-        </div>
-</div>
-
-	<hr>
-
-<span style="font-size: 11px;">HINDUSTAN SCALE COMPANY, 186/188 Janjikar Street, Crawford Market, Mumbai - 400003</span>
-  </p>
-
-
-</div>
-
-</center>
-
-
-
-<script>
-  function printDiv(divName) {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
-
-     document.body.innerHTML = printContents;
-
-     window.print();
-
-     document.body.innerHTML = originalContents;
-}
-</script>
-
-</body>
-</html>'''
+                        # pdf1 =
                         msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER,
                                                      ['liocause@gmail.com','sagarsingh27998@gmail.com'])
-                        html_content2 = '''
-                        
-<html>
-<head>
-  <title>
-    HSCO
-  </title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <style>
-      * {
-    font-family: 'Poppins';
-    font-size: 0.99em;
-
-  }
-
-  table {
-  border-collapse: collapse;
-  width: 85%;
-  font-size: 18px;
-  border-color: black;
-  color: black;
-
-
-
-}
-
-
-th {
-
-  font-size: 13px;
-    border: 1px solid black;
-    text-align: left;
-    padding:5px;
-
-}
-
-td {
-  border: 1px solid black;
-  padding: 3px;
-}
-
-
- @media print and (width: 10.5cm) and (height: 14.8cm) {
-    @page {
-       margin: 3cm;
-    }
- }
-
-
-  </style>
-
-</head>
-<body>
-
-<div  id="printableArea" style="margin-left: 10%; margin-right: 10%;">
-<div class="row" style="padding: 5px; border-bottom: 5px solid black;">
-    <div class="col-xl-2 col-md-2 ">
-<img src="/media/pi_history_file/hsco_template2.jpg" class="img-rounded" width="200" height="120" style="float: right;">
-</div>
-    <div class="col-xl-1 col-md-1 ">
-    </div>
-    <div class="col-xl-4 col-md-4 ">
-<!--        <center>Subject to Mumbai Jurisdiction</center><br>-->
-<!--        <center><h3 style="font: italic bold 22px/30px Georgia, serif;">Proforma Invoice</h3></center>-->
-</div>
-    <div class="col-xl-1 col-md-1 ">
-    </div>
-    <div class="col-xl-4 col-md-4 ">
-        <p>Ph: 022-23423183, 7045922250/51/52<br>
-Manufacture Licence No. LM/MH/H004<br>
-Dealer Licence No. LD/MH/H004<br>
-Repairing Licence No. LR/MH/H004</p>
-</div>
-</div>
-
-
-        <div class="row">
-         <div class="col-md-12" style="padding:10px;">
-        <center><h1 style="font-weight:bold;"> Hindustan Sales and Consultancy</h1>
-        </center></div>
-        </div>
-        <div class="row">
-         <div class="col-md-12" style="padding:0px;">
-        <center><p style="font-weight:bold;"> A one stop shop for all your weighing needs<br><font color="#FC6E20" style="font-weight:bold;"> AN ISO 9001: 2015 CERTIFIED COMPANY</font></p>
-        </center></div>
-        </div>
-
-
-    <div class="row">
-         <div class="col-md-12" style="padding:10px;">
-        <center><p style="font-weight:bold;"> All kinds of Mechanical and Digital Weighing Scales, Weights & Measures.<br>
-        186/188 Janjikar Street, Near Crawford Market, Mumbai- 400003/<font color="#FC6E20">www.hindustanscale.com/hsc@hindustanscale.com</font></p>
-        </center></div>
-        </div>
-
-
-    <div class="row">
-         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> Messrs</p>
-        </center></div>
-        <div class="col-md-5">
-             </div>
-        <div class="col-md-1">
-             </div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> Date :</p>
-        </center></div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">'''+todays_date+''' </p>
-        </center></div>
-        </div>
-
-
-    <div class="row">
-         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> Company Name</p>
-        </center></div>
-        <div class="col-md-5">
-             <center><p style="font-weight:bold; float:left; text-decoration: underline;">'''+str(lead_id.customer_id.company_name)+''' </p>
-        </center></div>
-
-        <div class="col-md-1">
-             </div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">PI Number:</p>
-        </center></div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">'''+str(item2.id)+''' </p>
-        </center></div>
-        </div>
-
-    <div class="row">
-         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">Contact Person</p>
-        </center></div>
-        <div class="col-md-5">
-             <center><p style="font-weight:bold; float:left;">'''+str(lead_id.customer_id.customer_name)+''' </p>
-        </center></div>
-
-        <div class="col-md-1">
-             </div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">Proforma Made By :</p>
-        </center></div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">'''+str(request.user.name)+''' </p>
-        </center></div>
-        </div>
-
-
-
-
-    <div class="row">
-         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">Address/State</p>
-        </center></div>
-        <div class="col-md-5">
-             <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.address)+'''</p>
-        </center></div>
-
-        <div class="col-md-1">
-             </div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">Contact Number:</p>
-        </center></div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">'''+str(request.user.mobile)+'''</p>
-        </center></div>
-        </div>
-
-
-
-
-    <div class="row">
-         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">Phone</p>
-        </center></div>
-        <div class="col-md-5">
-             <center><p style="font-weight:bold; float:left;"> '''+str(lead_id.customer_id.contact_no)+'''</p>
-        </center></div>
-
-        <div class="col-md-1">
-             </div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">Customer GST Number: </p>
-        </center></div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">'''+str(lead_id.customer_id.customer_gst_no)+''' </p>
-        </center></div>
-        </div>
-
-
-
-
-<style>
-    .border_class {
-    border:1px solid black;
-    height:45px;
-    text-align:center;
-    vertical-align: middle;
-    line-height: 45px;
-    }
-
-
-  table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 12px;
-  border-color: black;
-  color: black;
-
-
-
-}
-
-
-th {
-
-  font-size: 13px;
-    border: 1px solid black;
-    text-align: left;
-    padding:5px;
-
-}
-
-td {
-  border: 1px solid black;
-  padding: 3px;
-  font-size: 13px;
-  padding: 5px;
-  text-align: center;
-}
-
-
-            </style>
-
-
-<div style="min-height: 26vw;">
-
-        <div class="row" id="id_manager_view">
-
-    <table>
-        <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Quantity</td>
-            <td style="border: 0px solid gray;">HSN Code</td>
-            <td style="border: 0px solid gray;">Product Description</td>
-            <td style="border: 0px solid gray;">Rate</td>
-            <td style="border: 0px solid gray;">Total</td>
-        </tr>
-
-
- '''+table2+'''
-
-        <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Total</td>
-        <td>INR</td>
-        </tr>
-
-        <tr>
-        <td></td>
-
-        <td></td>
-        <td></td>
-        <td>Discount%</td>
-        <td>from PI form</td>
-        </tr>
-
-
-        <tr>
-        <td></td>
-
-        <td></td>
-        <td></td>
-        <td>Net Total</td>
-        <td></td>
-        </tr>
-
-
-
-        <tr>
-        <td></td>
-
-        <td></td>
-        <td> Delivery Charges </td>
-        <td>P&F</td>
-        <td>from PI form</td>
-        </tr>
-
-
-
-        <tr>
-        <td></td>
-
-        <td></td>
-        <td></td>
-        <td>CGST @ 9%</td>
-        <td>from PI form</td>
-        </tr>
-
-
-
-
-        <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>SGST @ 9%</td>
-        <td>from PI form</td>
-        </tr>
-
-
-
-
-        <tr>
-        <td></td>
-
-        <td></td>
-        <td></td>
-        <td>IGST @ 18%</td>
-        <td>from PI form</td>
-        </tr>
-
-
-
-        <tr>
-        <td></td>
-
-        <td></td>
-        <td></td>
-        <td>Round Up</td>
-        <td>INR</td>
-        </tr>
-
-        <tr>
-        <td></td>
-
-        <td></td>
-        <td></td>
-        <td>Grand Total</td>
-        <td>INR</td>
-        </tr>
-
-
-    </table>
-        </div>
-            </div>
-        <div class="row">
-            <div class="col-md-4" style="padding:10px;">
-                <p>GST ID - <b>27AACFH2329F1ZP</b><br>
-                    PAN Number - <b>AACFH2329F</b></p>
-            </div>
-         <div class="col-md-3" style="padding:10px;">
-<!--<img src="/media/pi_history_file/okay.png" style="width: 100%;">-->
-         </div>
-
-
-	         <div class="col-md-5" style="padding:10px;">
-<img src="/media/pi_history_file/l.png" style="width: 100%;">
-         </div>
-            #######################################################################################################################
-        </div>
-    <div class="row">
-            <div class="col-md-12" style="padding:10px; float:left; "><p>
-                This offer is valid for the next 10 days <br>
-                All prices are Ex-Workshop. Packing and forwarding is extra<br>
-                Cheque should be in the name of "Hindustan Sales and Consultancy"<br>
-                Bank details are as follows<br>
- </p>     </div>
-        </div>
-
-
-
-<div class="row">
-    <div class="col-md-6" style="padding-left: 40px;">
-<p>Bank details are as follows<br>
-                <b>DCB Bank<br>
-                Name – Hindustan Scale Co.<br>
-                Acct No – 01922412121947<br>
-                IFSC Code-DCBL0000019<br>
-                Type of account – Current Account <br>
-                Bank Name – DCB Bank<br>
-                    Address Mohamedali Road Branch</b></p></div>
-        </div>
-</div>
-</div>
-
-	<hr>
-
-<!--<span style="font-size: 11px;">HINDUSTAN SCALE COMPANY, 186/188 Janjikar Street, Crawford Market, Mumbai - 400003</span>-->
-  </p>
-
-
-</div>
-
-</center>
-
-
-
-<script>
-  function printDiv(divName) {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
-
-     document.body.innerHTML = printContents;
-
-     window.print();
-
-     document.body.innerHTML = originalContents;
-}
-</script>
-
-</body>
-</html>
-                        '''
-
+                        # html_content2 =
+                        html_content1 =''
                         if email == 'True' and select_pi_template == '1':
                             msg.attach_alternative(html_content1, "text/html")
                             msg.send()
@@ -1808,6 +985,13 @@ td {
                 # if whatsapp == 'True':
                 #     return redirect('https://api.whatsapp.com/send?phone=91' + customer_id.contact_no + '&text=' + 'hi')
             else :
+                pdf = request.FILES.get('pdf')
+                if pdf != None:
+                    history = Pi_History()
+                    history.file = pdf
+                    history.lead_id = Lead.objects.get(id=id)
+                    history.log_entered_by = request.user.profile_name
+                    history.save()
                 item2 = Pi_section()
                 item2.discount = discount
                 item2.upload_pi_file = upload_pi_file
@@ -4212,9 +3396,7 @@ def download_pi_pdf(request,id):
     lead_id=Lead.objects.get(id=id)
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
     pi_id = Pi_section.objects.get(lead_id=id)
-    print(pi_id)
-    print(pi_id.discount_type)
-    print(pi_id.discount_type)
+
     pi_products = Pi_product.objects.filter(lead_id=id)
     context={
         'lead_id':lead_id,
@@ -4224,6 +3406,19 @@ def download_pi_pdf(request,id):
     }
     return render(request,'lead_management/download_pi_pdf.html',context)
 
+def download_pi_second_pdf(request,id):
+    lead_id=Lead.objects.get(id=id)
+    todays_date = str(datetime.now().strftime("%Y-%m-%d"))
+    pi_id = Pi_section.objects.get(lead_id=id)
+
+    pi_products = Pi_product.objects.filter(lead_id=id)
+    context={
+        'lead_id':lead_id,
+        'todays_date':todays_date,
+        'pi_id':pi_id,
+        'pi_products':pi_products,
+    }
+    return render(request,'lead_management/download_pi_second_pdf.html',context)
 
 @login_required(login_url='/')
 def check_admin_roles(request):

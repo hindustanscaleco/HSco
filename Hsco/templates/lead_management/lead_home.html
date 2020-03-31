@@ -253,8 +253,8 @@ $(function() {
      <option value="d3">Search By Email Id</option>
      <option value="d4">Search By Customer Name</option>
      <option value="d5">Search By Company Name</option>
-     <option value="d6">Search By CRM No.</option>
-     <option value="d7">Search By Purchase No.</option>
+     <!--<option value="d6">Search By CRM No.</option>-->
+     <option value="d7">Search By Serial No.</option>
      <!--<option value="d7">Search By CRM Number Range</option>-->
   </select>
 </div>
@@ -267,28 +267,26 @@ $(function() {
 
 
 <div class="output">
-                                                              <form method="POST" autocomplete="off">{% csrf_token%}
   <div id="d1" class="divs d1 row">
+                                                              <form method="POST" autocomplete="off">{% csrf_token%}
 
       <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
-                <input name="date1" type="date" placeholder="Search 1" class="form-control">
-
+                <input name="date1" type="date"  class="form-control">
       </div>
 
       <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
                 <p style="font-weight: 600;">_</p>
-
       </div>
 
       <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
-                <input name="date2" type="date" placeholder="Search 1" class="form-control">
-
+                <input name="date2" type="date"  class="form-control">
       </div>
       <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
-                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
-
+                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button>
       </div>
                                </form>
+
+      </div>
 
 
   <div id="d2" class="divs d2">
@@ -321,27 +319,34 @@ $(function() {
     </form>
     </div>
 
-                               <form method="POST">{% csrf_token%}
   <div id="d5" class="divs d5">
+                                     <form method="POST">{% csrf_token%}
+
       <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button></div>
-</form>
+      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button>
+  </form>
 
-                               <form method="POST">{% csrf_token%}
+  </div>
+
 
     <div id="d6" class="divs d6">
+                                       <form method="POST">{% csrf_token%}
+
       <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
-</form>
-                       <form method="POST">{% csrf_token%}
+      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button>
+    </form>
+</div>
 
     <div id="d7" class="divs d7">
-      <input type="text" name="purchase_no" placeholder="Purchase No." class="form-control" style="width: 25%;float: left;">
+                               <form method="POST">{% csrf_token%}
+
+      <input type="text" name="serial_no" placeholder="Serial No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
-</form>
+      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button>
+    </form>
+</div>
                                <!--<form method="POST">{% csrf_token%}-->
 
   <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
