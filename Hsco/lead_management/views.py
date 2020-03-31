@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.paginator import Paginator
 from django.db import connection
@@ -32,7 +33,7 @@ from dispatch_app.models import Dispatch
 from purchase_app.models import Product_Details
 
 from dispatch_app.models import Product_Details_Dispatch
-
+from django.core.mail import EmailMessage
 def lead_home(request):
     import requests
     import json
@@ -882,16 +883,17 @@ def update_view_lead(request,id):
                 text_content = ''
                 subject = 'Support'
                 # pdf1 =
-                msg = EmailMultiAlternatives(subject,'fdsklfhsd' , settings.EMAIL_HOST_USER,[lead_id.customer_id.customer_email_id])
+                email_send = EmailMessage(subject, 'Testing', settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+                # msg = EmailMultiAlternatives(subject,'fdsklfhsd' , settings.EMAIL_HOST_USER,[lead_id.customer_id.customer_email_id])
                 if email == 'True' :
                     # msg.attach(pdf, history.file.read(), 'application/pdf')
 
-                    msg.content_subtype = "application/pdf"  # Main content is now text/html
+                    # msg.content_subtype = "application/pdf"  # Main content is now text/html
                     # msg.attach_file(history.file.url)
-                    msg.attach('design.pdf', history.file.path, 'application/pdf')
+                    email_send.attach_file(history.file.path)
                     print(history.file.path)
                     # msg.attach_file(pdf)
-                    msg.send()
+                    email_send.send()
                     # history = Pi_History()
                     # file = ContentFile(html_content1)
                     # # pdfkit.from_file(file, 'out.pdf')
