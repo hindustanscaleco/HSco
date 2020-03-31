@@ -15,6 +15,7 @@ from .forms import SiteUser_Form, LoginForm, Password_reset_Form
 from .models import SiteUser
 import secrets
 import string
+from datetime import datetime, timedelta
 
 from lead_management.models import Auto_followup_details
 
@@ -453,12 +454,16 @@ def navbar(request):
 
 
 def dashboard(request):
-    afd=Auto_followup_details.objects.filter()
+    todays_date = datetime.now().date()
+
+
+    afd=Auto_followup_details.objects.filter(followup_date=todays_date)
+    print("Doing Auto Followqqqq")
     for item in afd:
 
         if (item.follow_up_history.is_email):
 
-            send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.file, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
+            send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
 
 
         if (item.follow_up_history.is_sms):
@@ -467,6 +472,10 @@ def dashboard(request):
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+        end_date = todays_date + timedelta(days=2)
+        Auto_followup_details.objects.filter(id=item.id).update(followup_date=end_date)
+    print("Doing Auto Followup")
+
 
 
 

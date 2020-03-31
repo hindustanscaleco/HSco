@@ -3,6 +3,7 @@
 
 <head>
   {% load static %}
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,7 +13,6 @@
   <title>HSCO</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -27,6 +27,7 @@
 }
 
 </style>
+
 
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
@@ -210,7 +211,11 @@ td {
   {% for item in obj_list %}
 
 
-
+     <script>
+    $(function(){
+      $("#includedContent{{forloop.counter}}").load('/media/{{item.file}}');
+    });
+    </script>
 
  {% ifchanged item.entry_timedate.date %}
 
@@ -238,8 +243,9 @@ td {
   <div class="card shadow" >
       <br>
        <form action="" method='POST' enctype="multipart/form-data" >{% csrf_token %}
-
-
+{% if not item.is_manual_mode %}
+<span style="float:right;margin:10px;" class="alert alert-danger">Auto Follow-Up</span>
+           {% endif %}
                         <div class="row col-md-12" style="margin-left:4%">
                               <br>
 <div class="col-md-6" id="my123">
@@ -306,54 +312,16 @@ td {
 </center>
 
 
-                         <div class="">
-<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+    <div id="includedContent{{forloop.counter}}"></div>
 
+           {% if not item.is_manual_mode %}
+           <center>
+               <br>
+               <br>
+               <button onclick="location.href='/update_view_lead/{{item.follow_up_section.lead_id.pk}}'" class="btn btn-primary">Edit</button>
+           </center>
 
-               <table style="font-size: 14px;">
-
-                     {% for item in followup_products_list %}
-
- <tr>
-    <td colspan="5" style="text-align: center;"><input type="checkbox" class="custom-control-input" name="checks_pro[]" value="{{item.pk}}" id="customCheck{{forloop.counter}}"><label class="custom-control-label" for="customCheck{{forloop.counter}}">Select Product</label>
-</td>
-
-
-  </tr>
-
-  <tr>
-    <td>Product Code:</td>
-      <td colspan="5" style="text-align: center;"> Product Image   </td>
-
-  </tr>
-                   <tr>
-    <td>HSN Code: {{item.product_id.hsn_code}} </td>
-
-                   <td rowspan="5">
-                       {% if item.product_id.product_image %}
-                       <img height="150" width="150" src="{{item.product_id.product_image.url}}">
-                       {% endif %}
-                   </td>
-</tr>
-<tr>
-  <td>Sub Sub Model: {{item.product_id.sub_sub_category}} </td>
-</tr>
-<tr>
-   <td>Platform Size: {{item.product_id.platform_size}} </td>
-               </tr>
-
-<tr>
-   <td>Product Description: {{item.product_id.product_desc}} </td>
-               </tr>
-
-<tr>
-   <td>Rate : {{item.product_id.selling_price}} </td>
-
-  </tr>
-                   {% endfor %}
-</table>
-              </div>
-                          </div>
+           {% endif %}
 
                           </form>
 

@@ -63,30 +63,51 @@ def lead_home(request):
         if 'sort_submit' in request.POST:
             YEAR = request.POST.get('YEAR')
             MONTH = request.POST.get('MONTH')
-            found = False
+            found = ''
 
 
             if request.user.role == 'Super Admin':  # For ADMIN
                 lead_list = Lead.objects.filter(entry_timedate__month = MONTH , entry_timedate__year = YEAR).order_by('-id')
-                lead_list_count = Lead.objects.filter(entry_timedate__month = MONTH , entry_timedate__year = YEAR).count()
+                lead_list_count = lead_list.count()
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
+                if (lead_list_count > 0):
+                    found = True
+                    context22 = {
+                        'lead_list_count': found,
+                        'lead_list': lead_list,
+                    }
+                    context.update(context22)
+                elif (lead_list_count <= 0):
+                    found = True
+                    context22 = {
+                        'err': found,
+                        'lead_list': lead_list,
+
+                    }
+                    context.update(context22)
             else:
                 admin = SiteUser.objects.get(id=request.user.pk).admin
                 lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(entry_timedate__month = MONTH , entry_timedate__year = YEAR)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(entry_timedate__month = MONTH , entry_timedate__year = YEAR)).count()
+                lead_list_count = lead_list.count()
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
-            if(lead_list_count>0):
-                found = True
-            elif(lead_list_count<0):
-                found = False
-            context22={
-                'lead_list_count': found,
-            }
-            context.update(context22)
+                if (lead_list_count > 0):
+                    found = True
+                    context22 = {
+                        'lead_list_count': found,
+                        'lead_list': lead_list,
+                    }
+                    context.update(context22)
+                elif (lead_list_count <= 0):
+                    found = True
+                    context22 = {
+                        'err': found,
+                        'lead_list': lead_list,
+                    }
+                    context.update(context22)
 
         if 'submit1' in request.POST:
             start_date = request.POST.get('date1')
@@ -3065,12 +3086,11 @@ td {
                     for count_for, single in enumerate(final_list):
                         html_rows = html_rows + '''<tr> '''
                         count = count + 1
-                        sms_content = sms_content + '''\nProduct No-''' + str(count_for + 1) + ''':'''
+                        sms_content = sms_content + '''\nProduct No-''' + str(count_for + 1) + ''':\n'''
                         wa_content = wa_content + '''\nProduct No - ''' + str(
                             count_for + 1) + ''':\n______________________________________________________\n'''
                         for item in single:
-                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + item.partition(":")[
-                                2] + '''\n'''
+                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + item.partition(":")[2] + '''\n'''
                             wa_content = wa_content + item.partition(":")[0] + ''' :''' + item.partition(":")[
                                 2] + '''\n'''
                             html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
@@ -3160,6 +3180,7 @@ td {
                         </body>
                         </html>'''
 
+                        history_follow.html_content=html_content
                         file = ContentFile(html_content)
                         history_follow.file.save('AutoFollowup.html', file, save=False)
 
@@ -3175,7 +3196,7 @@ td {
 
                     history_follow.save()
                     afd= Auto_followup_details()
-                    afd.follow_up_history = History_followup.objects.get(id=history_follow)
+                    afd.follow_up_history = History_followup.objects.get(id=history_follow.id)
                     afd.save()
                     context28 = {
                         'success_6': "Followup Will Be Done Automatically After Every 2 Days",
