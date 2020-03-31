@@ -99,18 +99,17 @@ def lead_home(request):
             if(row_count!=None):
                 error = row_count['Error_Message']
                 error_exist = True
+    if request.user.role =='Super Admin':     #For ADMIN
+        lead_list = Lead.objects.all().order_by('-id')
+        paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+        page = request.GET.get('page')
+        lead_list = paginator.get_page(page)
     else:
-        if request.user.role =='Super Admin':     #For ADMIN
-            lead_list = Lead.objects.all().order_by('-id')
-            paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
-            page = request.GET.get('page')
-            lead_list = paginator.get_page(page)
-        else:
-            admin = SiteUser.objects.get(id=request.user.pk).admin
-            lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).order_by('-id')
-            paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
-            page = request.GET.get('page')
-            lead_list = paginator.get_page(page)
+        admin = SiteUser.objects.get(id=request.user.pk).admin
+        lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).order_by('-id')
+        paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+        page = request.GET.get('page')
+        lead_list = paginator.get_page(page)
     cust_sugg = Customer_Details.objects.all()
 
     context = {
