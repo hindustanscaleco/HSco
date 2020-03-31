@@ -419,7 +419,6 @@ function myFunction() {
 
 
 
-
                               </div>
 
                               <div class="form-group row">
@@ -481,20 +480,42 @@ function myFunction() {
 
 
 
-                                <label class="col-md-2 control-label" id="lost_reason_label" style="display: none;">Reason:</label>
+
+                                {% if lead_id.current_stage == 'Lost' %}
+                                       <label class="col-md-2 control-label" id="lost_reason_label" >Reason:</label>
+                              <div class="col-md-3 inputGroupContainer" id="lost_reason_div" >
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form2.lost_reason }}
+                            </div>
+                                  </div>
+                                {% else %}
+                                         <label class="col-md-2 control-label" id="lost_reason_label" style="display: none;">Reason:</label>
                               <div class="col-md-3 inputGroupContainer" id="lost_reason_div" style="display: none;">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form2.lost_reason }}
                             </div>
                                   </div>
-                                <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Reason:</label>
+                                {% endif %}
+
+{% if lead_id.current_stage == 'Postponed' %}
+                                <label class="col-md-2 control-label" id="postponed_lost_reason_label" >Reason:</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" >
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form2.postponed_reason }}
+                            </div>
+                                  </div>
+                                     {% else %}
+                                 <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Reason:</label>
                               <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: none;">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form2.postponed_reason }}
                             </div>
                                   </div>
+                                     {% endif %}
 
 
                           </div>
@@ -858,7 +879,7 @@ function myFunction_call() {
 
 
                          <div class="">
-<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; ">
+<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; overflow-x: scroll;">
 
     <table>
 
@@ -921,8 +942,11 @@ function myFunction_call() {
 
                          <br>
                          <center>
+{% if auto_manual_mode == 'Automatic' %}
+           {% else %}
+     <button name="submit5" style="background-color: #FC6E20;" class="btn btn-primary" type="submit" onclick="save_alert_form();">Send</button>
 
-<button name="submit5" style="background-color: #FC6E20;" class="btn btn-primary" type="submit" onclick="save_alert_form();">Send</button>
+           {% endif %}
                     </center>
                           </form>
                     <br>
@@ -1274,6 +1298,13 @@ function whosFunction() {
               </div>
             </div>
         {% endif %}
+
+                                          {% if lead_id.is_entered_purchase %}
+         <center>
+             <button class="btn btn-primary" type="clear" onclick="location.href='/update_customer_details/{{lead_id.purchase_id.pk}}'">Go To Purchase</button>
+
+         </center>
+{% endif %}
 
         <!-- /.container-fluid -->
       </div>

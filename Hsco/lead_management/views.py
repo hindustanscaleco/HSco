@@ -682,6 +682,7 @@ def update_view_lead(request,id):
             is_entered_purchase = Lead.objects.get(id=id).is_entered_purchase
             if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
                 Lead.objects.filter(id=id).update(is_entered_purchase=True)
+
                 purchase_det = Purchase_Details()
                 purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
                 purchase_det.company_address = lead_id.customer_id.address  # new2
@@ -707,6 +708,7 @@ def update_view_lead(request,id):
                 purchase_det.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no + 1
                 purchase_det.log_entered_by = request.user.profile_name
                 purchase_det.save()
+                Lead.objects.filter(id=id).update(purchase_id=Purchase_Details.objects.get(id=purchase_det.pk))
 
                 dispatch = Dispatch()
                 dispatch.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
@@ -3411,10 +3413,10 @@ def select_product_followup(request,id):
             product_id = request.POST.get('product_id')
 
             requested_product = Product.objects.get(id=product_id)
-            print("product_id")
+
             print(product_id)
             print(requested_product)
-            print("requested_product")
+
             fol_pro=Followup_product()
             fol_pro.product_id = requested_product
             fol_pro.lead_id = Lead.objects.get(id=id)
@@ -3545,11 +3547,30 @@ def lead_manager_view(request):
     return render(request,'lead_management/lead_manager.html',context)
 
 def lead_follow_up_histroy(request,follow_up_id):
+    context={}
     obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
 
-    context={
+    if request.method == 'POST':
+        if 'sub1' in request.POST:
+            delete_id = request.POST.get('delete_id')
+
+            Auto_followup_details.objects.filter(follow_up_history__pk=delete_id).delete()
+            History_followup.objects.filter(id=delete_id).update(is_auto_follow_deleted=True)
+            obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
+            Follow_up_section.objects.filter(id=History_followup.objects.get(id=delete_id).follow_up_section.pk).update(auto_manual_mode='Select Mode')
+            context2 = {
+                'obj_list': obj_list,
+                'is_deleted': True,
+                'msg': 'Auto Follow-up Cancelled Successfully',
+            }
+            context.update(context2)
+
+
+
+    context23={
         'obj_list':obj_list,
     }
+    context.update(context23)
 
     return render(request,'lead_management/follow_up_history.html',context)
 

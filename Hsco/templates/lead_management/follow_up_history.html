@@ -188,6 +188,15 @@ td {
         <!-- Begin Page Content -->
         <div class="container-fluid ">
 
+                           {% if is_deleted %}
+
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Sent : </strong> {{msg}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
           <!-- Page Heading -->
 
            <div class="row">
@@ -217,6 +226,9 @@ td {
     });
     </script>
 
+
+
+
  {% ifchanged item.entry_timedate.date %}
 
            <div class="col-xl-12 col-lg-12">
@@ -241,13 +253,16 @@ td {
 
 
   <div class="card shadow" >
-      <br>
-       <form action="" method='POST' enctype="multipart/form-data" >{% csrf_token %}
-{% if not item.is_manual_mode %}
+                      {% if not item.is_manual_mode %}
 <span style="float:right;margin:10px;" class="alert alert-danger">Auto Follow-Up</span>
            {% endif %}
+      <br>
+
+
                         <div class="row col-md-12" style="margin-left:4%">
+
                               <br>
+
 <div class="col-md-6" id="my123">
     <label class="col-md-12 control-label">Whatsapp Number :  {{ item.wa_no }}</label>
 
@@ -314,24 +329,26 @@ td {
 
     <div id="includedContent{{forloop.counter}}"></div>
 
-           {% if not item.is_manual_mode %}
+
+           {% if not item.is_auto_follow_deleted and not item.is_manual_mode %}
            <center>
                <br>
-               <br>
-               <button onclick="location.href='/update_view_lead/{{item.follow_up_section.lead_id.pk}}'" class="btn btn-primary">Edit</button>
+
+                            <form action="" method='POST' enctype="multipart/form-data" >{% csrf_token %}
+                        <input type="hidden" name="delete_id" value="{{item.pk}}">
+               <button type="submit" name="sub1" class="btn btn-primary">Cancel</button>
+                                        </form>
+                   <br>
            </center>
 
            {% endif %}
 
-                          </form>
+
 
 
 
                     </div>
 
-
-
-</form>
 
 
                           </div>
