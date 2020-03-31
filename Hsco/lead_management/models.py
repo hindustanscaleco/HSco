@@ -10,8 +10,11 @@ from stock_system.models import Product
 from django.core.validators import URLValidator
 from model_utils import FieldTracker
 
+from purchase_app.models import Purchase_Details
+
 
 class Lead(models.Model):
+    purchase_id = models.ForeignKey(Purchase_Details, on_delete=models.CASCADE,null=True,blank=True)
     customer_id = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
     owner_of_opportunity = models.ForeignKey(SiteUser,null=True,blank=True,on_delete=models.CASCADE)
     current_stage = models.CharField(max_length=50,null=True,blank=True)
@@ -132,14 +135,16 @@ class History_followup(models.Model):
     call_response = models.TextField(max_length=120, null=True, blank=True)
     sms_msg = models.TextField()
     is_manual_mode = models.BooleanField(default=True)
+    is_auto_follow_deleted = models.BooleanField(default=False)
     file = models.FileField(null=True, blank=True, upload_to='followup_history_file/')
+    html_content = models.TextField(null=True, blank=True)
     # entry_timedate = models.DateTimeField(default=timezone.now,)
     entry_timedate = models.DateField(default=datetime.date.today)
 
 
 class Auto_followup_details(models.Model):
     follow_up_history = models.ForeignKey(History_followup,on_delete=models.CASCADE,null=True,blank=True)
-    followup_date = models.DateTimeField(default=timezone.now,)
+    followup_date = models.DateField(default=datetime.date.today,)
     is_followed = models.BooleanField(default=False)
     # entry_timedate = models.DateTimeField(default=timezone.now,)
     entry_timedate = models.DateField(default=datetime.date.today)
