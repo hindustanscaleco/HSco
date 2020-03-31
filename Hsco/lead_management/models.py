@@ -116,15 +116,6 @@ class Follow_up_section(models.Model):
         return self.id
 
 
-class Auto_followup_details(models.Model):
-    follow_up_section = models.ForeignKey(Follow_up_section,on_delete=models.CASCADE,null=True,blank=True)
-    followup_date = models.DateTimeField(default=timezone.now,)
-    is_followed = models.BooleanField(default=False)
-    # entry_timedate = models.DateTimeField(default=timezone.now,)
-    entry_timedate = models.DateField(default=datetime.date.today)
-    tracker = FieldTracker()
-    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
-
 
 class History_followup(models.Model):
     follow_up_section = models.ForeignKey(Follow_up_section,on_delete=models.CASCADE,null=True,blank=True)
@@ -140,6 +131,8 @@ class History_followup(models.Model):
     email_msg = models.TextField(max_length=120, null=True, blank=True)
     call_response = models.TextField(max_length=120, null=True, blank=True)
     sms_msg = models.TextField()
+    is_manual_mode = models.BooleanField(default=True)
+    file = models.FileField(null=True, blank=True, upload_to='followup_history_file/')
     # entry_timedate = models.DateTimeField(default=timezone.now,)
     entry_timedate = models.DateField(default=datetime.date.today)
 

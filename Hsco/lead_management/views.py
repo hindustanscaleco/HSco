@@ -391,10 +391,6 @@ def update_view_lead(request,id):
         context.update(context2)
     else:
         pass
-    pi_pro = Pi_product.objects.filter(lead_id=lead_id.pk)
-    for item in pi_pro:
-        print(item.product_id.scale_type)
-        print(item.product_id.scale_type)
 
     if request.method == 'POST' or request.method == 'FILES':
         if 'submit' in request.POST:
@@ -2618,6 +2614,7 @@ td {
             selected_products = request.POST.getlist('checks_pro[]')
             selected_fields = Follow_up_section.objects.get(lead_id=id).fields
 
+
             if(len(selected_products)<1):
 
                 context22={
@@ -2645,7 +2642,7 @@ td {
                     'error_exist': True,
                 }
                 context.update(context28)
-            else:
+            elif(email_auto_manual == 'Manual'):
 
                 final_list = []
                 Follow_up_section.objects.filter(lead_id=id).update(whatsappno=wa_no,)
@@ -2836,6 +2833,179 @@ td {
                 history_follow.log_entered_by = request.user.name
 
                 history_follow.save()
+            elif (email_auto_manual == 'Automatic'):
+
+                if(Auto_followup_details.objects.filter(follow_up_history__follow_up_section__lead_id__id=lead_id.id).count()==0):
+                    final_list = []
+                    Follow_up_section.objects.filter(lead_id=id).update(whatsappno=wa_no, )
+                    Follow_up_section.objects.filter(lead_id=id).update(auto_manual_mode=email_auto_manual, )
+
+                    history_follow = History_followup()
+                    history_follow.follow_up_section = Follow_up_section.objects.get(id=hfu.id)
+
+                    selected_fields2 = selected_fields.replace("'", "").strip('][').split(
+                        ', ')  # convert string to list
+                    history_follow.fields = selected_fields2
+                    history_follow.product_ids = selected_products
+                    history_follow.is_manual_mode = False
+                    history_follow.is_call = False
+                    history_follow.is_whatsapp = False
+
+                    length_of_list = 1
+                    count_list = 0
+
+                    html_head = '''<thead> '''
+                    for item in selected_fields2:
+                        pro_list = Followup_product.objects.filter(lead_id=id, pk__in=selected_products).values_list(
+                            item, flat=True)
+                        list_pro = []
+                        item = item.replace('product_id_id__', '').replace('_', ' ').title().replace('Category',
+                                                                                                     'Model')
+                        if (count_list == 0):
+                            for ite, lt in enumerate(pro_list):
+                                if (ite == 0):
+                                    html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
+                                final_list.append([item + ' : ' + str(lt)])
+                            count_list = count_list + 1
+                        else:
+                            for ite, lt in enumerate(pro_list):
+                                if (ite == 0):
+                                    html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
+                                final_list[ite] = final_list[ite] + [item + ' : ' + str(lt)]
+                                # final_list[ite].append(list_pro)
+                    html_head = html_head + '''</thead> '''
+
+                    html_rows = ''''''
+                    count = 1
+                    sms_content = ''''''
+                    wa_content = ''''''
+                    for count_for, single in enumerate(final_list):
+                        html_rows = html_rows + '''<tr> '''
+                        count = count + 1
+                        sms_content = sms_content + '''\nProduct No-''' + str(count_for + 1) + ''':'''
+                        wa_content = wa_content + '''\nProduct No - ''' + str(
+                            count_for + 1) + ''':\n______________________________________________________\n'''
+                        for item in single:
+                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + item.partition(":")[
+                                2] + '''\n'''
+                            wa_content = wa_content + item.partition(":")[0] + ''' :''' + item.partition(":")[
+                                2] + '''\n'''
+                            html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
+                        html_rows = html_rows + '''</tr>'''
+
+
+
+                    if (is_email == 'on'):
+                        email_subject = request.POST.get('email_subject')
+                        email_msg = request.POST.get('email_msg')
+                        history_follow.is_email = True
+                        history_follow.email_subject = email_subject
+                        history_follow.email_msg = email_msg
+                        Follow_up_section.objects.filter(lead_id=id).update(email_subject=email_subject, )
+
+                        html_content = '''<html>
+                        <head>
+                          <title>
+                            HSCO
+                          </title>
+
+                          <meta name="viewport" content="width=device-width, initial-scale=1">
+                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+                          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+                          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+                          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+                          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+                          <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
+                        <body>
+
+                        <style>
+                            .border_class {
+                            border:1px solid black;
+                            height:45px;
+                            text-align:center;
+                            vertical-align: middle;
+                            line-height: 45px;
+                            }
+                          table {
+                          border-collapse: collapse;
+                          width: 100%;
+                          font-size: 12px;
+                          border-color: black;
+                          color: black;
+                        }
+                        th {
+                          font-size: 13px;
+                            border: 1px solid black;
+                            text-align: left;
+                            padding:5px;
+                        }
+                    td {
+                      border: 1px solid black;
+                      padding: 3px;
+                      font-size: 13px;
+                      padding: 5px;
+                      text-align: center;
+                    }
+
+
+                                </style>
+
+                                              <div class="card shadow">
+
+                    <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+                        <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
+
+                                  </div>
+                              </style>
+                                                  <div class="card shadow">
+
+                        <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+                            <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
+
+                            <h4>''' + email_msg + '''</h4>
+
+                            <table style="font-size: 14px;">
+
+                            ''' + html_head + ''' 
+
+                        ''' + html_rows + ''' 
+                        </table>
+                                      </div>
+                                                  </div>
+                        </body>
+                        </html>'''
+
+                        file = ContentFile(html_content)
+                        history_follow.file.save('AutoFollowup.html', file, save=False)
+
+
+
+                    if (is_sms == 'on'):
+                        sms_msg = request.POST.get('sms_msg')
+                        history_follow.is_sms = True
+                        history_follow.sms_msg = sms_msg + '\n' + sms_content
+
+
+                    history_follow.log_entered_by = request.user.name
+
+                    history_follow.save()
+                    afd= Auto_followup_details()
+                    afd.follow_up_history = History_followup.objects.get(id=history_follow)
+                    afd.save()
+                    context28 = {
+                        'success_6': "Followup Will Be Done Automatically After Every 2 Days",
+                        'success_exist_6': True,
+                    }
+                    context.update(context28)
+                elif(Auto_followup_details.objects.filter(follow_up_history__follow_up_section__lead_id__id=lead_id.id).count()>0):
+                    context28 = {
+                        'error': "Auto Follow-Up is Already Set For This Lead\nTo Edit Auto Follow-Up Click On History Button In Follow-Up Section",
+                        'error_exist': True,
+                    }
+                    context.update(context28)
+
 
     return render(request, 'lead_management/update_view_lead.html',context)
 

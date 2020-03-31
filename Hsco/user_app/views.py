@@ -1,3 +1,6 @@
+import json
+
+import requests
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from django.db import connection
@@ -12,6 +15,10 @@ from .forms import SiteUser_Form, LoginForm, Password_reset_Form
 from .models import SiteUser
 import secrets
 import string
+
+from lead_management.models import Auto_followup_details
+
+from lead_management.utils import send_html_mail
 
 
 class LoginView(FormView):
@@ -446,6 +453,24 @@ def navbar(request):
 
 
 def dashboard(request):
+    afd=Auto_followup_details.objects.filter()
+    for item in afd:
+
+        if (item.follow_up_history.is_email):
+
+            send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.file, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
+
+
+        if (item.follow_up_history.is_sms):
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.follow_up_history.follow_up_section.lead_id.customer_id.contact_no + "&message=" + item.follow_up_history.sms_msg + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+
+
+
+
     return render(request,"dashboardnew/dashboard.html",)
 
 def graph(request):
