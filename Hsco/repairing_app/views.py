@@ -1641,15 +1641,19 @@ def repairing_employee_graph(request,user_id):
 
     target_achieved = 0.0
     avg_time = 0.0
-    obj = Employee_Analysis_month.objects.get(user_id=user_id, entry_date__month=mon)
+    try:
+        obj = Employee_Analysis_month.objects.get(user_id=user_id, entry_date__month=mon)
+    except:
+        pass
 
     try:
         obj.reparing_target_achived_till_now = (obj.total_reparing_done / obj.reparing_target_given) * 100
         obj.save(update_fields=['reparing_target_achived_till_now'])
         target_achieved = obj.reparing_target_achived_till_now
+        avg_time = obj.avg_time_to_repair_single_scale
+
     except:
         pass
-    avg_time = obj.avg_time_to_repair_single_scale
 
     this_month = Repairing_after_sales_service.objects.filter(taken_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=mon)\
         .values('entry_timedate').annotate(data_sum=Sum('total_cost'))

@@ -956,7 +956,7 @@ def update_view_lead(request,id):
                     # msg.attach(pdf, history.file.read(), 'application/pdf')
 
                     # msg.content_subtype = "application/pdf"  # Main content is now text/html
-                    # msg.attach_file(history.file.url)
+
                     email_send.attach_file(history.file.path)
                     print(history.file.path)
                     # msg.attach_file(pdf)
@@ -1053,13 +1053,7 @@ def update_view_lead(request,id):
                 # if whatsapp == 'True':
                 #     return redirect('https://api.whatsapp.com/send?phone=91' + customer_id.contact_no + '&text=' + 'hi')
             else :
-                pdf = request.FILES.get('pdf')
-                if pdf != None:
-                    history = Pi_History()
-                    history.file = pdf
-                    history.lead_id = Lead.objects.get(id=id)
-                    history.log_entered_by = request.user.profile_name
-                    history.save()
+
                 item2 = Pi_section()
                 item2.discount = discount
                 item2.upload_pi_file = upload_pi_file
