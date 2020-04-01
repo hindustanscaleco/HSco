@@ -13,7 +13,7 @@ urlpatterns = [
     path('stock_transaction_status/',stock_transaction_status , name ='stock_transaction_status'),
     path('stock_accpet_goods/',stock_accpet_goods , name ='stock_accpet_goods'),
     path('stock_accpet_goods_list/',stock_accpet_goods_list , name ='stock_accpet_goods_list'),
-    path('stock_transaction_history_list/',stock_transaction_history_list , name ='stock_transaction_history'),
+    path('stock_transaction_history_list/',stock_transaction_history_list , name ='stock_transaction_history_list'),
     path('stock_transaction_history/',stock_transaction_history , name ='stock_transaction_history'),
 
 ]

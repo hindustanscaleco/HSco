@@ -475,7 +475,7 @@ $(function() {
               <div class="card shadow" style="background: #12CAD6">
                 <div class="card-body row" style="padding-left:22px;color: white; font-weight: 600; font-size: 12px;  height: 135px;">
 
-                   <center><p style="margin-top:10px;"> PI Sent & Follow-up <br>&nbsp; ( {{pi_sent_stage}} ) </p></center>
+                   <center><p style="margin-top:10px;"> PI Sent & Follow-up <br>&nbsp; ( {{pi_sent_stage}} ) <br> ( {{pi_sent_stage_total}} ) </p></center>
 
                     </div>
 
@@ -486,7 +486,7 @@ $(function() {
               <div class="card shadow" style="background: rgba(252,98,98,.9)">
                 <div class="card-body row" style="padding-left:20px;color: white; font-weight: 600; font-size: 12px;  height: 135px;">
 
-                   <center><p style="margin-top:0px;"> PO Issued - Payment not done <br>&nbsp; ( {{po_no_payment}}) </p></center>
+                   <center><p style="margin-top:0px;"> PO Issued - Payment not done <br>&nbsp; ( {{po_no_payment}} ) <br> ( {{pi_sent_stage_total}} ) </p></center>
 
                     </div>
 
@@ -497,7 +497,7 @@ $(function() {
               <div class="card shadow" style="background: #015668">
                 <div class="card-body row" style="padding-left:20px;color: white; font-weight: 600; font-size: 11px;  height: 135px;">
 
-                   <center><p style="margin-top:0px;"> PO Issued - Payment Done - Dispatch Pending <br>&nbsp; ({{po_payment_done}}) </p></center>
+                   <center><p style="margin-top:0px;"> PO Issued - Payment Done - Dispatch Pending <br>&nbsp; ( {{po_payment_done}} ) <br> ( {{po_payment_done_total}} )</p></center>
 
                     </div>
 
@@ -508,7 +508,7 @@ $(function() {
               <div class="card shadow" style="background: #8B2F97">
                 <div class="card-body row" style="padding-left:20px;color: white; font-weight: 600; font-size: 12px;  height: 135px;">
 
-                   <center><p style="margin-top:0 px;"> Dispatch Done - Closed <br>&nbsp; ( {{dispatch_done_stage}}) </p></center>
+                   <center><p style="margin-top:0 px;"> Dispatch Done - Closed <br>&nbsp; ( {{dispatch_done_stage}} )<br> ( {{dispatch_stage_total}} ) </p></center>
 
                     </div>
 
@@ -520,7 +520,7 @@ $(function() {
               <div class="card shadow" style="background: rgba(214,186,277,.9)">
                 <div class="card-body row" style="padding-left:40px; color: white; font-weight: 600; font-size: 13px;  height: 135px;">
 
-                   <center><p style="margin-top:15px"> Lost <br>&nbsp; ({{lost_stage}} ) </p></center>
+                   <center><p style="margin-top:15px"> Lost <br>&nbsp; ( {{lost_stage_total}} )<br> ( {{lost_stage_total}} ) </p></center>
 
                     </div>
 
@@ -531,7 +531,7 @@ $(function() {
               <div class="card shadow" style="background: #fd5e53">
                 <div class="card-body row" style="padding-left:20px; color: white; font-weight: 600; font-size: 13px;  height: 135px;">
 
-                   <center><p style="margin-top:10px"> Not Relevant <br>&nbsp; ({{not_relevant_stage}} ) </p></center>
+                   <center><p style="margin-top:10px"> Not Relevant <br>&nbsp; ( {{not_relevant_stage}} )<br> ( {{not_relevant_stage_total}} ) </p></center>
 
                     </div>
 
@@ -554,7 +554,7 @@ $(function() {
               <div class="card shadow" style="background: #ffba5a">
                 <div class="card-body row" style="padding-left:16px; color: white; font-weight: 600; font-size: 13px;  height: 135px;">
 
-                   <center><p style="margin-top:15px"> Postponed <br>&nbsp; ({{postponed_stage}} ) </p></center>
+                   <center><p style="margin-top:15px"> Postponed <br>&nbsp; ( {{postponed_stage}} )<br> ( {{postponed_stage_total}} ) </p></center>
 
                     </div>
 
