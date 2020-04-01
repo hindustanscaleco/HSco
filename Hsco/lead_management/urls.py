@@ -4,7 +4,7 @@ from django.urls import path, include, re_path
 from .views import lead_home, add_lead, lead_report, lead_manager_view, lead_follow_up_histroy, lead_delete_product, \
     lead_analytics, \
     lead_employee_graph, update_view_lead, lead_pi_form, select_product, pi_section_history, alpha_pi_form, \
-    select_product_followup, final_lead_report, download_pi_image, download_pi_pdf, report_2, lead_logs
+    select_product_followup, final_lead_report, download_pi_image, download_pi_pdf, report_2, lead_logs, download_pi_second_pdf
 
 
 urlpatterns = [
@@ -26,6 +26,7 @@ urlpatterns = [
     path('final_lead_report/',final_lead_report , name ='final_lead_report'),
     path('download_pi_image/<int:id>',download_pi_image , name ='download_pi_image'),
     path('download_pi_pdf/<int:id>',download_pi_pdf , name ='download_pi_pdf'),
+    path('download_pi_second_pdf/<int:id>',download_pi_second_pdf , name ='download_pi_second_pdf'),
     path('lead_logs/',lead_logs , name ='lead_logs'),
 
 ]

@@ -113,7 +113,8 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-            {% else %}
+                {% endif %}
+            {% if err %}
                        <div class="alert alert-success alert-dismissible fade show" role="alert">
   <strong>Nothing Found!!!</strong>
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -253,8 +254,8 @@ $(function() {
      <option value="d3">Search By Email Id</option>
      <option value="d4">Search By Customer Name</option>
      <option value="d5">Search By Company Name</option>
-     <option value="d6">Search By CRM No.</option>
-     <option value="d7">Search By Purchase No.</option>
+     <!--<option value="d6">Search By CRM No.</option>-->
+     <option value="d7">Search By Serial No.</option>
      <!--<option value="d7">Search By CRM Number Range</option>-->
   </select>
 </div>
@@ -267,28 +268,26 @@ $(function() {
 
 
 <div class="output">
-                                                              <form method="POST" autocomplete="off">{% csrf_token%}
   <div id="d1" class="divs d1 row">
+                                                              <form method="POST" autocomplete="off">{% csrf_token%}
 
       <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
-                <input name="date1" type="date" placeholder="Search 1" class="form-control">
-
+                <input name="date1" type="date"  class="form-control">
       </div>
 
       <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
                 <p style="font-weight: 600;">_</p>
-
       </div>
 
       <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
-                <input name="date2" type="date" placeholder="Search 1" class="form-control">
-
+                <input name="date2" type="date"  class="form-control">
       </div>
       <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
-                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
-
+                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button>
       </div>
                                </form>
+
+      </div>
 
 
   <div id="d2" class="divs d2">
@@ -321,27 +320,34 @@ $(function() {
     </form>
     </div>
 
-                               <form method="POST">{% csrf_token%}
   <div id="d5" class="divs d5">
+                                     <form method="POST">{% csrf_token%}
+
       <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button></div>
-</form>
+      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button>
+  </form>
 
-                               <form method="POST">{% csrf_token%}
+  </div>
+
 
     <div id="d6" class="divs d6">
+                                       <form method="POST">{% csrf_token%}
+
       <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
-</form>
-                       <form method="POST">{% csrf_token%}
+      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button>
+    </form>
+</div>
 
     <div id="d7" class="divs d7">
-      <input type="text" name="purchase_no" placeholder="Purchase No." class="form-control" style="width: 25%;float: left;">
+                               <form method="POST">{% csrf_token%}
+
+      <input type="text" name="serial_no" placeholder="Serial No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
-</form>
+      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button>
+    </form>
+</div>
                                <!--<form method="POST">{% csrf_token%}-->
 
   <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
@@ -469,7 +475,7 @@ $(function() {
               <div class="card shadow" style="background: #12CAD6">
                 <div class="card-body row" style="padding-left:22px;color: white; font-weight: 600; font-size: 12px;  height: 135px;">
 
-                   <center><p style="margin-top:10px;"> PI Sent & Follow-up <br>&nbsp; ( {{pi_sent_stage}} ) </p></center>
+                   <center><p style="margin-top:10px;"> PI Sent & Follow-up <br>&nbsp; ( {{pi_sent_stage}} ) <br> ( {{pi_sent_stage_total}} ) </p></center>
 
                     </div>
 
@@ -480,7 +486,7 @@ $(function() {
               <div class="card shadow" style="background: rgba(252,98,98,.9)">
                 <div class="card-body row" style="padding-left:20px;color: white; font-weight: 600; font-size: 12px;  height: 135px;">
 
-                   <center><p style="margin-top:0px;"> PO Issued - Payment not done <br>&nbsp; ( {{po_no_payment}}) </p></center>
+                   <center><p style="margin-top:0px;"> PO Issued - Payment not done <br>&nbsp; ( {{po_no_payment}} ) <br> ( {{pi_sent_stage_total}} ) </p></center>
 
                     </div>
 
@@ -491,7 +497,7 @@ $(function() {
               <div class="card shadow" style="background: #015668">
                 <div class="card-body row" style="padding-left:20px;color: white; font-weight: 600; font-size: 11px;  height: 135px;">
 
-                   <center><p style="margin-top:0px;"> PO Issued - Payment Done - Dispatch Pending <br>&nbsp; ({{po_payment_done}}) </p></center>
+                   <center><p style="margin-top:0px;"> PO Issued - Payment Done - Dispatch Pending <br>&nbsp; ( {{po_payment_done}} ) <br> ( {{po_payment_done_total}} )</p></center>
 
                     </div>
 
@@ -502,7 +508,7 @@ $(function() {
               <div class="card shadow" style="background: #8B2F97">
                 <div class="card-body row" style="padding-left:20px;color: white; font-weight: 600; font-size: 12px;  height: 135px;">
 
-                   <center><p style="margin-top:0 px;"> Dispatch Done - Closed <br>&nbsp; ( {{dispatch_done_stage}}) </p></center>
+                   <center><p style="margin-top:0 px;"> Dispatch Done - Closed <br>&nbsp; ( {{dispatch_done_stage}} )<br> ( {{dispatch_stage_total}} ) </p></center>
 
                     </div>
 
@@ -514,7 +520,7 @@ $(function() {
               <div class="card shadow" style="background: rgba(214,186,277,.9)">
                 <div class="card-body row" style="padding-left:40px; color: white; font-weight: 600; font-size: 13px;  height: 135px;">
 
-                   <center><p style="margin-top:15px"> Lost <br>&nbsp; ({{lost_stage}} ) </p></center>
+                   <center><p style="margin-top:15px"> Lost <br>&nbsp; ( {{lost_stage_total}} )<br> ( {{lost_stage_total}} ) </p></center>
 
                     </div>
 
@@ -525,7 +531,7 @@ $(function() {
               <div class="card shadow" style="background: #fd5e53">
                 <div class="card-body row" style="padding-left:20px; color: white; font-weight: 600; font-size: 13px;  height: 135px;">
 
-                   <center><p style="margin-top:10px"> Not Relevant <br>&nbsp; ({{not_relevant_stage}} ) </p></center>
+                   <center><p style="margin-top:10px"> Not Relevant <br>&nbsp; ( {{not_relevant_stage}} )<br> ( {{not_relevant_stage_total}} ) </p></center>
 
                     </div>
 
@@ -548,7 +554,7 @@ $(function() {
               <div class="card shadow" style="background: #ffba5a">
                 <div class="card-body row" style="padding-left:16px; color: white; font-weight: 600; font-size: 13px;  height: 135px;">
 
-                   <center><p style="margin-top:15px"> Postponed <br>&nbsp; ({{postponed_stage}} ) </p></center>
+                   <center><p style="margin-top:15px"> Postponed <br>&nbsp; ( {{postponed_stage}} )<br> ( {{postponed_stage_total}} ) </p></center>
 
                     </div>
 
