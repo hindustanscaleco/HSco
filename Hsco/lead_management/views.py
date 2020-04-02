@@ -558,6 +558,7 @@ def update_view_lead(request,id):
 
     lead_pi_products = Pi_product.objects.filter(lead_id=id)
     hfu = Follow_up_section.objects.filter(lead_id=id).last()
+    history_follow = History_followup.objects.filter(follow_up_section__id=hfu.id).last()
 
     followup_products_list = Followup_product.objects.filter(lead_id=id)
 
@@ -600,7 +601,21 @@ def update_view_lead(request,id):
     form2 = Deal_detailForm(initial=deal_details_initial_data)
     form3 = Pi_sectionForm()
     form4 = Follow_up_sectionForm(initial={'email_auto_manual':hfu.auto_manual_mode,})
-    form6 = History_followupForm(initial={'wa_no':hfu.whatsappno,'email_subject':hfu.email_subject})
+   
+    if(history_follow!=None):
+        wa_msg = history_follow.wa_msg
+        email_msg = history_follow.email_msg
+        sms_msg = history_follow.sms_msg
+        is_email = 'is_email' if history_follow.is_email else ''
+    else:
+        wa_msg = ''
+        email_msg = ''
+        sms_msg = ''
+        is_email = ''
+    wa_no = history_follow.wa_no if history_follow.wa_no else customer_id.contact_no
+
+    form6 = History_followupForm(initial={'wa_no':wa_no,'email_subject':hfu.email_subject,'wa_msg':wa_msg,'email_msg':email_msg,
+                                          'sms_msg':sms_msg,'is_email':is_email})
     form5 = Payment_detailsForm()
     context = {
         'form': form,
@@ -616,6 +631,8 @@ def update_view_lead(request,id):
         'form6':form6,
         'users':users,
         'auto_manual_mode':hfu.auto_manual_mode,
+        'customer_id':customer_id,
+        'history_follow':history_follow,
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
         pi_id = Pi_section.objects.get(lead_id=id)
