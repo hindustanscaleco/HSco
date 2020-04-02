@@ -1,6 +1,4 @@
 from datetime import datetime
-
-
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.paginator import Paginator
 from django.db import connection
@@ -26,14 +24,13 @@ import requests
 import json
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
-# Create your views here.
 from .utils import send_html_mail
 from purchase_app.models import Purchase_Details
 from dispatch_app.models import Dispatch
 from purchase_app.models import Product_Details
-
 from dispatch_app.models import Product_Details_Dispatch
 from django.core.mail import EmailMessage
+
 def lead_home(request):
     import requests
     import json
