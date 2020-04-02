@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'amc_visit_app',
     'notif_dec_app',
     'purchase_app',
-    'stock_system',
     'session_security',
     'lead_management',
     'stock_management_system_app',

@@ -9,7 +9,7 @@ from django.core.files.base import ContentFile
 from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render, redirect
 from customer_app.models import type_purchase
-from stock_system.models import Product
+from stock_management_system_app.models import Product
 from django.contrib.auth.decorators import login_required
 
 from Hsco import settings
