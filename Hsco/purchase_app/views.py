@@ -1547,18 +1547,72 @@ def edit_product_customer(request,product_id_rec):
 
 @login_required(login_url='/')
 def load_users(request):
-    current_month = datetime.now().month
-    current_year = datetime.now().year
+
 
     selected = request.GET.get('loc_id')
-    if selected=='true':
-        user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,entry_date__year=current_year,
-                   manager_id__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module')
+    sel_month = request.GET.get('sel_month')
+    sel_year = request.GET.get('sel_year')
+    sel_month_text = request.GET.get('sel_month_text')
+    print(sel_month)
+    print(sel_year)
 
-        context = {
-            'user_list': user_list,
-            'manager': True,
-        }
+
+    if selected=='true':
+        if (sel_month == 0):
+            current_month = datetime.now().month
+            current_year = datetime.now().year
+            user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,
+                                                               entry_date__year=current_year,
+                                                               manager_id__icontains=request.user.name,
+                                                               user_id__is_deleted=False,
+                                                               user_id__modules_assigned__icontains='Customer Module')
+            if (user_list.count == 0):
+                error_exist_225 = True
+                success_exist_225 = False
+            else:
+                error_exist_225 = False
+                success_exist_225 = True
+            context = {
+
+                'error_exist_225': error_exist_225,
+                'success_exist_225': success_exist_225,
+                'error_msg_225': 'Select Valid Month And Year\n Showing Results For Current Month and Year.',
+                'user_list': user_list,
+                'manager': True,
+
+            }
+
+
+        else:
+            current_month = sel_month
+            current_year = sel_year
+            user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,
+                                                               entry_date__year=current_year,
+                                                               manager_id__icontains=request.user.name,
+                                                               user_id__is_deleted=False,
+                                                               user_id__modules_assigned__icontains='Customer Module')
+            if(user_list.count() == 0):
+                error_exist_225 = True
+                success_exist_225 = False
+            else:
+                error_exist_225 = False
+                success_exist_225 = True
+            if(sel_month_text == 'Select Month'):
+                error_msg_225 = 'Select Valid Month And Year'
+            else:
+                error_msg_225 = 'Result Not Found For ' + sel_month_text + ', ' + current_year
+
+
+
+            context = {
+                'error_exist_225': error_exist_225,
+                'success_exist_225': success_exist_225,
+                'success_msg_225': 'Results For ' + sel_month_text + ', ' + current_year,
+                'error_msg_225': error_msg_225,
+                'user_list': user_list,
+                'manager': True,
+            }
+
         return render(request, 'AJAX/load_users.html', context)
     else:
         if check_admin_roles(request):  # For ADMIN

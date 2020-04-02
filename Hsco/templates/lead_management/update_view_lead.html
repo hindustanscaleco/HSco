@@ -259,6 +259,21 @@ function myFunction() {
 
                      <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
+
+
+                                       <div class="form-group row">
+                              <label class="col-md-2 control-label">CRM No: {{customer_id.pk}}</label>
+                                  <div class="col-md-3 inputGroupContainer">
+
+                        </div>
+
+
+
+                              <div class="col-md-3 inputGroupContainer">
+
+                             </div>
+                          </div>
+
                           <div class="form-group row">
                               <label class="col-md-2 control-label">Customer Name: *</label>
                                   <div class="col-md-3 inputGroupContainer">
@@ -779,7 +794,13 @@ function myFunction_call() {
                             </div>
                         <div class="row col-md-12" style="margin-left:4%">
                               <br>
-    <div class="col-md-5" id="my123" style="display: none;">
+
+                                                                {% if history_follow.is_wa %}
+
+    <div class="col-md-5" id="my123">
+
+
+
     <label class="col-md-10 control-label">Whatsapp:</label>
                                 <br>
                         {{ form6.wa_no }}
@@ -787,8 +808,24 @@ function myFunction_call() {
                                 <label class="col-md-5 control-label" style="float:left;">Content:</label>
                                 {{ form6.wa_msg }}
 </div>
+       {% else %}
+                             <div class="col-md-5" id="my123" style="display: none;">
+
+
+
+    <label class="col-md-10 control-label">Whatsapp:</label>
+                                <br>
+                        {{ form6.wa_no }}
+                        <br>
+                                <label class="col-md-5 control-label" style="float:left;">Content:</label>
+                                {{ form6.wa_msg }}
+</div>
+       {% endif %}
+
+
 <div class="col-md-1"></div>
-<div class="col-md-5" id="myemail" style="display: none;">
+                            {% if history_follow.is_email %}
+<div class="col-md-5" id="myemail">
 
                          <label class="col-md-4 control-label">Email Subject:</label>
     <br>
@@ -798,21 +835,56 @@ function myFunction_call() {
                                 {{ form6.email_msg }}
                         <br>
 </div>
+                            {% else %}
+                            <div class="col-md-5" id="myemail" style="display: none;">
+
+                         <label class="col-md-4 control-label">Email Subject:</label>
+    <br>
+                                {{ form6.email_subject }}
+                        <br>
+                           <label class="col-md-4 control-label">Email Message:</label>
+                                {{ form6.email_msg }}
+                        <br>
+</div>
+                            {% endif %}
     </div>
                             <br>
-                        <div class="row col-md-12" style="margin-left:4%">
-                            <div class="col-md-5" id="mycall_follow_up" style="display: none;">
+<div class="row col-md-12" style="margin-left:4%">
+                                {% if history_follow.is_call %}
+
+                            <div class="col-md-5" id="mycall_follow_up" >
                            <label class="col-md-4 control-label">Call Response:</label>
 <br>
                                 {{ form6.call_response }}
                             </div>
+    {% else %}
+       <div class="col-md-5" id="mycall_follow_up" style="display: none;">
+                           <label class="col-md-4 control-label">Call Response:</label>
+<br>
+                                {{ form6.call_response }}
+                            </div>
+    {% endif %}
+
+
+
+
                                 <div class="col-md-1">
                                 </div>
-                                    <div class="col-md-5" id="mysms" style="display: none;">
+                                    {% if history_follow.is_sms %}
+
+                                    <div class="col-md-5" id="mysms" >
                            <label class="col-md-4 control-label">SMS Content:</label>
 <br>
                                 {{ form6.sms_msg }}
                         </div>
+
+    {% else %}
+             <div class="col-md-5" id="mysms" style="display: none;">
+                           <label class="col-md-4 control-label">SMS Content:</label>
+<br>
+                                {{ form6.sms_msg }}
+                        </div>
+    {% endif %}
                         </div>
                         <br>
                         <script>
@@ -866,7 +938,7 @@ function myFunction_call() {
 
 
                          <div class="">
-<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; ">
+<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; overflow-x:scroll;">
 
     <table>
 
@@ -1299,7 +1371,7 @@ function whosFunction() {
 <script type="text/javascript">
 let doc = new jsPDF('p','pt','a4');
 doc.addHTML(document.getElementById("content_content"),function() {
-<!--    doc.save('html.pdf');-->
+//doc.save('html.pdf');
     	sessionStorage.setItem("doc", doc);
 
 });
@@ -1450,6 +1522,7 @@ function change( el )
     else
         el.value = "+";
 }
+
 
   </script>
 
