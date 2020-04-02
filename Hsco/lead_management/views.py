@@ -66,7 +66,7 @@ def lead_home(request):
         if 'sort_submit' in request.POST:
             YEAR = request.POST.get('YEAR')
             MONTH = request.POST.get('MONTH')
-            found = False
+
 
 
             if request.user.role == 'Super Admin':  # For ADMIN
@@ -75,6 +75,11 @@ def lead_home(request):
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
+                context={
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False ,
+                }
+
             else:
                 admin = SiteUser.objects.get(id=request.user.pk).admin
                 lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(entry_timedate__month = MONTH , entry_timedate__year = YEAR)).order_by('-id')
@@ -82,14 +87,15 @@ def lead_home(request):
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
-            if(lead_list_count>0):
-                found = True
-            elif(lead_list_count<0):
-                found = False
-            context22={
-                'lead_list_count': found,
-            }
-            context.update(context22)
+                context = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+
+
+            return render(request, 'lead_management/lead_home.html', context)
+
+
 
         if 'submit1' in request.POST:
             start_date = request.POST.get('date1')
@@ -601,7 +607,7 @@ def update_view_lead(request,id):
     form2 = Deal_detailForm(initial=deal_details_initial_data)
     form3 = Pi_sectionForm()
     form4 = Follow_up_sectionForm(initial={'email_auto_manual':hfu.auto_manual_mode,})
-   
+
     if(history_follow!=None):
         wa_msg = history_follow.wa_msg
         email_msg = history_follow.email_msg
