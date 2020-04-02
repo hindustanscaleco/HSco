@@ -326,66 +326,68 @@ def lead_home(request):
     # lead = Pi_section.objects.filter(lead_id=Lead.objects.filter(Q(owner_of_opportunity__admin=admin)))
 
 
+    try:
+        po_no_payment = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment not done',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        po_no_payment_total = 0.0
+        for x in po_no_payment:
+            po_no_payment_total += float(x['data_sum'])
 
-    po_no_payment = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment not done',
-                                               lead_id__owner_of_opportunity__admin=admin).values(
-        'grand_total').annotate(data_sum=Sum('grand_total'))
-    po_no_payment_total = 0.0
-    for x in po_no_payment:
-        po_no_payment_total += float(x['data_sum'])
+        po_payment_done = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        po_payment_done_total = 0.0
+        for x in po_payment_done:
+            po_payment_done_total += float(x['data_sum'])
 
-    po_payment_done = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
-                                               lead_id__owner_of_opportunity__admin=admin).values(
-        'grand_total').annotate(data_sum=Sum('grand_total'))
-    po_payment_done_total = 0.0
-    for x in po_payment_done:
-        po_payment_done_total += float(x['data_sum'])
+        dispatch_done_stage = Pi_section.objects.filter(lead_id__current_stage='Dispatch Done - Closed',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        dispatch_done_stage_total = 0.0
+        for x in dispatch_done_stage:
+            dispatch_done_stage_total += float(x['data_sum'])
 
-    dispatch_done_stage = Pi_section.objects.filter(lead_id__current_stage='Dispatch Done - Closed',
-                                               lead_id__owner_of_opportunity__admin=admin).values(
-        'grand_total').annotate(data_sum=Sum('grand_total'))
-    dispatch_done_stage_total = 0.0
-    for x in dispatch_done_stage:
-        dispatch_done_stage_total += float(x['data_sum'])
+        lost_stage = Pi_section.objects.filter(lead_id__current_stage='Lost',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        lost_stage_total = 0.0
+        for x in lost_stage:
+            lost_stage_total += float(x['data_sum'])
 
-    lost_stage = Pi_section.objects.filter(lead_id__current_stage='Lost',
-                                               lead_id__owner_of_opportunity__admin=admin).values(
-        'grand_total').annotate(data_sum=Sum('grand_total'))
-    lost_stage_total = 0.0
-    for x in lost_stage:
-        lost_stage_total += float(x['data_sum'])
+        not_relevant_stage = Pi_section.objects.filter(lead_id__current_stage='Not Relevant',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        not_relevant_stage_total = 0.0
+        for x in not_relevant_stage:
+            not_relevant_stage_total += float(x['data_sum'])
 
-    not_relevant_stage = Pi_section.objects.filter(lead_id__current_stage='Not Relevant',
-                                               lead_id__owner_of_opportunity__admin=admin).values(
-        'grand_total').annotate(data_sum=Sum('grand_total'))
-    not_relevant_stage_total = 0.0
-    for x in not_relevant_stage:
-        not_relevant_stage_total += float(x['data_sum'])
+        postponed_stage = Pi_section.objects.filter(lead_id__current_stage='Postponed',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        postponed_stage_total = 0.0
+        for x in postponed_stage:
+            postponed_stage_total += float(x['data_sum'])
 
-    postponed_stage = Pi_section.objects.filter(lead_id__current_stage='Postponed',
-                                               lead_id__owner_of_opportunity__admin=admin).values(
-        'grand_total').annotate(data_sum=Sum('grand_total'))
-    postponed_stage_total = 0.0
-    for x in postponed_stage:
-        postponed_stage_total += float(x['data_sum'])
+        pi_sent_stage = Pi_section.objects.filter(lead_id__current_stage='PI Sent & Follow-up',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        pi_sent_stage_total = 0.0
+        for x in pi_sent_stage:
+            pi_sent_stage_total += float(x['data_sum'])
 
-    pi_sent_stage = Pi_section.objects.filter(lead_id__current_stage='PI Sent & Follow-up',
-                                               lead_id__owner_of_opportunity__admin=admin).values(
-        'grand_total').annotate(data_sum=Sum('grand_total'))
-    pi_sent_stage_total = 0.0
-    for x in pi_sent_stage:
-        pi_sent_stage_total += float(x['data_sum'])
-
-    context13={
-        'po_no_payment_total': po_no_payment_total,
-        'lost_stage_total': lost_stage_total,
-        'po_payment_done_total': po_payment_done_total,
-        'dispatch_done_stage_total': dispatch_done_stage_total,
-        'not_relevant_stage_total': not_relevant_stage_total,
-        'postponed_stage_total': postponed_stage_total,
-        'pi_sent_stage_total': pi_sent_stage_total,
-    }
-    context.update(context13)
+        context13={
+            'po_no_payment_total': po_no_payment_total,
+            'lost_stage_total': lost_stage_total,
+            'po_payment_done_total': po_payment_done_total,
+            'dispatch_done_stage_total': dispatch_done_stage_total,
+            'not_relevant_stage_total': not_relevant_stage_total,
+            'postponed_stage_total': postponed_stage_total,
+            'pi_sent_stage_total': pi_sent_stage_total,
+        }
+        context.update(context13)
+    except:
+        pass
 
     for i in total_stages:
         x = i
@@ -970,27 +972,40 @@ def update_view_lead(request,id):
                 history.lead_id = Lead.objects.get(id=id)
                 history.log_entered_by = request.user.profile_name
                 history.save()
-                text_content = ''
+                text_content = ''' <html><body>
+                <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Hindustan Scale Company<u></u><u></u></span><br>
+    <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Sales Enquiry -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +91-7045922250<u></u><u></u></span><br>
+    <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Queries &amp; Repairs -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +91-7045922251<u></u><u></u></span><br>
+    <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Feedback &amp; Complaints -&nbsp;&nbsp;&nbsp;&nbsp; +91-7045922252<u></u><u></u></span><br>
+    <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;color:#1f497d"><u></u>&nbsp;<u></u></span>
+    <div class="row">
+             <div class="col-md-5" style="padding:10px;">
+<a href="http://www.hindustanscale.com/" target="_blank" data-saferedirecturl="https://www.google.com/url?q=http://www.hindustanscale.com/&amp;source=gmail&amp;ust=1585915082471000&amp;usg=AFQjCNHRZAgVIPbzu5iKqetrBZA5Gw5aDQ">
+    <img  src="/media/pi_history_file/hsco.jpg" style="width: 50%; height:80px;"></a>
+         </div>
+        </div>
+    <span style="font-size: 12.0pt;font-family: 'Times New Roman',serif; color: #ff6600;">An ISO 9001:2015 Certified Company</span>
+    <div class="row">
+             <div class="col-md-5" style="padding:10px;">
+<img src="/media/pi_history_file/l.png" style="width: 100%;">
+         </div>
+        </div> </body></html>'''
                 subject = 'Support'
                 # pdf1 =
-                email_send = EmailMessage(subject, 'Testing', settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+                email_send = EmailMessage(subject, 'testing', settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
                 # msg = EmailMultiAlternatives(subject,'fdsklfhsd' , settings.EMAIL_HOST_USER,[lead_id.customer_id.customer_email_id])
                 if email == 'True' :
                     # msg.attach(pdf, history.file.read(), 'application/pdf')
 
-                    # msg.content_subtype = "application/pdf"  # Main content is now text/html
+                    # email_send.content_subtype = "text/html"  # Main content is now text/html
 
                     email_send.attach_file(history.file.path)
                     print(history.file.path)
                     # msg.attach_file(pdf)
                     email_send.send()
-                    # history = Pi_History()
-                    # file = ContentFile(html_content1)
-                    # # pdfkit.from_file(file, 'out.pdf')
-                    # history.file.save('ProformaInvoice.html', file, save=False)
-                    # history.lead_id = Lead.objects.get(id=id)
-                    #
-                    # history.save()
+
+            if whatsapp == 'True':
+                return redirect('https://api.whatsapp.com/send?phone=91' + customer_id.contact_no + '&text=' + 'hi')
 
             if Pi_section.objects.filter(lead_id=id).count() > 0:
 
@@ -1044,37 +1059,7 @@ def update_view_lead(request,id):
                                           'round_up_total','grand_total','total_cost','notes','pf_total',
                                         'email', 'whatsapp','call2','select_gst_type','discount_type','log_entered_by'  ])
 
-                if request.user.is_authenticated:
-                        todays_date = str(datetime.now())
-                        # gst_no = str(lead_id.customer_id.customer_gst_no)
-                        text_content = ''
-                        subject = 'Support'
-                        # pdf1 =
-                        msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER,
-                                                     ['liocause@gmail.com','sagarsingh27998@gmail.com'])
-                        # html_content2 =
-                        html_content1 =''
-                        if email == 'True' and select_pi_template == '1':
-                            msg.attach_alternative(html_content1, "text/html")
-                            msg.send()
-                            history = Pi_History()
-                            file = ContentFile(html_content1)
-                            # pdfkit.from_file(file, 'out.pdf')
-                            history.file.save('ProformaInvoice.html', file, save=False)
-                            history.lead_id = Lead.objects.get(id=id)
 
-                            history.save()
-                        elif email == 'True' and select_pi_template == '2':
-                            msg.attach_alternative(html_content2, "text/html")
-                            msg.send()
-                            history = Pi_History()
-                            file = ContentFile(html_content2)
-                            history.file.save('ProformaInvoice.html', file, save=False)
-                            history.lead_id = Lead.objects.get(id=id)
-
-                            history.save()
-                # if whatsapp == 'True':
-                #     return redirect('https://api.whatsapp.com/send?phone=91' + customer_id.contact_no + '&text=' + 'hi')
             else :
 
                 item2 = Pi_section()
@@ -1124,905 +1109,6 @@ def update_view_lead(request,id):
                     print("product not added or debugging needed")
 
                 item2.save()
-                if request.user.is_authenticated:
-                    todays_date = str(datetime.now())
-                    # gst_no = str(lead_id.customer_id.customer_gst_no)
-                    text_content = ''
-                    subject = 'Support'
-                    html_content1 = '''<html>
-                <head>
-                  <title>
-                    HSCO
-                  </title>
-
-                  <meta name="viewport" content="width=device-width, initial-scale=1">
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-                  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-                  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-                  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-                  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-                  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-
-
-                  <style>
-                      * {
-                    font-family: 'Poppins';
-                    font-size: 0.99em;
-
-                  }
-
-                  table {
-                  border-collapse: collapse;
-                  width: 85%;
-                  font-size: 18px;
-                  border-color: black;
-                  color: black;
-
-
-
-                }
-
-
-                th {
-
-                  font-size: 13px;
-                    border: 1px solid black;
-                    text-align: left;
-                    padding:5px;
-
-                }
-
-                td {
-                  border: 1px solid black;
-                  padding: 3px;
-                }
-
-
-                 @media print and (width: 10.5cm) and (height: 14.8cm) {
-                    @page {
-                       margin: 3cm;
-                    }
-                 }
-
-
-                  </style>
-
-                </head>
-                <body>
-
-                <div  id="printableArea" style="margin-left: 10%; margin-right: 10%;">
-                <div class="row" style="padding: 5px; border-bottom: 5px solid black;">
-                    <div class="col-xl-2 col-md-2 ">
-                <img src="/media/pi_history_file/hsco.jpg" class="img-rounded" width="200" height="120" style="float: right;">
-                </div>
-                    <div class="col-xl-1 col-md-1 ">
-                    </div>
-                    <div class="col-xl-4 col-md-4 ">
-                        <center>Subject to Mumbai Jurisdiction</center><br>
-                        <center><h3 style="font: italic bold 22px/30px Georgia, serif;">Proforma Invoice</h3></center>
-                </div>
-                    <div class="col-xl-1 col-md-1 ">
-                    </div>
-                    <div class="col-xl-4 col-md-4 ">
-                        <p>Ph: 022-23423183, 7045922250/51/52<br>
-                Manufacture Licence No. LM/MH/H004<br>
-                Dealer Licence No. LD/MH/H004<br>
-                Repairing Licence No. LR/MH/H004</p>
-                </div>
-                </div>
-
-
-                        <div class="row">
-                         <div class="col-md-12" style="padding:10px;">
-                        <center><h1 style="font-weight:bold;"> Hindustan Scale Company</h1>
-                        </center></div>
-                        </div>
-                        <div class="row">
-                         <div class="col-md-12" style="padding:0px;">
-                        <center><p style="font-weight:bold;"> A one stop shop for all your weighing needs<br><font color="#FC6E20" style="font-weight:bold;"> AN ISO 9001: 2015 CERTIFIED COMPANY</font></p>
-                        </center></div>
-                        </div>
-
-
-                    <div class="row">
-                         <div class="col-md-12" style="padding:10px;">
-                        <center><p style="font-weight:bold;"> All kinds of Mechanical and Digital Weighing Scales, Weights & Measures.<br>
-                        186/188 Janjikar Street, Near Crawford Market, Mumbai- 400003/<font color="#FC6E20">www.hindustanscale.com/hsc@hindustanscale.com</font></p>
-                        </center></div>
-                        </div>
-
-
-                    <div class="row">
-                         <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;"> Messrs</p>
-                        </center></div>
-                        <div class="col-md-5">
-                             </div>
-                        <div class="col-md-1">
-                             </div>
-                        <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;"> Date :</p>
-                        </center></div>
-                        <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;"> ''' + todays_date + '''</p>
-                                            </center></div>
-                                            </div>
-
-
-                                            <div class="row">
-                                                 <div class="col-md-2">
-                                                     <center><p style="font-weight:bold; float:left;"> Company Name</p>
-                                                </center></div>
-                                                <div class="col-md-5">
-                                                     <center><p style="font-weight:bold; float:left; text-decoration: underline;"> ''' + str(
-                        lead_id.customer_id.company_name) + '''</p>
-                                                </center></div>
-
-                                                <div class="col-md-1">
-                                                     </div>
-                                                <div class="col-md-2">
-                                                     <center><p style="font-weight:bold; float:left;">PI Number:</p>
-                                                </center></div>
-                                                <div class="col-md-2">
-                                                     <center><p style="font-weight:bold; float:left;"> ''' + str(
-                        item2.id) + '''</p>
-                                                </center></div>
-                                                </div>
-
-                                            <div class="row">
-                                                 <div class="col-md-2">
-                                                     <center><p style="font-weight:bold; float:left;">Contact Person</p>
-                                                </center></div>
-                                                <div class="col-md-5">
-                                                     <center><p style="font-weight:bold; float:left;"> ''' + str(
-                        lead_id.customer_id.customer_name) + '''</p>
-                                                </center></div>
-
-                                                <div class="col-md-1">
-                                                     </div>
-                                                <div class="col-md-2">
-                                                     <center><p style="font-weight:bold; float:left;">Proforma Made By :</p>
-                                                </center></div>
-                                                <div class="col-md-2">
-                                                     <center><p style="font-weight:bold; float:left;"> ''' + str(
-                        request.user.name) + '''</p>
-                                                </center></div>
-                                                </div>
-
-
-                                            <div class="row">
-                                                 <div class="col-md-2">
-                                                     <center><p style="font-weight:bold; float:left;">Address/State</p>
-                                                </center></div>
-                                                <div class="col-md-5">
-                                                     <center><p style="font-weight:bold; float:left;"> ''' + str(
-                        lead_id.customer_id.address) + '''</p>
-                                                </center></div>
-
-                                                <div class="col-md-1">
-                                                     </div>
-                                                <div class="col-md-2">
-                                                     <center><p style="font-weight:bold; float:left;">Contact Number:</p>
-                                                </center></div>
-                                                <div class="col-md-2">
-                                                     <center><p style="font-weight:bold; float:left;"> ''' + str(
-                        request.user.mobile) + '''</p>
-                                                </center></div>
-                                                </div>
-
-
-
-
-                                            <div class="row">
-                                                 <div class="col-md-2">
-                                                     <center><p style="font-weight:bold; float:left;">Phone</p>
-                                                </center></div>
-                                                <div class="col-md-5">
-                                                     <center><p style="font-weight:bold; float:left;"> ''' + str(
-                        lead_id.customer_id.contact_no) + '''</p>
-                        </center></div>
-
-                        <div class="col-md-1">
-                             </div>
-                        <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;">Customer GST Number: </p>
-                        </center></div>
-                        <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;"> ''' + str(
-                        lead_id.customer_id.customer_gst_no) + '''</p>
-                        </center></div>
-                        </div>
-
-
-
-
-                <style>
-                    .border_class {
-                    border:1px solid black;
-                    height:45px;
-                    text-align:center;
-                    vertical-align: middle;
-                    line-height: 45px;
-                    }
-
-
-                  table {
-                  border-collapse: collapse;
-                  width: 100%;
-                  font-size: 12px;
-                  border-color: black;
-                  color: black;
-
-
-
-                }
-
-
-                th {
-
-                  font-size: 13px;
-                    border: 1px solid black;
-                    text-align: left;
-                    padding:5px;
-
-                }
-
-                td {
-                  border: 1px solid black;
-                  padding: 3px;
-                  font-size: 13px;
-                  padding: 5px;
-                  text-align: center;
-                }
-
-
-                            </style>
-
-
-                <div style="min-height: 26vw;">
-
-
-                        <div class="row" id="id_manager_view">
-
-                    <table>
-                        <tr style="background-color: gray; color: white;">
-                            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Quantity</td>
-                            <td style="border: 0px solid gray;">HSN Code</td>
-                            <td style="border: 0px solid gray;">Product Code</td>
-                            <td style="border: 0px solid gray;">Product Image</td>
-                            <td style="border: 0px solid gray;">Product Description</td>
-                            <td style="border: 0px solid gray;">Rate</td>
-                            <td style="border: 0px solid gray;">Total</td>
-                        </tr>
-
-
-                 ''' + table + '''
-
-                        <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>Total</td>
-                        <td>INR</td>
-                        </tr>
-
-                        <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>Discount%</td>
-                        <td>from PI form</td>
-                        </tr>
-
-
-                        <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>Net Total</td>
-                        <td></td>
-                        </tr>
-
-
-
-                        <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>P&F</td>
-                        <td>from PI form</td>
-                        </tr>
-
-
-
-                        <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>CGST @ 9%</td>
-                        <td>from PI form</td>
-                        </tr>
-
-
-
-
-                        <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>SGST @ 9%</td>
-                        <td>from PI form</td>
-                        </tr>
-
-
-
-
-                        <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>IGST @ 18%</td>
-                        <td>from PI form</td>
-                        </tr>
-
-
-
-                        <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>Round Up</td>
-                        <td>INR</td>
-                        </tr>
-
-                        <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>Grand Total</td>
-                        <td>INR</td>
-                        </tr>
-
-
-                    </table>
-                        </div>
-                            </div>
-                        <div class="row">
-                            <div class="col-md-4" style="padding:10px;">
-                                <p>GST ID - <b>27AACFH2329F1ZP</b><br>
-                                    PAN Number - <b>AACFH2329F</b><br>
-                                    TAN Number - <b>MUMH17092F</b></p>
-                            </div>
-                         <div class="col-md-3" style="padding:10px;">
-                <img src="/media/pi_history_file/okay.png" style="width: 100%;">
-                         </div>
-
-
-                	         <div class="col-md-5" style="padding:10px;">
-                <img src="/media/pi_history_file/l.png" style="width: 100%;">
-                         </div>
-                        </div>
-                    <div class="row">
-                            <div class="col-md-12" style="padding:10px;"><p>
-                I/We hereby certify that my/our registration certificate under the Goods and Service Tax Laws is in force on the date of which the sale of goods specified in this “Proforma Invoice” is made by me/us and that the transaction of sale is covered <br><center>by this and has been effected by me/us and it shall be accounted for in the turnover of sales while filing of return and the due tax, if any, payable on the sale has been paid
-                  </center> </p>     </div>
-                        </div>
-                </div>
-
-
-                <div class="row">
-                            <div class="col-md-6" style="padding-left: 40px;">
-                <p>All prices are Ex-Workshop. Packing and forwarding is extra as indicated<br>
-                                All products have an warranty of 1 year against any manufacturing defect unless stated<br>
-                                There is no warranty for Loadcell, Battery and Mains Cord<br>
-                                Damages due to transportation is out of the scope of warranty<br>
-                                Payment is 50% advance with order and remaining 50% before Dispatch<br>
-                                This offer is valid for the next 10 days <br>
-                    Cheque should be in the name of "Hindustan Scale Co".</p></div>
-
-                    <div class="col-md-6" style="padding-left: 40px;">
-                <p>Bank details are as follows<br>
-                                <b>DCB Bank<br>
-                                Name – Hindustan Scale Co.<br>
-                                Acct No – 01922412121947<br>
-                                IFSC Code-DCBL0000019<br>
-                                Type of account – Current Account <br>
-                                Bank Name – DCB Bank<br>
-                                    Address Mohamedali Road Branch</b></p></div>
-                        </div>
-                </div>
-
-                	<hr>
-
-                <span style="font-size: 11px;">HINDUSTAN SCALE COMPANY, 186/188 Janjikar Street, Crawford Market, Mumbai - 400003</span>
-                  </p>
-
-
-                </div>
-
-                </center>
-
-
-
-                <script>
-                  function printDiv(divName) {
-                     var printContents = document.getElementById(divName).innerHTML;
-                     var originalContents = document.body.innerHTML;
-
-                     document.body.innerHTML = printContents;
-
-                     window.print();
-
-                     document.body.innerHTML = originalContents;
-                }
-                </script>
-
-                </body>
-                </html>'''
-                    msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER,
-                                                 ['liocause@gmail.com', 'sagarsingh27998@gmail.com'])
-                    html_content2 = '''
-
-                <html>
-                <head>
-                  <title>
-                    HSCO
-                  </title>
-
-                  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-                  <style>
-                      * {
-                    font-family: 'Poppins';
-                    font-size: 0.99em;
-
-                  }
-
-                  table {
-                  border-collapse: collapse;
-                  width: 85%;
-                  font-size: 18px;
-                  border-color: black;
-                  color: black;
-
-
-
-                }
-
-
-                th {
-
-                  font-size: 13px;
-                    border: 1px solid black;
-                    text-align: left;
-                    padding:5px;
-
-                }
-
-                td {
-                  border: 1px solid black;
-                  padding: 3px;
-                }
-
-
-                 @media print and (width: 10.5cm) and (height: 14.8cm) {
-                    @page {
-                       margin: 3cm;
-                    }
-                 }
-
-
-                  </style>
-
-                </head>
-                <body>
-
-                <div  id="printableArea" style="margin-left: 10%; margin-right: 10%;">
-                <div class="row" style="padding: 5px; border-bottom: 5px solid black;">
-                    <div class="col-xl-2 col-md-2 ">
-                <img src="/media/pi_history_file/hsco_template2.jpg" class="img-rounded" width="200" height="120" style="float: right;">
-                </div>
-                    <div class="col-xl-1 col-md-1 ">
-                    </div>
-                    <div class="col-xl-4 col-md-4 ">
-                <!--        <center>Subject to Mumbai Jurisdiction</center><br>-->
-                <!--        <center><h3 style="font: italic bold 22px/30px Georgia, serif;">Proforma Invoice</h3></center>-->
-                </div>
-                    <div class="col-xl-1 col-md-1 ">
-                    </div>
-                    <div class="col-xl-4 col-md-4 ">
-                        <p>Ph: 022-23423183, 7045922250/51/52<br>
-                Manufacture Licence No. LM/MH/H004<br>
-                Dealer Licence No. LD/MH/H004<br>
-                Repairing Licence No. LR/MH/H004</p>
-                </div>
-                </div>
-
-
-                        <div class="row">
-                         <div class="col-md-12" style="padding:10px;">
-                        <center><h1 style="font-weight:bold;"> Hindustan Sales and Consultancy</h1>
-                        </center></div>
-                        </div>
-                        <div class="row">
-                         <div class="col-md-12" style="padding:0px;">
-                        <center><p style="font-weight:bold;"> A one stop shop for all your weighing needs<br><font color="#FC6E20" style="font-weight:bold;"> AN ISO 9001: 2015 CERTIFIED COMPANY</font></p>
-                        </center></div>
-                        </div>
-
-
-                    <div class="row">
-                         <div class="col-md-12" style="padding:10px;">
-                        <center><p style="font-weight:bold;"> All kinds of Mechanical and Digital Weighing Scales, Weights & Measures.<br>
-                        186/188 Janjikar Street, Near Crawford Market, Mumbai- 400003/<font color="#FC6E20">www.hindustanscale.com/hsc@hindustanscale.com</font></p>
-                        </center></div>
-                        </div>
-
-
-                    <div class="row">
-                         <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;"> Messrs</p>
-                        </center></div>
-                        <div class="col-md-5">
-                             </div>
-                        <div class="col-md-1">
-                             </div>
-                        <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;"> Date :</p>
-                        </center></div>
-                        <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;">''' + todays_date + ''' </p>
-                        </center></div>
-                        </div>
-
-
-                    <div class="row">
-                         <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;"> Company Name</p>
-                        </center></div>
-                        <div class="col-md-5">
-                             <center><p style="font-weight:bold; float:left; text-decoration: underline;">''' + str(
-                        lead_id.customer_id.company_name) + ''' </p>
-                        </center></div>
-
-                        <div class="col-md-1">
-                             </div>
-                        <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;">PI Number:</p>
-                        </center></div>
-                        <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;">''' + str(item2.id) + ''' </p>
-                        </center></div>
-                        </div>
-
-                    <div class="row">
-                         <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;">Contact Person</p>
-                        </center></div>
-                        <div class="col-md-5">
-                             <center><p style="font-weight:bold; float:left;">''' + str(
-                        lead_id.customer_id.customer_name) + ''' </p>
-                        </center></div>
-
-                        <div class="col-md-1">
-                             </div>
-                        <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;">Proforma Made By :</p>
-                        </center></div>
-                        <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;">''' + str(request.user.name) + ''' </p>
-                        </center></div>
-                        </div>
-
-
-
-
-                    <div class="row">
-                         <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;">Address/State</p>
-                        </center></div>
-                        <div class="col-md-5">
-                             <center><p style="font-weight:bold; float:left;"> ''' + str(lead_id.customer_id.address) + '''</p>
-                        </center></div>
-
-                        <div class="col-md-1">
-                             </div>
-                        <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;">Contact Number:</p>
-                        </center></div>
-                        <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;">''' + str(request.user.mobile) + '''</p>
-                        </center></div>
-                        </div>
-
-
-
-
-                    <div class="row">
-                         <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;">Phone</p>
-                        </center></div>
-                        <div class="col-md-5">
-                             <center><p style="font-weight:bold; float:left;"> ''' + str(
-                        lead_id.customer_id.contact_no) + '''</p>
-                        </center></div>
-
-                        <div class="col-md-1">
-                             </div>
-                        <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;">Customer GST Number: </p>
-                        </center></div>
-                        <div class="col-md-2">
-                             <center><p style="font-weight:bold; float:left;">''' + str(
-                        lead_id.customer_id.customer_gst_no) + ''' </p>
-                        </center></div>
-                        </div>
-
-
-
-
-                <style>
-                    .border_class {
-                    border:1px solid black;
-                    height:45px;
-                    text-align:center;
-                    vertical-align: middle;
-                    line-height: 45px;
-                    }
-
-
-                  table {
-                  border-collapse: collapse;
-                  width: 100%;
-                  font-size: 12px;
-                  border-color: black;
-                  color: black;
-
-
-
-                }
-
-
-                th {
-
-                  font-size: 13px;
-                    border: 1px solid black;
-                    text-align: left;
-                    padding:5px;
-
-                }
-
-                td {
-                  border: 1px solid black;
-                  padding: 3px;
-                  font-size: 13px;
-                  padding: 5px;
-                  text-align: center;
-                }
-
-
-                            </style>
-
-
-                <div style="min-height: 26vw;">
-
-                        <div class="row" id="id_manager_view">
-
-                    <table>
-                        <tr style="background-color: gray; color: white;">
-                            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Quantity</td>
-                            <td style="border: 0px solid gray;">HSN Code</td>
-                            <td style="border: 0px solid gray;">Product Description</td>
-                            <td style="border: 0px solid gray;">Rate</td>
-                            <td style="border: 0px solid gray;">Total</td>
-                        </tr>
-
-
-                 ''' + table2 + '''
-
-                        <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>Total</td>
-                        <td>INR</td>
-                        </tr>
-
-                        <tr>
-                        <td></td>
-
-                        <td></td>
-                        <td></td>
-                        <td>Discount%</td>
-                        <td>from PI form</td>
-                        </tr>
-
-
-                        <tr>
-                        <td></td>
-
-                        <td></td>
-                        <td></td>
-                        <td>Net Total</td>
-                        <td></td>
-                        </tr>
-
-
-
-                        <tr>
-                        <td></td>
-
-                        <td></td>
-                        <td> Delivery Charges </td>
-                        <td>P&F</td>
-                        <td>from PI form</td>
-                        </tr>
-
-
-
-                        <tr>
-                        <td></td>
-
-                        <td></td>
-                        <td></td>
-                        <td>CGST @ 9%</td>
-                        <td>from PI form</td>
-                        </tr>
-
-
-
-
-                        <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>SGST @ 9%</td>
-                        <td>from PI form</td>
-                        </tr>
-
-
-
-
-                        <tr>
-                        <td></td>
-
-                        <td></td>
-                        <td></td>
-                        <td>IGST @ 18%</td>
-                        <td>from PI form</td>
-                        </tr>
-
-
-
-                        <tr>
-                        <td></td>
-
-                        <td></td>
-                        <td></td>
-                        <td>Round Up</td>
-                        <td>INR</td>
-                        </tr>
-
-                        <tr>
-                        <td></td>
-
-                        <td></td>
-                        <td></td>
-                        <td>Grand Total</td>
-                        <td>INR</td>
-                        </tr>
-
-
-                    </table>
-                        </div>
-                            </div>
-                        <div class="row">
-                            <div class="col-md-4" style="padding:10px;">
-                                <p>GST ID - <b>27AACFH2329F1ZP</b><br>
-                                    PAN Number - <b>AACFH2329F</b></p>
-                            </div>
-                         <div class="col-md-3" style="padding:10px;">
-                <!--<img src="/media/pi_history_file/okay.png" style="width: 100%;">-->
-                         </div>
-
-
-                	         <div class="col-md-5" style="padding:10px;">
-                <img src="/media/pi_history_file/l.png" style="width: 100%;">
-                         </div>
-                            #######################################################################################################################
-                        </div>
-                    <div class="row">
-                            <div class="col-md-12" style="padding:10px; float:left; "><p>
-                                This offer is valid for the next 10 days <br>
-                                All prices are Ex-Workshop. Packing and forwarding is extra<br>
-                                Cheque should be in the name of "Hindustan Sales and Consultancy"<br>
-                                Bank details are as follows<br>
-                 </p>     </div>
-                        </div>
-
-
-
-                <div class="row">
-                    <div class="col-md-6" style="padding-left: 40px;">
-                <p>Bank details are as follows<br>
-                                <b>DCB Bank<br>
-                                Name – Hindustan Scale Co.<br>
-                                Acct No – 01922412121947<br>
-                                IFSC Code-DCBL0000019<br>
-                                Type of account – Current Account <br>
-                                Bank Name – DCB Bank<br>
-                                    Address Mohamedali Road Branch</b></p></div>
-                        </div>
-                </div>
-                </div>
-
-                	<hr>
-
-                <!--<span style="font-size: 11px;">HINDUSTAN SCALE COMPANY, 186/188 Janjikar Street, Crawford Market, Mumbai - 400003</span>-->
-                  </p>
-
-
-                </div>
-
-                </center>
-
-
-
-                <script>
-                  function printDiv(divName) {
-                     var printContents = document.getElementById(divName).innerHTML;
-                     var originalContents = document.body.innerHTML;
-
-                     document.body.innerHTML = printContents;
-
-                     window.print();
-
-                     document.body.innerHTML = originalContents;
-                }
-                </script>
-
-                </body>
-                </html>
-                                        '''
-
-                    if email == 'True' and select_pi_template == '1':
-                        msg.attach_alternative(html_content1, "text/html")
-                        msg.send()
-                        history = Pi_History()
-                        file = ContentFile(html_content1)
-                        # pdfkit.from_file(file, 'out.pdf')
-                        history.file.save('ProformaInvoice.html', file, save=False)
-                        history.lead_id = Lead.objects.get(id=id)
-
-                        history.save()
-                    elif email == 'True' and select_pi_template == '2':
-                        msg.attach_alternative(html_content2, "text/html")
-                        msg.send()
-                        history = Pi_History()
-                        file = ContentFile(html_content2)
-                        history.file.save('ProformaInvoice.html', file, save=False)
-                        history.lead_id = Lead.objects.get(id=id)
-
-                        history.save()
                 # if whatsapp == 'True':
                 #     return redirect('https://api.whatsapp.com/send?phone=91' + customer_id.contact_no + '&text=' + 'hi')
 
