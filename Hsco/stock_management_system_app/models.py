@@ -45,25 +45,31 @@ class GodownProduct(models.Model):
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
 
+    def __int__(self):
+        return self.id
 class GoodsRequest(models.Model):
-    req_from_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,related_name='Godown1')
-    req_to_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,related_name='Godown2')
+    req_from_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,related_name='Godown1',null=True,blank=True)
+    req_to_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,related_name='Godown2',null=True,blank=True)
     is_all_req = models.BooleanField(default=False)
-    entered_by = models.ForeignKey(SiteUser,on_delete=models.CASCADE)
-    status = models.CharField(max_length=50)
+    entered_by = models.ForeignKey(SiteUser,on_delete=models.CASCADE,null=True,blank=True)
+    status = models.CharField(max_length=50,null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
 
 class RequestedProducts(models.Model):
-    goods_req_id = models.ForeignKey(GoodsRequest, on_delete=models.CASCADE,)
-    req_quantity = models.FloatField()
-    req_carton_count = models.FloatField()
-    req_type = models.CharField(max_length=20)
+    godown_id = models.ForeignKey(Godown,on_delete=models.CASCADE,null=True,blank=True)
+    godown_product_id = models.ForeignKey(GodownProduct, on_delete=models.CASCADE,null=True,blank=True)
+    goods_req_id = models.ForeignKey(GoodsRequest, on_delete=models.CASCADE,null=True,blank=True)
+    req_quantity = models.FloatField(default=0.0)
+    req_carton_count = models.FloatField(default=0.0)
+    req_type = models.CharField(max_length=20,null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
 
+    def __int__(self):
+        return self.id
 
 class AcceptGoods(models.Model):
     from_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,)
@@ -71,6 +77,9 @@ class AcceptGoods(models.Model):
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
+
+    def __int__(self):
+        return self.id
 
 class AGProducts(models.Model):
     accept_product_id = models.ForeignKey(AcceptGoods, on_delete=models.CASCADE,)
@@ -82,12 +91,17 @@ class AGProducts(models.Model):
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
 
+    def __int__(self):
+        return self.id
+
 class GodownTransactions(models.Model):
     goods_req_id = models.ForeignKey(GoodsRequest, on_delete=models.CASCADE,)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
 
+    def __int__(self):
+        return self.id
 
 
 
