@@ -34,7 +34,7 @@ def add_godown(request):
     return render(request, 'stock_management_system/add_godown.html',context)
 
 def stock_godown(request,id):
-    godown_id = Godown.objects.get(pk=id)
+    godown_id = Godown.objects.get(id=id)
     context={
              godown_id:'godown_id'
     }
