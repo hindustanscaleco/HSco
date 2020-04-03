@@ -333,6 +333,8 @@ a:hover {
 
 
 
+
+
 <div class="card" style="box-shadow: inset 0 0 4px #e47312;">
         <div class="card-body row col-md-12">
         <div class="col-md-2"> <center>Sr.No</center></div>|
@@ -342,24 +344,16 @@ a:hover {
         </div>
 </div>
 
-<div class="card">
-    <a href="{% url 'stock_godown' %}" > <div class="card-body row col-md-12" style="" onclick="">
-        <div class="col-md-2"> <center>1</center></div>|
-        <div class="col-md-3"> <center>asdadsacassacsacsaccs </center></div>|
-        <div class="col-md-3"> <center>Shelu</center></div>|
-        <div class="col-md-3"> <center>7757860524</center></div>
-        </div></a>
-</div>
-
-
-<div class="card">
+{% for item in godown_list %}
+<div class="card" style="cursor: pointer;" onclick="location.href='/stock_godown/{{item.id}}';">
         <div class="card-body row col-md-12" style="margin-top:0px;">
-        <div class="col-md-2"> <center>1</center></div>|
-        <div class="col-md-3"> <center>asdadsacassacsacsaccs </center></div>|
-        <div class="col-md-3"> <center>Shelu</center></div>|
-        <div class="col-md-3"> <center>7757860524</center></div>
+        <div class="col-md-2"> <center>{{ item.id }}</center></div>|
+        <div class="col-md-3"> <center>{{ item.location }} </center></div>|
+        <div class="col-md-3"> <center>{{ item.name_of_godown }}</center></div>|
+        <div class="col-md-3"> <center>{{ item.contact_no }}</center></div>
         </div>
 </div>
+            {% endfor %}
 
 
      </div>         </div>

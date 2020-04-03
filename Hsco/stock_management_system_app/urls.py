@@ -6,7 +6,7 @@ from .views import stock_godown_list,add_godown,stock_godown,stock_godown_images
 urlpatterns = [
     path('stock_godown_list/',stock_godown_list , name ='stock_godown_list'),
     path('add_godown/',add_godown, name ='add_godown'),
-    path('stock_godown/',stock_godown, name ='stock_godown'),
+    path('stock_godown/<str:id>',stock_godown, name ='stock_godown'),
     path('stock_godown_images/',stock_godown_images , name ='stock_godown_images'),
     path('stock_good_request/',stock_good_request , name ='stock_good_request'),
     path('stock_pending_request/',stock_pending_request , name ='stock_pending_request'),
