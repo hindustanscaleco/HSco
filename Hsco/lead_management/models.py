@@ -5,7 +5,6 @@ from django.utils import timezone
 from customer_app.models import Customer_Details
 from user_app.models import SiteUser
 
-# from stock_system.models import Product
 from stock_management_system_app.models import Product
 from django.core.validators import URLValidator
 from model_utils import FieldTracker
