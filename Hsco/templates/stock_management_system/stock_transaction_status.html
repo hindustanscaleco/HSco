@@ -363,6 +363,9 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Request</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Number</td>
+                        {% if good_request.status != 'Pending From Target'  %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Faulty</td>
+            {% endif %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Add</td>
         </tr>
         {% for list in requested_goods %}
@@ -388,9 +391,16 @@ td {
             </td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
                  <center>
-                <input type="text" name="number" class="form-control" style="height:40px; width:60px;">
+                <input type="number" value="0" name="number" class="form-control" style="height:40px; width:60px;">
 </center>
             </td>
+            {% if good_request.status != 'Pending From Target'  %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                 <center>
+                <input type="number" value="0" name="faulty" class="form-control" style="height:40px; width:60px;">
+</center>
+            </td>
+            {% endif %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
                 <button name="submit1" type="submit" class="btn btn-danger">Request</button>
 

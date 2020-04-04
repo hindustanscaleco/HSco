@@ -71,7 +71,8 @@ class RequestedProducts(models.Model):
     sent_carton_count = models.FloatField(default=0.0)
     received_carton_count = models.FloatField(default=0.0)
 
-    faulty = models.FloatField(default=0.0)
+    faulty_quantity = models.FloatField(default=0.0)
+    faulty_carton = models.FloatField(default=0.0)
 
     req_type = models.CharField(max_length=20,null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)

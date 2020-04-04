@@ -208,25 +208,37 @@ def stock_transaction_status(request,from_godown_id, trans_id):
             number = request.POST.get('number')
             req_type = request.POST.get('req_type')
             product_id = request.POST.get('product_id')
+            faulty = request.POST.get('faulty')
 
             item2 = RequestedProducts.objects.get(id=product_id)
             if req_type == 'Individual':
                 if good_request.status == 'Pending From Target':
-                    item2.sent_quantity = number
-                    item2.log_entered_by = request.user.name
+                    if number != '0':
+                        item2.sent_quantity = float(number)
+                        item2.log_entered_by = request.user.name
                 elif good_request.status == 'Confirmation of goods transformation':
-                    item2.received_quantity = number
-                    item2.log_entered_by = request.user.name
+                    if number != '0' :
+                        item2.received_quantity = float(number)
+                        item2.log_entered_by = request.user.name
+                    if faulty != '0':
+                        item2.faulty_quantity = float(faulty)
+                        item2.log_entered_by = request.user.name
 
             elif req_type == 'Carton':
                 if good_request.status == 'Pending From Target':
-                    item2.sent_carton_count = number
-                    item2.log_entered_by = request.user.name
+                    if number != '0':
+                        item2.sent_carton_count = float(number)
+                        item2.log_entered_by = request.user.name
                 elif good_request.status == 'Confirmation of goods transformation':
-                    item2.received_carton_count = number
-                    item2.log_entered_by = request.user.name
+                    if number != '0' :
+                        item2.received_carton_count = float(number)
+                        item2.log_entered_by = request.user.name
+                    if  faulty != '0':
+                        item2.faulty_carton = float(faulty)
+                        item2.log_entered_by = request.user.name
 
-            item2.save(update_fields=['sent_quantity','received_quantity','sent_carton_count','received_carton_count','log_entered_by'])
+            item2.save(update_fields=['sent_quantity','received_quantity','sent_carton_count','received_carton_count','log_entered_by',
+                                      'faulty_carton','faulty_quantity'])
             return redirect('/stock_transaction_status/'+str(from_godown_id)+'/'+str(trans_id))
 
         if 'submit2' in request.POST:
