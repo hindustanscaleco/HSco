@@ -204,25 +204,7 @@ def lead_home(request):
                 'search_msg': 'Search result for Company Name: ' + company,
             }
             return render(request, 'lead_management/lead_home.html', context)
-        # elif 'submit6' in request.POST:
-        #     crm = request.POST.get('crm')
-        #     if check_admin_roles(request):  # For ADMIN
-        #         cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
-        #                                         owner_of_opportunity__is_deleted=False, crm_no__pk=crm).order_by('-id')
-        #         paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-        #         page = request.GET.get('page')
-        #         cust_list = paginator.get_page(page)
-        #     else:  # For EMPLOYEE
-        #         cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk, crm_no__pk=crm).order_by('-id')
-        #         paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-        #         page = request.GET.get('page')
-        #         cust_list = paginator.get_page(page)
-        #     # cust_list = Customer_Details.objects.filter(crn_number=crm)
-        #     context = {
-        #         'lead_list': cust_list,
-        #         'search_msg': 'Search result for CRM No. : ' + crm,
-        #     }
-        #     return render(request, 'lead_management/lead_home.html', context)
+
         elif 'submit7' in request.POST:
             serial_no = request.POST.get('serial_no')
             if check_admin_roles(request):  # For ADMIN
