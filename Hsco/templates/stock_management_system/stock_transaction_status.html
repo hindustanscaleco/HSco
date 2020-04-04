@@ -322,18 +322,33 @@ td {
                 <div class="card col-md-12">
                     <div class="card-body col-md-12">
                         <div class="row">
+
                             <h5 style="font-size:15px;">Ownworkstation:Transaction ID:7757860:Transaction Status:conformation of goods transfer</h5>
                     </div>
                         <hr>
+        <form method="POST" >{%csrf_token%}
                         <div class="row">
+                                                           <div class="col-xl-5">
                         Current Stage:           &nbsp &nbsp      <div class="btn-group">
-<select class="btn btn-success" id="c5aasrs">
-  <option class="btn btn-success" value="Individual">Pending From Target</option>
-  <option class="btn btn-success" value="Carton">Confirmation of goods transformation</option>
-  <option class="btn btn-success" value="Carton">Confirms the transformation</option>
+<select class="btn btn-success" name="status"  id="c5aasrs">
+  <option class="btn btn-success" value="{{good_request.status}}">{{good_request.status}}</option>
+    {% if request.user.admin == good_request.req_to_godown.goddown_assign_to.admin  %}
+  <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
+    {% endif %}
+        {% if request.user.admin == good_request.req_from_godown.goddown_assign_to.admin %}
+  <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
+    {% endif %}
 </select>
-</div>
+                                                           </div></div>
+                                                           <div class="col-xl-1">
+    <center>
+ <button name="submit2" type="submit" class="btn btn-danger" style="background-color:#FC6E20;">Save</button></a>
+<!--<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Edit</button>-->
+</center>
+    </div>
                         </div>
+        </form>
+                        <br>
                         <br>
 
                             <div class="row" id="abhish123">
@@ -350,18 +365,20 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Number</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Add</td>
         </tr>
+        {% for list in requested_goods %}
+        <form method="POST" >{%csrf_token%}
         <tr>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{list.godown_product_id.product_id.scale_type}}</td>
+            <td style="border: 0px solid gray;">{{list.godown_product_id.product_id.main_category}}<input hidden name="product_id" value="{{list.id}}"> </td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.godown_product_id.product_id.sub_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.godown_product_id.product_id.sub_sub_category}}</td>
 
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.req_carton_count}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.req_quantity}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 
                 <div class="btn-group">
-<select class="btn btn-success" id="caasrs">
+<select class="btn btn-success" name="req_type" id="caasrs">
   <option class="btn btn-success" value="Individual">Individual</option>
   <option class="btn btn-success" value="Carton">Carton</option>
 </select>
@@ -371,25 +388,22 @@ td {
             </td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
                  <center>
-                <input type="text" class="form-control" style="height:40px; width:60px;">
+                <input type="text" name="number" class="form-control" style="height:40px; width:60px;">
 </center>
             </td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                <button type="button" class="btn btn-danger">Request</button>
+                <button name="submit1" type="submit" class="btn btn-danger">Request</button>
 
             </td>
         </tr>
+        </form>
+        {% endfor %}
     </table>
                             </div>
                         <br>
                         <br>
                         <div class="row">
-    <div class="col-md-12">
-    <center>
-<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Save</button>
-<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Edit</button>
-</center>
-    </div>
+
     </div>
 
                 </div></div>
