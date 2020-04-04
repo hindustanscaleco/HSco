@@ -131,15 +131,15 @@ def stock_good_request(request,godown_id):
 
             req_type = request.POST.get('req_type')
             req_carton_count = request.POST.get('req_carton_count')
-            req_quantity = request.POST.get('req_quantity')
+            number = request.POST.get('number')
 
             item2 = RequestedProducts()
 
-            item2.req_quantity = req_quantity
+            item2.req_quantity = number
             item2.req_carton_count = req_carton_count
             item2.req_type = req_type
             item2.godown_id = Godown.objects.get(id=godown_id)
-            item2.godown_product_id = GodownProduct.objects.get(product_id=product_id)
+            item2.godown_product_id = GodownProduct.objects.get(product_id=product_id,godown_id=godown_id)
             item2.log_entered_by = request.user.name
             item2.save()
         elif 'submit2' in request.POST:
