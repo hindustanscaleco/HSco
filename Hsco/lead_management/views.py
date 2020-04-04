@@ -858,12 +858,14 @@ def update_view_lead(request,id):
         email_msg = history_follow.email_msg
         sms_msg = history_follow.sms_msg
         is_email = 'is_email' if history_follow.is_email else ''
+        wa_no = history_follow.wa_no if history_follow.wa_no else customer_id.contact_no
     else:
         wa_msg = ''
         email_msg = ''
         sms_msg = ''
         is_email = ''
-    wa_no = history_follow.wa_no if history_follow.wa_no else customer_id.contact_no
+        wa_no = ''
+    
 
     form6 = History_followupForm(initial={'wa_no':wa_no,'email_subject':hfu.email_subject,'wa_msg':wa_msg,'email_msg':email_msg,
                                           'sms_msg':sms_msg,'is_email':is_email})
