@@ -87,6 +87,7 @@ def lead_home(request):
                 context = {
                     'lead_list': lead_list,
                     'lead_list_count': True if lead_list_count != 0 else False,
+                    'lead_lis': False if lead_list_count != 0 else True,
                 }
 
 

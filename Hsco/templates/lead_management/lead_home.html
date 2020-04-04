@@ -455,7 +455,7 @@ $(function() {
 
                    &nbsp&nbsp&nbsp&nbsp&nbsp
 
-      <button onclick="choice1('Estimate is given but Estimate is not confirmed')" class="col-xl-1 btn btn-primary"  name="" style="background: #7FA998 !important;">
+      <button class="col-xl-1 btn btn-primary"  name="" style="background: #7FA998 !important;">
                    <center>Customer Called&nbsp;<br> ( {{cust_called_stage}}  )</center></button>
 
 &nbsp&nbsp&nbsp&nbsp&nbsp
@@ -571,7 +571,8 @@ td {
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-                {% else %}
+                {% endif %}
+                {% if lead_lis %}
                 <br>
            <div class="alert alert-danger alert-dismissible fade show" role="alert">
   <strong></strong>Nothing Found Try Changing Month & Year
