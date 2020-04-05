@@ -865,7 +865,7 @@ def update_view_lead(request,id):
         sms_msg = ''
         is_email = ''
         wa_no = ''
-    
+
 
     form6 = History_followupForm(initial={'wa_no':wa_no,'email_subject':hfu.email_subject,'wa_msg':wa_msg,'email_msg':email_msg,
                                           'sms_msg':sms_msg,'is_email':is_email})
