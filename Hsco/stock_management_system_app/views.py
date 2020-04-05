@@ -99,6 +99,7 @@ def add_product_godown(request, godown_id):
         item.carton_count = carton_count
         item.log_entered_by = request.user.name
         item.save()
+
         if is_last_product_yes == 'yes':
             return redirect('/update_godown/' + str(godown_id))
         elif is_last_product_yes == 'no':
@@ -113,18 +114,26 @@ def add_product_godown(request, godown_id):
 
 def stock_godown(request,id):
     godown_id = Godown.objects.get(id=id)
+    if GoodsRequest.objects.all().count() == 0:
+        new_good_request_id = 1
+    else:
+        new_good_request_id = GoodsRequest.objects.latest('id').id + 1
+
+
     context={
-             godown_id:'godown_id'
+     'godown_id':godown_id,
+     'new_good_request_id':new_good_request_id,
     }
     return render(request,'stock_management_system/stock_godown.html',context)
 
 def stock_godown_images(request):
     return render(request,'stock_management_system/stock_godown_images.html')
 
-def stock_good_request(request,godown_id):
+def stock_good_request(request,godown_id, request_id):
+    # good_request = GoodsRequest.objects.get(id=request_id)
     godowns = Godown.objects.all()
     godown_goods = GodownProduct.objects.filter(godown_id=godown_id)
-    requested_goods = RequestedProducts.objects.filter(godown_id=godown_id)
+    requested_goods = RequestedProducts.objects.filter(godown_id=godown_id,goods_req_id =request_id)
     if request.method == 'POST' or request.method == 'FILES':
         if 'submit1' in request.POST:
             product_id = request.POST.get('product_id')
@@ -142,15 +151,30 @@ def stock_good_request(request,godown_id):
             item2.godown_product_id = GodownProduct.objects.get(product_id=product_id,godown_id=godown_id)
             item2.log_entered_by = request.user.name
             item2.save()
+            if GoodsRequest.objects.filter(id=request_id).count() == 0:
+                item3 = GoodsRequest()
+                item3.save()
+            else:
+                item3 = GoodsRequest.objects.get(id=request_id)
+            item2.goods_req_id = item3
+            item2.save(update_fields=['goods_req_id',])
+            return redirect('/stock_good_request/'+str(godown_id)+'/'+str(request_id))
         elif 'submit2' in request.POST:
             req_to_godown = request.POST.get('req_to_godown')
 
-            item2 = GoodsRequest()
+            item2 = GoodsRequest.objects.get(id=request_id)
 
             item2.req_from_godown = Godown.objects.get(id=godown_id)
-            item2.req_to_godown = Godown.objects.get(id=req_to_godown)
+            if req_to_godown == '':
+                item2.is_all_req = True
+            else:
+                item2.req_to_godown = Godown.objects.get(id=req_to_godown)
             item2.log_entered_by = request.user.name
-            item2.save()
+            item2.entered_by = SiteUser.objects.get(id=request.user.id)
+            item2.status = 'Pending From Target'
+            item2.save(update_fields=['req_from_godown','is_all_req','req_to_godown','log_entered_by','entered_by','status',])
+            return redirect('/stock_godown/'+str(godown_id))
+
         elif 'submit3' in request.POST:
             request_id = request.POST.get('request_id')
             RequestedProducts.objects.get(id=request_id).delete()
@@ -163,11 +187,73 @@ def stock_good_request(request,godown_id):
     }
     return render(request,'stock_management_system/stock_good_request.html',context)
 
-def stock_pending_request(request):
-    return render(request,'stock_management_system/stock_pending_request.html')
+def stock_pending_request(request,godown_id):
+    godown = Godown.objects.get(id=godown_id)
 
-def stock_transaction_status(request):
-    return render(request,'stock_management_system/stock_transaction_status.html')
+    admin = request.user.admin
+    pending_list = GoodsRequest.objects.filter(status='Pending From Target',req_to_godown__goddown_assign_to__admin=admin) |\
+                   GoodsRequest.objects.filter(is_all_req=True)
+    context = {
+        'godown_id': godown,
+        'pending_list': pending_list,
+    }
+    return render(request,'stock_management_system/stock_pending_request.html',context)
+
+def stock_transaction_status(request,from_godown_id, trans_id):
+    good_request = GoodsRequest.objects.get(id=trans_id)
+    godown = Godown.objects.get(id=from_godown_id)
+    requested_goods = RequestedProducts.objects.filter(godown_id=from_godown_id,goods_req_id =good_request)
+    if request.method == 'POST' or request.method == 'FILES':
+        if 'submit1' in request.POST:
+            number = request.POST.get('number')
+            req_type = request.POST.get('req_type')
+            product_id = request.POST.get('product_id')
+            faulty = request.POST.get('faulty')
+
+            item2 = RequestedProducts.objects.get(id=product_id)
+            if req_type == 'Individual':
+                if good_request.status == 'Pending From Target':
+                    if number != '0':
+                        item2.sent_quantity = float(number)
+                        item2.log_entered_by = request.user.name
+                elif good_request.status == 'Confirmation of goods transformation':
+                    if number != '0' :
+                        item2.received_quantity = float(number)
+                        item2.log_entered_by = request.user.name
+                    if faulty != '0':
+                        item2.faulty_quantity = float(faulty)
+                        item2.log_entered_by = request.user.name
+
+            elif req_type == 'Carton':
+                if good_request.status == 'Pending From Target':
+                    if number != '0':
+                        item2.sent_carton_count = float(number)
+                        item2.log_entered_by = request.user.name
+                elif good_request.status == 'Confirmation of goods transformation':
+                    if number != '0' :
+                        item2.received_carton_count = float(number)
+                        item2.log_entered_by = request.user.name
+                    if  faulty != '0':
+                        item2.faulty_carton = float(faulty)
+                        item2.log_entered_by = request.user.name
+
+            item2.save(update_fields=['sent_quantity','received_quantity','sent_carton_count','received_carton_count','log_entered_by',
+                                      'faulty_carton','faulty_quantity'])
+            return redirect('/stock_transaction_status/'+str(from_godown_id)+'/'+str(trans_id))
+
+        if 'submit2' in request.POST:
+            status = request.POST.get('status')
+            good_request = GoodsRequest.objects.get(id=trans_id)
+            good_request.status = status
+            good_request.save(update_fields=['status',])
+            return redirect('/stock_transaction_status/'+str(from_godown_id)+'/'+str(trans_id))
+    context = {
+        'good_request': good_request,
+        'godown': godown,
+        'requested_goods': requested_goods,
+
+    }
+    return render(request,'stock_management_system/stock_transaction_status.html',context)
 
 def stock_accpet_goods(request):
     return render(request,'stock_management_system/stock_accpet_goods.html')

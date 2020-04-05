@@ -47,6 +47,7 @@ class GodownProduct(models.Model):
 
     def __int__(self):
         return self.id
+
 class GoodsRequest(models.Model):
     req_from_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,related_name='Godown1',null=True,blank=True)
     req_to_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,related_name='Godown2',null=True,blank=True)
@@ -61,8 +62,18 @@ class RequestedProducts(models.Model):
     godown_id = models.ForeignKey(Godown,on_delete=models.CASCADE,null=True,blank=True)
     godown_product_id = models.ForeignKey(GodownProduct, on_delete=models.CASCADE,null=True,blank=True)
     goods_req_id = models.ForeignKey(GoodsRequest, on_delete=models.CASCADE,null=True,blank=True)
+
     req_quantity = models.FloatField(default=0.0)
+    sent_quantity = models.FloatField(default=0.0)
+    received_quantity = models.FloatField(default=0.0)
+
     req_carton_count = models.FloatField(default=0.0)
+    sent_carton_count = models.FloatField(default=0.0)
+    received_carton_count = models.FloatField(default=0.0)
+
+    faulty_quantity = models.FloatField(default=0.0)
+    faulty_carton = models.FloatField(default=0.0)
+
     req_type = models.CharField(max_length=20,null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
