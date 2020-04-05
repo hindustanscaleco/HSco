@@ -1361,9 +1361,13 @@ function whosFunction() {
 
 
 
+<center>
+            {% if lead_id.current_stage == 'PO Issued - Payment Done - Dispatch Pending' or lead_id.current_stage == 'Dispatch Done - Closed' %}
+{% if lead_id.is_entered_purchase %}
+    <button class="btn btn-primary" onclick="location.href='/update_customer_details/{{lead_id.purchase_id.pk}}'">Go To Purchase</button>
 
-
-
+ {% endif %}
+ {% endif %}
 </center>
 
 </div>

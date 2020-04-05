@@ -1028,6 +1028,8 @@ def update_view_lead(request,id):
                 purchase_det.log_entered_by = request.user.profile_name
                 purchase_det.save()
 
+                Lead.objects.filter(id=id).update(purchase_id=purchase_det.pk)
+
                 dispatch = Dispatch()
                 dispatch.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
                 dispatch.second_person = lead_id.customer_id.customer_name  # new1
