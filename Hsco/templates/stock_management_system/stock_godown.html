@@ -73,7 +73,7 @@
 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
 
-    <a style="padding: 2px;" href=""><button style="background-color: #FC6E20;" class="btn btn-primary"> Accpet Goods </button></a>
+    <a style="padding: 2px;" href="/stock_accpet_goods_list/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Accept Goods </button></a>
 
 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
@@ -83,7 +83,7 @@
 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
 
 
-    <a style="padding: 2px;" href=""><button style="background-color: #FC6E20;" class="btn btn-primary"> Transation History </button></a>
+    <a style="padding: 2px;" href="/stock_transaction_history_list/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Transaction History </button></a>
                 </div>
 </div>
 
@@ -377,29 +377,19 @@ td {
 
         </tr>
 
-
+{% for product in godown_products %}
 
         <tr>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
+                <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{product.product_id.scale_type}}</td>
+            <td style="border: 0px solid gray;">{{product.product_id.main_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.product_id.sub_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.product_id.sub_sub_category}}</td>
+          <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.carton_count}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.quantity}}</td>
         </tr>
 
+{% endfor %}
 
-        <tr>
-
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-</tr>
 
 
     </table>
@@ -419,8 +409,7 @@ td {
     <div class="row">
     <div class="col-md-12">
     <center>
-<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Save</button>
-<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Edit</button>
+<a href="/update_godown/{{godown_id.id}}"><button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Edit</button></a>
 </center>
     </div>
     </div>

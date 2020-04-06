@@ -322,9 +322,14 @@ td {
                 <div class="card col-md-12">
                     <div class="card-body col-md-12">
                         <div class="row">
-
-                            <h5 style="font-size:15px;">Ownworkstation:Transaction ID:7757860:Transaction Status:conformation of goods transfer</h5>
+                            <div class="col-xl-4">{% if request.user.admin == list.req_to_godown.goddown_assign_to.admin %} <b>Own WorkStation</b> {% else %} <b>Outside Workstation</b> {% endif %}
+                </div>
+                            <div class="col-xl-4">Transaction ID: <b>{{good_request.id}}</b>
+                </div>
+                            <div class="col-xl-4">Transaction Status: <b>{{good_request.status}}</b>
+                </div>
                     </div>
+
                         <hr>
         <form method="POST" >{%csrf_token%}
                         <div class="row">
