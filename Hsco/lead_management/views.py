@@ -865,7 +865,7 @@ def update_view_lead(request,id):
         sms_msg = ''
         is_email = ''
         wa_no = ''
-    
+
 
     form6 = History_followupForm(initial={'wa_no':wa_no,'email_subject':hfu.email_subject,'wa_msg':wa_msg,'email_msg':email_msg,
                                           'sms_msg':sms_msg,'is_email':is_email})
@@ -1027,6 +1027,8 @@ def update_view_lead(request,id):
                 purchase_det.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no + 1
                 purchase_det.log_entered_by = request.user.profile_name
                 purchase_det.save()
+
+                Lead.objects.filter(id=id).update(purchase_id=purchase_det.pk)
 
                 dispatch = Dispatch()
                 dispatch.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
@@ -1397,6 +1399,8 @@ def update_view_lead(request,id):
             selected_products = request.POST.getlist('checks_pro[]')
             selected_fields = Follow_up_section.objects.get(lead_id=id).fields
 
+            print(request.POST)
+            print(request.POST)
 
             if(len(selected_products)<1):
 
@@ -1405,7 +1409,7 @@ def update_view_lead(request,id):
                     'error_exist':True,
                 }
                 context.update(context22)
-            elif(is_call!='on' and is_sms!='on' and is_whatsapp!='on' and is_email!='on' ):
+            elif(is_call!='on' and is_sms!='on' and is_whatsapp!='on' and is_email!='on' and is_call!='is_call' and is_sms!='is_sms' and is_whatsapp!='is_whatsapp' and is_email !='is_email'):
                 context28 = {
                     'error': "Please Select Atleast One Medium For Followup",
                     'error_exist': True,
@@ -1476,9 +1480,9 @@ def update_view_lead(request,id):
                         html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
                     html_rows = html_rows + '''</tr>'''
 
-                print(sms_content)
 
-                if(is_email=='on'):
+
+                if(is_email=='on' or is_email =='is_email'):
                     email_subject = request.POST.get('email_subject')
                     email_msg = request.POST.get('email_msg')
                     history_follow.is_email=True
@@ -1567,7 +1571,7 @@ td {
                     }
                     context.update(context28)
 
-                if(is_whatsapp=='on'):
+                if(is_whatsapp=='on' or is_whatsapp=='is_whatsapp'):
                     history_follow.is_whatsapp = True
                     history_follow.wa_msg = wa_msg
                     history_follow.wa_no = wa_no
@@ -1586,7 +1590,7 @@ td {
                     }
                     context.update(context28)
 
-                if(is_sms=='on'):
+                if(is_sms=='on' or is_sms=='is_sms'):
                     sms_msg = request.POST.get('sms_msg')
                     history_follow.is_sms = True
                     history_follow.sms_msg = sms_msg+'\n'+sms_content
@@ -1604,7 +1608,7 @@ td {
                     }
                     context.update(context28)
 
-                if(is_call=='on'):
+                if(is_call=='on' or is_call=='is_call'):
                     call_response = request.POST.get('call_response')
                     history_follow.is_call = True
                     history_follow.call_response = call_response
@@ -1678,7 +1682,7 @@ td {
 
 
 
-                    if (is_email == 'on'):
+                    if(is_email=='on' or is_email =='is_email'):
                         email_subject = request.POST.get('email_subject')
                         email_msg = request.POST.get('email_msg')
                         history_follow.is_email = True
@@ -1762,10 +1766,11 @@ td {
 
                         file = ContentFile(html_content)
                         history_follow.file.save('AutoFollowup.html', file, save=False)
+                        history_follow.html_content= html_content
 
 
 
-                    if (is_sms == 'on'):
+                    if(is_sms=='on' or is_sms=='is_sms'):
                         sms_msg = request.POST.get('sms_msg')
                         history_follow.is_sms = True
                         history_follow.sms_msg = sms_msg + '\n' + sms_content
@@ -1775,7 +1780,7 @@ td {
 
                     history_follow.save()
                     afd= Auto_followup_details()
-                    afd.follow_up_history = History_followup.objects.get(id=history_follow)
+                    afd.follow_up_history = History_followup.objects.get(id=history_follow.pk)
                     afd.save()
                     context28 = {
                         'success_6': "Followup Will Be Done Automatically After Every 2 Days",
@@ -2123,12 +2128,32 @@ def lead_manager_view(request):
     }
     return render(request,'lead_management/lead_manager.html',context)
 
+
 def lead_follow_up_histroy(request,follow_up_id):
+    context={}
     obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
 
-    context={
+    if request.method == 'POST':
+        if 'sub1' in request.POST:
+            delete_id = request.POST.get('delete_id')
+
+            Auto_followup_details.objects.filter(follow_up_history__pk=delete_id).delete()
+            History_followup.objects.filter(id=delete_id).update(is_auto_follow_deleted=True)
+            obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
+            Follow_up_section.objects.filter(id=History_followup.objects.get(id=delete_id).follow_up_section.pk).update(auto_manual_mode='Select Mode')
+            context2 = {
+                'obj_list': obj_list,
+                'is_deleted': True,
+                'msg': 'Auto Follow-up Cancelled Successfully',
+            }
+            context.update(context2)
+
+
+
+    context23={
         'obj_list':obj_list,
     }
+    context.update(context23)
 
     return render(request,'lead_management/follow_up_history.html',context)
 
