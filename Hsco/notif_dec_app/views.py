@@ -68,7 +68,14 @@ def chat_details(request,from_id,to_id):
 
 def chat_with_user(request):
 
-    all_users_list = SiteUser.objects.all()
+    if request.user.role == 'Employee':
+        all_users_list = SiteUser.objects.filter(name = SiteUser.objects.get(id=request.user.id).manager)
+    elif request.user.role == 'Manager':
+        all_users_list = SiteUser.objects.filter(name = SiteUser.objects.get(id=request.user.id).admin)
+    elif request.user.role == 'Admin':
+        all_users_list = SiteUser.objects.filter(Q(admin = request.user.name) & Q(role = 'Manager') | Q(role = 'Super Admin'))
+    elif request.user.role == 'Super Admin':
+        all_users_list = SiteUser.objects.filter(role = 'Admin')
     context={
         'all_users_list':all_users_list,
     }

@@ -225,6 +225,10 @@ $(function() {
 
                 </div>
 
+                <div class="col-xl-3">
+                    <button class="btn btn-primary" onclick="location.href='/notif_decl_home/'">Notif Home</button>
+                </div>
+
 
 
             </div>
@@ -310,12 +314,17 @@ td {
 
         </tr>
                     {% for item in all_users_list %}
+{% if item.id == request.user.id %}
+              <tr>
 
-        <tr style="cursor: pointer; " onclick="location.href='/chat_details/{{request.user.pk}}/{{item.pk}}';">
+        {% else %}
+                          <tr style="cursor: pointer; " onclick="location.href='/chat_details/{{request.user.pk}}/{{item.pk}}';">
+
+        {% endif %}
 
             <td>{{ forloop.counter}}</td>
             <td>{{ item.employee_number }}</td>
-            <td>{{ item.profile_name}}</td>
+        <td>{{ item.profile_name}}{% if item.id == request.user.id %} <b>(YOU)</b>{% endif %}</td>
             <td>{{item.mobile}}</td>
             <td>{{item.role}}</td>
             <td>{{item.email}}</td>
