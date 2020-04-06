@@ -345,11 +345,14 @@ td {
                 <div class="card col-md-12">
                     <div class="card-body col-md-12">
                         <div class="row">
-                            <h5 style="font-size:15px;">Ownworkstation:Transaction ID:7757860:Transaction Status:conformation of goods transfer</h5>
+                            <div class="col-xl-4">{% if request.user.admin == good_request.req_to_godown.goddown_assign_to.admin %} <b>Own WorkStation</b> {% else %} <b>Outside Workstation</b> {% endif %}
+                </div>
+                            <div class="col-xl-4">Transaction ID: <b>{{good_request.id}}</b>
+                </div>
+                            <div class="col-xl-4">Transaction Status: <b>{{good_request.status}}</b>
+                </div>
                     </div>
                         <hr>
-    {% if request.user.is_authenticated %}
-{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
                             <label class="col-md-2 control-label"> From : Godown 1</label>
 
                           <div class="form-group row">
@@ -357,7 +360,7 @@ td {
                                   <div class="col-md-3 inputGroupContainer">
                                   <div class="input-group">
                                   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.name_of_godown }}
+                                {{ from_godown_form.name_of_godown }}
                           </div>
                         </div>
 
@@ -366,7 +369,7 @@ td {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.goddown_assign_to }}
+                                {{ from_godown_form.goddown_assign_to }}
                             </div>
                              </div>
                           </div>
@@ -376,7 +379,7 @@ td {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.contact_no }}
+                                {{ from_godown_form.contact_no }}
                             </div>
                              </div>
                           </div>
@@ -389,7 +392,7 @@ td {
                                   <div class="col-md-3 inputGroupContainer">
                                   <div class="input-group">
                                   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.name_of_godown }}
+                                {{ to_godown_form.name_of_godown }}
                           </div>
                         </div>
 
@@ -398,7 +401,7 @@ td {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.goddown_assign_to }}
+                                {{ to_godown_form.goddown_assign_to }}
                             </div>
                              </div>
                           </div>
@@ -408,13 +411,10 @@ td {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.contact_no }}
+                                {{ to_godown_form.contact_no }}
                             </div>
                              </div>
                           </div>
-                        {% else %}
-{% endif %}
-{% endif %}
 
 
 
@@ -423,9 +423,8 @@ td {
                             <div class="row">
                         Current Stage:           &nbsp &nbsp      <div class="btn-group">
 <select class="btn btn-success" id="c5aasrs">
-  <option class="btn btn-success" value="Individual">Pending From Target</option>
-  <option class="btn btn-success" value="Carton">Confirmation of goods transformation</option>
-  <option class="btn btn-success" value="Carton">Confirms the transformation</option>
+  <option class="btn btn-success" value="{{good_request.status}}">{{good_request.status}}</option>
+
 </select>
 </div>
                         </div>
@@ -441,41 +440,55 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Requested</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sended</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">&nbsp</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Recived</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Received</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Request</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Faulty</td>
         </tr>
+         {% for list in requested_goods %}
         <tr>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{list.godown_product_id.product_id.scale_type}}</td>
+            <td style="border: 0px solid gray;">{{list.godown_product_id.product_id.main_category}}<input hidden name="product_id" value="{{list.id}}"> </td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.godown_product_id.product_id.sub_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.godown_product_id.product_id.sub_sub_category}}</td>
 
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
+            {% if list.req_type == 'Individual' %}
+      <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.req_quantity}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.sent_quantity}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.received_quantity}}</td>
+
+            {% elif list.req_type == 'Carton' %}
+
+ <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.req_carton_count}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.sent_carton_count}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.received_carton_count}}</td>
+
+            {% endif %}
+
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 
                 <div class="btn-group">
-<select class="btn btn-success" id="caasrs">
+<select class="btn btn-success" name="req_type" id="caasrs">
+    {% if list.req_type == 'Individual' %}
   <option class="btn btn-success" value="Individual">Individual</option>
+        {% elif list.req_type == 'Carton' %}
   <option class="btn btn-success" value="Carton">Carton</option>
+    {% endif %}
 </select>
 </div>
 
 
             </td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                 <center>
-                <input type="text" class="form-control" style="height:40px; width:60px;">
-</center>
-            </td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                <center>
-                <input type="text" class="form-control" style="height:40px; width:60px;">
-</center>
 
+           
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+        {% if list.req_type == 'Individual' %}
+ {{list.faulty_quantity}}
+        {% elif list.req_type == 'Carton' %}
+ {{list.faulty_carton}}
+    {% endif %}
             </td>
         </tr>
+        {% endfor %}
     </table>
                             </div>
                         <br>
@@ -483,8 +496,8 @@ td {
                         <div class="row">
     <div class="col-md-12">
     <center>
-<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Save</button>
-<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Edit</button>
+<!--<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Save</button>-->
+<!--<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Edit</button>-->
 </center>
     </div>
     </div>
