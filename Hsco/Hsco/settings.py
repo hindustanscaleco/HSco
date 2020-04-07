@@ -66,13 +66,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notif_dec_app.views.notification_context',
             ],
         },
     },
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = [
-    'django.core.context_processors.request'
+    'django.core.context_processors.request',
 ]
 WSGI_APPLICATION = 'Hsco.wsgi.application'
 
