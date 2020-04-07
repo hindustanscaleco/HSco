@@ -59,7 +59,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">{{ message.count }}+</span>
+                <span class="badge badge-danger badge-counter">{{ alert_count }}+</span>
               </a>
               <!-- Dropdown - Alerts -->
          <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
@@ -67,16 +67,16 @@
                   Alerts Center
                 </h6>
 
-{% for msg in message %}
-                <a class="dropdown-item d-flex align-items-center" href="#">
+{% for msg in notif_alert %}
+                <a class="dropdown-item d-flex align-items-center" href="/chat_details/{{request.user.id}}/{{ msg.message_from.id }}">
                   <div class="mr-3">
                     <div class="icon-circle bg-warning">
                       <i class="fas fa-exclamation-triangle text-white"></i>
                     </div>
                   </div>
                   <div>
-                    <div class="small text-gray-500">{{ msg.user_id }}&nbsp; -{{ msg.entry_date }} </div>
-                    {{ msg.reason }}
+                    <div class="small text-gray-500">{{ msg..message_from.profile_name }}&nbsp; -{{ msg.entrytimedate }} </div>
+                    {{ msg.message }}
                   </div>
                 </a>
            {% endfor %}
@@ -88,24 +88,24 @@
             <!-- Nav Item - Messages -->
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <!--<i class="fas fa-envelope fa-fw"></i>-->
+                <i class="fas fa-envelope fa-fw"></i>
                 <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">{{ messge.count }}</span>
+                <span class="badge badge-danger badge-counter">{{ notification_count }}+</span>
               </a>
               <!-- Dropdown - Messages -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                 <h6 class="dropdown-header">
                   Message Center
                 </h6>
-                {% for msg in mesage %}
-                <!--<a class="dropdown-item d-flex align-items-center" href="#">-->
+                {% for msg in notif_message %}
+                <a class="dropdown-item d-flex align-items-center" href="/chat_details/{{request.user.id}}/{{ msg.message_from.id }}">
                   <div class="dropdown-list-image mr-3">
                     <img class="rounded-circle" src="" alt="">
                     <div class="status-indicator bg-success"></div>
                   </div>
                   <div class="font-weight-bold">
-                    <div class="text-truncate">{{ msg.user_id }}</div>
-                    <div class="small text-gray-500">{{ msg.reason }}</div>
+                    <div class="text-truncate">{{ msg.message_from.profile_name }}</div>
+                    <div class="small text-gray-500">{{ msg.message }}</div>
                   </div>
                 </a>
                 {% endfor %}

@@ -54,40 +54,27 @@
 
           <!-- Page Heading -->
             <div class="row">
+           <div class="col-xl-6 col-md-3 mb-3 ">
 
 
-                <div class="col-md-12">
-                      <center>
-<h1 class="h3 mb-0 text-gray-800 ">Stock Management System</h1>
-</center>
-</div>
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+<h1 class="h3 mb-0 text-gray-800 ">Select User</h1>
+
+
+                </div>
+              </div>
             </div>
 
-<br>
-
-<div class="row">
-                <div class="col-md-12">
-                    &nbsp &nbsp &nbsp &nbsp
-    <a style="padding: 2px;" href="/stock_good_request/{{godown_id.id}}/{{new_good_request_id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Good Request </button></a>
-
-&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-
-    <a style="padding: 2px;" href="/stock_accpet_goods_list/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Accept Goods </button></a>
-
-&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-
-    <a style="padding: 2px;" href="/stock_pending_request/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Pending Request </button></a>
-&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
 
 
-    <a style="padding: 2px;" href="/stock_transaction_history_list/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Transaction History </button></a>
+
+
                 </div>
-</div>
 
 
+
+<br>
 
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
@@ -174,7 +161,16 @@ $(function() {
             <div class="row">
 
                 <div  class="col-xl-3 col-md-3 col-mb-3">
-
+                    <div class="button dropdown">
+  <select id="divselector" class="form-control">
+     <option value="d0">Select Search Type</option>
+     <option value="d2">Search By Mobile Number</option>
+     <option value="d3">Search By Email Id</option>
+     <option value="d5">Search By Name</option>
+     <option value="d6">Search By Employee ID.</option>
+     <!--<option value="d7">Search By CRM Number Range</option>-->
+  </select>
+</div>
 
 <br>
                 </div>
@@ -184,28 +180,7 @@ $(function() {
 
 
 <div class="output">
-                                                              <form method="POST" autocomplete="off">{% csrf_token%}
-  <div id="d1" class="divs d1 row">
 
-      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
-                <input name="date1" type="date" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
-                <p style="font-weight: 600;">_</p>
-
-      </div>
-
-      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
-                <input name="date2" type="date" placeholder="Search 1" class="form-control">
-
-      </div>
-      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
-                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
-
-      </div>
-                               </form>
 
 
   <div id="d2" class="divs d2">
@@ -230,14 +205,6 @@ $(function() {
 
 
 
-    <div id="d4" class="divs d4">
-        <form method="POST">{% csrf_token%}
-      <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button>
-    </form>
-    </div>
-
                                <form method="POST">{% csrf_token%}
   <div id="d5" class="divs d5">
       <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
@@ -252,14 +219,14 @@ $(function() {
       &nbsp; &nbsp;
       <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
 </form>
-                       <form method="POST">{% csrf_token%}
 
-    <div id="d7" class="divs d7">
-      <input type="text" name="purchase_no" placeholder="Purchase No." class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
-</form>
+
 </div>
+
+                </div>
+
+                <div class="col-xl-3">
+                    <button class="btn btn-primary" onclick="location.href='/notif_decl_home/'">Notif Home</button>
                 </div>
 
 
@@ -286,19 +253,9 @@ a:hover {
   text-decoration: none;
 }
 
-.card + .card {
-    margin:0px;
-    box-shadow: 0 8px 6px -6px #e47312;
-    box-shadow: inset 0 0 4px #e47312;
-
-
-
-
-
-
 </style>
 
-                                                <style>
+                        <style>
                 .border_class {
                 border:1px solid black;
                 height:45px;
@@ -311,7 +268,7 @@ a:hover {
   table {
   border-collapse: collapse;
   width: 100%;
-  font-size: 12px;
+  font-size: 14px;
   border-color: black;
   color: black;
 
@@ -340,86 +297,86 @@ td {
 
             </style>
 
-            <div class="row">
-                            <div  class="col-xl-2 col-md-3 col-mb-3">
-                    <div class="button dropdown">
-  <select id="divsort" class="form-control">
-     <option value="d0">Sort by Sale person </option>
-     <option value="d1">Sort by Employee  </option>
-     <option value="d2">Sort by  </option>
-     <option value="d3">Sort by  </option>
-     <option value="d4">Sort by  </option>
-     <option value="d5">Sort by  </option>
-     <option value="d6">Sort by  </option>
-     <option value="d7">Sort by  </option>
-  </select>
-</div>
-                            </div>
 
-                <div class="col-md-8"></div>
-           <a href=""><button type="button" class="btn btn-primary" style="background-color:#FC6E20">Display with Image</button></a>
+<div style="min-height: 26vw;">
 
-
-                </div>
-
-<br>
-<div class="row" id="abhish123">
+        <div class="row" id="id_manager_view">
 
     <table>
         <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Count</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No.</td>
+            <td style="border: 0px solid gray;">Employee ID </td>
+            <td style="border: 0px solid gray;">Name</td>
+            <td style="border: 0px solid gray;">Contact No.</td>
+            <td style="border: 0px solid gray;">Position </td>
+            <td style="border: 0px solid gray;">Email</td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Deleted</td>
+
+        </tr>
+                    {% for item in all_users_list %}
+
+                          <tr style="cursor: pointer; " onclick="location.href='/chat_details/{{request.user.pk}}/{{item.pk}}';">
+
+
+            <td>{{ forloop.counter}}</td>
+            <td>{{ item.employee_number }}</td>
+        <td>{{ item.profile_name}}</td>
+            <td>{{item.mobile}}</td>
+            <td>{{item.role}}</td>
+            <td>{{item.email}}</td>
+            <td>
+                {% if item.is_deleted %}
+                                                <i class="fa fa-check-circle" style="font-size:20px;color:red; position:relative;"></i>
+
+
+                {% else %}
+                                <i class="fa fa-times-circle" style="font-size:20px;color:green; position:relative;"></i>
+
+                {% endif %}
+            </td>
 
 
         </tr>
-
-{% for product in godown_products %}
-
-        <tr>
-                <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{product.product_id.scale_type}}</td>
-            <td style="border: 0px solid gray;">{{product.product_id.main_category}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.product_id.sub_category}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.product_id.sub_sub_category}}</td>
-          <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.carton_count}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.quantity}}</td>
-        </tr>
-
-{% endfor %}
-
-
+                          {% endfor %}
 
     </table>
 
-
-
-
-
         </div>
 
-<br>
-<br>
-<br>
-     </div>
-         {% if request.user.is_authenticated %}
-{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
-    <div class="row">
-    <div class="col-md-12">
-    <center>
-<a href="/update_godown/{{godown_id.id}}"><button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Edit</button></a>
-</center>
-    </div>
-    </div>
-    {% else %}
-    {% endif %}
-{% endif %}</div>
+
 
 
 <br>
 
+
+
+
+
+
+
+            <div class="pagination">
+    <span class="step-links">
+        {% if customer_list.has_previous %}
+            <a href="?page=1"  class="btn btn-primary">&laquo; First</a>&nbsp;&nbsp;
+            <a href="?page={{ customer_list.previous_page_number }}" class="btn btn-primary">Previous</a>&nbsp;
+        {% endif %}
+
+        <span class="current">
+            Page {{ customer_list.number }} of {{ customer_list.paginator.num_pages }}.
+        </span>
+
+        {% if customer_list.has_next %}
+        &nbsp;
+            <a href="?page={{ customer_list.next_page_number }}" class="btn btn-primary">Next</a>&nbsp;&nbsp;
+            <a href="?page={{ customer_list.paginator.num_pages }}" class="btn btn-primary">Last &raquo;</a>
+        {% endif %}
+    </span>
+            </div>
+        </div>
+              </div>
+
+</div>
+<br>
 
   </div>
 
@@ -450,11 +407,44 @@ value = select.checked;
 }
         function toggleCheckbox2(select) {
 value = !select.checked;
+if(!select.checked == true){
+
+    document.getElementById("date_year").style.display = "block";
+}else{
+document.getElementById("date_year").style.display = "none";
+}
+
 
     $.ajax({
         url: "/load_users/",
         data: {
           'loc_id':value,
+          'sel_month':value,
+          'sel_year':value,
+
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+function toggleCheckbo(select) {
+sel_month = select.options[select.selectedIndex].value;
+sel_month_text = select.options[select.selectedIndex].text;
+sel_year = document.getElementById("selected_year")
+sel_year= sel_year.options[sel_year.selectedIndex].value;
+value = !document.getElementById("checker").checked;
+
+
+    $.ajax({
+        url: "/load_users/",
+        data: {
+          'loc_id':value,
+          'sel_month':sel_month,
+          'sel_month_text':sel_month_text,
+          'sel_year':sel_year,
+
         },
         success: function (data) {
            $("#id_manager_view").html(data);

@@ -83,8 +83,8 @@ class RequestedProducts(models.Model):
         return self.id
 
 class AcceptGoods(models.Model):
-    from_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,)
-    notes = models.TextField()
+    from_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,null=True,blank=True)
+    notes = models.TextField(null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
@@ -93,11 +93,12 @@ class AcceptGoods(models.Model):
         return self.id
 
 class AGProducts(models.Model):
-    accept_product_id = models.ForeignKey(AcceptGoods, on_delete=models.CASCADE,)
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.FloatField()
-    carton_count = models.FloatField()
-    type = models.CharField(max_length=20)
+    godown_id = models.ForeignKey(Godown,on_delete=models.CASCADE,null=True,blank=True)
+    accept_product_id = models.ForeignKey(AcceptGoods, on_delete=models.CASCADE,null=True, blank=True)
+    godown_product_id = models.ForeignKey(GodownProduct, on_delete=models.CASCADE,null=True,blank=True)
+    quantity = models.FloatField(default=0.0)
+    carton_count = models.FloatField(default=0.0)
+    type = models.CharField(max_length=20,null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
