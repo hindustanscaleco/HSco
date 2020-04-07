@@ -32,21 +32,27 @@ def chat_details(request,from_id,to_id):
         (Q(message_from_id=SiteUser.objects.get(id=from_id).id)&
          Q(message_to=SiteUser.objects.get(id=to_id).id)))
 
-    Chat_model.objects.filter(
-        (Q(message_from_id=SiteUser.objects.get(id=to_id).id) &
-         Q(message_to=SiteUser.objects.get(id=from_id).id)) |
-        (Q(message_from_id=SiteUser.objects.get(id=from_id).id) &
-         Q(message_to=SiteUser.objects.get(id=to_id).id))).update(is_viewed=True)
+    Chat_model.objects.filter(Q(message_to=SiteUser.objects.get(id=from_id).id) & Q(is_viewed=False)).update(is_viewed=True)
 
     msg_list2 = Chat_model.objects.filter()
 
     if request.method == 'POST' or request.method=='FILES':
         message = request.POST.get('message')
+        defectnwarn = request.POST.get('defectnwarn')
+
+        print(message)
+        print(message)
+        print(message)
+        print(message)
+
 
         item = Chat_model()
 
         item.message_from_id = request.user.id
         item.message = message
+
+        item.is_defect = True if defectnwarn == 'defect' else False
+        item.is_warning = True if defectnwarn == 'warning' else False
 
         item.is_superadmin = True if request.user.role == 'Super Admin' else False
         item.is_admin = True if request.user.role == 'Admin' else False
@@ -91,10 +97,14 @@ def chat_with_user(request):
 def notification_context(request):
     if request.user.is_authenticated:
 
-        message_count = Chat_model.objects.filter(message_to=request.user.id, is_viewed=False,is_warning=False,is_defect=False).count()
-        alert_count = Chat_model.objects.filter(message_to=request.user.id, is_viewed=False,is_warning=True,is_defect=True).count()
+        message = Chat_model.objects.filter(message_to=request.user.id, is_viewed=False,is_warning=False,is_defect=False)
+        alert = Chat_model.objects.filter(message_to=request.user.id, is_viewed=False,is_warning=True,is_defect=True)
 
         return {
-            'notification_count': message_count,
-            'alert_count': alert_count,
+            'notification_count': message.count(),
+            'alert_count': alert.count(),
+            'notif_message': message,
+            'notif_alert': alert,
         }
+    else:
+        return {}

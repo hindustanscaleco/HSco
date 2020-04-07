@@ -16,14 +16,38 @@
 <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
   <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %} rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
 
+<style>
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
 
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #FC6E20;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b30000;
+}
+scrollbar-color: #87ceeb #ff5621;
+scrollbar-width: thin;
+</style>
 
                 <script>
 //$( document ).ready(function() {
@@ -234,7 +258,7 @@ img{ max-width:100%;}
   margin: 0;
   padding: 18px 16px 10px;
 }
-.inbox_chat { height: 550px; overflow-y: scroll;}
+
 
 .active_chat{ background:#ebebeb;}
 
@@ -356,10 +380,10 @@ img{ max-width:100%;}
 <br>
 
 <div class="container">
-<div class="messaging">
+<div class="messaging" >
 
         <div class="mesgs" style="border: 2px solid gray; border-radius: 5px;">
-          <div class="msg_history">
+          <div id="messag" class="msg_history">
             {% if user.role == 'Super Admin' %}
             {% for msg in msg_list1 %}
 
@@ -381,6 +405,9 @@ img{ max-width:100%;}
             <div class="incoming_msg">
               <div class="incoming_msg_img">
                 <img src='{% static "images/chatuser.png" %}' alt="Student"> </div>
+
+
+
               <div class="received_msg">
                 <div class="received_withd_msg">
                   <p>{{msg.message}}</p>
@@ -390,11 +417,45 @@ img{ max-width:100%;}
 
             {% else %}
 
+               {% if msg.is_defect or msg.is_warning %}
+                       <div class="card bg-danger text-white shadow mb-4 col-lg-7" >
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                      {% if msg.is_defect %}
+                      Defect
+                      {% endif %}
+                          {% if msg.is_warning %}
+                      Warning
+                      {% endif %}
+                  </h6>
+                </div>
+                <div class="card-body">
+{{msg.message}}
+                </div>
+              </div>
+
+{% else %}
+
+
+
+
             <div class="outgoing_msg">
               <div class="sent_msg">
                 <p>{{msg.message}}</p>
-                <span class="time_date"> {{msg.entrytimedate.time}}</span> </div>
+                  <span class="time_date"> {{msg.entrytimedate.time}}
+                      <span style="float:right;">
+                      {% if msg.is_viewed %}
+                      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="20" height="20"
+viewBox="0 0 226 226"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none"></path><g fill="#7cfc00"><path d="M171.33625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-50.70875,-50.70875c-1.80094,-1.80094 -4.69656,-1.80094 -6.4975,0c-1.80094,1.80094 -1.80094,4.69656 0,6.4975l54.24,54.24c0.91812,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594zM221.05625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-11.5825,-11.44125c-1.09469,-1.34187 -2.84266,-1.95984 -4.53766,-1.57141c-1.67734,0.38844 -3.00156,1.71266 -3.39,3.39c-0.38844,1.695 0.22953,3.44297 1.57141,4.53766l14.9725,15.11375c0.91813,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594z"></path></g></g></svg>
+                      {% endif %}
+
+                  </span>
+
+                  </span> </div>
             </div>
+                        {% endif %}
                         {% endif %}
 
             {% endfor %}
@@ -418,23 +479,73 @@ img{ max-width:100%;}
 
             {% endifchanged %}
 {% if not msg.is_admin %}
+
+                {% if msg.is_defect or msg.is_warning %}
+                       <div class="card bg-danger text-white shadow mb-4 col-lg-7" >
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                      {% if msg.is_defect %}
+                      Defect
+                      {% endif %}
+                          {% if msg.is_warning %}
+                      Warning
+                      {% endif %}
+                  </h6>
+                </div>
+                <div class="card-body">
+{{msg.message}}                </div>
+              </div>
+
+{% else %}
+
+
             <div class="incoming_msg">
               <div class="incoming_msg_img">
                 <img src='{% static "images/chatuser.png" %}' alt="Student"> </div>
               <div class="received_msg">
                 <div class="received_withd_msg">
                   <p>{{msg.message}}</p>
-                  <span class="time_date"> {{msg.entrytimedate}}</span></div>
+                  <span class="time_date"> {{msg.entrytimedate.time}}</span></div>
               </div>
             </div>
 
+            {% endif %}
             {% else %}
+
+                              {% if msg.is_defect or msg.is_warning %}
+                       <div class="card bg-danger text-white shadow mb-4 col-lg-7" >
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                      {% if msg.is_defect %}
+                      Defect
+                      {% endif %}
+                          {% if msg.is_warning %}
+                      Warning
+                      {% endif %}
+                  </h6>
+                </div>
+                <div class="card-body">
+{{msg.message}}                </div>
+              </div>
+
+{% else %}
 
             <div class="outgoing_msg">
               <div class="sent_msg">
                 <p>{{msg.message}}</p>
-                <span class="time_date"> {{msg.entrytimedate}}</span> </div>
+                <span class="time_date"> {{msg.entrytimedate.time}}
+                    <span style="float:right;">
+                      {% if msg.is_viewed %}
+                      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="20" height="20"
+viewBox="0 0 226 226"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none"></path><g fill="#7cfc00"><path d="M171.33625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-50.70875,-50.70875c-1.80094,-1.80094 -4.69656,-1.80094 -6.4975,0c-1.80094,1.80094 -1.80094,4.69656 0,6.4975l54.24,54.24c0.91812,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594zM221.05625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-11.5825,-11.44125c-1.09469,-1.34187 -2.84266,-1.95984 -4.53766,-1.57141c-1.67734,0.38844 -3.00156,1.71266 -3.39,3.39c-0.38844,1.695 0.22953,3.44297 1.57141,4.53766l14.9725,15.11375c0.91813,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594z"></path></g></g></svg>
+                      {% endif %}
+
+                  </span>
+                </span> </div>
             </div>
+                        {% endif %}
                         {% endif %}
 
             {% endfor %}
@@ -449,23 +560,74 @@ img{ max-width:100%;}
 
             {% endifchanged %}
 {% if not msg.is_manager %}
+
+                              {% if msg.is_defect or msg.is_warning %}
+                       <div class="card bg-danger text-white shadow mb-4 col-lg-7" >
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                      {% if msg.is_defect %}
+                      Defect
+                      {% endif %}
+                          {% if msg.is_warning %}
+                      Warning
+                      {% endif %}
+                  </h6>
+                </div>
+                <div class="card-body">
+{{msg.message}}                </div>
+              </div>
+
+{% else %}
+
+
             <div class="incoming_msg">
               <div class="incoming_msg_img">
                 <img src='{% static "images/chatuser.png" %}' alt="Student"> </div>
               <div class="received_msg">
                 <div class="received_withd_msg">
                   <p>{{msg.message}}</p>
-                  <span class="time_date"> {{msg.entrytimedate}}</span></div>
+                  <span class="time_date"> {{msg.entrytimedate.time}}</span></div>
               </div>
             </div>
 
+            {% endif %}
             {% else %}
+
+                              {% if msg.is_defect or msg.is_warning %}
+                       <div class="card bg-danger text-white shadow mb-4 col-lg-7" >
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                      {% if msg.is_defect %}
+                      Defect
+                      {% endif %}
+                          {% if msg.is_warning %}
+                      Warning
+                      {% endif %}
+                  </h6>
+                </div>
+                <div class="card-body">
+{{msg.message}}                </div>
+              </div>
+
+{% else %}
 
             <div class="outgoing_msg">
               <div class="sent_msg">
                 <p>{{msg.message}}</p>
-                <span class="time_date"> {{msg.entrytimedate}}</span> </div>
+                <span class="time_date"> {{msg.entrytimedate.time}}
+                    <span style="float:right;">
+                      {% if msg.is_viewed %}
+                      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="20" height="20"
+viewBox="0 0 226 226"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none"></path><g fill="#7cfc00"><path d="M171.33625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-50.70875,-50.70875c-1.80094,-1.80094 -4.69656,-1.80094 -6.4975,0c-1.80094,1.80094 -1.80094,4.69656 0,6.4975l54.24,54.24c0.91812,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594zM221.05625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-11.5825,-11.44125c-1.09469,-1.34187 -2.84266,-1.95984 -4.53766,-1.57141c-1.67734,0.38844 -3.00156,1.71266 -3.39,3.39c-0.38844,1.695 0.22953,3.44297 1.57141,4.53766l14.9725,15.11375c0.91813,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594z"></path></g></g></svg>
+                      {% endif %}
+
+                  </span>
+
+                </span> </div>
             </div>
+                        {% endif %}
                         {% endif %}
 
             {% endfor %}
@@ -481,23 +643,71 @@ img{ max-width:100%;}
 
             {% endifchanged %}
 {% if not msg.is_employee %}
+
+                              {% if msg.is_defect or msg.is_warning %}
+                       <div class="card bg-danger text-white shadow mb-4 col-lg-7" >
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                      {% if msg.is_defect %}
+                      Defect
+                      {% endif %}
+                          {% if msg.is_warning %}
+                      Warning
+                      {% endif %}
+                  </h6>
+                </div>
+                <div class="card-body">
+{{msg.message}}                </div>
+              </div>
+
+{% else %}
             <div class="incoming_msg">
               <div class="incoming_msg_img">
                 <img src='{% static "images/chatuser.png" %}' alt="Student"> </div>
               <div class="received_msg">
                 <div class="received_withd_msg">
                   <p>{{msg.message}}</p>
-                  <span class="time_date"> {{msg.entrytimedate}}</span></div>
+                  <span class="time_date"> {{msg.entrytimedate.time}}</span></div>
               </div>
             </div>
 
+            {% endif %}
             {% else %}
 
+                              {% if msg.is_defect or msg.is_warning %}
+                       <div class="card bg-danger text-white shadow mb-4 col-lg-7" >
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                      {% if msg.is_defect %}
+                      Defect
+                      {% endif %}
+                          {% if msg.is_warning %}
+                      Warning
+                      {% endif %}
+                  </h6>
+                </div>
+                <div class="card-body" >
+{{msg.message}}                </div>
+              </div>
+
+{% else %}
             <div class="outgoing_msg">
               <div class="sent_msg">
                 <p>{{msg.message}}</p>
-                <span class="time_date"> {{msg.entrytimedate}}</span> </div>
+                <span class="time_date"> {{msg.entrytimedate.time}}
+
+                        <span style="float:right;">
+                      {% if msg.is_viewed %}
+                      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="20" height="20"
+viewBox="0 0 226 226"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none"></path><g fill="#7cfc00"><path d="M171.33625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-50.70875,-50.70875c-1.80094,-1.80094 -4.69656,-1.80094 -6.4975,0c-1.80094,1.80094 -1.80094,4.69656 0,6.4975l54.24,54.24c0.91812,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594zM221.05625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-11.5825,-11.44125c-1.09469,-1.34187 -2.84266,-1.95984 -4.53766,-1.57141c-1.67734,0.38844 -3.00156,1.71266 -3.39,3.39c-0.38844,1.695 0.22953,3.44297 1.57141,4.53766l14.9725,15.11375c0.91813,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594z"></path></g></g></svg>
+                      {% endif %}
+
+                  </span>
+                </span> </div>
             </div>
+                        {% endif %}
                         {% endif %}
 
             {% endfor %}
@@ -519,11 +729,64 @@ img{ max-width:100%;}
             </div>
           </div>
         </div>
+
+
+{% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager' %}
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+    <div class="mesgs" style="border: 2px solid gray; border-radius: 5px;">
+        <label style="margin-left:10%;font-size:20px;color:black;">Defects
+            <input name="defectnwarn" value="defect" onclick="myFunction3();" type="radio">
+        </label>
+
+         <label style="margin-left:43%;font-size:20px;color:black;">Warning
+            <input name="defectnwarn" value="warning" type="radio" onclick="myFunction4();">
+        </label>
+
+          <div class="type_msg" id="defect_rad" style="display:none;">
+            <div class="input_msg_write">
+              <input type="text" class="write_msg" id="msg_con" name="message" />
+              <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane" aria-hidden="true" style="color: white;"></i></button>
+            </div>
+          </div>
+
+
+
+        </div>
+    </form>
+{% endif %}
+
+
+
+
+
       </div>
 
+<script>
 
+window.onload = function() {
+  var objDiv = document.getElementById("messag");
+objDiv.scrollTop = objDiv.scrollHeight;
+};
+    function myFunction3() {
 
-    </div></div>
+  var y = document.getElementById("defect_rad").style.display = "block";
+var z=document.getElementById("msg_con");
+    z.placeholder = "Enter Defect"
+
+}
+
+    function myFunction4() {
+
+ var y = document.getElementById("defect_rad").style.display = "block";
+var z=document.getElementById("msg_con");
+z.placeholder = "Enter Warning"
+
+}
+</script>
+
+    </div>
+
+        </div>
 
 
 
@@ -554,24 +817,7 @@ img{ max-width:100%;}
 
 </div>
 
-           <script>
 
-        function region_select(select) {
-value = $(select).val();
-
-    $.ajax({
-        url: "/views_student/",
-        data: {
-          'region_id':value,
-        },
-        success: function (data) {
-
-           $("#id_manager_view").html(data);
-        }
-      });
-}
-
-    </script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
@@ -583,12 +829,8 @@ value = $(select).val();
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
 
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
 
 </body>
 
