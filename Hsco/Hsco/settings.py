@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'session_security',
     'lead_management',
     'stock_management_system_app',
+    'career_module_app',
 ]
 
 MIDDLEWARE = [

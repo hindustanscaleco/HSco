@@ -1,0 +1,372 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+
+<br>
+
+
+    <form class="well form-horizontal" ion="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
+<fieldset>
+    <center><h2>Career Module</h2></center>
+    <br>
+    <br>
+
+ <div id="loaded_customer">
+
+<div class="form-group row">
+
+      <label class="col-md-2 control-label">Current Stage
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+
+{{career_form.current_stage}}
+    </div>
+  </div>
+
+
+</div>
+
+
+
+<div class="form-group row">
+    <label class="col-md-2 control-label">Application No.
+    </label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+ {{career_form.application_no}}
+    </div>
+  </div>
+  <label class="col-md-2 control-label">Phone No.
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+{{career_form.phone_no}}
+    </div>
+  </div>
+
+
+</div>
+   <div class="form-group row">
+  <label class="col-md-2 control-label">Candidate Name
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+{{career_form.candidate_name}}
+    </div>
+  </div>
+
+
+
+    <label class="col-md-2 control-label">Choose Position
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+{{career_form.choose_position}}
+    </div>
+  </div>
+  </div>
+
+
+
+
+
+  <div class="form-group row">
+
+  <label class="col-md-2 control-label">Candidate Email:
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+{{career_form.candidate_email}}
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Address
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+{{career_form.address}}
+    </div>
+  </div>
+        </div>
+       <div class="form-group row">
+
+  <label class="col-md-2 control-label">Date Of Birth
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+{{career_form.date_of_birth}}
+    </div>
+  </div>
+       </div>
+
+     <hr>
+
+
+<br>
+
+     <center><h3>Education Details</h3></center>
+     <br>
+       <div class="form-group row">
+
+  <label class="col-md-2 control-label">Institute Name / University
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+{{career_form.institute_name}}
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Course
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+{{career_form.course}}
+    </div>
+  </div>
+        </div>
+
+            <div class="form-group row">
+
+  <label class="col-md-2 control-label">Year of completion
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+ {{career_form.year_of_completion}}
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Grade / Percentage
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+{{career_form.percentage}}
+    </div>
+  </div>
+        </div>
+
+          <hr>
+
+
+<br>
+
+     <center><h3>Work Expirance</h3></center>
+     <br>
+       <div class="form-group row">
+
+  <label class="col-md-2 control-label">Company Name
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+{{career_form.company_name}}
+    </div>
+  </div>
+
+    <label class="col-md-1 control-label">Experience:
+
+</label>
+
+    <div class="col-md-5 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  {{career_form.work_expirance_from}}&nbsp &nbsp
+      To &nbsp &nbsp
+{{career_form.work_expirance_to}}
+    </div>
+  </div>
+        </div>
+
+            <div class="form-group row">
+
+    <label class="col-md-2 control-label">Experience Details
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+{{career_form.work_expirance_details}}
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Designation
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+{{career_form.designation}}
+    </div>
+  </div>
+        </div>
+ </div>
+
+
+<br>
+<br>
+
+<center>
+	<button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Save</button>
+
+</center>
+
+
+
+<br>
+
+
+
+
+
+
+
+</fieldset>
+</form>
+</div>
+    </div>
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+<script>
+  window.onload = function() {
+document.getElementById('contract_start_date').required = false;
+};
+
+
+  function choice1(select) {
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#loaded_customer").html(data);
+        }
+      });
+}
+
+</script>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
+</body>
+
+</html>
