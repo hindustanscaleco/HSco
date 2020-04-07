@@ -15,4 +15,5 @@ class Chat_model(models.Model):
     is_manager = models.BooleanField()
     is_admin = models.BooleanField()
     is_superadmin = models.BooleanField()
+    is_viewed = models.BooleanField(default=False)
     entrytimedate = models.DateTimeField(default=timezone.now)
