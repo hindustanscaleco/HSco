@@ -302,6 +302,8 @@ Module
             </div>
             {% endif %}
 
+                                                {% if request.user.is_authenticated and 'Stock Module' in user.modules_assigned %}
+
                                           <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-info shadow  ">
                 <div class="card-body">
@@ -322,8 +324,10 @@ Module
                 </div>
               </div>
             </div>
+            {% endif %}
 
 
+                                                {% if request.user.is_authenticated and 'Career Module' in user.modules_assigned %}
 
               <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-info shadow  ">
@@ -345,6 +349,7 @@ Module
                 </div>
               </div>
             </div>
+            {% endif %}
 
           </div>
 

@@ -299,8 +299,37 @@ color:;
   </div>
  {% endif %}
 
-</div>
+ {% if 'Stock Module' in admin_id.modules_assigned %}
 
+            <label class="col-md-2 control-label">Stock Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Stock Module" {% if 'Stock Module' in employee_id.modules_assigned %}checked{% endif %} id="customCheck8">
+  <label class="custom-control-label" for="customCheck8"></label>
+  </div>
+  </div>
+     {% endif %}
+
+</div>
+        <div class="form-group row">
+                {% if 'Career Module' in admin_id.modules_assigned %}
+
+             <label class="col-md-2 control-label">Career Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Career Module" {% if 'Career Module' in employee_id.modules_assigned %}checked{% endif %} id="customCheck9">
+  <label class="custom-control-label" for="customCheck9"></label>
+  </div>
+  </div>
+                 {% endif %}
+
+        </div>
 
   </div>
 
@@ -443,6 +472,25 @@ color:;
     </div>
   </div>
     </div>
+<div class="form-group row">
+   <label class="col-md-2 control-label">Upload Pan Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="upload_pancard" placeholder="Upload Pan Card" class="form-control"  type="file">
+    </div>
+  </div>
+
+   <label class="col-md-2 control-label">Upload Aadhar Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="upload_aadhar_card" placeholder="Upload Aadhar Card" class="form-control" type="file" >
+  </div>
+    </div>
+</div>
 
 <center>
    <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Submit</button>

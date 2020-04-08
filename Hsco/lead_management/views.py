@@ -165,22 +165,16 @@ def lead_home(request):
             context.update(context3)
         if x['current_stage'] == 'PO Issued - Payment not done':
             po_no_payment = x['dcount']
-            context1 = {
+            context5 = {
                 'po_no_payment': po_no_payment,
             }
-            context.update(context1)
+            context.update(context5)
         if x['current_stage'] == 'PO Issued - Payment Done - Dispatch Pending':
             po_payment_done = x['dcount']
             context4 = {
                 'po_payment_done': po_payment_done,
             }
             context.update(context4)
-        if x['current_stage'] == 'Dispatch Done - Closed':
-            dispatch_done_stage = x['dcount']
-            context5= {
-                'dispatch_done_stage': dispatch_done_stage,
-            }
-            context.update(context5)
         if x['current_stage'] == 'Lost':
             lost_stage = x['dcount']
             context6 = {

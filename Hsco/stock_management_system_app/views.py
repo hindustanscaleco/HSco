@@ -196,9 +196,7 @@ def stock_good_request(request,godown_id, request_id):
 def stock_pending_request(request,godown_id):
     godown = Godown.objects.get(id=godown_id)
     admin = request.user.admin
-    print(admin)
-    print(admin)
-    print(admin)
+
     pending_list = GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&Q(req_to_godown__goddown_assign_to__admin=admin)).order_by('-id')    | \
                    GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&Q(req_from_godown__goddown_assign_to__admin=admin)).order_by('-id') | \
                    GoodsRequest.objects.filter(Q(is_all_req=True)&~Q(status='Confirms the transformation')).order_by('-id')
