@@ -312,14 +312,14 @@ def stock_accpet_goods(request, godown_id, accept_id):
             item2.save(update_fields=['accept_product_id', ])
             return redirect('/stock_accpet_goods/' + str(godown_id) + '/' + str(accept_id))
         elif 'submit2' in request.POST:
-            note = request.POST.get('note')
+            notes = request.POST.get('notes')
 
             item2 = AcceptGoods.objects.get(id=accept_id)
 
             item2.from_godown = Godown.objects.get(id=godown_id)
 
             item2.log_entered_by = request.user.name
-            item2.note = note
+            item2.notes = notes
             item2.save(update_fields=['notes', 'log_entered_by', 'from_godown',])
             accepted_goods = AGProducts.objects.filter(godown_id_id=godown_id,accept_product_id_id =accept_id)
             for good in accepted_goods:

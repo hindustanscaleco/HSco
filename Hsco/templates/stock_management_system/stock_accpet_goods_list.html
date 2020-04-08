@@ -294,6 +294,7 @@ td {
             <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Id</td>
             <td style="border: 0px solid gray;">Date</td>
             <td style="border: 0px solid gray;">Notes</td>
+            <td style="border: 0px solid gray;">individual / Carton (No.)</td>
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">To</td>
         </tr>
         {% for list in accept_good_list %}
@@ -301,6 +302,7 @@ td {
             <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">{{list.id}}</td>
             <td style="border: 0px solid gray;">{{list.entry_timedate}}</td>
             <td style="border: 0px solid gray;">{{list.notes}}</td>
+            <td style="border: 0px solid gray;"></td>
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">{{list.from_godown.name_of_godown}}</td>
         </tr>
         {% endfor %}
