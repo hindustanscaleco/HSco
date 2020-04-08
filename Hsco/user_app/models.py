@@ -95,6 +95,8 @@ class SiteUser(AbstractBaseUser):
     average_rating = models.FloatField(default=0.0)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    upload_pancard = models.FileField(upload_to='',null=True, blank=True)
+    upload_aadhar_card = models.FileField(upload_to='',null=True, blank=True)
 
     details = models.CharField(max_length=250, null=True, blank=True)
     pancard = models.CharField(max_length=20, null=True, blank=True)

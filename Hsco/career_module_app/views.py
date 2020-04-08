@@ -1,38 +1,183 @@
 from django.core.paginator import Paginator
+from django.db.models import Sum, Count
 from django.shortcuts import render, redirect
 from .forms import Career_moduleForm
 from .models import Career_module
 from datetime import datetime
 
 def career_module_list(request):
-    context={}
-    career_list = Career_module.objects.all()
-
+    career_list = Career_module.objects.all().order_by('-id')
+    paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+    page = request.GET.get('page')
+    career_list = paginator.get_page(page)
+    context = {
+        'career_list': career_list,
+    }
     if request.method == 'POST':
+        total_stages = Career_module.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
+        for i in total_stages:
+            x = i
+            if x['current_stage'] == 'Called for interview, interview is not taken':
+                called_nointerview = x['dcount']
+                context2 = {
+                    'called_nointerview': called_nointerview,
+                }
+                context.update(context2)
+            if x['current_stage'] == 'Applied but not call for interview':
+                applied_nocall = x['dcount']
+                context5 = {
+                    'applied_nocall': applied_nocall,
+                }
+                context.update(context5)
+            if x['current_stage'] == 'Interview in Progress':
+                interview_progress = x['dcount']
+                context6 = {
+                    'interview_progress': interview_progress,
+                }
+                context.update(context6)
+            if x['current_stage'] == 'Interview is taken, not selected':
+                interview_notselected = x['dcount']
+                context7 = {
+                    'interview_notselected': interview_notselected,
+                }
+                context.update(context7)
+            if x['current_stage'] == 'Interview is done and rejected':
+                interview_rejected = x['dcount']
+                context8 = {
+                    'interview_rejected': interview_rejected,
+                }
+                context.update(context8)
+            if x['current_stage'] == 'Interview is done and preserved for Future':
+                interview_preserved = x['dcount']
+                context9 = {
+                    'interview_preserved': interview_preserved,
+                }
+                context.update(context9)
         if 'sort_submit' in request.POST:
             YEAR = request.POST.get('YEAR')
             MONTH = request.POST.get('MONTH')
 
-            career_list = Career_module.objects.filter(entry_timedate__month=MONTH, entry_timedate__year=YEAR)
+            career_list = Career_module.objects.filter(entry_timedate__month=MONTH, entry_timedate__year=YEAR).order_by('-id')
 
             career_list_count = Career_module.objects.filter(entry_timedate__month=MONTH, entry_timedate__year=YEAR).count()
-            paginator = Paginator(career_list, 15)  # Show 25 contacts per page
+            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
             career_list = paginator.get_page(page)
-
-            context = {
+            context1 = {
                  'career_list':career_list,
                 'lead_list_count': True if career_list_count != 0 else False,
                 'lead_lis': False if career_list_count != 0 else True,
             }
+            context.update(context1)
+            return render(request, 'career_module/career_module_list.html', context)
+        if 'submit1' in request.POST:
+            career_list = Career_module.objects.filter( current_stage='Called for interview, interview is not taken',)
+            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            career_list = paginator.get_page(page)
+            context2 = {
+                'career_list': career_list,
+            }
+            context.update(context2)
+            return render(request, 'career_module/career_module_list.html', context)
+        if 'submit2' in request.POST:
+            career_list = Career_module.objects.filter(current_stage='Applied but not call for interview', )
+            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            career_list = paginator.get_page(page)
+            context3 = {
+                'career_list': career_list,
+            }
+            context.update(context3)
+
+            return render(request, 'career_module/career_module_list.html', context)
+        if 'submit3' in request.POST:
+            career_list = Career_module.objects.filter(current_stage='Interview in Progress', )
+            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            career_list = paginator.get_page(page)
+            context4 = {
+                'career_list': career_list,
+            }
+            context.update(context4)
+
+            return render(request, 'career_module/career_module_list.html', context)
+        if 'submit4' in request.POST:
+            career_list = Career_module.objects.filter(current_stage='Interview is taken, not selected', )
+            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            career_list = paginator.get_page(page)
+            context5 = {
+                'career_list': career_list,
+            }
+            context.update(context5)
+
+            return render(request, 'career_module/career_module_list.html', context)
+        if 'submit5' in request.POST:
+            career_list = Career_module.objects.filter(current_stage='Interview is done and rejected', )
+            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            career_list = paginator.get_page(page)
+            context6 = {
+                'career_list': career_list,
+            }
+            context.update(context6)
+
+            return render(request, 'career_module/career_module_list.html', context)
+        if 'submit6' in request.POST:
+            career_list = Career_module.objects.filter(current_stage='Interview is done and preserved for Future', )
+            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            career_list = paginator.get_page(page)
+            context7 = {
+                'career_list': career_list,
+            }
+            context.update(context7)
 
             return render(request, 'career_module/career_module_list.html', context)
 
 
-    context23={
-        'career_list':career_list,
-    }
-    context.update(context23)
+
+    total_stages = Career_module.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
+    for i in total_stages:
+        x = i
+        if x['current_stage'] == 'Called for interview, interview is not taken':
+            called_nointerview = x['dcount']
+            context2 = {
+                'called_nointerview': called_nointerview,
+            }
+            context.update(context2)
+        if x['current_stage'] == 'Applied but not call for interview':
+            applied_nocall = x['dcount']
+            context5 = {
+                'applied_nocall': applied_nocall,
+            }
+            context.update(context5)
+        if x['current_stage'] == 'Interview in Progress':
+            interview_progress = x['dcount']
+            context6 = {
+                'interview_progress': interview_progress,
+            }
+            context.update(context6)
+        if x['current_stage'] == 'Interview is taken, not selected':
+            interview_notselected = x['dcount']
+            context7 = {
+                'interview_notselected': interview_notselected,
+            }
+            context.update(context7)
+        if x['current_stage'] == 'Interview is done and rejected':
+            interview_rejected = x['dcount']
+            context8 = {
+                'interview_rejected': interview_rejected,
+            }
+            context.update(context8)
+        if x['current_stage'] == 'Interview is done and preserved for Future':
+            interview_preserved = x['dcount']
+            context9 = {
+                'interview_preserved': interview_preserved,
+            }
+            context.update(context9)
+
     return render(request,'career_module/career_module_list.html',context)
 
 def career_module_form(request):
@@ -73,9 +218,12 @@ def career_module_form(request):
         item.year_of_completion = year_of_completion
         item.percentage = percentage
         item.company_name = company_name
-        item.work_expirance_from = work_expirance_from
-        item.work_expirance_to = work_expirance_to
-        item.work_expirance_details = work_expirance_details
+        if work_expirance_from != '':
+            item.work_expirance_from = work_expirance_from
+        if work_expirance_to != '':
+            item.work_expirance_to = work_expirance_to
+        if work_expirance_details != '':
+            item.work_expirance_details = work_expirance_details
         item.designation = designation
 
         item.save()

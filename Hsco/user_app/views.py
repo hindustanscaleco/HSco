@@ -130,6 +130,8 @@ def create_admin(request):
         ifsc_code = request.POST.get('ifsc_code')
         employee_number = request.POST.get('employee_number')
         photo = request.FILES.get('photo')
+        upload_pancard = request.FILES.get('upload_pancard')
+        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         salary_slip = request.FILES.get('salary_slip')
 
         item=SiteUser()
@@ -151,6 +153,8 @@ def create_admin(request):
         item.ifsc_code = ifsc_code
         item.photo = photo
         item.salary_slip = salary_slip
+        item.upload_pancard = upload_pancard
+        item.upload_aadhar_card = upload_aadhar_card
         item.password_text = request.POST.get('password')
         item.super_admin = SiteUser.objects.get(role='Super Admin').name
         item.set_password(request.POST.get('password'))
@@ -200,7 +204,8 @@ def create_manager(request):
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.FILES.get('photo')
         salary_slip = request.FILES.get('salary_slip')
-
+        upload_pancard = request.FILES.get('upload_pancard')
+        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         item = SiteUser()
 
         item.mobile = mobile
@@ -234,7 +239,8 @@ def create_manager(request):
         item.super_admin = SiteUser.objects.get(role='Super Admin').name
         # if admin != '---------':
         #     item.admin = admin
-
+        item.upload_pancard = upload_pancard
+        item.upload_aadhar_card = upload_aadhar_card
 
         item.set_password(request.POST.get('password'))
 
@@ -301,7 +307,8 @@ def create_employee(request):
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.FILES.get('photo')
         salary_slip = request.FILES.get('salary_slip')
-
+        upload_pancard = request.FILES.get('upload_pancard')
+        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         item = SiteUser()
 
         item.mobile = mobile
@@ -323,7 +330,8 @@ def create_employee(request):
         item.salary_slip = salary_slip
         item.super_admin = SiteUser.objects.get(role='Super Admin').name
         item.admin = admin
-
+        item.upload_pancard = upload_pancard
+        item.upload_aadhar_card = upload_aadhar_card
         if is_admin:
 
             if manager == '' or manager == None or manager == '---------':
@@ -503,6 +511,8 @@ def update_admin(request,id):
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.FILES.get('photo')
         salary_slip = request.FILES.get('salary_slip')
+        upload_pancard = request.FILES.get('upload_pancard')
+        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         if is_deleted == 'on':
             is_deleted = True
         else:
@@ -524,10 +534,11 @@ def update_admin(request,id):
         item.photo = photo
         item.salary_slip = salary_slip
         item.password_text = request.POST.get('password')
-
+        item.upload_pancard = upload_pancard
+        item.upload_aadhar_card = upload_aadhar_card
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.save(update_fields=['upload_pancard','upload_aadhar_card','password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/admin_list/')
     context = {
         'form': form,
@@ -555,6 +566,8 @@ def update_manager(request,id):
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.FILES.get('photo')
         salary_slip = request.FILES.get('salary_slip')
+        upload_pancard = request.FILES.get('upload_pancard')
+        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         if is_deleted == 'on':
             is_deleted = True
         else:
@@ -577,8 +590,9 @@ def update_manager(request,id):
         item.salary_slip = salary_slip
         item.password_text = request.POST.get('password')
         item.set_password(request.POST.get('password'))
-
-        item.save(update_fields=['password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.upload_pancard = upload_pancard
+        item.upload_aadhar_card = upload_aadhar_card
+        item.save(update_fields=['upload_pancard','upload_aadhar_card','password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/manager_list/')
     context = {
         'form': form,
@@ -606,6 +620,8 @@ def update_employee(request,id):
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.POST.get('photo')
         salary_slip = request.FILES.get('salary_slip')
+        upload_pancard = request.FILES.get('upload_pancard')
+        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         if is_deleted == 'on':
             is_deleted = True
         else:
@@ -628,8 +644,9 @@ def update_employee(request,id):
         item.salary_slip = salary_slip
         item.password_text = request.POST.get('password')
         item.set_password(request.POST.get('password'))
-
-        item.save(update_fields=['password_text','mobile','email','employee_number', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.upload_pancard = upload_pancard
+        item.upload_aadhar_card = upload_aadhar_card
+        item.save(update_fields=['upload_pancard','upload_aadhar_card','password_text','mobile','email','employee_number', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/employee_list/')
     context = {
         'form': form,
