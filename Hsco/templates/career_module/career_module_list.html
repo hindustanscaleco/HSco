@@ -237,10 +237,10 @@ $(function() {
      <option value="d1">Search By Date Range</option>
      <option value="d2">Search By Mobile Number</option>
      <option value="d3">Search By Email Id</option>
-     <option value="d4">Search By Customer Name</option>
+     <option value="d4">Search By Candidate Name</option>
      <option value="d5">Search By Company Name</option>
      <!--<option value="d6">Search By CRM No.</option>-->
-     <option value="d7">Search By Serial No.</option>
+<!--     <option value="d7">Search By Serial No.</option>-->
      <!--<option value="d7">Search By CRM Number Range</option>-->
   </select>
 </div>
@@ -268,7 +268,7 @@ $(function() {
                 <input name="date2" type="date"  class="form-control">
       </div>
       <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
-                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button>
+                <button style="background-color: #FC6E20;" name="sub1" type="submit" class="btn btn-primary">Search</button>
       </div>
                                </form>
 
@@ -279,7 +279,7 @@ $(function() {
       <form method="POST" >{% csrf_token%}
       <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" type="submit" name="sub2" class="btn btn-primary">Search</button>
   </form>
   </div>
 
@@ -291,7 +291,7 @@ $(function() {
       <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
 
-      <button style="background-color: #FC6E20;" name="submit3" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" name="sub3" class="btn btn-primary">Search</button>
           </form>
   </div>
 
@@ -299,9 +299,9 @@ $(function() {
 
     <div id="d4" class="divs d4">
         <form method="POST">{% csrf_token%}
-      <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
+      <input type="text" name="candidate_name"  placeholder="Candidate Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" name="sub4" class="btn btn-primary">Search</button>
     </form>
     </div>
 
@@ -310,29 +310,29 @@ $(function() {
 
       <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" name="sub5" class="btn btn-primary">Search</button>
   </form>
 
   </div>
 
 
-    <div id="d6" class="divs d6">
-                                       <form method="POST">{% csrf_token%}
+<!--    <div id="d6" class="divs d6">-->
+<!--                                       <form method="POST">{% csrf_token%}-->
 
-      <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button>
-    </form>
-</div>
+<!--      <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">-->
+<!--      &nbsp; &nbsp;-->
+<!--      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button>-->
+<!--    </form>-->
+<!--</div>-->
 
-    <div id="d7" class="divs d7">
-                               <form method="POST">{% csrf_token%}
+<!--    <div id="d7" class="divs d7">-->
+<!--                               <form method="POST">{% csrf_token%}-->
 
-      <input type="text" name="serial_no" placeholder="Serial No." class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button>
-    </form>
-</div>
+<!--      <input type="text" name="serial_no" placeholder="Serial No." class="form-control" style="width: 25%;float: left;">-->
+<!--      &nbsp; &nbsp;-->
+<!--      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button>-->
+<!--    </form>-->
+<!--</div>-->
 
 </div>
                 </div>

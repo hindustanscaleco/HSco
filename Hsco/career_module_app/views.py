@@ -136,6 +136,73 @@ def career_module_list(request):
 
             return render(request, 'career_module/career_module_list.html', context)
 
+        if 'sub1' in request.POST:
+            start_date = request.POST.get('date1')
+            end_date = request.POST.get('date2')
+
+            career_list = Career_module.objects.filter(entry_timedate__range=[start_date, end_date]).order_by('-id')
+
+            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            career_list = paginator.get_page(page)
+            context2 = {
+                'career_list': career_list,
+                'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
+            }
+            context.update(context2)
+
+        elif 'sub2' in request.POST:
+            contact = request.POST.get('contact')
+            career_list = Career_module.objects.filter(phone_no=contact).order_by('-id')
+
+            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            career_list = paginator.get_page(page)
+            context2 = {
+                'career_list': career_list,
+                'search_msg': 'Search result for Customer Contact No: ' + contact,
+            }
+            context.update(context2)
+
+        elif 'sub3' in request.POST:
+            email = request.POST.get('email')
+            career_list = Career_module.objects.filter(candidate_email=email).order_by('-id')
+
+            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            career_list = paginator.get_page(page)
+            context2 = {
+                'career_list': career_list,
+                'search_msg': 'Search result for Customer Email ID: ' + email,
+            }
+            context.update(context2)
+
+        elif 'sub4' in request.POST:
+            candidate_name = request.POST.get('candidate_name')
+            career_list = Career_module.objects.filter(candidate_name=candidate_name).order_by('-id')
+
+            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            career_list = paginator.get_page(page)
+            context2 = {
+                'career_list': career_list,
+                'search_msg': 'Search result for Candidate Name: ' + candidate_name,
+            }
+            context.update(context2)
+
+
+        elif 'sub5' in request.POST:
+            company = request.POST.get('company')
+            career_list = Career_module.objects.filter(company_name=company).order_by('-id')
+
+            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            career_list = paginator.get_page(page)
+            context2 = {
+                'career_list': career_list,
+                'search_msg': 'Search result for Company Name: ' + company,
+            }
+            context.update(context2)
 
 
     total_stages = Career_module.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
@@ -203,6 +270,10 @@ def career_module_form(request):
 
 
 
+        is_sales_candidate = True if choose_position == 'Sales Position' else False
+        is_technical_candidate = True if choose_position == 'Technical Position' else False
+
+
         item = Career_module()
 
         item.current_stage = current_stage
@@ -218,6 +289,8 @@ def career_module_form(request):
         item.year_of_completion = year_of_completion
         item.percentage = percentage
         item.company_name = company_name
+        item.is_technical_candidate = is_technical_candidate
+        item.is_sales_candidate = is_sales_candidate
         if work_expirance_from != '':
             item.work_expirance_from = work_expirance_from
         if work_expirance_to != '':
@@ -329,6 +402,8 @@ def update_career_module_from(request,id):
         soldering_strong = request.POST.get('soldering_strong')
         value_of_resister = request.POST.get('value_of_resister')
         open_and_short_circuit = request.POST.get('open_and_short_circuit')
+
+
 
 
 

@@ -1989,10 +1989,7 @@ def select_product_followup(request,id):
             product_id = request.POST.get('product_id')
 
             requested_product = Product.objects.get(id=product_id)
-            print("product_id")
-            print(product_id)
-            print(requested_product)
-            print("requested_product")
+
             fol_pro=Followup_product()
             fol_pro.product_id = requested_product
             fol_pro.lead_id = Lead.objects.get(id=id)
@@ -2022,13 +2019,6 @@ def select_product_followup(request,id):
             type_of_scale_str = request.POST.get('type_of_scale')
             sub_model_str = request.POST.get('sub_model')
             sub_sub_model_str = request.POST.get('sub_sub_model')
-
-            print("model_of_purchase")
-            print(model_of_purchase_str)
-            print(type_of_scale_str)
-            print(sub_model_str)
-            print(sub_sub_model_str)
-            print("sub_sub_model")
 
             if (sub_sub_model == None or sub_sub_model == ""):
                 product_avail = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale_str).name, main_category=main_model.objects.get(id=model_of_purchase_str).name,

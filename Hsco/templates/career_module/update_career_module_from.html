@@ -294,7 +294,7 @@ color:;
 
 <br>
 
-     <center><h3>Work Expirance</h3></center>
+     <center><h3>Work Experience</h3></center>
      <br>
        <div class="form-group row">
 
@@ -491,9 +491,9 @@ color:;
 <hr>
      <br>
 
+{% if career_module_id.is_sales_candidate %}
 
-
-<div id="sales_person" style="display: none;">
+<div id="sales_person" >
 
      <center><h3>Position Applied For Sale</h3></center>
      <br>
@@ -554,11 +554,72 @@ color:;
 
      <br>
      <br>
+{% else %}
+     <div id="sales_person" style="display: none;">
+
+     <center><h3>Position Applied For Sale</h3></center>
+     <br>
+     <br>
+       <div class="form-group row">
+
+  <label class="col-md-4 control-label">How much time in minutes did the candidate take to find out
+ "5 weighting Scale Manufacturers in mumbai"
+</label>
+  <div class="col-md-2 inputGroupContainer">
+  <div class="input-group">
+{{career_form.weighting_scale_manufactures_mumbai}}
+    </div>
+  </div>
+
+    <label class="col-md-4 control-label">Was the excel Properly Formated
+
+</label>
+
+    <div class="col-md-2 inputGroupContainer">
+  <div class="input-group">
+{{career_form.excel_formate}}
+    </div>
+  </div>
+        </div>
+     <div class="form-group row">
+
+  <label class="col-md-4 control-label">Was the Candidate able to do sum of the cells?
+</label>
+  <div class="col-md-2 inputGroupContainer">
+  <div class="input-group">
+{{career_form.sum_in_excel}}
+    </div>
+  </div>
+
+    <label class="col-md-4 control-label">How much time was taken to figure it out in second ?
+
+</label>
+
+    <div class="col-md-2 inputGroupContainer">
+  <div class="input-group">
+{{career_form.time_taken}}
+    </div>
+  </div>
+        </div>
+
+          <div class="form-group row">
+
+  <label class="col-md-4 control-label">Was the Candidate able to take out 60% of the sum ?
+</label>
+  <div class="col-md-2 inputGroupContainer">
+  <div class="input-group">
+{{career_form.take_out_60}}
+    </div>
+  </div>
+          </div>
+        </div>
+{% endif %}
 
 
 
+{% if career_module_id.is_technical_candidate %}
 
-<div id="technical_position" style="display: none;">
+<div id="technical_position" >
 
      <center><h3>Position Applied For Technical Profile</h3></center>
      <br>
@@ -615,6 +676,66 @@ color:;
   </div>
 </div>
 </div>
+
+     {% else %}
+     <div id="technical_position" style="display: none;">
+
+     <center><h3>Position Applied For Technical Profile</h3></center>
+     <br>
+     <br>
+     <div class="form-group row">
+
+  <label class="col-md-4 control-label">How much time to disorder all the wires on the PCB in Secs
+</label>
+  <div class="col-md-2 inputGroupContainer">
+  <div class="input-group">
+{{career_form.time_to_disorder_wire_pcb}}
+    </div>
+  </div>
+
+    <label class="col-md-4 control-label">How much time to Solder the wires in its respective places in Seconds
+
+</label>
+
+    <div class="col-md-2 inputGroupContainer">
+  <div class="input-group">
+{{career_form.time_to_solder_wire_back}}
+    </div>
+  </div>
+        </div>
+     <div class="form-group row">
+
+  <label class="col-md-4 control-label">was the soldering strong ?
+</label>
+  <div class="col-md-2 inputGroupContainer">
+  <div class="input-group">
+{{career_form.soldering_strong}}
+    </div>
+  </div>
+
+    <label class="col-md-4 control-label">Could the candidate identify the value of resistor ?
+
+</label>
+
+    <div class="col-md-2 inputGroupContainer">
+  <div class="input-group">
+{{career_form.value_of_resister}}
+    </div>
+  </div>
+        </div>
+
+          <div class="form-group row">
+
+  <label class="col-md-4 control-label">Could the candidate identify the open and short circuit on the mains wire using a multi meter ?
+</label>
+  <div class="col-md-2 inputGroupContainer">
+  <div class="input-group">
+{{career_form.open_and_short_circuit}}
+    </div>
+  </div>
+</div>
+</div>
+     {% endif %}
           </div>
 
 
@@ -624,10 +745,6 @@ color:;
 
 
 
-
-
-
- </div>
 
 
 <br>
@@ -669,19 +786,21 @@ color:;
       if ( this.value == 'Sales Position')
       {
         $("#sales_person").show();
+        $("#technical_position").hide();
       }
       else
       {
-        $("#sales_person").show();
+        $("#sales_person").hide();
       }
 
-          if ( this.value == 'Technical Position')
+      if ( this.value == 'Technical Position')
       {
         $("#technical_position").show();
+        $("#sales_person").hide();
       }
       else
       {
-        $("#technical_position").show();
+        $("#technical_position").hide();
       }
 
     });
