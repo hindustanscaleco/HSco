@@ -786,10 +786,15 @@ function myFunction_call() {
                 <div class="card-body" id="myDIV4" style="display: none; height: auto;">
                     <form action="" method='POST' enctype="multipart/form-data" >{% csrf_token %}
                         <div class="row">
-                        <div class="row col-md-10">
+                        <div class="row col-md-9">
+
                         </div>
-                            <div class="row col-md-2">
+                            <div class="row col-md-3">
+
                         <a href="/lead_follow_up_histroy/{{hfu_id}}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp
+                         {% if not item.is_manual_mode %}
+<span style="float:right;margin:10px;" class="alert alert-danger">Auto Follow-Up</span>
+           {% endif %}
                             </div>
                             </div>
                         <div class="row col-md-12" style="margin-left:4%">
@@ -1001,8 +1006,9 @@ function myFunction_call() {
 
                          <br>
                          <center>
-
+{% if item.is_manual_mode %}
 <button name="submit5" style="background-color: #FC6E20;" class="btn btn-primary" type="submit" onclick="save_alert_form();">Send</button>
+           {% endif %}
                     </center>
                           </form>
                     <br>
@@ -1361,9 +1367,13 @@ function whosFunction() {
 
 
 
+<center>
+            {% if lead_id.current_stage == 'PO Issued - Payment Done - Dispatch Pending' or lead_id.current_stage == 'Dispatch Done - Closed' %}
+{% if lead_id.is_entered_purchase %}
+    <button class="btn btn-primary" onclick="location.href='/update_customer_details/{{lead_id.purchase_id.pk}}'">Go To Purchase</button>
 
-
-
+ {% endif %}
+ {% endif %}
 </center>
 
 </div>

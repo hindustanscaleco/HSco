@@ -47,6 +47,159 @@ def lead_home(request):
     error_exist = False
     context={}
 
+    if request.user.role == 'Super Admin':  # For ADMIN
+        lead_list = Lead.objects.all().order_by('-id')
+        paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+        page = request.GET.get('page')
+        lead_list = paginator.get_page(page)
+    else:
+        admin = SiteUser.objects.get(id=request.user.pk).admin
+        lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).order_by('-id')
+        paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+        page = request.GET.get('page')
+        lead_list = paginator.get_page(page)
+    cust_sugg = Customer_Details.objects.all()
+
+    context23 = {
+        'lead_list': lead_list,
+        'lead_count': lead_count,
+        'from_date': from_date,
+        'to_date': to_date,
+        'error': error,
+        'error2': error2,
+        'error_exist': error_exist,
+        'cust_sugg': cust_sugg,
+    }
+    context.update(context23)
+    if request.user.role == 'Super Admin':
+        total_stages = Lead.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
+    else:
+        admin = SiteUser.objects.get(id=request.user.pk).admin
+        total_stages = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).values('current_stage').annotate(dcount=Count('current_stage'))
+    admin = SiteUser.objects.get(id=request.user.pk).admin
+    # lead = Pi_section.objects.filter(lead_id=Lead.objects.filter(Q(owner_of_opportunity__admin=admin)))
+
+
+    try:
+        po_no_payment = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment not done',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        po_no_payment_total = 0.0
+        for x in po_no_payment:
+            po_no_payment_total += float(x['data_sum'])
+
+        po_payment_done = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        po_payment_done_total = 0.0
+        for x in po_payment_done:
+            po_payment_done_total += float(x['data_sum'])
+
+        dispatch_done_stage = Pi_section.objects.filter(lead_id__current_stage='Dispatch Done - Closed',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        dispatch_done_stage_total = 0.0
+        for x in dispatch_done_stage:
+            dispatch_done_stage_total += float(x['data_sum'])
+
+        lost_stage = Pi_section.objects.filter(lead_id__current_stage='Lost',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        lost_stage_total = 0.0
+        for x in lost_stage:
+            lost_stage_total += float(x['data_sum'])
+
+        not_relevant_stage = Pi_section.objects.filter(lead_id__current_stage='Not Relevant',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        not_relevant_stage_total = 0.0
+        for x in not_relevant_stage:
+            not_relevant_stage_total += float(x['data_sum'])
+
+        postponed_stage = Pi_section.objects.filter(lead_id__current_stage='Postponed',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        postponed_stage_total = 0.0
+        for x in postponed_stage:
+            postponed_stage_total += float(x['data_sum'])
+
+        pi_sent_stage = Pi_section.objects.filter(lead_id__current_stage='PI Sent & Follow-up',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        pi_sent_stage_total = 0.0
+        for x in pi_sent_stage:
+            pi_sent_stage_total += float(x['data_sum'])
+
+        context13={
+            'po_no_payment_total': po_no_payment_total,
+            'lost_stage_total': lost_stage_total,
+            'po_payment_done_total': po_payment_done_total,
+            'dispatch_done_stage_total': dispatch_done_stage_total,
+            'not_relevant_stage_total': not_relevant_stage_total,
+            'postponed_stage_total': postponed_stage_total,
+            'pi_sent_stage_total': pi_sent_stage_total,
+        }
+        context.update(context13)
+    except:
+        pass
+
+    for i in total_stages:
+        x = i
+        if x['current_stage'] == 'Not Yet Initiated':
+            not_yet_stage = x['dcount']
+            context1 = {
+                'not_yet_stage': not_yet_stage,
+            }
+            context.update(context1)
+        if x['current_stage'] == 'Dispatch Done - Closed':
+            dispatch_stage = x['dcount']
+            context2 = {
+                'dispatch_stage': dispatch_stage,
+            }
+            context.update(context2)
+        if x['current_stage'] == 'Customer Called':
+            cust_called_stage = x['dcount']
+            context3 = {
+                'cust_called_stage': cust_called_stage,
+            }
+            context.update(context3)
+        if x['current_stage'] == 'PO Issued - Payment not done':
+            po_no_payment = x['dcount']
+            context5 = {
+                'po_no_payment': po_no_payment,
+            }
+            context.update(context5)
+        if x['current_stage'] == 'PO Issued - Payment Done - Dispatch Pending':
+            po_payment_done = x['dcount']
+            context4 = {
+                'po_payment_done': po_payment_done,
+            }
+            context.update(context4)
+        if x['current_stage'] == 'Lost':
+            lost_stage = x['dcount']
+            context6 = {
+                'lost_stage': lost_stage,
+            }
+            context.update(context6)
+        if x['current_stage'] == 'Not Relevant':
+            not_relevant_stage = x['dcount']
+            context7 = {
+                'not_relevant_stage': not_relevant_stage,
+            }
+            context.update(context7)
+        if x['current_stage'] == 'Postponed':
+            postponed_stage = x['dcount']
+            context8 = {
+                'postponed_stage': postponed_stage,
+            }
+            context.update(context8)
+        if x['current_stage'] == 'PI Sent & Follow-up':
+            pi_sent_stage = x['dcount']
+            context9 = {
+                'pi_sent_stage': pi_sent_stage,
+            }
+            context.update(context9)
+
     if request.method == 'POST':
         if 'fetch_lead' in request.POST:
 
@@ -75,6 +228,7 @@ def lead_home(request):
                 context={
                     'lead_list': lead_list,
                     'lead_list_count': True if lead_list_count != 0 else False ,
+                    'lead_lis': False if lead_list_count != 0 else True,
                 }
 
             else:
@@ -87,10 +241,261 @@ def lead_home(request):
                 context = {
                     'lead_list': lead_list,
                     'lead_list_count': True if lead_list_count != 0 else False,
+                    'lead_lis': False if lead_list_count != 0 else True,
                 }
 
 
             return render(request, 'lead_management/lead_home.html', context)
+
+        if 'sub1' in request.POST:
+            if request.user.role == 'Super Admin':  # For ADMIN
+                lead_list = Lead.objects.filter(current_stage='Not Yet Initiated').order_by('-id')
+                lead_list_count = Lead.objects.filter(current_stage='Not Yet Initiated').count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+            else:
+                admin = SiteUser.objects.get(id=request.user.pk).admin
+                lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(current_stage='Not Yet Initiated')).order_by(
+                    '-id')
+                lead_list_count = Lead.objects.filter(
+                    Q(owner_of_opportunity__admin=admin) and Q(current_stage='Not Yet Initiated')).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+
+        if 'sub2' in request.POST:
+            if request.user.role == 'Super Admin':  # For ADMIN
+                lead_list = Lead.objects.filter(current_stage='Customer Called').order_by('-id')
+                lead_list_count = Lead.objects.filter(current_stage='Customer Called').count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+            else:
+                admin = SiteUser.objects.get(id=request.user.pk).admin
+                lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(current_stage='Customer Called')).order_by(
+                    '-id')
+                lead_list_count = Lead.objects.filter(
+                    Q(owner_of_opportunity__admin=admin) and Q(current_stage='Customer Called')).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+
+        if 'sub3' in request.POST:
+            cur_stage='PI Sent & Follow-up'
+            if request.user.role == 'Super Admin':  # For ADMIN
+                lead_list = Lead.objects.filter(current_stage=cur_stage).order_by('-id')
+                lead_list_count = Lead.objects.filter(current_stage=cur_stage).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+            else:
+                admin = SiteUser.objects.get(id=request.user.pk).admin
+                lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(current_stage=cur_stage)).order_by(
+                    '-id')
+                lead_list_count = Lead.objects.filter(
+                    Q(owner_of_opportunity__admin=admin) and Q(current_stage=cur_stage)).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+
+        if 'sub4' in request.POST:
+            cur_stage='PO Issued - Payment not done'
+            if request.user.role == 'Super Admin':  # For ADMIN
+                lead_list = Lead.objects.filter(current_stage=cur_stage).order_by('-id')
+                lead_list_count = Lead.objects.filter(current_stage=cur_stage).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+            else:
+                admin = SiteUser.objects.get(id=request.user.pk).admin
+                lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(current_stage=cur_stage)).order_by(
+                    '-id')
+                lead_list_count = Lead.objects.filter(
+                    Q(owner_of_opportunity__admin=admin) and Q(current_stage=cur_stage)).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+
+        if 'sub5' in request.POST:
+            cur_stage='PO Issued - Payment Done - Dispatch Pending'
+            if request.user.role == 'Super Admin':  # For ADMIN
+                lead_list = Lead.objects.filter(current_stage=cur_stage).order_by('-id')
+                lead_list_count = Lead.objects.filter(current_stage=cur_stage).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+            else:
+                admin = SiteUser.objects.get(id=request.user.pk).admin
+                lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(current_stage=cur_stage)).order_by(
+                    '-id')
+                lead_list_count = Lead.objects.filter(
+                    Q(owner_of_opportunity__admin=admin) and Q(current_stage=cur_stage)).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+
+        if 'sub6' in request.POST:
+            cur_stage='Dispatch Done - Closed'
+            if request.user.role == 'Super Admin':  # For ADMIN
+                lead_list = Lead.objects.filter(current_stage=cur_stage).order_by('-id')
+                lead_list_count = Lead.objects.filter(current_stage=cur_stage).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+            else:
+                admin = SiteUser.objects.get(id=request.user.pk).admin
+                lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(current_stage=cur_stage)).order_by(
+                    '-id')
+                lead_list_count = Lead.objects.filter(
+                    Q(owner_of_opportunity__admin=admin) and Q(current_stage=cur_stage)).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+
+        if 'sub7' in request.POST:
+            cur_stage='Lost'
+            if request.user.role == 'Super Admin':  # For ADMIN
+                lead_list = Lead.objects.filter(current_stage=cur_stage).order_by('-id')
+                lead_list_count = Lead.objects.filter(current_stage=cur_stage).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+            else:
+                admin = SiteUser.objects.get(id=request.user.pk).admin
+                lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(current_stage=cur_stage)).order_by(
+                    '-id')
+                lead_list_count = Lead.objects.filter(
+                    Q(owner_of_opportunity__admin=admin) and Q(current_stage=cur_stage)).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+
+        if 'sub8' in request.POST:
+            cur_stage='Not Relevant'
+            if request.user.role == 'Super Admin':  # For ADMIN
+                lead_list = Lead.objects.filter(current_stage=cur_stage).order_by('-id')
+                lead_list_count = Lead.objects.filter(current_stage=cur_stage).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+            else:
+                admin = SiteUser.objects.get(id=request.user.pk).admin
+                lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(current_stage=cur_stage)).order_by(
+                    '-id')
+                lead_list_count = Lead.objects.filter(
+                    Q(owner_of_opportunity__admin=admin) and Q(current_stage=cur_stage)).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+
+        if 'sub9' in request.POST:
+            cur_stage='Postponed'
+            if request.user.role == 'Super Admin':  # For ADMIN
+                lead_list = Lead.objects.filter(current_stage=cur_stage).order_by('-id')
+                lead_list_count = Lead.objects.filter(current_stage=cur_stage).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
+            else:
+                admin = SiteUser.objects.get(id=request.user.pk).admin
+                lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(current_stage=cur_stage)).order_by(
+                    '-id')
+                lead_list_count = Lead.objects.filter(
+                    Q(owner_of_opportunity__admin=admin) and Q(current_stage=cur_stage)).count()
+                paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+                page = request.GET.get('page')
+                lead_list = paginator.get_page(page)
+                context44 = {
+                    'lead_list': lead_list,
+                    'lead_list_count': True if lead_list_count != 0 else False,
+                }
+                context.update(context44)
 
 
 
@@ -272,165 +677,18 @@ def lead_home(request):
             if (row_count != None):
                 error = row_count['Error_Message']
                 error_exist = True
-    if request.user.role =='Super Admin':     #For ADMIN
-        lead_list = Lead.objects.all().order_by('-id')
-        paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
-        page = request.GET.get('page')
-        lead_list = paginator.get_page(page)
-    else:
-        admin = SiteUser.objects.get(id=request.user.pk).admin
-        lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).order_by('-id')
-        paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
-        page = request.GET.get('page')
-        lead_list = paginator.get_page(page)
-    cust_sugg = Customer_Details.objects.all()
+
 
     context23 = {
-        'lead_list': lead_list,
         'lead_count': lead_count,
         'from_date': from_date,
         'to_date': to_date,
         'error': error,
         'error2': error2,
         'error_exist': error_exist,
-        'cust_sugg': cust_sugg,
     }
     context.update(context23)
-    if request.user.role == 'Super Admin':
-        total_stages = Lead.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
-    else:
-        admin = SiteUser.objects.get(id=request.user.pk).admin
-        total_stages = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).values('current_stage').annotate(dcount=Count('current_stage'))
-    admin = SiteUser.objects.get(id=request.user.pk).admin
-    # lead = Pi_section.objects.filter(lead_id=Lead.objects.filter(Q(owner_of_opportunity__admin=admin)))
 
-
-    try:
-        po_no_payment = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment not done',
-                                                   lead_id__owner_of_opportunity__admin=admin).values(
-            'grand_total').annotate(data_sum=Sum('grand_total'))
-        po_no_payment_total = 0.0
-        for x in po_no_payment:
-            po_no_payment_total += float(x['data_sum'])
-
-        po_payment_done = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
-                                                   lead_id__owner_of_opportunity__admin=admin).values(
-            'grand_total').annotate(data_sum=Sum('grand_total'))
-        po_payment_done_total = 0.0
-        for x in po_payment_done:
-            po_payment_done_total += float(x['data_sum'])
-
-        dispatch_done_stage = Pi_section.objects.filter(lead_id__current_stage='Dispatch Done - Closed',
-                                                   lead_id__owner_of_opportunity__admin=admin).values(
-            'grand_total').annotate(data_sum=Sum('grand_total'))
-        dispatch_done_stage_total = 0.0
-        for x in dispatch_done_stage:
-            dispatch_done_stage_total += float(x['data_sum'])
-
-        lost_stage = Pi_section.objects.filter(lead_id__current_stage='Lost',
-                                                   lead_id__owner_of_opportunity__admin=admin).values(
-            'grand_total').annotate(data_sum=Sum('grand_total'))
-        lost_stage_total = 0.0
-        for x in lost_stage:
-            lost_stage_total += float(x['data_sum'])
-
-        not_relevant_stage = Pi_section.objects.filter(lead_id__current_stage='Not Relevant',
-                                                   lead_id__owner_of_opportunity__admin=admin).values(
-            'grand_total').annotate(data_sum=Sum('grand_total'))
-        not_relevant_stage_total = 0.0
-        for x in not_relevant_stage:
-            not_relevant_stage_total += float(x['data_sum'])
-
-        postponed_stage = Pi_section.objects.filter(lead_id__current_stage='Postponed',
-                                                   lead_id__owner_of_opportunity__admin=admin).values(
-            'grand_total').annotate(data_sum=Sum('grand_total'))
-        postponed_stage_total = 0.0
-        for x in postponed_stage:
-            postponed_stage_total += float(x['data_sum'])
-
-        pi_sent_stage = Pi_section.objects.filter(lead_id__current_stage='PI Sent & Follow-up',
-                                                   lead_id__owner_of_opportunity__admin=admin).values(
-            'grand_total').annotate(data_sum=Sum('grand_total'))
-        pi_sent_stage_total = 0.0
-        for x in pi_sent_stage:
-            pi_sent_stage_total += float(x['data_sum'])
-
-        context13={
-            'po_no_payment_total': po_no_payment_total,
-            'lost_stage_total': lost_stage_total,
-            'po_payment_done_total': po_payment_done_total,
-            'dispatch_done_stage_total': dispatch_done_stage_total,
-            'not_relevant_stage_total': not_relevant_stage_total,
-            'postponed_stage_total': postponed_stage_total,
-            'pi_sent_stage_total': pi_sent_stage_total,
-        }
-        context.update(context13)
-    except:
-        pass
-
-    for i in total_stages:
-        x = i
-        if x['current_stage'] == 'Not Yet Initiated':
-            not_yet_stage = x['dcount']
-            context1 = {
-                'not_yet_stage': not_yet_stage,
-            }
-            context.update(context1)
-        if x['current_stage'] == 'Dispatch Done - Closed':
-            dispatch_stage = x['dcount']
-            context2 = {
-                'dispatch_stage': dispatch_stage,
-            }
-            context.update(context2)
-        if x['current_stage'] == 'Customer Called':
-            cust_called_stage = x['dcount']
-            context3 = {
-                'cust_called_stage': cust_called_stage,
-            }
-            context.update(context3)
-        if x['current_stage'] == 'PO Issued - Payment not done':
-            po_no_payment = x['dcount']
-            context1 = {
-                'po_no_payment': po_no_payment,
-            }
-            context.update(context1)
-        if x['current_stage'] == 'PO Issued - Payment Done - Dispatch Pending':
-            po_payment_done = x['dcount']
-            context4 = {
-                'po_payment_done': po_payment_done,
-            }
-            context.update(context4)
-        if x['current_stage'] == 'Dispatch Done - Closed':
-            dispatch_done_stage = x['dcount']
-            context5= {
-                'dispatch_done_stage': dispatch_done_stage,
-            }
-            context.update(context5)
-        if x['current_stage'] == 'Lost':
-            lost_stage = x['dcount']
-            context6 = {
-                'lost_stage': lost_stage,
-            }
-            context.update(context6)
-        if x['current_stage'] == 'Not Relevant':
-            not_relevant_stage = x['dcount']
-            context7 = {
-                'not_relevant_stage': not_relevant_stage,
-            }
-            context.update(context7)
-        if x['current_stage'] == 'Postponed':
-            postponed_stage = x['dcount']
-            context8 = {
-                'postponed_stage': postponed_stage,
-            }
-            context.update(context8)
-        if x['current_stage'] == 'PI Sent & Follow-up':
-            pi_sent_stage = x['dcount']
-            context9 = {
-                'pi_sent_stage': pi_sent_stage,
-            }
-            context.update(context9)
-    # lead_list = Lead.objects.all()
 
 
     return render(request,'lead_management/lead_home.html',context)
@@ -594,12 +852,14 @@ def update_view_lead(request,id):
         email_msg = history_follow.email_msg
         sms_msg = history_follow.sms_msg
         is_email = 'is_email' if history_follow.is_email else ''
+        wa_no = history_follow.wa_no if history_follow.wa_no else customer_id.contact_no
     else:
         wa_msg = ''
         email_msg = ''
         sms_msg = ''
         is_email = ''
-    wa_no = history_follow.wa_no if history_follow.wa_no else customer_id.contact_no
+        wa_no = ''
+
 
     form6 = History_followupForm(initial={'wa_no':wa_no,'email_subject':hfu.email_subject,'wa_msg':wa_msg,'email_msg':email_msg,
                                           'sms_msg':sms_msg,'is_email':is_email})
@@ -761,6 +1021,8 @@ def update_view_lead(request,id):
                 purchase_det.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no + 1
                 purchase_det.log_entered_by = request.user.profile_name
                 purchase_det.save()
+
+                Lead.objects.filter(id=id).update(purchase_id=purchase_det.pk)
 
                 dispatch = Dispatch()
                 dispatch.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
@@ -1131,6 +1393,8 @@ def update_view_lead(request,id):
             selected_products = request.POST.getlist('checks_pro[]')
             selected_fields = Follow_up_section.objects.get(lead_id=id).fields
 
+            print(request.POST)
+            print(request.POST)
 
             if(len(selected_products)<1):
 
@@ -1139,7 +1403,7 @@ def update_view_lead(request,id):
                     'error_exist':True,
                 }
                 context.update(context22)
-            elif(is_call!='on' and is_sms!='on' and is_whatsapp!='on' and is_email!='on' ):
+            elif(is_call!='on' and is_sms!='on' and is_whatsapp!='on' and is_email!='on' and is_call!='is_call' and is_sms!='is_sms' and is_whatsapp!='is_whatsapp' and is_email !='is_email'):
                 context28 = {
                     'error': "Please Select Atleast One Medium For Followup",
                     'error_exist': True,
@@ -1210,9 +1474,9 @@ def update_view_lead(request,id):
                         html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
                     html_rows = html_rows + '''</tr>'''
 
-                print(sms_content)
 
-                if(is_email=='on'):
+
+                if(is_email=='on' or is_email =='is_email'):
                     email_subject = request.POST.get('email_subject')
                     email_msg = request.POST.get('email_msg')
                     history_follow.is_email=True
@@ -1301,7 +1565,7 @@ td {
                     }
                     context.update(context28)
 
-                if(is_whatsapp=='on'):
+                if(is_whatsapp=='on' or is_whatsapp=='is_whatsapp'):
                     history_follow.is_whatsapp = True
                     history_follow.wa_msg = wa_msg
                     history_follow.wa_no = wa_no
@@ -1320,7 +1584,7 @@ td {
                     }
                     context.update(context28)
 
-                if(is_sms=='on'):
+                if(is_sms=='on' or is_sms=='is_sms'):
                     sms_msg = request.POST.get('sms_msg')
                     history_follow.is_sms = True
                     history_follow.sms_msg = sms_msg+'\n'+sms_content
@@ -1338,7 +1602,7 @@ td {
                     }
                     context.update(context28)
 
-                if(is_call=='on'):
+                if(is_call=='on' or is_call=='is_call'):
                     call_response = request.POST.get('call_response')
                     history_follow.is_call = True
                     history_follow.call_response = call_response
@@ -1412,7 +1676,7 @@ td {
 
 
 
-                    if (is_email == 'on'):
+                    if(is_email=='on' or is_email =='is_email'):
                         email_subject = request.POST.get('email_subject')
                         email_msg = request.POST.get('email_msg')
                         history_follow.is_email = True
@@ -1496,10 +1760,11 @@ td {
 
                         file = ContentFile(html_content)
                         history_follow.file.save('AutoFollowup.html', file, save=False)
+                        history_follow.html_content= html_content
 
 
 
-                    if (is_sms == 'on'):
+                    if(is_sms=='on' or is_sms=='is_sms'):
                         sms_msg = request.POST.get('sms_msg')
                         history_follow.is_sms = True
                         history_follow.sms_msg = sms_msg + '\n' + sms_content
@@ -1509,7 +1774,7 @@ td {
 
                     history_follow.save()
                     afd= Auto_followup_details()
-                    afd.follow_up_history = History_followup.objects.get(id=history_follow)
+                    afd.follow_up_history = History_followup.objects.get(id=history_follow.pk)
                     afd.save()
                     context28 = {
                         'success_6': "Followup Will Be Done Automatically After Every 2 Days",
@@ -1724,10 +1989,7 @@ def select_product_followup(request,id):
             product_id = request.POST.get('product_id')
 
             requested_product = Product.objects.get(id=product_id)
-            print("product_id")
-            print(product_id)
-            print(requested_product)
-            print("requested_product")
+
             fol_pro=Followup_product()
             fol_pro.product_id = requested_product
             fol_pro.lead_id = Lead.objects.get(id=id)
@@ -1757,13 +2019,6 @@ def select_product_followup(request,id):
             type_of_scale_str = request.POST.get('type_of_scale')
             sub_model_str = request.POST.get('sub_model')
             sub_sub_model_str = request.POST.get('sub_sub_model')
-
-            print("model_of_purchase")
-            print(model_of_purchase_str)
-            print(type_of_scale_str)
-            print(sub_model_str)
-            print(sub_sub_model_str)
-            print("sub_sub_model")
 
             if (sub_sub_model == None or sub_sub_model == ""):
                 product_avail = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale_str).name, main_category=main_model.objects.get(id=model_of_purchase_str).name,
@@ -1857,12 +2112,32 @@ def lead_manager_view(request):
     }
     return render(request,'lead_management/lead_manager.html',context)
 
+
 def lead_follow_up_histroy(request,follow_up_id):
+    context={}
     obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
 
-    context={
+    if request.method == 'POST':
+        if 'sub1' in request.POST:
+            delete_id = request.POST.get('delete_id')
+
+            Auto_followup_details.objects.filter(follow_up_history__pk=delete_id).delete()
+            History_followup.objects.filter(id=delete_id).update(is_auto_follow_deleted=True)
+            obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
+            Follow_up_section.objects.filter(id=History_followup.objects.get(id=delete_id).follow_up_section.pk).update(auto_manual_mode='Select Mode')
+            context2 = {
+                'obj_list': obj_list,
+                'is_deleted': True,
+                'msg': 'Auto Follow-up Cancelled Successfully',
+            }
+            context.update(context2)
+
+
+
+    context23={
         'obj_list':obj_list,
     }
+    context.update(context23)
 
     return render(request,'lead_management/follow_up_history.html',context)
 

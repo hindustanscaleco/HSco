@@ -35,6 +35,7 @@ urlpatterns = [
     path('', include('purchase_app.urls')),
     path('', include('lead_management.urls')),
     path('', include('stock_management_system_app.urls')),
+    path('', include('career_module_app.urls')),
 
     path('session_security/', include('session_security.urls')),
 

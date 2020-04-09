@@ -201,7 +201,7 @@ $(function() {
   <div id="d3" class="divs d3">
       <form method="POST">{% csrf_token%}
       <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
+      &nbsp; &nbsp;Products Which are to be Requested
 
       <button style="background-color: #FC6E20;" name="submit3" class="btn btn-primary">Search</button>
           </form>
@@ -254,7 +254,7 @@ $(function() {
         border-left: 4px solid blue;
         }
     </style>
-<style>
+    <style>
   .border-left-primary {
     border-left: .09rem solid #4e73df!important;
     font-size: 12px;
@@ -361,19 +361,21 @@ td {
         </tr>
 
 
-
+{% for good in godown_goods %}
+                        <form method="POST" >{%csrf_token%}
         <tr>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
 
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{good.product_id.scale_type}}<input name="product_id" value="{{good.product_id.id}}" hidden></td>
+            <td style="border: 0px solid gray;">{{good.product_id.main_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.product_id.sub_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.product_id.sub_sub_category}}</td>
+
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.carton_count}}<input name="req_carton_count" value="{{good.carton_count}}" hidden></td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.quantity}}<input name="req_quantity" value="{{good.quantity}}" hidden></td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 
                 <div class="btn-group">
-<select class="btn btn-success" id="caasrs">
+<select class="btn btn-success"  name="req_type" id="caasrs">
   <option class="btn btn-success" value="Individual">Individual</option>
   <option class="btn btn-success" value="Carton">Carton</option>
 </select>
@@ -383,44 +385,17 @@ td {
             </td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
                  <center>
-                <input type="text" class="form-control" style="height:40px; width:60px;">
+                <input name="number" type="text" class="form-control" style="height:40px; width:60px;">
 </center>
             </td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                <button type="button" class="btn btn-danger">Request</button>
+                <button name="submit1" type="submit" class="btn btn-danger">Request</button>
 
             </td>
         </tr>
+                        </form>
+{% endfor %}
 
-
-        <tr>
-
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                                <div class="btn-group">
-<select class="btn btn-success" id="74614">
-  <option class="btn btn-success" value="Individual">Individual</option>
-  <option class="btn btn-success" value="Carton">Carton</option>
-</select>
-</div>
-
-            </td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                <center>
-                <input type="text" class="form-control" style="height:40px; width:60px;">
-</center>
-            </td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                <button type="button" class="btn btn-danger">Request</button>
-
-            </td>
-</tr>
 
 
     </table>
@@ -465,44 +440,32 @@ td {
         </tr>
 
 
-
+{% for good in requested_goods %}
+                                <form method="POST" >{%csrf_token%}
         <tr>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{good.godown_product_id.product_id.scale_type}}</td>
+            <td style="border: 0px solid gray;">{{good.godown_product_id.product_id.main_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.godown_product_id.product_id.sub_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.godown_product_id.product_id.sub_sub_category}} <input hidden name="request_id" value="{{good.id}}"> </td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><button type="submit" name="submit3"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></button></td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{% if good.req_type == 'Individual' %}{{good.req_quantity}}{% elif good.req_type == 'Carton' %}{{good.req_carton_count}}{% endif %}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 
                 <div class="btn-group">
 <select class="btn btn-success" id="cars">
+    {% if good.req_type == 'Individual' %}
   <option class="btn btn-success" value="Individual">Individual</option>
+    {% elif good.req_type == 'Carton' %}
   <option class="btn btn-success" value="Carton">Carton</option>
+    {% endif %}
 </select>
 </div>
             </td>
         </tr>
+                                </form>
+{% endfor %}
 
 
-        <tr>
-
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                                <div class="btn-group">
-<select class="btn btn-success" id="197">
-  <option class="btn btn-success" value="Individual">Individual</option>
-  <option class="btn btn-success" value="Carton">Carton</option>
-</select>
-</div>
-
-            </td>
-</tr>
     </table>
         </div>
             <br>
@@ -518,34 +481,37 @@ td {
 </div>
 
             <br>
+                        <form method="POST" >{%csrf_token%}
 
         <div>
                                             <div class="btn-group">
                                                 Select Godown: &nbsp&nbsp
-<select class="btn btn-secondary" id="1sa97">
-  <option class="btn btn-secondary" value="Individual">Select Godown</option>
-  <option class="btn btn-secondary" value="Individual">Individual</option>
-  <option class="btn btn-secondary" value="Carton">Carton</option>
+<select class="btn btn-secondary" name="req_to_godown" id="1sa97">
+  <option class="btn btn-secondary" value="">Select Godown</option>
+    {% for list in godowns %}
+  <option class="btn btn-secondary" value="{{list.id}}">{{list.name_of_godown}}</option>
+    {% endfor %}
 </select>
         </div>
 
 </div>
+    <br>
+    <br>
+
+                <div class="row">
+    <div class="col-md-12">
+    <center>
+<button name="submit2" type="submit" class="btn btn-danger" style="background-color:#FC6E20;">Send Request</button>
+</center>
+    </div>
+    </div>
+                        </form>
             </div>
 
 
 
-    <br>
-    <br>
-
 
      </div>
-    <div class="row">
-    <div class="col-md-12">
-    <center>
-<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Send Request</button>
-</center>
-    </div>
-    </div>
 
 
     <br>

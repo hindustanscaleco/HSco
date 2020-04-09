@@ -18,6 +18,8 @@ from customer_app.models import Log
 from customer_app.models import type_purchase,main_model,sub_model,sub_sub_model
 
 from ess_app.models import Defects_Warning
+
+from stock_management_system_app.models import Godown
 from .models import  Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
 from _datetime import datetime
@@ -159,6 +161,7 @@ def purchase_product_handler(sender, instance, update_fields=None, **kwargs):
 
 @login_required(login_url='/')
 def add_purchase_details(request):
+    godowns = Godown.objects.all()
     if 'purchase_id' in request.session:
         if request.session.get('product_saved'):
             pass
@@ -211,6 +214,7 @@ def add_purchase_details(request):
         # value_of_goods = request.POST.get('value_of_goods')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
+        godown = request.POST.get('godown')
         # feedback_form_filled = request.POST.get('feedback_form_filled')
 
         item2 = Purchase_Details()
@@ -285,6 +289,7 @@ def add_purchase_details(request):
         # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no+1
+        item2.godown_id = Godown.objects.get(id=godown)
         item2.log_entered_by = request.user.profile_name
         # request.session['new_repeat_purchase'] = new_repeat_purchase
         # request.session['second_person'] = customer_name
@@ -407,6 +412,7 @@ def add_purchase_details(request):
         'form': form,
         'cust_sugg': cust_sugg,
         'sales_person_sugg': sales_person_sugg,
+        'godowns': godowns,
     }
 
     return render(request,'forms/cust_mod_form.html',context)
@@ -598,7 +604,7 @@ def update_customer_details(request,id):
     customer_id = Purchase_Details.objects.get(id=id).crm_no
     # customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
-
+    godowns = Godown.objects.all()
     if 'product_saved' in request.session:
         if request.session.get('product_saved'):
             pass

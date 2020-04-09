@@ -69,7 +69,6 @@ color:;
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <center><h3>Accpet Goods</h3></center>
 
         <div class="container-fluid" >
 
@@ -148,9 +147,16 @@ td {
 <div style="min-height: 26vw;">
 
 <br>
+            {% if accepted_goods.0.accept_product_id.good_added != True %}
+
+        <center><h3>Accept Goods</h3></center>
+<br>
+<br>
+
         <div class="row" id="id_manager_view">
 
     <table>
+
         <tr style="background-color: gray; color: white;">
             <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
             <td style="border: 0px solid gray;">Model</td>
@@ -158,27 +164,28 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Count</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Add/Remove</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Request</td>
+
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Number</td>
-
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Add</td>
 
         </tr>
 
+{% for good in godown_goods %}
 
-
+<form method="POST" >{%csrf_token%}
         <tr>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><i class="fa fa-plus" aria-hidden="true" style="font-size:15px;"></i></td>
+                        <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{good.product_id.scale_type}}<input name="product_id" value="{{good.product_id.id}}" hidden></td>
+            <td style="border: 0px solid gray;">{{good.product_id.main_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.product_id.sub_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.product_id.sub_sub_category}}</td>
+
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.carton_count}}<input name="req_carton_count" value="{{good.carton_count}}" hidden></td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.quantity}}<input name="req_quantity" value="{{good.quantity}}" hidden></td>
              <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 
                 <div class="btn-group">
-<select class="btn btn-success" id="caasrs">
+<select class="btn btn-success" id="caasrs" name="req_type">
   <option class="btn btn-success" value="Individual">Individual</option>
   <option class="btn btn-success" value="Carton">Carton</option>
 </select>
@@ -186,40 +193,21 @@ td {
 
 
             </td>
+
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
                  <center>
-                <input type="text" class="form-control" style="height:40px; width:60px;">
+                <input name="number" type="text" class="form-control" style="height:40px; width:60px;">
 </center>
+            </td>
+
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                <button name="submit1" type="submit" class="btn btn-danger">Request</button>
+
             </td>
         </tr>
+    </form>
 
-
-        <tr>
-
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><i class="fa fa-plus" aria-hidden="true" style="font-size:15px;"></i></td>
-             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-
-                <div class="btn-group">
-<select class="btn btn-success" id="caasasrs">
-  <option class="btn btn-success" value="Individual">Individual</option>
-  <option class="btn btn-success" value="Carton">Carton</option>
-</select>
-</div>
-
-
-            </td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                 <center>
-                <input type="text" class="form-control" style="height:40px; width:60px;">
-</center>
-            </td>
-</tr>
+{% endfor %}
 
 
     </table>
@@ -231,6 +219,7 @@ td {
         </div>
     <br>
     <br>
+{% endif %}
     <center><h3>Added Products</h3></center>
     <br>
     <br>
@@ -244,7 +233,9 @@ td {
             <td style="border: 0px solid gray;">Model</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Add/Remove</td>
+                                    {% if accepted_goods.0.accept_product_id.good_added != True %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Add/Remove</td>
+            {% endif    %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Request</td>
 
@@ -253,19 +244,27 @@ td {
 
 
 
+      {% for good in accepted_goods %}
+                                <form method="POST" >{%csrf_token%}
         <tr>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{good.godown_product_id.product_id.scale_type}}</td>
+            <td style="border: 0px solid gray;">{{good.godown_product_id.product_id.main_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.godown_product_id.product_id.sub_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.godown_product_id.product_id.sub_sub_category}} <input hidden name="request_id" value="{{good.id}}"> </td>
+            {% if accepted_goods.0.accept_product_id.good_added != True %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><button type="submit" name="submit3"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></button></td>
+            {% endif %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{% if good.type == 'Individual' %}{{good.quantity}}{% elif good.type == 'Carton' %}{{good.carton_count}}{% endif %}</td>
+
                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 
                 <div class="btn-group">
 <select class="btn btn-success" id="caasrs">
+   {% if good.type == 'Individual' %}
   <option class="btn btn-success" value="Individual">Individual</option>
+    {% elif good.type == 'Carton' %}
   <option class="btn btn-success" value="Carton">Carton</option>
+    {% endif %}
 </select>
 </div>
 
@@ -273,29 +272,9 @@ td {
             </td>
 
         </tr>
+                                </form>
+{% endfor %}
 
-
-        <tr>
-
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-               <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-
-                <div class="btn-group">
-<select class="btn btn-success" id="caasrs">
-  <option class="btn btn-success" value="Individual">Individual</option>
-  <option class="btn btn-success" value="Carton">Carton</option>
-</select>
-</div>
-
-
-            </td>
-
-</tr>
 
 
     </table>
@@ -307,9 +286,11 @@ td {
         </div>
     <br>
     <br>
+                                    <form method="POST" >{%csrf_token%}
+
     <div class="row">
         <div class="col-md-1">Notes:</div>
-        <div><input class="form-control" type="textarea" style="height:300px; width:1080px;">  </div>
+        <div><input class="form-control" name="notes" value="{{accepted_goods.0.accept_product_id.notes|default_if_none:''}}" style="height:300px; width:1080px;"> </input> </div>
     </div>
 
     <div class="row">
@@ -317,12 +298,13 @@ td {
     <center>
         <br>
         <br>
-<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Save</button>
-<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Edit</button>
+            {% if accepted_goods.0.accept_product_id.good_added != True %}
+<button type="submit" name="submit2" class="btn btn-danger" style="background-color:#FC6E20;">Save</button>
+        {% endif %}
 </center>
     </div>
     </div>
-
+                                    </form>
     <br>
     <br><br>
     <br><br>

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'session_security',
     'lead_management',
     'stock_management_system_app',
+    'career_module_app',
 ]
 
 MIDDLEWARE = [
@@ -66,13 +67,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notif_dec_app.views.notification_context',
             ],
         },
     },
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = [
-    'django.core.context_processors.request'
+    'django.core.context_processors.request',
 ]
 WSGI_APPLICATION = 'Hsco.wsgi.application'
 
@@ -100,7 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
-    {        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
