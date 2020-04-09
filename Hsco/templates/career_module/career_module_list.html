@@ -237,10 +237,10 @@ $(function() {
      <option value="d1">Search By Date Range</option>
      <option value="d2">Search By Mobile Number</option>
      <option value="d3">Search By Email Id</option>
-     <option value="d4">Search By Customer Name</option>
-     <option value="d5">Search By Company Name</option>
+     <option value="d4">Search By Student Name</option>
+<!--     <option value="d5">Search By Company Name</option>-->
      <!--<option value="d6">Search By CRM No.</option>-->
-     <option value="d7">Search By Serial No.</option>
+<!--     <option value="d7">Search By Serial No.</option>-->
      <!--<option value="d7">Search By CRM Number Range</option>-->
   </select>
 </div>
@@ -308,7 +308,7 @@ $(function() {
   <div id="d5" class="divs d5">
                                      <form method="POST">{% csrf_token%}
 
-      <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
+<!--      <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">-->
       &nbsp; &nbsp;
       <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button>
   </form>
@@ -539,8 +539,8 @@ td {
             <td style="border: 0px solid gray;">Name</td>
             <td style="border: 0px solid gray;">Contact No</td>
             <td style="border: 0px solid gray;">Email ID</td>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Stage</td>
-            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Company Name</td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Stage</td>
+<!--            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Company Name</td>-->
         </tr>
                     {% for list in career_list %}
 
@@ -551,7 +551,7 @@ td {
             <td>{{ list.phone_no }}</td>
             <td>{{ list.candidate_email }}</td>
             <td>{{ list.current_stage}}</td>
-            <td>{{list.company_name}}</td>
+<!--            <td>{{list.company_name}}</td>-->
 
         </tr>
                           {% endfor %}
