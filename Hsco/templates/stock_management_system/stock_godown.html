@@ -66,7 +66,7 @@
 
                           <br>
 
-                          <b>Godown Name:</b>
+                          <b>Godown Name:  {{godown_id.name_of_godown}}</b>
 </center>
 </div>
             </div>
@@ -403,7 +403,7 @@ $(document).ready(function(){
             <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.product_id.sub_sub_category}}</td>
           <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.carton_count}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.quantity}}</td>
-            <td id="image" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.product_image}}</td>
+            <td id="image" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{% if product.product_id.product_image %}<img height="40" width="40" src="{{product.product_id.product_image.url}}">{% endif %}</td>
         </tr>
 
 {% endfor %}
