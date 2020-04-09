@@ -8,11 +8,14 @@ from user_app.models import SiteUser
 from dispatch_app.models import Product_Details_Dispatch
 from model_utils import FieldTracker
 
+from stock_management_system_app.models import Godown
+
 choices = (('NO', 'NO'),
     ('YES', 'YES'),)
 
 class Purchase_Details(models.Model):   #cleaned
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    godown_id = models.ForeignKey(Godown, on_delete=models.CASCADE,null=True,blank=True)
     manager_id = models.CharField(max_length=150, null=True, blank=True)
     crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE,null=True,blank=True)
     date_of_purchase = models.DateField(default=datetime.date.today,null=True,blank=True)

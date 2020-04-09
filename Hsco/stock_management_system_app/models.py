@@ -52,6 +52,8 @@ class GoodsRequest(models.Model):
     req_from_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,related_name='Godown1',null=True,blank=True)
     req_to_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,related_name='Godown2',null=True,blank=True)
     is_all_req = models.BooleanField(default=False)
+    goods_sent = models.BooleanField(default=False)
+    goods_received = models.BooleanField(default=False)
     entered_by = models.ForeignKey(SiteUser,on_delete=models.CASCADE,null=True,blank=True)
     status = models.CharField(max_length=50,null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
@@ -62,18 +64,14 @@ class RequestedProducts(models.Model):
     godown_id = models.ForeignKey(Godown,on_delete=models.CASCADE,null=True,blank=True)
     godown_product_id = models.ForeignKey(GodownProduct, on_delete=models.CASCADE,null=True,blank=True)
     goods_req_id = models.ForeignKey(GoodsRequest, on_delete=models.CASCADE,null=True,blank=True)
-
     req_quantity = models.FloatField(default=0.0)
     sent_quantity = models.FloatField(default=0.0)
     received_quantity = models.FloatField(default=0.0)
-
     req_carton_count = models.FloatField(default=0.0)
     sent_carton_count = models.FloatField(default=0.0)
     received_carton_count = models.FloatField(default=0.0)
-
     faulty_quantity = models.FloatField(default=0.0)
     faulty_carton = models.FloatField(default=0.0)
-
     req_type = models.CharField(max_length=20,null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
@@ -85,6 +83,7 @@ class RequestedProducts(models.Model):
 class AcceptGoods(models.Model):
     from_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,null=True,blank=True)
     notes = models.TextField(null=True,blank=True)
+    good_added = models.BooleanField(default=False)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)

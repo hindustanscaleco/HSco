@@ -297,7 +297,7 @@ td {
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">To</td>
         </tr>
         {% for list in accept_good_list %}
-<tr >
+<tr onclick="location.href='/stock_accpet_goods/{{godown.id}}/{{list.id}}'">
             <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">{{list.id}}</td>
             <td style="border: 0px solid gray;">{{list.entry_timedate}}</td>
             <td style="border: 0px solid gray;">{{list.notes}}</td>

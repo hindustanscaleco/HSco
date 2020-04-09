@@ -199,7 +199,7 @@ def stock_pending_request(request,godown_id):
 
     pending_list = GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&Q(req_to_godown__goddown_assign_to__admin=admin)).order_by('-id')    | \
                    GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&Q(req_from_godown__goddown_assign_to__admin=admin)).order_by('-id') | \
-                   GoodsRequest.objects.filter(Q(is_all_req=True)&~Q(status='Confirms the transformation')).order_by('-id')
+                   GoodsRequest.objects.filter(Q(is_all_req=True)&~Q(status='Confirms the transformation')&Q(req_to_godown__goddown_assign_to__admin=None)).order_by('-id')
     context = {
         'godown_id': godown,
         'pending_list': pending_list,
@@ -251,24 +251,52 @@ def stock_transaction_status(request,from_godown_id, trans_id):
         if 'submit2' in request.POST:
             status = request.POST.get('status')
             good_request = GoodsRequest.objects.get(id=trans_id)
+            admin = request.user.admin
+            if status == 'Confirmation of goods transformation':
+                if good_request.req_to_godown == '' or 'None':
+                    good_request.req_to_godown = Godown.objects.filter(goddown_assign_to__name=admin).first()
+                    good_request.save(update_fields=['req_to_godown'])
+                if good_request.goods_sent == False:
+                    for good in requested_goods:
+                        if GodownProduct.objects.filter(godown_id=from_godown_id,
+                                                        product_id=good.godown_product_id.product_id):
+                            # subtracting  the products quantity from sent godown
+                            sub_godown_product = GodownProduct.objects.get(godown_id=good_request.req_to_godown.id,
+                                                                           product_id=good.godown_product_id.product_id)
+                            sub_godown_product.quantity = float(sub_godown_product.quantity) - float(good.sent_quantity)
+                            sub_godown_product.carton_count = float(sub_godown_product.carton_count) - float(
+                                good.sent_carton_count)
+                            sub_godown_product.log_entered_by = request.user.name
+                            sub_godown_product.save(update_fields=['carton_count', 'quantity', 'log_entered_by'])
+
+                            good_request.goods_sent = True
+                            good_request.save(update_fields=['goods_sent',])
             if status == 'Confirms the transformation':
-                for good in requested_goods:
-                    if GodownProduct.objects.filter(godown_id=from_godown_id, product_id=good.godown_product_id.product_id):
-                        godown_product = GodownProduct.objects.get(godown_id=from_godown_id,
-                                                                   product_id=good.godown_product_id.product_id)
-                        godown_product.quantity = float(godown_product.quantity) + float(good.received_quantity)
-                        godown_product.carton_count = float(godown_product.carton_count) + float(good.received_carton_count)
-                        godown_product.log_entered_by = request.user.name
-                        godown_product.save(update_fields=['carton_count', 'quantity', 'log_entered_by'])
-                    else:
-                        godown_product = GodownProduct()
-                        godown_product.godown_id = Godown.objects.get(id=good.godown_id.id)
-                        godown_product.product_id = Product.objects.get(id=good.godown_product_id.product_id.id)
-                        godown_product.added_by_id = SiteUser.objects.get(id=request.user.id)
-                        godown_product.quantity = good.quantity
-                        godown_product.carton_count = good.received_carton_count
-                        godown_product.log_entered_by = request.user.name
-                        godown_product.save()
+                if good_request.goods_received == False:
+
+                    for good in requested_goods:
+                        if GodownProduct.objects.filter(godown_id=from_godown_id, product_id=good.godown_product_id.product_id):
+
+                            #adding the products to received godown
+                            add_godown_product = GodownProduct.objects.get(godown_id=from_godown_id,
+                                                                       product_id=good.godown_product_id.product_id)
+                            add_godown_product.quantity = float(add_godown_product.quantity) + float(good.received_quantity)
+                            add_godown_product.carton_count = float(add_godown_product.carton_count) + float(good.received_carton_count)
+                            add_godown_product.log_entered_by = request.user.name
+                            add_godown_product.save(update_fields=['carton_count', 'quantity', 'log_entered_by'])
+
+                            good_request.goods_received = True
+                            good_request.save(update_fields=['goods_received',])
+                    #
+                    # else:
+                    #     godown_product = GodownProduct()
+                    #     godown_product.godown_id = Godown.objects.get(id=good.godown_id.id)
+                    #     godown_product.product_id = Product.objects.get(id=good.godown_product_id.product_id.id)
+                    #     godown_product.added_by_id = SiteUser.objects.get(id=request.user.id)
+                    #     godown_product.quantity = good.quantity
+                    #     godown_product.carton_count = good.received_carton_count
+                    #     godown_product.log_entered_by = request.user.name
+                    #     godown_product.save()
             good_request.status = status
             good_request.save(update_fields=['status',])
             return redirect('/stock_pending_request/'+str(from_godown_id))
@@ -310,15 +338,16 @@ def stock_accpet_goods(request, godown_id, accept_id):
             item2.save(update_fields=['accept_product_id', ])
             return redirect('/stock_accpet_goods/' + str(godown_id) + '/' + str(accept_id))
         elif 'submit2' in request.POST:
-            note = request.POST.get('note')
+            notes = request.POST.get('notes')
 
             item2 = AcceptGoods.objects.get(id=accept_id)
 
             item2.from_godown = Godown.objects.get(id=godown_id)
+            item2.good_added = True
 
             item2.log_entered_by = request.user.name
-            item2.note = note
-            item2.save(update_fields=['notes', 'log_entered_by', 'from_godown',])
+            item2.notes = notes
+            item2.save(update_fields=['notes', 'log_entered_by', 'from_godown','good_added'])
             accepted_goods = AGProducts.objects.filter(godown_id_id=godown_id,accept_product_id_id =accept_id)
             for good in accepted_goods:
                 if GodownProduct.objects.filter(godown_id=godown_id,product_id=good.godown_product_id.product_id):

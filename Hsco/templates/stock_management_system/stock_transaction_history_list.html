@@ -260,7 +260,7 @@ td {
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">To</td>
         </tr>
         {% for list in trans_history %}
-<tr onclick="location.href='/stock_transaction_history/{{list.req_from_godown.id}}/{{list.id}}'">
+<tr style="cursor: pointer;" onclick="location.href='/stock_transaction_history/{{list.req_from_godown.id}}/{{list.id}}'">
             <td style="border: 0px solid gray;">{{list.id}}</td>
             <td style="border: 0px solid gray;">{% if request.user.admin == list.req_to_godown.goddown_assign_to.admin %} Own WorkStation {% else %} Outside Workstation {% endif %}</td>
             <td style="border: 0px solid gray;">{{list.status}}</td>

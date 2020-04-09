@@ -518,7 +518,25 @@ Format : (company name)
     <!--</div>-->
   <!--</div>-->
   </div>
+<div class="form-group row">
+  <label class="col-md-2 control-label">Select Godown
 
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
+<select name="godown" placeholder="Godown" class="form-control" >-->
+  <option value="">Select</option>
+  {% for godown in godowns %}
+  <option value="{{godown.id}}">{{godown.name_of_godown}}</option>
+  {% endfor %}
+</select>
+  </div>
+  </div>
+
+</div>
 <center>
    <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Add Product</button>
 </center>

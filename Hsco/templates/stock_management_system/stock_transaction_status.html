@@ -337,9 +337,7 @@ td {
                         Current Stage:           &nbsp &nbsp      <div class="btn-group">
 <select class="btn btn-success" name="status"  id="c5aasrs">
   <option class="btn btn-success" value="{{good_request.status}}">{{good_request.status}}</option>
-    {% if request.user.admin == good_request.req_to_godown.goddown_assign_to.admin  %}
   <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
-    {% endif %}
         {% if request.user.admin == good_request.req_from_godown.goddown_assign_to.admin %}
   <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
     {% endif %}
@@ -364,8 +362,9 @@ td {
             <td style="border: 0px solid gray;">Model</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Count</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Requested</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sent</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Received</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Request</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Number</td>
                         {% if good_request.status != 'Pending From Target'  %}
@@ -380,15 +379,21 @@ td {
             <td style="border: 0px solid gray;">{{list.godown_product_id.product_id.main_category}}<input hidden name="product_id" value="{{list.id}}"> </td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.godown_product_id.product_id.sub_category}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.godown_product_id.product_id.sub_sub_category}}</td>
-
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.req_carton_count}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.req_quantity}}</td>
+            {% if list.req_type == 'Individual' %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.req_quantity}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.sent_quantity}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.received_quantity}}</td>
+            {% endif %}
+{% if list.req_type == 'Carton' %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.req_carton_count}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.sent_carton_count}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.received_carton_count}}</td>
+            {% endif %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 
                 <div class="btn-group">
 <select class="btn btn-success" name="req_type" id="caasrs">
-  <option class="btn btn-success" value="Individual">Individual</option>
-  <option class="btn btn-success" value="Carton">Carton</option>
+  <option class="btn btn-success" value="{{list.req_type}}">{{list.req_type}}</option>
 </select>
 </div>
 
@@ -407,7 +412,7 @@ td {
             </td>
             {% endif %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                <button name="submit1" type="submit" class="btn btn-danger">Request</button>
+                <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
 
             </td>
         </tr>

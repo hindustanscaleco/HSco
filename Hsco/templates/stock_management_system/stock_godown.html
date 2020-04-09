@@ -59,6 +59,14 @@
                 <div class="col-md-12">
                       <center>
 <h1 class="h3 mb-0 text-gray-800 ">Stock Management System</h1>
+
+
+
+
+
+                          <br>
+
+                          <b>Godown Name:  {{godown_id.name_of_godown}}</b>
 </center>
 </div>
             </div>
@@ -357,12 +365,20 @@ td {
                             </div>
 
                 <div class="col-md-8"></div>
-           <a href=""><button type="button" class="btn btn-primary" style="background-color:#FC6E20">Display with Image</button></a>
+           <button id="display_image" type="button" class="btn btn-primary" style="background-color:#FC6E20">Display List</button>
 
 
                 </div>
 
 <br>
+
+            <script>
+$(document).ready(function(){
+  $("#display_image").click(function(){
+    $("#image_title , #image ").toggle();
+  });
+});
+</script>
 <div class="row" id="abhish123">
 
     <table>
@@ -373,19 +389,21 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Count</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
+            <td id="image_title" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Image</td>
 
 
         </tr>
 
 {% for product in godown_products %}
 
-        <tr>
-                <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{product.product_id.scale_type}}</td>
-            <td style="border: 0px solid gray;">{{product.product_id.main_category}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.product_id.sub_category}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.product_id.sub_sub_category}}</td>
-          <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.carton_count}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.quantity}}</td>
+        <tr style="border: 1px solid gray;">
+                <td style="border-radius: 0px 0px 0px 0px; border: 1px solid gray;">{{product.product_id.scale_type}}</td>
+            <td style="border: 1px solid gray;">{{product.product_id.main_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.product_id.sub_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.product_id.sub_sub_category}}</td>
+          <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.carton_count}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.quantity}}</td>
+            <td id="image" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{% if product.product_id.product_image %}<img height="40" width="40" src="{{product.product_id.product_image.url}}">{% endif %}</td>
         </tr>
 
 {% endfor %}
