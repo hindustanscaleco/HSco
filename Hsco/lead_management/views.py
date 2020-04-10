@@ -1468,7 +1468,7 @@ def update_view_lead(request,id):
                         print('item.partition(":")[0]')
                         print('"'+item.partition(":")[0]+'"')
                         if item.partition(":")[0] == 'Product Image ':
-                            img_path = 'http://139.59.76.87:8000/media/'+item.partition(":")[2]
+                            img_path = 'http://139.59.76.87:8000/media/'+item.partition(":")[2][1:]
                             sms_content = sms_content + item.partition(":")[0] + ''' :''' + img_path + '''\n'''
                             wa_content = wa_content + item.partition(":")[0] + ''' :''' + img_path + '''\n'''
                             html_rows = html_rows + '''<td> <img height="150" width="150" src="'''+img_path+'''"> </td>'''
@@ -1477,12 +1477,12 @@ def update_view_lead(request,id):
                             print("'"+img_path+"'")
 
                         elif item.partition(":")[0] == 'Product Brochure ':
-                            bro_link = 'http://139.59.76.87:8000/media/'+item.partition(":")[2]
+                            bro_link = 'http://139.59.76.87:8000/media/'+item.partition(":")[2][1:]
                             sms_content = sms_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
                             wa_content = wa_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
                             html_rows = html_rows + '''<td> <a href="'''+bro_link+'''" target="_blank">View Brochure</a> </td>'''
                         elif item.partition(":")[0] == 'Product Document ':
-                            bro_link = 'http://139.59.76.87:8000/media/'+item.partition(":")[2]
+                            bro_link = 'http://139.59.76.87:8000/media/'+item.partition(":")[2][1:]
                             sms_content = sms_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
                             wa_content = wa_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
                             html_rows = html_rows + '''<td> <a href="'''+bro_link+'''" target="_blank">View Brochure</a> </td>'''
