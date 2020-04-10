@@ -248,7 +248,11 @@ function myFunction() {
                   </div>
                 </div>
                 <!-- Card Body -->
-<div class="card-body" id="myDIV" style="display: none; height:auto;">
+                  {% if expand_customer %}
+                  <div class="card-body" id="myDIV" style="display: block; height:auto;">
+                  {% else %}
+                      <div class="card-body" id="myDIV" style="display: none; height:auto;">
+                  {% endif %}
 
     <div class="form-group row" style="display:none;">
             <form  method='POST' enctype="multipart/form-data" target="_blank">{% csrf_token %}
@@ -418,7 +422,13 @@ function myFunction() {
                   </div>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body" id="myDIV2" style="display: none; height: auto;">
+                  {% if expand_deal_detail %}
+                                  <div class="card-body" id="myDIV2" style="display: block; height: auto;">
+
+                  {% else %}
+                                                      <div class="card-body" id="myDIV2" style="display: none; height: auto;">
+
+                  {% endif %}
 
 
                               <div class="form-group row">
@@ -587,7 +597,12 @@ function myFunction() {
                   </div>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body" id="myDIV3" style="display: none; height:auto;">
+                  {% if expand_pi_section %}
+                <div class="card-body" id="myDIV3" style="display: block; height:auto;">
+                    {% else %}
+                                    <div class="card-body" id="myDIV3" style="display: none; height:auto;">
+
+                    {% endif %}
                          <div class="row">
                              <div class="col-xl-2 col-lg-2">
 </div>
@@ -784,8 +799,12 @@ function myFunction_call() {
                 </div>
                 <!-- Card Body -->
 
+                {% if expand_followup %}
+                  <div class="card-body" id="myDIV4" style="display: block; height: auto;">
+                  {% else %}
+                                      <div class="card-body" id="myDIV4" style="display: none; height: auto;">
 
-                <div class="card-body" id="myDIV4" style="display: none; height: auto;">
+                  {% endif %}
                       <div class="card" >
                         <div class="card-body" style="padding: 10px;color: black; font-weight: 300; font-size: 14px;">
                             <center><h4><b>Product Fields To Show</b></h4></center>
@@ -1276,6 +1295,10 @@ function whosFunction() {
 }
 </script>
                           </div>
+
+
+
+
               </div>
             </div>
 

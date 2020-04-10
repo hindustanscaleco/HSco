@@ -931,6 +931,10 @@ def update_view_lead(request,id):
             payment_receipt = request.POST.get('payment_receipt')
             upload_pofile = request.POST.get('upload_pofile')
             payment_received_date = request.POST.get('payment_received_date')
+            context22 = {
+                'expand_customer': True,
+            }
+            context.update(context22)
 
 
             item2 = Lead.objects.get(id=id)
@@ -958,7 +962,7 @@ def update_view_lead(request,id):
             if customer_industry != '' and customer_industry != None:
                 item3.customer_industry = customer_industry
                 item3.save(update_fields=['customer_industry'])
-            return redirect('/update_view_lead/'+str(id))
+            # return redirect('/update_view_lead/'+str(id))
 
         if 'submit1' in request.POST:                                            #for customer and deal details section
 
@@ -976,6 +980,11 @@ def update_view_lead(request,id):
             payment_receipt = request.POST.get('payment_receipt')
             upload_pofile = request.POST.get('upload_pofile')
             payment_received_date = request.POST.get('payment_received_date')
+
+            context22 = {
+                'expand_deal_detail': True,
+            }
+            context.update(context22)
 
             item2 = Lead.objects.get(id=id)
 
@@ -1181,8 +1190,13 @@ def update_view_lead(request,id):
 
 
 
-            return redirect('/update_view_lead/'+str(id))
+            # return redirect('/update_view_lead/'+str(id))
         elif 'submit2' in request.POST:
+
+            context22 = {
+                'expand_pi_section': True,
+            }
+            context.update(context22)
 
             #for pi section
             discount = request.POST.get('discount')
@@ -1361,8 +1375,10 @@ def update_view_lead(request,id):
             context23 = {
 
                 'hfu': hfu.fields,
+                'expand_followup': True,
             }
             context.update(context23)
+
 
         elif 'submit56' in request.POST:
             if(request.session['wa_msg']):
@@ -1391,6 +1407,11 @@ def update_view_lead(request,id):
             email_auto_manual = request.POST.get('email_auto_manual')
             selected_products = request.POST.getlist('checks_pro[]')
             selected_fields = Follow_up_section.objects.get(lead_id=id).fields
+
+            context22 = {
+                'expand_followup': True,
+            }
+            context.update(context22)
 
             if(len(selected_products)<1):
 
