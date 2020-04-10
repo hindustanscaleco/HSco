@@ -783,238 +783,10 @@ function myFunction_call() {
                   </div>
                 </div>
                 <!-- Card Body -->
+
+
                 <div class="card-body" id="myDIV4" style="display: none; height: auto;">
-                    <form action="" method='POST' enctype="multipart/form-data" >{% csrf_token %}
-                        <div class="row">
-                        <div class="row col-md-9">
-
-                        </div>
-                            <div class="row col-md-3">
-
-                        <a href="/lead_follow_up_histroy/{{hfu_id}}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp
-                         {% if not item.is_manual_mode %}
-<span style="float:right;margin:10px;" class="alert alert-danger">Auto Follow-Up</span>
-           {% endif %}
-                            </div>
-                            </div>
-                        <div class="row col-md-12" style="margin-left:4%">
-                              <br>
-
-                                                                {% if history_follow.is_wa %}
-
-    <div class="col-md-5" id="my123">
-
-
-
-    <label class="col-md-10 control-label">Whatsapp:</label>
-                                <br>
-                        {{ form6.wa_no }}
-                        <br>
-                                <label class="col-md-5 control-label" style="float:left;">Content:</label>
-                                {{ form6.wa_msg }}
-</div>
-       {% else %}
-                             <div class="col-md-5" id="my123" style="display: none;">
-
-
-
-    <label class="col-md-10 control-label">Whatsapp:</label>
-                                <br>
-                        {{ form6.wa_no }}
-                        <br>
-                                <label class="col-md-5 control-label" style="float:left;">Content:</label>
-                                {{ form6.wa_msg }}
-</div>
-       {% endif %}
-
-
-<div class="col-md-1"></div>
-                            {% if history_follow.is_email %}
-<div class="col-md-5" id="myemail">
-
-                         <label class="col-md-4 control-label">Email Subject:</label>
-    <br>
-                                {{ form6.email_subject }}
-                        <br>
-                           <label class="col-md-4 control-label">Email Message:</label>
-                                {{ form6.email_msg }}
-                        <br>
-</div>
-                            {% else %}
-                            <div class="col-md-5" id="myemail" style="display: none;">
-
-                         <label class="col-md-4 control-label">Email Subject:</label>
-    <br>
-                                {{ form6.email_subject }}
-                        <br>
-                           <label class="col-md-4 control-label">Email Message:</label>
-                                {{ form6.email_msg }}
-                        <br>
-</div>
-                            {% endif %}
-    </div>
-                            <br>
-<div class="row col-md-12" style="margin-left:4%">
-                                {% if history_follow.is_call %}
-
-                            <div class="col-md-5" id="mycall_follow_up" >
-                           <label class="col-md-4 control-label">Call Response:</label>
-<br>
-                                {{ form6.call_response }}
-                            </div>
-    {% else %}
-       <div class="col-md-5" id="mycall_follow_up" style="display: none;">
-                           <label class="col-md-4 control-label">Call Response:</label>
-<br>
-                                {{ form6.call_response }}
-                            </div>
-    {% endif %}
-
-
-
-
-                                <div class="col-md-1">
-                                </div>
-                                    {% if history_follow.is_sms %}
-
-                                    <div class="col-md-5" id="mysms" >
-                           <label class="col-md-4 control-label">SMS Content:</label>
-<br>
-                                {{ form6.sms_msg }}
-                        </div>
-
-    {% else %}
-             <div class="col-md-5" id="mysms" style="display: none;">
-                           <label class="col-md-4 control-label">SMS Content:</label>
-<br>
-                                {{ form6.sms_msg }}
-                        </div>
-    {% endif %}
-                        </div>
-                        <br>
-                        <script>
-                            $(document).ready(function(){
-    $('#purpose').on('change', function() {
-      if ( this.value == 'Manual')
-      {
-        $("#div_call").show();
-      }
-      if ( this.value == 'Select Mode')
-      {
-        $("#div_call").show();
-      }
-      if ( this.value == 'Automatic')
-      {
-        $("#div_call").hide();
-      }
-    });
-});
-</script>
-
-<div class="row col-md-12">
-
-                            <label class="col-md-2 control-label">Medium of Selection:</label>
-
-    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp {{ form6.is_email  }}
-    <div class="col-xl-2 col-lg-2"></div>
-    <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form6.is_whatsapp  }}
-    <div class="col-xl-2 col-lg-2"></div>
-
-    {% if auto_manual_mode == 'Manual' %}
-       <div id="div_call" >
-    <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_call  }}
-    </div>
-    {% else %}
-       <div id="div_call" style="display: none;">
-    <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_call  }}
-    </div>
-    {% endif %}
-
-
-
-    <div class="col-xl-2 col-lg-2"></div>
-    <label class="form-check-label">SMS:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_sms  }}
-</div>
-<br>
-<center>
-
-      {{form4.email_auto_manual}}
-</center>
-
-
-                         <div class="">
-<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; overflow-x:scroll;">
-
-    <table>
-
-        <tr>
-
-            <td style="min-width: 100px;">Product Selection</td>
-            <td style="min-width: 200px;">Scale Type</td>
-            <td style="min-width: 200px;">Main Model</td>
-            <td style="min-width: 200px;">Sub Model</td>
-            <td style="min-width: 200px;">Sub Sub Model</td>
-            <td style="min-width: 100px;">Hsn Code</td>
-            <td style="min-width: 200px;">Product Image</td>
-            <td style="min-width: 200px;">Max Capacity</td>
-            <td style="min-width: 200px;">Accuracy</td>
-            <td style="min-width: 200px;">Platform Size</td>
-            <td style="min-width: 200px;">Product Desc</td>
-            <td style="min-width: 200px;">Product Brochure</td>
-            <td style="min-width: 200px;">Product Document</td>
-            <td style="min-width: 100px;">Cost Price</td>
-            <td style="min-width: 100px;">Selling Price</td>
-            <td style="min-width: 100px;">Carton Size</td>
-
-
-        </tr>
-
-
-          {% for item in followup_products_list %}
-        <tr>
-
-
-            <td ><input style="margin:40%;" type="checkbox" name="checks_pro[]" value="{{item.pk}}" ></td>
-            <td>{{item.scale_type}}</td>
-            <td>{{item.main_category}}</td>
-            <td>{{item.sub_category}}</td>
-            <td>{{item.sub_sub_category}}</td>
-            <td>{{item.hsn_code}}</td>
-            {% if item.product_id.product_image %}
-            <td>
-                       <img height="150" width="150" src="{{item.product_id.product_image.url}}">
-            </td>
-             {% endif %}
-            <td>{{item.max_capacity}}</td>
-            <td>{{item.accuracy}}</td>
-            <td>{{item.platform_size}}</td>
-            <td>{{item.product_desc}}</td>
-            <td>{{item.product_id.product_brochure}}</td>
-            <td>{{item.product_id.product_document}}</td>
-            <td>{{item.cost_price}}</td>
-            <td>{{item.selling_price}}</td>
-            <td>{{item.carton_size}}</td>
-
-        </tr>
-           {% endfor %}
-
-    </table>
-
-
-              </div>
-                          </div>
-
-                         <br>
-                         <center>
-{% if item.is_manual_mode %}
-<button name="submit5" style="background-color: #FC6E20;" class="btn btn-primary" type="submit" onclick="save_alert_form();">Send</button>
-           {% endif %}
-                    </center>
-                          </form>
-                    <br>
-                    <br>
-
-  <div class="card shadow" >
+                      <div class="card" >
                         <div class="card-body" style="padding: 10px;color: black; font-weight: 300; font-size: 14px;">
                             <center><h4><b>Product Fields To Show</b></h4></center>
                             <br>
@@ -1197,17 +969,247 @@ function myFunction_call() {
                         </div>
 
                     </div>
+                    <br>
+                    <br>
+                    <form action="" method='POST' enctype="multipart/form-data" >{% csrf_token %}
+                        <div class="row">
+                            <div class="row col-md-3"></div>
+                        <div class="row col-md-6">
+<center>
+
+     <button type="reset" onclick="location.href='/select_product_followup/{{lead_id.pk}}'" style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button>
+</center>
+                        </div>
+                            <div class="row col-md-3">
+
+                        <a href="/lead_follow_up_histroy/{{hfu_id}}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp
+                         {% if auto_manual_mode == 'Automatic' %}
+
+<span style="float:right;margin:10px;" class="alert alert-danger">Auto Follow-Up</span>
+           {% endif %}
+                            </div>
+                            </div>
+
+                            <div class="">
+<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; overflow-x:scroll;">
+
+    <table>
+
+        <tr>
+
+            <td style="min-width: 100px;">Product Selection</td>
+            <td style="min-width: 200px;">Scale Type</td>
+            <td style="min-width: 200px;">Main Model</td>
+            <td style="min-width: 200px;">Sub Model</td>
+            <td style="min-width: 200px;">Sub Sub Model</td>
+            <td style="min-width: 100px;">Hsn Code</td>
+            <td style="min-width: 200px;">Product Image</td>
+            <td style="min-width: 200px;">Max Capacity</td>
+            <td style="min-width: 200px;">Accuracy</td>
+            <td style="min-width: 200px;">Platform Size</td>
+            <td style="min-width: 200px;">Product Desc</td>
+            <td style="min-width: 200px;">Product Brochure</td>
+            <td style="min-width: 200px;">Product Document</td>
+            <td style="min-width: 100px;">Cost Price</td>
+            <td style="min-width: 100px;">Selling Price</td>
+            <td style="min-width: 100px;">Carton Size</td>
+
+
+        </tr>
+
+
+          {% for item in followup_products_list %}
+        <tr>
+
+
+            <td ><input style="margin:40%;" type="checkbox" name="checks_pro[]" value="{{item.pk}}" ></td>
+            <td>{{item.scale_type}}</td>
+            <td>{{item.main_category}}</td>
+            <td>{{item.sub_category}}</td>
+            <td>{{item.sub_sub_category}}</td>
+            <td>{{item.hsn_code}}</td>
+            {% if item.product_id.product_image %}
+            <td>
+                       <img height="150" width="150" src="{{item.product_id.product_image.url}}">
+            </td>
+             {% endif %}
+            <td>{{item.max_capacity}}</td>
+            <td>{{item.accuracy}}</td>
+            <td>{{item.platform_size}}</td>
+            <td>{{item.product_desc}}</td>
+            <td>{{item.product_id.product_brochure}}</td>
+            <td>{{item.product_id.product_document}}</td>
+            <td>{{item.cost_price}}</td>
+            <td>{{item.selling_price}}</td>
+            <td>{{item.carton_size}}</td>
+
+        </tr>
+           {% endfor %}
+
+    </table>
+
+
+              </div>
+                          </div>
+<br>
+<br>
+
+                        <div class="row col-md-12" style="margin-left:4%">
+                              <br>
+
+                                                                {% if history_follow.is_wa %}
+
+    <div class="col-md-5" id="my123">
+
+
+
+    <label class="col-md-10 control-label">Whatsapp:</label>
+                                <br>
+                        {{ form6.wa_no }}
+                        <br>
+                                <label class="col-md-5 control-label" style="float:left;">Content:</label>
+                                {{ form6.wa_msg }}
+</div>
+       {% else %}
+                             <div class="col-md-5" id="my123" style="display: none;">
+
+
+
+    <label class="col-md-10 control-label">Whatsapp:</label>
+                                <br>
+                        {{ form6.wa_no }}
+                        <br>
+                                <label class="col-md-5 control-label" style="float:left;">Content:</label>
+                                {{ form6.wa_msg }}
+</div>
+       {% endif %}
+
+
+<div class="col-md-1"></div>
+                            {% if history_follow.is_email %}
+<div class="col-md-5" id="myemail">
+
+                         <label class="col-md-4 control-label">Email Subject:</label>
+    <br>
+                                {{ form6.email_subject }}
+                        <br>
+                           <label class="col-md-4 control-label">Email Message:</label>
+                                {{ form6.email_msg }}
+                        <br>
+</div>
+                            {% else %}
+                            <div class="col-md-5" id="myemail" style="display: none;">
+
+                         <label class="col-md-4 control-label">Email Subject:</label>
+    <br>
+                                {{ form6.email_subject }}
+                        <br>
+                           <label class="col-md-4 control-label">Email Message:</label>
+                                {{ form6.email_msg }}
+                        <br>
+</div>
+                            {% endif %}
+    </div>
+                            <br>
+<div class="row col-md-12" style="margin-left:4%">
+                                {% if history_follow.is_call %}
+
+                            <div class="col-md-5" id="mycall_follow_up" >
+                           <label class="col-md-4 control-label">Call Response:</label>
+<br>
+                                {{ form6.call_response }}
+                            </div>
+    {% else %}
+       <div class="col-md-5" id="mycall_follow_up" style="display: none;">
+                           <label class="col-md-4 control-label">Call Response:</label>
+<br>
+                                {{ form6.call_response }}
+                            </div>
+    {% endif %}
+
+
+
+
+                                <div class="col-md-1">
+                                </div>
+                                    {% if history_follow.is_sms %}
+
+                                    <div class="col-md-5" id="mysms" >
+                           <label class="col-md-4 control-label">SMS Content:</label>
+<br>
+                                {{ form6.sms_msg }}
+                        </div>
+
+    {% else %}
+             <div class="col-md-5" id="mysms" style="display: none;">
+                           <label class="col-md-4 control-label">SMS Content:</label>
+<br>
+                                {{ form6.sms_msg }}
+                        </div>
+    {% endif %}
+                        </div>
+                        <br>
+                        <script>
+                            $(document).ready(function(){
+    $('#purpose').on('change', function() {
+      if ( this.value == 'Manual')
+      {
+        $("#div_call").show();
+      }
+      if ( this.value == 'Select Mode')
+      {
+        $("#div_call").show();
+      }
+      if ( this.value == 'Automatic')
+      {
+        $("#div_call").hide();
+      }
+    });
+});
+</script>
+
+<div class="row col-md-12">
+
+                            <label class="col-md-2 control-label">Medium of Selection:</label>
+
+    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp {{ form6.is_email  }}
+    <div class="col-xl-2 col-lg-2"></div>
+    <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form6.is_whatsapp  }}
+    <div class="col-xl-2 col-lg-2"></div>
+
+    {% if auto_manual_mode == 'Manual' %}
+       <div id="div_call" >
+    <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_call  }}
+    </div>
+    {% else %}
+       <div id="div_call" style="display: none;">
+    <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_call  }}
+    </div>
+    {% endif %}
+
+
+
+    <div class="col-xl-2 col-lg-2"></div>
+    <label class="form-check-label">SMS:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_sms  }}
+</div>
+<br>
+<center>
+
+      {{form4.email_auto_manual}}
+</center>
+
 
 
 
                          <br>
+                         <center>
+{% if auto_manual_mode == 'Manual' or auto_manual_mode == 'Select Mode' %}
+<button name="submit5" style="background-color: #FC6E20;" class="btn btn-primary" type="submit" onclick="save_alert_form();">Send</button>
+           {% endif %}
+                    </center>
+                          </form>
 
-<center>
 
-     <button type="submit" onclick="location.href='/select_product_followup/{{lead_id.pk}}'" style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button>
-</center>
-
-</form>
 
 
 <script>
