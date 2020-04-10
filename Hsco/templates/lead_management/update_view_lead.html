@@ -1037,8 +1037,8 @@ function myFunction_call() {
             <td>{{item.accuracy}}</td>
             <td>{{item.platform_size}}</td>
             <td>{{item.product_desc}}</td>
-            <td>{{item.product_id.product_brochure}}</td>
-            <td>{{item.product_id.product_document}}</td>
+            <td><a target="_blank" href="{{item.product_id.product_brochure.url}}"> View Brochure</a></td>
+            <td><a target="_blank" href="{{item.product_id.product_document.url}}"> View Product Document</a></td>
             <td>{{item.cost_price}}</td>
             <td>{{item.selling_price}}</td>
             <td>{{item.carton_size}}</td>
