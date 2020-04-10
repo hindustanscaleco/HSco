@@ -1379,8 +1379,6 @@ def update_view_lead(request,id):
 
             return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
-
-
         elif 'submit5' in request.POST:
 
             is_email = request.POST.get('is_email')
@@ -1392,9 +1390,6 @@ def update_view_lead(request,id):
             email_auto_manual = request.POST.get('email_auto_manual')
             selected_products = request.POST.getlist('checks_pro[]')
             selected_fields = Follow_up_section.objects.get(lead_id=id).fields
-
-            print(request.POST)
-            print(request.POST)
 
             if(len(selected_products)<1):
 
@@ -1557,6 +1552,9 @@ td {
                               </div>
     </body>
     </html>'''
+                    file = ContentFile(html_content)
+                    history_follow.file.save('AutoFollowup.html', file, save=False)
+                    history_follow.html_content = html_content
 
                     send_html_mail(email_subject, html_content, settings.EMAIL_HOST_USER, [customer_id.customer_email_id, ])
                     context28 = {
