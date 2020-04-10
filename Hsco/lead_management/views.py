@@ -1359,7 +1359,7 @@ def update_view_lead(request,id):
                                           'round_up_total','grand_total','total_cost','notes','pf_total',
                                         'email', 'whatsapp','call2','select_gst_type','discount_type','log_entered_by','first_submit'  ])
 
-                return redirect('/update_view_lead/'+str(lead_id.id))
+                # return redirect('/update_view_lead/'+str(lead_id.id))
             else :
 
                 item2 = Pi_section()
@@ -1414,7 +1414,7 @@ def update_view_lead(request,id):
                 item2.save()
                 # if whatsapp == 'True':
                 #     return redirect('https://api.whatsapp.com/send?phone=91' + customer_id.contact_no + '&text=' + 'hi')
-                return redirect('/update_view_lead/'+str(lead_id.id))
+                # return redirect('/update_view_lead/'+str(lead_id.id))
 
         elif 'submit3' in request.POST:
             selected_fields = request.POST.getlist('checks[]')
