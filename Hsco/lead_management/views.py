@@ -995,7 +995,7 @@ def update_view_lead(request,id):
                                       'lost_reason','postponed_reason'])
             is_entered_purchase = Lead.objects.get(id=id).is_entered_purchase
             if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
-                Lead.objects.filter(id=id).update(is_entered_purchase=True)
+
                 purchase_det = Purchase_Details()
                 purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
                 purchase_det.company_address = lead_id.customer_id.address  # new2
@@ -1094,6 +1094,7 @@ def update_view_lead(request,id):
 
 
                 Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
+                Lead.objects.filter(id=id).update(is_entered_purchase=True)
 
                 if True :
                     Purchase_Details.objects.filter(id=id).update(is_last_product=True)
