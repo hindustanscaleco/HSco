@@ -715,8 +715,8 @@ tr:nth-child(even) {
 {% if pi_id.first_submit == True  %}
 <br>
                         <pre>
-Steps: 1) Select PI Template
-       2) Upload PDF and Select Medium of Selection
+Steps: 1) Select PI Template and click on submit
+       2) Choose PI PDF, Select Medium of Selection and click on submit
                          </pre>
                             <div class="form-group row">
                                 <label class="col-md-2 control-label">Select PI Template <b>(Generate PI PDF):</b></label>
@@ -726,7 +726,7 @@ Steps: 1) Select PI Template
                                 {{ form3.select_pi_template }}
                                                               </div>
                           </div>
-                                      <label class="col-md-2 control-label">Upload PI PDF:
+                                      <label class="col-md-2 control-label">Choose PI PDF:
 
 </label>
 
@@ -775,8 +775,8 @@ function myFunction_call() {
 
                              <!--<button type="submit" onclick="download_pdf()" class="btn btn-primary" style="background-color: #FC6E20;">PDF</button>-->
                              {% if pi_id.first_submit == True  %}
-                             <button type="submit" onclick="download_image()" class="btn btn-primary" style="background-color: #FC6E20;">Image</button>
-                             <a target="_blank" href="https://api.whatsapp.com/send?phone=91 + customer_id.contact_no + '&text=' + hi"><button type="button" class="btn btn-primary" style="background-color: #FC6E20;">Whatsapp</button></a>
+<!--                             <button type="submit" onclick="download_image()" class="btn btn-primary" style="background-color: #FC6E20;">Image</button>-->
+                             <a target="_blank" href="https://api.whatsapp.com/send?phone=91{{customer_id.contact_no}}&text=Hey\nHere is the PI"><button onclick="download_image()"  type="button" class="btn btn-primary" style="background-color: #FC6E20;">Whatsapp</button></a>
                              {% endif %}
 
 </center>
@@ -1614,7 +1614,7 @@ function download_pdf(){
 
 function download_image(){
 var popupwin2 = window.open('/download_pi_image/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
-    setTimeout(function() { popupwin2.close();}, 1000);
+    setTimeout(function() { popupwin2.close();}, 5000);
 
 }
 
