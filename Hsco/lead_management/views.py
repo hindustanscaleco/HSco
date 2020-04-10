@@ -883,6 +883,7 @@ def update_view_lead(request,id):
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
         pi_id = Pi_section.objects.get(lead_id=id)
+
         pi_initial_data = {
             'discount': pi_id.discount,
             'upload_pi_file': pi_id.upload_pi_file,
@@ -894,6 +895,7 @@ def update_view_lead(request,id):
             'notes': pi_id.notes,
             'select_gst_type': pi_id.select_gst_type,
             'discount_type': pi_id.discount_type,
+            'first_submit': pi_id.first_submit,
         }
         form3 = Pi_sectionForm(initial=pi_initial_data)
         context2 = {
@@ -901,12 +903,53 @@ def update_view_lead(request,id):
             'form2': form2,
             'form3': form3,
             'lead_id': lead_id,
+            'pi_id': pi_id,
             'lead_pi_products': lead_pi_products,
 
         }
         context.update(context2)
     else:
         pass
+    try:
+        item2 = Pi_section.objects.filter(lead_id=id).first()
+
+
+        total = Pi_product.objects.filter(lead_id=id).values('product_total_cost')
+        total_cost = 0.0
+        for x in total:
+            total_cost += x['product_total_cost']
+        item2.total_cost = total_cost
+
+        product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
+        pf_total = 0.0
+        for x in product_pf:
+            pf_total += float(x['pf'])
+        item2.pf_total = pf_total
+
+
+        if item2.discount_type == 'percent' and item2.discount != '' and item2.discount != 0 and total_cost != '':
+            total_discount = (float(total_cost) * float(
+                item2.discount)) / 100.0  # converting discount percentage to discount total
+            net_total = float(total_cost) - float(total_discount)
+            item2.net_total = net_total
+            item2.cgst_sgst = (9.0 * net_total) / 100.0
+            igst = (18.0 * net_total) / 100.0
+            item2.igst = igst
+            item2.round_up_total = round(net_total + pf_total + igst)
+            item2.grand_total = item2.round_up_total
+        elif item2.discount_type == 'rupee' and item2.discount != '' and total_cost != '':
+            net_total = float(total_cost) - float(item2.discount)
+            item2.net_total = net_total
+            item2.cgst_sgst = (9.0 * net_total) / 100.0
+            igst = (18.0 * item2.net_total) / 100.0
+            item2.igst = igst
+            item2.round_up_total = round(item2.net_total + pf_total + igst)
+            item2.grand_total = item2.round_up_total
+            item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call', 'net_total', 'cgst_sgst','igst',
+                               'round_up_total', 'grand_total', 'total_cost', 'notes', 'pf_total',
+                               'email', 'whatsapp', 'call2', 'select_gst_type', 'discount_type', 'log_entered_by'])
+    except:
+        print("product not added or debugging needed")
 
     if request.method == 'POST' or request.method == 'FILES':
         if 'submit' in request.POST:
@@ -1261,6 +1304,7 @@ def update_view_lead(request,id):
                 item2.call2 = call2
                 item2.select_gst_type = select_gst_type
                 item2.discount_type = discount_type
+                item2.first_submit = True
                 item2.log_entered_by = request.user.name
                 try:
                     total = Pi_product.objects.filter(lead_id=id).values('product_total_cost')
@@ -1298,9 +1342,9 @@ def update_view_lead(request,id):
 
                 item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call','net_total','cgst_sgst','igst',
                                           'round_up_total','grand_total','total_cost','notes','pf_total',
-                                        'email', 'whatsapp','call2','select_gst_type','discount_type','log_entered_by'  ])
+                                        'email', 'whatsapp','call2','select_gst_type','discount_type','log_entered_by','first_submit'  ])
 
-
+                return redirect('/update_view_lead/'+str(lead_id.id))
             else :
 
                 item2 = Pi_section()
@@ -1310,9 +1354,12 @@ def update_view_lead(request,id):
                 item2.call = call
                 item2.email = email
                 item2.whatsapp = whatsapp
+                item2.first_submit = True
                 item2.call2 = call2
-                item2.select_gst_type = select_gst_type
-                item2.discount_type = discount_type
+                if select_gst_type != '':
+                    item2.select_gst_type = select_gst_type
+                if discount_type != '':
+                    item2.discount_type = discount_type
                 item2.lead_id = Lead.objects.get(id=id)
                 item2.log_entered_by = request.user.name
                 try:
@@ -1338,7 +1385,7 @@ def update_view_lead(request,id):
                         item2.igst = igst
                         item2.round_up_total = round(net_total + pf_total + igst)
                         item2.grand_total = item2.round_up_total
-                    elif discount_type == 'rupee' and discount != '' and discount != 0 and total_cost != '':
+                    elif discount_type == 'rupee' and discount != '' and total_cost != '':
                         net_total = float(total_cost) - float(discount)
                         item2.net_total = net_total
                         item2.cgst_sgst = (9.0 * net_total)/100.0
@@ -1352,6 +1399,7 @@ def update_view_lead(request,id):
                 item2.save()
                 # if whatsapp == 'True':
                 #     return redirect('https://api.whatsapp.com/send?phone=91' + customer_id.contact_no + '&text=' + 'hi')
+                return redirect('/update_view_lead/'+str(lead_id.id))
 
         elif 'submit3' in request.POST:
             selected_fields = request.POST.getlist('checks[]')
@@ -2825,7 +2873,18 @@ def Payment_details_handler(sender, instance, update_fields=None, **kwargs):
 
 
 def download_pi_image(request,id):
-    return render(request,'lead_management/download_pi_image.html')
+    lead_id = Lead.objects.get(id=id)
+    todays_date = str(datetime.now().strftime("%Y-%m-%d"))
+    pi_id = Pi_section.objects.get(lead_id=id)
+
+    pi_products = Pi_product.objects.filter(lead_id=id)
+    context = {
+        'lead_id': lead_id,
+        'todays_date': todays_date,
+        'pi_id': pi_id,
+        'pi_products': pi_products,
+    }
+    return render(request,'lead_management/download_pi_image.html',context)
 
 def download_pi_pdf(request,id):
     lead_id=Lead.objects.get(id=id)

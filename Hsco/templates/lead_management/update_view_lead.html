@@ -654,7 +654,7 @@ tr:nth-child(even) {
                {% endfor %}
 
                          <br>
-                     <form  name="PIForm" method='POST' enctype="multipart/form-data" >{% csrf_token %}
+                     <form  name="PIForm" method='POST'  a enctype="multipart/form-data" >{% csrf_token %}
 
                               <div class="form-group row">
                               <label class="col-md-2 control-label">Discount:</label>
@@ -686,13 +686,7 @@ tr:nth-child(even) {
 
 
                             <div class="form-group row">
-                                              <label class="col-md-2 control-label">Select PI Template :</label>
-                              <div class="col-md-3 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
-                                {{ form3.select_pi_template }}
-                                                              </div>
-                          </div>
+
 
                                          <label class="col-md-2 control-label">Select GST Type :</label>
                               <div class="col-md-3 inputGroupContainer">
@@ -703,8 +697,21 @@ tr:nth-child(even) {
                           </div>
                             </div>
 
+{% if pi_id.first_submit == True  %}
+<br>
+                        <pre>
+Steps: 1) Select PI Template
+       2) Upload PDF and Select Medium of Selection
+                         </pre>
                             <div class="form-group row">
-                                      <label class="col-md-2 control-label">Upload PDF
+                                <label class="col-md-2 control-label">Select PI Template <b>(Generate PI PDF):</b></label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.select_pi_template }}
+                                                              </div>
+                          </div>
+                                      <label class="col-md-2 control-label">Upload PI PDF:
 
 </label>
 
@@ -726,8 +733,6 @@ tr:nth-child(even) {
                    </div>
                              </div>
                           </div>
-
-
                          <script>
 function myFunction_call() {
   var x = document.getElementById("myDiv_call");
@@ -741,25 +746,24 @@ function myFunction_call() {
 
 
 </script>
-
-
 <br>
-
-
-
 <div class="row">
                                                          <label class="col-md-2 control-label">Medium of Selection:</label>
 
-    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp  {{ form3.email  }} <div class="col-xl-2 col-lg-2"></div> <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form3.whatsapp  }} <div class="col-xl-2 col-lg-2"></div>   <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form3.call2  }}
+    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp  {{ form3.email  }} <div class="col-xl-2 col-lg-2"></div>  <div class="col-xl-2 col-lg-2"></div>   <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form3.call2  }}
 </div>
-
+{% endif %}
 
 
                          <center>
      <button type="submit" name="submit2" onclick="pdf_download()" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
 
-                             <button type="submit" onclick="download_pdf()" class="btn btn-primary" style="background-color: #FC6E20;">PDF</button>
+                             <!--<button type="submit" onclick="download_pdf()" class="btn btn-primary" style="background-color: #FC6E20;">PDF</button>-->
+                             {% if pi_id.first_submit == True  %}
                              <button type="submit" onclick="download_image()" class="btn btn-primary" style="background-color: #FC6E20;">Image</button>
+                             <a target="_blank" href="https://api.whatsapp.com/send?phone=91 + customer_id.contact_no + '&text=' + hi"><button type="button" class="btn btn-primary" style="background-color: #FC6E20;">Whatsapp</button></a>
+                             {% endif %}
+
 </center>
 
 </form>
@@ -1559,8 +1563,9 @@ function download_pdf(){
 }
 
 function download_image(){
-    var popupwin2 = window.open('/download_pi_image/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
-    setTimeout(function() { popupwin2.close();}, 5000);
+var popupwin2 = window.open('/download_pi_image/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
+    setTimeout(function() { popupwin2.close();}, 1000);
+
 }
 
 
