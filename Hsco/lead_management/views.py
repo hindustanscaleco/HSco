@@ -974,6 +974,10 @@ def update_view_lead(request,id):
             payment_receipt = request.POST.get('payment_receipt')
             upload_pofile = request.POST.get('upload_pofile')
             payment_received_date = request.POST.get('payment_received_date')
+            context22 = {
+                'expand_customer': True,
+            }
+            context.update(context22)
 
 
             item2 = Lead.objects.get(id=id)
@@ -1001,7 +1005,7 @@ def update_view_lead(request,id):
             if customer_industry != '' and customer_industry != None:
                 item3.customer_industry = customer_industry
                 item3.save(update_fields=['customer_industry'])
-            return redirect('/update_view_lead/'+str(id))
+            # return redirect('/update_view_lead/'+str(id))
 
         if 'submit1' in request.POST:                                            #for customer and deal details section
 
@@ -1019,6 +1023,11 @@ def update_view_lead(request,id):
             payment_receipt = request.POST.get('payment_receipt')
             upload_pofile = request.POST.get('upload_pofile')
             payment_received_date = request.POST.get('payment_received_date')
+
+            context22 = {
+                'expand_deal_detail': True,
+            }
+            context.update(context22)
 
             item2 = Lead.objects.get(id=id)
 
@@ -1038,7 +1047,7 @@ def update_view_lead(request,id):
                                       'lost_reason','postponed_reason'])
             is_entered_purchase = Lead.objects.get(id=id).is_entered_purchase
             if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
-                Lead.objects.filter(id=id).update(is_entered_purchase=True)
+
                 purchase_det = Purchase_Details()
                 purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
                 purchase_det.company_address = lead_id.customer_id.address  # new2
@@ -1137,6 +1146,7 @@ def update_view_lead(request,id):
 
 
                 Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
+                Lead.objects.filter(id=id).update(is_entered_purchase=True)
 
                 if True :
                     Purchase_Details.objects.filter(id=id).update(is_last_product=True)
@@ -1223,8 +1233,13 @@ def update_view_lead(request,id):
 
 
 
-            return redirect('/update_view_lead/'+str(id))
+            # return redirect('/update_view_lead/'+str(id))
         elif 'submit2' in request.POST:
+
+            context22 = {
+                'expand_pi_section': True,
+            }
+            context.update(context22)
 
             #for pi section
             discount = request.POST.get('discount')
@@ -1408,8 +1423,10 @@ def update_view_lead(request,id):
             context23 = {
 
                 'hfu': hfu.fields,
+                'expand_followup': True,
             }
             context.update(context23)
+
 
         elif 'submit56' in request.POST:
             if(request.session['wa_msg']):
@@ -1427,8 +1444,6 @@ def update_view_lead(request,id):
 
             return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
-
-
         elif 'submit5' in request.POST:
 
             is_email = request.POST.get('is_email')
@@ -1441,8 +1456,10 @@ def update_view_lead(request,id):
             selected_products = request.POST.getlist('checks_pro[]')
             selected_fields = Follow_up_section.objects.get(lead_id=id).fields
 
-            print(request.POST)
-            print(request.POST)
+            context22 = {
+                'expand_followup': True,
+            }
+            context.update(context22)
 
             if(len(selected_products)<1):
 
@@ -1517,9 +1534,33 @@ def update_view_lead(request,id):
                     sms_content=sms_content+'''\nProduct No-'''+str(count_for+1)+''':'''
                     wa_content=wa_content+'''\nProduct No - '''+str(count_for+1)+''':\n______________________________________________________\n'''
                     for item in single:
-                        sms_content = sms_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
-                        wa_content = wa_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
-                        html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
+                        print('item.partition(":")[0]')
+                        print('item.partition(":")[0]')
+                        print('"'+item.partition(":")[0]+'"')
+                        if item.partition(":")[0] == 'Product Image ':
+                            img_path = 'http://139.59.76.87:8000/media/'+item.partition(":")[2][1:]
+                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + img_path + '''\n'''
+                            wa_content = wa_content + item.partition(":")[0] + ''' :''' + img_path + '''\n'''
+                            html_rows = html_rows + '''<td> <img height="150" width="150" src="'''+img_path+'''"> </td>'''
+                            print('img_path')
+                            print("'"+img_path+"'")
+                            print("'"+img_path+"'")
+
+                        elif item.partition(":")[0] == 'Product Brochure ':
+                            bro_link = 'http://139.59.76.87:8000/media/'+item.partition(":")[2][1:]
+                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
+                            wa_content = wa_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
+                            html_rows = html_rows + '''<td> <a href="'''+bro_link+'''" target="_blank">View Brochure</a> </td>'''
+                        elif item.partition(":")[0] == 'Product Document ':
+                            bro_link = 'http://139.59.76.87:8000/media/'+item.partition(":")[2][1:]
+                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
+                            wa_content = wa_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
+                            html_rows = html_rows + '''<td> <a href="'''+bro_link+'''" target="_blank">View Brochure</a> </td>'''
+                        else:
+                            sms_content = sms_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
+                            wa_content = wa_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
+                            html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
+
                     html_rows = html_rows + '''</tr>'''
 
 
@@ -1605,6 +1646,9 @@ td {
                               </div>
     </body>
     </html>'''
+                    file = ContentFile(html_content)
+                    history_follow.file.save('AutoFollowup.html', file, save=False)
+                    history_follow.html_content = html_content
 
                     send_html_mail(email_subject, html_content, settings.EMAIL_HOST_USER, [customer_id.customer_email_id, ])
                     context28 = {
@@ -2037,10 +2081,7 @@ def select_product_followup(request,id):
             product_id = request.POST.get('product_id')
 
             requested_product = Product.objects.get(id=product_id)
-            print("product_id")
-            print(product_id)
-            print(requested_product)
-            print("requested_product")
+
             fol_pro=Followup_product()
             fol_pro.product_id = requested_product
             fol_pro.lead_id = Lead.objects.get(id=id)
@@ -2070,13 +2111,6 @@ def select_product_followup(request,id):
             type_of_scale_str = request.POST.get('type_of_scale')
             sub_model_str = request.POST.get('sub_model')
             sub_sub_model_str = request.POST.get('sub_sub_model')
-
-            print("model_of_purchase")
-            print(model_of_purchase_str)
-            print(type_of_scale_str)
-            print(sub_model_str)
-            print(sub_sub_model_str)
-            print("sub_sub_model")
 
             if (sub_sub_model == None or sub_sub_model == ""):
                 product_avail = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale_str).name, main_category=main_model.objects.get(id=model_of_purchase_str).name,

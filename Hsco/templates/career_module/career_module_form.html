@@ -15,7 +15,7 @@
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
 
@@ -328,10 +328,50 @@ color:;
     <i class="fas fa-angle-up"></i>
   </a>
 
+
+
+ <script>
+                                                         $(document).ready(function(){
+    $('#id_choose_position').on('change', function() {
+      if ( this.value == 'Sales Position')
+      {
+        $("#sales_person").show();
+      }
+      else
+      {
+        $("#sales_person").show();
+      }
+
+          if ( this.value == 'Technical Position')
+      {
+        $("#technical_position").show();
+      }
+      else
+      {
+        $("#technical_position").show();
+      }
+
+    });
+
+      $('#id_any_question').on('change', function() {
+      if ( this.value == 'Yes')
+      {
+        $("#any_question").show();
+      }
+      else
+      {
+        $("#any_question").show();
+      }
+        });
+
+
+
+         });
+                         </script>
+
+
 <script>
-  window.onload = function() {
-document.getElementById('contract_start_date').required = false;
-};
+
 
 
   function choice1(select) {

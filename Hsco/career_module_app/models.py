@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-
+import datetime
 
 class Career_module(models.Model):
     current_stage = models.CharField(max_length=50,null=True,blank=True)
@@ -46,6 +46,8 @@ class Career_module(models.Model):
     soldering_strong = models.CharField(max_length=10, null=True, blank=True)
     value_of_resister = models.CharField(max_length=10, null=True, blank=True)
     open_and_short_circuit = models.CharField(max_length=10, null=True, blank=True)
+    is_sales_candidate = models.BooleanField(default=False)
+    is_technical_candidate = models.BooleanField(default=False)
 
     def __str__(self):
         return self.candidate_name

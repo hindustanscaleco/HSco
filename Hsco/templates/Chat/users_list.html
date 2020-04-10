@@ -160,16 +160,22 @@ $(function() {
                     <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
             <div class="row">
 
+                 <div class="col-xl-3">
+                    <button class="btn btn-primary" onclick="location.href='/notif_decl_home/'">Notif Home</button>
+                </div>
+                <br>
+                <br>
+
                 <div  class="col-xl-3 col-md-3 col-mb-3">
                     <div class="button dropdown">
-  <select id="divselector" class="form-control">
-     <option value="d0">Select Search Type</option>
-     <option value="d2">Search By Mobile Number</option>
-     <option value="d3">Search By Email Id</option>
-     <option value="d5">Search By Name</option>
-     <option value="d6">Search By Employee ID.</option>
-     <!--<option value="d7">Search By CRM Number Range</option>-->
-  </select>
+<!--  <select id="divselector" class="form-control">-->
+<!--     <option value="d0">Select Search Type</option>-->
+<!--     <option value="d2">Search By Mobile Number</option>-->
+<!--     <option value="d3">Search By Email Id</option>-->
+<!--     <option value="d5">Search By Name</option>-->
+<!--     <option value="d6">Search By Employee ID.</option>-->
+<!--     &lt;!&ndash;<option value="d7">Search By CRM Number Range</option>&ndash;&gt;-->
+<!--  </select>-->
 </div>
 
 <br>
@@ -225,9 +231,7 @@ $(function() {
 
                 </div>
 
-                <div class="col-xl-3">
-                    <button class="btn btn-primary" onclick="location.href='/notif_decl_home/'">Notif Home</button>
-                </div>
+
 
 
 
@@ -310,21 +314,52 @@ td {
             <td style="border: 0px solid gray;">Contact No.</td>
             <td style="border: 0px solid gray;">Position </td>
             <td style="border: 0px solid gray;">Email</td>
+             {% if request.user.role == 'Super Admin' %}
+            <td style="border: 0px solid gray;">Replying status</td>
+             {% endif %}
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Deleted</td>
 
         </tr>
                     {% for item in all_users_list %}
 
+        {% if item.id == request.user.id %}
+              <tr>
+
+        {% else %}
                           <tr style="cursor: pointer; " onclick="location.href='/chat_details/{{request.user.pk}}/{{item.pk}}';">
+
+        {% endif %}
+
 
 
             <td>{{ forloop.counter}}</td>
             <td>{{ item.employee_number }}</td>
-        <td>{{ item.profile_name}}</td>
+               <td>{{ item.profile_name}}{% if item.id == request.user.id %} <b>(Super Admin)</b>{% endif %}</td>
+
             <td>{{item.mobile}}</td>
             <td>{{item.role}}</td>
             <td>{{item.email}}</td>
+        {% if request.user.role == 'Super Admin' %}
+                 <td>
+                      {% if item.id == request.user.id %}
+                     N/A
+                      {% else %}
+                {% if item.can_reply_to_sa %}
+                     <i class="fa fa-check-circle" style="font-size:20px;color:green; position:relative;"></i>
+
+
+                {% else %}
+                      <i class="fa fa-times-circle" style="font-size:20px;color:red; position:relative;"></i>
+
+                {% endif %}
+                {% endif %}
+            </td>
+
+        {% endif %}
             <td>
+                 {% if item.id == request.user.id %}
+                     N/A
+                      {% else %}
                 {% if item.is_deleted %}
                                                 <i class="fa fa-check-circle" style="font-size:20px;color:red; position:relative;"></i>
 
@@ -332,6 +367,7 @@ td {
                 {% else %}
                                 <i class="fa fa-times-circle" style="font-size:20px;color:green; position:relative;"></i>
 
+                {% endif %}
                 {% endif %}
             </td>
 
