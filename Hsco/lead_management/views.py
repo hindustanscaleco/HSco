@@ -1464,9 +1464,33 @@ def update_view_lead(request,id):
                     sms_content=sms_content+'''\nProduct No-'''+str(count_for+1)+''':'''
                     wa_content=wa_content+'''\nProduct No - '''+str(count_for+1)+''':\n______________________________________________________\n'''
                     for item in single:
-                        sms_content = sms_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
-                        wa_content = wa_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
-                        html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
+                        print('item.partition(":")[0]')
+                        print('item.partition(":")[0]')
+                        print('"'+item.partition(":")[0]+'"')
+                        if item.partition(":")[0] == 'Product Image ':
+                            img_path = 'http://139.59.76.87:8000/media/'+item.partition(":")[2]
+                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + img_path + '''\n'''
+                            wa_content = wa_content + item.partition(":")[0] + ''' :''' + img_path + '''\n'''
+                            html_rows = html_rows + '''<td> <img height="150" width="150" src="'''+img_path+'''"> </td>'''
+                            print('img_path')
+                            print("'"+img_path+"'")
+                            print("'"+img_path+"'")
+
+                        elif item.partition(":")[0] == 'Product Brochure ':
+                            bro_link = 'http://139.59.76.87:8000/media/'+item.partition(":")[2]
+                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
+                            wa_content = wa_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
+                            html_rows = html_rows + '''<td> <a href="'''+bro_link+'''" target="_blank">View Brochure</a> </td>'''
+                        elif item.partition(":")[0] == 'Product Document ':
+                            bro_link = 'http://139.59.76.87:8000/media/'+item.partition(":")[2]
+                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
+                            wa_content = wa_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
+                            html_rows = html_rows + '''<td> <a href="'''+bro_link+'''" target="_blank">View Brochure</a> </td>'''
+                        else:
+                            sms_content = sms_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
+                            wa_content = wa_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
+                            html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
+
                     html_rows = html_rows + '''</tr>'''
 
 
