@@ -270,7 +270,7 @@ td {
         <td>{{product.quantity}}</td>
         <td>{{product.product_id.hsn_code}}</td>
         <td>{{product.product_id.sub_sub_category}}</td>
-        <td>{% if product.product_id.product_image %}<img style="height:40px; width:40px;" src="http://127.0.0.1:8000{{product.product_id.product_image.url}}">{% endif %}</td>
+        <td>{% if product.product_id.product_image %}<img style="height:40px; width:40px;" src="{{product.product_id.product_image.url}}">{% endif %}</td>
         <td>{{product.product_id.product_desc}}</td>
         <td>{{product.product_id.selling_price}}</td>
         <td>{{product.product_total_cost}}</td>

@@ -1005,7 +1005,7 @@ def update_view_lead(request,id):
             if customer_industry != '' and customer_industry != None:
                 item3.customer_industry = customer_industry
                 item3.save(update_fields=['customer_industry'])
-            # return redirect('/update_view_lead/'+str(id))
+            return redirect('/update_view_lead/'+str(id))
 
         if 'submit1' in request.POST:                                            #for customer and deal details section
 
@@ -1233,7 +1233,7 @@ def update_view_lead(request,id):
 
 
 
-            # return redirect('/update_view_lead/'+str(id))
+            return redirect('/update_view_lead/'+str(id))
         elif 'submit2' in request.POST:
 
             context22 = {
@@ -1359,7 +1359,7 @@ def update_view_lead(request,id):
                                           'round_up_total','grand_total','total_cost','notes','pf_total',
                                         'email', 'whatsapp','call2','select_gst_type','discount_type','log_entered_by','first_submit'  ])
 
-                # return redirect('/update_view_lead/'+str(lead_id.id))
+                return redirect('/update_view_lead/'+str(lead_id.id))
             else :
 
                 item2 = Pi_section()
@@ -1426,6 +1426,7 @@ def update_view_lead(request,id):
                 'expand_followup': True,
             }
             context.update(context23)
+            return redirect('/update_view_lead/' + str(id))
 
 
         elif 'submit56' in request.POST:
@@ -1706,6 +1707,7 @@ td {
                 history_follow.log_entered_by = request.user.name
 
                 history_follow.save()
+                return redirect('/update_view_lead/' + str(id))
             elif (email_auto_manual == 'Automatic'):
 
                 if(Auto_followup_details.objects.filter(follow_up_history__follow_up_section__lead_id__id=lead_id.id).count()==0):
