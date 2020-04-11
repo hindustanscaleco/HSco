@@ -63,6 +63,7 @@ class Pi_section(models.Model):
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     first_submit = models.BooleanField(default=False, null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
+    postpond_time_date = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 

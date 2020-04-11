@@ -379,11 +379,15 @@ function myFunction() {
       {
         $("#postponed_lost_reason_label").show();
         $("#postponed_lost_reason_label_div").show();
+        $("#postponed_date_lable").show();
+        $("#postponed_date").show();
       }
       else
       {
         $("#postponed_lost_reason_label").hide();
         $("#postponed_lost_reason_label_div").hide();
+        $("#postponed_date_lable").hide();
+        $("#postponed_date").hide();
       }
 
     });
@@ -473,12 +477,20 @@ function myFunction() {
                               <div class="form-group row">
 
                                 <label class="col-md-2 control-label">New/Existing Customer: *</label>
-                              <div class="col-md-3 inputGroupContainer">
+                              <div class="col-md-4 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form2.new_existing_customer }}
                             </div>
                              </div>
+
+                              <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Postpond Date</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: none;">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form2.postpond_time_date }}
+                            </div>
+                                  </div>
                           </div>
 
 
@@ -536,8 +548,8 @@ function myFunction() {
                                 {{ form2.lost_reason }}
                             </div>
                                   </div>
-                                <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Reason:</label>
-                              <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: none;">
+                                <label class="col-md-2 control-label" id="postponed_date_lable" style="display: none;">Reason:</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_date" style="display: none;">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form2.postponed_reason }}
