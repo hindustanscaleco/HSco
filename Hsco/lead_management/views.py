@@ -7,6 +7,7 @@ from django.core.files.base import ContentFile
 from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render, redirect
 from customer_app.models import type_purchase
+from django.template.loader import get_template
 from stock_management_system_app.models import Product
 from django.contrib.auth.decorators import login_required
 
@@ -952,6 +953,7 @@ def update_view_lead(request,id):
     except:
         print("product not added or debugging needed")
 
+
     if request.method == 'POST' or request.method == 'FILES':
         if 'submit' in request.POST:
             customer_name = request.POST.get('customer_name')
@@ -1077,25 +1079,25 @@ def update_view_lead(request,id):
 
                 Lead.objects.filter(id=id).update(purchase_id=purchase_det.pk)
 
-                dispatch = Dispatch()
-                dispatch.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
-                dispatch.second_person = lead_id.customer_id.customer_name  # new1
-                dispatch.second_contact_no = lead_id.customer_id.contact_no  # new2
-                dispatch.second_company_name = lead_id.customer_id.company_name  # new2
-                dispatch.company_email = lead_id.customer_id.customer_email_id
-                dispatch.company_address = lead_id.customer_id.address  # new2
-                dispatch.notes = "Entry From Lead Module\n"  # new2
-                dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
-                dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
-                if Dispatch.objects.all().count() == 0:
-                    dispatch.dispatch_no = 1
-                else:
-                    dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
-                dispatch.save()
+                # dispatch = Dispatch()
+                # dispatch.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
+                # dispatch.second_person = lead_id.customer_id.customer_name  # new1
+                # dispatch.second_contact_no = lead_id.customer_id.contact_no  # new2
+                # dispatch.second_company_name = lead_id.customer_id.company_name  # new2
+                # dispatch.company_email = lead_id.customer_id.customer_email_id
+                # dispatch.company_address = lead_id.customer_id.address  # new2
+                # dispatch.notes = "Entry From Lead Module\n"  # new2
+                # dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
+                # dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                # if Dispatch.objects.all().count() == 0:
+                #     dispatch.dispatch_no = 1
+                # else:
+                #     dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
+                # dispatch.save()
 
                 customer_id = Purchase_Details.objects.get(id=purchase_det.pk)
-                customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
-                customer_id.save(update_fields=['dispatch_id_assigned'])
+                # customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
+                # customer_id.save(update_fields=['dispatch_id_assigned'])
 
                 pi_pro = Pi_product.objects.filter(lead_id=lead_id.pk)
                 for item in pi_pro:
@@ -1122,28 +1124,28 @@ def update_view_lead(request,id):
                     item_pro.save()
 
 
-                    dispatch_id = Dispatch.objects.get(id=dispatch.id)
-                    dispatch_pro = Product_Details_Dispatch()
-                    dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
-                    dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
-                    dispatch_pro.quantity = item.quantity
-                    dispatch_pro.type_of_scale = item.product_id.scale_type
-                    dispatch_pro.model_of_purchase = item.product_id.main_category
-                    dispatch_pro.sub_model = item.product_id.sub_category
-                    dispatch_pro.sub_sub_model = item.product_id.sub_sub_category
-
-                    dispatch_pro.brand = 'HSCO'
-                    dispatch_pro.capacity = item.product_id.max_capacity
-                    dispatch_pro.unit = 'Kg'
-                    dispatch_pro.dispatch_id = dispatch_id
-                    if (item.product_total_cost == None or item.product_total_cost == ''):
-                        dispatch_pro.value_of_goods = 0.0
-                    else:
-                        dispatch_pro.value_of_goods = item.product_total_cost
-
-                    dispatch_pro.save()
-
-                    Product_Details.objects.filter(id=item_pro.pk).update(product_dispatch_id=dispatch_pro.pk)
+                    # dispatch_id = Dispatch.objects.get(id=dispatch.id)
+                    # dispatch_pro = Product_Details_Dispatch()
+                    # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+                    # dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                    # dispatch_pro.quantity = item.quantity
+                    # dispatch_pro.type_of_scale = item.product_id.scale_type
+                    # dispatch_pro.model_of_purchase = item.product_id.main_category
+                    # dispatch_pro.sub_model = item.product_id.sub_category
+                    # dispatch_pro.sub_sub_model = item.product_id.sub_sub_category
+                    #
+                    # dispatch_pro.brand = 'HSCO'
+                    # dispatch_pro.capacity = item.product_id.max_capacity
+                    # dispatch_pro.unit = 'Kg'
+                    # dispatch_pro.dispatch_id = dispatch_id
+                    # if (item.product_total_cost == None or item.product_total_cost == ''):
+                    #     dispatch_pro.value_of_goods = 0.0
+                    # else:
+                    #     dispatch_pro.value_of_goods = item.product_total_cost
+                    #
+                    # dispatch_pro.save()
+                    #
+                    # Product_Details.objects.filter(id=item_pro.pk).update(product_dispatch_id=dispatch_pro.pk)
 
 
                 Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
@@ -2420,14 +2422,22 @@ def report_2(request):
 def download_pi_image(request):
     return render(request,'lead_management/download_pi_image.html')
 
+
+# from io import BytesIO
+# from django.http import HttpResponse
+# from django.template.loader import get_template
+#
+# from xhtml2pdf import pisa
+
 def download_pi_pdf(request):
-    return render(request,'lead_management/download_pi_pdf.html')
+    # template = get_template(template_src)
+    # html = template.render(context_dict)
+    # result = BytesIO()
+    # pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+    return render(request,'lead_management/download_pi_pdf.html',)
 
 def lead_logs(request):
     lead_logs = Log.objects.filter(module_name='Lead Module').order_by('-id')
-    print(lead_logs)
-    print(lead_logs)
-    print(lead_logs)
     paginator = Paginator(lead_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')
     lead_logs = paginator.get_page(page)
