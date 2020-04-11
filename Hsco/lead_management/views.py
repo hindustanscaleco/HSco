@@ -3,7 +3,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.paginator import Paginator
 from django.db import connection
 from django.db.models import Sum, Q, Count
-from django.core.files.base import ContentFile
+from django.core.files.base import ContentFile, File
 from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render, redirect
 from customer_app.models import type_purchase
@@ -955,6 +955,16 @@ def update_view_lead(request,id):
 
 
     if request.method == 'POST' or request.method == 'FILES':
+        if 'file_pdf' in request.POST:
+            val = request.POST
+            try:
+                email_send = EmailMessage('subject', 'testing', settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+                email_send.attach('invoicex.pdf', val.get('file_pdf'), 'application/pdf')
+                email_send.send()
+            except Exception as e:
+                print(e)
+
+
         if 'submit' in request.POST:
             customer_name = request.POST.get('customer_name')
             company_name = request.POST.get('company_name')
@@ -2423,17 +2433,9 @@ def download_pi_image(request):
     return render(request,'lead_management/download_pi_image.html')
 
 
-# from io import BytesIO
-# from django.http import HttpResponse
-# from django.template.loader import get_template
-#
-# from xhtml2pdf import pisa
 
 def download_pi_pdf(request):
-    # template = get_template(template_src)
-    # html = template.render(context_dict)
-    # result = BytesIO()
-    # pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+
     return render(request,'lead_management/download_pi_pdf.html',)
 
 def lead_logs(request):
@@ -2933,6 +2935,34 @@ def download_pi_image(request,id):
     }
     return render(request,'lead_management/download_pi_image.html',context)
 
+import os
+def link_callback(uri, rel):
+    """
+    Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+    resources
+    """
+    # use short variable names
+    sUrl = settings.STATIC_URL      # Typically /static/
+    sRoot = settings.STATIC_ROOT    # Typically /home/userX/project_static/
+    mUrl = settings.MEDIA_URL       # Typically /static/media/
+    mRoot = settings.MEDIA_ROOT     # Typically /home/userX/project_static/media/
+
+    # convert URIs to absolute system paths
+    if uri.startswith(mUrl):
+        path = os.path.join(mRoot, uri.replace(mUrl, ""))
+    elif uri.startswith(sUrl):
+        path = os.path.join(sRoot, uri.replace(sUrl, ""))
+    else:
+        return uri  # handle absolute uri (ie: http://some.tld/foo.png)
+
+    # make sure that file exists
+    if not os.path.isfile(path):
+            raise Exception(
+                'media URI must start with %s or %s' % (sUrl, mUrl)
+            )
+    return path
+
+
 def download_pi_pdf(request,id):
     lead_id=Lead.objects.get(id=id)
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
@@ -2945,6 +2975,25 @@ def download_pi_pdf(request,id):
         'pi_id':pi_id,
         'pi_products':pi_products,
     }
+    # template = get_template('lead_management/download_pi_pdf.html')
+    # html = template.render(context)
+    # result = BytesIO()
+    # pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1", "ignore")), result)
+    # pisaStatus = pisa.CreatePDF(
+    #     html, dest=result, link_callback=link_callback)
+    # pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+
+    # email_send = EmailMessage('subject', 'testing', settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+    # email_send.attach('invoicex.pdf', result.getvalue(), 'application/pdf')
+    # email_send.send()
+
+    # pi = Pi_History()
+    # file = ContentFile(result.getvalue())
+    # pi.file.save('AutoFollowup.pdf', file, save=False)
+    # # pi.file = result.getvalue()
+    # pi.lead_id = Lead.objects.get(id=id)
+    # pi.save()
+
     return render(request,'lead_management/download_pi_pdf.html',context)
 
 def download_pi_second_pdf(request,id):

@@ -395,15 +395,44 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 </div>
 
 <script type="text/javascript">
-
+    function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
 let doc = new jsPDF('p','pt','a4');
+
 doc.addHTML(document.body,function() {
 
-
-    doc.save('html.pdf');
-
+var formData = new FormData();
+formData.append('file_pdf', doc.output());
+var pdf = btoa(doc.output());
+//console.log(doc);
+var xhr = new XMLHttpRequest();
+xhr.onload = function (e) {
+    if (xhr.readyState === 4 && xhr.status === 200){
+        result=xhr.responseText;
+        console.log(result);
+    }
+}
+xhr.open('POST', '/update_view_lead/{{lead_id.pk}}', true);
+xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+xhr.send(formData);
 
 });
+
+
+
 
 </script>
 </body>
