@@ -206,6 +206,16 @@ class Deal_detailForm(forms.ModelForm):
                                              }
                                          ))
 
+    postpond_time_date = forms.DateField( required=False,
+                                         widget=forms.DateInput(
+
+                                             attrs={
+                                                 'type': 'date',
+                                                 'placeholder': "Date of Initiation",
+                                                 'class': 'form-control',
+                                             }
+                                         ))
+
     upload_requirement_file = forms.CharField(max_length=80,required=False,
                               widget=forms.TextInput(
                                   attrs={
