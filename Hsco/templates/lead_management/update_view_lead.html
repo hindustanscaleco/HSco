@@ -685,32 +685,47 @@ tr:nth-child(even) {
                                       <!--</select>-->
                           </div>
                         </div>
-
-
-                                <label class="col-md-2 control-label">Upload PI File:</label>
-                              <div class="col-md-3 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
-                                {{ form3.upload_pi_file }}
-                                  <!--{% if form3.upload_pi_file %}-->
-                                  <!--<a href="/{{ form3.upload_pi_file.url }}/" class="btn btn-primary">Old File</a>-->
-                                   <!--{% endif %}-->
-                            </div>
-                             </div>
-                          </div>
-
-
-                            <div class="form-group row">
-
-
-                                         <label class="col-md-2 control-label">Select GST Type :</label>
+                                                                           <label class="col-md-2 control-label">Select GST Type :</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
                                 {{ form3.select_gst_type }}
                                                               </div>
                           </div>
+
+
+
+                          </div>
+
+                         <hr>
+                         <center>External PI</center>
+                         <hr>
+<br>
+<br>
+
+                            <div class="form-group row">
+                                <label class="col-md-2 control-label">Upload PI File:</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.upload_pi_file }}
                             </div>
+                             </div>
+
+                                                                         <label class="col-md-2 control-label">Amount</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.grand_total }}
+                                                              </div>
+                          </div>
+
+
+                            </div>
+
+
+                         <hr>
+                         <br>
 
 {% if pi_id.first_submit == True  %}
 <br>
@@ -1330,6 +1345,7 @@ function whosFunction() {
 
               </div>
             </div>
+        </div>
 
 
         {% if lead_id.current_stage == 'PO Issued - Payment Done - Dispatch Pending' or lead_id.current_stage == 'Dispatch Done - Closed' %}

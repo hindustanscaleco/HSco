@@ -389,6 +389,15 @@ class Pi_sectionForm(forms.ModelForm):
                                              }
                                          ))
 
+    grand_total = forms.CharField(max_length=80, required=False,
+                                         widget=forms.TextInput(
+                                             attrs={
+                                                 'type': 'text',
+                                                 'placeholder':'External PI Amount',
+                                                 'class': 'form-control',
+                                             }
+                                         ))
+
     email_auto_manual = forms.CharField(
         widget=forms.Select(
             choices=auto_manual_email,
