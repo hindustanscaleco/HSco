@@ -893,6 +893,7 @@ def update_view_lead(request,id):
             'upload_po_file': pi_id.upload_po_file,
             'payment_received_date': pi_id.payment_received_date,
             'notes': pi_id.notes,
+            'grand_total': pi_id.grand_total,
             'select_gst_type': pi_id.select_gst_type,
             'discount_type': pi_id.discount_type,
             'first_submit': pi_id.first_submit,
@@ -946,7 +947,7 @@ def update_view_lead(request,id):
             item2.round_up_total = round(item2.net_total + pf_total + igst)
             item2.grand_total = item2.round_up_total
             item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call', 'net_total', 'cgst_sgst','igst',
-                               'round_up_total', 'grand_total', 'total_cost', 'notes', 'pf_total',
+                               'round_up_total', 'grand_total', 'total_cost', 'notes', 'grand_total','pf_total',
                                'email', 'whatsapp', 'call2', 'select_gst_type', 'discount_type', 'log_entered_by'])
     except:
         print("product not added or debugging needed")
