@@ -20,6 +20,10 @@ from customer_app.models import type_purchase,main_model,sub_model,sub_sub_model
 from ess_app.models import Defects_Warning
 
 from stock_management_system_app.models import Godown
+
+from stock_management_system_app.models import GodownProduct
+
+from stock_management_system_app.models import Product
 from .models import  Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
 from _datetime import datetime
@@ -161,7 +165,6 @@ def purchase_product_handler(sender, instance, update_fields=None, **kwargs):
 
 @login_required(login_url='/')
 def add_purchase_details(request):
-    godowns = Godown.objects.all()
     if 'purchase_id' in request.session:
         if request.session.get('product_saved'):
             pass
@@ -214,7 +217,6 @@ def add_purchase_details(request):
         # value_of_goods = request.POST.get('value_of_goods')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
-        godown = request.POST.get('godown')
         # feedback_form_filled = request.POST.get('feedback_form_filled')
 
         item2 = Purchase_Details()
@@ -289,7 +291,6 @@ def add_purchase_details(request):
         # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no+1
-        item2.godown_id = Godown.objects.get(id=godown)
         item2.log_entered_by = request.user.profile_name
         # request.session['new_repeat_purchase'] = new_repeat_purchase
         # request.session['second_person'] = customer_name
@@ -412,7 +413,6 @@ def add_purchase_details(request):
         'form': form,
         'cust_sugg': cust_sugg,
         'sales_person_sugg': sales_person_sugg,
-        'godowns': godowns,
     }
 
     return render(request,'forms/cust_mod_form.html',context)
@@ -604,7 +604,6 @@ def update_customer_details(request,id):
     customer_id = Purchase_Details.objects.get(id=id).crm_no
     # customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
-    godowns = Godown.objects.all()
     if 'product_saved' in request.session:
         if request.session.get('product_saved'):
             pass
@@ -818,7 +817,7 @@ def update_customer_details(request,id):
 def add_product_details(request,id):
     purchase = Purchase_Details.objects.get(id=id)
     purchase_id = purchase.id
-
+    godowns = Godown.objects.filter(default_godown_purchase=False)
     type_of_purchase_list =type_purchase.objects.all() #1
     if 'purchase_id' in request.session:
         request.session['product_saved'] = False
@@ -829,7 +828,7 @@ def add_product_details(request,id):
         dispatch_id_assigned=None
     form = Product_Details_Form(request.POST or None)
     if request.method == 'POST':
-        quantity = request.POST.get('quantity')
+        quantity = float(request.POST.get('quantity'))
         model_of_purchase = request.POST.get('model_of_purchase')
         type_of_scale = request.POST.get('type_of_scale')
         sub_model = request.POST.get('sub_model')
@@ -840,6 +839,7 @@ def add_product_details(request,id):
         unit = request.POST.get('unit')
         value_of_goods = request.POST.get('value_of_goods')
         is_last_product_yes = request.POST.get('is_last_product_yes')
+        godown = request.POST.get('godown')
 
         if value_of_goods == '' or value_of_goods == None:
             value_of_goods=0.0
@@ -862,6 +862,17 @@ def add_product_details(request,id):
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.log_entered_by = request.user.name
+        item.godown_id = Godown.objects.get(id=godown)
+
+        if sub_sub_model != '':
+            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                  sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+
+            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
+                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
+                        GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                        quantity=F("quantity") - quantity)
+
 
         item.save()
 
@@ -1066,8 +1077,17 @@ def add_product_details(request,id):
     context = {
         'form': form,
         'purchase_id': purchase_id,
+        'godowns': godowns,
         'type_purchase': type_of_purchase_list,  #2
     }
+    try:
+        default_godown = Godown.objects.get(default_godown_purchase=True)
+        context1={
+            'default_godown': default_godown,
+        }
+        context.update(context1)
+    except:
+        pass
     return render(request,'dashboardnew/add_product.html',context)
 
 
@@ -1428,7 +1448,6 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
 
 @login_required(login_url='/')
 def edit_product_customer(request,product_id_rec):
-
     purchase = Product_Details.objects.get(id=product_id_rec)
     purchase_id = Purchase_Details.objects.get(id=purchase.purchase_id)
     # dispatch_id_assigned = str(purchase_id.dispatch_id_assigned)
@@ -1437,6 +1456,11 @@ def edit_product_customer(request,product_id_rec):
     except:
         dispatch_id_assigned=None
     product_id = Product_Details.objects.get(id=product_id_rec)
+
+    try:
+        godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id))
+    except:
+        godowns = Godown.objects.all()
     if request.method == 'POST':
         quantity = request.POST.get('quantity')
         model_of_purchase = request.POST.get('model_of_purchase')
@@ -1447,11 +1471,33 @@ def edit_product_customer(request,product_id_rec):
         brand = request.POST.get('brand')
         capacity = request.POST.get('capacity')
         unit = request.POST.get('unit')
-        # sales_person = request.POST.get('sales_person')
         amount = request.POST.get('value_of_goods')
-        # purchase_type = request.POST.get('purchase_type')
+        godown = request.POST.get('godown')
 
         cost2 = purchase.amount
+        godown_product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+
+        # If godown is changed, add stored quantity in current godown and subtract new quantity from new godown
+        if purchase.godown_id.id != godown and godown != 'None' and godown != '':
+
+            # adding stored quantity in current godown
+            GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(  
+                quantity=F("quantity") + purchase.quantity)
+            
+            # subtracting new quantity from new godown
+            GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                quantity=F("quantity") - quantity)
+
+        elif quantity != purchase.quantity and quantity != 'None' and quantity != '':
+
+            # adding old quantity from current godown
+            GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
+                quantity=F("quantity") + purchase.quantity)
+
+            # subtracting new quantity from current godown
+            GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
+                quantity=F("quantity") - quantity)
 
         Purchase_Details.objects.filter(id=purchase_id.pk).update(value_of_goods=F("value_of_goods") - cost2)
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
@@ -1483,6 +1529,7 @@ def edit_product_customer(request,product_id_rec):
         item.capacity = capacity
         item.unit = unit
         item.amount = amount
+        item.godown_id = Godown.objects.get(id=godown)
         item.log_entered_by = request.user.name
         # item.purchase_id_id = purchase_id
         # item.sales_person = sales_person
@@ -1490,7 +1537,7 @@ def edit_product_customer(request,product_id_rec):
         # item.user_id = SiteUser.objects.get(id=request.user.pk)
         # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save(update_fields=['log_entered_by','quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
-                                 'serial_no_scale', 'brand', 'capacity', 'unit','amount',
+                                 'serial_no_scale', 'brand', 'capacity', 'unit','amount','godown_id'
                                  ])
 
         Purchase_Details.objects.filter(id=purchase_id.pk).update(
@@ -1527,6 +1574,7 @@ def edit_product_customer(request,product_id_rec):
                     dispatch_pro.capacity = capacity
                     dispatch_pro.unit = unit
                     dispatch_pro.value_of_goods = amount
+                    dispatch_pro.godown_id = Godown.objects.get(id=product_id.godown_id)
 
                     # dispatch_pro.dispatch_id = dispatch_id
                     # dispatch_pro.sales_person = sales_person
@@ -1534,7 +1582,7 @@ def edit_product_customer(request,product_id_rec):
                     dispatch_pro.save(
                         update_fields=['quantity', 'type_of_scale','value_of_goods', 'model_of_purchase', 'sub_model',
                                        'sub_sub_model',
-                                       'serial_no_scale', 'brand', 'capacity', 'unit',
+                                       'serial_no_scale', 'brand', 'capacity', 'unit','godown_id'
                                        ])
 
         # try:
@@ -1547,6 +1595,7 @@ def edit_product_customer(request,product_id_rec):
 
     context = {
         'product_id': product_id,
+        'godowns': godowns,
     }
 
     return render(request,'edit_product/edit_product_customer.html',context)
@@ -1656,7 +1705,43 @@ def purchase_logs(request):
     }
     return render(request,"logs/purchase_logs.html",context)
 
+def stock_does_not_exist(request):
+    model_of_purchase = request.GET.get('model_of_purchase')
+    type_of_scale = request.GET.get('type_of_scale')
+    sub_model = request.GET.get('sub_model')
+    sub_sub_model = request.GET.get('sub_sub_model')
+    godown = request.GET.get('godown')
+    quantity =request.GET.get('quantity')
+    godown = Godown.objects.get(id=godown)
+    quantity =float(quantity) if quantity != '' and quantity!=None else 0
+    context={}
+    if sub_sub_model != '':
+        product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                         sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+    if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
+        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity:
+            success_message = 'Stock Available!!!'
+            context4={
+                'success_message': success_message,
+                'success': True,
+            }
+            context.update(context4)
+        else:
+            error1 = 'Insufficient Stock!!!'
+            context1 = {
+                'error1_msg':error1,
+                'error1':True,
+            }
+            context.update(context1)
+    else:
 
+        error2 = 'Insufficient Stock!!!'
+        context2 = {
+            'error2': True,
+            'error2_msg': error2,
+        }
+        context.update(context2)
+    return render(request, 'AJAX/stock_does_not_exist.html',context)
 
 
 

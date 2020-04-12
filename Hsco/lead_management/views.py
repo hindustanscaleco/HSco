@@ -958,7 +958,7 @@ def update_view_lead(request,id):
         if 'file_pdf' in request.POST:
             val = request.POST
             try:
-                email_send = EmailMessage('subject', 'testing', settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+                email_send = EmailMessage('PI - HSCo', 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo', settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
                 email_send.attach('invoicex.pdf', val.get('file_pdf'), 'application/pdf')
                 email_send.send()
             except Exception as e:

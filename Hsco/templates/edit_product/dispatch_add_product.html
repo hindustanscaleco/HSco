@@ -168,8 +168,10 @@ color:;
 </center>
 <br>
 <br>
+            <div id="rec_data"></div>
 
             <form method="POST" action="" onsubmit="return isOneChecked();" >{% csrf_token %}
+
 
 <div class="form-group row">
 
@@ -374,6 +376,29 @@ color:;
 <!--  </div>-->
 
                 </div>
+                                                <div class="form-group row">
+  <label class="col-md-2 control-label">Select Godown
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
+<select name="godown" id="godown" onchange="choice5(this)" class="form-control" >
+    {% if default_godown %}
+          <option value="{{default_godown.id}}">{{default_godown.name_of_godown}}</option>
+    {% endif %}
+  {% for godown in godowns %}
+  <option value="{{godown.id}}">{{godown.name_of_godown}}</option>
+
+  {% endfor %}
+</select>
+  </div>
+  </div>
+
+</div>
+
                                 <div class="form-group row">
 
 
@@ -416,6 +441,32 @@ color:;
     </div>
   </div>
 
+  <script>
+  function choice5(select) {
+
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/stock_does_not_exist/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'model_of_purchase': $('#model_of_purchase').val(),     // add the country id to the GET parameters
+          'type_of_scale': $("#type_of_scale").val(),      // add the country id to the GET parameters
+          'sub_model': $("#sub_model").val(),       // add the country id to the GET parameters
+          'sub_sub_model': $("#sub_sub_model").val(),      // add the country id to the GET parameters
+          'godown': select.options[select.selectedIndex].value ,      // add the country id to the GET parameters
+          'quantity': $("#quantity").val(),     // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+
+    $("#rec_data").html(data);
+
+
+        }
+      });
+}
+
+
+  </script>
 
 <script>
 function choice1(select) {
