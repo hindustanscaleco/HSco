@@ -32,8 +32,10 @@ class Godown(models.Model):
     location = models.CharField(max_length=60)
     contact_no = models.CharField(max_length=15)
     entry_timedate = models.DateField(default=datetime.date.today)
+    default_godown_purchase = models.BooleanField(default=False)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
+
 
 class GodownProduct(models.Model):
     godown_id = models.ForeignKey(Godown,on_delete=models.CASCADE)

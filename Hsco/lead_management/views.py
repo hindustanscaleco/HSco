@@ -2422,9 +2422,7 @@ def download_pi_pdf(request):
 
 def lead_logs(request):
     lead_logs = Log.objects.filter(module_name='Lead Module').order_by('-id')
-    print(lead_logs)
-    print(lead_logs)
-    print(lead_logs)
+
     paginator = Paginator(lead_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')
     lead_logs = paginator.get_page(page)

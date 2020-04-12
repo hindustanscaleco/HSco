@@ -20,6 +20,8 @@ from purchase_app.models import Purchase_Details
 from ess_app.models import Defects_Warning
 
 from customer_app.models import Log
+
+from stock_management_system_app.models import Product, GodownProduct, Godown
 from .models import Dispatch, Product_Details_Dispatch
 from django.core.mail import send_mail
 from Hsco import settings
@@ -330,6 +332,7 @@ def dispatch_product(request,id):
     type_of_purchase_list = type_purchase.objects.all()  # 1
     if 'purchase_id' in request.session:
         request.session['product_saved'] = False
+    godowns = Godown.objects.filter(default_godown_purchase=False)
 
     form = Product_Details_Form(request.POST or None)
     if request.method == 'POST':
@@ -344,6 +347,7 @@ def dispatch_product(request,id):
         unit = request.POST.get('unit')
         value_of_goods = request.POST.get('value_of_goods')
         is_last_product_yes = request.POST.get('is_last_product_yes')
+        godown = request.POST.get('godown')
 
         if value_of_goods == '' or value_of_goods == None:
             value_of_goods = 0.0
@@ -366,7 +370,15 @@ def dispatch_product(request,id):
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.log_entered_by = request.user.name
+        item.godown_id = Godown.objects.get(id=godown)
 
+        if sub_sub_model != '':
+            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                  sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
+                GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                quantity=F("quantity") - quantity)
+        item.save()
         item.save()
         try:
             user_name = SiteUser.objects.get(profile_name=dispatch.dispatch_by)
@@ -426,10 +438,18 @@ def dispatch_product(request,id):
             return redirect('/dispatch_product/' + str(dispatch.pk))
     context = {
         'form': form,
+        'godowns': godowns,
         'type_purchase': type_of_purchase_list,  # 2
 
     }
-
+    try:
+        default_godown = Godown.objects.get(default_godown_purchase=True)
+        context1={
+            'default_godown': default_godown,
+        }
+        context.update(context1)
+    except:
+        pass
     return render(request,"edit_product/dispatch_add_product.html", context)
 
 def edit_product_from_dispatch(request):
@@ -1383,7 +1403,10 @@ def load_dispatch_stages_list(request):
 def edit_dispatch_product(request,id):
 
     pro_dispatch=Product_Details_Dispatch.objects.get(id=id)
-
+    try:
+        godowns = Godown.objects.filter(~Q(id=pro_dispatch.godown_id.id))
+    except:
+        godowns = Godown.objects.all()
     if request.method == 'POST':
         quantity = request.POST.get('quantity')
         model_of_purchase = request.POST.get('model_of_purchase')
@@ -1395,9 +1418,33 @@ def edit_dispatch_product(request,id):
         capacity = request.POST.get('capacity')
         unit = request.POST.get('unit')
         amount = request.POST.get('value_of_goods')
+        godown = request.POST.get('godown')
         # purchase_type = request.POST.get('purchase_type')
 
         cost2 = pro_dispatch.value_of_goods
+        godown_product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+
+        # If godown is changed, add stored quantity in current godown and subtract new quantity from new godown
+        if pro_dispatch.godown_id.id != godown and godown != 'None' and godown != '':
+
+            # adding stored quantity in current godown
+            GodownProduct.objects.filter(godown_id=pro_dispatch.godown_id.id, product_id=godown_product_id).update(
+                quantity=F("quantity") + pro_dispatch.quantity)
+
+            # subtracting new quantity from new godown
+            GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                quantity=F("quantity") - quantity)
+
+        elif quantity != pro_dispatch.quantity and quantity != 'None' and quantity != '':
+
+            # adding old quantity from current godown
+            GodownProduct.objects.filter(godown_id=pro_dispatch.godown_id.id, product_id=godown_product_id).update(
+                quantity=F("quantity") + pro_dispatch.quantity)
+
+            # subtracting new quantity from current godown
+            GodownProduct.objects.filter(godown_id=pro_dispatch.godown_id.id, product_id=godown_product_id).update(
+                quantity=F("quantity") - quantity)
 
         Employee_Analysis_month.objects.filter(user_id=pro_dispatch.user_id,
                                                entry_date__month=pro_dispatch.entry_timedate.month,
@@ -1440,6 +1487,7 @@ def edit_dispatch_product(request,id):
 
     context = {
         'product_id': pro_dispatch,
+        'godowns': godowns,
     }
 
     return render(request,'edit_product/dispatch_product.html',context)

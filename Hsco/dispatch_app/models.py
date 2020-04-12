@@ -7,6 +7,8 @@ from user_app.models import SiteUser
 # from purchase_app.models import Product_Details
 from model_utils import FieldTracker
 
+from stock_management_system_app.models import Godown
+
 
 class Dispatch(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
@@ -56,6 +58,7 @@ class Dispatch(models.Model):
 
 class Product_Details_Dispatch(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    godown_id = models.ForeignKey(Godown, on_delete=models.CASCADE,null=True,blank=True)
     manager_id = models.CharField(max_length=150, null=True, blank=True)
     dispatch_id = models.ForeignKey(Dispatch,on_delete=models.CASCADE)
     # product_name = models.CharField(max_length=30,null=True,blank=True)

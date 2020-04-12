@@ -15,7 +15,6 @@ choices = (('NO', 'NO'),
 
 class Purchase_Details(models.Model):   #cleaned
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
-    godown_id = models.ForeignKey(Godown, on_delete=models.CASCADE,null=True,blank=True)
     manager_id = models.CharField(max_length=150, null=True, blank=True)
     crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE,null=True,blank=True)
     date_of_purchase = models.DateField(default=datetime.date.today,null=True,blank=True)
@@ -54,6 +53,7 @@ class Purchase_Details(models.Model):   #cleaned
 
 class Product_Details(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    godown_id = models.ForeignKey(Godown, on_delete=models.CASCADE,null=True,blank=True)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
     purchase_id = models.ForeignKey(Purchase_Details,on_delete=models.CASCADE, null=True, blank=True)
     product_dispatch_id = models.ForeignKey(Product_Details_Dispatch,on_delete=models.CASCADE,null=True, blank=True)
