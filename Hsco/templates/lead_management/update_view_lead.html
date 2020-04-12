@@ -12,12 +12,12 @@
 
   <title>Robot</title>
 
-	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
@@ -379,11 +379,15 @@ function myFunction() {
       {
         $("#postponed_lost_reason_label").show();
         $("#postponed_lost_reason_label_div").show();
+        $("#postponed_date_lable").show();
+        $("#postponed_date").show();
       }
       else
       {
         $("#postponed_lost_reason_label").hide();
         $("#postponed_lost_reason_label_div").hide();
+        $("#postponed_date_lable").hide();
+        $("#postponed_date").hide();
       }
 
     });
@@ -431,6 +435,7 @@ function myFunction() {
                   {% endif %}
 
 
+
                               <div class="form-group row">
                               <label class="col-md-2 control-label">Current Stage: *</label>
                                   <div class="col-md-5 inputGroupContainer">
@@ -440,22 +445,52 @@ function myFunction() {
                           </div>
                         </div>
 
+         <div class="col-md-2">
+             Purchase ID: {{lead_id.purchase_id.pk}}<br>
+             {% if lead_id.purchase_id.dispatch_id_assigned %}
+             Dispatch ID: {{lead_id.purchase_id.dispatch_id_assigned.pk}}
+                              {% endif %}
+         </div>
+   <div class="col-md-3">
+            {% if lead_id.current_stage == 'PO Issued - Payment Done - Dispatch Pending' or lead_id.current_stage == 'Dispatch Done - Closed' %}
+{% if lead_id.is_entered_purchase %}
+        <a class="btn btn-primary" target="_blank" href='/update_customer_details/{{lead_id.purchase_id.pk}}' >Go To Purchase</a>
 
+
+ {% endif %}
+             {% if lead_id.is_entered_purchase %}
+             {% if lead_id.purchase_id.dispatch_id_assigned %}
+        <a class="btn btn-primary" target="_blank" href='/update_dispatch_details/{{lead_id.purchase_id.dispatch_id_assigned.pk}}' >Go To Dispatch</a>
+{% endif %}
+
+ {% endif %}
+ {% endif %}
+
+                        </div>
 
 
 
 
                               </div>
 
+
                               <div class="form-group row">
 
                                 <label class="col-md-2 control-label">New/Existing Customer: *</label>
-                              <div class="col-md-3 inputGroupContainer">
+                              <div class="col-md-4 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form2.new_existing_customer }}
                             </div>
                              </div>
+
+                              <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Postpond Date</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: none;">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form2.postpond_time_date }}
+                            </div>
+                                  </div>
                           </div>
 
 
@@ -513,8 +548,8 @@ function myFunction() {
                                 {{ form2.lost_reason }}
                             </div>
                                   </div>
-                                <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Reason:</label>
-                              <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: none;">
+                                <label class="col-md-2 control-label" id="postponed_date_lable" style="display: none;">Reason:</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_date" style="display: none;">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form2.postponed_reason }}
@@ -676,7 +711,7 @@ tr:nth-child(even) {
 
                                   <div class="col-md-3 inputGroupContainer">
                                   <div class="input-group">
-                                  <span class="input-group-addon icon-border"><i class="fa fa-percent faicons"></i></span>
+                                  <span class="input-group-addon icon-border"></span>
                                 {{ form3.discount }}
                                 {{ form3.discount_type }}
                                       <!--<select class="form-control" id="discount_type">-->
@@ -685,38 +720,53 @@ tr:nth-child(even) {
                                       <!--</select>-->
                           </div>
                         </div>
-
-
-                                <label class="col-md-2 control-label">Upload PI File:</label>
-                              <div class="col-md-3 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
-                                {{ form3.upload_pi_file }}
-                                  <!--{% if form3.upload_pi_file %}-->
-                                  <!--<a href="/{{ form3.upload_pi_file.url }}/" class="btn btn-primary">Old File</a>-->
-                                   <!--{% endif %}-->
-                            </div>
-                             </div>
-                          </div>
-
-
-                            <div class="form-group row">
-
-
-                                         <label class="col-md-2 control-label">Select GST Type :</label>
+                                                                           <label class="col-md-2 control-label">Select GST Type :</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
                                 {{ form3.select_gst_type }}
                                                               </div>
                           </div>
+
+
+
+                          </div>
+
+                         <hr>
+                         <center>External PI</center>
+                         <hr>
+<br>
+<br>
+
+                            <div class="form-group row">
+                                <label class="col-md-2 control-label">Upload PI File:</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.upload_pi_file }}
                             </div>
+                             </div>
+
+                                                                         <label class="col-md-2 control-label">Amount</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.grand_total }}
+                                                              </div>
+                          </div>
+
+
+                            </div>
+
+
+                         <hr>
+                         <br>
 
 {% if pi_id.first_submit == True  %}
 <br>
                         <pre>
-Steps: 1) Select PI Template
-       2) Upload PDF and Select Medium of Selection
+Steps: 1) Select PI Template and click on submit
+       2) Choose PI PDF, Select Medium of Selection and click on submit
                          </pre>
                             <div class="form-group row">
                                 <label class="col-md-2 control-label">Select PI Template <b>(Generate PI PDF):</b></label>
@@ -726,7 +776,7 @@ Steps: 1) Select PI Template
                                 {{ form3.select_pi_template }}
                                                               </div>
                           </div>
-                                      <label class="col-md-2 control-label">Upload PI PDF:
+                                      <label class="col-md-2 control-label">Choose PI PDF:
 
 </label>
 
@@ -737,7 +787,7 @@ Steps: 1) Select PI Template
   </div>
 
                           </div>
-                      
+
                             <div class="form-group row" id="myDiv_call" >
 
 
@@ -776,7 +826,7 @@ function myFunction_call() {
                              <!--<button type="submit" onclick="download_pdf()" class="btn btn-primary" style="background-color: #FC6E20;">PDF</button>-->
                              {% if pi_id.first_submit == True  %}
                              <button type="submit" onclick="download_image()" class="btn btn-primary" style="background-color: #FC6E20;">Image</button>
-                             <a target="_blank" href="https://api.whatsapp.com/send?phone=91 + customer_id.contact_no + '&text=' + hi"><button type="button" class="btn btn-primary" style="background-color: #FC6E20;">Whatsapp</button></a>
+                             <a target="_blank" href="https://api.whatsapp.com/send?phone=91{{customer_id.contact_no}}&text=Hey\nHere is the PI"><button type="button" class="btn btn-primary" style="background-color: #FC6E20;">Whatsapp</button></a>
                              {% endif %}
 
 </center>
@@ -816,11 +866,11 @@ function myFunction_call() {
 
                             <form action="" method="post" >{% csrf_token %}
 
-<div style="margin-left:10%;">
+<div style="margin-left:5%;">
 
 
 <div class="form-group row">
-    <div class="col-md-6 inputGroupContainer">
+    <div class="col-md-3 inputGroupContainer">
         <div class="custom-control custom-checkbox">
 
             {% if 'scale_type' in hfu %}
@@ -829,9 +879,11 @@ function myFunction_call() {
           <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_type" id="custoChec1">
 
               {% endif %}
-          <label class="custom-control-label col-md-3" for="custoChec1">Type Of Scale</label>
+          <label class="custom-control-label col-md-6" for="custoChec1">Type Of Scale</label>
         </div>
-         <br>
+        </div>
+
+       <div class="col-md-3 inputGroupContainer">
         <div class="custom-control custom-checkbox">
 {% if 'main_category' in hfu %}
 <input type="checkbox" class="custom-control-input" name="checks[]" value="main_category" checked id="custCheck2">
@@ -839,23 +891,26 @@ function myFunction_call() {
 <input type="checkbox" class="custom-control-input" name="checks[]" value="main_category" id="custCheck2">
 
 {% endif %}
-<label class="custom-control-label col-md-3" for="custCheck2">Main Model</label>
+<label class="custom-control-label col-md-6" for="custCheck2">Main Model</label>
 
 </div>
-           <br>
+</div>
+
+
+  <div class="col-md-3 inputGroupContainer">
+
        <div class="custom-control custom-checkbox">
          {% if 'sub_category' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_category" checked id="cstoCheck6">
       {% else %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_category" id="cstoCheck6">
       {% endif %}
-  <label class="custom-control-label col-md-4" for="cstoCheck6">Sub Model</label>
+  <label class="custom-control-label col-md-6" for="cstoCheck6">Sub Model</label>
 </div>
-
-         <br>
     </div>
 
-    <div class="col-md-6 inputGroupContainer">
+
+    <div class="col-md-3 inputGroupContainer">
 <div class="custom-control custom-checkbox">
      {% if 'sub_sub_category' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" checked id="custoCheck3">
@@ -863,9 +918,16 @@ function myFunction_call() {
   <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" id="custoCheck3">
 
       {% endif %}
-  <label class="custom-control-label col-md-4" for="custoCheck3">Sub Sub Model</label>
+  <label class="custom-control-label col-md-12" for="custoCheck3">Sub Sub Model</label>
 </div>
- <br>
+</div>
+</div>
+
+
+<div class="form-group row">
+
+  <div class="col-md-3 inputGroupContainer">
+
         <div class="custom-control custom-checkbox">
         {% if 'platform_size' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" checked id="custoCheck8">
@@ -873,9 +935,11 @@ function myFunction_call() {
   <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" id="custoCheck8">
 
       {% endif %}
-  <label class="custom-control-label col-md-4" for="custoCheck8">Platform Size</label>
+  <label class="custom-control-label col-md-12" for="custoCheck8">Platform Size</label>
 </div>
- <br>
+</div>
+
+  <div class="col-md-3 inputGroupContainer">
         <div class="custom-control custom-checkbox">
     {% if 'product_desc' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="product_desc" checked id="custoCheck4">
@@ -883,16 +947,13 @@ function myFunction_call() {
       <input type="checkbox" class="custom-control-input" name="checks[]" value="product_desc" id="custoCheck4">
 
     {% endif %}
-  <label class="custom-control-label col-md-4" for="custoCheck4">Product Description</label>
+  <label class="custom-control-label col-md-12" for="custoCheck4">Product Description</label>
 </div>
- <br>
+
   </div>
-</div>
 
 
-<div class="form-group row">
-
-  <div class="col-md-6 inputGroupContainer">
+  <div class="col-md-3 inputGroupContainer">
         <div class="custom-control custom-checkbox">
          {% if 'cost_price' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" checked id="custoCheck5">
@@ -900,19 +961,28 @@ function myFunction_call() {
   <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" id="custoCheck5">
 
       {% endif %}
-  <label class="custom-control-label col-md-4" for="custoCheck5">Price</label>
+  <label class="custom-control-label col-md-6" for="custoCheck5">Price</label>
 </div>
-       <br>
+</div>
+
+
+
+  <div class="col-md-3 inputGroupContainer">
       <div class="custom-control custom-checkbox">
          {% if 'product_id_id__product_image' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_image" checked id="custoCheck6">
       {% else %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_image" id="custoCheck6">
       {% endif %}
-  <label class="custom-control-label col-md-4" for="custoCheck6">Product Image</label>
+  <label class="custom-control-label col-md-12" for="custoCheck6">Product Image</label>
+</div>
+</div>
 </div>
 
- <br>
+
+<div class="form-group row">
+
+  <div class="col-md-3 inputGroupContainer">
         <div class="custom-control custom-checkbox">
         {% if 'hsn_code' in hfu %}
         <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" checked id="custoCheck2">
@@ -920,13 +990,11 @@ function myFunction_call() {
         <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" id="custoCheck2">
 
         {% endif %}
-        <label class="custom-control-label col-md-3" for="custoCheck2">HSN Code</label>
+        <label class="custom-control-label col-md-12" for="custoCheck2">HSN Code</label>
         </div>
-
-       <br>
   </div>
 
-      <div class="col-md-6 inputGroupContainer">
+      <div class="col-md-3 inputGroupContainer">
         <div class="custom-control custom-checkbox">
          {% if 'max_capacity' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="max_capacity" checked id="custoCheck56">
@@ -934,33 +1002,38 @@ function myFunction_call() {
   <input type="checkbox" class="custom-control-input" name="checks[]" value="max_capacity" id="custoCheck56">
 
       {% endif %}
-  <label class="custom-control-label col-md-4" for="custoCheck56">Max Capacity</label>
+  <label class="custom-control-label col-md-12" for="custoCheck56">Max Capacity</label>
 </div>
-       <br>
+</div>
+
+
+  <div class="col-md-3 inputGroupContainer">
       <div class="custom-control custom-checkbox">
          {% if 'accuracy' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="accuracy" checked id="custoCheck67">
       {% else %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="accuracy" id="custoCheck67">
       {% endif %}
-  <label class="custom-control-label col-md-4" for="custoCheck67">Accuracy</label>
+  <label class="custom-control-label col-md-12" for="custoCheck67">Accuracy</label>
 </div>
-       <br>
+</div>
+
+
+  <div class="col-md-3 inputGroupContainer">
        <div class="custom-control custom-checkbox">
          {% if 'product_brochure' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_brochure" checked id="cstoCheck68">
       {% else %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_brochure" id="cstoCheck68">
       {% endif %}
-  <label class="custom-control-label col-md-4" for="cstoCheck68">Product Brochure Link</label>
+  <label class="custom-control-label col-md-12" for="cstoCheck68">Product Brochure Link</label>
 </div>
-       <br>
+
   </div>
 </div>
 
 <div class="form-group row">
-
-  <div class="col-md-8 inputGroupContainer">
+  <div class="col-md-3 inputGroupContainer">
         <div class="custom-control custom-checkbox">
          {% if 'product_id_id__product_document' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_document" checked id="custoCheck52">
@@ -968,25 +1041,27 @@ function myFunction_call() {
   <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_document" id="custoCheck52">
 
       {% endif %}
-  <label class="custom-control-label col-md-6" for="custoCheck52">Product Document Link</label>
+  <label class="custom-control-label col-md-12" for="custoCheck52">Product Document Link</label>
 </div>
-       <br>
+</div>
+
+
+  <div class="col-md-3 inputGroupContainer">
       <div class="custom-control custom-checkbox">
          {% if 'carton_size' in hfu %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="carton_size" checked id="custoCheck63">
       {% else %}
   <input type="checkbox" class="custom-control-input" name="checks[]" value="carton_size" id="custoCheck63">
       {% endif %}
-  <label class="custom-control-label col-md-4" for="custoCheck63">Carton Size</label>
+  <label class="custom-control-label col-md-12" for="custoCheck63">Carton Size</label>
 </div>
-       <br>
-
+</div>
   </div>
-                                </div>
-</div>
+  <hr>
                                 <center>
                                     <button style="background-color: #FC6E20;" class="btn btn-primary" type="submit" name="submit3">Save</button>
                                 </center>
+                                <hr>
                             </form>
 
                         </div>
@@ -1305,6 +1380,7 @@ function whosFunction() {
 
               </div>
             </div>
+        </div>
 
 
         {% if lead_id.current_stage == 'PO Issued - Payment Done - Dispatch Pending' or lead_id.current_stage == 'Dispatch Done - Closed' %}
@@ -1396,14 +1472,7 @@ function whosFunction() {
 
 
 
-<center>
-            {% if lead_id.current_stage == 'PO Issued - Payment Done - Dispatch Pending' or lead_id.current_stage == 'Dispatch Done - Closed' %}
-{% if lead_id.is_entered_purchase %}
-    <button class="btn btn-primary" onclick="location.href='/update_customer_details/{{lead_id.purchase_id.pk}}'">Go To Purchase</button>
 
- {% endif %}
- {% endif %}
-</center>
 
 </div>
 
@@ -1411,7 +1480,7 @@ function whosFunction() {
 let doc = new jsPDF('p','pt','a4');
 doc.addHTML(document.getElementById("content_content"),function() {
 //doc.save('html.pdf');
-    	sessionStorage.setItem("doc", doc);
+      sessionStorage.setItem("doc", doc);
 
 });
 

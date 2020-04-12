@@ -141,11 +141,12 @@ Repairing Licence No. LR/MH/H004</p>
                                  <div class="col-md-2">
                                      <center><p style="font-weight:bold; float:left;">Phone</p>
                                 </center></div>
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                      <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.contact_no}}</p>
         </center></div>
 
         <div class="col-md-1">
+             </div><div class="col-md-1">
              </div>
         <div class="col-md-2">
              <center><p style="font-weight:bold; float:left;">Customer GST Number: </p>
@@ -221,7 +222,7 @@ td {
         <td>{{product.quantity}}</td>
         <td>{{product.product_id.hsn_code}}</td>
         <td>{{product.product_id.sub_sub_category}}</td>
-        <td>{% if product.product_id.product_image %}<img style="height:40px; width:40px;" src="http://127.0.0.1:8000{{product.product_id.product_image.url}}">{% endif %}</td>
+        <td>{% if product.product_id.product_image %}<img style="height:40px; width:40px;" src="{{product.product_id.product_image.url}}">{% endif %}</td>
         <td>{{product.product_id.product_desc}}</td>
         <td>{{product.product_id.selling_price}}</td>
         <td>{{product.product_total_cost}}</td>
@@ -394,15 +395,44 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 </div>
 
 <script type="text/javascript">
-
+    function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
 let doc = new jsPDF('p','pt','a4');
+
 doc.addHTML(document.body,function() {
 
-
-    doc.save('html.pdf');
-
+var formData = new FormData();
+formData.append('file_pdf', doc.output());
+var pdf = btoa(doc.output());
+//console.log(doc);
+var xhr = new XMLHttpRequest();
+xhr.onload = function (e) {
+    if (xhr.readyState === 4 && xhr.status === 200){
+        result=xhr.responseText;
+        console.log(result);
+    }
+}
+xhr.open('POST', '/update_view_lead/{{lead_id.pk}}', true);
+xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+xhr.send(formData);
 
 });
+
+
+
 
 </script>
 </body>

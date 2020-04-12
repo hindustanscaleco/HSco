@@ -3,10 +3,11 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.paginator import Paginator
 from django.db import connection
 from django.db.models import Sum, Q, Count
-from django.core.files.base import ContentFile
+from django.core.files.base import ContentFile, File
 from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render, redirect
 from customer_app.models import type_purchase
+from django.template.loader import get_template
 from stock_management_system_app.models import Product
 from django.contrib.auth.decorators import login_required
 
@@ -893,6 +894,7 @@ def update_view_lead(request,id):
             'upload_po_file': pi_id.upload_po_file,
             'payment_received_date': pi_id.payment_received_date,
             'notes': pi_id.notes,
+            'grand_total': pi_id.grand_total,
             'select_gst_type': pi_id.select_gst_type,
             'discount_type': pi_id.discount_type,
             'first_submit': pi_id.first_submit,
@@ -946,12 +948,23 @@ def update_view_lead(request,id):
             item2.round_up_total = round(item2.net_total + pf_total + igst)
             item2.grand_total = item2.round_up_total
             item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call', 'net_total', 'cgst_sgst','igst',
-                               'round_up_total', 'grand_total', 'total_cost', 'notes', 'pf_total',
+                               'round_up_total', 'grand_total', 'total_cost', 'notes', 'grand_total','pf_total',
                                'email', 'whatsapp', 'call2', 'select_gst_type', 'discount_type', 'log_entered_by'])
     except:
         print("product not added or debugging needed")
 
+
     if request.method == 'POST' or request.method == 'FILES':
+        if 'file_pdf' in request.POST:
+            val = request.POST
+            try:
+                email_send = EmailMessage('subject', 'testing', settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+                email_send.attach('invoicex.pdf', val.get('file_pdf'), 'application/pdf')
+                email_send.send()
+            except Exception as e:
+                print(e)
+
+
         if 'submit' in request.POST:
             customer_name = request.POST.get('customer_name')
             company_name = request.POST.get('company_name')
@@ -1005,7 +1018,7 @@ def update_view_lead(request,id):
             if customer_industry != '' and customer_industry != None:
                 item3.customer_industry = customer_industry
                 item3.save(update_fields=['customer_industry'])
-            # return redirect('/update_view_lead/'+str(id))
+            return redirect('/update_view_lead/'+str(id))
 
         if 'submit1' in request.POST:                                            #for customer and deal details section
 
@@ -1076,25 +1089,25 @@ def update_view_lead(request,id):
 
                 Lead.objects.filter(id=id).update(purchase_id=purchase_det.pk)
 
-                dispatch = Dispatch()
-                dispatch.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
-                dispatch.second_person = lead_id.customer_id.customer_name  # new1
-                dispatch.second_contact_no = lead_id.customer_id.contact_no  # new2
-                dispatch.second_company_name = lead_id.customer_id.company_name  # new2
-                dispatch.company_email = lead_id.customer_id.customer_email_id
-                dispatch.company_address = lead_id.customer_id.address  # new2
-                dispatch.notes = "Entry From Lead Module\n"  # new2
-                dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
-                dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
-                if Dispatch.objects.all().count() == 0:
-                    dispatch.dispatch_no = 1
-                else:
-                    dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
-                dispatch.save()
+                # dispatch = Dispatch()
+                # dispatch.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
+                # dispatch.second_person = lead_id.customer_id.customer_name  # new1
+                # dispatch.second_contact_no = lead_id.customer_id.contact_no  # new2
+                # dispatch.second_company_name = lead_id.customer_id.company_name  # new2
+                # dispatch.company_email = lead_id.customer_id.customer_email_id
+                # dispatch.company_address = lead_id.customer_id.address  # new2
+                # dispatch.notes = "Entry From Lead Module\n"  # new2
+                # dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
+                # dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                # if Dispatch.objects.all().count() == 0:
+                #     dispatch.dispatch_no = 1
+                # else:
+                #     dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
+                # dispatch.save()
 
                 customer_id = Purchase_Details.objects.get(id=purchase_det.pk)
-                customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
-                customer_id.save(update_fields=['dispatch_id_assigned'])
+                # customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
+                # customer_id.save(update_fields=['dispatch_id_assigned'])
 
                 pi_pro = Pi_product.objects.filter(lead_id=lead_id.pk)
                 for item in pi_pro:
@@ -1121,28 +1134,28 @@ def update_view_lead(request,id):
                     item_pro.save()
 
 
-                    dispatch_id = Dispatch.objects.get(id=dispatch.id)
-                    dispatch_pro = Product_Details_Dispatch()
-                    dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
-                    dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
-                    dispatch_pro.quantity = item.quantity
-                    dispatch_pro.type_of_scale = item.product_id.scale_type
-                    dispatch_pro.model_of_purchase = item.product_id.main_category
-                    dispatch_pro.sub_model = item.product_id.sub_category
-                    dispatch_pro.sub_sub_model = item.product_id.sub_sub_category
-
-                    dispatch_pro.brand = 'HSCO'
-                    dispatch_pro.capacity = item.product_id.max_capacity
-                    dispatch_pro.unit = 'Kg'
-                    dispatch_pro.dispatch_id = dispatch_id
-                    if (item.product_total_cost == None or item.product_total_cost == ''):
-                        dispatch_pro.value_of_goods = 0.0
-                    else:
-                        dispatch_pro.value_of_goods = item.product_total_cost
-
-                    dispatch_pro.save()
-
-                    Product_Details.objects.filter(id=item_pro.pk).update(product_dispatch_id=dispatch_pro.pk)
+                    # dispatch_id = Dispatch.objects.get(id=dispatch.id)
+                    # dispatch_pro = Product_Details_Dispatch()
+                    # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+                    # dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                    # dispatch_pro.quantity = item.quantity
+                    # dispatch_pro.type_of_scale = item.product_id.scale_type
+                    # dispatch_pro.model_of_purchase = item.product_id.main_category
+                    # dispatch_pro.sub_model = item.product_id.sub_category
+                    # dispatch_pro.sub_sub_model = item.product_id.sub_sub_category
+                    #
+                    # dispatch_pro.brand = 'HSCO'
+                    # dispatch_pro.capacity = item.product_id.max_capacity
+                    # dispatch_pro.unit = 'Kg'
+                    # dispatch_pro.dispatch_id = dispatch_id
+                    # if (item.product_total_cost == None or item.product_total_cost == ''):
+                    #     dispatch_pro.value_of_goods = 0.0
+                    # else:
+                    #     dispatch_pro.value_of_goods = item.product_total_cost
+                    #
+                    # dispatch_pro.save()
+                    #
+                    # Product_Details.objects.filter(id=item_pro.pk).update(product_dispatch_id=dispatch_pro.pk)
 
 
                 Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
@@ -1233,7 +1246,7 @@ def update_view_lead(request,id):
 
 
 
-            # return redirect('/update_view_lead/'+str(id))
+            return redirect('/update_view_lead/'+str(id))
         elif 'submit2' in request.POST:
 
             context22 = {
@@ -1414,7 +1427,7 @@ def update_view_lead(request,id):
                 item2.save()
                 # if whatsapp == 'True':
                 #     return redirect('https://api.whatsapp.com/send?phone=91' + customer_id.contact_no + '&text=' + 'hi')
-                return redirect('/update_view_lead/'+str(lead_id.id))
+                # return redirect('/update_view_lead/'+str(lead_id.id))
 
         elif 'submit3' in request.POST:
             selected_fields = request.POST.getlist('checks[]')
@@ -1426,6 +1439,7 @@ def update_view_lead(request,id):
                 'expand_followup': True,
             }
             context.update(context23)
+            return redirect('/update_view_lead/' + str(id))
 
 
         elif 'submit56' in request.POST:
@@ -1706,6 +1720,7 @@ td {
                 history_follow.log_entered_by = request.user.name
 
                 history_follow.save()
+                return redirect('/update_view_lead/' + str(id))
             elif (email_auto_manual == 'Automatic'):
 
                 if(Auto_followup_details.objects.filter(follow_up_history__follow_up_section__lead_id__id=lead_id.id).count()==0):
@@ -2417,12 +2432,14 @@ def report_2(request):
 def download_pi_image(request):
     return render(request,'lead_management/download_pi_image.html')
 
+
+
 def download_pi_pdf(request):
-    return render(request,'lead_management/download_pi_pdf.html')
+
+    return render(request,'lead_management/download_pi_pdf.html',)
 
 def lead_logs(request):
     lead_logs = Log.objects.filter(module_name='Lead Module').order_by('-id')
-
     paginator = Paginator(lead_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')
     lead_logs = paginator.get_page(page)
@@ -2918,6 +2935,34 @@ def download_pi_image(request,id):
     }
     return render(request,'lead_management/download_pi_image.html',context)
 
+import os
+def link_callback(uri, rel):
+    """
+    Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+    resources
+    """
+    # use short variable names
+    sUrl = settings.STATIC_URL      # Typically /static/
+    sRoot = settings.STATIC_ROOT    # Typically /home/userX/project_static/
+    mUrl = settings.MEDIA_URL       # Typically /static/media/
+    mRoot = settings.MEDIA_ROOT     # Typically /home/userX/project_static/media/
+
+    # convert URIs to absolute system paths
+    if uri.startswith(mUrl):
+        path = os.path.join(mRoot, uri.replace(mUrl, ""))
+    elif uri.startswith(sUrl):
+        path = os.path.join(sRoot, uri.replace(sUrl, ""))
+    else:
+        return uri  # handle absolute uri (ie: http://some.tld/foo.png)
+
+    # make sure that file exists
+    if not os.path.isfile(path):
+            raise Exception(
+                'media URI must start with %s or %s' % (sUrl, mUrl)
+            )
+    return path
+
+
 def download_pi_pdf(request,id):
     lead_id=Lead.objects.get(id=id)
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
@@ -2930,6 +2975,25 @@ def download_pi_pdf(request,id):
         'pi_id':pi_id,
         'pi_products':pi_products,
     }
+    # template = get_template('lead_management/download_pi_pdf.html')
+    # html = template.render(context)
+    # result = BytesIO()
+    # pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1", "ignore")), result)
+    # pisaStatus = pisa.CreatePDF(
+    #     html, dest=result, link_callback=link_callback)
+    # pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+
+    # email_send = EmailMessage('subject', 'testing', settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+    # email_send.attach('invoicex.pdf', result.getvalue(), 'application/pdf')
+    # email_send.send()
+
+    # pi = Pi_History()
+    # file = ContentFile(result.getvalue())
+    # pi.file.save('AutoFollowup.pdf', file, save=False)
+    # # pi.file = result.getvalue()
+    # pi.lead_id = Lead.objects.get(id=id)
+    # pi.save()
+
     return render(request,'lead_management/download_pi_pdf.html',context)
 
 def download_pi_second_pdf(request,id):

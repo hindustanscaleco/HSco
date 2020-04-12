@@ -565,7 +565,7 @@ td {
                 {% if history.file %}
                 <!--<button onclick="myFunction()">Try it</button>-->
 
-                                  <a href="http://127.0.0.1:8000{{ history.file.url }}" class="btn btn-primary">File</a>
+                                  <a href="{{ history.file.url }}" class="btn btn-primary">File</a>
                                    {% endif %}</td>
             <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{history.entry_timedate}}</td>
             <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{history.time}}</td>
