@@ -2510,8 +2510,8 @@ def lead_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Lead No: '+str(new_instance.id)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
     except:
         pass
 
@@ -2569,8 +2569,8 @@ def Pi_section_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Pi_section No: '+str(new_instance.id)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
     except:
         pass
 
@@ -2628,8 +2628,8 @@ def pi_product_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Pi_product No: '+str(new_instance.id)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
     except:
         pass
 
@@ -2685,8 +2685,8 @@ def Pi_History_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Pi_History No: '+str(new_instance.id)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
     except:
         pass
 
@@ -2744,8 +2744,8 @@ def Follow_up_section_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Follow_up_section No: '+str(new_instance.id)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
     except:
         pass
 
@@ -2803,8 +2803,8 @@ def History_followup_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'History_followup No: '+str(new_instance.id)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
     except:
         pass
 
@@ -2862,8 +2862,8 @@ def Followup_product_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Followup_product No: '+str(new_instance.id)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
     except:
         pass
 
@@ -2919,8 +2919,8 @@ def Payment_details_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Payment_details No: '+str(new_instance.id)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
     except:
         pass
 

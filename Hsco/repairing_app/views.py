@@ -91,7 +91,8 @@ def repairing_main_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Repairing No: '+str(new_instance.repairing_no)
 
                 log.action = old_list
-                log.save()
+                if old_list != []:
+                    log.save()
 
     except:
         pass
@@ -153,8 +154,8 @@ def repairing_products_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Repairing No: ' + str(rep.repairing_no) + ', Product id:' +str(new_instance.id)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
     except:
         pass
 

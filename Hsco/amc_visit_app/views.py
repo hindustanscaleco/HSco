@@ -78,8 +78,8 @@ def amc_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Amc No: '+str(new_instance.amc_no)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
 
     except:
         pass
