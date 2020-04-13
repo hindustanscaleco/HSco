@@ -184,11 +184,10 @@ $(function() {
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-
-
-                    <div class="col-xl-2 col-md-1 mb-1"><center>  Entered By </center></div>|
+<div class="col-xl-2 col-md-1 mb-1"><center>  TimeStamp </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center>  Entered By </center></div>|
                     <div class="col-xl-1 col-md-1 mb-1"><center> Action Type </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Table Name </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center> Table Name </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> Reference </center></div>|
                     <div class="col-xl-4 col-md-1 mb-1"><center> Action </center></div>|
                     </div>
@@ -210,12 +209,12 @@ $(function() {
               <div class="card shadow">
                 <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
-                    <div class="col-xl-2 col-md-1 mb-1"><center>  {{log.entered_by}} </center></div>|
+                   <div class="col-xl-2 col-md-1 mb-1"><center>  {{log.entry_timedate}} </center></div>|
+                           <div class="col-xl-1 col-md-1 mb-1"><center>  {{log.entered_by}} </center></div>|
                     <div class="col-xl-1 col-md-1 mb-1"><center> {{log.action_type}} </center> </div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{log.table_name}} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"><center> {{log.table_name}} </center></div>|
                     <div class="col-xl-2 col-md-1 mb-1"><center> {{log.reference}} </center></div>|
                     <div class="col-xl-4 col-md-1 mb-1"><center> {{log.action}} </center></div>|
-
 
 
                 </div>
