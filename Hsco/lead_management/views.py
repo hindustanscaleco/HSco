@@ -842,6 +842,7 @@ def update_view_lead(request,id):
         'owner_of_opportunity_employee': lead_id.owner_of_opportunity,
         'lost_reason': lead_id.lost_reason,
         'postponed_reason': lead_id.postponed_reason,
+        'postpond_time_date': lead_id.postpond_time_date,
     }
     form = Customer_detailForm(initial=customer_initial_data)
     form2 = Deal_detailForm(initial=deal_details_initial_data)
@@ -1031,6 +1032,7 @@ def update_view_lead(request,id):
             lost_reason = request.POST.get('lost_reason')
             postponed_reason = request.POST.get('postponed_reason')
             current_stage = request.POST.get('current_stage')
+            postpond_time_date = request.POST.get('postpond_time_date')
 
             payment_channel = request.POST.get('payment_channel')
             payment_receipt = request.POST.get('payment_receipt')
@@ -1053,11 +1055,13 @@ def update_view_lead(request,id):
             item2.lost_reason = lost_reason
             item2.postponed_reason = postponed_reason
             item2.upload_requirement_file = upload_requirement_file
+            if postpond_time_date != '' and postpond_time_date != None:
+                item2.postpond_time_date = postpond_time_date
             item2.log_entered_by = request.user.name
             item2.owner_of_opportunity = SiteUser.objects.get(profile_name=owner_of_opportunity)
             item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
                                       'requirement','upload_requirement_file','owner_of_opportunity','log_entered_by',
-                                      'lost_reason','postponed_reason'])
+                                      'lost_reason','postponed_reason','postpond_time_date'])
             is_entered_purchase = Lead.objects.get(id=id).is_entered_purchase
             if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
 

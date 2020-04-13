@@ -25,7 +25,7 @@ class Lead(models.Model):
     postponed_reason = models.CharField(blank= True, null=True, max_length=180)
     upload_requirement_file = models.FileField(upload_to='lead_requirement_file/',null=True,blank=True)
     is_entered_purchase = models.BooleanField(default=False)
-
+    postpond_time_date = models.DateField(null=True,blank=True)
     # owner_of_opportunity = models.CharField(max_length=80,null=True,blank=True)
 
     # entry_timedate = models.DateTimeField(default=timezone.now, )
@@ -63,7 +63,7 @@ class Pi_section(models.Model):
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     first_submit = models.BooleanField(default=False, null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
-    postpond_time_date = models.DateField(default=datetime.date.today)
+
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 

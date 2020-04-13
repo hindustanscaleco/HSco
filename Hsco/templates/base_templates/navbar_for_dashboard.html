@@ -80,6 +80,21 @@
                   </div>
                 </a>
            {% endfor %}
+           {% if is_post_alert %}
+           {% for msg in postponed_alert %}
+                <a class="dropdown-item d-flex align-items-center" href="/update_view_lead/{{msg.pk}}">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-warning">
+                      <i class="fas fa-exclamation-triangle text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">System&nbsp; -{{ msg.postpond_time_date }} </div>
+                    {{ msg.postponed_reason }}
+                  </div>
+                </a>
+           {% endfor %}
+           {% endif %}
                 <a class="dropdown-item text-center small text-gray-500" href="/notif_decl_home">Show All Alerts</a>
               </div>
             </li>

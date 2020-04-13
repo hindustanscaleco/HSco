@@ -368,17 +368,22 @@ function myFunction() {
       {
         $("#lost_reason_label").show();
         $("#lost_reason_div").show();
+        $("#id_lost_reason").prop('required',true);
       }
       else
       {
         $("#lost_reason_label").hide();
         $("#lost_reason_div").hide();
+                $("#id_lost_reason").prop('required',false);
+
       }
 
           if ( this.value == 'Postponed')
       {
         $("#postponed_lost_reason_label").show();
         $("#postponed_lost_reason_label_div").show();
+        $("#id_postpond_time_date").prop('required',true);
+        $("#id_postponed_reason").prop('required',true);
         $("#postponed_date_lable").show();
         $("#postponed_date").show();
       }
@@ -388,6 +393,8 @@ function myFunction() {
         $("#postponed_lost_reason_label_div").hide();
         $("#postponed_date_lable").hide();
         $("#postponed_date").hide();
+        $("#id_postpond_time_date").prop('required',false);
+        $("#id_postponed_reason").prop('required',false);
       }
 
     });
@@ -484,8 +491,13 @@ function myFunction() {
                             </div>
                              </div>
 
-                              <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Postpond Date</label>
+                                   {% if lead_id.current_stage == 'Postponed' %}
+                              <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: block;">Postpond Date</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: block;">
+                                  {% else %}
+                                  <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Postpond Date</label>
                               <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: none;">
+                                  {% endif %}
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form2.postpond_time_date }}
@@ -540,16 +552,28 @@ function myFunction() {
                              </div>
 
 
-
+{% if lead_id.current_stage == 'Lost' %}
+                                <label class="col-md-2 control-label" id="lost_reason_label" >Reason:</label>
+                              <div class="col-md-3 inputGroupContainer" id="lost_reason_div" >
+                                {% else %}
                                 <label class="col-md-2 control-label" id="lost_reason_label" style="display: none;">Reason:</label>
                               <div class="col-md-3 inputGroupContainer" id="lost_reason_div" style="display: none;">
+                                {% endif %}
+
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form2.lost_reason }}
                             </div>
                                   </div>
+
+
+                                  {% if lead_id.current_stage == 'Postponed' %}
+                                    <label class="col-md-2 control-label" id="postponed_date_lable" style="display: block;">Reason:</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_date" style="display: block;">
+                                  {% else %}
                                 <label class="col-md-2 control-label" id="postponed_date_lable" style="display: none;">Reason:</label>
                               <div class="col-md-3 inputGroupContainer" id="postponed_date" style="display: none;">
+                                  {% endif %}
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form2.postponed_reason }}
