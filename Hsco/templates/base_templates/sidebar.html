@@ -105,6 +105,7 @@
       </li>
                     {% endif %}
 
+
                     {% if request.user.is_authenticated and 'Onsite Repairing Module' in user.modules_assigned %}
 
           <li class="nav-item ">
@@ -112,6 +113,31 @@
         {% else %}<a class="nav-link" href="/onsite_views/"><span>Onsite Repairing</span></a>{% endif %}
           <!--<i class="fas fa-fw fa-chart-area"></i>-->
 
+      </li>
+                    {% endif %}
+            {% if request.user.is_authenticated and 'Lead Module' in user.modules_assigned %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/lead_home/">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Lead Module</span></a>
+      </li>
+                    {% endif %}
+
+         {% if request.user.is_authenticated and 'Stock Module' in user.modules_assigned %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/stock_godown_list/">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Stock Module</span></a>
+      </li>
+                    {% endif %}
+          {% if request.user.is_authenticated and 'Stock Module' in user.modules_assigned %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/career_module_list/">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Career Module</span></a>
       </li>
                     {% endif %}
 
