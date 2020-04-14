@@ -268,10 +268,11 @@ class Deal_detailForm(forms.ModelForm):
 class Pi_sectionForm(forms.ModelForm):
 
 
-    discount = forms.CharField(max_length=80, required=True,
+    discount = forms.CharField(max_length=80, required=False,
        widget=forms.TextInput(
            attrs={
                'type': 'text',
+               'default': '0',
                'placeholder': "Discount",
                'class': 'form-control',
            }
@@ -349,9 +350,6 @@ class Pi_sectionForm(forms.ModelForm):
             attrs={
                 'default':"Select Mode",
                 'class':'btn btn-outline-primary',
-
-
-
             }
         ))
 

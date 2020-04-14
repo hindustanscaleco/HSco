@@ -38,7 +38,7 @@ class Lead(models.Model):
 
 class Pi_section(models.Model):
     lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
-    discount = models.CharField(max_length=80,null=True,blank=True)
+    discount = models.CharField(max_length=80,null=True,blank=True,default=0.0)
     discount_type = models.CharField(max_length=80,null=True,blank=True)
     upload_pi_file = models.FileField(null=True,blank=True)
     select_pi_template = models.CharField(max_length=45,null=True, blank=True)
