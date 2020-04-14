@@ -43,6 +43,7 @@ class Pi_section(models.Model):
     upload_pi_file = models.FileField(null=True,blank=True)
     select_pi_template = models.CharField(max_length=45,null=True, blank=True)
     select_gst_type = models.CharField(max_length=45,null=True, blank=True)
+    manual_pi_no = models.CharField(max_length=45,null=True, blank=True)
     call = models.TextField(max_length=120, null=True,blank=True)
     email = models.BooleanField(default=False, null=True,blank=True)
     whatsapp = models.BooleanField(default=False, null=True,blank=True)
@@ -60,6 +61,7 @@ class Pi_section(models.Model):
     net_total = models.FloatField(null=True,blank=True)
     round_up_total = models.FloatField(null=True,blank=True)
     grand_total = models.FloatField(null=True,blank=True)
+
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     first_submit = models.BooleanField(default=False, null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
