@@ -142,13 +142,16 @@ function myFunction() {
 
   var x = document.getElementById("myText19");
   var y = document.getElementById("myText20");
-  if (x.style.display === "none") {
+  if (x != null){
+    if (x.style.display === "none") {
     x.style.display = "block";
     y.style.display = "none";
   } else {
     x.style.display = "none";
     y.style.display = "block";
   }
+  }
+
 
 
   document.getElementById("myText").disabled = false;
@@ -167,7 +170,7 @@ function myFunction() {
     document.getElementById("myText21").disabled = false;
     document.getElementById("myText22").disabled = false;
     document.getElementById("myText23").disabled = true;
-    document.getElementById("myText24").disabled = false;
+
     document.getElementById("myText19").style.display = "block";
 
 }
@@ -469,10 +472,23 @@ function myFunction() {
     <div class="col-md-12 ">
       <br>
     <center>
+
 {% if not purchase_id_id.dispatch_id_assigned %}
         <button style="background-color: #FC6E20;" onclick="myFunction()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
 
                                           {% endif %}
+
+        {% if request.session.enable_auto_edit %}
+        <script>
+
+            document.getElementById("myText20").click();
+            document.getElementById("myText20").style.display = "none";
+
+        </script>
+        <br>
+        <br>
+        <button style="background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
+        {% endif %}
 
           {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None  %}
         <button style="background-color: #FC6E20;" onclick="myFunction()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
@@ -712,11 +728,9 @@ tr:nth-child(even) {
   <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
 
   <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
 
   <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
       <script>
 
 $(function() {
@@ -737,14 +751,11 @@ $("#stars").val("0");
     });
 });
 
-  window.onload = function() {
-document.getElementById("").style.display = "none";
-};
+
 
 
 </script>
-    </div>
-  </div>
+
 </body>
 
 </html>

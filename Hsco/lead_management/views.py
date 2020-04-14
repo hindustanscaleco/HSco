@@ -695,7 +695,7 @@ def lead_home(request):
     return render(request,'lead_management/lead_home.html',context)
 
 def add_lead(request):
-    users = SiteUser.objects.all()
+    users = SiteUser.objects.filter(modules_assigned='Lead Module',)
     if Lead.objects.all().count() == 0:
         latest_lead_id = 1
     else:
@@ -988,10 +988,11 @@ def update_view_lead(request,id):
             payment_receipt = request.POST.get('payment_receipt')
             upload_pofile = request.POST.get('upload_pofile')
             payment_received_date = request.POST.get('payment_received_date')
-            context22 = {
-                'expand_customer': True,
-            }
-            context.update(context22)
+
+            del_all_sessions(request)
+            request.session['expand_customer'] = True
+
+
 
 
             item2 = Lead.objects.get(id=id)
@@ -1039,10 +1040,9 @@ def update_view_lead(request,id):
             upload_pofile = request.POST.get('upload_pofile')
             payment_received_date = request.POST.get('payment_received_date')
 
-            context22 = {
-                'expand_deal_detail': True,
-            }
-            context.update(context22)
+            del_all_sessions(request)
+            request.session['expand_deal_detail'] = True
+
 
             item2 = Lead.objects.get(id=id)
 
@@ -1160,7 +1160,12 @@ def update_view_lead(request,id):
                     # dispatch_pro.save()
                     #
                     # Product_Details.objects.filter(id=item_pro.pk).update(product_dispatch_id=dispatch_pro.pk)
+                try:
+                    del request.session['enable_auto_edit']
+                except:
+                    pass
 
+                request.session['enable_auto_edit'] = True
 
                 Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
                 Lead.objects.filter(id=id).update(is_entered_purchase=True)
@@ -1252,11 +1257,9 @@ def update_view_lead(request,id):
 
             return redirect('/update_view_lead/'+str(id))
         elif 'submit2' in request.POST:
+            del_all_sessions(request)
+            request.session['expand_pi_section'] = True
 
-            context22 = {
-                'expand_pi_section': True,
-            }
-            context.update(context22)
 
             #for pi section
             discount = request.POST.get('discount')
@@ -1437,12 +1440,10 @@ def update_view_lead(request,id):
             selected_fields = request.POST.getlist('checks[]')
             Follow_up_section.objects.filter(lead_id=id).update(fields=selected_fields)
             hfu = Follow_up_section.objects.filter(lead_id=id).last()
-            context23 = {
 
-                'hfu': hfu.fields,
-                'expand_followup': True,
-            }
-            context.update(context23)
+            del_all_sessions(request)
+            request.session['expand_followup'] = True
+
             return redirect('/update_view_lead/' + str(id))
 
 
@@ -1474,10 +1475,9 @@ def update_view_lead(request,id):
             selected_products = request.POST.getlist('checks_pro[]')
             selected_fields = Follow_up_section.objects.get(lead_id=id).fields
 
-            context22 = {
-                'expand_followup': True,
-            }
-            context.update(context22)
+            del_all_sessions(request)
+            request.session['expand_followup'] = True
+
 
             if(len(selected_products)<1):
 
@@ -1902,6 +1902,25 @@ td {
 
     return render(request, 'lead_management/update_view_lead.html',context)
 
+
+def del_all_sessions(request):
+    try:
+        del request.session['expand_customer']
+    except:
+        pass
+    try:
+        del request.session['expand_deal_detail']
+    except:
+        pass
+    try:
+        del request.session['expand_pi_section']
+    except:
+        pass
+    try:
+        del request.session['expand_followup']
+    except:
+        pass
+
 def load_wa(wa_no,wa_msg,sms_content):
     return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
@@ -2094,6 +2113,8 @@ def select_product_followup(request,id):
     lead_id = Lead.objects.get(id=id)
     products = Product.objects.all()
     context={}
+    del_all_sessions(request)
+    request.session['expand_followup'] = True
     if request.method == 'POST' or request.method == 'FILES' :
         if 'product_id' in request.POST:
             is_last_product_yes = request.POST.get('is_last_product_yes')
@@ -2177,6 +2198,11 @@ def select_product(request,id):
         if quantity != 'None' or quantity != '':
             item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
         item.save()
+
+        del_all_sessions(request)
+
+        request.session['expand_pi_section'] = True
+
         if is_last_product_yes == 'yes':
             return redirect('/update_view_lead/' + str(id))
         elif is_last_product_yes == 'no':
@@ -2227,7 +2253,8 @@ def lead_manager_view(request):
 def lead_follow_up_histroy(request,follow_up_id):
     context={}
     obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
-
+    del_all_sessions(request)
+    request.session['expand_followup'] = True
     if request.method == 'POST':
         if 'sub1' in request.POST:
             delete_id = request.POST.get('delete_id')
@@ -2256,6 +2283,9 @@ def pi_section_history(request,id):
     lead_id = Lead.objects.get(id=id)
     # lead_pi_id = Pi_section.objects.get(lead_id=id)
     lead_pi_history = Pi_History.objects.filter(lead_id=id).order_by('-id')
+    del_all_sessions(request)
+
+    request.session['expand_pi_section'] = True
     context = {
         'lead_id': lead_id,
         'lead_pi_history': lead_pi_history,
@@ -2268,6 +2298,12 @@ def lead_delete_product(request,id):
         delete_id = request.POST.getlist('check[]')
         for i in delete_id:
             Pi_product.objects.filter(id=i).delete()
+
+        del_all_sessions(request)
+
+        request.session['expand_pi_section'] = True
+
+        return redirect('/update_view_lead/'+str(id))
     context={
         'leads':leads,
     }

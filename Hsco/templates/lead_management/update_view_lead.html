@@ -240,18 +240,17 @@ function myFunction() {
 
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;"  value="+" onclick="myFunction(); return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Customer Details Section</h6>
-                  <div class="dropdown no-arrow">
-<!--                      <button onclick="myFunction6()">.</button>-->
-                  </div>
-                </div>
+
+
+          <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+      <h6 class="m-0 font-weight-bold text-primary">Customer Details</h6>
+    </a>
+
                 <!-- Card Body -->
-                  {% if expand_customer %}
-                  <div class="card-body" id="myDIV" style="display: block; height:auto;">
+                  {% if request.session.expand_customer %}
+                  <div class="card-body collapse show" id="collapseCardExample" >
                   {% else %}
-                      <div class="card-body" id="myDIV" style="display: none; height:auto;">
+                      <div class="card-body collapse" id="collapseCardExample" >
                   {% endif %}
 
     <div class="form-group row" style="display:none;">
@@ -425,19 +424,15 @@ function myFunction() {
            <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction2(); return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Deal Details Section</h6>
-                  <div class="dropdown no-arrow">
-
-                  </div>
-                </div>
+             <a href="#collapseCardExample2" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample2">
+      <h6 class="m-0 font-weight-bold text-primary">Deal Details Section</h6>
+    </a>
                 <!-- Card Body -->
-                  {% if expand_deal_detail %}
-                                  <div class="card-body" id="myDIV2" style="display: block; height: auto;">
+                  {% if request.session.expand_deal_detail %}
+                                  <div class="card-body collapse show" id="collapseCardExample2" >
 
                   {% else %}
-                                                      <div class="card-body" id="myDIV2" style="display: none; height: auto;">
+                                                      <div class="card-body collapse" id="collapseCardExample2" >
 
                   {% endif %}
 
@@ -492,10 +487,10 @@ function myFunction() {
                              </div>
 
                                    {% if lead_id.current_stage == 'Postponed' %}
-                              <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: block;">Postpond Date</label>
+                              <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: block;">Postpond Date *</label>
                               <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: block;">
                                   {% else %}
-                                  <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Postpond Date</label>
+                                  <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Postpond Date *</label>
                               <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: none;">
                                   {% endif %}
                               <div class="input-group">
@@ -553,10 +548,10 @@ function myFunction() {
 
 
 {% if lead_id.current_stage == 'Lost' %}
-                                <label class="col-md-2 control-label" id="lost_reason_label" >Reason:</label>
+                                <label class="col-md-2 control-label" id="lost_reason_label" >Reason: *</label>
                               <div class="col-md-3 inputGroupContainer" id="lost_reason_div" >
                                 {% else %}
-                                <label class="col-md-2 control-label" id="lost_reason_label" style="display: none;">Reason:</label>
+                                <label class="col-md-2 control-label" id="lost_reason_label" style="display: none;">Reason: *</label>
                               <div class="col-md-3 inputGroupContainer" id="lost_reason_div" style="display: none;">
                                 {% endif %}
 
@@ -568,10 +563,10 @@ function myFunction() {
 
 
                                   {% if lead_id.current_stage == 'Postponed' %}
-                                    <label class="col-md-2 control-label" id="postponed_date_lable" style="display: block;">Reason:</label>
+                                    <label class="col-md-2 control-label" id="postponed_date_lable" style="display: block;">Reason: *</label>
                               <div class="col-md-3 inputGroupContainer" id="postponed_date" style="display: block;">
                                   {% else %}
-                                <label class="col-md-2 control-label" id="postponed_date_lable" style="display: none;">Reason:</label>
+                                <label class="col-md-2 control-label" id="postponed_date_lable" style="display: none;">Reason: *</label>
                               <div class="col-md-3 inputGroupContainer" id="postponed_date" style="display: none;">
                                   {% endif %}
                               <div class="input-group">
@@ -642,24 +637,14 @@ function myFunction() {
           <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction3();return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">PI Section</h6>
-
-
-
-
-
-
-
-                  <div class="dropdown no-arrow">
-                  </div>
-                </div>
+              <a href="#collapseCardExample3" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample3">
+      <h6 class="m-0 font-weight-bold text-primary">PI Section</h6>
+    </a>
                 <!-- Card Body -->
-                  {% if expand_pi_section %}
-                <div class="card-body" id="myDIV3" style="display: block; height:auto;">
+                  {% if request.session.expand_pi_section %}
+                <div class="card-body collapse show" id="collapseCardExample3" >
                     {% else %}
-                                    <div class="card-body" id="myDIV3" style="display: none; height:auto;">
+                                    <div class="card-body collapse" id="collapseCardExample3" >
 
                     {% endif %}
                          <div class="row">
@@ -866,21 +851,15 @@ function myFunction_call() {
         <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction4();return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Follow-up Section</h6>
-
-
-
-                  <div class="dropdown no-arrow">
-                  </div>
-                </div>
+         <a href="#collapseCardExample4" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample4">
+      <h6 class="m-0 font-weight-bold text-primary">Follow-up Section</h6>
+    </a>
                 <!-- Card Body -->
 
-                {% if expand_followup %}
-                  <div class="card-body" id="myDIV4" style="display: block; height: auto;">
+                {% if request.session.expand_followup %}
+                  <div class="card-body collapse show" id="collapseCardExample4" >
                   {% else %}
-                                      <div class="card-body" id="myDIV4" style="display: none; height: auto;">
+                                      <div class="card-body collapse" id="collapseCardExample4" >
 
                   {% endif %}
                       <div class="card" >
@@ -1411,14 +1390,11 @@ function whosFunction() {
         <div class="col-xl-12 col-lg-12" id="payment_section" >
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;"  value="+" onclick="myFunction5();return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Payment Details Section</h6>
-                  <div class="dropdown no-arrow">
-                  </div>
-                </div>
+             <a href="#collapseCardExample5" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample5">
+      <h6 class="m-0 font-weight-bold text-primary">Payment Details Section</h6>
+    </a>
                 <!-- Card Body -->
-                <div class="card-body" id="myDIV5" style="display: none; height:auto;">
+                <div class="card-body collapse" id="collapseCardExample5" >
 <form  method='POST' id="abc" enctype="multipart/form-data" >{% csrf_token %}
 
 
@@ -1493,6 +1469,9 @@ function whosFunction() {
         <!-- /.container-fluid -->
       </div>
       <!-- End of Main Content -->
+
+
+
 
 
 
