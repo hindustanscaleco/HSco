@@ -9,6 +9,8 @@ from ess_app.models import Employee_Leave,Defects_Warning
 from .models import Chat_model
 from user_app.models import SiteUser
 
+from lead_management.models import Lead
+
 
 def notif_decl_home(request):
     if request.user.role == 'Super Admin':
@@ -129,18 +131,26 @@ def change_replying_status_ajax(request,user_id):
 
     return JsonResponse(context)
 
-
+import datetime
 def notification_context(request):
     if request.user.is_authenticated:
 
+
         message = Chat_model.objects.filter(message_to=request.user.id, is_viewed=False,is_warning=False,is_defect=False)
         alert = Chat_model.objects.filter((Q(message_to=request.user.id) &Q(is_viewed=False))&(Q(is_warning=True)|Q(is_defect=True)))
+        postponed_alert = Lead.objects.filter(postpond_time_date=datetime.date.today(),owner_of_opportunity__id=request.user.pk)
 
+        if postponed_alert.count() > 1:
+            post_alert = True
+        else:
+            post_alert = False
         return {
             'notification_count': message.count(),
-            'alert_count': alert.count(),
+            'alert_count': alert.count()+postponed_alert.count(),
             'notif_message': message,
             'notif_alert': alert,
+            'is_post_alert': post_alert,
+            'postponed_alert': postponed_alert,
         }
     else:
         return {}

@@ -198,7 +198,6 @@ class Deal_detailForm(forms.ModelForm):
 
     date_of_initiation = forms.DateField( required=True,
                                          widget=forms.DateInput(
-
                                              attrs={
                                                  'type': 'date',
                                                  'placeholder': "Date of Initiation",
@@ -268,12 +267,14 @@ class Deal_detailForm(forms.ModelForm):
 class Pi_sectionForm(forms.ModelForm):
 
 
-    discount = forms.CharField(max_length=80, required=True,
+    discount = forms.CharField(max_length=80, required=False,
        widget=forms.TextInput(
            attrs={
                'type': 'text',
+               'default': '0',
                'placeholder': "Discount",
                'class': 'form-control',
+               'value': '0',
            }
        ))
 
@@ -349,9 +350,6 @@ class Pi_sectionForm(forms.ModelForm):
             attrs={
                 'default':"Select Mode",
                 'class':'btn btn-outline-primary',
-
-
-
             }
         ))
 
@@ -556,12 +554,12 @@ class Payment_detailsForm(forms.ModelForm):
         widget=forms.Select(
             choices=payment_method,
             attrs={
-                'default':"automatic",
+                'default':"Cheque",
                 'class':'btn btn-outline-primary',
             }
         ))
 
-    payment_receipt = forms.CharField(max_length=80, required=True,
+    payment_receipt = forms.CharField(max_length=80, required=False,
                                               widget=forms.TextInput(
                                                   attrs={
                                                       'type': 'file',
@@ -570,7 +568,7 @@ class Payment_detailsForm(forms.ModelForm):
                                                   }
                                               ))
 
-    upload_pofile = forms.CharField(max_length=80, required=True,
+    upload_pofile = forms.CharField(max_length=80, required=False,
                                               widget=forms.TextInput(
                                                   attrs={
                                                       'type': 'file',
@@ -579,15 +577,15 @@ class Payment_detailsForm(forms.ModelForm):
                                                   }
                                               ))
 
-    payment_received_date = forms.CharField(max_length=80, required=True,
-                                         widget=forms.TextInput(
+    payment_recived_date = forms.DateField( required=True,
+                                         widget=forms.DateInput(
                                              attrs={
                                                  'type': 'date',
                                                  'class': 'form-control',
                                              }
                                          ))
 
-    notes = forms.CharField(max_length=80, required=True,
+    Payment_notes = forms.CharField(max_length=80, required=True,
                                          widget=forms.Textarea(
                                              attrs={
                                                  'type': 'text',

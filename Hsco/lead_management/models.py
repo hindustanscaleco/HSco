@@ -25,7 +25,7 @@ class Lead(models.Model):
     postponed_reason = models.CharField(blank= True, null=True, max_length=180)
     upload_requirement_file = models.FileField(upload_to='lead_requirement_file/',null=True,blank=True)
     is_entered_purchase = models.BooleanField(default=False)
-
+    postpond_time_date = models.DateField(null=True,blank=True)
     # owner_of_opportunity = models.CharField(max_length=80,null=True,blank=True)
 
     # entry_timedate = models.DateTimeField(default=timezone.now, )
@@ -38,11 +38,12 @@ class Lead(models.Model):
 
 class Pi_section(models.Model):
     lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
-    discount = models.CharField(max_length=80,null=True,blank=True)
+    discount = models.CharField(max_length=80,null=True,blank=True,default=0.0)
     discount_type = models.CharField(max_length=80,null=True,blank=True)
     upload_pi_file = models.FileField(null=True,blank=True)
     select_pi_template = models.CharField(max_length=45,null=True, blank=True)
     select_gst_type = models.CharField(max_length=45,null=True, blank=True)
+    manual_pi_no = models.CharField(max_length=45,null=True, blank=True)
     call = models.TextField(max_length=120, null=True,blank=True)
     email = models.BooleanField(default=False, null=True,blank=True)
     whatsapp = models.BooleanField(default=False, null=True,blank=True)
@@ -60,10 +61,11 @@ class Pi_section(models.Model):
     net_total = models.FloatField(null=True,blank=True)
     round_up_total = models.FloatField(null=True,blank=True)
     grand_total = models.FloatField(null=True,blank=True)
+
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     first_submit = models.BooleanField(default=False, null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
-    postpond_time_date = models.DateField(default=datetime.date.today)
+
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 

@@ -698,7 +698,8 @@ def update_customer_details(request,id):
         item2.industry = industry
         # item2.value_of_goods = value_of_goods
 
-        if item2.channel_of_dispatch =='Franchisee Store' and channel_of_dispatch != 'Franchisee Store':
+
+        if (purchase_id_id.dispatch_id_assigned == None and channel_of_dispatch != 'Franchisee Store')  or (item2.channel_of_dispatch =='Franchisee Store' and channel_of_dispatch != 'Franchisee Store') :
             dispatch = Dispatch()
 
             if Customer_Details.objects.filter(customer_name=customer_name,
@@ -769,11 +770,16 @@ def update_customer_details(request,id):
                 Product_Details.objects.filter(id=item).update(product_dispatch_id=dispatch_pro.pk)
 
 
-        if item2.channel_of_dispatch != 'Franchisee Store' and channel_of_dispatch == 'Franchisee Store':
+        if item2.channel_of_dispatch != 'Franchisee Store' and channel_of_dispatch == 'Franchisee Store' :
             customer_id = Purchase_Details.objects.get(id=item2.pk)
             customer_id.dispatch_id_assigned = None  # str(dispatch.pk + 00000)
             customer_id.save(update_fields=['dispatch_id_assigned'])
-            Dispatch.objects.get(id=item2.dispatch_id_assigned.pk).delete()
+            try:
+                Dispatch.objects.get(id=item2.dispatch_id_assigned.pk).delete()
+            except:
+                pass
+
+
 
 
 
@@ -799,6 +805,11 @@ def update_customer_details(request,id):
         #     'purchase_id_id': purchase_id_id,
         #     'feedback': feedback,
         # }
+
+        try:
+            del request.session['enable_auto_edit']
+        except:
+            pass
 
         return redirect('/view_customer_details/')
 

@@ -240,18 +240,17 @@ function myFunction() {
 
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;"  value="+" onclick="myFunction(); return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Customer Details Section</h6>
-                  <div class="dropdown no-arrow">
-<!--                      <button onclick="myFunction6()">.</button>-->
-                  </div>
-                </div>
+
+
+          <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+      <h6 class="m-0 font-weight-bold text-primary">Customer Details</h6>
+    </a>
+
                 <!-- Card Body -->
-                  {% if expand_customer %}
-                  <div class="card-body" id="myDIV" style="display: block; height:auto;">
+                  {% if request.session.expand_customer %}
+                  <div class="card-body collapse show" id="collapseCardExample" >
                   {% else %}
-                      <div class="card-body" id="myDIV" style="display: none; height:auto;">
+                      <div class="card-body collapse" id="collapseCardExample" >
                   {% endif %}
 
     <div class="form-group row" style="display:none;">
@@ -368,17 +367,22 @@ function myFunction() {
       {
         $("#lost_reason_label").show();
         $("#lost_reason_div").show();
+        $("#id_lost_reason").prop('required',true);
       }
       else
       {
         $("#lost_reason_label").hide();
         $("#lost_reason_div").hide();
+                $("#id_lost_reason").prop('required',false);
+
       }
 
           if ( this.value == 'Postponed')
       {
         $("#postponed_lost_reason_label").show();
         $("#postponed_lost_reason_label_div").show();
+        $("#id_postpond_time_date").prop('required',true);
+        $("#id_postponed_reason").prop('required',true);
         $("#postponed_date_lable").show();
         $("#postponed_date").show();
       }
@@ -388,6 +392,8 @@ function myFunction() {
         $("#postponed_lost_reason_label_div").hide();
         $("#postponed_date_lable").hide();
         $("#postponed_date").hide();
+        $("#id_postpond_time_date").prop('required',false);
+        $("#id_postponed_reason").prop('required',false);
       }
 
     });
@@ -418,19 +424,15 @@ function myFunction() {
            <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction2(); return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Deal Details Section</h6>
-                  <div class="dropdown no-arrow">
-
-                  </div>
-                </div>
+             <a href="#collapseCardExample2" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample2">
+      <h6 class="m-0 font-weight-bold text-primary">Deal Details Section</h6>
+    </a>
                 <!-- Card Body -->
-                  {% if expand_deal_detail %}
-                                  <div class="card-body" id="myDIV2" style="display: block; height: auto;">
+                  {% if request.session.expand_deal_detail %}
+                                  <div class="card-body collapse show" id="collapseCardExample2" >
 
                   {% else %}
-                                                      <div class="card-body" id="myDIV2" style="display: none; height: auto;">
+                                                      <div class="card-body collapse" id="collapseCardExample2" >
 
                   {% endif %}
 
@@ -484,8 +486,13 @@ function myFunction() {
                             </div>
                              </div>
 
-                              <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Postpond Date</label>
+                                   {% if lead_id.current_stage == 'Postponed' %}
+                              <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: block;">Postpond Date *</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: block;">
+                                  {% else %}
+                                  <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Postpond Date *</label>
                               <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: none;">
+                                  {% endif %}
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form2.postpond_time_date }}
@@ -540,16 +547,28 @@ function myFunction() {
                              </div>
 
 
-
-                                <label class="col-md-2 control-label" id="lost_reason_label" style="display: none;">Reason:</label>
+{% if lead_id.current_stage == 'Lost' %}
+                                <label class="col-md-2 control-label" id="lost_reason_label" >Reason: *</label>
+                              <div class="col-md-3 inputGroupContainer" id="lost_reason_div" >
+                                {% else %}
+                                <label class="col-md-2 control-label" id="lost_reason_label" style="display: none;">Reason: *</label>
                               <div class="col-md-3 inputGroupContainer" id="lost_reason_div" style="display: none;">
+                                {% endif %}
+
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form2.lost_reason }}
                             </div>
                                   </div>
-                                <label class="col-md-2 control-label" id="postponed_date_lable" style="display: none;">Reason:</label>
+
+
+                                  {% if lead_id.current_stage == 'Postponed' %}
+                                    <label class="col-md-2 control-label" id="postponed_date_lable" style="display: block;">Reason: *</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_date" style="display: block;">
+                                  {% else %}
+                                <label class="col-md-2 control-label" id="postponed_date_lable" style="display: none;">Reason: *</label>
                               <div class="col-md-3 inputGroupContainer" id="postponed_date" style="display: none;">
+                                  {% endif %}
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form2.postponed_reason }}
@@ -618,24 +637,14 @@ function myFunction() {
           <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction3();return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">PI Section</h6>
-
-
-
-
-
-
-
-                  <div class="dropdown no-arrow">
-                  </div>
-                </div>
+              <a href="#collapseCardExample3" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample3">
+      <h6 class="m-0 font-weight-bold text-primary">PI Section</h6>
+    </a>
                 <!-- Card Body -->
-                  {% if expand_pi_section %}
-                <div class="card-body" id="myDIV3" style="display: block; height:auto;">
+                  {% if request.session.expand_pi_section %}
+                <div class="card-body collapse show" id="collapseCardExample3" >
                     {% else %}
-                                    <div class="card-body" id="myDIV3" style="display: none; height:auto;">
+                                    <div class="card-body collapse" id="collapseCardExample3" >
 
                     {% endif %}
                          <div class="row">
@@ -776,19 +785,19 @@ Steps: 1) Select PI Template and click on submit
                                 {{ form3.select_pi_template }}
                                                               </div>
                           </div>
-                                      <label class="col-md-2 control-label">Choose PI PDF:
+                                      <!--<label class="col-md-2 control-label">Choose PI PDF:-->
 
-</label>
+<!--</label>-->
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-    <input type="file" name="pdf" id="fileToUpload" class="form-control">
-    </div>
-  </div>
+    <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+    <!--<input type="file" name="pdf" id="fileToUpload" class="form-control">-->
+    <!--</div>-->
+  <!--</div>-->
 
                           </div>
 
-                            <div class="form-group row" id="myDiv_call" >
+                            <div class="form-group row" id="myDiv_call" style="display:none;" >
 
 
                                 <label class="col-md-2 control-label">Call:</label>
@@ -801,7 +810,7 @@ Steps: 1) Select PI Template and click on submit
                          <script>
 function myFunction_call() {
   var x = document.getElementById("myDiv_call");
-  if (x.style.display === "none") {
+  if (x.style.display == "none") {
     x.style.display = "block";
   } else {
     x.style.display = "none";
@@ -826,7 +835,7 @@ function myFunction_call() {
                              <!--<button type="submit" onclick="download_pdf()" class="btn btn-primary" style="background-color: #FC6E20;">PDF</button>-->
                              {% if pi_id.first_submit == True  %}
                              <button type="submit" onclick="download_image()" class="btn btn-primary" style="background-color: #FC6E20;">Image</button>
-                             <a target="_blank" href="https://api.whatsapp.com/send?phone=91{{customer_id.contact_no}}&text=Hey\nHere is the PI"><button type="button" class="btn btn-primary" style="background-color: #FC6E20;">Whatsapp</button></a>
+                             <a target="_blank" href="https://api.whatsapp.com/send?phone={{customer_id.contact_no}}&text=Hey, here is the PI"><button type="button" class="btn btn-primary" style="background-color: #FC6E20;">Whatsapp</button></a>
                              {% endif %}
 
 </center>
@@ -842,21 +851,15 @@ function myFunction_call() {
         <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;" value="+" onclick="myFunction4();return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Follow-up Section</h6>
-
-
-
-                  <div class="dropdown no-arrow">
-                  </div>
-                </div>
+         <a href="#collapseCardExample4" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample4">
+      <h6 class="m-0 font-weight-bold text-primary">Follow-up Section</h6>
+    </a>
                 <!-- Card Body -->
 
-                {% if expand_followup %}
-                  <div class="card-body" id="myDIV4" style="display: block; height: auto;">
+                {% if request.session.expand_followup %}
+                  <div class="card-body collapse show" id="collapseCardExample4" >
                   {% else %}
-                                      <div class="card-body" id="myDIV4" style="display: none; height: auto;">
+                                      <div class="card-body collapse" id="collapseCardExample4" >
 
                   {% endif %}
                       <div class="card" >
@@ -1387,14 +1390,16 @@ function whosFunction() {
         <div class="col-xl-12 col-lg-12" id="payment_section" >
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;"  value="+" onclick="myFunction5();return change(this);" />
-                  <h6 class="m-0 font-weight-bold text-primary">Payment Details Section</h6>
-                  <div class="dropdown no-arrow">
-                  </div>
-                </div>
+             <a href="#collapseCardExample5" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample5">
+      <h6 class="m-0 font-weight-bold text-primary">Payment Details Section</h6>
+    </a>
                 <!-- Card Body -->
-                <div class="card-body" id="myDIV5" style="display: none; height:auto;">
+                  {% if request.session.expand_payment %}
+                <div class="card-body collapse show" id="collapseCardExample5" >
+                    {% else %}
+
+                <div class="card-body collapse" id="collapseCardExample5" >
+                      {% endif %}
 <form  method='POST' id="abc" enctype="multipart/form-data" >{% csrf_token %}
 
 
@@ -1412,6 +1417,10 @@ function whosFunction() {
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form5.payment_receipt }}
+                                   &nbsp &nbsp
+                                   {% if payment_id.payment_receipt %}
+                                  <a href="{{ payment_id.payment_receipt.url }}" class="btn btn-primary">File</a>
+                                  {% endif %}
                             </div>
                              </div>
                           </div>
@@ -1422,7 +1431,7 @@ function whosFunction() {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form5.payment_received_date }}
+                                {{ form5.payment_recived_date }}
                             </div>
                           </div>
 
@@ -1431,6 +1440,10 @@ function whosFunction() {
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form5.upload_pofile }}
+                                  &nbsp &nbsp
+                                  {% if payment_id.upload_pofile %}
+                                  <a href="{{ payment_id.upload_pofile.url }}" class="btn btn-primary">File</a>
+                                  {% endif %}
                    </div>
                              </div>
                           </div>
@@ -1442,7 +1455,7 @@ function whosFunction() {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form5.notes }}
+                                {{ form5.Payment_notes }}
                             </div>
                              </div>
 
@@ -1457,7 +1470,7 @@ function whosFunction() {
 
 
 <center>
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Save</button>
+     <button type="submit" style="background-color: #FC6E20;" name="submit_payment" class="btn btn-primary">Save</button>
 </center>
 
 </form>
@@ -1469,6 +1482,9 @@ function whosFunction() {
         <!-- /.container-fluid -->
       </div>
       <!-- End of Main Content -->
+
+
+
 
 
 
