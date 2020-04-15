@@ -869,23 +869,12 @@ def update_view_lead(request,id):
     form6 = History_followupForm(initial={'wa_no':wa_no,'email_subject':hfu.email_subject,'wa_msg':wa_msg,'email_msg':email_msg,
                                           'sms_msg':sms_msg,'is_email':is_email})
 
-    payment_id = Payment_details.objects.get(lead_id=id)
-    payment_detail_initial_data = {
-        'payment_channel': payment_id.payment_channel,
-        'payment_receipt': payment_id.payment_receipt,
-        'upload_pofile': payment_id.upload_pofile,
-        'payment_recived_date': payment_id.payment_recived_date,
-        'Payment_notes': payment_id.Payment_notes
-    }
 
-
-    form5 = Payment_detailsForm(payment_detail_initial_data)
     context = {
         'form': form,
         'form2': form2,
         'form3': form3,
         'form4': form4,
-        'form5': form5,
         'lead_id': lead_id,
         'lead_pi_products': lead_pi_products,
        'followup_products_list': followup_products_list,
@@ -895,9 +884,26 @@ def update_view_lead(request,id):
         'users':users,
         'auto_manual_mode':hfu.auto_manual_mode,
         'customer_id':customer_id,
-        'payment_id':payment_id,
         'history_follow':history_follow,
     }
+    try:
+        payment_id = Payment_details.objects.get(lead_id=id)
+        payment_detail_initial_data = {
+            'payment_channel': payment_id.payment_channel,
+            'payment_receipt': payment_id.payment_receipt,
+            'upload_pofile': payment_id.upload_pofile,
+            'payment_recived_date': payment_id.payment_recived_date,
+            'Payment_notes': payment_id.Payment_notes
+        }
+        form5 = Payment_detailsForm(payment_detail_initial_data)
+        context1 = {
+        'form5': form5,
+        'payment_id':payment_id,
+        }
+        context.update(context1)
+    except:
+        pass
+
     if Pi_section.objects.filter(lead_id=id).count() > 0:
         pi_id = Pi_section.objects.get(lead_id=id)
 
@@ -1351,7 +1357,7 @@ def update_view_lead(request,id):
                                               'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
                                               settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
 
-                    email_send.attach('invoice.pdf',history.file.path)
+                    email_send.attach_file(history.file.path)
 
                     email_send.send()
 

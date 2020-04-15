@@ -753,6 +753,9 @@ tr:nth-child(even) {
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
                                 {{ form3.upload_pi_file }}
+                                  {% if pi_id.upload_pi_file %}
+                                  <a href="{{ pi_id.upload_pi_file.url }}" class="btn btn-primary">Old File</a>
+                                  {% endif %}
                             </div>
                              </div>
 
