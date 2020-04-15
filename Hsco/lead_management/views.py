@@ -1523,10 +1523,8 @@ def update_view_lead(request,id):
             else:
                 return render(request, 'lead_management/update_view_lead.html', context)
 
-<<<<<<< HEAD
             return redirect('https://api.whatsapp.com/send?phone=' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
-=======
-            return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+
         if 'submit_payment' in request.POST:
             payment_channel = request.POST.get("payment_channel")
             payment_receipt = request.POST.get("payment_receipt")
@@ -1561,7 +1559,6 @@ def update_view_lead(request,id):
             return redirect('/update_view_lead/' + str(id))
 
 
->>>>>>> f46b915788fb8c948c12210e9dd0f07056634b0b
 
         elif 'submit5' in request.POST:
 
