@@ -844,6 +844,7 @@ def update_view_lead(request,id):
         'postponed_reason': lead_id.postponed_reason,
         'postpond_time_date': lead_id.postpond_time_date,
     }
+
     form = Customer_detailForm(initial=customer_initial_data)
     form2 = Deal_detailForm(initial=deal_details_initial_data)
     form3 = Pi_sectionForm()
@@ -865,7 +866,18 @@ def update_view_lead(request,id):
 
     form6 = History_followupForm(initial={'wa_no':wa_no,'email_subject':hfu.email_subject,'wa_msg':wa_msg,'email_msg':email_msg,
                                           'sms_msg':sms_msg,'is_email':is_email})
-    form5 = Payment_detailsForm()
+
+    payment_id = Payment_details.objects.get(lead_id=id)
+    payment_detail_initial_data = {
+        'payment_channel': payment_id.payment_channel,
+        'payment_receipt': payment_id.payment_receipt,
+        'upload_pofile': payment_id.upload_pofile,
+        'payment_recived_date': payment_id.payment_recived_date,
+        'Payment_notes': payment_id.Payment_notes
+    }
+
+
+    form5 = Payment_detailsForm(payment_detail_initial_data)
     context = {
         'form': form,
         'form2': form2,
@@ -881,6 +893,7 @@ def update_view_lead(request,id):
         'users':users,
         'auto_manual_mode':hfu.auto_manual_mode,
         'customer_id':customer_id,
+        'payment_id':payment_id,
         'history_follow':history_follow,
     }
     if Pi_section.objects.filter(lead_id=id).count() > 0:
@@ -900,6 +913,8 @@ def update_view_lead(request,id):
             'discount_type': pi_id.discount_type,
             'first_submit': pi_id.first_submit,
         }
+
+
         form3 = Pi_sectionForm(initial=pi_initial_data)
         context2 = {
             'form': form,
@@ -1462,6 +1477,40 @@ def update_view_lead(request,id):
                 return render(request, 'lead_management/update_view_lead.html', context)
 
             return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+        if 'submit_payment' in request.POST:
+            payment_channel = request.POST.get("payment_channel")
+            payment_receipt = request.POST.get("payment_receipt")
+            upload_pofile = request.POST.get("upload_pofile")
+            payment_received_date = request.POST.get("payment_recived_date")
+            Payment_notes = request.POST.get("Payment_notes")
+
+
+
+            if Payment_details.objects.filter(lead_id=id).count() == 0:
+                item10 = Payment_details()
+            else:
+                item10 = Payment_details.objects.get(lead_id=id)
+            item10.lead_id=Lead.objects.get(id=id)
+            item10.payment_channel = payment_channel
+            item10.payment_receipt = payment_receipt
+            item10.upload_pofile = upload_pofile
+            item10.payment_recived_date = payment_received_date
+            item10.Payment_notes = Payment_notes
+
+            if Payment_details.objects.filter(lead_id=id).count()==0:
+                item10.save()
+            else:
+                item10.save(
+                    update_fields=['payment_channel', 'payment_receipt', 'upload_pofile', 'payment_recived_date', 'Payment_notes'])
+
+
+
+            del_all_sessions(request)
+            request.session['expand_payment'] = True
+
+            return redirect('/update_view_lead/' + str(id))
+
+
 
         elif 'submit5' in request.POST:
 
@@ -1900,12 +1949,20 @@ td {
                     context.update(context28)
 
 
+
+
+
+
     return render(request, 'lead_management/update_view_lead.html',context)
 
 
 def del_all_sessions(request):
     try:
         del request.session['expand_customer']
+    except:
+        pass
+    try:
+        del request.session['expand_payment']
     except:
         pass
     try:

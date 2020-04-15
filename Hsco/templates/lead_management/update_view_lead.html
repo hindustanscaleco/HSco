@@ -1394,7 +1394,12 @@ function whosFunction() {
       <h6 class="m-0 font-weight-bold text-primary">Payment Details Section</h6>
     </a>
                 <!-- Card Body -->
+                  {% if request.session.expand_payment %}
+                <div class="card-body collapse show" id="collapseCardExample5" >
+                    {% else %}
+
                 <div class="card-body collapse" id="collapseCardExample5" >
+                      {% endif %}
 <form  method='POST' id="abc" enctype="multipart/form-data" >{% csrf_token %}
 
 
@@ -1412,6 +1417,10 @@ function whosFunction() {
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form5.payment_receipt }}
+                                   &nbsp &nbsp
+                                   {% if payment_id.payment_receipt %}
+                                  <a href="{{ payment_id.payment_receipt.url }}" class="btn btn-primary">File</a>
+                                  {% endif %}
                             </div>
                              </div>
                           </div>
@@ -1422,7 +1431,7 @@ function whosFunction() {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form5.payment_received_date }}
+                                {{ form5.payment_recived_date }}
                             </div>
                           </div>
 
@@ -1431,6 +1440,10 @@ function whosFunction() {
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form5.upload_pofile }}
+                                  &nbsp &nbsp
+                                  {% if payment_id.upload_pofile %}
+                                  <a href="{{ payment_id.upload_pofile.url }}" class="btn btn-primary">File</a>
+                                  {% endif %}
                    </div>
                              </div>
                           </div>
@@ -1442,7 +1455,7 @@ function whosFunction() {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form5.notes }}
+                                {{ form5.Payment_notes }}
                             </div>
                              </div>
 
@@ -1457,7 +1470,7 @@ function whosFunction() {
 
 
 <center>
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Save</button>
+     <button type="submit" style="background-color: #FC6E20;" name="submit_payment" class="btn btn-primary">Save</button>
 </center>
 
 </form>
