@@ -10,6 +10,10 @@
 
   <title>HSCO</title>
 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<!--<script src = "http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>-->
+    <script src = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -17,7 +21,6 @@
 
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
-
 </head>
 
 <body id="page-top">
@@ -102,7 +105,14 @@ color:;
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.goddown_assign_to }}
+         <select name="goddown_assign_to" class="form-control">
+    <option value="{{ godown.goddown_assign_to }}"> {{ godown.goddown_assign_to }}</option>
+       {% for user in assign_users %}
+  <option value="{{user.profile_name}}">{{user.profile_name}}</option>
+
+   {% endfor %}
+</select>
+
                             </div>
                              </div>
                           </div>
@@ -248,7 +258,7 @@ td {
 
 
 {% for product in godown_products %}
-            <form method="POST" action=""  >{% csrf_token %}
+            <form method="POST" id="form" action=""  >{% csrf_token %}
         <tr>
             <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{product.product_id.scale_type}}</td>
             <td style="border: 0px solid gray;">{{product.product_id.main_category}}</td>
@@ -267,6 +277,12 @@ td {
 
 
 
+
+<script>
+$('form').on('submit', function(){
+        alert('Press OK to remove the product !!!');
+    });
+</script>
 
 
         </div>
@@ -340,8 +356,6 @@ td {
     <br><br>
     <br><br>
     <br>
-
-
 
 
 

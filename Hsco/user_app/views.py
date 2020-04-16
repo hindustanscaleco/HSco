@@ -34,8 +34,12 @@ class LoginView(FormView):
             request = self.request
             form = LoginForm(request.POST or None)
             if request.session.has_key('registered_mobile'):
+                print('fdsjk')
+                print('fdsjk')
+                print('fdsjk')
                 mobile = request.session['registered_mobile']
                 password = request.session['user_password']
+
                 user = authenticate(request, mobile=mobile, password=password)
                 if user is not None:
                     login(request, user)
@@ -57,6 +61,7 @@ class LoginView(FormView):
                 request.session['registered_mobile'] = mobile
                 request.session['user_password'] = password
                 next = request.GET.get('next', '/dashboard/')
+
                 if not is_safe_url(next,allowed_hosts=None):
                     next = '/dashboard/'
                 return redirect(next)

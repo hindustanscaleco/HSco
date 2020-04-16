@@ -102,7 +102,13 @@ color:;
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.goddown_assign_to }}
+                                <select name="goddown_assign_to" class="form-control">
+    <option value="">Select</option>
+       {% for user in assign_users %}
+  <option value="{{user.pk}}">{{user.profile_name}}</option>
+
+   {% endfor %}
+</select>
                             </div>
                              </div>
                           </div>
