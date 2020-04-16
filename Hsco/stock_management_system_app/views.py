@@ -8,7 +8,9 @@ from user_app.models import SiteUser
 
 
 def stock_godown_list(request):
-    if request.user.role == 'Admin':
+    if request.user.role == 'Super Admin':
+        godown_list = Godown.objects.all().order_by('-id')
+    elif request.user.role == 'Admin':
         godown_list = Godown.objects.filter(godown_admin__id=request.user.id).order_by('-id')
     else:
         godown_list = Godown.objects.filter(goddown_assign_to__id=request.user.id).order_by('-id')
@@ -209,7 +211,7 @@ def stock_good_request(request,godown_id, request_id):
 def stock_pending_request(request,godown_id):
     godown = Godown.objects.get(id=godown_id)
     if request.user.role == 'Super Admin':
-        pending_list = GoodsRequest.objects.all()
+        pending_list = GoodsRequest.objects.all().order_by('-id')
     else:
         pending_list = GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_to_godown__goddown_assign_to__id=request.user.id)).order_by('-id')    | \
                        GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_from_godown__goddown_assign_to__id=request.user.id)).order_by('-id') | \
@@ -335,7 +337,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
 
 def stock_accpet_goods(request, godown_id, accept_id):
     godown_goods = GodownProduct.objects.filter(godown_id=godown_id)
-    accepted_goods = AGProducts.objects.filter(godown_id_id=godown_id,accept_product_id_id =accept_id)
+    accepted_goods = AGProducts.objects.filter(godown_id_id=godown_id,accept_product_id_id =accept_id).order_by('-id')
     if request.method == 'POST' or request.method == 'FILES':
         if 'submit1' in request.POST:
             product_id = request.POST.get('product_id')
