@@ -641,7 +641,11 @@ def lead_home(request):
                 item3.company_name = item['GLUSR_USR_COMPANYNAME']
                 item3.address = item['ENQ_ADDRESS']
                 item3.customer_email_id = item['SENDEREMAIL']
-                item3.contact_no = item['MOB']
+                if (item['MOB']!=None and item['MOB'] !='' and len(item['MOB'])>3):
+                    clean_mob=item['MOB'].partition('-')[2]
+                else:
+                    clean_mob=''
+                item3.contact_no = clean_mob
                 item3.customer_industry = ''
                 try:
                     item3.save()
@@ -651,7 +655,6 @@ def lead_home(request):
                     item2.new_existing_customer = 'New'
                     item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
                     item2.channel = 'Indiamart'
-
                     item2.requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
                     try:
                         item2.save()
@@ -1552,17 +1555,12 @@ def update_view_lead(request,id):
                     sms_content=sms_content+'''\nProduct No-'''+str(count_for+1)+''':'''
                     wa_content=wa_content+'''\nProduct No - '''+str(count_for+1)+''':\n______________________________________________________\n'''
                     for item in single:
-                        print('item.partition(":")[0]')
-                        print('item.partition(":")[0]')
-                        print('"'+item.partition(":")[0]+'"')
                         if item.partition(":")[0] == 'Product Image ':
                             img_path = 'http://139.59.76.87:8000/media/'+item.partition(":")[2][1:]
                             sms_content = sms_content + item.partition(":")[0] + ''' :''' + img_path + '''\n'''
                             wa_content = wa_content + item.partition(":")[0] + ''' :''' + img_path + '''\n'''
                             html_rows = html_rows + '''<td> <img height="150" width="150" src="'''+img_path+'''"> </td>'''
-                            print('img_path')
-                            print("'"+img_path+"'")
-                            print("'"+img_path+"'")
+
 
                         elif item.partition(":")[0] == 'Product Brochure ':
                             bro_link = 'http://139.59.76.87:8000/media/'+item.partition(":")[2][1:]
