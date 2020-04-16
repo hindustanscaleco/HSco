@@ -659,8 +659,9 @@ def lead_home(request):
                         item2.is_indiamart_purchased_lead = False
                     item2.new_existing_customer = 'New'
                     item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
-                    item2.channel = 'Indiamart'
-                    item2.requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
+                    item2.channel = 'IndiaMart'
+                    requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
+                    item2.requirement = requirement.replace('<b>','\n')
                     try:
                         item2.save()
                         fp = Follow_up_section()

@@ -609,7 +609,7 @@ td {
         </tr>
                     {% for list in lead_list %}
 
-{% if list.channel == 'IndiaMart' %}
+{% if list.channel == 'IndiaMart' or list.channel == 'Indiamart' %}
         {% if list.is_indiamart_purchased_lead %}
             <tr bgcolor="#7CFC00" style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
         {% else %}
