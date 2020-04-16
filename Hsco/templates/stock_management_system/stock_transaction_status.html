@@ -337,10 +337,20 @@ td {
                         Current Stage:           &nbsp &nbsp      <div class="btn-group">
 <select class="btn btn-success" name="status"  id="c5aasrs">
   <option class="btn btn-success" value="{{good_request.status}}">{{good_request.status}}</option>
-  <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
-        {% if request.user.admin == good_request.req_from_godown.goddown_assign_to.admin %}
+
+
+        {% if request.user.id == good_request.req_from_godown.goddown_assign_to.id %}
   <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
     {% endif %}
+    {% if request.user.id == good_request.req_from_godown.godown_admin.id %}
+  <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
+        {% endif %}
+    {% if request.user.id == good_request.req_to_godown.godown_admin.id %}
+  <option class="btn btn-success" value="Confirmation of goods transformation">Confirms the transformation</option>
+        {% endif %}
+    {% if request.user.id == good_request.req_to_godown.goddown_assign_to.id %}
+  <option class="btn btn-success" value="Confirmation of goods transformation">Confirms the transformation</option>
+        {% endif %}
 </select>
                                                            </div></div>
                                                            <div class="col-xl-1">
