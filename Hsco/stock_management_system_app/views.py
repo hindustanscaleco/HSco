@@ -8,7 +8,11 @@ from user_app.models import SiteUser
 
 
 def stock_godown_list(request):
-    godown_list = Godown.objects.all()
+    if request.user.role == 'Admin':
+        godown_list = Godown.objects.filter(godown_admin__id=request.user.id).order_by('-id')
+    else:
+        godown_list = Godown.objects.filter(goddown_assign_to__id=request.user.id).order_by('-id')
+
     context = {
         'godown_list':godown_list,
     }
@@ -16,7 +20,9 @@ def stock_godown_list(request):
 
 def add_godown(request):
     products = Product.objects.all()
-    form = GodownForm()   
+    assign_users = SiteUser.objects.filter(modules_assigned__icontains= 'Stock', admin__contains= request.user.profile_name)
+
+    form = GodownForm()
     if request.method == 'POST' or request.method=='FILES':
         name_of_godown = request.POST.get('name_of_godown')
         goddown_assign_to = request.POST.get('goddown_assign_to')
@@ -25,7 +31,8 @@ def add_godown(request):
 
         item=Godown()
         item.name_of_godown=name_of_godown
-        item.goddown_assign_to=SiteUser.objects.filter(profile_name=goddown_assign_to).first()
+        item.goddown_assign_to=SiteUser.objects.filter(id=goddown_assign_to).first()
+        item.godown_admin=SiteUser.objects.get(id=request.user.id)
         item.location=location
         item.contact_no=contact_no
         item.log_entered_by = request.user.name
@@ -36,12 +43,15 @@ def add_godown(request):
     context = {
         'form':form,
         'products':products,
+        'assign_users':assign_users,
     }
     return render(request, 'stock_management_system/add_godown.html',context)
 
 def update_godown(request,godown_id):
     godown = Godown.objects.get(id=godown_id)
     godown_products = GodownProduct.objects.filter(godown_id=godown_id)
+    assign_users = SiteUser.objects.filter(modules_assigned__icontains= 'Stock', admin__contains= request.user.profile_name)
+
     godown_initial_data = {
         'name_of_godown': godown.name_of_godown,
         'goddown_assign_to': godown.goddown_assign_to,
@@ -67,18 +77,25 @@ def update_godown(request,godown_id):
         if 'submit2' in request.POST:
             product_id = request.POST.get('product_id')
             GodownProduct.objects.get(id=product_id).delete()
+            return redirect('/update_godown/'+str(godown_id))
 
 
     context={
         'godown': godown,
         'form': form,
         'godown_products': godown_products,
+        'assign_users': assign_users,
     }
     return render(request, 'stock_management_system/update_godown.html',context)
 
 def add_product_godown(request, godown_id):
     godown = Godown.objects.get(id=godown_id)
     type_of_purchase_list =type_purchase.objects.all() #1
+    context = {
+        'godown': godown,
+        'type_of_purchase_list': type_of_purchase_list,
+
+    }
     if request.method == 'POST' or request.method == 'FILES':
         carton_count = request.POST.get('carton_count')
         quantity = request.POST.get('quantity')
@@ -101,14 +118,10 @@ def add_product_godown(request, godown_id):
         item.save()
 
         if is_last_product_yes == 'yes':
-            return redirect('/stock_godown/' + str(godown_id))
+            return redirect('/update_godown/' + str(godown_id))
         elif is_last_product_yes == 'no':
             return redirect('/add_product_godown/' + str(godown_id))
-    context={
-        'godown': godown,
-        'type_of_purchase_list': type_of_purchase_list,
 
-    }
     return render(request, 'stock_management_system/add_product_godown.html',context)
 
 

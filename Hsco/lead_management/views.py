@@ -1,4 +1,6 @@
 from datetime import datetime
+from io import BytesIO
+
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.paginator import Paginator
 from django.db import connection
@@ -847,6 +849,7 @@ def update_view_lead(request,id):
         'postponed_reason': lead_id.postponed_reason,
         'postpond_time_date': lead_id.postpond_time_date,
     }
+
     form = Customer_detailForm(initial=customer_initial_data)
     form2 = Deal_detailForm(initial=deal_details_initial_data)
     form3 = Pi_sectionForm()
@@ -868,13 +871,13 @@ def update_view_lead(request,id):
 
     form6 = History_followupForm(initial={'wa_no':wa_no,'email_subject':hfu.email_subject,'wa_msg':wa_msg,'email_msg':email_msg,
                                           'sms_msg':sms_msg,'is_email':is_email})
-    form5 = Payment_detailsForm()
+
+
     context = {
         'form': form,
         'form2': form2,
         'form3': form3,
         'form4': form4,
-        'form5': form5,
         'lead_id': lead_id,
         'lead_pi_products': lead_pi_products,
        'followup_products_list': followup_products_list,
@@ -886,6 +889,24 @@ def update_view_lead(request,id):
         'customer_id':customer_id,
         'history_follow':history_follow,
     }
+    try:
+        payment_id = Payment_details.objects.get(lead_id=id)
+        payment_detail_initial_data = {
+            'payment_channel': payment_id.payment_channel,
+            'payment_receipt': payment_id.payment_receipt,
+            'upload_pofile': payment_id.upload_pofile,
+            'payment_recived_date': payment_id.payment_recived_date,
+            'Payment_notes': payment_id.Payment_notes
+        }
+        form5 = Payment_detailsForm(payment_detail_initial_data)
+        context1 = {
+        'form5': form5,
+        'payment_id':payment_id,
+        }
+        context.update(context1)
+    except:
+        pass
+
     if Pi_section.objects.filter(lead_id=id).count() > 0:
         pi_id = Pi_section.objects.get(lead_id=id)
 
@@ -903,6 +924,8 @@ def update_view_lead(request,id):
             'discount_type': pi_id.discount_type,
             'first_submit': pi_id.first_submit,
         }
+
+
         form3 = Pi_sectionForm(initial=pi_initial_data)
         context2 = {
             'form': form,
@@ -959,13 +982,43 @@ def update_view_lead(request,id):
 
 
     if request.method == 'POST' or request.method == 'FILES':
-        if 'file_pdf' in request.POST:
+        email = request.session.get('email')
+
+        if 'file_pdf' in request.POST and email == True:
             val = request.POST
             try:
-                email_send = EmailMessage('PI - HSCo', 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo', settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+                email_send = EmailMessage('PI - HSCo ', 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
+                                          settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
                 email_send.attach('invoicex.pdf', val.get('file_pdf'), 'application/pdf')
                 email_send.send()
+
+
+                history = Pi_History()
+                lead_id = Lead.objects.get(id=id)
+                todays_date = str(datetime.now().strftime("%Y-%m-%d"))
+                pi_id = Pi_section.objects.get(lead_id=id)
+
+                pi_products = Pi_product.objects.filter(lead_id=id)
+                context22 = {
+                    'lead_id': lead_id,
+                    'todays_date': todays_date,
+                    'pi_id': pi_id,
+                    'pi_products': pi_products,
+                }
+                template = get_template('lead_management/download_pi_pdf.html')
+                html = template.render(context22)
+                file_pdf = ContentFile(html)
+                # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
+                history.file.save('PI.html', file_pdf, save=False)
+                history.lead_id = Lead.objects.get(id=id)
+                history.log_entered_by = request.user.profile_name
+                history.save()
+                try:
+                    del request.session['email']
+                except:
+                    pass
             except Exception as e:
+                print("hhhhh")
                 print(e)
 
 
@@ -1274,27 +1327,47 @@ def update_view_lead(request,id):
             whatsapp = request.POST.get('whatsapp')
             call2 = request.POST.get('call2')
             discount_type = request.POST.get('discount_type')
+
             if call2 == 'on':
                 call2 = 'True'
             else:
                 call2 = 'False'
             if email == 'on':
                 email = 'True'
+                request.session['email'] = True
+
             else:
                 email = 'False'
+                request.session['email'] = False
+
             if whatsapp == 'on':
                 whatsapp = 'True'
             else:
                 whatsapp = 'False'
-
             pdf = request.FILES.get('pdf')
-            if pdf != None:
-                history = Pi_History()
-                history.file = pdf
-                history.lead_id = Lead.objects.get(id=id)
-                history.log_entered_by = request.user.profile_name
-                history.save()
-                text_content = ''' <html><body>
+
+            if upload_pi_file != None and email == 'True':
+
+                try:
+                    history = Pi_History()
+
+                    history.file = upload_pi_file
+                    history.lead_id = Lead.objects.get(id=id)
+                    history.log_entered_by = request.user.profile_name
+                    history.save()
+
+                    email_send = EmailMessage('PI - HSCo ',
+                                              'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
+                                              settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+
+                    email_send.attach_file(history.file.path)
+
+                    email_send.send()
+
+                except Exception as pi_file_error:
+                    print(pi_file_error)
+
+            text_content = ''' <html><body>
                 <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Hindustan Scale Company<u></u><u></u></span><br>
     <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Sales Enquiry -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +91-7045922250<u></u><u></u></span><br>
     <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Queries &amp; Repairs -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +91-7045922251<u></u><u></u></span><br>
@@ -1312,22 +1385,8 @@ def update_view_lead(request,id):
 <img src="/media/pi_history_file/l.png" style="width: 100%;">
          </div>
         </div> </body></html>'''
-                subject = 'Support'
-                # pdf1 =
-                email_send = EmailMessage(subject, 'testing', settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
-                # msg = EmailMultiAlternatives(subject,'fdsklfhsd' , settings.EMAIL_HOST_USER,[lead_id.customer_id.customer_email_id])
-                if email == 'True' :
-                    # msg.attach(pdf, history.file.read(), 'application/pdf')
 
-                    # email_send.content_subtype = "text/html"  # Main content is now text/html
 
-                    email_send.attach_file(history.file.path)
-                    print(history.file.path)
-                    # msg.attach_file(pdf)
-                    email_send.send()
-
-            if whatsapp == 'True':
-                return redirect('https://api.whatsapp.com/send?phone=91' + customer_id.contact_no + '&text=' + 'hi')
 
             if Pi_section.objects.filter(lead_id=id).count() > 0:
 
@@ -1457,14 +1516,58 @@ def update_view_lead(request,id):
                 wa_no = request.session['wa_no']
                 try:
                     del request.session['wa_msg']
+
+                except:
+                    pass
+                try:
                     del request.session['wa_content']
+
+                except:
+                    pass
+                try:
+
                     del request.session['wa_no']
                 except:
                     pass
             else:
                 return render(request, 'lead_management/update_view_lead.html', context)
 
-            return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+            return redirect('https://api.whatsapp.com/send?phone=' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+
+        if 'submit_payment' in request.POST:
+            payment_channel = request.POST.get("payment_channel")
+            payment_receipt = request.POST.get("payment_receipt")
+            upload_pofile = request.POST.get("upload_pofile")
+            payment_received_date = request.POST.get("payment_recived_date")
+            Payment_notes = request.POST.get("Payment_notes")
+
+
+
+            if Payment_details.objects.filter(lead_id=id).count() == 0:
+                item10 = Payment_details()
+            else:
+                item10 = Payment_details.objects.get(lead_id=id)
+            item10.lead_id=Lead.objects.get(id=id)
+            item10.payment_channel = payment_channel
+            item10.payment_receipt = payment_receipt
+            item10.upload_pofile = upload_pofile
+            item10.payment_recived_date = payment_received_date
+            item10.Payment_notes = Payment_notes
+
+            if Payment_details.objects.filter(lead_id=id).count()==0:
+                item10.save()
+            else:
+                item10.save(
+                    update_fields=['payment_channel', 'payment_receipt', 'upload_pofile', 'payment_recived_date', 'Payment_notes'])
+
+
+
+            del_all_sessions(request)
+            request.session['expand_payment'] = True
+
+            return redirect('/update_view_lead/' + str(id))
+
+
 
         elif 'submit5' in request.POST:
 
@@ -1898,12 +2001,20 @@ td {
                     context.update(context28)
 
 
+
+
+
+
     return render(request, 'lead_management/update_view_lead.html',context)
 
 
 def del_all_sessions(request):
     try:
         del request.session['expand_customer']
+    except:
+        pass
+    try:
+        del request.session['expand_payment']
     except:
         pass
     try:
@@ -1920,7 +2031,7 @@ def del_all_sessions(request):
         pass
 
 def load_wa(wa_no,wa_msg,sms_content):
-    return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+    return redirect('https://api.whatsapp.com/send?phone=' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
 def lead_report(request):
     if request.method =='POST' :

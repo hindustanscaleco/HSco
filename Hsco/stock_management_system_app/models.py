@@ -28,7 +28,8 @@ class Product(models.Model):
 
 class Godown(models.Model):
     name_of_godown = models.CharField(max_length=50,unique=True)
-    goddown_assign_to = models.ForeignKey(SiteUser,on_delete=models.CASCADE)
+    goddown_assign_to = models.ForeignKey(SiteUser,on_delete=models.CASCADE,related_name='goddown_assign_to', null=True, blank=True)
+    godown_admin = models.ForeignKey(SiteUser,on_delete=models.CASCADE,related_name='godown_admin', null=True, blank=True)
     location = models.CharField(max_length=60)
     contact_no = models.CharField(max_length=15)
     entry_timedate = models.DateField(default=datetime.date.today)

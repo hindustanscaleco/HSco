@@ -753,6 +753,9 @@ tr:nth-child(even) {
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
                                 {{ form3.upload_pi_file }}
+                                  {% if pi_id.upload_pi_file %}
+                                  <a href="{{ pi_id.upload_pi_file.url }}" class="btn btn-primary">Old File</a>
+                                  {% endif %}
                             </div>
                              </div>
 
@@ -785,19 +788,19 @@ Steps: 1) Select PI Template and click on submit
                                 {{ form3.select_pi_template }}
                                                               </div>
                           </div>
-                                      <label class="col-md-2 control-label">Choose PI PDF:
+                                      <!--<label class="col-md-2 control-label">Choose PI PDF:-->
 
-</label>
+<!--</label>-->
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-    <input type="file" name="pdf" id="fileToUpload" class="form-control">
-    </div>
-  </div>
+    <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+    <!--<input type="file" name="pdf" id="fileToUpload" class="form-control">-->
+    <!--</div>-->
+  <!--</div>-->
 
                           </div>
 
-                            <div class="form-group row" id="myDiv_call" >
+                            <div class="form-group row" id="myDiv_call" style="display:none;" >
 
 
                                 <label class="col-md-2 control-label">Call:</label>
@@ -810,7 +813,7 @@ Steps: 1) Select PI Template and click on submit
                          <script>
 function myFunction_call() {
   var x = document.getElementById("myDiv_call");
-  if (x.style.display === "none") {
+  if (x.style.display == "none") {
     x.style.display = "block";
   } else {
     x.style.display = "none";
@@ -835,7 +838,7 @@ function myFunction_call() {
                              <!--<button type="submit" onclick="download_pdf()" class="btn btn-primary" style="background-color: #FC6E20;">PDF</button>-->
                              {% if pi_id.first_submit == True  %}
                              <button type="submit" onclick="download_image()" class="btn btn-primary" style="background-color: #FC6E20;">Image</button>
-                             <a target="_blank" href="https://api.whatsapp.com/send?phone=91{{customer_id.contact_no}}&text=Hey\nHere is the PI"><button type="button" class="btn btn-primary" style="background-color: #FC6E20;">Whatsapp</button></a>
+                             <a target="_blank" href="https://api.whatsapp.com/send?phone={{customer_id.contact_no}}&text=Hey, here is the PI"><button type="button" class="btn btn-primary" style="background-color: #FC6E20;">Whatsapp</button></a>
                              {% endif %}
 
 </center>
@@ -1394,7 +1397,12 @@ function whosFunction() {
       <h6 class="m-0 font-weight-bold text-primary">Payment Details Section</h6>
     </a>
                 <!-- Card Body -->
+                  {% if request.session.expand_payment %}
+                <div class="card-body collapse show" id="collapseCardExample5" >
+                    {% else %}
+
                 <div class="card-body collapse" id="collapseCardExample5" >
+                      {% endif %}
 <form  method='POST' id="abc" enctype="multipart/form-data" >{% csrf_token %}
 
 
@@ -1412,6 +1420,10 @@ function whosFunction() {
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form5.payment_receipt }}
+                                   &nbsp &nbsp
+                                   {% if payment_id.payment_receipt %}
+                                  <a href="{{ payment_id.payment_receipt.url }}" class="btn btn-primary">File</a>
+                                  {% endif %}
                             </div>
                              </div>
                           </div>
@@ -1422,7 +1434,7 @@ function whosFunction() {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form5.payment_received_date }}
+                                {{ form5.payment_recived_date }}
                             </div>
                           </div>
 
@@ -1431,6 +1443,10 @@ function whosFunction() {
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form5.upload_pofile }}
+                                  &nbsp &nbsp
+                                  {% if payment_id.upload_pofile %}
+                                  <a href="{{ payment_id.upload_pofile.url }}" class="btn btn-primary">File</a>
+                                  {% endif %}
                    </div>
                              </div>
                           </div>
@@ -1442,7 +1458,7 @@ function whosFunction() {
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form5.notes }}
+                                {{ form5.Payment_notes }}
                             </div>
                              </div>
 
@@ -1457,7 +1473,7 @@ function whosFunction() {
 
 
 <center>
-     <button type="submit" style="background-color: #FC6E20;" class="btn btn-primary">Save</button>
+     <button type="submit" style="background-color: #FC6E20;" name="submit_payment" class="btn btn-primary">Save</button>
 </center>
 
 </form>
