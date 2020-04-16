@@ -4,6 +4,7 @@ import requests
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from django.db import connection
+from django.db.models import F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
@@ -17,9 +18,10 @@ import secrets
 import string
 from datetime import datetime, timedelta
 
-from lead_management.models import Auto_followup_details
+from lead_management.models import Auto_followup_details, Lead
 
 from lead_management.utils import send_html_mail
+
 
 
 class LoginView(FormView):
@@ -471,7 +473,7 @@ def dashboard(request):
 
 
     afd=Auto_followup_details.objects.filter(followup_date=todays_date)
-    print("Doing Auto Followqqqq")
+
     for item in afd:
 
         if (item.follow_up_history.is_email):
@@ -485,9 +487,11 @@ def dashboard(request):
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+
         end_date = todays_date + timedelta(days=2)
-        Auto_followup_details.objects.filter(id=item.id).update(followup_date=end_date)
-    print("Doing Auto Followup")
+        Auto_followup_details.objects.filter(id=item.id).update(followup_date=end_date,no_of_times_fdone=F('no_of_times_fdone')+1)
+        Lead.objects.filter(id=item.follow_up_history.follow_up_section.lead_id).update(no_of_times_followup_done=F('no_of_times_followup_done')+1)
+
 
 
 

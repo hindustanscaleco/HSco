@@ -26,7 +26,10 @@ class Lead(models.Model):
     upload_requirement_file = models.FileField(upload_to='lead_requirement_file/',null=True,blank=True)
     is_entered_purchase = models.BooleanField(default=False)
     postpond_time_date = models.DateField(null=True,blank=True)
+    is_indiamart_purchased_lead = models.BooleanField(default=False)
     # owner_of_opportunity = models.CharField(max_length=80,null=True,blank=True)
+    is_manual_mode_followup = models.BooleanField(default=True)
+    no_of_times_followup_done = models.IntegerField(default=0)
 
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     entry_timedate = models.DateField(default=datetime.date.today)
@@ -141,7 +144,7 @@ class History_followup(models.Model):
     is_auto_follow_deleted = models.BooleanField(default=False)
     file = models.FileField(null=True, blank=True, upload_to='followup_history_file/')
     html_content = models.TextField(null=True, blank=True)
-    # entry_timedate = models.DateTimeField(default=timezone.now,)
+    entry_timedate_time = models.DateTimeField(default=timezone.now,)
     entry_timedate = models.DateField(default=datetime.date.today)
 
 
@@ -149,6 +152,7 @@ class Auto_followup_details(models.Model):
     follow_up_history = models.ForeignKey(History_followup,on_delete=models.CASCADE,null=True,blank=True)
     followup_date = models.DateField(default=datetime.date.today,)
     is_followed = models.BooleanField(default=False)
+    no_of_times_fdone = models.IntegerField(default=0)
     # entry_timedate = models.DateTimeField(default=timezone.now,)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()

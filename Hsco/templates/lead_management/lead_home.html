@@ -438,8 +438,16 @@ $(function() {
 
                 </div>
 </form>
-
-
+<br>
+<table>
+    <tr>
+        <td bgcolor="#7CFC00">Indiamart Purchased Leads</td>
+        <td bgcolor="#32c932">Indiamart Enquiry</td>
+        <td bgcolor="#FFA500">Lead From HSCo Website</td>
+        <td bgcolor="red">Auto Follow-up (> 2 days) </td>
+        <td bgcolor="#FF8C00">Auto Follow-up (< 2 days) </td>
+    </tr>
+</table>
 
 
 <br>
@@ -461,7 +469,7 @@ $(function() {
                   <center><p style="margin-top:10px; font-size: 15px;"> PI Sent & Follow-up <br> ( {{pi_sent_stage}} ) <br>( {{pi_sent_stage_total}} ) </p></center></button>
 &nbsp&nbsp&nbsp&nbsp&nbsp
                         <button class="col-xl-1 btn btn-primary"  name="sub4" style="background: rgba(252,98,98,.9)">
-                  <center><p style="margin-top:8px; font-size: 12px;"> PO Issued - Payment not done <br> ( {{po_no_payment}} ) <br> ( {{pi_sent_stage_total}} ) </p></center>
+                  <center><p style="margin-top:8px; font-size: 12px;"> PO Issued - Payment not done <br> ( {{po_no_payment}} ) <br> ( {{po_no_payment_total}} ) </p></center>
 </button>
 
 &nbsp&nbsp&nbsp&nbsp&nbsp
@@ -472,14 +480,14 @@ $(function() {
 &nbsp&nbsp&nbsp&nbsp&nbsp
             <button class="col-xl-1 btn btn-primary"  name="sub6" style="background: #8B2F97">
 
-                   <center><p style="margin-top:0 px; font-size: 12px;"> Dispatch Done - Closed <br> ( {{dispatch_done_stage}} )<br> ( {{dispatch_stage_total}} ) </p></center>
+                   <center><p style="margin-top:0 px; font-size: 12px;"> Dispatch Done - Closed <br> ( {{dispatch_stage}} )<br> ( {{dispatch_done_stage_total}} ) </p></center>
 </button>
 
 &nbsp&nbsp&nbsp&nbsp&nbsp
 
             <button class="col-xl-1 btn btn-primary"  name="sub7" style="background: rgba(214,186,277,.9)">
 
-                    <center><p style="margin-top:15px font-size: 12px;"> Lost <br> ( {{lost_stage_total}} )<br> ( {{lost_stage_total}} ) </p></center>
+                    <center><p style="margin-top:15px font-size: 12px;"> Lost <br> ( {{lost_stage}} )<br> ( {{lost_stage_total}} ) </p></center>
 </button>
                    &nbsp&nbsp&nbsp&nbsp&nbsp
             <button class="col-xl-1 btn btn-primary"  name="sub8" style="background: #fd5e53">
@@ -597,12 +605,32 @@ td {
             <td style="border: 0px solid gray;">Company Name</td>
             <td style="border: 0px solid gray;">Email ID</td>
             <td style="border: 0px solid gray;">Owner of Opportunity</td>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Stage</td>
-            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">PI Amount</td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Stage</td>
         </tr>
                     {% for list in lead_list %}
 
-        <tr style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
+{% if list.channel == 'IndiaMart' %}
+        {% if list.is_indiamart_purchased_lead %}
+            <tr bgcolor="#7CFC00" style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
+        {% else %}
+        <tr bgcolor="#32c932" style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
+        {% endif %}
+
+
+ {% elif list.channel == 'Website' %}
+  <tr bgcolor="#FFA500" style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
+
+       {% elif list.current_stage == 'PI Sent & Follow-up' or list.current_stage == 'PO Issued - Payment not done' %}
+
+        {% if list.no_of_times_followup_done > 2 %}
+  <tr bgcolor="red" style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
+{% else %}
+          <tr bgcolor="#FF8C00" style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
+        {% endif %}
+        {% else %}
+                  <tr style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
+
+        {% endif %}
 
             <td>{{ list.id}}</td>
             <td>{{ list.date_of_initiation|date:'Y-m-d'}}</td>
@@ -612,8 +640,6 @@ td {
             <td>{{ list.customer_id.customer_email_id}}</td>
             <td>{{list.owner_of_opportunity}}</td>
             <td>{{list.current_stage}}</td>
-            <td>{{list.Pi_section.grand_total}}</td>
-            <!--<td>{{list.sales_person}}</td>-->
 
         </tr>
                           {% endfor %}
