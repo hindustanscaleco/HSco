@@ -637,7 +637,6 @@ def lead_home(request):
 
         if (lead_count > 1):
             for item in response:
-
                 item3 = Customer_Details()
                 item3.customer_name = item['SENDERNAME']
                 item3.company_name = item['GLUSR_USR_COMPANYNAME']
@@ -654,6 +653,10 @@ def lead_home(request):
                     item2 = Lead()
                     item2.customer_id = Customer_Details.objects.get(id=item3.pk)
                     item2.current_stage = 'Not Yet Initiated'
+                    if item['QTYPE'] == 'B':
+                        item2.is_indiamart_purchased_lead = True
+                    else:
+                        item2.is_indiamart_purchased_lead = False
                     item2.new_existing_customer = 'New'
                     item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
                     item2.channel = 'Indiamart'
@@ -1843,6 +1846,7 @@ td {
                     history_follow.is_manual_mode = False
                     history_follow.is_call = False
                     history_follow.is_whatsapp = False
+                    Lead.objects.filter(id=id).update(is_manual_mode_followup=False)
 
                     length_of_list = 1
                     count_list = 0
@@ -2370,6 +2374,7 @@ def lead_follow_up_histroy(request,follow_up_id):
 
             Auto_followup_details.objects.filter(follow_up_history__pk=delete_id).delete()
             History_followup.objects.filter(id=delete_id).update(is_auto_follow_deleted=True)
+            Lead.objects.filter(id=id).update(is_manual_mode_followup=True)
             obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
             Follow_up_section.objects.filter(id=History_followup.objects.get(id=delete_id).follow_up_section.pk).update(auto_manual_mode='Select Mode')
             context2 = {
