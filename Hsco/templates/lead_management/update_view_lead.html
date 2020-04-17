@@ -10,7 +10,7 @@
   <meta name="author" content="">
 
 
-  <title>Robot</title>
+  <title>Hsco | Lead Management</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -37,7 +37,31 @@
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
 
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #FC6E20;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b30000;
+}
+scrollbar-color: #87ceeb #ff5621;
+scrollbar-width: thin;
+</style>
 
 </head>
 
@@ -127,11 +151,7 @@ $(document).ready(function(){
    document.getElementById("name").disabled = false;
   }
 
-var form = document.getElementById("contact_form");
-var elements = form.elements;
-for (var i = 0, len = elements.length; i < len; ++i) {
-    elements[i].disabled = true;
-}
+
 </script>
 
           <script>
@@ -169,29 +189,31 @@ function myFunction() {
 
 
          <div class="col-xl-12 col-lg-12">
-              {% if error_exist %}
+
+
+              {% if request.session.context_sess.error_exist %}
 
                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>Error : </strong> {{error}}
+  <strong>Error : </strong> {{request.session.context_sess.error}}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 {% endif %}
-                           {% if success_exist %}
+                           {% if request.session.context_sess.success_exist %}
 
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Sent : </strong> {{success}}
+  <strong>Sent : </strong> {{request.session.context_sess.success}}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 {% endif %}
 
-               {% if success_exist_2 %}
+               {% if request.session.context_sess.success_exist_2 %}
 
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Sent : </strong> {{success_2}}
+  <strong>Sent : </strong> {{request.session.context_sess.success_2}}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -206,28 +228,28 @@ function myFunction() {
 </script>
 
 {% endif %}
-               {% if success_exist_4 %}
+               {% if request.session.context_sess.success_exist_4 %}
 
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Sent : </strong> {{success_4}}
+  <strong>Sent : </strong> {{request.session.context_sess.success_4}}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 {% endif %}
-               {% if success_exist_5 %}
+               {% if request.session.context_sess.success_exist_5 %}
 
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Recorded : </strong> {{success_5}}
+  <strong>Recorded : </strong> {{request.session.context_sess.success_5}}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 {% endif %}
-                     {% if success_exist_6 %}
+                     {% if request.session.context_sess.success_exist_6 %}
 
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Message : </strong> {{success_6}}
+  <strong>Message : </strong> {{request.session.context_sess.success_6}}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -243,7 +265,7 @@ function myFunction() {
 
 
           <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-      <h6 class="m-0 font-weight-bold text-primary">Customer Details</h6>
+      <h6 class="m-0 font-weight-bold text-primary">Customer Details <span style="float:right;"> CRM No: {{customer_id.pk}} </span> </h6>
     </a>
 
                 <!-- Card Body -->
@@ -260,22 +282,8 @@ function myFunction() {
         </form>
     </div>
 
-                     <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
+                     <form action="" method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
-
-
-                                       <div class="form-group row">
-                              <label class="col-md-2 control-label">CRM No: {{customer_id.pk}}</label>
-                                  <div class="col-md-3 inputGroupContainer">
-
-                        </div>
-
-
-
-                              <div class="col-md-3 inputGroupContainer">
-
-                             </div>
-                          </div>
 
                           <div class="form-group row">
                               <label class="col-md-2 control-label">Customer Name: *</label>
@@ -288,7 +296,7 @@ function myFunction() {
 
 
                                 <label class="col-md-2 control-label">Company Name:</label>
-                              <div class="col-md-3 inputGroupContainer">
+                              <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-industry faicons"></i></span>
                                   {{ form.company_name }}
@@ -307,7 +315,7 @@ function myFunction() {
                           </div>
 
                                 <label class="col-md-2 control-label">Customer Email ID</label>
-                              <div class="col-md-3 inputGroupContainer">
+                              <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-at faicons"></i></span>
                                   {{ form.customer_email_id }}
@@ -327,7 +335,7 @@ function myFunction() {
                              </div>
 
                                 <label class="col-md-2 control-label">Address: *</label>
-                              <div class="col-md-3 inputGroupContainer">
+                              <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-home faicons" aria-hidden="true"></i></span>
                                   {{ form.address }}
@@ -425,7 +433,10 @@ function myFunction() {
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
              <a href="#collapseCardExample2" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample2">
-      <h6 class="m-0 font-weight-bold text-primary">Deal Details Section</h6>
+                 <h6 class="m-0 font-weight-bold text-primary">Deal Details Section<span style="float:right;">Purchase ID: {{lead_id.purchase_id.pk}} </span>
+             {% if lead_id.purchase_id.dispatch_id_assigned %}
+                     <span style="float:right;">Dispatch ID: {{lead_id.purchase_id.dispatch_id_assigned.pk}} &nbsp;&nbsp; | &nbsp;&nbsp; </span>
+                              {% endif %} </h6>
     </a>
                 <!-- Card Body -->
                   {% if request.session.expand_deal_detail %}
@@ -447,12 +458,7 @@ function myFunction() {
                           </div>
                         </div>
 
-         <div class="col-md-2">
-             Purchase ID: {{lead_id.purchase_id.pk}}<br>
-             {% if lead_id.purchase_id.dispatch_id_assigned %}
-             Dispatch ID: {{lead_id.purchase_id.dispatch_id_assigned.pk}}
-                              {% endif %}
-         </div>
+
    <div class="col-md-3">
             {% if lead_id.current_stage == 'PO Issued - Payment Done - Dispatch Pending' or lead_id.current_stage == 'Dispatch Done - Closed' %}
 {% if lead_id.is_entered_purchase %}
@@ -713,24 +719,30 @@ tr:nth-child(even) {
                {% endfor %}
 
                          <br>
-                     <form  name="PIForm" method='POST'  a enctype="multipart/form-data" >{% csrf_token %}
+                     <form  name="PIForm" method='POST'  action="" enctype="multipart/form-data" >{% csrf_token %}
 
-                              <div class="form-group row">
-                              <label class="col-md-2 control-label">Discount:</label>
+                         <div class="row">
 
-                                  <div class="col-md-3 inputGroupContainer">
+                         <div class="card shadow col-md-6">
+                        <br>
+                         <center>System Generated PI</center>
+
+ <hr>
+   <div class="form-group row">
+                              <label class="col-md-4 control-label">Discount:</label>
+
+                                  <div class="col-md-7 inputGroupContainer">
                                   <div class="input-group">
                                   <span class="input-group-addon icon-border"></span>
                                 {{ form3.discount }}
                                 {{ form3.discount_type }}
-                                      <!--<select class="form-control" id="discount_type">-->
-                                      <!--<option value="volvo">%</option>-->
-                                      <!--<option value="saab">₹</option>-->
-                                      <!--</select>-->
+
                           </div>
                         </div>
-                                                                           <label class="col-md-2 control-label">Select GST Type :</label>
-                              <div class="col-md-3 inputGroupContainer">
+   </div>
+                                <div class="form-group row">
+                                                                           <label class="col-md-4 control-label">Select GST Type :</label>
+                              <div class="col-md-7 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
                                 {{ form3.select_gst_type }}
@@ -740,16 +752,29 @@ tr:nth-child(even) {
 
 
                           </div>
+                             {% if pi_id.first_submit == True  %}
+                                                  <div class="form-group row">
+                                <label class="col-md-4 control-label">Select PI Template </label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.select_pi_template }}
+                                                              </div>
+                          </div>
 
-                         <hr>
+
+                          </div>
+                             {% endif %}
+                         </div>
+                                <div class="card shadow col-md-6">
+<br>
                          <center>External PI</center>
-                         <hr>
-<br>
-<br>
+
+ <hr>
 
                             <div class="form-group row">
-                                <label class="col-md-2 control-label">Upload PI File:</label>
-                              <div class="col-md-3 inputGroupContainer">
+                                <label class="col-md-4 control-label">Upload PI File:</label>
+                              <div class="col-md-7 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
                                 {{ form3.upload_pi_file }}
@@ -758,9 +783,12 @@ tr:nth-child(even) {
                                   {% endif %}
                             </div>
                              </div>
+                            </div>
 
-                                                                         <label class="col-md-2 control-label">Amount</label>
-                              <div class="col-md-3 inputGroupContainer">
+                                <div class="form-group row">
+
+                                                                         <label class="col-md-4 control-label">Amount:</label>
+                              <div class="col-md-7 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
                                 {{ form3.grand_total }}
@@ -771,45 +799,34 @@ tr:nth-child(even) {
                             </div>
 
 
-                         <hr>
-                         <br>
+
+
+                         </div>
+
+
+
+
+                         </div>
+
+
+
 
 {% if pi_id.first_submit == True  %}
-<br>
-                        <pre>
-Steps: 1) Select PI Template and click on submit
-       2) Choose PI PDF, Select Medium of Selection and click on submit
-                         </pre>
-                            <div class="form-group row">
-                                <label class="col-md-2 control-label">Select PI Template <b>(Generate PI PDF):</b></label>
-                              <div class="col-md-3 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
-                                {{ form3.select_pi_template }}
-                                                              </div>
-                          </div>
-                                      <!--<label class="col-md-2 control-label">Choose PI PDF:-->
+<div class="row">
 
-<!--</label>-->
-
-    <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-    <!--<input type="file" name="pdf" id="fileToUpload" class="form-control">-->
-    <!--</div>-->
-  <!--</div>-->
-
-                          </div>
+                         <div class="card shadow col-md-6">
 
                             <div class="form-group row" id="myDiv_call" style="display:none;" >
 
 
-                                <label class="col-md-2 control-label">Call:</label>
-                              <div class="col-md-6 inputGroupContainer">
+                                <label class="col-md-3 control-label">Call Response:</label>
+                              <div class="col-md-12 inputGroupContainer">
                               <div class="input-group">
                                 {{ form3.call }}
                    </div>
                              </div>
                           </div>
+                         </div></div>
                          <script>
 function myFunction_call() {
   var x = document.getElementById("myDiv_call");
@@ -827,7 +844,10 @@ function myFunction_call() {
 <div class="row">
                                                          <label class="col-md-2 control-label">Medium of Selection:</label>
 
-    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp  {{ form3.email  }} <div class="col-xl-2 col-lg-2"></div>  <div class="col-xl-2 col-lg-2"></div>   <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form3.call2  }}
+    <label class="form-check-label">Email : &nbsp;&nbsp; {{ form3.email  }}</label>
+    <div class="col-xl-2 col-lg-2"></div>
+    <div class="col-xl-2 col-lg-2"></div>
+    <label class="form-check-label">Call : &nbsp;&nbsp; {{ form3.call2  }}</label>
 </div>
 {% endif %}
 
@@ -855,7 +875,16 @@ function myFunction_call() {
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
          <a href="#collapseCardExample4" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample4">
-      <h6 class="m-0 font-weight-bold text-primary">Follow-up Section</h6>
+      <h6 class="m-0 font-weight-bold text-primary">Follow-up Section
+          {% if auto_manual_mode == 'Automatic' %}
+
+<span style="float:right;" class="m-0 alert alert-danger">Auto Follow-Up</span>
+           {% else %}
+          <span style="float:right;" class="m-0 alert alert-success">Manual Follow-Up</span>
+
+           {% endif %}</h6>
+
+
     </a>
                 <!-- Card Body -->
 
@@ -1063,7 +1092,7 @@ function myFunction_call() {
 </div>
 </div>
   </div>
-  <hr>
+
                                 <center>
                                     <button style="background-color: #FC6E20;" class="btn btn-primary" type="submit" name="submit3">Save</button>
                                 </center>
@@ -1095,12 +1124,11 @@ function myFunction_call() {
                             </div>
 
                             <div class="">
-<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; overflow-x:scroll;">
+<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; ">
 
-    <table>
-
+    <div style="overflow:scroll;height:380px; ">
+    <table >
         <tr>
-
             <td style="min-width: 100px;">Product Selection</td>
             <td style="min-width: 200px;">Scale Type</td>
             <td style="min-width: 200px;">Main Model</td>
@@ -1151,7 +1179,7 @@ function myFunction_call() {
            {% endfor %}
 
     </table>
-
+    </div>
 
               </div>
                           </div>
@@ -1161,21 +1189,24 @@ function myFunction_call() {
                         <div class="row col-md-12" style="margin-left:4%">
                               <br>
 
-                                                                {% if history_follow.is_wa %}
+                                                                {% if history_follow.is_whatsapp %}
 
-    <div class="col-md-5" id="my123">
+    <div class="col-md-5 card shadow" id="my123">
 
+<div class="row">
+        <label class="col-md-3 control-label">Whatsapp:</label>
 
-
-    <label class="col-md-10 control-label">Whatsapp:</label>
-                                <br>
                         {{ form6.wa_no }}
-                        <br>
-                                <label class="col-md-5 control-label" style="float:left;">Content:</label>
+
+                                <label class="col-md-3 control-label" style="float:left;">Content:</label>
                                 {{ form6.wa_msg }}
+         <br>
+</div>
+
+
 </div>
        {% else %}
-                             <div class="col-md-5" id="my123" style="display: none;">
+                             <div class="col-md-5 card shadow" id="my123" style="display: none;">
 
 
 
@@ -1185,24 +1216,27 @@ function myFunction_call() {
                         <br>
                                 <label class="col-md-5 control-label" style="float:left;">Content:</label>
                                 {{ form6.wa_msg }}
+                                 <br>
 </div>
        {% endif %}
 
 
 <div class="col-md-1"></div>
                             {% if history_follow.is_email %}
-<div class="col-md-5" id="myemail">
+<div class="col-md-5 card shadow" id="myemail">
+<div class="row">
+                      <label class="col-md-4 control-label">Email Subject:</label>
 
-                         <label class="col-md-4 control-label">Email Subject:</label>
-    <br>
                                 {{ form6.email_subject }}
-                        <br>
+
                            <label class="col-md-4 control-label">Email Message:</label>
                                 {{ form6.email_msg }}
-                        <br>
+
+</div>
+
 </div>
                             {% else %}
-                            <div class="col-md-5" id="myemail" style="display: none;">
+                            <div class="col-md-5 card shadow" id="myemail" style="display: none;">
 
                          <label class="col-md-4 control-label">Email Subject:</label>
     <br>
@@ -1210,7 +1244,7 @@ function myFunction_call() {
                         <br>
                            <label class="col-md-4 control-label">Email Message:</label>
                                 {{ form6.email_msg }}
-                        <br>
+
 </div>
                             {% endif %}
     </div>
@@ -1218,16 +1252,18 @@ function myFunction_call() {
 <div class="row col-md-12" style="margin-left:4%">
                                 {% if history_follow.is_call %}
 
-                            <div class="col-md-5" id="mycall_follow_up" >
+                            <div class="col-md-5 card shadow" id="mycall_follow_up" >
                            <label class="col-md-4 control-label">Call Response:</label>
 <br>
                                 {{ form6.call_response }}
+                                <br>
                             </div>
     {% else %}
-       <div class="col-md-5" id="mycall_follow_up" style="display: none;">
+       <div class="col-md-5 card shadow" id="mycall_follow_up" style="display: none;">
                            <label class="col-md-4 control-label">Call Response:</label>
 <br>
                                 {{ form6.call_response }}
+           <br>
                             </div>
     {% endif %}
 
@@ -1238,17 +1274,22 @@ function myFunction_call() {
                                 </div>
                                     {% if history_follow.is_sms %}
 
-                                    <div class="col-md-5" id="mysms" >
-                           <label class="col-md-4 control-label">SMS Content:</label>
-<br>
+                                    <div class="col-md-5 card shadow" id="mysms" >
+                                        <div class="row" >
+                                            <label class="col-md-4 control-label">SMS Content:</label>
+
                                 {{ form6.sms_msg }}
+                                        </div>
+
+
                         </div>
 
     {% else %}
-             <div class="col-md-5" id="mysms" style="display: none;">
+             <div class="col-md-5 card shadow" id="mysms" style="display: none;">
                            <label class="col-md-4 control-label">SMS Content:</label>
 <br>
                                 {{ form6.sms_msg }}
+                 <br>
                         </div>
     {% endif %}
                         </div>
@@ -1259,14 +1300,22 @@ function myFunction_call() {
       if ( this.value == 'Manual')
       {
         $("#div_call").show();
+          if(document.getElementById("is_call").checked == true){
+        $("#mycall_follow_up").show();
+        }
       }
       if ( this.value == 'Select Mode')
       {
         $("#div_call").show();
+        if(document.getElementById("is_call").checked == true){
+        $("#mycall_follow_up").show();
+        }
       }
       if ( this.value == 'Automatic')
       {
         $("#div_call").hide();
+
+        $("#mycall_follow_up").hide();
       }
     });
 });
@@ -1276,25 +1325,25 @@ function myFunction_call() {
 
                             <label class="col-md-2 control-label">Medium of Selection:</label>
 
-    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp {{ form6.is_email  }}
+    <label class="form-check-label">Email : &nbsp; &nbsp; {{ form6.is_email  }}</label>
     <div class="col-xl-2 col-lg-2"></div>
-    <label class="form-check-label">Whatsapp:</label>&nbsp &nbsp&nbsp&nbsp{{ form6.is_whatsapp  }}
+    <label class="form-check-label">Whatsapp : &nbsp; &nbsp; {{ form6.is_whatsapp  }}</label>
     <div class="col-xl-2 col-lg-2"></div>
 
     {% if auto_manual_mode == 'Manual' %}
        <div id="div_call" >
-    <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_call  }}
+    <label class="form-check-label">Call : &nbsp; &nbsp; {{ form6.is_call  }}</label>
     </div>
     {% else %}
        <div id="div_call" style="display: none;">
-    <label class="form-check-label">Call:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_call  }}
+    <label class="form-check-label">Call : &nbsp; &nbsp; {{ form6.is_call  }}</label>
     </div>
     {% endif %}
 
 
 
     <div class="col-xl-2 col-lg-2"></div>
-    <label class="form-check-label">SMS:</label>&nbsp &nbsp &nbsp &nbsp{{ form6.is_sms  }}
+    <label class="form-check-label">SMS : &nbsp; &nbsp;{{ form6.is_sms  }}</label>
 </div>
 <br>
 <center>
@@ -1495,17 +1544,7 @@ function whosFunction() {
 
 </div>
 
-<script type="text/javascript">
-let doc = new jsPDF('p','pt','a4');
-doc.addHTML(document.getElementById("content_content"),function() {
-//doc.save('html.pdf');
-      sessionStorage.setItem("doc", doc);
 
-});
-
-
-
-</script>
 
       <!-- Footer -->
       <footer class="sticky-footer bg-white">

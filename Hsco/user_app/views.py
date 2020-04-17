@@ -483,7 +483,7 @@ def dashboard(request):
 
         if (item.follow_up_history.is_sms):
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.follow_up_history.follow_up_section.lead_id.customer_id.contact_no + "&message=" + item.follow_up_history.sms_msg + "&senderid=" + settings.senderid + "&type=txt"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.follow_up_history.follow_up_section.lead_id.customer_id.contact_no + "&message=" + item.follow_up_history.sms_msg+'\n'+item.follow_up_history.sms_con + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
