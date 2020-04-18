@@ -585,7 +585,7 @@ class Payment_detailsForm(forms.ModelForm):
                                              }
                                          ))
 
-    Payment_notes = forms.CharField(max_length=80, required=True,
+    Payment_notes = forms.CharField(max_length=80, required=False,
                                          widget=forms.Textarea(
                                              attrs={
                                                  'type': 'text',
