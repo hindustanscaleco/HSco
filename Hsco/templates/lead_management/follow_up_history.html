@@ -229,13 +229,13 @@ td {
 
 
 
- {% ifchanged item.entry_timedate.date %}
+ {% ifchanged item.entry_timedate_time.date %}
 
            <div class="col-xl-12 col-lg-12">
 
     <table>
         <tr style="background-color: gray; color: white;">
-            <td style=" border: 0px solid gray;"> {{ item.entry_timedate_time.time }}</td>
+            <td style=" border: 0px solid gray;"> {{ item.entry_timedate_time.date }}</td>
         </tr>
 
     </table>
@@ -293,7 +293,7 @@ td {
         </div>
 
                 <div class="col-md-6" id="mysms" >
-                           <label class="col-md-12 control-label">SMS Content: {{ item.sms_msg }}</label>
+                           <label class="col-md-12 control-label">SMS Content: {{ item.sms_msg }}{{item.sms_con}}</label>
 <br>
 
                         </div>
@@ -321,7 +321,10 @@ td {
       {% endif %}
 </div>
 </div>
-
+<br>
+      <center>
+          {{ item.entry_timedate_time.time }}
+      </center>
 <center>
       {{form4.email_auto_manual}}
 </center>

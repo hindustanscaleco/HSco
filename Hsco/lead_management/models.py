@@ -141,6 +141,7 @@ class History_followup(models.Model):
     email_msg = models.TextField(max_length=120, null=True, blank=True)
     call_response = models.TextField(max_length=120, null=True, blank=True)
     sms_msg = models.TextField()
+    sms_con = models.TextField()
     is_manual_mode = models.BooleanField(default=True)
     is_auto_follow_deleted = models.BooleanField(default=False)
     file = models.FileField(null=True, blank=True, upload_to='followup_history_file/')

@@ -816,7 +816,10 @@ def update_view_lead(request,id):
     history_follow = History_followup.objects.filter(follow_up_section__id=hfu.id).last()
 
     followup_products_list = Followup_product.objects.filter(lead_id=id)
-
+    try:
+        del request.session['context_sess']
+    except:
+        pass
     table = ''
     table2 = ''
     total = 0.0
@@ -857,24 +860,33 @@ def update_view_lead(request,id):
     form = Customer_detailForm(initial=customer_initial_data)
     form2 = Deal_detailForm(initial=deal_details_initial_data)
     form3 = Pi_sectionForm()
+
     form4 = Follow_up_sectionForm(initial={'email_auto_manual':hfu.auto_manual_mode,})
 
     if(history_follow!=None):
         wa_msg = history_follow.wa_msg
         email_msg = history_follow.email_msg
+        call_response = history_follow.call_response
         sms_msg = history_follow.sms_msg
         is_email = 'is_email' if history_follow.is_email else ''
+        is_call = 'is_call' if history_follow.is_call else ''
+        is_sms = 'is_sms' if history_follow.is_sms else ''
+        is_whatsapp = 'is_whatsapp' if history_follow.is_whatsapp else ''
         wa_no = history_follow.wa_no if history_follow.wa_no else customer_id.contact_no
     else:
         wa_msg = ''
         email_msg = ''
         sms_msg = ''
         is_email = ''
+        is_call = ''
+        is_sms = ''
+        is_whatsapp = ''
         wa_no = ''
+        call_response = ''
 
 
     form6 = History_followupForm(initial={'wa_no':wa_no,'email_subject':hfu.email_subject,'wa_msg':wa_msg,'email_msg':email_msg,
-                                          'sms_msg':sms_msg,'is_email':is_email})
+                                          'sms_msg':sms_msg,'is_email':is_email,'call_response':call_response,'is_call':is_call,'is_sms':is_sms,'is_whatsapp':is_whatsapp})
 
 
     context = {
@@ -893,8 +905,9 @@ def update_view_lead(request,id):
         'customer_id':customer_id,
         'history_follow':history_follow,
     }
+
     try:
-        payment_id = Payment_details.objects.get(lead_id=id)
+        payment_id = Payment_details.objects.filter(lead_id=id)
         payment_detail_initial_data = {
             'payment_channel': payment_id.payment_channel,
             'payment_receipt': payment_id.payment_receipt,
@@ -902,14 +915,18 @@ def update_view_lead(request,id):
             'payment_recived_date': payment_id.payment_recived_date,
             'Payment_notes': payment_id.Payment_notes
         }
-        form5 = Payment_detailsForm(payment_detail_initial_data)
+        form5 = Payment_detailsForm(initial=payment_detail_initial_data)
         context1 = {
         'form5': form5,
         'payment_id':payment_id,
         }
         context.update(context1)
     except:
-        pass
+        form5 = Payment_detailsForm()
+        context1 = {
+            'form5': form5,
+        }
+        context.update(context1)
 
     if Pi_section.objects.filter(lead_id=id).count() > 0:
         pi_id = Pi_section.objects.get(lead_id=id)
@@ -1518,25 +1535,7 @@ def update_view_lead(request,id):
                 wa_msg = request.session['wa_msg']
                 sms_content = request.session['wa_content']
                 wa_no = request.session['wa_no']
-                try:
-                    del request.session['wa_msg']
-
-                except:
-                    pass
-                try:
-                    del request.session['wa_content']
-
-                except:
-                    pass
-                try:
-
-                    del request.session['wa_no']
-                except:
-                    pass
-            else:
-                return render(request, 'lead_management/update_view_lead.html', context)
-
-            return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+            	return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
         if 'submit_payment' in request.POST:
             payment_channel = request.POST.get("payment_channel")
@@ -1590,18 +1589,29 @@ def update_view_lead(request,id):
 
 
             if(len(selected_products)<1):
-
                 context22={
                     'error':"No Product Selected\nPlease Select Products And Try Again",
                     'error_exist':True,
                 }
                 context.update(context22)
+                try:
+                    del request.session['context_sess']
+                except:
+                    pass
+                request.session['context_sess']=context22
+                return redirect('/update_view_lead/' + str(id))
             elif(is_call!='on' and is_sms!='on' and is_whatsapp!='on' and is_email!='on' and is_call!='is_call' and is_sms!='is_sms' and is_whatsapp!='is_whatsapp' and is_email !='is_email'):
                 context28 = {
                     'error': "Please Select Atleast One Medium For Followup",
                     'error_exist': True,
                 }
                 context.update(context28)
+                try:
+                    del request.session['context_sess']
+                except:
+                    pass
+                request.session['context_sess']=context28
+                return redirect('/update_view_lead/' + str(id))
             elif (len(selected_fields)<6):
 
                 context28 = {
@@ -1609,6 +1619,12 @@ def update_view_lead(request,id):
                     'error_exist': True,
                 }
                 context.update(context28)
+                try:
+                    del request.session['context_sess']
+                except:
+                    pass
+                request.session['context_sess']=context28
+                return redirect('/update_view_lead/' + str(id))
             elif (email_auto_manual == 'Select Mode'):
 
                 context28 = {
@@ -1616,6 +1632,12 @@ def update_view_lead(request,id):
                     'error_exist': True,
                 }
                 context.update(context28)
+                try:
+                    del request.session['context_sess']
+                except:
+                    pass
+                request.session['context_sess']=context28
+                return redirect('/update_view_lead/' + str(id))
             elif(email_auto_manual == 'Manual'):
 
                 final_list = []
@@ -1685,7 +1707,7 @@ def update_view_lead(request,id):
                             html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
 
                     html_rows = html_rows + '''</tr>'''
-
+                context_session={}
 
 
                 if(is_email=='on' or is_email =='is_email'):
@@ -1778,7 +1800,7 @@ td {
                         'success': "Email Sent on email Id: "+customer_id.customer_email_id,
                         'success_exist': True,
                     }
-                    context.update(context28)
+                    context_session.update(context28)
 
                 if(is_whatsapp=='on' or is_whatsapp=='is_whatsapp'):
                     history_follow.is_whatsapp = True
@@ -1786,7 +1808,16 @@ td {
                     history_follow.wa_no = wa_no
                     try:
                         del request.session['wa_msg']
+
+                    except:
+                        pass
+                    try:
                         del request.session['wa_content']
+
+                    except:
+                        pass
+                    try:
+
                         del request.session['wa_no']
                     except:
                         pass
@@ -1797,14 +1828,15 @@ td {
                         'success_2': "WhatsApp Redirect Successful On WhatsApp No : " + wa_no,
                         'success_exist_2': True,
                     }
-                    context.update(context28)
+                    context_session.update(context28)
 
                 if(is_sms=='on' or is_sms=='is_sms'):
                     sms_msg = request.POST.get('sms_msg')
                     history_follow.is_sms = True
-                    history_follow.sms_msg = sms_msg+'\n'+sms_content
+                    history_follow.sms_msg = sms_msg
+                    history_follow.sms_con = sms_content
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + customer_id.contact_no + "&message=" + sms_msg + "&senderid=" + settings.senderid + "&type=txt"
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + customer_id.contact_no + "&message=" + sms_msg+'\n'+sms_content + "&senderid=" + settings.senderid + "&type=txt"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 
@@ -1815,7 +1847,7 @@ td {
                         'success_4': "SMS Sent Successfully To : " + customer_id.contact_no,
                         'success_exist_4': True,
                     }
-                    context.update(context28)
+                    context_session.update(context28)
 
                 if(is_call=='on' or is_call=='is_call'):
                     call_response = request.POST.get('call_response')
@@ -1825,11 +1857,19 @@ td {
                         'success_5': "Call Response Recorded Successfully" ,
                         'success_exist_5': True,
                     }
-                    context.update(context28)
+                    context_session.update(context28)
                 history_follow.log_entered_by = request.user.name
 
                 history_follow.save()
+                try:
+                    del request.session['context_sess']
+                except:
+                    pass
+                request.session['context_sess']=context_session
                 return redirect('/update_view_lead/' + str(id))
+
+
+
             elif (email_auto_manual == 'Automatic'):
 
                 if(Auto_followup_details.objects.filter(follow_up_history__follow_up_section__lead_id__id=lead_id.id).count()==0):
@@ -1984,8 +2024,8 @@ td {
                     if(is_sms=='on' or is_sms=='is_sms'):
                         sms_msg = request.POST.get('sms_msg')
                         history_follow.is_sms = True
-                        history_follow.sms_msg = sms_msg + '\n' + sms_content
-
+                        history_follow.sms_msg = sms_msg
+                        history_follow.sms_con = sms_content
 
                     history_follow.log_entered_by = request.user.name
 
