@@ -900,6 +900,21 @@ function myFunction_call() {
                                       <div class="card-body collapse" id="collapseCardExample4" >
 
                   {% endif %}
+                                                   <div class="row">
+                            <div class="row col-md-8"></div>
+                        <div class="row col-md-2">
+ <button type="reset" onclick="location.href='/select_product_followup/{{lead_id.pk}}'" style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button>
+
+                        </div>
+                            <div class="row col-md-2">
+                        <a href="/lead_follow_up_histroy/{{hfu_id}}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="History"></a> &nbsp
+
+
+                            </div>
+                            </div>
+
+<br>
+
                       <div class="card" >
                         <div class="card-body" style="padding: 10px;color: black; font-weight: 300; font-size: 14px;">
                             <center><h4><b>Product Fields To Show</b></h4></center>
@@ -1108,26 +1123,21 @@ function myFunction_call() {
                         </div>
 
                     </div>
-                    <br>
-                    <br>
+
                     <form action="" method='POST' enctype="multipart/form-data" >{% csrf_token %}
-                        <div class="row">
-                            <div class="row col-md-3"></div>
-                        <div class="row col-md-6">
-<center>
+<!--                        <div class="row">-->
+<!--                            <div class="row col-md-3"></div>-->
+<!--                        <div class="row col-md-6">-->
 
-     <button type="reset" onclick="location.href='/select_product_followup/{{lead_id.pk}}'" style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button>
-</center>
-                        </div>
-                            <div class="row col-md-3">
+<!--                        </div>-->
+<!--                            <div class="row col-md-3">-->
 
-                        <a href="/lead_follow_up_histroy/{{hfu_id}}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="History"></a> &nbsp
-                         {% if auto_manual_mode == 'Automatic' %}
+<!--                         {% if auto_manual_mode == 'Automatic' %}-->
 
-<span style="float:right;margin:10px;" class="alert alert-danger">Auto Follow-Up</span>
-           {% endif %}
-                            </div>
-                            </div>
+<!--<span style="float:right;margin:10px;" class="alert alert-danger">Auto Follow-Up</span>-->
+<!--           {% endif %}-->
+<!--                            </div>-->
+<!--                            </div>-->
 
                             <div class="">
 <div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; ">
