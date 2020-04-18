@@ -379,7 +379,7 @@ Format : (company name)
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-<input type="text" required name="owner_of_opportunity" placeholder="Owner" class="form-control"  list="channel102">
+<input type="text" required name="owner_of_opportunity" placeholder="Owner" class="form-control" value="{{user.profile_name}}" list="channel102">
     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
       <datalist style="height:20px;" id="channel102">
                     {% for user in users %}

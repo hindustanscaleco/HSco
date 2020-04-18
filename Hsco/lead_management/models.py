@@ -201,9 +201,9 @@ class IndiamartLeadDetails(models.Model):
 class Payment_details(models.Model):
     lead_id = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, blank=True)
     payment_channel = models.CharField(max_length=60, null=True, blank=True)
-    payment_receipt = models.FileField(null=True,blank=True)
+    payment_receipt = models.FileField(upload_to='payment_receipt/',null=True,blank=True)
     payment_recived_date = models.DateTimeField(default=timezone.now)
-    upload_pofile = models.FileField(null=True,blank=True)
+    upload_pofile = models.FileField(upload_to='payment_section_po_file/',null=True,blank=True)
     Payment_notes = models.TextField(max_length=120, null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()

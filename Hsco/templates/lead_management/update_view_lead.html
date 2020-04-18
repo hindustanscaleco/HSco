@@ -609,7 +609,7 @@ function myFunction() {
     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
       <datalist style="height:20px;" id="channel102">
                     {% for user in users %}
-      <option value="{{user.profile_name}}">{{user.profile_name}}</option>
+      <option value="{{user.name}}">{{user.name}}</option>
           {% endfor %}
     </datalist>                            </div>
                              </div>
@@ -769,6 +769,7 @@ tr:nth-child(even) {
 
                           </div>
                              {% endif %}
+                             <center>Note: For PI Preview Uncheck Email and click on submit button</center>
                          </div>
                                 <div class="card shadow col-md-6">
 <br>
@@ -1131,7 +1132,7 @@ function myFunction_call() {
                             <div class="">
 <div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; ">
 
-    <div style="overflow:scroll;height:380px; ">
+    <div style="overflow:auto;min-height:100px;max-height:390px;">
     <table >
         <tr>
             <td style="min-width: 100px;">Product Selection</td>
@@ -1484,7 +1485,7 @@ function whosFunction() {
 
 
                             <div class="form-group row">
-                                <label class="col-md-2 control-label">Payment Received Date</label>
+                                <label class="col-md-2 control-label">Payment Received Date*</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
@@ -1497,7 +1498,8 @@ function whosFunction() {
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form5.upload_pofile }}
-                                  &nbsp &nbsp
+                                  &nbsp; &nbsp;
+
                                   {% if payment_id.upload_pofile %}
                                   <a href="{{ payment_id.upload_pofile.url }}" class="btn btn-primary">File</a>
                                   {% endif %}

@@ -872,7 +872,7 @@ def update_view_lead(request,id):
         is_call = 'is_call' if history_follow.is_call else ''
         is_sms = 'is_sms' if history_follow.is_sms else ''
         is_whatsapp = 'is_whatsapp' if history_follow.is_whatsapp else ''
-        wa_no = history_follow.wa_no if history_follow.wa_no else customer_id.contact_no
+        wa_no = history_follow.wa_no if history_follow.wa_no != None else customer_id.contact_no
     else:
         wa_msg = ''
         email_msg = ''
@@ -881,7 +881,7 @@ def update_view_lead(request,id):
         is_call = ''
         is_sms = ''
         is_whatsapp = ''
-        wa_no = ''
+        wa_no = customer_id.contact_no
         call_response = ''
 
 
@@ -907,7 +907,7 @@ def update_view_lead(request,id):
     }
 
     try:
-        payment_id = Payment_details.objects.filter(lead_id=id)
+        payment_id = Payment_details.objects.get(lead_id=id)
         payment_detail_initial_data = {
             'payment_channel': payment_id.payment_channel,
             'payment_receipt': payment_id.payment_receipt,
@@ -1005,7 +1005,7 @@ def update_view_lead(request,id):
     if request.method == 'POST' or request.method == 'FILES':
         email = request.session.get('email')
 
-        if 'file_pdf' in request.POST and email == True:
+        if 'file_pdf' in request.POST and (email == 'True' or email == True):
             val = request.POST
             try:
                 email_send = EmailMessage('PI - HSCo ', 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
@@ -1135,7 +1135,7 @@ def update_view_lead(request,id):
             if postpond_time_date != '' and postpond_time_date != None:
                 item2.postpond_time_date = postpond_time_date
             item2.log_entered_by = request.user.name
-            item2.owner_of_opportunity = SiteUser.objects.get(profile_name=owner_of_opportunity)
+            item2.owner_of_opportunity = SiteUser.objects.get(name=owner_of_opportunity)
             item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
                                       'requirement','upload_requirement_file','owner_of_opportunity','log_entered_by',
                                       'lost_reason','postponed_reason','postpond_time_date'])
@@ -1153,10 +1153,7 @@ def update_view_lead(request,id):
                 purchase_det.date_of_purchase = item2.entry_timedate
                 purchase_det.product_purchase_date = item2.entry_timedate
                 purchase_det.sales_person = owner_of_opportunity
-                purchase_det.user_id = SiteUser.objects.get(profile_name=owner_of_opportunity)
-                # purchase_det.bill_no = bill_no
-                # purchase_det.upload_op_file = upload_op_file
-                # purchase_det.po_number = po_number
+                purchase_det.user_id = SiteUser.objects.get(name=owner_of_opportunity)
                 purchase_det.channel_of_sales = channel
                 purchase_det.industry = lead_id.customer_id.customer_industry
                 purchase_det.value_of_goods = 0.0
@@ -1522,8 +1519,6 @@ def update_view_lead(request,id):
         elif 'submit3' in request.POST:
             selected_fields = request.POST.getlist('checks[]')
             Follow_up_section.objects.filter(lead_id=id).update(fields=selected_fields)
-            hfu = Follow_up_section.objects.filter(lead_id=id).last()
-
             del_all_sessions(request)
             request.session['expand_followup'] = True
 
@@ -1535,12 +1530,14 @@ def update_view_lead(request,id):
                 wa_msg = request.session['wa_msg']
                 sms_content = request.session['wa_content']
                 wa_no = request.session['wa_no']
-            	return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+                return redirect('https://api.whatsapp.com/send?phone=+91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+
+
 
         if 'submit_payment' in request.POST:
             payment_channel = request.POST.get("payment_channel")
-            payment_receipt = request.POST.get("payment_receipt")
-            upload_pofile = request.POST.get("upload_pofile")
+            payment_receipt = request.FILES.get("payment_receipt")
+            upload_pofile = request.FILES.get("upload_pofile")
             payment_received_date = request.POST.get("payment_recived_date")
             Payment_notes = request.POST.get("Payment_notes")
 
