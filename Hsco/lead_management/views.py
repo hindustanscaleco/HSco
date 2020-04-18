@@ -1500,7 +1500,7 @@ def update_view_lead(request,id):
                 item2.save()
                 # if whatsapp == 'True':
                 #     return redirect('https://api.whatsapp.com/send?phone=91' + customer_id.contact_no + '&text=' + 'hi')
-                # return redirect('/update_view_lead/'+str(lead_id.id))
+            return redirect('/update_view_lead/'+str(lead_id.id))
 
         elif 'submit3' in request.POST:
             selected_fields = request.POST.getlist('checks[]')
@@ -1536,7 +1536,7 @@ def update_view_lead(request,id):
             else:
                 return render(request, 'lead_management/update_view_lead.html', context)
 
-            return redirect('https://api.whatsapp.com/send?phone=' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+            return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
         if 'submit_payment' in request.POST:
             payment_channel = request.POST.get("payment_channel")
@@ -2036,7 +2036,7 @@ def del_all_sessions(request):
         pass
 
 def load_wa(wa_no,wa_msg,sms_content):
-    return redirect('https://api.whatsapp.com/send?phone=' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+    return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
 def lead_report(request):
     if request.method =='POST' :

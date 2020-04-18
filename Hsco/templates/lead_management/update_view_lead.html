@@ -713,7 +713,7 @@ tr:nth-child(even) {
                {% endfor %}
 
                          <br>
-                     <form  name="PIForm" method='POST'  a enctype="multipart/form-data" >{% csrf_token %}
+                     <form   method='POST'   enctype="multipart/form-data" >{% csrf_token %}
 
                               <div class="form-group row">
                               <label class="col-md-2 control-label">Discount:</label>
@@ -740,12 +740,14 @@ tr:nth-child(even) {
 
 
                           </div>
+                         <center>
+                 <button type="button" onclick="document.getElementById('primaryButton').click()" name="secondaryButton"  style="background-color: #FC6E20;" class="btn btn-primary">Save</button>
+</center>
 
                          <hr>
-                         <center>External PI</center>
-                         <hr>
+                         <center><h4>External PI</h4></center>
 <br>
-<br>
+
 
                             <div class="form-group row">
                                 <label class="col-md-2 control-label">Upload PI File:</label>
@@ -833,12 +835,12 @@ function myFunction_call() {
 
 
                          <center>
-     <button type="submit" name="submit2" onclick="pdf_download()" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
+     <button type="submit" name="submit2" id="primaryButton" onclick="pdf_download()" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
 
                              <!--<button type="submit" onclick="download_pdf()" class="btn btn-primary" style="background-color: #FC6E20;">PDF</button>-->
                              {% if pi_id.first_submit == True  %}
                              <button type="submit" onclick="download_image()" class="btn btn-primary" style="background-color: #FC6E20;">Image</button>
-                             <a target="_blank" href="https://api.whatsapp.com/send?phone={{customer_id.contact_no}}&text=Hey, here is the PI"><button type="button" class="btn btn-primary" style="background-color: #FC6E20;">Whatsapp</button></a>
+                             <a target="_blank" href="https://api.whatsapp.com/send?phone=91{{customer_id.contact_no}}&text=Hey, here is the PI"><button type="button" class="btn btn-primary" style="background-color: #FC6E20;">Whatsapp</button></a>
                              {% endif %}
 
 </center>
@@ -1086,7 +1088,7 @@ function myFunction_call() {
                         </div>
                             <div class="row col-md-3">
 
-                        <a href="/lead_follow_up_histroy/{{hfu_id}}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="history"></a> &nbsp
+                        <a href="/lead_follow_up_histroy/{{hfu_id}}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="History"></a> &nbsp
                          {% if auto_manual_mode == 'Automatic' %}
 
 <span style="float:right;margin:10px;" class="alert alert-danger">Auto Follow-Up</span>

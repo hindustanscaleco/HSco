@@ -98,7 +98,8 @@ class Pi_History(models.Model):
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     time = models.TimeField(default=datetime.time(datetime.now()))
     import datetime
-
+    medium_of_selection = models.CharField(blank= True, null=True, max_length=100)
+    call_detail = models.CharField(blank= True, null=True, max_length=100)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
