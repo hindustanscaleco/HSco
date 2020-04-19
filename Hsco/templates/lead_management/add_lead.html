@@ -89,7 +89,7 @@ color:;
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;"  value="+" onclick="myFunction(); return change(this);" />
+          <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" style="width:40px; font-size: 15px;"  value="-" onclick="myFunction(); return change(this);" />
                   <h6 class="m-0 font-weight-bold text-primary">Customer Details Section</h6>
                   <div class="dropdown no-arrow">
 <!--                      <button onclick="myFunction6()">.</button>-->
@@ -304,7 +304,7 @@ Format : (company name)
 
 
                             <div class="form-group row">
-                                <label class="col-md-2 control-label">Date of Initiation:</label>
+                                <label class="col-md-2 control-label">Date of Initiation: *</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
@@ -340,7 +340,7 @@ Format : (company name)
 
                             <div class="form-group row">
 
-                                   <label class="col-md-2 control-label">Requirement:</label>
+                                   <label class="col-md-2 control-label">Requirement: *</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
@@ -348,7 +348,7 @@ Format : (company name)
                             </div>
                              </div>
 
-                                <label class="col-md-2 control-label">Upload Requirement File :</label>
+                                <label class="col-md-2 control-label">Upload Requirement File:</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
@@ -361,7 +361,7 @@ Format : (company name)
                     <div class="form-group row">
                         {% if request.user.role == 'Employee' %}
 
-                                <label class="col-md-2 control-label">Owner of Opportunity :</label>
+                                <label class="col-md-2 control-label">Owner of Opportunity: *</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
@@ -375,7 +375,7 @@ Format : (company name)
                             </div>
                              </div>
                     {% else %}
-                                <label class="col-md-2 control-label">Owner of Opportunity :</label>
+                                <label class="col-md-2 control-label">Owner of Opportunity: *</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
