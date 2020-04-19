@@ -564,40 +564,40 @@ td {
                     {% endif %}
      <center><p>{{search_msg}}</p></center>
     <form method="POST">{% csrf_token %}
-
         <div class="row" id="id_manager_view">
 
-    <table>
-        <tr style="background-color: gray; color: white;">
-            <td style="border: 0px solid gray;"><label class="checkbox">
-      Option 1
-    </label></td>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Category</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Category</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Category</td>
+            <table>
+                <tr style="background-color: gray; color: white;">
+                    <td style="border: 0px solid gray;"><label class="checkbox">
+                        Option 1
+                    </label></td>
+                    <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
+                    <td style="border: 0px solid gray;">Category</td>
+                    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Category</td>
+                    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Category</td>
 
-        </tr>
+                </tr>
 
 
-{% for lead in leads %}
-            <td style="border: 0px solid gray;"><label class="checkbox">
-      <input type="checkbox" value="{{lead.id}}" name="check[]" >
-    </label></td>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{lead.product_id.scale_type}}</td>
-            <td style="border: 0px solid gray;">{{lead.product_id.main_category}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{lead.product_id.sub_category}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{lead.product_id.sub_sub_category}}</td></tr>
-            {% endfor %}
+                {% for lead in leads %}
+                <td style="border: 0px solid gray;"><label class="checkbox">
+                    <input type="checkbox" value="{{lead.id}}" name="check[]" >
+                </label></td>
+                <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{lead.product_id.scale_type}}</td>
+                <td style="border: 0px solid gray;">{{lead.product_id.main_category}}</td>
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{lead.product_id.sub_category}}</td>
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{lead.product_id.sub_sub_category}}</td></tr>
+                {% endfor %}
 
-    </table>
+            </table>
 
         </div>
-    <br>
-    <center>
-<button type="submit" class="btn btn-danger">Delete</button>
-</center>
-</form>
+        <br>
+        <center>
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </center>
+    </form>
+
 
 
 

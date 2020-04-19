@@ -829,10 +829,7 @@ def update_view_lead(request,id):
     history_follow = History_followup.objects.filter(follow_up_section__id=hfu.id).last()
 
     followup_products_list = Followup_product.objects.filter(lead_id=id)
-    try:
-        del request.session['context_sess']
-    except:
-        pass
+
     table = ''
     table2 = ''
     total = 0.0
@@ -978,6 +975,202 @@ def update_view_lead(request,id):
 
     if request.method == 'POST' or request.method == 'FILES':
         email = request.session.get('email')
+        try:
+            del request.session['context_sess']
+        except:
+            pass
+
+        if 'send_submit' in request.POST :
+            delete_id = request.POST.getlist('check[]')
+            current_stage = lead_id.current_stage
+            is_entered_purchase = lead_id.is_entered_purchase
+            if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
+
+                purchase_det = Purchase_Details()
+                purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
+                purchase_det.company_address = lead_id.customer_id.address  # new2
+                purchase_det.company_email = lead_id.customer_id.customer_email_id  # new2
+                purchase_det.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
+                purchase_det.new_repeat_purchase = lead_id.new_existing_customer
+                purchase_det.second_person = lead_id.customer_id.customer_name  # new1
+                purchase_det.second_contact_no = lead_id.customer_id.contact_no  # new2
+                purchase_det.date_of_purchase = lead_id.entry_timedate
+                purchase_det.product_purchase_date = lead_id.entry_timedate
+                purchase_det.sales_person = lead_id.owner_of_opportunity.name
+                purchase_det.user_id = SiteUser.objects.get(name=lead_id.owner_of_opportunity.name)
+                purchase_det.channel_of_sales = lead_id.channel
+                purchase_det.industry = lead_id.customer_id.customer_industry
+                purchase_det.value_of_goods = 0.0
+                # purchase_det.channel_of_dispatch = channel_of_dispatch
+                purchase_det.notes = "Entry From Lead Module\n"
+                purchase_det.feedback_form_filled = False
+                purchase_det.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                purchase_det.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no + 1
+                purchase_det.log_entered_by = request.user.profile_name
+                purchase_det.save()
+
+                Lead.objects.filter(id=id).update(purchase_id=purchase_det.pk)
+
+                # dispatch = Dispatch()
+                # dispatch.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
+                # dispatch.second_person = lead_id.customer_id.customer_name  # new1
+                # dispatch.second_contact_no = lead_id.customer_id.contact_no  # new2
+                # dispatch.second_company_name = lead_id.customer_id.company_name  # new2
+                # dispatch.company_email = lead_id.customer_id.customer_email_id
+                # dispatch.company_address = lead_id.customer_id.address  # new2
+                # dispatch.notes = "Entry From Lead Module\n"  # new2
+                # dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
+                # dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                # if Dispatch.objects.all().count() == 0:
+                #     dispatch.dispatch_no = 1
+                # else:
+                #     dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
+                # dispatch.save()
+
+                customer_id = Purchase_Details.objects.get(id=purchase_det.pk)
+                # customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
+                # customer_id.save(update_fields=['dispatch_id_assigned'])
+
+                pi_pro = Pi_product.objects.filter(pk__in=delete_id)
+                for item in pi_pro:
+                    item_pro = Product_Details()
+
+                    item_pro.quantity = item.quantity
+
+                    item_pro.type_of_scale = item.product_id.scale_type
+                    item_pro.model_of_purchase = item.product_id.main_category
+                    item_pro.sub_model = item.product_id.sub_category
+                    item_pro.sub_sub_model = item.product_id.sub_sub_category
+                    item_pro.brand = 'HSCO'
+                    item_pro.capacity = item.product_id.max_capacity
+                    item_pro.unit = 'Kg'
+                    if (item.product_total_cost == None or item.product_total_cost == ''):
+                        item_pro.amount = 0.0
+                    else:
+                        item_pro.amount = item.product_total_cost
+                    item_pro.purchase_id_id = customer_id
+                    item_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+                    item_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                    item_pro.log_entered_by = request.user.name
+
+                    item_pro.save()
+
+                    # dispatch_id = Dispatch.objects.get(id=dispatch.id)
+                    # dispatch_pro = Product_Details_Dispatch()
+                    # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+                    # dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                    # dispatch_pro.quantity = item.quantity
+                    # dispatch_pro.type_of_scale = item.product_id.scale_type
+                    # dispatch_pro.model_of_purchase = item.product_id.main_category
+                    # dispatch_pro.sub_model = item.product_id.sub_category
+                    # dispatch_pro.sub_sub_model = item.product_id.sub_sub_category
+                    #
+                    # dispatch_pro.brand = 'HSCO'
+                    # dispatch_pro.capacity = item.product_id.max_capacity
+                    # dispatch_pro.unit = 'Kg'
+                    # dispatch_pro.dispatch_id = dispatch_id
+                    # if (item.product_total_cost == None or item.product_total_cost == ''):
+                    #     dispatch_pro.value_of_goods = 0.0
+                    # else:
+                    #     dispatch_pro.value_of_goods = item.product_total_cost
+                    #
+                    # dispatch_pro.save()
+                    #
+                    # Product_Details.objects.filter(id=item_pro.pk).update(product_dispatch_id=dispatch_pro.pk)
+                try:
+                    del request.session['enable_auto_edit']
+                except:
+                    pass
+
+                request.session['enable_auto_edit'] = True
+
+                Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
+                Lead.objects.filter(id=id).update(is_entered_purchase=True)
+
+                if True:
+                    Purchase_Details.objects.filter(id=id).update(is_last_product=True)
+
+                    product_list = ''' '''
+                    pro_lis = Product_Details.objects.filter(purchase_id_id=customer_id)
+
+                    for idx, item in enumerate(pro_lis):
+                        email_body_text = (
+                            u"\nSr. No.: {},"
+                            "\tModel: {},"
+                            "\tSub Model: {}"
+                            "\tbrand: {}"
+                            "\tcapacity: {}"
+                            "\tCost: {}"
+                        ).format(
+                            idx + 1,
+                            item.type_of_scale,
+                            item.sub_model,
+                            item.brand,
+                            item.capacity,
+                            item.amount,
+                        )
+                        product_list = product_list + '' + str(email_body_text)
+                    try:
+                        import smtplib
+                        sent_from = settings.EMAIL_HOST_USER
+                        to = [customer_id.company_email]
+                        subject = 'Your HSCo Purchase'
+
+                        message = 'Dear ' + str(
+                            customer_id.second_person) + ',' \
+                                                         ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
+                            customer_id.purchase_no) + '.' \
+                                                       ' Ww will love to hear your feedback to help us improve' \
+                                                       ' our customer experience. Please click on the link' \
+                                                       ' below: \n http://139.59.76.87/feedback_purchase/' + str(
+                            request.user.pk) + '/' + str(
+                            customer_id.crm_no.pk) + '/' + str(
+                            customer_id.id) + '\n For more details contact us on - 7045922250 \n Order Details:\n ' + product_list
+
+                        body = message
+
+                        email_text = """\
+                                    From: %s
+                                    To: %s
+                                    Subject: %s
+
+                                    %s
+                                    """ % (sent_from, customer_id.company_email, subject, body)
+
+                        try:
+                            server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+                            server.ehlo()
+                            server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+                            server.sendmail(sent_from, to, email_text)
+                            server.close()
+                            print('Email sent!')
+                        except:
+                            print('Something went wrong...Email not send!!!')
+
+                    except:
+                        print("exception occured!!")
+                        pass
+
+                    message = 'Dear ' + str(
+                        customer_id.second_person) + ',' \
+                                                     ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
+                        customer_id.purchase_no) + '.' \
+                                                   ' WE will love to hear your feedback to help us improve' \
+                                                   ' our customer experience. Please click on the link' \
+                                                   ' below: \n http://139.59.76.87/feedback_purchase/' + str(
+                        request.user.pk) + '/' + str(
+                        customer_id.crm_no.pk) + '/' + str(
+                        customer_id.id) + '\n For more details contact us on - 7045922250'
+
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + customer_id.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+                    payload = ""
+                    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    x = response.text
+                    del_all_sessions(request)
+                    request.session['expand_deal_detail'] = True
+                    return redirect('/update_view_lead/' + str(id))
 
         if 'file_pdf' in request.POST and (email == 'True' or email == True):
             val = request.POST
@@ -1116,197 +1309,10 @@ def update_view_lead(request,id):
             item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
                                       'requirement','upload_requirement_file','owner_of_opportunity','log_entered_by',
                                       'lost_reason','postponed_reason','postpond_time_date'])
-            is_entered_purchase = Lead.objects.get(id=id).is_entered_purchase
-            if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
-
-                purchase_det = Purchase_Details()
-                purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
-                purchase_det.company_address = lead_id.customer_id.address  # new2
-                purchase_det.company_email = lead_id.customer_id.customer_email_id  # new2
-                purchase_det.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
-                purchase_det.new_repeat_purchase = new_existing_customer
-                purchase_det.second_person = lead_id.customer_id.customer_name  # new1
-                purchase_det.second_contact_no = lead_id.customer_id.contact_no  # new2
-                purchase_det.date_of_purchase = item2.entry_timedate
-                purchase_det.product_purchase_date = item2.entry_timedate
-                purchase_det.sales_person = owner_of_opportunity
-                purchase_det.user_id = SiteUser.objects.get(name=owner_of_opportunity)
-                purchase_det.channel_of_sales = channel
-                purchase_det.industry = lead_id.customer_id.customer_industry
-                purchase_det.value_of_goods = 0.0
-                # purchase_det.channel_of_dispatch = channel_of_dispatch
-                purchase_det.notes = "Entry From Lead Module\n"
-                purchase_det.feedback_form_filled = False
-                purchase_det.manager_id = SiteUser.objects.get(id=request.user.pk).group
-                purchase_det.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no + 1
-                purchase_det.log_entered_by = request.user.profile_name
-                purchase_det.save()
-
-                Lead.objects.filter(id=id).update(purchase_id=purchase_det.pk)
-
-                # dispatch = Dispatch()
-                # dispatch.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
-                # dispatch.second_person = lead_id.customer_id.customer_name  # new1
-                # dispatch.second_contact_no = lead_id.customer_id.contact_no  # new2
-                # dispatch.second_company_name = lead_id.customer_id.company_name  # new2
-                # dispatch.company_email = lead_id.customer_id.customer_email_id
-                # dispatch.company_address = lead_id.customer_id.address  # new2
-                # dispatch.notes = "Entry From Lead Module\n"  # new2
-                # dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
-                # dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
-                # if Dispatch.objects.all().count() == 0:
-                #     dispatch.dispatch_no = 1
-                # else:
-                #     dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
-                # dispatch.save()
-
-                customer_id = Purchase_Details.objects.get(id=purchase_det.pk)
-                # customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
-                # customer_id.save(update_fields=['dispatch_id_assigned'])
-
-                pi_pro = Pi_product.objects.filter(lead_id=lead_id.pk)
-                for item in pi_pro:
-                    item_pro = Product_Details()
-
-                    item_pro.quantity = item.quantity
-
-                    item_pro.type_of_scale = item.product_id.scale_type
-                    item_pro.model_of_purchase = item.product_id.main_category
-                    item_pro.sub_model = item.product_id.sub_category
-                    item_pro.sub_sub_model = item.product_id.sub_sub_category
-                    item_pro.brand = 'HSCO'
-                    item_pro.capacity = item.product_id.max_capacity
-                    item_pro.unit = 'Kg'
-                    if(item.product_total_cost == None or item.product_total_cost == ''):
-                        item_pro.amount = 0.0
-                    else:
-                        item_pro.amount = item.product_total_cost
-                    item_pro.purchase_id_id = customer_id
-                    item_pro.user_id = SiteUser.objects.get(id=request.user.pk)
-                    item_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
-                    item_pro.log_entered_by = request.user.name
-
-                    item_pro.save()
-
-
-                    # dispatch_id = Dispatch.objects.get(id=dispatch.id)
-                    # dispatch_pro = Product_Details_Dispatch()
-                    # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
-                    # dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
-                    # dispatch_pro.quantity = item.quantity
-                    # dispatch_pro.type_of_scale = item.product_id.scale_type
-                    # dispatch_pro.model_of_purchase = item.product_id.main_category
-                    # dispatch_pro.sub_model = item.product_id.sub_category
-                    # dispatch_pro.sub_sub_model = item.product_id.sub_sub_category
-                    #
-                    # dispatch_pro.brand = 'HSCO'
-                    # dispatch_pro.capacity = item.product_id.max_capacity
-                    # dispatch_pro.unit = 'Kg'
-                    # dispatch_pro.dispatch_id = dispatch_id
-                    # if (item.product_total_cost == None or item.product_total_cost == ''):
-                    #     dispatch_pro.value_of_goods = 0.0
-                    # else:
-                    #     dispatch_pro.value_of_goods = item.product_total_cost
-                    #
-                    # dispatch_pro.save()
-                    #
-                    # Product_Details.objects.filter(id=item_pro.pk).update(product_dispatch_id=dispatch_pro.pk)
-                try:
-                    del request.session['enable_auto_edit']
-                except:
-                    pass
-
-                request.session['enable_auto_edit'] = True
-
-                Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
-                Lead.objects.filter(id=id).update(is_entered_purchase=True)
-
-                if True :
-                    Purchase_Details.objects.filter(id=id).update(is_last_product=True)
-
-                    product_list = ''' '''
-                    pro_lis = Product_Details.objects.filter(purchase_id_id=customer_id)
-
-                    for idx, item in enumerate(pro_lis):
-
-                        email_body_text = (
-                            u"\nSr. No.: {},"
-                            "\tModel: {},"
-                            "\tSub Model: {}"
-                            "\tbrand: {}"
-                            "\tcapacity: {}"
-                            "\tCost: {}"
-                        ).format(
-                            idx + 1,
-                            item.type_of_scale,
-                            item.sub_model,
-                            item.brand,
-                            item.capacity,
-                            item.amount,
-                        )
-                        product_list = product_list + '' + str(email_body_text)
-                    try:
-                        import smtplib
-                        sent_from = settings.EMAIL_HOST_USER
-                        to = [customer_id.company_email]
-                        subject = 'Your HSCo Purchase'
-
-                        message = 'Dear ' + str(
-                            customer_id.second_person) + ',' \
-                                                      ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
-                            customer_id.purchase_no) + '.' \
-                                                    ' Ww will love to hear your feedback to help us improve' \
-                                                    ' our customer experience. Please click on the link' \
-                                                    ' below: \n http://139.59.76.87/feedback_purchase/' + str(
-                            request.user.pk) + '/' + str(
-                            customer_id.crm_no.pk) + '/' + str(
-                            customer_id.id) + '\n For more details contact us on - 7045922250 \n Order Details:\n ' + product_list
-
-                        body = message
-
-                        email_text = """\
-                        From: %s
-                        To: %s
-                        Subject: %s
-    
-                        %s
-                        """ % (sent_from, customer_id.company_email, subject, body)
-
-                        try:
-                            server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-                            server.ehlo()
-                            server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-                            server.sendmail(sent_from, to, email_text)
-                            server.close()
-                            print('Email sent!')
-                        except:
-                            print('Something went wrong...Email not send!!!')
-
-                    except:
-                        print("exception occured!!")
-                        pass
-
-                    message = 'Dear ' + str(
-                        customer_id.second_person) + ',' \
-                                                  ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
-                        customer_id.purchase_no) + '.' \
-                                                ' WE will love to hear your feedback to help us improve' \
-                                                ' our customer experience. Please click on the link' \
-                                                ' below: \n http://139.59.76.87/feedback_purchase/' + str(
-                        request.user.pk) + '/' + str(
-                        customer_id.crm_no.pk) + '/' + str(
-                        customer_id.id) + '\n For more details contact us on - 7045922250'
-
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + customer_id.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-                    payload = ""
-                    headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                    x = response.text
-
 
 
             return redirect('/update_view_lead/'+str(id))
+
         elif 'submit2' in request.POST:
             del_all_sessions(request)
             request.session['expand_pi_section'] = True
@@ -1582,7 +1588,7 @@ def update_view_lead(request,id):
                     del request.session['context_sess']
                 except:
                     pass
-                request.session['context_sess']=context22
+                request.session['context_sess'] = context22
                 return redirect('/update_view_lead/' + str(id))
             elif(is_call!='on' and is_sms!='on' and is_whatsapp!='on' and is_email!='on' and is_call!='is_call' and is_sms!='is_sms' and is_whatsapp!='is_whatsapp' and is_email !='is_email'):
                 context28 = {
@@ -1786,6 +1792,7 @@ td {
                     }
                     context_session.update(context28)
 
+
                 if(is_whatsapp=='on' or is_whatsapp=='is_whatsapp'):
                     history_follow.is_whatsapp = True
                     history_follow.wa_msg = wa_msg
@@ -1813,6 +1820,7 @@ td {
                         'success_exist_2': True,
                     }
                     context_session.update(context28)
+
 
                 if(is_sms=='on' or is_sms=='is_sms'):
                     sms_msg = request.POST.get('sms_msg')
@@ -1842,6 +1850,7 @@ td {
                         'success_exist_5': True,
                     }
                     context_session.update(context28)
+
                 history_follow.log_entered_by = request.user.name
 
                 history_follow.save()

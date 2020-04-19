@@ -186,10 +186,7 @@ function myFunction() {
         <!-- Begin Page Content -->
      <div class="container-fluid">
 
-
-
          <div class="col-xl-12 col-lg-12">
-
 
               {% if request.session.context_sess.error_exist %}
 
@@ -228,6 +225,7 @@ function myFunction() {
 </script>
 
 {% endif %}
+
                {% if request.session.context_sess.success_exist_4 %}
 
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -459,11 +457,13 @@ function myFunction() {
                         </div>
 
 
-   <div class="col-md-3">
+   <div class="col-md-5">
             {% if lead_id.current_stage == 'PO Issued - Payment Done - Dispatch Pending' or lead_id.current_stage == 'Dispatch Done - Closed' %}
 {% if lead_id.is_entered_purchase %}
         <a class="btn btn-primary" target="_blank" href='/update_customer_details/{{lead_id.purchase_id.pk}}' >Go To Purchase</a>
 
+ {% else %}
+         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Send To Purchase</button>
 
  {% endif %}
              {% if lead_id.is_entered_purchase %}
@@ -472,6 +472,8 @@ function myFunction() {
 {% endif %}
 
  {% endif %}
+
+
  {% endif %}
 
                         </div>
@@ -591,11 +593,11 @@ function myFunction() {
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-<input type="text" required name="owner_of_opportunity" placeholder="Channel" value="{{lead_id.owner_of_opportunity}}" disabled class="form-control"  list="channel101">
+<input type="text" required name="owner_of_opportunity" placeholder="Channel" value="{{lead_id.owner_of_opportunity.name}}" disabled class="form-control"  list="channel101">
     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
       <datalist style="height:20px;" id="channel101">
           {% for user in users %}
-      <option value="{{user.profile_name}}">{{user.profile_name}}</option>
+      <option value="{{user.name}}">{{user.name}}</option>
         {% endfor %}
     </datalist>
                             </div>
@@ -605,7 +607,7 @@ function myFunction() {
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-<input type="text" required name="owner_of_opportunity" placeholder="Owner" class="form-control" value="{{lead_id.owner_of_opportunity}}" list="channel102">
+<input type="text" required name="owner_of_opportunity" placeholder="Owner" class="form-control" value="{{lead_id.owner_of_opportunity.name}}" list="channel102">
     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
       <datalist style="height:20px;" id="channel102">
                     {% for user in users %}
@@ -1566,6 +1568,63 @@ function whosFunction() {
 
 </div>
 
+
+               <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Select PI Products</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+        </div>
+        <div class="modal-body">
+
+               <form method="POST">{% csrf_token %}
+        <div class="row" >
+
+            <table>
+                <tr style="background-color: gray; color: white;">
+                    <td style="border: 1px solid gray;"><label class="checkbox">
+                        Select
+                    </label></td>
+                    <td style="border-radius: 0px 0px 0px 0px; border: 1px solid gray;">Type Of Scale</td>
+                    <td style="border: 1px solid gray;">Category</td>
+                    <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Sub Category</td>
+                    <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Sub Sub Category</td>
+
+                </tr>
+
+
+                {% for lead in lead_pi_products %}
+                <td style="border: 1px solid gray;"><label class="checkbox">
+                    <input type="checkbox" value="{{lead.id}}" name="check[]" >
+                </label></td>
+                <td style="border-radius: 0px 0px 0px 0px; border: 1px solid gray;">{{lead.product_id.scale_type}}</td>
+                <td style="border: 1px solid gray;">{{lead.product_id.main_category}}</td>
+                <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{lead.product_id.sub_category}}</td>
+                <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{lead.product_id.sub_sub_category}}</td></tr>
+                {% endfor %}
+
+            </table>
+
+        </div>
+        <br>
+        <center>
+
+            <button type="submit" name="send_submit" class="btn btn-danger">SEND</button>
+        </center>
+    </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 
       <!-- Footer -->
