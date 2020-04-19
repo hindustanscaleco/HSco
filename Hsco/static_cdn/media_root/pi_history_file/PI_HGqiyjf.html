@@ -1,78 +1,29 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <title>
-    HSCO
-  </title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<title></title>
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
-  <script src=
-"https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
-  </script>
-
-  <script src=
-"https://files.codepedia.info/files/uploads/iScripts/html2canvas.js">
-  </script>
-
-
-  <style>
-      * {
-    font-family: 'Poppins';
-    font-size: 0.99em;
-    background-color: white;
-
-  }
-
-  table {
-  border-collapse: collapse;
-  width: 85%;
-  font-size: 18px;
-  border-color: black;
-  color: black;
-
-
-
-}
-
-
-th {
-
-  font-size: 13px;
-    border: 1px solid black;
-    text-align: left;
-    padding:5px;
-
-}
-
-td {
-  border: 1px solid black;
-  padding: 3px;
-}
-
-
- @media print and (width: 10.5cm) and (height: 14.8cm) {
-    @page {
-       margin: 3cm;
-    }
- }
-
-
-  </style>
-
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
 </head>
 <body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-<div  id="html-content-holder" style="margin-left: 10%; margin-right: 10%; padding: 40px;">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+
+<div id="content">
+
+<div  id="html-content-holder" style=" margin-left: 5%; margin-right: 5%;">
 <div class="row" style="padding: 5px; border-bottom: 5px solid black;">
     <div class="col-xl-2 col-md-2 ">
-<img src="/media/pi_history_file/hsco.jpg" class="img-rounded" width="200" height="120" style="float: right;">
+<img src="/media/pi_history_file/hsco.jpg" class="img-rounded" width="160" height="80" style="float: right; padding-top:10px;">
 </div>
     <div class="col-xl-1 col-md-1 ">
     </div>
@@ -123,7 +74,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;"> Date :</p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">{{todays_date}}</p>
+             <center><p style="font-weight:bold; float:left;"> 2020-04-19</p>
                             </center></div>
                             </div>
 
@@ -132,17 +83,13 @@ Repairing Licence No. LR/MH/H004</p>
                                  <div class="col-md-2">
                                      <center><p style="font-weight:bold; float:left;"> Company Name</p>
                                 </center></div>
-                                <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left; text-decoration: underline;"> {{lead_id.customer_id.company_name}}</p>
+                                <div class="col-md-2">
+                                     <center><p style="font-weight:bold; float:left; text-decoration: underline;"> Shree Dewasi Trading</p>
                                 </center></div>
 
-                                <div class="col-md-1">
-                                     </div>
-                                <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;">PI Number:</p>
-                                </center></div>
-                                <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> {{pi_id.id}}</p>
+                                <div class="col-md-4">
+                                </div><div class="col-md-4">
+                                     <center><p style="font-weight:bold; float:left;">PI - XXXX2 - fsdf - Shree Dewasi Trading</p>
                                 </center></div>
                                 </div>
 
@@ -151,7 +98,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Contact Person</p>
                                 </center></div>
                                 <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.customer_name}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> fsdf</p>
                                 </center></div>
 
                                 <div class="col-md-1">
@@ -160,7 +107,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Proforma Made By :</p>
                                 </center></div>
                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> {{request.user.name}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> </p>
                                 </center></div>
                                 </div>
 
@@ -170,7 +117,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Address/State</p>
                                 </center></div>
                                 <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.address}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> Plot no: 18, Shop No: 1 and 2,  Sector 23, Janta Market,  Turbhe, Navi Mumbai 400705</p>
                                 </center></div>
 
                                 <div class="col-md-1">
@@ -179,7 +126,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Contact Number:</p>
                                 </center></div>
                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> {{request.user.mobile}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> </p>
                                 </center></div>
                                 </div>
 
@@ -190,17 +137,18 @@ Repairing Licence No. LR/MH/H004</p>
                                  <div class="col-md-2">
                                      <center><p style="font-weight:bold; float:left;">Phone</p>
                                 </center></div>
-                                <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.contact_no}}</p>
+                                <div class="col-md-4">
+                                     <center><p style="font-weight:bold; float:left;"> 9730644834</p>
         </center></div>
 
         <div class="col-md-1">
+             </div><div class="col-md-1">
              </div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;">Customer GST Number: </p>
-        </center></div>
+          <p style="font-weight:bold; float:right;">Customer GST Number: </p>
+        </div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.customer_gst_no}}</p>
+             <center><p style="font-weight:bold; float:left;"> 789456132465789</p>
         </center></div>
         </div>
 
@@ -256,26 +204,36 @@ td {
         <div class="row" id="id_manager_view">
 
     <table>
-        <tr >
-            <td >Quantity</td>
-            <td >HSN Code</td>
-            <td >Product Code</td>
-            <td >Product Image</td>
-            <td >Product Description</td>
-            <td >Rate</td>
-            <td >Total</td>
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Quantity</td>
+            <td style="border: 0px solid gray;">HSN Code</td>
+            <td style="border: 0px solid gray;">Product Code</td>
+            <td style="border: 0px solid gray;">Product Image</td>
+            <td style="border: 0px solid gray;">Product Description</td>
+            <td style="border: 0px solid gray;">Rate</td>
+            <td style="border: 0px solid gray;">Total</td>
         </tr>
-{% for product in pi_products %}
+
 <tr>
-        <td>{{product.quantity}}</td>
-        <td>{{product.product_id.hsn_code}}</td>
-        <td>{{product.product_id.sub_sub_category}}</td>
-        <td>{% if product.product_id.product_image %}<img  src="{{product.product_id.product_image.url}}">{% endif %}</td>
-        <td>{{product.product_id.product_desc}}</td>
-        <td>{{product.product_id.selling_price}}</td>
-        <td>{{product.product_total_cost}}</td>
+        <td>23.0</td>
+        <td>None</td>
+        <td>rtet</td>
+        <td><img  src="/media/lead_product_image/WhatsApp_Image_2020-04-11_at_20.52.02.jpeg"></td>
+        <td>None</td>
+        <td>23.0</td>
+        <td>529.0</td>
         </tr>
-{% endfor %}
+
+<tr>
+        <td>32.0</td>
+        <td>None</td>
+        <td>rtet</td>
+        <td><img  src="/media/lead_product_image/WhatsApp_Image_2020-04-11_at_20.52.02.jpeg"></td>
+        <td>None</td>
+        <td>23.0</td>
+        <td>736.0</td>
+        </tr>
+
         <tr>
         <td></td>
         <td></td>
@@ -283,7 +241,7 @@ td {
         <td></td>
         <td></td>
         <td>Total</td>
-        <td>{{pi_id.total_cost}} INR</td>
+        <td>1265.0 INR</td>
         </tr>
 
         <tr>
@@ -293,7 +251,7 @@ td {
         <td></td>
         <td></td>
         <td>Discount</td>
-        <td>{{pi_id.discount}}{% if pi_id.discount_type == "percent" %} % {% elif pi_id.discount_type == "rupee" %} INR {% else %} {% endif %}</td>
+        <td>0 % </td>
         </tr>
 
 
@@ -304,7 +262,7 @@ td {
         <td></td>
         <td></td>
         <td>Net Total</td>
-        <td>{{pi_id.net_total}}</td>
+        <td>1265.0</td>
         </tr>
 
 
@@ -316,7 +274,7 @@ td {
         <td></td>
         <td></td>
         <td>P&F</td>
-        <td>{{pi_id.pf_total}} </td>
+        <td>1.0 </td>
         </tr>
 
 
@@ -327,7 +285,7 @@ td {
         <td></td>
         <td></td>
         <td>CGST @ 9%</td>
-        <td>{% if pi_id.select_gst_type == "CGST / SGST" %} {{pi_id.cgst_sgst}} {% endif %}</td>
+        <td> 113.85 </td>
         </tr>
 
 
@@ -340,7 +298,7 @@ td {
         <td></td>
         <td></td>
         <td>SGST @ 9%</td>
-        <td>{% if pi_id.select_gst_type == "CGST / SGST" %} {{pi_id.cgst_sgst}} {% endif %}</td>
+        <td> 113.85 </td>
         </tr>
 
 
@@ -353,7 +311,7 @@ td {
         <td></td>
         <td></td>
         <td>IGST @ 18%</td>
-        <td>{% if pi_id.select_gst_type == "IGST" %} {{pi_id.igst}} {% endif %}</td>
+        <td></td>
         </tr>
 
 
@@ -365,7 +323,7 @@ td {
         <td></td>
         <td></td>
         <td>Round Up</td>
-        <td>{{pi_id.round_up_total}} INR</td>
+        <td>1494.0 INR</td>
         </tr>
 
         <tr>
@@ -375,7 +333,7 @@ td {
         <td></td>
         <td></td>
         <td>Grand Total</td>
-        <td>{{pi_id.grand_total}} INR</td>
+        <td>1494.0 INR</td>
         </tr>
 
 
@@ -383,23 +341,26 @@ td {
         </div>
             </div>
         <div class="row">
-            <div class="col-md-4" style="padding:10px;">
-                <p>GST ID - <b>27AACFH2329F1ZP</b><br>
+            <div class="col-md-5" style="padding:10px;">
+                <p style="padding-top:30px;">GST ID - <b>27AACFH2329F1ZP</b><br>
                     PAN Number - <b>AACFH2329F</b><br>
                     TAN Number - <b>MUMH17092F</b></p>
             </div>
-         <div class="col-md-3" style="padding:10px;">
-<img src="/media/pi_history_file/okay.png" style="width: 100%;">
+         <div class="col-md-2" style="padding-left:10px; float:left;">
+<img src="/media/pi_history_file/okay.png" style="width: 80%; height:90%;">
          </div>
 
 
-	         <div class="col-md-5" style="padding:10px;">
+             <div class="col-md-5">
 <img src="/media/pi_history_file/l.png" style="width: 100%;">
          </div>
         </div>
     <div class="row">
             <div class="col-md-12" style="padding:10px;"><p>
-I/We hereby certify that my/our registration certificate under the Goods and Service Tax Laws is in force on the date of which the sale of goods specified in this ‚ÄúProforma Invoice‚Äù is made by me/us and that the transaction of sale is covered <br><center>by this and has been effected by me/us and it shall be accounted for in the turnover of sales while filing of return and the due tax, if any, payable on the sale has been paid
+                I/We hereby certify that my/our registration certificate under the Goods and Service Tax Laws is in force on
+                the date of which the sale of goods specified in this ìProforma Invoiceî is made by me/us and that the transaction of sale is covered
+                by this and has been effected by me/us and it shall be accounted for in the turnover of sales while filing of return and the due tax,
+                if any, payable on the sale has been paid
   </center> </p>     </div>
         </div>
 </div>
@@ -407,7 +368,7 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 
 <div class="row">
             <div class="col-md-6" style="padding-left: 40px;">
-<p>All prices are Ex-Workshop. Packing and forwarding is extra as indicated<br>
+<p style="padding-left:34px;">All prices are Ex-Workshop. Packing and forwarding is extra as indicated<br>
                 All products have an warranty of 1 year against any manufacturing defect unless stated<br>
                 There is no warranty for Loadcell, Battery and Mains Cord<br>
                 Damages due to transportation is out of the scope of warranty<br>
@@ -416,29 +377,18 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
     Cheque should be in the name of "Hindustan Scale Co".</p></div>
 
     <div class="col-md-6" style="padding-left: 40px;">
-<p>Bank details are as follows<br>
+<p style="padding-left:240px;">Bank details are as follows<br>
                 <b>DCB Bank<br>
-                Name ‚Äì Hindustan Scale Co.<br>
-                Acct No ‚Äì 01922412121947<br>
+                Name ñ Hindustan Scale Co.<br>
+                Acct No ñ 01922412121947<br>
                 IFSC Code-DCBL0000019<br>
-                Type of account ‚Äì Current Account <br>
-                Bank Name ‚Äì DCB Bank<br>
+                Type of account ñ Current Account <br>
+                Bank Name ñ DCB Bank<br>
                     Address Mohamedali Road Branch</b></p></div>
         </div>
 </div>
 
-	<hr>
-
-
-  <input id="btn-Preview-Image" type="button"
-        value="Preview" / style="visibility: hidden;">
-
-  <a id="btn-Convert-Html2Image" href="#" style="visibility: hidden;">
-    Download
-  </a>
-
-  <br/>
-
+    <hr>
 
 
 
@@ -451,65 +401,48 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 
 </center>
 
+</div>
 
+<script type="text/javascript">
+    function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+let doc = new jsPDF('p','pt','a4');
 
-<script>
-  function printDiv(divName) {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
+doc.addHTML(document.body,function() {
 
-     document.body.innerHTML = printContents;
-
-     window.print();
-
-     document.body.innerHTML = originalContents;
+var formData = new FormData();
+formData.append('file_pdf', doc.output());
+var pdf = btoa(doc.output());
+//console.log(doc);
+var xhr = new XMLHttpRequest();
+xhr.onload = function (e) {
+    if (xhr.readyState === 4 && xhr.status === 200){
+        result=xhr.responseText;
+        console.log(result);
+    }
 }
+xhr.open('POST', '/update_view_lead/2', true);
+xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+xhr.send(formData);
+
+});
 
 
 
-  $(document).ready(function() {
-
-      // Global variable
-      var element = $("#html-content-holder");
-
-      // Global variable
-      var getCanvas;
-
-      $(document).ready(function() {
-        html2canvas(element, {
-          onrendered: function(canvas) {
-            $("#previewImage").append(canvas);
-            getCanvas = canvas;
-          }
-        });
-      });
-
-      $("#btn-Convert-Html2Image").on('click', function() {
-        var imgageData =
-          getCanvas.toDataURL("image/png");
-
-        // Now browser starts downloading
-        // it instead of just showing it
-        var newData = imgageData.replace(
-        /^data:image\/png/, "data:application/octet-stream");
-
-        $("#btn-Convert-Html2Image").attr( "download", "s.png").attr("href", newData);
-
-      });
-
-
-    });
-
-
-
-
-
-    function explode(){
-    $('#btn-Convert-Html2Image')[0].click();
-}
-setTimeout(explode, 3000);
 
 </script>
-
 </body>
 </html>

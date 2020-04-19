@@ -553,22 +553,26 @@ td {
 
     <table>
         <tr style="background-color: gray; color: white;">
-            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">File Id</td>
-            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Previous Templates</td>
-            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Date</td>
-            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Time</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Id</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Medium</td>
+            <td colspan="5" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Call Detail</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Previous Templates</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Date</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Time</td>
         </tr>
     {% for history in lead_pi_history %}
         <tr>
                         <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"> {{history.id}}</td>
-            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                        <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"> {{history.medium_of_selection|default:''}}</td>
+                        <td colspan="5" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"> {{history.call_detail|default:''}}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
                 {% if history.file %}
                 <!--<button onclick="myFunction()">Try it</button>-->
 
                                   <a href="{{ history.file.url }}" class="btn btn-primary">File</a>
                                    {% endif %}</td>
-            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{history.entry_timedate}}</td>
-            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{history.time}}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{history.entry_timedate}}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{history.time}}</td>
 
         </tr>
 

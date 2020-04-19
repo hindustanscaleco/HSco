@@ -960,46 +960,7 @@ def update_view_lead(request,id):
         context.update(context2)
     else:
         pass
-    try:
-        item2 = Pi_section.objects.filter(lead_id=id).first()
 
-
-        total = Pi_product.objects.filter(lead_id=id).values('product_total_cost')
-        total_cost = 0.0
-        for x in total:
-            total_cost += x['product_total_cost']
-        item2.total_cost = total_cost
-
-        product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
-        pf_total = 0.0
-        for x in product_pf:
-            pf_total += float(x['pf'])
-        item2.pf_total = pf_total
-
-
-        if item2.discount_type == 'percent' and item2.discount != '' and item2.discount != 0 and total_cost != '':
-            total_discount = (float(total_cost) * float(
-                item2.discount)) / 100.0  # converting discount percentage to discount total
-            net_total = float(total_cost) - float(total_discount)
-            item2.net_total = net_total
-            item2.cgst_sgst = (9.0 * net_total) / 100.0
-            igst = (18.0 * net_total) / 100.0
-            item2.igst = igst
-            item2.round_up_total = round(net_total + pf_total + igst)
-            item2.grand_total = item2.round_up_total
-        elif item2.discount_type == 'rupee' and item2.discount != '' and total_cost != '':
-            net_total = float(total_cost) - float(item2.discount)
-            item2.net_total = net_total
-            item2.cgst_sgst = (9.0 * net_total) / 100.0
-            igst = (18.0 * item2.net_total) / 100.0
-            item2.igst = igst
-            item2.round_up_total = round(item2.net_total + pf_total + igst)
-            item2.grand_total = item2.round_up_total
-            item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call', 'net_total', 'cgst_sgst','igst',
-                               'round_up_total', 'grand_total', 'total_cost', 'notes', 'grand_total','pf_total',
-                               'email', 'whatsapp', 'call2', 'select_gst_type', 'discount_type', 'log_entered_by'])
-    except:
-        print("product not added or debugging needed")
 
 
     if request.method == 'POST' or request.method == 'FILES':
@@ -1010,7 +971,7 @@ def update_view_lead(request,id):
             try:
                 email_send = EmailMessage('PI - HSCo ', 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
                                           settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
-                email_send.attach('invoicex.pdf', val.get('file_pdf'), 'application/pdf')
+                email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
                 email_send.send()
 
 
@@ -1030,9 +991,12 @@ def update_view_lead(request,id):
                 html = template.render(context22)
                 file_pdf = ContentFile(html)
                 # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
+
                 history.file.save('PI.html', file_pdf, save=False)
                 history.lead_id = Lead.objects.get(id=id)
                 history.log_entered_by = request.user.profile_name
+                history.medium_of_selection = 'Email'
+                history.call_detail = ''
                 history.save()
                 try:
                     del request.session['email']
@@ -1041,7 +1005,6 @@ def update_view_lead(request,id):
             except Exception as e:
                 print("hhhhh")
                 print(e)
-
 
         if 'submit' in request.POST:
             customer_name = request.POST.get('customer_name')
@@ -1131,7 +1094,8 @@ def update_view_lead(request,id):
             item2.requirement = requirement
             item2.lost_reason = lost_reason
             item2.postponed_reason = postponed_reason
-            item2.upload_requirement_file = upload_requirement_file
+            if upload_requirement_file != '' and upload_requirement_file != None:
+                item2.upload_requirement_file = upload_requirement_file
             if postpond_time_date != '' and postpond_time_date != None:
                 item2.postpond_time_date = postpond_time_date
             item2.log_entered_by = request.user.name
@@ -1345,6 +1309,7 @@ def update_view_lead(request,id):
             whatsapp = request.POST.get('whatsapp')
             call2 = request.POST.get('call2')
             discount_type = request.POST.get('discount_type')
+            grand_total = request.POST.get('grand_total')
 
             if call2 == 'on':
                 call2 = 'True'
@@ -1364,6 +1329,13 @@ def update_view_lead(request,id):
                 whatsapp = 'False'
             pdf = request.FILES.get('pdf')
 
+            if (call2 == 'True' or call2 == True):
+                history = Pi_History()
+                history.lead_id = Lead.objects.get(id=id)
+                history.log_entered_by = request.user.profile_name
+                history.medium_of_selection = 'Call'
+                history.call_detail = call
+                history.save()
             if upload_pi_file != None and email == 'True':
 
                 try:
@@ -1410,7 +1382,8 @@ def update_view_lead(request,id):
 
                 item2 = Pi_section.objects.filter(lead_id=id).first()
                 item2.discount = discount
-                if upload_pi_file != None  or '':
+
+                if upload_pi_file != None or '':
                     item2.upload_pi_file = upload_pi_file
                 item2.select_pi_template = select_pi_template
                 item2.call = call
@@ -1454,10 +1427,11 @@ def update_view_lead(request,id):
                 except:
                     print("product not added or debugging needed")
 
-
+                if grand_total != None  or '':
+                    item2.grand_total = grand_total
                 item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call','net_total','cgst_sgst','igst',
                                           'round_up_total','grand_total','total_cost','notes','pf_total',
-                                        'email', 'whatsapp','call2','select_gst_type','discount_type','log_entered_by','first_submit'  ])
+                                        'email', 'whatsapp','call2','select_gst_type','discount_type','log_entered_by','first_submit','grand_total'  ])
 
                 return redirect('/update_view_lead/'+str(lead_id.id))
             else :

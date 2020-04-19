@@ -450,7 +450,7 @@ function myFunction() {
 
 
                               <div class="form-group row">
-                              <label class="col-md-2 control-label">Current Stage: *</label>
+                              <label class="col-md-2 control-label">Current Stage* : </label>
                                   <div class="col-md-5 inputGroupContainer">
                                   <div class="input-group">
 <!--                                  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>-->
@@ -484,7 +484,7 @@ function myFunction() {
 
                               <div class="form-group row">
 
-                                <label class="col-md-2 control-label">New/Existing Customer: *</label>
+                                <label class="col-md-2 control-label">New/Existing Customer : *</label>
                               <div class="col-md-4 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
@@ -516,7 +516,7 @@ function myFunction() {
                             </div>
                           </div>
 
-                                <label class="col-md-2 control-label">Channel: *</label>
+                                <label class="col-md-2 control-label">Channel*: </label>
                              <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
@@ -544,7 +544,7 @@ function myFunction() {
 
                             <div class="form-group row">
 
-                                   <label class="col-md-2 control-label">Requirement :</label>
+                                   <label class="col-md-2 control-label">Requirement* :</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-check-square faicons"></i></span>
@@ -587,7 +587,7 @@ function myFunction() {
 <div class="form-group row">
                          {% if request.user.role == 'Employee' %}
 
-                                <label class="col-md-2 control-label">Owner of Opportunity :</label>
+                                <label class="col-md-2 control-label">Owner of Opportunity* :</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
@@ -601,7 +601,7 @@ function myFunction() {
                             </div>
                              </div>
                     {% else %}
-                                <label class="col-md-2 control-label">Owner of Opportunity :</label>
+                                <label class="col-md-2 control-label">Owner of Opportunity* :</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
@@ -756,19 +756,7 @@ tr:nth-child(even) {
                  <button type="button" onclick="document.getElementById('primaryButton').click()" name="secondaryButton"  style="background-color: #FC6E20;" class="btn btn-primary">Save</button>
 </center>
 
-                             {% if pi_id.first_submit == True  %}
-                                                  <div class="form-group row">
-                                <label class="col-md-4 control-label">Select PI Template </label>
-                              <div class="col-md-7 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
-                                {{ form3.select_pi_template }}
-                                                              </div>
-                          </div>
 
-
-                          </div>
-                             {% endif %}
                              <center>Note: For PI Preview Uncheck Email and click on submit button</center>
                          </div>
                                 <div class="card shadow col-md-6">
@@ -838,8 +826,11 @@ function myFunction_call() {
   var x = document.getElementById("myDiv_call");
   if (x.style.display == "none") {
     x.style.display = "block";
+     $('#call').attr('required', '');
+
   } else {
     x.style.display = "none";
+   $('#call').removeAttr('required');
   }
 }
 
@@ -847,6 +838,20 @@ function myFunction_call() {
 
 </script>
 <br>
+                         {% if pi_id.first_submit == True  %}
+                                                  <div class="form-group row">
+                                <label class="col-md-4 control-label">Select PI Template </label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.select_pi_template }}
+                                                              </div>
+                          </div>
+
+
+                          </div>
+                             {% endif %}
+                         <br>
 <div class="row">
                                                          <label class="col-md-2 control-label">Medium of Selection:</label>
 

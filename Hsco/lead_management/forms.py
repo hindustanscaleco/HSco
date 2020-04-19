@@ -223,7 +223,7 @@ class Deal_detailForm(forms.ModelForm):
                                   }
                               ))
 
-    owner_of_opportunity = forms.CharField(max_length=80, required=False,
+    owner_of_opportunity = forms.CharField(max_length=80, required=True,
                                   widget=forms.TextInput(
                                       attrs={
                                           'type': 'text',
@@ -232,7 +232,7 @@ class Deal_detailForm(forms.ModelForm):
                                       }
                                   ))
 
-    owner_of_opportunity_employee = forms.CharField(max_length=80, required=False,
+    owner_of_opportunity_employee = forms.CharField(max_length=80, required=True,
                    widget=forms.TextInput(
                        attrs={
                            'type': 'text',
@@ -296,7 +296,7 @@ class Pi_sectionForm(forms.ModelForm):
            }
        ))
 
-    select_gst_type = forms.CharField(required=False,
+    select_gst_type = forms.CharField(required=True,
        widget=forms.Select(choices=select_gst_type,
              attrs={
                  'type': 'text',
