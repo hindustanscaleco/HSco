@@ -2319,6 +2319,7 @@ def select_product_followup(request,id):
                 product_avail = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale_str).id, main_category=main_model.objects.get(id=model_of_purchase_str).id,
                                                        sub_category=sub_model.objects.get(id=sub_model_str).id, sub_sub_category=sub_sub_model.objects.get(id=sub_sub_model_str).id)
 
+
             context23 = {
                 'product_avail': product_avail,
             }
@@ -2357,19 +2358,20 @@ def select_product(request,id):
                                                    main_category=main_model.objects.get(id=main_category).name,
                                                    sub_category=sub_model.objects.get(id=sub_category).name,
                                                    sub_sub_category=sub_model.objects.get(id=sub_sub_category).name)
+            item.lead_id = Lead.objects.get(id=lead_id)
+            item.quantity = quantity
+            item.pf = pf
+            item.log_entered_by = request.user.name
+            if quantity != 'None' or quantity != '':
+                item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
+            item.save()
         else:
             msg = "Selected Product does not exist!!!"
             context1={
                 'msg':msg,
             }
             context.update(context1)
-        item.lead_id = Lead.objects.get(id=lead_id)
-        item.quantity = quantity
-        item.pf = pf
-        item.log_entered_by = request.user.name
-        if quantity != 'None' or quantity != '':
-            item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
-        item.save()
+
 
         del_all_sessions(request)
 
