@@ -2353,21 +2353,22 @@ def select_product(request,id):
         # if sub_sub_category != '':
         #     item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
         #                                           sub_category=sub_category, sub_sub_category=sub_sub_category)
-        if (sub_sub_category != None and sub_sub_category != ""):
-            item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
-                                                  sub_category=sub_category, sub_sub_category=sub_sub_category)
-            item.lead_id = Lead.objects.get(id=lead_id)
-            item.quantity = quantity
-            item.pf = pf
-            item.log_entered_by = request.user.name
-            if quantity != 'None' or quantity != '':
-                item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
-            item.save()
-            if is_last_product_yes == 'yes':
-                return redirect('/update_view_lead/' + str(id))
-            elif is_last_product_yes == 'no':
-                return redirect('/select_product/' + str(id))
-        else:
+        try:
+            if (sub_sub_category != None and sub_sub_category != ""):
+                item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
+                                                      sub_category=sub_category, sub_sub_category=sub_sub_category)
+                item.lead_id = Lead.objects.get(id=lead_id)
+                item.quantity = quantity
+                item.pf = pf
+                item.log_entered_by = request.user.name
+                if quantity != 'None' or quantity != '':
+                    item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
+                item.save()
+                if is_last_product_yes == 'yes':
+                    return redirect('/update_view_lead/' + str(id))
+                elif is_last_product_yes == 'no':
+                    return redirect('/select_product/' + str(id))
+        except:
             msg = "Selected Product does not exist!!!"
             context1={
                 'msg':msg,
