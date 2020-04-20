@@ -2365,23 +2365,23 @@ def select_product(request,id):
             if quantity != 'None' or quantity != '':
                 item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
             item.save()
+            if is_last_product_yes == 'yes':
+                return redirect('/update_view_lead/' + str(id))
+            elif is_last_product_yes == 'no':
+                return redirect('/select_product/' + str(id))
         else:
             msg = "Selected Product does not exist!!!"
             context1={
                 'msg':msg,
             }
             context.update(context1)
-            return redirect('/select_product/' + str(id))
 
 
         del_all_sessions(request)
 
         request.session['expand_pi_section'] = True
 
-        if is_last_product_yes == 'yes':
-            return redirect('/update_view_lead/' + str(id))
-        elif is_last_product_yes == 'no':
-            return redirect('/select_product/' + str(id))
+
     context2 = {
         'lead_id': lead_id,
         'type_of_purchase_list': type_of_purchase_list,
