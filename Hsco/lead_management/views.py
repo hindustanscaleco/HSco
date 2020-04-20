@@ -2371,6 +2371,7 @@ def select_product(request,id):
                 'msg':msg,
             }
             context.update(context1)
+            return redirect('/select_product/' + str(id))
 
 
         del_all_sessions(request)
