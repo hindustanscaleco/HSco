@@ -348,14 +348,13 @@ td {
 
 
             </style>
+          <form method="POST" autocomplete="off">{% csrf_token%}
 
             <div class="row">
-                     <div  class="col-xl-1 col-md-1">
-                    <button type="button" class="btn btn-secondary">Sort</button>
-                </div>
+
                             <div  class="col-xl-2 col-md-1">
                     <div class="button dropdown">
-  <select id="divselector" name="scale_type"  required onchange="choice1(this)" class="form-control btn btn-secondary">
+  <select id="divselector" name="scale_type"  onchange="choice1(this)" class="form-control btn btn-secondary">
        <option value="">Select Scale Type</option>
 
     {% for item in type_of_purchase_list %}
@@ -370,7 +369,7 @@ td {
 <div  class="col-xl-2 col-md-2">
     <div class="button dropdown">
 
-      <select id="id_subcat" name="main_category" required onchange="choice_model(this)" class="form-control btn btn-secondary">
+      <select id="id_subcat" name="main_category"  onchange="choice_model(this)" class="form-control btn btn-secondary">
   </select>
     </div>
 </div>
@@ -385,18 +384,23 @@ td {
 </div>
 <div  class="col-xl-2 col-md-2">
     <div class="button dropdown">
-         <select required id="id_subcat22" name="sub_sub_category" onchange="choice_sub_sub_model(this)" class="form-control btn btn-secondary">
+         <select  id="id_subcat22" name="sub_sub_category" onchange="choice_sub_sub_model(this)" class="form-control btn btn-secondary">
 
 
   </select>
     </div>
 </div>
+                                     <div  class="col-xl-1 col-md-1">
+                    <button type="submit"  class="btn btn-secondary">Sort</button>
+                </div>
 
                 <div class="col-md-1"></div>
            <button id="display_image" type="button" class="btn btn-primary" style="background-color:#FC6E20">List / Image</button>
 
 
                 </div>
+                      </form>
+
 
 <br>
 
@@ -501,9 +505,7 @@ function choice1(select) {
 
     if ($('#id_subcat option').length > 1)
     {
-    $('#id_subcat').attr('required', '');
-    $('#id_subcat2').attr('required', '');
-    $('#id_subcat22').attr('required', '');
+
     }
     else{
     $('#id_subcat').removeAttr('required');
@@ -530,8 +532,7 @@ $("#model_of_purchase").val(select.options[select.selectedIndex].text);
 
        if ($('#id_subcat2 option').length > 1)
     {
-    $('#id_subcat2').attr('required', '');
-    $('#id_subcat22').attr('required', '');
+
 
 
     }
@@ -560,7 +561,6 @@ $("#sub_model").val(select.options[select.selectedIndex].text);
 
      if ($('#id_subcat22 option').length > 1)
     {
-    $('#id_subcat22').attr('required', '');
 
     }
     else{

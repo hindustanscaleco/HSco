@@ -319,42 +319,56 @@ td {
 
             </style>
 
+          <form method="POST" autocomplete="off">{% csrf_token%}
+
             <div class="row">
-                                  <div  class="col-xl-2 col-md-3 col-mb-3">
+
+                            <div  class="col-xl-2 col-md-1">
                     <div class="button dropdown">
-  <select id="divsort" class="form-control">
-     <option value="d0">Sort by Type </option>
+  <select id="divselector" name="scale_type"  onchange="choice1(this)" class="form-control btn btn-secondary">
+       <option value="">Select Scale Type</option>
+
+    {% for item in type_of_purchase_list %}
+  <option value="{{item.pk}}">{{item.name}}</option>
+
+   {% endfor %}
+
   </select>
 </div>
                             </div>
 
-                                            <div  class="col-xl-2 col-md-2 col-mb-3">
-                    <div class="button dropdown">
-  <select id="divssaorst" class="form-control">
-     <option value="d0">Sort by Model </option>
-  </select>
-</div>
-                            </div>
+<div  class="col-xl-2 col-md-2">
+    <div class="button dropdown">
 
-                <div class="col-md-2">
-                                        <div class="button dropdown">
-  <select id="divassorst" class="form-control">
-     <option value="d0">Sort by Sub Model </option>
+      <select id="id_subcat" name="main_category"  onchange="choice_model(this)" class="form-control btn btn-secondary">
   </select>
+    </div>
 </div>
-                </div>
-                <div class="col-md-2">
-                                        <div class="button dropdown">
-  <select id="divasassorst" class="form-control">
-     <option value="d0">Sort by Sub Sub Model </option>
-  </select>
-</div>
-                </div>
-                <div class="col-md-2"></div>
-<!--           <a href="{% url 'stock_godown_images' %}"><button type="button" class="btn btn-primary" style="background-color:#FC6E20">Display with Image</button></a>-->
+
+<div  class="col-xl-2 col-md-2">
+    <div class="button dropdown">
+        <select id="id_subcat2" name="sub_category" onchange="choice_sub_model(this)" class="form-control btn btn-secondary">
 
 
+  </select>
+    </div>
+</div>
+<div  class="col-xl-2 col-md-2">
+    <div class="button dropdown">
+         <select  id="id_subcat22" name="sub_sub_category" onchange="choice_sub_sub_model(this)" class="form-control btn btn-secondary">
+
+
+  </select>
+    </div>
+</div>
+                                     <div  class="col-xl-1 col-md-1">
+                    <button type="submit" name="submit4" class="btn btn-secondary">Sort</button>
                 </div>
+
+
+
+                </div>
+                      </form>
 
 <br>
 <div class="row" id="abhish123">
@@ -582,6 +596,116 @@ value = !select.checked;
 
     </script>
 
+<script>
+function choice1(select) {
+     //alert(select.options[select.selectedIndex].value);
+
+
+       $("#type_of_scale").val(select.options[select.selectedIndex].text);
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat").html(data);
+
+    if ($('#id_subcat option').length > 1)
+    {
+
+    }
+    else{
+    $('#id_subcat').removeAttr('required');
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+    }
+
+
+
+        }
+      });
+}
+function choice_model(select) {
+$("#model_of_purchase").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat2").html(data);
+
+       if ($('#id_subcat2 option').length > 1)
+    {
+
+
+
+    }
+    else{
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+
+    }
+
+
+        }
+      });
+}
+
+function choice_sub_model(select) {
+$("#sub_model").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_sub_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat22").html(data);
+
+     if ($('#id_subcat22 option').length > 1)
+    {
+
+    }
+    else{
+    $('#id_subcat22').removeAttr('required');
+
+    }
+
+
+        }
+      });
+}
+
+function choice_sub_sub_model(select) {
+$("#sub_sub_model").val(select.options[select.selectedIndex].text);
+
+}
+
+function isOneChecked() {
+  // All <input> tags...
+  var chx = document.getElementsByTagName('input');
+  for (var i=0; i<chx.length; i++) {
+    // If you have more than one radio group, also check the name attribute
+    // for the one you want as in && chx[i].name == 'choose'
+    // Return true from the function on first match of a checked item
+    if (chx[i].type == 'radio' && chx[i].checked) {
+    alert("Are you sure it's last product?\n you will not be able to add product again.");
+      return true;
+    }
+  }
+  // End of the loop, return false
+  alert("Please Select any one radio buttons in last product field.");
+  return false;
+}
+
+
+  </script>
 
 
           <!--</div>-->

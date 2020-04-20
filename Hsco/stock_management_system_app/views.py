@@ -54,7 +54,8 @@ def update_godown(request,godown_id):
     godown = Godown.objects.get(id=godown_id)
     godown_products = GodownProduct.objects.filter(godown_id=godown_id)
     assign_users = SiteUser.objects.filter(modules_assigned__icontains= 'Stock', admin__contains= request.user.profile_name)
-
+    type_of_purchase_list = type_purchase.objects.all()  # 1
+    products = Product.objects.all()
     godown_initial_data = {
         'name_of_godown': godown.name_of_godown,
         'goddown_assign_to': godown.goddown_assign_to,
@@ -62,6 +63,15 @@ def update_godown(request,godown_id):
         'contact_no': godown.contact_no,
     }
     form = GodownForm(initial=godown_initial_data)
+    context = {
+        'godown_products': godown_products,
+        'godown': godown,
+        'form': form,
+        'assign_users': assign_users,
+        'type_of_purchase_list': type_of_purchase_list,
+        'products': products,
+
+    }
     if request.method == 'POST' or request.method=='FILES':
         if 'submit1' in request.POST:
             name_of_godown = request.POST.get('name_of_godown')
@@ -81,14 +91,80 @@ def update_godown(request,godown_id):
             product_id = request.POST.get('product_id')
             GodownProduct.objects.get(id=product_id).delete()
             return redirect('/update_godown/'+str(godown_id))
+        if 'submit3' in request.POST:
+            type_of_scale = request.POST.get('scale_type')
+            main_category = request.POST.get('main_category')
+            sub_category = request.POST.get('sub_category')
+            sub_sub_category = request.POST.get('sub_sub_category')
+
+            if ((sub_sub_category != None and sub_sub_category != '') and (
+                    sub_category != None and sub_category != '') and (
+                    main_category != None and main_category != '') and (
+                    type_of_scale != None and type_of_scale != '')):
+                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                                                    product_id__main_category=main_category,
+                                                    product_id__sub_category=sub_category,
+                                                    product_id__sub_sub_category=sub_sub_category)
+                context1 = {
+                    'godown_products': sort,
+                    'godown': godown,
+                    'form': form,
+                    'assign_users': assign_users,
+                    'type_of_purchase_list': type_of_purchase_list,
+                    'products': products,
+                }
+                context.update(context1)
+                return render(request, 'stock_management_system/update_godown.html', context)
 
 
-    context={
-        'godown': godown,
-        'form': form,
-        'godown_products': godown_products,
-        'assign_users': assign_users,
-    }
+            elif ((sub_category != None and sub_category != '') and (
+                    main_category != None and main_category != '') and (
+                          type_of_scale != None and type_of_scale != '')):
+                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                                                    product_id__main_category=main_category,
+                                                    product_id__sub_category=sub_category)
+                context1 = {
+                    'godown_products': sort,
+                    'godown': godown,
+                    'form': form,
+                    'assign_users': assign_users,
+                    'type_of_purchase_list': type_of_purchase_list,
+                    'products': products,
+                }
+                context.update(context1)
+                return render(request, 'stock_management_system/update_godown.html', context)
+
+
+            elif ((main_category != None and main_category != '') and (
+                    type_of_scale != None and type_of_scale != '')):
+                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                                                    product_id__main_category=main_category)
+                context1 = {
+                    'godown_products': sort,
+                    'godown': godown,
+                    'form': form,
+                    'assign_users': assign_users,
+                    'type_of_purchase_list': type_of_purchase_list,
+                    'products': products,
+                }
+                context.update(context1)
+                return render(request, 'stock_management_system/update_godown.html', context)
+
+
+            elif (type_of_scale != None and type_of_scale != ''):
+                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale)
+                context1 = {
+                    'godown_products': sort,
+                    'godown': godown,
+                    'form': form,
+                    'assign_users': assign_users,
+                    'type_of_purchase_list': type_of_purchase_list,
+                    'products': products,
+                }
+                context.update(context1)
+                return render(request, 'stock_management_system/update_godown.html', context)
+
+
     return render(request, 'stock_management_system/update_godown.html',context)
 
 def add_product_godown(request, godown_id):
@@ -138,7 +214,14 @@ def stock_godown(request,id):
         new_good_request_id = 1
     else:
         new_good_request_id = GoodsRequest.objects.latest('id').id + 1
+    context={
+        'godown_id': godown_id,
+        'new_good_request_id': new_good_request_id,
+        'type_of_purchase_list': type_of_purchase_list,
+        'products': products,
+        'godown_products': godown_products,
 
+    }
     if request.method == 'POST' or request.method == 'FILES':
 
         type_of_scale = request.POST.get('scale_type')
@@ -146,34 +229,64 @@ def stock_godown(request,id):
         sub_category = request.POST.get('sub_category')
         sub_sub_category = request.POST.get('sub_sub_category')
 
-        if (sub_sub_category != "" and sub_category != "" and main_category != "" and type_of_scale != ""):
-            sort = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale).name,
-                                                  main_category=main_model.objects.get(id=main_category).name,
-                                                  sub_category=sub_model.objects.get(id=sub_category).name,
-                                                  sub_sub_category=sub_model.objects.get(id=sub_sub_category).name)
-            print(sort)
+        if ((sub_sub_category != None and sub_sub_category !='') and (sub_category != None and sub_category !='') and (main_category != None and main_category !='') and (type_of_scale != None and type_of_scale !='')):
+            sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                                                  product_id__main_category=main_category,
+                                                  product_id__sub_category=sub_category,
+                                                  product_id__sub_sub_category=sub_sub_category)
+            context1={
+                'godown_products':sort,
+                'godown_id': godown_id,
+                'new_good_request_id': new_good_request_id,
+                'type_of_purchase_list': type_of_purchase_list,
+                'products': products,
+            }
+            context.update(context1)
+            return render(request, 'stock_management_system/stock_godown.html', context)
 
-        elif ( sub_category != "" and main_category != "" and type_of_scale != ""):
-            sort = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale).name,
-                                                  main_category=main_model.objects.get(id=main_category).name,
-                                                  sub_category=sub_model.objects.get(id=sub_category).name)
-            print(sort)
 
-        elif (  main_category != "" and type_of_scale != ""):
-            sort = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale).name,
-                                                  main_category=main_model.objects.get(id=main_category).name)
-            print(sort)
+        elif ( (sub_category != None and sub_category !='')and (main_category != None and main_category !='')  and (type_of_scale != None and type_of_scale !='')):
+            sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                                                  product_id__main_category=main_category,
+                                                  product_id__sub_category=sub_category)
+            context1 = {
+                'godown_products': sort,
+                'godown_id': godown_id,
+                'new_good_request_id': new_good_request_id,
+                'type_of_purchase_list': type_of_purchase_list,
+                'products': products,
+            }
+            context.update(context1)
+            return render(request, 'stock_management_system/stock_godown.html', context)
 
-        elif ( type_of_scale != ""):
-            sort = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale).name)
-            print(sort)
-    context={
-     'godown_id':godown_id,
-     'new_good_request_id':new_good_request_id,
-     'godown_products':godown_products,
-     'type_of_purchase_list':type_of_purchase_list,
-     'products':products,
-    }
+
+        elif (  (main_category != None and main_category !='')  and (type_of_scale != None and type_of_scale !='')):
+            sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                                                  product_id__main_category=main_category)
+            context1 = {
+                'godown_products': sort,
+                'godown_id': godown_id,
+                'new_good_request_id': new_good_request_id,
+                'type_of_purchase_list': type_of_purchase_list,
+                'products': products,
+            }
+            context.update(context1)
+            return render(request, 'stock_management_system/stock_godown.html', context)
+
+
+        elif (type_of_scale != None and type_of_scale !=''):
+            sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale)
+            context1 = {
+                'godown_products': sort,
+                'godown_id': godown_id,
+                'new_good_request_id': new_good_request_id,
+                'type_of_purchase_list': type_of_purchase_list,
+                'products': products,
+            }
+            context.update(context1)
+            return render(request, 'stock_management_system/stock_godown.html', context)
+
+
     return render(request,'stock_management_system/stock_godown.html',context)
 
 def stock_godown_images(request):
@@ -184,6 +297,15 @@ def stock_good_request(request,godown_id, request_id):
     godowns = Godown.objects.all()
     godown_goods = GodownProduct.objects.filter(godown_id=godown_id)
     requested_goods = RequestedProducts.objects.filter(godown_id=godown_id,goods_req_id =request_id)
+    type_of_purchase_list = type_purchase.objects.all()  # 1
+    products = Product.objects.all()
+    context = {
+        'godown_goods': godown_goods,
+        'requested_goods': requested_goods,
+        'godowns': godowns,
+        'type_of_purchase_list': type_of_purchase_list,
+        'products': products,
+    }
     if request.method == 'POST' or request.method == 'FILES':
         if 'submit1' in request.POST:
             product_id = request.POST.get('product_id')
@@ -231,12 +353,76 @@ def stock_good_request(request,godown_id, request_id):
             request_id = request.POST.get('request_id')
             RequestedProducts.objects.get(id=request_id).delete()
 
+        elif 'submit4' in request.POST:
+            type_of_scale = request.POST.get('scale_type')
+            main_category = request.POST.get('main_category')
+            sub_category = request.POST.get('sub_category')
+            sub_sub_category = request.POST.get('sub_sub_category')
 
-    context={
-        'godown_goods':godown_goods,
-        'requested_goods':requested_goods,
-        'godowns':godowns,
-    }
+            if ((sub_sub_category != None and sub_sub_category != '') and (
+                    sub_category != None and sub_category != '') and (
+                    main_category != None and main_category != '') and (
+                    type_of_scale != None and type_of_scale != '')):
+                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                                                    product_id__main_category=main_category,
+                                                    product_id__sub_category=sub_category,
+                                                    product_id__sub_sub_category=sub_sub_category)
+                context1 = {
+                    'godown_goods': sort,
+                    'requested_goods': requested_goods,
+                    'godowns': godowns,
+                    'type_of_purchase_list': type_of_purchase_list,
+                    'products': products,
+                }
+                context.update(context1)
+                return render(request, 'stock_management_system/stock_good_request.html', context)
+
+
+            elif ((sub_category != None and sub_category != '') and (
+                    main_category != None and main_category != '') and (
+                          type_of_scale != None and type_of_scale != '')):
+                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                                                    product_id__main_category=main_category,
+                                                    product_id__sub_category=sub_category)
+                context1 = {
+                    'godown_goods': sort,
+                    'requested_goods': requested_goods,
+                    'godowns': godowns,
+                    'type_of_purchase_list': type_of_purchase_list,
+                    'products': products,
+                }
+                context.update(context1)
+                return render(request, 'stock_management_system/stock_good_request.html', context)
+
+
+            elif ((main_category != None and main_category != '') and (
+                    type_of_scale != None and type_of_scale != '')):
+                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                                                    product_id__main_category=main_category)
+                context1 = {
+                    'godown_goods': sort,
+                    'requested_goods': requested_goods,
+                    'godowns': godowns,
+                    'type_of_purchase_list': type_of_purchase_list,
+                    'products': products,
+                }
+                context.update(context1)
+                return render(request, 'stock_management_system/stock_good_request.html', context)
+
+
+            elif (type_of_scale != None and type_of_scale != ''):
+                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale)
+                context1 = {
+                    'godown_goods': sort,
+                    'requested_goods': requested_goods,
+                    'godowns': godowns,
+                    'type_of_purchase_list': type_of_purchase_list,
+                    'products': products,
+                }
+                context.update(context1)
+                return render(request, 'stock_management_system/stock_good_request.html', context)
+
+
     return render(request,'stock_management_system/stock_good_request.html',context)
 
 def stock_pending_request(request,godown_id):
