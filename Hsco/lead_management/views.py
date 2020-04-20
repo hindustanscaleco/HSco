@@ -2354,10 +2354,8 @@ def select_product(request,id):
         #     item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
         #                                           sub_category=sub_category, sub_sub_category=sub_sub_category)
         if (sub_sub_category != None and sub_sub_category != ""):
-            item.product_id = Product.objects.get(scale_type=type_purchase.objects.get(id=type_of_scale),
-                                                   main_category=main_model.objects.get(id=main_category),
-                                                   sub_category=sub_model.objects.get(id=sub_category),
-                                                   sub_sub_category=sub_model.objects.get(id=sub_sub_category))
+            item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
+                                                  sub_category=sub_category, sub_sub_category=sub_sub_category)
             item.lead_id = Lead.objects.get(id=lead_id)
             item.quantity = quantity
             item.pf = pf
