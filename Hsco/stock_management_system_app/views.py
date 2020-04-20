@@ -5,6 +5,7 @@ from customer_app.models import type_purchase
 from .forms import GodownForm
 from .models import Godown, GodownProduct, RequestedProducts, GoodsRequest, Product, AGProducts, AcceptGoods
 from user_app.models import SiteUser
+from customer_app.models import sub_model, main_model, sub_sub_model
 
 
 def stock_godown_list(request):
@@ -128,6 +129,8 @@ def add_product_godown(request, godown_id):
 
 
 def stock_godown(request,id):
+    type_of_purchase_list =type_purchase.objects.all() #1
+    products = Product.objects.all()
     godown_id = Godown.objects.get(id=id)
     godown_products = GodownProduct.objects.filter(godown_id=id)
 
@@ -136,12 +139,40 @@ def stock_godown(request,id):
     else:
         new_good_request_id = GoodsRequest.objects.latest('id').id + 1
 
+    if request.method == 'POST' or request.method == 'FILES':
 
+        type_of_scale = request.POST.get('scale_type')
+        main_category = request.POST.get('main_category')
+        sub_category = request.POST.get('sub_category')
+        sub_sub_category = request.POST.get('sub_sub_category')
 
+        if (sub_sub_category != "" and sub_category != "" and main_category != "" and type_of_scale != ""):
+            sort = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale).name,
+                                                  main_category=main_model.objects.get(id=main_category).name,
+                                                  sub_category=sub_model.objects.get(id=sub_category).name,
+                                                  sub_sub_category=sub_model.objects.get(id=sub_sub_category).name)
+            print(sort)
+
+        elif ( sub_category != "" and main_category != "" and type_of_scale != ""):
+            sort = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale).name,
+                                                  main_category=main_model.objects.get(id=main_category).name,
+                                                  sub_category=sub_model.objects.get(id=sub_category).name)
+            print(sort)
+
+        elif (  main_category != "" and type_of_scale != ""):
+            sort = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale).name,
+                                                  main_category=main_model.objects.get(id=main_category).name)
+            print(sort)
+
+        elif ( type_of_scale != ""):
+            sort = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale).name)
+            print(sort)
     context={
      'godown_id':godown_id,
      'new_good_request_id':new_good_request_id,
      'godown_products':godown_products,
+     'type_of_purchase_list':type_of_purchase_list,
+     'products':products,
     }
     return render(request,'stock_management_system/stock_godown.html',context)
 
