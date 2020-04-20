@@ -2336,6 +2336,7 @@ def select_product(request,id):
     type_of_purchase_list =type_purchase.objects.all() #1
     lead_id = Lead.objects.get(id=id)
     products = Product.objects.all()
+    context={}
     if request.method == 'POST' or request.method == 'FILES':
         hsn_code = request.POST.get('hsn_code')
         pf = request.POST.get('pf')
@@ -2357,10 +2358,11 @@ def select_product(request,id):
                                                    sub_category=sub_model.objects.get(id=sub_category).name,
                                                    sub_sub_category=sub_model.objects.get(id=sub_sub_category).name)
         else:
-            item.product_id = Product.objects.get(scale_type=type_purchase.objects.get(id=type_of_scale).id,
-                                                   main_category=main_model.objects.get(id=main_category).id,
-                                                   sub_category=sub_model.objects.get(id=sub_category).id,
-                                                   sub_sub_category=sub_sub_model.objects.get(id=sub_sub_category).id)
+            msg = "Selected Product does not exist!!!"
+            context1={
+                'msg':msg,
+            }
+            context.update(context1)
         item.lead_id = Lead.objects.get(id=lead_id)
         item.quantity = quantity
         item.pf = pf
@@ -2377,11 +2379,12 @@ def select_product(request,id):
             return redirect('/update_view_lead/' + str(id))
         elif is_last_product_yes == 'no':
             return redirect('/select_product/' + str(id))
-    context = {
+    context2 = {
         'lead_id': lead_id,
         'type_of_purchase_list': type_of_purchase_list,
         'products': products,
     }
+    context.update(context2)
     return render(request, 'lead_management/select_product.html', context)
 
 def lead_manager_view(request):
