@@ -1459,7 +1459,7 @@ def update_view_lead(request,id):
                 except:
                     print("product not added or debugging needed")
 
-                if grand_total != None or grand_total != '' or grand_total != 'None':
+                if grand_total != None and grand_total != '' and grand_total != 'None':
                     item2.grand_total = float(grand_total)
                 item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call','net_total','cgst_sgst','igst',
                                           'round_up_total','grand_total','total_cost','notes','pf_total',
