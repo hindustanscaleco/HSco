@@ -44,6 +44,7 @@ class GodownProduct(models.Model):
     added_by_id = models.ForeignKey(SiteUser,on_delete=models.CASCADE)
     quantity = models.FloatField(null=True, blank=True)
     carton_count = models.FloatField(null=True, blank=True)
+    critical_limit = models.FloatField(null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)

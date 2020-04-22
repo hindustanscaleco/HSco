@@ -53,7 +53,8 @@ def add_godown(request):
 def update_godown(request,godown_id):
     godown = Godown.objects.get(id=godown_id)
     godown_products = GodownProduct.objects.filter(godown_id=godown_id)
-    assign_users = SiteUser.objects.filter(modules_assigned__icontains= 'Stock', admin__contains= request.user.profile_name)
+    assign_users = SiteUser.objects.filter(Q(modules_assigned__icontains= 'Stock')&Q(admin__contains= request.user.profile_name)
+                                           &~Q(id=godown.goddown_assign_to.id))
     type_of_purchase_list = type_purchase.objects.all()  # 1
     products = Product.objects.all()
     godown_initial_data = {
@@ -86,11 +87,31 @@ def update_godown(request,godown_id):
             item.contact_no = contact_no
             item.log_entered_by = request.user.name
             item.save(update_fields=['name_of_godown','goddown_assign_to','location','contact_no','log_entered_by'])
-            return redirect('/update_godown/'+str(godown_id))
+            context1={
+                'godown_msg' : "Godown Updated Successfully!!!",
+                'godown_products': godown_products,
+                'godown': godown,
+                'form': form,
+                'assign_users': assign_users,
+                'type_of_purchase_list': type_of_purchase_list,
+                'products': products,
+            }
+            context.update(context1)
+            return render(request, 'stock_management_system/update_godown.html', context)
         if 'submit2' in request.POST:
             product_id = request.POST.get('product_id')
             GodownProduct.objects.get(id=product_id).delete()
-            return redirect('/update_godown/'+str(godown_id))
+            context1 = {
+                'product_deleted': "Product Removed From Godown Successfully!!!",
+                'godown_products': godown_products,
+                'godown': godown,
+                'form': form,
+                'assign_users': assign_users,
+                'type_of_purchase_list': type_of_purchase_list,
+                'products': products,
+            }
+            context.update(context1)
+            return render(request, 'stock_management_system/update_godown.html', context)
         if 'submit3' in request.POST:
             type_of_scale = request.POST.get('scale_type')
             main_category = request.POST.get('main_category')
@@ -101,68 +122,35 @@ def update_godown(request,godown_id):
                     sub_category != None and sub_category != '') and (
                     main_category != None and main_category != '') and (
                     type_of_scale != None and type_of_scale != '')):
-                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                godown_products = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
                                                     product_id__main_category=main_category,
                                                     product_id__sub_category=sub_category,
                                                     product_id__sub_sub_category=sub_sub_category)
-                context1 = {
-                    'godown_products': sort,
-                    'godown': godown,
-                    'form': form,
-                    'assign_users': assign_users,
-                    'type_of_purchase_list': type_of_purchase_list,
-                    'products': products,
-                }
-                context.update(context1)
-                return render(request, 'stock_management_system/update_godown.html', context)
-
 
             elif ((sub_category != None and sub_category != '') and (
                     main_category != None and main_category != '') and (
                           type_of_scale != None and type_of_scale != '')):
-                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                godown_products = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
                                                     product_id__main_category=main_category,
                                                     product_id__sub_category=sub_category)
-                context1 = {
-                    'godown_products': sort,
-                    'godown': godown,
-                    'form': form,
-                    'assign_users': assign_users,
-                    'type_of_purchase_list': type_of_purchase_list,
-                    'products': products,
-                }
-                context.update(context1)
-                return render(request, 'stock_management_system/update_godown.html', context)
-
 
             elif ((main_category != None and main_category != '') and (
                     type_of_scale != None and type_of_scale != '')):
-                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                godown_products = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
                                                     product_id__main_category=main_category)
-                context1 = {
-                    'godown_products': sort,
-                    'godown': godown,
-                    'form': form,
-                    'assign_users': assign_users,
-                    'type_of_purchase_list': type_of_purchase_list,
-                    'products': products,
-                }
-                context.update(context1)
-                return render(request, 'stock_management_system/update_godown.html', context)
-
 
             elif (type_of_scale != None and type_of_scale != ''):
-                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale)
-                context1 = {
-                    'godown_products': sort,
-                    'godown': godown,
-                    'form': form,
-                    'assign_users': assign_users,
-                    'type_of_purchase_list': type_of_purchase_list,
-                    'products': products,
-                }
-                context.update(context1)
-                return render(request, 'stock_management_system/update_godown.html', context)
+                godown_products = GodownProduct.objects.filter(product_id__scale_type=type_of_scale)
+            context1 = {
+                'godown_products': godown_products,
+                'godown': godown,
+                'form': form,
+                'assign_users': assign_users,
+                'type_of_purchase_list': type_of_purchase_list,
+                'products': products,
+            }
+            context.update(context1)
+            return render(request, 'stock_management_system/update_godown.html', context)
 
 
     return render(request, 'stock_management_system/update_godown.html',context)
@@ -183,23 +171,56 @@ def add_product_godown(request, godown_id):
         type_of_scale = request.POST.get('scale_type')
         main_category = request.POST.get('main_category')
         sub_category = request.POST.get('sub_category')
+        critical_limit = request.POST.get('critical_limit')
         sub_sub_category = request.POST.get('sub_sub_category')    #product code or sub_sub_category
 
         item = GodownProduct()
-        if sub_sub_category != '':
-            item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
-                                                  sub_category=sub_category, sub_sub_category=sub_sub_category)
-        item.godown_id = Godown.objects.get(id=godown_id)
-        item.added_by_id = SiteUser.objects.get(id=request.user.id)
-        item.quantity = quantity
-        item.carton_count = carton_count
-        item.log_entered_by = request.user.name
-        item.save()
+        try:
+            if sub_sub_category != '':
+                if GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,product_id__main_category=main_category,
+                product_id__sub_category=sub_category,product_id__sub_sub_category=sub_sub_category).count() > 0:
+                    try:
+                        GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,product_id__main_category=main_category,
+                        product_id__sub_category=sub_category,product_id__sub_sub_category=sub_sub_category).update(
+                        quantity=F("quantity") + quantity)
+                    except:
+                        pass
+                    try:
+                        GodownProduct.objects.filter(godown_id=godown_id, product_id__scale_type=type_of_scale,product_id__main_category=main_category,
+                        product_id__sub_category=sub_category,product_id__sub_sub_category=sub_sub_category).update(
+                        carton_count=F("carton_count") + carton_count)
+                    except:
+                        pass
 
-        if is_last_product_yes == 'yes':
-            return redirect('/update_godown/' + str(godown_id))
-        elif is_last_product_yes == 'no':
-            return redirect('/add_product_godown/' + str(godown_id))
+                    if critical_limit != '0' and '' and 'None':
+                        GodownProduct.objects.filter(godown_id=godown_id, product_id__scale_type=type_of_scale,
+                                                     product_id__main_category=main_category,
+                                                     product_id__sub_category=sub_category,
+                                                     product_id__sub_sub_category=sub_sub_category).update(
+                            critical_limit= critical_limit)
+                else:
+                    item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
+                                                          sub_category=sub_category, sub_sub_category=sub_sub_category)
+                    item.godown_id = Godown.objects.get(id=godown_id)
+                    item.added_by_id = SiteUser.objects.get(id=request.user.id)
+                    if quantity != '0' and '':
+                        item.quantity = quantity
+                    if carton_count != '0' and '':
+                        item.carton_count = carton_count
+                    if critical_limit != '0' and '':
+                        item.critical_limit = critical_limit
+                    item.log_entered_by = request.user.name
+                    item.save()
+            if is_last_product_yes == 'yes':
+                return redirect('/update_godown/' + str(godown_id))
+            elif is_last_product_yes == 'no':
+                return redirect('/add_product_godown/' + str(godown_id))
+        except:
+            msg = "Selected Product does not exist!!!"
+            context1={
+                'msg':msg,
+            }
+            context.update(context1)
 
     return render(request, 'stock_management_system/add_product_godown.html',context)
 

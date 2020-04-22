@@ -166,6 +166,15 @@ color:;
          <!-- Page Heading -->
             <h1 class="h3 mb-0 text-gray-800"> Select Product</h1>
 </center>
+            {% if msg %}
+
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> {{msg}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
 <br>
 <br>
 
@@ -295,6 +304,28 @@ color:;
      </div>
   </div>
 </div>
+<div class="form-group row">
+
+
+
+
+                            <label class="col-md-2 control-label">Critical Limit *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+
+    <input class="form-control" name="critical_limit" value="0" type="number">
+
+     </div>
+  </div>
+
+
+  </div>
+
 
                                 <div class="form-group row">
 
@@ -325,11 +356,7 @@ color:;
 
 </center>
             </form>
-<script>
-$('form').on('submit', function(){
-        alert('Product has been added to the godown successfully!!!');
-    });
-</script>
+
   </div>
   <!-- End of Page Wrapper -->
 

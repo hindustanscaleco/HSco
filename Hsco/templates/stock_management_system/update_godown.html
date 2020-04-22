@@ -76,8 +76,25 @@ color:;
 
         <!-- Begin Page Content -->
         <center><h3>Stock Management System</h3></center>
-        <center><h4>Adding Godown</h4></center>
+        <center><h4>Godown</h4></center>
+{% if godown_msg %}
 
+                     <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success : </strong> {{godown_msg}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+          {% if product_deleted %}
+
+                     <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success : </strong> {{product_deleted}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
         <div class="container-fluid" >
 
           <!--<div class="row" style="padding:20px;">-->
@@ -100,18 +117,24 @@ color:;
                           </div>
                         </div>
 
-
                                 <label class="col-md-2 control-label">Godown Assign To:</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+{% if request.user.role == 'Employee' or request.user.role == 'Manager' %}
          <select name="goddown_assign_to" class="form-control">
     <option value="{{ godown.goddown_assign_to }}"> {{ godown.goddown_assign_to }}</option>
-       {% for user in assign_users %}
-  <option value="{{user.profile_name}}">{{user.profile_name}}</option>
 
-   {% endfor %}
-</select>
+ {% else %}
+             <select name="goddown_assign_to" class="form-control">
+    <option value="{{ godown.goddown_assign_to }}"> {{ godown.goddown_assign_to }}</option>
+                   {% for user in assign_users %}
+              <option value="{{user.profile_name}}">{{user.profile_name}}</option>
+
+               {% endfor %}
+                 </select>
+
+     {% endif %}
 
                             </div>
                              </div>
@@ -195,11 +218,17 @@ color:;
                     <button type="submit" name="submit3" class="btn btn-secondary">Sort</button>
                 </div>
 
-                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                               <button   onclick="location.href='/add_product_godown/{{godown.id}}'"  type="button" class="btn btn-primary" style="background-color:#FC6E20">Add Product</button>
+
+                </div>
            <button id="display_image"  type="button" class="btn btn-primary" style="background-color:#FC6E20">List / Image</button>
 
 
                 </div>
+
+
+
                       </form>
 
 
@@ -282,6 +311,7 @@ $(document).ready(function(){
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><button name="submit2" type="submit"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></button></td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.carton_count}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.quantity}}</td>
+            <td id="image" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{% if product.product_id.product_image %}<img height="40" width="40" src="{{product.product_id.product_image.url}}">{% endif %}</td>
         </tr>
             </form>
 {% endfor %}
