@@ -203,11 +203,11 @@ def add_product_godown(request, godown_id):
                                                           sub_category=sub_category, sub_sub_category=sub_sub_category)
                     item.godown_id = Godown.objects.get(id=godown_id)
                     item.added_by_id = SiteUser.objects.get(id=request.user.id)
-                    if quantity != '0' and '':
+                    if quantity !=  '' and 'None':
                         item.quantity = quantity
-                    if carton_count != '0' and '':
+                    if carton_count != '' and 'None':
                         item.carton_count = carton_count
-                    if critical_limit != '0' and '':
+                    if critical_limit != '' and 'None':
                         item.critical_limit = critical_limit
                     item.log_entered_by = request.user.name
                     item.save()
