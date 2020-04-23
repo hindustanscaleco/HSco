@@ -693,3 +693,7 @@ def stock_transaction_history(request, from_godown_id, trans_id):
         'requested_goods':requested_goods,
     }
     return render(request, 'stock_management_system/stock_transaction_history.html',context)
+
+
+def request_admin(request):
+    return render(request,'stock_management_system/request_admin_page.html')
