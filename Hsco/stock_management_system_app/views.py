@@ -164,8 +164,8 @@ def add_product_godown(request, godown_id):
 
     }
     if request.method == 'POST' or request.method == 'FILES':
-        carton_count = request.POST.get('carton_count')
         quantity = request.POST.get('quantity')
+        req_type = request.POST.get('req_type')
         is_last_product_yes = request.POST.get('is_last_product_yes')
         # model_of_purchase = request.POST.get('model_of_purchase')
         type_of_scale = request.POST.get('scale_type')
@@ -179,18 +179,16 @@ def add_product_godown(request, godown_id):
             if sub_sub_category != '':
                 if GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,product_id__main_category=main_category,
                 product_id__sub_category=sub_category,product_id__sub_sub_category=sub_sub_category).count() > 0:
-                    try:
+                    if req_type == 'Individual':
                         GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,product_id__main_category=main_category,
                         product_id__sub_category=sub_category,product_id__sub_sub_category=sub_sub_category).update(
                         quantity=F("quantity") + quantity)
-                    except:
-                        pass
-                    try:
+
+                    elif req_type == 'Carton':
                         GodownProduct.objects.filter(godown_id=godown_id, product_id__scale_type=type_of_scale,product_id__main_category=main_category,
                         product_id__sub_category=sub_category,product_id__sub_sub_category=sub_sub_category).update(
-                        carton_count=F("carton_count") + carton_count)
-                    except:
-                        pass
+                        carton_count=F("carton_count") + quantity)
+
 
                     if critical_limit != '0' and '' and 'None':
                         GodownProduct.objects.filter(godown_id=godown_id, product_id__scale_type=type_of_scale,
@@ -203,10 +201,17 @@ def add_product_godown(request, godown_id):
                                                           sub_category=sub_category, sub_sub_category=sub_sub_category)
                     item.godown_id = Godown.objects.get(id=godown_id)
                     item.added_by_id = SiteUser.objects.get(id=request.user.id)
-                    if quantity !=  '' and 'None':
-                        item.quantity = quantity
-                    if carton_count != '' and 'None':
-                        item.carton_count = carton_count
+                    if req_type == 'Individual':
+                        if quantity !=  '' and 'None':
+                            item.quantity = quantity
+                    else:
+                        item.quantity = 0.0
+
+                    if req_type == 'Carton':
+                        if quantity !=  '' and 'None':
+                            item.carton_count = quantity
+                    else:
+                        item.carton_count = 0.0
                     if critical_limit != '' and 'None':
                         item.critical_limit = critical_limit
                     item.log_entered_by = request.user.name
@@ -216,7 +221,7 @@ def add_product_godown(request, godown_id):
             elif is_last_product_yes == 'no':
                 return redirect('/add_product_godown/' + str(godown_id))
         except:
-            msg = "Selected Product does not exist!!!"
+            msg = "Selected Product does not exist in Main Product Database Table!!!"
             context1={
                 'msg':msg,
             }
@@ -466,16 +471,21 @@ def stock_transaction_status(request,from_godown_id, trans_id):
     good_request = GoodsRequest.objects.get(id=trans_id)
     godown = Godown.objects.get(id=from_godown_id)
     requested_goods = RequestedProducts.objects.filter(godown_id=from_godown_id,goods_req_id =good_request)
+    godown_assign_employee = Godown.objects.filter(goddown_assign_to__id=request.user.id)
+    godown_assign_admin = Godown.objects.filter(godown_admin__id=request.user.id)
     if request.method == 'POST' or request.method == 'FILES':
         if 'submit1' in request.POST:
             number = request.POST.get('number')
             req_type = request.POST.get('req_type')
             product_id = request.POST.get('product_id')
             faulty = request.POST.get('faulty')
-
+            req_to_godown = request.POST.get('req_to_godown')
             item2 = RequestedProducts.objects.get(id=product_id)
+
             if req_type == 'Individual':
                 if good_request.status == 'Pending From Target':
+                    if good_request.req_to_godown == 'None' or None or '':
+                        good_request.req_to_godown = Godown.objects.get(id=req_to_godown)
                     if number != '0':
                         item2.sent_quantity = float(number)
                         item2.log_entered_by = request.user.name
@@ -486,6 +496,8 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                     if faulty != '0':
                         item2.faulty_quantity = float(faulty)
                         item2.log_entered_by = request.user.name
+                    if good_request.req_to_godown == 'None' or None or '':
+                        good_request.req_to_godown = Godown.objects.get(id=req_to_godown)
 
             elif req_type == 'Carton':
                 if good_request.status == 'Pending From Target':
@@ -501,7 +513,8 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                         item2.log_entered_by = request.user.name
 
             item2.save(update_fields=['sent_quantity','received_quantity','sent_carton_count','received_carton_count','log_entered_by',
-                                      'faulty_carton','faulty_quantity'])
+                                      'faulty_carton','faulty_quantity',])
+            good_request.save(update_fields=['req_to_godown'])
             return redirect('/stock_transaction_status/'+str(from_godown_id)+'/'+str(trans_id))
 
         if 'submit2' in request.POST:
@@ -569,6 +582,8 @@ def stock_transaction_status(request,from_godown_id, trans_id):
         'good_request': good_request,
         'godown': godown,
         'requested_goods': requested_goods,
+        'godown_assign_admin': godown_assign_admin,
+        'godown_assign_employee': godown_assign_employee,
 
     }
     return render(request,'stock_management_system/stock_transaction_status.html',context)
