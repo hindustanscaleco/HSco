@@ -2,7 +2,7 @@ from django.urls import path, include, re_path
 
 from .views import stock_godown_list,add_godown,stock_godown,stock_godown_images,stock_good_request,stock_pending_request,stock_transaction_status, \
                     stock_accpet_goods,stock_accpet_goods_list,stock_transaction_history_list,stock_transaction_history, update_godown,\
-add_product_godown
+add_product_godown,request_admin
 
 urlpatterns = [
     path('stock_godown_list/',stock_godown_list , name ='stock_godown_list'),
@@ -18,5 +18,6 @@ urlpatterns = [
     path('stock_transaction_history/<int:from_godown_id>/<int:trans_id>',stock_transaction_history , name ='stock_transaction_history'),
     path('update_godown/<int:godown_id>',update_godown , name ='update_godown'),
     path('add_product_godown/<int:godown_id>',add_product_godown , name ='add_product_godown'),
+    path('request_admin',request_admin, name ='request_admin'),
 
 ]
