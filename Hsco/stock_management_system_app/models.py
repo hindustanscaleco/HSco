@@ -49,6 +49,14 @@ class GodownProduct(models.Model):
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
 
+    @property
+    def total(self):
+        "Returns the total"
+        product = Product.objects.get(id=self.product_id)
+
+        cart_count = self.carton_count
+        return (float(cart_count) * float(product.carton_size))
+
     def __int__(self):
         return self.id
 
@@ -60,6 +68,8 @@ class GoodsRequest(models.Model):
     goods_received = models.BooleanField(default=False)
     entered_by = models.ForeignKey(SiteUser,on_delete=models.CASCADE,null=True,blank=True)
     status = models.CharField(max_length=50,null=True,blank=True)
+    request_admin = models.BooleanField(default=False)
+    request_admin_id = models.ForeignKey(SiteUser,on_delete=models.CASCADE,related_name='request_admin', null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)

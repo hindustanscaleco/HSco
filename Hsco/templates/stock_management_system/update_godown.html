@@ -309,7 +309,7 @@ $(document).ready(function(){
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.product_id.sub_category}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.product_id.sub_sub_category}} <input hidden name="product_id" value="{{product.id}}"></td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{% if product.quantity == 0 %}<button name="submit2" type="submit"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></button>{% endif %}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.carton_count}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.total}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.quantity}}</td>
             <td id="image" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{% if product.product_id.product_image %}<img height="40" width="40" src="{{product.product_id.product_image.url}}">{% endif %}</td>
         </tr>

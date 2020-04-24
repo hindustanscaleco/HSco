@@ -18,6 +18,6 @@ urlpatterns = [
     path('stock_transaction_history/<int:from_godown_id>/<int:trans_id>',stock_transaction_history , name ='stock_transaction_history'),
     path('update_godown/<int:godown_id>',update_godown , name ='update_godown'),
     path('add_product_godown/<int:godown_id>',add_product_godown , name ='add_product_godown'),
-    path('request_admin',request_admin, name ='request_admin'),
+    path('request_admin/',request_admin, name ='request_admin'),
 
 ]

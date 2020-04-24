@@ -66,7 +66,26 @@
               </div>
             </div>
 
-<div class="col-md-4"></div>
+<div class="col-xl-2"></div>
+                {% if  request.user.role == 'Admin' %}
+
+<div class="col-xl-2">
+                    <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+
+
+
+
+ <a href="{% url 'add_godown' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Godown </button></a>
+
+
+
+
+
+                </div>
+              </div>
+
+</div>
 
                  <div class="col-xl-2 col-md-9 mb-9 ">
 
@@ -77,9 +96,7 @@
 
 
 
-{% if  request.user.role == 'Admin' %}
- <a href="{% url 'add_godown' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Godown </button></a>
-                      {% endif %}
+ <a href="{% url 'request_admin' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Request to Admin</button></a>
 
 
 
@@ -93,6 +110,7 @@
 
             </div>
 
+                      {% endif %}
 
 
                 </div>

@@ -147,65 +147,86 @@ td {
 <div style="min-height: 15vw;">
 
 <br>
-            {% if accepted_goods.0.accept_product_id.good_added != True %}
 
         <center><h3>Request Admin</h3></center>
 <br>
 <br>
+{% if messages %}
 
+                     <div class="alert alert-success alert-dismissible fade show" role="alert">
+                             {% for message in messages %}
+
+  <strong>Success : </strong> {{ message }}
+                         {% endfor %}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+{% endif %}
         <div class="row" id="id_manager_view">
 
-    <table border="1">
+    <table >
 
         <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Count</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Accept / Reject</td>
+            <td style="border: 0px solid gray;">Request From Godown </td>
+            <td style="border: 0px solid gray;">Accept From Godown </td>
+            <!--<td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Accept / Reject</td>-->
 
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Admin</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray; border-soild:1px;">Confirm</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Send Request To Other Admin </td>
+            <!--<td style="border-radius: 0px 0px 0px 0px; border:0px solid gray; border-soild:1px;">Confirm</td>-->
 
         </tr>
 
 
+{% for good in request_admin_list %}
+        <tr >
 
-<form method="POST" >{%csrf_token%}
-        <tr style="border-bottom-style: solid;">
-                        <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{good.product_id.scale_type}}<input name="product_id" value="{{good.product_id.id}}" hidden></td>
-            <td style="border: 0px solid gray;">{{good.product_id.main_category}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.product_id.sub_category}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.product_id.sub_sub_category}}</td>
-
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.carton_count}}<input name="req_carton_count" value="{{good.carton_count}}" hidden></td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.quantity}}<input name="req_quantity" value="{{good.quantity}}" hidden></td>
+                <td onclick="location.href='/stock_transaction_status/{{good.req_from_godown.id}}/{{good.id}}'" style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{good.req_from_godown.name_of_godown}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                 <button type="button" class="btn btn-primary">Accept</button>
-            </td>
+        <div class="btn-group">
+                        <form method="POST" >{%csrf_token%}
+
+<select class="btn btn-success" id="caasrs" name="accept_to_godown">
+{% for godown in admin_godowns %}
+  <option class="btn btn-success" value="{{godown.0}}">{{godown.1 }}</option>
+    {% endfor %}
+</select>
+                 <button type="submit" name="request_accepted" class="btn btn-danger">Accept</button>
+                                <input name="good_req" value="{{good.id}}" hidden>
+                                                    </form>
+</div>
+
+                                 </td>
+            <!--<td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">-->
+
+
+            <!--</td>-->
+
                      <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 
                 <div class="btn-group">
-<select class="btn btn-success" id="caasrs" name="req_type">
-  <option class="btn btn-success" value="Individual">Admin 1</option>
-  <option class="btn btn-success" value="Carton">Admin 2</option>
+                                            <form method="POST" >{%csrf_token%}
+
+<select class="btn btn-success" id="caasrs" name="outside_admin">
+{% for admin in outside_workarea_admins %}
+  <option class="btn btn-success" value="{{admin.0}}">{{admin.1 }}</option>
+    {% endfor %}
 </select>
+<input name="good_req" value="{{good.id}}" hidden>
+<button name="request_send" type="submit" class="btn btn-danger">Send</button>
+                                            </form>
 </div>
+
             </td>
 
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                <button name="submit1" type="submit" class="btn btn-danger">Send</button>
 
             </td>
+
         </tr>
 
-
-
-    </form>
-
-
+{% endfor %}
 
 
     </table>
@@ -216,7 +237,6 @@ td {
 
         </div>
 
-{% endif %}
 
         </div>
 
