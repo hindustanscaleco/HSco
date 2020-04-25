@@ -54,6 +54,12 @@ class GodownProduct(models.Model):
         quantity = self.quantity
         return (float(quantity) / float(product.carton_size))
 
+    @property
+    def carton_critical_limit(self):
+        product = Product.objects.get(id=self.product_id)
+        critical_limit = self.critical_limit
+        return (float(critical_limit) / float(product.carton_size))
+
     def __int__(self):
         return self.id
 

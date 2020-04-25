@@ -124,7 +124,7 @@ def update_godown(request,godown_id):
                     sub_category != None and sub_category != '') and (
                     main_category != None and main_category != '') and (
                     type_of_scale != None and type_of_scale != '')):
-                godown_products = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                godown_products = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,
                                                     product_id__main_category=main_category,
                                                     product_id__sub_category=sub_category,
                                                     product_id__sub_sub_category=sub_sub_category)
@@ -132,17 +132,17 @@ def update_godown(request,godown_id):
             elif ((sub_category != None and sub_category != '') and (
                     main_category != None and main_category != '') and (
                           type_of_scale != None and type_of_scale != '')):
-                godown_products = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                godown_products = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,
                                                     product_id__main_category=main_category,
                                                     product_id__sub_category=sub_category)
 
             elif ((main_category != None and main_category != '') and (
                     type_of_scale != None and type_of_scale != '')):
-                godown_products = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                godown_products = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,
                                                     product_id__main_category=main_category)
 
             elif (type_of_scale != None and type_of_scale != ''):
-                godown_products = GodownProduct.objects.filter(product_id__scale_type=type_of_scale)
+                godown_products = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale)
             context1 = {
                 'godown_products': godown_products,
                 'godown': godown,
@@ -186,7 +186,12 @@ def add_product_godown(request, godown_id):
                         GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,product_id__main_category=main_category,
                         product_id__sub_category=sub_category,product_id__sub_sub_category=sub_sub_category).update(
                         quantity=F("quantity") + quantity)
-
+                        if critical_limit != '0' and critical_limit != '' and critical_limit != 'None':
+                            GodownProduct.objects.filter(godown_id=godown_id, product_id__scale_type=type_of_scale,
+                                                         product_id__main_category=main_category,
+                                                         product_id__sub_category=sub_category,
+                                                         product_id__sub_sub_category=sub_sub_category).update(
+                                critical_limit= critical_limit)
                     elif req_type == 'Carton':
                         product = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
                                                       sub_category=sub_category, sub_sub_category=sub_sub_category)
@@ -195,13 +200,14 @@ def add_product_godown(request, godown_id):
                         GodownProduct.objects.filter(godown_id=godown_id, product_id__scale_type=type_of_scale,product_id__main_category=main_category,
                         product_id__sub_category=sub_category,product_id__sub_sub_category=sub_sub_category).update(
                         quantity=F("quantity") + individual_quantity)
+                        if critical_limit != '0' and critical_limit != '' and critical_limit != 'None':
+                            individual_critical_limit = (float(product.carton_size) * float(critical_limit))
+                            GodownProduct.objects.filter(godown_id=godown_id, product_id__scale_type=type_of_scale,
+                                                         product_id__main_category=main_category,
+                                                         product_id__sub_category=sub_category,
+                                                         product_id__sub_sub_category=sub_sub_category).update(
+                                critical_limit=individual_critical_limit)
 
-                    if critical_limit != '0' and critical_limit != '' and critical_limit != 'None':
-                        GodownProduct.objects.filter(godown_id=godown_id, product_id__scale_type=type_of_scale,
-                                                     product_id__main_category=main_category,
-                                                     product_id__sub_category=sub_category,
-                                                     product_id__sub_sub_category=sub_sub_category).update(
-                            critical_limit= critical_limit)
                 else:
                     item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
                                                           sub_category=sub_category, sub_sub_category=sub_sub_category)
@@ -210,16 +216,20 @@ def add_product_godown(request, godown_id):
                     if req_type == 'Individual':
                         if quantity !=  '' and 'None':
                             item.quantity = quantity
+                        if critical_limit != '' and 'None':
+                            item.critical_limit = critical_limit
                     elif req_type == 'Carton':
                         product = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
                                                       sub_category=sub_category, sub_sub_category=sub_sub_category)
                         individual_quantity = (float(product.carton_size) * float(quantity))
+                        individual_critical_limit = (float(product.carton_size) * float(critical_limit))
                         if quantity !=  '' and 'None':
                             item.quantity = individual_quantity
+                        if critical_limit != '' and 'None':
+                            item.critical_limit = individual_critical_limit
                     else:
                         item.quantity = 0.0
-                    if critical_limit != '' and 'None':
-                        item.critical_limit = critical_limit
+
                     item.log_entered_by = request.user.name
                     item.save()
 
@@ -264,7 +274,7 @@ def stock_godown(request,id):
         sub_sub_category = request.POST.get('sub_sub_category')
 
         if ((sub_sub_category != None and sub_sub_category !='') and (sub_category != None and sub_category !='') and (main_category != None and main_category !='') and (type_of_scale != None and type_of_scale !='')):
-            sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+            sort = GodownProduct.objects.filter(godown_id=id,product_id__scale_type=type_of_scale,
                                                   product_id__main_category=main_category,
                                                   product_id__sub_category=sub_category,
                                                   product_id__sub_sub_category=sub_sub_category)
@@ -280,7 +290,7 @@ def stock_godown(request,id):
 
 
         elif ( (sub_category != None and sub_category !='')and (main_category != None and main_category !='')  and (type_of_scale != None and type_of_scale !='')):
-            sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+            sort = GodownProduct.objects.filter(godown_id=id,product_id__scale_type=type_of_scale,
                                                   product_id__main_category=main_category,
                                                   product_id__sub_category=sub_category)
             context1 = {
@@ -295,7 +305,7 @@ def stock_godown(request,id):
 
 
         elif (  (main_category != None and main_category !='')  and (type_of_scale != None and type_of_scale !='')):
-            sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+            sort = GodownProduct.objects.filter(godown_id=id,product_id__scale_type=type_of_scale,
                                                   product_id__main_category=main_category)
             context1 = {
                 'godown_products': sort,
@@ -309,7 +319,7 @@ def stock_godown(request,id):
 
 
         elif (type_of_scale != None and type_of_scale !=''):
-            sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale)
+            sort = GodownProduct.objects.filter(godown_id=id,product_id__scale_type=type_of_scale)
             context1 = {
                 'godown_products': sort,
                 'godown_id': godown_id,
@@ -328,8 +338,8 @@ def stock_godown_images(request):
 
 def stock_good_request(request,godown_id, request_id):
     # good_request = GoodsRequest.objects.get(id=request_id)
-    godowns = Godown.objects.filter(goddown_assign_to__name=request.user.admin)| \
-              Godown.objects.filter(godown_admin__id=request.user.id)
+    godowns = Godown.objects.filter(Q(goddown_assign_to__name=request.user.admin)& ~Q(id=godown_id))| \
+              Godown.objects.filter(Q(godown_admin__id=request.user.id)& ~Q(id=godown_id))
     godown_goods = GodownProduct.objects.filter(godown_id=godown_id)
     requested_goods = RequestedProducts.objects.filter(godown_id=godown_id,goods_req_id =request_id)
     type_of_purchase_list = type_purchase.objects.all()  # 1
@@ -400,7 +410,7 @@ def stock_good_request(request,godown_id, request_id):
                     sub_category != None and sub_category != '') and (
                     main_category != None and main_category != '') and (
                     type_of_scale != None and type_of_scale != '')):
-                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                sort = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,
                                                     product_id__main_category=main_category,
                                                     product_id__sub_category=sub_category,
                                                     product_id__sub_sub_category=sub_sub_category)
@@ -418,7 +428,7 @@ def stock_good_request(request,godown_id, request_id):
             elif ((sub_category != None and sub_category != '') and (
                     main_category != None and main_category != '') and (
                           type_of_scale != None and type_of_scale != '')):
-                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                sort = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,
                                                     product_id__main_category=main_category,
                                                     product_id__sub_category=sub_category)
                 context1 = {
@@ -434,7 +444,7 @@ def stock_good_request(request,godown_id, request_id):
 
             elif ((main_category != None and main_category != '') and (
                     type_of_scale != None and type_of_scale != '')):
-                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale,
+                sort = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,
                                                     product_id__main_category=main_category)
                 context1 = {
                     'godown_goods': sort,
@@ -448,7 +458,7 @@ def stock_good_request(request,godown_id, request_id):
 
 
             elif (type_of_scale != None and type_of_scale != ''):
-                sort = GodownProduct.objects.filter(product_id__scale_type=type_of_scale)
+                sort = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale)
                 context1 = {
                     'godown_goods': sort,
                     'requested_goods': requested_goods,
@@ -540,8 +550,13 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                     for good in requested_goods:
 
                         if good_request.req_to_godown :
+                            godown_product_sent = GodownProduct.objects.get(godown_id=good_request.req_to_godown.id,
+                                                            product_id=good.godown_product_id.product_id)
+                            if godown_product_sent.quantity < good.sent_quantity:
 
-                            if GodownProduct.objects.filter(godown_id=good_request.req_to_godown.id,
+                                messages.success(request, 'Insufficient Stock to Transfer, Please Update Your Stock!!!')
+
+                            elif GodownProduct.objects.filter(godown_id=good_request.req_to_godown.id,
                                                             product_id=good.godown_product_id.product_id):
                                 if good.req_type == 'Individual':
                                     GodownProduct.objects.filter(godown_id=good_request.req_to_godown.id,
@@ -555,6 +570,8 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                                         quantity=F("quantity") - individual_quantity)
                                 good_request.goods_sent = True
                                 good_request.save(update_fields=['goods_sent',])
+                                messages.success(request, 'Stock Transferred!!!')
+
                         else:
                             if good.req_type == 'Individual':
                                 GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown.id),
@@ -570,6 +587,10 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                             good_request.goods_sent = True
                             good_request.req_to_godown = Godown.objects.get(id=godown.id)
                             good_request.save(update_fields=['goods_sent','req_to_godown'])
+                            messages.success(request, 'Stock Transferred!!!')
+
+                return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
+
             if status == 'Confirms the transformation':
                 good_request.status = 'Confirms the transformation'
                 good_request.save(update_fields=['status'])
@@ -589,14 +610,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                                     quantity=F("quantity") + individual_quantity)
                             good_request.goods_received = True
                             good_request.save(update_fields=['goods_received',])
-                        else:
-                            GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown.id),
-                                                         product_id=good.godown_product_id.product_id).update(
-                                quantity=F("quantity") + good.received_quantity)
-                            GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown.id),
-                                                         product_id=good.godown_product_id.product_id).update(
-                                carton_count=F("carton_count") + good.received_carton_count)
-                            good_request.req_to_godown = Godown.objects.get(id=godown.id)
+
                             good_request.status = status
                             good_request.goods_received = True
                             good_request.save(update_fields=['status','req_to_godown','goods_received'])
@@ -627,7 +641,10 @@ def stock_accpet_goods(request, godown_id, accept_id):
             if req_type == 'Individual':
                 item2.quantity = number
             elif req_type == 'Carton':
-                item2.carton_count = number
+                product = Product.objects.get(id=product_id)
+                individual_quantity = (float(product.carton_size) * float(number))
+                item2.quantity = individual_quantity
+
             item2.godown_id = Godown.objects.get(id=godown_id)
             item2.godown_product_id = GodownProduct.objects.filter(product_id=product_id, godown_id=godown_id).first()
             item2.log_entered_by = request.user.name
@@ -656,16 +673,14 @@ def stock_accpet_goods(request, godown_id, accept_id):
                 if GodownProduct.objects.filter(godown_id=godown_id,product_id=good.godown_product_id.product_id):
                     godown_product = GodownProduct.objects.get(godown_id=godown_id,product_id=good.godown_product_id.product_id)
                     godown_product.quantity = float(godown_product.quantity) + float(good.quantity)
-                    godown_product.carton_count = float(godown_product.carton_count) + float(good.carton_count)
                     godown_product.log_entered_by = request.user.name
-                    godown_product.save(update_fields=['quantity','carton_count','log_entered_by'])
+                    godown_product.save(update_fields=['quantity','log_entered_by'])
                 else:
                     godown_product = GodownProduct()
                     godown_product.godown_id = Godown.objects.get(id=good.godown_id.id)
                     godown_product.product_id = Product.objects.get(id=good.godown_product_id.product_id.id)
                     godown_product.added_by_id = SiteUser.objects.get(id=request.user.id)
                     godown_product.quantity = good.quantity
-                    godown_product.carton_count = good.carton_count
                     godown_product.log_entered_by = request.user.name
                     godown_product.save()
             return redirect('/stock_accpet_goods_list/' + str(godown_id))
