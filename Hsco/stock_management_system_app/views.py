@@ -54,8 +54,7 @@ def add_godown(request):
 def update_godown(request,godown_id):
     godown = Godown.objects.get(id=godown_id)
     godown_products = GodownProduct.objects.filter(godown_id=godown_id)
-    for product in godown_products:
-        print(product.total)
+
     assign_users = SiteUser.objects.filter(Q(modules_assigned__icontains= 'Stock')&Q(admin__contains= request.user.profile_name)
                                            &~Q(id=godown.goddown_assign_to.id))
     type_of_purchase_list = type_purchase.objects.all()  # 1
@@ -177,6 +176,7 @@ def add_product_godown(request, godown_id):
         critical_limit = request.POST.get('critical_limit')
         sub_sub_category = request.POST.get('sub_sub_category')    #product code or sub_sub_category
 
+
         item = GodownProduct()
         try:
             if sub_sub_category != '':
@@ -188,11 +188,15 @@ def add_product_godown(request, godown_id):
                         quantity=F("quantity") + quantity)
 
                     elif req_type == 'Carton':
+                        product = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
+                                                      sub_category=sub_category, sub_sub_category=sub_sub_category)
+                        individual_quantity = (float(product.carton_size) * float(quantity))
+
                         GodownProduct.objects.filter(godown_id=godown_id, product_id__scale_type=type_of_scale,product_id__main_category=main_category,
                         product_id__sub_category=sub_category,product_id__sub_sub_category=sub_sub_category).update(
-                        carton_count=F("carton_count") + quantity)
+                        quantity=F("quantity") + individual_quantity)
 
-                    if critical_limit != '0' and '' and 'None':
+                    if critical_limit != '0' and critical_limit != '' and critical_limit != 'None':
                         GodownProduct.objects.filter(godown_id=godown_id, product_id__scale_type=type_of_scale,
                                                      product_id__main_category=main_category,
                                                      product_id__sub_category=sub_category,
@@ -206,14 +210,14 @@ def add_product_godown(request, godown_id):
                     if req_type == 'Individual':
                         if quantity !=  '' and 'None':
                             item.quantity = quantity
+                    elif req_type == 'Carton':
+                        product = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
+                                                      sub_category=sub_category, sub_sub_category=sub_sub_category)
+                        individual_quantity = (float(product.carton_size) * float(quantity))
+                        if quantity !=  '' and 'None':
+                            item.quantity = individual_quantity
                     else:
                         item.quantity = 0.0
-
-                    if req_type == 'Carton':
-                        if quantity !=  '' and 'None':
-                            item.carton_count = quantity
-                    else:
-                        item.carton_count = 0.0
                     if critical_limit != '' and 'None':
                         item.critical_limit = critical_limit
                     item.log_entered_by = request.user.name
@@ -223,7 +227,8 @@ def add_product_godown(request, godown_id):
                 return redirect('/update_godown/' + str(godown_id))
             elif is_last_product_yes == 'no':
                 return redirect('/add_product_godown/' + str(godown_id))
-        except:
+        except Exception as e:
+            print(e)
             msg = "Selected Product does not exist in Main Product Database Table!!!"
             context1={
                 'msg':msg,
@@ -533,26 +538,35 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                 good_request.save(update_fields=['status'])
                 if good_request.goods_sent == False:
                     for good in requested_goods:
+
                         if good_request.req_to_godown :
+
                             if GodownProduct.objects.filter(godown_id=good_request.req_to_godown.id,
                                                             product_id=good.godown_product_id.product_id):
-                                GodownProduct.objects.filter(godown_id=good_request.req_to_godown.id,
-                                                             product_id=good.godown_product_id.product_id).update(
-                                    quantity=F("quantity") - good.sent_quantity)
-                                GodownProduct.objects.filter(godown_id=good_request.req_to_godown.id,
-                                                             product_id=good.godown_product_id.product_id).update(
-                                    carton_count=F("carton_count") - good.sent_carton_count)
+                                if good.req_type == 'Individual':
+                                    GodownProduct.objects.filter(godown_id=good_request.req_to_godown.id,
+                                                                 product_id=good.godown_product_id.product_id).update(
+                                        quantity=F("quantity") - good.sent_quantity)
+                                elif good.req_type == 'Carton':
+                                    product = Product.objects.get(id=good.godown_product_id.product_id)
+                                    individual_quantity = (float(product.carton_size) * float(good.sent_carton_count))
+                                    GodownProduct.objects.filter(godown_id=good_request.req_to_godown.id,
+                                                                 product_id=good.godown_product_id.product_id).update(
+                                        quantity=F("quantity") - individual_quantity)
                                 good_request.goods_sent = True
                                 good_request.save(update_fields=['goods_sent',])
                         else:
-
-                            GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown.id),
-                                                         product_id=good.godown_product_id.product_id).update(
-                                quantity=F("quantity") - good.sent_quantity)
-                            GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown.id),
-                                                         product_id=good.godown_product_id.product_id).update(
-                                carton_count=F("carton_count") - good.sent_carton_count)
-
+                            if good.req_type == 'Individual':
+                                GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown.id),
+                                                             product_id=good.godown_product_id.product_id).update(
+                                    quantity=F("quantity") - good.sent_quantity)
+                            elif good.req_type == 'Carton':
+                                product = Product.objects.get(id=good.godown_product_id.product_id)
+                                individual_quantity = (float(product.carton_size) * float(good.sent_carton_count))
+                                GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown.id),
+                                                             product_id=good.godown_product_id.product_id).update(
+                                    quantity=F("quantity") - individual_quantity)
+                            good_request.req_to_godown = Godown.objects.get(id=godown.id)
                             good_request.goods_sent = True
                             good_request.req_to_godown = Godown.objects.get(id=godown.id)
                             good_request.save(update_fields=['goods_sent','req_to_godown'])
@@ -562,16 +576,19 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                 if good_request.goods_received == False:
 
                     for good in requested_goods:
-                        if good_request.req_to_godown :
-                            if GodownProduct.objects.filter(godown_id=from_godown_id, product_id=good.godown_product_id.product_id):
+                        if GodownProduct.objects.filter(godown_id=from_godown_id, product_id=good.godown_product_id.product_id):
+                            if good.req_type == 'Individual':
                                 GodownProduct.objects.filter(godown_id=from_godown_id,
                                                              product_id=good.godown_product_id.product_id).update(
                                     quantity=F("quantity") + good.received_quantity)
+                            elif good.req_type == 'Carton':
+                                product = Product.objects.get(id=good.godown_product_id.product_id)
+                                individual_quantity = (float(product.carton_size) * float(good.received_carton_count))
                                 GodownProduct.objects.filter(godown_id=from_godown_id,
                                                              product_id=good.godown_product_id.product_id).update(
-                                    carton_count=F("carton_count") + good.received_carton_count)
-                                good_request.goods_received = True
-                                good_request.save(update_fields=['goods_received',])
+                                    quantity=F("quantity") + individual_quantity)
+                            good_request.goods_received = True
+                            good_request.save(update_fields=['goods_received',])
                         else:
                             GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown.id),
                                                          product_id=good.godown_product_id.product_id).update(
