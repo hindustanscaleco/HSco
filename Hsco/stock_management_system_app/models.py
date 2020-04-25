@@ -20,7 +20,7 @@ class Product(models.Model):
     product_document = models.FileField(upload_to='lead_product_document/', blank=True, null=True)
     cost_price = models.FloatField( null=True, blank=True)
     selling_price = models.FloatField( null=True, blank=True)
-    carton_size = models.CharField(max_length=150, null=True, blank=True)
+    carton_size = models.CharField(max_length=150)
 
     def __int__(self):
         return self.id
@@ -43,10 +43,16 @@ class GodownProduct(models.Model):
     product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
     added_by_id = models.ForeignKey(SiteUser,on_delete=models.CASCADE)
     quantity = models.FloatField(null=True, blank=True)
-    carton_count = models.FloatField(null=True, blank=True)
+    critical_limit = models.FloatField(null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
+
+    @property
+    def carton_count(self):
+        product = Product.objects.get(id=self.product_id)
+        quantity = self.quantity
+        return (float(quantity) / float(product.carton_size))
 
     def __int__(self):
         return self.id
@@ -59,6 +65,8 @@ class GoodsRequest(models.Model):
     goods_received = models.BooleanField(default=False)
     entered_by = models.ForeignKey(SiteUser,on_delete=models.CASCADE,null=True,blank=True)
     status = models.CharField(max_length=50,null=True,blank=True)
+    request_admin = models.BooleanField(default=False)
+    request_admin_id = models.ForeignKey(SiteUser,on_delete=models.CASCADE,related_name='request_admin', null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)

@@ -346,10 +346,10 @@ td {
   <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
         {% endif %}
     {% if request.user.id == good_request.req_to_godown.godown_admin.id %}
-  <option class="btn btn-success" value="Confirmation of goods transformation">Confirms the transformation</option>
+  <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
         {% endif %}
     {% if request.user.id == good_request.req_to_godown.goddown_assign_to.id %}
-  <option class="btn btn-success" value="Confirmation of goods transformation">Confirms the transformation</option>
+  <option class="btn btn-success" value="Confirmation of goods transformation">CConfirmation of goods transformation</option>
         {% endif %}
 </select>
                                                            </div></div>
@@ -375,7 +375,10 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Requested</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sent</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Received</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Request</td>
+{% if good_request.req_to_godown == 'None' or good_request.req_to_godown == '' or good_request.req_to_godown == None %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Godown</td>
+            {% endif %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Request Type</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Number</td>
                         {% if good_request.status != 'Pending From Target'  %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Faulty</td>
@@ -399,6 +402,29 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.sent_carton_count}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.received_carton_count}}</td>
             {% endif %}
+{% if good_request.req_to_godown == 'None' or good_request.req_to_godown == '' or good_request.req_to_godown == None %}
+    {% if request.user.role == 'Employee' %}
+        <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+           <div class="btn-group">
+            <select class="form-control" name="req_to_godown" >
+                {% for godown in godown_assign_employee %}
+                    <option class="form-control" value="{{godown.id}}">{{godown.name_of_godown}}</option>
+                {% endfor %}
+            </select>
+           </div>
+       </td>
+    {% elif request.user.role == 'Admin' %}
+       <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+           <div class="btn-group">
+            <select class="form-control" name="req_to_godown" >
+                {% for godown in godown_assign_admin %}
+                    <option class="form-control" value="{{godown.id}}">{{godown.name_of_godown}}</option>
+                {% endfor %}
+            </select>
+           </div>
+       </td>
+    {% endif %}
+{% endif %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 
                 <div class="btn-group">
