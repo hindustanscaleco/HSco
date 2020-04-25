@@ -20,7 +20,7 @@ class Product(models.Model):
     product_document = models.FileField(upload_to='lead_product_document/', blank=True, null=True)
     cost_price = models.FloatField( null=True, blank=True)
     selling_price = models.FloatField( null=True, blank=True)
-    carton_size = models.CharField(max_length=150, null=True, blank=True)
+    carton_size = models.CharField(max_length=150)
 
     def __int__(self):
         return self.id
@@ -43,19 +43,22 @@ class GodownProduct(models.Model):
     product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
     added_by_id = models.ForeignKey(SiteUser,on_delete=models.CASCADE)
     quantity = models.FloatField(null=True, blank=True)
-    carton_count = models.FloatField(null=True, blank=True)
     critical_limit = models.FloatField(null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
 
     @property
-    def total(self):
-        "Returns the total"
+    def carton_count(self):
         product = Product.objects.get(id=self.product_id)
+        quantity = self.quantity
+        return (float(quantity) / float(product.carton_size))
 
-        cart_count = self.carton_count
-        return (float(cart_count) * float(product.carton_size))
+    @property
+    def carton_critical_limit(self):
+        product = Product.objects.get(id=self.product_id)
+        critical_limit = self.critical_limit
+        return (float(critical_limit) / float(product.carton_size))
 
     def __int__(self):
         return self.id

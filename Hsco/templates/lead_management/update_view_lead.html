@@ -448,14 +448,18 @@ function myFunction() {
 
 
                               <div class="form-group row">
-                              <label class="col-md-2 control-label">Current Stage* : </label>
-                                  <div class="col-md-5 inputGroupContainer">
+                                  <label class="col-md-2 control-label">Current Stage* : </label>
+                                  {% if lead_id.is_entered_purchase %}
+        {{lead_id.current_stage}}
+
+ {% else %}
+                                         <div class="col-md-5 inputGroupContainer">
                                   <div class="input-group">
 <!--                                  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>-->
                                 {{ form2.current_stage }}
                           </div>
                         </div>
-
+ {% endif %}
 
    <div class="col-md-5">
             {% if lead_id.current_stage == 'PO Issued - Payment Done - Dispatch Pending' or lead_id.current_stage == 'Dispatch Done - Closed' %}
@@ -477,9 +481,6 @@ function myFunction() {
  {% endif %}
 
                         </div>
-
-
-
 
                               </div>
 

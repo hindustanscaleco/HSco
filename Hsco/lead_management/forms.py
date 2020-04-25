@@ -62,9 +62,8 @@ select_gst_type= [
 ]
 
 discount_type= [
-    ('','Select'),
-    ('percent','%'),
     ('rupee','₹'),
+    ('percent','%'),
 ]
 
 customer_exist_new = [

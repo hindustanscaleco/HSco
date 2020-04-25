@@ -399,7 +399,7 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.product_id.sub_category}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.product_id.sub_sub_category}}</td>
 
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.carton_count}}<input name="req_carton_count" value="{{good.carton_count}}" hidden></td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.carton_count|floatformat:2}}<input name="req_carton_count" value="{{good.carton_count}}" hidden></td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.quantity}}<input name="req_quantity" value="{{good.quantity}}" hidden></td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 

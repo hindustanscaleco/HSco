@@ -284,7 +284,7 @@ color:;
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
 
-<select  name="req_type" class="form-control" required>
+<select id="req_type"  name="req_type" class="form-control" required>
   <option  value="Individual">Individual</option>
   <option  value="Carton">Carton</option>
 </select>
@@ -301,7 +301,7 @@ color:;
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
 
-<input class="form-control" name="quantity" value="0" type="number">
+<input class="form-control" id="count" name="quantity" value="0" type="number">
 
 
      </div>
@@ -486,6 +486,7 @@ function isOneChecked() {
 
 
   </script>
+
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
