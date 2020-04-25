@@ -266,8 +266,9 @@ color:;
             </form>
 <br>
 <br>
-            <form method="POST" action="" onsubmit="return isOneChecked();" >{% csrf_token %}
 
+            <form class="card shadow" method="POST" action="" onsubmit="return isOneChecked();" >{% csrf_token %}
+   <div style="margin:15px;" >
             {% for item in product_avail %}
 
 
@@ -448,16 +449,17 @@ color:;
             <br>
   <input type="hidden" id="product_id" name="product_id" value="{{item.pk}}">
 
-{% endfor %}
-
-
-
-<center>
+                <br>
+                <center>
     <button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">ADD</button>
 
 </center>
+                <br>
+{% endfor %}
+ </div>
             </form>
-
+<br>
+<br>
   </div>
   <!-- End of Page Wrapper -->
 
