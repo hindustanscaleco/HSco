@@ -511,7 +511,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                         item2.sent_quantity = float(number)
                         item2.log_entered_by = request.user.name
                 elif good_request.status == 'Confirmation of goods transformation':
-                    if number != '0' :
+                    if number != '0':
                         item2.received_quantity = float(number)
                         item2.log_entered_by = request.user.name
                     if faulty != '0':
@@ -602,9 +602,11 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                                 GodownProduct.objects.filter(godown_id=from_godown_id,
                                                              product_id=good.godown_product_id.product_id).update(
                                     quantity=F("quantity") + good.received_quantity)
+
                             elif good.req_type == 'Carton':
                                 product = Product.objects.get(id=good.godown_product_id.product_id)
                                 individual_quantity = (float(product.carton_size) * float(good.received_carton_count))
+
                                 GodownProduct.objects.filter(godown_id=from_godown_id,
                                                              product_id=good.godown_product_id.product_id).update(
                                     quantity=F("quantity") + individual_quantity)

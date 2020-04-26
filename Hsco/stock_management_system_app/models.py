@@ -45,6 +45,7 @@ class GodownProduct(models.Model):
     quantity = models.FloatField(null=True, blank=True)
     critical_limit = models.FloatField(null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
+
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
 
@@ -54,6 +55,8 @@ class GodownProduct(models.Model):
         quantity = self.quantity
         return (float(quantity) / float(product.carton_size))
 
+
+
     @property
     def carton_critical_limit(self):
         product = Product.objects.get(id=self.product_id)
@@ -62,6 +65,8 @@ class GodownProduct(models.Model):
 
     def __int__(self):
         return self.id
+
+
 
 class GoodsRequest(models.Model):
     req_from_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,related_name='Godown1',null=True,blank=True)

@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, F
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -10,6 +10,10 @@ from .models import Chat_model
 from user_app.models import SiteUser
 
 from lead_management.models import Lead
+
+from stock_management_system_app.models import GodownProduct, RequestedProducts, GoodsRequest
+from datetime import timedelta
+
 
 
 def notif_decl_home(request):
@@ -139,6 +143,15 @@ def notification_context(request):
         message = Chat_model.objects.filter(message_to=request.user.id, is_viewed=False,is_warning=False,is_defect=False)
         alert = Chat_model.objects.filter((Q(message_to=request.user.id) &Q(is_viewed=False))&(Q(is_warning=True)|Q(is_defect=True)))
         postponed_alert = Lead.objects.filter(postpond_time_date=datetime.date.today(),owner_of_opportunity__id=request.user.pk)
+        # next_date = datetime.date.today() + timedelta(days=1)
+
+        critical_limit_notif = GodownProduct.objects.filter(critical_limit__gte=F('quantity'),godown_id__goddown_assign_to=request.user)
+        request_admin_list = GoodsRequest.objects.filter(Q(request_admin=True) & Q(req_from_godown__godown_admin__id=request.user.id)) | \
+                             GoodsRequest.objects.filter(Q(request_admin=True) & Q(request_admin_id__id=request.user.id))
+        # req_product_mismatch_notif = RequestedProducts.objects.filter((Q(sent_quantity__gte=0.0)|Q(sent_carton_count__gte=0.0))|~Q(sent_quantity=F('received_quantity')))
+        req_product_mismatch_notif = RequestedProducts.objects.filter(
+            (~Q(sent_quantity=F('received_quantity'))|~Q(sent_carton_count=F('received_carton_count')))& Q(godown_id__godown_admin=request.user)
+        )
 
         if postponed_alert.count() > 1:
             post_alert = True
@@ -146,11 +159,14 @@ def notification_context(request):
             post_alert = False
         return {
             'notification_count': message.count(),
-            'alert_count': alert.count()+postponed_alert.count(),
+            'alert_count': alert.count()+postponed_alert.count()+critical_limit_notif.count()+request_admin_list.count()+req_product_mismatch_notif.count(),
             'notif_message': message,
             'notif_alert': alert,
             'is_post_alert': post_alert,
             'postponed_alert': postponed_alert,
+            'critical_limit_alert': critical_limit_notif,
+            'request_admin_notif': request_admin_list,
+            'req_product_mismatch_notif': req_product_mismatch_notif,
         }
     else:
         return {}

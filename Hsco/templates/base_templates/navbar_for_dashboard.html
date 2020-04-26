@@ -95,6 +95,45 @@
                 </a>
            {% endfor %}
            {% endif %}
+             {% for msg in critical_limit_alert %}
+                <a class="dropdown-item d-flex align-items-center" href="/stock_godown/{{msg.godown_id.pk}}">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-warning">
+                      <i class="fas fa-exclamation-triangle text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">System&nbsp; -{{ msg.next_notif_date_cl }} </div>
+                    Critical Limit Reached
+                  </div>
+                </a>
+           {% endfor %}
+             {% for msg in request_admin_notif %}
+                <a class="dropdown-item d-flex align-items-center" href="/request_admin/">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-warning">
+                      <i class="fas fa-exclamation-triangle text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">{{msg.req_from_godown.godown_admin.name}}&nbsp; - {{ msg.entry_timedate }} </div>
+                    Pending Outside Workarea Request
+                  </div>
+                </a>
+           {% endfor %}
+              {% for msg in req_product_mismatch_notif %}
+                <a class="dropdown-item d-flex align-items-center" href="/stock_transaction_status/{{goods_req_id.req_from_godown.pk}}/{{goods_req_id.pk}}">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-warning">
+                      <i class="fas fa-exclamation-triangle text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">System - {{ msg.entry_timedate }} </div>
+                    Sent & Rec Quantity Mismatched
+                  </div>
+                </a>
+           {% endfor %}
                 <a class="dropdown-item text-center small text-gray-500" href="/notif_decl_home">Show All Alerts</a>
               </div>
             </li>
