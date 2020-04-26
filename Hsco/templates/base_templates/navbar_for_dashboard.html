@@ -121,6 +121,19 @@
                   </div>
                 </a>
            {% endfor %}
+              {% for msg in req_product_mismatch_notif %}
+                <a class="dropdown-item d-flex align-items-center" href="/stock_transaction_status/{{goods_req_id.req_from_godown.pk}}/{{goods_req_id.pk}}">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-warning">
+                      <i class="fas fa-exclamation-triangle text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">System - {{ msg.entry_timedate }} </div>
+                    Sent & Rec Quantity Mismatched
+                  </div>
+                </a>
+           {% endfor %}
                 <a class="dropdown-item text-center small text-gray-500" href="/notif_decl_home">Show All Alerts</a>
               </div>
             </li>
