@@ -501,10 +501,10 @@ $(function() {
             <button class="col-xl-1 btn btn-primary"  name="sub9" style="background: #ffba5a">
                   <center><p style="margin-top:15px"> Postponed <br>( {{postponed_stage}} )<br> ( {{postponed_stage_total}} ) </p></center>
 </button>
-
+ </div>
 </form>
 
-   </div>
+
                 </form>
 
                <style>
@@ -721,89 +721,7 @@ value = !select.checked;
 }
 
     </script>
-    <!--<div class="row" style="width: 100%; margin-top: 20%;">-->
 
-        <!--{% if request.user.is_authenticated %}-->
-<!--{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}-->
-                <!--<div class="col-xl-3 col-md-3 mb-12">-->
-              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
-                <!--<div class="card-body" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col ">-->
- <!--<a href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"Add Purchase</button></a>-->
-                    <!--</div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-
-
-
-
-        <!--<div class="col-xl-3 col-md-3 mb-12">-->
-              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
-                <!--<div class="card-body" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col ">-->
-                        <!--<form method="POST" ion="">{%csrf_token%}-->
- <!--<a href="#"><button name="deleted" type="submit" class="btn btn-primary">Deleted User</button></a>-->
-                              <!--</form>-->
-                    <!--</div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-
-
-                <!--<div class="col-xl-3 col-md-12 mb-12">-->
-              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
-                <!--<div class="card-body" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col mr-2">-->
-                        <!--<a href="/user_logs/"> <button style="background-color: #FC6E20;" class="btn btn-primary"Log</button></a>&nbsp; &nbsp;-->
-                        <!--<a href="/report/"> <button style="background-color: #FC6E20;" class="btn btn-primary"Report</button></a>&nbsp;-->
-                    <!--</div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-
-
-        <!--&lt;!&ndash; Earnings (Monthly) Card Example &ndash;&gt;-->
-            <!--<div class="col-xl-3 col-md-12 mb-12">-->
-              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
-                <!--<div class="card-body" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col mr-2">-->
-                        <!--<a href="/purchase_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary"Analytics</button></a>-->
-
-                    <!--</div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-<!--{% else %}-->
-          <!--<div class="col-xl-3 col-md-3 mb-12">-->
-              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
-                <!--<div class="card-body" style="padding: 12px;">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col ">-->
- <!--<a href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"Add Purchase</button></a>-->
-                    <!--</div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-<!--{% endif %}-->
-<!--{% endif %}-->
-
-
-          <!--</div>-->
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
