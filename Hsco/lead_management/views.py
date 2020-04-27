@@ -70,7 +70,7 @@ def lead_home(request):
         page = request.GET.get('page')
         lead_list = paginator.get_page(page)
     elif request.user.role == 'Employee': #for employee
-        lead_list = Lead.objects.filter(Q(owner_of_opportunity=request.user.profile_name)).order_by('-id')
+        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
         paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
         page = request.GET.get('page')
         lead_list = paginator.get_page(page)
@@ -95,7 +95,7 @@ def lead_home(request):
         total_stages = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(owner_of_opportunity__manager__icontains=request.user.profile_name)).values('current_stage').annotate(dcount=Count('current_stage'))
 
     elif request.user.role == 'Employee': #for employee
-        total_stages = Lead.objects.filter(Q(owner_of_opportunity=request.user.profile_name)).values('current_stage').annotate(dcount=Count('current_stage'))
+        total_stages = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)).values('current_stage').annotate(dcount=Count('current_stage'))
 
     admin = SiteUser.objects.get(id=request.user.pk).admin
     # lead = Pi_section.objects.filter(lead_id=Lead.objects.filter(Q(owner_of_opportunity__admin=admin)))
@@ -315,7 +315,7 @@ def lead_home(request):
         }
         context.update(context13)
     elif request.user.role == 'Employee':
-        po_no_payment = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')&Q(owner_of_opportunity=request.user.profile_name)).values(
+        po_no_payment = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         po_no_payment_total = 0.0
         try:
@@ -324,7 +324,7 @@ def lead_home(request):
         except:
             pass
 
-        po_payment_done = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending')&Q(owner_of_opportunity=request.user.profile_name)).values(
+        po_payment_done = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         po_payment_done_total = 0.0
         try:
@@ -333,7 +333,7 @@ def lead_home(request):
         except:
             pass
 
-        dispatch_done_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Dispatch Done - Closed')&Q(owner_of_opportunity=request.user.profile_name)).values(
+        dispatch_done_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Dispatch Done - Closed')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         dispatch_done_stage_total = 0.0
         try:
@@ -341,7 +341,7 @@ def lead_home(request):
                 dispatch_done_stage_total += float(x['data_sum'])
         except:
             pass
-        lost_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Lost')&Q(owner_of_opportunity=request.user.profile_name)).values(
+        lost_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Lost')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         lost_stage_total = 0.0
         try:
@@ -349,7 +349,7 @@ def lead_home(request):
                 lost_stage_total += float(x['data_sum'])
         except:
             pass
-        not_relevant_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Not Relevant')&Q(owner_of_opportunity=request.user.profile_name)).values(
+        not_relevant_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Not Relevant')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         not_relevant_stage_total = 0.0
         try:
@@ -357,7 +357,7 @@ def lead_home(request):
                 not_relevant_stage_total += float(x['data_sum'])
         except:
             pass
-        postponed_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Postponed')&Q(owner_of_opportunity=request.user.profile_name)).values(
+        postponed_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Postponed')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         postponed_stage_total = 0.0
         try:
@@ -365,7 +365,7 @@ def lead_home(request):
                 postponed_stage_total += float(x['data_sum'])
         except:
             pass
-        pi_sent_stage = Pi_section.objects.filter(Q(lead_id__current_stage='PI Sent & Follow-up')&Q(owner_of_opportunity=request.user.profile_name)).values(
+        pi_sent_stage = Pi_section.objects.filter(Q(lead_id__current_stage='PI Sent & Follow-up')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         pi_sent_stage_total = 0.0
         try:
@@ -513,8 +513,8 @@ def lead_home(request):
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
             else:  # for employee
-                lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&Q(owner_of_opportunity=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated') &Q(owner_of_opportunity=request.user.profile_name)).count()
+                lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&Q(owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated') &Q(owner_of_opportunity__profile_name=request.user.profile_name)).count()
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
@@ -554,9 +554,9 @@ def lead_home(request):
                 lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='Customer Called') & Q(
-                    owner_of_opportunity=request.user.profile_name)).order_by('-id')
+                    owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Customer Called') & Q(
-                    owner_of_opportunity=request.user.profile_name)).count()
+                    owner_of_opportunity__profile_name=request.user.profile_name)).count()
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
@@ -596,9 +596,9 @@ def lead_home(request):
                 lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='PI Sent & Follow-up') & Q(
-                    owner_of_opportunity=request.user.profile_name)).order_by('-id')
+                    owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='PI Sent & Follow-up') & Q(
-                    owner_of_opportunity=request.user.profile_name)).count()
+                    owner_of_opportunity__profile_name=request.user.profile_name)).count()
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
@@ -638,9 +638,9 @@ def lead_home(request):
                 lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='PO Issued - Payment not done') & Q(
-                    owner_of_opportunity=request.user.profile_name)).order_by('-id')
+                    owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='PO Issued - Payment not done') & Q(
-                    owner_of_opportunity=request.user.profile_name)).count()
+                    owner_of_opportunity__profile_name=request.user.profile_name)).count()
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
@@ -682,9 +682,9 @@ def lead_home(request):
                 lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='PO Issued - Payment Done - Dispatch Pending') & Q(
-                    owner_of_opportunity=request.user.profile_name)).order_by('-id')
+                    owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='PO Issued - Payment Done - Dispatch Pending') & Q(
-                    owner_of_opportunity=request.user.profile_name)).count()
+                    owner_of_opportunity__profile_name=request.user.profile_name)).count()
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
@@ -724,9 +724,9 @@ def lead_home(request):
                 lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='Dispatch Done - Closed') & Q(
-                    owner_of_opportunity=request.user.profile_name)).order_by('-id')
+                    owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Dispatch Done - Closed') & Q(
-                    owner_of_opportunity=request.user.profile_name)).count()
+                    owner_of_opportunity__profile_name=request.user.profile_name)).count()
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
@@ -766,9 +766,9 @@ def lead_home(request):
                 lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='Lost') & Q(
-                    owner_of_opportunity=request.user.profile_name)).order_by('-id')
+                    owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Lost') & Q(
-                    owner_of_opportunity=request.user.profile_name)).count()
+                    owner_of_opportunity__profile_name=request.user.profile_name)).count()
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
@@ -807,9 +807,9 @@ def lead_home(request):
                 lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='Not Relevant') & Q(
-                    owner_of_opportunity=request.user.profile_name)).order_by('-id')
+                    owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Not Relevant') & Q(
-                    owner_of_opportunity=request.user.profile_name)).count()
+                    owner_of_opportunity__profile_name=request.user.profile_name)).count()
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
@@ -848,9 +848,9 @@ def lead_home(request):
                 lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='Postponed') & Q(
-                    owner_of_opportunity=request.user.profile_name)).order_by('-id')
+                    owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Postponed') & Q(
-                    owner_of_opportunity=request.user.profile_name)).count()
+                    owner_of_opportunity__profile_name=request.user.profile_name)).count()
                 paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
                 page = request.GET.get('page')
                 lead_list = paginator.get_page(page)
@@ -1792,7 +1792,9 @@ def update_view_lead(request,id):
             except:
                 pass
             request.session['download_pdf_exist'] = True
-
+            print(request.session['download_pdf_exist'])
+            print(request.session['download_pdf_exist'])
+            print(request.session['download_pdf_exist'])
             #for pi section
             discount = request.POST.get('discount')
             upload_pi_file = request.FILES.get('upload_pi_file')
@@ -1986,49 +1988,46 @@ def update_view_lead(request,id):
                     print("product not added or debugging needed")
 
                 item2.save()
-            is_file_pdf = request.session.get('is_file_pdf')
-            print(is_file_pdf)
-            print(is_file_pdf)
-            print(is_file_pdf)
-            if request.session['download_pdf_exist'] == True and (email == 'True' or email == True):
 
-                val = request.POST
-                email_send = EmailMessage('PI - HSCo ', 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
-                                          settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
-                email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
-                email_send.send()
-
-                history = Pi_History()
-                lead_id = Lead.objects.get(id=id)
-                todays_date = str(datetime.now().strftime("%Y-%m-%d"))
-                history.medium_of_selection = 'Email'
-                pi_id = Pi_section.objects.get(lead_id=id)
-
-                pi_products = Pi_product.objects.filter(lead_id=id)
-                context22 = {
-                    'lead_id': lead_id,
-                    'todays_date': todays_date,
-                    'pi_id': pi_id,
-                    'pi_products': pi_products,
-                }
-                template = get_template('lead_management/download_pi_pdf.html')
-                html = template.render(context22)
-                file_pdf = ContentFile(html)
-                # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
-                history.pi_history_file.save('PI.html', file_pdf, save=False)
-                history.lead_id = Lead.objects.get(id=id)
-                history.log_entered_by = request.user.profile_name
-                history.medium_of_selection = 'Email'
-                history.call_detail = ''
-                history.save()
-                try:
-                    del request.session['email']
-                except:
-                    pass
-            try:
-                del request.session['is_file_pdf']
-            except:
-                pass
+            # if request.session['download_pdf_exist'] == True and (email == 'True' or email == True):
+            #
+            #     val = request.POST
+            #     email_send = EmailMessage('PI - HSCo ', 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
+            #                               settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+            #     email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
+            #     email_send.send()
+            #
+            #     history = Pi_History()
+            #     lead_id = Lead.objects.get(id=id)
+            #     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
+            #     history.medium_of_selection = 'Email'
+            #     pi_id = Pi_section.objects.get(lead_id=id)
+            #
+            #     pi_products = Pi_product.objects.filter(lead_id=id)
+            #     context22 = {
+            #         'lead_id': lead_id,
+            #         'todays_date': todays_date,
+            #         'pi_id': pi_id,
+            #         'pi_products': pi_products,
+            #     }
+            #     template = get_template('lead_management/download_pi_pdf.html')
+            #     html = template.render(context22)
+            #     file_pdf = ContentFile(html)
+            #     # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
+            #     history.pi_history_file.save('PI.html', file_pdf, save=False)
+            #     history.lead_id = Lead.objects.get(id=id)
+            #     history.log_entered_by = request.user.profile_name
+            #     history.medium_of_selection = 'Email'
+            #     history.call_detail = ''
+            #     history.save()
+            #     try:
+            #         del request.session['email']
+            #     except:
+            #         pass
+            # try:
+            #     del request.session['is_file_pdf']
+            # except:
+            #     pass
 
             return redirect('/update_view_lead/'+str(lead_id.id))
 
