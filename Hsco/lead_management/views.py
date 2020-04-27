@@ -1183,7 +1183,7 @@ def update_view_lead(request,id):
                 except:
                     pass
                 request.session['context_sess'] = context22
-                return redirect('/update_view_lead/' + str(id))
+                return redirect('/update_customer_details/'+str(lead_id.purchase_id.pk))
 
         if 'file_pdf' in request.POST and (email == 'True' or email == True):
             val = request.POST
