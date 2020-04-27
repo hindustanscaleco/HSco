@@ -4,7 +4,7 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.paginator import Paginator
 from django.db import connection
-from django.db.models import Sum, Q, Count
+from django.db.models import Sum, Q, Count, Min
 from django.core.files.base import ContentFile, File
 from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render, redirect
@@ -2486,62 +2486,327 @@ def lead_delete_product(request,id):
     return render(request,'lead_management/lead_delete_product.html',context)
 
 def lead_analytics(request):
-    #this month lead
-    current_month_lead = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
-                                                entry_timedate__month=datetime.now().month) \
-        .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
-    current_month_lead_date = []
-    current_month_lead_sum = []
-    for i in current_month_lead:
-        x = i
-        current_month_lead_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
-        current_month_lead_sum.append(x['data_sum'])
+    try:
+        highest_lead_day_list = Pi_section.objects.filter().values('entry_timedate').order_by('entry_timedate').annotate(data_sum=Sum('grand_total'))
+        print(highest_lead_day_list)
+        maxPricedItem = max(highest_lead_day_list, key=lambda x: x['data_sum'])
+        minPricedItem = min(highest_lead_day_list, key=lambda x: x['data_sum'])
 
-    #previous month lead
-    mon = (datetime.now().month)
-    if mon == 1:
-        previous_mon = 12
-    else:
-        previous_mon = (datetime.now().month) - 1
-    previous_month_lead = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
-                                                   entry_timedate__month=previous_mon) \
-        .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
-    previous_month_lead_date = []
-    previous_month_lead_sum = []
-    for i in previous_month_lead:
-        x = i
-        previous_month_lead_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
-        previous_month_lead_sum.append(x['data_sum'])
-    context = {
-        'current_month_lead_date': current_month_lead_date,
-        'current_month_lead_sum': current_month_lead_sum,
-        'previous_month_lead_date': previous_month_lead_date,
-        'previous_month_lead_sum': previous_month_lead_sum,
+        context={
+            'maxPricedItem':maxPricedItem,
+            'minPricedItem':minPricedItem,
+        }
 
-    }
-    if request.method=='POST' and 'date1' in request.POST :
-        start_date = request.POST.get('date1')
-        lead_conversion = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
-                                                    entry_timedate__month=datetime.strptime(start_date, '%Y-%m-%d').month) \
+        mon = (datetime.now().month)
+        if mon == 1:
+            previous_mon = 12
+        else:
+            previous_mon = (datetime.now().month) - 1
+
+        #this month lead
+        current_month_lead = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
+                                                    entry_timedate__month=datetime.now().month) \
             .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
 
-        lead_conversion_date = []
-        lead_conversion_sum = []
-        for i in lead_conversion:
+
+        #previous month lead
+        previous_month_lead = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
+                                                       entry_timedate__month=previous_mon) \
+            .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+
+        if request.method=='POST'   :
+            if 'date1' in request.POST :
+                start_date = request.POST.get('date1')
+                lead_conversion = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
+                                                            entry_timedate__month=datetime.strptime(start_date, '%Y-%m-%d').month) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+
+                lead_conversion_date = []
+                lead_conversion_sum = []
+                for i in lead_conversion:
+                    x = i
+                    lead_conversion_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+                    lead_conversion_sum.append(x['data_sum'])
+
+
+                context = {
+
+                    'lead_conversion_date': lead_conversion_date,
+                    'lead_conversion_sum': lead_conversion_sum,
+
+                }
+            if 'sub1' in request.POST:
+                # this month lead
+                current_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='Not Yet Initiated',
+                    entry_timedate__month=datetime.now().month) \
+                    .values('entry_timedate').annotate(data_sum=Count('grand_total'))
+
+                # previous month lead
+                previous_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='Not Yet Initiated',
+                    entry_timedate__month=previous_mon) \
+                    .values('entry_timedate').annotate(data_sum=Count('grand_total'))
+            elif 'sub2' in request.POST:
+                # this month lead
+                current_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='Customer Called',
+                    entry_timedate__month=datetime.now().month) \
+                    .values('entry_timedate').annotate(data_sum=Count('grand_total'))
+
+                # previous month lead
+                previous_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='Customer Called',
+                    entry_timedate__month=previous_mon) \
+                    .values('entry_timedate').annotate(data_sum=Count('grand_total'))
+            elif 'sub3' in request.POST:
+                # this month lead
+                current_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='PI Sent & Follow-up',
+                    entry_timedate__month=datetime.now().month) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+
+                # previous month lead
+                previous_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='PI Sent & Follow-up',
+                    entry_timedate__month=previous_mon) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+            elif 'sub4' in request.POST:
+                # this month lead
+                current_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='PO Issued - Payment not done',
+                    entry_timedate__month=datetime.now().month) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+
+                # previous month lead
+                previous_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='PO Issued - Payment not done',
+                    entry_timedate__month=previous_mon) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+            elif 'sub5' in request.POST:
+                # this month lead
+                current_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
+                    entry_timedate__month=datetime.now().month) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+
+                # previous month lead
+                previous_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
+                    entry_timedate__month=previous_mon) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+            elif 'sub6' in request.POST:
+                # this month lead
+                current_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='Dispatch Done - Closed',
+                    entry_timedate__month=datetime.now().month) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+
+                # previous month lead
+                previous_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='Dispatch Done - Closed',
+                    entry_timedate__month=previous_mon) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+            elif 'sub7' in request.POST:
+                # this month lead
+                current_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='Lost',
+                    entry_timedate__month=datetime.now().month) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+
+                # previous month lead
+                previous_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='Lost',
+                    entry_timedate__month=previous_mon) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+            elif 'sub8' in request.POST:
+                # this month lead
+                current_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='Not Relevant',
+                    entry_timedate__month=datetime.now().month) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+
+                # previous month lead
+                previous_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='Not Relevant',
+                    entry_timedate__month=previous_mon) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+            elif 'sub9' in request.POST:
+                # this month lead
+                current_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='Postponed',
+                    entry_timedate__month=datetime.now().month) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+
+                # previous month lead
+                previous_month_lead = Pi_section.objects.filter(
+                    lead_id__current_stage='Postponed',
+                    entry_timedate__month=previous_mon) \
+                    .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+
+
+        if request.user.role == 'Super Admin':
+            total_stages = Lead.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
+        else:
+            admin = SiteUser.objects.get(id=request.user.pk).admin
+            total_stages = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).values('current_stage').annotate(dcount=Count('current_stage'))
+        admin = SiteUser.objects.get(id=request.user.pk).admin
+
+
+        po_no_payment = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment not done',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        po_no_payment_total = 0.0
+        try:
+            for x in po_no_payment:
+                po_no_payment_total += float(x['data_sum'])
+        except:
+            pass
+
+        po_payment_done = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        po_payment_done_total = 0.0
+        try:
+            for x in po_payment_done:
+                po_payment_done_total += float(x['data_sum'])
+        except:
+            pass
+
+        dispatch_done_stage = Pi_section.objects.filter(lead_id__current_stage='Dispatch Done - Closed',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        dispatch_done_stage_total = 0.0
+        try:
+            for x in dispatch_done_stage:
+                dispatch_done_stage_total += float(x['data_sum'])
+        except:
+            pass
+        lost_stage = Pi_section.objects.filter(lead_id__current_stage='Lost',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        lost_stage_total = 0.0
+        try:
+            for x in lost_stage:
+                lost_stage_total += float(x['data_sum'])
+        except:
+            pass
+        not_relevant_stage = Pi_section.objects.filter(lead_id__current_stage='Not Relevant',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        not_relevant_stage_total = 0.0
+        try:
+            for x in not_relevant_stage:
+                not_relevant_stage_total += float(x['data_sum'])
+        except:
+            pass
+        postponed_stage = Pi_section.objects.filter(lead_id__current_stage='Postponed',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        postponed_stage_total = 0.0
+        try:
+            for x in postponed_stage:
+                postponed_stage_total += float(x['data_sum'])
+        except:
+            pass
+        pi_sent_stage = Pi_section.objects.filter(lead_id__current_stage='PI Sent & Follow-up',
+                                                   lead_id__owner_of_opportunity__admin=admin).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        pi_sent_stage_total = 0.0
+        try:
+            for x in pi_sent_stage:
+                pi_sent_stage_total += float(x['data_sum'])
+        except:
+            pass
+        context13={
+            'po_no_payment_total': po_no_payment_total,
+            'lost_stage_total': lost_stage_total,
+            'po_payment_done_total': po_payment_done_total,
+            'dispatch_done_stage_total': dispatch_done_stage_total,
+            'not_relevant_stage_total': not_relevant_stage_total,
+            'postponed_stage_total': postponed_stage_total,
+            'pi_sent_stage_total': pi_sent_stage_total,
+        }
+        context.update(context13)
+
+        for i in total_stages:
             x = i
-            lead_conversion_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
-            lead_conversion_sum.append(x['data_sum'])
-
-
-        context = {
+            if x['current_stage'] == 'Not Yet Initiated':
+                not_yet_stage = x['dcount']
+                context1 = {
+                    'not_yet_stage': not_yet_stage,
+                }
+                context.update(context1)
+            if x['current_stage'] == 'Dispatch Done - Closed':
+                dispatch_stage = x['dcount']
+                context2 = {
+                    'dispatch_stage': dispatch_stage,
+                }
+                context.update(context2)
+            if x['current_stage'] == 'Customer Called':
+                cust_called_stage = x['dcount']
+                context3 = {
+                    'cust_called_stage': cust_called_stage,
+                }
+                context.update(context3)
+            if x['current_stage'] == 'PO Issued - Payment not done':
+                po_no_payment = x['dcount']
+                context5 = {
+                    'po_no_payment': po_no_payment,
+                }
+                context.update(context5)
+            if x['current_stage'] == 'PO Issued - Payment Done - Dispatch Pending':
+                po_payment_done = x['dcount']
+                context4 = {
+                    'po_payment_done': po_payment_done,
+                }
+                context.update(context4)
+            if x['current_stage'] == 'Lost':
+                lost_stage = x['dcount']
+                context6 = {
+                    'lost_stage': lost_stage,
+                }
+                context.update(context6)
+            if x['current_stage'] == 'Not Relevant':
+                not_relevant_stage = x['dcount']
+                context7 = {
+                    'not_relevant_stage': not_relevant_stage,
+                }
+                context.update(context7)
+            if x['current_stage'] == 'Postponed':
+                postponed_stage = x['dcount']
+                context8 = {
+                    'postponed_stage': postponed_stage,
+                }
+                context.update(context8)
+            if x['current_stage'] == 'PI Sent & Follow-up':
+                pi_sent_stage = x['dcount']
+                context9 = {
+                    'pi_sent_stage': pi_sent_stage,
+                }
+                context.update(context9)
+        previous_month_lead_date = []
+        previous_month_lead_sum = []
+        current_month_lead_date = []
+        current_month_lead_sum = []
+        for i in current_month_lead:
+            x = i
+            current_month_lead_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            current_month_lead_sum.append(x['data_sum'])
+        for i in previous_month_lead:
+            x = i
+            previous_month_lead_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            previous_month_lead_sum.append(x['data_sum'])
+        context14 = {
             'current_month_lead_date': current_month_lead_date,
             'current_month_lead_sum': current_month_lead_sum,
             'previous_month_lead_date': previous_month_lead_date,
             'previous_month_lead_sum': previous_month_lead_sum,
-            'lead_conversion_date': lead_conversion_date,
-            'lead_conversion_sum': lead_conversion_sum,
 
         }
+        context.update(context14)
+    except:
+        pass
 
     return render(request,'lead_management/lead_analytics.html',context)
 
