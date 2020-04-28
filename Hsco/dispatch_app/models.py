@@ -28,6 +28,8 @@ class Dispatch(models.Model):
     company_address = models.CharField(max_length=250,null=True,blank=True)
     second_contact_no = models.CharField(max_length=150,null=True,blank=True)
     third_contact_no = models.CharField(max_length=150,null=True,blank=True)
+    bill_address = models.CharField(max_length=150,null=True,blank=True)
+    shipping_address = models.CharField(max_length=150,null=True,blank=True)
     date_of_dispatch = models.DateField(null=True,blank=True)
     dispatch_by = models.CharField(max_length=150,null=True,blank=True)
     packed_by = models.CharField(max_length=150,null=True,blank=True)

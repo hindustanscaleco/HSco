@@ -210,6 +210,8 @@ def add_purchase_details(request):
         sales_person = request.POST.get('sales_person')
         product_purchase_date = request.POST.get('product_purchase_date')
         bill_no = request.POST.get('bill_no')
+        bill_address = request.POST.get('bill_address')
+        shipping_address = request.POST.get('shipping_address')
         upload_op_file = request.FILES.get('upload_op_file')
         po_number = request.POST.get('po_number')
         channel_of_sales = request.POST.get('channel_of_sales')
@@ -280,6 +282,8 @@ def add_purchase_details(request):
         item2.sales_person = sales_person
         item2.user_id=SiteUser.objects.get(id=site_user_id)
         item2.bill_no = bill_no
+        item2.bill_address = bill_address
+        item2.shipping_address = shipping_address
         item2.upload_op_file = upload_op_file
         item2.po_number = po_number
         item2.channel_of_sales = channel_of_sales
@@ -292,22 +296,7 @@ def add_purchase_details(request):
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no+1
         item2.log_entered_by = request.user.profile_name
-        # request.session['new_repeat_purchase'] = new_repeat_purchase
-        # request.session['second_person'] = customer_name
-        # request.session['second_contact_no'] = contact_no
-        # request.session['date_of_purchase'] = date_of_purchase
-        # request.session['product_purchase_date'] = product_purchase_date
-        # request.session['sales_person'] = sales_person
-        # request.session['user_id'] = SiteUser.objects.get(id=site_user_id)
-        # request.session['bill_no'] = bill_no
-        # request.session['upload_op_file'] = upload_op_file
-        # request.session['po_number'] = po_number
-        # request.session['channel_of_sales'] = channel_of_sales
-        # request.session['industry'] = industry
-        # request.session['value_of_goods'] = 0.0
-        # request.session['channel_of_dispatch'] = channel_of_dispatch
-        # request.session['notes'] = notes
-        # request.session['feedback_form_filled'] = False
+
 
         item2.save()
 
@@ -338,6 +327,8 @@ def add_purchase_details(request):
             dispatch.company_email = customer_email_id
             dispatch.company_address = address  # new2
             dispatch.channel_of_dispatch = channel_of_dispatch   # new2
+            dispatch.bill_address = bill_address   # new2
+            dispatch.shipping_address = shipping_address   # new2
             if notes != None or notes != 'None' or notes != '':
                 dispatch.notes = notes   # new2
             dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
@@ -650,6 +641,8 @@ def update_customer_details(request,id):
         # third_contact_no=request.POST.get('third_contact_no')
         sales_person = request.POST.get('sales_person')
         bill_no = request.POST.get('bill_no')
+        bill_address = request.POST.get('bill_address')
+        shipping_address = request.POST.get('shipping_address')
         new_repeat_purchase = request.POST.get('new_repeat_purchase')
         upload_op_file = request.FILES.get('upload_op_file')
         po_number = request.POST.get('po_number')
@@ -692,6 +685,8 @@ def update_customer_details(request,id):
         item2.sales_person = sales_person
         item2.new_repeat_purchase = new_repeat_purchase
         item2.bill_no = bill_no
+        item2.bill_address = bill_address
+        item2.shipping_address = shipping_address
         item2.upload_op_file = upload_op_file
         item2.po_number = po_number
         item2.channel_of_sales = channel_of_sales
@@ -717,6 +712,8 @@ def update_customer_details(request,id):
             dispatch.company_email = customer_email_id
             dispatch.company_address = address  # new2
             dispatch.channel_of_dispatch = channel_of_dispatch  # new2
+            dispatch.bill_address = bill_address  # new2
+            dispatch.shipping_address = shipping_address  # new2
             dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
             dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
             if Dispatch.objects.all().count() == 0:
@@ -791,7 +788,7 @@ def update_customer_details(request,id):
         item2.log_entered_by = request.user.profile_name
 
         item2.save(update_fields=['log_entered_by','date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
-                                  'channel_of_sales','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email',
+                                  'channel_of_sales','shipping_address','billing_address','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email',
                                   ])  #new6
 
 

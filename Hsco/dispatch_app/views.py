@@ -208,6 +208,8 @@ def add_dispatch_details(request):
         dispatch_id = request.POST.get('dispatch_id')
         date_of_dispatch = request.POST.get('date_of_dispatch')
         dispatch_by = request.POST.get('dispatch_by')
+        shipping_address = request.POST.get('shipping_address')
+        bill_address = request.POST.get('bill_address')
         packed_by = request.POST.get('packed_by')
         hamal_name = request.POST.get('hamal_name')
         no_bundles = request.POST.get('no_bundles')
@@ -282,6 +284,8 @@ def add_dispatch_details(request):
         item2.hamal_name = hamal_name
         item2.no_bundles = no_bundles
         item2.transport_name = transport_name
+        item2.shipping_address = shipping_address
+        item2.bill_address = bill_address
         item2.lr_no = lr_no
         item2.photo_lr_no = photo_lr_no
         item2.channel_of_dispatch = channel_of_dispatch
@@ -839,6 +843,8 @@ def update_dispatch_details(request,update_id):
 
         date_of_dispatch = request.POST.get('date_of_dispatch')
         dispatch_by = request.POST.get('dispatch_by')
+        bill_address = request.POST.get('bill_address')
+        shipping_address = request.POST.get('shipping_address')
         packed_by = request.POST.get('packed_by')
         hamal_name = request.POST.get('hamal_name')
         no_bundles = request.POST.get('no_bundles')
@@ -978,6 +984,8 @@ def update_dispatch_details(request,update_id):
                     dispatch_item.save(update_fields=['dispatch_time_calculated', ])
         item.packed_by = packed_by
         item.hamal_name = hamal_name
+        item.bill_address = bill_address
+        item.shipping_address = shipping_address
         item.no_bundles = no_bundles
         item.transport_name = transport_name
         item.lr_no = lr_no
@@ -1107,7 +1115,7 @@ def update_dispatch_details(request,update_id):
 
         item.save(update_fields=['second_person','second_contact_no', 'dispatch_done_timedate','log_entered_by','packed_by',
                                  'hamal_name','no_bundles','transport_name','lr_no','photo_lr_no','channel_of_dispatch',
-                                 'notes','second_company_name','company_address','company_email',]),
+                                 'notes','second_company_name','company_address','company_email','billing_address','shipping_address']),
 
         # item.save(update_fields=[ ]),
         # item.save(update_fields=[ ]),
