@@ -217,19 +217,6 @@ function myFunction() {
 </div>
 {% endif %}
 
-<script>
-
-
-    function myFunction225(){
-        var win = window.open('/update_view_lead/{{lead_id.pk}}', '_blank');
-        document.getElementById("submit56").click();
-
-    }
-
-
-</script>
-
-
 
                {% if request.session.context_sess.success_exist_4 %}
 
@@ -280,11 +267,26 @@ function myFunction() {
 
 
     <div class="form-group row" style="display:none;">
-            <form  method='POST' enctype="multipart/form-data" >{% csrf_token %}
+            <form  method='POST' enctype="multipart/form-data" target="_blank">{% csrf_token %}
             <input name="tp" value="{{lead_id.pk}}">
          <button name="submit56" id="submit56" type="submit" >Send</button>
         </form>
     </div>
+
+                          {% if request.session.context_sess.success_exist_2 %}
+<script>
+
+
+    function myFunction225(){
+    document.getElementById("submit56").click();
+    }
+myFunction225();
+
+
+</script>
+
+
+{% endif %}
 
                      <form action="" method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 

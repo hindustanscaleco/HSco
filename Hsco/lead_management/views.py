@@ -1594,10 +1594,8 @@ def update_view_lead(request,id):
                     del request.session['wa_msg']
                 except:
                     pass
-                try:
-                    return redirect('https://api.whatsapp.com/send?phone=+91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
-                except:
-                    pass
+                return redirect('https://api.whatsapp.com/send?phone=+91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+
 
 
 
@@ -2404,6 +2402,8 @@ def select_product(request,id):
     lead_id = Lead.objects.get(id=id)
     products = Product.objects.all()
     context={}
+    del_all_sessions(request)
+    request.session['expand_pi_section'] = True
     if request.method == 'POST' or request.method == 'FILES':
         hsn_code = request.POST.get('hsn_code')
         pf = request.POST.get('pf')
@@ -2440,11 +2440,10 @@ def select_product(request,id):
                 'msg':msg,
             }
             context.update(context1)
-
-
         del_all_sessions(request)
-
         request.session['expand_pi_section'] = True
+
+
 
 
     context2 = {
