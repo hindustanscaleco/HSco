@@ -215,18 +215,20 @@ function myFunction() {
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-
+{% endif %}
+             {% if request.session.wa_msg %}
 <script>
 
-   myVar =setTimeout(myFunction225, 4000);
+
     function myFunction225(){
         var win = window.open('/update_view_lead/{{lead_id.pk}}', '_blank');
         document.getElementById("submit56").click();
 
     }
-clearTimeout(myVar);
+myFunction225();
 
 </script>
+
 
 {% endif %}
 
