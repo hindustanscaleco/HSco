@@ -715,7 +715,8 @@ def stock_accpet_goods_list(request, godown_id):
 def stock_transaction_history_list(request, godown_id):
     trans_history = GoodsRequest.objects.filter(req_from_godown=godown_id, status='Confirms the transformation').order_by('-id') | \
                     GoodsRequest.objects.filter(req_from_godown=godown_id, status='Confirms the transformation').order_by('-id') | \
-                    GoodsRequest.objects.filter(Q(is_all_req=True) & Q(status='Confirms the transformation')).order_by('-id')
+                    GoodsRequest.objects.filter(req_to_godown=godown_id, status='Confirms the transformation').order_by('-id') | \
+                    GoodsRequest.objects.filter(req_to_godown=godown_id, status='Confirms the transformation').order_by('-id')
 
     context={
         'trans_history': trans_history,

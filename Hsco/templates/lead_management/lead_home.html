@@ -78,7 +78,7 @@
  <a style="padding: 2px;" href="{% url 'add_lead' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Lead </button></a>
                       <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Share</button></a>
                       <a style="padding: 2px;" href="{% url 'lead_logs' %}"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
-<a style="padding: 2px;" href="{% url 'lead_report' %}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
+<a style="padding: 2px;" href="{% url 'report_2' %}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
  <a style="padding: 2px;" href="{% url 'lead_analytics' %}"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
                       {% if request.user.is_authenticated and 'Indiamart Leads' in user.modules_assigned %}
                       <form action="" method="post">{% csrf_token %}

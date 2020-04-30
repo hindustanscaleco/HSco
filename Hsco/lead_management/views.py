@@ -2085,16 +2085,31 @@ def load_wa(wa_no,wa_msg,sms_content):
     return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
 def lead_report(request):
+
+    return render(request,'lead_management/report_lead.html')
+
+def report_2(request):
     if request.method =='POST' :
-        selected_list = request.POST.getlist('checks[]')
+        cust_detail = request.POST.getlist('cust_detail[]')
+        deal_detail = request.POST.getlist('deal_detail[]')
+        pi_history = request.POST.getlist('pi_history[]')
+        follow_up = request.POST.getlist('follow_up[]')
+        pay_detail = request.POST.getlist('pay_detail[]')
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        string = ','.join(selected_list)
+        string_cust_detail = ','.join(cust_detail)
+        string_deal_detail = ','.join(deal_detail)
+        string_pi_history = ','.join(pi_history)
+        string_follow_up = ','.join(follow_up)
+        string_pay_detail = ','.join(pay_detail)
 
         request.session['start_date'] = start_date
         request.session['end_date'] = end_date
-        request.session['string'] = string
-        request.session['selected_list'] = selected_list
+        request.session['string_cust_detail'] = string_cust_detail
+        request.session['string_deal_detail'] = string_deal_detail
+        request.session['string_pi_history'] = string_pi_history
+        request.session['string_follow_up'] = string_follow_up
+        request.session['string_pay_detail'] = string_pay_detail
 
         if 'submit1' in request.POST:
             table_name = 'Customer Details Section'
@@ -2112,83 +2127,41 @@ def lead_report(request):
             table_name = 'Payment Details Form'
             request.session['table_name'] = table_name
         return redirect('/final_lead_report/')
-    return render(request,'lead_management/report_lead.html')
+    return render(request,'lead_management/report_2.html')
 
 def final_lead_report(request):
     table_name = request.session.get('table_name')
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
-    string = request.session.get('string')
-    selected_list = request.session.get('selected_list')
+    print(start_date)
+    print(start_date)
+    print(start_date)
+    print(end_date)
+    print(end_date)
+    string_cust_detail = request.session.get('string_cust_detail')
+    string_deal_detail = request.session.get('string_deal_detail')
+    string_pi_history = request.session.get('string_pi_history')
+    string_follow_up = request.session.get('string_follow_up')
+    string_pay_detail = request.session.get('string_pay_detail')
     final_row_product = []
     final_row=[]
-    context = {
-        'final_row': final_row,
-        'final_row_product': final_row_product,
-        'selected_list': selected_list,
-    }
-    if table_name == 'Customer Details Section':
-        # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
-        with connection.cursor() as cursor:
-            if string != '' :
-                    cursor.execute("SELECT " +  string + " from customer_app_customer_details  PRODUCT  where "
-                    " entry_timedate between'" + start_date + "' and '" + end_date + "';")
-                    row = cursor.fetchall()
-                    final_row_product = [list(x) for x in row]
-                    repairing_data = []
-                    for i in row:
-                        repairing_data.append(list(i))
+    print(string_cust_detail)
+    print(string_cust_detail)
+    print(string_deal_detail)
+    print(string_deal_detail)
+    with connection.cursor() as cursor:
 
-                    final_row = [list(x) for x in row]
-                    repairing_data = []
-                    for i in row:
-                        repairing_data.append(list(i))
+        if string_cust_detail != '' or string_deal_detail != '' or string_pi_history != '' or string_follow_up != '' or string_pay_detail != '':
+            # "," + string_deal_detail + "," + string_pi_history + "," + string_follow_up + "," + string_pay_detail) +
 
-        try:
-            del request.session['start_date']
-            del request.session['end_date']
-            del request.session['string']
-            del request.session['selected_list']
-        except:
-            pass
-    if table_name == 'Deal Details Section':
-
-        # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
-        with connection.cursor() as cursor:
-            if string != '' :
-                    cursor.execute("SELECT " +  string + " from lead_management_lead  PRODUCT  where "
-                    " entry_timedate between '" + start_date + "' and '" + end_date + "';")
-                    row = cursor.fetchall()
-                    final_row_product = [list(x) for x in row]
-                    repairing_data = []
-                    for i in row:
-                        repairing_data.append(list(i))
-
-                    final_row = [list(x) for x in row]
-                    repairing_data = []
-                    for i in row:
-                        repairing_data.append(list(i))
-
-        try:
-            del request.session['start_date']
-            del request.session['end_date']
-            del request.session['string']
-            del request.session['selected_list']
-        except:
-            pass
-    if table_name == 'PI Section':
-        # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
-        selected_list = ['lead_id','discount','discount_type','payment_channel','payment_received_date','notes','cgst_sgst','igst','grand_total','entry_timedate'
-                         ,'quantity','P&F']
-
-
-        with connection.cursor() as cursor:
-
-            cursor.execute("SELECT PI.lead_id_id,discount,discount_type,payment_channel,payment_received_date,notes,cgst_sgst,igst,grand_total,PRODUCT.entry_timedate,"
-                           "quantity,pf "
-                           " from lead_management_pi_section PI, lead_management_pi_product PRODUCT where PRODUCT.lead_id_id = PI.lead_id_id and "
-                           "PRODUCT.entry_timedate between'" + start_date + "' and '" + end_date + "';")
+            cursor.execute("SELECT " + string_cust_detail + " from customer_app_customer_details CUSTOMER union "
+                        "SELECT " + string_deal_detail + " from lead_management_lead where  "
+                        " entry_timedate between '" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
+            print(row)
+            print(row)
+            print(row)
+            print(row)
             final_row_product = [list(x) for x in row]
             repairing_data = []
             for i in row:
@@ -2198,73 +2171,148 @@ def final_lead_report(request):
             repairing_data = []
             for i in row:
                 repairing_data.append(list(i))
-        try:
-            del request.session['start_date']
-            del request.session['end_date']
-            del request.session['string']
-            del request.session['selected_list']
-        except:
-            pass
-    if table_name == 'Follow-up Section':
-        # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
-        selected_list = ['lead_id', 'whatsappno', 'fields', 'email_subject','product_id', 'scale_type', 'main_category','sub_category', 'sub_sub_category',
-                         'hsn_code','max_capacity', 'accuracy', 'platform_size','product_desc','cost_price','selling_price','carton_size',
-                         'entry_timedate']
+            print(repairing_data)
+            print(repairing_data)
+            print(repairing_data)
+            print(repairing_data)
 
-        with connection.cursor() as cursor:
-
-            cursor.execute(
-                "SELECT FOLLOW.lead_id_id,whatsappno,fields,email_subject,product_id_id,scale_type,main_category,sub_category,sub_sub_category,hsn_code,"
-                "max_capacity,accuracy,platform_size,product_desc,cost_price,selling_price,carton_size,PRODUCT.entry_timedate"
-                " from lead_management_follow_up_section FOLLOW, lead_management_followup_product PRODUCT where PRODUCT.lead_id_id = FOLLOW.lead_id_id and "
-                "PRODUCT.entry_timedate between'" + start_date + "' and '" + end_date + "';")
-            row = cursor.fetchall()
-            final_row_product = [list(x) for x in row]
-            repairing_data = []
-            for i in row:
-                repairing_data.append(list(i))
-
-            final_row = [list(x) for x in row]
-            repairing_data = []
-            for i in row:
-                repairing_data.append(list(i))
-
-        try:
-            del request.session['start_date']
-            del request.session['end_date']
-            del request.session['string']
-            del request.session['selected_list']
-        except:
-            pass
-    if table_name == 'Payment Details Form':
-        # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
-        with connection.cursor() as cursor:
-            if string != '' :
-                    cursor.execute("SELECT " +  string + " from lead_management_payment_details  PRODUCT  where "
-                    " entry_timedate between'" + start_date + "' and '" + end_date + "';")
-                    row = cursor.fetchall()
-                    final_row_product = [list(x) for x in row]
-                    repairing_data = []
-                    for i in row:
-                        repairing_data.append(list(i))
-
-                    final_row = [list(x) for x in row]
-                    repairing_data = []
-                    for i in row:
-                        repairing_data.append(list(i))
-
-        try:
-            del request.session['start_date']
-            del request.session['end_date']
-            del request.session['string']
-            del request.session['selected_list']
-        except:
-            pass
+    # if table_name == 'Customer Details Section':
+    #     # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+    #     with connection.cursor() as cursor:
+    #         if string != '' :
+    #                 cursor.execute("SELECT " +  string + " from customer_app_customer_details  PRODUCT  where "
+    #                 " entry_timedate between'" + start_date + "' and '" + end_date + "';")
+    #                 row = cursor.fetchall()
+    #                 final_row_product = [list(x) for x in row]
+    #                 repairing_data = []
+    #                 for i in row:
+    #                     repairing_data.append(list(i))
+    #
+    #                 final_row = [list(x) for x in row]
+    #                 repairing_data = []
+    #                 for i in row:
+    #                     repairing_data.append(list(i))
+    #
+    #     try:
+    #         del request.session['start_date']
+    #         del request.session['end_date']
+    #         del request.session['string']
+    #         del request.session['selected_list']
+    #     except:
+    #         pass
+    # if table_name == 'Deal Details Section':
+    #
+    #     # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+    #     with connection.cursor() as cursor:
+    #         if string != '' :
+    #                 cursor.execute("SELECT " +  string + " from lead_management_lead  PRODUCT  where "
+    #                 " entry_timedate between '" + start_date + "' and '" + end_date + "';")
+    #                 row = cursor.fetchall()
+    #                 final_row_product = [list(x) for x in row]
+    #                 repairing_data = []
+    #                 for i in row:
+    #                     repairing_data.append(list(i))
+    #
+    #                 final_row = [list(x) for x in row]
+    #                 repairing_data = []
+    #                 for i in row:
+    #                     repairing_data.append(list(i))
+    #
+    #     try:
+    #         del request.session['start_date']
+    #         del request.session['end_date']
+    #         del request.session['string']
+    #         del request.session['selected_list']
+    #     except:
+    #         pass
+    # if table_name == 'PI Section':
+    #     # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+    #     selected_list = ['lead_id','discount','discount_type','payment_channel','payment_received_date','notes','cgst_sgst','igst','grand_total','entry_timedate'
+    #                      ,'quantity','P&F']
+    #
+    #
+    #     with connection.cursor() as cursor:
+    #
+    #         cursor.execute("SELECT PI.lead_id_id,discount,discount_type,payment_channel,payment_received_date,notes,cgst_sgst,igst,grand_total,PRODUCT.entry_timedate,"
+    #                        "quantity,pf "
+    #                        " from lead_management_pi_section PI, lead_management_pi_product PRODUCT where PRODUCT.lead_id_id = PI.lead_id_id and "
+    #                        "PRODUCT.entry_timedate between'" + start_date + "' and '" + end_date + "';")
+    #         row = cursor.fetchall()
+    #         final_row_product = [list(x) for x in row]
+    #         repairing_data = []
+    #         for i in row:
+    #             repairing_data.append(list(i))
+    #
+    #         final_row = [list(x) for x in row]
+    #         repairing_data = []
+    #         for i in row:
+    #             repairing_data.append(list(i))
+    #     try:
+    #         del request.session['start_date']
+    #         del request.session['end_date']
+    #         del request.session['string']
+    #         del request.session['selected_list']
+    #     except:
+    #         pass
+    # if table_name == 'Follow-up Section':
+    #     # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+    #     selected_list = ['lead_id', 'whatsappno', 'fields', 'email_subject','product_id', 'scale_type', 'main_category','sub_category', 'sub_sub_category',
+    #                      'hsn_code','max_capacity', 'accuracy', 'platform_size','product_desc','cost_price','selling_price','carton_size',
+    #                      'entry_timedate']
+    #
+    #     with connection.cursor() as cursor:
+    #
+    #         cursor.execute(
+    #             "SELECT FOLLOW.lead_id_id,whatsappno,fields,email_subject,product_id_id,scale_type,main_category,sub_category,sub_sub_category,hsn_code,"
+    #             "max_capacity,accuracy,platform_size,product_desc,cost_price,selling_price,carton_size,PRODUCT.entry_timedate"
+    #             " from lead_management_follow_up_section FOLLOW, lead_management_followup_product PRODUCT where PRODUCT.lead_id_id = FOLLOW.lead_id_id and "
+    #             "PRODUCT.entry_timedate between'" + start_date + "' and '" + end_date + "';")
+    #         row = cursor.fetchall()
+    #         final_row_product = [list(x) for x in row]
+    #         repairing_data = []
+    #         for i in row:
+    #             repairing_data.append(list(i))
+    #
+    #         final_row = [list(x) for x in row]
+    #         repairing_data = []
+    #         for i in row:
+    #             repairing_data.append(list(i))
+    #
+    #     try:
+    #         del request.session['start_date']
+    #         del request.session['end_date']
+    #         del request.session['string']
+    #         del request.session['selected_list']
+    #     except:
+    #         pass
+    # if table_name == 'Payment Details Form':
+    #     # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+    #     with connection.cursor() as cursor:
+    #         if string != '' :
+    #                 cursor.execute("SELECT " +  string + " from lead_management_payment_details  PRODUCT  where "
+    #                 " entry_timedate between'" + start_date + "' and '" + end_date + "';")
+    #                 row = cursor.fetchall()
+    #                 final_row_product = [list(x) for x in row]
+    #                 repairing_data = []
+    #                 for i in row:
+    #                     repairing_data.append(list(i))
+    #
+    #                 final_row = [list(x) for x in row]
+    #                 repairing_data = []
+    #                 for i in row:
+    #                     repairing_data.append(list(i))
+    #
+    #     try:
+    #         del request.session['start_date']
+    #         del request.session['end_date']
+    #         del request.session['string']
+    #         del request.session['selected_list']
+    #     except:
+    #         pass
 
     context={
         'final_row':final_row,
         'final_row_product':final_row_product,
-        'selected_list':selected_list,
     }
     return render(request,"report/final_lead_report.html",context)
 
@@ -2905,8 +2953,6 @@ def lead_pi_form(request):
 def alpha_pi_form(request):
     return render(request,'lead_management/alpha_pi_template.html')
 
-def report_2(request):
-    return render(request,'lead_management/report_2.html')
 
 
 
