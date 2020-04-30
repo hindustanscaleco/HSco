@@ -216,7 +216,7 @@ function myFunction() {
   </button>
 </div>
 {% endif %}
-             {% if request.session.wa_msg %}
+
 <script>
 
 
@@ -225,12 +225,11 @@ function myFunction() {
         document.getElementById("submit56").click();
 
     }
-myFunction225();
+
 
 </script>
 
 
-{% endif %}
 
                {% if request.session.context_sess.success_exist_4 %}
 
@@ -279,14 +278,14 @@ myFunction225();
                       <div class="card-body collapse" id="collapseCardExample" >
                   {% endif %}
 
-{% if request.session.wa_msg %}
+
     <div class="form-group row" style="display:none;">
             <form  method='POST' enctype="multipart/form-data" >{% csrf_token %}
             <input name="tp" value="{{lead_id.pk}}">
          <button name="submit56" id="submit56" type="submit" >Send</button>
         </form>
     </div>
-{% endif %}
+
                      <form action="" method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
 
