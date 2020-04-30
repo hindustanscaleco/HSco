@@ -19,6 +19,8 @@ class Purchase_Details(models.Model):   #cleaned
     crm_no = models.ForeignKey(Customer_Details,on_delete=models.CASCADE,null=True,blank=True)
     date_of_purchase = models.DateField(default=datetime.date.today,null=True,blank=True)
     bill_no = models.CharField(max_length=150,null=True,blank=True)
+    bill_address = models.CharField(max_length=150,null=True,blank=True)
+    shipping_address = models.CharField(max_length=150,null=True,blank=True)
     second_person = models.CharField(max_length=150,null=True,blank=True)
     second_company_name = models.CharField(max_length=150,null=True,blank=True)
     company_email = models.CharField(max_length=150,null=True,blank=True)
