@@ -808,6 +808,7 @@ def update_customer_details(request,id):
 
         try:
             del request.session['enable_auto_edit']
+            del request.session['lead_url']
         except:
             pass
 
