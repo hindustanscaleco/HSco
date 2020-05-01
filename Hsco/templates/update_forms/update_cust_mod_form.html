@@ -355,9 +355,6 @@ function myFunction() {
       <option value="App"></option>
       <option value="Field Salesmen"></option>
       <option value="Fairs and Trade Shows"></option>
-      <option value="Friend"></option>
-      <option value="Online Promotions"></option>
-      <option value="BNI"></option>
     </datalist>
     </div>
   </div>
@@ -413,6 +410,9 @@ function myFunction() {
       <option value="Grocery/Retail"></option>
       <option value="Bakery"></option>
           <option value="Supplier"></option>
+      <option value="BNI"></option>
+      <option value="Online Promotion"></option>
+
     </datalist>
     </div>
   </div>
@@ -514,6 +514,8 @@ function myFunction() {
         <br>
         <br>
         <button style="background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
+<br>
+        <a href="{{request.session.lead_url}}">Back To Lead Module</a>
         {% endif %}
 
           {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None  %}

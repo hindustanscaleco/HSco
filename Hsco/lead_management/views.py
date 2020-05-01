@@ -4,7 +4,7 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.paginator import Paginator
 from django.db import connection
-from django.db.models import Sum, Q, Count, Min
+from django.db.models import Sum, Q, Count, Min, F
 from django.core.files.base import ContentFile, File
 from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render, redirect
@@ -33,6 +33,9 @@ from dispatch_app.models import Dispatch
 from purchase_app.models import Product_Details
 from dispatch_app.models import Product_Details_Dispatch
 from django.core.mail import EmailMessage
+
+from stock_management_system_app.models import Godown,GodownProduct
+
 
 def lead_home(request):
     import requests
@@ -882,7 +885,8 @@ def update_view_lead(request,id):
         is_call = 'is_call' if history_follow.is_call else ''
         is_sms = 'is_sms' if history_follow.is_sms else ''
         is_whatsapp = 'is_whatsapp' if history_follow.is_whatsapp else ''
-        wa_no = history_follow.wa_no if history_follow.wa_no != None else customer_id.contact_no
+
+        wa_no = history_follow.wa_no if history_follow.wa_no != None and history_follow.wa_no !='' else customer_id.contact_no
     else:
         wa_msg = ''
         email_msg = ''
@@ -898,7 +902,7 @@ def update_view_lead(request,id):
     form6 = History_followupForm(initial={'wa_no':wa_no,'email_subject':hfu.email_subject,'wa_msg':wa_msg,'email_msg':email_msg,
                                           'sms_msg':sms_msg,'is_email':is_email,'call_response':call_response,'is_call':is_call,'is_sms':is_sms,'is_whatsapp':is_whatsapp})
 
-
+    work_area_godowns = Godown.objects.filter(godown_admin__name=request.user.admin)
     context = {
         'form': form,
         'form2': form2,
@@ -914,6 +918,7 @@ def update_view_lead(request,id):
         'auto_manual_mode':hfu.auto_manual_mode,
         'customer_id':customer_id,
         'history_follow':history_follow,
+        'work_area_godowns':work_area_godowns,
     }
 
     try:
@@ -982,6 +987,48 @@ def update_view_lead(request,id):
 
         if 'send_submit' in request.POST :
             delete_id = request.POST.getlist('check[]')
+            godown_ids = request.POST.getlist('selected_dodown')
+            is_sufficient_stock = False
+
+            pi_pro = Pi_product.objects.filter(pk__in=delete_id)
+            list_count = 0
+            for item in pi_pro:
+
+                product_id = Product.objects.get(scale_type=item.product_id.scale_type,main_category=item.product_id.main_category,
+                                                 sub_category=item.product_id.sub_category,sub_sub_category=item.product_id.sub_sub_category).id
+                if (GodownProduct.objects.get(godown_id=Godown.objects.get(id=godown_ids[list_count]).id,product_id=product_id).quantity > item.quantity):
+                    is_sufficient_stock = True
+                else:
+                    context22 = {
+                        'error': "Insufficient Stock in Godown: " + Godown.objects.get(
+                            id=godown_ids[list_count]).name_of_godown + " Please Select Different Godown And Try Again",
+                        'error_exist': True,
+                    }
+                    context.update(context22)
+                    try:
+                        del request.session['context_sess']
+                    except:
+                        pass
+                    request.session['context_sess'] = context22
+                    return redirect('/update_view_lead/' + str(id))
+
+                for item in pi_pro:
+
+                    product_id = Product.objects.get(scale_type=item.product_id.scale_type,
+                                                     main_category=item.product_id.main_category,
+                                                     sub_category=item.product_id.sub_category,
+                                                     sub_sub_category=item.product_id.sub_sub_category).id
+                    GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown_ids[list_count]).id,
+                                                     product_id=product_id).update(
+                        quantity=F("quantity") - item.quantity)
+
+
+
+
+                list_count=list_count+1
+
+
+
             if (len(delete_id)>0):
                 current_stage = lead_id.current_stage
                 is_entered_purchase = lead_id.is_entered_purchase
@@ -1032,7 +1079,8 @@ def update_view_lead(request,id):
                     # customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
                     # customer_id.save(update_fields=['dispatch_id_assigned'])
 
-                    pi_pro = Pi_product.objects.filter(pk__in=delete_id)
+                    # pi_pro = Pi_product.objects.filter(pk__in=delete_id)
+                    list_count=0
                     for item in pi_pro:
                         item_pro = Product_Details()
 
@@ -1045,6 +1093,7 @@ def update_view_lead(request,id):
                         item_pro.brand = 'HSCO'
                         item_pro.capacity = item.product_id.max_capacity
                         item_pro.unit = 'Kg'
+                        item_pro.godown_id = Godown.objects.get(id=godown_ids[list_count])
                         if (item.product_total_cost == None or item.product_total_cost == ''):
                             item_pro.amount = 0.0
                         else:
@@ -1055,6 +1104,7 @@ def update_view_lead(request,id):
                         item_pro.log_entered_by = request.user.name
 
                         item_pro.save()
+                        list_count=list_count+1
 
                         # dispatch_id = Dispatch.objects.get(id=dispatch.id)
                         # dispatch_pro = Product_Details_Dispatch()
@@ -1080,13 +1130,16 @@ def update_view_lead(request,id):
                         # Product_Details.objects.filter(id=item_pro.pk).update(product_dispatch_id=dispatch_pro.pk)
                     try:
                         del request.session['enable_auto_edit']
+                        del request.session['lead_url']
                     except:
                         pass
 
                     request.session['enable_auto_edit'] = True
+                    request.session['lead_url'] = '/update_view_lead/'+str(id)
 
                     Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
-                    Lead.objects.filter(id=id).update(is_entered_purchase=True)
+                    Lead.objects.filter(id=id).update(is_entered_purchase=True,current_stage='Dispatch Done - Closed')
+
 
                     if True:
                         Purchase_Details.objects.filter(id=id).update(is_last_product=True)
@@ -1171,7 +1224,8 @@ def update_view_lead(request,id):
                         x = response.text
                         del_all_sessions(request)
                         request.session['expand_deal_detail'] = True
-                        return redirect('/update_view_lead/' + str(id))
+                        return redirect('/update_customer_details/' + str(lead_id.purchase_id.pk))
+
             else:
                 context22 = {
                     'error': "No Product Selected\nPlease Select Products And Try Again",
@@ -1183,7 +1237,8 @@ def update_view_lead(request,id):
                 except:
                     pass
                 request.session['context_sess'] = context22
-                return redirect('/update_customer_details/'+str(lead_id.purchase_id.pk))
+                return redirect('/update_view_lead/' + str(id))
+
 
         if 'file_pdf' in request.POST and (email == 'True' or email == True):
             val = request.POST
@@ -1368,7 +1423,12 @@ def update_view_lead(request,id):
                 history.medium_of_selection = 'Call'
                 history.call_detail = call
                 history.save()
-            if upload_pi_file != None and email == 'True':
+            if email == 'True':
+
+                if upload_pi_file == None:
+                    upload_pi_file = Pi_History.objects.filter(lead_id=id).latest('pk').file
+                elif upload_pi_file != None:
+                    print("not none")
 
                 try:
                     history = Pi_History()
@@ -1536,7 +1596,12 @@ def update_view_lead(request,id):
                 wa_msg = request.session['wa_msg']
                 sms_content = request.session['wa_content']
                 wa_no = request.session['wa_no']
+                try:
+                    del request.session['wa_msg']
+                except:
+                    pass
                 return redirect('https://api.whatsapp.com/send?phone=+91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+
 
 
 
@@ -1591,7 +1656,7 @@ def update_view_lead(request,id):
             request.session['expand_followup'] = True
 
 
-            if(len(selected_products)<1):
+            if(len(selected_products)<1 and email_auto_manual == 'Manual' and not (is_call!='on' or is_call!='is_call')):
                 context22={
                     'error':"No Product Selected\nPlease Select Products And Try Again",
                     'error_exist':True,
@@ -1603,7 +1668,7 @@ def update_view_lead(request,id):
                     pass
                 request.session['context_sess'] = context22
                 return redirect('/update_view_lead/' + str(id))
-            elif(is_call!='on' and is_sms!='on' and is_whatsapp!='on' and is_email!='on' and is_call!='is_call' and is_sms!='is_sms' and is_whatsapp!='is_whatsapp' and is_email !='is_email'):
+            if(is_call!='on' and is_sms!='on' and is_whatsapp!='on' and is_email!='on' and is_call!='is_call' and is_sms!='is_sms' and is_whatsapp!='is_whatsapp' and is_email !='is_email'):
                 context28 = {
                     'error': "Please Select Atleast One Medium For Followup",
                     'error_exist': True,
@@ -1615,7 +1680,7 @@ def update_view_lead(request,id):
                     pass
                 request.session['context_sess']=context28
                 return redirect('/update_view_lead/' + str(id))
-            elif (len(selected_fields)<6):
+            if (len(selected_fields)<6):
 
                 context28 = {
                     'error': "Please Select Atleast One Product Field",
@@ -1628,7 +1693,7 @@ def update_view_lead(request,id):
                     pass
                 request.session['context_sess']=context28
                 return redirect('/update_view_lead/' + str(id))
-            elif (email_auto_manual == 'Select Mode'):
+            if (email_auto_manual == 'Select Mode'):
 
                 context28 = {
                     'error': "Please Select Follow Up Mode",
@@ -1641,7 +1706,7 @@ def update_view_lead(request,id):
                     pass
                 request.session['context_sess']=context28
                 return redirect('/update_view_lead/' + str(id))
-            elif(email_auto_manual == 'Manual'):
+            if(email_auto_manual == 'Manual'):
 
                 final_list = []
                 Follow_up_section.objects.filter(lead_id=id).update(whatsappno=wa_no,)
@@ -1876,7 +1941,7 @@ td {
 
 
 
-            elif (email_auto_manual == 'Automatic'):
+            if (email_auto_manual == 'Automatic'):
 
                 if(Auto_followup_details.objects.filter(follow_up_history__follow_up_section__lead_id__id=lead_id.id).count()==0):
                     final_list = []
@@ -2043,7 +2108,12 @@ td {
                         'success_6': "Followup Will Be Done Automatically After Every 2 Days",
                         'success_exist_6': True,
                     }
-                    context.update(context28)
+                    try:
+                        del request.session['context_sess']
+                    except:
+                        pass
+                    request.session['context_sess'] = context28
+                    return redirect('/update_view_lead/' + str(id))
                 elif(Auto_followup_details.objects.filter(follow_up_history__follow_up_section__lead_id__id=lead_id.id).count()>0):
                     context28 = {
                         'error': "Auto Follow-Up is Already Set For This Lead\nTo Edit Auto Follow-Up Click On History Button In Follow-Up Section",
@@ -2386,6 +2456,8 @@ def select_product(request,id):
     lead_id = Lead.objects.get(id=id)
     products = Product.objects.all()
     context={}
+    del_all_sessions(request)
+    request.session['expand_pi_section'] = True
     if request.method == 'POST' or request.method == 'FILES':
         hsn_code = request.POST.get('hsn_code')
         pf = request.POST.get('pf')
@@ -2422,11 +2494,10 @@ def select_product(request,id):
                 'msg':msg,
             }
             context.update(context1)
-
-
         del_all_sessions(request)
-
         request.session['expand_pi_section'] = True
+
+
 
 
     context2 = {
@@ -2484,7 +2555,7 @@ def lead_follow_up_histroy(request,follow_up_id):
 
             Auto_followup_details.objects.filter(follow_up_history__pk=delete_id).delete()
             History_followup.objects.filter(id=delete_id).update(is_auto_follow_deleted=True)
-            Lead.objects.filter(id=id).update(is_manual_mode_followup=True)
+            Lead.objects.filter(id=Follow_up_section.objects.get(id=History_followup.objects.get(id=delete_id).follow_up_section).lead_id).update(is_manual_mode_followup=True)
             obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
             Follow_up_section.objects.filter(id=History_followup.objects.get(id=delete_id).follow_up_section.pk).update(auto_manual_mode='Select Mode')
             context2 = {
@@ -2532,6 +2603,23 @@ def lead_delete_product(request,id):
         'leads':leads,
     }
     return render(request,'lead_management/lead_delete_product.html',context)
+
+def followup_delete_product(request,id):
+    followup_products_list = Followup_product.objects.filter(lead_id=id)
+    if request.method == 'POST' :
+        delete_id = request.POST.getlist('check[]')
+        for i in delete_id:
+            Followup_product.objects.filter(id=i).delete()
+
+        del_all_sessions(request)
+
+        request.session['expand_followup'] = True
+
+        return redirect('/update_view_lead/'+str(id))
+    context={
+        'followup_products_list':followup_products_list,
+    }
+    return render(request,'lead_management/followup_delete_product.html',context)
 
 def lead_analytics(request):
     try:

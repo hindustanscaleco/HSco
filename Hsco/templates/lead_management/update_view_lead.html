@@ -215,16 +215,8 @@ function myFunction() {
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-
-<script>
-    setTimeout(myFunction225, 4000);
-    function myFunction225(){
-        var win = window.open('/update_view_lead/{{lead_id.pk}}', '_blank');
-        document.getElementById("submit56").click();
-    }
-</script>
-
 {% endif %}
+
 
                {% if request.session.context_sess.success_exist_4 %}
 
@@ -273,12 +265,28 @@ function myFunction() {
                       <div class="card-body collapse" id="collapseCardExample" >
                   {% endif %}
 
+
     <div class="form-group row" style="display:none;">
             <form  method='POST' enctype="multipart/form-data" target="_blank">{% csrf_token %}
             <input name="tp" value="{{lead_id.pk}}">
-         <button name="submit56" id="submit56" type="submit" target="_blank">Send</button>
+         <button name="submit56" id="submit56" type="submit" >Send</button>
         </form>
     </div>
+
+                          {% if request.session.context_sess.success_exist_2 %}
+<script>
+
+
+    function myFunction225(){
+    document.getElementById("submit56").click();
+    }
+myFunction225();
+
+
+</script>
+
+
+{% endif %}
 
                      <form action="" method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
@@ -441,17 +449,15 @@ function myFunction() {
                                   <div class="card-body collapse show" id="collapseCardExample2" >
 
                   {% else %}
-                                                      <div class="card-body collapse" id="collapseCardExample2" >
+                                    <div class="card-body collapse" id="collapseCardExample2" >
 
                   {% endif %}
-
-
-
                               <div class="form-group row">
                                   <label class="col-md-2 control-label">Current Stage* : </label>
-                                  {% if lead_id.is_entered_purchase %}
+                                  {% if lead_id.current_stage == 'Dispatch Done - Closed' %}
+                                  <div class="col-md-5">
         {{lead_id.current_stage}}
-
+                                  </div>
  {% else %}
                                          <div class="col-md-5 inputGroupContainer">
                                   <div class="input-group">
@@ -792,20 +798,11 @@ tr:nth-child(even) {
                                                               </div>
                           </div>
 
-
                             </div>
 
-
-
-
                          </div>
 
-
-
-
                          </div>
-
-
 
 
 {% if pi_id.first_submit == True  %}
@@ -909,9 +906,15 @@ function myFunction_call() {
 
                   {% endif %}
                                                    <div class="row">
-                            <div class="row col-md-8"></div>
+                            <div class="row col-md-6"></div>
                         <div class="row col-md-2">
- <button type="reset" onclick="location.href='/select_product_followup/{{lead_id.pk}}'" style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button>
+ <button type="reset" onclick="location.href='/select_product_followup/{{lead_id.pk}}'" style="background-color: #FC6E20;"
+         class="btn btn-primary">Add Product</button>
+
+                        </div>
+                                                         <div class="row col-md-2">
+ <button type="reset" onclick="location.href='/followup_delete_product/{{lead_id.pk}}'" style="background-color: #FC6E20;"
+         class="btn btn-primary">Delete Product</button>
 
                         </div>
                             <div class="row col-md-2">
@@ -1207,7 +1210,10 @@ function myFunction_call() {
 
               </div>
                           </div>
+
+
 <br>
+
 <br>
 
                         <div class="row col-md-12" style="margin-left:4%">
@@ -1583,7 +1589,7 @@ function whosFunction() {
         </div>
         <div class="modal-body">
 
-               <form method="POST">{% csrf_token %}
+               <form method="POST" >{% csrf_token %}
         <div class="row" >
 
             <table>
@@ -1595,6 +1601,7 @@ function whosFunction() {
                     <td style="border: 1px solid gray;">Category</td>
                     <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Sub Category</td>
                     <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Sub Sub Category</td>
+                    <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Godown</td>
 
                 </tr>
 
@@ -1606,7 +1613,17 @@ function whosFunction() {
                 <td style="border-radius: 0px 0px 0px 0px; border: 1px solid gray;">{{lead.product_id.scale_type}}</td>
                 <td style="border: 1px solid gray;">{{lead.product_id.main_category}}</td>
                 <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{lead.product_id.sub_category}}</td>
-                <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{lead.product_id.sub_sub_category}}</td></tr>
+                <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{lead.product_id.sub_sub_category}}</td>
+                  <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">
+                    <select required name="selected_dodown">
+                        <option value="">Select Godown</option>
+                        {% for item in work_area_godowns %}
+                        <option value="{{item.pk}}">{{item.name_of_godown}}</option>
+                        {% endfor %}
+                    </select>
+
+                </td>
+                </tr>
                 {% endfor %}
 
             </table>
