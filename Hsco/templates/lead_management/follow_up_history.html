@@ -217,149 +217,76 @@ td {
                 </div>
 
   <div class="row">
-  {% for item in obj_list %}
 
-
-     <script>
+    <table>
+        <tr style="background-color: gray; color: white;">
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sr. No.</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Time</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Mode</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Medium of Selection</td>
+            <td colspan="5" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Whatsapp Number</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Whatsapp Message</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Email Subject</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Email Message</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">SMS Content</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Call Response</td>
+        </tr>
+    {% for item in obj_list %}
+          <script>
     $(function(){
       $("#includedContent{{forloop.counter}}").load('/media/{{item.file}}');
     });
     </script>
 
 
-
-
  {% ifchanged item.entry_timedate_time.date %}
-
-           <div class="col-xl-12 col-lg-12">
-
-    <table>
         <tr style="background-color: gray; color: white;">
-            <td style=" border: 0px solid gray;"> {{ item.entry_timedate_time.date }}</td>
+            <td colspan="14" style=" border: 1px solid white;"> {{ item.entry_timedate_time.date }}</td>
         </tr>
 
+            {% endifchanged %}
+
+
+        <tr>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"> {{forloop.counter}}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"> {{ item.entry_timedate_time.time }}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"> {{form4.email_auto_manual}}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"> {% if item.is_email %} Email {% endif %} {% if item.is_whatsapp %}| Whatsapp {% endif %} {% if item.is_call %}| Call {% endif %} {% if item.is_sms %}| SMS {% endif %}</td>
+            <td colspan="5" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"> {{ item.wa_no }}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{ item.wa_msg }}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{ item.email_subject }}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{ item.email_msg }}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{ item.sms_msg }}{{item.sms_con}}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{ item.call_response }}</td>
+
+        </tr>
+        <tr >
+            <td colspan="12" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                <div id="includedContent{{forloop.counter}}"></div>
+            </td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+            {% if not item.is_manual_mode %}
+            <span style="float:right;margin:10px;" class="alert alert-danger">Auto Follow-Up</span>
+            {% endif %}
+            </td>
+            {% if not item.is_auto_follow_deleted and not item.is_manual_mode %}
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+
+                    <form action="" method='POST'>{% csrf_token %}
+                        <input type="hidden" name="delete_id" value="{{item.pk}}">
+                        <button type="submit" name="sub1" class="btn btn-primary">Cancel</button>
+                    </form>
+
+            </td>
+            {% endif %}
+        </tr>
+{% endfor %}
     </table>
 
         </div>
 
 
- {% else %}
 
-            {% endifchanged %}
-
-        <div class="col-xl-12 col-lg-12">
-
-                <div class="card-body" id="myDIV4" style="height: auto;">
-
-
-  <div class="card shadow" >
-                      {% if not item.is_manual_mode %}
-<span style="float:right;margin:10px;" class="alert alert-danger">Auto Follow-Up</span>
-           {% endif %}
-      <br>
-
-
-                        <div class="row col-md-12" style="margin-left:4%">
-
-                              <br>
-
-<div class="col-md-6" id="my123">
-    <label class="col-md-12 control-label">Whatsapp Number :  {{ item.wa_no }}</label>
-
-                                <label class="col-md-12 control-label" style="float:left;">Whatsapp Content :  {{ item.wa_msg }}</label>
-
-
-
-</div>
-
-<div class="col-md-6" id="myemail" >
-
-                         <label class="col-md-12 control-label">Email Subject: {{ item.email_subject }}</label>
-
-                           <label class="col-md-12 control-label">Email Message: {{ item.email_msg }}</label>
-
-
-                        <br>
-</div>
-    </div>
-
-
-
-<div class="row col-md-12" style="margin-left:4%">
-        <div class="col-md-6" id="mycall_follow_up" >
-       <label class="col-md-4 control-label">Call Response: {{ item.call_response }}</label>
-<br>
-
-        </div>
-
-                <div class="col-md-6" id="mysms" >
-                           <label class="col-md-12 control-label">SMS Content: {{ item.sms_msg }}{{item.sms_con}}</label>
-<br>
-
-                        </div>
-  </div>
-
-<div class="row col-md-12" style="margin-left:4%">
-    <div class="col-md-12" id="mymedium" >
-                            <label class="col-md-2 control-label">Medium of Selection:</label>
-    {% if item.is_email %}
-    <label class="form-check-label">Email</label>&nbsp &nbsp &nbsp &nbsp
-
-    {% endif %}
-
-    <div class="col-xl-2 col-lg-2"></div>
-        {% if item.is_whatsapp %}
-    <label class="form-check-label">Whatsapp</label>&nbsp &nbsp&nbsp&nbsp
-      {% endif %}
-    <div class="col-xl-2 col-lg-2"></div>
-        {% if item.is_call %}
-    <label class="form-check-label">Call</label>&nbsp &nbsp &nbsp &nbsp
-      {% endif %}
-    <div class="col-xl-2 col-lg-2"></div>
-        {% if item.is_sms %}
-    <label class="form-check-label">SMS</label>
-      {% endif %}
-</div>
-</div>
-<br>
-      <center>
-          {{ item.entry_timedate_time.time }}
-      </center>
-<center>
-      {{form4.email_auto_manual}}
-</center>
-
-
-    <div id="includedContent{{forloop.counter}}"></div>
-
-
-           {% if not item.is_auto_follow_deleted and not item.is_manual_mode %}
-           <center>
-               <br>
-
-                            <form action="" method='POST' enctype="multipart/form-data" >{% csrf_token %}
-                        <input type="hidden" name="delete_id" value="{{item.pk}}">
-               <button type="submit" name="sub1" class="btn btn-primary">Cancel</button>
-                                        </form>
-                   <br>
-           </center>
-
-           {% endif %}
-
-
-
-
-
-                    </div>
-
-
-
-                          </div>
-
-            </div>
-
-
-    {% endfor %}
 
 
    </div>
@@ -369,7 +296,7 @@ td {
 </div>
   </div>
   <!-- End of Page Wrapper -->
-  </div>
+
 
 
   <!-- Scroll to Top Button-->

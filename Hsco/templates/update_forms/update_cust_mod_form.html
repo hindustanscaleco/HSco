@@ -514,6 +514,8 @@ function myFunction() {
         <br>
         <br>
         <button style="background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
+<br>
+        <a href="{{request.session.lead_url}}">Back To Lead Module</a>
         {% endif %}
 
           {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None  %}

@@ -145,6 +145,8 @@ def notification_context(request):
         postponed_alert = Lead.objects.filter(postpond_time_date=datetime.date.today(),owner_of_opportunity__id=request.user.pk)
         # next_date = datetime.date.today() + timedelta(days=1)
 
+
+
         critical_limit_notif = GodownProduct.objects.filter(critical_limit__gte=F('quantity'),godown_id__goddown_assign_to=request.user)
         request_admin_list = GoodsRequest.objects.filter(Q(request_admin=True) & Q(req_from_godown__godown_admin__id=request.user.id)) | \
                              GoodsRequest.objects.filter(Q(request_admin=True) & Q(request_admin_id__id=request.user.id))
@@ -153,7 +155,7 @@ def notification_context(request):
             (~Q(sent_quantity=F('received_quantity'))|~Q(sent_carton_count=F('received_carton_count')))& Q(godown_id__godown_admin=request.user)
         )
 
-        if postponed_alert.count() > 1:
+        if postponed_alert.count() > 0:
             post_alert = True
         else:
             post_alert = False
