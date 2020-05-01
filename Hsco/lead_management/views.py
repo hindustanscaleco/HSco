@@ -1252,6 +1252,7 @@ def update_view_lead(request,id):
                 history = Pi_History()
                 lead_id = Lead.objects.get(id=id)
                 todays_date = str(datetime.now().strftime("%Y-%m-%d"))
+                history.medium_of_selection = 'Email'
                 pi_id = Pi_section.objects.get(lead_id=id)
 
                 pi_products = Pi_product.objects.filter(lead_id=id)
@@ -1423,19 +1424,20 @@ def update_view_lead(request,id):
                 history.medium_of_selection = 'Call'
                 history.call_detail = call
                 history.save()
-            if email == 'True':
+            try:
+                upload_pi_file = Pi_History.objects.filter(lead_id=id).latest('pk').file
+                if email == 'True':
+                    if upload_pi_file == None:
+                        upload_pi_file = upload_pi_file
+                    elif upload_pi_file != None:
+                        print("not none")
 
-                if upload_pi_file == None:
-                    upload_pi_file = Pi_History.objects.filter(lead_id=id).latest('pk').file
-                elif upload_pi_file != None:
-                    print("not none")
-
-                try:
                     history = Pi_History()
 
                     history.file = upload_pi_file
                     history.lead_id = Lead.objects.get(id=id)
                     history.log_entered_by = request.user.profile_name
+                    history.medium_of_selection = 'Email'
                     history.save()
 
                     email_send = EmailMessage('PI - HSCo ',
@@ -1446,8 +1448,8 @@ def update_view_lead(request,id):
 
                     email_send.send()
 
-                except Exception as pi_file_error:
-                    print(pi_file_error)
+            except Exception as pi_file_error:
+                print(pi_file_error)
 
             text_content = ''' <html><body>
                 <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Hindustan Scale Company<u></u><u></u></span><br>

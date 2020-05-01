@@ -301,6 +301,7 @@ class Pi_sectionForm(forms.ModelForm):
                  'type': 'text',
                  'placeholder': "Select GST Type",
                  'class': 'form-control',
+                 'id': 'select_gst_type_id',
              }
              ))
 
@@ -402,6 +403,7 @@ class Pi_sectionForm(forms.ModelForm):
                                                  'type': 'text',
                                                  'placeholder':'External PI Amount',
                                                  'class': 'form-control',
+                                                 'id': 'grand_total_id',
                                              }
                                          ))
 

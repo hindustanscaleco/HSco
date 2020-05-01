@@ -731,10 +731,17 @@ tr:nth-child(even) {
                      <form  name="PIForm" method='POST'  action="" enctype="multipart/form-data" >{% csrf_token %}
 
                          <div class="row">
-
-                         <div class="card shadow col-md-6">
+                        {% if pi_id.upload_pi_file != None %}
+                             <div style="display:None;" id="div_Internal" class="card shadow col-md-6">
                         <br>
-                         <center>System Generated PI</center>
+                             <div class="row">
+                                 <div class="col-xl-9">
+                                    <center>System Generated PI</center>
+                                 </div>
+                                 <div class="col-xl-3">
+                                    <button onclick="show_external()" type="button"class="btn btn-primary">External PI</button>
+                                 </div>
+                             </div>
 
  <hr>
    <div class="form-group row">
@@ -759,18 +766,38 @@ tr:nth-child(even) {
                           </div>
 
 
+                          </div>
+
+{% if pi_id.first_submit == True  %}
+                                                  <div class="form-group row">
+                                <label class="col-md-4 control-label">Select PI Template </label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.select_pi_template }}
+                                                              </div>
+                          </div>
+
 
                           </div>
-                         <center>
-                 <button type="button" onclick="document.getElementById('primaryButton').click()" name="secondaryButton"  style="background-color: #FC6E20;" class="btn btn-primary">Save</button>
-</center>
+                             {% endif %}
+                         <!--<center>-->
+                 <!--<button type="button" onclick="document.getElementById('primaryButton').click()" name="secondaryButton"  style="background-color: #FC6E20;" class="btn btn-primary">Save</button>-->
+<!--</center>-->
 
 
                              <center>Note: For PI Preview Uncheck Email and click on submit button</center>
                          </div>
-                                <div class="card shadow col-md-6">
+                                <div style="display:block;" id="div_External" class="card shadow col-md-6">
 <br>
-                         <center>External PI</center>
+                                    <div class="row">
+                                 <div class="col-xl-8">
+                                    <center>External PI</center>
+                                 </div>
+                                 <div class="col-xl-4">
+                                    <button onclick="show_internal()" type="button" class="btn btn-primary">System Generated PI</button>
+                                 </div>
+                             </div>
 
  <hr>
 
@@ -801,7 +828,104 @@ tr:nth-child(even) {
                             </div>
 
                          </div>
+                             {% else %}
+                         <div style="display:block;" id="div_Internal" class="card shadow col-md-6">
+                        <br>
+                             <div class="row">
+                                 <div class="col-xl-9">
+                                    <center>System Generated PI</center>
+                                 </div>
+                                 <div class="col-xl-3">
+                                    <button onclick="show_external()" type="button"class="btn btn-primary">External PI</button>
+                                 </div>
+                             </div>
 
+ <hr>
+   <div class="form-group row">
+                              <label class="col-md-4 control-label">Discount:</label>
+
+                                  <div class="col-md-7 inputGroupContainer">
+                                  <div class="input-group">
+                                  <span class="input-group-addon icon-border"></span>
+                                {{ form3.discount }}
+                                {{ form3.discount_type }}
+
+                          </div>
+                        </div>
+   </div>
+                                <div class="form-group row">
+                                                                           <label class="col-md-4 control-label">Select GST Type :</label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.select_gst_type }}
+                                                              </div>
+                          </div>
+
+
+                          </div>
+
+{% if pi_id.first_submit == True  %}
+                                                  <div class="form-group row">
+                                <label class="col-md-4 control-label">Select PI Template </label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.select_pi_template }}
+                                                              </div>
+                          </div>
+
+
+                          </div>
+                             {% endif %}
+                         <!--<center>-->
+                 <!--<button type="button" onclick="document.getElementById('primaryButton').click()" name="secondaryButton"  style="background-color: #FC6E20;" class="btn btn-primary">Save</button>-->
+<!--</center>-->
+
+
+                             <center>Note: For PI Preview Uncheck Email and click on submit button</center>
+                         </div>
+                                <div style="display:None;" id="div_External" class="card shadow col-md-6">
+<br>
+                                    <div class="row">
+                                 <div class="col-xl-8">
+                                    <center>External PI</center>
+                                 </div>
+                                 <div class="col-xl-4">
+                                    <button onclick="show_internal()" type="button" class="btn btn-primary">System Generated PI</button>
+                                 </div>
+                             </div>
+
+ <hr>
+
+
+                            <div class="form-group row">
+                                <label class="col-md-4 control-label">Upload PI File:</label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.upload_pi_file }}
+                                  {% if pi_id.upload_pi_file %}
+                                  <a href="{{ pi_id.upload_pi_file.url }}" class="btn btn-primary">Old File</a>
+                                  {% endif %}
+                            </div>
+                             </div>
+                            </div>
+
+                                <div class="form-group row">
+
+                                                                         <label class="col-md-4 control-label">Amount:</label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.grand_total }}
+                                                              </div>
+                          </div>
+
+                            </div>
+
+                         </div>
+                        {% endif %}
                          </div>
 
 
@@ -838,19 +962,7 @@ function myFunction_call() {
 
 </script>
 <br>
-                         {% if pi_id.first_submit == True  %}
-                                                  <div class="form-group row">
-                                <label class="col-md-4 control-label">Select PI Template </label>
-                              <div class="col-md-7 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
-                                {{ form3.select_pi_template }}
-                                                              </div>
-                          </div>
 
-
-                          </div>
-                             {% endif %}
                          <br>
 <div class="row">
                                                          <label class="col-md-2 control-label">Medium of Selection:</label>
@@ -868,7 +980,9 @@ function myFunction_call() {
 
                              <!--<button type="submit" onclick="download_pdf()" class="btn btn-primary" style="background-color: #FC6E20;">PDF</button>-->
                              {% if pi_id.first_submit == True  %}
+                             {% if pi_id.grand_total != 0.0  %}
                              <button type="submit" onclick="download_image()" class="btn btn-primary" style="background-color: #FC6E20;">Image</button>
+                             {% endif %}
                              <a target="_blank" href="https://api.whatsapp.com/send?phone=91{{customer_id.contact_no}}&text=Hey, here is the PI"><button type="button" class="btn btn-primary" style="background-color: #FC6E20;">Whatsapp</button></a>
                              {% endif %}
 
@@ -1665,8 +1779,54 @@ function whosFunction() {
   </a>
 
 
+<script>
+function show_external() {
+  var x = document.getElementById("div_External");
+  var y = document.getElementById("div_Internal");
+  if (x.style.display == "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
 
+  if (y.style.display == "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
+  $('#select_gst_type_id').removeAttr('required', '');
+  $('#grand_total_id').attr('required', '');
+}
+ function show_internal() {
+  var x = document.getElementById("div_Internal");
+  var y = document.getElementById("div_External");
+  if (x.style.display == "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
 
+  if (y.style.display == "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
+  $('#select_gst_type_id').attr('required', '');
+  $('#grand_total_id').removeAttr('required', '');
+}
+</script>
+                         <script>
+function myFunction_call() {
+  var x = document.getElementById("myDiv_call");
+  if (x.style.display == "none") {
+    x.style.display = "block";
+     $('#call').attr('required', '');
+
+  } else {
+    x.style.display = "none";
+   $('#call').removeAttr('required');
+  }
+}
   <!-- Logout Modal-->
   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -1687,7 +1847,8 @@ function whosFunction() {
   </div>
   </div>
     <!-- Bootstrap core JavaScript-->
-  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/jquery.min.js' %}">
+</script>
   <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
 
   <!-- Core plugin JavaScript-->
