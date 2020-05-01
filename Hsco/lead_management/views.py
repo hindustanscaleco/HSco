@@ -1423,7 +1423,12 @@ def update_view_lead(request,id):
                 history.medium_of_selection = 'Call'
                 history.call_detail = call
                 history.save()
-            if upload_pi_file != None and email == 'True':
+            if email == 'True':
+
+                if upload_pi_file == None:
+                    upload_pi_file = Pi_History.objects.filter(lead_id=id).latest('pk').file
+                elif upload_pi_file != None:
+                    print("not none")
 
                 try:
                     history = Pi_History()
