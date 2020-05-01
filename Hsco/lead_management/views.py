@@ -996,12 +996,12 @@ def update_view_lead(request,id):
 
                 product_id = Product.objects.get(scale_type=item.product_id.scale_type,main_category=item.product_id.main_category,
                                                  sub_category=item.product_id.sub_category,sub_sub_category=item.product_id.sub_sub_category).id
-                if (GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown_ids[list_count]).id,product_id=product_id).quantity > item.quantity):
+                if (GodownProduct.objects.get(godown_id=Godown.objects.get(id=godown_ids[list_count]).id,product_id=product_id).quantity > item.quantity):
                     is_sufficient_stock = True
                 else:
                     context22 = {
                         'error': "Insufficient Stock in Godown: " + Godown.objects.get(
-                            id=godown_ids[list_count]).godown_name + " Please Select Different Godown And Try Again",
+                            id=godown_ids[list_count]).name_of_godown + " Please Select Different Godown And Try Again",
                         'error_exist': True,
                     }
                     context.update(context22)
@@ -1138,7 +1138,8 @@ def update_view_lead(request,id):
                     request.session['lead_url'] = '/update_view_lead/'+str(id)
 
                     Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
-                    Lead.objects.filter(id=id).update(is_entered_purchase=True)
+                    Lead.objects.filter(id=id).update(is_entered_purchase=True,current_stage='Dispatch Done - Closed')
+
 
                     if True:
                         Purchase_Details.objects.filter(id=id).update(is_last_product=True)
