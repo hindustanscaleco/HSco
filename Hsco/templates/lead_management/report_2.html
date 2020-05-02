@@ -109,12 +109,12 @@ color:;
                      <div class="form-group row">
 
 
-<label class="col-md-2 control-label">Select All</label>
+<label class="col-md-2 control-label" id="label">Select All</label>
 
     <div class="col-md-4 inputGroupContainer">
    <div class="custom-control custom-checkbox">
   <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_name" id="customCheck01">
-  <label class="custom-control-label" for="customCheck01"></label>
+  <label class="custom-control-label" id="customCheck01" for="customCheck01"></label>
 </div>
   </div>
 </div>
@@ -631,7 +631,30 @@ function change( el )
     else
         el.value = "+";
 }
+
+
+
+        $("#customCheck01").change(function () {
+            $(".custom-control-input").prop('checked', $(this).prop("checked"));
+        });
+
+        $(".custom-control-input").change(function () {
+            if($(this).prop("checked")==false){
+            $("#customCheck01").prop("checked",false)
+            }
+
+            if($(".custom-control-input:checked").length == $(".custom-control-input").length){
+            $("#customCheck01").prop("checked",true)
+            }
+
+        });
+
+
+
   </script>
+
+
+
 
 
 
