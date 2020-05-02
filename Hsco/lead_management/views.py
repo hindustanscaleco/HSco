@@ -1267,11 +1267,12 @@ def update_view_lead(request,id):
                 file_pdf = ContentFile(html)
                 # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
 
-                history.file.save('PI.html', file_pdf, save=False)
+                history.pi_history_file.save('PI.html', file_pdf, save=False)
                 history.lead_id = Lead.objects.get(id=id)
                 history.log_entered_by = request.user.profile_name
                 history.medium_of_selection = 'Email'
                 history.call_detail = ''
+
                 history.save()
                 try:
                     del request.session['email']
@@ -1434,7 +1435,7 @@ def update_view_lead(request,id):
 
                     history = Pi_History()
 
-                    history.file = upload_pi_file
+                    history.pi_history_file = upload_pi_file
                     history.lead_id = Lead.objects.get(id=id)
                     history.log_entered_by = request.user.profile_name
                     history.medium_of_selection = 'Email'
@@ -1716,6 +1717,7 @@ def update_view_lead(request,id):
 
                 history_follow= History_followup()
                 history_follow.follow_up_section=Follow_up_section.objects.get(id=hfu.id)
+                history_follow.lead_id = Lead.objects.get(id=id)
 
 
                 selected_fields2 = selected_fields.replace("'", "").strip('][').split(', ')  # convert string to list
@@ -1862,7 +1864,7 @@ td {
     </body>
     </html>'''
                     file = ContentFile(html_content)
-                    history_follow.file.save('AutoFollowup.html', file, save=False)
+                    history_follow.followup_history_file.save('AutoFollowup.html', file, save=False)
                     history_follow.html_content = html_content
 
                     send_html_mail(email_subject, html_content, settings.EMAIL_HOST_USER, [customer_id.customer_email_id, ])
@@ -1952,6 +1954,7 @@ td {
 
                     history_follow = History_followup()
                     history_follow.follow_up_section = Follow_up_section.objects.get(id=hfu.id)
+                    history_follow.lead_id = Lead.objects.get(id=id)
 
                     selected_fields2 = selected_fields.replace("'", "").strip('][').split(
                         ', ')  # convert string to list
@@ -2089,7 +2092,7 @@ td {
                         </html>'''
 
                         file = ContentFile(html_content)
-                        history_follow.file.save('AutoFollowup.html', file, save=False)
+                        history_follow.followup_history_file.save('AutoFollowup.html', file, save=False)
                         history_follow.html_content= html_content
 
 
@@ -2161,6 +2164,16 @@ def lead_report(request):
     return render(request,'lead_management/report_lead.html')
 
 def report_2(request):
+    try:
+        del request.session['start_date']
+        del request.session['end_date']
+        del request.session['string_cust_detail']
+        del request.session['string_deal_detail']
+        del request.session['string_pi_history']
+        del request.session['string_follow_up']
+        del request.session['string_pay_detail']
+    except:
+        pass
     if request.method =='POST' :
         cust_detail = request.POST.getlist('cust_detail[]')
         deal_detail = request.POST.getlist('deal_detail[]')
@@ -2183,33 +2196,12 @@ def report_2(request):
         request.session['string_follow_up'] = string_follow_up
         request.session['string_pay_detail'] = string_pay_detail
 
-        if 'submit1' in request.POST:
-            table_name = 'Customer Details Section'
-            request.session['table_name'] = table_name
-        elif 'submit2' in request.POST:
-            table_name = 'Deal Details Section'
-            request.session['table_name'] = table_name
-        elif 'submit3' in request.POST:
-            table_name = 'PI Section'
-            request.session['table_name'] = table_name
-        elif 'submit4' in request.POST:
-            table_name = 'Follow-up Section'
-            request.session['table_name'] = table_name
-        elif 'submit5' in request.POST:
-            table_name = 'Payment Details Form'
-            request.session['table_name'] = table_name
         return redirect('/final_lead_report/')
     return render(request,'lead_management/report_2.html')
 
 def final_lead_report(request):
-    table_name = request.session.get('table_name')
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
-    print(start_date)
-    print(start_date)
-    print(start_date)
-    print(end_date)
-    print(end_date)
     string_cust_detail = request.session.get('string_cust_detail')
     string_deal_detail = request.session.get('string_deal_detail')
     string_pi_history = request.session.get('string_pi_history')
@@ -2217,23 +2209,21 @@ def final_lead_report(request):
     string_pay_detail = request.session.get('string_pay_detail')
     final_row_product = []
     final_row=[]
-    print(string_cust_detail)
-    print(string_cust_detail)
-    print(string_deal_detail)
-    print(string_deal_detail)
+    if string_pi_history != '':
+        string_pi_history = 'pi_history_file, time, call_detail, medium_of_selection'
+    if string_follow_up != '':
+        string_follow_up = 'wa_no, wa_msg, email_subject, email_msg, followup_history_file, sms_msg, call_response'
     with connection.cursor() as cursor:
+        if string_cust_detail != '' and string_deal_detail != '' and string_pi_history != '' and string_follow_up != '' and string_pay_detail != '':
 
-        if string_cust_detail != '' or string_deal_detail != '' or string_pi_history != '' or string_follow_up != '' or string_pay_detail != '':
-            # "," + string_deal_detail + "," + string_pi_history + "," + string_follow_up + "," + string_pay_detail) +
+            cursor.execute("SELECT " + (
+            string_cust_detail + "," + string_deal_detail+ "," + string_pi_history+ "," + string_follow_up+ "," + string_pay_detail) +
+            " from customer_app_customer_details , lead_management_lead  , lead_management_pi_history  ,"
+            " lead_management_history_followup  , lead_management_payment_details  where lead_management_pi_history.lead_id_id = lead_management_lead.id "
+            " and lead_management_history_followup.lead_id_id = lead_management_lead.id and lead_management_payment_details.lead_id_id = lead_management_lead.id and lead_management_lead.customer_id_id = customer_app_customer_details.id and "
+            " lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
 
-            cursor.execute("SELECT " + string_cust_detail + " from customer_app_customer_details CUSTOMER union "
-                        "SELECT " + string_deal_detail + " from lead_management_lead where  "
-                        " entry_timedate between '" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
-            print(row)
-            print(row)
-            print(row)
-            print(row)
             final_row_product = [list(x) for x in row]
             repairing_data = []
             for i in row:
@@ -2243,10 +2233,62 @@ def final_lead_report(request):
             repairing_data = []
             for i in row:
                 repairing_data.append(list(i))
-            print(repairing_data)
-            print(repairing_data)
-            print(repairing_data)
-            print(repairing_data)
+        elif  string_deal_detail != '' and string_cust_detail != '' and string_pi_history != '' and string_follow_up != '':
+            cursor.execute("SELECT " +(string_cust_detail + ","+ string_deal_detail+ ","+ string_pi_history+ "," + string_follow_up )+ " from  "
+            "lead_management_lead , customer_app_customer_details, lead_management_pi_history PI , lead_management_history_followup FOLLOWUP "
+            "  where lead_management_lead.customer_id_id = customer_app_customer_details.id and PI.lead_id_id = lead_management_lead.id "
+            "and FOLLOWUP.lead_id_id = lead_management_lead.id and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+            row = cursor.fetchall()
+            final_row_product = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+
+            final_row = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+        elif  string_deal_detail != '' and string_cust_detail != '' and string_pi_history != '':
+            cursor.execute("SELECT " +(string_cust_detail + ","+ string_deal_detail+ ","+ string_pi_history )+ " from  lead_management_lead  , customer_app_customer_details, lead_management_pi_history  "
+            "  where lead_management_lead.customer_id_id = customer_app_customer_details.id and lead_management_pi_history.lead_id_id = lead_management_lead.id "
+            "and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+            row = cursor.fetchall()
+            final_row_product = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+
+            final_row = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+        elif  string_deal_detail != '' and string_cust_detail != '':
+            cursor.execute("SELECT " +(string_cust_detail + ","+ string_deal_detail )+ " from  lead_management_lead  , customer_app_customer_details  "
+                                "  where lead_management_lead.customer_id_id = customer_app_customer_details.id and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+            row = cursor.fetchall()
+            final_row_product = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+
+            final_row = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+        elif  string_deal_detail != '' :
+
+            cursor.execute("SELECT " + string_deal_detail + " from  lead_management_lead "
+                                "  where lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+            row = cursor.fetchall()
+            final_row_product = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
+
+            final_row = [list(x) for x in row]
+            repairing_data = []
+            for i in row:
+                repairing_data.append(list(i))
 
     # if table_name == 'Customer Details Section':
     #     # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
@@ -2381,6 +2423,16 @@ def final_lead_report(request):
     #         del request.session['selected_list']
     #     except:
     #         pass
+    try:
+        del request.session['start_date']
+        del request.session['end_date']
+        del request.session['string_cust_detail']
+        del request.session['string_deal_detail']
+        del request.session['string_pi_history']
+        del request.session['string_follow_up']
+        del request.session['string_pay_detail']
+    except:
+        pass
 
     context={
         'final_row':final_row,

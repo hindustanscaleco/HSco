@@ -92,7 +92,7 @@ class Pi_product(models.Model):
 
 class Pi_History(models.Model):
     from datetime import datetime
-    file = models.FileField(null=True,blank=True, upload_to='pi_history_file/')
+    pi_history_file = models.FileField(null=True,blank=True, upload_to='pi_history_file/')
     lead_id = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, blank=True)
     # pi_product_id = models.ForeignKey(Pi_product, on_delete=models.CASCADE, null=True, blank=True)
     # entry_timedate = models.DateTimeField(default=timezone.now, )
@@ -129,6 +129,7 @@ class Follow_up_section(models.Model):
 
 class History_followup(models.Model):
     follow_up_section = models.ForeignKey(Follow_up_section,on_delete=models.CASCADE,null=True,blank=True)
+    lead_id = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, blank=True)
     fields = models.TextField(null=True, blank=True)
     product_ids = models.CharField(max_length=100)
     is_email = models.BooleanField(default=False)
@@ -144,7 +145,7 @@ class History_followup(models.Model):
     sms_con = models.TextField()
     is_manual_mode = models.BooleanField(default=True)
     is_auto_follow_deleted = models.BooleanField(default=False)
-    file = models.FileField(null=True, blank=True, upload_to='followup_history_file/')
+    followup_history_file = models.FileField(null=True, blank=True, upload_to='followup_history_file/')
     html_content = models.TextField(null=True, blank=True)
     entry_timedate_time = models.DateTimeField(default=timezone.now,)
     entry_timedate = models.DateField(default=datetime.date.today)
