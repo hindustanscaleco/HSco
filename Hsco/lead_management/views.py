@@ -52,15 +52,25 @@ def lead_home(request):
     error = None
     error_exist = False
     context={}
+    admin = SiteUser.objects.get(id=request.user.pk).admin
 
-    if request.user.role == 'Super Admin':  # For ADMIN
+    if request.user.role == 'Super Admin':  # For SUPER ADMIN
         lead_list = Lead.objects.all().order_by('-id')
         paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
         page = request.GET.get('page')
         lead_list = paginator.get_page(page)
-    else:
-        admin = SiteUser.objects.get(id=request.user.pk).admin
-        lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).order_by('-id')
+    elif request.user.role == 'Admin':  # For ADMIN
+        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(owner_of_opportunity__admin__icontains=request.user.profile_name)).order_by('-id')
+        paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+        page = request.GET.get('page')
+        lead_list = paginator.get_page(page)
+    elif request.user.role == 'Manager':  # For ADMIN
+        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(owner_of_opportunity__manager__icontains=request.user.profile_name)).order_by('-id')
+        paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
+        page = request.GET.get('page')
+        lead_list = paginator.get_page(page)
+    elif request.user.role == 'Employee':
+        lead_list = Lead.objects.filter(Q(owner_of_opportunity=request.user.profile_name)).order_by('-id')
         paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
         page = request.GET.get('page')
         lead_list = paginator.get_page(page)
@@ -721,6 +731,8 @@ def lead_home(request):
 
 def add_lead(request):
     users = SiteUser.objects.filter(modules_assigned='Lead Module',)
+    under_admin_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',admin__icontains=request.user.profile_name)
+    under_manager_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',manager__icontains=request.user.profile_name)
     if Lead.objects.all().count() == 0:
         latest_lead_id = 1
     else:
@@ -819,13 +831,18 @@ def add_lead(request):
         'latest_lead_id':latest_lead_id,
         'cust_sugg':cust_sugg,
         'users':users,
+        'under_admin_users':under_admin_users,
+        'under_manager_users':under_manager_users,
     }
     return render(request, 'lead_management/add_lead.html',context)
 
 def update_view_lead(request,id):
     lead_id = Lead.objects.get(id=id)
-    users = SiteUser.objects.all()
-
+    users = SiteUser.objects.filter(modules_assigned='Lead Module',)
+    under_admin_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',
+                                                admin__icontains=request.user.profile_name)
+    under_manager_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',
+                                                  manager__icontains=request.user.profile_name)
 
     lead_pi_products = Pi_product.objects.filter(lead_id=id)
     hfu = Follow_up_section.objects.filter(lead_id=id).last()
@@ -904,6 +921,8 @@ def update_view_lead(request,id):
 
     work_area_godowns = Godown.objects.filter(godown_admin__name=request.user.admin)
     context = {
+        'under_admin_users': under_admin_users,
+        'under_manager_users': under_manager_users,
         'form': form,
         'form2': form2,
         'form3': form3,
@@ -1720,9 +1739,15 @@ def update_view_lead(request,id):
                 history_follow= History_followup()
                 history_follow.follow_up_section=Follow_up_section.objects.get(id=hfu.id)
                 history_follow.lead_id = Lead.objects.get(id=id)
-
-
+                print(selected_fields)
+                print(selected_fields)
+                print(selected_fields)
+                print(selected_fields)
                 selected_fields2 = selected_fields.replace("'", "").strip('][').split(', ')  # convert string to list
+                print('fields 2')
+                print(selected_fields2)
+                print(selected_fields2)
+                print(selected_fields2)
                 history_follow.fields = selected_fields2
                 history_follow.product_ids = selected_products
 
@@ -2183,7 +2208,7 @@ def report_2(request):
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         string_cust_detail = ','.join(cust_detail)
-        string_deal_detail = '","'.join(deal_detail)
+        string_deal_detail = ','.join(deal_detail)
         string_pi_history = ','.join(pi_history)
         string_follow_up = ','.join(follow_up)
         string_pay_detail = ','.join(pay_detail)
@@ -2191,10 +2216,15 @@ def report_2(request):
         request.session['start_date'] = start_date
         request.session['end_date'] = end_date
         request.session['string_cust_detail'] = string_cust_detail
+        request.session['string_cust_detail_list'] = cust_detail
         request.session['string_deal_detail'] = string_deal_detail
+        request.session['string_deal_detail_list'] = deal_detail
         request.session['string_pi_history'] = string_pi_history
+        request.session['string_pi_history_list'] = pi_history
         request.session['string_follow_up'] = string_follow_up
+        request.session['string_follow_up_list'] = follow_up
         request.session['string_pay_detail'] = string_pay_detail
+        request.session['string_pay_detail_list'] = pay_detail
 
         return redirect('/final_lead_report/')
     return render(request,'lead_management/report_2.html')
@@ -2203,18 +2233,27 @@ def final_lead_report(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
     string_cust_detail = request.session.get('string_cust_detail')
+    string_cust_detail_list = request.session.get('string_cust_detail_list')
     string_deal_detail = request.session.get('string_deal_detail')
+    string_deal_detail_list = request.session.get('string_deal_detail_list')
     string_pi_history = request.session.get('string_pi_history')
+    string_pi_history_list = ['pi_history_file', 'time', 'call_detail', 'medium_of_selection']
     string_follow_up = request.session.get('string_follow_up')
+    string_follow_up_list = ['wa_no', 'wa_msg', 'email_subject', 'email_msg', 'followup_history_file', 'sms_msg', 'call_response']
     string_pay_detail = request.session.get('string_pay_detail')
+    string_pay_detail_list = request.session.get('string_pay_detail_list')
     final_row_product = []
     final_row=[]
+    selected_list=[]
+
     if string_pi_history != '':
         string_pi_history = 'pi_history_file, time, call_detail, medium_of_selection'
     if string_follow_up != '':
         string_follow_up = 'wa_no, wa_msg, email_subject, email_msg, followup_history_file, sms_msg, call_response'
     with connection.cursor() as cursor:
         if string_cust_detail != '' and string_deal_detail != '' and string_pi_history != '' and string_follow_up != '' and string_pay_detail != '':
+
+            selected_list = string_cust_detail_list + string_deal_detail_list + string_pi_history_list + string_follow_up_list + string_pay_detail_list
 
             cursor.execute("SELECT " + (
             string_cust_detail + "," + string_deal_detail+ "," + string_pi_history+ "," + string_follow_up+ "," + string_pay_detail) +
@@ -2234,6 +2273,8 @@ def final_lead_report(request):
             for i in row:
                 repairing_data.append(list(i))
         elif  string_deal_detail != '' and string_cust_detail != '' and string_pi_history != '' and string_follow_up != '':
+            selected_list =  string_cust_detail_list + string_deal_detail_list + string_pi_history_list + string_follow_up_list
+
             cursor.execute("SELECT " +(string_cust_detail + ","+ string_deal_detail+ ","+ string_pi_history+ "," + string_follow_up )+ " from  "
             "lead_management_lead , customer_app_customer_details, lead_management_pi_history PI , lead_management_history_followup FOLLOWUP "
             "  where lead_management_lead.customer_id_id = customer_app_customer_details.id and PI.lead_id_id = lead_management_lead.id "
@@ -2249,6 +2290,8 @@ def final_lead_report(request):
             for i in row:
                 repairing_data.append(list(i))
         elif  string_deal_detail != '' and string_cust_detail != '' and string_pi_history != '':
+            selected_list =string_cust_detail_list +string_deal_detail_list +   string_pi_history_list
+
             cursor.execute("SELECT " +(string_cust_detail + ","+ string_deal_detail+ ","+ string_pi_history )+ " from  lead_management_lead  , customer_app_customer_details, lead_management_pi_history  "
             "  where lead_management_lead.customer_id_id = customer_app_customer_details.id and lead_management_pi_history.lead_id_id = lead_management_lead.id "
             "and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
@@ -2263,6 +2306,8 @@ def final_lead_report(request):
             for i in row:
                 repairing_data.append(list(i))
         elif  string_deal_detail != '' and string_cust_detail != '':
+            selected_list =  string_cust_detail_list + string_deal_detail_list
+
             cursor.execute("SELECT " +(string_cust_detail + ","+ string_deal_detail )+ " from  lead_management_lead  , customer_app_customer_details  "
                                 "  where lead_management_lead.customer_id_id = customer_app_customer_details.id and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
@@ -2276,13 +2321,8 @@ def final_lead_report(request):
             for i in row:
                 repairing_data.append(list(i))
         elif  string_deal_detail != '' :
-            string_deal_detail = '"'+string_deal_detail+ '"'
+            selected_list = string_deal_detail_list
 
-            deal_details = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(string_deal_detail)
-            print(deal_details)
-            print(deal_details)
-            print(deal_details)
-            print(deal_details)
             cursor.execute("SELECT " + string_deal_detail + " from  lead_management_lead "
                                 "  where lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
@@ -2429,6 +2469,7 @@ def final_lead_report(request):
     #         del request.session['selected_list']
     #     except:
     #         pass
+
     try:
         del request.session['start_date']
         del request.session['end_date']
@@ -2439,10 +2480,10 @@ def final_lead_report(request):
         del request.session['string_pay_detail']
     except:
         pass
-
     context={
         'final_row':final_row,
         'final_row_product':final_row_product,
+        'selected_list':selected_list,
     }
     return render(request,"report/final_lead_report.html",context)
 
@@ -2635,16 +2676,19 @@ def lead_follow_up_histroy(request,follow_up_id):
     return render(request,'lead_management/follow_up_history.html',context)
 
 def pi_section_history(request,id):
-    lead_id = Lead.objects.get(id=id)
-    # lead_pi_id = Pi_section.objects.get(lead_id=id)
-    lead_pi_history = Pi_History.objects.filter(lead_id=id).order_by('-id')
-    del_all_sessions(request)
+    try:
+        lead_id = Lead.objects.get(id=id)
+        # lead_pi_id = Pi_section.objects.get(lead_id=id)
+        lead_pi_history = Pi_History.objects.filter(lead_id=id).order_by('-id')
+        del_all_sessions(request)
 
-    request.session['expand_pi_section'] = True
-    context = {
-        'lead_id': lead_id,
-        'lead_pi_history': lead_pi_history,
-    }
+        request.session['expand_pi_section'] = True
+        context = {
+            'lead_id': lead_id,
+            'lead_pi_history': lead_pi_history,
+        }
+    except:
+        pass
     return render(request,'lead_management/lead_history.html',context)
 
 def lead_delete_product(request,id):
