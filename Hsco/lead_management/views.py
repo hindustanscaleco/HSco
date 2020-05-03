@@ -988,15 +988,48 @@ def update_view_lead(request,id):
         if 'send_submit' in request.POST :
             delete_id = request.POST.getlist('check[]')
             godown_ids = request.POST.getlist('selected_dodown')
-            is_sufficient_stock = False
+
 
             pi_pro = Pi_product.objects.filter(pk__in=delete_id)
-            list_count = 0
+            list_count = 0;
             for item in pi_pro:
 
-                product_id = Product.objects.get(scale_type=item.product_id.scale_type,main_category=item.product_id.main_category,
-                                                 sub_category=item.product_id.sub_category,sub_sub_category=item.product_id.sub_sub_category).id
-                if (GodownProduct.objects.get(godown_id=Godown.objects.get(id=godown_ids[list_count]).id,product_id=product_id).quantity > item.quantity):
+                product_id = Product.objects.filter(scale_type=item.product_id.scale_type,main_category=item.product_id.main_category,
+                                                 sub_category=item.product_id.sub_category,sub_sub_category=item.product_id.sub_sub_category)
+                if product_id.count()>0:
+                    for item2 in product_id:
+                        product_id = item2
+                else:
+                    context22 = {
+                        'error': "Product Having Scale Type:"+item.product_id.scale_type.name+"Main Category:"+item.product_id.main_category.name+" Sub Category:"+item.product_id.sub_category.name+"Sub Sub Category:"+item.product_id.sub_sub_category.name+" Does Not Exist In Product Database",
+                        'error_exist': True,
+                    }
+                    context.update(context22)
+                    try:
+                        del request.session['context_sess']
+                    except:
+                        pass
+                    request.session['context_sess'] = context22
+                    return redirect('/update_view_lead/' + str(id))
+                godown = Godown.objects.get(id=godown_ids[list_count])
+                godown_product_exist = GodownProduct.objects.filter(godown_id=godown.id,product_id=product_id.id)
+                if (godown_product_exist.count()>0):
+                    for item in godown_product_exist:
+                        quantity = item.quantity
+                else:
+                    context22 = {
+                        'error': "Product Having Sub Category:"+product_id.sub_category.name+" and Sub Sub Category:"+product_id.sub_sub_category.name+" Does Not Exist in Godown:"+godown.name_of_godown,
+                        'error_exist': True,
+                    }
+                    context.update(context22)
+                    try:
+                        del request.session['context_sess']
+                    except:
+                        pass
+                    request.session['context_sess'] = context22
+                    return redirect('/update_view_lead/' + str(id))
+
+                if (quantity > item.quantity):
                     is_sufficient_stock = True
                 else:
                     context22 = {
