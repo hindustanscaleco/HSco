@@ -234,7 +234,7 @@ td {
     {% for item in obj_list %}
           <script>
     $(function(){
-      $("#includedContent{{forloop.counter}}").load('/media/{{item.file}}');
+      $("#includedContent{{forloop.counter}}").load('/media/{{item.followup_history_file}}');
     });
     </script>
 

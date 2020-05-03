@@ -566,10 +566,10 @@ td {
                         <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"> {{history.medium_of_selection|default:''}}</td>
                         <td colspan="5" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"> {{history.call_detail|default:''}}</td>
             <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                {% if history.file %}
+                {% if history.pi_history_file %}
                 <!--<button onclick="myFunction()">Try it</button>-->
 
-                                  <a href="{{ history.file.url }}" class="btn btn-primary">File</a>
+                                  <a href="{{ history.pi_history_file.url }}" class="btn btn-primary">File</a>
                                    {% endif %}</td>
             <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{history.entry_timedate}}</td>
             <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{history.time}}</td>
