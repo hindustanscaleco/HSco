@@ -64,12 +64,12 @@ def lead_home(request):
         paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
         page = request.GET.get('page')
         lead_list = paginator.get_page(page)
-    elif request.user.role == 'Manager':  # For ADMIN
+    elif request.user.role == 'Manager':  # For manager
         lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(owner_of_opportunity__manager__icontains=request.user.profile_name)).order_by('-id')
         paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
         page = request.GET.get('page')
         lead_list = paginator.get_page(page)
-    elif request.user.role == 'Employee':
+    elif request.user.role == 'Employee': #for employee
         lead_list = Lead.objects.filter(Q(owner_of_opportunity=request.user.profile_name)).order_by('-id')
         paginator = Paginator(lead_list, 15)  # Show 25 contacts per page
         page = request.GET.get('page')
@@ -89,88 +89,300 @@ def lead_home(request):
     context.update(context23)
     if request.user.role == 'Super Admin':
         total_stages = Lead.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
-    else:
-        admin = SiteUser.objects.get(id=request.user.pk).admin
-        total_stages = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).values('current_stage').annotate(dcount=Count('current_stage'))
+    elif request.user.role == 'Admin':  # For ADMIN
+        total_stages = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name) |  Q(owner_of_opportunity__admin__icontains=request.user.profile_name)).values('current_stage').annotate(dcount=Count('current_stage'))
+    elif request.user.role == 'Manager':  # For manager
+        total_stages = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(owner_of_opportunity__manager__icontains=request.user.profile_name)).values('current_stage').annotate(dcount=Count('current_stage'))
+
+    elif request.user.role == 'Employee': #for employee
+        total_stages = Lead.objects.filter(Q(owner_of_opportunity=request.user.profile_name)).values('current_stage').annotate(dcount=Count('current_stage'))
+
     admin = SiteUser.objects.get(id=request.user.pk).admin
     # lead = Pi_section.objects.filter(lead_id=Lead.objects.filter(Q(owner_of_opportunity__admin=admin)))
 
+    superadmin_pi = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done'))
+    admin_pi = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')|
+      Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name) )
+    manager_pi = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')|
+      Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))
+    employee_pi = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')|
+      Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) )
+    if request.user.role == 'Super Admin':
+        po_no_payment = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        po_no_payment_total = 0.0
+        try:
+            for x in po_no_payment:
+                po_no_payment_total += float(x['data_sum'])
+        except:
+            pass
 
-    po_no_payment = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment not done',
-                                               lead_id__owner_of_opportunity__admin=admin).values(
-        'grand_total').annotate(data_sum=Sum('grand_total'))
-    po_no_payment_total = 0.0
-    try:
-        for x in po_no_payment:
-            po_no_payment_total += float(x['data_sum'])
-    except:
-        pass
+        po_payment_done = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending')).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        po_payment_done_total = 0.0
+        try:
+            for x in po_payment_done:
+                po_payment_done_total += float(x['data_sum'])
+        except:
+            pass
 
-    po_payment_done = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
-                                               lead_id__owner_of_opportunity__admin=admin).values(
-        'grand_total').annotate(data_sum=Sum('grand_total'))
-    po_payment_done_total = 0.0
-    try:
-        for x in po_payment_done:
-            po_payment_done_total += float(x['data_sum'])
-    except:
-        pass
+        dispatch_done_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Dispatch Done - Closed')).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        dispatch_done_stage_total = 0.0
+        try:
+            for x in dispatch_done_stage:
+                dispatch_done_stage_total += float(x['data_sum'])
+        except:
+            pass
+        lost_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Lost')).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        lost_stage_total = 0.0
+        try:
+            for x in lost_stage:
+                lost_stage_total += float(x['data_sum'])
+        except:
+            pass
+        not_relevant_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Not Relevant')).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        not_relevant_stage_total = 0.0
+        try:
+            for x in not_relevant_stage:
+                not_relevant_stage_total += float(x['data_sum'])
+        except:
+            pass
+        postponed_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Postponed')).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        postponed_stage_total = 0.0
+        try:
+            for x in postponed_stage:
+                postponed_stage_total += float(x['data_sum'])
+        except:
+            pass
+        pi_sent_stage = Pi_section.objects.filter(Q(lead_id__current_stage='PI Sent & Follow-up')).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        pi_sent_stage_total = 0.0
+        try:
+            for x in pi_sent_stage:
+                pi_sent_stage_total += float(x['data_sum'])
+        except:
+            pass
+        context13={
+            'po_no_payment_total': po_no_payment_total,
+            'lost_stage_total': lost_stage_total,
+            'po_payment_done_total': po_payment_done_total,
+            'dispatch_done_stage_total': dispatch_done_stage_total,
+            'not_relevant_stage_total': not_relevant_stage_total,
+            'postponed_stage_total': postponed_stage_total,
+            'pi_sent_stage_total': pi_sent_stage_total,
+        }
+        context.update(context13)
+    elif request.user.role == 'Admin':
+        po_no_payment = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        po_no_payment_total = 0.0
+        try:
+            for x in po_no_payment:
+                po_no_payment_total += float(x['data_sum'])
+        except:
+            pass
 
-    dispatch_done_stage = Pi_section.objects.filter(lead_id__current_stage='Dispatch Done - Closed',
-                                               lead_id__owner_of_opportunity__admin=admin).values(
-        'grand_total').annotate(data_sum=Sum('grand_total'))
-    dispatch_done_stage_total = 0.0
-    try:
-        for x in dispatch_done_stage:
-            dispatch_done_stage_total += float(x['data_sum'])
-    except:
-        pass
-    lost_stage = Pi_section.objects.filter(lead_id__current_stage='Lost',
-                                               lead_id__owner_of_opportunity__admin=admin).values(
-        'grand_total').annotate(data_sum=Sum('grand_total'))
-    lost_stage_total = 0.0
-    try:
-        for x in lost_stage:
-            lost_stage_total += float(x['data_sum'])
-    except:
-        pass
-    not_relevant_stage = Pi_section.objects.filter(lead_id__current_stage='Not Relevant',
-                                               lead_id__owner_of_opportunity__admin=admin).values(
-        'grand_total').annotate(data_sum=Sum('grand_total'))
-    not_relevant_stage_total = 0.0
-    try:
-        for x in not_relevant_stage:
-            not_relevant_stage_total += float(x['data_sum'])
-    except:
-        pass
-    postponed_stage = Pi_section.objects.filter(lead_id__current_stage='Postponed',
-                                               lead_id__owner_of_opportunity__admin=admin).values(
-        'grand_total').annotate(data_sum=Sum('grand_total'))
-    postponed_stage_total = 0.0
-    try:
-        for x in postponed_stage:
-            postponed_stage_total += float(x['data_sum'])
-    except:
-        pass
-    pi_sent_stage = Pi_section.objects.filter(lead_id__current_stage='PI Sent & Follow-up',
-                                               lead_id__owner_of_opportunity__admin=admin).values(
-        'grand_total').annotate(data_sum=Sum('grand_total'))
-    pi_sent_stage_total = 0.0
-    try:
-        for x in pi_sent_stage:
-            pi_sent_stage_total += float(x['data_sum'])
-    except:
-        pass
-    context13={
-        'po_no_payment_total': po_no_payment_total,
-        'lost_stage_total': lost_stage_total,
-        'po_payment_done_total': po_payment_done_total,
-        'dispatch_done_stage_total': dispatch_done_stage_total,
-        'not_relevant_stage_total': not_relevant_stage_total,
-        'postponed_stage_total': postponed_stage_total,
-        'pi_sent_stage_total': pi_sent_stage_total,
-    }
-    context.update(context13)
+        po_payment_done = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        po_payment_done_total = 0.0
+        try:
+            for x in po_payment_done:
+                po_payment_done_total += float(x['data_sum'])
+        except:
+            pass
+
+        dispatch_done_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Dispatch Done - Closed')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        dispatch_done_stage_total = 0.0
+        try:
+            for x in dispatch_done_stage:
+                dispatch_done_stage_total += float(x['data_sum'])
+        except:
+            pass
+        lost_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Lost')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        lost_stage_total = 0.0
+        try:
+            for x in lost_stage:
+                lost_stage_total += float(x['data_sum'])
+        except:
+            pass
+        not_relevant_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Not Relevant')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        not_relevant_stage_total = 0.0
+        try:
+            for x in not_relevant_stage:
+                not_relevant_stage_total += float(x['data_sum'])
+        except:
+            pass
+        postponed_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Postponed')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        postponed_stage_total = 0.0
+        try:
+            for x in postponed_stage:
+                postponed_stage_total += float(x['data_sum'])
+        except:
+            pass
+        pi_sent_stage = Pi_section.objects.filter(Q(lead_id__current_stage='PI Sent & Follow-up')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        pi_sent_stage_total = 0.0
+        try:
+            for x in pi_sent_stage:
+                pi_sent_stage_total += float(x['data_sum'])
+        except:
+            pass
+        context13={
+            'po_no_payment_total': po_no_payment_total,
+            'lost_stage_total': lost_stage_total,
+            'po_payment_done_total': po_payment_done_total,
+            'dispatch_done_stage_total': dispatch_done_stage_total,
+            'not_relevant_stage_total': not_relevant_stage_total,
+            'postponed_stage_total': postponed_stage_total,
+            'pi_sent_stage_total': pi_sent_stage_total,
+        }
+        context.update(context13)
+    elif request.user.role == 'Manager':
+        po_no_payment = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        po_no_payment_total = 0.0
+        try:
+            for x in po_no_payment:
+                po_no_payment_total += float(x['data_sum'])
+        except:
+            pass
+
+        po_payment_done = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        po_payment_done_total = 0.0
+        try:
+            for x in po_payment_done:
+                po_payment_done_total += float(x['data_sum'])
+        except:
+            pass
+
+        dispatch_done_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Dispatch Done - Closed')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        dispatch_done_stage_total = 0.0
+        try:
+            for x in dispatch_done_stage:
+                dispatch_done_stage_total += float(x['data_sum'])
+        except:
+            pass
+        lost_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Lost')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        lost_stage_total = 0.0
+        try:
+            for x in lost_stage:
+                lost_stage_total += float(x['data_sum'])
+        except:
+            pass
+        not_relevant_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Not Relevant')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        not_relevant_stage_total = 0.0
+        try:
+            for x in not_relevant_stage:
+                not_relevant_stage_total += float(x['data_sum'])
+        except:
+            pass
+        postponed_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Postponed')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        postponed_stage_total = 0.0
+        try:
+            for x in postponed_stage:
+                postponed_stage_total += float(x['data_sum'])
+        except:
+            pass
+        pi_sent_stage = Pi_section.objects.filter(Q(lead_id__current_stage='PI Sent & Follow-up')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        pi_sent_stage_total = 0.0
+        try:
+            for x in pi_sent_stage:
+                pi_sent_stage_total += float(x['data_sum'])
+        except:
+            pass
+        context13={
+            'po_no_payment_total': po_no_payment_total,
+            'lost_stage_total': lost_stage_total,
+            'po_payment_done_total': po_payment_done_total,
+            'dispatch_done_stage_total': dispatch_done_stage_total,
+            'not_relevant_stage_total': not_relevant_stage_total,
+            'postponed_stage_total': postponed_stage_total,
+            'pi_sent_stage_total': pi_sent_stage_total,
+        }
+        context.update(context13)
+    elif request.user.role == 'Employee':
+        po_no_payment = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')&Q(owner_of_opportunity=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        po_no_payment_total = 0.0
+        try:
+            for x in po_no_payment:
+                po_no_payment_total += float(x['data_sum'])
+        except:
+            pass
+
+        po_payment_done = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending')&Q(owner_of_opportunity=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        po_payment_done_total = 0.0
+        try:
+            for x in po_payment_done:
+                po_payment_done_total += float(x['data_sum'])
+        except:
+            pass
+
+        dispatch_done_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Dispatch Done - Closed')&Q(owner_of_opportunity=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        dispatch_done_stage_total = 0.0
+        try:
+            for x in dispatch_done_stage:
+                dispatch_done_stage_total += float(x['data_sum'])
+        except:
+            pass
+        lost_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Lost')&Q(owner_of_opportunity=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        lost_stage_total = 0.0
+        try:
+            for x in lost_stage:
+                lost_stage_total += float(x['data_sum'])
+        except:
+            pass
+        not_relevant_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Not Relevant')&Q(owner_of_opportunity=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        not_relevant_stage_total = 0.0
+        try:
+            for x in not_relevant_stage:
+                not_relevant_stage_total += float(x['data_sum'])
+        except:
+            pass
+        postponed_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Postponed')&Q(owner_of_opportunity=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        postponed_stage_total = 0.0
+        try:
+            for x in postponed_stage:
+                postponed_stage_total += float(x['data_sum'])
+        except:
+            pass
+        pi_sent_stage = Pi_section.objects.filter(Q(lead_id__current_stage='PI Sent & Follow-up')&Q(owner_of_opportunity=request.user.profile_name)).values(
+            'grand_total').annotate(data_sum=Sum('grand_total'))
+        pi_sent_stage_total = 0.0
+        try:
+            for x in pi_sent_stage:
+                pi_sent_stage_total += float(x['data_sum'])
+        except:
+            pass
+        context13={
+            'po_no_payment_total': po_no_payment_total,
+            'lost_stage_total': lost_stage_total,
+            'po_payment_done_total': po_payment_done_total,
+            'dispatch_done_stage_total': dispatch_done_stage_total,
+            'not_relevant_stage_total': not_relevant_stage_total,
+            'postponed_stage_total': postponed_stage_total,
+            'pi_sent_stage_total': pi_sent_stage_total,
+        }
+        context.update(context13)
 
     for i in total_stages:
         x = i
