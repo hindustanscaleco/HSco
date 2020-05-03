@@ -1299,14 +1299,16 @@ def update_view_lead(request,id):
                 html = template.render(context22)
                 file_pdf = ContentFile(html)
                 # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
-
+                print('checking')
                 history.pi_history_file.save('PI.html', file_pdf, save=False)
+                print('file_done')
                 history.lead_id = Lead.objects.get(id=id)
                 history.log_entered_by = request.user.profile_name
                 history.medium_of_selection = 'Email'
                 history.call_detail = ''
-
+                print('noting saved')
                 history.save()
+                print('saved file')
                 try:
                     del request.session['email']
                 except:
@@ -1459,8 +1461,8 @@ def update_view_lead(request,id):
                 history.call_detail = call
                 history.save()
             try:
-                upload_pi_file = Pi_History.objects.filter(lead_id=id).latest('pk').file
-                if email == 'True':
+                upload_pi_file = Pi_History.objects.filter(lead_id=id).latest('pk').pi_history_file
+                if email == 'True' and upload_pi_file != None and upload_pi_file != '':
                     if upload_pi_file == None:
                         upload_pi_file = upload_pi_file
                     elif upload_pi_file != None:
@@ -1478,7 +1480,7 @@ def update_view_lead(request,id):
                                               'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
                                               settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
 
-                    email_send.attach_file(history.file.path)
+                    email_send.attach_file(history.pi_history_file.path)
 
                     email_send.send()
 
@@ -2128,8 +2130,6 @@ td {
                         history_follow.followup_history_file.save('AutoFollowup.html', file, save=False)
                         history_follow.html_content= html_content
 
-
-
                     if(is_sms=='on' or is_sms=='is_sms'):
                         sms_msg = request.POST.get('sms_msg')
                         history_follow.is_sms = True
@@ -2216,7 +2216,7 @@ def report_2(request):
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         string_cust_detail = ','.join(cust_detail)
-        string_deal_detail = ','.join(deal_detail)
+        string_deal_detail = '","'.join(deal_detail)
         string_pi_history = ','.join(pi_history)
         string_follow_up = ','.join(follow_up)
         string_pay_detail = ','.join(pay_detail)
@@ -2309,7 +2309,13 @@ def final_lead_report(request):
             for i in row:
                 repairing_data.append(list(i))
         elif  string_deal_detail != '' :
+            string_deal_detail = '"'+string_deal_detail+ '"'
 
+            deal_details = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(string_deal_detail)
+            print(deal_details)
+            print(deal_details)
+            print(deal_details)
+            print(deal_details)
             cursor.execute("SELECT " + string_deal_detail + " from  lead_management_lead "
                                 "  where lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
