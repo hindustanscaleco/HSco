@@ -365,16 +365,40 @@ Format : (company name)
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-<input type="text" required name="owner_of_opportunity" placeholder="Channel" disabled class="form-control"  list="channel101">
+<input type="text" required name="owner_of_opportunity" placeholder="Owner"  class="form-control"  list="channel101">
     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
       <datalist style="height:20px;" id="channel101">
-          {% for user in users %}
-      <option value="{{user.profile_name}}">{{user.profile_name}}</option>
-        {% endfor %}
+      <option value="{{request.user.profile_name}}">{{request.user.profile_name}}</option>
     </datalist>
                             </div>
                              </div>
-                    {% else %}
+                        {% elif request.user.role == 'Admin' %}
+                                <label class="col-md-2 control-label">Owner of Opportunity: *</label>
+                              <div class="col-md-5 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+<input type="text" required name="owner_of_opportunity" placeholder="Owner" class="form-control" value="{{user.profile_name}}" list="channel102">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="channel102">
+                    {% for user in under_admin_users %}
+      <option value="{{user.profile_name}}">{{user.profile_name}}</option>
+          {% endfor %}
+    </datalist>                            </div>
+                             </div>
+                        {% elif request.user.role == 'Manager' %}
+                                <label class="col-md-2 control-label">Owner of Opportunity: *</label>
+                              <div class="col-md-5 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+<input type="text" required name="owner_of_opportunity" placeholder="Owner" class="form-control" value="{{user.profile_name}}" list="channel102">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="channel102">
+                    {% for user in under_manager_users %}
+      <option value="{{user.profile_name}}">{{user.profile_name}}</option>
+          {% endfor %}
+    </datalist>                            </div>
+                             </div>
+                    {% elif request.user.role == 'Super Admin' %}
                                 <label class="col-md-2 control-label">Owner of Opportunity: *</label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
