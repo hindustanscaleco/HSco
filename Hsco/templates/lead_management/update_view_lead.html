@@ -755,7 +755,7 @@ tr:nth-child(even) {
                      <form  name="PIForm" method='POST'  action="" enctype="multipart/form-data" >{% csrf_token %}
 
                          <div class="row">
-                        {% if pi_id.upload_pi_file != None %}
+                        {% if pi_id.upload_pi_file != None and pi_id.upload_pi_file != '' %}
                              <div style="display:None;" id="div_Internal" class="card shadow col-md-6">
                         <br>
                              <div class="row">
