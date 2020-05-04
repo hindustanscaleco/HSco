@@ -1066,7 +1066,7 @@ def lead_home(request):
     return render(request,'lead_management/lead_home.html',context)
 
 def add_lead(request):
-    users = SiteUser.objects.filter(modules_assigned='Lead Module',)
+    users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',)
     under_admin_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',admin__icontains=request.user.profile_name)
     under_manager_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',manager__icontains=request.user.profile_name)
     if Lead.objects.all().count() == 0:
@@ -1174,7 +1174,7 @@ def add_lead(request):
 
 def update_view_lead(request,id):
     lead_id = Lead.objects.get(id=id)
-    users = SiteUser.objects.filter(modules_assigned='Lead Module',)
+    users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',)
     under_admin_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',
                                                 admin__icontains=request.user.profile_name)
     under_manager_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',
