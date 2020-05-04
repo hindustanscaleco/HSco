@@ -499,7 +499,7 @@ function myFunction() {
       <br>
     <center>
 
-{% if not purchase_id_id.dispatch_id_assigned %}
+{% if not purchase_id_id.dispatch_id_assigned and not purchase_id_id.is_quick_entry %}
         <button style="background-color: #FC6E20;" onclick="myFunction()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
 
                                           {% endif %}
@@ -518,7 +518,8 @@ function myFunction() {
         <a href="{{request.session.lead_url}}">Back To Lead Module</a>
         {% endif %}
 
-          {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None  %}
+          {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None and not purchase_id_id.is_quick_entry %}
+
         <button style="background-color: #FC6E20;" onclick="myFunction()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
                                   {% endif %}
 
@@ -532,19 +533,19 @@ function myFunction() {
 </fieldset>
 </form>
                       <center>
-                          {% if purchase_id_id.is_last_product %}
-                          {% else %}
-                                    {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None  %}
+              {% if purchase_id_id.is_last_product %}
+              {% else %}
+                {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None and not purchase_id_id.is_quick_entry %}
 
-                                    <a href="/add_product_details/{{purchase_id_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
+                <a href="/add_product_details/{{purchase_id_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
 
-                          {% endif %}
-                          {% endif %}
+              {% endif %}
+              {% endif %}
 
-                          {% if not purchase_id_id.dispatch_id_assigned %}
-                                                              <a href="/add_product_details/{{purchase_id_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
+              {% if not purchase_id_id.dispatch_id_assigned and not purchase_id_id.is_quick_entry %}
+                                                  <a href="/add_product_details/{{purchase_id_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
 
-                                                    {% endif %}
+                                        {% endif %}
 
             </center>
 <br>
@@ -609,13 +610,13 @@ tr:nth-child(even) {
 
           <br>
           <br><center>
-                            {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None  %}
+                            {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None and not purchase_id_id.is_quick_entry  %}
 
                   <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
 
                   {% endif %}
 
-                                            {% if not purchase_id_id.dispatch_id_assigned %}
+                                            {% if not purchase_id_id.dispatch_id_assigned and not purchase_id_id.is_quick_entry %}
                   <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
 
                   {% endif %}

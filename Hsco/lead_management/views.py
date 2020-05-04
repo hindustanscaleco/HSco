@@ -1397,6 +1397,19 @@ def update_view_lead(request,id):
 
             item2 = Lead.objects.get(id=id)
 
+            if (current_stage=='Dispatch Done - Closed'):
+                if(not item2.is_entered_purchase):
+                    context22 = {
+                        'error': 'Make Entry In Purchase Module And Try Again!!!',
+                        'error_exist': True,
+                    }
+                    context.update(context22)
+                    try:
+                        del request.session['context_sess']
+                    except:
+                        pass
+                    request.session['context_sess'] = context22
+                    return redirect('/update_view_lead/' + str(id))
 
             item2.current_stage = current_stage
             item2.new_existing_customer = new_existing_customer
