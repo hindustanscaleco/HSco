@@ -1801,9 +1801,6 @@ def load_users(request):
     sel_month = request.GET.get('sel_month')
     sel_year = request.GET.get('sel_year')
     sel_month_text = request.GET.get('sel_month_text')
-    print(sel_month)
-    print(sel_year)
-
 
     if selected=='true':
         if (sel_month == 0 or sel_month == 'true'):

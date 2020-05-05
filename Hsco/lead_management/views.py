@@ -1368,9 +1368,10 @@ def update_view_lead(request,id):
                     return redirect('/update_view_lead/' + str(id))
                 godown = Godown.objects.get(id=godown_ids[list_count])
                 godown_product_exist = GodownProduct.objects.filter(godown_id=godown.id,product_id=product_id.id)
+                quantity = 0.0
                 if (godown_product_exist.count()>0):
-                    for item in godown_product_exist:
-                        quantity = item.quantity
+                    for item2 in godown_product_exist:
+                        quantity = item2.quantity
                 else:
                     context22 = {
                         'error': "Product Having Sub Category:"+product_id.sub_category.name+" and Sub Sub Category:"+product_id.sub_sub_category.name+" Does Not Exist in Godown:"+godown.name_of_godown,
@@ -1383,7 +1384,8 @@ def update_view_lead(request,id):
                         pass
                     request.session['context_sess'] = context22
                     return redirect('/update_view_lead/' + str(id))
-
+                for item2 in godown_product_exist:
+                    quantity = item2.quantity
                 if (quantity > item.quantity):
                     is_sufficient_stock = True
                 else:

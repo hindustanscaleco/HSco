@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'Hsco.wsgi.application'
 
 DATABASES = {
  'default': {
-     'ENGINE': 'django.db.backends.mysql',
+    'ENGINE': 'django.db.backends.mysql',
     'NAME': 'hsco_db',
     'USER': 'root',
     'PASSWORD': '',
