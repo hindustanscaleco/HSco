@@ -287,6 +287,18 @@ myFunction225();
 
 {% endif %}
 
+      {% if request.session.context_sess.download_pdf_exist %}
+<script>
+
+
+pdf_download();
+
+
+</script>
+
+
+{% endif %}
+
                      <form action="" method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
 
@@ -751,7 +763,7 @@ tr:nth-child(even) {
                {% endfor %}
 
                          <br>
-                     <form  name="PIForm" method='POST'  action="" enctype="multipart/form-data" >{% csrf_token %}
+                     <form  name="PIForm" method='POST' enctype="multipart/form-data" >{% csrf_token %}
 
                          <div class="row">
                         {% if pi_id.upload_pi_file != None and pi_id.upload_pi_file != '' and pi_id.upload_pi_file != 'None' %}
@@ -844,7 +856,7 @@ tr:nth-child(even) {
                               <div class="col-md-7 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
-                                {{ form3.grand_total }}
+                                {{ form3.grand_total|default_if_none:"" }}
                                                               </div>
                           </div>
 
@@ -888,7 +900,6 @@ tr:nth-child(even) {
 
                           </div>
 
-{% if pi_id.first_submit == True  %}
                                                   <div class="form-group row">
                                 <label class="col-md-4 control-label">Select PI Template </label>
                               <div class="col-md-7 inputGroupContainer">
@@ -900,7 +911,6 @@ tr:nth-child(even) {
 
 
                           </div>
-                             {% endif %}
                          <!--<center>-->
                  <!--<button type="button" onclick="document.getElementById('primaryButton').click()" name="secondaryButton"  style="background-color: #FC6E20;" class="btn btn-primary">Save</button>-->
 <!--</center>-->
@@ -952,7 +962,6 @@ tr:nth-child(even) {
                          </div>
 
 
-{% if pi_id.first_submit == True  %}
 <div class="row">
 
                          <div class="card shadow col-md-6">
@@ -968,22 +977,7 @@ tr:nth-child(even) {
                              </div>
                           </div>
                          </div></div>
-                         <script>
-function myFunction_call() {
-  var x = document.getElementById("myDiv_call");
-  if (x.style.display == "none") {
-    x.style.display = "block";
-     $('#call').attr('required', '');
 
-  } else {
-    x.style.display = "none";
-   $('#call').removeAttr('required');
-  }
-}
-
-
-
-</script>
 <br>
 
                          <br>
@@ -995,11 +989,10 @@ function myFunction_call() {
     <div class="col-xl-2 col-lg-2"></div>
     <label class="form-check-label">Call : &nbsp;&nbsp; {{ form3.call2  }}</label>
 </div>
-{% endif %}
 
 
                          <center>
-     <button type="submit" name="submit2" id="primaryButton" onclick="pdf_download()" style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
+     <button type="submit" name="submit2" id="primaryButton"  style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
 
                              <!--<button type="submit" onclick="download_pdf()" class="btn btn-primary" style="background-color: #FC6E20;">PDF</button>-->
                              {% if pi_id.first_submit == True  %}
@@ -1977,21 +1970,21 @@ function change( el )
 
   <script type="text/javascript">
 
-function download_pdf(){
-    var popupwin1 = window.open('/download_pi_pdf/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
-    setTimeout(function() { popupwin1.close();}, 5000);
-  }
-
   function pdf_download(){
+   setTimeout(pdf_download2(), 5000);
+   }
+
+  function pdf_download2(){
   template_type = document.forms["PIForm"]["select_pi_template"].value;
       if (template_type == '1') {
-        var popupwin = window.open('/download_pi_pdf/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
-        setTimeout(function() { popupwin.close();}, 5000);
+
+        setTimeout(function() { var popupwin = window.open('/download_pi_pdf/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');}, 10000);
+        setTimeout(function() { popupwin.close();}, 10000);
 
     }
     else if (template_type == '2') {
         var popupwin = window.open('/download_pi_second_pdf/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
-        setTimeout(function() { popupwin.close();}, 5000);
+        setTimeout(function() { popupwin.close();}, 10000);
 
     }
 

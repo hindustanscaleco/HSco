@@ -251,7 +251,7 @@ td {
 <tr>
         <td>{{product.quantity}}</td>
         <td>{{product.product_id.hsn_code}}</td>
-        <td>{{product.product_id.product_desc}}</td>
+        <td>{{product.product_id.product_desc|default_if_none:""}}</td>
         <td>{{product.product_id.selling_price}}</td>
         <td>{{product.product_total_cost}}</td>
         </tr>
@@ -339,7 +339,7 @@ td {
         <td></td>
         <td></td>
         <td>Grand Total</td>
-        <td>{{pi_id.grand_total}} INR</td>
+        <td>{{pi_id.round_up_total}} INR</td>
         </tr>
         <tr>
           <td colspan="2" style="border: 0px solid black;"><p>GST ID - <b>27AACFH2329F1ZP</b><br>

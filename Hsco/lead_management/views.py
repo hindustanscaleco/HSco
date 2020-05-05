@@ -1314,6 +1314,7 @@ def update_view_lead(request,id):
             'select_gst_type': pi_id.select_gst_type,
             'discount_type': pi_id.discount_type,
             'first_submit': pi_id.first_submit,
+            'grand_total': '' if pi_id.grand_total == 0.0 else pi_id.grand_total,
         }
 
 
@@ -1629,50 +1630,46 @@ def update_view_lead(request,id):
                 request.session['context_sess'] = context22
                 return redirect('/update_view_lead/' + str(id))
 
-
         if 'file_pdf' in request.POST and (email == 'True' or email == True):
-            val = request.POST
             try:
-                email_send = EmailMessage('PI - HSCo ', 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
-                                          settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
-                email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
-                email_send.send()
+                del request.session['download_pdf_exist']
+            except:
+                pass
+            request.session['is_file_pdf'] = True
+            val = request.POST
+            email_send = EmailMessage('PI - HSCo ', 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
+                                      settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+            email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
+            email_send.send()
 
+            history = Pi_History()
+            lead_id = Lead.objects.get(id=id)
+            todays_date = str(datetime.now().strftime("%Y-%m-%d"))
+            history.medium_of_selection = 'Email'
+            pi_id = Pi_section.objects.get(lead_id=id)
 
-                history = Pi_History()
-                lead_id = Lead.objects.get(id=id)
-                todays_date = str(datetime.now().strftime("%Y-%m-%d"))
-                history.medium_of_selection = 'Email'
-                pi_id = Pi_section.objects.get(lead_id=id)
+            pi_products = Pi_product.objects.filter(lead_id=id)
+            context22 = {
+                'lead_id': lead_id,
+                'todays_date': todays_date,
+                'pi_id': pi_id,
+                'pi_products': pi_products,
+            }
+            template = get_template('lead_management/download_pi_pdf.html')
+            html = template.render(context22)
+            file_pdf = ContentFile(html)
+            # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
+            history.pi_history_file.save('PI.html', file_pdf, save=False)
+            history.lead_id = Lead.objects.get(id=id)
+            history.log_entered_by = request.user.profile_name
+            history.medium_of_selection = 'Email'
+            history.call_detail = ''
+            history.save()
+            try:
+                del request.session['email']
+            except:
+                pass
 
-                pi_products = Pi_product.objects.filter(lead_id=id)
-                context22 = {
-                    'lead_id': lead_id,
-                    'todays_date': todays_date,
-                    'pi_id': pi_id,
-                    'pi_products': pi_products,
-                }
-                template = get_template('lead_management/download_pi_pdf.html')
-                html = template.render(context22)
-                file_pdf = ContentFile(html)
-                # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
-                print('checking')
-                history.pi_history_file.save('PI.html', file_pdf, save=False)
-                print('file_done')
-                history.lead_id = Lead.objects.get(id=id)
-                history.log_entered_by = request.user.profile_name
-                history.medium_of_selection = 'Email'
-                history.call_detail = ''
-                print('noting saved')
-                history.save()
-                print('saved file')
-                try:
-                    del request.session['email']
-                except:
-                    pass
-            except Exception as e:
-                print("hhhhh")
-                print(e)
 
         if 'submit' in request.POST:
             customer_name = request.POST.get('customer_name')
@@ -1791,7 +1788,11 @@ def update_view_lead(request,id):
         elif 'submit2' in request.POST:
             del_all_sessions(request)
             request.session['expand_pi_section'] = True
-
+            try:
+                del request.session['download_pdf_exist']
+            except:
+                pass
+            request.session['download_pdf_exist'] = True
 
             #for pi section
             discount = request.POST.get('discount')
@@ -1877,7 +1878,6 @@ def update_view_lead(request,id):
         </div> </body></html>'''
 
 
-
             if Pi_section.objects.filter(lead_id=id).count() > 0:
 
                 item2 = Pi_section.objects.filter(lead_id=id).first()
@@ -1915,15 +1915,15 @@ def update_view_lead(request,id):
                         igst = (18.0 * net_total) / 100.0
                         item2.igst = igst
                         item2.round_up_total = round(net_total + pf_total + igst)
-                        item2.grand_total = item2.round_up_total
-                    elif discount_type == 'rupee' and discount != '' and discount != 0 and total_cost != '':
+                        item2.grand_total = round(net_total + pf_total + igst)
+                    elif discount_type == 'rupee' and discount != '' and total_cost != '':
                         net_total = float(total_cost) - float(discount)
                         item2.net_total = net_total
                         item2.cgst_sgst = (9.0 * net_total)/100.0
                         igst = (18.0 * item2.net_total)/100.0
                         item2.igst = igst
                         item2.round_up_total = round(item2.net_total + pf_total + igst)
-                        item2.grand_total = item2.round_up_total
+                        item2.grand_total = round(item2.net_total + pf_total + igst)
                 except:
                     print("product not added or debugging needed")
 
@@ -1933,7 +1933,8 @@ def update_view_lead(request,id):
                                           'round_up_total','grand_total','total_cost','notes','pf_total',
                                         'email', 'whatsapp','call2','select_gst_type','discount_type','log_entered_by','first_submit','grand_total'  ])
 
-                return redirect('/update_view_lead/'+str(lead_id.id))
+
+
             else :
 
                 item2 = Pi_section()
@@ -1958,7 +1959,6 @@ def update_view_lead(request,id):
                         total_cost += x['product_total_cost']
                     item2.total_cost = total_cost
 
-
                     product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
                     pf_total = 0.0
                     for x in product_pf:
@@ -1966,7 +1966,8 @@ def update_view_lead(request,id):
 
                     item2.pf_total = pf_total
                     if discount_type == 'percent' and discount != '' and discount != 0 and total_cost != '':
-                        total_discount = (float(total_cost) * float(discount))/100.0  #converting discount percentage to discount total
+                        total_discount = (float(total_cost) * float(
+                            discount)) / 100.0  # converting discount percentage to discount total
                         net_total = float(total_cost) - float(total_discount)
                         item2.net_total = net_total
                         item2.cgst_sgst = (9.0 * net_total) / 100.0
@@ -1977,8 +1978,8 @@ def update_view_lead(request,id):
                     elif discount_type == 'rupee' and discount != '' and total_cost != '':
                         net_total = float(total_cost) - float(discount)
                         item2.net_total = net_total
-                        item2.cgst_sgst = (9.0 * net_total)/100.0
-                        igst = (18.0 * item2.net_total)/100.0
+                        item2.cgst_sgst = (9.0 * net_total) / 100.0
+                        igst = (18.0 * item2.net_total) / 100.0
                         item2.igst = igst
                         item2.round_up_total = round(item2.net_total + pf_total + igst)
                         item2.grand_total = item2.round_up_total
@@ -1986,8 +1987,50 @@ def update_view_lead(request,id):
                     print("product not added or debugging needed")
 
                 item2.save()
-                # if whatsapp == 'True':
-                #     return redirect('https://api.whatsapp.com/send?phone=91' + customer_id.contact_no + '&text=' + 'hi')
+            is_file_pdf = request.session.get('is_file_pdf')
+            print(is_file_pdf)
+            print(is_file_pdf)
+            print(is_file_pdf)
+            if request.session['download_pdf_exist'] == True and (email == 'True' or email == True):
+
+                val = request.POST
+                email_send = EmailMessage('PI - HSCo ', 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
+                                          settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+                email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
+                email_send.send()
+
+                history = Pi_History()
+                lead_id = Lead.objects.get(id=id)
+                todays_date = str(datetime.now().strftime("%Y-%m-%d"))
+                history.medium_of_selection = 'Email'
+                pi_id = Pi_section.objects.get(lead_id=id)
+
+                pi_products = Pi_product.objects.filter(lead_id=id)
+                context22 = {
+                    'lead_id': lead_id,
+                    'todays_date': todays_date,
+                    'pi_id': pi_id,
+                    'pi_products': pi_products,
+                }
+                template = get_template('lead_management/download_pi_pdf.html')
+                html = template.render(context22)
+                file_pdf = ContentFile(html)
+                # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
+                history.pi_history_file.save('PI.html', file_pdf, save=False)
+                history.lead_id = Lead.objects.get(id=id)
+                history.log_entered_by = request.user.profile_name
+                history.medium_of_selection = 'Email'
+                history.call_detail = ''
+                history.save()
+                try:
+                    del request.session['email']
+                except:
+                    pass
+            try:
+                del request.session['is_file_pdf']
+            except:
+                pass
+
             return redirect('/update_view_lead/'+str(lead_id.id))
 
         elif 'submit3' in request.POST:
@@ -2123,15 +2166,7 @@ def update_view_lead(request,id):
                 history_follow= History_followup()
                 history_follow.follow_up_section=Follow_up_section.objects.get(id=hfu.id)
                 history_follow.lead_id = Lead.objects.get(id=id)
-                print(selected_fields)
-                print(selected_fields)
-                print(selected_fields)
-                print(selected_fields)
                 selected_fields2 = selected_fields.replace("'", "").strip('][').split(', ')  # convert string to list
-                print('fields 2')
-                print(selected_fields2)
-                print(selected_fields2)
-                print(selected_fields2)
                 history_follow.fields = selected_fields2
                 history_follow.product_ids = selected_products
 
