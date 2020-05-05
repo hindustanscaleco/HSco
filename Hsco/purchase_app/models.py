@@ -45,6 +45,7 @@ class Purchase_Details(models.Model):   #cleaned
     purchase_no = models.BigIntegerField(null=True,blank=True)
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
     tracker = FieldTracker()
+    is_quick_entry = models.BooleanField(default=False)
 
     def __int__(self):
         return self.id

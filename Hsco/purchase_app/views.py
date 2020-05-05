@@ -409,6 +409,190 @@ def add_purchase_details(request):
     return render(request,'forms/cust_mod_form.html',context)
 
 @login_required(login_url='/')
+def quick_purchase_entry(request):
+    global_count=0
+    try:
+        del request.session['global_count_sess']
+    except:
+        pass
+    request.session['global_count_sess'] = global_count
+    godowns = Godown.objects.filter(default_godown_purchase=False)
+    type_of_purchase_list = type_purchase.objects.all()  # 1
+    if request.method == 'POST':
+        quantity = float(request.POST.get('quantity'))
+        model_of_purchase = request.POST.get('model_of_purchase')
+        type_of_scale = request.POST.get('type_of_scale')
+        sub_model = request.POST.get('sub_model')
+        sub_sub_model = request.POST.get('sub_sub_model')
+        serial_no_scale = request.POST.get('serial_no_scale')
+        brand = request.POST.get('brand')
+        capacity = request.POST.get('capacity')
+        unit = request.POST.get('unit')
+        value_of_goods = request.POST.get('value_of_goods')
+        is_last_product_yes = request.POST.get('is_last_product_yes')
+        godown = request.POST.get('godown')
+        global_count = request.POST.get('global_count')
+        from datetime import datetime
+
+
+        item2 = Purchase_Details.objects.filter(sales_person=request.user.profile_name,date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
+        if item2.count()>0:
+
+            if value_of_goods == '' or value_of_goods == None:
+                value_of_goods = 0.0
+            item2.update(value_of_goods=F("value_of_goods") + value_of_goods)
+            item2 = Purchase_Details.objects.get(sales_person=request.user.profile_name,date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
+
+        else:
+            item2 = Purchase_Details()
+
+            cust_val =Customer_Details.objects.filter(customer_name = "Small Sale",contact_no = '0000000000')
+            if cust_val.count()>0:
+                item = Customer_Details.objects.get(customer_name = "Small Sale",contact_no = '0000000000')
+            else:
+                item = Customer_Details()
+                item.customer_name = "Small Sale"
+
+                item2.second_company_name = "Small Sale"  # new2
+                item.company_name = "Small Sale"
+
+                item.address = "Small Sale"
+                item2.company_address = "Small Sale"  # new2
+                item.contact_no = '0000000000'
+                item2.company_email = ''  # new2
+                item.customer_email_id = ''
+
+
+                item.save()
+            item2.crm_no = Customer_Details.objects.get(id=item.pk)
+
+            site_user_id = SiteUser.objects.get(profile_name=request.user.profile_name).pk
+            # item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            item2.new_repeat_purchase = 'New'
+            item2.second_person = "Small Sale"  # new1
+            # item2.third_person=third_person
+            item2.second_contact_no = "0000000000"  # new2
+
+            # item2.third_contact_no=third_contact_no
+            item2.date_of_purchase = datetime.today().strftime('%Y-%m-%d')
+            item2.product_purchase_date = datetime.today().strftime('%Y-%m-%d')
+            item2.sales_person = request.user.profile_name
+            item2.user_id = SiteUser.objects.get(id=site_user_id)
+            item2.bill_no = ''
+            item2.bill_address = ''
+            item2.shipping_address = ''
+            item2.upload_op_file = ''
+            item2.po_number = ''
+            item2.channel_of_sales = "Retail Through Physical Store"
+            item2.industry = "Small Sale"
+            if value_of_goods == '' or value_of_goods == None:
+                value_of_goods = 0.0
+            item2.value_of_goods = value_of_goods
+            item2.channel_of_dispatch = "Franchisee Store"
+            item2.notes = "Small Sale"
+            item2.feedback_form_filled = False
+            item2.is_quick_entry = True
+            # item2.user_id = SiteUser.objects.get(id=request.user.pk)
+            item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            item2.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no + 1
+            item2.log_entered_by = request.user.profile_name
+
+            item2.save()
+
+        if value_of_goods == '' or value_of_goods == None:
+            value_of_goods=0.0
+
+        item = Product_Details()
+
+        item.quantity = quantity
+
+        item.type_of_scale = type_of_scale
+        # if model_of_purchase != None and model_of_purchase != '':
+        item.model_of_purchase = model_of_purchase
+        item.sub_model = sub_model
+        item.sub_sub_model = sub_sub_model
+        item.serial_no_scale = serial_no_scale
+        item.brand = brand
+        item.capacity = capacity
+        item.unit = unit
+        item.amount = value_of_goods
+        item.purchase_id_id = item2.pk
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item.log_entered_by = request.user.name
+        item.godown_id = Godown.objects.get(id=godown)
+
+        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
+                                                 Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_date.objects.filter(user_id=item2.user_id,
+                                                  entry_date=datetime.now().date(),
+                                                  year=datetime.now().year).update(
+                total_sales_done_today=F("total_sales_done_today") + value_of_goods)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_date()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_sales_done_today = value_of_goods
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(user_id=site_user_id)).count() > 0:
+            Employee_Analysis_month.objects.filter(user_id=site_user_id,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done=F("total_sales_done") + value_of_goods)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_month()
+            ead.user_id = SiteUser.objects.get(id=site_user_id)
+            ead.total_sales_done = value_of_goods
+            # ead.total_dispatch_done = value_of_goods
+            ead.manager_id = SiteUser.objects.get(id=site_user_id).group
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
+        if sub_sub_model != '':
+            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                  sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+
+            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
+                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
+                        GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                        quantity=F("quantity") - quantity)
+
+
+        item.save()
+
+        if is_last_product_yes == 'yes':
+            try:
+                del request.session['global_count_sess']
+            except:
+                pass
+            return redirect('/view_customer_details/' )
+        elif is_last_product_yes == 'no':
+            try:
+                del request.session['global_count_sess']
+            except:
+                pass
+            request.session['global_count_sess'] = global_count
+            return redirect('/quick_purchase_entry/')
+    context={
+        'global_count':global_count,
+        'godowns': godowns,
+        'type_purchase': type_of_purchase_list,  # 2
+    }
+    return render(request, 'dashboardnew/add_product.html', context)
+
+
+
+@login_required(login_url='/')
 def view_customer_details(request):
     date_today= datetime.now().strftime('%Y-%m-%d')
     message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
@@ -1622,7 +1806,7 @@ def load_users(request):
 
 
     if selected=='true':
-        if (sel_month == 0):
+        if (sel_month == 0 or sel_month == 'true'):
             current_month = datetime.now().month
             current_year = datetime.now().year
             user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,
@@ -1630,7 +1814,7 @@ def load_users(request):
                                                                manager_id__icontains=request.user.name,
                                                                user_id__is_deleted=False,
                                                                user_id__modules_assigned__icontains='Customer Module')
-            if (user_list.count == 0):
+            if (user_list.count() == 0):
                 error_exist_225 = True
                 success_exist_225 = False
             else:
@@ -1650,6 +1834,7 @@ def load_users(request):
         else:
             current_month = sel_month
             current_year = sel_year
+
             user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,
                                                                entry_date__year=current_year,
                                                                manager_id__icontains=request.user.name,
