@@ -74,7 +74,7 @@ Repairing Licence No. LR/MH/H004</p>
              <center><p style="font-weight:bold; float:left;"> Date :</p>
         </center></div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> {{todays_date}}</p>
+             <center><p style="font-weight:bold; float:left;"> 2020-05-05</p>
                             </center></div>
                             </div>
 
@@ -84,12 +84,12 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;"> Company Name :</p>
                                 </center></div>
                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left; text-decoration: underline;"> {{lead_id.customer_id.company_name}}</p>
+                                     <center><p style="font-weight:bold; float:left; text-decoration: underline;"> Shree Dewasi Trading</p>
                                 </center></div>
 
                                 <div class="col-md-4">
                                 </div><div class="col-md-4">
-                                     <center><p style="font-weight:bold; float:left;">PI - XXXX{{lead_id.id}} - {{lead_id.customer_id.customer_name}} - {{lead_id.customer_id.company_name}}  </p>
+                                     <center><p style="font-weight:bold; float:left;">PI - XXXX11 - fsdf - Shree Dewasi Trading  </p>
                                 </center></div>
                                 </div>
 
@@ -98,7 +98,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Contact Person</p>
                                 </center></div>
                                 <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.customer_name}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> fsdf</p>
                                 </center></div>
 
                                 <div class="col-md-1">
@@ -107,7 +107,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Proforma Made By :</p>
                                 </center></div>
                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> {{request.user.name}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> </p>
                                 </center></div>
                                 </div>
 
@@ -117,7 +117,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Address/State</p>
                                 </center></div>
                                 <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.address}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> Plot no: 18, Shop No: 1 and 2,  Sector 23, Janta Market,  Turbhe, Navi Mumbai 400705</p>
                                 </center></div>
 
                                 <div class="col-md-1">
@@ -126,7 +126,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Contact Number:</p>
                                 </center></div>
                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> {{request.user.mobile}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> </p>
                                 </center></div>
                                 </div>
 
@@ -138,7 +138,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">Phone</p>
                                 </center></div>
                                 <div class="col-md-4">
-                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.contact_no}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> 9730644834</p>
         </center></div>
 
         <div class="col-md-1">
@@ -148,7 +148,7 @@ Repairing Licence No. LR/MH/H004</p>
           <p style="font-weight:bold; float:right;">Customer GST Number: </p>
         </div>
         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.customer_gst_no}}</p>
+             <center><p style="font-weight:bold; float:left;"> 789456132465789</p>
         </center></div>
         </div>
 
@@ -213,17 +213,17 @@ td {
             <td style="border: 0px solid gray;">Rate</td>
             <td style="border: 0px solid gray;">Total</td>
         </tr>
-{% for product in pi_products %}
+
 <tr>
-        <td>{{product.quantity}}</td>
-        <td>{{product.product_id.hsn_code}}</td>
-        <td>{{product.product_id.sub_sub_category}}</td>
-        <td>{% if product.product_id.product_image %}<img  src="{{product.product_id.product_image.url}}">{% endif %}</td>
-        <td>{{product.product_id.product_desc|default_if_none:""}}</td>
-        <td>{{product.product_id.selling_price}}</td>
-        <td>{{product.product_total_cost}}</td>
+        <td>41.0</td>
+        <td>None</td>
+        <td>rtet</td>
+        <td><img  src="/media/lead_product_image/WhatsApp_Image_2020-04-11_at_20.52.02.jpeg"></td>
+        <td>None</td>
+        <td>23.0</td>
+        <td>943.0</td>
         </tr>
-{% endfor %}
+
         <tr>
         <td></td>
         <td></td>
@@ -231,7 +231,7 @@ td {
         <td></td>
         <td></td>
         <td>Total</td>
-        <td>{{pi_id.total_cost}} INR</td>
+        <td>943.0 INR</td>
         </tr>
 
         <tr>
@@ -241,7 +241,7 @@ td {
         <td></td>
         <td></td>
         <td>Discount</td>
-        <td>{{pi_id.discount}}{% if pi_id.discount_type == "percent" %} % {% elif pi_id.discount_type == "rupee" %} INR {% else %} {% endif %}</td>
+        <td>0 INR </td>
         </tr>
 
 
@@ -252,7 +252,7 @@ td {
         <td></td>
         <td></td>
         <td>Net Total</td>
-        <td>{{pi_id.net_total}}</td>
+        <td>943.0</td>
         </tr>
 
 
@@ -264,7 +264,7 @@ td {
         <td></td>
         <td></td>
         <td>P&F</td>
-        <td>{{pi_id.pf_total}} </td>
+        <td>0.0 </td>
         </tr>
 
 
@@ -275,7 +275,7 @@ td {
         <td></td>
         <td></td>
         <td>CGST @ 9%</td>
-        <td>{% if pi_id.select_gst_type == "CGST / SGST" %} {{pi_id.cgst_sgst}} {% endif %}</td>
+        <td> 84.87 </td>
         </tr>
 
 
@@ -288,7 +288,7 @@ td {
         <td></td>
         <td></td>
         <td>SGST @ 9%</td>
-        <td>{% if pi_id.select_gst_type == "CGST / SGST" %} {{pi_id.cgst_sgst}} {% endif %}</td>
+        <td> 84.87 </td>
         </tr>
 
 
@@ -301,7 +301,7 @@ td {
         <td></td>
         <td></td>
         <td>IGST @ 18%</td>
-        <td>{% if pi_id.select_gst_type == "IGST" %} {{pi_id.igst}} {% endif %}</td>
+        <td></td>
         </tr>
 
 
@@ -313,7 +313,7 @@ td {
         <td></td>
         <td></td>
         <td>Round Up</td>
-        <td>{{pi_id.round_up_total}} INR</td>
+        <td>1113.0 INR</td>
         </tr>
 
         <tr>
@@ -323,7 +323,7 @@ td {
         <td></td>
         <td></td>
         <td>Grand Total</td>
-        <td>{{pi_id.round_up_total}} INR</td>
+        <td>1113.0 INR</td>
         </tr>
 
 
@@ -348,7 +348,7 @@ td {
     <div class="row">
             <div class="col-md-12" style="padding:10px;"><p>
                 I/We hereby certify that my/our registration certificate under the Goods and Service Tax Laws is in force on
-                the date of which the sale of goods specified in this ‚ÄúProforma Invoice‚Äù is made by me/us and that the transaction of sale is covered
+                the date of which the sale of goods specified in this ìProforma Invoiceî is made by me/us and that the transaction of sale is covered
                 by this and has been effected by me/us and it shall be accounted for in the turnover of sales while filing of return and the due tax,
                 if any, payable on the sale has been paid
   </center> </p>     </div>
@@ -369,11 +369,11 @@ td {
     <div class="col-md-6" style="padding-left: 40px;">
 <p style="padding-left:240px;">Bank details are as follows<br>
                 <b>DCB Bank<br>
-                Name ‚Äì Hindustan Scale Co.<br>
-                Acct No ‚Äì 01922412121947<br>
+                Name ñ Hindustan Scale Co.<br>
+                Acct No ñ 01922412121947<br>
                 IFSC Code-DCBL0000019<br>
-                Type of account ‚Äì Current Account <br>
-                Bank Name ‚Äì DCB Bank<br>
+                Type of account ñ Current Account <br>
+                Bank Name ñ DCB Bank<br>
                     Address Mohamedali Road Branch</b></p></div>
         </div>
 </div>
@@ -424,7 +424,7 @@ xhr.onload = function (e) {
         console.log(result);
     }
 }
-xhr.open('POST', '/update_view_lead/{{lead_id.pk}}', true);
+xhr.open('POST', '/update_view_lead/11', true);
 xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
 xhr.send(formData);
 

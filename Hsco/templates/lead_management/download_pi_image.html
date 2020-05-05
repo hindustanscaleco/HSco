@@ -271,7 +271,7 @@ td {
         <td>{{product.product_id.hsn_code}}</td>
         <td>{{product.product_id.sub_sub_category}}</td>
         <td>{% if product.product_id.product_image %}<img  src="{{product.product_id.product_image.url}}">{% endif %}</td>
-        <td>{{product.product_id.product_desc}}</td>
+        <td>{{product.product_id.product_desc|default_if_none:""}}</td>
         <td>{{product.product_id.selling_price}}</td>
         <td>{{product.product_total_cost}}</td>
         </tr>
