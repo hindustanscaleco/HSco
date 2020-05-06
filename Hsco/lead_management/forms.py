@@ -295,7 +295,7 @@ class Pi_sectionForm(forms.ModelForm):
            }
        ))
 
-    select_gst_type = forms.CharField(required=True,
+    select_gst_type = forms.CharField(required=False,
        widget=forms.Select(choices=select_gst_type,
              attrs={
                  'type': 'text',

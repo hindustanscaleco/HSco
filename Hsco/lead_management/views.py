@@ -33,6 +33,7 @@ from dispatch_app.models import Dispatch
 from purchase_app.models import Product_Details
 from dispatch_app.models import Product_Details_Dispatch
 from django.core.mail import EmailMessage
+from django.contrib import messages
 
 from stock_management_system_app.models import Godown,GodownProduct
 
@@ -1310,8 +1311,8 @@ def update_view_lead(request,id):
             'upload_po_file': pi_id.upload_po_file,
             'payment_received_date': pi_id.payment_received_date,
             'notes': pi_id.notes,
-            'grand_total': pi_id.grand_total,
             'select_gst_type': pi_id.select_gst_type,
+            'select_pi_template': pi_id.select_pi_template,
             'discount_type': pi_id.discount_type,
             'first_submit': pi_id.first_submit,
             'grand_total': '' if pi_id.grand_total == 0.0 else pi_id.grand_total,
@@ -1668,6 +1669,8 @@ def update_view_lead(request,id):
             history.medium_of_selection = 'Email'
             history.call_detail = ''
             history.save()
+            messages.success(request, "Email Sent on email Id: "+customer_id.customer_email_id)
+
             try:
                 del request.session['email']
             except:
@@ -1814,12 +1817,9 @@ def update_view_lead(request,id):
                 del request.session['select_pi_template_session']
             except:
                 pass
-            request.session['download_pdf_exist'] = True
+            if select_pi_template != None:
+                request.session['download_pdf_exist'] = True
             request.session['select_pi_template_session'] = select_pi_template
-            print("select_pi_templateselect_pi_template")
-            print("select_pi_templateselect_pi_template")
-            print(request.session['select_pi_template_session'])
-            print(request.session['select_pi_template_session'])
 
             if call2 == 'on':
                 call2 = 'True'
@@ -1847,16 +1847,14 @@ def update_view_lead(request,id):
                 history.call_detail = call
                 history.save()
             try:
-                upload_pi_file = Pi_History.objects.filter(lead_id=id).latest('pk').pi_history_file
-                if email == 'True' and upload_pi_file != None and upload_pi_file != '':
-                    if upload_pi_file == None:
-                        upload_pi_file = upload_pi_file
-                    elif upload_pi_file != None:
-                        print("not none")
 
+                if email == 'True' and upload_pi_file == None :
+                    pi_file = Pi_section.objects.filter(lead_id=id).latest('pk').upload_pi_file
+
+                    pi_file = pi_file
                     history = Pi_History()
 
-                    history.pi_history_file = upload_pi_file
+                    history.pi_history_file = pi_file
                     history.lead_id = Lead.objects.get(id=id)
                     history.log_entered_by = request.user.profile_name
                     history.medium_of_selection = 'Email'
@@ -1869,6 +1867,25 @@ def update_view_lead(request,id):
                     email_send.attach_file(history.pi_history_file.path)
 
                     email_send.send()
+                    messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
+                elif email == 'True' and upload_pi_file !=None :
+                    pi_file = upload_pi_file
+                    history = Pi_History()
+
+                    history.pi_history_file = pi_file
+                    history.lead_id = Lead.objects.get(id=id)
+                    history.log_entered_by = request.user.profile_name
+                    history.medium_of_selection = 'Email'
+                    history.save()
+
+                    email_send = EmailMessage('PI - HSCo ',
+                                              'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
+                                              settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+
+                    email_send.attach_file(history.pi_history_file.path)
+
+                    email_send.send()
+                    messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
 
             except Exception as pi_file_error:
                 print(pi_file_error)
@@ -1959,6 +1976,7 @@ def update_view_lead(request,id):
                 item2.call = call
                 item2.email = email
                 item2.whatsapp = whatsapp
+                item2.grand_total = grand_total
                 item2.first_submit = True
                 item2.call2 = call2
                 if select_gst_type != '':
@@ -1989,7 +2007,8 @@ def update_view_lead(request,id):
                         igst = (18.0 * net_total) / 100.0
                         item2.igst = igst
                         item2.round_up_total = round(net_total + pf_total + igst)
-                        item2.grand_total = item2.round_up_total
+                        if grand_total == None or grand_total == '':
+                            item2.grand_total = item2.round_up_total
                     elif discount_type == 'rupee' and discount != '' and total_cost != '':
                         net_total = float(total_cost) - float(discount)
                         item2.net_total = net_total
@@ -1997,51 +2016,12 @@ def update_view_lead(request,id):
                         igst = (18.0 * item2.net_total) / 100.0
                         item2.igst = igst
                         item2.round_up_total = round(item2.net_total + pf_total + igst)
-                        item2.grand_total = item2.round_up_total
+                        if grand_total == None or grand_total == '':
+                            item2.grand_total = item2.round_up_total
                 except:
                     print("product not added or debugging needed")
 
                 item2.save()
-
-            # if request.session['download_pdf_exist'] == True and (email == 'True' or email == True):
-            #
-            #     val = request.POST
-            #     email_send = EmailMessage('PI - HSCo ', 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
-            #                               settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
-            #     email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
-            #     email_send.send()
-            #
-            #     history = Pi_History()
-            #     lead_id = Lead.objects.get(id=id)
-            #     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
-            #     history.medium_of_selection = 'Email'
-            #     pi_id = Pi_section.objects.get(lead_id=id)
-            #
-            #     pi_products = Pi_product.objects.filter(lead_id=id)
-            #     context22 = {
-            #         'lead_id': lead_id,
-            #         'todays_date': todays_date,
-            #         'pi_id': pi_id,
-            #         'pi_products': pi_products,
-            #     }
-            #     template = get_template('lead_management/download_pi_pdf.html')
-            #     html = template.render(context22)
-            #     file_pdf = ContentFile(html)
-            #     # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
-            #     history.pi_history_file.save('PI.html', file_pdf, save=False)
-            #     history.lead_id = Lead.objects.get(id=id)
-            #     history.log_entered_by = request.user.profile_name
-            #     history.medium_of_selection = 'Email'
-            #     history.call_detail = ''
-            #     history.save()
-            #     try:
-            #         del request.session['email']
-            #     except:
-            #         pass
-            # try:
-            #     del request.session['is_file_pdf']
-            # except:
-            #     pass
 
             return redirect('/update_view_lead/'+str(lead_id.id))
 
@@ -3682,9 +3662,6 @@ def download_pi_image(request):
 
 
 
-def download_pi_pdf(request):
-
-    return render(request,'lead_management/download_pi_pdf.html',)
 
 def lead_logs(request):
     lead_logs = Log.objects.filter(module_name='Lead Module').order_by('-id')
@@ -4223,6 +4200,10 @@ def download_pi_pdf(request,id):
         'pi_id':pi_id,
         'pi_products':pi_products,
     }
+    try:
+        del request.session['download_pdf_exist']
+    except:
+        pass
     # template = get_template('lead_management/download_pi_pdf.html')
     # html = template.render(context)
     # result = BytesIO()
@@ -4256,6 +4237,10 @@ def download_pi_second_pdf(request,id):
         'pi_id':pi_id,
         'pi_products':pi_products,
     }
+    try:
+        del request.session['download_pdf_exist']
+    except:
+        pass
     return render(request,'lead_management/download_pi_second_pdf.html',context)
 
 @login_required(login_url='/')

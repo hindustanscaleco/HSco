@@ -398,11 +398,9 @@ td {
 let doc = new jsPDF('p','pt','a4');
 
 doc.addHTML(document.body,function() {
-
 var formData = new FormData();
 formData.append('file_pdf', doc.output());
 var pdf = btoa(doc.output());
-//console.log(doc);
 var xhr = new XMLHttpRequest();
 xhr.onload = function (e) {
     if (xhr.readyState === 4 && xhr.status === 200){
@@ -413,6 +411,15 @@ xhr.onload = function (e) {
 xhr.open('POST', '/update_view_lead/{{lead_id.pk}}', true);
 xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
 xhr.send(formData);
+
+});
+
+
+doc.addHTML(document.body,function() {
+
+
+    doc.save('ProformaInvoice.pdf');
+
 
 });
 

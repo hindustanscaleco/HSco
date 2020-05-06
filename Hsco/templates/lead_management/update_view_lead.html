@@ -187,7 +187,16 @@ function myFunction() {
      <div class="container-fluid">
 
          <div class="col-xl-12 col-lg-12">
+{% if messages %}
+    {% for message in messages %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>    {% endfor %}
 
+{% endif %}
               {% if request.session.context_sess.error_exist %}
                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
   <strong>Error : </strong> {{request.session.context_sess.error}}
@@ -756,6 +765,10 @@ tr:nth-child(even) {
 
                          <div class="row">
                         {% if pi_id.upload_pi_file != None and pi_id.upload_pi_file != '' and pi_id.upload_pi_file != 'None' %}
+                             <script>
+                                   $('#grand_total_id').attr('required', '');
+
+                             </script>
                              <div style="display:None;" id="div_Internal" class="card shadow col-md-6">
                         <br>
                              <div class="row">
@@ -853,6 +866,10 @@ tr:nth-child(even) {
 
                          </div>
                              {% else %}
+                             <script>
+                                   $('#select_gst_type_id').attr('required', '');
+
+                             </script>
                          <div style="display:block;" id="div_Internal" class="card shadow col-md-6">
                         <br>
                              <div class="row">
@@ -1818,7 +1835,8 @@ function show_external() {
     y.style.display = "none";
   }
   $('#select_gst_type_id').removeAttr('required', '');
-  $('#grand_total_id').attr('required', '');
+    $('#grand_total_id').attr('required', '');
+
 }
  function show_internal() {
   var x = document.getElementById("div_Internal");
@@ -1870,17 +1888,15 @@ function pdf_download(){
       if (template_type == '1') {
 
          var popupwin = window.open('/download_pi_pdf/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
-        setTimeout(function() { popupwin.close();}, 10000);
 
     }
     else if (template_type == '2') {
         var popupwin = window.open('/download_pi_second_pdf/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
-        setTimeout(function() { popupwin.close();}, 10000);
 
     }
 
 }
-, 5000);
+, 2000);
    }
 
 

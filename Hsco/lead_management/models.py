@@ -91,18 +91,16 @@ class Pi_product(models.Model):
         return self.id
 
 class Pi_History(models.Model):
-    from datetime import datetime
     pi_history_file = models.FileField(null=True,blank=True, upload_to='pi_history_file/')
     lead_id = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, blank=True)
     # pi_product_id = models.ForeignKey(Pi_product, on_delete=models.CASCADE, null=True, blank=True)
     # entry_timedate = models.DateTimeField(default=timezone.now, )
-    time = models.TimeField(default=datetime.time(datetime.now()))
-    import datetime
     medium_of_selection = models.CharField(blank= True, null=True, max_length=100)
     call_detail = models.CharField(blank= True, null=True, max_length=100)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
+    entry_timedate_time = models.DateTimeField(default=timezone.now,)
 
 
     def __int__(self):
