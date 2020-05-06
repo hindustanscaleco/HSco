@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Career | HSCO</title>
+  <title>Upload Requirement | HSCO</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -223,9 +223,9 @@ color:;
 
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
   <strong>Success : </strong> {{request.session.context_sess.success_65}}
-  <a href="https://hindustanscale.com/"><button type="button" class="close" data-dismiss="alert" aria-label="Close">
+  <button type="button" onclick="location.href='https://hindustanscale.com/'" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
-                        </button></a>
+  </button>
 </div>
 {% endif %}
      {% if request.session.context_sess.error_exist_65 %}
@@ -237,72 +237,63 @@ color:;
 </div>
 {% endif %}
     <br>
-
+ <script>function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}</script>
  <div id="loaded_customer">
-
-<div class="form-group row" style="display:none;">
-
-      <label class="col-md-2 control-label">Current Stage
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-
-{{career_form.current_stage}}
-    </div>
-  </div>
-
-
-</div>
-
 
 
 <div class="form-group row">
-    <label class="col-md-2 control-label">Application No.
+    <label class="col-md-2 control-label">Name *
     </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
- {{career_form.application_no}}
+<input type="text" name="full_name" required placeholder="Your Name" class="form-control">
     </div>
   </div>
-  <label class="col-md-2 control-label">Phone No.
+  <label class="col-md-2 control-label">Contact *
 
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-{{career_form.phone_no}}
+<input type="text" required onkeypress="return isNumber(event)" placeholder="Your Mobile Number" maxlength="10" name="phone_no" class="form-control">
     </div>
   </div>
 
 
 </div>
    <div class="form-group row">
-  <label class="col-md-2 control-label">Candidate Name
+  <label class="col-md-2 control-label">Email *
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-{{career_form.candidate_name}}
+<input type="email" required name="email_id" placeholder="Your Email ID" class="form-control">
     </div>
   </div>
 
 
 
-    <label class="col-md-2 control-label">Choose Position
+    <label class="col-md-2 control-label">Requirement *
 
 </label>
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-{{career_form.choose_position}}
+      <textarea required name="requirement" class="form-control">
+
+      </textarea>
+
     </div>
   </div>
   </div>
@@ -313,147 +304,17 @@ color:;
 
   <div class="form-group row">
 
-  <label class="col-md-2 control-label">Candidate Email:
+  <label class="col-md-2 control-label">Requirement File
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-{{career_form.candidate_email}}
+<input name="req_file" type="file" class="form-control">
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Address
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.address}}
-    </div>
-  </div>
-        </div>
-       <div class="form-group row">
-
-  <label class="col-md-2 control-label">Date Of Birth
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-{{career_form.date_of_birth}}
-    </div>
-  </div>
-       </div>
-
-     <hr>
-
-
-<br>
-
-     <center><h3>Education Details</h3></center>
-     <br>
-       <div class="form-group row">
-
-  <label class="col-md-2 control-label">Institute Name / University
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-{{career_form.institute_name}}
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Course
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.course}}
-    </div>
-  </div>
         </div>
 
-            <div class="form-group row">
-
-  <label class="col-md-2 control-label">Year of completion
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-
- {{career_form.year_of_completion}}
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Grade / Percentage
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.percentage}}
-    </div>
-  </div>
-        </div>
-
-          <hr>
-
-
-<br>
-
-     <center><h3>Work Experience</h3></center>
-     <br>
-       <div class="form-group row">
-
-  <label class="col-md-2 control-label">Company Name
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-{{career_form.company_name}}
-    </div>
-  </div>
-
-    <label class="col-md-1 control-label">Experience:
-
-</label>
-
-    <div class="col-md-5 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  {{career_form.work_expirance_from}}&nbsp &nbsp
-      To &nbsp &nbsp
-{{career_form.work_expirance_to}}
-    </div>
-  </div>
-        </div>
-
-            <div class="form-group row">
-
-    <label class="col-md-2 control-label">Experience Details
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.work_expirance_details}}
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Designation
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.designation}}
-    </div>
-  </div>
-        </div>
  </div>
 
 

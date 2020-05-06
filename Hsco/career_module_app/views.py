@@ -310,6 +310,82 @@ def career_module_form(request):
 
 def career_module_form_hsc(request):
     career_form = Career_moduleForm()
+    if request.method == 'POST' or request.method == 'FILES':
+        current_stage = request.POST.get('current_stage')
+        application_no = request.POST.get('application_no')
+        phone_no = request.POST.get('phone_no')
+        candidate_name = request.POST.get('candidate_name')
+        choose_position = request.POST.get('choose_position')
+        candidate_email = request.POST.get('candidate_email')
+        address = request.POST.get('address')
+        institute_name = request.POST.get('institute_name')
+        course = request.POST.get('course')
+        year_of_completion = request.POST.get('year_of_completion')
+        percentage = request.POST.get('percentage')
+        company_name = request.POST.get('company_name')
+        work_expirance_from = request.POST.get('work_expirance_from')
+        work_expirance_to = request.POST.get('work_expirance_to')
+        work_expirance_details = request.POST.get('work_expirance_details')
+        designation = request.POST.get('designation')
+        date_of_birth = request.POST.get('date_of_birth')
+
+
+
+        is_sales_candidate = True if choose_position == 'Sales Position' else False
+        is_technical_candidate = True if choose_position == 'Technical Position' else False
+
+
+        item = Career_module()
+
+        item.current_stage = current_stage
+        item.application_no = application_no
+        item.phone_no = phone_no
+        item.candidate_name = candidate_name
+        item.choose_position = choose_position
+        item.candidate_email = candidate_email
+        item.address = address
+        item.institute_name = institute_name
+        item.course = course
+        item.date_of_birth = date_of_birth
+        item.year_of_completion = year_of_completion
+        item.percentage = percentage
+        item.company_name = company_name
+        item.is_technical_candidate = is_technical_candidate
+        item.is_sales_candidate = is_sales_candidate
+        if work_expirance_from != '':
+            item.work_expirance_from = work_expirance_from
+        if work_expirance_to != '':
+            item.work_expirance_to = work_expirance_to
+        if work_expirance_details != '':
+            item.work_expirance_details = work_expirance_details
+        item.designation = designation
+
+        try:
+            item.save()
+            context22 = {
+                'success_65': "Thank You For Interest, Our Team Will Get In Touch With You Soon!!!",
+                'success_exist_65': True,
+            }
+
+            try:
+                del request.session['context_sess']
+            except:
+                pass
+            request.session['context_sess'] = context22
+
+        except Exception as e:
+            context22 = {
+                'error_65': str(e),
+                'error_exist_65': True,
+            }
+
+            try:
+                del request.session['context_sess']
+            except:
+                pass
+            request.session['context_sess'] = context22
+
+
     context = {
         'career_form': career_form
     }
