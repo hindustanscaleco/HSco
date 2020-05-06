@@ -127,6 +127,7 @@ class AGProducts(models.Model):
     def __int__(self):
         return self.id
 
+
 class GodownTransactions(models.Model):
     goods_req_id = models.ForeignKey(GoodsRequest, on_delete=models.CASCADE,)
     entry_timedate = models.DateField(default=datetime.date.today)

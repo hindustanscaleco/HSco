@@ -76,8 +76,7 @@ color:;
 
         <!-- Begin Page Content -->
         <center><h3>Stock Management System</h3></center>
-        <center><h4>Godown</h4></center>
-{% if godown_msg %}
+          {% if godown_msg %}
 
                      <div class="alert alert-success alert-dismissible fade show" role="alert">
   <strong>Success : </strong> {{godown_msg}}
@@ -95,16 +94,21 @@ color:;
   </button>
 </div>
 {% endif %}
+
+
+
         <div class="container-fluid" >
 
           <!--<div class="row" style="padding:20px;">-->
                <!--&lt;!&ndash;<label class="col-md-6 control-label">CRM Number:</label>&ndash;&gt;-->
 
           <!--</div>-->
+
+
+
+                    {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' %}
+        <center><h4>Godown</h4></center>
 <br>
-
-
-
 <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
 
 
@@ -169,6 +173,7 @@ color:;
 </form>
             <br>
             <br>
+            {% endif %}
             <center><h3>Added Products</h3></center>
   <!--Product List-->
 <br>

@@ -340,6 +340,7 @@ def stock_good_request(request,godown_id, request_id):
     # good_request = GoodsRequest.objects.get(id=request_id)
     godowns = Godown.objects.filter(Q(goddown_assign_to__name=request.user.admin)& ~Q(id=godown_id))| \
               Godown.objects.filter(Q(godown_admin__id=request.user.id)& ~Q(id=godown_id))
+    godowns_superadmin = Godown.objects.all()
     godown_goods = GodownProduct.objects.filter(godown_id=godown_id)
     requested_goods = RequestedProducts.objects.filter(godown_id=godown_id,goods_req_id =request_id)
     type_of_purchase_list = type_purchase.objects.all()  # 1
@@ -348,6 +349,7 @@ def stock_good_request(request,godown_id, request_id):
         'godown_goods': godown_goods,
         'requested_goods': requested_goods,
         'godowns': godowns,
+        'godowns_superadmin': godowns_superadmin,
         'type_of_purchase_list': type_of_purchase_list,
         'products': products,
     }
@@ -645,7 +647,10 @@ def stock_accpet_goods(request, godown_id, accept_id):
             elif req_type == 'Carton':
                 product = Product.objects.get(id=product_id)
                 individual_quantity = (float(product.carton_size) * float(number))
+
+                item2.carton_count = number
                 item2.quantity = individual_quantity
+                print(item2.carton_count)
 
             item2.godown_id = Godown.objects.get(id=godown_id)
             item2.godown_product_id = GodownProduct.objects.filter(product_id=product_id, godown_id=godown_id).first()
