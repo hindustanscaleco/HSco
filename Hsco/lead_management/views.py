@@ -1634,6 +1634,10 @@ def update_view_lead(request,id):
                 del request.session['download_pdf_exist']
             except:
                 pass
+            try:
+                del request.session['select_pi_template_session']
+            except:
+                pass
             request.session['is_file_pdf'] = True
             val = request.POST
             email_send = EmailMessage('PI - HSCo ', 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
@@ -1787,14 +1791,8 @@ def update_view_lead(request,id):
         elif 'submit2' in request.POST:
             del_all_sessions(request)
             request.session['expand_pi_section'] = True
-            try:
-                del request.session['download_pdf_exist']
-            except:
-                pass
-            request.session['download_pdf_exist'] = True
-            print(request.session['download_pdf_exist'])
-            print(request.session['download_pdf_exist'])
-            print(request.session['download_pdf_exist'])
+
+
             #for pi section
             discount = request.POST.get('discount')
             upload_pi_file = request.FILES.get('upload_pi_file')
@@ -1806,6 +1804,22 @@ def update_view_lead(request,id):
             call2 = request.POST.get('call2')
             discount_type = request.POST.get('discount_type')
             grand_total = request.POST.get('grand_total')
+
+            try:
+                del request.session['download_pdf_exist']
+            except:
+                pass
+
+            try:
+                del request.session['select_pi_template_session']
+            except:
+                pass
+            request.session['download_pdf_exist'] = True
+            request.session['select_pi_template_session'] = select_pi_template
+            print("select_pi_templateselect_pi_template")
+            print("select_pi_templateselect_pi_template")
+            print(request.session['select_pi_template_session'])
+            print(request.session['select_pi_template_session'])
 
             if call2 == 'on':
                 call2 = 'True'

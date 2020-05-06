@@ -15,8 +15,7 @@ var sessionSecurity = new yourlabs.SessionSecurity({
 pingUrl: '{% url 'session_security_ping' %}',
 warnAfter: {{ request|warn_after|unlocalize }},
 expireAfter: {{ request|expire_after|unlocalize }},
-confirmFormDiscard: "{% trans 'You have unsaved changes in a form of
-this page.' %}"
+confirmFormDiscard: "{% trans 'You have unsaved changes in a form of this page.' %}"
 });
 </script>
 {% endlocalize %}
