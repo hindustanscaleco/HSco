@@ -88,6 +88,14 @@
 
                       </form>
                       {% endif %}
+                         {% if request.user.is_authenticated and 'Hsco Website Leads' in user.modules_assigned %}
+                      <form action="" method="post">{% csrf_token %}
+                          <input type="hidden" name="from_date_form" value="{{from_date}}">
+                           <input type="hidden" name="to_date_form" value="{{to_date}}">
+                          <button style="background-color: #FC6E20;" type="submit" name="fetch_website_lead" class="btn btn-primary">Fetch Website Lead</button>
+
+                      </form>
+                      {% endif %}
                 </div>
               </div>
 

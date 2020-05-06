@@ -365,12 +365,23 @@ td {
                     <button type="submit" name="submit4" class="btn btn-secondary">Sort</button>
                 </div>
 
+<div  class="col-xl-2 col-md-2">
 
+                       <button id="display_image" type="button" class="btn btn-primary" style="background-color:#FC6E20">List / Image</button>
+                                                 </div>
 
                 </div>
                       </form>
 
+
 <br>
+              <script>
+$(document).ready(function(){
+  $("#display_image").click(function(){
+    $("#image_title , #image ").toggle();
+  });
+});
+</script>
 <div class="row" id="abhish123">
 
     <table>
@@ -381,6 +392,7 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Count</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
+            <td id="image" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Image</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Request</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Number</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Add</td>
@@ -401,6 +413,8 @@ td {
 
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.carton_count|floatformat:2}}<input name="req_carton_count" value="{{good.carton_count}}" hidden></td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.quantity}}<input name="req_quantity" value="{{good.quantity}}" hidden></td>
+    <td id="image" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{% if good.product_id.product_image %}<img height="40" width="40" src="{{good.product_id.product_image.url}}">{% endif %}</td>
+
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 
                 <div class="btn-group">
@@ -518,9 +532,15 @@ td {
 <select class="btn btn-secondary" name="req_to_godown" id="1sa97">
   <option class="btn btn-secondary" value="">Broadcast</option>
      <option class="btn btn-secondary" value="admin">ADMIN</option>
-    {% for list in godowns %}
-  <option class="btn btn-secondary" value="{{list.id}}">{{list.name_of_godown}}</option>
-    {% endfor %}
+    {% if request.user.role == 'Super Admin' %}
+        {% for list in godowns_superadmin %}
+      <option class="btn btn-secondary" value="{{list.id}}">{{list.name_of_godown}}</option>
+        {% endfor %}
+    {% else %}
+        {% for list in godowns %}
+      <option class="btn btn-secondary" value="{{list.id}}">{{list.name_of_godown}}</option>
+        {% endfor %}
+    {% endif %}
 </select>
         </div>
 
