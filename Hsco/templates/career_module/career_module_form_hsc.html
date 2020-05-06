@@ -16,12 +16,14 @@
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery.min.js"></script>
+<script src="lib/year-select.js"></script>
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
 
 </head>
 
-<body id="page-top">
+<body id="page-top" style="background-color:#FAA252;">
 
 <style>
 
@@ -51,6 +53,82 @@ color:;
 
 </style>
 
+<style>
+.dropbtn {
+  background-color: white;
+  color: black;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+
+.dropbtn12 {
+  background-color: white;
+  color: black;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn12:hover {background-color: orange;}
+
+
+
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.ui-datepicker-calendar {
+   display: none;
+}
+
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  background-color: white;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #black;
+}
+
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -1px;
+}
+</style>
+
   <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -67,13 +145,77 @@ color:;
         <!-- Topbar -->
         <!-- End of Topbar -->
 
+<div class="row">
+    <div class="card-body" style="background-color:#1E1E1C;">
+        <p style="float:left;">One Stop for all Your Weighing Needs</p>
+    </div>
 
-<br>
-
+</div>
 
     <form class="well form-horizontal" ion="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
 <fieldset>
-    <center><h2>Career Module</h2></center>
+    <div class="row" style="margin-left:05%;">
+        <div class="card-body" style=" background-color:#ffffff;">
+            <div class="col-md-2">
+                                  <div style="width:100%; float: left;">
+                                              <img src="{% static 'images/hsco.jpg' %}" style="height: 70px; padding-top: 5px; ">
+
+              </div>
+            </div>
+
+            <div class="col-md-12">
+               <button class="dropbtn12"> Suggest a Scale</button> <button class="dropbtn12"> Home </button>
+                    <div class="dropdown">
+                    <button class="dropbtn dropbtn12">About Us </button>
+                    <div class="dropdown-content">
+                    <a href="https://hindustanscale.com/know-more-about-us/">Vision,Mission &amp; Values</a>
+                    <a href="https://hindustanscale.com/know-more-about-us/">Awards &amp; Certification</a>
+                    <a href="https://hindustanscale.com/know-more-about-us/">Customers</a>
+                    <a href="https://hindustanscale.com/know-more-about-us/">Customer Installation</a>
+                    </div>
+                    </div>
+                    <div class="dropdown">
+                    <button class="dropbtn dropbtn12">Products </button>
+                    <div class="dropdown-content">
+                    <a href="https://hindustanscale.com/products/">Electronic Scales</a>
+                    <a href="https://hindustanscale.com/products/">Mechanical Scales</a>
+                    <a href="https://hindustanscale.com/products/">Lifestyle Scales (Not For Commercial Use)</a>
+                    <a href="https://hindustanscale.com/products/">Bluetooth Scales</a>
+                    </div>
+                    </div>
+                    <div class="dropdown">
+                    <button class="dropbtn dropbtn12">Services</button>
+                    <div class="dropdown-content">
+                    <a href="https://hindustanscale.com/service-request/">Services</a>
+                    </div>
+                    </div>
+                  <div class="dropdown">
+                    <button class="dropbtn dropbtn12">Blogs</button>
+                    <div class="dropdown-content">
+                    <a href="https://hindustanscale.com/blogs/">Blogs</a>
+                    </div>
+                    </div>
+                      <div class="dropdown">
+                    <button class="dropbtn dropbtn12">Career</button>
+                    <div class="dropdown-content">
+                    <a href="https://hindustanscale.com/career/">Career</a>
+                    </div>
+                    </div>
+                  <div class="dropdown">
+                    <button class="dropbtn dropbtn12">Help & Videos</button>
+                    <div class="dropdown-content">
+                    <a href="https://hindustanscale.com/troubleshooting-video/">Help & Videos</a>
+                    </div>
+                    </div>
+                  <div class="dropdown">
+                    <button class="dropbtn dropbtn12">Contact Us</button>
+                    <div class="dropdown-content">
+                    <a href="https://hindustanscale.com/contact-us/">Contact Us</a>
+                    </div>
+                    </div>
+            </div>
+            </div>
+        </div>
     <br>
     <br>
 
@@ -221,6 +363,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
  {{career_form.year_of_completion}}
     </div>
   </div>
@@ -302,16 +445,7 @@ color:;
 	<button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Save</button>
 
 </center>
-
-
-
 <br>
-
-
-
-
-
-
 
 </fieldset>
 </form>
@@ -319,6 +453,10 @@ color:;
     </div>
 
   </div>
+    <div class="row col-md-12">
+        <div class="card-body" style="background-color:#faa252;">
+            </div>
+        </div>
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
@@ -385,6 +523,18 @@ color:;
         }
       });
 }
+
+   function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
+
+
+
 
 </script>
 

@@ -57,6 +57,8 @@ class Career_moduleForm(forms.ModelForm):
                'type': 'text',
                'placeholder': "Application No.",
                'class': 'form-control',
+               'onkeypress': 'return isNumberKey(event)',
+
            }))
 
 
@@ -66,6 +68,7 @@ class Career_moduleForm(forms.ModelForm):
                'type': 'text',
                'placeholder': "Phone No.",
                'class': 'form-control',
+               'onkeypress': 'return isNumberKey(event)',
            }))
 
 
@@ -126,13 +129,14 @@ class Career_moduleForm(forms.ModelForm):
 
 
 
-    year_of_completion = forms.CharField(max_length=100, required=False,
+    year_of_completion = forms.CharField( min_length=4,max_length=4, required=False,
        widget=forms.TextInput(
            attrs={
-               'type': 'text',
+               'type': 'number',
                'placeholder': "Year Of Completion",
                'class': 'form-control',
-
+               'min':1990,
+               'max':2020,
            }))
 
 
