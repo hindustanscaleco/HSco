@@ -1410,8 +1410,7 @@ def update_view_lead(request,id):
                                                      sub_category=item.product_id.sub_category,
                                                      sub_sub_category=item.product_id.sub_sub_category).id
                     GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown_ids[list_count]).id,
-                                                     product_id=product_id).update(
-                        quantity=F("quantity") - item.quantity)
+                                                     product_id=product_id).update(quantity=F("quantity") - item.quantity)
 
 
 

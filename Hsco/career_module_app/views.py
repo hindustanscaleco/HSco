@@ -308,6 +308,15 @@ def career_module_form(request):
     }
     return render(request,'career_module/career_module_form.html',context)
 
+def career_module_form_hsc(request):
+    career_form = Career_moduleForm()
+    context = {
+        'career_form': career_form
+    }
+    return render(request, 'career_module/career_module_form_hsc.html',context)
+
+
+
 def update_career_module_from(request,id):
     career_module_id = Career_module.objects.get(id=id)
     career_module_initial_data = {
