@@ -69,6 +69,8 @@
 
 <br>
 {% if request.user.role == 'Employee' and godown_id.goddown_assign_to.id != request.user.id %}
+            {% elif request.user.role == 'Manager' and godown_id.goddown_assign_to.id != request.user.id %}
+
             {% else %}
 <div class="row">
                 <div class="col-xl-3 col-md-3">
@@ -94,7 +96,6 @@
                 </div>
             {% endif %}
 
-</div>
 
 
 
@@ -417,6 +418,7 @@ $(document).ready(function(){
 <h3 style="padding-left:30%;" ><center>Products Of Godown</center></h3>
                     </div>
                 {% if request.user.role == 'Employee' and godown_id.goddown_assign_to.id != request.user.id %}
+                {% elif request.user.role == 'Manager' and godown_id.goddown_assign_to.id != request.user.id %}
                 {% else %}
                                 <div class="col-xl-2">
             <button onclick="tableToExcel(&#39;testTable&#39;, &#39;W3C Example Table&#39;)"  type="button" class="btn btn-primary" style="background-color:#FC6E20">Download Stock</button>
@@ -473,6 +475,8 @@ $(document).ready(function(){
 <br>
      </div>
 {% if request.user.role == 'Employee' and godown_id.goddown_assign_to.id != request.user.id %}
+                          {% elif request.user.role == 'Manager' and godown_id.goddown_assign_to.id != request.user.id %}
+
                 {% else %}
     <div class="row">
 
