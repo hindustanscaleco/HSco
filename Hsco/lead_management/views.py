@@ -1083,7 +1083,7 @@ def add_lead(request):
         company_name = request.POST.get('company_name')
         address = request.POST.get('address')
         contact_no = request.POST.get('contact_no')
-        customer_industry = request.POST.get('customer_industry')
+        customer_industry = request.POST.get('customer_email_id')
         customer_email_id = request.POST.get('customer_email_id')
         customer_gst_no = request.POST.get('customer_gst_no')
 
@@ -2962,104 +2962,6 @@ def select_product_followup(request,id):
     }
     context.update(context2)
     return render(request,'lead_management/select_product_followup.html', context)
-
-def upload_requirement_hsc(request):
-    if request.method == 'POST' or request.method == 'FILES':
-        customer_name = request.POST.get('full_name')
-        contact_no = request.POST.get('phone_no')
-        customer_email_id = request.POST.get('email_id')
-
-        requirement = request.POST.get('requirement')
-        upload_requirement_file = request.FILES.get('req_file')
-
-        item2 = Lead()
-        if Customer_Details.objects.filter(customer_name=customer_name,
-                                           contact_no=contact_no).count() > 0:
-
-            item2.customer_id = Customer_Details.objects.filter(contact_no=contact_no).first()
-
-            item3 = Customer_Details.objects.filter(customer_name=customer_name,
-                                                    contact_no=contact_no).first()
-
-            if customer_email_id != '' and customer_email_id != None:
-                item3.customer_email_id = customer_email_id
-                item3.save(update_fields=['customer_email_id'])
-
-            item2.new_existing_customer = 'New'
-
-
-        else:
-            new_cust = Customer_Details()
-
-            new_cust.customer_name = customer_name
-
-            new_cust.contact_no = contact_no
-            if customer_email_id != '':
-                new_cust.customer_email_id = customer_email_id
-
-            try:
-                new_cust.save()
-                item2.customer_id = Customer_Details.objects.get(id=new_cust.pk)
-            except Exception as e:
-                context22 = {
-                    'error_65': str(e),
-                    'error_exist_65': True,
-                }
-
-                try:
-                    del request.session['context_sess']
-                except:
-                    pass
-                request.session['context_sess'] = context22
-            item2.new_existing_customer = 'Existing'
-
-
-        item2.current_stage = 'Not Yet Initiated'
-        from datetime import datetime
-
-
-        item2.date_of_initiation = datetime.today().strftime('%Y-%m-%d')
-        item2.channel = 'Website'
-        item2.requirement = requirement
-        item2.owner_of_opportunity = SiteUser.objects.filter(profile_name=request.user.profile_name).first()
-        item2.upload_requirement_file = upload_requirement_file
-        item2.log_entered_by = request.user.name
-
-
-        try:
-            item2.save()
-
-            fp = Follow_up_section()
-            fp.lead_id = Lead.objects.get(id=item2.pk)
-            fp.save()
-            context22 = {
-                'success_65': "Thank You For Interest, Our Team Will Get In Touch With You Soon!!!",
-                'success_exist_65': True,
-            }
-
-            try:
-                del request.session['context_sess']
-            except:
-                pass
-            request.session['context_sess'] = context22
-
-
-        except Exception as e:
-            context22 = {
-                'error_65': str(e),
-                'error_exist_65': True,
-            }
-
-            try:
-                del request.session['context_sess']
-            except:
-                pass
-            request.session['context_sess'] = context22
-        return redirect('/requirement.hindustanscale.com/')
-
-
-    return render(request,'lead_management/upload_requirement_hsc.html')
-
 
 def select_product(request,id):
     type_of_purchase_list =type_purchase.objects.all() #1

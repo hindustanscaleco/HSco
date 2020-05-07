@@ -206,8 +206,16 @@ td {
             </td>
         </tr>
     </form>
+
 {% endfor %}
+
+
     </table>
+
+
+
+
+
         </div>
     <br>
     <br>
@@ -280,11 +288,9 @@ td {
     <br>
                                     <form method="POST" >{%csrf_token%}
 
-    <div class="row col-md-12">
-        <div class="col-md-1"></div>
+    <div class="row">
         <div class="col-md-1">Notes:</div>
-        <div class="col-md-8">
-            <textarea type="text" class="form-control" name="notes" style="height:300px;"> {{accepted_goods.0.accept_product_id.notes|default_if_none:''}} </textarea></div>
+        <div><input class="form-control" name="notes" value="{{accepted_goods.0.accept_product_id.notes|default_if_none:''}}" style="height:300px; width:1080px;"> </div>
     </div>
 
     <div class="row">
