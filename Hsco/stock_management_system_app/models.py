@@ -4,6 +4,9 @@ from model_utils import FieldTracker
 from user_app.models import SiteUser
 import datetime
 
+from purchase_app.models import Purchase_Details
+
+
 class Product(models.Model):
     # lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
     scale_type = models.ForeignKey(type_purchase, null=True, blank=True,on_delete=models.CASCADE)
@@ -129,7 +132,10 @@ class AGProducts(models.Model):
 
 
 class GodownTransactions(models.Model):
-    goods_req_id = models.ForeignKey(GoodsRequest, on_delete=models.CASCADE,)
+    goods_req_id = models.OneToOneField(GoodsRequest, on_delete=models.CASCADE,)
+    accept_goods_id = models.OneToOneField(AcceptGoods, on_delete=models.CASCADE,)
+    purchase_id = models.OneToOneField(Purchase_Details, on_delete=models.CASCADE,)
+    lead_id = models.OneToOneField(Lead, on_delete=models.CASCADE,)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
