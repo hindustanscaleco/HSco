@@ -49,6 +49,9 @@ class Career_module(models.Model):
     is_sales_candidate = models.BooleanField(default=False)
     is_technical_candidate = models.BooleanField(default=False)
 
+    class Meta:
+        unique_together = ('phone_no','candidate_email')
+
     def __str__(self):
         return self.candidate_name
 
