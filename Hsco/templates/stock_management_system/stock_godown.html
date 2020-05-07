@@ -475,6 +475,8 @@ $(document).ready(function(){
 <br>
      </div>
 {% if request.user.role == 'Employee' and godown_id.goddown_assign_to.id != request.user.id %}
+                          {% elif request.user.role == 'Manager' and godown_id.goddown_assign_to.id != request.user.id %}
+
                 {% else %}
     <div class="row">
 
