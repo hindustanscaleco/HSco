@@ -4,10 +4,9 @@ from django.db import models
 from django.utils import timezone
 from customer_app.models import Customer_Details
 from user_app.models import SiteUser
-# from purchase_app.models import Product_Details
 from model_utils import FieldTracker
 
-from stock_management_system_app.models import Godown
+from stock_management_system_app.models import *
 
 
 class Dispatch(models.Model):

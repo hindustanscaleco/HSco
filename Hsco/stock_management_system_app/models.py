@@ -3,7 +3,6 @@ from customer_app.models import type_purchase, main_model, sub_model, sub_sub_mo
 from model_utils import FieldTracker
 from user_app.models import SiteUser
 import datetime
-
 from purchase_app.models import Purchase_Details
 
 
@@ -135,7 +134,7 @@ class GodownTransactions(models.Model):
     goods_req_id = models.OneToOneField(GoodsRequest, on_delete=models.CASCADE,)
     accept_goods_id = models.OneToOneField(AcceptGoods, on_delete=models.CASCADE,)
     purchase_id = models.OneToOneField(Purchase_Details, on_delete=models.CASCADE,)
-    lead_id = models.OneToOneField(Lead, on_delete=models.CASCADE,)
+    # lead_id = models.OneToOneField(Lead, on_delete=models.CASCADE,)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)

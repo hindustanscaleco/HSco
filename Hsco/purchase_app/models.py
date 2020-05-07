@@ -3,12 +3,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.utils import timezone
 from customer_app.models import Customer_Details
-from dispatch_app.models import Dispatch
 from user_app.models import SiteUser
-from dispatch_app.models import Product_Details_Dispatch
 from model_utils import FieldTracker
-
-from stock_management_system_app.models import Godown
 
 choices = (('NO', 'NO'),
     ('YES', 'YES'),)
@@ -37,7 +33,7 @@ class Purchase_Details(models.Model):   #cleaned
     feedback_form_filled = models.BooleanField(default=False)
     sales_person = models.CharField(max_length=150, null=True, blank=True)
     new_repeat_purchase = models.CharField(max_length=150, null=True, blank=True)
-    dispatch_id_assigned = models.ForeignKey(Dispatch,on_delete=models.CASCADE,null=True,blank=True)  #remaining make forenkey of this with Dispatch module
+    dispatch_id_assigned = models.ForeignKey('dispatch_app.Dispatch',on_delete=models.CASCADE,null=True,blank=True)  #remaining make forenkey of this with Dispatch module
     entry_timedate = models.DateField(default=datetime.date.today)
     feedback_stars=models.FloatField(default=0.0)
     is_last_product = models.BooleanField(default=False)
@@ -56,10 +52,10 @@ class Purchase_Details(models.Model):   #cleaned
 
 class Product_Details(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
-    godown_id = models.ForeignKey(Godown, on_delete=models.CASCADE,null=True,blank=True)
+    godown_id = models.ForeignKey('stock_management_system_app.Godown', on_delete=models.CASCADE,null=True,blank=True)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
     purchase_id = models.ForeignKey(Purchase_Details,on_delete=models.CASCADE, null=True, blank=True)
-    product_dispatch_id = models.ForeignKey(Product_Details_Dispatch,on_delete=models.CASCADE,null=True, blank=True)
+    product_dispatch_id = models.ForeignKey('dispatch_app.Product_Details_Dispatch',on_delete=models.CASCADE,null=True, blank=True)
     # product_name = models.CharField(max_length=30,null=True,blank=True)
     quantity = models.CharField(max_length=30,null=True,blank=True)
     type_of_scale = models.CharField(max_length=30,null=True,blank=True)
