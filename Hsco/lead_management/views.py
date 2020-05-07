@@ -1256,7 +1256,15 @@ def update_view_lead(request,id):
     form6 = History_followupForm(initial={'wa_no':wa_no,'email_subject':hfu.email_subject,'wa_msg':wa_msg,'email_msg':email_msg,
                                           'sms_msg':sms_msg,'is_email':is_email,'call_response':call_response,'is_call':is_call,'is_sms':is_sms,'is_whatsapp':is_whatsapp})
 
-    work_area_godowns = Godown.objects.filter(godown_admin__name=request.user.admin)
+    if request.user.role == 'Employee':
+
+        work_area_godowns = Godown.objects.filter(godown_admin__name=request.user.admin,goddown_assign_to=request.user.profile_name)
+    elif request.user.role == 'Manager':
+        work_area_godowns = Godown.objects.filter(godown_admin__name=request.user.admin,goddown_assign_to=request.user.profile_name)
+    elif request.user.role == 'Admin':
+        work_area_godowns = Godown.objects.filter(godown_admin__name=request.user.profile_name)
+    elif request.user.role == 'Super Admin':
+        work_area_godowns = Godown.objects.all()
     context = {
         'under_admin_users': under_admin_users,
         'under_manager_users': under_manager_users,
@@ -1370,10 +1378,11 @@ def update_view_lead(request,id):
                     return redirect('/update_view_lead/' + str(id))
                 godown = Godown.objects.get(id=godown_ids[list_count])
                 godown_product_exist = GodownProduct.objects.filter(godown_id=godown.id,product_id=product_id.id)
-                quantity = 0.0
+                required_quantity = item.quantity
+                quantity_available=0.0
                 if (godown_product_exist.count()>0):
-                    for item2 in godown_product_exist:
-                        quantity = item2.quantity
+                    for item3 in godown_product_exist:
+                        quantity_available = item3.quantity
                 else:
                     context22 = {
                         'error': "Product Having Sub Category:"+product_id.sub_category.name+" and Sub Sub Category:"+product_id.sub_sub_category.name+" Does Not Exist in Godown:"+godown.name_of_godown,
@@ -1386,10 +1395,9 @@ def update_view_lead(request,id):
                         pass
                     request.session['context_sess'] = context22
                     return redirect('/update_view_lead/' + str(id))
-                for item2 in godown_product_exist:
-                    quantity = item2.quantity
-                if (quantity > item.quantity):
-                    is_sufficient_stock = True
+
+                if (quantity_available > required_quantity):
+                    is_sufficient_stock = False
                 else:
                     context22 = {
                         'error': "Insufficient Stock in Godown: " + Godown.objects.get(
@@ -1403,20 +1411,19 @@ def update_view_lead(request,id):
                         pass
                     request.session['context_sess'] = context22
                     return redirect('/update_view_lead/' + str(id))
+                list_count = list_count + 1
+            list_count = 0;
+            for item in pi_pro:
 
-                for item in pi_pro:
-
-                    product_id = Product.objects.get(scale_type=item.product_id.scale_type,
-                                                     main_category=item.product_id.main_category,
-                                                     sub_category=item.product_id.sub_category,
-                                                     sub_sub_category=item.product_id.sub_sub_category).id
-                    GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown_ids[list_count]).id,
-                                                     product_id=product_id).update(quantity=F("quantity") - item.quantity)
-
+                product_id = Product.objects.get(scale_type=item.product_id.scale_type,
+                                                 main_category=item.product_id.main_category,
+                                                 sub_category=item.product_id.sub_category,
+                                                 sub_sub_category=item.product_id.sub_sub_category).id
+                GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown_ids[list_count]).id,
+                                                 product_id=product_id).update(quantity=F("quantity") - item.quantity)
+                list_count = list_count + 1
 
 
-
-                list_count=list_count+1
 
 
 
