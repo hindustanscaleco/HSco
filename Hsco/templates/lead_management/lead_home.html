@@ -615,9 +615,11 @@ td {
             <td style="border: 0px solid gray;">Company Name</td>
             <td style="border: 0px solid gray;">Email ID</td>
             <td style="border: 0px solid gray;">Owner of Opportunity</td>
-            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Stage</td>
+            <td style="border: 0px solid gray;">Stage</td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Selection</td>
         </tr>
                     {% for list in lead_list %}
+<form method="post" action="">{% csrf_token %}
 
 {% if list.channel == 'IndiaMart' or list.channel == 'Indiamart' or list.channel == 'India Mart' %}
         {% if list.is_indiamart_purchased_lead %}
@@ -650,8 +652,10 @@ td {
             <td>{{ list.customer_id.customer_email_id}}</td>
             <td>{{list.owner_of_opportunity}}</td>
             <td>{{list.current_stage}}</td>
+            <td><input type="checkbox" value="{{list.id}}" name="delete_lead_id"></td>
 
         </tr>
+    </form>
                           {% endfor %}
 
     </table>

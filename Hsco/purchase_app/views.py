@@ -435,13 +435,13 @@ def quick_purchase_entry(request):
         from datetime import datetime
 
 
-        item2 = Purchase_Details.objects.filter(sales_person=request.user.profile_name,date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
+        item2 = Purchase_Details.objects.filter(sales_person=request.user.profile_name,is_quick_entry=True,date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
         if item2.count()>0:
 
             if value_of_goods == '' or value_of_goods == None:
                 value_of_goods = 0.0
             item2.update(value_of_goods=F("value_of_goods") + value_of_goods)
-            item2 = Purchase_Details.objects.get(sales_person=request.user.profile_name,date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
+            item2 = Purchase_Details.objects.get(sales_person=request.user.profile_name,is_quick_entry=True,date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
 
         else:
             item2 = Purchase_Details()
