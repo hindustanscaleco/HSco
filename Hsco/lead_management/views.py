@@ -4195,7 +4195,7 @@ def link_callback(uri, rel):
     return path
 
 
-def download_pi_pdf(request,id):
+def download_pi_pdf(request,id,download):
     lead_id=Lead.objects.get(id=id)
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
     pi_id = Pi_section.objects.get(lead_id=id)
@@ -4206,6 +4206,7 @@ def download_pi_pdf(request,id):
         'todays_date':todays_date,
         'pi_id':pi_id,
         'pi_products':pi_products,
+        'download':True if download == 1 else False,
     }
     try:
         del request.session['download_pdf_exist']
@@ -4232,7 +4233,7 @@ def download_pi_pdf(request,id):
 
     return render(request,'lead_management/download_pi_pdf.html',context)
 
-def download_pi_second_pdf(request,id):
+def download_pi_second_pdf(request,id,download):
     lead_id=Lead.objects.get(id=id)
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
     pi_id = Pi_section.objects.get(lead_id=id)
@@ -4243,6 +4244,7 @@ def download_pi_second_pdf(request,id):
         'todays_date':todays_date,
         'pi_id':pi_id,
         'pi_products':pi_products,
+        'download': True if download == 1 else False,
     }
     try:
         del request.session['download_pdf_exist']
