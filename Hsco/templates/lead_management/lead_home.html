@@ -84,7 +84,7 @@
                       <form action="" method="post">{% csrf_token %}
                           <input type="hidden" name="from_date_form" value="{{from_date}}">
                            <input type="hidden" name="to_date_form" value="{{to_date}}">
-                           <a style="padding: 2px;" href="{% url 'lead_analytics' %}"><button style="background-color: #FC6E20;" type="submit" name="fetch_lead" class="btn btn-primary">Fetch Lead</button></a>
+                          <button style="background-color: #FC6E20;" type="submit" name="fetch_lead" class="btn btn-primary">Fetch Lead</button>
 
                       </form>
                       {% endif %}
