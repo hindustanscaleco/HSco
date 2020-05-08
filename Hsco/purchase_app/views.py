@@ -435,13 +435,13 @@ def quick_purchase_entry(request):
         from datetime import datetime
 
 
-        item2 = Purchase_Details.objects.filter(sales_person=request.user.profile_name,date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
+        item2 = Purchase_Details.objects.filter(sales_person=request.user.profile_name,is_quick_entry=True,date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
         if item2.count()>0:
 
             if value_of_goods == '' or value_of_goods == None:
                 value_of_goods = 0.0
             item2.update(value_of_goods=F("value_of_goods") + value_of_goods)
-            item2 = Purchase_Details.objects.get(sales_person=request.user.profile_name,date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
+            item2 = Purchase_Details.objects.get(sales_person=request.user.profile_name,is_quick_entry=True,date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
 
         else:
             item2 = Purchase_Details()
@@ -542,18 +542,18 @@ def quick_purchase_entry(request):
             ead.year = datetime.now().year
             ead.save()
 
-        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(user_id=site_user_id)).count() > 0:
-            Employee_Analysis_month.objects.filter(user_id=site_user_id,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done=F("total_sales_done") + value_of_goods)
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_month.objects.filter(user_id=SiteUser.objects.get(id=request.user.pk),entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done=F("total_sales_done") + value_of_goods)
             # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
             # ead.save(update_fields=['total_sales_done_today'])
 
         else:
             ead = Employee_Analysis_month()
-            ead.user_id = SiteUser.objects.get(id=site_user_id)
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
             ead.total_sales_done = value_of_goods
             # ead.total_dispatch_done = value_of_goods
-            ead.manager_id = SiteUser.objects.get(id=site_user_id).group
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
             ead.month = datetime.now().month
             ead.year = datetime.now().year
             ead.save()

@@ -39,6 +39,9 @@ class Lead(models.Model):
     def __int__(self):
         return self.id
 
+    class Meta:
+        unique_together = ('customer_id','channel','current_stage')
+
 class Pi_section(models.Model):
     lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
     discount = models.CharField(max_length=80,null=True,blank=True,default=0.0)

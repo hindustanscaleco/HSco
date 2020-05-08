@@ -818,9 +818,9 @@ tr:nth-child(even) {
 
                           </div>
                              {% endif %}
-                         <!--<center>-->
-                 <!--<button type="button" onclick="document.getElementById('primaryButton').click()" name="secondaryButton"  style="background-color: #FC6E20;" class="btn btn-primary">Save</button>-->
-<!--</center>-->
+                         <center>
+                 <button type="button" onclick="pdf_download_manual()" name="download_pi"  style="background-color: #FC6E20;" class="btn btn-primary">Download PI</button>
+</center>
 
 
                              <center>Note: For PI Preview Uncheck Email and click on submit button</center>
@@ -1737,6 +1737,7 @@ function whosFunction() {
                     <td style="border: 1px solid gray;">Category</td>
                     <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Sub Category</td>
                     <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Sub Sub Category</td>
+                    <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Quantity</td>
                     <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Godown</td>
 
                 </tr>
@@ -1750,6 +1751,8 @@ function whosFunction() {
                 <td style="border: 1px solid gray;">{{lead.product_id.main_category}}</td>
                 <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{lead.product_id.sub_category}}</td>
                 <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{lead.product_id.sub_sub_category}}</td>
+                                <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{lead.quantity}}</td>
+
                   <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">
                     <select required name="selected_dodown">
                         <option value="">Select Godown</option>
@@ -1887,11 +1890,11 @@ function pdf_download(){
 
       if (template_type == '1') {
 
-         var popupwin = window.open('/download_pi_pdf/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
+         var popupwin = window.open('/download_pi_pdf/{{lead_id.id}}/2','anyname','width=1280,height=720,left=5,top=3');
 
     }
     else if (template_type == '2') {
-        var popupwin = window.open('/download_pi_second_pdf/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
+        var popupwin = window.open('/download_pi_second_pdf/{{lead_id.id}}/2','anyname','width=1280,height=720,left=5,top=3');
 
     }
 
@@ -1911,6 +1914,35 @@ pdf_download();
 
 
 {% endif %}
+
+
+
+<script>
+
+function pdf_download_manual(){
+
+   setTimeout(function (){
+  template_type = document.forms["PIForm"]["select_pi_template"].value;
+
+      if (template_type == '1') {
+
+         var popupwin = window.open('/download_pi_pdf/{{lead_id.id}}/1','anyname','width=1280,height=720,left=5,top=3');
+
+    }
+    else if (template_type == '2') {
+        var popupwin = window.open('/download_pi_second_pdf/{{lead_id.id}}/1','anyname','width=1280,height=720,left=5,top=3');
+
+    }
+
+}
+, 1000);
+   }
+
+
+</script>
+
+
+
   <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
 
   <!-- Core plugin JavaScript-->

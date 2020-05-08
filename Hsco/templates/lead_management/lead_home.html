@@ -84,7 +84,7 @@
                       <form action="" method="post">{% csrf_token %}
                           <input type="hidden" name="from_date_form" value="{{from_date}}">
                            <input type="hidden" name="to_date_form" value="{{to_date}}">
-                           <a style="padding: 2px;" href="{% url 'lead_analytics' %}"><button style="background-color: #FC6E20;" type="submit" name="fetch_lead" class="btn btn-primary">Fetch Lead</button></a>
+                          <button style="background-color: #FC6E20;" type="submit" name="fetch_lead" class="btn btn-primary">Fetch Lead</button>
 
                       </form>
                       {% endif %}
@@ -126,7 +126,7 @@
 
              {% if lead_count > 1 and error_exist %}
              <div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Already Fetched!!! </strong>
+  <strong>{{error}} </strong>
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -615,9 +615,11 @@ td {
             <td style="border: 0px solid gray;">Company Name</td>
             <td style="border: 0px solid gray;">Email ID</td>
             <td style="border: 0px solid gray;">Owner of Opportunity</td>
-            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Stage</td>
+            <td style="border: 0px solid gray;">Stage</td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Selection</td>
         </tr>
                     {% for list in lead_list %}
+<form method="post" action="">{% csrf_token %}
 
 {% if list.channel == 'IndiaMart' or list.channel == 'Indiamart' or list.channel == 'India Mart' %}
         {% if list.is_indiamart_purchased_lead %}
@@ -650,8 +652,10 @@ td {
             <td>{{ list.customer_id.customer_email_id}}</td>
             <td>{{list.owner_of_opportunity}}</td>
             <td>{{list.current_stage}}</td>
+            <td><input type="checkbox" value="{{list.id}}" name="delete_lead_id"></td>
 
         </tr>
+    </form>
                           {% endfor %}
 
     </table>

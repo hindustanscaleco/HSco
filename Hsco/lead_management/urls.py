@@ -26,8 +26,8 @@ urlpatterns = [
     path('report_2/',report_2 , name ='report_2'),
     path('final_lead_report/',final_lead_report , name ='final_lead_report'),
     path('download_pi_image/<int:id>',download_pi_image , name ='download_pi_image'),
-    path('download_pi_pdf/<int:id>',download_pi_pdf , name ='download_pi_pdf'),
-    path('download_pi_second_pdf/<int:id>',download_pi_second_pdf , name ='download_pi_second_pdf'),
+    path('download_pi_pdf/<int:id>/<int:download>',download_pi_pdf , name ='download_pi_pdf'), #<int:download> == 1 Download = True else Download = False
+    path('download_pi_second_pdf/<int:id>/<int:download>',download_pi_second_pdf , name ='download_pi_second_pdf'), #<int:download> == 1 Download = True else Download = False
     path('lead_logs/',lead_logs , name ='lead_logs'),
     path('requirement.hindustanscale.com/',upload_requirement_hsc , name ='upload_requirement_hsc'),
 
