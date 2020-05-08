@@ -744,6 +744,7 @@ def stock_accpet_goods_list(request, godown_id):
 
 def stock_transaction_history_list(request, godown_id):
     trans_history = GodownTransactions.objects.filter(goods_req_id__req_from_godown=godown_id, goods_req_id__status='Confirms the transformation').order_by('-id') | \
+                    GodownTransactions.objects.filter(goods_req_id__req_to_godown=godown_id,goods_req_id__status='Confirms the transformation').order_by('-id') | \
                     GodownTransactions.objects.filter(accept_goods_id__from_godown=godown_id).order_by('-id')
 
     context={
@@ -754,28 +755,38 @@ def stock_transaction_history_list(request, godown_id):
 def stock_transaction_history(request, from_godown_id, trans_id):
     godown_id = Godown.objects.get(id=from_godown_id)
     godown_transaction = GodownTransactions.objects.get(id=trans_id)
-    requested_goods = RequestedProducts.objects.filter(godown_id=godown_id.id,goods_req_id =godown_transaction.goods_req_id.id)
 
-    from_godown_initial_data = {
-        'name_of_godown': godown_transaction.goods_req_id.req_from_godown.name_of_godown,
-        'goddown_assign_to': godown_transaction.goods_req_id.req_from_godown.goddown_assign_to.profile_name,
-        'location': godown_transaction.goods_req_id.req_from_godown.location,
-        'contact_no': godown_transaction.goods_req_id.req_from_godown.contact_no,
+    if godown_transaction.goods_req_id :
+        requested_goods = RequestedProducts.objects.filter(godown_id=godown_id.id,goods_req_id =godown_transaction.goods_req_id.id)
+    elif godown_transaction.accept_goods_id :
+        requested_goods = AGProducts.objects.filter(godown_id=godown_id.id,accept_product_id =godown_transaction.accept_goods_id.id)
+    context = {
+        'godown_transaction': godown_transaction,
+        'requested_goods': requested_goods,
     }
-    to_godown_initial_data= {
-        'name_of_godown': godown_transaction.goods_req_id.req_to_godown.name_of_godown,
-        'goddown_assign_to': godown_transaction.goods_req_id.req_to_godown.goddown_assign_to.profile_name,
-        'location': godown_transaction.goods_req_id.req_to_godown.location,
-        'contact_no': godown_transaction.goods_req_id.req_to_godown.contact_no,
-    }
-    from_godown_form = GodownForm(initial=from_godown_initial_data)
-    to_godown_form = GodownForm(initial=to_godown_initial_data)
-    context={
-        'from_godown_form':from_godown_form,
-        'to_godown_form':to_godown_form,
-        'good_request':godown_transaction,
-        'requested_goods':requested_goods,
-    }
+
+    if godown_transaction.goods_req_id :
+        from_godown_initial_data = {
+            'name_of_godown': godown_transaction.goods_req_id.req_from_godown.name_of_godown,
+            'goddown_assign_to': godown_transaction.goods_req_id.req_from_godown.goddown_assign_to.profile_name,
+            'location': godown_transaction.goods_req_id.req_from_godown.location,
+            'contact_no': godown_transaction.goods_req_id.req_from_godown.contact_no,
+        }
+        to_godown_initial_data= {
+            'name_of_godown': godown_transaction.goods_req_id.req_to_godown.name_of_godown,
+            'goddown_assign_to': godown_transaction.goods_req_id.req_to_godown.goddown_assign_to.profile_name,
+            'location': godown_transaction.goods_req_id.req_to_godown.location,
+            'contact_no': godown_transaction.goods_req_id.req_to_godown.contact_no,
+        }
+        from_godown_form = GodownForm(initial=from_godown_initial_data)
+        to_godown_form = GodownForm(initial=to_godown_initial_data)
+        context1={
+            'from_godown_form':from_godown_form,
+            'to_godown_form':to_godown_form,
+            'godown_transaction':godown_transaction,
+            'requested_goods':requested_goods,
+        }
+        context.update(context1)
     return render(request, 'stock_management_system/stock_transaction_history.html',context)
 
 

@@ -341,15 +341,20 @@ td {
             </style>
 
 <br>
+            {% if godown_transaction.goods_req_id %}
             <div class="row">
                 <div class="card col-md-12">
                     <div class="card-body col-md-12">
                         <div class="row">
-                            <div class="col-xl-4">{% if request.user.admin == good_request.req_to_godown.goddown_assign_to.admin %} <b>Own WorkStation</b> {% else %} <b>Outside Workstation</b> {% endif %}
+                            <div class="col-xl-4">{% if request.user.admin == godown_transaction.goods_req_id.req_from_godown.goddown_assign_to.admin %}
+                                <b>Own WorkStation</b>
+                                {% else %}
+                                <b>Outside Workstation</b>
+                                {% endif %}
                 </div>
-                            <div class="col-xl-4">Transaction ID: <b>{{good_request.id}}</b>
+                            <div class="col-xl-4">Transaction ID: <b>{{godown_transaction.id}}</b>
                 </div>
-                            <div class="col-xl-4">Transaction Status: <b>{{good_request.status}}</b>
+                            <div class="col-xl-4">Transaction Status: <b>{{godown_transaction.goods_req_id.status}}</b>
                 </div>
                     </div>
                         <hr>
@@ -423,7 +428,7 @@ td {
                             <div class="row">
                         Current Stage:           &nbsp &nbsp      <div class="btn-group">
 <select class="btn btn-success" id="c5aasrs">
-  <option class="btn btn-success" value="{{good_request.status}}">{{good_request.goods_req_id.status}}</option>
+  <option class="btn btn-success" value="{{godown_transaction.goods_req_id.status}}">{{godown_transaction.goods_req_id.status}}</option>
 
 </select>
 </div>
@@ -504,9 +509,71 @@ td {
 
                 </div></div>
             </div>
+            {% elif godown_transaction.accept_goods_id  %}
+            <center><h3>Accept Goods</h3></center>
+<br>
+<br>
+                <div class="row" id="abhish123">
+
+    <table>
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
+            <td style="border: 0px solid gray;">Model</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
+                                    {% if requested_goods.0.accept_product_id.good_added != True %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Add/Remove</td>
+            {% endif    %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Accept</td>
+
+
+        </tr>
 
 
 
+      {% for good in requested_goods %}
+                                <form method="POST" >{%csrf_token%}
+        <tr>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{good.godown_product_id.product_id.scale_type}}</td>
+            <td style="border: 0px solid gray;">{{good.godown_product_id.product_id.main_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.godown_product_id.product_id.sub_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.godown_product_id.product_id.sub_sub_category}} <input hidden name="request_id" value="{{good.id}}"> </td>
+            {% if requested_goods.0.accept_product_id.good_added != True %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><button type="submit" name="submit3"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></button></td>
+            {% endif %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{% if good.type == 'Individual' %}{{good.quantity}}{% elif good.type == 'Carton' %}{{good.carton_count}}{% endif %}</td>
+
+               <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+
+                <div class="btn-group">
+<select class="btn btn-success" id="caasrs">
+   {% if good.type == 'Individual' %}
+  <option class="btn btn-success" value="Individual">Individual</option>
+    {% elif good.type == 'Carton' %}
+  <option class="btn btn-success" value="Carton">Carton</option>
+    {% endif %}
+</select>
+</div>
+
+
+            </td>
+
+        </tr>
+                                </form>
+{% endfor %}
+
+
+
+    </table>
+
+
+
+
+
+        </div>
+
+            {% endif%}
 
 
 <br>
