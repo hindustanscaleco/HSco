@@ -2725,7 +2725,8 @@ def report_2(request):
         request.session['string_pay_detail'] = string_pay_detail
         request.session['string_pay_detail_list'] = pay_detail
 
-        return redirect('/final_lead_report/')
+        # return redirect('/final_lead_report/')
+        return redirect('/final_lead_report_test/')
     return render(request,'lead_management/report_2.html')
 
 def final_lead_report(request):
@@ -2985,6 +2986,49 @@ def final_lead_report(request):
         'selected_list':selected_list,
     }
     return render(request,"report/final_lead_report.html",context)
+
+def final_lead_report_test(request):
+    start_date = request.session.get('start_date')
+    end_date = request.session.get('end_date')
+    string_cust_detail = request.session.get('string_cust_detail')
+    string_cust_detail_list = request.session.get('string_cust_detail_list')
+    string_deal_detail = request.session.get('string_deal_detail')
+    string_deal_detail_list = request.session.get('string_deal_detail_list')
+    string_pi_history = request.session.get('string_pi_history')
+    string_pi_history_list = ['pi_history_file', 'time', 'call_detail', 'medium_of_selection']
+    string_follow_up = request.session.get('string_follow_up')
+    string_follow_up_list = ['wa_no', 'wa_msg', 'email_subject', 'email_msg', 'followup_history_file', 'sms_msg', 'call_response']
+    string_pay_detail = request.session.get('string_pay_detail')
+    string_pay_detail_list = request.session.get('string_pay_detail_list')
+    print("string_cust_detail_list")
+    string_cust_detail_list=['id'] + string_cust_detail_list
+    string_deal_detail_list=['id'] + string_deal_detail_list
+    # print("string_cust_detail")
+    # print(string_cust_detail)
+    from .models import Pi_section
+    cust_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_cust_detail_list)
+    lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
+    for lead in lead_list:
+        names = Pi_section.objects.filter(lead_id_id=lead['id']).values()
+        lead['pisection'] = list(names)
+
+    try:
+        del request.session['start_date']
+        del request.session['end_date']
+        del request.session['string_cust_detail']
+        del request.session['string_deal_detail']
+        del request.session['string_pi_history']
+        del request.session['string_follow_up']
+        del request.session['string_pay_detail']
+    except:
+        pass
+    context={
+        'lead_list':lead_list,
+        # 'final_row_product':final_row_product,
+        # 'selected_list':string_deal_detail_list,
+    }
+    return render(request,"report/final_lead_report_test.html",context)
+
 
 def select_product_followup(request,id):
     type_of_purchase_list =type_purchase.objects.all() #1
