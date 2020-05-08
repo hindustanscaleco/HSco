@@ -462,13 +462,17 @@ def lead_home(request):
                         clean_mob = item['MOB'].partition('-')[2]
                     else:
                         clean_mob = ''
+                    entered_customer_name = item['SENDERNAME']
+                    if entered_customer_name == None or entered_customer_name == '':
+                        entered_customer_name = 'NA'
                     cust_val = Customer_Details.objects.filter(customer_name=item['SENDERNAME'], contact_no=clean_mob)
                     if cust_val.count() > 0:
-                        item3 = Customer_Details.objects.get(customer_name=item['SENDERNAME'], contact_no=clean_mob)
+
+                        item3 = Customer_Details.objects.get(customer_name=entered_customer_name, contact_no=clean_mob)
                         item2.new_existing_customer = 'Existing'
                     else:
                         item3 = Customer_Details()
-                        item3.customer_name = item['SENDERNAME']
+                        item3.customer_name = entered_customer_name
                         item3.company_name = item['GLUSR_USR_COMPANYNAME']
                         item3.address = item['ENQ_ADDRESS']
                         item3.customer_email_id = item['SENDEREMAIL']
