@@ -160,17 +160,16 @@ def update_godown(request,godown_id):
 
             product_carton_count = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).carton_count
             product_quantity = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).quantity
+            if float(product_carton_count) !=  float(carton_count):
 
-            if product_carton_count != carton_count:
-                GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
-                    quantity= quantity)
-
-            elif product_quantity != quantity:
                 product = Product.objects.get(id=product_id)
                 individual_quantity = (float(product.carton_size) * float(carton_count))
 
                 GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
                     quantity=individual_quantity)
+            elif  float(product_quantity) !=  float(quantity):
+                GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
+                    quantity=quantity)
             messages.success(request, "Product quantity updated!!! " )
 
     return render(request, 'stock_management_system/update_godown.html',context)
@@ -498,12 +497,12 @@ def stock_pending_request(request,godown_id):
     if request.user.role == 'Super Admin':
         pending_list = GoodsRequest.objects.filter(~Q(status=None)).order_by('-id')
     else:
-        pending_list = GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_to_godown__goddown_assign_to__id=request.user.id)).order_by('-id')    | \
-                       GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_from_godown__goddown_assign_to__id=request.user.id)).order_by('-id') | \
-                       GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_to_godown__godown_admin__id=request.user.id)).order_by('-id') | \
-                       GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_from_godown__godown_admin__id=request.user.id)).order_by('-id') | \
-                       GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_from_godown__godown_admin__profile_name=request.user.admin)).order_by('-id') | \
-                       GoodsRequest.objects.filter(Q(is_all_req=True)&~Q(status='Confirms the transformation')&~Q(status=None)&(Q(req_from_godown__godown_admin__profile_name=request.user.profile_name)|Q(req_from_godown__goddown_assign_to__id=request.user.id))&Q(req_to_godown__goddown_assign_to__admin=None)).order_by('-id')
+        pending_list = GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_to_godown__goddown_assign_to__id=request.user.id)&Q(req_to_godown__id=godown_id)).order_by('-id')    | \
+                       GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_from_godown__goddown_assign_to__id=request.user.id)&Q(req_from_godown__id=godown_id)).order_by('-id') | \
+                       GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_to_godown__godown_admin__id=request.user.id)&Q(req_to_godown__id=godown_id)).order_by('-id') | \
+                       GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_from_godown__godown_admin__id=request.user.id)&Q(req_from_godown__id=godown_id)).order_by('-id') | \
+                       GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_from_godown__godown_admin__profile_name=request.user.admin)&Q(req_from_godown__id=godown_id)).order_by('-id') | \
+                       GoodsRequest.objects.filter(Q(is_all_req=True)&~Q(status='Confirms the transformation')&~Q(status=None)&(Q(req_from_godown__godown_admin__profile_name=request.user.profile_name)|Q(req_from_godown__goddown_assign_to__admin=request.user.admin))&Q(req_to_godown__goddown_assign_to__admin=None)).order_by('-id')
     context = {
         'godown_id': godown,
         'pending_list': pending_list,
@@ -539,7 +538,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                     if faulty != '0':
                         item2.faulty_quantity = float(faulty)
                         item2.log_entered_by = request.user.name
-                    if good_request.req_to_godown == 'None' or None or '':
+                    if good_request.req_to_godown == 'None' or good_request.req_to_godown == None or good_request.req_to_godown == '':
                         good_request.req_to_godown = Godown.objects.get(id=req_to_godown)
 
             elif req_type == 'Carton':

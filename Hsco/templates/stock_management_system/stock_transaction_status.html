@@ -346,27 +346,28 @@ td {
                         <hr>
         <form method="POST" >{%csrf_token%}
                         <div class="row">
-                                                           <div class="col-xl-5">
+                                                           <div class="col-xl-7 col-md-7">
                         Current Stage:           &nbsp &nbsp      <div class="btn-group">
 <select class="btn btn-success" name="status"  id="c5aasrs">
   <option class="btn btn-success" value="{{good_request.status}}">{{good_request.status}}</option>
-{% if request.user.id == good_request.req_to_godown.godown_admin.id %}
+{% if request.user.id == good_request.req_to_godown.godown_admin.id and good_request.goods_sent == False %}
   <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
-        {% endif %}
-    {% if request.user.id == good_request.req_to_godown.goddown_assign_to.id %}
+    {% elif request.user.id == good_request.req_to_godown.goddown_assign_to.id  and good_request.goods_sent == False %}
+  <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
+{% elif not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == False %}
   <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
         {% endif %}
 
-        {% if request.user.id == good_request.req_from_godown.goddown_assign_to.id %}
+
+        {% if request.user.id == good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == True %}
   <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
-    {% endif %}
-    {% if request.user.id == good_request.req_from_godown.godown_admin.id %}
+    {% elif request.user.id == good_request.req_from_godown.godown_admin.id and good_request.goods_sent == True %}
   <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
         {% endif %}
 
 </select>
                                                            </div></div>
-                                                           <div class="col-xl-1">
+                                                           <div class="col-xl-1 col-md-1">
     <center>
  <button name="submit2" type="submit" class="btn btn-danger" style="background-color:#FC6E20;">Save</button></a>
 <!--<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Edit</button>-->
@@ -388,15 +389,16 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Requested</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sent</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Received</td>
+            {% if request.user.id != good_request.req_from_godown.goddown_assign_to.id %}
 {% if good_request.req_to_godown == 'None' or good_request.req_to_godown == '' or good_request.req_to_godown == None %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Godown</td>
+            {% endif %}
             {% endif %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Request Type</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Number</td>
                         {% if good_request.status != 'Pending From Target'  %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Faulty</td>
             {% endif %}
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Add</td>
         </tr>
         {% for list in requested_goods %}
         <form method="POST" >{%csrf_token%}
@@ -415,29 +417,32 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.sent_carton_count}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.received_carton_count}}</td>
             {% endif %}
-{% if good_request.req_to_godown == 'None' or good_request.req_to_godown == '' or good_request.req_to_godown == None %}
-    {% if request.user.role == 'Employee' %}
-        <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-           <div class="btn-group">
-            <select class="form-control" name="req_to_godown" >
-                {% for godown in godown_assign_employee %}
-                    <option class="form-control" value="{{godown.id}}">{{godown.name_of_godown}}</option>
-                {% endfor %}
-            </select>
-           </div>
-       </td>
-    {% elif request.user.role == 'Admin' %}
-       <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-           <div class="btn-group">
-            <select class="form-control" name="req_to_godown" >
-                {% for godown in godown_assign_admin %}
-                    <option class="form-control" value="{{godown.id}}">{{godown.name_of_godown}}</option>
-                {% endfor %}
-            </select>
-           </div>
-       </td>
+{% if request.user.id != good_request.req_from_godown.goddown_assign_to.id %}
+    {% if good_request.req_to_godown == 'None' or good_request.req_to_godown == '' or good_request.req_to_godown == None %}
+        {% if request.user.role == 'Employee' or request.user.role == 'Manager'  %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+               <div class="btn-group">
+                <select class="form-control" name="req_to_godown" >
+                    {% for godown in godown_assign_employee %}
+                        <option class="form-control" value="{{godown.id}}">{{godown.name_of_godown}}</option>
+                    {% endfor %}
+                </select>
+               </div>
+           </td>
+        {% elif request.user.role == 'Admin' %}
+           <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+               <div class="btn-group">
+                <select class="form-control" name="req_to_godown" >
+                    {% for godown in godown_assign_admin %}
+                        <option class="form-control" value="{{godown.id}}">{{godown.name_of_godown}}</option>
+                    {% endfor %}
+                </select>
+               </div>
+           </td>
+        {% endif %}
     {% endif %}
 {% endif %}
+
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 
                 <div class="btn-group">
@@ -450,20 +455,49 @@ td {
             </td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
                  <center>
-                <input type="number" value="0" name="number" class="form-control" style="height:40px; width:60px;">
+                <input type="number" value="0" name="number" class="form-control" step="0.01" style="height:40px; width:60px;">
 </center>
             </td>
             {% if good_request.status != 'Pending From Target'  %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
                  <center>
-                <input type="number" value="0" name="faulty" class="form-control" style="height:40px; width:60px;">
+                <input type="number" value="0" name="faulty" class="form-control"  step="0.01" style="height:40px; width:60px;">
 </center>
             </td>
             {% endif %}
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
 
-            </td>
+            {% if request.user.id == good_request.req_to_godown.goddown_assign_to.id and good_request.goods_sent == False %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                    <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
+
+                </td>
+            {% elif request.user.id == good_request.req_to_godown.godown_admin.id and good_request.goods_sent == False %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                    <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
+
+                </td>
+            {% else %}
+            {% endif %}
+
+            {% if request.user.id == good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == True %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                    <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
+
+                </td>
+            {% elif request.user.id == good_request.req_from_godown.godown_admin.id and good_request.goods_sent == True %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                    <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
+
+                </td>
+            {% else %}
+            {% endif %}
+            {% if not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id  and good_request.goods_sent == False %}
+<td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                    <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
+
+                </td>
+            {% endif %}
+
         </tr>
         </form>
         {% endfor %}
