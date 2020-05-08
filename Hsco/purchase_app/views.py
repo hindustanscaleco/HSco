@@ -550,10 +550,10 @@ def quick_purchase_entry(request):
 
         else:
             ead = Employee_Analysis_month()
-            ead.user_id = SiteUser.objects.get(id=SiteUser.objects.get(id=request.user.pk))
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
             ead.total_sales_done = value_of_goods
             # ead.total_dispatch_done = value_of_goods
-            ead.manager_id = SiteUser.objects.get(id=SiteUser.objects.get(id=request.user.pk)).group
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
             ead.month = datetime.now().month
             ead.year = datetime.now().year
             ead.save()
