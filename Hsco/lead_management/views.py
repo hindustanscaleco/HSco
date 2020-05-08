@@ -1615,9 +1615,22 @@ def update_view_lead(request,id):
 
                     request.session['enable_auto_edit'] = True
                     request.session['lead_url'] = '/update_view_lead/'+str(id)
+                    try:
 
-                    Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
-                    Lead.objects.filter(id=id).update(is_entered_purchase=True,current_stage='Dispatch Done - Closed')
+                        Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
+                        Lead.objects.filter(id=id).update(is_entered_purchase=True,current_stage='Dispatch Done - Closed')
+                    except Exception as e :
+                        context22 = {
+                            'error': "Submit PI Details First!!!",
+                            'error_exist': True,
+                        }
+                        context.update(context22)
+                        try:
+                            del request.session['context_sess']
+                        except:
+                            pass
+                        request.session['context_sess'] = context22
+                        return redirect('/update_view_lead/' + str(id))
 
 
                     if True:
@@ -1703,7 +1716,7 @@ def update_view_lead(request,id):
                         x = response.text
                         del_all_sessions(request)
                         request.session['expand_deal_detail'] = True
-                        return redirect('/update_customer_details/' + str(lead_id.purchase_id.pk))
+                        return redirect('/update_customer_details/' + str(purchase_det.pk))
 
             else:
                 context22 = {
