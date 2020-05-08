@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect
 
 from customer_app.models import type_purchase
 from .forms import GodownForm
-from .models import Godown, GodownProduct, RequestedProducts, GoodsRequest, Product, AGProducts, AcceptGoods
+from .models import Godown, GodownProduct, RequestedProducts, GoodsRequest, Product, AGProducts, AcceptGoods, \
+    GodownTransactions
 from user_app.models import SiteUser
 from customer_app.models import sub_model, main_model, sub_sub_model
 
@@ -616,7 +617,9 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                 good_request.status = 'Confirms the transformation'
                 good_request.save(update_fields=['status'])
                 if good_request.goods_received == False:
-
+                    new_transaction = GodownTransactions()
+                    new_transaction.goods_req_id = good_request
+                    new_transaction.save()
                     for good in requested_goods:
                         if GodownProduct.objects.filter(godown_id=from_godown_id, product_id=good.godown_product_id.product_id):
                             if good.req_type == 'Individual':
@@ -695,6 +698,9 @@ def stock_accpet_goods(request, godown_id, accept_id):
             item2.notes = notes
             item2.save(update_fields=['notes', 'log_entered_by', 'from_godown','good_added'])
             accepted_goods = AGProducts.objects.filter(godown_id_id=godown_id,accept_product_id_id =accept_id)
+            new_transaction = GodownTransactions()
+            new_transaction.accept_goods_id = item2
+            new_transaction.save()
             for good in accepted_goods:
                 if GodownProduct.objects.filter(godown_id=godown_id,product_id=good.godown_product_id.product_id):
                     godown_product = GodownProduct.objects.get(godown_id=godown_id,product_id=good.godown_product_id.product_id)
@@ -737,10 +743,8 @@ def stock_accpet_goods_list(request, godown_id):
     return render(request,'stock_management_system/stock_accpet_goods_list.html',context)
 
 def stock_transaction_history_list(request, godown_id):
-    trans_history = GoodsRequest.objects.filter(req_from_godown=godown_id, status='Confirms the transformation').order_by('-id') | \
-                    GoodsRequest.objects.filter(req_from_godown=godown_id, status='Confirms the transformation').order_by('-id') | \
-                    GoodsRequest.objects.filter(req_to_godown=godown_id, status='Confirms the transformation').order_by('-id') | \
-                    GoodsRequest.objects.filter(req_to_godown=godown_id, status='Confirms the transformation').order_by('-id')
+    trans_history = GodownTransactions.objects.filter(goods_req_id__req_from_godown=godown_id, goods_req_id__status='Confirms the transformation').order_by('-id') | \
+                    GodownTransactions.objects.filter(accept_goods_id__from_godown=godown_id).order_by('-id')
 
     context={
         'trans_history': trans_history,
@@ -749,27 +753,27 @@ def stock_transaction_history_list(request, godown_id):
 
 def stock_transaction_history(request, from_godown_id, trans_id):
     godown_id = Godown.objects.get(id=from_godown_id)
-    good_request = GoodsRequest.objects.get(id=trans_id)
-    requested_goods = RequestedProducts.objects.filter(godown_id=godown_id.id,goods_req_id =trans_id)
+    godown_transaction = GodownTransactions.objects.get(id=trans_id)
+    requested_goods = RequestedProducts.objects.filter(godown_id=godown_id.id,goods_req_id =godown_transaction.goods_req_id.id)
 
     from_godown_initial_data = {
-        'name_of_godown': good_request.req_from_godown.name_of_godown,
-        'goddown_assign_to': good_request.req_from_godown.goddown_assign_to.profile_name,
-        'location': good_request.req_from_godown.location,
-        'contact_no': good_request.req_from_godown.contact_no,
+        'name_of_godown': godown_transaction.goods_req_id.req_from_godown.name_of_godown,
+        'goddown_assign_to': godown_transaction.goods_req_id.req_from_godown.goddown_assign_to.profile_name,
+        'location': godown_transaction.goods_req_id.req_from_godown.location,
+        'contact_no': godown_transaction.goods_req_id.req_from_godown.contact_no,
     }
     to_godown_initial_data= {
-        'name_of_godown': good_request.req_to_godown.name_of_godown,
-        'goddown_assign_to': good_request.req_to_godown.goddown_assign_to.profile_name,
-        'location': good_request.req_to_godown.location,
-        'contact_no': good_request.req_to_godown.contact_no,
+        'name_of_godown': godown_transaction.goods_req_id.req_to_godown.name_of_godown,
+        'goddown_assign_to': godown_transaction.goods_req_id.req_to_godown.goddown_assign_to.profile_name,
+        'location': godown_transaction.goods_req_id.req_to_godown.location,
+        'contact_no': godown_transaction.goods_req_id.req_to_godown.contact_no,
     }
     from_godown_form = GodownForm(initial=from_godown_initial_data)
     to_godown_form = GodownForm(initial=to_godown_initial_data)
     context={
         'from_godown_form':from_godown_form,
         'to_godown_form':to_godown_form,
-        'good_request':good_request,
+        'good_request':godown_transaction,
         'requested_goods':requested_goods,
     }
     return render(request, 'stock_management_system/stock_transaction_history.html',context)
