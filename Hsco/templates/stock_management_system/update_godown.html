@@ -334,11 +334,11 @@ $(document).ready(function(){
                                                     {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' %}
 
                     <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input  value="{{product.carton_count|floatformat:2}}" name="carton_count"></td>
-    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input value="{{product.quantity}}" name="quantity"></td> <input type="hidden" value="{{product.product_id.id}}" name="product_id">
+    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input value="{{product.quantity|floatformat:2}}" name="quantity"></td> <input type="hidden" value="{{product.product_id.id}}" name="product_id">
                     <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">   <button type="submit" name="update_stock" class="btn btn-primary">Update</button></td>
                     {% else %}
-                    <td style="border: 0px solid gray;">{{product.carton_count}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.quantity}}</td>
+                    <td style="border: 0px solid gray;">{{product.carton_count|floatformat:2}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.quantity|floatformat:2}}</td>
             {% endif %}
             <td id="image" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{% if product.product_id.product_image %}<img height="40" width="40" src="{{product.product_id.product_image.url}}">{% endif %}</td>
         </tr>

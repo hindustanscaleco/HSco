@@ -415,7 +415,7 @@ def stock_good_request(request,godown_id, request_id):
             item2.entered_by = SiteUser.objects.get(id=request.user.id)
             item2.status = 'Pending From Target'
             item2.save(update_fields=['req_from_godown','is_all_req','req_to_godown','log_entered_by','entered_by','status','request_admin'])
-            return redirect('/stock_godown/'+str(godown_id))
+            return redirect('/stock_pending_request/'+str(godown_id))
 
         elif 'submit3' in request.POST:
             request_id = request.POST.get('request_id')
@@ -503,6 +503,7 @@ def stock_pending_request(request,godown_id):
                        GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_to_godown__godown_admin__id=request.user.id)&Q(req_to_godown__id=godown_id)).order_by('-id') | \
                        GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_from_godown__godown_admin__id=request.user.id)&Q(req_from_godown__id=godown_id)).order_by('-id') | \
                        GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_from_godown__godown_admin__profile_name=request.user.admin)&Q(req_from_godown__id=godown_id)).order_by('-id') | \
+                       GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_to_godown__godown_admin__profile_name=request.user.admin)&Q(req_to_godown__id=godown_id)).order_by('-id') | \
                        GoodsRequest.objects.filter(Q(is_all_req=True)&~Q(status='Confirms the transformation')&~Q(status=None)&(Q(req_from_godown__godown_admin__profile_name=request.user.profile_name)|Q(req_from_godown__goddown_assign_to__admin=request.user.admin))&Q(req_to_godown__goddown_assign_to__admin=None)).order_by('-id')
     context = {
         'godown_id': godown,
@@ -525,6 +526,9 @@ def stock_transaction_status(request,from_godown_id, trans_id):
             req_to_godown = request.POST.get('req_to_godown')
             item2 = RequestedProducts.objects.get(id=product_id)
 
+            if good_request.req_to_godown == 'None' or good_request.req_to_godown == None :
+                good_request.req_to_godown = Godown.objects.get(id=req_to_godown)
+
             if req_type == 'Individual':
                 if good_request.status == 'Pending From Target':
                     if good_request.req_to_godown == 'None' or good_request.req_to_godown ==  None :
@@ -539,8 +543,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                     if faulty != '0':
                         item2.faulty_quantity = float(faulty)
                         item2.log_entered_by = request.user.name
-                    if good_request.req_to_godown == 'None' or good_request.req_to_godown == None or good_request.req_to_godown == '':
-                        good_request.req_to_godown = Godown.objects.get(id=req_to_godown)
+
 
             elif req_type == 'Carton':
                 if good_request.status == 'Pending From Target':
@@ -621,19 +624,29 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                     new_transaction.goods_req_id = good_request
                     new_transaction.save()
                     for good in requested_goods:
+
                         if GodownProduct.objects.filter(godown_id=from_godown_id, product_id=good.godown_product_id.product_id):
                             if good.req_type == 'Individual':
                                 GodownProduct.objects.filter(godown_id=from_godown_id,
                                                              product_id=good.godown_product_id.product_id).update(
                                     quantity=F("quantity") + good.received_quantity)
-
+                                GodownProduct.objects.filter(godown_id=from_godown_id,
+                                                             product_id=good.godown_product_id.product_id).update(
+                                    individual_faulty=F("individual_faulty") + good.faulty_quantity)
                             elif good.req_type == 'Carton':
+                                #converting carton quantity to individual quantity
                                 product = Product.objects.get(id=good.godown_product_id.product_id)
                                 individual_quantity = (float(product.carton_size) * float(good.received_carton_count))
 
                                 GodownProduct.objects.filter(godown_id=from_godown_id,
                                                              product_id=good.godown_product_id.product_id).update(
                                     quantity=F("quantity") + individual_quantity)
+
+                                #converting faulty carton to individual faulty
+                                individual_faulty = (float(product.carton_size) * float(good.faulty_carton))
+                                GodownProduct.objects.filter(godown_id=from_godown_id,
+                                                             product_id=good.godown_product_id.product_id).update(
+                                    individual_faulty=F("individual_faulty") + individual_faulty)
                             good_request.goods_received = True
                             good_request.save(update_fields=['goods_received',])
 
@@ -808,7 +821,7 @@ def request_admin(request):
             good_request.request_admin = False
             good_request.req_to_godown = Godown.objects.get(id=accept_to_godown)
             good_request.save(update_fields=['request_admin','req_to_godown'])
-            messages.success(request, 'Request Accepted to the Selected Godown')
+            messages.success(request, 'Request Accepted to the Godown ('+Godown.objects.get(id=accept_to_godown).name_of_godown+')')
 
         elif 'request_send' in request.POST:
             good_req = request.POST.get('good_req')
@@ -816,7 +829,7 @@ def request_admin(request):
             good_request = GoodsRequest.objects.get(id=good_req)
             good_request.request_admin_id = SiteUser.objects.get(id=outside_admin_id)
             good_request.save(update_fields=['request_admin_id'])
-            messages.success(request, 'Request Send to Admin')
+            messages.success(request, 'Request Send to Admin ('+SiteUser.objects.get(id=outside_admin_id).profile_name+')')
 
 
     return render(request,'stock_management_system/request_admin_page.html',context)

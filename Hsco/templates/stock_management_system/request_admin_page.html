@@ -151,7 +151,19 @@ td {
         <center><h3>Request Admin</h3></center>
 <br>
 <br>
+{% if messages %}
 
+                     <div class="alert alert-success alert-dismissible fade show" role="alert">
+                             {% for message in messages %}
+
+  <strong>Success : </strong> {{ message }}
+                         {% endfor %}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+{% endif %}
 
         <div class="row" id="id_manager_view">
 
@@ -159,6 +171,7 @@ td {
 
         <tr style="background-color: gray; color: white;">
             <td style="border: 0px solid gray;">Request From Godown </td>
+
             <td style="border: 0px solid gray;">Accept From Godown </td>
             <!--<td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Accept / Reject</td>-->
 
@@ -172,6 +185,7 @@ td {
         <tr >
 
                 <td onclick="location.href='/stock_transaction_status/{{good.req_from_godown.id}}/{{good.id}}'" style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{good.req_from_godown.name_of_godown}}</td>
+            {% if request.user.id != good.req_from_godown.godown_admin.id %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
         <div class="btn-group">
                         <form method="POST" >{%csrf_token%}
@@ -187,6 +201,9 @@ td {
 </div>
 
                                  </td>
+            {% else %}
+            <td style="border: 0px solid gray;"> </td>
+            {% endif %}
             <!--<td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">-->
 
 
@@ -209,9 +226,6 @@ td {
 
             </td>
 
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-
-            </td>
 
         </tr>
 

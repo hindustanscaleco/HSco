@@ -1010,7 +1010,18 @@ def update_customer_details(request,id):
 def add_product_details(request,id):
     purchase = Purchase_Details.objects.get(id=id)
     purchase_id = purchase.id
-    godowns = Godown.objects.filter(default_godown_purchase=False)
+    if request.user.role == 'Super Admin':
+        godowns = Godown.objects.filter(default_godown_purchase=False)
+
+    elif request.user.role == 'Admin':
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id ))
+
+    elif request.user.role == 'Manager':
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+    else:
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
     type_of_purchase_list =type_purchase.objects.all() #1
     if 'purchase_id' in request.session:
         request.session['product_saved'] = False
@@ -1650,10 +1661,18 @@ def edit_product_customer(request,product_id_rec):
         dispatch_id_assigned=None
     product_id = Product_Details.objects.get(id=product_id_rec)
 
-    try:
-        godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id))
-    except:
-        godowns = Godown.objects.all()
+    if request.user.role == 'Super Admin':
+        godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False))
+
+    elif request.user.role == 'Admin':
+        godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id) )
+
+    elif request.user.role == 'Manager':
+        godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+    else:
+        godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
     if request.method == 'POST':
         quantity = request.POST.get('quantity')
         model_of_purchase = request.POST.get('model_of_purchase')

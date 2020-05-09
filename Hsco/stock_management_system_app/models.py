@@ -44,8 +44,9 @@ class GodownProduct(models.Model):
     godown_id = models.ForeignKey(Godown,on_delete=models.CASCADE)
     product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
     added_by_id = models.ForeignKey(SiteUser,on_delete=models.CASCADE)
-    quantity = models.FloatField(null=True, blank=True)
-    critical_limit = models.FloatField(null=True, blank=True)
+    quantity = models.FloatField(default=0.0)
+    critical_limit = models.FloatField(default=0.0)
+    individual_faulty = models.FloatField(default=0.0)
     entry_timedate = models.DateField(default=datetime.date.today)
 
     tracker = FieldTracker()
@@ -57,13 +58,17 @@ class GodownProduct(models.Model):
         quantity = self.quantity
         return (float(quantity) / float(product.carton_size))
 
-
-
     @property
     def carton_critical_limit(self):
         product = Product.objects.get(id=self.product_id)
         critical_limit = self.critical_limit
         return (float(critical_limit) / float(product.carton_size))
+
+    @property
+    def carton_faulty(self):
+        product = Product.objects.get(id=self.product_id)
+        individual_faulty = self.individual_faulty
+        return (float(individual_faulty) / float(product.carton_size))
 
     def __int__(self):
         return self.id
