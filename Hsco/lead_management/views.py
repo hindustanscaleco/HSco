@@ -1426,6 +1426,7 @@ def update_view_lead(request,id):
 
     if request.method == 'POST' or request.method == 'FILES':
         email = request.session.get('email')
+        email_type = request.session.get('email_type')
         try:
             del request.session['context_sess']
         except:
@@ -1731,7 +1732,7 @@ def update_view_lead(request,id):
                 request.session['context_sess'] = context22
                 return redirect('/update_view_lead/' + str(id))
 
-        if 'file_pdf' in request.POST and (email == 'True' or email == True):
+        if 'file_pdf' in request.POST and (email == 'True' or email == True) and email_type == 'internal_pi':
             try:
                 del request.session['download_pdf_exist']
             except:
@@ -1777,6 +1778,10 @@ def update_view_lead(request,id):
             except:
                 pass
 
+            try:
+                del request.session['email_type']
+            except:
+                pass
 
         if 'submit' in request.POST:
             customer_name = request.POST.get('customer_name')
@@ -1908,6 +1913,7 @@ def update_view_lead(request,id):
             call2 = request.POST.get('call2')
             discount_type = request.POST.get('discount_type')
             grand_total = request.POST.get('grand_total')
+            email_type = request.POST.get('email_type_check')
 
             try:
                 del request.session['download_pdf_exist']
@@ -1921,6 +1927,11 @@ def update_view_lead(request,id):
             if select_pi_template != None:
                 request.session['download_pdf_exist'] = True
             request.session['select_pi_template_session'] = select_pi_template
+
+            if email_type == 'internal_pi':
+                request.session['email_type'] = 'internal_pi'
+            elif email_type == 'external_pi':
+                request.session['email_type'] = 'external_pi'
 
             if call2 == 'on':
                 call2 = 'True'

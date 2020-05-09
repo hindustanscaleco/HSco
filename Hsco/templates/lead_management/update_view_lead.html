@@ -764,9 +764,11 @@ tr:nth-child(even) {
                      <form  name="PIForm" method='POST' enctype="multipart/form-data" >{% csrf_token %}
 
                          <div class="row">
+                             <input style="display:None;" type="hidden" id="email_type_check" name="email_type_check" >
                         {% if pi_id.upload_pi_file != None and pi_id.upload_pi_file != '' and pi_id.upload_pi_file != 'None' %}
                              <script>
                                    $('#grand_total_id').attr('required', '');
+                                document.getElementById("email_type_check").value = 'external_pi' ;
 
                              </script>
                              <div style="display:None;" id="div_Internal" class="card shadow col-md-6">
@@ -838,7 +840,6 @@ tr:nth-child(even) {
 
  <hr>
 
-
                             <div class="form-group row">
                                 <label class="col-md-4 control-label">Upload PI File:</label>
                               <div class="col-md-7 inputGroupContainer">
@@ -868,6 +869,7 @@ tr:nth-child(even) {
                              {% else %}
                              <script>
                                    $('#select_gst_type_id').attr('required', '');
+                                document.getElementById("email_type_check").value = 'internal_pi' ;
 
                              </script>
                          <div style="display:block;" id="div_Internal" class="card shadow col-md-6">
@@ -882,6 +884,7 @@ tr:nth-child(even) {
                              </div>
 
  <hr>
+
    <div class="form-group row">
                               <label class="col-md-4 control-label">Discount:</label>
 
@@ -924,7 +927,7 @@ tr:nth-child(even) {
 
                              <center>Note: For PI Preview Uncheck Email and click on submit button</center>
                          </div>
-                                <div style="display:None;" id="div_External" class="card shadow col-md-6">
+                                <div style="display:None;" style="display:block;" id="div_External" class="card shadow col-md-6">
 <br>
                                     <div class="row">
                                  <div class="col-xl-8">
@@ -1839,6 +1842,7 @@ function show_external() {
   }
   $('#select_gst_type_id').removeAttr('required', '');
     $('#grand_total_id').attr('required', '');
+    document.getElementById("email_type_check").value = 'external_pi' ;
 
 }
  function show_internal() {
@@ -1857,6 +1861,8 @@ function show_external() {
   }
   $('#select_gst_type_id').attr('required', '');
   $('#grand_total_id').removeAttr('required', '');
+  document.getElementById("email_type_check").value = 'internal_pi' ;
+
 }
 </script>
                          <script>

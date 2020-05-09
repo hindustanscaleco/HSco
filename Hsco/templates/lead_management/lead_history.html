@@ -557,8 +557,7 @@ td {
             <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Medium</td>
             <td colspan="5" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Call Detail</td>
             <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Previous Templates</td>
-            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Date</td>
-            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Time</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Date and Time</td>
         </tr>
     {% for history in lead_pi_history %}
         <tr>
@@ -571,8 +570,7 @@ td {
 
                                   <a href="{{ history.pi_history_file.url }}" class="btn btn-primary">File</a>
                                    {% endif %}</td>
-            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{history.entry_timedate}}</td>
-            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{history.entry_timedate_time.time}}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{history.entry_timedate_time}}</td>
 
         </tr>
 
