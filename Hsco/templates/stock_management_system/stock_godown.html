@@ -437,8 +437,10 @@ $(document).ready(function(){
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Count</td>
 
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
+{% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or godown_id.goddown_assign_to.id == request.user.id %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Individual Faulty</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Faulty</td>
+            {% endif %}
             <td id="image_title" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Image</td>
 
 
@@ -457,8 +459,10 @@ $(document).ready(function(){
             <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.product_id.sub_sub_category}}</td>
           <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.carton_count|floatformat:2}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.quantity|floatformat:2}}</td>
+        {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or godown_id.goddown_assign_to.id == request.user.id %}
             <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.individual_faulty|floatformat:2 }}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.carton_faulty|floatformat:2 }}</td>
+        {% endif %}
             <td id="image" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{% if product.product_id.product_image %}<img height="40" width="40" src="{{product.product_id.product_image.url}}">{% endif %}</td>
         </tr>
 

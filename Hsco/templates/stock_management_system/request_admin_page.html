@@ -215,6 +215,9 @@ td {
                                             <form method="POST" >{%csrf_token%}
 
 <select class="btn btn-success" id="caasrs" name="outside_admin">
+    {% if good.request_admin_id %}
+      <option class="btn btn-success" value="{{good.request_admin_id.id }}"> {{ good.request_admin_id.profile_name  }}</option>
+    {% endif %}
 {% for admin in outside_workarea_admins %}
   <option class="btn btn-success" value="{{admin.0}}">{{admin.1 }}</option>
     {% endfor %}

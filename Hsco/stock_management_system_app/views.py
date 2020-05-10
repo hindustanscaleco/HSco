@@ -25,8 +25,8 @@ def stock_godown_list(request):
 
 def add_godown(request):
     products = Product.objects.all()
-    assign_users = SiteUser.objects.filter(modules_assigned__icontains= 'Stock', admin__contains= request.user.profile_name)
-
+    assign_users = SiteUser.objects.filter(modules_assigned__icontains= 'Stock', admin__contains= request.user.profile_name)| \
+                   SiteUser.objects.filter(modules_assigned__icontains='Stock', id = request.user.id)
     form = GodownForm()
     if request.method == 'POST' or request.method=='FILES':
         name_of_godown = request.POST.get('name_of_godown')
@@ -57,7 +57,9 @@ def update_godown(request,godown_id):
     godown_products = GodownProduct.objects.filter(godown_id=godown_id)
 
     assign_users = SiteUser.objects.filter(Q(modules_assigned__icontains= 'Stock')&Q(admin__contains= request.user.profile_name)
-                                           &~Q(id=godown.goddown_assign_to.id))
+                                           &~Q(id=godown.goddown_assign_to.id))| \
+                   SiteUser.objects.filter(Q(modules_assigned__icontains='Stock')&Q(id=request.user.id)&~Q(id=godown.goddown_assign_to.id))
+
     type_of_purchase_list = type_purchase.objects.all()  # 1
     products = Product.objects.all()
     godown_initial_data = {
@@ -806,7 +808,7 @@ def stock_transaction_history(request, from_godown_id, trans_id):
 def request_admin(request):
     request_admin_list= GoodsRequest.objects.filter(Q(request_admin=True)& Q(req_from_godown__godown_admin__id=request.user.id)).order_by('-id') | \
                         GoodsRequest.objects.filter(Q(request_admin=True) & Q(request_admin_id__id=request.user.id)).order_by('-id')
-    outside_workarea_admins = Godown.objects.filter(~Q(godown_admin__id=request.user.id)).values_list('godown_admin__id','godown_admin__name').distinct()
+    outside_workarea_admins = Godown.objects.filter(~Q(godown_admin__id=request.user.id)&~Q(godown_admin__id__in=[x.request_admin_id.id for x in request_admin_list])).values_list('godown_admin__id','godown_admin__name').distinct()
     admin_godowns = Godown.objects.filter(Q(godown_admin__id=request.user.id)).values_list('id','name_of_godown').distinct()
     context = {
         'request_admin_list': request_admin_list,

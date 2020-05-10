@@ -335,7 +335,13 @@ td {
                 <div class="card col-md-12">
                     <div class="card-body col-md-12">
                         <div class="row">
-                            <div class="col-xl-4">{% if request.user.admin == list.req_to_godown.goddown_assign_to.admin %} <b>Own WorkStation</b> {% else %} <b>Outside Workstation</b> {% endif %}
+                            <div class="col-xl-4">
+
+                                {% if  good_request.request_admin == False %}
+                                <b>Own WorkStation</b>
+                                {% else %}
+                                <b>Outside Workstation</b>
+                                {% endif %}
                 </div>
                             <div class="col-xl-4">Transaction ID: <b>{{good_request.id}}</b>
                 </div>
@@ -354,7 +360,7 @@ td {
   <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
     {% elif request.user.id == good_request.req_to_godown.goddown_assign_to.id  and good_request.goods_sent == False %}
   <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
-{% elif not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == False %}
+{% elif not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and request.user.id != good_request.req_from_godown.godown_admin.id and good_request.goods_sent == False %}
   <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
         {% endif %}
 
@@ -425,7 +431,7 @@ Submit
                 </td>
             {% else %}
             {% endif %}
-            {% if not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id  and good_request.goods_sent == False %}
+            {% if not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and request.user.id != good_request.req_from_godown.godown_admin.id and good_request.goods_sent == False %}
 <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 Submit
                 </td>
@@ -523,7 +529,7 @@ Submit
                 </td>
             {% else %}
             {% endif %}
-            {% if not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id  and good_request.goods_sent == False %}
+            {% if not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and request.user.id != good_request.req_from_godown.godown_admin.id and good_request.goods_sent == False %}
 <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
                     <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
 

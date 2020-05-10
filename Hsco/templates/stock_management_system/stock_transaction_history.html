@@ -346,11 +346,13 @@ td {
                 <div class="card col-md-12">
                     <div class="card-body col-md-12">
                         <div class="row">
-                            <div class="col-xl-4">{% if request.user.admin == godown_transaction.goods_req_id.req_from_godown.goddown_assign_to.admin %}
+                            <div class="col-xl-4">
+                                {% if  godown_transaction.goods_req_id.request_admin == False %}
                                 <b>Own WorkStation</b>
-                                {% else %}
+    {% else %}
                                 <b>Outside Workstation</b>
-                                {% endif %}
+    {% endif %}
+
                 </div>
                             <div class="col-xl-4">Transaction ID: <b>{{godown_transaction.id}}</b>
                 </div>
