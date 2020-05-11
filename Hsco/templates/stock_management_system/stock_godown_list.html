@@ -27,6 +27,28 @@
 }
 
 </style>
+    <style>
+        .notification {
+
+  color: white;
+  text-decoration: none;
+  padding: 0px 0px;
+  position: relative;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+
+.notification .badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background-color: #0a0a0a;
+  color: white;
+}
+    </style>
 </head>
 
 <body id="page-top">
@@ -96,8 +118,10 @@
 
 
 
- <a href="{% url 'request_admin' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Request to Admin</button></a>
-
+<a href="{% url 'request_admin' %}" class="notification">
+<button style="background-color: #FC6E20;" class="btn btn-primary"> Request to Admin</button>
+    <span class="badge">{{request_admin_count}}</span>
+</a>
 
 
 

@@ -18,8 +18,12 @@ def stock_godown_list(request):
     else:
         godown_list = Godown.objects.filter(goddown_assign_to__id=request.user.id).order_by('-id') | \
                     Godown.objects.filter(godown_admin__profile_name=request.user.admin).order_by('-id')
+    request_admin_count = GoodsRequest.objects.filter(Q(request_admin=True) \
+              & Q(req_from_godown__godown_admin__id=request.user.id)& Q(request_admin_id=None) ).count()
+
     context = {
         'godown_list':godown_list,
+        'request_admin_count':request_admin_count,
     }
     return render(request,'stock_management_system/stock_godown_list.html',context)
 
@@ -808,7 +812,10 @@ def stock_transaction_history(request, from_godown_id, trans_id):
 def request_admin(request):
     request_admin_list= GoodsRequest.objects.filter(Q(request_admin=True)& Q(req_from_godown__godown_admin__id=request.user.id)).order_by('-id') | \
                         GoodsRequest.objects.filter(Q(request_admin=True) & Q(request_admin_id__id=request.user.id)).order_by('-id')
-    outside_workarea_admins = Godown.objects.filter(~Q(godown_admin__id=request.user.id)&~Q(godown_admin__id__in=[x.request_admin_id.id for x in request_admin_list])).values_list('godown_admin__id','godown_admin__name').distinct()
+    try:
+        outside_workarea_admins = Godown.objects.filter(~Q(godown_admin__id=request.user.id)&~Q(godown_admin__id__in=[x.request_admin_id.id for x in request_admin_list])).values_list('godown_admin__id','godown_admin__name').distinct()
+    except:
+        outside_workarea_admins = Godown.objects.filter(~Q(godown_admin__id=request.user.id)).values_list('godown_admin__id','godown_admin__name').distinct()
     admin_godowns = Godown.objects.filter(Q(godown_admin__id=request.user.id)).values_list('id','name_of_godown').distinct()
     context = {
         'request_admin_list': request_admin_list,
@@ -824,6 +831,7 @@ def request_admin(request):
             good_request.req_to_godown = Godown.objects.get(id=accept_to_godown)
             good_request.save(update_fields=['request_admin','req_to_godown'])
             messages.success(request, 'Request Accepted to the Godown ('+Godown.objects.get(id=accept_to_godown).name_of_godown+')')
+            return redirect('/request_admin')
 
         elif 'request_send' in request.POST:
             good_req = request.POST.get('good_req')
@@ -832,6 +840,7 @@ def request_admin(request):
             good_request.request_admin_id = SiteUser.objects.get(id=outside_admin_id)
             good_request.save(update_fields=['request_admin_id'])
             messages.success(request, 'Request Send to Admin ('+SiteUser.objects.get(id=outside_admin_id).profile_name+')')
+            return redirect('/request_admin')
 
 
     return render(request,'stock_management_system/request_admin_page.html',context)

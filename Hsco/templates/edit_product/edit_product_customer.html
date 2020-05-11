@@ -186,7 +186,6 @@ function myFunction() {
     document.getElementById("myText4").disabled = false;
     document.getElementById("myText5").disabled = false;
     document.getElementById("myText6").disabled = false;
-    document.getElementById("myText7").disabled = false;
     document.getElementById("myText8").disabled = false;
     document.getElementById("myText9").disabled = false;
     document.getElementById("myText9").disabled = false;
@@ -297,21 +296,7 @@ function myFunction() {
     </div>
   </div>
 
-
-    <label class="col-md-2 control-label">Capacity *
-</label>
-
-    <div class="col-md-4 inputGroupCont+-ainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="capacity" disabled placeholder="Components Replaced" id="myText7" value="{{product_id.capacity}}" class="form-control"  type="text">
-    </div>
-  </div>
-</div>
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Units *
+ <label class="col-md-2 control-label">Unit *
 
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -333,8 +318,22 @@ function myFunction() {
   </div>
 
 
+</div>
 
-                    <label class="col-md-2 control-label">Amount
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Capacity *
+</label>
+
+    <div class="col-md-4 inputGroupCont+-ainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="capacity" disabled placeholder="Max Capacity" id="myText7" value="{{main_product.max_capacity}}" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+                    <label class="col-md-2 control-label">Rate*
 
 
 
@@ -342,7 +341,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods" required placeholder="Rate x quantity" id="myText11" value="{{product_id.amount}}" disabled class="form-control" step="0.2" type="number">
+  <input  name="rate" id="rate" required placeholder="Rate" value="{{main_product.selling_price}}" disabled class="form-control" step="0.2" type="number">
     </div>
   </div>
 
@@ -350,20 +349,6 @@ function myFunction() {
   </div>
 
   <div class="form-group row">
-    <label class="col-md-2 control-label">Serial No. on scale
-
-
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
-<input  type="text" name="serial_no_scale" disabled placeholder="Serial No. on scale" id="myText5" value="{{product_id.serial_no_scale}}" class="form-control">
-
-    </div>
-  </div>
-
 
 
 
@@ -380,13 +365,43 @@ function myFunction() {
   <input  name="quantity" disabled placeholder="Quantity
 
 
-" class="form-control" id="myText9" value="{{product_id.quantity}}" type="text">
+" class="form-control" id="myText9" onkeyup="total_product_amount()" value="{{product_id.quantity}}" type="text">
     </div>
 </div>
+
+
+                    <label class="col-md-2 control-label">Amount
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="value_of_goods" required placeholder="Rate x quantity" id="myText11" value="{{product_id.amount}}" disabled class="form-control" step="0.2" type="number">
+    </div>
+  </div>
+
+
 </div>
 
 
 <div class="form-group row">
+     <label class="col-md-2 control-label">Serial No. on scale
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>
+<input  type="text" name="serial_no_scale" disabled placeholder="Serial No. on scale" id="myText5" value="{{product_id.serial_no_scale}}" class="form-control">
+
+    </div>
+  </div>
+
+
   <label class="col-md-2 control-label"> Godown
 
 
@@ -395,7 +410,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
-<select name="godown" class="form-control" onchange="choice5(this)" disabled id="godown">
+<select name="godown" class="form-control" onchange="choice5(this)" disabled id="godown" required>
   <option value="{{product_id.godown_id.id}}">{{product_id.godown_id.name_of_godown}} </option>
     {% for godown in godowns %}
   <option value="{{godown.id}}">{{godown.name_of_godown}} </option>
@@ -450,6 +465,17 @@ function myFunction() {
   <!-- Page level custom scripts -->
   <!--<script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>-->
   <!--<script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>-->
+                      <script type="text/javascript">
+      function total_product_amount(){
+    var rate = parseFloat(document.getElementById("rate").value);
+            var quantity = parseFloat(document.getElementById("myText9").value);
+
+            var total =Math.round(rate * quantity);
+
+            document.getElementById("myText11").value = total;
+}
+  </script>
+
             <script>
   function choice5(select) {
 

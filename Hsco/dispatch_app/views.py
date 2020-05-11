@@ -334,9 +334,20 @@ def dispatch_product(request,id):
     # purchase = Purchase_Details.objects.get(id=id)
     dispatch = Dispatch.objects.get(id=id)
     type_of_purchase_list = type_purchase.objects.all()  # 1
+    if request.user.role == 'Super Admin':
+        godowns = Godown.objects.filter(default_godown_purchase=False)
+
+    elif request.user.role == 'Admin':
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id ))
+
+    elif request.user.role == 'Manager':
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+    else:
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
     if 'purchase_id' in request.session:
         request.session['product_saved'] = False
-    godowns = Godown.objects.filter(default_godown_purchase=False)
 
     form = Product_Details_Form(request.POST or None)
     if request.method == 'POST':
@@ -1411,10 +1422,29 @@ def load_dispatch_stages_list(request):
 def edit_dispatch_product(request,id):
 
     pro_dispatch=Product_Details_Dispatch.objects.get(id=id)
-    try:
-        godowns = Godown.objects.filter(~Q(id=pro_dispatch.godown_id.id))
-    except:
-        godowns = Godown.objects.all()
+
+    if request.user.role == 'Super Admin':
+        try:
+            godowns = Godown.objects.filter(~Q(id=pro_dispatch.godown_id.id)&Q(default_godown_purchase=False))
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False))
+
+    elif request.user.role == 'Admin':
+        try:
+            godowns = Godown.objects.filter(~Q(id=pro_dispatch.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id) )
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id) )
+    elif request.user.role == 'Manager':
+        try:
+            godowns = Godown.objects.filter(~Q(id=pro_dispatch.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+    else:
+        try:
+            godowns = Godown.objects.filter(~Q(id=pro_dispatch.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
     if request.method == 'POST':
         quantity = request.POST.get('quantity')
         model_of_purchase = request.POST.get('model_of_purchase')
@@ -1433,26 +1463,32 @@ def edit_dispatch_product(request,id):
         godown_product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                                 sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
 
-        # If godown is changed, add stored quantity in current godown and subtract new quantity from new godown
-        if pro_dispatch.godown_id.id != godown and godown != 'None' and godown != '':
+        if (quantity != '') or  (godown != '') :
+            if  pro_dispatch.godown_id == None and godown != '':
+                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                    quantity=F("quantity") - quantity)
 
-            # adding stored quantity in current godown
-            GodownProduct.objects.filter(godown_id=pro_dispatch.godown_id.id, product_id=godown_product_id).update(
-                quantity=F("quantity") + pro_dispatch.quantity)
+            elif pro_dispatch.godown_id.id != godown and quantity != pro_dispatch.quantity :
+                GodownProduct.objects.filter(godown_id=pro_dispatch.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") + pro_dispatch.quantity)
 
-            # subtracting new quantity from new godown
-            GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
-                quantity=F("quantity") - quantity)
+                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                    quantity=F("quantity") - quantity)
+            elif pro_dispatch.godown_id.id != godown :
+                GodownProduct.objects.filter(godown_id=pro_dispatch.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") + pro_dispatch.quantity)
 
-        elif quantity != pro_dispatch.quantity and quantity != 'None' and quantity != '':
+                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                    quantity=F("quantity") - pro_dispatch.quantity)
+            elif quantity != pro_dispatch.quantity:
+                GodownProduct.objects.filter(godown_id=pro_dispatch.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") + pro_dispatch.quantity)
 
-            # adding old quantity from current godown
-            GodownProduct.objects.filter(godown_id=pro_dispatch.godown_id.id, product_id=godown_product_id).update(
-                quantity=F("quantity") + pro_dispatch.quantity)
+                GodownProduct.objects.filter(godown_id=pro_dispatch.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") - pro_dispatch)
+            else:
+                print('no godown changes')
 
-            # subtracting new quantity from current godown
-            GodownProduct.objects.filter(godown_id=pro_dispatch.godown_id.id, product_id=godown_product_id).update(
-                quantity=F("quantity") - quantity)
 
         Employee_Analysis_month.objects.filter(user_id=pro_dispatch.user_id,
                                                entry_date__month=pro_dispatch.entry_timedate.month,

@@ -273,24 +273,7 @@ color:;
     <!--</datalist>-->
   </div>
   </div>
-
-    <label class="col-md-2 control-label">Capacity *
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>
-  <input  name="capacity" required placeholder="Capacity" class="form-control"  type="text" value="">
-    </div>
-  </div>
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Unit *
+ <label class="col-md-2 control-label">Unit *
 
 
 </label>
@@ -312,7 +295,23 @@ color:;
   </div>
 
 
-  <label class="col-md-2 control-label">Amount *
+</div>
+
+
+<div id="product_details">
+<div class="form-group row">
+
+    <label class="col-md-2 control-label">Capacity *
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>
+  <input  name="capacity" required placeholder="Capacity" class="form-control"  type="text" value="">
+    </div>
+  </div>
+  <label class="col-md-2 control-label">Rate *
 
 
 
@@ -320,25 +319,40 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods" required placeholder="Rate x quantity" class="form-control" step="0.2" type="number">
+  <input required placeholder="Rate" class="form-control" step="0.2" type="number">
     </div>
   </div>
 
 
 
 
+
+</div>
 </div>
 
-
                 <div class="form-group row">
-                    <label class="col-md-2 control-label">Serial No. of Scale
+                     <label class="col-md-2 control-label">Quantity *
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
-  <input  name="serial_no_scale" placeholder="Serial No. of Scale" class="form-control"  type="text" value="">
+  <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>
+  <input  name="quantity" placeholder="Quantity" id="quantity" onkeyup="total_product_amount()"  required class="form-control" type="text" value="1">
+    </div>
+  </div>
+
+
+
+              <label class="col-md-2 control-label">Amount *
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="value_of_goods" required placeholder="Rate x quantity"  id="amount"  class="form-control" step="0.2" type="number">
     </div>
   </div>
 <!--                    <label class="col-md-2 control-label">Purchase Type:-->
@@ -351,33 +365,26 @@ color:;
 <!--  <input  name="purchase_type" placeholder="Purchase Type" class="form-control"  type="text" value="">-->
 <!--    </div>-->
 <!--  </div>-->
-                    <label class="col-md-2 control-label">Quantity *
+
+
+
+                </div>
+
+            <div class="form-group row">
+
+
+                    <label class="col-md-2 control-label">Serial No. of Scale
 
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>
-  <input  name="quantity" placeholder="Quantity" required class="form-control" type="text" value="1">
+  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
+  <input  name="serial_no_scale" placeholder="Serial No. of Scale" class="form-control"  type="text" value="">
     </div>
   </div>
 
 
-
-<!--                    <label class="col-md-2 control-label">Sales Person-->
-
-<!--</label>-->
-
-<!--    <div class="col-md-4 inputGroupContainer">-->
-<!--  <div class="input-group">-->
-<!--  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
-<!--  <input  name="sales_person" placeholder="Sales Person" class="form-control"  type="text" value="">-->
-<!--    </div>-->
-<!--  </div>-->
-
-                </div>
-
-            <div class="form-group row">
   <label class="col-md-2 control-label">Select Godown
 
 
@@ -386,10 +393,14 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
-<select id="godown" name="godown" onchange="choice5(this)" class="form-control">
+<select required id="godown" name="godown" onchange="choice5(this)" class="form-control">
     {% if default_godown %}
           <option value="{{default_godown.id}}">{{default_godown.name_of_godown}}</option>
+    {% else %}
+              <option value="">Select</option>
+
     {% endif %}
+
   {% for godown in godowns %}
   <option value="{{godown.id}}">{{godown.name_of_godown}}</option>
 
@@ -469,6 +480,16 @@ color:;
 }
 
 
+  </script>
+  <script type="text/javascript">
+      function total_product_amount(){
+    var rate = parseFloat(document.getElementById("rate").value);
+            var quantity = parseFloat(document.getElementById("quantity").value);
+
+            var total =Math.round(rate * quantity);
+
+            document.getElementById("amount").value = total;
+}
   </script>
 <script>
  function choice1(select) {
@@ -562,7 +583,22 @@ $("#sub_model").val(select.options[select.selectedIndex].text);
 
 function choice_sub_sub_model(select) {
 $("#sub_sub_model").val(select.options[select.selectedIndex].text);
+    $.ajax({                       // initialize an AJAX request
+            url: "/get_product_details/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+            data: {
+              'model_of_purchase': $('#model_of_purchase').val(),     // add the country id to the GET parameters
+              'type_of_scale': $("#type_of_scale").val(),      // add the country id to the GET parameters
+              'sub_model': $("#sub_model").val(),       // add the country id to the GET parameters
+              'sub_sub_model': select.options[select.selectedIndex].value,      // add the country id to the GET parameters
 
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+
+        $("#product_details").html(data);
+
+
+            }
+          });
 }
 
 function isOneChecked() {
