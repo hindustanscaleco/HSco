@@ -86,6 +86,7 @@ class GoodsRequest(models.Model):
     status = models.CharField(max_length=50,null=True,blank=True)
     request_admin = models.BooleanField(default=False)
     outside_workstation = models.BooleanField(default=False)
+    notify = models.BooleanField(default=False)
     request_admin_id = models.ForeignKey(SiteUser,on_delete=models.CASCADE,related_name='request_admin', null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
