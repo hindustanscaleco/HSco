@@ -638,9 +638,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
             if status == 'Confirms the transformation' :
 
                 if good_request.goods_received == False:
-                    new_transaction = GodownTransactions()
-                    new_transaction.goods_req_id = good_request
-                    new_transaction.save()
+
                     for good in requested_goods:
 
                         if GodownProduct.objects.filter(godown_id=from_godown_id, product_id=good.godown_product_id.product_id):
@@ -648,9 +646,12 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                                 #for mismatch
 
                                 if good.sent_quantity != (good.faulty_quantity + good.received_quantity):
+                                    print('something')
                                     good_request.status = 'Mismatch occured'
                                     good_request.notify = True
+                                    print('something23')
                                     good_request.save(update_fields=['status','notify'])
+                                    print('something2')
                                     return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
                                 elif good.sent_quantity == (good.faulty_quantity + good.received_quantity):
                                     good_request.status = 'Confirms the transformation'
@@ -663,6 +664,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                             elif good.req_type == 'Carton':
                                 #for mismatch
                                 if good.sent_carton_count != (good.faulty_carton + good.received_carton_count):
+                                    good_request.status = 'Mismatch occured'
                                     good_request.notify = True
                                     good_request.save(update_fields=['status', 'notify'])
                                     return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
@@ -686,7 +688,9 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                             good_request.status = status
                             good_request.goods_received = True
                             good_request.save(update_fields=['status','req_to_godown','goods_received'])
-
+                            new_transaction = GodownTransactions()
+                            new_transaction.goods_req_id = good_request
+                            new_transaction.save()
             return redirect('/stock_pending_request/'+str(from_godown_id))
     context = {
         'good_request': good_request,
