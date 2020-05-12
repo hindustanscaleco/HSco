@@ -560,9 +560,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                     if faulty != '0':
                         item2.faulty_quantity = float(faulty)
                         item2.log_entered_by = request.user.name
-                    if item2.req_quantity != (float(faulty) + float(number)):
-                        print('something')
-                        good_request.status = 'Mismatch occured'
+
 
 
             elif req_type == 'Carton':
@@ -577,13 +575,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                     if  faulty != '0':
                         item2.faulty_carton = float(faulty)
                         item2.log_entered_by = request.user.name
-                if item2.req_carton_count != (float(faulty) + float(number)):
-                    print(faulty)
-                    print(faulty)
-                    print(number)
-                    print(number)
-                    print(number)
-                    good_request.status = 'Mismatch occured'
+
 
             item2.save(update_fields=['sent_quantity','received_quantity','sent_carton_count','received_carton_count','log_entered_by',
                                       'faulty_carton','faulty_quantity'])
@@ -644,8 +636,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                 return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
 
             if status == 'Confirms the transformation' :
-                good_request.status = 'Confirms the transformation'
-                good_request.save(update_fields=['status'])
+
                 if good_request.goods_received == False:
                     new_transaction = GodownTransactions()
                     new_transaction.goods_req_id = good_request
@@ -654,6 +645,20 @@ def stock_transaction_status(request,from_godown_id, trans_id):
 
                         if GodownProduct.objects.filter(godown_id=from_godown_id, product_id=good.godown_product_id.product_id):
                             if good.req_type == 'Individual':
+                                #for mismatch
+                                print(good.req_quantity)
+                                print(good.faulty_quantity)
+                                print(good.received_quantity)
+                                print(good.req_quantity)
+                                print((good.faulty_quantity + good.received_quantity))
+                                if good.sent_quantity != (good.faulty_quantity + good.received_quantity):
+                                    print('yessesss')
+                                    print('yessesss')
+                                    good_request.status = 'Mismatch occured'
+                                    good_request.save(update_fields=['status'])
+                                    return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
+                                elif good.sent_quantity == (good.faulty_quantity + good.received_quantity):
+                                    good_request.status = 'Confirms the transformation'
                                 GodownProduct.objects.filter(godown_id=from_godown_id,
                                                              product_id=good.godown_product_id.product_id).update(
                                     quantity=F("quantity") + good.received_quantity)
@@ -661,6 +666,13 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                                                              product_id=good.godown_product_id.product_id).update(
                                     individual_faulty=F("individual_faulty") + good.faulty_quantity)
                             elif good.req_type == 'Carton':
+                                #for mismatch
+                                if good.sent_carton_count != (good.faulty_carton + good.received_carton_count):
+                                    good_request.status = 'Mismatch occured'
+                                    good_request.save(update_fields=['status'])
+                                    return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
+                                elif good.sent_carton_count == (good.faulty_carton + good.received_carton_count):
+                                    good_request.status = 'Confirms the transformation'
                                 #converting carton quantity to individual quantity
                                 product = Product.objects.get(id=good.godown_product_id.product_id)
                                 individual_quantity = (float(product.carton_size) * float(good.received_carton_count))
@@ -675,11 +687,11 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                                                              product_id=good.godown_product_id.product_id).update(
                                     individual_faulty=F("individual_faulty") + individual_faulty)
                             good_request.goods_received = True
-                            good_request.save(update_fields=['goods_received',])
 
                             good_request.status = status
                             good_request.goods_received = True
                             good_request.save(update_fields=['status','req_to_godown','goods_received'])
+
             return redirect('/stock_pending_request/'+str(from_godown_id))
     context = {
         'good_request': good_request,
