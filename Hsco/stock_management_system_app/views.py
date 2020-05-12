@@ -18,12 +18,15 @@ def stock_godown_list(request):
     else:
         godown_list = Godown.objects.filter(goddown_assign_to__id=request.user.id).order_by('-id') | \
                     Godown.objects.filter(godown_admin__profile_name=request.user.admin).order_by('-id')
-    request_admin_count = GoodsRequest.objects.filter(Q(request_admin=True) \
-              & Q(req_from_godown__godown_admin__id=request.user.id)& Q(request_admin_id=None) ).count()
+
+    request_admin_indication = GoodsRequest.objects.filter(Q(req_from_godown__godown_admin__id=request.user.id) &
+     Q(request_admin=True) & Q(request_admin_id=None)) | \
+     GoodsRequest.objects.filter(~Q(req_from_godown__godown_admin__id=request.user.id) &Q(request_admin=True)
+                                 & ~Q(request_admin_id = None)& Q(req_to_godown = None))
 
     context = {
         'godown_list':godown_list,
-        'request_admin_count':request_admin_count,
+        'request_admin_indication':request_admin_indication,
     }
     return render(request,'stock_management_system/stock_godown_list.html',context)
 
@@ -282,12 +285,19 @@ def stock_godown(request,id):
         new_good_request_id = 1
     else:
         new_good_request_id = GoodsRequest.objects.latest('id').id + 1
+
+    pending_req_indication = GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_to_godown__goddown_assign_to__id=request.user.id)&Q(req_to_godown__id=id)& Q(goods_sent=False)) | \
+    GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None) & Q(req_to_godown__godown_admin__id=request.user.id) & Q(req_to_godown__id=id) & Q(goods_sent=False)) | \
+    GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None) & Q(req_to_godown__godown_admin__profile_name=request.user.admin) & Q( req_to_godown__id=id)& Q(goods_sent=False))
+    print(pending_req_indication)
+    print(pending_req_indication)
     context={
         'godown_id': godown_id,
         'new_good_request_id': new_good_request_id,
         'type_of_purchase_list': type_of_purchase_list,
         'products': products,
         'godown_products': godown_products,
+        'pending_req_indication': pending_req_indication,
 
     }
     if request.method == 'POST' or request.method == 'FILES':

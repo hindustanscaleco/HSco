@@ -292,6 +292,7 @@ class Pi_sectionForm(forms.ModelForm):
                'type': 'text',
                'placeholder': "Select PI Template",
                'class': 'form-control',
+               'id': 'select_pi_template_id',
            }
        ))
 

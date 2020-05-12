@@ -319,7 +319,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input required placeholder="Rate" class="form-control" step="0.2" type="number">
+  <input required placeholder="Rate" class="form-control" id="rate" onkeyup="total_product_amount()" step="0.2" type="number">
     </div>
   </div>
 
@@ -352,7 +352,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods" required placeholder="Rate x quantity"  id="amount"  class="form-control" step="0.2" type="number">
+  <input  name="value_of_goods" required placeholder="Rate x quantity"  id="amount" onclick="total_product_amount()"  class="form-control" step="0.2" type="number">
     </div>
   </div>
 <!--                    <label class="col-md-2 control-label">Purchase Type:-->

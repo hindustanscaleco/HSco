@@ -416,7 +416,17 @@ def quick_purchase_entry(request):
     except:
         pass
     request.session['global_count_sess'] = global_count
-    godowns = Godown.objects.filter(default_godown_purchase=False)
+    if request.user.role == 'Super Admin':
+        godowns = Godown.objects.filter(default_godown_purchase=False)
+
+    elif request.user.role == 'Admin':
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id ))
+
+    elif request.user.role == 'Manager':
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+    else:
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
     type_of_purchase_list = type_purchase.objects.all()  # 1
     if request.method == 'POST':
         quantity = float(request.POST.get('quantity'))

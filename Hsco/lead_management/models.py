@@ -69,7 +69,8 @@ class Pi_section(models.Model):
     grand_total = models.FloatField(null=True,blank=True)
 
     # entry_timedate = models.DateTimeField(default=timezone.now, )
-    first_submit = models.BooleanField(default=False, null=True,blank=True)
+    first_submit = models.BooleanField(default=False)
+    show_external_pi_first = models.BooleanField(default=False)
     entry_timedate = models.DateField(default=datetime.date.today)
 
     tracker = FieldTracker()

@@ -118,10 +118,14 @@
 
 
 
-<a href="{% url 'request_admin' %}" class="notification">
-<button style="background-color: #FC6E20;" class="btn btn-primary"> Request to Admin</button>
-    <span class="badge">{{request_admin_count}}</span>
+<a href="{% url 'request_admin' %}" >
+    {% if request_admin_indication %}
+<button style="background-color: #FC6E20; border-color: #2196F3; color: blue;" class="btn btn-primary"> Request to Admin</button>
+    {% else %}
+<button style="background-color: #FC6E20; " class="btn btn-primary"> Request to Admin</button>
+    {% endif %}
 </a>
+
 
 
 

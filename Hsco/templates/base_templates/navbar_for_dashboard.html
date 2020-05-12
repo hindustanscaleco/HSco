@@ -109,7 +109,7 @@
                 </a>
            {% endfor %}
              {% for msg in request_admin_notif %}
-                <a class="dropdown-item d-flex align-items-center" href="/request_admin/">
+                <a class="dropdown-item d-flex align-items-center" href="/{{msg.request_admin}}/">
                   <div class="mr-3">
                     <div class="icon-circle bg-warning">
                       <i class="fas fa-exclamation-triangle text-white"></i>
@@ -122,7 +122,7 @@
                 </a>
            {% endfor %}
               {% for msg in req_product_mismatch_notif %}
-                <a class="dropdown-item d-flex align-items-center" href="/stock_transaction_status/{{goods_req_id.req_from_godown.pk}}/{{goods_req_id.pk}}">
+                <a class="dropdown-item d-flex align-items-center" href="/stock_transaction_status/{{msg.goods_req_id.req_from_godown.pk}}/{{msg.goods_req_id.pk}}">
                   <div class="mr-3">
                     <div class="icon-circle bg-warning">
                       <i class="fas fa-exclamation-triangle text-white"></i>

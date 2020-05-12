@@ -151,9 +151,13 @@ def notification_context(request):
         request_admin_list = GoodsRequest.objects.filter(Q(request_admin=True) & Q(req_from_godown__godown_admin__id=request.user.id)) | \
                              GoodsRequest.objects.filter(Q(request_admin=True) & Q(request_admin_id__id=request.user.id))
         # req_product_mismatch_notif = RequestedProducts.objects.filter((Q(sent_quantity__gte=0.0)|Q(sent_carton_count__gte=0.0))|~Q(sent_quantity=F('received_quantity')))
-        req_product_mismatch_notif = RequestedProducts.objects.filter(
-            (~Q(sent_quantity=F('received_quantity'))|~Q(sent_carton_count=F('received_carton_count')))& Q(godown_id__godown_admin=request.user)
-        )
+        if request.user.role == 'Super Admin':
+            req_product_mismatch_notif = RequestedProducts.objects.filter((~Q(received_quantity=F('received_quantity') + F('faulty_quantity')) | ~Q(
+                    received_carton_count=F('received_carton_count') + F('received_carton_count')))).order_by('-id')
+        else:
+            req_product_mismatch_notif = RequestedProducts.objects.filter(
+                (~Q(received_quantity=F('received_quantity')+F('faulty_quantity'))|~Q(received_carton_count=F('received_carton_count')+F('received_carton_count')))& Q(godown_id__godown_admin=request.user)
+            ).order_by('-id')
 
         if postponed_alert.count() > 0:
             post_alert = True

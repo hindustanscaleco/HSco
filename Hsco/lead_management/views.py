@@ -1256,11 +1256,11 @@ def add_lead(request):
 
 def update_view_lead(request,id):
     lead_id = Lead.objects.get(id=id)
-    users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',)
-    under_admin_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',
-                                                admin__icontains=request.user.profile_name)
-    under_manager_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',
-                                                  manager__icontains=request.user.profile_name)
+    users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module')& ~Q(profile_name=lead_id.owner_of_opportunity.profile_name))
+    under_admin_users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module')&
+                          Q(admin__icontains=request.user.profile_name)& ~Q(profile_name=lead_id.owner_of_opportunity.profile_name))
+    under_manager_users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module')&
+                          Q(manager__icontains=request.user.profile_name) & ~Q(profile_name=lead_id.owner_of_opportunity.profile_name))
 
     lead_pi_products = Pi_product.objects.filter(lead_id=id)
     hfu = Follow_up_section.objects.filter(lead_id=id).last()
@@ -1889,7 +1889,8 @@ def update_view_lead(request,id):
             if postpond_time_date != '' and postpond_time_date != None:
                 item2.postpond_time_date = postpond_time_date
             item2.log_entered_by = request.user.name
-            item2.owner_of_opportunity = SiteUser.objects.get(name=owner_of_opportunity)
+            if owner_of_opportunity != None and owner_of_opportunity != 'None':
+                item2.owner_of_opportunity = SiteUser.objects.get(profile_name=owner_of_opportunity)
             item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
                                       'requirement','upload_requirement_file','owner_of_opportunity','log_entered_by',
                                       'lost_reason','postponed_reason','postpond_time_date'])
@@ -1930,8 +1931,10 @@ def update_view_lead(request,id):
 
             if email_type == 'internal_pi':
                 request.session['email_type'] = 'internal_pi'
+                Pi_section.objects.filter(lead_id=id).update(show_external_pi_first=False)
             elif email_type == 'external_pi':
                 request.session['email_type'] = 'external_pi'
+                Pi_section.objects.filter(lead_id=id).update(show_external_pi_first=True)
 
             if call2 == 'on':
                 call2 = 'True'

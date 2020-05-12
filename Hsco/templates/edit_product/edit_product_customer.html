@@ -180,6 +180,8 @@ function myFunction() {
     x.style.display = "none";
     y.style.display = "block";
   }
+  document.getElementById("capacity").disabled = false;
+  document.getElementById("rate").disabled = false;
   document.getElementById("myText").disabled = false;
     document.getElementById("myText2").disabled = false;
     document.getElementById("myText3").disabled = false;
@@ -322,18 +324,18 @@ function myFunction() {
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Capacity *
+  <label class="col-md-2 control-label">Capacity(Product DB) *
 </label>
 
     <div class="col-md-4 inputGroupCont+-ainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="capacity" disabled placeholder="Max Capacity" id="myText7" value="{{main_product.max_capacity}}" class="form-control"  type="text">
+  <input  name="capacity" id="capacity" disabled placeholder="Max Capacity" id="myText7" value="{{main_product.max_capacity}}" class="form-control"  type="text">
     </div>
   </div>
 
 
-                    <label class="col-md-2 control-label">Rate*
+                    <label class="col-md-2 control-label">Rate(Product DB) *
 
 
 
@@ -341,7 +343,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="rate" id="rate" required placeholder="Rate" value="{{main_product.selling_price}}" disabled class="form-control" step="0.2" type="number">
+  <input  name="rate" id="rate" required placeholder="Rate"  onkeyup="total_product_amount()"  value="{{main_product.selling_price}}"  disabled class="form-control" step="0.2" type="number">
     </div>
   </div>
 
@@ -378,7 +380,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods" required placeholder="Rate x quantity" id="myText11" value="{{product_id.amount}}" disabled class="form-control" step="0.2" type="number">
+  <input  name="value_of_goods" required placeholder="Rate x quantity" onclick="total_product_amount()" id="myText11" value="{{product_id.amount}}" disabled class="form-control" step="0.2" type="number">
     </div>
   </div>
 
