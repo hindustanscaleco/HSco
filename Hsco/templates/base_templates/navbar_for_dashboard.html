@@ -121,6 +121,7 @@
                   </div>
                 </a>
            {% endfor %}
+
               {% for msg in req_product_mismatch_notif %}
                 <a class="dropdown-item d-flex align-items-center" href="/stock_transaction_status/{{msg.goods_req_id.req_from_godown.pk}}/{{msg.goods_req_id.pk}}">
                   <div class="mr-3">
@@ -129,7 +130,7 @@
                     </div>
                   </div>
                   <div>
-                    <div class="small text-gray-500">System - {{ msg.entry_timedate }} </div>
+                    <div class="small text-gray-500">System - {{ msg.entry_timedate_time }} </div>
                     Sent & Rec Quantity Mismatched
                   </div>
                 </a>

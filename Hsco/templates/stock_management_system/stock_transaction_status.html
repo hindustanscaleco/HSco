@@ -337,7 +337,7 @@ td {
                         <div class="row">
                             <div class="col-xl-4">
 
-                                {% if  good_request.request_admin == False %}
+                                {% if  good_request.outside_workstation == False %}
                                 <b>Own WorkStation</b>
                                 {% else %}
                                 <b>Outside Workstation</b>
@@ -355,22 +355,29 @@ td {
                                                            <div class="col-xl-8 col-md-8">
                         Current Stage:           &nbsp &nbsp      <div class="btn-group">
 <select class="btn btn-success" name="status"  id="c5aasrs">
-  <option class="btn btn-success" value="{{good_request.status}}">{{good_request.status}}</option>
-{% if request.user.id == good_request.req_to_godown.godown_admin.id and good_request.goods_sent == False %}
-  <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
-    {% elif request.user.id == good_request.req_to_godown.goddown_assign_to.id  and good_request.goods_sent == False %}
-  <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
-{% elif not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and request.user.id != good_request.req_from_godown.godown_admin.id and good_request.goods_sent == False %}
-  <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
-        {% endif %}
+{% if good_request.status == 'Mismatch occured' %}
+          <option class="btn btn-success" value="{{good_request.status}}">{{good_request.status}}</option>
+
+    {% if good_request.req_from_godown.godown_admin.id == request.user.id  or request.user.role == 'Super Admin' %}
+      <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
+    {% endif %}
+{% else %}
+      <option class="btn btn-success" value="{{good_request.status}}">{{good_request.status}}</option>
+    {% if request.user.id == good_request.req_to_godown.godown_admin.id and good_request.goods_sent == False %}
+      <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
+        {% elif request.user.id == good_request.req_to_godown.goddown_assign_to.id  and good_request.goods_sent == False %}
+      <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
+    {% elif not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and request.user.id != good_request.req_from_godown.godown_admin.id and good_request.goods_sent == False %}
+      <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
+            {% endif %}
 
 
-        {% if request.user.id == good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == True %}
-  <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
-    {% elif request.user.id == good_request.req_from_godown.godown_admin.id and good_request.goods_sent == True %}
-  <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
-        {% endif %}
-
+            {% if request.user.id == good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == True %}
+      <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
+        {% elif request.user.id == good_request.req_from_godown.godown_admin.id and good_request.goods_sent == True %}
+      <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
+            {% endif %}
+{% endif %}
 </select>
                                                            </div></div>
                                                            <div class="col-xl-1 col-md-1">

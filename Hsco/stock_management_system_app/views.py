@@ -288,8 +288,8 @@ def stock_godown(request,id):
 
     pending_req_indication = GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_to_godown__goddown_assign_to__id=request.user.id)&Q(req_to_godown__id=id)& Q(goods_sent=False)) | \
     GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None) & Q(req_to_godown__godown_admin__id=request.user.id) & Q(req_to_godown__id=id) & Q(goods_sent=False)) | \
-    GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None) & Q(req_to_godown__godown_admin__profile_name=request.user.admin) & Q( req_to_godown__id=id)& Q(goods_sent=False))
-    print(pending_req_indication)
+    GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None) & Q(req_to_godown__godown_admin__profile_name=request.user.admin) & Q( req_to_godown__id=id)& Q(goods_sent=False))| \
+    GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None) & Q(req_to_godown=None) & Q(is_all_req=True)& Q(goods_sent=False))
     print(pending_req_indication)
     context={
         'godown_id': godown_id,
@@ -425,12 +425,13 @@ def stock_good_request(request,godown_id, request_id):
                 item2.is_all_req = True
             elif req_to_godown == 'admin':
                 item2.request_admin = True
+                item2.outside_workstation = True
             else:
                 item2.req_to_godown = Godown.objects.get(id=req_to_godown)
             item2.log_entered_by = request.user.name
             item2.entered_by = SiteUser.objects.get(id=request.user.id)
             item2.status = 'Pending From Target'
-            item2.save(update_fields=['req_from_godown','is_all_req','req_to_godown','log_entered_by','entered_by','status','request_admin'])
+            item2.save(update_fields=['req_from_godown','is_all_req','req_to_godown','log_entered_by','entered_by','status','request_admin','outside_workstation'])
             return redirect('/stock_pending_request/'+str(godown_id))
 
         elif 'submit3' in request.POST:
@@ -552,13 +553,16 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                     if number != '0':
                         item2.sent_quantity = float(number)
                         item2.log_entered_by = request.user.name
-                elif good_request.status == 'Confirmation of goods transformation':
+                elif good_request.status == 'Confirmation of goods transformation' or good_request.status == 'Mismatch occured':
                     if number != '0':
                         item2.received_quantity = float(number)
                         item2.log_entered_by = request.user.name
                     if faulty != '0':
                         item2.faulty_quantity = float(faulty)
                         item2.log_entered_by = request.user.name
+                    if item2.req_quantity != (float(faulty) + float(number)):
+                        print('something')
+                        good_request.status = 'Mismatch occured'
 
 
             elif req_type == 'Carton':
@@ -566,17 +570,24 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                     if number != '0':
                         item2.sent_carton_count = float(number)
                         item2.log_entered_by = request.user.name
-                elif good_request.status == 'Confirmation of goods transformation':
+                elif good_request.status == 'Confirmation of goods transformation' or good_request.status == 'Mismatch occured':
                     if number != '0' :
                         item2.received_carton_count = float(number)
                         item2.log_entered_by = request.user.name
                     if  faulty != '0':
                         item2.faulty_carton = float(faulty)
                         item2.log_entered_by = request.user.name
+                if item2.req_carton_count != (float(faulty) + float(number)):
+                    print(faulty)
+                    print(faulty)
+                    print(number)
+                    print(number)
+                    print(number)
+                    good_request.status = 'Mismatch occured'
 
             item2.save(update_fields=['sent_quantity','received_quantity','sent_carton_count','received_carton_count','log_entered_by',
-                                      'faulty_carton','faulty_quantity',])
-            good_request.save(update_fields=['req_to_godown'])
+                                      'faulty_carton','faulty_quantity'])
+            good_request.save(update_fields=['req_to_godown','status'])
             return redirect('/stock_transaction_status/'+str(from_godown_id)+'/'+str(trans_id))
 
         if 'submit2' in request.POST:
@@ -632,7 +643,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
 
                 return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
 
-            if status == 'Confirms the transformation':
+            if status == 'Confirms the transformation' :
                 good_request.status = 'Confirms the transformation'
                 good_request.save(update_fields=['status'])
                 if good_request.goods_received == False:

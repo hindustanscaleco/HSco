@@ -4,6 +4,7 @@ from model_utils import FieldTracker
 from user_app.models import SiteUser
 import datetime
 from purchase_app.models import Purchase_Details
+from django.utils import timezone
 
 
 class Product(models.Model):
@@ -84,6 +85,7 @@ class GoodsRequest(models.Model):
     entered_by = models.ForeignKey(SiteUser,on_delete=models.CASCADE,null=True,blank=True)
     status = models.CharField(max_length=50,null=True,blank=True)
     request_admin = models.BooleanField(default=False)
+    outside_workstation = models.BooleanField(default=False)
     request_admin_id = models.ForeignKey(SiteUser,on_delete=models.CASCADE,related_name='request_admin', null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
@@ -105,6 +107,7 @@ class RequestedProducts(models.Model):
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
+    entry_timedate_time = models.DateTimeField(default=timezone.now,)
 
     def __int__(self):
         return self.id

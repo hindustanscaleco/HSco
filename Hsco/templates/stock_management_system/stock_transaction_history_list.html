@@ -253,7 +253,7 @@ td {
 <tr style="cursor: pointer;" onclick="location.href='/stock_transaction_history/{{list.goods_req_id.req_from_godown.id}}/{{list.id}}'">
             <td style="border: 0px solid gray;">{{list.id}}</td>
             <td style="border: 0px solid gray;">
-                {% if list.goods_req_id.request_admin == False  %}
+                {% if list.goods_req_id.outside_workstation == False  %}
     Own WorkStation
     {% else %}
     Outside Workstation
