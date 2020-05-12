@@ -1963,7 +1963,7 @@ def update_view_lead(request,id):
                 history.save()
             try:
 
-                if email == 'True' and upload_pi_file == None :
+                if email == 'True' and upload_pi_file == None and email_type == 'external_pi':
                     pi_file = Pi_section.objects.filter(lead_id=id).latest('pk').upload_pi_file
 
                     pi_file = pi_file
@@ -1983,7 +1983,7 @@ def update_view_lead(request,id):
 
                     email_send.send()
                     messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
-                elif email == 'True' and upload_pi_file !=None :
+                elif email == 'True' and upload_pi_file !=None and email_type == 'external_pi':
                     pi_file = upload_pi_file
                     history = Pi_History()
 
@@ -2030,9 +2030,11 @@ def update_view_lead(request,id):
                 item2 = Pi_section.objects.filter(lead_id=id).first()
                 item2.discount = discount
 
-                if upload_pi_file != None or '':
+                if upload_pi_file != None or select_pi_template != '':
                     item2.upload_pi_file = upload_pi_file
-                item2.select_pi_template = select_pi_template
+
+                if select_pi_template != None or select_pi_template !=  '':
+                    item2.select_pi_template = select_pi_template
                 item2.call = call
                 item2.email = email
                 item2.whatsapp = whatsapp
@@ -2085,6 +2087,11 @@ def update_view_lead(request,id):
             else :
 
                 item2 = Pi_section()
+                if email_type == 'internal_pi':
+                    item2.show_external_pi_first = False
+                elif email_type == 'external_pi':
+                    item2.show_external_pi_first = True
+
                 item2.discount = discount
                 item2.upload_pi_file = upload_pi_file
                 item2.select_pi_template = select_pi_template
