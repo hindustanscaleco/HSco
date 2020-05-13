@@ -139,15 +139,16 @@ td {
             </tr>
 <tr>
                     {% for value in lead.values %}
-                        {% if 'pisection' in lead.keys %}
+                        {% if 'pi_history' in lead.keys %}
                             {% if forloop.last %}
                                 <td>
                                     <table>
                                         {% for val in value %}
                                             <tr>
-                                                <td>{{ val.grand_total }}</td>
-                                                <td>{{ val.discount }}</td>
-                                                <td>{{ val.select_gst_type }}</td>
+                                                <td>{{ val.pi_history_file }}</td>
+                                                <td>{{ val.entry_timedate_time }}</td>
+                                                <td>{{ val.call_detail }}</td>
+                                                <td>{{ val.medium_of_selection }}</td>
                                             </tr>
                                         {% endfor %}
                                     </table>
@@ -155,9 +156,34 @@ td {
                             {% else %}
                                 <td>{{ value }}</td>
                             {% endif %}
+                        {% elif 'followup_history' in lead.keys %}
+                            {% if forloop.last %}
+                                <td>
+                                    <table>
+
+                                        {% for val in value %}
+
+                                            <tr>
+                                                <td>{{ val.wa_no }}</td>
+                                                <td>{{ val.wa_msg }}</td>
+                                                <td>{{ val.email_subject }}</td>
+                                                <td>{{ val.email_msg }}</td>
+                                                <td>{{ val.followup_history_file }}</td>
+                                                <td>{{ val.sms_msg }}</td>
+                                                <td>{{ val.call_response }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </td>
+                            {% else %}
+                                <td>{{ value }}</td>
+                            {% endif %}
+
                         {% else %}
                             <td>{{ value }}</td>
                         {% endif %}
+
+
                     {% endfor %}
                 </tr>
 {% endfor %}
