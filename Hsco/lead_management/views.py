@@ -1339,9 +1339,9 @@ def update_view_lead(request,id):
 
     if request.user.role == 'Employee':
 
-        work_area_godowns = Godown.objects.filter(godown_admin__profile_name=request.user.admin,goddown_assign_to__profile_name=request.user.profile_name)
+        work_area_godowns = Godown.objects.filter(Q(godown_admin__profile_name=request.user.admin) | Q(goddown_assign_to__profile_name=request.user.profile_name))
     elif request.user.role == 'Manager':
-        work_area_godowns = Godown.objects.filter(godown_admin__profile_name=request.user.admin,goddown_assign_to__profile_name=request.user.profile_name)
+        work_area_godowns = Godown.objects.filter(Q(godown_admin__profile_name=request.user.admin) | Q(goddown_assign_to__profile_name=request.user.profile_name))
     elif request.user.role == 'Admin':
         work_area_godowns = Godown.objects.filter(godown_admin__profile_name=request.user.profile_name)
     elif request.user.role == 'Super Admin':
