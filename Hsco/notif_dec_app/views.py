@@ -142,7 +142,7 @@ def notification_context(request):
 
         message = Chat_model.objects.filter(message_to=request.user.id, is_viewed=False,is_warning=False,is_defect=False)
         alert = Chat_model.objects.filter((Q(message_to=request.user.id) &Q(is_viewed=False))&(Q(is_warning=True)|Q(is_defect=True)))
-        postponed_alert = Lead.objects.filter(Q(postpond_time_date__gte=datetime.date.today()) & Q(owner_of_opportunity__id=request.user.pk) & ~Q(current_stage='Postponed'))
+        postponed_alert = Lead.objects.filter(Q(current_stage='Postponed') & Q(postpond_time_date__gte=datetime.date.today()) & Q(owner_of_opportunity__id=request.user.pk))
         # next_date = datetime.date.today() + timedelta(days=1)
 
 
