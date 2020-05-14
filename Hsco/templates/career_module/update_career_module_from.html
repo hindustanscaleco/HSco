@@ -144,8 +144,13 @@ color:;
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-{{career_form.choose_position}}
-    </div>
+
+  <input required name="choose_position" value="{{career_module_id.choose_position}}" placeholder="Choose Position" class="form-control" type="text" list="position">
+    <datalist style="height:20px;" id="position">
+      <option value="Sales Position">Sales Position</option>
+      <option value="Technical Position">Technical Position</option>
+    </datalist>
+  </div>
   </div>
   </div>
 
@@ -185,7 +190,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-{{career_form.date_of_birth}}
+{{ career_form.date_of_birth }}
     </div>
   </div>
 
@@ -243,6 +248,7 @@ color:;
 
      <center><h3>Education Details</h3></center>
      <br>
+     {% for education_form in edu_details_list %}
        <div class="form-group row">
 
   <label class="col-md-2 control-label">Institute Name / University
@@ -250,7 +256,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-{{career_form.institute_name}}
+      <input name="institute_name'+initial_count+'" type="text" value="{{education_form.institute_name}}" class="form-control" placeholder="Institute Name / University">
     </div>
   </div>
 
@@ -261,7 +267,8 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.course}}
+<input name="course'+initial_count+'" type="text" value="{{education_form.course}}" class="form-control" placeholder="Course">
+
     </div>
   </div>
         </div>
@@ -273,7 +280,8 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
- {{career_form.year_of_completion}}
+
+      <input name="year_of_completion'+initial_count+'" type="text" class="form-control" min="1990" max="2020" value="{{education_form.year_of_completion}}" placeholder="Year Of Completion">
     </div>
   </div>
 
@@ -284,11 +292,12 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.percentage}}
+
+      <input value="{{education_form.percentage}}" name="percentage'+initial_count+'" type="text" class="form-control" placeholder="Percentage or Grade">
     </div>
   </div>
         </div>
-
+{% endfor %}
           <hr>
 
 
@@ -296,14 +305,15 @@ color:;
 
      <center><h3>Work Experience</h3></center>
      <br>
+     {% for workexp_form in work_exp_list %}
        <div class="form-group row">
-
+<input value="{{workexp_form.id}}" name="work_exp_id" hidden>
   <label class="col-md-2 control-label">Company Name
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-{{career_form.company_name}}
+<input value="{{workexp_form.company_name}}" name="company_name'+{{workexp_form.id}}+'" type="text" class="form-control" placeholder="Company Name">
     </div>
   </div>
 
@@ -314,9 +324,11 @@ color:;
     <div class="col-md-5 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  {{career_form.work_expirance_from}}&nbsp &nbsp
+ <input value="{{workexp_form.work_expirance_from|date:'Y-m-d'}}" name="work_expirance_from'+{{workexp_form.id}}+'" type="date" class="form-control">
+ &nbsp &nbsp
       To &nbsp &nbsp
-{{career_form.work_expirance_to}}
+
+      <input value="{{workexp_form.work_expirance_to|date:'Y-m-d'}}" name="work_expirance_to'+{{workexp_form.id}}+'" type="date" class="form-control" >
     </div>
   </div>
         </div>
@@ -329,7 +341,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.work_expirance_details}}
+<textarea value="{{workexp_form.work_expirance_details}}" name="work_expirance_details'+{{workexp_form.id}}+'" class="form-control" placeholder="Expirance Details"></textarea>
     </div>
   </div>
 
@@ -340,11 +352,11 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.designation}}
+<input name="designation'+{{workexp_form.id}}+'" type="text" class="form-control" placeholder="Designation" value="{{workexp_form.designation}}">
     </div>
   </div>
         </div>
-
+    {% endfor %}
 
       <hr>
 

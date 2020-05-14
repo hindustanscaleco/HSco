@@ -10,16 +10,8 @@ class Career_module(models.Model):
     choose_position = models.CharField(max_length=20,null=True,blank=True)
     candidate_email = models.CharField(max_length=60, null=True,blank=True)
     address = models.CharField(max_length=120,null=True,blank=True)
-    institute_name = models.CharField(max_length=50,null=True,blank=True)
-    course = models.CharField(max_length=50,null=True,blank=True)
-    year_of_completion = models.CharField(max_length=4,null=True,blank=True)
-    percentage = models.CharField(max_length=50,null=True,blank=True)
-    company_name = models.CharField(max_length=50,null=True,blank=True)
-    work_expirance_from = models.DateTimeField(blank= True, null=True)
-    work_expirance_to = models.DateTimeField(blank= True, null=True)
     date_of_birth = models.DateTimeField(blank= True, null=True)
-    work_expirance_details = models.CharField(max_length=120,null=True,blank=True)
-    designation = models.CharField(max_length=60,null=True,blank=True)
+
     current_salary = models.CharField(max_length=60,null=True,blank=True)
     aadhar_card = models.CharField(max_length=60,null=True,blank=True)
     pan_card_availabe = models.CharField(max_length=60,null=True,blank=True)
@@ -48,6 +40,7 @@ class Career_module(models.Model):
     open_and_short_circuit = models.CharField(max_length=10, null=True, blank=True)
     is_sales_candidate = models.BooleanField(default=False)
     is_technical_candidate = models.BooleanField(default=False)
+    entry_timedate = models.DateField(default=datetime.date.today)
 
     class Meta:
         unique_together = ('phone_no','candidate_email')
@@ -56,3 +49,35 @@ class Career_module(models.Model):
         return self.candidate_name
 
 
+    class  Meta():
+        ordering = ['-id']
+
+class EducationalDetails(models.Model):
+    career_id = models.ForeignKey(Career_module, on_delete=models.CASCADE,null=True, blank=True)
+    institute_name = models.CharField(max_length=50, null=True, blank=True)
+    course = models.CharField(max_length=50, null=True, blank=True)
+    year_of_completion = models.CharField(max_length=4, null=True, blank=True)
+    percentage = models.CharField(max_length=50, null=True, blank=True)
+    entry_timedate = models.DateField(default=datetime.date.today)
+
+    def __int__(self):
+        return self.id
+
+    class  Meta():
+        ordering = ['-id']
+
+class WorkExperience(models.Model):
+    career_id = models.ForeignKey(Career_module, on_delete=models.CASCADE,null=True, blank=True)
+    company_name = models.CharField(max_length=80, null=True, blank=True)
+    work_expirance_from = models.DateTimeField(blank=True, null=True)
+    work_expirance_to = models.DateTimeField(blank=True, null=True)
+    work_expirance_details = models.CharField(max_length=250, null=True, blank=True)
+    designation = models.CharField(max_length=80, null=True, blank=True)
+    entry_timedate = models.DateField(default=datetime.date.today)
+
+
+    def __int__(self):
+        return self.id
+
+    class  Meta():
+        ordering = ['-id']

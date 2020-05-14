@@ -1,5 +1,8 @@
+import datetime
+
 from django import forms
-from .models import Career_module
+from .models import Career_module, EducationalDetails, WorkExperience
+
 current_stage_field = [
     ('Applied but not call for interview', 'Applied but not call for interview'),
     ('Called for interview, interview is not taken', 'Called for interview, interview is not taken'),
@@ -58,11 +61,12 @@ class Career_moduleForm(forms.ModelForm):
                'placeholder': "Application No.",
                'class': 'form-control',
                'onkeypress': 'return isNumberKey(event)',
+               'readonly': 'readonly',
 
            }))
 
 
-    phone_no = forms.CharField(max_length=10,min_length=10, required=False,
+    phone_no = forms.CharField(max_length=10,min_length=10, required=True,
        widget=forms.TextInput(
            attrs={
                'type': 'text',
@@ -73,7 +77,7 @@ class Career_moduleForm(forms.ModelForm):
 
 
 
-    candidate_name = forms.CharField(max_length=60, required=False,
+    candidate_name = forms.CharField(max_length=60, required=True,
        widget=forms.TextInput(
            attrs={
                'type': 'text',
@@ -98,7 +102,7 @@ class Career_moduleForm(forms.ModelForm):
                'class': 'form-control',
            }))
 
-    address = forms.CharField(max_length=100, required=False,
+    address = forms.CharField(max_length=100, required=True,
        widget=forms.TextInput(
            attrs={
                'type': 'textarea',
@@ -108,77 +112,12 @@ class Career_moduleForm(forms.ModelForm):
            }))
 
 
-    institute_name = forms.CharField(max_length=100, required=False,
-       widget=forms.TextInput(
-           attrs={
-               'type': 'text',
-               'placeholder': "Institute Name / University",
-               'class': 'form-control',
-
-           }))
-
-
-    course = forms.CharField(max_length=100, required=False,
-       widget=forms.TextInput(
-           attrs={
-               'type': 'text',
-               'placeholder': "Course",
-               'class': 'form-control',
-
-           }))
-
-
-
-    year_of_completion = forms.CharField( min_length=4,max_length=4, required=False,
-       widget=forms.TextInput(
-           attrs={
-               'type': 'number',
-               'placeholder': "Year Of Completion",
-               'class': 'form-control',
-               'min':1990,
-               'max':2020,
-           }))
 
 
 
 
-    percentage = forms.CharField(max_length=100, required=False,
-       widget=forms.TextInput(
-           attrs={
-               'type': 'text',
-               'placeholder': "Percentage or Grade",
-               'class': 'form-control',
 
-           }))
-
-    company_name = forms.CharField(max_length=100, required=False,
-       widget=forms.TextInput(
-           attrs={
-               'type': 'text',
-               'placeholder': "Company Name",
-               'class': 'form-control',
-
-           }))
-
-    work_expirance_from = forms.DateField( required=False,
-                                         widget=forms.DateInput(
-                                             attrs={
-                                                 'type': 'date',
-                                                 'placeholder': "Date of Initiation",
-                                                 'class': 'form-control',
-                                             }
-                                         ))
-
-    work_expirance_to = forms.DateField( required=False,
-                                         widget=forms.DateInput(
-                                             attrs={
-                                                 'type': 'date',
-                                                 'placeholder': "Date of Initiation",
-                                                 'class': 'form-control',
-                                             }
-                                         ))
-
-    date_of_birth = forms.DateField( required=False,
+    date_of_birth = forms.DateField( required=True,
                                          widget=forms.DateInput(
                                              attrs={
                                                  'type': 'date',
@@ -187,24 +126,6 @@ class Career_moduleForm(forms.ModelForm):
                                              }
                                          ))
 
-
-    work_expirance_details = forms.CharField(max_length=100, required=False,
-       widget=forms.TextInput(
-           attrs={
-               'type': 'text',
-               'placeholder': "Expirance Details",
-               'class': 'form-control',
-
-           }))
-
-    designation = forms.CharField(max_length=100, required=False,
-       widget=forms.TextInput(
-           attrs={
-               'type': 'text',
-               'placeholder': "Designation",
-               'class': 'form-control',
-
-           }))
 
 
 
@@ -435,6 +356,102 @@ class Career_moduleForm(forms.ModelForm):
         model = Career_module
         fields = "__all__"
 
+class EducationForm(forms.ModelForm):
+    institute_name = forms.CharField(max_length=100, required=False,
+     widget=forms.TextInput(
+         attrs={
+             'type': 'text',
+             'placeholder': "Institute Name / University",
+             'class': 'form-control',
+
+         }))
+
+    course = forms.CharField(max_length=100, required=False,
+     widget=forms.TextInput(
+         attrs={
+             'type': 'text',
+             'placeholder': "Course",
+             'class': 'form-control',
+
+         }))
+
+    year_of_completion = forms.CharField(min_length=4, max_length=4, required=False,
+     widget=forms.TextInput(
+         attrs={
+             'type': 'number',
+             'placeholder': "Year Of Completion",
+             'class': 'form-control',
+             'min': 1990,
+             'max': 2020,
+             'value': datetime.datetime.now().year
+         }))
+
+
+    percentage = forms.CharField(max_length=100, required=False,
+       widget=forms.TextInput(
+           attrs={
+               'type': 'text',
+               'placeholder': "Percentage or Grade",
+               'class': 'form-control',
+
+           }))
+    class Meta:
+        model = EducationalDetails
+        fields = "__all__"
+
+
+class WorkExpForm(forms.ModelForm):
+    company_name = forms.CharField(max_length=100, required=False,
+       widget=forms.TextInput(
+           attrs={
+               'type': 'text',
+               'placeholder': "Company Name",
+               'class': 'form-control',
+
+           }))
+
+    work_expirance_from = forms.DateField(required=False,
+      widget=forms.DateInput(
+          attrs={
+              'type': 'date',
+              'placeholder': "Date of Initiation",
+              'class': 'form-control',
+          }
+      ))
+
+    work_expirance_to = forms.DateField(required=False,
+        widget=forms.DateInput(
+            attrs={
+                'type': 'date',
+                'placeholder': "Date of Initiation",
+                'class': 'form-control',
+            }
+        ))
+
+
+    work_expirance_details = forms.CharField(max_length=100, required=False,
+       widget=forms.Textarea(
+           attrs={
+               'type': 'texta',
+               'placeholder': "Experience Details",
+               'class': 'form-control',
+               'rows':'4',
+               'cols':'4',
+
+           }))
+
+    designation = forms.CharField(max_length=100, required=False,
+       widget=forms.TextInput(
+           attrs={
+               'type': 'text',
+               'placeholder': "Designation",
+               'class': 'form-control',
+
+           }))
+
+    class Meta:
+        model = WorkExperience
+        fields = "__all__"
 
 
 

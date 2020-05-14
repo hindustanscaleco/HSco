@@ -143,7 +143,11 @@ color:;
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-{{career_form.choose_position}}
+  <input required name="choose_position" placeholder="Choose Position" class="form-control" type="text" list="position">
+            <datalist style="height:20px;" id="position">
+                <option value="Sales Position">Sales Position</option>
+      <option value="Technical Position">Technical Position</option>
+    </datalist>
     </div>
   </div>
   </div>
@@ -182,6 +186,7 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 {{career_form.date_of_birth}}
+
     </div>
   </div>
        </div>
@@ -192,7 +197,9 @@ color:;
 <br>
 
      <center><h3>Education Details</h3></center>
-     <br>
+     <br><input id="maxedu_id" name="maxedu_id" value="1" type="number" hidden>
+
+     <div id="edu_detail_id" class="edu_detail">
        <div class="form-group row">
 
   <label class="col-md-2 control-label">Institute Name / University
@@ -200,7 +207,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-{{career_form.institute_name}}
+{{education_form.institute_name}}
     </div>
   </div>
 
@@ -211,11 +218,10 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.course}}
+{{education_form.course}}
     </div>
   </div>
         </div>
-
             <div class="form-group row">
 
   <label class="col-md-2 control-label">Year of completion
@@ -223,7 +229,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
- {{career_form.year_of_completion}}
+ {{education_form.year_of_completion}}
     </div>
   </div>
 
@@ -234,18 +240,19 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.percentage}}
+{{education_form.percentage}}
     </div>
   </div>
         </div>
-
-          <hr>
-
+ </div>
+    <button type="button" class="add_edu_detail">Add </button>
+    <button type="button" class="delete_edu_detail">Delete </button>
 
 <br>
 
-     <center><h3>Work Expirance</h3></center>
-     <br>
+     <center><h3>Work Experience</h3></center>
+     <br><input id="maxwork_exp_id" name="maxwork_exp" value="1" type="number" hidden>
+  <div id="work_exp_id" class="work_exp">
        <div class="form-group row">
 
   <label class="col-md-2 control-label">Company Name
@@ -253,24 +260,21 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-{{career_form.company_name}}
+{{workexp_form.company_name}}
     </div>
   </div>
 
-    <label class="col-md-1 control-label">Experience:
+    <label class="col-md-1 control-label">Experience
 
 </label>
 
     <div class="col-md-5 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  {{career_form.work_expirance_from}}&nbsp &nbsp
-      To &nbsp &nbsp
-{{career_form.work_expirance_to}}
+  {{workexp_form.work_expirance_from}}&nbsp &nbsp To &nbsp &nbsp {{workexp_form.work_expirance_to}}
     </div>
   </div>
         </div>
-
             <div class="form-group row">
 
     <label class="col-md-2 control-label">Experience Details
@@ -279,7 +283,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.work_expirance_details}}
+{{workexp_form.work_expirance_details}}
     </div>
   </div>
 
@@ -290,10 +294,13 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.designation}}
+{{workexp_form.designation}}
     </div>
   </div>
         </div>
+  </div>
+     <button type="button" class="add_work_exp">Add </button>
+    <button type="button" class="delete_work_exp">Delete </button>
  </div>
 
 
@@ -328,10 +335,71 @@ color:;
     <i class="fas fa-angle-up"></i>
   </a>
 
+<script>
+$(document).ready(function(){
+var max_fields2 = 10;
+var wrapper2 = $(".work_exp");
+var add_work_exp = $(".add_work_exp");
+var delete_work_exp = $(".delete_work_exp");
+
+var initial_count2 = 1;
+
+$(add_work_exp).click(function(e){
+    e.preventDefault();
+    if(initial_count2 < max_fields2){
+        initial_count2++ ;
+        $(wrapper2).append($('<div id="work_exp_id2" ><div class="form-group row"><label class="col-md-2 control-label">Company Name</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="company_name'+initial_count2+'" type="text" class="form-control" placeholder="Company Name"></div></div><label class="col-md-2 control-label">Experience</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="work_expirance_from'+initial_count2+'" type="date" class="form-control">&nbsp &nbsp To &nbsp &nbsp <input name="work_expirance_to'+initial_count2+'" type="date" class="form-control" ></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Experience Details</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><textarea rows="4" cols="50" name="work_expirance_details'+initial_count2+'" class="form-control" placeholder="Expirance Details"></textarea></div></div><label class="col-md-2 control-label">Designation</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="designation'+initial_count2+'" type="text" class="form-control" placeholder="Designation"></div></div></div></div>'));
+
+        }
+    $('#maxwork_exp_id').val(initial_count2);
+    console.log(initial_count2);
+    });
 
 
+
+$(delete_work_exp).click(function(f){
+        initial_count2-- ;
+        f.preventDefault();
+        $("#work_exp_id2").last().remove();
+        $('#maxwork_exp_id').val(initial_count2);
+        console.log(initial_count2);
+    });
+});
+</script>
+
+<script>
+$(document).ready(function(){
+var max_fields = 10;
+var wrapper = $(".edu_detail");
+var add_edu_button = $(".add_edu_detail");
+var delete_edu_detail = $(".delete_edu_detail");
+
+var initial_count = 1;
+
+$(add_edu_button).click(function(e){
+    e.preventDefault();
+    if(initial_count < max_fields){
+        initial_count++ ;
+        $(wrapper).append($('<div id="edu_detail_id2" ><div class="form-group row"><label class="col-md-2 control-label">Institute Name / University</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="institute_name'+initial_count+'" type="text" class="form-control" placeholder="Institute Name / University"></div></div><label class="col-md-2 control-label">Course</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="course'+initial_count+'" type="text" class="form-control" placeholder="Course"></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Year of completion</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="year_of_completion'+initial_count+'" type="text" class="form-control" min="1990" max="2020" value="2020" placeholder="Year Of Completion"></div></div><label class="col-md-2 control-label">Grade / Percentage</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="percentage'+initial_count+'" type="text" class="form-control" placeholder="Percentage or Grade"></div></div></div></div>'));
+
+        }
+    $('#maxedu_id').val(initial_count);
+    console.log(initial_count);
+    });
+
+
+
+$(delete_edu_detail).click(function(f){
+        initial_count-- ;
+        f.preventDefault();
+        $("#edu_detail_id2").last().remove();
+        $('#maxedu_id').val(initial_count);
+        console.log(initial_count);
+    });
+});
+</script>
  <script>
-                                                         $(document).ready(function(){
+ $(document).ready(function(){
     $('#id_choose_position').on('change', function() {
       if ( this.value == 'Sales Position')
       {
@@ -370,25 +438,6 @@ color:;
                          </script>
 
 
-<script>
-
-
-
-  function choice1(select) {
-     //alert(select.options[select.selectedIndex].value);
-    $.ajax({                       // initialize an AJAX request
-        url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
-        data: {
-          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
-
-        },
-        success: function (data) {   // `data` is the return of the `load_cities` view function
-    $("#loaded_customer").html(data);
-        }
-      });
-}
-
-</script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
