@@ -1836,7 +1836,7 @@ def edit_product_customer(request,product_id_rec):
                     dispatch_pro.capacity = capacity
                     dispatch_pro.unit = unit
                     dispatch_pro.value_of_goods = amount
-                    dispatch_pro.godown_id = Godown.objects.get(id=product_id.godown_id).pk
+                    dispatch_pro.godown_id = Godown.objects.get(id=product_id.godown_id.pk)
 
                     # dispatch_pro.dispatch_id = dispatch_id
                     # dispatch_pro.sales_person = sales_person
