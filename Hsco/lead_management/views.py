@@ -1517,6 +1517,8 @@ def update_view_lead(request,id):
                     purchase_det = Purchase_Details()
                     purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
                     purchase_det.company_address = lead_id.customer_id.address  # new2
+                    purchase_det.bill_address = lead_id.customer_id.address  # new2
+                    purchase_det.shipping_address = lead_id.customer_id.address  # new2
                     purchase_det.company_email = lead_id.customer_id.customer_email_id  # new2
                     purchase_det.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
                     purchase_det.new_repeat_purchase = lead_id.new_existing_customer
@@ -1560,6 +1562,7 @@ def update_view_lead(request,id):
                     # customer_id.save(update_fields=['dispatch_id_assigned'])
 
                     # pi_pro = Pi_product.objects.filter(pk__in=delete_id)
+                    total_purchase_product_cost = 0.0
                     list_count=0
                     for item in pi_pro:
                         item_pro = Product_Details()
@@ -1576,8 +1579,12 @@ def update_view_lead(request,id):
                         item_pro.godown_id = Godown.objects.get(id=godown_ids[list_count])
                         if (item.product_total_cost == None or item.product_total_cost == ''):
                             item_pro.amount = 0.0
+                            total_purchase_product_cost = total_purchase_product_cost + 0.0
+
                         else:
                             item_pro.amount = item.product_total_cost
+                            total_purchase_product_cost = total_purchase_product_cost + item.product_total_cost
+
                         item_pro.purchase_id_id = customer_id
                         item_pro.user_id = SiteUser.objects.get(id=request.user.pk)
                         item_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -1618,7 +1625,8 @@ def update_view_lead(request,id):
                     request.session['lead_url'] = '/update_view_lead/'+str(id)
                     try:
 
-                        Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
+                        # Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
+                        Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=total_purchase_product_cost)
                         Lead.objects.filter(id=id).update(is_entered_purchase=True,current_stage='Dispatch Done - Closed')
                     except Exception as e :
                         context22 = {

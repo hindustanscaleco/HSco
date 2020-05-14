@@ -982,7 +982,7 @@ def update_customer_details(request,id):
         item2.log_entered_by = request.user.profile_name
 
         item2.save(update_fields=['log_entered_by','date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
-                                  'channel_of_sales','shipping_address','billing_address','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email',
+                                  'channel_of_sales','shipping_address','bill_address','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email',
                                   ])  #new6
 
 
