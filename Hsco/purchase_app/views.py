@@ -1820,7 +1820,7 @@ def edit_product_customer(request,product_id_rec):
 
         if dispatch_id_assigned != '' or dispatch_id_assigned != None:
             if product_id.product_dispatch_id != '' or product_id.product_dispatch_id != None:
-                if Product_Details_Dispatch.objects.filter(id=product_id.product_dispatch_id).count()>0:
+                if Product_Details_Dispatch.objects.filter(id=product_id.product_dispatch_id.pk).count()>0:
                     dispatch_pro = Product_Details_Dispatch.objects.get(id=product_id.product_dispatch_id.pk)
 
                     # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
