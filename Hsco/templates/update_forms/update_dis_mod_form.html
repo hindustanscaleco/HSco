@@ -549,12 +549,14 @@ function myFunction() {
 
 <div class="col-md-12 ">
       <br>
+    {% if 'Dispatch Module' in user.modules_assigned %}
     <center>
         <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" id="myText17" type="reset" style="">Edit</button>
         <br>
         <br>
         <button style="display:none; background-color: #FC6E20;" id="myText15" type="submit" value="Submit" class="btn btn-primary">Save</button>
       </center>
+    {% endif %}
     </div>
 
 
@@ -634,9 +636,11 @@ tr:nth-child(even) {
 
                   <br>
                   <br>
+                      {% if 'Dispatch Module' in user.modules_assigned %}
+
                 <center>
                 <a href="/edit_dispatch_product/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
-</center>
+</center>    {% endif %}
                 <br>
               </div>
             {% endfor %}

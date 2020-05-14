@@ -176,9 +176,11 @@ function myFunction() {
 
 }
 </script>
-
-
-
+{% if channel_error %}
+<script>
+    alert("Please Select Valid Channel Of Dispatch");
+</script>
+{% endif %}
     <form class="well form-horizontal" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
 <fieldset>
 

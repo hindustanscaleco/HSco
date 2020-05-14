@@ -789,6 +789,7 @@ def update_customer_details(request,id):
     customer_id = Purchase_Details.objects.get(id=id).crm_no
     # customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
+    context ={}
     if 'product_saved' in request.session:
         if request.session.get('product_saved'):
             pass
@@ -820,197 +821,212 @@ def update_customer_details(request,id):
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
-        item=customer_id
-
-        item.customer_name = customer_name
-        item.contact_no = contact_no
-        if customer_id.contact_no != item.contact_no or customer_id.customer_name != item.customer_name :
-            item.save(update_fields=['customer_name','contact_no'])  #new3
-
-
-        date_of_purchase = request.POST.get('date_of_purchase')
-        # second_person=request.POST.get('second_person')
-        # third_person=request.POST.get('third_person')
-        # second_contact_no=request.POST.get('second_contact_no')
-        # third_contact_no=request.POST.get('third_contact_no')
-        sales_person = request.POST.get('sales_person')
-        bill_no = request.POST.get('bill_no')
-        bill_address = request.POST.get('bill_address')
-        shipping_address = request.POST.get('shipping_address')
-        new_repeat_purchase = request.POST.get('new_repeat_purchase')
-        upload_op_file = request.FILES.get('upload_op_file')
-        po_number = request.POST.get('po_number')
-        channel_of_sales = request.POST.get('channel_of_sales')
-        industry = request.POST.get('industry')
-        industry = request.POST.get('industry')
-        # value_of_goods = request.POST.get('value_of_goods')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
-        notes = request.POST.get('notes')
-        # value_of_goods = request.POST.get('value_of_goods')
-        # feedback_form_filled = request.POST.get('feedback_form_filled')
+        if channel_of_dispatch == None or channel_of_dispatch == '' or len(channel_of_dispatch) < 2:
+            context22 = {
+                'product_id': product_id,
+                'customer_id': customer_id,
+                'purchase_id_id': purchase_id_id,
+                'feedback': feedback,
+                'channel_error': True,
+            }
+            context.update(context22)
+            return render(request, 'update_forms/update_cust_mod_form.html', context)
+        else:
+
+            item=customer_id
+
+            item.customer_name = customer_name
+            item.contact_no = contact_no
+            if customer_id.contact_no != item.contact_no or customer_id.customer_name != item.customer_name :
+                item.save(update_fields=['customer_name','contact_no'])  #new3
 
 
-        item2 = purchase_id_id
-
-        item2.crm_no = Customer_Details.objects.get(id=item.pk)
-
-        if company_name != '':
-            item2.second_company_name = company_name  # new2
-
-            item.company_name = company_name
-            item.save(update_fields=['company_name'])
-        if address != '':
-            item.address = address
-
-            item2.company_address = address  # new2
-            item.save(update_fields=['address'])
-        if customer_email_id != '':
-            item.customer_email_id = customer_email_id
-            item2.company_email = customer_email_id  # new2
-            item.save(update_fields=['customer_email_id'])
-
-
-
-        item2.date_of_purchase = date_of_purchase
-        item2.second_person=customer_name   #new4
-        # item2.third_person=third_person
-        item2.second_contact_no=contact_no   #new5
-        # item2.third_contact_no=third_contact_no
-        item2.sales_person = sales_person
-        item2.new_repeat_purchase = new_repeat_purchase
-        item2.bill_no = bill_no
-        item2.bill_address = bill_address
-        item2.shipping_address = shipping_address
-        item2.upload_op_file = upload_op_file
-        item2.po_number = po_number
-        item2.channel_of_sales = channel_of_sales
-        item2.industry = industry
-        # item2.value_of_goods = value_of_goods
+            date_of_purchase = request.POST.get('date_of_purchase')
+            # second_person=request.POST.get('second_person')
+            # third_person=request.POST.get('third_person')
+            # second_contact_no=request.POST.get('second_contact_no')
+            # third_contact_no=request.POST.get('third_contact_no')
+            sales_person = request.POST.get('sales_person')
+            bill_no = request.POST.get('bill_no')
+            bill_address = request.POST.get('bill_address')
+            shipping_address = request.POST.get('shipping_address')
+            new_repeat_purchase = request.POST.get('new_repeat_purchase')
+            upload_op_file = request.FILES.get('upload_op_file')
+            po_number = request.POST.get('po_number')
+            channel_of_sales = request.POST.get('channel_of_sales')
+            industry = request.POST.get('industry')
+            industry = request.POST.get('industry')
+            # value_of_goods = request.POST.get('value_of_goods')
+            notes = request.POST.get('notes')
+            # value_of_goods = request.POST.get('value_of_goods')
+            # feedback_form_filled = request.POST.get('feedback_form_filled')
 
 
-        if (purchase_id_id.dispatch_id_assigned == None and channel_of_dispatch != 'Franchisee Store')  or (item2.channel_of_dispatch =='Franchisee Store' and channel_of_dispatch != 'Franchisee Store') :
-            dispatch = Dispatch()
-
-            if Customer_Details.objects.filter(customer_name=customer_name,
-                                               contact_no=contact_no).count() > 0:
-
-                dispatch.crm_no = Customer_Details.objects.filter(customer_name=customer_name,
-                                                                  contact_no=contact_no).first()
-
-            else:
-                dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
-
-            dispatch.second_person = customer_name  # new1
-            dispatch.second_contact_no = contact_no  # new2
-            dispatch.second_company_name = company_name  # new2
-            dispatch.company_email = customer_email_id
-            dispatch.company_address = address  # new2
-            dispatch.channel_of_dispatch = channel_of_dispatch  # new2
-            dispatch.bill_address = bill_address  # new2
-            dispatch.shipping_address = shipping_address  # new2
-            dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
-            dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
-            if Dispatch.objects.all().count() == 0:
-                dispatch.dispatch_no = 1
-            else:
-                dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
-            # dispatch.customer_email = customer_email_id
-            # dispatch.customer_name = customer_name
-            # dispatch.company_name = company_name
-            # dispatch.customer_address = address
-
-            dispatch.save()
-            current_stage_in_db = Dispatch.objects.get(id=dispatch.pk).current_stage  # updatestage1
-            if (current_stage_in_db == '' or current_stage_in_db == None):
-                Dispatch.objects.filter(id=dispatch.pk).update(current_stage='dispatch q')
-
-            # dispatch2 = Dispatch.objects.get(id=dispatch.pk)
-            # dispatch2.dispatch_id = dispatch.pk
-            # dispatch2.save(update_fields=['dispatch_id'])
-            customer_id = Purchase_Details.objects.get(id=item2.pk)
-            customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
-            customer_id.save(update_fields=['dispatch_id_assigned'])
 
 
-            prod_list= list(Product_Details.objects.filter(purchase_id=customer_id.pk).values_list('id', flat=True))
-            for item in prod_list:   #newold
+            item2 = purchase_id_id
 
-                oobj=Product_Details.objects.get(id=item)
+            item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
-                dispatch_pro=Product_Details_Dispatch()
+            if company_name != '':
+                item2.second_company_name = company_name  # new2
 
-                dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
-                dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
-                # dispatch_pro.product_name = product_name
-                dispatch_pro.quantity = oobj.quantity
-                dispatch_pro.type_of_scale = oobj.type_of_scale
-                dispatch_pro.model_of_purchase = oobj.model_of_purchase
-                dispatch_pro.sub_model = oobj.sub_model
-                dispatch_pro.sub_sub_model = oobj.sub_sub_model
-                dispatch_pro.serial_no_scale = oobj.serial_no_scale
-                dispatch_pro.brand = oobj.brand
-                dispatch_pro.capacity = oobj.capacity
-                dispatch_pro.unit = oobj.unit
-                dispatch_pro.value_of_goods = oobj.amount
-                dispatch_pro.dispatch_id = Dispatch.objects.get(id=dispatch.pk)
-                dispatch_pro.save()
+                item.company_name = company_name
+                item.save(update_fields=['company_name'])
+            if address != '':
+                item.address = address
 
-                #aaao
-
-                # nobj.__dict__ = oobj.__dict__.copy()
-                Product_Details.objects.filter(id=item).update(product_dispatch_id=dispatch_pro.pk)
+                item2.company_address = address  # new2
+                item.save(update_fields=['address'])
+            if customer_email_id != '':
+                item.customer_email_id = customer_email_id
+                item2.company_email = customer_email_id  # new2
+                item.save(update_fields=['customer_email_id'])
 
 
-        if item2.channel_of_dispatch != 'Franchisee Store' and channel_of_dispatch == 'Franchisee Store' :
-            customer_id = Purchase_Details.objects.get(id=item2.pk)
-            customer_id.dispatch_id_assigned = None  # str(dispatch.pk + 00000)
-            customer_id.save(update_fields=['dispatch_id_assigned'])
+
+            item2.date_of_purchase = date_of_purchase
+            item2.second_person=customer_name   #new4
+            # item2.third_person=third_person
+            item2.second_contact_no=contact_no   #new5
+            # item2.third_contact_no=third_contact_no
+            item2.sales_person = sales_person
+            item2.new_repeat_purchase = new_repeat_purchase
+            item2.bill_no = bill_no
+            item2.bill_address = bill_address
+            item2.shipping_address = shipping_address
+            item2.upload_op_file = upload_op_file
+            item2.po_number = po_number
+            item2.channel_of_sales = channel_of_sales
+            item2.industry = industry
+            # item2.value_of_goods = value_of_goods
+
+
+            if (purchase_id_id.dispatch_id_assigned == None and channel_of_dispatch != 'Franchisee Store')  or (item2.channel_of_dispatch =='Franchisee Store' and channel_of_dispatch != 'Franchisee Store') :
+                dispatch = Dispatch()
+
+                if Customer_Details.objects.filter(customer_name=customer_name,
+                                                   contact_no=contact_no).count() > 0:
+
+                    dispatch.crm_no = Customer_Details.objects.filter(customer_name=customer_name,
+                                                                      contact_no=contact_no).first()
+
+                else:
+                    dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
+
+                dispatch.second_person = customer_name  # new1
+                dispatch.second_contact_no = contact_no  # new2
+                dispatch.second_company_name = company_name  # new2
+                dispatch.company_email = customer_email_id
+                dispatch.company_address = address  # new2
+                dispatch.channel_of_dispatch = channel_of_dispatch  # new2
+                dispatch.bill_address = bill_address  # new2
+                dispatch.shipping_address = shipping_address  # new2
+                dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
+                dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                if Dispatch.objects.all().count() == 0:
+                    dispatch.dispatch_no = 1
+                else:
+                    dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
+                # dispatch.customer_email = customer_email_id
+                # dispatch.customer_name = customer_name
+                # dispatch.company_name = company_name
+                # dispatch.customer_address = address
+
+                dispatch.save()
+                current_stage_in_db = Dispatch.objects.get(id=dispatch.pk).current_stage  # updatestage1
+                if (current_stage_in_db == '' or current_stage_in_db == None):
+                    Dispatch.objects.filter(id=dispatch.pk).update(current_stage='dispatch q')
+
+                # dispatch2 = Dispatch.objects.get(id=dispatch.pk)
+                # dispatch2.dispatch_id = dispatch.pk
+                # dispatch2.save(update_fields=['dispatch_id'])
+                customer_id = Purchase_Details.objects.get(id=item2.pk)
+                customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
+                customer_id.save(update_fields=['dispatch_id_assigned'])
+
+
+                prod_list= list(Product_Details.objects.filter(purchase_id=customer_id.pk).values_list('id', flat=True))
+                for item in prod_list:   #newold
+
+                    oobj=Product_Details.objects.get(id=item)
+
+                    dispatch_pro=Product_Details_Dispatch()
+
+                    dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+                    dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                    # dispatch_pro.product_name = product_name
+                    dispatch_pro.quantity = oobj.quantity
+                    dispatch_pro.type_of_scale = oobj.type_of_scale
+                    dispatch_pro.model_of_purchase = oobj.model_of_purchase
+                    dispatch_pro.sub_model = oobj.sub_model
+                    dispatch_pro.sub_sub_model = oobj.sub_sub_model
+                    dispatch_pro.serial_no_scale = oobj.serial_no_scale
+                    dispatch_pro.brand = oobj.brand
+                    dispatch_pro.capacity = oobj.capacity
+                    dispatch_pro.unit = oobj.unit
+                    dispatch_pro.value_of_goods = oobj.amount
+                    dispatch_pro.dispatch_id = Dispatch.objects.get(id=dispatch.pk)
+                    dispatch_pro.save()
+
+                    #aaao
+
+                    # nobj.__dict__ = oobj.__dict__.copy()
+                    Product_Details.objects.filter(id=item).update(product_dispatch_id=dispatch_pro.pk)
+
+
+            if item2.channel_of_dispatch != 'Franchisee Store' and channel_of_dispatch == 'Franchisee Store' :
+                customer_id = Purchase_Details.objects.get(id=item2.pk)
+                customer_id.dispatch_id_assigned = None  # str(dispatch.pk + 00000)
+                customer_id.save(update_fields=['dispatch_id_assigned'])
+                try:
+                    Dispatch.objects.get(id=item2.dispatch_id_assigned.pk).delete()
+                except:
+                    pass
+
+
+
+
+
+            item2.channel_of_dispatch = channel_of_dispatch
+            item2.notes = notes
+            # item2.feedback_form_filled = feedback_form_filled
+            # item2.user_id = SiteUser.objects.get(id=request.user.pk)
+            # item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            item2.log_entered_by = request.user.profile_name
+
+            item2.save(update_fields=['log_entered_by','date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
+                                      'channel_of_sales','shipping_address','bill_address','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email',
+                                      ])  #new6
+
+
+            # purchase_id_id = Purchase_Details.objects.get(id=id)
+            # customer_id = Purchase_Details.objects.get(id=id).crm_no
+            # customer_id = Customer_Details.objects.get(id=customer_id)
+            # product_id = Product_Details.objects.filter(purchase_id=id)
+            # context = {
+            #     'product_id': product_id,
+            #     'customer_id': customer_id,
+            #     'purchase_id_id': purchase_id_id,
+            #     'feedback': feedback,
+            # }
+
             try:
-                Dispatch.objects.get(id=item2.dispatch_id_assigned.pk).delete()
+                del request.session['enable_auto_edit']
+                del request.session['lead_url']
             except:
                 pass
 
+            return redirect('/view_customer_details/')
 
-
-
-
-        item2.channel_of_dispatch = channel_of_dispatch
-        item2.notes = notes
-        # item2.feedback_form_filled = feedback_form_filled
-        # item2.user_id = SiteUser.objects.get(id=request.user.pk)
-        # item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item2.log_entered_by = request.user.profile_name
-
-        item2.save(update_fields=['log_entered_by','date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
-                                  'channel_of_sales','shipping_address','bill_address','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email',
-                                  ])  #new6
-
-
-        # purchase_id_id = Purchase_Details.objects.get(id=id)
-        # customer_id = Purchase_Details.objects.get(id=id).crm_no
-        # customer_id = Customer_Details.objects.get(id=customer_id)
-        # product_id = Product_Details.objects.filter(purchase_id=id)
-        # context = {
-        #     'product_id': product_id,
-        #     'customer_id': customer_id,
-        #     'purchase_id_id': purchase_id_id,
-        #     'feedback': feedback,
-        # }
-
-        try:
-            del request.session['enable_auto_edit']
-            del request.session['lead_url']
-        except:
-            pass
-
-        return redirect('/view_customer_details/')
-
-    context = {
+    context2 = {
         'product_id':product_id,
         'customer_id': customer_id,
         'purchase_id_id': purchase_id_id,
         'feedback': feedback,
     }
+    context.update(context2)
 
 
     return render(request,'update_forms/update_cust_mod_form.html',context)
