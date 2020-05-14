@@ -1529,6 +1529,7 @@ def update_view_lead(request,id):
                     purchase_det.sales_person = lead_id.owner_of_opportunity.name
                     purchase_det.user_id = SiteUser.objects.get(name=lead_id.owner_of_opportunity.name)
                     purchase_det.channel_of_sales = lead_id.channel
+                    purchase_det.channel_of_dispatch = ''
                     purchase_det.industry = lead_id.customer_id.customer_industry
                     purchase_det.value_of_goods = 0.0
                     # purchase_det.channel_of_dispatch = channel_of_dispatch
@@ -3052,21 +3053,22 @@ def   final_lead_report_test(request):
 
     from .models import Pi_section
     # cust_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_cust_detail_list)
-    if string_deal_detail_list and  string_pi_history != '':
-        lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
-        for lead in lead_list:
-            # names = Pi_section.objects.filter(lead_id_id=lead['id']).values()
-            if 'owner_of_opportunity_id' in lead_list :
-                lead['owner_of_opportunity_id'] = SiteUser.objects.get(id=lead['owner_of_opportunity_id'])
-            if   Lead.objects.get(id=lead['id']).upload_requirement_file:
-                lead['upload_requirement_file'] = Lead.objects.get(id=lead['id']).upload_requirement_file.path
-            names = Pi_History.objects.filter(lead_id_id=lead['id']).values()
-            lead['pi_history'] = list(names)
-            print(lead)
-        context1 = {
-            'lead_list': lead_list,
-        }
-        context.update(context1)
+    # if string_deal_detail_list and  string_pi_history != '':
+    lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
+    for lead in lead_list:
+        # names = Pi_section.objects.filter(lead_id_id=lead['id']).values()
+        # if 'owner_of_opportunity_id' in lead_list :
+        #     lead['owner_of_opportunity_id'] = SiteUser.objects.get(id=lead['owner_of_opportunity_id'])
+        # if   Lead.objects.get(id=lead['id']).upload_requirement_file:
+        #     lead['upload_requirement_file'] = Lead.objects.get(id=lead['id']).upload_requirement_file.path
+        names = Pi_History.objects.filter(lead_id_id=lead['id']).values()
+        lead['pi_history'] = list(names)
+
+    print(lead_list)
+    context1 = {
+        'lead_list': lead_list,
+    }
+    context.update(context1)
     if string_deal_detail_list:
         deal_detail_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
         for lead in deal_detail_list:
