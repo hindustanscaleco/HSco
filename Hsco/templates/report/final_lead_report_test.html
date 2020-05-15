@@ -128,68 +128,116 @@ td {
       <center>  <h1 style="color: black; font-size: 25px;">Custom Report</h1>  </center>
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"  onclick="tableToExcel(&#39;testTable&#39;, &#39;W3C Example Table&#39;)" ><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div>
-                <table id="testTable">
-            <tr>
-              {% for lead in lead_list %}
-              {% if forloop.first %}
+
+{% load replace_underscore %}
+    <table id="testTable">
+        <tr>
+            {% for lead in lead_list %}
+                {% if forloop.first %}
                     {% for header in lead.keys %}
-                        <th>{{ header }}</th>
+                        <th>{{ header|replace_underscore|title }}</th>
                     {% endfor %}
                 {% endif %}
-            </tr>
-<tr>
-                    {% for value in lead.values %}
-                        {% if 'pi_history' in lead.keys %}
-                            {% if forloop.last %}
+         </tr>
+                <tr>
+                    {% for key2,value in lead.items %}
+
+                        {% if key2 == 'pi_history' %}
+
                                 <td>
                                     <table>
-                                        {% for val in value %}
+
+                                         {% for val in value %}
+
+
+                        {% if forloop.first %}
+                                        <tr>
+                    {% for header in val.keys %}
+                                            {% if forloop.first %}
+                                            {% elif header == 'lead_id_id' %}
+                                            {% else %}
+                        <th>{{ header|replace_underscore|title }}</th>
+                                            {% endif %}
+                    {% endfor %}
+                                        </tr>
+                {% endif %}
+
+
                                             <tr>
-                                                <td>{{ val.pi_history_file }}</td>
-                                                <td>{{ val.entry_timedate_time }}</td>
-                                                <td>{{ val.call_detail }}</td>
+                                                 <td>{{ val.pi_history_file }}</td>
                                                 <td>{{ val.medium_of_selection }}</td>
+                                                <td>{{ val.call_detail }}</td>
+                                                <td>{{ val.entry_timedate_time }}</td>
+                                                <td>{{ val.log_entered_by }}</td>
+                                                <td>{{ val.entry_timedate_time }}</td>
+
+
                                             </tr>
                                         {% endfor %}
                                     </table>
                                 </td>
-                            {% else %}
-                                <td>{{ value }}</td>
-                            {% endif %}
-                        {% elif 'followup_history' in lead.keys %}
-                            {% if forloop.last %}
+
+                        {% elif key2 == 'followup_history' %}
+
+
                                 <td>
                                     <table>
 
                                         {% for val in value %}
-
+{% if forloop.first %}
+                                        <tr>
+                    {% for header in val.keys %}
+                                            {% if forloop.first %}
+                                            {% elif header == 'is_manual_mode' or header == 'is_auto_follow_deleted' or header == 'entry_timedate_time' or header == 'followup_history_file' or header == 'html_content' %}
+                                            {% else %}
+                        <th>{{ header|replace_underscore|title }}</th>
+                                            {% endif %}
+                    {% endfor %}
+                                        </tr>
+                {% endif %}
                                             <tr>
-                                                <td>{{ val.wa_no }}</td>
+                                                <td>{{ val.follow_up_section_id }}</td>
+                                                <td>{{ val.lead_id_id }}</td>
+                                                <td>
+                                                    {% with val.fields|slice:"1:-1" as list %}
+                                                    {% for item in list.split %}
+                                                    {% if forloop.last %}
+                                                    <p>{{forloop.counter}}){{item|slice:"1:-1"}}</p>
+                                                    {% else %}
+                                                    <p>{{forloop.counter}}){{item|slice:"1:-2"}}</p>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                    {% endwith %}
+
+                                                </td>
+                                                <td>{{ val.product_ids }}</td>
+                                                <td>{{ val.is_email }}</td>
+                                                <td>{{ val.is_whatsapp }}</td>
+                                                <td>{{ val.is_call }}</td>
+                                                <td>{{ val.is_sms }}</td>
                                                 <td>{{ val.wa_msg }}</td>
+                                                <td>{{ val.wa_no }}</td>
                                                 <td>{{ val.email_subject }}</td>
                                                 <td>{{ val.email_msg }}</td>
-                                                <td>{{ val.followup_history_file }}</td>
+                                                 <td>{{ val.call_response }}</td>
                                                 <td>{{ val.sms_msg }}</td>
-                                                <td>{{ val.call_response }}</td>
+                                                <td>{{val.sms_con}}</td>
+
+                                                <td>{{val.entry_timedate}}</td>
+
                                             </tr>
                                         {% endfor %}
                                     </table>
                                 </td>
-                            {% else %}
-                                <td>{{ value }}</td>
-                            {% endif %}
 
-                        {% else %}
+                    {% else %}
                             <td>{{ value }}</td>
                         {% endif %}
-
-
                     {% endfor %}
                 </tr>
-{% endfor %}
+            {% endfor %}
 
-          </table>
-
+    </table>
 
 </div>
 
