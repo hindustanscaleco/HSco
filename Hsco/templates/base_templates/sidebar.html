@@ -53,6 +53,14 @@
 
             {% if request.user.is_authenticated and 'Customer Module' in user.modules_assigned %}
 
+        <li class="nav-item ">
+        {% if request.user.role == 'Employee' %}<a class="nav-link" href="/quick_purchase_entry/"><span style="color: black;">Rush Hour Entry</span></a>
+        {% else %}<a class="nav-link" href="/quick_purchase_entry/"><span style="color: black;">Rush Hour Entry</span></a> {% endif %}
+          <!-- <i class="fas fa-fw fa-plus"></i> -->
+
+          <!--<i class="fas fa-fw fa-plus"></i>-->
+      </li>
+
       <li class="nav-item ">
         {% if request.user.role == 'Employee' %}<a class="nav-link" href="/customer_employee_sales_graph/{{request.user.id}}"><span>Purchase</span></a>
         {% else %}<a class="nav-link" href="/view_customer_details/"><span>Purchase</span></a> {% endif %}
@@ -105,6 +113,7 @@
       </li>
                     {% endif %}
 
+
                     {% if request.user.is_authenticated and 'Onsite Repairing Module' in user.modules_assigned %}
 
           <li class="nav-item ">
@@ -114,9 +123,34 @@
 
       </li>
                     {% endif %}
+            {% if request.user.is_authenticated and 'Lead Module' in user.modules_assigned %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/lead_home/">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Lead Module</span></a>
+      </li>
+                    {% endif %}
+
+         {% if request.user.is_authenticated and 'Stock Module' in user.modules_assigned %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/stock_godown_list/">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Stock Module</span></a>
+      </li>
+                    {% endif %}
+          {% if request.user.is_authenticated and 'Stock Module' in user.modules_assigned %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/career_module_list/">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Career Module</span></a>
+      </li>
+                    {% endif %}
 
   <li class="nav-item ">
-        <a class="nav-link" href="/notif_decl_home/">
+        <a class="nav-link" href="/chat_with_user/">
           <!--<i class="fas fa-fw fa-chart-area"></i>-->
           <span>Notif. & Declaration</span></a>
       </li>

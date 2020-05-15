@@ -232,16 +232,28 @@ td {
         <div class="row" id="id_manager_view">
 
     <table>
-        <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No</td>
+        <tr  style="background-color: gray; color: white;">
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Transaction ID</td>
             <td style="border: 0px solid gray;">Work Station</td>
-            <td style="border: 0px solid gray;">Transaction ID</td>
             <td style="border: 0px solid gray;">Transaction Status</td>
-            <td style="border: 0px solid gray;">Request</td>
-            <td style="border: 0px solid gray;">From</td>
-            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">To</td>
+            <td style="border: 0px solid gray;">Request From</td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Request To</td>
         </tr>
+        {% for list in pending_list %}
+<tr style="cursor: pointer;" onclick="location.href='/stock_transaction_status/{{list.req_from_godown.id}}/{{list.id}}'">
+            <td style="border: 0px solid gray;">{{list.id}}</td>
+<td style="border: 0px solid gray;">
+{% if list.outside_workstation == False  %}
+    Own WorkStation
+    {% else %}
+    Outside Workstation
+    {% endif %}</td>
+            <td style="border: 0px solid gray;">{{list.status}}</td>
+            <td style="border: 0px solid gray;">{{list.req_from_godown.name_of_godown}}</td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">{{list.req_to_godown.name_of_godown}}</td>
+     </tr>
 
+        {% endfor %}
     </table>
         </div>
 <br>

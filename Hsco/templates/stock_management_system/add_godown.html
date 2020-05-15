@@ -23,6 +23,9 @@
 <body id="page-top">
 
 <style>
+input:focus{
+    outline: none;
+}
 
 * {
 color:;
@@ -99,7 +102,13 @@ color:;
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.goddown_assign_to }}
+                                <select name="goddown_assign_to" class="form-control">
+    <option value="">Select</option>
+       {% for user in assign_users %}
+  <option value="{{user.pk}}">{{user.profile_name}}</option>
+
+   {% endfor %}
+</select>
                             </div>
                              </div>
                           </div>
@@ -123,195 +132,18 @@ color:;
                              </div>
                           </div>
 
-</form>
-            <center><h3>Adding Products</h3></center>
-  <!--Product List-->
-
-            <div class="row">
-                            <div  class="col-xl-2 col-md-3 col-mb-3">
-                    <div class="button dropdown">
-  <select id="divsort" class="form-control">
-     <option value="d0">Sort by Sale person </option>
-     <option value="d1">Sort by Employee  </option>
-     <option value="d2">Sort by  </option>
-     <option value="d3">Sort by  </option>
-     <option value="d4">Sort by  </option>
-     <option value="d5">Sort by  </option>
-     <option value="d6">Sort by  </option>
-     <option value="d7">Sort by  </option>
-  </select>
-</div>
-                            </div>
-                <div class="col-md-8"></div>
-                <button type="button" class="btn btn-primary" style="background-color:#FC6E20">Display with Image</button>
-
-
-                </div>
-
-
-                                    <style>
-                .border_class {
-                border:1px solid black;
-                height:45px;
-                text-align:center;
-                vertical-align: middle;
-                line-height: 45px;
-                }
-
-
-  table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 12px;
-  border-color: black;
-  color: black;
-
-
-
-}
-
-
-th {
-
-  font-size: 13px;
-    border: 1px solid black;
-    text-align: left;
-    padding:5px;
-
-}
-
-td {
-  border: 1px solid black;
-  padding: 3px;
-  font-size: 13px;
-  padding: 5px;
-  text-align: center;
-}
-
-
-            </style>
-
-
-<div style="min-height: 26vw;">
-
-<br>
-        <div class="row" id="id_manager_view">
-
-    <table>
-        <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Add/Remove</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Count</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
-
-
-        </tr>
-
-
-
-        <tr>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><i class="fa fa-plus" aria-hidden="true" style="font-size:15px;"></i></td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-        </tr>
-
-
-        <tr>
-
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><i class="fa fa-plus" aria-hidden="true" style="font-size:15px;"></i></td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-</tr>
-
-
-    </table>
-
-
-
-
-
-        </div>
-    <br>
-    <br>
-    <center><h3>Added Products</h3></center>
-    <br>
-    <br>
-
-
-    <div class="row" id="abhish123">
-
-    <table>
-        <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Add/Remove</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Count</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
-
-
-        </tr>
-
-
-
-        <tr>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-        </tr>
-
-
-        <tr>
-
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-</tr>
-
-
-    </table>
-
-
-
-
-
-        </div>
-    <br>
-    <br>
-
-    <div class="row">
+<div class="row">
     <div class="col-md-12">
     <center>
-<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Save</button>
-<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Edit</button>
+<button name="submit1" type="submit" class="btn btn-danger" style="background-color:#FC6E20;">Save</button>
 </center>
     </div>
     </div>
+</form>
+            <br>
+            <br>
 
-    <br>
-    <br><br>
-    <br><br>
-    <br>
+
 
 
 

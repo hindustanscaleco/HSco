@@ -166,10 +166,19 @@ color:;
          <!-- Page Heading -->
             <h1 class="h3 mb-0 text-gray-800"> Select Product</h1>
 </center>
+            {% if msg %}
+
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> {{msg}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
 <br>
 <br>
 
-            <form method="POST" action="" onsubmit="return isOneChecked();" >{% csrf_token %}
+            <form method="POST" action=""  >{% csrf_token %}
 
 <div class="form-group row">
 
@@ -184,12 +193,13 @@ color:;
       <select id="divselector" name="scale_type"  required onchange="choice1(this)" class="form-control">
        <option value="">Select Scale Type</option>
 
-    {% for item in type_purchase %}
+    {% for item in type_of_purchase_list %}
   <option value="{{item.pk}}">{{item.name}}</option>
 
    {% endfor %}
 
   </select>
+<input type="hidden" id="product_id" name="product_id" value="{{item.pk}}">
 
 
      </div>
@@ -257,6 +267,9 @@ color:;
 
 
 
+
+
+
 <div class="form-group row">
 
 
@@ -271,7 +284,7 @@ color:;
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
 
-<input class="form-control" name="product_quantity" type="number">
+<input class="form-control" name="quantity" type="number" value="0.0">
 
      </div>
   </div>
@@ -285,14 +298,28 @@ color:;
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
 
-<input class="form-control" name="product_quantity" type="number">
+<input class="form-control" name="pf" type="number" value="0.0">
 
 
      </div>
   </div>
 </div>
 
+                                <div class="form-group row">
 
+
+                    <label class="col-md-2 control-label">Last Product ?
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
+  YES:<input  name="is_last_product_yes" value="yes" placeholder="Is deleted" class="form-control" type="radio">
+  NO:<input  name="is_last_product_yes" value="no" placeholder="Is deleted" class="form-control" type="radio">
+
+    </div>
+  </div>
+</div>
 
 
 

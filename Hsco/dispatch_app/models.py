@@ -4,8 +4,9 @@ from django.db import models
 from django.utils import timezone
 from customer_app.models import Customer_Details
 from user_app.models import SiteUser
-# from purchase_app.models import Product_Details
 from model_utils import FieldTracker
+
+from stock_management_system_app.models import *
 
 
 class Dispatch(models.Model):
@@ -26,6 +27,8 @@ class Dispatch(models.Model):
     company_address = models.CharField(max_length=250,null=True,blank=True)
     second_contact_no = models.CharField(max_length=150,null=True,blank=True)
     third_contact_no = models.CharField(max_length=150,null=True,blank=True)
+    bill_address = models.CharField(max_length=150,null=True,blank=True)
+    shipping_address = models.CharField(max_length=150,null=True,blank=True)
     date_of_dispatch = models.DateField(null=True,blank=True)
     dispatch_by = models.CharField(max_length=150,null=True,blank=True)
     packed_by = models.CharField(max_length=150,null=True,blank=True)
@@ -56,6 +59,7 @@ class Dispatch(models.Model):
 
 class Product_Details_Dispatch(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    godown_id = models.ForeignKey(Godown, on_delete=models.CASCADE,null=True,blank=True)
     manager_id = models.CharField(max_length=150, null=True, blank=True)
     dispatch_id = models.ForeignKey(Dispatch,on_delete=models.CASCADE)
     # product_name = models.CharField(max_length=30,null=True,blank=True)

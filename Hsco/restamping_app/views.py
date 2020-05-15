@@ -83,8 +83,8 @@ def restamping_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Restamping No: '+str(new_instance.restamping_no)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
 
     except:
         pass
@@ -144,8 +144,8 @@ def restamping_product_handler(sender, instance, update_fields=None, **kwargs):
                 log.table_name = 'Restamping_Product'
                 log.reference = 'Restamping No: '+str(restamping.restamping_no) + ', Product id:' +str(new_instance.id)
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
 
     except:
         pass
@@ -1299,7 +1299,7 @@ def load_restamping_stages_list(request,):
 
 @login_required(login_url='/')
 def restamping_logs(request):
-    restamping_logs = Log.objects.filter(module_name='Restamping Module')
+    restamping_logs = Log.objects.filter(module_name='Restamping Module').order_by('-id')
     paginator = Paginator(restamping_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')
     restamping_logs = paginator.get_page(page)

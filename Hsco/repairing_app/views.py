@@ -91,7 +91,8 @@ def repairing_main_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Repairing No: '+str(new_instance.repairing_no)
 
                 log.action = old_list
-                log.save()
+                if old_list != []:
+                    log.save()
 
     except:
         pass
@@ -153,8 +154,8 @@ def repairing_products_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Repairing No: ' + str(rep.repairing_no) + ', Product id:' +str(new_instance.id)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
     except:
         pass
 
@@ -1641,15 +1642,19 @@ def repairing_employee_graph(request,user_id):
 
     target_achieved = 0.0
     avg_time = 0.0
-    obj = Employee_Analysis_month.objects.get(user_id=user_id, entry_date__month=mon)
+    try:
+        obj = Employee_Analysis_month.objects.get(user_id=user_id, entry_date__month=mon)
+    except:
+        pass
 
     try:
         obj.reparing_target_achived_till_now = (obj.total_reparing_done / obj.reparing_target_given) * 100
         obj.save(update_fields=['reparing_target_achived_till_now'])
         target_achieved = obj.reparing_target_achived_till_now
+        avg_time = obj.avg_time_to_repair_single_scale
+
     except:
         pass
-    avg_time = obj.avg_time_to_repair_single_scale
 
     this_month = Repairing_after_sales_service.objects.filter(taken_by=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=mon)\
         .values('entry_timedate').annotate(data_sum=Sum('total_cost'))
@@ -1985,7 +1990,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
 
 @login_required(login_url='/')
 def repairing_logs(request):
-    repairing_logs = Log.objects.filter(module_name='Repairing Module')
+    repairing_logs = Log.objects.filter(module_name='Repairing Module').order_by('-id')
     paginator = Paginator(repairing_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')
     repairing_logs = paginator.get_page(page)

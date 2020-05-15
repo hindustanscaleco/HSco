@@ -54,7 +54,7 @@
 
           <!-- Page Heading -->
             <div class="row">
-           <div class="col-xl-6 col-md-3 mb-3 ">
+           <div class="col-xl-4 col-md-3 mb-3 ">
 
 
                 <div class="card-body" style="padding: 2px;">
@@ -68,7 +68,7 @@
 
 
 
-                 <div class="col-xl-6 col-md-9 mb-9 ">
+                 <div class="col-xl-8 col-md-9 mb-9 ">
 
 
                 <div class="card-body" style="padding: 2px;">
@@ -86,8 +86,11 @@
  <a style="padding: 2px;" href="/purchase_logs/"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
  <a style="padding: 2px;" href="/report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
  <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Purchase </button></a>
+                       <a style="padding: 2px;" href="/quick_purchase_entry/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Rush Hour Entry </button></a>
+
 {% else %}
  <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Purchase </button></a>
+ <a style="padding: 2px;" href="/quick_purchase_entry/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Quick Entry </button></a>
 {% endif %}
 {% endif %}
 
@@ -316,7 +319,9 @@ $(function() {
       <!--</div>-->
                                <!--</form>-->
 </div>
+
                 </div>
+
 
                                  <div class="col-xl-3 col-md-2 col-mb-8 row" style="color: black;">
 
@@ -329,7 +334,7 @@ $(function() {
                      </div>
                      <div class="col-xl-3 col-md-2 col-mb-8">
                          <label class="switch ">
-  <input name="deleted" type="checkbox" checked onchange="toggleCheckbox2(this)">
+  <input name="deleted" type="checkbox" id="checker" checked onchange="toggleCheckbox2(this)">
   <span class="slider round"></span>
 </label>
                      </div>
@@ -347,6 +352,47 @@ $(function() {
                 </div>
 
             </div>
+
+
+                <div class="row" id="date_year" style="display:none;">
+
+                       <div  class="col-xl-2 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+                    <select id="selected_year" class="form-control">
+     <option value="2020">2020</option>
+     <option value="2021">2021</option>
+     <option value="2022">2022</option>
+
+                    </select>
+                    </div>
+                    </div>
+<br>
+                    <div class="col-xl-3 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+                    <select id="selected_month" onchange="toggleCheckbo(this)" class="form-control">
+     <option value="0">Select Month</option>
+     <option value="1">January</option>
+     <option value="2">February</option>
+     <option value="3">March</option>
+     <option value="4">April</option>
+     <option value="5">May</option>
+     <option value="6">June</option>
+     <option value="7">July</option>
+     <option value="8">August</option>
+     <option value="9">September</option>
+     <option value="10">October</option>
+     <option value="11">November</option>
+     <option value="12">December</option>
+                    </select>
+                    </div>
+                    </div>
+
+
+
+
+                </div>
+
+
 
 
                <style>
@@ -524,11 +570,44 @@ value = select.checked;
 }
         function toggleCheckbox2(select) {
 value = !select.checked;
+if(!select.checked == true){
+
+    document.getElementById("date_year").style.display = "block";
+}else{
+document.getElementById("date_year").style.display = "none";
+}
+
 
     $.ajax({
         url: "/load_users/",
         data: {
           'loc_id':value,
+          'sel_month':value,
+          'sel_year':value,
+
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+function toggleCheckbo(select) {
+sel_month = select.options[select.selectedIndex].value;
+sel_month_text = select.options[select.selectedIndex].text;
+sel_year = document.getElementById("selected_year")
+sel_year= sel_year.options[sel_year.selectedIndex].value;
+value = !document.getElementById("checker").checked;
+
+
+    $.ajax({
+        url: "/load_users/",
+        data: {
+          'loc_id':value,
+          'sel_month':sel_month,
+          'sel_month_text':sel_month_text,
+          'sel_year':sel_year,
+
         },
         success: function (data) {
            $("#id_manager_view").html(data);

@@ -4,7 +4,6 @@ import sys
 sys.path.append("..")
 from customer_app.models import Customer_Details
 
-
 auto_manual_email = [
     ('Automatic', 'Automatic'),
     ('Manual', 'Manual'),
@@ -14,7 +13,6 @@ payment_channel = [
     ('Check Payment', 'Check Payment'),
     ('Cash', 'Cash'),
 ]
-
 
 industory_dropdown = [
         ('Energy industry','Energy industry'),
@@ -36,7 +34,6 @@ industory_dropdown = [
         ('Online Promotion','Online Promotion'),
 ]
 
-
 stage = [
     ('Not Yet Initiated','Not Yet Initiated'),
     ('Customer Called','Customer Called'),
@@ -48,8 +45,6 @@ stage = [
     ('Not Relevant','Not Relevant'),
     ('Postponed','Postponed'),
 ]
-
-
 
 class Customer_detail_disabledForm(forms.ModelForm):
     customer_name = forms.CharField(max_length=80, required=True,
@@ -134,17 +129,14 @@ class Customer_detail_disabledForm(forms.ModelForm):
         fields = "__all__"
 
 
-
-
-
-
 class Deal_detailForm(forms.ModelForm):
     current_stage = forms.CharField(max_length=80, required=True,
                                     widget=forms.Select(
                                         choices=stage,
                                         attrs={
-                                            'default': "automatic",
+                                            'default': "Not Yet Initiated','Not Yet Initiated",
                                             'class': 'btn btn-outline-primary',
+                                            'id': 'deal_stage',
 
                                         }
                                     ))

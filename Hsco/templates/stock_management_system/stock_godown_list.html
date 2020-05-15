@@ -27,6 +27,28 @@
 }
 
 </style>
+    <style>
+        .notification {
+
+  color: white;
+  text-decoration: none;
+  padding: 0px 0px;
+  position: relative;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+
+.notification .badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background-color: #0a0a0a;
+  color: white;
+}
+    </style>
 </head>
 
 <body id="page-top">
@@ -66,7 +88,26 @@
               </div>
             </div>
 
-<div class="col-md-4"></div>
+<div class="col-xl-2"></div>
+                {% if  request.user.role == 'Admin' %}
+
+<div class="col-xl-2">
+                    <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+
+
+
+
+ <a href="{% url 'add_godown' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Godown </button></a>
+
+
+
+
+
+                </div>
+              </div>
+
+</div>
 
                  <div class="col-xl-2 col-md-9 mb-9 ">
 
@@ -77,8 +118,13 @@
 
 
 
-
- <a href="{% url 'add_godown' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Godwon </button></a>
+<a href="{% url 'request_admin' %}" >
+    {% if request_admin_indication %}
+<button style="background-color: #FC6E20; border-color: #2196F3; color: blue;" class="btn btn-primary"> Request to Admin</button>
+    {% else %}
+<button style="background-color: #FC6E20; " class="btn btn-primary"> Request to Admin</button>
+    {% endif %}
+</a>
 
 
 
@@ -92,6 +138,7 @@
 
             </div>
 
+                      {% endif %}
 
 
                 </div>
@@ -321,19 +368,18 @@ a:hover {
 
 .card + .card {
     margin:0px;
-    box-shadow: 0 8px 6px -6px #e47312;
-    box-shadow: inset 0 0 4px #e47312;
-
-
-
-
-
+    box-shadow: 1px 8px 6px 6px #555555;
+    box-shadow: inset 0px 0px 0px 1px #555555;
+    width:auto;
+    }
 
 </style>
 
 
 
-<div class="card" style="box-shadow: inset 0 0 4px #e47312;">
+
+
+<div class="card" style="height:60px; box-shadow: inset 0px 0px 0px 1px #555555;">
         <div class="card-body row col-md-12">
         <div class="col-md-2"> <center>Sr.No</center></div>|
         <div class="col-md-3"> <center>Address </center></div>|
@@ -342,24 +388,16 @@ a:hover {
         </div>
 </div>
 
-<div class="card">
-    <a href="{% url 'stock_godown' %}" > <div class="card-body row col-md-12" style="" onclick="">
-        <div class="col-md-2"> <center>1</center></div>|
-        <div class="col-md-3"> <center>asdadsacassacsacsaccs </center></div>|
-        <div class="col-md-3"> <center>Shelu</center></div>|
-        <div class="col-md-3"> <center>7757860524</center></div>
-        </div></a>
-</div>
-
-
-<div class="card">
+{% for item in godown_list %}
+<div class="card" style="cursor: pointer; height:60px; box-shadow:10px;" onclick="location.href='/stock_godown/{{item.id}}';">
         <div class="card-body row col-md-12" style="margin-top:0px;">
-        <div class="col-md-2"> <center>1</center></div>|
-        <div class="col-md-3"> <center>asdadsacassacsacsaccs </center></div>|
-        <div class="col-md-3"> <center>Shelu</center></div>|
-        <div class="col-md-3"> <center>7757860524</center></div>
+        <div class="col-md-2"> <center>{{ item.id }}</center></div>|
+        <div class="col-md-3"> <center>{{ item.location }} </center></div>|
+        <div class="col-md-3"> <center>{{ item.name_of_godown }}</center></div>|
+        <div class="col-md-3"> <center>{{ item.contact_no }}</center></div>
         </div>
 </div>
+            {% endfor %}
 
 
      </div>         </div>

@@ -161,7 +161,7 @@ function myFunction() {
     document.getElementById("myText13").disabled = false;
     document.getElementById("myText14").disabled = false;
     document.getElementById("myText16").disabled = false;
-    document.getElementById("myText25").disabled = false;
+    document.getElementById("myText20").disabled = false;
     document.getElementById("myText26").disabled = false;
     document.getElementById("myText27").disabled = false;
     document.getElementById("myText28").disabled = false;
@@ -265,75 +265,37 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="contact_no" placeholder="Contact No" onkeypress="return isNumber(event)" maxlength="10" minlength="10"  required class="form-control"  type="text" id="myText16" disabled value="{{dispatch_item.second_contact_no}}">
+  <input  name="contact_no" placeholder="Contact No" onkeypress="return isNumber(event)" maxlength="10" minlength="10"  required class="form-control"  type="text" id="myText5" disabled value="{{dispatch_item.second_contact_no}}">
     </div>
   </div>
 
 
 </div>
-<!--<div class="form-group row">-->
+         <div class="form-group row">
+  <label class="col-md-2 control-label">Bill Address
 
-<!-- <label class="col-md-2 control-label">Second Person-->
+</label>
 
-<!--</label>-->
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="bill_address" placeholder="Bill Address" class="form-control" disabled id="myText6" value="{{dispatch_item.bill_address}}" type="text">
+    </div>
+  </div>
 
-<!--    <div class="col-md-4 inputGroupContainer">-->
-<!--  <div class="input-group">-->
-<!--      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-<!--    <input type="text" name="second_person" placeholder="Name" class="form-control" disabled id="myText25" value="{{dispatch_item.second_person}}">-->
-<!--    </div>-->
-<!--  </div>-->
+    <label class="col-md-2 control-label">Shipping Address
 
-<!--    <label class="col-md-2 control-label">Contact No-->
+</label>
 
-<!--</label>-->
-
-<!--    <div class="col-md-4 inputGroupContainer">-->
-<!--  <div class="input-group">-->
-<!--  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-<!--  <input name="second_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="myText26" value="{{dispatch_item.second_contact_no}}">-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
-<!--<div class="form-group row">-->
-
-<!-- <label class="col-md-2 control-label">Third Person-->
-
-<!--</label>-->
-
-<!--    <div class="col-md-4 inputGroupContainer">-->
-<!--  <div class="input-group">-->
-<!--      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-<!--    <input type="text" name="third_person" placeholder="Name" class="form-control" disabled id="myText27" value="{{dispatch_item.third_person}}">-->
-<!--    </div>-->
-<!--  </div>-->
-
-<!--    <label class="col-md-2 control-label">Contact No-->
-
-<!--</label>-->
-
-<!--    <div class="col-md-4 inputGroupContainer">-->
-<!--  <div class="input-group">-->
-<!--  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-<!--  <input name="third_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="myText28" value="{{dispatch_item.third_contact_no}}">-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
-
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="shipping_address" placeholder="Shipping Address" class="form-control" disabled id="myText7" value="{{dispatch_item.shipping_address}}" type="text">
+    </div>
+  </div>
+</div>
 <div class="form-group row">
-  <!--<label class="col-md-2 control-label">Goods to be Dispatched-->
 
-
-<!--</label>-->
-  <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-car faicons"></i></span>-->
-  <!--<input  name="first_name" placeholder="Goods to be Dispatched-->
-<!--" class="form-control"  type="text">-->
-    <!--</div>-->
-  <!--</div>-->
 
     <label class="col-md-2 control-label">Dispatch Date
 
@@ -343,7 +305,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input type="date" name="date_of_dispatch" id="myText5" placeholder="Dispatch Date" class="form-control" disabled value="{{dispatch_item.date_of_dispatch|date:'Y-m-d'}}">
+  <input type="date" name="date_of_dispatch" id="myText8" placeholder="Dispatch Date" class="form-control" disabled value="{{dispatch_item.date_of_dispatch|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -360,7 +322,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-<input  name="dispatch_by" placeholder="Dispatched By" id="myText6" disabled class="form-control" value="{% if dispatch_item.dispatch_by == None %}{% else %}{{dispatch_item.dispatch_by}}{% endif %}" type="text" list="dispat_list">
+<input  name="dispatch_by" placeholder="Dispatched By" id="myText9" disabled class="form-control" value="{% if dispatch_item.dispatch_by == None %}{% else %}{{dispatch_item.dispatch_by}}{% endif %}" type="text" list="dispat_list">
     <datalist style="height:20px;" id="dispat_list">
         <option value = "{{user.profile_name}}"></option>
       {% for item in user_list %}
@@ -387,7 +349,7 @@ function myFunction() {
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
 
       <input  name="packed_by" placeholder="Packed by
-" class="form-control" id="myText7" disabled value="{% if dispatch_item.packed_by == None %}{% else %}{{dispatch_item.packed_by}}{% endif %}" type="text" list="packed_list">
+" class="form-control" id="myText10" disabled value="{% if dispatch_item.packed_by == None %}{% else %}{{dispatch_item.packed_by}}{% endif %}" type="text" list="packed_list">
         <datalist style="height:20px;" id="packed_list">
       {% for item in user_list %}
 
@@ -411,7 +373,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="hamal_name" placeholder="Hamal Name" class="form-control" id="myText8" type="text" disabled value="{% if dispatch_item.hamal_name == None %}{% else %}{{dispatch_item.hamal_name}}{% endif %}">
+  <input  name="hamal_name" placeholder="Hamal Name" class="form-control" id="myText11" type="text" disabled value="{% if dispatch_item.hamal_name == None %}{% else %}{{dispatch_item.hamal_name}}{% endif %}">
     </div>
   </div>
   </div>
@@ -429,7 +391,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="no_bundles" placeholder="No. of Bundles" class="form-control" id="myText9" type="text" disabled value="{{dispatch_item.no_bundles}}">
+  <input  name="no_bundles" placeholder="No. of Bundles" class="form-control" id="myText12" type="text" disabled value="{{dispatch_item.no_bundles}}">
     </div>
   </div>
 
@@ -445,7 +407,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-car faicons"></i></span>
-  <input  name="transport_name" placeholder="Transport Name" class="form-control" id="myText10" type="text" disabled value="{% if dispatch_item.transport_name == None %}{% else %}{{dispatch_item.transport_name}}{% endif %}">
+  <input  name="transport_name" placeholder="Transport Name" class="form-control" id="myText13" type="text" disabled value="{% if dispatch_item.transport_name == None %}{% else %}{{dispatch_item.transport_name}}{% endif %}">
     </div>
   </div>
   </div>
@@ -461,7 +423,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="lr_no" placeholder="LR NO" class="form-control" type="text" id="myText11" disabled value="{{dispatch_item.lr_no}}">
+  <input  name="lr_no" placeholder="LR NO" class="form-control" type="text" id="myText14" disabled value="{{dispatch_item.lr_no}}">
     </div>
   </div>
 
@@ -476,12 +438,22 @@ function myFunction() {
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-drivers-license faicons"></i></span>
-  <input  name="photo_lr_no" placeholder="Photo of LR No" class="form-control" id="myText12" type="file" disabled value="{{dispatch_item.photo_lr_no}}">
-    </div>
-  </div>
-  </div>
 
+      <div style="padding-left:11px;" class="row">
+                  <span style="padding-right:10px; width:35px;"  class="input-group-addon icon-border"><i class="fa fa-drivers-license faicons"></i></span>
+          <div style="padding-left:0px;" class="col-xl-8">
+  <input size="1" name="photo_lr_no" placeholder="Photo of LR No" class="form-control" id="myText15" type="file" disabled value="{{dispatch_item.photo_lr_no}}">
+          </div>
+          {% if dispatch_item.photo_lr_no %}
+          <div class="col-xl-3">
+              <a href="{{dispatch_item.photo_lr_no.url}}" class="btn btn-primary">Old File</a>
+          </div>
+          {% endif %}
+    </div>
+
+  </div>
+  </div>
+  </div>
 <div class="form-group row">
 
     <label class="col-md-2 control-label">Channel of Dispatch
@@ -493,7 +465,7 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
 
-  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch" class="form-control" id="myText13" list="channel" type="text" disabled value="{{dispatch_item.channel_of_dispatch}}">
+  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch" class="form-control" id="myText16" list="channel" type="text" disabled value="{{dispatch_item.channel_of_dispatch}}">
      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
 
     <datalist style="height:20px;" id="channel">
@@ -520,7 +492,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <input  name="notes" placeholder="Notes" class="form-control" type="text" id="myText14" disabled value="{{dispatch_item.notes}}">
+  <input  name="notes" placeholder="Notes" class="form-control" type="text" id="myText20" disabled value="{{dispatch_item.notes}}">
     </div>
   </div>
 </div>
@@ -577,12 +549,14 @@ function myFunction() {
 
 <div class="col-md-12 ">
       <br>
+    {% if 'Dispatch Module' in user.modules_assigned %}
     <center>
         <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" id="myText17" type="reset" style="">Edit</button>
         <br>
         <br>
         <button style="display:none; background-color: #FC6E20;" id="myText15" type="submit" value="Submit" class="btn btn-primary">Save</button>
       </center>
+    {% endif %}
     </div>
 
 
@@ -662,9 +636,11 @@ tr:nth-child(even) {
 
                   <br>
                   <br>
+                      {% if 'Dispatch Module' in user.modules_assigned %}
+
                 <center>
                 <a href="/edit_dispatch_product/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
-</center>
+</center>    {% endif %}
                 <br>
               </div>
             {% endfor %}

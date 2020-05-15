@@ -13,11 +13,17 @@ from django.db.models import Q, F, Min, Avg
 from django.db.models import Sum
 from ess_app.models import Employee_Analysis_date
 from django.contrib.auth.decorators import login_required
-from customer_app.models import Log
+from customer_app.models import Log, sub_sub_model
 
 from customer_app.models import type_purchase,main_model,sub_model,sub_sub_model
 
 from ess_app.models import Defects_Warning
+
+from stock_management_system_app.models import Godown
+
+from stock_management_system_app.models import GodownProduct
+
+from stock_management_system_app.models import Product
 from .models import  Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
 from _datetime import datetime
@@ -86,8 +92,8 @@ def purchase_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Purchase No: '+str(new_instance.purchase_no)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
 
     except:
         pass
@@ -149,8 +155,8 @@ def purchase_product_handler(sender, instance, update_fields=None, **kwargs):
                 log.table_name = 'Product_Details'
                 log.reference = 'Purchase No: '+str(purchase.purchase_no)+ ', Product id:' +str(new_instance.id)
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
 
     except:
         pass
@@ -162,8 +168,6 @@ def add_purchase_details(request):
     if 'purchase_id' in request.session:
         if request.session.get('product_saved'):
             pass
-
-            # request.session['product_saved'] = True
 
         else:
             prod_list=Product_Details.objects.all().values_list('purchase_id', flat=True)
@@ -177,29 +181,6 @@ def add_purchase_details(request):
         except:
             pass
     cust_sugg = Customer_Details.objects.all()
-    # sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name)
-    # if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager':
-    #     sales_person_sugg = SiteUser.objects.filter(group__icontains=request.user.name,
-    #                                         modules_assigned__icontains='Customer Module', is_deleted=False)
-    #
-    #
-    # else:  # display colleague
-    #     list_group = SiteUser.objects.get(id=request.user.id).group
-    #     import ast
-    #
-    #     x = "[" + list_group + "]"
-    #     x = ast.literal_eval(x)
-    #     manager_list = []
-    #     for item in x:
-    #         name = SiteUser.objects.filter(name=item)
-    #         for i in name:
-    #             if i.role == 'Manager':
-    #                 if item not in manager_list:
-    #                     manager_list.append(item)
-    #
-    #     sales_person_sugg = SiteUser.objects.filter(group__icontains=manager_list,
-    #                                         modules_assigned__icontains='Customer Module', is_deleted=False)
-
     if request.user.role == 'Super Admin':
         sales_person_sugg=SiteUser.objects.filter(Q(id=request.user.id) | Q(group__icontains=request.user.name),modules_assigned__icontains='Customer Module', is_deleted=False)
 
@@ -229,11 +210,9 @@ def add_purchase_details(request):
         sales_person = request.POST.get('sales_person')
         product_purchase_date = request.POST.get('product_purchase_date')
         bill_no = request.POST.get('bill_no')
+        bill_address = request.POST.get('bill_address')
+        shipping_address = request.POST.get('shipping_address')
         upload_op_file = request.FILES.get('upload_op_file')
-        # second_person = request.POST.get('second_person')
-        # third_person = request.POST.get('third_person')
-        # second_contact_no = request.POST.get('second_contact_no')
-        # third_contact_no = request.POST.get('third_contact_no')
         po_number = request.POST.get('po_number')
         channel_of_sales = request.POST.get('channel_of_sales')
         industry = request.POST.get('industry')
@@ -303,6 +282,8 @@ def add_purchase_details(request):
         item2.sales_person = sales_person
         item2.user_id=SiteUser.objects.get(id=site_user_id)
         item2.bill_no = bill_no
+        item2.bill_address = bill_address
+        item2.shipping_address = shipping_address
         item2.upload_op_file = upload_op_file
         item2.po_number = po_number
         item2.channel_of_sales = channel_of_sales
@@ -315,22 +296,7 @@ def add_purchase_details(request):
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item2.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no+1
         item2.log_entered_by = request.user.profile_name
-        # request.session['new_repeat_purchase'] = new_repeat_purchase
-        # request.session['second_person'] = customer_name
-        # request.session['second_contact_no'] = contact_no
-        # request.session['date_of_purchase'] = date_of_purchase
-        # request.session['product_purchase_date'] = product_purchase_date
-        # request.session['sales_person'] = sales_person
-        # request.session['user_id'] = SiteUser.objects.get(id=site_user_id)
-        # request.session['bill_no'] = bill_no
-        # request.session['upload_op_file'] = upload_op_file
-        # request.session['po_number'] = po_number
-        # request.session['channel_of_sales'] = channel_of_sales
-        # request.session['industry'] = industry
-        # request.session['value_of_goods'] = 0.0
-        # request.session['channel_of_dispatch'] = channel_of_dispatch
-        # request.session['notes'] = notes
-        # request.session['feedback_form_filled'] = False
+
 
         item2.save()
 
@@ -361,6 +327,8 @@ def add_purchase_details(request):
             dispatch.company_email = customer_email_id
             dispatch.company_address = address  # new2
             dispatch.channel_of_dispatch = channel_of_dispatch   # new2
+            dispatch.bill_address = bill_address   # new2
+            dispatch.shipping_address = shipping_address   # new2
             if notes != None or notes != 'None' or notes != '':
                 dispatch.notes = notes   # new2
             dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
@@ -439,6 +407,200 @@ def add_purchase_details(request):
     }
 
     return render(request,'forms/cust_mod_form.html',context)
+
+@login_required(login_url='/')
+def quick_purchase_entry(request):
+    global_count=0
+    try:
+        del request.session['global_count_sess']
+    except:
+        pass
+    request.session['global_count_sess'] = global_count
+    if request.user.role == 'Super Admin':
+        godowns = Godown.objects.filter(default_godown_purchase=False)
+
+    elif request.user.role == 'Admin':
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id ))
+
+    elif request.user.role == 'Manager':
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+    else:
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+    type_of_purchase_list = type_purchase.objects.all()  # 1
+    if request.method == 'POST':
+        quantity = float(request.POST.get('quantity'))
+        model_of_purchase = request.POST.get('model_of_purchase')
+        type_of_scale = request.POST.get('type_of_scale')
+        sub_model = request.POST.get('sub_model')
+        sub_sub_model = request.POST.get('sub_sub_model')
+        serial_no_scale = request.POST.get('serial_no_scale')
+        brand = request.POST.get('brand')
+        capacity = request.POST.get('capacity')
+        unit = request.POST.get('unit')
+        value_of_goods = request.POST.get('value_of_goods')
+        is_last_product_yes = request.POST.get('is_last_product_yes')
+        godown = request.POST.get('godown')
+        global_count = request.POST.get('global_count')
+        from datetime import datetime
+
+
+        item2 = Purchase_Details.objects.filter(sales_person=request.user.profile_name,is_quick_entry=True,date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
+        if item2.count()>0:
+
+            if value_of_goods == '' or value_of_goods == None:
+                value_of_goods = 0.0
+            item2.update(value_of_goods=F("value_of_goods") + value_of_goods)
+            item2 = Purchase_Details.objects.get(sales_person=request.user.profile_name,is_quick_entry=True,date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
+
+        else:
+            item2 = Purchase_Details()
+
+            cust_val =Customer_Details.objects.filter(customer_name = "Small Sale",contact_no = '0000000000')
+            if cust_val.count()>0:
+                item = Customer_Details.objects.get(customer_name = "Small Sale",contact_no = '0000000000')
+            else:
+                item = Customer_Details()
+                item.customer_name = "Small Sale"
+
+                item2.second_company_name = "Small Sale"  # new2
+                item.company_name = "Small Sale"
+
+                item.address = "Small Sale"
+                item2.company_address = "Small Sale"  # new2
+                item.contact_no = '0000000000'
+                item2.company_email = ''  # new2
+                item.customer_email_id = ''
+
+
+                item.save()
+            item2.crm_no = Customer_Details.objects.get(id=item.pk)
+
+            site_user_id = SiteUser.objects.get(profile_name=request.user.profile_name).pk
+            # item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            item2.new_repeat_purchase = 'New'
+            item2.second_person = "Small Sale"  # new1
+            # item2.third_person=third_person
+            item2.second_contact_no = "0000000000"  # new2
+
+            # item2.third_contact_no=third_contact_no
+            item2.date_of_purchase = datetime.today().strftime('%Y-%m-%d')
+            item2.product_purchase_date = datetime.today().strftime('%Y-%m-%d')
+            item2.sales_person = request.user.profile_name
+            item2.user_id = SiteUser.objects.get(id=site_user_id)
+            item2.bill_no = ''
+            item2.bill_address = ''
+            item2.shipping_address = ''
+            item2.upload_op_file = ''
+            item2.po_number = ''
+            item2.channel_of_sales = "Retail Through Physical Store"
+            item2.industry = "Small Sale"
+            if value_of_goods == '' or value_of_goods == None:
+                value_of_goods = 0.0
+            item2.value_of_goods = value_of_goods
+            item2.channel_of_dispatch = "Franchisee Store"
+            item2.notes = "Small Sale"
+            item2.feedback_form_filled = False
+            item2.is_quick_entry = True
+            # item2.user_id = SiteUser.objects.get(id=request.user.pk)
+            item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            item2.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no + 1
+            item2.log_entered_by = request.user.profile_name
+
+            item2.save()
+
+        if value_of_goods == '' or value_of_goods == None:
+            value_of_goods=0.0
+
+        item = Product_Details()
+
+        item.quantity = quantity
+
+        item.type_of_scale = type_of_scale
+        # if model_of_purchase != None and model_of_purchase != '':
+        item.model_of_purchase = model_of_purchase
+        item.sub_model = sub_model
+        item.sub_sub_model = sub_sub_model
+        item.serial_no_scale = serial_no_scale
+        item.brand = brand
+        item.capacity = capacity
+        item.unit = unit
+        item.amount = value_of_goods
+        item.purchase_id_id = item2.pk
+        item.user_id = SiteUser.objects.get(id=request.user.pk)
+        item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item.log_entered_by = request.user.name
+        item.godown_id = Godown.objects.get(id=godown)
+
+        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
+                                                 Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_date.objects.filter(user_id=item2.user_id,
+                                                  entry_date=datetime.now().date(),
+                                                  year=datetime.now().year).update(
+                total_sales_done_today=F("total_sales_done_today") + value_of_goods)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_date()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_sales_done_today = value_of_goods
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_month.objects.filter(user_id=SiteUser.objects.get(id=request.user.pk),entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done=F("total_sales_done") + value_of_goods)
+            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+
+            # ead.save(update_fields=['total_sales_done_today'])
+
+        else:
+            ead = Employee_Analysis_month()
+            ead.user_id = SiteUser.objects.get(id=request.user.pk)
+            ead.total_sales_done = value_of_goods
+            # ead.total_dispatch_done = value_of_goods
+            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            ead.month = datetime.now().month
+            ead.year = datetime.now().year
+            ead.save()
+
+        if sub_sub_model != '':
+            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                  sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+
+            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
+                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
+                        GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                        quantity=F("quantity") - quantity)
+
+
+        item.save()
+
+        if is_last_product_yes == 'yes':
+            try:
+                del request.session['global_count_sess']
+            except:
+                pass
+            return redirect('/view_customer_details/' )
+        elif is_last_product_yes == 'no':
+            try:
+                del request.session['global_count_sess']
+            except:
+                pass
+            request.session['global_count_sess'] = global_count
+            return redirect('/quick_purchase_entry/')
+    context={
+        'global_count':global_count,
+        'godowns': godowns,
+        'type_purchase': type_of_purchase_list,  # 2
+    }
+    return render(request, 'dashboardnew/add_product.html', context)
+
+
 
 @login_required(login_url='/')
 def view_customer_details(request):
@@ -627,7 +789,7 @@ def update_customer_details(request,id):
     customer_id = Purchase_Details.objects.get(id=id).crm_no
     # customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
-
+    context ={}
     if 'product_saved' in request.session:
         if request.session.get('product_saved'):
             pass
@@ -659,179 +821,212 @@ def update_customer_details(request,id):
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
 
-        item=customer_id
-
-        item.customer_name = customer_name
-        item.contact_no = contact_no
-        if customer_id.contact_no != item.contact_no or customer_id.customer_name != item.customer_name :
-            item.save(update_fields=['customer_name','contact_no'])  #new3
-
-
-        date_of_purchase = request.POST.get('date_of_purchase')
-        # second_person=request.POST.get('second_person')
-        # third_person=request.POST.get('third_person')
-        # second_contact_no=request.POST.get('second_contact_no')
-        # third_contact_no=request.POST.get('third_contact_no')
-        sales_person = request.POST.get('sales_person')
-        bill_no = request.POST.get('bill_no')
-        new_repeat_purchase = request.POST.get('new_repeat_purchase')
-        upload_op_file = request.FILES.get('upload_op_file')
-        po_number = request.POST.get('po_number')
-        channel_of_sales = request.POST.get('channel_of_sales')
-        industry = request.POST.get('industry')
-        industry = request.POST.get('industry')
-        # value_of_goods = request.POST.get('value_of_goods')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
-        notes = request.POST.get('notes')
-        # value_of_goods = request.POST.get('value_of_goods')
-        # feedback_form_filled = request.POST.get('feedback_form_filled')
+        if channel_of_dispatch == None or channel_of_dispatch == '' or len(channel_of_dispatch) < 2:
+            context22 = {
+                'product_id': product_id,
+                'customer_id': customer_id,
+                'purchase_id_id': purchase_id_id,
+                'feedback': feedback,
+                'channel_error': True,
+            }
+            context.update(context22)
+            return render(request, 'update_forms/update_cust_mod_form.html', context)
+        else:
+
+            item=customer_id
+
+            item.customer_name = customer_name
+            item.contact_no = contact_no
+            if customer_id.contact_no != item.contact_no or customer_id.customer_name != item.customer_name :
+                item.save(update_fields=['customer_name','contact_no'])  #new3
 
 
-        item2 = purchase_id_id
-
-        item2.crm_no = Customer_Details.objects.get(id=item.pk)
-
-        if company_name != '':
-            item2.second_company_name = company_name  # new2
-
-            item.company_name = company_name
-            item.save(update_fields=['company_name'])
-        if address != '':
-            item.address = address
-
-            item2.company_address = address  # new2
-            item.save(update_fields=['address'])
-        if customer_email_id != '':
-            item.customer_email_id = customer_email_id
-            item2.company_email = customer_email_id  # new2
-            item.save(update_fields=['customer_email_id'])
-
-
-
-        item2.date_of_purchase = date_of_purchase
-        item2.second_person=customer_name   #new4
-        # item2.third_person=third_person
-        item2.second_contact_no=contact_no   #new5
-        # item2.third_contact_no=third_contact_no
-        item2.sales_person = sales_person
-        item2.new_repeat_purchase = new_repeat_purchase
-        item2.bill_no = bill_no
-        item2.upload_op_file = upload_op_file
-        item2.po_number = po_number
-        item2.channel_of_sales = channel_of_sales
-        item2.industry = industry
-        # item2.value_of_goods = value_of_goods
-
-        if item2.channel_of_dispatch =='Franchisee Store' and channel_of_dispatch != 'Franchisee Store':
-            dispatch = Dispatch()
-
-            if Customer_Details.objects.filter(customer_name=customer_name,
-                                               contact_no=contact_no).count() > 0:
-
-                dispatch.crm_no = Customer_Details.objects.filter(customer_name=customer_name,
-                                                                  contact_no=contact_no).first()
-
-            else:
-                dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
-
-            dispatch.second_person = customer_name  # new1
-            dispatch.second_contact_no = contact_no  # new2
-            dispatch.second_company_name = company_name  # new2
-            dispatch.company_email = customer_email_id
-            dispatch.company_address = address  # new2
-            dispatch.channel_of_dispatch = channel_of_dispatch  # new2
-            dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
-            dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
-            if Dispatch.objects.all().count() == 0:
-                dispatch.dispatch_no = 1
-            else:
-                dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
-            # dispatch.customer_email = customer_email_id
-            # dispatch.customer_name = customer_name
-            # dispatch.company_name = company_name
-            # dispatch.customer_address = address
-
-            dispatch.save()
-            current_stage_in_db = Dispatch.objects.get(id=dispatch.pk).current_stage  # updatestage1
-            if (current_stage_in_db == '' or current_stage_in_db == None):
-                Dispatch.objects.filter(id=dispatch.pk).update(current_stage='dispatch q')
-
-            # dispatch2 = Dispatch.objects.get(id=dispatch.pk)
-            # dispatch2.dispatch_id = dispatch.pk
-            # dispatch2.save(update_fields=['dispatch_id'])
-            customer_id = Purchase_Details.objects.get(id=item2.pk)
-            customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
-            customer_id.save(update_fields=['dispatch_id_assigned'])
-
-
-            prod_list= list(Product_Details.objects.filter(purchase_id=customer_id.pk).values_list('id', flat=True))
-            for item in prod_list:   #newold
-
-                oobj=Product_Details.objects.get(id=item)
-
-                dispatch_pro=Product_Details_Dispatch()
-
-                dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
-                dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
-                # dispatch_pro.product_name = product_name
-                dispatch_pro.quantity = oobj.quantity
-                dispatch_pro.type_of_scale = oobj.type_of_scale
-                dispatch_pro.model_of_purchase = oobj.model_of_purchase
-                dispatch_pro.sub_model = oobj.sub_model
-                dispatch_pro.sub_sub_model = oobj.sub_sub_model
-                dispatch_pro.serial_no_scale = oobj.serial_no_scale
-                dispatch_pro.brand = oobj.brand
-                dispatch_pro.capacity = oobj.capacity
-                dispatch_pro.unit = oobj.unit
-                dispatch_pro.value_of_goods = oobj.amount
-                dispatch_pro.dispatch_id = Dispatch.objects.get(id=dispatch.pk)
-                dispatch_pro.save()
-
-                #aaao
-
-                # nobj.__dict__ = oobj.__dict__.copy()
-                Product_Details.objects.filter(id=item).update(product_dispatch_id=dispatch_pro.pk)
-
-
-        if item2.channel_of_dispatch != 'Franchisee Store' and channel_of_dispatch == 'Franchisee Store':
-            customer_id = Purchase_Details.objects.get(id=item2.pk)
-            customer_id.dispatch_id_assigned = None  # str(dispatch.pk + 00000)
-            customer_id.save(update_fields=['dispatch_id_assigned'])
-            Dispatch.objects.get(id=item2.dispatch_id_assigned.pk).delete()
+            date_of_purchase = request.POST.get('date_of_purchase')
+            # second_person=request.POST.get('second_person')
+            # third_person=request.POST.get('third_person')
+            # second_contact_no=request.POST.get('second_contact_no')
+            # third_contact_no=request.POST.get('third_contact_no')
+            sales_person = request.POST.get('sales_person')
+            bill_no = request.POST.get('bill_no')
+            bill_address = request.POST.get('bill_address')
+            shipping_address = request.POST.get('shipping_address')
+            new_repeat_purchase = request.POST.get('new_repeat_purchase')
+            upload_op_file = request.FILES.get('upload_op_file')
+            po_number = request.POST.get('po_number')
+            channel_of_sales = request.POST.get('channel_of_sales')
+            industry = request.POST.get('industry')
+            industry = request.POST.get('industry')
+            # value_of_goods = request.POST.get('value_of_goods')
+            notes = request.POST.get('notes')
+            # value_of_goods = request.POST.get('value_of_goods')
+            # feedback_form_filled = request.POST.get('feedback_form_filled')
 
 
 
-        item2.channel_of_dispatch = channel_of_dispatch
-        item2.notes = notes
-        # item2.feedback_form_filled = feedback_form_filled
-        # item2.user_id = SiteUser.objects.get(id=request.user.pk)
-        # item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item2.log_entered_by = request.user.profile_name
 
-        item2.save(update_fields=['log_entered_by','date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
-                                  'channel_of_sales','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email',
-                                  ])  #new6
+            item2 = purchase_id_id
+
+            item2.crm_no = Customer_Details.objects.get(id=item.pk)
+
+            if company_name != '':
+                item2.second_company_name = company_name  # new2
+
+                item.company_name = company_name
+                item.save(update_fields=['company_name'])
+            if address != '':
+                item.address = address
+
+                item2.company_address = address  # new2
+                item.save(update_fields=['address'])
+            if customer_email_id != '':
+                item.customer_email_id = customer_email_id
+                item2.company_email = customer_email_id  # new2
+                item.save(update_fields=['customer_email_id'])
 
 
-        # purchase_id_id = Purchase_Details.objects.get(id=id)
-        # customer_id = Purchase_Details.objects.get(id=id).crm_no
-        # customer_id = Customer_Details.objects.get(id=customer_id)
-        # product_id = Product_Details.objects.filter(purchase_id=id)
-        # context = {
-        #     'product_id': product_id,
-        #     'customer_id': customer_id,
-        #     'purchase_id_id': purchase_id_id,
-        #     'feedback': feedback,
-        # }
 
-        return redirect('/view_customer_details/')
+            item2.date_of_purchase = date_of_purchase
+            item2.second_person=customer_name   #new4
+            # item2.third_person=third_person
+            item2.second_contact_no=contact_no   #new5
+            # item2.third_contact_no=third_contact_no
+            item2.sales_person = sales_person
+            item2.new_repeat_purchase = new_repeat_purchase
+            item2.bill_no = bill_no
+            item2.bill_address = bill_address
+            item2.shipping_address = shipping_address
+            item2.upload_op_file = upload_op_file
+            item2.po_number = po_number
+            item2.channel_of_sales = channel_of_sales
+            item2.industry = industry
+            # item2.value_of_goods = value_of_goods
 
-    context = {
+
+            if (purchase_id_id.dispatch_id_assigned == None and channel_of_dispatch != 'Franchisee Store')  or (item2.channel_of_dispatch =='Franchisee Store' and channel_of_dispatch != 'Franchisee Store') :
+                dispatch = Dispatch()
+
+                if Customer_Details.objects.filter(customer_name=customer_name,
+                                                   contact_no=contact_no).count() > 0:
+
+                    dispatch.crm_no = Customer_Details.objects.filter(customer_name=customer_name,
+                                                                      contact_no=contact_no).first()
+
+                else:
+                    dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
+
+                dispatch.second_person = customer_name  # new1
+                dispatch.second_contact_no = contact_no  # new2
+                dispatch.second_company_name = company_name  # new2
+                dispatch.company_email = customer_email_id
+                dispatch.company_address = address  # new2
+                dispatch.channel_of_dispatch = channel_of_dispatch  # new2
+                dispatch.bill_address = bill_address  # new2
+                dispatch.shipping_address = shipping_address  # new2
+                dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
+                dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                if Dispatch.objects.all().count() == 0:
+                    dispatch.dispatch_no = 1
+                else:
+                    dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
+                # dispatch.customer_email = customer_email_id
+                # dispatch.customer_name = customer_name
+                # dispatch.company_name = company_name
+                # dispatch.customer_address = address
+
+                dispatch.save()
+                current_stage_in_db = Dispatch.objects.get(id=dispatch.pk).current_stage  # updatestage1
+                if (current_stage_in_db == '' or current_stage_in_db == None):
+                    Dispatch.objects.filter(id=dispatch.pk).update(current_stage='dispatch q')
+
+                # dispatch2 = Dispatch.objects.get(id=dispatch.pk)
+                # dispatch2.dispatch_id = dispatch.pk
+                # dispatch2.save(update_fields=['dispatch_id'])
+                customer_id = Purchase_Details.objects.get(id=item2.pk)
+                customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
+                customer_id.save(update_fields=['dispatch_id_assigned'])
+
+
+                prod_list= list(Product_Details.objects.filter(purchase_id=customer_id.pk).values_list('id', flat=True))
+                for item in prod_list:   #newold
+
+                    oobj=Product_Details.objects.get(id=item)
+
+                    dispatch_pro=Product_Details_Dispatch()
+
+                    dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+                    dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                    # dispatch_pro.product_name = product_name
+                    dispatch_pro.quantity = oobj.quantity
+                    dispatch_pro.type_of_scale = oobj.type_of_scale
+                    dispatch_pro.model_of_purchase = oobj.model_of_purchase
+                    dispatch_pro.sub_model = oobj.sub_model
+                    dispatch_pro.sub_sub_model = oobj.sub_sub_model
+                    dispatch_pro.serial_no_scale = oobj.serial_no_scale
+                    dispatch_pro.brand = oobj.brand
+                    dispatch_pro.capacity = oobj.capacity
+                    dispatch_pro.unit = oobj.unit
+                    dispatch_pro.value_of_goods = oobj.amount
+                    dispatch_pro.dispatch_id = Dispatch.objects.get(id=dispatch.pk)
+                    dispatch_pro.save()
+
+                    #aaao
+
+                    # nobj.__dict__ = oobj.__dict__.copy()
+                    Product_Details.objects.filter(id=item).update(product_dispatch_id=dispatch_pro.pk)
+
+
+            if item2.channel_of_dispatch != 'Franchisee Store' and channel_of_dispatch == 'Franchisee Store' :
+                customer_id = Purchase_Details.objects.get(id=item2.pk)
+                customer_id.dispatch_id_assigned = None  # str(dispatch.pk + 00000)
+                customer_id.save(update_fields=['dispatch_id_assigned'])
+                try:
+                    Dispatch.objects.get(id=item2.dispatch_id_assigned.pk).delete()
+                except:
+                    pass
+
+
+
+
+
+            item2.channel_of_dispatch = channel_of_dispatch
+            item2.notes = notes
+            # item2.feedback_form_filled = feedback_form_filled
+            # item2.user_id = SiteUser.objects.get(id=request.user.pk)
+            # item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            item2.log_entered_by = request.user.profile_name
+
+            item2.save(update_fields=['log_entered_by','date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
+                                      'channel_of_sales','shipping_address','bill_address','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email',
+                                      ])  #new6
+
+
+            # purchase_id_id = Purchase_Details.objects.get(id=id)
+            # customer_id = Purchase_Details.objects.get(id=id).crm_no
+            # customer_id = Customer_Details.objects.get(id=customer_id)
+            # product_id = Product_Details.objects.filter(purchase_id=id)
+            # context = {
+            #     'product_id': product_id,
+            #     'customer_id': customer_id,
+            #     'purchase_id_id': purchase_id_id,
+            #     'feedback': feedback,
+            # }
+
+            try:
+                del request.session['enable_auto_edit']
+                del request.session['lead_url']
+            except:
+                pass
+
+            return redirect('/view_customer_details/')
+
+    context2 = {
         'product_id':product_id,
         'customer_id': customer_id,
         'purchase_id_id': purchase_id_id,
         'feedback': feedback,
     }
+    context.update(context2)
 
 
     return render(request,'update_forms/update_cust_mod_form.html',context)
@@ -841,6 +1036,17 @@ def update_customer_details(request,id):
 def add_product_details(request,id):
     purchase = Purchase_Details.objects.get(id=id)
     purchase_id = purchase.id
+    if request.user.role == 'Super Admin':
+        godowns = Godown.objects.filter(default_godown_purchase=False)
+
+    elif request.user.role == 'Admin':
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id ))
+
+    elif request.user.role == 'Manager':
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+    else:
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
 
     type_of_purchase_list =type_purchase.objects.all() #1
     if 'purchase_id' in request.session:
@@ -852,7 +1058,7 @@ def add_product_details(request,id):
         dispatch_id_assigned=None
     form = Product_Details_Form(request.POST or None)
     if request.method == 'POST':
-        quantity = request.POST.get('quantity')
+        quantity = float(request.POST.get('quantity'))
         model_of_purchase = request.POST.get('model_of_purchase')
         type_of_scale = request.POST.get('type_of_scale')
         sub_model = request.POST.get('sub_model')
@@ -863,6 +1069,7 @@ def add_product_details(request,id):
         unit = request.POST.get('unit')
         value_of_goods = request.POST.get('value_of_goods')
         is_last_product_yes = request.POST.get('is_last_product_yes')
+        godown = request.POST.get('godown')
 
         if value_of_goods == '' or value_of_goods == None:
             value_of_goods=0.0
@@ -885,6 +1092,17 @@ def add_product_details(request,id):
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.log_entered_by = request.user.name
+        item.godown_id = Godown.objects.get(id=godown)
+
+        if sub_sub_model != '':
+            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                  sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+
+            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
+                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
+                        GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                        quantity=F("quantity") - quantity)
+
 
         item.save()
 
@@ -925,14 +1143,6 @@ def add_product_details(request,id):
                 sent_from = settings.EMAIL_HOST_USER
                 to = [purchase.company_email]
                 subject = 'Your HSCo Purchase'
-                # message_old = 'Dear ' + str(
-                #     purchase.crm_no.customer_name) + ', Thanks for purchasing your scale from HSCo. ' \
-                #                                      'Your Purchase ID is ' + str(
-                #     purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-                #                    ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' \
-                #           + str(request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(
-                #     purchase.id) + '\nHere is the list of product you purchased:\n' + product_list
-
 
                 message= 'Dear ' + str(
                     purchase.second_person) + ',' \
@@ -969,19 +1179,10 @@ def add_product_details(request,id):
                     print('Something went wrong...Email not send!!!')
 
 
-                # send_mail('Feedback Form',
-                #           message, settings.EMAIL_HOST_USER,
-                #           [purchase.company_email])
-                # print("send mail!!")
             except:
                 print("exception occured!!")
                 pass
 
-            # message_old = 'Dear ' + str(purchase.second_person) + ', Thanks for purchasing your scale from HSCo. ' \
-            #                                                 'Your Purchase ID is ' + str(
-            #     purchase.pk) + '. Please quote this Purchase number for all future references. Please fill the feedback form to' \
-            #                 ' avail exciting offers in the future Click on the link to give feedback http://139.59.76.87/feedback_purchase/' + str(
-            #     request.user.pk) + '/' + str(purchase.crm_no.pk) + '/' + str(purchase.id)
 
             message = 'Dear ' + str(
                 purchase.second_person) + ',' \
@@ -1051,7 +1252,7 @@ def add_product_details(request,id):
             ead.month = datetime.now().month
             ead.year = datetime.now().year
             ead.save()
-        #
+
         # Employee_Analysis_month.objects.filter(user_id=purchase.user_id,
         #                                        entry_date__month=datetime.now().month,
         #                                        year=datetime.now().year).update(
@@ -1106,8 +1307,17 @@ def add_product_details(request,id):
     context = {
         'form': form,
         'purchase_id': purchase_id,
+        'godowns': godowns,
         'type_purchase': type_of_purchase_list,  #2
     }
+    try:
+        default_godown = Godown.objects.get(default_godown_purchase=True)
+        context1={
+            'default_godown': default_godown,
+        }
+        context.update(context1)
+    except:
+        pass
     return render(request,'dashboardnew/add_product.html',context)
 
 
@@ -1169,11 +1379,7 @@ def final_report(request):
                 repairing_data = []
                 for i in row:
                     repairing_data.append(list(i))
-                print(final_row_product)
-                print(final_row)
-                print(final_row)
-                print(final_row)
-                print(final_row)
+
     # with connection.cursor() as cursor:
     #     if string!='':
     #         cursor.execute("SELECT  "+string+" from purchase_app_purchase_details , customer_app_customer_details"
@@ -1472,7 +1678,6 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
 
 @login_required(login_url='/')
 def edit_product_customer(request,product_id_rec):
-
     purchase = Product_Details.objects.get(id=product_id_rec)
     purchase_id = Purchase_Details.objects.get(id=purchase.purchase_id)
     # dispatch_id_assigned = str(purchase_id.dispatch_id_assigned)
@@ -1481,6 +1686,32 @@ def edit_product_customer(request,product_id_rec):
     except:
         dispatch_id_assigned=None
     product_id = Product_Details.objects.get(id=product_id_rec)
+    main_product = Product.objects.get(scale_type__name=product_id.type_of_scale, main_category__name=product_id.model_of_purchase,
+                                         sub_category__name=product_id.sub_model, sub_sub_category__name=product_id.sub_sub_model)
+    if request.user.role == 'Super Admin':
+        try:
+            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False))
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False))
+
+    elif request.user.role == 'Admin':
+        try:
+            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id) )
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id) )
+    elif request.user.role == 'Manager':
+        try:
+            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+    else:
+        try:
+            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+
     if request.method == 'POST':
         quantity = request.POST.get('quantity')
         model_of_purchase = request.POST.get('model_of_purchase')
@@ -1491,11 +1722,44 @@ def edit_product_customer(request,product_id_rec):
         brand = request.POST.get('brand')
         capacity = request.POST.get('capacity')
         unit = request.POST.get('unit')
-        # sales_person = request.POST.get('sales_person')
         amount = request.POST.get('value_of_goods')
-        # purchase_type = request.POST.get('purchase_type')
+        godown = request.POST.get('godown')
 
         cost2 = purchase.amount
+        godown_product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+        # If godown is changed, add stored quantity in current godown and subtract new quantity from new godown
+        if (quantity != '') or  (godown != '') :
+            if  purchase.godown_id == None and godown != '':
+                # subtracting quantity from new godown
+                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                    quantity=F("quantity") - quantity)
+            elif purchase.godown_id.id != godown and quantity != purchase.quantity :
+                # adding stored quantity in current godown
+                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") + purchase.quantity)
+
+                # subtracting new quantity from new godown
+                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                    quantity=F("quantity") - quantity)
+            elif purchase.godown_id.id != godown :
+                # adding stored quantity in current godown
+                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") + purchase.quantity)
+
+                # subtracting new quantity from new godown
+                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                    quantity=F("quantity") - purchase.quantity)
+            elif quantity != purchase.quantity:
+                # adding old quantity to current godown
+                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") + purchase.quantity)
+
+                # subtracting new quantity from current godown
+                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") - quantity)
+            else:
+                print('no godown changes')
 
         Purchase_Details.objects.filter(id=purchase_id.pk).update(value_of_goods=F("value_of_goods") - cost2)
         # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
@@ -1527,6 +1791,7 @@ def edit_product_customer(request,product_id_rec):
         item.capacity = capacity
         item.unit = unit
         item.amount = amount
+        item.godown_id = Godown.objects.get(id=godown)
         item.log_entered_by = request.user.name
         # item.purchase_id_id = purchase_id
         # item.sales_person = sales_person
@@ -1534,7 +1799,7 @@ def edit_product_customer(request,product_id_rec):
         # item.user_id = SiteUser.objects.get(id=request.user.pk)
         # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.save(update_fields=['log_entered_by','quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
-                                 'serial_no_scale', 'brand', 'capacity', 'unit','amount',
+                                 'serial_no_scale', 'brand', 'capacity', 'unit','amount','godown_id'
                                  ])
 
         Purchase_Details.objects.filter(id=purchase_id.pk).update(
@@ -1555,7 +1820,7 @@ def edit_product_customer(request,product_id_rec):
 
         if dispatch_id_assigned != '' or dispatch_id_assigned != None:
             if product_id.product_dispatch_id != '' or product_id.product_dispatch_id != None:
-                if Product_Details_Dispatch.objects.filter(id=product_id.product_dispatch_id).count()>0:
+                if Product_Details_Dispatch.objects.filter(id=product_id.product_dispatch_id.pk).count()>0:
                     dispatch_pro = Product_Details_Dispatch.objects.get(id=product_id.product_dispatch_id.pk)
 
                     # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
@@ -1571,6 +1836,7 @@ def edit_product_customer(request,product_id_rec):
                     dispatch_pro.capacity = capacity
                     dispatch_pro.unit = unit
                     dispatch_pro.value_of_goods = amount
+                    dispatch_pro.godown_id = Godown.objects.get(id=product_id.godown_id.pk)
 
                     # dispatch_pro.dispatch_id = dispatch_id
                     # dispatch_pro.sales_person = sales_person
@@ -1578,7 +1844,7 @@ def edit_product_customer(request,product_id_rec):
                     dispatch_pro.save(
                         update_fields=['quantity', 'type_of_scale','value_of_goods', 'model_of_purchase', 'sub_model',
                                        'sub_sub_model',
-                                       'serial_no_scale', 'brand', 'capacity', 'unit',
+                                       'serial_no_scale', 'brand', 'capacity', 'unit','godown_id'
                                        ])
 
         # try:
@@ -1591,24 +1857,78 @@ def edit_product_customer(request,product_id_rec):
 
     context = {
         'product_id': product_id,
+        'godowns': godowns,
+        'main_product': main_product,
     }
 
     return render(request,'edit_product/edit_product_customer.html',context)
 
 @login_required(login_url='/')
 def load_users(request):
-    current_month = datetime.now().month
-    current_year = datetime.now().year
+
 
     selected = request.GET.get('loc_id')
-    if selected=='true':
-        user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,entry_date__year=current_year,
-                   manager_id__icontains=request.user.name,user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module')
+    sel_month = request.GET.get('sel_month')
+    sel_year = request.GET.get('sel_year')
+    sel_month_text = request.GET.get('sel_month_text')
 
-        context = {
-            'user_list': user_list,
-            'manager': True,
-        }
+    if selected=='true':
+        if (sel_month == 0 or sel_month == 'true'):
+            current_month = datetime.now().month
+            current_year = datetime.now().year
+            user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,
+                                                               entry_date__year=current_year,
+                                                               manager_id__icontains=request.user.name,
+                                                               user_id__is_deleted=False,
+                                                               user_id__modules_assigned__icontains='Customer Module')
+            if (user_list.count() == 0):
+                error_exist_225 = True
+                success_exist_225 = False
+            else:
+                error_exist_225 = False
+                success_exist_225 = True
+            context = {
+
+                'error_exist_225': error_exist_225,
+                'success_exist_225': success_exist_225,
+                'error_msg_225': 'Select Valid Month And Year\n Showing Results For Current Month and Year.',
+                'user_list': user_list,
+                'manager': True,
+
+            }
+
+
+        else:
+            current_month = sel_month
+            current_year = sel_year
+
+            user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,
+                                                               entry_date__year=current_year,
+                                                               manager_id__icontains=request.user.name,
+                                                               user_id__is_deleted=False,
+                                                               user_id__modules_assigned__icontains='Customer Module')
+            if(user_list.count() == 0):
+                error_exist_225 = True
+                success_exist_225 = False
+            else:
+                error_exist_225 = False
+                success_exist_225 = True
+            if(sel_month_text == 'Select Month'):
+                error_msg_225 = 'Select Valid Month And Year'
+            else:
+                error_msg_225 = 'Result Not Found For ' + sel_month_text + ', ' + current_year
+
+
+
+            context = {
+                'error_exist_225': error_exist_225,
+                'success_exist_225': success_exist_225,
+                'success_msg_225': 'Results For ' + sel_month_text + ', ' + current_year,
+                'error_msg_225': error_msg_225,
+                'user_list': user_list,
+                'manager': True,
+            }
+
         return render(request, 'AJAX/load_users.html', context)
     else:
         if check_admin_roles(request):  # For ADMIN
@@ -1636,7 +1956,7 @@ def check_admin_roles(request):
 
 @login_required(login_url='/')
 def purchase_logs(request):
-    purchase_logs = Log.objects.filter(module_name='Purchase Module')
+    purchase_logs = Log.objects.filter(module_name='Purchase Module').order_by('-id')
     paginator = Paginator(purchase_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')
     purchase_logs = paginator.get_page(page)
@@ -1646,8 +1966,62 @@ def purchase_logs(request):
     }
     return render(request,"logs/purchase_logs.html",context)
 
+def stock_does_not_exist(request):
+    model_of_purchase = request.GET.get('model_of_purchase')
+    type_of_scale = request.GET.get('type_of_scale')
+    sub_model = request.GET.get('sub_model')
+    sub_sub_model = request.GET.get('sub_sub_model')
 
+    godown = request.GET.get('godown')
+    quantity =request.GET.get('quantity')
+    godown = Godown.objects.get(id=godown)
+    quantity =float(quantity) if quantity != '' and quantity!=None else 0
+    context={}
+    if sub_sub_model != '':
+        product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                         sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+    if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
+        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity:
+            success_message = 'Stock Available!!!'
+            context4={
+                'success_message': success_message,
+                'success': True,
+            }
+            context.update(context4)
+        else:
+            error1 = 'Insufficient Stock!!!'
+            context1 = {
+                'error1_msg':error1,
+                'error1':True,
+            }
+            context.update(context1)
+    else:
 
+        error2 = 'Insufficient Stock!!!'
+        context2 = {
+            'error2': True,
+            'error2_msg': error2,
+        }
+        context.update(context2)
+    return render(request, 'AJAX/stock_does_not_exist.html',context)
+
+def get_product_details(request):
+    model_of_purchase = request.GET.get('model_of_purchase')
+    type_of_scale = request.GET.get('type_of_scale')
+    sub_model = request.GET.get('sub_model')
+    sub_sub_model_var = request.GET.get('sub_sub_model')
+
+    sub_sub_model_var = sub_sub_model.objects.filter(id=sub_sub_model_var).first()
+
+    context={}
+    if sub_sub_model != '':
+        product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                         sub_category__name=sub_model, sub_sub_category__name=sub_sub_model_var)
+        context1={
+            'product_id' : product_id,
+        }
+        context.update(context1)
+    return render(request, 'AJAX/get_product_details.html',context)
 
 
 

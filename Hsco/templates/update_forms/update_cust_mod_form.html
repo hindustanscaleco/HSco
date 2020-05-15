@@ -142,13 +142,16 @@ function myFunction() {
 
   var x = document.getElementById("myText19");
   var y = document.getElementById("myText20");
-  if (x.style.display === "none") {
+  if (x != null){
+    if (x.style.display === "none") {
     x.style.display = "block";
     y.style.display = "none";
   } else {
     x.style.display = "none";
     y.style.display = "block";
   }
+  }
+
 
 
   document.getElementById("myText").disabled = false;
@@ -167,14 +170,17 @@ function myFunction() {
     document.getElementById("myText21").disabled = false;
     document.getElementById("myText22").disabled = false;
     document.getElementById("myText23").disabled = true;
-    document.getElementById("myText24").disabled = false;
+    document.getElementById("myText25").disabled = true;
+
     document.getElementById("myText19").style.display = "block";
 
 }
 </script>
-
-
-
+{% if channel_error %}
+<script>
+    alert("Please Select Valid Channel Of Dispatch");
+</script>
+{% endif %}
     <form class="well form-horizontal" action="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
 <fieldset>
 
@@ -358,6 +364,31 @@ function myFunction() {
   </div>
 </div>
 
+
+          <div class="form-group row">
+  <label class="col-md-2 control-label">Bill Address
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="bill_address" placeholder="Bill Address" class="form-control" disabled id="myText16" value="{{purchase_id_id.bill_address}}" type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Shipping Address
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="shipping_address" placeholder="Shipping Address" class="form-control" disabled id="myText17" value="{{purchase_id_id.shipping_address}}" type="text">
+    </div>
+  </div>
+</div>
+
     <div class="form-group row">
 
 
@@ -365,7 +396,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input  type="text" required name="industry" placeholder="Industry" class="form-control" disabled id="myText17" value="{{purchase_id_id.industry}}" list="channel2">
+    <input  type="text" required name="industry" placeholder="Industry" class="form-control" disabled id="myText18" value="{{purchase_id_id.industry}}" list="channel2">
         <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
       <datalist style="height:20px;" id="channel2">
       <option value="Energy industry"></option>
@@ -396,7 +427,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods" placeholder="Value of Goods"  value="{{purchase_id_id.value_of_goods}}" class="form-control" step="0.2" type="number" disabled id="myText18">
+  <input  name="value_of_goods" placeholder="Value of Goods"  value="{{purchase_id_id.value_of_goods}}" class="form-control" step="0.2" type="number" disabled id="myText25">
     </div>
   </div>
     </div>
@@ -470,12 +501,28 @@ function myFunction() {
     <div class="col-md-12 ">
       <br>
     <center>
-{% if not purchase_id_id.dispatch_id_assigned %}
+
+{% if not purchase_id_id.dispatch_id_assigned and not purchase_id_id.is_quick_entry %}
         <button style="background-color: #FC6E20;" onclick="myFunction()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
 
                                           {% endif %}
 
-          {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None  %}
+        {% if request.session.enable_auto_edit %}
+        <script>
+
+            document.getElementById("myText20").click();
+            document.getElementById("myText20").style.display = "none";
+
+        </script>
+        <br>
+        <br>
+        <button style="background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
+<br>
+        <a href="{{request.session.lead_url}}">Back To Lead Module</a>
+        {% endif %}
+
+          {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None and not purchase_id_id.is_quick_entry %}
+
         <button style="background-color: #FC6E20;" onclick="myFunction()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
                                   {% endif %}
 
@@ -489,19 +536,19 @@ function myFunction() {
 </fieldset>
 </form>
                       <center>
-                          {% if purchase_id_id.is_last_product %}
-                          {% else %}
-                                    {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None  %}
+              {% if purchase_id_id.is_last_product %}
+              {% else %}
+                {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None and not purchase_id_id.is_quick_entry %}
 
-                                    <a href="/add_product_details/{{purchase_id_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
+                <a href="/add_product_details/{{purchase_id_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
 
-                          {% endif %}
-                          {% endif %}
+              {% endif %}
+              {% endif %}
 
-                          {% if not purchase_id_id.dispatch_id_assigned %}
-                                                              <a href="/add_product_details/{{purchase_id_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
+              {% if not purchase_id_id.dispatch_id_assigned and not purchase_id_id.is_quick_entry %}
+                                                  <a href="/add_product_details/{{purchase_id_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
 
-                                                    {% endif %}
+                                        {% endif %}
 
             </center>
 <br>
@@ -561,18 +608,27 @@ tr:nth-child(even) {
         <td>{{list.amount}} </td><s></s>
 
   </tr>
+
+                   <tr>
+    <td>Godown:</td>
+        <td>{{list.godown_id.name_of_godown}} </td><s></s>
+
+  </tr>
 </table>
               </div>
 
           <br>
           <br><center>
-                            {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None  %}
+                            {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None and not purchase_id_id.is_quick_entry  %}
 
                   <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
 
+                  {% elif user.role == 'Admin' or user.role == 'Super Admin' %}
+                                    <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
+
                   {% endif %}
 
-                                            {% if not purchase_id_id.dispatch_id_assigned %}
+                                            {% if not purchase_id_id.dispatch_id_assigned and not purchase_id_id.is_quick_entry %}
                   <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
 
                   {% endif %}
@@ -713,11 +769,9 @@ tr:nth-child(even) {
   <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
 
   <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
 
   <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
       <script>
 
 $(function() {
@@ -738,14 +792,11 @@ $("#stars").val("0");
     });
 });
 
-  window.onload = function() {
-document.getElementById("").style.display = "none";
-};
+
 
 
 </script>
-    </div>
-  </div>
+
 </body>
 
 </html>

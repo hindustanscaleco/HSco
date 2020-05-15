@@ -87,8 +87,8 @@ def onsite_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Onsite No: '+str(new_instance.onsite_no)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
 
     except:
         pass
@@ -150,8 +150,8 @@ def onsite_product_handler(sender, instance, update_fields=None, **kwargs):
                 log.table_name = 'Onsite_Products'
                 log.reference = 'Onsite No: '+str(onsite.onsite_no) + ', Product id:' +str(new_instance.id)
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
 
     except:
         pass
@@ -1384,15 +1384,23 @@ def onsitevisit_app_graph(request,user_id):
     mon = datetime.now().month
 
     print(user_id)
-    obj = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon)
     try:
-        obj.onsitereparing_target_achived_till_now = (obj.total_reparing_done_onsite / obj.onsitereparing_target_given) * 100
+        obj = Employee_Analysis_month.objects.get(user_id=user_id,entry_date__month=mon)
     except:
         pass
-    obj.save(update_fields=['onsitereparing_target_achived_till_now'])
+
+    try:
+        obj.onsitereparing_target_achived_till_now = (obj.total_reparing_done_onsite / obj.onsitereparing_target_given) * 100
+        obj.save(update_fields=['onsitereparing_target_achived_till_now'])
+        target_achieved = obj.onsitereparing_target_achived_till_now
+        avg_time =  obj.avg_time_to_repair_single_scale
+        context21={
+            'target_achieved': target_achieved,
+        }
+        context.update(context21)
+    except:
+        pass
     # current month
-    target_achieved = obj.onsitereparing_target_achived_till_now
-    avg_time =  obj.avg_time_to_repair_single_scale
 
     # current month
     this_month = Onsite_aftersales_service.objects.filter(complaint_assigned_to=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
@@ -1508,7 +1516,6 @@ def onsitevisit_app_graph(request,user_id):
             'previous_lis_sum': previous_lis_sum,
             'this_lis_date': this_lis_date,
             'this_lis_sum': this_lis_sum,
-            'target_achieved': target_achieved,
             'rep_feedback': rep_feedback,
         }
         try:
@@ -1531,7 +1538,7 @@ def onsitevisit_app_graph(request,user_id):
 
 @login_required(login_url='/')
 def onsite_repairing_logs(request):
-    onsite_repairing_logs = Log.objects.filter(module_name='Onsite Repairing Module')
+    onsite_repairing_logs = Log.objects.filter(module_name='Onsite Repairing Module').order_by('-id')
     paginator = Paginator(onsite_repairing_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')
     onsite_repairing_logs = paginator.get_page(page)

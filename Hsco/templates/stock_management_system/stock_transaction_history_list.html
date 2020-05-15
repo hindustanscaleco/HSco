@@ -226,18 +226,7 @@ td {
             </div>
             <div class="row">
                             <div  class="col-xl-2 col-md-3 col-mb-3">
-                    <div class="button dropdown">
-  <select id="divsort" class="form-control">
-     <option value="d0">Sort by Sale person </option>
-     <option value="d1">Sort by Employee  </option>
-     <option value="d2">Sort by  </option>
-     <option value="d3">Sort by  </option>
-     <option value="d4">Sort by  </option>
-     <option value="d5">Sort by  </option>
-     <option value="d6">Sort by  </option>
-     <option value="d7">Sort by  </option>
-  </select>
-</div>
+
                             </div>
                 <div class="col-md-8"></div>
 
@@ -253,14 +242,37 @@ td {
 
     <table>
         <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No</td>
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Transaction ID</td>
             <td style="border: 0px solid gray;">Work Station</td>
-            <td style="border: 0px solid gray;">Transaction ID</td>
             <td style="border: 0px solid gray;">Transaction Status</td>
             <td style="border: 0px solid gray;">From</td>
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">To</td>
         </tr>
-
+        {% for list in trans_history %}
+        {% if list.goods_req_id  %}
+<tr style="cursor: pointer;" onclick="location.href='/stock_transaction_history/{{list.goods_req_id.req_from_godown.id}}/{{list.id}}'">
+            <td style="border: 0px solid gray;">{{list.id}}</td>
+            <td style="border: 0px solid gray;">
+                {% if list.goods_req_id.outside_workstation == False  %}
+    Own WorkStation
+    {% else %}
+    Outside Workstation
+    {% endif %}
+            </td>
+            <td style="border: 0px solid gray;">{{list.goods_req_id.status}}</td>
+            <td style="border: 0px solid gray;">{{list.goods_req_id.req_from_godown.name_of_godown}}</td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">{{list.goods_req_id.req_to_godown.name_of_godown}}</td>
+        </tr>
+        {% elif list.accept_goods_id  %}
+<tr style="cursor: pointer;" onclick="location.href='/stock_transaction_history/{{list.accept_goods_id.from_godown.id}}/{{list.id}}'">
+            <td style="border: 0px solid gray;">{{list.id}}</td>
+            <td style="border: 0px solid gray;">Own WorkStation</td>
+            <td style="border: 0px solid gray;">Accept Goods</td>
+            <td style="border: 0px solid gray;"></td>
+            <td style="border: 0px solid gray;">{{list.accept_goods_id.from_godown.name_of_godown}}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
     </table>
         </div>
 <br>

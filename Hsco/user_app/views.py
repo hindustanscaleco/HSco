@@ -1,6 +1,10 @@
+import json
+
+import requests
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from django.db import connection
+from django.db.models import F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
@@ -12,6 +16,12 @@ from .forms import SiteUser_Form, LoginForm, Password_reset_Form
 from .models import SiteUser
 import secrets
 import string
+from datetime import datetime, timedelta
+
+from lead_management.models import Auto_followup_details, Lead
+
+from lead_management.utils import send_html_mail
+
 
 
 class LoginView(FormView):
@@ -26,8 +36,12 @@ class LoginView(FormView):
             request = self.request
             form = LoginForm(request.POST or None)
             if request.session.has_key('registered_mobile'):
+                print('fdsjk')
+                print('fdsjk')
+                print('fdsjk')
                 mobile = request.session['registered_mobile']
                 password = request.session['user_password']
+
                 user = authenticate(request, mobile=mobile, password=password)
                 if user is not None:
                     login(request, user)
@@ -49,6 +63,7 @@ class LoginView(FormView):
                 request.session['registered_mobile'] = mobile
                 request.session['user_password'] = password
                 next = request.GET.get('next', '/dashboard/')
+
                 if not is_safe_url(next,allowed_hosts=None):
                     next = '/dashboard/'
                 return redirect(next)
@@ -122,6 +137,8 @@ def create_admin(request):
         ifsc_code = request.POST.get('ifsc_code')
         employee_number = request.POST.get('employee_number')
         photo = request.FILES.get('photo')
+        upload_pancard = request.FILES.get('upload_pancard')
+        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         salary_slip = request.FILES.get('salary_slip')
 
         item=SiteUser()
@@ -143,6 +160,8 @@ def create_admin(request):
         item.ifsc_code = ifsc_code
         item.photo = photo
         item.salary_slip = salary_slip
+        item.upload_pancard = upload_pancard
+        item.upload_aadhar_card = upload_aadhar_card
         item.password_text = request.POST.get('password')
         item.super_admin = SiteUser.objects.get(role='Super Admin').name
         item.set_password(request.POST.get('password'))
@@ -192,7 +211,8 @@ def create_manager(request):
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.FILES.get('photo')
         salary_slip = request.FILES.get('salary_slip')
-
+        upload_pancard = request.FILES.get('upload_pancard')
+        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         item = SiteUser()
 
         item.mobile = mobile
@@ -226,7 +246,8 @@ def create_manager(request):
         item.super_admin = SiteUser.objects.get(role='Super Admin').name
         # if admin != '---------':
         #     item.admin = admin
-
+        item.upload_pancard = upload_pancard
+        item.upload_aadhar_card = upload_aadhar_card
 
         item.set_password(request.POST.get('password'))
 
@@ -293,7 +314,8 @@ def create_employee(request):
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.FILES.get('photo')
         salary_slip = request.FILES.get('salary_slip')
-
+        upload_pancard = request.FILES.get('upload_pancard')
+        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         item = SiteUser()
 
         item.mobile = mobile
@@ -315,7 +337,8 @@ def create_employee(request):
         item.salary_slip = salary_slip
         item.super_admin = SiteUser.objects.get(role='Super Admin').name
         item.admin = admin
-
+        item.upload_pancard = upload_pancard
+        item.upload_aadhar_card = upload_aadhar_card
         if is_admin:
 
             if manager == '' or manager == None or manager == '---------':
@@ -446,6 +469,34 @@ def navbar(request):
 
 
 def dashboard(request):
+    todays_date = datetime.now().date()
+
+
+    afd=Auto_followup_details.objects.filter(followup_date=todays_date)
+
+    for item in afd:
+
+        if (item.follow_up_history.is_email):
+
+            send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
+
+
+        if (item.follow_up_history.is_sms):
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.follow_up_history.follow_up_section.lead_id.customer_id.contact_no + "&message=" + item.follow_up_history.sms_msg+'\n'+item.follow_up_history.sms_con + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+
+        end_date = todays_date + timedelta(days=2)
+        Auto_followup_details.objects.filter(id=item.id).update(followup_date=end_date,no_of_times_fdone=F('no_of_times_fdone')+1)
+        Lead.objects.filter(id=item.follow_up_history.follow_up_section.lead_id).update(no_of_times_followup_done=F('no_of_times_followup_done')+1)
+
+
+
+
+
+
     return render(request,"dashboardnew/dashboard.html",)
 
 def graph(request):
@@ -469,6 +520,8 @@ def update_admin(request,id):
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.FILES.get('photo')
         salary_slip = request.FILES.get('salary_slip')
+        upload_pancard = request.FILES.get('upload_pancard')
+        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         if is_deleted == 'on':
             is_deleted = True
         else:
@@ -490,10 +543,11 @@ def update_admin(request,id):
         item.photo = photo
         item.salary_slip = salary_slip
         item.password_text = request.POST.get('password')
-
+        item.upload_pancard = upload_pancard
+        item.upload_aadhar_card = upload_aadhar_card
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.save(update_fields=['upload_pancard','upload_aadhar_card','password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/admin_list/')
     context = {
         'form': form,
@@ -521,6 +575,8 @@ def update_manager(request,id):
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.FILES.get('photo')
         salary_slip = request.FILES.get('salary_slip')
+        upload_pancard = request.FILES.get('upload_pancard')
+        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         if is_deleted == 'on':
             is_deleted = True
         else:
@@ -543,8 +599,9 @@ def update_manager(request,id):
         item.salary_slip = salary_slip
         item.password_text = request.POST.get('password')
         item.set_password(request.POST.get('password'))
-
-        item.save(update_fields=['password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.upload_pancard = upload_pancard
+        item.upload_aadhar_card = upload_aadhar_card
+        item.save(update_fields=['upload_pancard','upload_aadhar_card','password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/manager_list/')
     context = {
         'form': form,
@@ -572,6 +629,8 @@ def update_employee(request,id):
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.POST.get('photo')
         salary_slip = request.FILES.get('salary_slip')
+        upload_pancard = request.FILES.get('upload_pancard')
+        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         if is_deleted == 'on':
             is_deleted = True
         else:
@@ -594,8 +653,9 @@ def update_employee(request,id):
         item.salary_slip = salary_slip
         item.password_text = request.POST.get('password')
         item.set_password(request.POST.get('password'))
-
-        item.save(update_fields=['password_text','mobile','email','employee_number', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.upload_pancard = upload_pancard
+        item.upload_aadhar_card = upload_aadhar_card
+        item.save(update_fields=['upload_pancard','upload_aadhar_card','password_text','mobile','email','employee_number', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
         return redirect('/employee_list/')
     context = {
         'form': form,

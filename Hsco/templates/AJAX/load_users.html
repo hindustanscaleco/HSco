@@ -1,5 +1,29 @@
   {% if manager %}
 
+            {% if error_exist_225 %}
+
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+   {{error_msg_225}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+
+            {% if success_exist_225 %}
+
+
+                     <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Data Exist : </strong> {{success_msg_225}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+
+ {% endif %}
+
     <table>
         <tr style="background-color: gray; color: white;">
 
@@ -16,8 +40,7 @@
 
 
             {% for list1 in user_list %}
-                <tr style="cursor: pointer; " onclick="location.href='/customer_employee_sales_graph/{{list1.user_id}}';">
-
+                <tr style="cursor: pointer; " onclick="location.href='/customer_employee_sales_graph/{{list1.user_id.pk}}';">
 
                     <td> {{ list1.user_id.name }}</td>
                     <td> {{ list1.total_sales_done}} </td>

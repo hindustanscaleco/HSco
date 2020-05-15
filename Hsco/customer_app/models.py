@@ -15,6 +15,8 @@ class Customer_Details(models.Model):
     customer_email_id = models.EmailField(max_length=80,null=True,blank=True)
     customer_gst_no = models.CharField(max_length=15,null=True,blank=True)
     customer_industry = models.CharField(max_length=80,null=True,blank=True)
+    # entry_timedate = models.DateTimeField(default=timezone.now, )
+    entry_timedate = models.DateField(default=datetime.date.today)
 
     class Meta:
         unique_together = ('customer_name','contact_no')

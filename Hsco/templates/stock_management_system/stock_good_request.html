@@ -56,12 +56,13 @@
             <div class="row">
 
 
-                <div class="col-md-12">
-                      <center>
-<h1 class="h3 mb-0 text-gray-800 ">Good Request</h1>
-                          <br>
-<h5 class="h5 mb-0 text-gray-800 ">All Product List</h5>
-</center>
+                <div class="row col-md-12">
+
+<h1 class="h3 mb-0 text-gray-800 ">Good Request </h1>
+                    <div class="col-md-3"></div>
+
+<h1 class="h3 mb-0 text-gray-800 ">All Product List</h1>
+
 </div>
             </div>
 
@@ -201,7 +202,7 @@ $(function() {
   <div id="d3" class="divs d3">
       <form method="POST">{% csrf_token%}
       <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
+      &nbsp; &nbsp;Products Which are to be Requested
 
       <button style="background-color: #FC6E20;" name="submit3" class="btn btn-primary">Search</button>
           </form>
@@ -254,7 +255,7 @@ $(function() {
         border-left: 4px solid blue;
         }
     </style>
-<style>
+    <style>
   .border-left-primary {
     border-left: .09rem solid #4e73df!important;
     font-size: 12px;
@@ -319,30 +320,70 @@ td {
 
             </style>
 
+          <form method="POST" autocomplete="off">{% csrf_token%}
+
             <div class="row">
-                            <div  class="col-xl-2 col-md-3 col-mb-3">
+
+                            <div  class="col-xl-2 col-md-1">
                     <div class="button dropdown">
-  <select id="divsort" class="form-control">
-     <option value="d0">Sort by Sale person </option>
-     <option value="d1">Sort by Employee  </option>
-     <option value="d2">Sort by  </option>
-     <option value="d3">Sort by  </option>
-     <option value="d4">Sort by  </option>
-     <option value="d5">Sort by  </option>
-     <option value="d6">Sort by  </option>
-     <option value="d7">Sort by  </option>
+  <select id="divselector" name="scale_type"  onchange="choice1(this)" class="form-control btn btn-secondary">
+       <option value="">Select Scale Type</option>
+
+    {% for item in type_of_purchase_list %}
+  <option value="{{item.pk}}">{{item.name}}</option>
+
+   {% endfor %}
+
   </select>
 </div>
                             </div>
 
-                <div class="col-md-8"></div>
-<!--           <a href="{% url 'stock_godown_images' %}"><button type="button" class="btn btn-primary" style="background-color:#FC6E20">Display with Image</button></a>-->
+<div  class="col-xl-2 col-md-2">
+    <div class="button dropdown">
+
+      <select id="id_subcat" name="main_category"  onchange="choice_model(this)" class="form-control btn btn-secondary">
+  </select>
+    </div>
+</div>
+
+<div  class="col-xl-2 col-md-2">
+    <div class="button dropdown">
+        <select id="id_subcat2" name="sub_category" onchange="choice_sub_model(this)" class="form-control btn btn-secondary">
 
 
+  </select>
+    </div>
+</div>
+<div  class="col-xl-2 col-md-2">
+    <div class="button dropdown">
+         <select  id="id_subcat22" name="sub_sub_category" onchange="choice_sub_sub_model(this)" class="form-control btn btn-secondary">
+
+
+  </select>
+    </div>
+</div>
+                                     <div  class="col-xl-1 col-md-1">
+                    <button type="submit" name="submit4" class="btn btn-secondary">Sort</button>
                 </div>
 
+<div  class="col-xl-2 col-md-2">
+
+                       <button id="display_image" type="button" class="btn btn-primary" style="background-color:#FC6E20">List / Image</button>
+                                                 </div>
+
+                </div>
+                      </form>
+
+
 <br>
-<div class="row" id="abhish123">
+              <script>
+$(document).ready(function(){
+  $("#display_image").click(function(){
+    $("#image_title , #image ").toggle();
+  });
+});
+</script>
+<div class="row" style="min-height:220px;overflow-y:auto;" id="abhish123">
 
     <table>
         <tr style="background-color: gray; color: white;">
@@ -352,6 +393,7 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Count</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
+            <td id="image" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Image</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Request</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Number</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Add</td>
@@ -361,19 +403,23 @@ td {
         </tr>
 
 
-
+{% for good in godown_goods %}
+                        <form method="POST" >{%csrf_token%}
         <tr>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
 
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{good.product_id.scale_type}}<input name="product_id" value="{{good.product_id.id}}" hidden></td>
+            <td style="border: 0px solid gray;">{{good.product_id.main_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.product_id.sub_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.product_id.sub_sub_category}}</td>
+
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.carton_count|floatformat:2}}<input name="req_carton_count" value="{{good.carton_count}}" hidden></td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.quantity|floatformat:2}}<input name="req_quantity" value="{{good.quantity}}" hidden></td>
+    <td id="image" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{% if good.product_id.product_image %}<img height="40" width="40" src="{{good.product_id.product_image.url}}">{% endif %}</td>
+
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 
                 <div class="btn-group">
-<select class="btn btn-success" id="caasrs">
+<select class="btn btn-success"  name="req_type" id="caasrs">
   <option class="btn btn-success" value="Individual">Individual</option>
   <option class="btn btn-success" value="Carton">Carton</option>
 </select>
@@ -383,44 +429,17 @@ td {
             </td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
                  <center>
-                <input type="text" class="form-control" style="height:40px; width:60px;">
+                <input name="number" type="text" required class="form-control" style="height:40px; width:60px;">
 </center>
             </td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                <button type="button" class="btn btn-danger">Request</button>
+                <button name="submit1" type="submit" class="btn btn-danger">Request</button>
 
             </td>
         </tr>
+                        </form>
+{% endfor %}
 
-
-        <tr>
-
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                                <div class="btn-group">
-<select class="btn btn-success" id="74614">
-  <option class="btn btn-success" value="Individual">Individual</option>
-  <option class="btn btn-success" value="Carton">Carton</option>
-</select>
-</div>
-
-            </td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                <center>
-                <input type="text" class="form-control" style="height:40px; width:60px;">
-</center>
-            </td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                <button type="button" class="btn btn-danger">Request</button>
-
-            </td>
-</tr>
 
 
     </table>
@@ -465,44 +484,32 @@ td {
         </tr>
 
 
-
+{% for good in requested_goods %}
+                                <form method="POST" >{%csrf_token%}
         <tr>
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{good.godown_product_id.product_id.scale_type}}</td>
+            <td style="border: 0px solid gray;">{{good.godown_product_id.product_id.main_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.godown_product_id.product_id.sub_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.godown_product_id.product_id.sub_sub_category}} <input hidden name="request_id" value="{{good.id}}"> </td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><button type="submit" name="submit3"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></button></td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{% if good.req_type == 'Individual' %}{{good.req_quantity}}{% elif good.req_type == 'Carton' %}{{good.req_carton_count}}{% endif %}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 
                 <div class="btn-group">
 <select class="btn btn-success" id="cars">
+    {% if good.req_type == 'Individual' %}
   <option class="btn btn-success" value="Individual">Individual</option>
+    {% elif good.req_type == 'Carton' %}
   <option class="btn btn-success" value="Carton">Carton</option>
+    {% endif %}
 </select>
 </div>
             </td>
         </tr>
+                                </form>
+{% endfor %}
 
 
-        <tr>
-
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
-            <td style="border: 0px solid gray;">Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">0</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
-                                <div class="btn-group">
-<select class="btn btn-success" id="197">
-  <option class="btn btn-success" value="Individual">Individual</option>
-  <option class="btn btn-success" value="Carton">Carton</option>
-</select>
-</div>
-
-            </td>
-</tr>
     </table>
         </div>
             <br>
@@ -518,34 +525,44 @@ td {
 </div>
 
             <br>
+                        <form method="POST" >{%csrf_token%}
 
         <div>
                                             <div class="btn-group">
                                                 Select Godown: &nbsp&nbsp
-<select class="btn btn-secondary" id="1sa97">
-  <option class="btn btn-secondary" value="Individual">Select Godown</option>
-  <option class="btn btn-secondary" value="Individual">Individual</option>
-  <option class="btn btn-secondary" value="Carton">Carton</option>
+<select class="btn btn-secondary" name="req_to_godown" id="1sa97">
+  <option class="btn btn-secondary" value="">Broadcast</option>
+     <option class="btn btn-secondary" value="admin">ADMIN</option>
+    {% if request.user.role == 'Super Admin' %}
+        {% for list in godowns_superadmin %}
+      <option class="btn btn-secondary" value="{{list.id}}">{{list.name_of_godown}}</option>
+        {% endfor %}
+    {% else %}
+        {% for list in godowns %}
+      <option class="btn btn-secondary" value="{{list.id}}">{{list.name_of_godown}}</option>
+        {% endfor %}
+    {% endif %}
 </select>
         </div>
 
 </div>
+    <br>
+    <br>
+
+                <div class="row">
+    <div class="col-md-12">
+    <center>
+<button name="submit2" type="submit" class="btn btn-danger" style="background-color:#FC6E20;">Send Request</button>
+</center>
+    </div>
+    </div>
+                        </form>
             </div>
 
 
 
-    <br>
-    <br>
-
 
      </div>
-    <div class="row">
-    <div class="col-md-12">
-    <center>
-<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Send Request</button>
-</center>
-    </div>
-    </div>
 
 
     <br>
@@ -601,6 +618,116 @@ value = !select.checked;
 
     </script>
 
+<script>
+function choice1(select) {
+     //alert(select.options[select.selectedIndex].value);
+
+
+       $("#type_of_scale").val(select.options[select.selectedIndex].text);
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat").html(data);
+
+    if ($('#id_subcat option').length > 1)
+    {
+
+    }
+    else{
+    $('#id_subcat').removeAttr('required');
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+    }
+
+
+
+        }
+      });
+}
+function choice_model(select) {
+$("#model_of_purchase").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat2").html(data);
+
+       if ($('#id_subcat2 option').length > 1)
+    {
+
+
+
+    }
+    else{
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+
+    }
+
+
+        }
+      });
+}
+
+function choice_sub_model(select) {
+$("#sub_model").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_sub_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat22").html(data);
+
+     if ($('#id_subcat22 option').length > 1)
+    {
+
+    }
+    else{
+    $('#id_subcat22').removeAttr('required');
+
+    }
+
+
+        }
+      });
+}
+
+function choice_sub_sub_model(select) {
+$("#sub_sub_model").val(select.options[select.selectedIndex].text);
+
+}
+
+function isOneChecked() {
+  // All <input> tags...
+  var chx = document.getElementsByTagName('input');
+  for (var i=0; i<chx.length; i++) {
+    // If you have more than one radio group, also check the name attribute
+    // for the one you want as in && chx[i].name == 'choose'
+    // Return true from the function on first match of a checked item
+    if (chx[i].type == 'radio' && chx[i].checked) {
+    alert("Are you sure it's last product?\n you will not be able to add product again.");
+      return true;
+    }
+  }
+  // End of the loop, return false
+  alert("Please Select any one radio buttons in last product field.");
+  return false;
+}
+
+
+  </script>
 
 
           <!--</div>-->

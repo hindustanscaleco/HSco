@@ -226,7 +226,7 @@ color:;
 
 </label>
 
-  <div class="col-md-4 inputGroupContainer">da
+  <div class="col-md-4 inputGroupContainer">
  <div class="custom-control custom-checkbox">
   <input type="checkbox" class="custom-control-input" name="checks[]" value="Restamping Module" {% if 'Restamping Module' in employee_id.modules_assigned %}checked{% endif %} id="customCheck3">
   <label class="custom-control-label" for="customCheck3"></label>
@@ -285,7 +285,83 @@ color:;
      {% endif %}
 </div>
 
+<div class="form-group row">
+    {% if 'Lead Module' in manager_id.modules_assigned %}
+  <label class="col-md-2 control-label">Lead Module
 
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Lead Module" {% if 'Lead Module' in employee_id.modules_assigned %}checked{% endif %} id="customCheck7">
+  <label class="custom-control-label" for="customCheck7"></label>
+  </div>
+  </div>
+ {% endif %}
+
+ {% if 'Stock Module' in admin_id.modules_assigned %}
+
+            <label class="col-md-2 control-label">Stock Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Stock Module" {% if 'Stock Module' in employee_id.modules_assigned %}checked{% endif %} id="customCheck8">
+  <label class="custom-control-label" for="customCheck8"></label>
+  </div>
+  </div>
+     {% endif %}
+
+</div>
+        <div class="form-group row">
+                {% if 'Career Module' in admin_id.modules_assigned %}
+
+             <label class="col-md-2 control-label">Career Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Career Module" {% if 'Career Module' in employee_id.modules_assigned %}checked{% endif %} id="customCheck9">
+  <label class="custom-control-label" for="customCheck9"></label>
+  </div>
+  </div>
+                 {% endif %}
+
+        </div>
+
+
+
+        <div class="form-group row">
+    {% if 'Indiamart Leads' in manager_id.modules_assigned %}
+  <label class="col-md-2 control-label">Indiamart Leads
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Indiamart Leads" {% if 'Indiamart Leads' in employee_id.modules_assigned %}checked{% endif %} id="customCheck10">
+  <label class="custom-control-label" for="customCheck10"></label>
+  </div>
+  </div>
+ {% endif %}
+
+ {% if 'Hsco Website Leads' in admin_id.modules_assigned %}
+
+            <label class="col-md-2 control-label">Hsco Website Leads
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Hsco Website Leads" {% if 'Hsco Website Leads' in employee_id.modules_assigned %}checked{% endif %} id="customCheck11">
+  <label class="custom-control-label" for="customCheck11"></label>
+  </div>
+  </div>
+     {% endif %}
+
+</div>
 
   </div>
 
@@ -428,6 +504,25 @@ color:;
     </div>
   </div>
     </div>
+<div class="form-group row">
+   <label class="col-md-2 control-label">Upload Pan Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="upload_pancard" placeholder="Upload Pan Card" class="form-control"  type="file">
+    </div>
+  </div>
+
+   <label class="col-md-2 control-label">Upload Aadhar Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="upload_aadhar_card" placeholder="Upload Aadhar Card" class="form-control" type="file" >
+  </div>
+    </div>
+</div>
 
 <center>
    <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Submit</button>

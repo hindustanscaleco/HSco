@@ -68,47 +68,75 @@
 
 
 
-                 <div class="col-xl-1 col-md-9 mb-9 ">
-                 </div>
-                 <div class="col-xl-5 col-md-9 mb-9 ">
-
-
-                <div class="card-body" style="padding: 2px;">
-                  <div class="row no-gutters align-items-right">
-
-
-<!-- <a style="padding: 2px;" href="{% url 'view_lead' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Lead </button></a>-->
-<!--                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Share</button></a>-->
-<!--                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>-->
-<!--<a style="padding: 2px;" href="//"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>-->
-<!-- <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>-->
-
-
-
-
 
 
                 </div>
-              </div>
-
-
-
-
-            </div>
-
-
-
-                </div>
-
-
-
-<br>
-
-<style>
-    .border-right-primary{border-right:.25rem solid #4e73df!important}
-</style>
 
                         <style>
+
+                                .border-right-primarya {
+        border-right: 4px solid blue;
+        }
+        .border-left-primarya {
+        border-left: 4px solid blue;
+        }
+
+          .border-left-primary {
+    border-left: .09rem solid #4e73df!important;
+    font-size: 12px;
+
+}
+
+a:hover {
+  text-decoration: none;
+}
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+                        <style>
+
+
+
+                            .border-right-primary{border-right:.25rem solid #4e73df!important}
+
+
 .switch {
   position: relative;
   display: inline-block;
@@ -191,19 +219,31 @@ $(function() {
             </script>
                     <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
             <div class="row">
-
-                <div  class="col-xl-3 col-md-3 col-mb-3">
+                <div  class="col-xl-2 col-md-3 col-mb-3">
                     <div class="button dropdown">
-  <select id="divselector" class="form-control">
-     <option value="d0">Select Search Type</option>
-     <option value="d1">Search By Date Range</option>
-     <option value="d2">Search By Mobile Number</option>
-     <option value="d3">Search By Email Id</option>
-     <option value="d4">Search By Customer Name</option>
-     <option value="d5">Search By Company Name</option>
-     <option value="d6">Search By CRM No.</option>
-     <option value="d7">Search By Purchase No.</option>
-     <!--<option value="d7">Search By CRM Number Range</option>-->
+  <select id="okay" class="form-control">
+     <option value="d0">Sort by</option>
+  </select>
+</div>
+                            </div>
+
+
+                <div  class="col-xl-2 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+  <select id="divsort" class="form-control">
+     <option value="00">Month </option>
+     <option value="1">Jan  </option>
+     <option value="2">Feb </option>
+     <option value="3">Mar  </option>
+     <option value="4">Apr </option>
+     <option value="5">May </option>
+     <option value="6">Jun </option>
+     <option value="7">Jul </option>
+     <option value="8">Aug </option>
+     <option value="9">Sep </option>
+     <option value="10">Oct </option>
+     <option value="11">Nov </option>
+     <option value="12">Dec </option>
   </select>
 </div>
 
@@ -211,109 +251,21 @@ $(function() {
                 </div>
 
 
-                <div  class="col-xl-6 col-md-6 col-mb-8">
-
-
-<div class="output">
-                                                              <form method="POST" autocomplete="off">{% csrf_token%}
-  <div id="d1" class="divs d1 row">
-
-      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
-                <input name="date1" type="date" placeholder="Search 1" class="form-control">
-
-      </div>
-
-      <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
-                <p style="font-weight: 600;">_</p>
-
-      </div>
-
-      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
-                <input name="date2" type="date" placeholder="Search 1" class="form-control">
-
-      </div>
-      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
-                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
-
-      </div>
-                               </form>
-
-
-  <div id="d2" class="divs d2">
-      <form method="POST" >{% csrf_token%}
-      <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Search</button>
-  </form>
-  </div>
-
-
-
-
-  <div id="d3" class="divs d3">
-      <form method="POST">{% csrf_token%}
-      <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-
-      <button style="background-color: #FC6E20;" name="submit3" class="btn btn-primary">Search</button>
-          </form>
-  </div>
-
-
-
-    <div id="d4" class="divs d4">
-        <form method="POST">{% csrf_token%}
-      <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button>
-    </form>
-    </div>
-
-                               <form method="POST">{% csrf_token%}
-  <div id="d5" class="divs d5">
-      <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button></div>
-</form>
-
-                               <form method="POST">{% csrf_token%}
-
-    <div id="d6" class="divs d6">
-      <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
-</form>
-                       <form method="POST">{% csrf_token%}
-
-    <div id="d7" class="divs d7">
-      <input type="text" name="purchase_no" placeholder="Purchase No." class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
-</form>
-                               <!--<form method="POST">{% csrf_token%}-->
-
-  <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
-      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
-                <!--<input name="crm1" type="text" placeholder="CRM No." class="form-control">-->
-
-      <!--</div>-->
-
-      <!--<div class="col-xl-0 col-md-0 col-mb-0">-->
-                <!--<p style="font-weight: 600;">_</p>-->
-
-      <!--</div>-->
-
-      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
-                <!--<input name="crm2" type="text" placeholder="CRM No." class="form-control">-->
-
-      <!--</div>-->
-      <!--<div class="col-xl-2 col-md-2 col-mb-2">-->
-                <!--<button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>-->
-
-      <!--</div>-->
-                               <!--</form>-->
+                <div  class="col-xl-2 col-md-6 col-mb-8">
+                     <div class="button dropdown">
+  <select id="divyear" class="form-control">
+     <option value="y1">Sort by Year </option>
+     <option value="y2">Sort by 2020  </option>
+     <option value="y3">Sort by 2021 </option>
+     <option value="y4">Sort by 2022 </option>
+     <option value="y5">Sort by 2023 </option>
+     <option value="y6">Sort by 2024 </option>
+     <option value="y7">Sort by 2025 </option>
+  </select>
 </div>
+
                 </div>
+                <div class="col-md-3"></div>
 
                                  <div class="col-xl-3 col-md-2 col-mb-8 row" style="color: black;">
 
@@ -338,33 +290,13 @@ $(function() {
             <div class="row">
                             <div  class="col-xl-2 col-md-3 col-mb-3">
                     <div class="button dropdown">
-  <select id="divsort" class="form-control">
-     <option value="d0">Sort by Month </option>
-     <option value="d1">Sort by March  </option>
-     <option value="d2">Sort by  </option>
-     <option value="d3">Sort by  </option>
-     <option value="d4">Sort by  </option>
-     <option value="d5">Sort by  </option>
-     <option value="d6">Sort by  </option>
-     <option value="d7">Sort by  </option>
-  </select>
+
 </div>
                             </div>
 
 
                 <div  class="col-xl-2 col-md-3 col-mb-3">
-                    <div class="button dropdown">
-  <select id="divyear" class="form-control">
-     <option value="d0">Sort by Year </option>
-     <option value="d1">Sort by 2019  </option>
-     <option value="d2">Sort by  </option>
-     <option value="d3">Sort by  </option>
-     <option value="d4">Sort by  </option>
-     <option value="d5">Sort by  </option>
-     <option value="d6">Sort by  </option>
-     <option value="d7">Sort by  </option>
-  </select>
-</div>
+
                             </div>
 
 
@@ -373,70 +305,6 @@ $(function() {
 
 
 
-
-
-               <style>
-        .border-right-primarya {
-        border-right: 4px solid blue;
-        }
-        .border-left-primarya {
-        border-left: 4px solid blue;
-        }
-    </style>
-<style>
-  .border-left-primary {
-    border-left: .09rem solid #4e73df!important;
-    font-size: 12px;
-
-}
-
-a:hover {
-  text-decoration: none;
-}
-
-</style>
-
-                        <style>
-                .border_class {
-                border:1px solid black;
-                height:45px;
-                text-align:center;
-                vertical-align: middle;
-                line-height: 45px;
-                }
-
-
-  table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 12px;
-  border-color: black;
-  color: black;
-
-
-
-}
-
-
-th {
-
-  font-size: 13px;
-    border: 1px solid black;
-    text-align: left;
-    padding:5px;
-
-}
-
-td {
-  border: 1px solid black;
-  padding: 3px;
-  font-size: 13px;
-  padding: 5px;
-  text-align: center;
-}
-
-
-            </style>
 
 
 <div style="min-height: 26vw;">
@@ -455,6 +323,21 @@ td {
             <td style="border: 0px solid gray;">Lost</td>
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Postpond</td>
         </tr>
+
+             {% for list12 in pi_list %}
+             {% for list1 in list12 %}
+
+        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+
+            <td>{{ forloop.counter}}</td>
+            <td>{{ list1.0}}</td>
+            <td>{{ list1.1 }}</td>
+            <td>{{ list1.2}}</td>
+            <td>{{ list1.3}}</td>
+
+        </tr>
+                          {% endfor %}
+                          {% endfor %}
 
 
     </table>

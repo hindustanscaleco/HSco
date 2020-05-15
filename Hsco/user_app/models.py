@@ -95,6 +95,9 @@ class SiteUser(AbstractBaseUser):
     average_rating = models.FloatField(default=0.0)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    can_reply_to_sa = models.BooleanField(default=False)
+    upload_pancard = models.FileField(upload_to='',null=True, blank=True)
+    upload_aadhar_card = models.FileField(upload_to='',null=True, blank=True)
 
     details = models.CharField(max_length=250, null=True, blank=True)
     pancard = models.CharField(max_length=20, null=True, blank=True)
@@ -123,7 +126,7 @@ class SiteUser(AbstractBaseUser):
     REQUIRED_FIELDS = ['email',]
 
     def __str__(self):
-        return str(self.id)
+        return str(self.profile_name)
 
 
 

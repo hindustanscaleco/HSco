@@ -41,8 +41,4 @@ class GodownForm(forms.ModelForm):
        ))
     class Meta:
         model = Godown
-        fields = ["name_of_godown",
-                  "goddown_assign_to",
-                  "location",
-                  "contact_no",
-                  ]
+        fields = "__all__"

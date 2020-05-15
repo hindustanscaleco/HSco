@@ -37,10 +37,10 @@ INSTALLED_APPS = [
     'amc_visit_app',
     'notif_dec_app',
     'purchase_app',
-    'stock_system',
     'session_security',
     'lead_management',
     'stock_management_system_app',
+    'career_module_app',
 ]
 
 MIDDLEWARE = [
@@ -67,13 +67,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notif_dec_app.views.notification_context',
             ],
         },
     },
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = [
-    'django.core.context_processors.request'
+    'django.core.context_processors.request',
 ]
 WSGI_APPLICATION = 'Hsco.wsgi.application'
 
@@ -83,7 +84,7 @@ WSGI_APPLICATION = 'Hsco.wsgi.application'
 
 DATABASES = {
  'default': {
-     'ENGINE': 'django.db.backends.mysql',
+    'ENGINE': 'django.db.backends.mysql',
     'NAME': 'hsco_db',
     'USER': 'root2',
     'PASSWORD': '',
@@ -101,7 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
-    {        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -117,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -157,6 +158,7 @@ EMAIL_HOST_PASSWORD = 'Hsco123456789@'
 SESSION_SECURITY_EXPIRE_AFTER = 3600
 SESSION_SECURITY_WARN_AFTER = 3500
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+
 
 user = 'HSCo'
 #user_test = 'vikka'

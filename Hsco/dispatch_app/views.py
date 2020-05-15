@@ -20,6 +20,8 @@ from purchase_app.models import Purchase_Details
 from ess_app.models import Defects_Warning
 
 from customer_app.models import Log
+
+from stock_management_system_app.models import Product, GodownProduct, Godown
 from .models import Dispatch, Product_Details_Dispatch
 from django.core.mail import send_mail
 from Hsco import settings
@@ -89,8 +91,8 @@ def dispatch_handler(sender, instance, update_fields=None, **kwargs):
                 log.reference = 'Dispatch No: '+str(new_instance.dispatch_no)
 
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
 
     except:
         pass
@@ -154,8 +156,8 @@ def dispatch_productss_handler(sender, instance, update_fields=None, **kwargs):
                 log.table_name = 'Product_Details_Dispatch'
                 log.reference = 'Dispatch No: '+str(dispatch.dispatch_no) + ', Product id:' +str(new_instance.id)
                 log.action = old_list
-                log.save()
-
+                if old_list != []:
+                    log.save()
     except:
         pass
 
@@ -206,12 +208,14 @@ def add_dispatch_details(request):
         dispatch_id = request.POST.get('dispatch_id')
         date_of_dispatch = request.POST.get('date_of_dispatch')
         dispatch_by = request.POST.get('dispatch_by')
+        shipping_address = request.POST.get('shipping_address')
+        bill_address = request.POST.get('bill_address')
         packed_by = request.POST.get('packed_by')
         hamal_name = request.POST.get('hamal_name')
         no_bundles = request.POST.get('no_bundles')
         transport_name = request.POST.get('transport_name')
         lr_no = request.POST.get('lr_no')
-        photo_lr_no = request.POST.get('photo_lr_no')
+        photo_lr_no = request.FILES.get('photo_lr_no')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
 
@@ -280,6 +284,8 @@ def add_dispatch_details(request):
         item2.hamal_name = hamal_name
         item2.no_bundles = no_bundles
         item2.transport_name = transport_name
+        item2.shipping_address = shipping_address
+        item2.bill_address = bill_address
         item2.lr_no = lr_no
         item2.photo_lr_no = photo_lr_no
         item2.channel_of_dispatch = channel_of_dispatch
@@ -328,6 +334,18 @@ def dispatch_product(request,id):
     # purchase = Purchase_Details.objects.get(id=id)
     dispatch = Dispatch.objects.get(id=id)
     type_of_purchase_list = type_purchase.objects.all()  # 1
+    if request.user.role == 'Super Admin':
+        godowns = Godown.objects.filter(default_godown_purchase=False)
+
+    elif request.user.role == 'Admin':
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id ))
+
+    elif request.user.role == 'Manager':
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+    else:
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
     if 'purchase_id' in request.session:
         request.session['product_saved'] = False
 
@@ -344,6 +362,7 @@ def dispatch_product(request,id):
         unit = request.POST.get('unit')
         value_of_goods = request.POST.get('value_of_goods')
         is_last_product_yes = request.POST.get('is_last_product_yes')
+        godown = request.POST.get('godown')
 
         if value_of_goods == '' or value_of_goods == None:
             value_of_goods = 0.0
@@ -366,7 +385,15 @@ def dispatch_product(request,id):
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.log_entered_by = request.user.name
+        item.godown_id = Godown.objects.get(id=godown)
 
+        if sub_sub_model != '':
+            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                  sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
+                GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                quantity=F("quantity") - quantity)
+        item.save()
         item.save()
         try:
             user_name = SiteUser.objects.get(profile_name=dispatch.dispatch_by)
@@ -426,10 +453,18 @@ def dispatch_product(request,id):
             return redirect('/dispatch_product/' + str(dispatch.pk))
     context = {
         'form': form,
+        'godowns': godowns,
         'type_purchase': type_of_purchase_list,  # 2
 
     }
-
+    try:
+        default_godown = Godown.objects.get(default_godown_purchase=True)
+        context1={
+            'default_godown': default_godown,
+        }
+        context.update(context1)
+    except:
+        pass
     return render(request,"edit_product/dispatch_add_product.html", context)
 
 def edit_product_from_dispatch(request):
@@ -819,12 +854,14 @@ def update_dispatch_details(request,update_id):
 
         date_of_dispatch = request.POST.get('date_of_dispatch')
         dispatch_by = request.POST.get('dispatch_by')
+        bill_address = request.POST.get('bill_address')
+        shipping_address = request.POST.get('shipping_address')
         packed_by = request.POST.get('packed_by')
         hamal_name = request.POST.get('hamal_name')
         no_bundles = request.POST.get('no_bundles')
         transport_name = request.POST.get('transport_name')
         lr_no = request.POST.get('lr_no')
-        photo_lr_no = request.POST.get('photo_lr_no')
+        photo_lr_no = request.FILES.get('photo_lr_no')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
 
@@ -958,6 +995,8 @@ def update_dispatch_details(request,update_id):
                     dispatch_item.save(update_fields=['dispatch_time_calculated', ])
         item.packed_by = packed_by
         item.hamal_name = hamal_name
+        item.bill_address = bill_address
+        item.shipping_address = shipping_address
         item.no_bundles = no_bundles
         item.transport_name = transport_name
         item.lr_no = lr_no
@@ -1087,7 +1126,7 @@ def update_dispatch_details(request,update_id):
 
         item.save(update_fields=['second_person','second_contact_no', 'dispatch_done_timedate','log_entered_by','packed_by',
                                  'hamal_name','no_bundles','transport_name','lr_no','photo_lr_no','channel_of_dispatch',
-                                 'notes','second_company_name','company_address','company_email',]),
+                                 'notes','second_company_name','company_address','company_email','billing_address','shipping_address']),
 
         # item.save(update_fields=[ ]),
         # item.save(update_fields=[ ]),
@@ -1384,6 +1423,28 @@ def edit_dispatch_product(request,id):
 
     pro_dispatch=Product_Details_Dispatch.objects.get(id=id)
 
+    if request.user.role == 'Super Admin':
+        try:
+            godowns = Godown.objects.filter(~Q(id=pro_dispatch.godown_id.id)&Q(default_godown_purchase=False))
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False))
+
+    elif request.user.role == 'Admin':
+        try:
+            godowns = Godown.objects.filter(~Q(id=pro_dispatch.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id) )
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id) )
+    elif request.user.role == 'Manager':
+        try:
+            godowns = Godown.objects.filter(~Q(id=pro_dispatch.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+    else:
+        try:
+            godowns = Godown.objects.filter(~Q(id=pro_dispatch.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
     if request.method == 'POST':
         quantity = request.POST.get('quantity')
         model_of_purchase = request.POST.get('model_of_purchase')
@@ -1395,9 +1456,39 @@ def edit_dispatch_product(request,id):
         capacity = request.POST.get('capacity')
         unit = request.POST.get('unit')
         amount = request.POST.get('value_of_goods')
+        godown = request.POST.get('godown')
         # purchase_type = request.POST.get('purchase_type')
 
         cost2 = pro_dispatch.value_of_goods
+        godown_product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+
+        if (quantity != '') or  (godown != '') :
+            if  pro_dispatch.godown_id == None and godown != '':
+                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                    quantity=F("quantity") - quantity)
+
+            elif pro_dispatch.godown_id.id != godown and quantity != pro_dispatch.quantity :
+                GodownProduct.objects.filter(godown_id=pro_dispatch.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") + pro_dispatch.quantity)
+
+                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                    quantity=F("quantity") - quantity)
+            elif pro_dispatch.godown_id.id != godown :
+                GodownProduct.objects.filter(godown_id=pro_dispatch.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") + pro_dispatch.quantity)
+
+                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                    quantity=F("quantity") - pro_dispatch.quantity)
+            elif quantity != pro_dispatch.quantity:
+                GodownProduct.objects.filter(godown_id=pro_dispatch.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") + pro_dispatch.quantity)
+
+                GodownProduct.objects.filter(godown_id=pro_dispatch.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") - pro_dispatch)
+            else:
+                print('no godown changes')
+
 
         Employee_Analysis_month.objects.filter(user_id=pro_dispatch.user_id,
                                                entry_date__month=pro_dispatch.entry_timedate.month,
@@ -1440,13 +1531,14 @@ def edit_dispatch_product(request,id):
 
     context = {
         'product_id': pro_dispatch,
+        'godowns': godowns,
     }
 
     return render(request,'edit_product/dispatch_product.html',context)
 
 @login_required(login_url='/')
 def dispatch_logs(request):
-    dispatch_logs = Log.objects.filter(module_name='Dispatch Module')
+    dispatch_logs = Log.objects.filter(module_name='Dispatch Module').order_by('-id')
     paginator = Paginator(dispatch_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')
     dispatch_logs = paginator.get_page(page)

@@ -57,10 +57,9 @@
             <div class="row col-md-12">
            <div class="col-xl-12 col-md-3 mb-3 ">
 
-
                 <div class="card-body col-xl-12 col-md-3 mb-3" style="padding: 2px;">
                   <center>
-<h1 class="h3 mb-0 text-gray-800 ">Accpet Goods</h1>
+<h1 class="h3 mb-0 text-gray-800 ">Accept Goods</h1>
 </center>
 
 
@@ -225,21 +224,60 @@ td {
 
             </div>
             <div class="row">
-                            <div  class="col-xl-2 col-md-3 col-mb-3">
-                    <div class="button dropdown">
-  <select id="divsort" class="form-control">
-     <option value="d0">Sort by Sale person </option>
-     <option value="d1">Sort by Employee  </option>
-     <option value="d2">Sort by  </option>
-     <option value="d3">Sort by  </option>
-     <option value="d4">Sort by  </option>
-     <option value="d5">Sort by  </option>
-     <option value="d6">Sort by  </option>
-     <option value="d7">Sort by  </option>
-  </select>
+                            <div  class="col-xl-1 col-md-2 col-mb-2">
+<!--<button type="button" class="btn btn-dark">Sort By</button>-->
 </div>
-                            </div>
-                <div class="col-md-8"></div>
+
+                <div class="col-md-2">
+<!--                                        <div class="button dropdown">-->
+<!--  <select id="divsub" class="form-control">-->
+<!--     <option value="d0">Type </option>-->
+<!--     <option value="d1">Digital</option>-->
+<!--     <option value="d2">Mechanical</option>-->
+<!--     <option value="d2">China</option>-->
+<!--  </select>-->
+<!--</div>-->
+                </div>
+                <div class="col-md-2">
+<!--                                        <div class="button dropdown">-->
+<!--  <select id="divsub-model" class="form-control">-->
+<!--     <option value="d0">Model </option>-->
+<!--     <option value="d1">Digital</option>-->
+<!--     <option value="d2">Mechanical</option>-->
+<!--     <option value="d2">China</option>-->
+<!--  </select>-->
+<!--</div>-->
+                </div>
+
+
+        <div class="col-md-2">
+<!--                                        <div class="button dropdown">-->
+<!--  <select id="divsubsubmodel" class="form-control">-->
+<!--     <option value="d0">Sub Model </option>-->
+<!--     <option value="d1">Digital</option>-->
+<!--     <option value="d2">Mechanical</option>-->
+<!--     <option value="d2">China</option>-->
+<!--  </select>-->
+<!--</div>-->
+                </div>
+
+        <div class="col-md-2">
+<!--                                        <div class="button dropdown">-->
+<!--  <select id="divsubmodel" class="form-control">-->
+<!--     <option value="d0">Sub Sub Model </option>-->
+<!--     <option value="d1">Digital</option>-->
+<!--     <option value="d2">Mechanical</option>-->
+<!--     <option value="d2">China</option>-->
+<!--  </select>-->
+<!--</div>-->
+                </div>
+                <div class="col-md-1"></div>
+
+                <div  class="col-xl-2 col-md-2 col-mb-2">
+
+                   <a href="/stock_accpet_goods/{{godown.id}}/{{new_accept_request_id}}"><button type="button" class="btn btn-dark">Accept Goods</button></a>
+</div>
+
 
 
 
@@ -253,13 +291,19 @@ td {
 
     <table>
         <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No</td>
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Id</td>
             <td style="border: 0px solid gray;">Date</td>
             <td style="border: 0px solid gray;">Notes</td>
-            <td style="border: 0px solid gray;">From</td>
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">To</td>
         </tr>
-
+        {% for list in accept_good_list %}
+<tr style="cursor: pointer;" onclick="location.href='/stock_accpet_goods/{{godown.id}}/{{list.id}}'">
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">{{list.id}}</td>
+            <td style="border: 0px solid gray;">{{list.entry_timedate}}</td>
+            <td style="border: 0px solid gray;">{{list.notes}}</td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">{{list.from_godown.name_of_godown}}</td>
+        </tr>
+        {% endfor %}
     </table>
         </div>
 <br>
