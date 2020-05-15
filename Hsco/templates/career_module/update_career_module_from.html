@@ -16,6 +16,7 @@
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
@@ -103,7 +104,7 @@ color:;
 
 
 <div class="form-group row">
-    <label class="col-md-2 control-label">Application No.
+    <label class="col-md-2 control-label">Application No*
     </label>
 
     <div class="col-md-4 inputGroupContainer">
@@ -112,7 +113,7 @@ color:;
  {{career_form.application_no}}
     </div>
   </div>
-  <label class="col-md-2 control-label">Phone No.
+  <label class="col-md-2 control-label">Phone No*
 
 
 </label>
@@ -126,7 +127,7 @@ color:;
 
 </div>
    <div class="form-group row">
-  <label class="col-md-2 control-label">Candidate Name
+  <label class="col-md-2 control-label">Candidate Name*
 
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -138,7 +139,7 @@ color:;
 
 
 
-    <label class="col-md-2 control-label">Choose Position
+    <label class="col-md-2 control-label">Choose Position*
 
 </label>
 
@@ -160,7 +161,7 @@ color:;
 
   <div class="form-group row">
 
-  <label class="col-md-2 control-label">Candidate Email:
+  <label class="col-md-2 control-label">Candidate Email
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -169,7 +170,7 @@ color:;
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Address
+    <label class="col-md-2 control-label">Address*
 
 </label>
 
@@ -185,12 +186,13 @@ color:;
 
   <div class="form-group row">
 
-  <label class="col-md-2 control-label">Date Of Birth
+  <label class="col-md-2 control-label">Date Of Birth*
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-{{ career_form.date_of_birth }}
+
+      <input name="date_of_birth" required type="date" class="form-control" value="{{ career_module_id.date_of_birth|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -245,9 +247,12 @@ color:;
 
 
 <br>
-
+<input id="latest_work_exp_id"  value="{{latest_work_exp_id}}" type="number" hidden>
+<input id="latest_edu_details_id"  value="{{latest_edu_details_id}}" type="number" hidden>
      <center><h3>Education Details</h3></center>
-     <br>
+     <br><input id="maxedu_id" name="maxedu_id" value="1" type="number" hidden>
+
+     <div id="edu_detail_id" class="edu_detail">
      {% for education_form in edu_details_list %}
        <div class="form-group row">
 
@@ -256,7 +261,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-      <input name="institute_name'+initial_count+'" type="text" value="{{education_form.institute_name}}" class="form-control" placeholder="Institute Name / University">
+      <input name="institute_name{{education_form.id}}" type="text" value="{{education_form.institute_name}}" class="form-control" placeholder="Institute Name / University">
     </div>
   </div>
 
@@ -267,7 +272,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-<input name="course'+initial_count+'" type="text" value="{{education_form.course}}" class="form-control" placeholder="Course">
+<input name="course{{education_form.id}}" type="text" value="{{education_form.course}}" class="form-control" placeholder="Course">
 
     </div>
   </div>
@@ -281,7 +286,7 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-      <input name="year_of_completion'+initial_count+'" type="text" class="form-control" min="1990" max="2020" value="{{education_form.year_of_completion}}" placeholder="Year Of Completion">
+      <input name="year_of_completion{{education_form.id}}" type="text" class="form-control" min="1990" max="2020" value="{{education_form.year_of_completion}}" placeholder="Year Of Completion">
     </div>
   </div>
 
@@ -293,19 +298,29 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
 
-      <input value="{{education_form.percentage}}" name="percentage'+initial_count+'" type="text" class="form-control" placeholder="Percentage or Grade">
+      <input value="{{education_form.percentage}}" name="percentage{{education_form.id}}" type="text" class="form-control" placeholder="Percentage or Grade">
     </div>
   </div>
         </div>
+               <hr>
+
 {% endfor %}
+      </div>
+     <center>
+    <button type="button" class="add_edu_detail">Add </button>
+    <button type="button" class="delete_edu_detail">Delete </button>
+         </center>
           <hr>
 
 
 <br>
 
      <center><h3>Work Experience</h3></center>
-     <br>
+     <br><input id="maxwork_exp_id" name="maxwork_exp"  value="1" type="number" hidden>
+     <div id="work_exp_id" class="work_exp">
+
      {% for workexp_form in work_exp_list %}
+
        <div class="form-group row">
 <input value="{{workexp_form.id}}" name="work_exp_id" hidden>
   <label class="col-md-2 control-label">Company Name
@@ -313,22 +328,22 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-<input value="{{workexp_form.company_name}}" name="company_name'+{{workexp_form.id}}+'" type="text" class="form-control" placeholder="Company Name">
+<input value="{{workexp_form.company_name}}" name="company_name{{workexp_form.id}}" type="text" class="form-control" placeholder="Company Name">
     </div>
   </div>
 
-    <label class="col-md-1 control-label">Experience:
+    <label class="col-md-2 control-label">Experience:
 
 </label>
 
-    <div class="col-md-5 inputGroupContainer">
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
- <input value="{{workexp_form.work_expirance_from|date:'Y-m-d'}}" name="work_expirance_from'+{{workexp_form.id}}+'" type="date" class="form-control">
- &nbsp &nbsp
+ <input  value="{{workexp_form.work_expirance_from|date:'Y-m-d'}}" name="work_expirance_from{{workexp_form.id}}" type="date" class="form-control">
+&nbsp &nbsp
       To &nbsp &nbsp
 
-      <input value="{{workexp_form.work_expirance_to|date:'Y-m-d'}}" name="work_expirance_to'+{{workexp_form.id}}+'" type="date" class="form-control" >
+      <input value="{{workexp_form.work_expirance_to|date:'Y-m-d'}}" name="work_expirance_to{{workexp_form.id}}" type="date" class="form-control" >
     </div>
   </div>
         </div>
@@ -341,7 +356,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-<textarea value="{{workexp_form.work_expirance_details}}" name="work_expirance_details'+{{workexp_form.id}}+'" class="form-control" placeholder="Expirance Details"></textarea>
+<input style="height:80px;" value="{{workexp_form.work_expirance_details}}" name="work_expirance_details{{workexp_form.id}}" class="form-control" placeholder="Experience Details">
     </div>
   </div>
 
@@ -352,12 +367,18 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-<input name="designation'+{{workexp_form.id}}+'" type="text" class="form-control" placeholder="Designation" value="{{workexp_form.designation}}">
+<input name="designation{{workexp_form.id}}" type="text" class="form-control" placeholder="Designation" value="{{workexp_form.designation}}">
     </div>
   </div>
         </div>
-    {% endfor %}
 
+    <hr>
+    {% endfor %}
+                  </div>
+          <center>
+     <button type="button" class="add_work_exp">Add </button>
+    <button type="button" class="delete_work_exp">Delete </button>
+          </center>
       <hr>
 
 
@@ -763,7 +784,7 @@ color:;
 <br>
 
 <center>
-	<button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Save</button>
+	<button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Update</button>
 
 </center>
 
@@ -790,7 +811,70 @@ color:;
     <i class="fas fa-angle-up"></i>
   </a>
 
+<script>
+$(document).ready(function(){
+var max_fields2 = 10;
+var wrapper2 = $(".work_exp");
+var add_work_exp = $(".add_work_exp");
+var delete_work_exp = $(".delete_work_exp");
 
+var initial_count2 = $("#latest_work_exp_id").val();
+
+$(add_work_exp).click(function(e){
+    e.preventDefault();
+    initial_count2++ ;
+    $(wrapper2).append($('<div id="work_exp_id2" ><hr><div class="form-group row"><label class="col-md-2 control-label">Company Name</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="company_name'+initial_count2+'" type="text" class="form-control" placeholder="Company Name"></div></div><label class="col-md-2 control-label">Experience</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="work_expirance_from'+initial_count2+'" type="date" class="form-control">&nbsp &nbsp To &nbsp &nbsp <input name="work_expirance_to'+initial_count2+'" type="date" class="form-control" ></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Experience Details</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><textarea rows="4" cols="50" name="work_expirance_details'+initial_count2+'" class="form-control" placeholder="Expirance Details"></textarea></div></div><label class="col-md-2 control-label">Designation</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="designation'+initial_count2+'" type="text" class="form-control" placeholder="Designation"></div></div></div></div>'));
+
+    $('#maxwork_exp_id').val(initial_count2);
+    console.log(initial_count2);
+
+    });
+
+
+
+$(delete_work_exp).click(function(f){
+if ($("#maxwork_exp_id").val() > $("#latest_work_exp_id").val()){
+        initial_count2-- ;
+        f.preventDefault();
+        $("#work_exp_id2").last().remove();
+        $('#maxwork_exp_id').val(initial_count2);
+        console.log(initial_count2);
+        }
+    });
+});
+</script>
+
+<script>
+$(document).ready(function(){
+var max_fields = 10;
+var wrapper = $(".edu_detail");
+var add_edu_button = $(".add_edu_detail");
+var delete_edu_detail = $(".delete_edu_detail");
+
+var initial_count = $("#latest_edu_details_id").val();
+
+$(add_edu_button).click(function(e){
+    e.preventDefault();
+    initial_count++ ;
+    $(wrapper).append($('<div id="edu_detail_id2" ><hr><div class="form-group row"><label class="col-md-2 control-label">Institute Name / University</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="institute_name'+initial_count+'" type="text" class="form-control" placeholder="Institute Name / University"></div></div><label class="col-md-2 control-label">Course</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="course'+initial_count+'" type="text" class="form-control" placeholder="Course"></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Year of completion</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="year_of_completion'+initial_count+'" type="text" class="form-control" min="1990" max="2020" value="2020" placeholder="Year Of Completion"></div></div><label class="col-md-2 control-label">Grade / Percentage</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="percentage'+initial_count+'" type="text" class="form-control" placeholder="Percentage or Grade"></div></div></div></div>'));
+    $('#maxedu_id').val(initial_count);
+    console.log(initial_count);
+
+    });
+
+
+
+$(delete_edu_detail).click(function(f){
+if ($("#maxedu_id").val() > $("#latest_edu_details_id").val()){
+        initial_count-- ;
+        f.preventDefault();
+        $("#edu_detail_id2").last().remove();
+        $('#maxedu_id').val(initial_count);
+        console.log(initial_count);
+        }
+    });
+});
+</script>
 
     <script>
                                                          $(document).ready(function(){
@@ -841,17 +925,19 @@ color:;
 
 
 
-
-
-  <!-- Bootstrap core JavaScript-->
-  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+<script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
   <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="{% static 'js/dashboard/jquery.easing.min.js' %}"></script>
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
 
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
 
 
 </body>

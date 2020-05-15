@@ -416,6 +416,7 @@ class WorkExpForm(forms.ModelForm):
               'type': 'date',
               'placeholder': "Date of Initiation",
               'class': 'form-control',
+              'size':'1',
           }
       ))
 

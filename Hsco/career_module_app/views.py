@@ -313,8 +313,8 @@ def career_module_form(request):
         edu_detail.career_id = Career_module.objects.get(id=item.id)
         edu_detail.save()
 
-        if int(maxwork_exp) > 1:
-            for i in range(2, int(maxwork_exp)+1 ):
+        if int(maxedu_id) > 1:
+            for i in range(2, int(maxedu_id)+1 ):
                 institute_name = request.POST.get('institute_name'+str(i))
                 course = request.POST.get('course'+str(i))
                 year_of_completion = request.POST.get('year_of_completion'+str(i))
@@ -340,9 +340,9 @@ def career_module_form(request):
         work_exp.company_name = company_name
         work_exp.career_id =  Career_module.objects.get(id=item.id)
         work_exp.save()
-        if int(maxedu_id) > 1:
-            for i in range(2, int(maxedu_id)+1 ):
 
+        if int(maxwork_exp) > 1:
+            for i in range(2, int(maxwork_exp)+1 ):
                 company_name = request.POST.get('company_name'+str(i))
                 work_expirance_from = request.POST.get('work_expirance_from'+str(i))
                 work_expirance_to = request.POST.get('work_expirance_to'+str(i))
@@ -363,6 +363,7 @@ def career_module_form(request):
                 work_exp.save()
         return redirect('/career_module_list/')
 
+
     context = {
         'career_form':career_form,
         'education_form':education_form,
@@ -371,7 +372,14 @@ def career_module_form(request):
     return render(request,'career_module/career_module_form.html',context)
 
 def career_module_form_hsc(request):
-    career_form = Career_moduleForm()
+    if Career_module.objects.all().count() == 0:
+        application_number = '1'
+    else:
+        application_number = Career_module.objects.latest('id').id + 1
+    initial_data = {
+        'application_no': application_number,
+    }
+    career_form = Career_moduleForm(initial=initial_data)
     if request.method == 'POST' or request.method == 'FILES':
         current_stage = request.POST.get('current_stage')
         application_no = request.POST.get('application_no')
@@ -390,12 +398,11 @@ def career_module_form_hsc(request):
         work_expirance_details = request.POST.get('work_expirance_details')
         designation = request.POST.get('designation')
         date_of_birth = request.POST.get('date_of_birth')
-
-
+        maxedu_id = request.POST.get('maxedu_id')
+        maxwork_exp = request.POST.get('maxwork_exp')
 
         is_sales_candidate = True if choose_position == 'Sales Position' else False
         is_technical_candidate = True if choose_position == 'Technical Position' else False
-
 
         item = Career_module()
 
@@ -408,22 +415,73 @@ def career_module_form_hsc(request):
         item.address = address
         item.institute_name = institute_name
         item.course = course
-        item.date_of_birth = date_of_birth
+        if work_expirance_to != '':
+            item.date_of_birth = date_of_birth
         item.year_of_completion = year_of_completion
         item.percentage = percentage
-        item.company_name = company_name
         item.is_technical_candidate = is_technical_candidate
         item.is_sales_candidate = is_sales_candidate
+
+        item.save()
+
+        edu_detail = EducationalDetails()
+        edu_detail.institute_name = institute_name
+        edu_detail.course = course
+        edu_detail.year_of_completion = year_of_completion
+        edu_detail.percentage = percentage
+        edu_detail.career_id = Career_module.objects.get(id=item.id)
+        edu_detail.save()
+
+        if int(maxedu_id) > 1:
+            for i in range(2, int(maxedu_id) + 1):
+                institute_name = request.POST.get('institute_name' + str(i))
+                course = request.POST.get('course' + str(i))
+                year_of_completion = request.POST.get('year_of_completion' + str(i))
+                percentage = request.POST.get('percentage' + str(i))
+
+                edu_detail = EducationalDetails()
+
+                edu_detail.institute_name = institute_name
+                edu_detail.course = course
+                edu_detail.year_of_completion = year_of_completion
+                edu_detail.percentage = percentage
+                edu_detail.career_id = Career_module.objects.get(id=item.id)
+                edu_detail.save()
+
+        work_exp = WorkExperience()
         if work_expirance_from != '':
-            item.work_expirance_from = work_expirance_from
+            work_exp.work_expirance_from = work_expirance_from
         if work_expirance_to != '':
-            item.work_expirance_to = work_expirance_to
+            work_exp.work_expirance_to = work_expirance_to
         if work_expirance_details != '':
-            item.work_expirance_details = work_expirance_details
-        item.designation = designation
+            work_exp.work_expirance_details = work_expirance_details
+        work_exp.designation = designation
+        work_exp.company_name = company_name
+        work_exp.career_id = Career_module.objects.get(id=item.id)
+        work_exp.save()
+
+        if int(maxwork_exp) > 1:
+            for i in range(2, int(maxwork_exp) + 1):
+                company_name = request.POST.get('company_name' + str(i))
+                work_expirance_from = request.POST.get('work_expirance_from' + str(i))
+                work_expirance_to = request.POST.get('work_expirance_to' + str(i))
+                work_expirance_details = request.POST.get('work_expirance_details' + str(i))
+                designation = request.POST.get('designation' + str(i))
+
+                work_exp = WorkExperience()
+
+                if work_expirance_from != '':
+                    work_exp.work_expirance_from = work_expirance_from
+                if work_expirance_to != '':
+                    work_exp.work_expirance_to = work_expirance_to
+                if work_expirance_details != '':
+                    work_exp.work_expirance_details = work_expirance_details
+                work_exp.designation = designation
+                work_exp.company_name = company_name
+                work_exp.career_id = Career_module.objects.get(id=item.id)
+                work_exp.save()
 
         try:
-            item.save()
             context22 = {
                 'success_65': "Thank You For Interest, Our Team Will Get In Touch With You Soon!!!",
                 'success_exist_65': True,
@@ -449,14 +507,18 @@ def career_module_form_hsc(request):
 
 
     context = {
-        'career_form': career_form
+        'career_form': career_form,
     }
     return render(request, 'career_module/career_module_form_hsc.html',context)
 
 def update_career_module_from(request,id):
     career_module_id = Career_module.objects.get(id=id)
-    work_exp_list = WorkExperience.objects.filter(career_id=id)
-    edu_details_list = EducationalDetails.objects.filter(career_id=id)
+    work_exp_list = WorkExperience.objects.filter(career_id=id).order_by('id')
+    edu_details_list = EducationalDetails.objects.filter(career_id=id).order_by('id')
+
+    work_exp_list_id = WorkExperience.objects.filter(career_id=id).values('id')
+    edu_details_list_id = EducationalDetails.objects.filter(career_id=id).values('id')
+
     career_module_initial_data = {
         'current_stage': career_module_id.current_stage,
         'application_no': career_module_id.application_no,
@@ -493,8 +555,8 @@ def update_career_module_from(request,id):
         'open_and_short_circuit': career_module_id.open_and_short_circuit,
     }
 
-    work_exp_ids = WorkExperience.objects.filter(career_id=id).values('id')
-    edu_details_ids = EducationalDetails.objects.filter(career_id=id).values('id')
+    latest_work_exp_id = WorkExperience.objects.filter(career_id=id).latest('id').id
+    latest_edu_details_id = EducationalDetails.objects.filter(career_id=id).latest('id').id
 
 
     career_form = Career_moduleForm(initial=career_module_initial_data)
@@ -543,7 +605,8 @@ def update_career_module_from(request,id):
         soldering_strong = request.POST.get('soldering_strong')
         value_of_resister = request.POST.get('value_of_resister')
         open_and_short_circuit = request.POST.get('open_and_short_circuit')
-
+        maxedu_id = request.POST.get('maxedu_id')
+        maxwork_exp = request.POST.get('maxwork_exp')
 
 
         item = Career_module.objects.get(id=id)
@@ -594,43 +657,78 @@ def update_career_module_from(request,id):
                                  'any_question_yes','comfortable_english','how_good_english','comfortable_marathi','working_from_10_to_8',
                                  'weighting_scale_manufactures_mumbai','excel_formate','sum_in_excel','time_taken','take_out_60',
                                  'time_to_disorder_wire_pcb','time_to_solder_wire_back','soldering_strong','value_of_resister','open_and_short_circuit','date_of_birth',])
-        # for i in work_exp_ids:
-        #     print(i['id'])
-        #     company_name = request.POST.get('company_name' + str(i['id']))
-        #     work_expirance_from = request.POST.get('work_expirance_from' + str(i['id']))
-        #     work_expirance_to = request.POST.get('work_expirance_to' + str(i['id']))
-        #     work_expirance_details = request.POST.get('work_expirance_details' + str(i['id']))
-        #     designation = request.POST.get('designation' + str(i['id']))
-        #
-        #     work_exp = WorkExperience.objects.get(id=i['id'])
-        #
-        #     if work_expirance_from != '':
-        #         work_exp.work_expirance_from = work_expirance_from
-        #     if work_expirance_to != '':
-        #         work_exp.work_expirance_to = work_expirance_to
-        #     if work_expirance_details != '':
-        #         work_exp.work_expirance_details = work_expirance_details
-        #     work_exp.designation = designation
-        #     work_exp.company_name = company_name
-        #     work_exp.save(update_fields=['work_expirance_from', 'work_expirance_to', 'work_expirance_details', 'designation',
-        #                        'company_name'])
-        # for i in edu_details_ids:
-        #     print(i['id'])
-        #     institute_name = request.POST.get('institute_name' + str(i))
-        #     course = request.POST.get('course' + str(i))
-        #     year_of_completion = request.POST.get('year_of_completion' + str(i))
-        #     percentage = request.POST.get('percentage' + str(i))
-        #
-        #     edu_detail = EducationalDetails.objects.get(id=i['id'])
-        #
-        #     edu_detail.institute_name = institute_name
-        #     edu_detail.course = course
-        #     edu_detail.year_of_completion = year_of_completion
-        #     edu_detail.percentage = percentage
-        #     edu_detail.career_id = Career_module.objects.get(id=item.id)
-        #     edu_detail.save(
-        #         update_fields=['work_expirance_from', 'work_expirance_to', 'work_expirance_details', 'designation',
-        #                        'company_name'])
+
+        if int(maxwork_exp) > latest_work_exp_id:
+            for i in range(latest_work_exp_id, int(maxwork_exp) ):
+                company_name = request.POST.get('company_name'+str(i))
+                work_expirance_from = request.POST.get('work_expirance_from'+str(i))
+                work_expirance_to = request.POST.get('work_expirance_to'+str(i))
+                work_expirance_details = request.POST.get('work_expirance_details'+str(i))
+                designation = request.POST.get('designation'+str(i))
+
+                work_exp = WorkExperience()
+
+                if work_expirance_from != '':
+                    work_exp.work_expirance_from = work_expirance_from
+                if work_expirance_to != '':
+                    work_exp.work_expirance_to = work_expirance_to
+                if work_expirance_details != '':
+                    work_exp.work_expirance_details = work_expirance_details
+                work_exp.designation = designation
+                work_exp.company_name = company_name
+                work_exp.career_id = Career_module.objects.get(id=id)
+                work_exp.save()
+
+        if int(maxedu_id) > latest_edu_details_id:
+            for i in range(latest_edu_details_id, int(maxedu_id) ):
+
+                institute_name = request.POST.get('institute_name'+str(i))
+                course = request.POST.get('course'+str(i))
+                year_of_completion = request.POST.get('year_of_completion'+str(i))
+                percentage = request.POST.get('percentage'+str(i))
+
+                edu_detail = EducationalDetails()
+
+                edu_detail.institute_name = institute_name
+                edu_detail.course = course
+                edu_detail.year_of_completion = year_of_completion
+                edu_detail.percentage = percentage
+                edu_detail.career_id = Career_module.objects.get(id=id)
+                edu_detail.save()
+
+
+        for i in work_exp_list_id:
+            company_name = request.POST.get('company_name' + str(i['id']))
+            work_expirance_from = request.POST.get('work_expirance_from' + str(i['id']))
+            work_expirance_to = request.POST.get('work_expirance_to' + str(i['id']))
+            work_expirance_details = request.POST.get('work_expirance_details' + str(i['id']))
+            designation = request.POST.get('designation' + str(i['id']))
+
+            work_exp = WorkExperience.objects.get(id=i['id'])
+
+            if work_expirance_from != '':
+                work_exp.work_expirance_from = work_expirance_from
+            if work_expirance_to != '':
+                work_exp.work_expirance_to = work_expirance_to
+            if work_expirance_details != '':
+                work_exp.work_expirance_details = work_expirance_details
+            work_exp.designation = designation
+            work_exp.company_name = company_name
+            work_exp.save(update_fields=['work_expirance_from', 'work_expirance_to', 'work_expirance_details', 'designation','company_name'])
+        for i in edu_details_list_id:
+
+            institute_name = request.POST.get('institute_name' +str(i['id']))
+            course = request.POST.get('course' + str(i['id']))
+            year_of_completion = request.POST.get('year_of_completion' + str(i['id']))
+            percentage = request.POST.get('percentage' + str(i['id']))
+
+            edu_detail = EducationalDetails.objects.get(id=i['id'])
+
+            edu_detail.institute_name = institute_name
+            edu_detail.course = course
+            edu_detail.year_of_completion = year_of_completion
+            edu_detail.percentage = percentage
+            edu_detail.save(update_fields=['institute_name', 'course', 'year_of_completion', 'percentage',])
         return redirect('/update_career_module_from/'+str(id))
 
     context = {
@@ -638,5 +736,7 @@ def update_career_module_from(request,id):
         'work_exp_list':work_exp_list,
         'edu_details_list':edu_details_list,
         'career_module_id':career_module_id,
+        'latest_work_exp_id':latest_work_exp_id,
+        'latest_edu_details_id':latest_edu_details_id,
     }
     return render(request,'career_module/update_career_module_from.html',context)

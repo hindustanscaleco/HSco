@@ -151,104 +151,15 @@ color:;
     </div>
 
 </div>
-
     <form class="well form-horizontal" ion="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
 <fieldset>
-    <div class="row" style="margin-left:05%;">
-        <div class="card-body" style=" background-color:#ffffff;">
-            <div class="col-md-2">
-                                  <div style="width:100%; float: left;">
-                                              <img src="{% static 'images/hsco.jpg' %}" style="height: 70px; padding-top: 5px; ">
-
-              </div>
-            </div>
-
-            <div class="col-md-12">
-               <button class="dropbtn12"> Suggest a Scale</button> <button class="dropbtn12"> Home </button>
-                    <div class="dropdown">
-                    <button class="dropbtn dropbtn12">About Us </button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/know-more-about-us/">Vision,Mission &amp; Values</a>
-                    <a href="https://hindustanscale.com/know-more-about-us/">Awards &amp; Certification</a>
-                    <a href="https://hindustanscale.com/know-more-about-us/">Customers</a>
-                    <a href="https://hindustanscale.com/know-more-about-us/">Customer Installation</a>
-                    </div>
-                    </div>
-                    <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Products </button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/products/">Electronic Scales</a>
-                    <a href="https://hindustanscale.com/products/">Mechanical Scales</a>
-                    <a href="https://hindustanscale.com/products/">Lifestyle Scales (Not For Commercial Use)</a>
-                    <a href="https://hindustanscale.com/products/">Bluetooth Scales</a>
-                    </div>
-                    </div>
-                    <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Services</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/service-request/">Services</a>
-                    </div>
-                    </div>
-                  <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Blogs</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/blogs/">Blogs</a>
-                    </div>
-                    </div>
-                      <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Career</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/career/">Career</a>
-                    </div>
-                    </div>
-                  <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Help & Videos</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/troubleshooting-video/">Help & Videos</a>
-                    </div>
-                    </div>
-                  <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Contact Us</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/contact-us/">Contact Us</a>
-                    </div>
-                    </div>
-            </div>
-            </div>
-        </div>
-    <hr>
-
-
-          {% if request.session.context_sess.success_exist_65 %}
-
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Success : </strong> {{request.session.context_sess.success_65}}
-  <a href="https://hindustanscale.com/"><button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-                        </button></a>
-</div>
-
-      <script>
-    setTimeout(function (){
-window.location.replace("https://hindustanscale.com/");
-}
-, 3000);
-
-    </script>
-{% endif %}
-     {% if request.session.context_sess.error_exist_65 %}
-                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>Error : </strong> {{request.session.context_sess.error_65}}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-{% endif %}
+    <center><h2>Career Module</h2></center>
+    <br>
     <br>
 
  <div id="loaded_customer">
 
-<div class="form-group row" style="display:none;">
+<div class="form-group row">
 
       <label class="col-md-2 control-label">Current Stage
 
@@ -269,7 +180,7 @@ window.location.replace("https://hindustanscale.com/");
 
 
 <div class="form-group row">
-    <label class="col-md-2 control-label">Application No.
+    <label class="col-md-2 control-label">Application No*
     </label>
 
     <div class="col-md-4 inputGroupContainer">
@@ -278,7 +189,7 @@ window.location.replace("https://hindustanscale.com/");
  {{career_form.application_no}}
     </div>
   </div>
-  <label class="col-md-2 control-label">Phone No.
+  <label class="col-md-2 control-label">Phone No*
 
 
 </label>
@@ -292,7 +203,7 @@ window.location.replace("https://hindustanscale.com/");
 
 </div>
    <div class="form-group row">
-  <label class="col-md-2 control-label">Candidate Name
+  <label class="col-md-2 control-label">Candidate Name*
 
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -304,13 +215,17 @@ window.location.replace("https://hindustanscale.com/");
 
 
 
-    <label class="col-md-2 control-label">Choose Position
+    <label class="col-md-2 control-label">Choose Position*
 
 </label>
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-{{career_form.choose_position}}
+  <input required name="choose_position" placeholder="Choose Position" class="form-control" type="text" list="position">
+            <datalist style="height:20px;" id="position">
+                <option value="Sales Position">Sales Position</option>
+      <option value="Technical Position">Technical Position</option>
+    </datalist>
     </div>
   </div>
   </div>
@@ -321,7 +236,7 @@ window.location.replace("https://hindustanscale.com/");
 
   <div class="form-group row">
 
-  <label class="col-md-2 control-label">Candidate Email:
+  <label class="col-md-2 control-label">Candidate Email
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -330,7 +245,7 @@ window.location.replace("https://hindustanscale.com/");
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Address
+    <label class="col-md-2 control-label">Address*
 
 </label>
 
@@ -343,12 +258,13 @@ window.location.replace("https://hindustanscale.com/");
         </div>
        <div class="form-group row">
 
-  <label class="col-md-2 control-label">Date Of Birth
+  <label class="col-md-2 control-label">Date Of Birth*
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 {{career_form.date_of_birth}}
+
     </div>
   </div>
        </div>
@@ -359,7 +275,9 @@ window.location.replace("https://hindustanscale.com/");
 <br>
 
      <center><h3>Education Details</h3></center>
-     <br>
+     <br><input id="maxedu_id" name="maxedu_id" value="1" type="number" hidden>
+
+     <div id="edu_detail_id" class="edu_detail">
        <div class="form-group row">
 
   <label class="col-md-2 control-label">Institute Name / University
@@ -367,7 +285,7 @@ window.location.replace("https://hindustanscale.com/");
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-{{career_form.institute_name}}
+{{education_form.institute_name}}
     </div>
   </div>
 
@@ -378,11 +296,10 @@ window.location.replace("https://hindustanscale.com/");
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.course}}
+{{education_form.course}}
     </div>
   </div>
         </div>
-
             <div class="form-group row">
 
   <label class="col-md-2 control-label">Year of completion
@@ -390,8 +307,7 @@ window.location.replace("https://hindustanscale.com/");
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-
- {{career_form.year_of_completion}}
+ {{education_form.year_of_completion}}
     </div>
   </div>
 
@@ -402,18 +318,20 @@ window.location.replace("https://hindustanscale.com/");
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.percentage}}
+{{education_form.percentage}}
     </div>
   </div>
         </div>
-
-          <hr>
-
-
+ </div>
+     <center>
+    <button type="button" class="add_edu_detail">Add </button>
+    <button type="button" class="delete_edu_detail">Delete </button>
+</center>
 <br>
 
      <center><h3>Work Experience</h3></center>
-     <br>
+     <br><input id="maxwork_exp_id" name="maxwork_exp" value="1" type="number" hidden>
+  <div id="work_exp_id" class="work_exp">
        <div class="form-group row">
 
   <label class="col-md-2 control-label">Company Name
@@ -421,24 +339,21 @@ window.location.replace("https://hindustanscale.com/");
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-{{career_form.company_name}}
+{{workexp_form.company_name}}
     </div>
   </div>
 
-    <label class="col-md-1 control-label">Experience:
+    <label class="col-md-2 control-label">Experience
 
 </label>
 
-    <div class="col-md-5 inputGroupContainer">
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  {{career_form.work_expirance_from}}&nbsp &nbsp
-      To &nbsp &nbsp
-{{career_form.work_expirance_to}}
+  {{workexp_form.work_expirance_from}}&nbsp &nbsp To &nbsp &nbsp {{workexp_form.work_expirance_to}}
     </div>
   </div>
         </div>
-
             <div class="form-group row">
 
     <label class="col-md-2 control-label">Experience Details
@@ -447,7 +362,7 @@ window.location.replace("https://hindustanscale.com/");
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.work_expirance_details}}
+{{workexp_form.work_expirance_details}}
     </div>
   </div>
 
@@ -458,10 +373,16 @@ window.location.replace("https://hindustanscale.com/");
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-{{career_form.designation}}
+{{workexp_form.designation}}
     </div>
   </div>
         </div>
+  </div>
+          <center>
+     <button type="button" class="add_work_exp">Add </button>
+    <button type="button" class="delete_work_exp">Delete </button>
+              </center>
+
  </div>
 
 
@@ -472,10 +393,20 @@ window.location.replace("https://hindustanscale.com/");
 	<button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Save</button>
 
 </center>
+
+
+
 <br>
+
+
+
+
+
+
 
 </fieldset>
 </form>
+
 </div>
     </div>
 
@@ -491,7 +422,73 @@ window.location.replace("https://hindustanscale.com/");
     <i class="fas fa-angle-up"></i>
   </a>
 
+<script>
+$(document).ready(function(){
+var max_fields2 = 10;
+var wrapper2 = $(".work_exp");
+var add_work_exp = $(".add_work_exp");
+var delete_work_exp = $(".delete_work_exp");
 
+var initial_count2 = 1;
+
+$(add_work_exp).click(function(e){
+    e.preventDefault();
+    if(initial_count2 < max_fields2){
+        initial_count2++ ;
+        $(wrapper2).append($('<div id="work_exp_id2" ><hr><div class="form-group row"><label class="col-md-2 control-label">Company Name</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="company_name'+initial_count2+'" type="text" class="form-control" placeholder="Company Name"></div></div><label class="col-md-2 control-label">Experience</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="work_expirance_from'+initial_count2+'" type="date" class="form-control">&nbsp &nbsp To &nbsp &nbsp <input name="work_expirance_to'+initial_count2+'" type="date" class="form-control" ></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Experience Details</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><textarea rows="4" cols="50" name="work_expirance_details'+initial_count2+'" class="form-control" placeholder="Expirance Details"></textarea></div></div><label class="col-md-2 control-label">Designation</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="designation'+initial_count2+'" type="text" class="form-control" placeholder="Designation"></div></div></div></div>'));
+
+        }
+    $('#maxwork_exp_id').val(initial_count2);
+    console.log(initial_count2);
+    });
+
+
+
+$(delete_work_exp).click(function(f){
+    if ($('#maxwork_exp_id').val() > 1){
+        initial_count2-- ;
+        f.preventDefault();
+        $("#work_exp_id2").last().remove();
+        $('#maxwork_exp_id').val(initial_count2);
+        console.log(initial_count2);
+        }
+    });
+});
+</script>
+
+<script>
+$(document).ready(function(){
+var max_fields = 10;
+var wrapper = $(".edu_detail");
+var add_edu_button = $(".add_edu_detail");
+var delete_edu_detail = $(".delete_edu_detail");
+
+var initial_count = 1;
+
+$(add_edu_button).click(function(e){
+    e.preventDefault();
+    if(initial_count < max_fields){
+        initial_count++ ;
+        $(wrapper).append($('<div id="edu_detail_id2" ><hr><div class="form-group row"><label class="col-md-2 control-label">Institute Name / University</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="institute_name'+initial_count+'" type="text" class="form-control" placeholder="Institute Name / University"></div></div><label class="col-md-2 control-label">Course</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="course'+initial_count+'" type="text" class="form-control" placeholder="Course"></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Year of completion</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="year_of_completion'+initial_count+'" type="text" class="form-control" min="1990" max="2020" value="2020" placeholder="Year Of Completion"></div></div><label class="col-md-2 control-label">Grade / Percentage</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="percentage'+initial_count+'" type="text" class="form-control" placeholder="Percentage or Grade"></div></div></div></div>'));
+
+        }
+    $('#maxedu_id').val(initial_count);
+    console.log(initial_count);
+    });
+
+
+
+$(delete_edu_detail).click(function(f){
+if ($('#maxedu_id').val() > 1){
+        initial_count-- ;
+        f.preventDefault();
+        $("#edu_detail_id2").last().remove();
+        $('#maxedu_id').val(initial_count);
+        console.log(initial_count);
+        }
+    });
+});
+</script>
 
  <script>
                                                          $(document).ready(function(){

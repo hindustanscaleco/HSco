@@ -102,7 +102,7 @@ color:;
 
 
 <div class="form-group row">
-    <label class="col-md-2 control-label">Application No.
+    <label class="col-md-2 control-label">Application No*
     </label>
 
     <div class="col-md-4 inputGroupContainer">
@@ -111,7 +111,7 @@ color:;
  {{career_form.application_no}}
     </div>
   </div>
-  <label class="col-md-2 control-label">Phone No.
+  <label class="col-md-2 control-label">Phone No*
 
 
 </label>
@@ -125,7 +125,7 @@ color:;
 
 </div>
    <div class="form-group row">
-  <label class="col-md-2 control-label">Candidate Name
+  <label class="col-md-2 control-label">Candidate Name*
 
 </label>
   <div class="col-md-4 inputGroupContainer">
@@ -137,7 +137,7 @@ color:;
 
 
 
-    <label class="col-md-2 control-label">Choose Position
+    <label class="col-md-2 control-label">Choose Position*
 
 </label>
 
@@ -158,7 +158,7 @@ color:;
 
   <div class="form-group row">
 
-  <label class="col-md-2 control-label">Candidate Email:
+  <label class="col-md-2 control-label">Candidate Email
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -167,7 +167,7 @@ color:;
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Address
+    <label class="col-md-2 control-label">Address*
 
 </label>
 
@@ -180,7 +180,7 @@ color:;
         </div>
        <div class="form-group row">
 
-  <label class="col-md-2 control-label">Date Of Birth
+  <label class="col-md-2 control-label">Date Of Birth*
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -245,9 +245,10 @@ color:;
   </div>
         </div>
  </div>
+     <center>
     <button type="button" class="add_edu_detail">Add </button>
     <button type="button" class="delete_edu_detail">Delete </button>
-
+</center>
 <br>
 
      <center><h3>Work Experience</h3></center>
@@ -264,11 +265,11 @@ color:;
     </div>
   </div>
 
-    <label class="col-md-1 control-label">Experience
+    <label class="col-md-2 control-label">Experience
 
 </label>
 
-    <div class="col-md-5 inputGroupContainer">
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
   {{workexp_form.work_expirance_from}}&nbsp &nbsp To &nbsp &nbsp {{workexp_form.work_expirance_to}}
@@ -299,8 +300,11 @@ color:;
   </div>
         </div>
   </div>
+          <center>
      <button type="button" class="add_work_exp">Add </button>
     <button type="button" class="delete_work_exp">Delete </button>
+              </center>
+
  </div>
 
 
@@ -348,7 +352,7 @@ $(add_work_exp).click(function(e){
     e.preventDefault();
     if(initial_count2 < max_fields2){
         initial_count2++ ;
-        $(wrapper2).append($('<hr><div id="work_exp_id2" ><div class="form-group row"><label class="col-md-2 control-label">Company Name</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="company_name'+initial_count2+'" type="text" class="form-control" placeholder="Company Name"></div></div><label class="col-md-2 control-label">Experience</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="work_expirance_from'+initial_count2+'" type="date" class="form-control">&nbsp &nbsp To &nbsp &nbsp <input name="work_expirance_to'+initial_count2+'" type="date" class="form-control" ></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Experience Details</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><textarea rows="4" cols="50" name="work_expirance_details'+initial_count2+'" class="form-control" placeholder="Expirance Details"></textarea></div></div><label class="col-md-2 control-label">Designation</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="designation'+initial_count2+'" type="text" class="form-control" placeholder="Designation"></div></div></div></div>'));
+        $(wrapper2).append($('<div id="work_exp_id2" ><hr><div class="form-group row"><label class="col-md-2 control-label">Company Name</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="company_name'+initial_count2+'" type="text" class="form-control" placeholder="Company Name"></div></div><label class="col-md-2 control-label">Experience</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="work_expirance_from'+initial_count2+'" type="date" class="form-control">&nbsp &nbsp To &nbsp &nbsp <input name="work_expirance_to'+initial_count2+'" type="date" class="form-control" ></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Experience Details</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><textarea rows="4" cols="50" name="work_expirance_details'+initial_count2+'" class="form-control" placeholder="Expirance Details"></textarea></div></div><label class="col-md-2 control-label">Designation</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="designation'+initial_count2+'" type="text" class="form-control" placeholder="Designation"></div></div></div></div>'));
 
         }
     $('#maxwork_exp_id').val(initial_count2);
@@ -358,11 +362,13 @@ $(add_work_exp).click(function(e){
 
 
 $(delete_work_exp).click(function(f){
+    if ($('#maxwork_exp_id').val() > 1){
         initial_count2-- ;
         f.preventDefault();
         $("#work_exp_id2").last().remove();
         $('#maxwork_exp_id').val(initial_count2);
         console.log(initial_count2);
+        }
     });
 });
 </script>
@@ -380,7 +386,7 @@ $(add_edu_button).click(function(e){
     e.preventDefault();
     if(initial_count < max_fields){
         initial_count++ ;
-        $(wrapper).append($('<hr><div id="edu_detail_id2" ><div class="form-group row"><label class="col-md-2 control-label">Institute Name / University</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="institute_name'+initial_count+'" type="text" class="form-control" placeholder="Institute Name / University"></div></div><label class="col-md-2 control-label">Course</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="course'+initial_count+'" type="text" class="form-control" placeholder="Course"></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Year of completion</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="year_of_completion'+initial_count+'" type="text" class="form-control" min="1990" max="2020" value="2020" placeholder="Year Of Completion"></div></div><label class="col-md-2 control-label">Grade / Percentage</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="percentage'+initial_count+'" type="text" class="form-control" placeholder="Percentage or Grade"></div></div></div></div>'));
+        $(wrapper).append($('<div id="edu_detail_id2" ><hr><div class="form-group row"><label class="col-md-2 control-label">Institute Name / University</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="institute_name'+initial_count+'" type="text" class="form-control" placeholder="Institute Name / University"></div></div><label class="col-md-2 control-label">Course</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="course'+initial_count+'" type="text" class="form-control" placeholder="Course"></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Year of completion</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="year_of_completion'+initial_count+'" type="text" class="form-control" min="1990" max="2020" value="2020" placeholder="Year Of Completion"></div></div><label class="col-md-2 control-label">Grade / Percentage</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="percentage'+initial_count+'" type="text" class="form-control" placeholder="Percentage or Grade"></div></div></div></div>'));
 
         }
     $('#maxedu_id').val(initial_count);
@@ -390,11 +396,13 @@ $(add_edu_button).click(function(e){
 
 
 $(delete_edu_detail).click(function(f){
+if ($('#maxedu_id').val() > 1){
         initial_count-- ;
         f.preventDefault();
         $("#edu_detail_id2").last().remove();
         $('#maxedu_id').val(initial_count);
         console.log(initial_count);
+        }
     });
 });
 </script>
