@@ -167,7 +167,7 @@ def career_module_list(request):
 
         elif 'sub2' in request.POST:
             contact = request.POST.get('contact')
-            career_list = Career_module.objects.filter(phone_no=contact).order_by('-id')
+            career_list = Career_module.objects.filter(phone_no__icontains=contact).order_by('-id')
 
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
@@ -180,7 +180,7 @@ def career_module_list(request):
 
         elif 'sub3' in request.POST:
             email = request.POST.get('email')
-            career_list = Career_module.objects.filter(candidate_email=email).order_by('-id')
+            career_list = Career_module.objects.filter(candidate_email__icontains=email).order_by('-id')
 
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
@@ -193,7 +193,7 @@ def career_module_list(request):
 
         elif 'sub4' in request.POST:
             candidate_name = request.POST.get('candidate_name')
-            career_list = Career_module.objects.filter(candidate_name=candidate_name).order_by('-id')
+            career_list = Career_module.objects.filter(candidate_name__icontains=candidate_name).order_by('-id')
 
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
@@ -207,7 +207,7 @@ def career_module_list(request):
 
         elif 'sub5' in request.POST:
             company = request.POST.get('company')
-            career_list = Career_module.objects.filter(company_name=company).order_by('-id')
+            career_list = Career_module.objects.filter(company_name__icontains=company).order_by('-id')
 
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
