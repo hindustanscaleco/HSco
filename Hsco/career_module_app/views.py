@@ -13,7 +13,7 @@ def career_module_list(request):
     context = {
         'career_list': career_list,
     }
-    total_stages = Career_module.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
+    total_stages = Career_module.objects.values('current_stage').annotate(dcount=Count('current_stage'))
 
     for i in total_stages:
         print(total_stages)
@@ -466,7 +466,7 @@ def career_module_form_hsc(request):
 
         except Exception as e:
             context22 = {
-                'error_65': str(e),
+                'error_65': 'Form already submitted, Please enter unique personal details!!!',
                 'error_exist_65': True,
             }
 
