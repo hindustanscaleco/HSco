@@ -15,7 +15,7 @@ def career_module_list(request):
         'career_list': career_list,
     }
     try:
-        called_nointerview = Career_module.objects.filter(current_stage='Called for interview, interview is not taken').count()
+        called_nointerview = Career_module.objects.filter(current_stage='Called for interview but interview is not taken').count()
         context2 = {
             'called_nointerview': called_nointerview,
         }
