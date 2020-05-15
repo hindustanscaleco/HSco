@@ -98,6 +98,7 @@ def chat_details(request,from_id,to_id):
         'dont_show':dont_show,
         'to_id_id':to_id_id.id,
         'to_id_name':to_id_id.profile_name,
+        'to_role':to_role,
     }
     return render(request,'Chat/chat_details.html',context)
 
