@@ -85,7 +85,7 @@ def career_module_list(request):
             context.update(context1)
             return render(request, 'career_module/career_module_list.html', context)
         if 'submit1' in request.POST:
-            career_list = Career_module.objects.filter( current_stage='Called for interview, interview is not taken',)
+            career_list = Career_module.objects.filter( current_stage='Called for interview but interview is not taken',)
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
             career_list = paginator.get_page(page)
