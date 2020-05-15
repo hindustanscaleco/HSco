@@ -14,48 +14,54 @@ def career_module_list(request):
     context = {
         'career_list': career_list,
     }
-    total_stages = Career_module.objects.values('current_stage').annotate(dcount=Count('current_stage'))
-
-    for i in total_stages:
-        print(total_stages)
-        x = i
-        if x['current_stage'] == 'Called for interview, interview is not taken':
-            called_nointerview = x['dcount']
-            context2 = {
-                'called_nointerview': called_nointerview,
-            }
-            context.update(context2)
-        if x['current_stage'] == 'Applied but not call for interview':
-            applied_nocall = x['dcount']
-            context5 = {
-                'applied_nocall': applied_nocall,
-            }
-            print(applied_nocall)
-            context.update(context5)
-        if x['current_stage'] == 'Interview in Progress':
-            interview_progress = x['dcount']
-            context6 = {
-                'interview_progress': interview_progress,
-            }
-            context.update(context6)
-        if x['current_stage'] == 'Interview is taken, not selected':
-            interview_notselected = x['dcount']
-            context7 = {
-                'interview_notselected': interview_notselected,
-            }
-            context.update(context7)
-        if x['current_stage'] == 'Interview is done and rejected':
-            interview_rejected = x['dcount']
-            context8 = {
-                'interview_rejected': interview_rejected,
-            }
-            context.update(context8)
-        if x['current_stage'] == 'Interview is done and preserved for Future':
-            interview_preserved = x['dcount']
-            context9 = {
-                'interview_preserved': interview_preserved,
-            }
-            context.update(context9)
+    try:
+        called_nointerview = Career_module.objects.filter(current_stage='Called for interview but interview is not taken').count()
+        context2 = {
+            'called_nointerview': called_nointerview,
+        }
+        context.update(context2)
+    except:
+        pass
+    try:
+        applied_nocall = Career_module.objects.filter(current_stage='Applied but not call for interview').count()
+        context5 = {
+            'applied_nocall': applied_nocall,
+        }
+        context.update(context5)
+    except:
+        pass
+    try:
+        interview_progress = Career_module.objects.filter(current_stage='Interview in Progress').count()
+        context6 = {
+            'interview_progress': interview_progress,
+        }
+        context.update(context6)
+    except:
+        pass
+    try:
+        interview_notselected =Career_module.objects.filter(current_stage='Interview is taken, not selected').count()
+        context7 = {
+            'interview_notselected': interview_notselected,
+        }
+        context.update(context7)
+    except:
+        pass
+    try:
+        interview_rejected = Career_module.objects.filter(current_stage='Interview is done and rejected').count()
+        context8 = {
+            'interview_rejected': interview_rejected,
+        }
+        context.update(context8)
+    except:
+        pass
+    try:
+        interview_preserved = Career_module.objects.filter(current_stage='Interview is done and preserved for Future').count()
+        context9 = {
+            'interview_preserved': interview_preserved,
+        }
+        context.update(context9)
+    except:
+        pass
 
     if request.method == 'POST':
 
@@ -79,7 +85,7 @@ def career_module_list(request):
             context.update(context1)
             return render(request, 'career_module/career_module_list.html', context)
         if 'submit1' in request.POST:
-            career_list = Career_module.objects.filter( current_stage='Called for interview, interview is not taken',)
+            career_list = Career_module.objects.filter( current_stage='Called for interview but interview is not taken',)
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
             career_list = paginator.get_page(page)
@@ -161,7 +167,7 @@ def career_module_list(request):
 
         elif 'sub2' in request.POST:
             contact = request.POST.get('contact')
-            career_list = Career_module.objects.filter(phone_no=contact).order_by('-id')
+            career_list = Career_module.objects.filter(phone_no__icontains=contact).order_by('-id')
 
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
@@ -174,7 +180,7 @@ def career_module_list(request):
 
         elif 'sub3' in request.POST:
             email = request.POST.get('email')
-            career_list = Career_module.objects.filter(candidate_email=email).order_by('-id')
+            career_list = Career_module.objects.filter(candidate_email__icontains=email).order_by('-id')
 
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
@@ -187,7 +193,7 @@ def career_module_list(request):
 
         elif 'sub4' in request.POST:
             candidate_name = request.POST.get('candidate_name')
-            career_list = Career_module.objects.filter(candidate_name=candidate_name).order_by('-id')
+            career_list = Career_module.objects.filter(candidate_name__icontains=candidate_name).order_by('-id')
 
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
@@ -201,7 +207,7 @@ def career_module_list(request):
 
         elif 'sub5' in request.POST:
             company = request.POST.get('company')
-            career_list = Career_module.objects.filter(company_name=company).order_by('-id')
+            career_list = Career_module.objects.filter(company_name__icontains=company).order_by('-id')
 
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
