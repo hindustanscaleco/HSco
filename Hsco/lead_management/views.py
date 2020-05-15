@@ -3030,7 +3030,7 @@ def final_lead_report(request):
     }
     return render(request,"report/final_lead_report.html",context)
 
-def   final_lead_report_test(request):
+def final_lead_report_test(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
     # start_date = '2020-05-01'

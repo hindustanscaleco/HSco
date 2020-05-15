@@ -105,9 +105,10 @@ def chat_details(request,from_id,to_id):
 def chat_with_user(request):
 
     if request.user.role == 'Employee':
-        all_users_list = SiteUser.objects.filter(Q(name = SiteUser.objects.get(id=request.user.id).manager) | Q(name = SiteUser.objects.get(id=request.user.id).admin) | Q(role = 'Super Admin'))
+        # all_users_list = SiteUser.objects.filter(Q(name = SiteUser.objects.get(id=request.user.id).manager) | Q(name = SiteUser.objects.get(id=request.user.id).admin) | Q(role = 'Super Admin'))
+        all_users_list = SiteUser.objects.filter(Q(name = SiteUser.objects.get(id=request.user.id).manager) | Q(role = 'Super Admin'))
     elif request.user.role == 'Manager':
-        all_users_list = SiteUser.objects.filter(Q(name = SiteUser.objects.get(id=request.user.id).admin) | Q(role = 'Super Admin'))
+        all_users_list = SiteUser.objects.filter(Q(name = SiteUser.objects.get(id=request.user.id).admin) | Q(manager = request.user.name) | Q(role = 'Super Admin'))
     elif request.user.role == 'Admin':
         all_users_list = SiteUser.objects.filter(Q(admin = request.user.name) & Q(role = 'Manager') | Q(role = 'Super Admin'))
     elif request.user.role == 'Super Admin':
