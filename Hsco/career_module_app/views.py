@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from .forms import Career_moduleForm, EducationForm, WorkExpForm
 from .models import Career_module, EducationalDetails, WorkExperience
 from datetime import datetime
+from django.contrib import messages
 
 def career_module_list(request):
     career_list = Career_module.objects.all().order_by('-id')
