@@ -452,7 +452,7 @@ def career_module_form_hsc(request):
                 work_exp.company_name = company_name
                 work_exp.career_id = Career_module.objects.get(id=item.id)
                 work_exp.save()
-        messages.success(request, "Thank You For Interest, Your application no is "+application_number+". Our Team Will Get In Touch With You Soon!!!")
+        messages.success(request, "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!")
 
 
 
