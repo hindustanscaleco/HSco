@@ -78,7 +78,7 @@
  <a style="padding: 2px;" href="{% url 'add_lead' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Lead </button></a>
                       <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Share</button></a>
                       <a style="padding: 2px;" href="{% url 'lead_logs' %}"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
-                      {% if user.role == 'Super Admin' %}
+                      {% if user.role == 'Super Admin' or user.role == 'Manager' or user.role == 'Admin' %}
 <a style="padding: 2px;" href="{% url 'report_2' %}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
                       {% endif %}
  <a style="padding: 2px;" href="{% url 'lead_analytics' %}"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
