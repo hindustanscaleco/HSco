@@ -5,7 +5,7 @@ from .models import Career_module, EducationalDetails, WorkExperience
 
 current_stage_field = [
     ('Applied but not call for interview', 'Applied but not call for interview'),
-    ('Called for interview, interview is not taken', 'Called for interview, interview is not taken'),
+    ('Called for interview but interview is not taken', 'Called for interview but interview is not taken'),
     ('Interview in Progress', 'Interview in Progress'),
     ('Interview is taken, not selected', 'Interview is taken, not selected'),
     ('Interview is done and rejected', 'Interview is done and rejected'),
