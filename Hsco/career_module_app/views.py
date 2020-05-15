@@ -13,46 +13,53 @@ def career_module_list(request):
     context = {
         'career_list': career_list,
     }
+    total_stages = Career_module.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
+
+    for i in total_stages:
+        print(total_stages)
+        x = i
+        if x['current_stage'] == 'Called for interview, interview is not taken':
+            called_nointerview = x['dcount']
+            context2 = {
+                'called_nointerview': called_nointerview,
+            }
+            context.update(context2)
+        if x['current_stage'] == 'Applied but not call for interview':
+            applied_nocall = x['dcount']
+            context5 = {
+                'applied_nocall': applied_nocall,
+            }
+            print(applied_nocall)
+            context.update(context5)
+        if x['current_stage'] == 'Interview in Progress':
+            interview_progress = x['dcount']
+            context6 = {
+                'interview_progress': interview_progress,
+            }
+            context.update(context6)
+        if x['current_stage'] == 'Interview is taken, not selected':
+            interview_notselected = x['dcount']
+            context7 = {
+                'interview_notselected': interview_notselected,
+            }
+            context.update(context7)
+        if x['current_stage'] == 'Interview is done and rejected':
+            interview_rejected = x['dcount']
+            context8 = {
+                'interview_rejected': interview_rejected,
+            }
+            context.update(context8)
+        if x['current_stage'] == 'Interview is done and preserved for Future':
+            interview_preserved = x['dcount']
+            context9 = {
+                'interview_preserved': interview_preserved,
+            }
+            context.update(context9)
+
     if request.method == 'POST':
-        total_stages = Career_module.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
-        for i in total_stages:
-            x = i
-            if x['current_stage'] == 'Called for interview, interview is not taken':
-                called_nointerview = x['dcount']
-                context2 = {
-                    'called_nointerview': called_nointerview,
-                }
-                context.update(context2)
-            if x['current_stage'] == 'Applied but not call for interview':
-                applied_nocall = x['dcount']
-                context5 = {
-                    'applied_nocall': applied_nocall,
-                }
-                context.update(context5)
-            if x['current_stage'] == 'Interview in Progress':
-                interview_progress = x['dcount']
-                context6 = {
-                    'interview_progress': interview_progress,
-                }
-                context.update(context6)
-            if x['current_stage'] == 'Interview is taken, not selected':
-                interview_notselected = x['dcount']
-                context7 = {
-                    'interview_notselected': interview_notselected,
-                }
-                context.update(context7)
-            if x['current_stage'] == 'Interview is done and rejected':
-                interview_rejected = x['dcount']
-                context8 = {
-                    'interview_rejected': interview_rejected,
-                }
-                context.update(context8)
-            if x['current_stage'] == 'Interview is done and preserved for Future':
-                interview_preserved = x['dcount']
-                context9 = {
-                    'interview_preserved': interview_preserved,
-                }
-                context.update(context9)
+
+
+
         if 'sort_submit' in request.POST:
             YEAR = request.POST.get('YEAR')
             MONTH = request.POST.get('MONTH')
@@ -205,45 +212,7 @@ def career_module_list(request):
             context.update(context2)
 
 
-    total_stages = Career_module.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
-    for i in total_stages:
-        x = i
-        if x['current_stage'] == 'Called for interview, interview is not taken':
-            called_nointerview = x['dcount']
-            context2 = {
-                'called_nointerview': called_nointerview,
-            }
-            context.update(context2)
-        if x['current_stage'] == 'Applied but not call for interview':
-            applied_nocall = x['dcount']
-            context5 = {
-                'applied_nocall': applied_nocall,
-            }
-            context.update(context5)
-        if x['current_stage'] == 'Interview in Progress':
-            interview_progress = x['dcount']
-            context6 = {
-                'interview_progress': interview_progress,
-            }
-            context.update(context6)
-        if x['current_stage'] == 'Interview is taken, not selected':
-            interview_notselected = x['dcount']
-            context7 = {
-                'interview_notselected': interview_notselected,
-            }
-            context.update(context7)
-        if x['current_stage'] == 'Interview is done and rejected':
-            interview_rejected = x['dcount']
-            context8 = {
-                'interview_rejected': interview_rejected,
-            }
-            context.update(context8)
-        if x['current_stage'] == 'Interview is done and preserved for Future':
-            interview_preserved = x['dcount']
-            context9 = {
-                'interview_preserved': interview_preserved,
-            }
-            context.update(context9)
+
 
     return render(request,'career_module/career_module_list.html',context)
 
@@ -295,7 +264,7 @@ def career_module_form(request):
         item.address = address
         item.institute_name = institute_name
         item.course = course
-        if work_expirance_to != '':
+        if date_of_birth != '':
             item.date_of_birth = date_of_birth
         item.year_of_completion = year_of_completion
         item.percentage = percentage
@@ -417,7 +386,7 @@ def career_module_form_hsc(request):
         item.address = address
         item.institute_name = institute_name
         item.course = course
-        if work_expirance_to != '':
+        if date_of_birth != '':
             item.date_of_birth = date_of_birth
         item.year_of_completion = year_of_completion
         item.percentage = percentage
@@ -485,7 +454,7 @@ def career_module_form_hsc(request):
 
         try:
             context22 = {
-                'success_65': "Thank You For Interest, Our Team Will Get In Touch With You Soon!!!",
+                'success_65': "Thank You For Interest, Your application no is "+application_number+". Our Team Will Get In Touch With You Soon!!!",
                 'success_exist_65': True,
             }
 

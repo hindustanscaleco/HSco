@@ -144,7 +144,7 @@ td {
 
                         {% if key2 == 'pi_history' %}
 
-                                <td>
+                            <td>
                                     <table>
 
                                          {% for val in value %}
@@ -153,8 +153,7 @@ td {
                         {% if forloop.first %}
                                         <tr>
                     {% for header in val.keys %}
-                                            {% if forloop.first %}
-                                            {% elif header == 'lead_id_id' %}
+                                            {% if header == 'lead_id_id' %}
                                             {% else %}
                         <th>{{ header|replace_underscore|title }}</th>
                                             {% endif %}
@@ -169,18 +168,14 @@ td {
                                                 <td>{{ val.call_detail }}</td>
                                                 <td>{{ val.entry_timedate_time }}</td>
                                                 <td>{{ val.log_entered_by }}</td>
-                                                <td>{{ val.entry_timedate_time }}</td>
-
-
                                             </tr>
+
                                         {% endfor %}
                                     </table>
                                 </td>
-
                         {% elif key2 == 'followup_history' %}
 
-
-                                <td>
+                            <td>
                                     <table>
 
                                         {% for val in value %}
@@ -228,9 +223,58 @@ td {
                                             </tr>
                                         {% endfor %}
                                     </table>
-                                </td>
+                        </td>
+                        {% elif key2 == 'payment_details' %}
 
-                    {% else %}
+                            <td>
+                                    <table>
+
+                                        {% for val in value %}
+{% if forloop.first %}
+                                        <tr>
+
+                    {% for header in val.keys %}
+
+                        <th>{{ header|replace_underscore|title }}</th>
+                    {% endfor %}
+                                        </tr>
+                {% endif %}
+                                            <tr>
+                                                {% for value in val.values %}
+
+                                                <td>{{ value }}</td>
+                                                {% endfor %}
+
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                        </td>
+                        {% elif key2 == 'customer_details' %}
+
+                            <td>
+                                    <table>
+
+                                        {% for val in value %}
+{% if forloop.first %}
+                                        <tr>
+
+                    {% for header in val.keys %}
+
+                        <th>{{ header|replace_underscore|title }}</th>
+                    {% endfor %}
+                                        </tr>
+                {% endif %}
+                                            <tr>
+                                                {% for value in val.values %}
+
+                                                <td>{{ value }}</td>
+                                                {% endfor %}
+
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                        </td>
+                        {% else %}
                             <td>{{ value }}</td>
                         {% endif %}
                     {% endfor %}

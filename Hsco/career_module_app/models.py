@@ -43,7 +43,7 @@ class Career_module(models.Model):
     entry_timedate = models.DateField(default=datetime.date.today)
 
     class Meta:
-        unique_together = ('phone_no','candidate_email')
+        unique_together = ('candidate_name','choose_position','phone_no','candidate_email')
 
     def __str__(self):
         return self.candidate_name

@@ -3051,30 +3051,126 @@ def final_lead_report_test(request):
     if  string_deal_detail_list:
         string_deal_detail_list=['id'] + string_deal_detail_list
     if string_pay_detail != '':
-        string_pay_detail_list=['id'] + string_pay_detail_list
+        string_pay_detail_list=['lead_id_id'] +string_pay_detail_list
     context ={}
 
     from .models import Pi_section
     # cust_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_cust_detail_list)
     # if string_deal_detail_list and  string_pi_history != '':
-    lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
-    for lead in lead_list:
-        # names = Pi_section.objects.filter(lead_id_id=lead['id']).values()
-        # if 'owner_of_opportunity_id' in lead_list :
-        #     lead['owner_of_opportunity_id'] = SiteUser.objects.get(id=lead['owner_of_opportunity_id'])
-        # if   Lead.objects.get(id=lead['id']).upload_requirement_file:
-        #     lead['upload_requirement_file'] = Lead.objects.get(id=lead['id']).upload_requirement_file.path
-        names = Pi_History.objects.filter(lead_id_id=lead['id']).values()
-        names2 = History_followup.objects.filter(lead_id_id=lead['id']).values()
+
+    if string_follow_up != '' and string_pi_history != '' and string_pay_detail != '' and string_cust_detail_list and string_deal_detail_list:
+
+        lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
+
+        for lead in lead_list:
+            # names3 = Payment_details.objects.filter(lead_id_id__in=lead_list.values('id')).values(*string_pay_detail_list)
+            # for item in names3:
+            #     if lead['id'] == item['lead_id_id']:
+            #         lead.update(item)
+            # print(lead)
+
+            if 'owner_of_opportunity_id' in lead_list :
+                lead['owner_of_opportunity_id'] = SiteUser.objects.get(id=lead['owner_of_opportunity_id']).profile_name
+
+            # if   Lead.objects.get(id=lead['id']).upload_requirement_file:
+            #     lead['upload_requirement_file'] = Lead.objects.get(id=lead['id']).upload_requirement_file.path
+            names = Pi_History.objects.filter(lead_id_id=lead['id']).values()
+            names2 = History_followup.objects.filter(lead_id_id=lead['id']).values()
+            names3 = Payment_details.objects.filter(lead_id_id__in=lead_list.values('id')).values(*string_pay_detail_list)
+            names4 = Customer_Details.objects.filter(id__in=lead_list.values('customer_id__id')).values(*string_cust_detail_list)
+
+            lead['pi_history'] = list(names)
+            lead['followup_history'] = list(names2)
+            lead['payment_details'] = list(names3)
+            lead['customer_details'] = list(names4)
+
+    elif string_follow_up != '' and string_pi_history != '' and string_pay_detail != ''  and string_deal_detail_list:
+        lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
+
+        for lead in lead_list:
+            if 'owner_of_opportunity_id' in lead_list :
+                lead['owner_of_opportunity_id'] = SiteUser.objects.get(id=lead['owner_of_opportunity_id']).profile_name
+            elif   Lead.objects.get(id=lead['id']).upload_requirement_file:
+                lead['upload_requirement_file'] = Lead.objects.get(id=lead['id']).upload_requirement_file.path
+            names = Pi_History.objects.filter(lead_id_id=lead['id']).values()
+            names2 = History_followup.objects.filter(lead_id_id=lead['id']).values()
+            names3 = Payment_details.objects.filter(lead_id_id__in=lead_list.values('id')).values(*string_pay_detail_list)
+
+            lead['pi_history'] = list(names)
+            lead['followup_history'] = list(names2)
+            lead['payment_details'] = list(names3)
+
+    elif string_follow_up != '' and string_pi_history != ''   and string_deal_detail_list:
+        lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
+
+        for lead in lead_list:
+            if 'owner_of_opportunity_id' in lead_list :
+                lead['owner_of_opportunity_id'] = SiteUser.objects.get(id=lead['owner_of_opportunity_id']).profile_name
+            elif   Lead.objects.get(id=lead['id']).upload_requirement_file:
+                lead['upload_requirement_file'] = Lead.objects.get(id=lead['id']).upload_requirement_file.path
+            names = Pi_History.objects.filter(lead_id_id=lead['id']).values()
+            names2 = History_followup.objects.filter(lead_id_id=lead['id']).values()
+
+            lead['pi_history'] = list(names)
+            lead['followup_history'] = list(names2)
+
+    elif  string_pi_history != ''   and string_deal_detail_list:
+        lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
+
+        for lead in lead_list:
+            if 'owner_of_opportunity_id' in lead_list :
+                lead['owner_of_opportunity_id'] = SiteUser.objects.get(id=lead['owner_of_opportunity_id']).profile_name
+            elif   Lead.objects.get(id=lead['id']).upload_requirement_file:
+                lead['upload_requirement_file'] = Lead.objects.get(id=lead['id']).upload_requirement_file.path
+            names = Pi_History.objects.filter(lead_id_id=lead['id']).values()
+
+            lead['pi_history'] = list(names)
+
+    elif string_follow_up != ''  and string_deal_detail_list:
+        lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
+
+        for lead in lead_list:
+            if 'owner_of_opportunity_id' in lead_list :
+                lead['owner_of_opportunity_id'] = SiteUser.objects.get(id=lead['owner_of_opportunity_id']).profile_name
+            elif   Lead.objects.get(id=lead['id']).upload_requirement_file:
+                lead['upload_requirement_file'] = Lead.objects.get(id=lead['id']).upload_requirement_file.path
+            names2 = History_followup.objects.filter(lead_id_id=lead['id']).values()
+
+            lead['followup_history'] = list(names2)
+
+    elif string_deal_detail_list:
+        lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
+        for lead in lead_list:
+            # names = Pi_section.objects.filter(lead_id_id=lead['id']).values()
+            if 'owner_of_opportunity_id' in lead_list :
+                lead['owner_of_opportunity_id'] = SiteUser.objects.get(id=lead['owner_of_opportunity_id'])
+            if  'upload_requirement_file' in lead_list  and Lead.objects.get(id=lead['id']).upload_requirement_file:
+                lead['upload_requirement_file'] = Lead.objects.get(id=lead['id']).upload_requirement_file.path
 
 
-        lead['pi_history'] = list(names)
-        lead['followup_history'] = list(names2)
+    elif string_pi_history != '':
+        lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values('id')
+        for lead in lead_list:
+            names = Pi_History.objects.filter(lead_id_id=lead['id']).values(*string_pi_history_list)
+            lead['pi_history'] = list(names)
 
-    print('lead_list----------------------')
-    print(lead_list)
-    print('lead_list----------------------')
+    elif string_follow_up != '':
 
+        lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values('id')
+        for lead in lead_list:
+            names =  History_followup.objects.filter(lead_id_id=lead['id']).values(*string_follow_up_list)
+            lead['followup_history'] = list(names)
+
+    elif string_pay_detail != '':
+
+        lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values('id')
+        for lead in lead_list:
+            names =  Payment_details.objects.filter(lead_id_id=lead['id']).values(*string_pay_detail_list)
+            lead['payment_details'] = list(names)
+        pay_detail_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values('id')
+
+    elif string_cust_detail_list != '':
+        lead_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_cust_detail_list)
     context1 = {
         'lead_list': lead_list,
     }
