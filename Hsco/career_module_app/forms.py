@@ -381,8 +381,8 @@ class EducationForm(forms.ModelForm):
              'type': 'number',
              'placeholder': "Year Of Completion",
              'class': 'form-control',
-             'min': 1990,
-             'max': 2020,
+             'min': '1990',
+             'max': '2020',
              'value': datetime.datetime.now().year
          }))
 
