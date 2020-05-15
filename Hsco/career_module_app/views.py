@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from .forms import Career_moduleForm, EducationForm, WorkExpForm
 from .models import Career_module, EducationalDetails, WorkExperience
 from datetime import datetime
+from django.contrib import messages
 
 def career_module_list(request):
     career_list = Career_module.objects.all().order_by('-id')
@@ -13,7 +14,7 @@ def career_module_list(request):
     context = {
         'career_list': career_list,
     }
-    total_stages = Career_module.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
+    total_stages = Career_module.objects.values('current_stage').annotate(dcount=Count('current_stage'))
 
     for i in total_stages:
         print(total_stages)
@@ -451,30 +452,8 @@ def career_module_form_hsc(request):
                 work_exp.company_name = company_name
                 work_exp.career_id = Career_module.objects.get(id=item.id)
                 work_exp.save()
+        messages.success(request, "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!")
 
-        try:
-            context22 = {
-                'success_65': "Thank You For Interest, Your application no is "+application_number+". Our Team Will Get In Touch With You Soon!!!",
-                'success_exist_65': True,
-            }
-
-            try:
-                del request.session['context_sess']
-            except:
-                pass
-            request.session['context_sess'] = context22
-
-        except Exception as e:
-            context22 = {
-                'error_65': str(e),
-                'error_exist_65': True,
-            }
-
-            try:
-                del request.session['context_sess']
-            except:
-                pass
-            request.session['context_sess'] = context22
 
 
     context = {
