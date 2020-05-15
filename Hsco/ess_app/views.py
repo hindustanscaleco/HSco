@@ -86,17 +86,23 @@ def ess_home(request):
     context={}
     print(request.user.role)
     if request.user.role == 'Super Admin':
-        leave_req_list = Employee_Leave.objects.filter(user_id__is_deleted=False,).order_by('-id'   )
-        context={
+        leave_req_list = Employee_Leave.objects.filter(user_id__is_deleted=False,).order_by('-id')
+        context2={
             'leave_req_list': leave_req_list
         }
-        context.update(context)
+        context.update(context2)
     elif request.user.role == 'Manager' or request.user.role == 'Admin':
         leave_req_list = Employee_Leave.objects.filter(user_id__group__icontains=request.user.name, user_id__is_deleted=False)
-        context = {
+        context22 = {
             'leave_req_list': leave_req_list
         }
-        context.update(context)
+        context.update(context22)
+    if request.user.role != 'Super Admin':
+        leave_list = Employee_Leave.objects.filter(user_id=request.user.id)
+        context25={
+            'leave_list':leave_list,
+        }
+        context.update(context25)
     if request.method == 'POST' and 'list[]' in request.POST:
         user_id = request.POST.get('user_id')
         list = request.POST.getlist('list[]')
@@ -113,6 +119,7 @@ def ess_home(request):
             item2.in_process = False
             item2.save(update_fields=['is_approved'])
             item2.save(update_fields=['in_process'])
+        return redirect('/ess_home/')
 
     if request.method == 'POST'and 'from' in request.POST:
         from_date = request.POST.get('from')
@@ -126,8 +133,12 @@ def ess_home(request):
         item.requested_leave_date_to = to
         item.reason = reason
         item.save()
+        context25={
+            'success':True,
+        }
+        context.update(context25)
 
-        return HttpResponse("Leave Applied!!!")
+        return render(request,'dashboardnew/ess_home.html',context)
 
     return render(request,'dashboardnew/ess_home.html',context)
 
