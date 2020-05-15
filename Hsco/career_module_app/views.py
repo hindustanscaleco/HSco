@@ -379,6 +379,8 @@ def career_module_form_hsc(request):
     initial_data = {
         'application_no': application_number,
     }
+    education_form = EducationForm()
+    workexp_form = WorkExpForm()
     career_form = Career_moduleForm(initial=initial_data)
     if request.method == 'POST' or request.method == 'FILES':
         current_stage = request.POST.get('current_stage')
@@ -508,6 +510,8 @@ def career_module_form_hsc(request):
 
     context = {
         'career_form': career_form,
+        'education_form': education_form,
+        'workexp_form': workexp_form
     }
     return render(request, 'career_module/career_module_form_hsc.html',context)
 
