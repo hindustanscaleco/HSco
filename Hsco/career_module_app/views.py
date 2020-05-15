@@ -451,30 +451,8 @@ def career_module_form_hsc(request):
                 work_exp.company_name = company_name
                 work_exp.career_id = Career_module.objects.get(id=item.id)
                 work_exp.save()
+        messages.success(request, "Thank You For Interest, Your application no is "+application_number+". Our Team Will Get In Touch With You Soon!!!")
 
-        try:
-            context22 = {
-                'success_65': "Thank You For Interest, Your application no is "+application_number+". Our Team Will Get In Touch With You Soon!!!",
-                'success_exist_65': True,
-            }
-
-            try:
-                del request.session['context_sess']
-            except:
-                pass
-            request.session['context_sess'] = context22
-
-        except Exception as e:
-            context22 = {
-                'error_65': 'Form already submitted, Please enter unique personal details!!!',
-                'error_exist_65': True,
-            }
-
-            try:
-                del request.session['context_sess']
-            except:
-                pass
-            request.session['context_sess'] = context22
 
 
     context = {
