@@ -2,9 +2,10 @@ from django.urls import path, include, re_path
 
 from .views import stock_godown_list,add_godown,stock_godown,stock_godown_images,stock_good_request,stock_pending_request,stock_transaction_status, \
                     stock_accpet_goods,stock_accpet_goods_list,stock_transaction_history_list,stock_transaction_history, update_godown,\
-add_product_godown,request_admin
+add_product_godown,request_admin, add_product_master
 
 urlpatterns = [
+    path('add_product_master/',add_product_master , name ='add_product_master'),
     path('stock_godown_list/',stock_godown_list , name ='stock_godown_list'),
     path('add_godown/',add_godown, name ='add_godown'),
     path('stock_godown/<str:id>',stock_godown, name ='stock_godown'),

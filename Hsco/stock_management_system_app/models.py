@@ -18,7 +18,7 @@ class Product(models.Model):
     max_capacity = models.CharField(max_length=150, null=True, blank=True)
     accuracy = models.CharField(max_length=150, null=True, blank=True)
     platform_size = models.CharField(max_length=150, null=True, blank=True)
-    product_desc = models.CharField(max_length=250, null=True, blank=True)
+    product_desc = models.TextField(null=True, blank=True)
     product_brochure = models.FileField(upload_to='lead_product_brochure/', blank=True, null=True)
     product_document = models.FileField(upload_to='lead_product_document/', blank=True, null=True)
     cost_price = models.FloatField( null=True, blank=True)

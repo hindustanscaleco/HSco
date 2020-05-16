@@ -9,6 +9,8 @@ from .models import Godown, GodownProduct, RequestedProducts, GoodsRequest, Prod
 from user_app.models import SiteUser
 from customer_app.models import sub_model, main_model, sub_sub_model
 
+def add_product_master(request):
+    return render(request,'stock_management_system/add_lead_product.html')
 
 def stock_godown_list(request):
     if request.user.role == 'Super Admin':
