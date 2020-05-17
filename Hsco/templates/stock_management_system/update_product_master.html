@@ -169,7 +169,7 @@ color:;
 <br>
 <br>
 
-            <form method="POST" action="" onsubmit="return isOneChecked();" >{% csrf_token %}
+            <form method="POST" action="" >{% csrf_token %}
 
 <div class="form-group row">
 
@@ -285,12 +285,14 @@ color:;
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
+
   <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>
-      {% if product_obj.product_image %}
-      <img src="{{product_obj.product_image.url}}" height="250" width="250">
-      {% endif %}
+
   <input  name="product_image" required placeholder="Product Image" class="form-control"  type="file" >
     </div>
+        {% if product_obj.product_image %}
+      <img src="{{product_obj.product_image.url}}" height="250" width="250">
+      {% endif %}
   </div>
 
 </div>
@@ -423,21 +425,7 @@ color:;
 
                 </div>
 
-                                <div class="form-group row">
 
-
-                    <label class="col-md-2 control-label">Last Product ?
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
-  YES:<input  name="is_last_product_yes" value="yes" placeholder="Is deleted" class="form-control" type="radio">
-  NO:<input  name="is_last_product_yes" value="no" placeholder="Is deleted" class="form-control" type="radio">
-
-    </div>
-  </div>
-</div>
             <br>
 
 
