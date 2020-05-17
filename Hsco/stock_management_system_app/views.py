@@ -7,10 +7,10 @@ from .forms import GodownForm
 from .models import Godown, GodownProduct, RequestedProducts, GoodsRequest, Product, AGProducts, AcceptGoods, \
     GodownTransactions
 from user_app.models import SiteUser
-from customer_app.models import sub_model, main_model, sub_sub_model
+from customer_app.models import sub_model, main_model, sub_sub_model, type_purchase
 
 def product_master_list(request):
-    product_list = Product.objects.all()
+    product_list = Product.objects.all().order_by('-id')
     context={
         'product_list': product_list,
     }
@@ -36,10 +36,7 @@ def update_product_master(request,update_id):
         product_document = request.FILES.get('product_document')
 
         fol_pro = product_obj
-        fol_pro.scale_type = scale_type
-        fol_pro.main_category = main_category
-        fol_pro.sub_category = sub_category
-        fol_pro.sub_sub_category = sub_sub_category
+
         fol_pro.hsn_code = hsn_code
         fol_pro.max_capacity = max_capacity
         fol_pro.accuracy = accuracy
@@ -83,38 +80,75 @@ def add_product_master(request):
             product_brochure = request.FILES.get('product_brochure')
             product_document = request.FILES.get('product_document')
 
-            if Product.objects.filter(scale_type__name=request.POST.get('scale_type'), main_category__name=request.POST.get('main_category'),
-                                         sub_category__name=request.POST.get('sub_category'), sub_sub_category__name=request.POST.get('sub_sub_category')).count()>0:
-                context2={
-                    'product_already_exist':True
-                }
-                context.update(context2)
-            else:
+            if request.POST.get('sub_sub_category') != None and request.POST.get('sub_sub_category') !='':
 
-                fol_pro=Product()
-                fol_pro.scale_type = scale_type
-                fol_pro.main_category = main_category
-                fol_pro.sub_category = sub_category
-                fol_pro.sub_sub_category = sub_sub_category
-                fol_pro.hsn_code = hsn_code
-                fol_pro.max_capacity = max_capacity
-                fol_pro.accuracy = accuracy
-                fol_pro.platform_size = platform_size
-                fol_pro.product_desc = product_desc
-                fol_pro.cost_price = cost_price
-                fol_pro.selling_price = selling_price
-                fol_pro.carton_size = carton_size
-                fol_pro.product_image = product_image
-                fol_pro.product_brochure = product_brochure
-                fol_pro.product_document = product_document
-                fol_pro.log_entered_by = request.user.name
+                if Product.objects.filter(scale_type__id=request.POST.get('scale_type'), main_category__id=request.POST.get('main_category'),
+                                             sub_category__id=request.POST.get('sub_category'), sub_sub_category__id=request.POST.get('sub_sub_category')).count()>0:
+                    context2={
+                        'product_already_exist':True
+                    }
+                    context.update(context2)
+                else:
 
-                fol_pro.save()
+                    fol_pro = Product()
+                    fol_pro.scale_type = type_purchase.objects.get(id=scale_type)
+                    fol_pro.main_category = main_model.objects.get(id=main_category)
+                    fol_pro.sub_category = sub_model.objects.get(id=sub_category)
+                    fol_pro.sub_sub_category = sub_sub_model.objects.get(id=sub_sub_category)
+                    fol_pro.hsn_code = hsn_code
+                    fol_pro.max_capacity = max_capacity
+                    fol_pro.accuracy = accuracy
+                    fol_pro.platform_size = platform_size
+                    fol_pro.product_desc = product_desc
+                    fol_pro.cost_price = cost_price
+                    fol_pro.selling_price = selling_price
+                    fol_pro.carton_size = carton_size
+                    fol_pro.product_image = product_image
+                    fol_pro.product_brochure = product_brochure
+                    fol_pro.product_document = product_document
+                    fol_pro.log_entered_by = request.user.name
 
-                if is_last_product_yes == 'yes':
-                    return redirect('/product_master_list/')
-                elif is_last_product_yes == 'no':
-                    return redirect('/add_product_master/')
+                    fol_pro.save()
+
+                    if is_last_product_yes == 'yes':
+                        return redirect('/product_master_list/')
+                    elif is_last_product_yes == 'no':
+                        return redirect('/add_product_master/')
+
+            if request.POST.get('sub_sub_category') == None or request.POST.get('sub_sub_category') =='':
+                if Product.objects.filter(scale_type__id=request.POST.get('scale_type'), main_category__id=request.POST.get('main_category'),
+                                             sub_category__id=request.POST.get('sub_category')).count()>0:
+                    context2={
+                        'product_already_exist':True
+                    }
+                    context.update(context2)
+
+                else:
+
+                    fol_pro=Product()
+                    fol_pro.scale_type = type_purchase.objects.get(id=scale_type)
+                    fol_pro.main_category = main_model.objects.get(id=main_category)
+                    fol_pro.sub_category = sub_model.objects.get(id=sub_category)
+                    fol_pro.sub_sub_category = sub_sub_model.objects.get(id=sub_sub_category)
+                    fol_pro.hsn_code = hsn_code
+                    fol_pro.max_capacity = max_capacity
+                    fol_pro.accuracy = accuracy
+                    fol_pro.platform_size = platform_size
+                    fol_pro.product_desc = product_desc
+                    fol_pro.cost_price = cost_price
+                    fol_pro.selling_price = selling_price
+                    fol_pro.carton_size = carton_size
+                    fol_pro.product_image = product_image
+                    fol_pro.product_brochure = product_brochure
+                    fol_pro.product_document = product_document
+                    fol_pro.log_entered_by = request.user.name
+
+                    fol_pro.save()
+
+                    if is_last_product_yes == 'yes':
+                        return redirect('/product_master_list/')
+                    elif is_last_product_yes == 'no':
+                        return redirect('/add_product_master/')
     context22={
         'type_purchase':type_of_purchase_list,
     }
