@@ -31,6 +31,9 @@ def update_product_master(request,update_id):
         cost_price = request.POST.get('cost_price')
         selling_price = request.POST.get('selling_price')
         carton_size = request.POST.get('carton_size')
+        product_image = request.FILES.get('product_image')
+        product_brochure = request.FILES.get('product_brochure')
+        product_document = request.FILES.get('product_document')
 
         fol_pro = product_obj
         fol_pro.scale_type = scale_type
@@ -45,10 +48,13 @@ def update_product_master(request,update_id):
         fol_pro.cost_price = cost_price
         fol_pro.selling_price = selling_price
         fol_pro.carton_size = carton_size
+        fol_pro.product_image = product_image
+        fol_pro.product_brochure = product_brochure
+        fol_pro.product_document = product_document
         fol_pro.log_entered_by = request.user.name
 
         fol_pro.save(update_fields=['hsn_code','max_capacity','accuracy','platform_size',
-                                    'product_desc','cost_price','selling_price','carton_size','log_entered_by'])
+                                    'product_desc','cost_price','selling_price','carton_size','log_entered_by','product_image','product_brochure','product_document',])
         return redirect('/product_master_list/')
     context={
         'product_obj':product_obj,
@@ -56,9 +62,10 @@ def update_product_master(request,update_id):
     return render(request, 'stock_management_system/update_product_master.html',context)
 
 def add_product_master(request):
+    type_of_purchase_list = type_purchase.objects.all()
     context = {}
     if request.method == 'POST' or request.method == 'FILES' :
-        if 'product_id' in request.POST:
+        if 'scale_type' in request.POST:
             is_last_product_yes = request.POST.get('is_last_product_yes')
             scale_type = request.POST.get('scale_type')
             main_category = request.POST.get('main_category')
@@ -72,6 +79,9 @@ def add_product_master(request):
             cost_price = request.POST.get('cost_price')
             selling_price = request.POST.get('selling_price')
             carton_size = request.POST.get('carton_size')
+            product_image = request.FILES.get('product_image')
+            product_brochure = request.FILES.get('product_brochure')
+            product_document = request.FILES.get('product_document')
 
             if Product.objects.filter(scale_type__name=request.POST.get('scale_type'), main_category__name=request.POST.get('main_category'),
                                          sub_category__name=request.POST.get('sub_category'), sub_sub_category__name=request.POST.get('sub_sub_category')).count()>0:
@@ -94,6 +104,9 @@ def add_product_master(request):
                 fol_pro.cost_price = cost_price
                 fol_pro.selling_price = selling_price
                 fol_pro.carton_size = carton_size
+                fol_pro.product_image = product_image
+                fol_pro.product_brochure = product_brochure
+                fol_pro.product_document = product_document
                 fol_pro.log_entered_by = request.user.name
 
                 fol_pro.save()
@@ -102,7 +115,11 @@ def add_product_master(request):
                     return redirect('/product_master_list/')
                 elif is_last_product_yes == 'no':
                     return redirect('/add_product_master/')
-    return render(request,'stock_management_system/add_product_master.html')
+    context22={
+        'type_purchase':type_of_purchase_list,
+    }
+    context.update(context22)
+    return render(request,'stock_management_system/add_product_master.html',context)
 
 def stock_godown_list(request):
     if request.user.role == 'Super Admin':
