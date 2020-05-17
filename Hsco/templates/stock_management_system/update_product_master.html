@@ -180,16 +180,17 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+ <input  type="text" required value="{{product_obj.scale_type.name}}" class="form-control" name="scale_type" >
 
-      <select id="divselector" name="scale_type"  required onchange="choice1(this)" class="form-control">
-       <option value="">Select Scale Type</option>
+<!--      <select id="divselector" name="scale_type"  required onchange="choice1(this)" class="form-control">-->
+<!--                 <option value="product_obj.scale_type.pk}}">product_obj.scale_type.name}}</option>-->
 
-    {% for item in type_purchase %}
-  <option value="{{item.pk}}">{{item.name}}</option>
 
-   {% endfor %}
+<!--  <option value="item.pk}}">item.name}}</option>-->
 
-  </select>
+<!--   endfor %}-->
+
+<!--  </select>-->
 
 
      </div>
@@ -202,11 +203,13 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+ <input  type="text" required value="{{product_obj.main_category.name}}" class="form-control" name="main_category" >
 
-      <select id="id_subcat" name="main_category" required onchange="choice_model(this)" class="form-control">
+<!--      <select id="id_subcat" name="main_category" required onchange="choice_model(this)" class="form-control">-->
+<!--          <option value="product_obj.main_category.pk}}">product_obj.main_category.name}}</option>-->
 
 
-  </select>
+<!--  </select>-->
 
 
      </div>
@@ -226,11 +229,13 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+ <input  type="text" required value="{{product_obj.sub_category.name}}" class="form-control" name="sub_category" >
 
-      <select id="id_subcat2" name="sub_category" onchange="choice_sub_model(this)" class="form-control">
+<!--      <select id="id_subcat2" name="sub_category" onchange="choice_sub_model(this)" class="form-control">-->
+<!--          <option value="product_obj.sub_category.pk">product_obj.sub_category.name}}</option>-->
 
 
-  </select>
+<!--  </select>-->
 
 
      </div>
@@ -243,12 +248,14 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+ <input  type="text" required value="{{product_obj.sub_sub_category.name}}" class="form-control" name="sub_sub_category" >
 
-      <select required id="id_subcat22" name="sub_sub_category" onchange="choice_sub_sub_model(this)" class="form-control">
+<!--      <select required id="id_subcat22" name="sub_sub_category" onchange="choice_sub_sub_model(this)" class="form-control">-->
+<!--          <option value="product_obj.sub_sub_category.pk">product_obj.sub_sub_category.name</option>-->
 
 
 
-  </select>
+<!--  </select>-->
 
 
      </div>
@@ -265,7 +272,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
- <input  type="text" placeholder="HSN Code" required class="form-control" name="hsn_code" >
+ <input  type="text" placeholder="HSN Code" required value="{{product_obj.hsn_code}}" class="form-control" name="hsn_code" >
     <!--<datalist style="height:20px;" id="brand">-->
     <!--<option value = "HSCO"></option>-->
     <!--</datalist>-->
@@ -279,6 +286,9 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>
+      {% if product_obj.product_image %}
+      <img src="{{product_obj.product_image.url}}" height="250" width="250">
+      {% endif %}
   <input  name="product_image" required placeholder="Product Image" class="form-control"  type="file" >
     </div>
   </div>
@@ -295,7 +305,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
- <input  type="text"  placeholder="Maximum Capacity" class="form-control" name="max_capacity" >
+ <input  type="text"  placeholder="Maximum Capacity" class="form-control" value="{{product_obj.max_capacity}}" name="max_capacity" >
   </div>
   </div>
 
@@ -308,7 +318,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="accuracy"  placeholder="Accuracy" class="form-control"  type="text">
+  <input  name="accuracy"  placeholder="Accuracy" class="form-control" value="{{product_obj.accuracy}}" type="text">
     </div>
   </div>
 
@@ -326,7 +336,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
-  <input  name="platform_size" placeholder="Platform Size" class="form-control"  type="text" >
+  <input  name="platform_size" placeholder="Platform Size" value="{{product_obj.platform_size}}" class="form-control"  type="text" >
     </div>
   </div>
                     <label class="col-md-2 control-label">Product Description *
@@ -336,7 +346,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>
-  <input  name="product_desc" placeholder="Product Description" required class="form-control" type="text" >
+  <input  name="product_desc" placeholder="Product Description" value="{{product_obj.product_desc}}" required class="form-control" type="text" >
     </div>
   </div>
 
@@ -350,6 +360,9 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
+      {% if product_obj.product_brochure %}
+      <a href="product_obj.product_brochure.url">Old File</a>
+      {% endif %}
   <input  name="product_brochure" placeholder="Product Brochure" class="form-control"  type="file" >
     </div>
   </div>
@@ -361,7 +374,10 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>
-  <input  name="product_document" placeholder="Product Document"  class="form-control" type="file" >
+      {% if product_obj.product_document %}
+      <a href="product_obj.product_document.url">Old File</a>
+      {% endif %}
+  <input  name="product_document" placeholder="Product Document" class="form-control" type="file" >
     </div>
   </div>
 
@@ -377,7 +393,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
-  <input  name="cost_price" required placeholder="Cost Price" class="form-control"  type="text" >
+  <input  name="cost_price" required placeholder="Cost Price" value="{{product_obj.cost_price}}" class="form-control"  type="text" >
     </div>
   </div>
                     <label class="col-md-2 control-label">Selling Price *
@@ -387,7 +403,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>
-  <input   name="selling_price" placeholder="Selling Price" required class="form-control" type="text" >
+  <input   name="selling_price" placeholder="Selling Price" value="{{product_obj.selling_price}}" required class="form-control" type="text" >
     </div>
   </div>
 
@@ -401,7 +417,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
-  <input  name="carton_size" placeholder="Carton Size" class="form-control"  type="text" >
+  <input  name="carton_size" placeholder="Carton Size" class="form-control" value="{{product_obj.carton_size}}" type="text" >
     </div>
   </div>
 
