@@ -164,7 +164,7 @@ color:;
         <div class="container-fluid">
 <center>
          <!-- Page Heading -->
-            <h1 class="h3 mb-0 text-gray-800"> Add Product</h1>
+            <h1 class="h3 mb-0 text-gray-800"> Update Product</h1>
 </center>
 <br>
 <br>
@@ -348,7 +348,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>
-  <input  name="product_desc" placeholder="Product Description" value="{{product_obj.product_desc}}" required class="form-control" type="text" >
+      <textarea  name="product_desc" placeholder="Product Description" required class="form-control" >{{product_obj.product_desc}}</textarea>
     </div>
   </div>
 
@@ -436,7 +436,7 @@ color:;
 
 
 <center>
-    <button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Submit</button>
+    <button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Update</button>
 
 </center>
             </form>

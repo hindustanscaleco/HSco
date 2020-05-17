@@ -515,7 +515,7 @@ def lead_home(request):
                         error_exist = True
                         error = e
                         print('e')
-                      
+
                         print(e)
 
                 obj = IndiamartLeadDetails()
