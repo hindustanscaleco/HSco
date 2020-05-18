@@ -141,78 +141,7 @@ color:;
       <!-- Main Content -->
       <div id="content" style="background-color: white;">
 
-
-        <!-- Topbar -->
-        <!-- End of Topbar -->
-
-<div class="row">
-    <div class="card-body" style="background-color:#1E1E1C;">
-        <p style="float:left;">One Stop for all Your Weighing Needs</p>
-    </div>
-
-</div>
-          <div class="row" style="margin-left:05%;">
-        <div class="card-body" style=" background-color:#ffffff;">
-            <div class="col-md-2">
-                                  <div style="width:100%; float: left;">
-                                              <img src="{% static 'images/hsco.jpg' %}" style="height: 70px; padding-top: 5px; ">
-
-              </div>
-            </div>
-
-            <div class="col-md-12">
-               <button class="dropbtn12"> Suggest a Scale</button> <button class="dropbtn12"> Home </button>
-                    <div class="dropdown">
-                    <button class="dropbtn dropbtn12">About Us </button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/know-more-about-us/">Vision,Mission &amp; Values</a>
-                    <a href="https://hindustanscale.com/know-more-about-us/">Awards &amp; Certification</a>
-                    <a href="https://hindustanscale.com/know-more-about-us/">Customers</a>
-                    <a href="https://hindustanscale.com/know-more-about-us/">Customer Installation</a>
-                    </div>
-                    </div>
-                    <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Products </button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/products/">Electronic Scales</a>
-                    <a href="https://hindustanscale.com/products/">Mechanical Scales</a>
-                    <a href="https://hindustanscale.com/products/">Lifestyle Scales (Not For Commercial Use)</a>
-                    <a href="https://hindustanscale.com/products/">Bluetooth Scales</a>
-                    </div>
-                    </div>
-                    <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Services</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/service-request/">Services</a>
-                    </div>
-                    </div>
-                  <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Blogs</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/blogs/">Blogs</a>
-                    </div>
-                    </div>
-                      <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Career</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/career/">Career</a>
-                    </div>
-                    </div>
-                  <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Help & Videos</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/troubleshooting-video/">Help & Videos</a>
-                    </div>
-                    </div>
-                  <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Contact Us</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/contact-us/">Contact Us</a>
-                    </div>
-                    </div>
-            </div>
-            </div>
-        </div>
+{% include 'base_templates/hindustanscale_navbar.html' %}
     <form class="well form-horizontal" ion="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
 <fieldset>
 
@@ -250,15 +179,7 @@ window.location.replace("https://hindustanscale.com/");
 
 
 <div class="form-group row">
-    <label class="col-md-2 control-label">Application No*
-    </label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
- {{career_form.application_no}}
-    </div>
-  </div>
   <label class="col-md-2 control-label">Phone No*
 
 
@@ -269,7 +190,15 @@ window.location.replace("https://hindustanscale.com/");
 {{career_form.phone_no}}
     </div>
   </div>
+<label class="col-md-2 control-label">Date Of Birth*
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+{{career_form.date_of_birth}}
 
+    </div>
+  </div>
 
 </div>
    <div class="form-group row">
@@ -291,11 +220,14 @@ window.location.replace("https://hindustanscale.com/");
 
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-  <input required name="choose_position" placeholder="Choose Position" class="form-control" type="text" list="position">
-            <datalist style="height:20px;" id="position">
-                <option value="Sales Position">Sales Position</option>
-      <option value="Technical Position">Technical Position</option>
-    </datalist>
+
+      <select  required name="choose_position"  class="form-control">
+                                <option value="">Select</option>
+
+                {% for position in positions %}
+                <option value="{{position.position}}">{{position.position}}</option>
+                {% endfor %}
+    </select>
     </div>
   </div>
   </div>
@@ -326,25 +258,15 @@ window.location.replace("https://hindustanscale.com/");
     </div>
   </div>
         </div>
-       <div class="form-group row">
 
-  <label class="col-md-2 control-label">Date Of Birth*
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-{{career_form.date_of_birth}}
 
-    </div>
-  </div>
-       </div>
-
-     <hr>
+          <hr style="border:2px solid;">
 
 
 <br>
 
      <center><h3>Education Details</h3></center>
+       <center><p>Note:- The most recent educational details should be mentioned first</p></center>
      <br><input id="maxedu_id" name="maxedu_id" value="1" type="number" hidden>
 
      <div id="edu_detail_id" class="edu_detail">
@@ -392,14 +314,31 @@ window.location.replace("https://hindustanscale.com/");
     </div>
   </div>
         </div>
+                              <div class="form-group row">
+
+  <label class="col-md-2 control-label">Achievements
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+ {{education_form.achievements}}
+    </div>
+  </div>
+
+        </div>
+
  </div>
      <center>
     <button type="button" class="add_edu_detail">Add </button>
     <button type="button" class="delete_edu_detail">Delete </button>
 </center>
+               <hr style="border:2px solid;">
+
 <br>
 
      <center><h3>Work Experience</h3></center>
+            <center><p>Note:- The most recent Job details should be mentioned first</p></center>
+
      <br><input id="maxwork_exp_id" name="maxwork_exp" value="1" type="number" hidden>
   <div id="work_exp_id" class="work_exp">
        <div class="form-group row">
@@ -539,7 +478,7 @@ $(add_edu_button).click(function(e){
     e.preventDefault();
     if(initial_count < max_fields){
         initial_count++ ;
-        $(wrapper).append($('<div id="edu_detail_id2" ><hr><div class="form-group row"><label class="col-md-2 control-label">Institute Name / University*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="institute_name'+initial_count+'" type="text" class="form-control" placeholder="Institute Name / University" required></div></div><label class="col-md-2 control-label">Course*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="course'+initial_count+'" type="text" class="form-control" placeholder="Course" required></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Year of completion*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="year_of_completion'+initial_count+'" type="text" class="form-control" min="1990" max="2020" value="2020" placeholder="Year Of Completion" required></div></div><label class="col-md-2 control-label">Grade / Percentage*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="percentage'+initial_count+'" type="text" class="form-control" required placeholder="Percentage or Grade"></div></div></div></div>'));
+        $(wrapper).append($('<div id="edu_detail_id2" ><hr><div class="form-group row"><label class="col-md-2 control-label">Institute Name / University*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="institute_name'+initial_count+'" type="text" class="form-control" placeholder="Institute Name / University" required></div></div><label class="col-md-2 control-label">Course*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="course'+initial_count+'" type="text" class="form-control" placeholder="Course" required></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Year of completion*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="year_of_completion'+initial_count+'" type="text" class="form-control" min="1990" max="2020" value="2020" placeholder="Year Of Completion" required></div></div><label class="col-md-2 control-label">Grade / Percentage*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="percentage'+initial_count+'" type="text" class="form-control" required placeholder="Percentage or Grade"></div></div></div> <div class="form-group row"><label class="col-md-2 control-label">Achievements*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><textarea rows="4" cols="50" name="achievements'+initial_count+'" class="form-control" required placeholder="Achievements"></textarea></div></div></div></div>'));
 
         }
     $('#maxedu_id').val(initial_count);
