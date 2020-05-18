@@ -2,14 +2,23 @@ from django.db import models
 from django.utils import timezone
 import datetime
 
+class Position(models.Model):
+    position = models.CharField(max_length=50,null=True,blank=True)
+
+    def __int__(self):
+        return self.id
+
+    class  Meta():
+        ordering = ['-id']
+
 class Career_module(models.Model):
     current_stage = models.CharField(max_length=50,null=True,blank=True)
     application_no = models.IntegerField(null=True,blank=True)
     phone_no = models.CharField(max_length=10,null=True,blank=True)
     candidate_name = models.CharField(max_length=50,null=True,blank=True)
-    choose_position = models.CharField(max_length=20,null=True,blank=True)
+    choose_position = models.ForeignKey(Position, on_delete=models.CASCADE,null=True, blank=True )
     candidate_email = models.CharField(max_length=60, null=True,blank=True)
-    address = models.CharField(max_length=120,null=True,blank=True)
+    address = models.CharField(max_length=300,null=True,blank=True)
     date_of_birth = models.DateTimeField(blank= True, null=True)
 
     current_salary = models.CharField(max_length=60,null=True,blank=True)
@@ -40,6 +49,7 @@ class Career_module(models.Model):
     open_and_short_circuit = models.CharField(max_length=10, null=True, blank=True)
     is_sales_candidate = models.BooleanField(default=False)
     is_technical_candidate = models.BooleanField(default=False)
+    notes = models.TextField( null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
 
     class Meta:
@@ -52,12 +62,15 @@ class Career_module(models.Model):
     class  Meta():
         ordering = ['-id']
 
+
+
 class EducationalDetails(models.Model):
     career_id = models.ForeignKey(Career_module, on_delete=models.CASCADE,null=True, blank=True)
     institute_name = models.CharField(max_length=50, null=True, blank=True)
     course = models.CharField(max_length=50, null=True, blank=True)
     year_of_completion = models.CharField(max_length=4, null=True, blank=True)
     percentage = models.CharField(max_length=50, null=True, blank=True)
+    achievements = models.TextField( null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
 
     def __int__(self):
