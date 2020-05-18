@@ -663,10 +663,12 @@ td {
 
         </div>
         <br>
+        {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin' %}
 <div style="float:right;">
             <button style="cursor: pointer;" type="submit" name="delete_lead" class="btn-danger">Delete Selected Leads</button>
 
 </div>
+        {% endif %}
 </form>
 
 
