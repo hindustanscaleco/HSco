@@ -406,7 +406,7 @@ class EducationForm(forms.ModelForm):
 
            }))
 
-    achievements = forms.CharField(max_length=1024,
+    achievements = forms.CharField(max_length=1024,required=False,
       widget=forms.Textarea(
           attrs={
               'type': 'textarea',
