@@ -532,7 +532,6 @@ def update_career_module_from(request,id):
         'application_no': career_module_id.application_no,
         'phone_no': career_module_id.phone_no,
         'candidate_name': career_module_id.candidate_name,
-        'choose_position': career_module_id.choose_position_id.position,
         'candidate_email': career_module_id.candidate_email,
         'address': career_module_id.address,
         'date_of_birth': career_module_id.date_of_birth,
