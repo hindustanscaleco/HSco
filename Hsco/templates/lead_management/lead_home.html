@@ -90,14 +90,12 @@
 
                       </form>
                       {% endif %}
-                         {% if request.user.is_authenticated and 'Hsco Website Leads' in user.modules_assigned %}
-                      <form action="" method="post">{% csrf_token %}
-                          <input type="hidden" name="from_date_form" value="{{from_date}}">
-                           <input type="hidden" name="to_date_form" value="{{to_date}}">
-                          <button style="background-color: #FC6E20;" type="submit" name="fetch_website_lead" class="btn btn-primary">Fetch Website Lead</button>
+<!--                      <form action="" method="post">{% csrf_token %}-->
+<!--                          <input type="hidden" name="from_date_form" value="{{from_date}}">-->
+<!--                           <input type="hidden" name="to_date_form" value="{{to_date}}">-->
+<!--                          <button style="background-color: #FC6E20;" type="submit" name="fetch_website_lead" class="btn btn-primary">Fetch Website Lead</button>-->
 
-                      </form>
-                      {% endif %}
+<!--                      </form>-->
                 </div>
               </div>
 
@@ -606,6 +604,7 @@ td {
                   <center> <p>list of deleted users</p></center>
                     {% endif %}
      <center><p>{{search_msg}}</p></center>
+    <form method="post" action="">{% csrf_token %}
         <div class="row" id="id_manager_view">
 
     <table>
@@ -621,49 +620,56 @@ td {
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Selection</td>
         </tr>
                     {% for list in lead_list %}
-<form method="post" action="">{% csrf_token %}
+
 
 {% if list.channel == 'IndiaMart' or list.channel == 'Indiamart' or list.channel == 'India Mart' %}
         {% if list.is_indiamart_purchased_lead %}
-            <tr bgcolor="#7CFC00" style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
+            <tr bgcolor="#7CFC00" style="cursor: pointer;" >
         {% else %}
-        <tr bgcolor="#32c932" style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
+        <tr bgcolor="#32c932" style="cursor: pointer;" >
         {% endif %}
 
 
  {% elif list.channel == 'Website' %}
-  <tr bgcolor="#FFA500" style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
+  <tr bgcolor="#FFA500" style="cursor: pointer;" >
 
        {% elif list.current_stage == 'PI Sent & Follow-up' or list.current_stage == 'PO Issued - Payment not done' %}
 
         {% if list.no_of_times_followup_done > 2 %}
-  <tr bgcolor="red" style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
+  <tr bgcolor="red" style="cursor: pointer;" >
 {% else %}
-          <tr bgcolor="#FF8C00" style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
+          <tr bgcolor="#FF8C00" style="cursor: pointer;" >
         {% endif %}
         {% else %}
-                  <tr style="cursor: pointer;" onclick="location.href='/update_view_lead/{{list.pk}}';">
+                  <tr style="cursor: pointer;" >
 
         {% endif %}
 
-            <td>{{ list.id}}</td>
-            <td>{{ list.date_of_initiation|date:'Y-m-d'}}</td>
-            <td>{{ list.customer_id.customer_name}}</td>
-            <td>{{ list.customer_id.contact_no }}</td>
-            <td>{{ list.customer_id.company_name }}</td>
-            <td>{{ list.customer_id.customer_email_id}}</td>
-            <td>{{list.owner_of_opportunity}}</td>
-            <td>{{list.current_stage}}</td>
-            <td><input type="checkbox" value="{{list.id}}" name="delete_lead_id"></td>
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';">{{ list.id}}</td>
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{ list.date_of_initiation|date:'Y-m-d'}}</td>
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{ list.customer_id.customer_name}}</td>
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{ list.customer_id.contact_no }}</td>
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{ list.customer_id.company_name }}</td>
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{ list.customer_id.customer_email_id}}</td>
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{list.owner_of_opportunity}}</td>
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{list.current_stage}}</td>
+            <td><input style="cursor: pointer;" type="checkbox" value="{{list.id}}" name="delete_lead_id"></td>
 
         </tr>
-    </form>
+
                           {% endfor %}
 
     </table>
 
         </div>
+        <br>
+        {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin' %}
+<div style="float:right;">
+            <button style="cursor: pointer;" type="submit" name="delete_lead" class="btn-danger">Delete Selected Leads</button>
 
+</div>
+        {% endif %}
+</form>
 
 
 

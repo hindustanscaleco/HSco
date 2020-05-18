@@ -83,7 +83,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
 
-                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 18px;">Purchase Module
+                      <div class=" font-weight-bold text-primary text-uppercase mb-1" style="font-size: 18px;">Sales Module
 </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
@@ -276,6 +276,29 @@ Module
                 </div>
               </div>
             </div>
+
+              {% if user.product_master_access %}
+                 <div class="col-xl-4 col-md-6 mb-4">
+              <div class="card border-left-warning shadow  ">
+                <div class="card-body">
+                    <a href="/product_master_list/">
+
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="font-size: 15px;">Product Master
+
+</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-comments fa-x text-gray-300"  style="font-size: 18px;"></i>
+                    </div>
+                  </div>
+                        </a>
+                </div>
+              </div>
+            </div>
+              {% endif %}
 
 
                                   {% if request.user.is_authenticated and 'Lead Module' in user.modules_assigned %}
