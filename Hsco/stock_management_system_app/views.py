@@ -62,7 +62,7 @@ def add_product_master(request):
     type_of_purchase_list = type_purchase.objects.all()
     context = {}
     if request.method == 'POST' or request.method == 'FILES' :
-        if 'scale_type' in request.POST:
+        if 'scale_type' in request.POST and 'send_submit' not in request.POST:
             is_last_product_yes = request.POST.get('is_last_product_yes')
             scale_type = request.POST.get('scale_type')
             main_category = request.POST.get('main_category')
@@ -149,6 +149,89 @@ def add_product_master(request):
                         return redirect('/product_master_list/')
                     elif is_last_product_yes == 'no':
                         return redirect('/add_product_master/')
+        if 'send_submit' in request.POST:
+            scale_type = request.POST.get('scale_type')
+            main_category = request.POST.get('main_category')
+            sub_category = request.POST.get('sub_category')
+            sub_sub_category = request.POST.get('sub_sub_category')
+
+
+            type=type_purchase.objects.filter(name=scale_type)
+            if type.count()>0:
+                context22 = {
+                    'already_exist': True,
+                    'already_exist_msg': 'Scale Type: '+scale_type + 'Already Exist!!!' ,
+                }
+                context.update(context22)
+            else:
+                item = type_purchase()
+                item.name = scale_type
+                item.save()
+                context22={
+                    'already_dont_exist': True,
+                    'scale_type' : item
+                }
+                context.update(context22)
+
+            main = main_model.objects.filter(name=main_category)
+            if main.count() > 0:
+                context22 = {
+                    'already_exist': True,
+                    'already_exist_msg': 'Main Category: ' + main_category + 'Already Exist!!!',
+                }
+                context.update(context22)
+            else:
+                item2 = main_model()
+                item2.name = main_category
+                item2.type_purchase = item
+                item2.save()
+                context22 = {
+                    'already_dont_exist_main': True,
+                    'main_category': item2
+                }
+                context.update(context22)
+
+            sub = sub_model.objects.filter(name=sub_category)
+            if sub.count() > 0:
+                context22 = {
+                    'already_exist': True,
+                    'already_exist_msg': 'Sub Category: ' + sub_category + 'Already Exist!!!',
+                }
+                context.update(context22)
+            else:
+                item3 = sub_model()
+                item3.name = sub_category
+                item3.main_model = item2
+                item3.save()
+                context22 = {
+                    'already_dont_exist_sub': True,
+                    'sub_category': item3
+                }
+                context.update(context22)
+
+            sub_sub= sub_sub_model.objects.filter(name=sub_sub_category)
+            if (sub_sub_category!= None or sub_sub_category!= '') and sub_sub.count() > 0 :
+                context22 = {
+                    'already_exist': True,
+                    'already_exist_msg': 'Sub Sub Category: ' + sub_sub_category + 'Already Exist!!!',
+                }
+                context.update(context22)
+            else:
+                item4 = sub_sub_model()
+                item4.name = sub_sub_category
+                item4.sub_model = item3
+                item4.save()
+                context22 = {
+                    'already_dont_exist_sub_sub': True,
+                    'sub_sub_category': item4
+                }
+                context.update(context22)
+
+
+
+
+
+
     context22={
         'type_purchase':type_of_purchase_list,
     }

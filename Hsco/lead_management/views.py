@@ -488,8 +488,6 @@ def lead_home(request):
                             pass
 
                     try:
-
-
                         item2.customer_id = Customer_Details.objects.get(id=item3.pk)
                         item2.current_stage = 'Not Yet Initiated'
                         if item['QTYPE'] == 'B':
@@ -499,6 +497,7 @@ def lead_home(request):
 
                         item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
                         item2.channel = 'IndiaMart'
+                        item2.owner_of_opportunity = request.user
                         requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
                         item2.requirement = requirement.replace('<b>', '\n')
                         try:
@@ -533,71 +532,71 @@ def lead_home(request):
                     error_exist = True
                     print('error_exist')
                     print(error)
-        if (lead_count > 1):
-            for item in response:
-                item2 = Lead()
-                if (item['MOB'] != None and item['MOB'] != '' and len(item['MOB']) > 3):
-                    clean_mob = item['MOB'].partition('-')[2]
-                else:
-                    clean_mob = ''
-                entered_customer_name = item['SENDERNAME']
-                if entered_customer_name == None or entered_customer_name == '':
-                    entered_customer_name = 'NA'
-
-                item3 = Customer_Details()
-                item3.customer_name = entered_customer_name
-                item3.company_name = item['GLUSR_USR_COMPANYNAME']
-                item3.address = item['ENQ_ADDRESS']
-                item3.customer_email_id = item['SENDEREMAIL']
-
-                item3.contact_no = clean_mob
-                item3.customer_industry = ''
-
-                try:
-                    item3.save()
-                    item2.new_existing_customer = 'New'
-                    item2.customer_id = Customer_Details.objects.get(id=item3.pk)
-                    item2.current_stage = 'Not Yet Initiated'
-                    if item['QTYPE'] == 'B':
-                        item2.is_indiamart_purchased_lead = True
-                    else:
-                        item2.is_indiamart_purchased_lead = False
-
-                    item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
-                    item2.channel = 'IndiaMart'
-                    item2.owner_of_opportunity = request.user
-                    requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
-                    item2.requirement = requirement.replace('<b>', '\n')
-                    try:
-                        item2.save()
-                        fp = Follow_up_section()
-                        fp.lead_id = Lead.objects.get(id=item2.pk)
-                        fp.save()
-                    except Exception as e:
-                        error_exist = True
-                        error2 = e
-                        print(error2)
-                except Exception as e:
-                    error_exist = True
-                    error = e
-                    print('e')
-                    print(e)
-
-            obj = IndiamartLeadDetails()
-            obj.from_date = time.strftime("%Y-%m-%d", conv)
-            obj.to_date = time.strftime("%Y-%m-%d", conv2)
-            obj.lead_count = lead_count
-            try:
-                obj.save()
-            except:
-                print("error")
-        elif (lead_count < 0):
-            row_count = response
-            if (row_count != None):
-                error = row_count
-                error_exist = True
-                print('error_exist')
-                print(error)
+        # if (lead_count > 1):
+        #     for item in response:
+        #         item2 = Lead()
+        #         if (item['MOB'] != None and item['MOB'] != '' and len(item['MOB']) > 3):
+        #             clean_mob = item['MOB'].partition('-')[2]
+        #         else:
+        #             clean_mob = ''
+        #         entered_customer_name = item['SENDERNAME']
+        #         if entered_customer_name == None or entered_customer_name == '':
+        #             entered_customer_name = 'NA'
+        #
+        #         item3 = Customer_Details()
+        #         item3.customer_name = entered_customer_name
+        #         item3.company_name = item['GLUSR_USR_COMPANYNAME']
+        #         item3.address = item['ENQ_ADDRESS']
+        #         item3.customer_email_id = item['SENDEREMAIL']
+        #
+        #         item3.contact_no = clean_mob
+        #         item3.customer_industry = ''
+        #
+        #         try:
+        #             item3.save()
+        #             item2.new_existing_customer = 'New'
+        #             item2.customer_id = Customer_Details.objects.get(id=item3.pk)
+        #             item2.current_stage = 'Not Yet Initiated'
+        #             if item['QTYPE'] == 'B':
+        #                 item2.is_indiamart_purchased_lead = True
+        #             else:
+        #                 item2.is_indiamart_purchased_lead = False
+        #
+        #             item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
+        #             item2.channel = 'IndiaMart'
+        #             item2.owner_of_opportunity = request.user
+        #             requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
+        #             item2.requirement = requirement.replace('<b>', '\n')
+        #             try:
+        #                 item2.save()
+        #                 fp = Follow_up_section()
+        #                 fp.lead_id = Lead.objects.get(id=item2.pk)
+        #                 fp.save()
+        #             except Exception as e:
+        #                 error_exist = True
+        #                 error2 = e
+        #                 print(error2)
+        #         except Exception as e:
+        #             error_exist = True
+        #             error = e
+        #             print('e')
+        #             print(e)
+        #
+        #     obj = IndiamartLeadDetails()
+        #     obj.from_date = time.strftime("%Y-%m-%d", conv)
+        #     obj.to_date = time.strftime("%Y-%m-%d", conv2)
+        #     obj.lead_count = lead_count
+        #     try:
+        #         obj.save()
+        #     except:
+        #         print("error")
+        # elif (lead_count < 0):
+        #     row_count = response
+        #     if (row_count != None):
+        #         error = row_count
+        #         error_exist = True
+        #         print('error_exist')
+        #         print(error)
         if 'sort_submit' in request.POST:
             YEAR = request.POST.get('YEAR')
             MONTH = request.POST.get('MONTH')
