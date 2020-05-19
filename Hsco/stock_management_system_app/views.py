@@ -163,6 +163,12 @@ def add_product_master(request):
             sub_category = sub_category if len(sub_category)>1 else sub_category_d if sub_category_d!=None and sub_category_d !='' else None
             sub_sub_category = sub_sub_category if len(sub_sub_category)>1 and sub_sub_category != None else None
 
+            print('ssssssssss')
+            print(scale_type)
+            print(main_category)
+            print(sub_category)
+            print(sub_sub_category)
+
             try:
                 type=type_purchase.objects.filter(Q(id = scale_type))
             except:
@@ -218,9 +224,9 @@ def add_product_master(request):
 
             if sub_category != None:
                 try:
-                    sub = sub_model.objects.filter(Q(name=sub_category))
+                    sub = sub_model.objects.filter(Q(id=sub_category))
                 except:
-                    sub = sub_model.objects.filter(Q(id = sub_category))
+                    sub = sub_model.objects.filter(Q(name = sub_category))
 
                 if sub.count() > 0:
                     try:
