@@ -3388,6 +3388,7 @@ def upload_requirement_hsc(request):
         if Customer_Details.objects.filter(customer_name=customer_name,
                                            contact_no=contact_no).count() > 0:
 
+
             item2.customer_id = Customer_Details.objects.filter(contact_no=contact_no).first()
 
             item3 = Customer_Details.objects.filter(customer_name=customer_name,
@@ -3435,7 +3436,7 @@ def upload_requirement_hsc(request):
         item2.requirement = requirement
         item2.owner_of_opportunity = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Admin').first()
         item2.upload_requirement_file = upload_requirement_file
-        item2.log_entered_by = request.user.name
+        item2.log_entered_by = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Admin').first().name
 
 
         try:
