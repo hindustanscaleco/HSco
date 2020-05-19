@@ -7,8 +7,236 @@ from .forms import GodownForm
 from .models import Godown, GodownProduct, RequestedProducts, GoodsRequest, Product, AGProducts, AcceptGoods, \
     GodownTransactions
 from user_app.models import SiteUser
-from customer_app.models import sub_model, main_model, sub_sub_model
+from customer_app.models import sub_model, main_model, sub_sub_model, type_purchase
 
+def product_master_list(request):
+    product_list = Product.objects.all().order_by('-id')
+    context={
+        'product_list': product_list,
+    }
+    return render(request, 'stock_management_system/product_master_list.html',context)
+
+def update_product_master(request,update_id):
+    product_obj = Product.objects.get(id=update_id)
+    if request.method == 'POST':
+        scale_type = request.POST.get('scale_type')
+        main_category = request.POST.get('main_category')
+        sub_category = request.POST.get('sub_category')
+        sub_sub_category = request.POST.get('sub_sub_category')
+        hsn_code = request.POST.get('hsn_code')
+        max_capacity = request.POST.get('max_capacity')
+        accuracy = request.POST.get('accuracy')
+        platform_size = request.POST.get('platform_size')
+        product_desc = request.POST.get('product_desc')
+        cost_price = request.POST.get('cost_price')
+        selling_price = request.POST.get('selling_price')
+        carton_size = request.POST.get('carton_size')
+        product_image = request.FILES.get('product_image')
+        product_brochure = request.FILES.get('product_brochure')
+        product_document = request.FILES.get('product_document')
+
+        fol_pro = product_obj
+
+        fol_pro.hsn_code = hsn_code
+        fol_pro.max_capacity = max_capacity
+        fol_pro.accuracy = accuracy
+        fol_pro.platform_size = platform_size
+        fol_pro.product_desc = product_desc
+        fol_pro.cost_price = cost_price
+        fol_pro.selling_price = selling_price
+        fol_pro.carton_size = carton_size
+        fol_pro.product_image = product_image
+        fol_pro.product_brochure = product_brochure
+        fol_pro.product_document = product_document
+        fol_pro.log_entered_by = request.user.name
+
+        fol_pro.save(update_fields=['hsn_code','max_capacity','accuracy','platform_size',
+                                    'product_desc','cost_price','selling_price','carton_size','log_entered_by','product_image','product_brochure','product_document',])
+        return redirect('/product_master_list/')
+    context={
+        'product_obj':product_obj,
+    }
+    return render(request, 'stock_management_system/update_product_master.html',context)
+
+def add_product_master(request):
+    type_of_purchase_list = type_purchase.objects.all()
+    context = {}
+    if request.method == 'POST' or request.method == 'FILES' :
+        if 'scale_type' in request.POST and 'send_submit' not in request.POST:
+            is_last_product_yes = request.POST.get('is_last_product_yes')
+            scale_type = request.POST.get('scale_type')
+            main_category = request.POST.get('main_category')
+            sub_category = request.POST.get('sub_category')
+            sub_sub_category = request.POST.get('sub_sub_category')
+            hsn_code = request.POST.get('hsn_code')
+            max_capacity = request.POST.get('max_capacity')
+            accuracy = request.POST.get('accuracy')
+            platform_size = request.POST.get('platform_size')
+            product_desc = request.POST.get('product_desc')
+            cost_price = request.POST.get('cost_price')
+            selling_price = request.POST.get('selling_price')
+            carton_size = request.POST.get('carton_size')
+            product_image = request.FILES.get('product_image')
+            product_brochure = request.FILES.get('product_brochure')
+            product_document = request.FILES.get('product_document')
+
+            if request.POST.get('sub_sub_category') != None and request.POST.get('sub_sub_category') !='':
+
+                if Product.objects.filter(scale_type__id=request.POST.get('scale_type'), main_category__id=request.POST.get('main_category'),
+                                             sub_category__id=request.POST.get('sub_category'), sub_sub_category__id=request.POST.get('sub_sub_category')).count()>0:
+                    context2={
+                        'product_already_exist':True
+                    }
+                    context.update(context2)
+                else:
+
+                    fol_pro = Product()
+                    fol_pro.scale_type = type_purchase.objects.get(id=scale_type)
+                    fol_pro.main_category = main_model.objects.get(id=main_category)
+                    fol_pro.sub_category = sub_model.objects.get(id=sub_category)
+                    fol_pro.sub_sub_category = sub_sub_model.objects.get(id=sub_sub_category)
+                    fol_pro.hsn_code = hsn_code
+                    fol_pro.max_capacity = max_capacity
+                    fol_pro.accuracy = accuracy
+                    fol_pro.platform_size = platform_size
+                    fol_pro.product_desc = product_desc
+                    fol_pro.cost_price = cost_price
+                    fol_pro.selling_price = selling_price
+                    fol_pro.carton_size = carton_size
+                    fol_pro.product_image = product_image
+                    fol_pro.product_brochure = product_brochure
+                    fol_pro.product_document = product_document
+                    fol_pro.log_entered_by = request.user.name
+
+                    fol_pro.save()
+
+                    if is_last_product_yes == 'yes':
+                        return redirect('/product_master_list/')
+                    elif is_last_product_yes == 'no':
+                        return redirect('/add_product_master/')
+
+            if request.POST.get('sub_sub_category') == None or request.POST.get('sub_sub_category') =='':
+                if Product.objects.filter(scale_type__id=request.POST.get('scale_type'), main_category__id=request.POST.get('main_category'),
+                                             sub_category__id=request.POST.get('sub_category')).count()>0:
+                    context2={
+                        'product_already_exist':True
+                    }
+                    context.update(context2)
+
+                else:
+
+                    fol_pro=Product()
+                    fol_pro.scale_type = type_purchase.objects.get(id=scale_type)
+                    fol_pro.main_category = main_model.objects.get(id=main_category)
+                    fol_pro.sub_category = sub_model.objects.get(id=sub_category)
+                    fol_pro.sub_sub_category = sub_sub_model.objects.get(id=sub_sub_category)
+                    fol_pro.hsn_code = hsn_code
+                    fol_pro.max_capacity = max_capacity
+                    fol_pro.accuracy = accuracy
+                    fol_pro.platform_size = platform_size
+                    fol_pro.product_desc = product_desc
+                    fol_pro.cost_price = cost_price
+                    fol_pro.selling_price = selling_price
+                    fol_pro.carton_size = carton_size
+                    fol_pro.product_image = product_image
+                    fol_pro.product_brochure = product_brochure
+                    fol_pro.product_document = product_document
+                    fol_pro.log_entered_by = request.user.name
+
+                    fol_pro.save()
+
+                    if is_last_product_yes == 'yes':
+                        return redirect('/product_master_list/')
+                    elif is_last_product_yes == 'no':
+                        return redirect('/add_product_master/')
+        if 'send_submit' in request.POST:
+            scale_type = request.POST.get('scale_type')
+            main_category = request.POST.get('main_category')
+            sub_category = request.POST.get('sub_category')
+            sub_sub_category = request.POST.get('sub_sub_category')
+
+
+            type=type_purchase.objects.filter(name=scale_type)
+            if type.count()>0:
+                context22 = {
+                    'already_exist': True,
+                    'already_exist_msg': 'Scale Type: '+scale_type + 'Already Exist!!!' ,
+                }
+                context.update(context22)
+            else:
+                item = type_purchase()
+                item.name = scale_type
+                item.save()
+                context22={
+                    'already_dont_exist': True,
+                    'scale_type' : item
+                }
+                context.update(context22)
+
+            main = main_model.objects.filter(name=main_category)
+            if main.count() > 0:
+                context22 = {
+                    'already_exist': True,
+                    'already_exist_msg': 'Main Category: ' + main_category + 'Already Exist!!!',
+                }
+                context.update(context22)
+            else:
+                item2 = main_model()
+                item2.name = main_category
+                item2.type_purchase = item
+                item2.save()
+                context22 = {
+                    'already_dont_exist_main': True,
+                    'main_category': item2
+                }
+                context.update(context22)
+
+            sub = sub_model.objects.filter(name=sub_category)
+            if sub.count() > 0:
+                context22 = {
+                    'already_exist': True,
+                    'already_exist_msg': 'Sub Category: ' + sub_category + 'Already Exist!!!',
+                }
+                context.update(context22)
+            else:
+                item3 = sub_model()
+                item3.name = sub_category
+                item3.main_model = item2
+                item3.save()
+                context22 = {
+                    'already_dont_exist_sub': True,
+                    'sub_category': item3
+                }
+                context.update(context22)
+
+            sub_sub= sub_sub_model.objects.filter(name=sub_sub_category)
+            if (sub_sub_category!= None or sub_sub_category!= '') and sub_sub.count() > 0 :
+                context22 = {
+                    'already_exist': True,
+                    'already_exist_msg': 'Sub Sub Category: ' + sub_sub_category + 'Already Exist!!!',
+                }
+                context.update(context22)
+            else:
+                item4 = sub_sub_model()
+                item4.name = sub_sub_category
+                item4.sub_model = item3
+                item4.save()
+                context22 = {
+                    'already_dont_exist_sub_sub': True,
+                    'sub_sub_category': item4
+                }
+                context.update(context22)
+
+
+
+
+
+
+    context22={
+        'type_purchase':type_of_purchase_list,
+    }
+    context.update(context22)
+    return render(request,'stock_management_system/add_product_master.html',context)
 
 def stock_godown_list(request):
     if request.user.role == 'Super Admin':

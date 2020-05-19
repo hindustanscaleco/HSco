@@ -4,12 +4,13 @@ from django import forms
 from .models import Career_module, EducationalDetails, WorkExperience
 
 current_stage_field = [
-    ('Applied but not call for interview', 'Applied but not call for interview'),
-    ('Called for interview but interview is not taken', 'Called for interview but interview is not taken'),
-    ('Interview in Progress', 'Interview in Progress'),
-    ('Interview is taken, not selected', 'Interview is taken, not selected'),
-    ('Interview is done and rejected', 'Interview is done and rejected'),
-    ('Interview is done and preserved for Future', 'Interview is done and preserved for Future'),
+    ('Applied but Not called for Interview', 'Applied but Not called for Interview'),
+    ('Called for Interview', 'Called for Interview'),
+    ('Selection in Progress', 'Selection in Progress'),
+    ('Selected', 'Selected'),
+    ('Rejected', 'Rejected'),
+    ('Future Reference', 'Future Reference'),
+    ('Did not Joined', 'Did not Joined'),
 ]
 
 choose_position_dropdown = [
@@ -102,12 +103,13 @@ class Career_moduleForm(forms.ModelForm):
                'class': 'form-control',
            }))
 
-    address = forms.CharField(max_length=100, required=True,
-       widget=forms.TextInput(
+    address = forms.CharField(max_length=250, required=True,
+       widget=forms.Textarea(
            attrs={
                'type': 'textarea',
                'placeholder': "Address",
                'class': 'form-control',
+               'rows': '6',
 
            }))
 
@@ -351,7 +353,15 @@ class Career_moduleForm(forms.ModelForm):
             }
         ))
 
+    notes = forms.CharField(max_length=100, required=False,
+     widget=forms.Textarea(
+         attrs={
+             'type': 'text',
+             'placeholder': "Notes",
+             'class': 'form-control',
+             'rows': '7',
 
+         }))
     class Meta:
         model = Career_module
         fields = "__all__"
@@ -395,6 +405,15 @@ class EducationForm(forms.ModelForm):
                'class': 'form-control',
 
            }))
+
+    achievements = forms.CharField(max_length=1024,required=False,
+      widget=forms.Textarea(
+          attrs={
+              'type': 'textarea',
+              'placeholder': "Achievements",
+              'class': 'form-control',
+
+          }))
     class Meta:
         model = EducationalDetails
         fields = "__all__"
@@ -433,7 +452,7 @@ class WorkExpForm(forms.ModelForm):
     work_expirance_details = forms.CharField(max_length=100, required=False,
        widget=forms.Textarea(
            attrs={
-               'type': 'texta',
+               'type': 'text',
                'placeholder': "Experience Details",
                'class': 'form-control',
                'rows':'4',

@@ -155,9 +155,13 @@
           <span>Notif. & Declaration</span></a>
       </li>
 
-
-
-
+{% if user.product_master_access %}
+<li class="nav-item ">
+        <a class="nav-link" href="/product_master_list/">
+          <!--<i class="fas fa-fw fa-chart-area"></i>-->
+          <span>Product Master</span></a>
+      </li>
+{% endif %}
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <!--<i class="fas fa-clipboard-list"></i>-->

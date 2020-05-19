@@ -146,11 +146,13 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
 
-  <input required name="choose_position" value="{{career_module_id.choose_position}}" placeholder="Choose Position" class="form-control" type="text" list="position">
-    <datalist style="height:20px;" id="position">
-      <option value="Sales Position">Sales Position</option>
-      <option value="Technical Position">Technical Position</option>
-    </datalist>
+      <select  required name="choose_position"  class="form-control">
+                                <option value="{{career_module_id.choose_position.position}}">{{career_module_id.choose_position.position}}</option>
+
+                {% for position in positions %}
+                <option value="{{position.position}}">{{position.position}}</option>
+                {% endfor %}
+    </select>
   </div>
   </div>
   </div>
@@ -243,14 +245,15 @@ color:;
     </div>
   </div>
        </div>
-     <hr>
+          <hr style="border:2px solid;">
 
 
 <br>
 <input id="latest_work_exp_id"  value="{{latest_work_exp_id}}" type="number" hidden>
 <input id="latest_edu_details_id"  value="{{latest_edu_details_id}}" type="number" hidden>
      <center><h3>Education Details</h3></center>
-     <br><input id="maxedu_id" name="maxedu_id" value="1" type="number" hidden>
+     <center><p>Note:- The most recent educational details should be mentioned first</p></center>
+     <input id="maxedu_id" name="maxedu_id" value="1" type="number" hidden>
 
      <div id="edu_detail_id" class="edu_detail">
      {% for education_form in edu_details_list %}
@@ -302,6 +305,19 @@ color:;
     </div>
   </div>
         </div>
+                              <div class="form-group row">
+
+  <label class="col-md-2 control-label">Achievements
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+      <textarea style="height:120px;" name="achievements{{education_form.id}}"  class="form-control" placeholder="Percentage or Grade">{{education_form.achievements}}</textarea>
+    </div>
+  </div>
+
+        </div>
+
                <hr>
 
 {% endfor %}
@@ -310,13 +326,14 @@ color:;
     <button type="button" class="add_edu_detail">Add </button>
     <button type="button" class="delete_edu_detail">Delete </button>
          </center>
-          <hr>
+          <hr style="border:2px solid;">
 
 
 <br>
 
      <center><h3>Work Experience</h3></center>
-     <br><input id="maxwork_exp_id" name="maxwork_exp"  value="1" type="number" hidden>
+      <center><p>Note:- The most recent Job details should be mentioned first</p></center>
+     <input id="maxwork_exp_id" name="maxwork_exp"  value="1" type="number" hidden>
      <div id="work_exp_id" class="work_exp">
 
      {% for workexp_form in work_exp_list %}
@@ -356,7 +373,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-<input style="height:80px;" value="{{workexp_form.work_expirance_details}}" name="work_expirance_details{{workexp_form.id}}" class="form-control" placeholder="Experience Details">
+      <textarea style="height:80px;" name="work_expirance_details{{workexp_form.id}}" class="form-control" placeholder="Experience Details">{{workexp_form.work_expirance_details}}</textarea>
     </div>
   </div>
 
@@ -379,7 +396,7 @@ color:;
      <button type="button" class="add_work_exp">Add </button>
     <button type="button" class="delete_work_exp">Delete </button>
           </center>
-      <hr>
+          <hr style="border:2px solid;">
 
 
 <br>
@@ -471,8 +488,8 @@ color:;
   </div>
         </div>
         </div>
-<br>
-     <hr>
+
+          <hr style="border:2px solid;">
      <br>
 
 
@@ -519,9 +536,22 @@ color:;
     </div>
   </div>
         </div>
+          <div class="form-group row">
+
+  <label class="col-md-2 control-label">Notes
+</label>
+  <div class="col-md-2 inputGroupContainer">
+  <div class="input-group">
+{{career_form.notes}}
+    </div>
+  </div>
+
+        </div>
+
      <br>
 
-<hr>
+          <hr style="border:2px solid;">
+
      <br>
 
 {% if career_module_id.is_sales_candidate %}
@@ -856,7 +886,7 @@ var initial_count = $("#latest_edu_details_id").val();
 $(add_edu_button).click(function(e){
     e.preventDefault();
     initial_count++ ;
-    $(wrapper).append($('<div id="edu_detail_id2" ><hr><div class="form-group row"><label class="col-md-2 control-label">Institute Name / University*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="institute_name'+initial_count+'" type="text" class="form-control" placeholder="Institute Name / University" required></div></div><label class="col-md-2 control-label">Course*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="course'+initial_count+'" type="text" class="form-control" placeholder="Course" required></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Year of completion*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="year_of_completion'+initial_count+'" type="text" class="form-control" min="1990" max="2020" value="2020" placeholder="Year Of Completion" required></div></div><label class="col-md-2 control-label">Grade / Percentage*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="percentage'+initial_count+'" type="text" class="form-control" required placeholder="Percentage or Grade"></div></div></div></div>'));
+    $(wrapper).append($('<div id="edu_detail_id2" ><hr><div class="form-group row"><label class="col-md-2 control-label">Institute Name / University*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="institute_name'+initial_count+'" type="text" class="form-control" placeholder="Institute Name / University" required></div></div><label class="col-md-2 control-label">Course*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="course'+initial_count+'" type="text" class="form-control" placeholder="Course" required></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Year of completion*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="year_of_completion'+initial_count+'" type="text" class="form-control" min="1990" max="2020" value="2020" placeholder="Year Of Completion" required></div></div><label class="col-md-2 control-label">Grade / Percentage*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="percentage'+initial_count+'" type="text" class="form-control" required placeholder="Percentage or Grade"></div></div></div> <div class="form-group row"><label class="col-md-2 control-label">Achievements*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><textarea rows="4" cols="50" name="achievements'+initial_count+'" class="form-control" required placeholder="Achievements"></textarea></div></div></div></div>'));
     $('#maxedu_id').val(initial_count);
     console.log(initial_count);
 
