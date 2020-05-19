@@ -3310,27 +3310,18 @@ def select_product_followup(request,id):
     request.session['expand_followup'] = True
     if request.method == 'POST' or request.method == 'FILES' :
         if 'submit' in request.POST:
-
             is_last_product_yes = request.POST.get('is_last_product_yes')
             model_of_purchase_str = request.POST.get('model_of_purchase')
             type_of_scale_str = request.POST.get('type_of_scale')
             sub_model_str = request.POST.get('sub_model')
             sub_sub_model_str = request.POST.get('sub_sub_model')
-            print('request.POST')
-            print('request.POST')
-            print(request.POST)
-
-
             try:
-
                 if (sub_sub_model_str == None or sub_sub_model_str == ""):
-
                     product_avail = Product.objects.get(scale_type__id=type_purchase.objects.get(id=type_of_scale_str).id, main_category__id=main_model.objects.get(id=model_of_purchase_str).id,
-                                                           sub_category__id=sub_model.objects.get(id=sub_model_str).id)
+                                                 sub_category__id=sub_model.objects.get(id=sub_model_str).id)
                 else:
-
                     product_avail = Product.objects.get(scale_type__id=type_purchase.objects.get(id=type_of_scale_str).id, main_category__id=main_model.objects.get(id=model_of_purchase_str).id,
-                                                           sub_category__id=sub_model.objects.get(id=sub_model_str).id, sub_sub_category__id=sub_sub_model.objects.get(id=sub_sub_model_str).id)
+                                                 sub_category__id=sub_model.objects.get(id=sub_model_str).id, sub_sub_category__id=sub_sub_model.objects.get(id=sub_sub_model_str).id)
                 requested_product = product_avail
                 fol_pro = Followup_product()
                 fol_pro.product_id = requested_product
@@ -3350,7 +3341,7 @@ def select_product_followup(request,id):
                 fol_pro.log_entered_by = request.user.name
 
                 fol_pro.save()
-                print("avail")
+                
 
                 context23 = {
                     'product_avail': True,
