@@ -3322,12 +3322,12 @@ def select_product_followup(request,id):
 
                 if (sub_sub_model_str == None or sub_sub_model_str == ""):
 
-                    product_avail = Product.objects.get(scale_type=type_purchase.objects.get(id=type_of_scale_str).id, main_category=main_model.objects.get(id=model_of_purchase_str).id,
-                                                           sub_category=sub_model.objects.get(id=sub_model_str).id)
+                    product_avail = Product.objects.get(scale_type__id=type_purchase.objects.get(id=type_of_scale_str).id, main_category__id=main_model.objects.get(id=model_of_purchase_str).id,
+                                                           sub_category__id=sub_model.objects.get(id=sub_model_str).id)
                 else:
 
-                    product_avail = Product.objects.get(scale_type=type_purchase.objects.get(id=type_of_scale_str).id, main_category=main_model.objects.get(id=model_of_purchase_str).id,
-                                                           sub_category=sub_model.objects.get(id=sub_model_str).id, sub_sub_category=sub_sub_model.objects.get(id=sub_sub_model_str).id)
+                    product_avail = Product.objects.get(scale_type__id=type_purchase.objects.get(id=type_of_scale_str).id, main_category__id=main_model.objects.get(id=model_of_purchase_str).id,
+                                                           sub_category__id=sub_model.objects.get(id=sub_model_str).id, sub_sub_category__id=sub_sub_model.objects.get(id=sub_sub_model_str).id)
                 requested_product = product_avail
                 fol_pro = Followup_product()
                 fol_pro.product_id = requested_product
