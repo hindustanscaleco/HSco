@@ -1,10 +1,15 @@
+from django.core.mail import send_mail
+
+from Hsco import settings
 from django.core.paginator import Paginator
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Q
 from django.shortcuts import render, redirect
 from .forms import Career_moduleForm, EducationForm, WorkExpForm
-from .models import Career_module, EducationalDetails, WorkExperience
+from .models import Career_module, EducationalDetails, WorkExperience, Position
 from datetime import datetime
 from django.contrib import messages
+import requests
+import json
 
 def career_module_list(request):
     career_list = Career_module.objects.all().order_by('-id')
@@ -15,7 +20,7 @@ def career_module_list(request):
         'career_list': career_list,
     }
     try:
-        called_nointerview = Career_module.objects.filter(current_stage='Called for interview but interview is not taken').count()
+        called_nointerview = Career_module.objects.filter(current_stage='Called for Interview').count()
         context2 = {
             'called_nointerview': called_nointerview,
         }
@@ -23,7 +28,7 @@ def career_module_list(request):
     except:
         pass
     try:
-        applied_nocall = Career_module.objects.filter(current_stage='Applied but not call for interview').count()
+        applied_nocall = Career_module.objects.filter(current_stage='Applied but Not called for Interview').count()
         context5 = {
             'applied_nocall': applied_nocall,
         }
@@ -31,7 +36,7 @@ def career_module_list(request):
     except:
         pass
     try:
-        interview_progress = Career_module.objects.filter(current_stage='Interview in Progress').count()
+        interview_progress = Career_module.objects.filter(current_stage='Selection in Progress').count()
         context6 = {
             'interview_progress': interview_progress,
         }
@@ -39,7 +44,7 @@ def career_module_list(request):
     except:
         pass
     try:
-        interview_notselected =Career_module.objects.filter(current_stage='Interview is taken, not selected').count()
+        interview_notselected =Career_module.objects.filter(current_stage='Selected').count()
         context7 = {
             'interview_notselected': interview_notselected,
         }
@@ -47,7 +52,7 @@ def career_module_list(request):
     except:
         pass
     try:
-        interview_rejected = Career_module.objects.filter(current_stage='Interview is done and rejected').count()
+        interview_rejected = Career_module.objects.filter(current_stage='Rejected').count()
         context8 = {
             'interview_rejected': interview_rejected,
         }
@@ -55,14 +60,21 @@ def career_module_list(request):
     except:
         pass
     try:
-        interview_preserved = Career_module.objects.filter(current_stage='Interview is done and preserved for Future').count()
+        interview_preserved = Career_module.objects.filter(current_stage='Future Reference').count()
         context9 = {
             'interview_preserved': interview_preserved,
         }
         context.update(context9)
     except:
         pass
-
+    try:
+        did_not_joined = Career_module.objects.filter(current_stage='Did not Joined').count()
+        context10 = {
+            'did_not_joined': did_not_joined,
+        }
+        context.update(context10)
+    except:
+        pass
     if request.method == 'POST':
 
 
@@ -85,7 +97,7 @@ def career_module_list(request):
             context.update(context1)
             return render(request, 'career_module/career_module_list.html', context)
         if 'submit1' in request.POST:
-            career_list = Career_module.objects.filter( current_stage='Called for interview but interview is not taken',)
+            career_list = Career_module.objects.filter( current_stage='Called for Interview',)
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
             career_list = paginator.get_page(page)
@@ -95,7 +107,7 @@ def career_module_list(request):
             context.update(context2)
             return render(request, 'career_module/career_module_list.html', context)
         if 'submit2' in request.POST:
-            career_list = Career_module.objects.filter(current_stage='Applied but not call for interview', )
+            career_list = Career_module.objects.filter(current_stage='Applied but Not called for Interview', )
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
             career_list = paginator.get_page(page)
@@ -106,7 +118,7 @@ def career_module_list(request):
 
             return render(request, 'career_module/career_module_list.html', context)
         if 'submit3' in request.POST:
-            career_list = Career_module.objects.filter(current_stage='Interview in Progress', )
+            career_list = Career_module.objects.filter(current_stage='Selection in Progress', )
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
             career_list = paginator.get_page(page)
@@ -117,7 +129,7 @@ def career_module_list(request):
 
             return render(request, 'career_module/career_module_list.html', context)
         if 'submit4' in request.POST:
-            career_list = Career_module.objects.filter(current_stage='Interview is taken, not selected', )
+            career_list = Career_module.objects.filter(current_stage='Selected', )
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
             career_list = paginator.get_page(page)
@@ -128,7 +140,7 @@ def career_module_list(request):
 
             return render(request, 'career_module/career_module_list.html', context)
         if 'submit5' in request.POST:
-            career_list = Career_module.objects.filter(current_stage='Interview is done and rejected', )
+            career_list = Career_module.objects.filter(current_stage='Rejected', )
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
             career_list = paginator.get_page(page)
@@ -139,7 +151,7 @@ def career_module_list(request):
 
             return render(request, 'career_module/career_module_list.html', context)
         if 'submit6' in request.POST:
-            career_list = Career_module.objects.filter(current_stage='Interview is done and preserved for Future', )
+            career_list = Career_module.objects.filter(current_stage='Future Reference', )
             paginator = Paginator(career_list, 25)  # Show 25 contacts per page
             page = request.GET.get('page')
             career_list = paginator.get_page(page)
@@ -149,7 +161,17 @@ def career_module_list(request):
             context.update(context7)
 
             return render(request, 'career_module/career_module_list.html', context)
+        if 'submit7' in request.POST:
+            career_list = Career_module.objects.filter(current_stage='Did not Joined', )
+            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+            page = request.GET.get('page')
+            career_list = paginator.get_page(page)
+            context7 = {
+                'career_list': career_list,
+            }
+            context.update(context7)
 
+            return render(request, 'career_module/career_module_list.html', context)
         if 'sub1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
@@ -225,9 +247,9 @@ def career_module_list(request):
 
 def career_module_form(request):
     if Career_module.objects.all().count() == 0:
-        application_number = '1'
+        application_number = 166353
     else:
-        application_number = Career_module.objects.latest('id').id + 1
+        application_number = Career_module.objects.latest('id').application_no + 1
     initial_data = {
         'application_no': application_number,
     }
@@ -253,6 +275,7 @@ def career_module_form(request):
         work_expirance_details = request.POST.get('work_expirance_details')
         designation = request.POST.get('designation')
         date_of_birth = request.POST.get('date_of_birth')
+        achievements = request.POST.get('achievements')
         maxedu_id = request.POST.get('maxedu_id')
         maxwork_exp = request.POST.get('maxwork_exp')
 
@@ -263,10 +286,10 @@ def career_module_form(request):
         item = Career_module()
 
         item.current_stage = current_stage
-        item.application_no = application_no
+        item.application_no = application_number
         item.phone_no = phone_no
         item.candidate_name = candidate_name
-        item.choose_position = choose_position
+        item.choose_position = Position.objects.get(position=choose_position)
         item.candidate_email = candidate_email
         item.address = address
         item.institute_name = institute_name
@@ -286,7 +309,9 @@ def career_module_form(request):
         edu_detail.course = course
         edu_detail.year_of_completion = year_of_completion
         edu_detail.percentage = percentage
+        edu_detail.achievements = achievements
         edu_detail.career_id = Career_module.objects.get(id=item.id)
+
         edu_detail.save()
 
         if int(maxedu_id) > 1:
@@ -295,6 +320,7 @@ def career_module_form(request):
                 course = request.POST.get('course'+str(i))
                 year_of_completion = request.POST.get('year_of_completion'+str(i))
                 percentage = request.POST.get('percentage'+str(i))
+                achievements = request.POST.get('achievements'+str(i))
 
                 edu_detail = EducationalDetails()
 
@@ -302,6 +328,7 @@ def career_module_form(request):
                 edu_detail.course = course
                 edu_detail.year_of_completion = year_of_completion
                 edu_detail.percentage = percentage
+                edu_detail.achievements = achievements
                 edu_detail.career_id = Career_module.objects.get(id=item.id)
                 edu_detail.save()
 
@@ -340,27 +367,36 @@ def career_module_form(request):
         return redirect('/career_module_list/')
 
 
+    positions = Position.objects.all()
     context = {
         'career_form':career_form,
         'education_form':education_form,
-        'workexp_form':workexp_form
+        'workexp_form':workexp_form,
+        'positions':positions,
     }
     return render(request,'career_module/career_module_form.html',context)
 
 def career_module_form_hsc(request):
     if Career_module.objects.all().count() == 0:
-        application_number = '1'
+        application_number = 166353
     else:
-        application_number = Career_module.objects.latest('id').id + 1
+        application_number = Career_module.objects.latest('id').application_no + 1
     initial_data = {
         'application_no': application_number,
     }
     education_form = EducationForm()
     workexp_form = WorkExpForm()
     career_form = Career_moduleForm(initial=initial_data)
+    positions = Position.objects.all()
+
+    context = {
+        'career_form': career_form,
+        'education_form': education_form,
+        'workexp_form': workexp_form,
+        'positions': positions
+    }
     if request.method == 'POST' or request.method == 'FILES':
         current_stage = request.POST.get('current_stage')
-        application_no = request.POST.get('application_no')
         phone_no = request.POST.get('phone_no')
         candidate_name = request.POST.get('candidate_name')
         choose_position = request.POST.get('choose_position')
@@ -385,10 +421,10 @@ def career_module_form_hsc(request):
         item = Career_module()
 
         item.current_stage = current_stage
-        item.application_no = application_no
+        item.application_no = application_number
         item.phone_no = phone_no
         item.candidate_name = candidate_name
-        item.choose_position = choose_position
+        item.choose_position = Position.objects.get(position=choose_position)
         item.candidate_email = candidate_email
         item.address = address
         item.institute_name = institute_name
@@ -416,6 +452,7 @@ def career_module_form_hsc(request):
                 course = request.POST.get('course' + str(i))
                 year_of_completion = request.POST.get('year_of_completion' + str(i))
                 percentage = request.POST.get('percentage' + str(i))
+                achievements = request.POST.get('achievements'+str(i))
 
                 edu_detail = EducationalDetails()
 
@@ -423,6 +460,7 @@ def career_module_form_hsc(request):
                 edu_detail.course = course
                 edu_detail.year_of_completion = year_of_completion
                 edu_detail.percentage = percentage
+                edu_detail.achievements = achievements
                 edu_detail.career_id = Career_module.objects.get(id=item.id)
                 edu_detail.save()
 
@@ -458,16 +496,38 @@ def career_module_form_hsc(request):
                 work_exp.company_name = company_name
                 work_exp.career_id = Career_module.objects.get(id=item.id)
                 work_exp.save()
-        messages.success(request, "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!")
+        msg = "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!"
 
-    context = {
+
+
+
+        try:
+            messages.success(request, "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!")
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + phone_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+        except:
+            print("exception occured!!")
+            pass
+
+        send_mail('HSCo - Career, Form Submitted Successfully!!! ',
+                  msg, settings.EMAIL_HOST_USER,
+                  [candidate_email, ])
+        context = {
         'career_form': career_form,
         'education_form': education_form,
         'workexp_form': workexp_form
     }
-    return render(request, 'base_templates/hindustanscale_navbar.html',context)
+
+    return render(request, 'career_module/career_module_form_hsc.html',context)
+
 
 def update_career_module_from(request,id):
+
     career_module_id = Career_module.objects.get(id=id)
     work_exp_list = WorkExperience.objects.filter(career_id=id).order_by('id')
     edu_details_list = EducationalDetails.objects.filter(career_id=id).order_by('id')
@@ -476,11 +536,11 @@ def update_career_module_from(request,id):
     edu_details_list_id = EducationalDetails.objects.filter(career_id=id).values('id')
 
     career_module_initial_data = {
+        'notes': career_module_id.notes,
         'current_stage': career_module_id.current_stage,
         'application_no': career_module_id.application_no,
         'phone_no': career_module_id.phone_no,
         'candidate_name': career_module_id.candidate_name,
-        'choose_position': career_module_id.choose_position,
         'candidate_email': career_module_id.candidate_email,
         'address': career_module_id.address,
         'date_of_birth': career_module_id.date_of_birth,
@@ -561,6 +621,7 @@ def update_career_module_from(request,id):
         soldering_strong = request.POST.get('soldering_strong')
         value_of_resister = request.POST.get('value_of_resister')
         open_and_short_circuit = request.POST.get('open_and_short_circuit')
+        notes = request.POST.get('notes')
         maxedu_id = request.POST.get('maxedu_id')
         maxwork_exp = request.POST.get('maxwork_exp')
 
@@ -570,7 +631,7 @@ def update_career_module_from(request,id):
         item.application_no = application_no
         item.phone_no = phone_no
         item.candidate_name = candidate_name
-        item.choose_position = choose_position
+        item.choose_position = Position.objects.get(position=choose_position)
         item.candidate_email = candidate_email
         item.address = address
         item.institute_name = institute_name
@@ -607,12 +668,13 @@ def update_career_module_from(request,id):
         item.soldering_strong = soldering_strong
         item.value_of_resister = value_of_resister
         item.open_and_short_circuit = open_and_short_circuit
+        item.notes = notes
         item.save(update_fields=['current_stage','application_no','phone_no','candidate_name','choose_position','candidate_email',
                                  'address','current_salary','aadhar_card','pan_card_availabe',
                                  'bank_account','say_yourself','confidance','without_job_with_reason','reason_for_last_job_before','working_from_10_to_8_and',
                                  'any_question_yes','comfortable_english','how_good_english','comfortable_marathi','working_from_10_to_8',
                                  'weighting_scale_manufactures_mumbai','excel_formate','sum_in_excel','time_taken','take_out_60',
-                                 'time_to_disorder_wire_pcb','time_to_solder_wire_back','soldering_strong','value_of_resister','open_and_short_circuit','date_of_birth',])
+                                 'time_to_disorder_wire_pcb','time_to_solder_wire_back','soldering_strong','value_of_resister','open_and_short_circuit','date_of_birth','notes'])
 
         if int(maxwork_exp) > latest_work_exp_id:
             for i in range(latest_work_exp_id, int(maxwork_exp) ):
@@ -642,6 +704,7 @@ def update_career_module_from(request,id):
                 course = request.POST.get('course'+str(i))
                 year_of_completion = request.POST.get('year_of_completion'+str(i))
                 percentage = request.POST.get('percentage'+str(i))
+                achievements = request.POST.get('achievements'+str(i))
 
                 edu_detail = EducationalDetails()
 
@@ -649,6 +712,7 @@ def update_career_module_from(request,id):
                 edu_detail.course = course
                 edu_detail.year_of_completion = year_of_completion
                 edu_detail.percentage = percentage
+                edu_detail.achievements = achievements
                 edu_detail.career_id = Career_module.objects.get(id=id)
                 edu_detail.save()
 
@@ -677,6 +741,7 @@ def update_career_module_from(request,id):
             course = request.POST.get('course' + str(i['id']))
             year_of_completion = request.POST.get('year_of_completion' + str(i['id']))
             percentage = request.POST.get('percentage' + str(i['id']))
+            achievements = request.POST.get('achievements' + str(i['id']))
 
             edu_detail = EducationalDetails.objects.get(id=i['id'])
 
@@ -684,8 +749,10 @@ def update_career_module_from(request,id):
             edu_detail.course = course
             edu_detail.year_of_completion = year_of_completion
             edu_detail.percentage = percentage
-            edu_detail.save(update_fields=['institute_name', 'course', 'year_of_completion', 'percentage',])
+            edu_detail.achievements = achievements
+            edu_detail.save(update_fields=['institute_name', 'course', 'year_of_completion', 'percentage','achievements'])
         return redirect('/update_career_module_from/'+str(id))
+    positions = Position.objects.filter(~Q(position=career_module_id.choose_position.position))
 
     context = {
         'career_form':career_form,
@@ -694,5 +761,6 @@ def update_career_module_from(request,id):
         'career_module_id':career_module_id,
         'latest_work_exp_id':latest_work_exp_id,
         'latest_edu_details_id':latest_edu_details_id,
+        'positions':positions,
     }
     return render(request,'career_module/update_career_module_from.html',context)
