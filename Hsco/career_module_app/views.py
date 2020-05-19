@@ -364,6 +364,24 @@ def career_module_form(request):
                 work_exp.company_name = company_name
                 work_exp.career_id = Career_module.objects.get(id=item.id)
                 work_exp.save()
+
+        msg = "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!"
+
+        try:
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + phone_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+
+            send_mail('HSCo - Career, Form Submitted Successfully!!! ',
+                      msg, settings.EMAIL_HOST_USER,
+                      [candidate_email, ])
+        except:
+            print("exception occured!!")
+            pass
         return redirect('/career_module_list/')
 
 
@@ -496,13 +514,12 @@ def career_module_form_hsc(request):
                 work_exp.company_name = company_name
                 work_exp.career_id = Career_module.objects.get(id=item.id)
                 work_exp.save()
+                messages.success(request, "Thank You For Interest, Your application no is " + str(application_number) + ". Our Team Will Get In Touch With You Soon!!!")
+
         msg = "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!"
 
 
-
-
         try:
-            messages.success(request, "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!")
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + phone_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
@@ -510,13 +527,15 @@ def career_module_form_hsc(request):
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
+
+            send_mail('HSCo - Career, Form Submitted Successfully!!! ',
+                      msg, settings.EMAIL_HOST_USER,
+                      [candidate_email, ])
         except:
             print("exception occured!!")
             pass
 
-        send_mail('HSCo - Career, Form Submitted Successfully!!! ',
-                  msg, settings.EMAIL_HOST_USER,
-                  [candidate_email, ])
+
         context = {
         'career_form': career_form,
         'education_form': education_form,
