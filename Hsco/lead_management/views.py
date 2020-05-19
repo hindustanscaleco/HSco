@@ -3316,6 +3316,9 @@ def select_product_followup(request,id):
             type_of_scale_str = request.POST.get('type_of_scale')
             sub_model_str = request.POST.get('sub_model')
             sub_sub_model_str = request.POST.get('sub_sub_model')
+            print('request.POST')
+            print('request.POST')
+            print(request.POST)
 
 
             try:
