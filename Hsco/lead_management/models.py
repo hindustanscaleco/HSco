@@ -175,7 +175,7 @@ class Followup_product(models.Model):
     max_capacity = models.CharField(max_length=150, null=True, blank=True)
     accuracy = models.CharField(max_length=150, null=True, blank=True)
     platform_size = models.CharField(max_length=150, null=True, blank=True)
-    product_desc = models.CharField(max_length=250, null=True, blank=True)
+    product_desc = models.TextField(null=True, blank=True)
     cost_price = models.FloatField(null=True, blank=True)
     selling_price = models.FloatField(null=True, blank=True)
     carton_size = models.CharField(max_length=150, null=True, blank=True)

@@ -3341,7 +3341,7 @@ def select_product_followup(request,id):
                 fol_pro.log_entered_by = request.user.name
 
                 fol_pro.save()
-                
+
 
                 context23 = {
                     'product_avail': True,
