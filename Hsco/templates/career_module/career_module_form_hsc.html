@@ -9,6 +9,8 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
+
+
   <title>Career | HSCO</title>
 
   <!-- Custom fonts for this template-->
@@ -145,74 +147,13 @@ color:;
         <!-- Topbar -->
         <!-- End of Topbar -->
 
-<div class="row">
-    <div class="card-body" style="background-color:#1E1E1C;">
-        <p style="float:left;">One Stop for all Your Weighing Needs</p>
-    </div>
 
-</div>
-          <div class="row" style="margin-left:05%;">
-        <div class="card-body" style=" background-color:#ffffff;">
-            <div class="col-md-2">
-                                  <div style="width:100%; float: left;">
-                                              <img src="{% static 'images/hsco.jpg' %}" style="height: 70px; padding-top: 5px; ">
 
-              </div>
-            </div>
+{% include 'base_templates/hsco_website_nav.html' %}
 
-            <div class="col-md-12">
-               <button class="dropbtn12"> Suggest a Scale</button> <button class="dropbtn12"> Home </button>
-                    <div class="dropdown">
-                    <button class="dropbtn dropbtn12">About Us </button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/know-more-about-us/">Vision,Mission &amp; Values</a>
-                    <a href="https://hindustanscale.com/know-more-about-us/">Awards &amp; Certification</a>
-                    <a href="https://hindustanscale.com/know-more-about-us/">Customers</a>
-                    <a href="https://hindustanscale.com/know-more-about-us/">Customer Installation</a>
-                    </div>
-                    </div>
-                    <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Products </button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/products/">Electronic Scales</a>
-                    <a href="https://hindustanscale.com/products/">Mechanical Scales</a>
-                    <a href="https://hindustanscale.com/products/">Lifestyle Scales (Not For Commercial Use)</a>
-                    <a href="https://hindustanscale.com/products/">Bluetooth Scales</a>
-                    </div>
-                    </div>
-                    <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Services</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/service-request/">Services</a>
-                    </div>
-                    </div>
-                  <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Blogs</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/blogs/">Blogs</a>
-                    </div>
-                    </div>
-                      <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Career</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/career/">Career</a>
-                    </div>
-                    </div>
-                  <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Help & Videos</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/troubleshooting-video/">Help & Videos</a>
-                    </div>
-                    </div>
-                  <div class="dropdown">
-                    <button class="dropbtn dropbtn12">Contact Us</button>
-                    <div class="dropdown-content">
-                    <a href="https://hindustanscale.com/contact-us/">Contact Us</a>
-                    </div>
-                    </div>
-            </div>
-            </div>
-        </div>
+
+
+
     <form class="well form-horizontal" ion="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
 <fieldset>
 
