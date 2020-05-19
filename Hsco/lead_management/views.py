@@ -3411,7 +3411,7 @@ def upload_requirement_hsc(request):
         item2.date_of_initiation = datetime.today().strftime('%Y-%m-%d')
         item2.channel = 'Website'
         item2.requirement = requirement
-        item2.owner_of_opportunity = SiteUser.objects.filter(profile_name=request.user.profile_name).first()
+        item2.owner_of_opportunity = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Admin').first()
         item2.upload_requirement_file = upload_requirement_file
         item2.log_entered_by = request.user.name
 
