@@ -498,6 +498,9 @@ def career_module_form_hsc(request):
                 work_exp.save()
         msg = "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!"
 
+
+
+
         try:
             messages.success(request, "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!")
 
@@ -514,8 +517,14 @@ def career_module_form_hsc(request):
         send_mail('HSCo - Career, Form Submitted Successfully!!! ',
                   msg, settings.EMAIL_HOST_USER,
                   [candidate_email, ])
+        context = {
+        'career_form': career_form,
+        'education_form': education_form,
+        'workexp_form': workexp_form
+    }
 
     return render(request, 'career_module/career_module_form_hsc.html',context)
+
 
 def update_career_module_from(request,id):
 

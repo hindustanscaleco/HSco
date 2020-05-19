@@ -464,18 +464,17 @@ def lead_home(request):
                     if (item['MOB'] != None and item['MOB'] != '' and len(item['MOB']) > 3):
                         clean_mob = item['MOB'].partition('-')[2]
                     else:
-                        clean_mob = ''
+                        clean_mob = '0000000000'
                     entered_customer_name = item['SENDERNAME']
                     if entered_customer_name == None or entered_customer_name == '':
                         entered_customer_name = 'NA'
                     cust_obj =Customer_Details.objects.filter(customer_name=entered_customer_name,contact_no=clean_mob)
-                    if cust_obj.count()>0:
+                    if cust_obj.exists() and cust_obj.count()>0:
                         for item in cust_obj:
                             exist_cust = item.pk
                         item3 =Customer_Details.objects.get(id = exist_cust)
                         item2.new_existing_customer = 'Existing'
                     else:
-
                         item3 = Customer_Details()
                         item3.customer_name = entered_customer_name
                         item3.company_name = item['GLUSR_USR_COMPANYNAME']
@@ -3277,64 +3276,73 @@ def final_lead_report_test(request):
 def select_product_followup(request,id):
     type_of_purchase_list =type_purchase.objects.all() #1
     lead_id = Lead.objects.get(id=id)
-    products = Product.objects.all()
+    # products = Product.objects.all()
     context={}
     del_all_sessions(request)
     request.session['expand_followup'] = True
     if request.method == 'POST' or request.method == 'FILES' :
-        if 'product_id' in request.POST:
+        if 'submit' in request.POST:
+
             is_last_product_yes = request.POST.get('is_last_product_yes')
-            product_id = request.POST.get('product_id')
-
-            requested_product = Product.objects.get(id=product_id)
-
-            fol_pro=Followup_product()
-            fol_pro.product_id = requested_product
-            fol_pro.lead_id = Lead.objects.get(id=id)
-            fol_pro.scale_type = requested_product.scale_type
-            fol_pro.main_category = requested_product.main_category
-            fol_pro.sub_category = requested_product.sub_category
-            fol_pro.sub_sub_category = requested_product.sub_sub_category
-            fol_pro.hsn_code = requested_product.hsn_code
-            fol_pro.max_capacity = requested_product.max_capacity
-            fol_pro.accuracy = requested_product.accuracy
-            fol_pro.platform_size = requested_product.platform_size
-            fol_pro.product_desc = requested_product.product_desc
-            fol_pro.cost_price = requested_product.cost_price
-            fol_pro.selling_price = requested_product.selling_price
-            fol_pro.carton_size = requested_product.carton_size
-            fol_pro.log_entered_by = request.user.name
-
-            fol_pro.save()
-
-
-            if is_last_product_yes == 'yes':
-                return redirect('/update_view_lead/' + str(id))
-            elif is_last_product_yes == 'no':
-                return redirect('/select_product_followup/' + str(id))
-        else:
             model_of_purchase_str = request.POST.get('model_of_purchase')
             type_of_scale_str = request.POST.get('type_of_scale')
             sub_model_str = request.POST.get('sub_model')
             sub_sub_model_str = request.POST.get('sub_sub_model')
 
-            if (sub_sub_model == None or sub_sub_model == ""):
-                product_avail = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale_str).name, main_category=main_model.objects.get(id=model_of_purchase_str).name,
-                                                       sub_category=sub_model.objects.get(id=sub_model_str).name)
-            else:
-                product_avail = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale_str).id, main_category=main_model.objects.get(id=model_of_purchase_str).id,
-                                                       sub_category=sub_model.objects.get(id=sub_model_str).id, sub_sub_category=sub_sub_model.objects.get(id=sub_sub_model_str).id)
+
+            try:
+
+                if (sub_sub_model_str == None or sub_sub_model_str == ""):
+
+                    product_avail = Product.objects.get(scale_type=type_purchase.objects.get(id=type_of_scale_str).id, main_category=main_model.objects.get(id=model_of_purchase_str).id,
+                                                           sub_category=sub_model.objects.get(id=sub_model_str).id)
+                else:
+
+                    product_avail = Product.objects.get(scale_type=type_purchase.objects.get(id=type_of_scale_str).id, main_category=main_model.objects.get(id=model_of_purchase_str).id,
+                                                           sub_category=sub_model.objects.get(id=sub_model_str).id, sub_sub_category=sub_sub_model.objects.get(id=sub_sub_model_str).id)
+                requested_product = product_avail
+                fol_pro = Followup_product()
+                fol_pro.product_id = requested_product
+                fol_pro.lead_id = Lead.objects.get(id=id)
+                fol_pro.scale_type = requested_product.scale_type
+                fol_pro.main_category = requested_product.main_category
+                fol_pro.sub_category = requested_product.sub_category
+                fol_pro.sub_sub_category = requested_product.sub_sub_category
+                fol_pro.hsn_code = requested_product.hsn_code
+                fol_pro.max_capacity = requested_product.max_capacity
+                fol_pro.accuracy = requested_product.accuracy
+                fol_pro.platform_size = requested_product.platform_size
+                fol_pro.product_desc = requested_product.product_desc
+                fol_pro.cost_price = requested_product.cost_price
+                fol_pro.selling_price = requested_product.selling_price
+                fol_pro.carton_size = requested_product.carton_size
+                fol_pro.log_entered_by = request.user.name
+
+                fol_pro.save()
+                print("avail")
+
+                context23 = {
+                    'product_avail': True,
+                }
+                context.update(context23)
+                if is_last_product_yes == 'yes':
+                    return redirect('/update_view_lead/' + str(id))
+                elif is_last_product_yes == 'no':
+                    return redirect('/select_product_followup/' + str(id))
+            except Exception as e:
+                print(e)
+                print(e)
+                context23 = {
+                    'product_not_avail': True,
+                }
+                context.update(context23)
 
 
-            context23 = {
-                'product_avail': product_avail,
-            }
-            context.update(context23)
 
     context2={
         'lead_id':lead_id,
         'type_purchase':type_of_purchase_list,
-        'products':products,
+
     }
     context.update(context2)
     return render(request,'lead_management/select_product_followup.html', context)
@@ -3397,7 +3405,7 @@ def upload_requirement_hsc(request):
         item2.date_of_initiation = datetime.today().strftime('%Y-%m-%d')
         item2.channel = 'Website'
         item2.requirement = requirement
-        item2.owner_of_opportunity = SiteUser.objects.filter(profile_name=request.user.profile_name).first()
+        item2.owner_of_opportunity = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Admin').first()
         item2.upload_requirement_file = upload_requirement_file
         item2.log_entered_by = request.user.name
 
