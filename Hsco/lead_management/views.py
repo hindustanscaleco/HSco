@@ -1,4 +1,5 @@
 from datetime import datetime
+from email.mime.text import MIMEText
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -16,6 +17,8 @@ from django.contrib.auth.decorators import login_required
 from Hsco import settings
 from user_app.models import SiteUser
 from customer_app.models import Log
+
+from lead_management.email_content import text_content
 from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm, Follow_up_sectionForm, History_followupForm, Payment_detailsForm
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
@@ -1766,8 +1769,13 @@ def update_view_lead(request,id):
                 pass
             request.session['is_file_pdf'] = True
             val = request.POST
-            email_send = EmailMessage('PI - HSCo ', 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
+            text='Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo\n\n'
+            email_send = EmailMessage('PI - HSCo ', '',
                                       settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+            part1 = MIMEText(text, 'plain')
+            part2 = MIMEText(text_content, 'html')
+            email_send.attach(part1)
+            email_send.attach(part2)
             email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
             email_send.send()
 
@@ -1984,7 +1992,9 @@ def update_view_lead(request,id):
                 history.medium_of_selection = 'Call'
                 history.call_detail = call
                 history.save()
+
             try:
+                text = 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo\n\n'
 
                 if email == 'True' and upload_pi_file == None and email_type == 'external_pi':
                     pi_file = Pi_section.objects.filter(lead_id=id).latest('pk').upload_pi_file
@@ -1997,13 +2007,13 @@ def update_view_lead(request,id):
                     history.log_entered_by = request.user.profile_name
                     history.medium_of_selection = 'Email'
                     history.save()
-
-                    email_send = EmailMessage('PI - HSCo ',
-                                              'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
+                    email_send = EmailMessage('PI - HSCo ','',
                                               settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
-
+                    part1 = MIMEText(text, 'plain')
+                    part2 = MIMEText(text_content, 'html')
+                    email_send.attach(part1)
+                    email_send.attach(part2)
                     email_send.attach_file(history.pi_history_file.path)
-
                     email_send.send()
                     messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
                 elif email == 'True' and upload_pi_file !=None and email_type == 'external_pi':
@@ -2017,35 +2027,19 @@ def update_view_lead(request,id):
                     history.save()
 
                     email_send = EmailMessage('PI - HSCo ',
-                                              'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
+                                              '',
                                               settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
-
+                    part1 = MIMEText(text, 'plain')
+                    part2 = MIMEText(text_content, 'html')
+                    email_send.attach(part1)
+                    email_send.attach(part2)
                     email_send.attach_file(history.pi_history_file.path)
-
                     email_send.send()
                     messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
 
             except Exception as pi_file_error:
                 print(pi_file_error)
 
-            text_content = ''' <html><body>
-                <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Hindustan Scale Company<u></u><u></u></span><br>
-    <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Sales Enquiry -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +91-7045922250<u></u><u></u></span><br>
-    <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Queries &amp; Repairs -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +91-7045922251<u></u><u></u></span><br>
-    <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Feedback &amp; Complaints -&nbsp;&nbsp;&nbsp;&nbsp; +91-7045922252<u></u><u></u></span><br>
-    <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;color:#1f497d"><u></u>&nbsp;<u></u></span>
-    <div class="row">
-             <div class="col-md-5" style="padding:10px;">
-<a href="http://www.hindustanscale.com/" target="_blank" data-saferedirecturl="https://www.google.com/url?q=http://www.hindustanscale.com/&amp;source=gmail&amp;ust=1585915082471000&amp;usg=AFQjCNHRZAgVIPbzu5iKqetrBZA5Gw5aDQ">
-    <img  src="/media/pi_history_file/hsco.jpg" style="width: 50%; height:80px;"></a>
-         </div>
-        </div>
-    <span style="font-size: 12.0pt;font-family: 'Times New Roman',serif; color: #ff6600;">An ISO 9001:2015 Certified Company</span>
-    <div class="row">
-             <div class="col-md-5" style="padding:10px;">
-<img src="/media/pi_history_file/l.png" style="width: 100%;">
-         </div>
-        </div> </body></html>'''
 
 
             if Pi_section.objects.filter(lead_id=id).count() > 0:
