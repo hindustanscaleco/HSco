@@ -3362,6 +3362,7 @@ def select_product_followup(request,id):
                 print(e)
                 context23 = {
                     'product_not_avail': True,
+                    'msg': str(e),
                 }
                 context.update(context23)
 
