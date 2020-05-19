@@ -460,14 +460,12 @@ def career_module_form_hsc(request):
                 work_exp.save()
         messages.success(request, "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!")
 
-
-
     context = {
         'career_form': career_form,
         'education_form': education_form,
         'workexp_form': workexp_form
     }
-    return render(request, 'career_module/career_module_form_hsc.html',context)
+    return render(request, 'base_templates/hindustanscale_navbar.html',context)
 
 def update_career_module_from(request,id):
     career_module_id = Career_module.objects.get(id=id)

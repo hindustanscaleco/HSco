@@ -167,6 +167,25 @@ color:;
             <h1 class="h3 mb-0 text-gray-800"> Add Product</h1>
 </center>
 <br>
+
+             {% if product_not_avail %}
+
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> Selected Product does not exist!!!
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+            {% if product_avail %}
+
+                     <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> Product Added!!!
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
 <br>
 
             <form method="POST" action="" >{% csrf_token %}
@@ -259,179 +278,8 @@ color:;
   <input type="hidden" value="" id="model_of_purchase" name="model_of_purchase">
   <input type="hidden" value="" id="sub_model" name="sub_model">
   <input type="hidden" value="" id="sub_sub_model" name="sub_sub_model">
-                <center>
-    <button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Check</button>
 
-</center>
-            </form>
-<br>
-<br>
-
-            <form class="card shadow" method="POST" action="" onsubmit="return isOneChecked();" >{% csrf_token %}
-   <div style="margin:15px;" >
-            {% for item in product_avail %}
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">HSN Code *
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
- <input  type="text" placeholder="HSN Code" required class="form-control" name="hsn_code" value="{{item.hsn_code}}" >
-
-  </div>
-  </div>
-
-    <label class="col-md-2 control-label">Product Image *
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-<!--  <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>-->
-      {% if item.product_image %}
-          <img height="100px" width="100px" src="{{ item.product_image.url }}">
-      {% endif %}
-<!--  <input  name="product_image" required placeholder="Product Image" class="form-control"  type="file" >-->
-    </div>
-  </div>
-
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Maximum Capacity
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
- <input  type="text"  placeholder="Maximum Capacity" class="form-control" name="max_capacity" value="{{item.max_capacity}}">
-  </div>
-  </div>
-
-
-  <label class="col-md-2 control-label">Accuracy
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="accuracy"  placeholder="Accuracy" class="form-control"  type="text" value="{{item.accuracy}}">
-    </div>
-  </div>
-
-
-
-
-</div>
-
-
-                <div class="form-group row">
-                    <label class="col-md-2 control-label">Platform Size
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
-  <input  name="platform_size" placeholder="Platform Size" class="form-control"  type="text" value="{{item.platform_size}}">
-    </div>
-  </div>
-                    <label class="col-md-2 control-label">Product Description *
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>
-  <input  name="product_desc" placeholder="Product Description" required class="form-control" type="text" value="{{item.product_desc}}">
-    </div>
-  </div>
-
-
-                </div>
-                                <div class="form-group row">
-                    <label class="col-md-2 control-label">Product Brochure
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-<!--  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>-->
-         {% if item.product_brochure %}
-      Available | &nbsp;
-      <a target="_blank" href="{{ item.product_brochure.url }}">View Brochure</a>
-      {% endif %}
-
-    </div>
-  </div>
-
-                    <label class="col-md-2 control-label">Product Technical Specification Document
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-<!--  <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>-->
-<!--  <input  name="product_document" placeholder="Product Document"  class="form-control" type="file" >-->
-           {% if item.product_document %}
-      Available | &nbsp;
-      <a target="_blank" href="{{ item.product_document.url }}">View Document</a>
-      {% endif %}
-    </div>
-  </div>
-
-
-
-                </div>
-
-                                <div class="form-group row">
-                    <label class="col-md-2 control-label">Cost Price *
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
-  <input  name="cost_price" required placeholder="Cost Price" class="form-control"  type="text" value="{{item.cost_price}}">
-    </div>
-  </div>
-                    <label class="col-md-2 control-label">Selling Price *
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>
-  <input   name="selling_price" placeholder="Selling Price" required class="form-control" type="text" value="{{item.selling_price}}">
-    </div>
-  </div>
-
-
-                </div>
-                                <div class="form-group row">
-                    <label class="col-md-2 control-label">Carton Size
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
-  <input  name="carton_size" placeholder="Carton Size" class="form-control"  type="text" value="{{item.carton_size}}">
-    </div>
-  </div>
-
-                </div>
-
-                                <div class="form-group row">
+                                                <div class="form-group row">
 
 
                     <label class="col-md-2 control-label">Last Product ?
@@ -446,20 +294,206 @@ color:;
     </div>
   </div>
 </div>
-            <br>
-  <input type="hidden" id="product_id" name="product_id" value="{{item.pk}}">
 
-                <br>
                 <center>
-    <button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">ADD</button>
+    <button style="background-color: #FC6E20;" type="submit" value="submit" name="submit" class="btn btn-primary">ADD</button>
 
 </center>
-                <br>
-{% endfor %}
- </div>
             </form>
-<br>
-<br>
+
+
+<!--            <form class="card shadow" method="POST" action="" onsubmit="return isOneChecked();" >{% csrf_token %}-->
+<!--   <div style="margin:15px;" >-->
+<!--&lt;!&ndash;             for item in product_avail &ndash;&gt;-->
+
+
+<!--<div class="form-group row">-->
+<!--  <label class="col-md-2 control-label">HSN Code *-->
+
+
+<!--</label>-->
+<!--  <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
+<!-- <input  type="text" placeholder="HSN Code" required class="form-control" name="hsn_code" value="{{item.hsn_code}}" >-->
+
+<!--  </div>-->
+<!--  </div>-->
+
+<!--    <label class="col-md-2 control-label">Product Image *-->
+
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--&lt;!&ndash;  <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>&ndash;&gt;-->
+<!--      {% if item.product_image %}-->
+<!--          <img height="100px" width="100px" src="{{ item.product_image.url }}">-->
+<!--      {% endif %}-->
+<!--&lt;!&ndash;  <input  name="product_image" required placeholder="Product Image" class="form-control"  type="file" >&ndash;&gt;-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--</div>-->
+
+
+
+<!--<div class="form-group row">-->
+<!--  <label class="col-md-2 control-label">Maximum Capacity-->
+
+
+<!--</label>-->
+<!--  <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>-->
+<!-- <input  type="text"  placeholder="Maximum Capacity" class="form-control" name="max_capacity" value="{{item.max_capacity}}">-->
+<!--  </div>-->
+<!--  </div>-->
+
+
+<!--  <label class="col-md-2 control-label">Accuracy-->
+
+
+
+<!--</label>-->
+<!--  <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+<!--  <input  name="accuracy"  placeholder="Accuracy" class="form-control"  type="text" value="{{item.accuracy}}">-->
+<!--    </div>-->
+<!--  </div>-->
+
+
+
+
+<!--</div>-->
+
+
+<!--                <div class="form-group row">-->
+<!--                    <label class="col-md-2 control-label">Platform Size-->
+
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>-->
+<!--  <input  name="platform_size" placeholder="Platform Size" class="form-control"  type="text" value="{{item.platform_size}}">-->
+<!--    </div>-->
+<!--  </div>-->
+<!--                    <label class="col-md-2 control-label">Product Description *-->
+
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>-->
+<!--  <input  name="product_desc" placeholder="Product Description" required class="form-control" type="text" value="{{item.product_desc}}">-->
+<!--    </div>-->
+<!--  </div>-->
+
+
+<!--                </div>-->
+<!--                                <div class="form-group row">-->
+<!--                    <label class="col-md-2 control-label">Product Brochure-->
+
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--&lt;!&ndash;  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>&ndash;&gt;-->
+<!--         {% if item.product_brochure %}-->
+<!--      Available | &nbsp;-->
+<!--      <a target="_blank" href="{{ item.product_brochure.url }}">View Brochure</a>-->
+<!--      {% endif %}-->
+
+<!--    </div>-->
+<!--  </div>-->
+
+<!--                    <label class="col-md-2 control-label">Product Technical Specification Document-->
+
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--&lt;!&ndash;  <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>&ndash;&gt;-->
+<!--&lt;!&ndash;  <input  name="product_document" placeholder="Product Document"  class="form-control" type="file" >&ndash;&gt;-->
+<!--           {% if item.product_document %}-->
+<!--      Available | &nbsp;-->
+<!--      <a target="_blank" href="{{ item.product_document.url }}">View Document</a>-->
+<!--      {% endif %}-->
+<!--    </div>-->
+<!--  </div>-->
+
+
+
+<!--                </div>-->
+
+<!--                                <div class="form-group row">-->
+<!--                    <label class="col-md-2 control-label">Cost Price *-->
+
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>-->
+<!--  <input  name="cost_price" required placeholder="Cost Price" class="form-control"  type="text" value="{{item.cost_price}}">-->
+<!--    </div>-->
+<!--  </div>-->
+<!--                    <label class="col-md-2 control-label">Selling Price *-->
+
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>-->
+<!--  <input   name="selling_price" placeholder="Selling Price" required class="form-control" type="text" value="{{item.selling_price}}">-->
+<!--    </div>-->
+<!--  </div>-->
+
+
+<!--                </div>-->
+<!--                                <div class="form-group row">-->
+<!--                    <label class="col-md-2 control-label">Carton Size-->
+
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>-->
+<!--  <input  name="carton_size" placeholder="Carton Size" class="form-control"  type="text" value="{{item.carton_size}}">-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--                </div>-->
+
+<!--                                <div class="form-group row">-->
+
+
+<!--                    <label class="col-md-2 control-label">Last Product ?-->
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  &lt;!&ndash;<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>&ndash;&gt;-->
+<!--  YES:<input  name="is_last_product_yes" value="yes" placeholder="Is deleted" class="form-control" type="radio">-->
+<!--  NO:<input  name="is_last_product_yes" value="no" placeholder="Is deleted" class="form-control" type="radio">-->
+
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--            <br>-->
+<!--  <input type="hidden" id="product_id" name="product_id" value="{{item.pk}}">-->
+
+<!--                <br>-->
+<!--                <center>-->
+<!--    <button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">ADD</button>-->
+
+<!--</center>-->
+<!--                <br>-->
+<!-- endfor -->
+<!-- </div>-->
+<!--            </form>-->
+
   </div>
   <!-- End of Page Wrapper -->
 

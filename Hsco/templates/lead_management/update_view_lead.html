@@ -1333,17 +1333,34 @@ tr:nth-child(even) {
             <td>{{item.sub_category}}</td>
             <td>{{item.sub_sub_category}}</td>
             <td>{{item.hsn_code}}</td>
-            {% if item.product_id.product_image %}
             <td>
-                       <img height="150" width="150" src="{{item.product_id.product_image.url}}">
+                 {% if item.product_id.product_image %}
+                  <img height="150" width="150" src="{{item.product_id.product_image.url}}">
+                 {% else %}
+                  N/A
+                {% endif %}
             </td>
-             {% endif %}
             <td>{{item.max_capacity}}</td>
             <td>{{item.accuracy}}</td>
             <td>{{item.platform_size}}</td>
             <td>{{item.product_desc}}</td>
-            <td><a target="_blank" href="{{item.product_id.product_brochure.url}}"> View Brochure</a></td>
-            <td><a target="_blank" href="{{item.product_id.product_document.url}}"> View Product Document</a></td>
+
+            <td>
+                {% if item.product_id.product_brochure %}
+                <a target="_blank" href="{{item.product_id.product_brochure.url}}"> View Brochure</a>
+                {% else %}
+                N/A
+                {% endif %}
+            </td>
+
+            <td>
+                                {% if item.product_id.product_document %}
+
+                <a target="_blank" href="{{item.product_id.product_document.url}}"> View Product Document</a>
+            {% else %}
+                N/A
+                {% endif %}
+            </td>
             <td>{{item.cost_price}}</td>
             <td>{{item.selling_price}}</td>
             <td>{{item.carton_size}}</td>
