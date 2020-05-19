@@ -151,18 +151,33 @@ def add_product_master(request):
                         return redirect('/add_product_master/')
         if 'send_submit' in request.POST:
             scale_type = request.POST.get('scale_type')
+            scale_type_d = request.POST.get('scale_type_d')
             main_category = request.POST.get('main_category')
+            main_category_d = request.POST.get('main_category_d')
             sub_category = request.POST.get('sub_category')
+            sub_category_d = request.POST.get('sub_category_d')
             sub_sub_category = request.POST.get('sub_sub_category')
 
+            scale_type = scale_type if len(scale_type)>1 else scale_type_d
+            main_category = main_category if len(main_category)>1 else main_category_d if main_category_d!=None and main_category_d !='' else None
+            sub_category = sub_category if len(sub_category)>1 else sub_category_d if sub_category_d!=None and sub_category_d !='' else None
+            sub_sub_category = sub_sub_category if len(sub_sub_category)>1 and sub_sub_category != None else None
 
-            type=type_purchase.objects.filter(name=scale_type)
+            try:
+                type=type_purchase.objects.filter(Q(id = scale_type))
+            except:
+                type=type_purchase.objects.filter(Q(name=scale_type))
+
             if type.count()>0:
-                context22 = {
-                    'already_exist': True,
-                    'already_exist_msg': 'Scale Type: '+scale_type + 'Already Exist!!!' ,
-                }
-                context.update(context22)
+                try:
+                    item=type_purchase.objects.get(Q(id = scale_type))
+                except:
+                    item = type_purchase.objects.get(Q(name=scale_type))
+                # context22 = {
+                #     'already_exist': True,
+                #     'already_exist_msg': 'Scale Type: '+scale_type + 'Already Exist!!!' ,
+                # }
+                # context.update(context22)
             else:
                 item = type_purchase()
                 item.name = scale_type
@@ -173,59 +188,82 @@ def add_product_master(request):
                 }
                 context.update(context22)
 
-            main = main_model.objects.filter(name=main_category)
-            if main.count() > 0:
-                context22 = {
-                    'already_exist': True,
-                    'already_exist_msg': 'Main Category: ' + main_category + 'Already Exist!!!',
-                }
-                context.update(context22)
-            else:
-                item2 = main_model()
-                item2.name = main_category
-                item2.type_purchase = item
-                item2.save()
-                context22 = {
-                    'already_dont_exist_main': True,
-                    'main_category': item2
-                }
-                context.update(context22)
+            if main_category != None:
+                try:
+                    main = main_model.objects.filter(Q(id=main_category))
+                except:
+                    main = main_model.objects.filter(Q(name=main_category))
 
-            sub = sub_model.objects.filter(name=sub_category)
-            if sub.count() > 0:
-                context22 = {
-                    'already_exist': True,
-                    'already_exist_msg': 'Sub Category: ' + sub_category + 'Already Exist!!!',
-                }
-                context.update(context22)
-            else:
-                item3 = sub_model()
-                item3.name = sub_category
-                item3.main_model = item2
-                item3.save()
-                context22 = {
-                    'already_dont_exist_sub': True,
-                    'sub_category': item3
-                }
-                context.update(context22)
+                if main.count() > 0:
+                    try:
+                        item2 = main_model.objects.get(Q(id = main_category))
+                    except:
+                        item2 = main_model.objects.get(Q(name = main_category))
 
-            sub_sub= sub_sub_model.objects.filter(name=sub_sub_category)
-            if (sub_sub_category!= None or sub_sub_category!= '') and sub_sub.count() > 0 :
-                context22 = {
-                    'already_exist': True,
-                    'already_exist_msg': 'Sub Sub Category: ' + sub_sub_category + 'Already Exist!!!',
-                }
-                context.update(context22)
-            else:
-                item4 = sub_sub_model()
-                item4.name = sub_sub_category
-                item4.sub_model = item3
-                item4.save()
-                context22 = {
-                    'already_dont_exist_sub_sub': True,
-                    'sub_sub_category': item4
-                }
-                context.update(context22)
+                    # context22 = {
+                    #     'already_exist': True,
+                    #     'already_exist_msg': 'Main Category: ' + main_category + 'Already Exist!!!',
+                    # }
+                    # context.update(context22)
+                else:
+                    item2 = main_model()
+                    item2.name = main_category
+                    item2.type_purchase = item
+                    item2.save()
+                    context22 = {
+                        'already_dont_exist_main': True,
+                        'main_category': item2
+                    }
+                    context.update(context22)
+
+            if sub_category != None:
+                try:
+                    sub = sub_model.objects.filter(Q(name=sub_category))
+                except:
+                    sub = sub_model.objects.filter(Q(id = sub_category))
+
+                if sub.count() > 0:
+                    try:
+                        item3 = sub_model.objects.get(Q(id = sub_category))
+                    except:
+                        item3 = sub_model.objects.get(Q(name=sub_category))
+
+
+                    # context22 = {
+                    #     'already_exist': True,
+                    #     'already_exist_msg': 'Sub Category: ' + sub_category + 'Already Exist!!!',
+                    # }
+                    # context.update(context22)
+                else:
+                    item3 = sub_model()
+                    item3.name = sub_category
+                    item3.main_model = item2
+                    item3.save()
+                    context22 = {
+                        'already_dont_exist_sub': True,
+                        'sub_category': item3
+                    }
+                    context.update(context22)
+
+            if sub_sub_category != None and sub_sub_category != 'None':
+                sub_sub= sub_sub_model.objects.filter(name=sub_sub_category)
+                if (sub_sub_category!= None or sub_sub_category!= '') and sub_sub.count() > 0 :
+                    context22 = {
+                        'already_exist': True,
+                        'already_exist_msg': 'Sub Sub Category: ' + sub_sub_category + 'Already Exist!!!',
+                    }
+                    context.update(context22)
+
+                else:
+                    item4 = sub_sub_model()
+                    item4.name = sub_sub_category
+                    item4.sub_model = item3
+                    item4.save()
+                    context22 = {
+                        'already_dont_exist_sub_sub': True,
+                        'sub_sub_category': item4
+                    }
+                    context.update(context22)
 
 
 

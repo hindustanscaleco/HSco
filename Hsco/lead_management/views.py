@@ -1,4 +1,5 @@
 from datetime import datetime
+from email.mime.text import MIMEText
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -16,6 +17,8 @@ from django.contrib.auth.decorators import login_required
 from Hsco import settings
 from user_app.models import SiteUser
 from customer_app.models import Log
+
+from lead_management.email_content import text_content
 from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm, Follow_up_sectionForm, History_followupForm, Payment_detailsForm
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
@@ -461,18 +464,17 @@ def lead_home(request):
                     if (item['MOB'] != None and item['MOB'] != '' and len(item['MOB']) > 3):
                         clean_mob = item['MOB'].partition('-')[2]
                     else:
-                        clean_mob = ''
+                        clean_mob = '0000000000'
                     entered_customer_name = item['SENDERNAME']
                     if entered_customer_name == None or entered_customer_name == '':
                         entered_customer_name = 'NA'
                     cust_obj =Customer_Details.objects.filter(customer_name=entered_customer_name,contact_no=clean_mob)
-                    if cust_obj.count()>0:
+                    if cust_obj.exists() and cust_obj.count()>0:
                         for item in cust_obj:
                             exist_cust = item.pk
                         item3 =Customer_Details.objects.get(id = exist_cust)
                         item2.new_existing_customer = 'Existing'
                     else:
-
                         item3 = Customer_Details()
                         item3.customer_name = entered_customer_name
                         item3.company_name = item['GLUSR_USR_COMPANYNAME']
@@ -1766,8 +1768,13 @@ def update_view_lead(request,id):
                 pass
             request.session['is_file_pdf'] = True
             val = request.POST
-            email_send = EmailMessage('PI - HSCo ', 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
+            text='Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo\n\n'
+            email_send = EmailMessage('PI - HSCo ', '',
                                       settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
+            part1 = MIMEText(text, 'plain')
+            part2 = MIMEText(text_content, 'html')
+            email_send.attach(part1)
+            email_send.attach(part2)
             email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
             email_send.send()
 
@@ -1984,7 +1991,9 @@ def update_view_lead(request,id):
                 history.medium_of_selection = 'Call'
                 history.call_detail = call
                 history.save()
+
             try:
+                text = 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo\n\n'
 
                 if email == 'True' and upload_pi_file == None and email_type == 'external_pi':
                     pi_file = Pi_section.objects.filter(lead_id=id).latest('pk').upload_pi_file
@@ -1997,13 +2006,13 @@ def update_view_lead(request,id):
                     history.log_entered_by = request.user.profile_name
                     history.medium_of_selection = 'Email'
                     history.save()
-
-                    email_send = EmailMessage('PI - HSCo ',
-                                              'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
+                    email_send = EmailMessage('PI - HSCo ','',
                                               settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
-
+                    part1 = MIMEText(text, 'plain')
+                    part2 = MIMEText(text_content, 'html')
+                    email_send.attach(part1)
+                    email_send.attach(part2)
                     email_send.attach_file(history.pi_history_file.path)
-
                     email_send.send()
                     messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
                 elif email == 'True' and upload_pi_file !=None and email_type == 'external_pi':
@@ -2017,35 +2026,19 @@ def update_view_lead(request,id):
                     history.save()
 
                     email_send = EmailMessage('PI - HSCo ',
-                                              'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo',
+                                              '',
                                               settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
-
+                    part1 = MIMEText(text, 'plain')
+                    part2 = MIMEText(text_content, 'html')
+                    email_send.attach(part1)
+                    email_send.attach(part2)
                     email_send.attach_file(history.pi_history_file.path)
-
                     email_send.send()
                     messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
 
             except Exception as pi_file_error:
                 print(pi_file_error)
 
-            text_content = ''' <html><body>
-                <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Hindustan Scale Company<u></u><u></u></span><br>
-    <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Sales Enquiry -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +91-7045922250<u></u><u></u></span><br>
-    <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Queries &amp; Repairs -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +91-7045922251<u></u><u></u></span><br>
-    <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif">Feedback &amp; Complaints -&nbsp;&nbsp;&nbsp;&nbsp; +91-7045922252<u></u><u></u></span><br>
-    <span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;color:#1f497d"><u></u>&nbsp;<u></u></span>
-    <div class="row">
-             <div class="col-md-5" style="padding:10px;">
-<a href="http://www.hindustanscale.com/" target="_blank" data-saferedirecturl="https://www.google.com/url?q=http://www.hindustanscale.com/&amp;source=gmail&amp;ust=1585915082471000&amp;usg=AFQjCNHRZAgVIPbzu5iKqetrBZA5Gw5aDQ">
-    <img  src="/media/pi_history_file/hsco.jpg" style="width: 50%; height:80px;"></a>
-         </div>
-        </div>
-    <span style="font-size: 12.0pt;font-family: 'Times New Roman',serif; color: #ff6600;">An ISO 9001:2015 Certified Company</span>
-    <div class="row">
-             <div class="col-md-5" style="padding:10px;">
-<img src="/media/pi_history_file/l.png" style="width: 100%;">
-         </div>
-        </div> </body></html>'''
 
 
             if Pi_section.objects.filter(lead_id=id).count() > 0:
@@ -3283,64 +3276,73 @@ def final_lead_report_test(request):
 def select_product_followup(request,id):
     type_of_purchase_list =type_purchase.objects.all() #1
     lead_id = Lead.objects.get(id=id)
-    products = Product.objects.all()
+    # products = Product.objects.all()
     context={}
     del_all_sessions(request)
     request.session['expand_followup'] = True
     if request.method == 'POST' or request.method == 'FILES' :
-        if 'product_id' in request.POST:
+        if 'submit' in request.POST:
+
             is_last_product_yes = request.POST.get('is_last_product_yes')
-            product_id = request.POST.get('product_id')
-
-            requested_product = Product.objects.get(id=product_id)
-
-            fol_pro=Followup_product()
-            fol_pro.product_id = requested_product
-            fol_pro.lead_id = Lead.objects.get(id=id)
-            fol_pro.scale_type = requested_product.scale_type
-            fol_pro.main_category = requested_product.main_category
-            fol_pro.sub_category = requested_product.sub_category
-            fol_pro.sub_sub_category = requested_product.sub_sub_category
-            fol_pro.hsn_code = requested_product.hsn_code
-            fol_pro.max_capacity = requested_product.max_capacity
-            fol_pro.accuracy = requested_product.accuracy
-            fol_pro.platform_size = requested_product.platform_size
-            fol_pro.product_desc = requested_product.product_desc
-            fol_pro.cost_price = requested_product.cost_price
-            fol_pro.selling_price = requested_product.selling_price
-            fol_pro.carton_size = requested_product.carton_size
-            fol_pro.log_entered_by = request.user.name
-
-            fol_pro.save()
-
-
-            if is_last_product_yes == 'yes':
-                return redirect('/update_view_lead/' + str(id))
-            elif is_last_product_yes == 'no':
-                return redirect('/select_product_followup/' + str(id))
-        else:
             model_of_purchase_str = request.POST.get('model_of_purchase')
             type_of_scale_str = request.POST.get('type_of_scale')
             sub_model_str = request.POST.get('sub_model')
             sub_sub_model_str = request.POST.get('sub_sub_model')
 
-            if (sub_sub_model == None or sub_sub_model == ""):
-                product_avail = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale_str).name, main_category=main_model.objects.get(id=model_of_purchase_str).name,
-                                                       sub_category=sub_model.objects.get(id=sub_model_str).name)
-            else:
-                product_avail = Product.objects.filter(scale_type=type_purchase.objects.get(id=type_of_scale_str).id, main_category=main_model.objects.get(id=model_of_purchase_str).id,
-                                                       sub_category=sub_model.objects.get(id=sub_model_str).id, sub_sub_category=sub_sub_model.objects.get(id=sub_sub_model_str).id)
+
+            try:
+
+                if (sub_sub_model_str == None or sub_sub_model_str == ""):
+
+                    product_avail = Product.objects.get(scale_type=type_purchase.objects.get(id=type_of_scale_str).id, main_category=main_model.objects.get(id=model_of_purchase_str).id,
+                                                           sub_category=sub_model.objects.get(id=sub_model_str).id)
+                else:
+
+                    product_avail = Product.objects.get(scale_type=type_purchase.objects.get(id=type_of_scale_str).id, main_category=main_model.objects.get(id=model_of_purchase_str).id,
+                                                           sub_category=sub_model.objects.get(id=sub_model_str).id, sub_sub_category=sub_sub_model.objects.get(id=sub_sub_model_str).id)
+                requested_product = product_avail
+                fol_pro = Followup_product()
+                fol_pro.product_id = requested_product
+                fol_pro.lead_id = Lead.objects.get(id=id)
+                fol_pro.scale_type = requested_product.scale_type
+                fol_pro.main_category = requested_product.main_category
+                fol_pro.sub_category = requested_product.sub_category
+                fol_pro.sub_sub_category = requested_product.sub_sub_category
+                fol_pro.hsn_code = requested_product.hsn_code
+                fol_pro.max_capacity = requested_product.max_capacity
+                fol_pro.accuracy = requested_product.accuracy
+                fol_pro.platform_size = requested_product.platform_size
+                fol_pro.product_desc = requested_product.product_desc
+                fol_pro.cost_price = requested_product.cost_price
+                fol_pro.selling_price = requested_product.selling_price
+                fol_pro.carton_size = requested_product.carton_size
+                fol_pro.log_entered_by = request.user.name
+
+                fol_pro.save()
+                print("avail")
+
+                context23 = {
+                    'product_avail': True,
+                }
+                context.update(context23)
+                if is_last_product_yes == 'yes':
+                    return redirect('/update_view_lead/' + str(id))
+                elif is_last_product_yes == 'no':
+                    return redirect('/select_product_followup/' + str(id))
+            except Exception as e:
+                print(e)
+                print(e)
+                context23 = {
+                    'product_not_avail': True,
+                }
+                context.update(context23)
 
 
-            context23 = {
-                'product_avail': product_avail,
-            }
-            context.update(context23)
 
     context2={
         'lead_id':lead_id,
         'type_purchase':type_of_purchase_list,
-        'products':products,
+
     }
     context.update(context2)
     return render(request,'lead_management/select_product_followup.html', context)
@@ -3403,7 +3405,7 @@ def upload_requirement_hsc(request):
         item2.date_of_initiation = datetime.today().strftime('%Y-%m-%d')
         item2.channel = 'Website'
         item2.requirement = requirement
-        item2.owner_of_opportunity = SiteUser.objects.filter(profile_name=request.user.profile_name).first()
+        item2.owner_of_opportunity = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Admin').first()
         item2.upload_requirement_file = upload_requirement_file
         item2.log_entered_by = request.user.name
 
