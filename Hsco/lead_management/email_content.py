@@ -13,6 +13,6 @@ text_content = ''' <html><body>
     <span style="font-size: 12.0pt;font-family: 'Times New Roman',serif; color: #ff6600;">An ISO 9001:2015 Certified Company</span>
     <div class="row">
              <div class="col-md-5" style="padding:10px;">
-<img src="http://139.59.76.87/media/pi_history_file/l.png" style="width: 400px; height:100px;">
+<img src="http://139.59.76.87/media/pi_history_file/l.png" style="width: 50%; height:100px;">
          </div>
         </div> </body></html>'''
