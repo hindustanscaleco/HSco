@@ -178,7 +178,7 @@ color:;
 
     <div class="col xl-12">
   <div class="form-group row">
-      {% if 'Customer Module' in manager_id.modules_assigned %}
+      {% if 'Customer Module' in request.user.modules_assigned %}
   <label class="col-md-2 control-label ">Sales Module
 
 
@@ -196,7 +196,7 @@ color:;
   </div>
 </div>
 {% endif %}
-       {% if 'Repairing Module' in manager_id.modules_assigned %}
+       {% if 'Repairing Module' in request.user.modules_assigned %}
     <label class="col-md-2 control-label">Repairing Module
 
 
@@ -217,7 +217,7 @@ color:;
 
 
 <div class="form-group row">
-    {% if 'Restamping Module' in manager_id.modules_assigned %}
+    {% if 'Restamping Module' in request.user.modules_assigned %}
   <label class="col-md-2 control-label">Restamping Module
 
 
@@ -233,7 +233,7 @@ color:;
   </div>
 </div>
   {% endif %}
-    {% if 'Dispatch Module' in manager_id.modules_assigned %}
+    {% if 'Dispatch Module' in request.user.modules_assigned %}
     <label class="col-md-2 control-label">Dispatch Module
 
 
@@ -255,7 +255,7 @@ color:;
 
 
 <div class="form-group row">
-    {% if 'AMC Module' in manager_id.modules_assigned %}
+    {% if 'AMC Module' in request.user.modules_assigned %}
   <label class="col-md-2 control-label">AMC Module
 
 
@@ -267,7 +267,7 @@ color:;
   </div>
   </div>
  {% endif %}
-    {% if 'Onsite Repairing Module' in manager_id.modules_assigned %}
+    {% if 'Onsite Repairing Module' in request.user.modules_assigned %}
     <label class="col-md-2 control-label">Onsite Repairing Module
 
 
@@ -286,7 +286,7 @@ color:;
 </div>
 
 <div class="form-group row">
-    {% if 'Lead Module' in manager_id.modules_assigned %}
+    {% if 'Lead Module' in request.user.modules_assigned %}
   <label class="col-md-2 control-label">Lead Module
 
 
@@ -299,7 +299,7 @@ color:;
   </div>
  {% endif %}
 
- {% if 'Stock Module' in admin_id.modules_assigned %}
+ {% if 'Stock Module' in request.user.modules_assigned %}
 
             <label class="col-md-2 control-label">Stock Module
 
@@ -315,7 +315,7 @@ color:;
 
 </div>
         <div class="form-group row">
-                {% if 'Career Module' in admin_id.modules_assigned %}
+                {% if 'Career Module' in request.user.modules_assigned %}
 
              <label class="col-md-2 control-label">Career Module
 
@@ -334,7 +334,7 @@ color:;
 
 
         <div class="form-group row">
-    {% if 'Indiamart Leads' in manager_id.modules_assigned %}
+    {% if 'Indiamart Leads' in request.user.modules_assigned %}
   <label class="col-md-2 control-label">Indiamart Leads
 
 
@@ -347,7 +347,7 @@ color:;
   </div>
  {% endif %}
 
- {% if 'Hsco Website Leads' in admin_id.modules_assigned %}
+ {% if 'Hsco Website Leads' in request.user.modules_assigned %}
 
             <label class="col-md-2 control-label">Hsco Website Leads
 
