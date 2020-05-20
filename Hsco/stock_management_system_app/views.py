@@ -301,8 +301,13 @@ def stock_godown_list(request):
 
 def add_godown(request):
     products = Product.objects.all()
-    assign_users = SiteUser.objects.filter(modules_assigned__icontains= 'Stock', admin__contains= request.user.profile_name)| \
-                   SiteUser.objects.filter(modules_assigned__icontains='Stock', id = request.user.id)
+
+    if request.user.role == 'Super Admin':
+        assign_users = SiteUser.objects.all()
+    elif request.user.role == 'Admin':
+        assign_users = SiteUser.objects.filter(modules_assigned__icontains= 'Stock', admin__contains= request.user.profile_name)| \
+                       SiteUser.objects.filter(modules_assigned__icontains='Stock', id = request.user.id)
+
     form = GodownForm()
     if request.method == 'POST' or request.method=='FILES':
         name_of_godown = request.POST.get('name_of_godown')
@@ -331,8 +336,10 @@ def add_godown(request):
 def update_godown(request,godown_id):
     godown = Godown.objects.get(id=godown_id)
     godown_products = GodownProduct.objects.filter(godown_id=godown_id)
-
-    assign_users = SiteUser.objects.filter(Q(modules_assigned__icontains= 'Stock')&Q(admin__contains= request.user.profile_name)
+    if request.user.role == 'Super Admin':
+        assign_users = SiteUser.objects.filter(~Q(id=godown.goddown_assign_to.id))
+    elif request.user.role == 'Admin':
+        assign_users = SiteUser.objects.filter(Q(modules_assigned__icontains= 'Stock')&Q(admin__contains= request.user.profile_name)
                                            &~Q(id=godown.goddown_assign_to.id))| \
                    SiteUser.objects.filter(Q(modules_assigned__icontains='Stock')&Q(id=request.user.id)&~Q(id=godown.goddown_assign_to.id))
 
@@ -505,8 +512,13 @@ def add_product_godown(request, godown_id):
                                 critical_limit=individual_critical_limit)
 
                 else:
+                    print(type_of_scale)
+                    print(main_category)
+                    print(sub_category)
+                    print(sub_sub_category)
                     item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
                                                           sub_category=sub_category, sub_sub_category=sub_sub_category)
+
                     item.godown_id = Godown.objects.get(id=godown_id)
                     item.added_by_id = SiteUser.objects.get(id=request.user.id)
                     if req_type == 'Individual':
@@ -556,8 +568,11 @@ def stock_godown(request,id):
         new_good_request_id = GoodsRequest.objects.latest('id').id + 1
 
     pending_req_indication = GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_to_godown__goddown_assign_to__id=request.user.id)&Q(req_to_godown__id=id)& Q(goods_sent=False)) | \
+    GoodsRequest.objects.filter(Q(status='Confirmation of goods transformation') & ~Q(status=None) & Q(req_from_godown__goddown_assign_to__id=request.user.id) & Q(req_to_godown__id=id) ) | \
     GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None) & Q(req_to_godown__godown_admin__id=request.user.id) & Q(req_to_godown__id=id) & Q(goods_sent=False)) | \
+    GoodsRequest.objects.filter(Q(status='Confirmation of goods transformation') & ~Q(status=None) & Q(req_from_godown__godown_admin__id=request.user.id) & Q(req_from_godown__id=id)) | \
     GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None) & Q(req_to_godown__godown_admin__profile_name=request.user.admin) & Q( req_to_godown__id=id)& Q(goods_sent=False))| \
+    GoodsRequest.objects.filter(Q(status='Confirmation of goods transformation') & ~Q(status=None) & Q(req_from_godown__godown_admin__profile_name=request.user.admin) & Q( req_from_godown__id=id))| \
     GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None) & Q(req_to_godown=None) & Q(is_all_req=True)& Q(goods_sent=False))
     print(pending_req_indication)
     context={
