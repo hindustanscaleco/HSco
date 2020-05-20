@@ -573,7 +573,7 @@ def stock_godown(request,id):
     GoodsRequest.objects.filter(Q(status='Confirmation of goods transformation') & ~Q(status=None) & Q(req_from_godown__godown_admin__id=request.user.id) & Q(req_from_godown__id=id)) | \
     GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None) & Q(req_to_godown__godown_admin__profile_name=request.user.admin) & Q( req_to_godown__id=id)& Q(goods_sent=False))| \
     GoodsRequest.objects.filter(Q(status='Confirmation of goods transformation') & ~Q(status=None) & Q(req_from_godown__godown_admin__profile_name=request.user.admin) & Q( req_from_godown__id=id))| \
-    GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None) & Q(req_to_godown=None) & Q(is_all_req=True)& Q(goods_sent=False))
+    GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None)& ~Q(req_from_godown__id=id) & Q(req_to_godown=None) & Q(is_all_req=True)& Q(goods_sent=False))
     print(pending_req_indication)
     context={
         'godown_id': godown_id,
