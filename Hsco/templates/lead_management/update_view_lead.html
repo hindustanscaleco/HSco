@@ -814,7 +814,6 @@ tr:nth-child(even) {
 
                           </div>
 
-{% if pi_id.first_submit == True  %}
                                                   <div class="form-group row">
                                 <label class="col-md-4 control-label">Select PI Template </label>
                               <div class="col-md-7 inputGroupContainer">
@@ -826,11 +825,12 @@ tr:nth-child(even) {
 
 
                           </div>
-                             {% endif %}
+               {% if pi_id.first_submit == True  %}
+
                          <center>
 <button type="button" onclick="pdf_download_manual()" name="download_pi"  style="background-color: #FC6E20;" class="btn btn-primary">Download PI</button>
 </center>
-
+{% endif %}
 
                              <center>Note: For PI Preview Uncheck Email and click on submit button</center>
                          </div>
@@ -930,10 +930,13 @@ tr:nth-child(even) {
                          <!--<center>-->
                  <!--<button type="button" onclick="document.getElementById('primaryButton').click()" name="secondaryButton"  style="background-color: #FC6E20;" class="btn btn-primary">Save</button>-->
 <!--</center>-->
+               {% if pi_id.first_submit == True  %}
 
       <center>
 <button type="button" onclick="pdf_download_manual()" name="download_pi"  style="background-color: #FC6E20;" class="btn btn-primary">Download PI</button>
 </center>
+                                                     {% endif %}
+
                              <center>Note: For PI Preview Uncheck Email and click on submit button</center>
                          </div>
                                 <div style="display:None;" style="display:block;" id="div_External" class="card shadow col-md-6">
