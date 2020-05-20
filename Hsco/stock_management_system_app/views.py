@@ -18,6 +18,7 @@ def product_master_list(request):
 
 def update_product_master(request,update_id):
     product_obj = Product.objects.get(id=update_id)
+    type_of_purchase_list = type_purchase.objects.all()
     if request.method == 'POST':
         scale_type = request.POST.get('scale_type')
         main_category = request.POST.get('main_category')
@@ -36,7 +37,10 @@ def update_product_master(request,update_id):
         product_document = request.FILES.get('product_document')
 
         fol_pro = product_obj
-
+        fol_pro.scale_type = type_purchase.objects.get(id=scale_type)
+        fol_pro.main_category = main_model.objects.get(id=main_category)
+        fol_pro.sub_category = sub_model.objects.get(id=sub_category)
+        fol_pro.sub_sub_category = sub_sub_model.objects.get(id=sub_sub_category)
         fol_pro.hsn_code = hsn_code
         fol_pro.max_capacity = max_capacity
         fol_pro.accuracy = accuracy
@@ -45,16 +49,17 @@ def update_product_master(request,update_id):
         fol_pro.cost_price = cost_price
         fol_pro.selling_price = selling_price
         fol_pro.carton_size = carton_size
-        fol_pro.product_image = product_image
-        fol_pro.product_brochure = product_brochure
-        fol_pro.product_document = product_document
-        fol_pro.log_entered_by = request.user.name
+        # fol_pro.product_image = product_image
+        # fol_pro.product_brochure = product_brochure
+        # fol_pro.product_document = product_document
 
-        fol_pro.save(update_fields=['hsn_code','max_capacity','accuracy','platform_size',
-                                    'product_desc','cost_price','selling_price','carton_size','log_entered_by','product_image','product_brochure','product_document',])
+        fol_pro.save(update_fields=['main_category','sub_category','sub_sub_category','hsn_code','max_capacity','accuracy','platform_size',
+                                    'product_desc','cost_price','selling_price','carton_size',])
+                                    # 'product_desc','cost_price','selling_price','carton_size','log_entered_by','product_image','product_brochure','product_document',])
         return redirect('/product_master_list/')
     context={
         'product_obj':product_obj,
+        'type_purchase': type_of_purchase_list,
     }
     return render(request, 'stock_management_system/update_product_master.html',context)
 
