@@ -3402,6 +3402,7 @@ def select_product_followup(request,id):
     return render(request,'lead_management/select_product_followup.html', context)
 
 def upload_requirement_hsc(request):
+    context={}
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('full_name')
         contact_no = request.POST.get('phone_no')
@@ -3445,11 +3446,7 @@ def upload_requirement_hsc(request):
                     'error_exist_65': True,
                 }
 
-                try:
-                    del request.session['context_sess']
-                except:
-                    pass
-                request.session['context_sess'] = context22
+                context.update(context22)
             item2.new_existing_customer = 'Existing'
 
 
@@ -3467,6 +3464,12 @@ def upload_requirement_hsc(request):
 
             item2.log_entered_by = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',
                                                            role='Employee').first().name
+        elif SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Manager').count()>0:
+            item2.owner_of_opportunity = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',
+                                                                 role='Manager').first()
+
+            item2.log_entered_by = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',
+                                                           role='Manager').first().name
         else:
             item2.owner_of_opportunity = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Admin').first()
 
@@ -3484,11 +3487,7 @@ def upload_requirement_hsc(request):
                 'success_exist_65': True,
             }
 
-            try:
-                del request.session['context_sess']
-            except:
-                pass
-            request.session['context_sess'] = context22
+            context.update(context22)
 
 
         except Exception as e:
@@ -3497,12 +3496,8 @@ def upload_requirement_hsc(request):
                 'error_exist_65': True,
             }
 
-            try:
-                del request.session['context_sess']
-            except:
-                pass
-            request.session['context_sess'] = context22
-        return redirect('/requirement.hindustanscale.com/')
+            context.update(context22)
+        #return redirect('/requirement.hindustanscale.com/')
 
 
     return render(request,'lead_management/upload_requirement_hsc.html')
