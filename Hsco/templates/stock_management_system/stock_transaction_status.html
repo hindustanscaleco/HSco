@@ -367,7 +367,7 @@ td {
       <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
         {% elif request.user.id == good_request.req_to_godown.goddown_assign_to.id  and good_request.goods_sent == False %}
       <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
-    {% elif not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and request.user.id != good_request.req_from_godown.godown_admin.id and good_request.goods_sent == False %}
+    {% elif not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == False %}
       <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
             {% endif %}
 
@@ -438,10 +438,11 @@ Submit
                 </td>
             {% else %}
             {% endif %}
-            {% if not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and request.user.id == good_request.req_from_godown.godown_admin.id and good_request.goods_sent == False %}
+            {% if not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id  and good_request.goods_sent == False %}
 <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 Submit
                 </td>
+
             {% endif %}
 
         </tr>
@@ -536,7 +537,7 @@ Submit
                 </td>
             {% else %}
             {% endif %}
-            {% if not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and request.user.id == good_request.req_from_godown.godown_admin.id and good_request.goods_sent == False %}
+            {% if not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == False %}
 <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
                     <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
 
