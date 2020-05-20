@@ -931,7 +931,9 @@ tr:nth-child(even) {
                  <!--<button type="button" onclick="document.getElementById('primaryButton').click()" name="secondaryButton"  style="background-color: #FC6E20;" class="btn btn-primary">Save</button>-->
 <!--</center>-->
 
-
+      <center>
+<button type="button" onclick="pdf_download_manual()" name="download_pi"  style="background-color: #FC6E20;" class="btn btn-primary">Download PI</button>
+</center>
                              <center>Note: For PI Preview Uncheck Email and click on submit button</center>
                          </div>
                                 <div style="display:None;" style="display:block;" id="div_External" class="card shadow col-md-6">
@@ -1937,6 +1939,13 @@ function show_external() {
   document.getElementById("email_type_check").value = 'internal_pi' ;
 
 }
+function download_image(){
+console.log("start");
+var popupwin2 = window.open('/download_pi_image/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
+console.log("end");
+    setTimeout(function() { popupwin2.close();}, 2000);
+
+}
 </script>
                          <script>
 function myFunction_call() {
@@ -1980,14 +1989,10 @@ function pdf_download(){
 }
 , 2000);
    }
-
-
-function download_image(){
-var popupwin2 = window.open('/download_pi_image/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
-    setTimeout(function() { popupwin2.close();}, 5000);
-
-}
 pdf_download();
+
+
+
 
 </script>
 
