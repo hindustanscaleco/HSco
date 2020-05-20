@@ -183,7 +183,7 @@ color:;
 <!-- <input  type="text" required value="product_obj.scale_type.name}}" class="form-control" name="scale_type" >-->
 
       <select id="divselector" name="scale_type"  required onchange="choice1(this)" class="form-control">
-                 <option value="{{product_obj.scale_type.pk}}">{{product_obj.scale_type.name}}</option>
+                 <option value="{{product_obj.scale_type.pk}}">{{product_obj.scale_type.name}} -old</option>
 
 {% for item in type_purchase %}
   <option value="{{item.pk}}">{{item.name}}</option>
@@ -203,7 +203,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
- <input  type="text" required value="{{product_obj.main_category.name}}" class="form-control" name="main_category" >
+<!-- <input  type="text" required value="{product_obj.main_category.name}" class="form-control" name="main_category" >-->
 
       <select id="id_subcat" name="main_category" required onchange="choice_model(this)" class="form-control">
           <option value="{{product_obj.main_category.pk}}">{{product_obj.main_category.name}}</option>
@@ -287,7 +287,7 @@ color:;
 
   <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>
 
-  <input  name="product_image" required placeholder="Product Image" class="form-control"  type="file" >
+  <input  name="product_image" placeholder="Product Image" class="form-control"  type="file" >
     </div>
         {% if product_obj.product_image %}
       <img src="{{product_obj.product_image.url}}" height="250" width="250">
