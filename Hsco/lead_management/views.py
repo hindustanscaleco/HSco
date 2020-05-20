@@ -56,6 +56,7 @@ def lead_home(request):
     error = None
     error_exist = False
     context={}
+    response = None
     admin = SiteUser.objects.get(id=request.user.pk).admin
 
     if request.user.role == 'Super Admin':  # For SUPER ADMIN
@@ -457,83 +458,108 @@ def lead_home(request):
             import time
             conv = time.strptime(from_date, "%d-%b-%Y")
             conv2 = time.strptime(to_date, "%d-%b-%Y")
+            if conv == conv2:
+                context23 = {
+                    'err': 'Already Fetched!!!',
+                }
+                context.update(context23)
+            else:
+                if (lead_count > 1 and response != None):
+                    for item in response:
+                        item2 = Lead()
+                        if (item['MOB'] != None and item['MOB'] != '' and len(item['MOB']) > 3):
+                            clean_mob = item['MOB'].partition('-')[2]
+                        elif len(item['MOB']) < 3:
+                            clean_mob = '0000000000'
 
-            if (lead_count > 1):
-                for item in response:
-                    item2 = Lead()
-                    if (item['MOB'] != None and item['MOB'] != '' and len(item['MOB']) > 3):
-                        clean_mob = item['MOB'].partition('-')[2]
-                    else:
-                        clean_mob = '0000000000'
-                    entered_customer_name = item['SENDERNAME']
-                    if entered_customer_name == None or entered_customer_name == '':
-                        entered_customer_name = 'NA'
-                    cust_obj =Customer_Details.objects.filter(customer_name=entered_customer_name,contact_no=clean_mob)
-                    if cust_obj.exists() and cust_obj.count()>0:
-                        for item in cust_obj:
-                            exist_cust = item.pk
-                        item3 =Customer_Details.objects.get(id = exist_cust)
-                        item2.new_existing_customer = 'Existing'
-                    else:
-                        item3 = Customer_Details()
-                        item3.customer_name = entered_customer_name
-                        item3.company_name = item['GLUSR_USR_COMPANYNAME']
-                        item3.address = item['ENQ_ADDRESS']
-                        item3.customer_email_id = item['SENDEREMAIL']
-
-                        item3.contact_no = clean_mob
-                        item3.customer_industry = ''
-                        item2.new_existing_customer = 'New'
-                        try:
-                            item3.save()
-                        except :
-                            pass
-
-                    try:
-                        item2.customer_id = Customer_Details.objects.get(id=item3.pk)
-                        item2.current_stage = 'Not Yet Initiated'
-                        if item['QTYPE'] == 'B':
-                            item2.is_indiamart_purchased_lead = True
+                        print(clean_mob)
+                        entered_customer_name = item['SENDERNAME']
+                        if entered_customer_name == None or entered_customer_name == '':
+                            entered_customer_name = 'NA'
+                        cust_obj = Customer_Details.objects.filter(customer_name=entered_customer_name,
+                                                                   contact_no=clean_mob)
+                        if cust_obj.exists() and cust_obj.count() > 0:
+                            for item23 in cust_obj:
+                                exist_cust = item23.pk
+                            item3 = Customer_Details.objects.get(id=exist_cust)
+                            item2.new_existing_customer = 'Existing'
                         else:
-                            item2.is_indiamart_purchased_lead = False
+                            item3 = Customer_Details()
+                            item3.customer_name = entered_customer_name
+                            item3.company_name = item['GLUSR_USR_COMPANYNAME']
+                            item3.address = item['ENQ_ADDRESS']
+                            item3.customer_email_id = item['SENDEREMAIL']
 
-                        item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
-                        item2.channel = 'IndiaMart'
-                        item2.owner_of_opportunity = request.user
-                        requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
-                        item2.requirement = requirement.replace('<b>', '\n')
+                            item3.contact_no = clean_mob
+                            item3.customer_industry = ''
+                            item2.new_existing_customer = 'New'
+                            try:
+                                item3.save()
+                            except:
+                                pass
+
                         try:
-                            item2.save()
-                            fp = Follow_up_section()
-                            fp.lead_id = Lead.objects.get(id=item2.pk)
-                            fp.save()
+                            item2.customer_id = Customer_Details.objects.get(id=item3.pk)
+                            item2.current_stage = 'Not Yet Initiated'
+                            if item['QTYPE'] == 'B':
+                                item2.is_indiamart_purchased_lead = True
+                            else:
+                                item2.is_indiamart_purchased_lead = False
+
+                            item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
+                            item2.channel = 'IndiaMart'
+                            item2.owner_of_opportunity = request.user
+                            requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME'] if item[
+                                                                                                              'SUBJECT'] != None and \
+                                                                                                          item[
+                                                                                                              'ENQ_MESSAGE'] != None and \
+                                                                                                          item[
+                                                                                                              'PRODUCT_NAME'] != None else \
+                            item['SUBJECT'] + item['ENQ_MESSAGE'] if item['SUBJECT'] != None and item[
+                                'ENQ_MESSAGE'] != None else item['SUBJECT']
+                            # requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
+                            item2.requirement = requirement.replace('<b>', '\n')
+                            try:
+                                item2.save()
+                                fp = Follow_up_section()
+                                fp.lead_id = Lead.objects.get(id=item2.pk)
+                                fp.save()
+                            except Exception as e:
+                                error_exist = True
+                                error2 = e
+                                print('error2')
+                                print(error2)
                         except Exception as e:
                             error_exist = True
-                            error2 = e
-                            print('error2')
-                            print(error2)
-                    except Exception as e:
+                            error = e
+                            print('e')
+
+                            print(e)
+
+                    obj = IndiamartLeadDetails()
+                    obj.from_date = time.strftime("%Y-%m-%d", conv)
+                    obj.to_date = time.strftime("%Y-%m-%d", conv2)
+                    obj.lead_count = lead_count
+                    try:
+                        obj.save()
+                    except:
+                        print("error")
+                elif (lead_count < 0):
+                    row_count = response
+                    if (row_count != None):
+                        error = row_count
                         error_exist = True
-                        error = e
-                        print('e')
+                        print('error_exist')
+                        print(error)
+                        context23 = {
+                            'error': error,
+                            'error2': error2,
+                            'error_exist': error_exist,
+                        }
+                        context.update(context23)
 
-                        print(e)
 
-                obj = IndiamartLeadDetails()
-                obj.from_date = time.strftime("%Y-%m-%d", conv)
-                obj.to_date = time.strftime("%Y-%m-%d", conv2)
-                obj.lead_count = lead_count
-                try:
-                    obj.save()
-                except:
-                    print("error")
-            elif (lead_count < 0):
-                row_count = response
-                if (row_count != None):
-                    error = row_count
-                    error_exist = True
-                    print('error_exist')
-                    print(error)
+
         # if (lead_count > 1):
         #     for item in response:
         #         item2 = Lead()
@@ -1146,9 +1172,6 @@ def lead_home(request):
             }
             return render(request, 'lead_management/lead_home.html', context)
 
-
-
-
     context23 = {
         'lead_count': lead_count,
         'from_date': from_date,
@@ -1511,6 +1534,18 @@ def update_view_lead(request,id):
                     return redirect('/update_view_lead/' + str(id))
                 list_count = list_count + 1
             list_count = 0;
+            if lead_id.customer_id.contact_no == '0000000000' or len(lead_id.customer_id.contact_no) < 10:
+                context22 = {
+                    'error': "Contact Number Is Not Valid!!!",
+                    'error_exist': True,
+                }
+                context.update(context22)
+                try:
+                    del request.session['context_sess']
+                except:
+                    pass
+                request.session['context_sess'] = context22
+                return redirect('/update_view_lead/' + str(id))
             for item in pi_pro:
 
                 product_id = Product.objects.get(scale_type=item.product_id.scale_type,
@@ -2236,6 +2271,18 @@ def update_view_lead(request,id):
             del_all_sessions(request)
             request.session['expand_followup'] = True
 
+            if wa_no == '0000000000' or len(wa_no) < 10 or len(customer_id.contact_no) < 10 or customer_id.contact_no == '0000000000' or customer_id.contact_no == '' or customer_id.contact_no == None:
+                context22 = {
+                    'error': "Contact Number Is  Invalid!!!",
+                    'error_exist': True,
+                }
+                context.update(context22)
+                try:
+                    del request.session['context_sess']
+                except:
+                    pass
+                request.session['context_sess'] = context22
+                return redirect('/update_view_lead/' + str(id))
 
             if(len(selected_products)<1 and email_auto_manual == 'Manual' and not (is_call!='on' or is_call!='is_call')):
                 context22={
@@ -3282,24 +3329,18 @@ def select_product_followup(request,id):
     request.session['expand_followup'] = True
     if request.method == 'POST' or request.method == 'FILES' :
         if 'submit' in request.POST:
-
             is_last_product_yes = request.POST.get('is_last_product_yes')
             model_of_purchase_str = request.POST.get('model_of_purchase')
             type_of_scale_str = request.POST.get('type_of_scale')
             sub_model_str = request.POST.get('sub_model')
             sub_sub_model_str = request.POST.get('sub_sub_model')
-
-
             try:
-
                 if (sub_sub_model_str == None or sub_sub_model_str == ""):
-
-                    product_avail = Product.objects.get(scale_type=type_purchase.objects.get(id=type_of_scale_str).id, main_category=main_model.objects.get(id=model_of_purchase_str).id,
-                                                           sub_category=sub_model.objects.get(id=sub_model_str).id)
+                    product_avail = Product.objects.get(scale_type__id=type_purchase.objects.get(id=type_of_scale_str).id, main_category__id=main_model.objects.get(id=model_of_purchase_str).id,
+                                                 sub_category__id=sub_model.objects.get(id=sub_model_str).id)
                 else:
-
-                    product_avail = Product.objects.get(scale_type=type_purchase.objects.get(id=type_of_scale_str).id, main_category=main_model.objects.get(id=model_of_purchase_str).id,
-                                                           sub_category=sub_model.objects.get(id=sub_model_str).id, sub_sub_category=sub_sub_model.objects.get(id=sub_sub_model_str).id)
+                    product_avail = Product.objects.get(scale_type__id=type_purchase.objects.get(id=type_of_scale_str).id, main_category__id=main_model.objects.get(id=model_of_purchase_str).id,
+                                                 sub_category__id=sub_model.objects.get(id=sub_model_str).id, sub_sub_category__id=sub_sub_model.objects.get(id=sub_sub_model_str).id)
                 requested_product = product_avail
                 fol_pro = Followup_product()
                 fol_pro.product_id = requested_product
@@ -3319,7 +3360,7 @@ def select_product_followup(request,id):
                 fol_pro.log_entered_by = request.user.name
 
                 fol_pro.save()
-                print("avail")
+
 
                 context23 = {
                     'product_avail': True,
@@ -3334,6 +3375,7 @@ def select_product_followup(request,id):
                 print(e)
                 context23 = {
                     'product_not_avail': True,
+                    'msg': str(e),
                 }
                 context.update(context23)
 
@@ -3359,6 +3401,7 @@ def upload_requirement_hsc(request):
         item2 = Lead()
         if Customer_Details.objects.filter(customer_name=customer_name,
                                            contact_no=contact_no).count() > 0:
+
 
             item2.customer_id = Customer_Details.objects.filter(contact_no=contact_no).first()
 
@@ -3405,9 +3448,17 @@ def upload_requirement_hsc(request):
         item2.date_of_initiation = datetime.today().strftime('%Y-%m-%d')
         item2.channel = 'Website'
         item2.requirement = requirement
-        item2.owner_of_opportunity = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Admin').first()
         item2.upload_requirement_file = upload_requirement_file
-        item2.log_entered_by = request.user.name
+        if SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Employee').count()>0:
+            item2.owner_of_opportunity = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',
+                                                                 role='Employee').first()
+
+            item2.log_entered_by = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',
+                                                           role='Employee').first().name
+        else:
+            item2.owner_of_opportunity = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Admin').first()
+
+            item2.log_entered_by = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Admin').first().name
 
 
         try:

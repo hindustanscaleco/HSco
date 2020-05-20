@@ -80,7 +80,7 @@ def add_product_master(request):
             product_brochure = request.FILES.get('product_brochure')
             product_document = request.FILES.get('product_document')
 
-            if request.POST.get('sub_sub_category') != None and request.POST.get('sub_sub_category') !='':
+            if request.POST.get('sub_sub_category') != None and request.POST.get('sub_sub_category') !='' and len(sub_sub_category) > 2:
 
                 if Product.objects.filter(scale_type__id=request.POST.get('scale_type'), main_category__id=request.POST.get('main_category'),
                                              sub_category__id=request.POST.get('sub_category'), sub_sub_category__id=request.POST.get('sub_sub_category')).count()>0:
@@ -115,7 +115,7 @@ def add_product_master(request):
                     elif is_last_product_yes == 'no':
                         return redirect('/add_product_master/')
 
-            if request.POST.get('sub_sub_category') == None or request.POST.get('sub_sub_category') =='':
+            if request.POST.get('sub_sub_category') == None or request.POST.get('sub_sub_category') ==''  and len(sub_sub_category) < 2:
                 if Product.objects.filter(scale_type__id=request.POST.get('scale_type'), main_category__id=request.POST.get('main_category'),
                                              sub_category__id=request.POST.get('sub_category')).count()>0:
                     context2={
@@ -129,7 +129,7 @@ def add_product_master(request):
                     fol_pro.scale_type = type_purchase.objects.get(id=scale_type)
                     fol_pro.main_category = main_model.objects.get(id=main_category)
                     fol_pro.sub_category = sub_model.objects.get(id=sub_category)
-                    fol_pro.sub_sub_category = sub_sub_model.objects.get(id=sub_sub_category)
+                    # fol_pro.sub_sub_category = sub_sub_model.objects.get(id=sub_sub_category)
                     fol_pro.hsn_code = hsn_code
                     fol_pro.max_capacity = max_capacity
                     fol_pro.accuracy = accuracy
@@ -149,6 +149,8 @@ def add_product_master(request):
                         return redirect('/product_master_list/')
                     elif is_last_product_yes == 'no':
                         return redirect('/add_product_master/')
+
+
         if 'send_submit' in request.POST:
             scale_type = request.POST.get('scale_type')
             scale_type_d = request.POST.get('scale_type_d')
@@ -162,6 +164,12 @@ def add_product_master(request):
             main_category = main_category if len(main_category)>1 else main_category_d if main_category_d!=None and main_category_d !='' else None
             sub_category = sub_category if len(sub_category)>1 else sub_category_d if sub_category_d!=None and sub_category_d !='' else None
             sub_sub_category = sub_sub_category if len(sub_sub_category)>1 and sub_sub_category != None else None
+
+            print('ssssssssss')
+            print(scale_type)
+            print(main_category)
+            print(sub_category)
+            print(sub_sub_category)
 
             try:
                 type=type_purchase.objects.filter(Q(id = scale_type))
@@ -218,9 +226,9 @@ def add_product_master(request):
 
             if sub_category != None:
                 try:
-                    sub = sub_model.objects.filter(Q(name=sub_category))
+                    sub = sub_model.objects.filter(Q(id=sub_category))
                 except:
-                    sub = sub_model.objects.filter(Q(id = sub_category))
+                    sub = sub_model.objects.filter(Q(name = sub_category))
 
                 if sub.count() > 0:
                     try:
@@ -264,11 +272,6 @@ def add_product_master(request):
                         'sub_sub_category': item4
                     }
                     context.update(context22)
-
-
-
-
-
 
     context22={
         'type_purchase':type_of_purchase_list,

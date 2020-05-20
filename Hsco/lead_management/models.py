@@ -39,8 +39,8 @@ class Lead(models.Model):
     def __int__(self):
         return self.id
 
-    class Meta:
-        unique_together = ('customer_id','channel','current_stage')
+    # class Meta:
+    #     unique_together = ('customer_id','channel','current_stage')
 
 class Pi_section(models.Model):
     lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
@@ -175,7 +175,7 @@ class Followup_product(models.Model):
     max_capacity = models.CharField(max_length=150, null=True, blank=True)
     accuracy = models.CharField(max_length=150, null=True, blank=True)
     platform_size = models.CharField(max_length=150, null=True, blank=True)
-    product_desc = models.CharField(max_length=250, null=True, blank=True)
+    product_desc = models.TextField(null=True, blank=True)
     cost_price = models.FloatField(null=True, blank=True)
     selling_price = models.FloatField(null=True, blank=True)
     carton_size = models.CharField(max_length=150, null=True, blank=True)
