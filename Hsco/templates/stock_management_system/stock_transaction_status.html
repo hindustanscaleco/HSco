@@ -402,11 +402,18 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Requested</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sent</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Received</td>
+            
+            {% if good_request.req_to_godown == 'None' or good_request.req_to_godown == '' or good_request.req_to_godown == None %}
+        {% if request.user.role == 'Employee' or request.user.role == 'Manager'  %}
             {% if request.user.id != good_request.req_from_godown.goddown_assign_to.id %}
-{% if good_request.req_to_godown == 'None' or good_request.req_to_godown == '' or good_request.req_to_godown == None %}
+
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Godown</td>
             {% endif %}
-            {% endif %}
+
+        {% elif request.user.role == 'Admin' or request.user.role == 'Super Admin' %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Godown</td>
+        {% endif %}
+    {% endif %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Request Type</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Number</td>
                         {% if good_request.status != 'Pending From Target'  %}
