@@ -2094,41 +2094,47 @@ def update_view_lead(request,id):
                 item2.discount_type = discount_type
                 item2.first_submit = True
                 item2.log_entered_by = request.user.name
-                try:
-                    total = Pi_product.objects.filter(lead_id=id).values('product_total_cost')
-                    total_cost = 0.0
-                    for x in total:
-                        total_cost += x['product_total_cost']
-                    item2.total_cost = total_cost
-
-
-                    product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
-                    pf_total = 0.0
-                    for x in product_pf:
-                        pf_total += float(x['pf'])
-                    item2.pf_total = pf_total
-                    if discount_type == 'percent' and discount != '' and discount != 0 and total_cost != '':
-                        total_discount = (float(total_cost) * float(discount))/100.0  #converting discount percentage to discount total
-                        net_total = float(total_cost) - float(total_discount)
-                        item2.net_total = net_total
-                        item2.cgst_sgst = (9.0 * net_total) / 100.0
-                        igst = (18.0 * net_total) / 100.0
-                        item2.igst = igst
-                        item2.round_up_total = round(net_total + pf_total + igst)
-                        item2.grand_total = round(net_total + pf_total + igst)
-                    elif discount_type == 'rupee' and discount != '' and total_cost != '':
-                        net_total = float(total_cost) - float(discount)
-                        item2.net_total = net_total
-                        item2.cgst_sgst = (9.0 * net_total)/100.0
-                        igst = (18.0 * item2.net_total)/100.0
-                        item2.igst = igst
-                        item2.round_up_total = round(item2.net_total + pf_total + igst)
-                        item2.grand_total = round(item2.net_total + pf_total + igst)
-                except:
-                    print("product not added or debugging needed")
-
-                if grand_total != None and grand_total != '' and grand_total != 'None':
+                print(grand_total)
+                print(item2.grand_total)
+                if grand_total != None and grand_total != '' and grand_total != 'None' and float(grand_total) != float(item2.grand_total):
                     item2.grand_total = float(grand_total)
+
+                else:
+                    try:
+                        total = Pi_product.objects.filter(lead_id=id).values('product_total_cost')
+                        total_cost = 0.0
+                        for x in total:
+                            total_cost += x['product_total_cost']
+                        item2.total_cost = total_cost
+
+
+                        product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
+                        pf_total = 0.0
+                        for x in product_pf:
+                            pf_total += float(x['pf'])
+                        item2.pf_total = pf_total
+                        if discount_type == 'percent' and discount != '' and discount != 0 and total_cost != '':
+                            total_discount = (float(total_cost) * float(discount))/100.0  #converting discount percentage to discount total
+                            net_total = float(total_cost) - float(total_discount)
+                            item2.net_total = net_total
+                            item2.cgst_sgst = (9.0 * net_total) / 100.0
+                            igst = (18.0 * net_total) / 100.0
+                            item2.igst = igst
+                            item2.round_up_total = round(net_total + pf_total + igst)
+                            item2.grand_total = round(net_total + pf_total + igst)
+                        elif discount_type == 'rupee' and discount != '' and total_cost != '':
+                            net_total = float(total_cost) - float(discount)
+                            item2.net_total = net_total
+                            item2.cgst_sgst = (9.0 * net_total)/100.0
+                            igst = (18.0 * item2.net_total)/100.0
+                            item2.igst = igst
+                            item2.round_up_total = round(item2.net_total + pf_total + igst)
+                            item2.grand_total = round(item2.net_total + pf_total + igst)
+                    except:
+                        print("product not added or debugging needed")
+
+
+
                 item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call','net_total','cgst_sgst','igst',
                                           'round_up_total','grand_total','total_cost','notes','pf_total',
                                         'email', 'whatsapp','call2','select_gst_type','discount_type','log_entered_by','first_submit','grand_total'  ])
@@ -2149,7 +2155,6 @@ def update_view_lead(request,id):
                 item2.call = call
                 item2.email = email
                 item2.whatsapp = whatsapp
-                item2.grand_total = grand_total
                 item2.first_submit = True
                 item2.call2 = call2
                 if select_gst_type != '':
@@ -2158,41 +2163,42 @@ def update_view_lead(request,id):
                     item2.discount_type = discount_type
                 item2.lead_id = Lead.objects.get(id=id)
                 item2.log_entered_by = request.user.name
-                try:
-                    total = Pi_product.objects.filter(lead_id=id).values('product_total_cost')
-                    total_cost = 0.0
-                    for x in total:
-                        total_cost += x['product_total_cost']
-                    item2.total_cost = total_cost
+                if grand_total != None and grand_total != '' and grand_total != 'None' :
+                    item2.grand_total = float(grand_total)
+                else:
+                    try:
+                        total = Pi_product.objects.filter(lead_id=id).values('product_total_cost')
+                        total_cost = 0.0
+                        for x in total:
+                            total_cost += x['product_total_cost']
+                        item2.total_cost = total_cost
 
-                    product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
-                    pf_total = 0.0
-                    for x in product_pf:
-                        pf_total += float(x['pf'])
+                        product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
+                        pf_total = 0.0
+                        for x in product_pf:
+                            pf_total += float(x['pf'])
 
-                    item2.pf_total = pf_total
-                    if discount_type == 'percent' and discount != '' and discount != 0 and total_cost != '':
-                        total_discount = (float(total_cost) * float(
-                            discount)) / 100.0  # converting discount percentage to discount total
-                        net_total = float(total_cost) - float(total_discount)
-                        item2.net_total = net_total
-                        item2.cgst_sgst = (9.0 * net_total) / 100.0
-                        igst = (18.0 * net_total) / 100.0
-                        item2.igst = igst
-                        item2.round_up_total = round(net_total + pf_total + igst)
-                        if grand_total == None or grand_total == '':
+                        item2.pf_total = pf_total
+                        if discount_type == 'percent' and discount != '' and discount != 0 and total_cost != '':
+                            total_discount = (float(total_cost) * float(
+                                discount)) / 100.0  # converting discount percentage to discount total
+                            net_total = float(total_cost) - float(total_discount)
+                            item2.net_total = net_total
+                            item2.cgst_sgst = (9.0 * net_total) / 100.0
+                            igst = (18.0 * net_total) / 100.0
+                            item2.igst = igst
+                            item2.round_up_total = round(net_total + pf_total + igst)
                             item2.grand_total = item2.round_up_total
-                    elif discount_type == 'rupee' and discount != '' and total_cost != '':
-                        net_total = float(total_cost) - float(discount)
-                        item2.net_total = net_total
-                        item2.cgst_sgst = (9.0 * net_total) / 100.0
-                        igst = (18.0 * item2.net_total) / 100.0
-                        item2.igst = igst
-                        item2.round_up_total = round(item2.net_total + pf_total + igst)
-                        if grand_total == None or grand_total == '':
+                        elif discount_type == 'rupee' and discount != '' and total_cost != '':
+                            net_total = float(total_cost) - float(discount)
+                            item2.net_total = net_total
+                            item2.cgst_sgst = (9.0 * net_total) / 100.0
+                            igst = (18.0 * item2.net_total) / 100.0
+                            item2.igst = igst
+                            item2.round_up_total = round(item2.net_total + pf_total + igst)
                             item2.grand_total = item2.round_up_total
-                except:
-                    print("product not added or debugging needed")
+                    except:
+                        print("product not added or debugging needed")
 
                 item2.save()
 
