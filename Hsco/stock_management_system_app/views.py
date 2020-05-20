@@ -805,7 +805,7 @@ def stock_pending_request(request,godown_id):
                        GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_from_godown__godown_admin__id=request.user.id)&Q(req_from_godown__id=godown_id)).order_by('-id') | \
                        GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_from_godown__godown_admin__profile_name=request.user.admin)&Q(req_from_godown__id=godown_id)).order_by('-id') | \
                        GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_to_godown__godown_admin__profile_name=request.user.admin)&Q(req_to_godown__id=godown_id)).order_by('-id') | \
-                       GoodsRequest.objects.filter(Q(is_all_req=True)&~Q(status='Confirms the transformation')&~Q(status=None)&(Q(req_from_godown__godown_admin__profile_name=request.user.profile_name)|Q(req_from_godown__goddown_assign_to__admin=request.user.admin))&Q(req_to_godown__goddown_assign_to__admin=None)).order_by('-id')
+                       GoodsRequest.objects.filter(Q(is_all_req=True)&~Q(status='Confirms the transformation')&~Q(status=None)&(Q(req_from_godown__godown_admin__profile_name=request.user.profile_name)|Q(req_from_godown__goddown_assign_to__admin__icontains=request.user.admin))&Q(req_to_godown__goddown_assign_to__admin=None)).order_by('-id')
     context = {
         'godown_id': godown,
         'pending_list': pending_list,
