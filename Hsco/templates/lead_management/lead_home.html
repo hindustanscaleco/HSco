@@ -122,6 +122,14 @@
   </button>
 </div>
             {% endif %}
+            {% if err2 %}
+                       <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Something Went Wrong!!!</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+            {% endif %}
 
 
              {% if lead_count > 1 and error_exist %}

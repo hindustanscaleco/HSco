@@ -456,8 +456,14 @@ def lead_home(request):
             from_date =  request.POST.get('from_date_form')
             to_date =  request.POST.get('to_date_form')
             import time
-            conv = time.strptime(from_date, "%d-%b-%Y")
-            conv2 = time.strptime(to_date, "%d-%b-%Y")
+            try:
+                conv = time.strptime(from_date, "%d-%b-%Y")
+                conv2 = time.strptime(to_date, "%d-%b-%Y")
+            except:
+                context23 = {
+                    'err2': 'Something Went Wrong!!!',
+                }
+                context.update(context23)
             if conv == conv2:
                 context23 = {
                     'err': 'Already Fetched!!!',
