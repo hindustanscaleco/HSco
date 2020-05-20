@@ -516,8 +516,8 @@ def add_product_godown(request, godown_id):
                     print(main_category)
                     print(sub_category)
                     print(sub_sub_category)
-                    item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
-                                                          sub_category=sub_category, sub_sub_category=sub_sub_category)
+                    item.product_id = Product.objects.get(scale_type__id=type_of_scale, main_category__id=main_category,
+                                                          sub_category__id=sub_category, sub_sub_category__id=sub_sub_category)
 
                     item.godown_id = Godown.objects.get(id=godown_id)
                     item.added_by_id = SiteUser.objects.get(id=request.user.id)
