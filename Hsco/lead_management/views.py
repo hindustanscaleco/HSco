@@ -3500,7 +3500,7 @@ def upload_requirement_hsc(request):
         #return redirect('/requirement.hindustanscale.com/')
 
 
-    return render(request,'lead_management/upload_requirement_hsc.html')
+    return render(request,'lead_management/upload_requirement_hsc.html',context)
 
 
 def select_product(request,id):
