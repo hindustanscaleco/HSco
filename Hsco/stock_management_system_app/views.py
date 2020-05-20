@@ -52,10 +52,9 @@ def update_product_master(request,update_id):
         # fol_pro.product_image = product_image
         # fol_pro.product_brochure = product_brochure
         # fol_pro.product_document = product_document
-        fol_pro.log_entered_by = request.user.name
 
         fol_pro.save(update_fields=['main_category','sub_category','sub_sub_category','hsn_code','max_capacity','accuracy','platform_size',
-                                    'product_desc','cost_price','selling_price','carton_size','log_entered_by',])
+                                    'product_desc','cost_price','selling_price','carton_size',])
                                     # 'product_desc','cost_price','selling_price','carton_size','log_entered_by','product_image','product_brochure','product_document',])
         return redirect('/product_master_list/')
     context={
