@@ -460,8 +460,7 @@ def lead_home(request):
             conv2 = time.strptime(to_date, "%d-%b-%Y")
             if conv == conv2:
                 context23 = {
-                    'error': 'Already Fetched!!!',
-                    'error_exist': True,
+                    'err': 'Already Fetched!!!',
                 }
                 context.update(context23)
             else:
