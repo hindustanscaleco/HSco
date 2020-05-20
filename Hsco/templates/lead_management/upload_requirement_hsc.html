@@ -154,10 +154,10 @@ color:;
     <hr>
 
 
-          {% if request.session.context_sess.success_exist_65 %}
+          {% if success_exist_65 %}
 
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Success : </strong> {{request.session.context_sess.success_65}}
+  <strong>Success : </strong> {{success_65}}
   <button type="button" onclick="location.href='https://hindustanscale.com/'" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
   </button>
@@ -171,9 +171,9 @@ window.location.replace("https://hindustanscale.com/");
 
     </script>
 {% endif %}
-     {% if request.session.context_sess.error_exist_65 %}
+     {% if error_exist_65 %}
                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>Error : </strong> {{request.session.context_sess.error_65}}
+  <strong>Error : </strong> {{error_65}}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
