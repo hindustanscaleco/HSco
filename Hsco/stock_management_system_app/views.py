@@ -515,40 +515,34 @@ def add_product_godown(request, godown_id):
 
         item = GodownProduct()
         try:
+            print(sub_sub_category)
+            print(sub_sub_category)
+            print(sub_category)
+            print(sub_category)
             if sub_sub_category != '':
-                if GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,product_id__main_category=main_category,
-                product_id__sub_category=sub_category,product_id__sub_sub_category=sub_sub_category).count() > 0:
+                Godown_product_filter = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,product_id__main_category=main_category,
+                product_id__sub_category=sub_category,product_id__sub_sub_category=sub_sub_category)
+                if Godown_product_filter.count() > 0:
                     if req_type == 'Individual':
-                        GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,product_id__main_category=main_category,
-                        product_id__sub_category=sub_category,product_id__sub_sub_category=sub_sub_category).update(
+                        Godown_product_filter.update(
                         quantity=F("quantity") + quantity)
                         if critical_limit != '0' and critical_limit != '' and critical_limit != 'None':
-                            GodownProduct.objects.filter(godown_id=godown_id, product_id__scale_type=type_of_scale,
-                                                         product_id__main_category=main_category,
-                                                         product_id__sub_category=sub_category,
-                                                         product_id__sub_sub_category=sub_sub_category).update(
+                            Godown_product_filter.update(
                                 critical_limit= critical_limit)
                     elif req_type == 'Carton':
                         product = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
                                                       sub_category=sub_category, sub_sub_category=sub_sub_category)
                         individual_quantity = (float(product.carton_size) * float(quantity))
 
-                        GodownProduct.objects.filter(godown_id=godown_id, product_id__scale_type=type_of_scale,product_id__main_category=main_category,
-                        product_id__sub_category=sub_category,product_id__sub_sub_category=sub_sub_category).update(
+                        Godown_product_filter.update(
                         quantity=F("quantity") + individual_quantity)
                         if critical_limit != '0' and critical_limit != '' and critical_limit != 'None':
                             individual_critical_limit = (float(product.carton_size) * float(critical_limit))
-                            GodownProduct.objects.filter(godown_id=godown_id, product_id__scale_type=type_of_scale,
-                                                         product_id__main_category=main_category,
-                                                         product_id__sub_category=sub_category,
-                                                         product_id__sub_sub_category=sub_sub_category).update(
+                            Godown_product_filter.update(
                                 critical_limit=individual_critical_limit)
 
                 else:
-                    print(type_of_scale)
-                    print(main_category)
-                    print(sub_category)
-                    print(sub_sub_category)
+
                     item.product_id = Product.objects.get(scale_type__id=type_of_scale, main_category__id=main_category,
                                                           sub_category__id=sub_category, sub_sub_category__id=sub_sub_category)
 
@@ -565,6 +559,58 @@ def add_product_godown(request, godown_id):
                         individual_quantity = (float(product.carton_size) * float(quantity))
                         individual_critical_limit = (float(product.carton_size) * float(critical_limit))
                         if quantity !=  '' and 'None':
+                            item.quantity = individual_quantity
+                        if critical_limit != '' and 'None':
+                            item.critical_limit = individual_critical_limit
+                    else:
+                        item.quantity = 0.0
+
+                    item.log_entered_by = request.user.name
+                    item.save()
+            elif sub_category != '':
+                Godown_product_filter = GodownProduct.objects.filter(godown_id=godown_id,
+                                                                     product_id__scale_type=type_of_scale,
+                                                                     product_id__main_category=main_category,
+                                                                     product_id__sub_category=sub_category,
+                                                                     product_id__sub_sub_category=None)
+                if Godown_product_filter.count() > 0:
+                    if req_type == 'Individual':
+                        Godown_product_filter.update(
+                            quantity=F("quantity") + quantity)
+                        if critical_limit != '0' and critical_limit != '' and critical_limit != 'None':
+                            Godown_product_filter.update(
+                                critical_limit=critical_limit)
+                    elif req_type == 'Carton':
+                        product = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
+                                                      sub_category=sub_category, sub_sub_category=None)
+                        individual_quantity = (float(product.carton_size) * float(quantity))
+
+                        Godown_product_filter.update(
+                            quantity=F("quantity") + individual_quantity)
+                        if critical_limit != '0' and critical_limit != '' and critical_limit != 'None':
+                            individual_critical_limit = (float(product.carton_size) * float(critical_limit))
+                            Godown_product_filter.update(
+                                critical_limit=individual_critical_limit)
+
+                else:
+
+                    item.product_id = Product.objects.get(scale_type__id=type_of_scale, main_category__id=main_category,
+                                                          sub_category__id=sub_category,
+                                                          sub_sub_category__id=None)
+
+                    item.godown_id = Godown.objects.get(id=godown_id)
+                    item.added_by_id = SiteUser.objects.get(id=request.user.id)
+                    if req_type == 'Individual':
+                        if quantity != '' and 'None':
+                            item.quantity = quantity
+                        if critical_limit != '' and 'None':
+                            item.critical_limit = critical_limit
+                    elif req_type == 'Carton':
+                        product = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
+                                                      sub_category=sub_category, sub_sub_category=None)
+                        individual_quantity = (float(product.carton_size) * float(quantity))
+                        individual_critical_limit = (float(product.carton_size) * float(critical_limit))
+                        if quantity != '' and 'None':
                             item.quantity = individual_quantity
                         if critical_limit != '' and 'None':
                             item.critical_limit = individual_critical_limit

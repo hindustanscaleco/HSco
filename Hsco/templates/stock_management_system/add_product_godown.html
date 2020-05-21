@@ -447,13 +447,13 @@ $("#sub_model").val(select.options[select.selectedIndex].text);
         success: function (data) {   // `data` is the return of the `load_cities` view function
     $("#id_subcat22").html(data);
 
-     if ($('#id_subcat22 option').length > 1)
+     if ($('#id_subcat2 option').length > 1)
     {
-    $('#id_subcat22').attr('required', '');
+    $('#id_subcat22').removeAttr('required');
 
     }
     else{
-    $('#id_subcat22').removeAttr('required');
+    $('#id_subcat22').attr('required', '');
 
     }
 
