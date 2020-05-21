@@ -59,10 +59,10 @@ def update_product_master(request,update_id):
         product_document = request.FILES.get('product_document')
 
         fol_pro = product_obj
-        fol_pro.scale_type = type_purchase.objects.get(id=scale_type)
-        fol_pro.main_category = main_model.objects.get(id=main_category)
-        fol_pro.sub_category = sub_model.objects.get(id=sub_category)
-        fol_pro.sub_sub_category = sub_sub_model.objects.get(id=sub_sub_category)
+        # fol_pro.scale_type = type_purchase.objects.get(id=scale_type)
+        # fol_pro.main_category = main_model.objects.get(id=main_category)
+        # fol_pro.sub_category = sub_model.objects.get(id=sub_category)
+        # fol_pro.sub_sub_category = sub_sub_model.objects.get(id=sub_sub_category)
         fol_pro.hsn_code = hsn_code
         fol_pro.max_capacity = max_capacity
         fol_pro.accuracy = accuracy
@@ -75,7 +75,7 @@ def update_product_master(request,update_id):
         fol_pro.product_brochure = product_brochure
         fol_pro.product_document = product_document
 
-        fol_pro.save(update_fields=['main_category','sub_category','sub_sub_category','hsn_code','max_capacity','accuracy','platform_size',
+        fol_pro.save(update_fields=['hsn_code','max_capacity','accuracy','platform_size',
                                     # 'product_desc','cost_price','selling_price','carton_size',])
                                     'product_desc','cost_price','selling_price','carton_size','product_image','product_brochure','product_document',])
         return redirect('/product_master_list/')
