@@ -4,7 +4,12 @@ from .models import Lead ,Pi_section, IndiamartLeadDetails
 from .models import Lead, Pi_section, Pi_product,Pi_History,Follow_up_section,Auto_followup_details,History_followup,Followup_product,Payment_details
 
 
-admin.site.register(Lead)
+class Lead_Admin(admin.ModelAdmin):
+
+    list_display = ('id','customer_id','current_stage','channel','entry_timedate')
+
+    # search_fields = ('scale_type__name','main_category__name','sub_category__name','sub_sub_category__name')
+admin.site.register(Lead,Lead_Admin)
 admin.site.register(Pi_section)
 
 
