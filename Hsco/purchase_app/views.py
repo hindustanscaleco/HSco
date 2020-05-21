@@ -576,7 +576,13 @@ def quick_purchase_entry(request):
                     if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
                         GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
                         quantity=F("quantity") - quantity)
-
+        elif sub_model != '':
+            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                  sub_category__name=sub_model, sub_sub_category__name=None)
+            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
+                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
+                        GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                        quantity=F("quantity") - quantity)
 
         item.save()
 
@@ -1103,7 +1109,13 @@ def add_product_details(request,id):
                         GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
                         quantity=F("quantity") - quantity)
 
-
+        elif sub_model != '':
+            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                  sub_category__name=sub_model, sub_sub_category__name=None)
+            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
+                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
+                        GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                        quantity=F("quantity") - quantity)
         item.save()
 
         if is_last_product_yes == 'yes':
@@ -1980,6 +1992,9 @@ def stock_does_not_exist(request):
     if sub_sub_model != '':
         product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                          sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+    elif sub_model != '':
+        product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                         sub_category__name=sub_model, sub_sub_category__name=None)
     if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
         if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity:
             success_message = 'Stock Available!!!'
