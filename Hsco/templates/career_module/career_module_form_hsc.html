@@ -151,7 +151,7 @@ color:;
 {% include 'base_templates/hsco_website_nav.html' %}
 
 
-    <form class="well form-horizontal" ion="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
+    <form class="well form-horizontal" action="" method="post" enctype="multipart/form-data" id="contact_form" style="padding:20px;">{% csrf_token%}
 <fieldset>
 
     <hr>
@@ -264,6 +264,22 @@ window.location.replace("https://hindustanscale.com/");
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
 {{career_form.address}}
+    </div>
+  </div>
+        </div>
+
+
+       <div class="form-group row">
+
+
+    <label class="col-md-2 control-label">Resume*
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+{{career_form.candidate_resume}}
     </div>
   </div>
         </div>
