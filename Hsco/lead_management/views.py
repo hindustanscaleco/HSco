@@ -1211,6 +1211,7 @@ def lead_home(request):
     return render(request,'lead_management/lead_home.html',context)
 
 def add_lead(request):
+    context={}
     users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',)
     under_admin_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',admin__icontains=request.user.profile_name)
     under_manager_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',manager__icontains=request.user.profile_name)
@@ -1299,14 +1300,21 @@ def add_lead(request):
         item2.upload_requirement_file = upload_requirement_file
         item2.log_entered_by = request.user.name
 
-        item2.save()
+        try:
+            item2.save()
 
-        fp=Follow_up_section()
-        fp.lead_id= Lead.objects.get(id=item2.pk)
-        fp.save()
-        return redirect('/update_view_lead/'+str(item2.id))
+            fp=Follow_up_section()
+            fp.lead_id= Lead.objects.get(id=item2.pk)
+            fp.save()
+            return redirect('/update_view_lead/'+str(item2.id))
+        except:
+            context25={
+                'already_exist':True,
+            }
+            context.update(context25)
+
         # item.save()
-    context={
+    context22={
         'form':form,
         'form2':form2,
         'latest_lead_id':latest_lead_id,
@@ -1315,6 +1323,7 @@ def add_lead(request):
         'under_admin_users':under_admin_users,
         'under_manager_users':under_manager_users,
     }
+    context.update(context22)
     return render(request, 'lead_management/add_lead.html',context)
 
 def update_view_lead(request,id):
