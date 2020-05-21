@@ -50,6 +50,7 @@ class Career_module(models.Model):
     is_sales_candidate = models.BooleanField(default=False)
     is_technical_candidate = models.BooleanField(default=False)
     notes = models.TextField( null=True, blank=True)
+    candidate_resume = models.FileField(upload_to='candidate_resume/',null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
 
     class Meta:

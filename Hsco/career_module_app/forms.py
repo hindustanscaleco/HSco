@@ -140,8 +140,15 @@ class Career_moduleForm(forms.ModelForm):
 
            }))
 
+    candidate_resume = forms.FileField(
+        widget=forms.FileInput(
+            attrs={
+                'type': 'file',
+                'class': 'form-control',
 
+            })
 
+    )
 
 
     aadhar_card = forms.CharField(

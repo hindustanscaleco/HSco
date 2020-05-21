@@ -440,6 +440,7 @@ def career_module_form_hsc(request):
         date_of_birth = request.POST.get('date_of_birth')
         maxedu_id = request.POST.get('maxedu_id')
         maxwork_exp = request.POST.get('maxwork_exp')
+        candidate_resume = request.FILES.get('candidate_resume')
 
         is_sales_candidate = True if choose_position == 'Sales Position' else False
         is_technical_candidate = True if choose_position == 'Technical Position' else False
@@ -461,6 +462,7 @@ def career_module_form_hsc(request):
         item.percentage = percentage
         item.is_technical_candidate = is_technical_candidate
         item.is_sales_candidate = is_sales_candidate
+        item.candidate_resume = candidate_resume
 
         item.save()
 
