@@ -18,7 +18,8 @@ from Hsco import settings
 from user_app.models import SiteUser
 from customer_app.models import Log
 
-from lead_management.email_content import text_content
+
+from lead_management.email_content import user
 from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm, Follow_up_sectionForm, History_followupForm, Payment_detailsForm
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
@@ -1816,7 +1817,7 @@ def update_view_lead(request,id):
             email_send = EmailMessage('PI - HSCo ', '',
                                       settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
             part1 = MIMEText(text, 'plain')
-            part2 = MIMEText(text_content, 'html')
+            part2 = MIMEText(user(request), 'html')
             email_send.attach(part1)
             email_send.attach(part2)
             email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
@@ -2053,7 +2054,7 @@ def update_view_lead(request,id):
                     email_send = EmailMessage('PI - HSCo ','',
                                               settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
                     part1 = MIMEText(text, 'plain')
-                    part2 = MIMEText(text_content, 'html')
+                    part2 = MIMEText(user(request), 'html')
                     email_send.attach(part1)
                     email_send.attach(part2)
                     email_send.attach_file(history.pi_history_file.path)
@@ -2073,7 +2074,7 @@ def update_view_lead(request,id):
                                               '',
                                               settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
                     part1 = MIMEText(text, 'plain')
-                    part2 = MIMEText(text_content, 'html')
+                    part2 = MIMEText(user(request), 'html')
                     email_send.attach(part1)
                     email_send.attach(part2)
                     email_send.attach_file(history.pi_history_file.path)
@@ -3421,6 +3422,7 @@ def upload_requirement_hsc(request):
         customer_email_id = request.POST.get('email_id')
 
         requirement = request.POST.get('requirement')
+        company_name = request.POST.get('company_name')
         upload_requirement_file = request.FILES.get('req_file')
 
         item2 = Lead()
@@ -3436,6 +3438,9 @@ def upload_requirement_hsc(request):
             if customer_email_id != '' and customer_email_id != None:
                 item3.customer_email_id = customer_email_id
                 item3.save(update_fields=['customer_email_id'])
+            if company_name != '' :
+                item3.company_name = company_name
+                item3.save(update_fields=['company_name'])
 
             item2.new_existing_customer = 'New'
 
@@ -3448,7 +3453,8 @@ def upload_requirement_hsc(request):
             new_cust.contact_no = contact_no
             if customer_email_id != '':
                 new_cust.customer_email_id = customer_email_id
-
+            if company_name != '' :
+                new_cust.company_name = company_name
             try:
                 new_cust.save()
                 item2.customer_id = Customer_Details.objects.get(id=new_cust.pk)

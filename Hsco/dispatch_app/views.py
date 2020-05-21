@@ -1,4 +1,5 @@
 from datetime import datetime
+from email.mime.text import MIMEText
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -24,8 +25,10 @@ from ess_app.models import Defects_Warning
 from customer_app.models import Log
 
 from stock_management_system_app.models import Product, GodownProduct, Godown
+
+from lead_management.email_content import user
 from .models import Dispatch, Product_Details_Dispatch
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from Hsco import settings
 import requests
 import json
@@ -1060,9 +1063,15 @@ def update_dispatch_details(request,update_id):
                          ' is dispatched from our end with Dispatch ID ' + str(
                     item.dispatch_no) + ' and LR No '+ lr_no +' by ' + transport_name +'. For more details contact us on - 7045922252 \n Dispatch Details:\n'+product_list
 
-                    send_mail('Dispatched, Your Hsco Purchase is Dispatched from our end',
-                              msg, settings.EMAIL_HOST_USER,
-                              [dispatch_item.company_email,])
+                    part1 = MIMEText(msg, 'plain')
+                    part2 = MIMEText(user(request), 'html')
+                    email_send = EmailMessage('Dispatched, Your Hsco Purchase is Dispatched from our end',
+                                              '', settings.EMAIL_HOST_USER,
+                                              [dispatch_item.company_email, ])
+                    email_send.attach(part1)
+                    email_send.attach(part2)
+                    email_send.send()
+
                     print("send mail!!")
                 except:
                     print("exception occured!!")

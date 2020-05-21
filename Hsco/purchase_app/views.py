@@ -15,7 +15,9 @@ from django.db.models import Sum
 from ess_app.models import Employee_Analysis_date
 from django.contrib.auth.decorators import login_required
 from customer_app.models import Log, sub_sub_model
-
+from email.mime.text import MIMEText
+from django.core.mail import send_mail, EmailMessage
+from lead_management.email_content import user
 from customer_app.models import type_purchase,main_model,sub_model,sub_sub_model
 
 from ess_app.models import Defects_Warning
