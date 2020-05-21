@@ -2296,7 +2296,7 @@ def update_view_lead(request,id):
                 request.session['context_sess'] = context22
                 return redirect('/update_view_lead/' + str(id))
 
-            if(len(selected_products)<1 and email_auto_manual == 'Manual' and not (is_call!='on' or is_call!='is_call')):
+            if (selected_products!=None and len(selected_products)<1 and email_auto_manual == 'Manual' and not (is_call!='on' or is_call!='is_call')):
                 context22={
                     'error':"No Product Selected\nPlease Select Products And Try Again",
                     'error_exist':True,
@@ -2320,7 +2320,7 @@ def update_view_lead(request,id):
                     pass
                 request.session['context_sess']=context28
                 return redirect('/update_view_lead/' + str(id))
-            if (len(selected_fields)<6):
+            if (selected_fields !=None and len(selected_fields)<6):
 
                 context28 = {
                     'error': "Please Select Atleast One Product Field",

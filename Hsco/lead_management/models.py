@@ -141,8 +141,8 @@ class History_followup(models.Model):
     wa_msg = models.TextField(max_length=120, null=True, blank=True)
     wa_no = models.CharField(max_length=12)
     email_subject = models.CharField(max_length=120)
-    email_msg = models.TextField(max_length=120, null=True, blank=True)
-    call_response = models.TextField(max_length=120, null=True, blank=True)
+    email_msg = models.TextField(null=True, blank=True)
+    call_response = models.TextField(null=True, blank=True)
     sms_msg = models.TextField()
     sms_con = models.TextField()
     is_manual_mode = models.BooleanField(default=True)
@@ -189,8 +189,8 @@ class Followup_product(models.Model):
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
 class IndiamartLeadDetails(models.Model):
-    from_date = models.DateField()
-    to_date = models.DateField()
+    from_date = models.DateTimeField()
+    to_date = models.DateTimeField()
     lead_count = models.BigIntegerField()
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     entry_timedate = models.DateField(default=datetime.date.today)
