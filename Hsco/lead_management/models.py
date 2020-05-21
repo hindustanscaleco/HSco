@@ -189,8 +189,8 @@ class Followup_product(models.Model):
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
 class IndiamartLeadDetails(models.Model):
-    from_date = models.DateTimeField()
-    to_date = models.DateTimeField()
+    from_date = models.DateField()
+    to_date = models.DateField()
     lead_count = models.BigIntegerField()
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     entry_timedate = models.DateField(default=datetime.date.today)
