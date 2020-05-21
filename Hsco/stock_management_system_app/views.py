@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.db.models import Q, F
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 from customer_app.models import type_purchase
 from .forms import GodownForm
@@ -9,6 +10,7 @@ from .models import Godown, GodownProduct, RequestedProducts, GoodsRequest, Prod
 from user_app.models import SiteUser
 from customer_app.models import sub_model, main_model, sub_sub_model, type_purchase
 
+@login_required(login_url='/')
 def product_master_list(request):
     product_list = Product.objects.all().order_by('-id')
     context={
@@ -16,6 +18,7 @@ def product_master_list(request):
     }
     return render(request, 'stock_management_system/product_master_list.html',context)
 
+@login_required(login_url='/')
 def update_product_master(request,update_id):
     product_obj = Product.objects.get(id=update_id)
     type_of_purchase_list = type_purchase.objects.all()
@@ -63,6 +66,7 @@ def update_product_master(request,update_id):
     }
     return render(request, 'stock_management_system/update_product_master.html',context)
 
+@login_required(login_url='/')
 def add_product_master(request):
     type_of_purchase_list = type_purchase.objects.all()
     context = {}
@@ -284,6 +288,7 @@ def add_product_master(request):
     context.update(context22)
     return render(request,'stock_management_system/add_product_master.html',context)
 
+@login_required(login_url='/')
 def stock_godown_list(request):
     if request.user.role == 'Super Admin':
         godown_list = Godown.objects.all().order_by('-id')
@@ -304,6 +309,7 @@ def stock_godown_list(request):
     }
     return render(request,'stock_management_system/stock_godown_list.html',context)
 
+@login_required(login_url='/')
 def add_godown(request):
     products = Product.objects.all()
 
@@ -338,6 +344,7 @@ def add_godown(request):
     }
     return render(request, 'stock_management_system/add_godown.html',context)
 
+@login_required(login_url='/')
 def update_godown(request,godown_id):
     godown = Godown.objects.get(id=godown_id)
     godown_products = GodownProduct.objects.filter(godown_id=godown_id)
@@ -465,6 +472,7 @@ def update_godown(request,godown_id):
 
     return render(request, 'stock_management_system/update_godown.html',context)
 
+@login_required(login_url='/')
 def add_product_godown(request, godown_id):
     godown = Godown.objects.get(id=godown_id)
     type_of_purchase_list =type_purchase.objects.all() #1
@@ -607,6 +615,7 @@ def add_product_godown(request, godown_id):
     return render(request, 'stock_management_system/add_product_godown.html',context)
 
 
+@login_required(login_url='/')
 def stock_godown(request,id):
     type_of_purchase_list =type_purchase.objects.all() #1
     products = Product.objects.all()
@@ -702,9 +711,11 @@ def stock_godown(request,id):
 
     return render(request,'stock_management_system/stock_godown.html',context)
 
+@login_required(login_url='/')
 def stock_godown_images(request):
     return render(request,'stock_management_system/stock_godown_images.html')
 
+@login_required(login_url='/')
 def stock_good_request(request,godown_id, request_id):
     # good_request = GoodsRequest.objects.get(id=request_id)
     godowns = Godown.objects.filter(Q(goddown_assign_to__name=request.user.admin)& ~Q(id=godown_id))| \
@@ -845,6 +856,7 @@ def stock_good_request(request,godown_id, request_id):
 
     return render(request,'stock_management_system/stock_good_request.html',context)
 
+@login_required(login_url='/')
 def stock_pending_request(request,godown_id):
     godown = Godown.objects.get(id=godown_id)
     if request.user.role == 'Super Admin':
@@ -863,6 +875,7 @@ def stock_pending_request(request,godown_id):
     }
     return render(request,'stock_management_system/stock_pending_request.html',context)
 
+@login_required(login_url='/')
 def stock_transaction_status(request,from_godown_id, trans_id):
     good_request = GoodsRequest.objects.get(id=trans_id)
     godown = Godown.objects.get(id=from_godown_id)
@@ -1037,6 +1050,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
     }
     return render(request,'stock_management_system/stock_transaction_status.html',context)
 
+@login_required(login_url='/')
 def stock_accpet_goods(request, godown_id, accept_id):
     godown_goods = GodownProduct.objects.filter(godown_id=godown_id)
     accepted_goods = AGProducts.objects.filter(godown_id_id=godown_id,accept_product_id_id =accept_id).order_by('-id')
@@ -1114,6 +1128,7 @@ def stock_accpet_goods(request, godown_id, accept_id):
     }
     return render(request,'stock_management_system/stock_accpet_goods.html',context)
 
+@login_required(login_url='/')
 def stock_accpet_goods_list(request, godown_id):
     godown = Godown.objects.get(id=godown_id)
     if AcceptGoods.objects.all().count() == 0:
@@ -1128,6 +1143,7 @@ def stock_accpet_goods_list(request, godown_id):
     }
     return render(request,'stock_management_system/stock_accpet_goods_list.html',context)
 
+@login_required(login_url='/')
 def stock_transaction_history_list(request, godown_id):
     trans_history = GodownTransactions.objects.filter(goods_req_id__req_from_godown=godown_id, goods_req_id__status='Confirms the transformation').order_by('-id') | \
                     GodownTransactions.objects.filter(goods_req_id__req_to_godown=godown_id,goods_req_id__status='Confirms the transformation').order_by('-id') | \
@@ -1138,6 +1154,7 @@ def stock_transaction_history_list(request, godown_id):
     }
     return render(request,'stock_management_system/stock_transaction_history_list.html', context)
 
+@login_required(login_url='/')
 def stock_transaction_history(request, from_godown_id, trans_id):
     godown_id = Godown.objects.get(id=from_godown_id)
     godown_transaction = GodownTransactions.objects.get(id=trans_id)
@@ -1176,6 +1193,7 @@ def stock_transaction_history(request, from_godown_id, trans_id):
     return render(request, 'stock_management_system/stock_transaction_history.html',context)
 
 
+@login_required(login_url='/')
 def request_admin(request):
     request_admin_list= GoodsRequest.objects.filter(Q(request_admin=True)& Q(req_from_godown__godown_admin__id=request.user.id)).order_by('-id') | \
                         GoodsRequest.objects.filter(Q(request_admin=True) & Q(request_admin_id__id=request.user.id)).order_by('-id')
