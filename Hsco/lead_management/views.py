@@ -445,6 +445,23 @@ def lead_home(request):
                 'pi_sent_stage': pi_sent_stage,
             }
             context.update(context9)
+            
+    if request.method == 'GET' and 'success' in request.method:
+        success = request.GET['success']
+        lead_count = request.GET['lead_count']
+        if success == 'true':
+            context22={
+                'err':True,
+                'lead_count':lead_count,
+            }
+        elif success == 'false':
+            context22 = {
+                'success_exist': False,
+                'lead_count': lead_count,
+            }
+        context.update(context22)
+
+
 
     if request.method == 'POST':
         if 'fetch_lead' in request.POST:
@@ -459,110 +476,111 @@ def lead_home(request):
             try:
                 conv = time.strptime(from_date, "%d-%b-%Y")
                 conv2 = time.strptime(to_date, "%d-%b-%Y")
-            except:
+
+            except Exception as e:
+                print("ssss"+str(e))
                 context23 = {
                     'err2': 'Something Went Wrong!!!',
                 }
                 context.update(context23)
-            if conv == conv2:
-                context23 = {
-                    'err': 'Already Fetched!!!',
-                }
-                context.update(context23)
-            else:
-                if (lead_count > 1 and response != None):
-                    for item in response:
-                        item2 = Lead()
-                        if (item['MOB'] != None and item['MOB'] != '' and len(item['MOB']) > 3):
-                            clean_mob = item['MOB'].partition('-')[2]
-                        elif len(item['MOB']) < 3:
-                            clean_mob = '0000000000'
 
-                        print(clean_mob)
-                        entered_customer_name = item['SENDERNAME']
-                        if entered_customer_name == None or entered_customer_name == '':
-                            entered_customer_name = 'NA'
-                        cust_obj = Customer_Details.objects.filter(customer_name=entered_customer_name,
-                                                                   contact_no=clean_mob)
-                        if cust_obj.exists() and cust_obj.count() > 0:
-                            for item23 in cust_obj:
-                                exist_cust = item23.pk
-                            item3 = Customer_Details.objects.get(id=exist_cust)
-                            item2.new_existing_customer = 'Existing'
-                        else:
-                            item3 = Customer_Details()
-                            item3.customer_name = entered_customer_name
-                            item3.company_name = item['GLUSR_USR_COMPANYNAME']
-                            item3.address = item['ENQ_ADDRESS']
-                            item3.customer_email_id = item['SENDEREMAIL']
+            if (lead_count > 1 and response != None):
+                for item in response:
+                    item2 = Lead()
+                    if (item['MOB'] != None and item['MOB'] != '' and len(item['MOB']) > 3):
+                        clean_mob = item['MOB'].partition('-')[2]
+                    elif len(item['MOB']) < 3:
+                        clean_mob = '0000000000'
 
-                            item3.contact_no = clean_mob
-                            item3.customer_industry = ''
-                            item2.new_existing_customer = 'New'
-                            try:
-                                item3.save()
-                            except:
-                                pass
+                    print(clean_mob)
+                    entered_customer_name = item['SENDERNAME']
+                    if entered_customer_name == None or entered_customer_name == '':
+                        entered_customer_name = 'NA'
+                    cust_obj = Customer_Details.objects.filter(customer_name=entered_customer_name,
+                                                               contact_no=clean_mob)
+                    if cust_obj.exists() and cust_obj.count() > 0:
+                        for item23 in cust_obj:
+                            exist_cust = item23.pk
+                        item3 = Customer_Details.objects.get(id=exist_cust)
+                        item2.new_existing_customer = 'Existing'
+                    else:
+                        item3 = Customer_Details()
+                        item3.customer_name = entered_customer_name
+                        item3.company_name = item['GLUSR_USR_COMPANYNAME']
+                        item3.address = item['ENQ_ADDRESS']
+                        item3.customer_email_id = item['SENDEREMAIL']
 
+                        item3.contact_no = clean_mob
+                        item3.customer_industry = ''
+                        item2.new_existing_customer = 'New'
                         try:
-                            item2.customer_id = Customer_Details.objects.get(id=item3.pk)
-                            item2.current_stage = 'Not Yet Initiated'
-                            if item['QTYPE'] == 'B':
-                                item2.is_indiamart_purchased_lead = True
-                            else:
-                                item2.is_indiamart_purchased_lead = False
+                            item3.save()
+                        except:
+                            pass
 
-                            item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
-                            item2.channel = 'IndiaMart'
-                            item2.owner_of_opportunity = request.user
-                            requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME'] if item[
-                                                                                                              'SUBJECT'] != None and \
-                                                                                                          item[
-                                                                                                              'ENQ_MESSAGE'] != None and \
-                                                                                                          item[
-                                                                                                              'PRODUCT_NAME'] != None else \
-                            item['SUBJECT'] + item['ENQ_MESSAGE'] if item['SUBJECT'] != None and item[
-                                'ENQ_MESSAGE'] != None else item['SUBJECT']
-                            # requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
-                            item2.requirement = requirement.replace('<b>', '\n')
-                            try:
-                                item2.save()
-                                fp = Follow_up_section()
-                                fp.lead_id = Lead.objects.get(id=item2.pk)
-                                fp.save()
-                            except Exception as e:
-                                error_exist = True
-                                error2 = e
-                                print('error2')
-                                print(error2)
-                        except Exception as e:
-                            error_exist = True
-                            error = e
-                            print('e')
-
-                            print(e)
-
-                    obj = IndiamartLeadDetails()
-                    obj.from_date = time.strftime("%Y-%m-%d", conv)
-                    obj.to_date = time.strftime("%Y-%m-%d", conv2)
-                    obj.lead_count = lead_count
                     try:
-                        obj.save()
-                    except:
-                        print("error")
-                elif (lead_count < 0):
-                    row_count = response
-                    if (row_count != None):
-                        error = row_count
-                        error_exist = True
-                        print('error_exist')
-                        print(error)
-                        context23 = {
-                            'error': error,
-                            'error2': error2,
-                            'error_exist': error_exist,
-                        }
-                        context.update(context23)
+                        item2.customer_id = Customer_Details.objects.get(id=item3.pk)
+                        item2.current_stage = 'Not Yet Initiated'
+                        if item['QTYPE'] == 'B':
+                            item2.is_indiamart_purchased_lead = True
+                        else:
+                            item2.is_indiamart_purchased_lead = False
+
+                        item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
+                        item2.channel = 'IndiaMart'
+                        item2.owner_of_opportunity = request.user
+                        requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME'] if item[
+                                                                                                          'SUBJECT'] != None and \
+                                                                                                      item[
+                                                                                                          'ENQ_MESSAGE'] != None and \
+                                                                                                      item[
+                                                                                                          'PRODUCT_NAME'] != None else \
+                        item['SUBJECT'] + item['ENQ_MESSAGE'] if item['SUBJECT'] != None and item[
+                            'ENQ_MESSAGE'] != None else item['SUBJECT']
+                        # requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
+                        item2.requirement = requirement.replace('<b>', '\n')
+                        item2.requirement_indiamart_unique = requirement.replace('<b>', '\n')[:115]
+                        try:
+                            item2.save()
+                            fp = Follow_up_section()
+                            fp.lead_id = Lead.objects.get(id=item2.pk)
+                            fp.save()
+                        except Exception as e:
+                            # error_exist = True
+                            error_exist = False
+                            # error2 = e
+                            print('error2')
+                            print(error2)
+                    except Exception as e:
+                        # error_exist = True
+                        error_exist = False
+                        error = e
+                        print('e')
+                        print(e)
+
+                obj = IndiamartLeadDetails()
+                obj.from_date = time.strftime("%Y-%m-%d", conv)
+                obj.to_date = time.strftime("%Y-%m-%d", conv2)
+                obj.lead_count = lead_count
+                try:
+                    obj.save()
+                    return redirect('/lead_home/?success=true&lead_count='+obj.lead_count)
+
+                except:
+                    print("error")
+            elif (lead_count < 0):
+                row_count = response
+                if (row_count != None):
+                    error = row_count
+                    error_exist = True
+                    print('error_exist')
+                    print(error)
+                    context23 = {
+                        'error': error,
+                        'error2': error2,
+                        'error_exist': error_exist,
+                    }
+                    context.update(context23)
 
 
 

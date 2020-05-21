@@ -21,6 +21,7 @@ class Lead(models.Model):
     date_of_initiation = models.DateTimeField(default=timezone.now,)
     channel = models.CharField(max_length=50,null=True,blank=True)
     requirement = models.TextField(null=True,blank=True)
+    requirement_indiamart_unique = models.CharField(max_length=120,null=True,blank=True)
     lost_reason = models.CharField(blank= True, null=True, max_length=180)
     postponed_reason = models.CharField(blank= True, null=True, max_length=180)
     upload_requirement_file = models.FileField(upload_to='lead_requirement_file/',null=True,blank=True)
@@ -39,8 +40,8 @@ class Lead(models.Model):
     def __int__(self):
         return self.id
 
-    # class Meta:
-    #     unique_together = ('customer_id','channel','current_stage')
+    class Meta:
+        unique_together = ('customer_id','channel','requirement_indiamart_unique','current_stage')
 
 class Pi_section(models.Model):
     lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
