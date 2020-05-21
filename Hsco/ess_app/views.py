@@ -1,10 +1,10 @@
 import calendar
 from datetime import datetime
+
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from user_app.models import SiteUser
-from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 
 from Hsco import settings
@@ -12,6 +12,11 @@ import requests
 import json
 from purchase_app.views import check_admin_roles
 from onsitevisit_app.models import Onsite_Feedback
+
+from email.mime.text import MIMEText
+from django.core.mail import send_mail, EmailMessage
+from lead_management.email_content import user
+
 from .models import Employee_Leave, Defects_Warning, Employee_Analysis_month
 from purchase_app.models import Feedback
 from repairing_app.models import Repairing_Feedback
@@ -61,7 +66,15 @@ def add_ess_details(request):
         item.warnings_given = warnings_given
 
         item.save()
-        send_mail('Feedback Form','Click on the link to give feedback' , settings.EMAIL_HOST_USER, [email_id])
+        msg = 'Click on the link to give feedback'
+        part1 = MIMEText(msg, 'plain')
+        part2 = MIMEText(user(request), 'html')
+        email_send = EmailMessage('Feedback Form',
+                                  '', settings.EMAIL_HOST_USER,
+                                  [email_id, ])
+        email_send.attach(part1)
+        email_send.attach(part2)
+        email_send.send()
 
         message = 'txt'
 

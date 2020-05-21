@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db import connection
 from django.http import HttpResponse
@@ -14,7 +15,9 @@ from django.db.models import Sum
 from ess_app.models import Employee_Analysis_date
 from django.contrib.auth.decorators import login_required
 from customer_app.models import Log, sub_sub_model
-
+from email.mime.text import MIMEText
+from django.core.mail import send_mail, EmailMessage
+from lead_management.email_content import user
 from customer_app.models import type_purchase,main_model,sub_model,sub_sub_model
 
 from ess_app.models import Defects_Warning
@@ -568,22 +571,27 @@ def quick_purchase_entry(request):
             ead.year = datetime.now().year
             ead.save()
 
-        if sub_sub_model != '':
-            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                                  sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
 
-            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
-                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
-                        GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
-                        quantity=F("quantity") - quantity)
-        elif sub_model != '':
-            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                                  sub_category__name=sub_model, sub_sub_category__name=None)
-            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
-                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
-                        GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
-                        quantity=F("quantity") - quantity)
 
+        try:
+            if sub_sub_model != '':
+                product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                 sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+
+                if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
+                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity:
+                        GodownProduct.objects.filter(godown_id=godown, product_id=product_id).update(
+                            quantity=F("quantity") - quantity)
+            elif sub_model != '':
+                product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                 sub_category__name=sub_model, sub_sub_category__name=None)
+                if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
+                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity:
+                        GodownProduct.objects.filter(godown_id=godown, product_id=product_id).update(
+                            quantity=F("quantity") - quantity)
+        except:
+            messages.success(request, "Selected Product does not exist in product master !!!")
+            return redirect('/quick_purchase_entry/' )
         item.save()
 
         if is_last_product_yes == 'yes':
@@ -1063,6 +1071,12 @@ def add_product_details(request,id):
     except:
         dispatch_id_assigned=None
     form = Product_Details_Form(request.POST or None)
+    context = {
+        'form': form,
+        'purchase_id': purchase_id,
+        'godowns': godowns,
+        'type_purchase': type_of_purchase_list,  # 2
+    }
     if request.method == 'POST':
         quantity = float(request.POST.get('quantity'))
         model_of_purchase = request.POST.get('model_of_purchase')
@@ -1099,23 +1113,26 @@ def add_product_details(request,id):
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.log_entered_by = request.user.name
         item.godown_id = Godown.objects.get(id=godown)
+        try:
+            if sub_sub_model != '':
+                product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                      sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
 
-        if sub_sub_model != '':
-            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                                  sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+                if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
+                        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
+                            GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                            quantity=F("quantity") - quantity)
 
-            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
-                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
-                        GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
-                        quantity=F("quantity") - quantity)
-
-        elif sub_model != '':
-            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                                  sub_category__name=sub_model, sub_sub_category__name=None)
-            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
-                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
-                        GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
-                        quantity=F("quantity") - quantity)
+            elif sub_model != '':
+                product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                      sub_category__name=sub_model, sub_sub_category__name=None)
+                if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
+                        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
+                            GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                            quantity=F("quantity") - quantity)
+        except:
+            messages.success(request, "Selected Product does not exist in product master !!!")
+            return redirect('/add_product_details/' + str(purchase_id))
         item.save()
 
         if is_last_product_yes == 'yes':
@@ -1316,12 +1333,7 @@ def add_product_details(request,id):
             return redirect('/add_product_details/'+str(purchase_id))
 
 
-    context = {
-        'form': form,
-        'purchase_id': purchase_id,
-        'godowns': godowns,
-        'type_purchase': type_of_purchase_list,  #2
-    }
+
     try:
         default_godown = Godown.objects.get(default_godown_purchase=True)
         context1={

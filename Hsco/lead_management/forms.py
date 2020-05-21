@@ -174,7 +174,7 @@ class Deal_detailForm(forms.ModelForm):
 
 
 
-    requirement = forms.CharField(max_length=80, required=True,
+    requirement = forms.CharField(required=True,
                                     widget=forms.Textarea(
                                         attrs={
                                             'type': 'text',

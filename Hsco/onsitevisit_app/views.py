@@ -7,7 +7,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from _datetime import datetime
 from django.contrib.auth.decorators import login_required
-
+from email.mime.text import MIMEText
+from django.core.mail import send_mail, EmailMessage
+from lead_management.email_content import user
 from customer_app.models import Customer_Details, Log
 from customer_app.models import type_purchase
 
