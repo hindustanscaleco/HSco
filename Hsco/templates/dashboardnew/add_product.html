@@ -490,6 +490,8 @@ color:;
 
             document.getElementById("amount").value = total;
 }
+// create an interval calling the specified function every 10 seconds.
+setInterval('total_product_amount()',3000);
   </script>
 <script>
  function choice1(select) {
@@ -557,6 +559,21 @@ $("#model_of_purchase").val(select.options[select.selectedIndex].text);
 function choice_sub_model(select) {
 $("#sub_model").val(select.options[select.selectedIndex].text);
      //alert(select.options[select.selectedIndex].value);
+     $.ajax({                       // initialize an AJAX request
+        url: "/get_product_details/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'model_of_purchase': $('#model_of_purchase').val(),     // add the country id to the GET parameters
+          'type_of_scale': $("#type_of_scale").val(),      // add the country id to the GET parameters
+          'sub_model': select.options[select.selectedIndex].value,       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+
+    $("#product_details").html(data);
+
+
+        }
+      });
+
     $.ajax({                       // initialize an AJAX request
         url: "/load_sub_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
         data: {
@@ -579,6 +596,8 @@ $("#sub_model").val(select.options[select.selectedIndex].text);
 
         }
       });
+
+
 }
 
 function choice_sub_sub_model(select) {
