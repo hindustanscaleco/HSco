@@ -65,6 +65,8 @@
                 </div>
               </div>
             </div>
+
+
                   <div class="col-xl-7 col-md-9 mb-9 ">
 
 
@@ -91,9 +93,17 @@
 
                 </div>
 
-            {% if err %}
+            {% if added_product %}
                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Nothing Found!!!</strong>
+  <strong>Product Added</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+            {% endif %}
+            {% if not_added_product %}
+                       <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Product Not Added</strong> Error: {{msg}}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>

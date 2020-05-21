@@ -9,11 +9,33 @@ from .models import Godown, GodownProduct, RequestedProducts, GoodsRequest, Prod
 from user_app.models import SiteUser
 from customer_app.models import sub_model, main_model, sub_sub_model, type_purchase
 
+
 def product_master_list(request):
+    context={}
     product_list = Product.objects.all().order_by('-id')
-    context={
+    if request.method == 'GET' and 'success' in request.GET:
+        if request.GET['success']== 'true':
+            context22={
+                'added_product':True,
+            }
+            context.update(context22)
+        elif request.GET['success']== 'false':
+            if 'msg' in request.GET:
+                context22 = {
+                    'not_added_product': True,
+                    'msg': request.GET['msg'],
+                }
+                context.update(context22)
+            else:
+                context22={
+                    'not_added_product':True,
+                }
+                context.update(context22)
+
+    context25={
         'product_list': product_list,
     }
+    context.update(context25)
     return render(request, 'stock_management_system/product_master_list.html',context)
 
 def update_product_master(request,update_id):
@@ -49,13 +71,13 @@ def update_product_master(request,update_id):
         fol_pro.cost_price = cost_price
         fol_pro.selling_price = selling_price
         fol_pro.carton_size = carton_size
-        # fol_pro.product_image = product_image
-        # fol_pro.product_brochure = product_brochure
-        # fol_pro.product_document = product_document
+        fol_pro.product_image = product_image
+        fol_pro.product_brochure = product_brochure
+        fol_pro.product_document = product_document
 
         fol_pro.save(update_fields=['main_category','sub_category','sub_sub_category','hsn_code','max_capacity','accuracy','platform_size',
-                                    'product_desc','cost_price','selling_price','carton_size',])
-                                    # 'product_desc','cost_price','selling_price','carton_size','log_entered_by','product_image','product_brochure','product_document',])
+                                    # 'product_desc','cost_price','selling_price','carton_size',])
+                                    'product_desc','cost_price','selling_price','carton_size','product_image','product_brochure','product_document',])
         return redirect('/product_master_list/')
     context={
         'product_obj':product_obj,
@@ -66,8 +88,10 @@ def update_product_master(request,update_id):
 def add_product_master(request):
     type_of_purchase_list = type_purchase.objects.all()
     context = {}
+
     if request.method == 'POST' or request.method == 'FILES' :
         if 'scale_type' in request.POST and 'send_submit' not in request.POST:
+
             is_last_product_yes = request.POST.get('is_last_product_yes')
             scale_type = request.POST.get('scale_type')
             main_category = request.POST.get('main_category')
@@ -85,7 +109,7 @@ def add_product_master(request):
             product_brochure = request.FILES.get('product_brochure')
             product_document = request.FILES.get('product_document')
 
-            if request.POST.get('sub_sub_category') != None and request.POST.get('sub_sub_category') !='' and len(sub_sub_category) > 2:
+            if request.POST.get('sub_sub_category') != None and request.POST.get('sub_sub_category') !='' and len(sub_sub_category) > 0:
 
                 if Product.objects.filter(scale_type__id=request.POST.get('scale_type'), main_category__id=request.POST.get('main_category'),
                                              sub_category__id=request.POST.get('sub_category'), sub_sub_category__id=request.POST.get('sub_sub_category')).count()>0:
@@ -113,14 +137,18 @@ def add_product_master(request):
                     fol_pro.product_document = product_document
                     fol_pro.log_entered_by = request.user.name
 
-                    fol_pro.save()
+                    try:
+                        fol_pro.save()
+                        if is_last_product_yes == 'yes':
+                            return redirect('/product_master_list/?success=true')
+                    except Exception as e:
+                        if is_last_product_yes == 'yes':
+                            return redirect('/product_master_list/?success=false&?msg='+str(e))
+                    # elif is_last_product_yes == 'no':
+                    #     return redirect('/add_product_master/')
 
-                    if is_last_product_yes == 'yes':
-                        return redirect('/product_master_list/')
-                    elif is_last_product_yes == 'no':
-                        return redirect('/add_product_master/')
+            if request.POST.get('sub_sub_category') == None or request.POST.get('sub_sub_category') ==''  or len(sub_sub_category) < 1:
 
-            if request.POST.get('sub_sub_category') == None or request.POST.get('sub_sub_category') ==''  and len(sub_sub_category) < 2:
                 if Product.objects.filter(scale_type__id=request.POST.get('scale_type'), main_category__id=request.POST.get('main_category'),
                                              sub_category__id=request.POST.get('sub_category')).count()>0:
                     context2={
@@ -147,13 +175,17 @@ def add_product_master(request):
                     fol_pro.product_brochure = product_brochure
                     fol_pro.product_document = product_document
                     fol_pro.log_entered_by = request.user.name
+                    try:
+                        fol_pro.save()
+                        if is_last_product_yes == 'yes':
+                            return redirect('/product_master_list/?success=true')
+                    except Exception as e:
+                        if is_last_product_yes == 'yes':
+                            return redirect('/product_master_list/?success=false&?msg='+str(e))
 
-                    fol_pro.save()
 
-                    if is_last_product_yes == 'yes':
-                        return redirect('/product_master_list/')
-                    elif is_last_product_yes == 'no':
-                        return redirect('/add_product_master/')
+                    # elif is_last_product_yes == 'no':
+                    #     return redirect('/add_product_master/')
 
 
         if 'send_submit' in request.POST:
@@ -170,11 +202,6 @@ def add_product_master(request):
             sub_category = sub_category if len(sub_category)>1 else sub_category_d if sub_category_d!=None and sub_category_d !='' else None
             sub_sub_category = sub_sub_category if len(sub_sub_category)>1 and sub_sub_category != None else None
 
-            print('ssssssssss')
-            print(scale_type)
-            print(main_category)
-            print(sub_category)
-            print(sub_sub_category)
 
             try:
                 type=type_purchase.objects.filter(Q(id = scale_type))
@@ -280,6 +307,7 @@ def add_product_master(request):
 
     context22={
         'type_purchase':type_of_purchase_list,
+
     }
     context.update(context22)
     return render(request,'stock_management_system/add_product_master.html',context)

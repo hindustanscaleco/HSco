@@ -737,9 +737,12 @@ function isOneChecked() {
     // If you have more than one radio group, also check the name attribute
     // for the one you want as in && chx[i].name == 'choose'
     // Return true from the function on first match of a checked item
-    if (chx[i].type == 'radio' && chx[i].checked) {
+    if (chx[i].type == 'radio' && chx[i].checked && chx[i].value == 'yes') {
     alert("Are you sure it's last product?\n you will not be able to add product again.");
       return true;
+    }
+    if (chx[i].type == 'radio' && chx[i].checked && chx[i].value == 'no') {
+    return true;
     }
   }
   // End of the loop, return false
