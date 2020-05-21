@@ -2008,19 +2008,30 @@ def stock_does_not_exist(request):
 def get_product_details(request):
     model_of_purchase = request.GET.get('model_of_purchase')
     type_of_scale = request.GET.get('type_of_scale')
-    sub_model = request.GET.get('sub_model')
+    sub_model_var = request.GET.get('sub_model')
     sub_sub_model_var = request.GET.get('sub_sub_model')
 
-    sub_sub_model_var = sub_sub_model.objects.filter(id=sub_sub_model_var).first()
 
     context={}
-    if sub_sub_model != '':
+
+    if sub_sub_model_var != '' and sub_sub_model_var != None  and sub_model_var != 'None':
+        sub_sub_model_var = sub_sub_model.objects.filter(id=sub_sub_model_var).first()
+
         product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                         sub_category__name=sub_model, sub_sub_category__name=sub_sub_model_var)
+                                         sub_category__name=sub_model_var, sub_sub_category__name=sub_sub_model_var)
         context1={
             'product_id' : product_id,
         }
         context.update(context1)
+    elif sub_model_var != '' and sub_model_var != None  and sub_model_var != 'None':
+        sub_model_var = sub_model.objects.filter(id=sub_model_var).first()
+
+        product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                         sub_category__name=sub_model_var, sub_sub_category__name=None)
+        context2={
+            'product_id' : product_id,
+        }
+        context.update(context2)
     return render(request, 'AJAX/get_product_details.html',context)
 
 
