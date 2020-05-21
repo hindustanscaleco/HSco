@@ -1,4 +1,5 @@
-text_content = ''' <html><body>
+def user(request):
+    text_content = ''' <html><body>
                
                <p>
 In case of any queries, please feel free to call us on the below numbers or visit our website at <br>
@@ -8,9 +9,9 @@ In case of any queries, please feel free to call us on the below numbers or visi
 Thanks and Regards<br>
 <br>
 
-Vaibhav Arde<br>
+'''+str(request.user.profile_name )+'''<br>
 
-+91-7045922254<br>
++91-'''+str( request.user.mobile )+'''<br>
 <br>
  
 
@@ -47,3 +48,4 @@ Feedback & Complaints - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+91-7045922252<br>
 
 
          </body></html>'''
+    return text_content

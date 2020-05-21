@@ -8,7 +8,9 @@ from django.utils import timezone
 from user_app.models import SiteUser
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-
+from email.mime.text import MIMEText
+from django.core.mail import send_mail, EmailMessage
+from lead_management.email_content import user
 from customer_app.models import Customer_Details
 
 from purchase_app.views import check_admin_roles
@@ -566,15 +568,19 @@ def repair_product(request,id):
             # if Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).count() > 0:
             # crm_no = Customer_Details.objects.filter(Q(customer_name=customer_name),Q(contact_no=contact_no)).first()
             try:
-                send_mail('HSCo',
-                          ' Dear ' + item.customer_name + ',Thank you for selecting HSCo. Your Scales have been successfully received at our repairing center.'
-                                                         'Your Repairing No is' + str(
+                msg = ' Dear ' + item.customer_name + ',Thank you for selecting HSCo. Your Scales have been successfully received at our repairing center.Your Repairing No is' + str(
                               rep.repairing_no) + '.Please ' \
                                                   'use this Unique ID for further communication.\n' \
                                                   'For any further details please contact our customer service team on 7045922251:\n ' \
-                                                  ' Product Details: \n' + product_list,
-                          settings.EMAIL_HOST_USER,
-                          [item.company_email, ])
+                                                  ' Product Details: \n' + product_list
+                email_send = EmailMessage('HSCo',
+                                          '', settings.EMAIL_HOST_USER,
+                                          [item.company_email, ])
+                part1 = MIMEText(msg, 'plain')
+                part2 = MIMEText(user(request), 'html')
+                email_send.attach(part1)
+                email_send.attach(part2)
+                email_send.send()
             except:
                 pass
 
@@ -752,9 +758,14 @@ def update_repairing_details(request,id):
                 msg='Dear '+customer_name+',Thank you for selecting HSCo. The Estimate for Your ' \
                     'Repairing No '+str(repair_id.repairing_no)+' is  '+str(repair_id.total_cost)+'.\n For any further details please contact our customer ' \
                     'service team on 7045922251. \n Estimate Details:'+product_list
-                send_mail('Feedback Form',msg
-                          , settings.EMAIL_HOST_USER,
-                          [item.customer_email_id,])
+                email_send = EmailMessage('Feedback Form',
+                                          '', settings.EMAIL_HOST_USER,
+                                          [item.customer_email_id, ])
+                part1 = MIMEText(msg, 'plain')
+                part2 = MIMEText(user(request), 'html')
+                email_send.attach(part1)
+                email_send.attach(part2)
+                email_send.send()
             except:
                 pass
 
@@ -795,11 +806,15 @@ def update_repairing_details(request,id):
             repair_id.save(update_fields=['repaired'])
 
             try:
-                send_mail('Repairing Done - HSCo',
-                          ' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.repairing_no)+' is resolved.'
-                          ' Please collect your Scales within the next 3 days.Consider this as your final reminder.For any further details please contact '
-                          'our customer service team on 7045922251', settings.EMAIL_HOST_USER,
-                          [item.customer_email_id,])
+                msg = ' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.repairing_no)+' is resolved.Please collect your Scales within the next 3 days.Consider this as your final reminder.For any further details please contact our customer service team on 7045922251'
+                email_send = EmailMessage('Repairing Done - HSCo',
+                                          '', settings.EMAIL_HOST_USER,
+                                          [item.customer_email_id, ])
+                part1 = MIMEText(msg, 'plain')
+                part2 = MIMEText(user(request), 'html')
+                email_send.attach(part1)
+                email_send.attach(part2)
+                email_send.send()
             except:
                 pass
 
@@ -838,14 +853,20 @@ def update_repairing_details(request,id):
                 repair_id.save(update_fields=['fifth_stage_timedate', ])
 
                 try:
-                    send_mail('Scale Collected - HSCo',
-                              ' Dear ' + customer_name + ',Thank you for selecting HSCo. Your Scale with Repairing No ' + str(
+                    msg = ' Dear ' + customer_name + ',Thank you for selecting HSCo. Your Scale with Repairing No ' + str(
                                   repair_id.repairing_no) + ' has been ' \
                           'Successfully Collected. We hope that your Repairing Complaint was resolved to your satisfaction. WE\'d love ' \
                           'to hear your feedback to help us improve our customer experience,just click on the link below:\n ' \
                                                   ' http://139.59.76.87/feedback_repairing/'+ str(request.user.pk) + '/' + str(repair_id.crm_no.pk) + '/' + str(repair_id.id)+'\n If you ' \
-                          'feel that your complaint has not been resolved please contact our customer service team on 7045922251', settings.EMAIL_HOST_USER,
-                              [item.customer_email_id,])
+                          'feel that your complaint has not been resolved please contact our customer service team on 7045922251'
+                    email_send = EmailMessage('Scale Collected - HSCo',
+                                              '', settings.EMAIL_HOST_USER,
+                                              [item.customer_email_id, ])
+                    part1 = MIMEText(msg, 'plain')
+                    part2 = MIMEText(user(request), 'html')
+                    email_send.attach(part1)
+                    email_send.attach(part2)
+                    email_send.send()
                 except:
                     pass
                 #
@@ -1909,12 +1930,12 @@ def send_sms(request,name,phone,email,repair_id,item_id):
     phone =phone
     email = email
     id = repair_id
-
     import requests
     import json
 
+
     mobile = '+91'+phone  # 9766323877'
-    user = 'HSCo'
+    user_hsco = 'HSCo'
     senderid = 'HSCALE'
     repair_id = Repairing_after_sales_service.objects.get(id=id).repairing_no
     api = 'PF8MzCBOGTopfpYFlSZT'
@@ -1924,8 +1945,17 @@ def send_sms(request,name,phone,email,repair_id,item_id):
                   ' For any further details please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(scale_sub_sms_count=F("scale_sub_sms_count")+1)
         try:
-            send_mail('Scale Submit - HSCo', message, settings.EMAIL_HOST_USER,[email,])
-        except:
+            from lead_management.email_content import user
+            email_send = EmailMessage('Scale Submit - HSCo',
+                                      '', settings.EMAIL_HOST_USER,
+                                      [email,])
+            part1 = MIMEText(message, 'plain')
+            part2 = MIMEText( user(request), 'html')
+            email_send.attach(part1)
+            email_send.attach(part2)
+            email_send.send()
+        except Exception as e:
+            print(e)
             pass
     elif msg_id == '2':
         rep_id = Repairing_after_sales_service.objects.get(id=id)
@@ -1934,8 +1964,15 @@ def send_sms(request,name,phone,email,repair_id,item_id):
                   'customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(estimate_informed_sms_count=F("estimate_informed_sms_count") + 1)
         try:
-            send_mail('Reparing Estimate - HSCo',  message, settings.EMAIL_HOST_USER, [email,])
-
+            from lead_management.email_content import user
+            email_send = EmailMessage('Reparing Estimate - HSCo',
+                                      '', settings.EMAIL_HOST_USER,
+                                      [email, ])
+            part1 = MIMEText(message, 'plain')
+            part2 = MIMEText( user(request), 'html')
+            email_send.attach(part1)
+            email_send.attach(part2)
+            email_send.send()
         except:
             pass
     elif msg_id == '3':
@@ -1943,7 +1980,15 @@ def send_sms(request,name,phone,email,repair_id,item_id):
                   ' Please collect your Scales within the next 3 days. Consider this as your final reminder.For any further details please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(reparing_done_sms_count=F("reparing_done_sms_count") + 1)
         try:
-            send_mail('Reparing done - HSCo', message, settings.EMAIL_HOST_USER, [email,])
+            from lead_management.email_content import user
+            email_send = EmailMessage('Reparing done- HSCo',
+                                      '', settings.EMAIL_HOST_USER,
+                                      [email, ])
+            part1 = MIMEText(message, 'plain')
+            part2 = MIMEText(user(request), 'html')
+            email_send.attach(part1)
+            email_send.attach(part2)
+            email_send.send()
         except:
             pass
     elif msg_id == '4':
@@ -1954,7 +1999,15 @@ def send_sms(request,name,phone,email,repair_id,item_id):
                   'contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(late_mark_sms_count=F("late_mark_sms_count") + 1)
         try:
-            send_mail('Late Mark - HSCo', message, settings.EMAIL_HOST_USER, [email,])
+            from lead_management.email_content import user
+            email_send = EmailMessage('Late Mark - HSCo',
+                                      '', settings.EMAIL_HOST_USER,
+                                      [email, ])
+            part1 = MIMEText(message, 'plain')
+            part2 = MIMEText(user(request), 'html')
+            email_send.attach(part1)
+            email_send.attach(part2)
+            email_send.send()
         except:
             pass
     elif msg_id == '5':
@@ -1966,12 +2019,20 @@ def send_sms(request,name,phone,email,repair_id,item_id):
         + '/' + str(rep_id.pk) + '\n ' +'Contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(final_del_sms_count=F("final_del_sms_count") + 1)
         try:
-            send_mail('Scale Collected - HSCo', message, settings.EMAIL_HOST_USER, [email,])
+            from lead_management.email_content import user
+            email_send = EmailMessage('Scale Collected - HSCo',
+                                      '', settings.EMAIL_HOST_USER,
+                                      [email, ])
+            part1 = MIMEText(message, 'plain')
+            part2 = MIMEText(user(request), 'html')
+            email_send.attach(part1)
+            email_send.attach(part2)
+            email_send.send()
         except:
             pass
 
 
-    url = "http://smshorizon.co.in/api/sendsms.php?user=" + user + "&apikey=" + api + "&mobile=" + mobile + "&message=" + message + "&senderid=" + senderid + "&type=txt"
+    url = "http://smshorizon.co.in/api/sendsms.php?user=" + user_hsco + "&apikey=" + api + "&mobile=" + mobile + "&message=" + message + "&senderid=" + senderid + "&type=txt"
     payload = ""
     headers = {'content-type': 'application/x-www-form-urlencoded'}
 

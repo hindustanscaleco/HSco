@@ -316,6 +316,7 @@ def create_employee(request):
         salary_slip = request.FILES.get('salary_slip')
         upload_pancard = request.FILES.get('upload_pancard')
         upload_aadhar_card = request.FILES.get('upload_aadhar_card')
+
         item = SiteUser()
 
         item.mobile = mobile
@@ -379,7 +380,6 @@ def assign_man_to_admin(request):
         item.group=group+SiteUser.objects.get(role='Super Admin')
 
         item.save(update_fields=['group',])
-    print(admin_list)
     context = {
         'admin_list': admin_list,
         'manager_list': manager_list,

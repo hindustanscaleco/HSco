@@ -18,7 +18,8 @@ from Hsco import settings
 from user_app.models import SiteUser
 from customer_app.models import Log
 
-from lead_management.email_content import text_content
+
+from lead_management.email_content import user
 from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm, Follow_up_sectionForm, History_followupForm, Payment_detailsForm
 from .form2 import Customer_detail_disabledForm
 from customer_app.models import Customer_Details
@@ -41,6 +42,7 @@ from django.contrib import messages
 from stock_management_system_app.models import Godown,GodownProduct
 
 
+@login_required(login_url='/')
 def lead_home(request):
     import requests
     import json
@@ -1192,6 +1194,7 @@ def lead_home(request):
 
     return render(request,'lead_management/lead_home.html',context)
 
+@login_required(login_url='/')
 def add_lead(request):
     users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',)
     under_admin_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',admin__icontains=request.user.profile_name)
@@ -1299,6 +1302,7 @@ def add_lead(request):
     }
     return render(request, 'lead_management/add_lead.html',context)
 
+@login_required(login_url='/')
 def update_view_lead(request,id):
     lead_id = Lead.objects.get(id=id)
     users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module')& ~Q(profile_name=lead_id.owner_of_opportunity.profile_name))
@@ -1813,7 +1817,7 @@ def update_view_lead(request,id):
             email_send = EmailMessage('PI - HSCo ', '',
                                       settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
             part1 = MIMEText(text, 'plain')
-            part2 = MIMEText(text_content, 'html')
+            part2 = MIMEText(user(request), 'html')
             email_send.attach(part1)
             email_send.attach(part2)
             email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
@@ -2050,7 +2054,7 @@ def update_view_lead(request,id):
                     email_send = EmailMessage('PI - HSCo ','',
                                               settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
                     part1 = MIMEText(text, 'plain')
-                    part2 = MIMEText(text_content, 'html')
+                    part2 = MIMEText(user(request), 'html')
                     email_send.attach(part1)
                     email_send.attach(part2)
                     email_send.attach_file(history.pi_history_file.path)
@@ -2070,7 +2074,7 @@ def update_view_lead(request,id):
                                               '',
                                               settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
                     part1 = MIMEText(text, 'plain')
-                    part2 = MIMEText(text_content, 'html')
+                    part2 = MIMEText(user(request), 'html')
                     email_send.attach(part1)
                     email_send.attach(part2)
                     email_send.attach_file(history.pi_history_file.path)
@@ -2767,6 +2771,7 @@ td {
     return render(request, 'lead_management/update_view_lead.html',context)
 
 
+@login_required(login_url='/')
 def del_all_sessions(request):
     try:
         del request.session['expand_customer']
@@ -2789,13 +2794,16 @@ def del_all_sessions(request):
     except:
         pass
 
+@login_required(login_url='/')
 def load_wa(wa_no,wa_msg,sms_content):
     return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
+@login_required(login_url='/')
 def lead_report(request):
 
     return render(request,'lead_management/report_lead.html')
 
+@login_required(login_url='/')
 def report_2(request):
     try:
         del request.session['start_date']
@@ -2838,6 +2846,7 @@ def report_2(request):
         return redirect('/final_lead_report_test/')
     return render(request,'lead_management/report_2.html')
 
+@login_required(login_url='/')
 def final_lead_report(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
@@ -3096,6 +3105,7 @@ def final_lead_report(request):
     }
     return render(request,"report/final_lead_report.html",context)
 
+@login_required(login_url='/')
 def final_lead_report_test(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
@@ -3332,6 +3342,7 @@ def final_lead_report_test(request):
     return render(request,"report/final_lead_report_test.html",context)
 
 
+@login_required(login_url='/')
 def select_product_followup(request,id):
     type_of_purchase_list =type_purchase.objects.all() #1
     lead_id = Lead.objects.get(id=id)
@@ -3348,9 +3359,14 @@ def select_product_followup(request,id):
             sub_sub_model_str = request.POST.get('sub_sub_model')
             try:
                 if (sub_sub_model_str == None or sub_sub_model_str == ""):
+                    print('first')
                     product_avail = Product.objects.get(scale_type__id=type_purchase.objects.get(id=type_of_scale_str).id, main_category__id=main_model.objects.get(id=model_of_purchase_str).id,
-                                                 sub_category__id=sub_model.objects.get(id=sub_model_str).id)
-                else:
+                                                 sub_category__id=sub_model.objects.get(id=sub_model_str).id, sub_sub_category=None)
+                    print(product_avail)
+                    print(product_avail)
+                    print(product_avail)
+                elif (sub_sub_model_str != None or sub_sub_model_str != ""):
+                    print('second')
                     product_avail = Product.objects.get(scale_type__id=type_purchase.objects.get(id=type_of_scale_str).id, main_category__id=main_model.objects.get(id=model_of_purchase_str).id,
                                                  sub_category__id=sub_model.objects.get(id=sub_model_str).id, sub_sub_category__id=sub_sub_model.objects.get(id=sub_sub_model_str).id)
                 requested_product = product_avail
@@ -3378,20 +3394,16 @@ def select_product_followup(request,id):
                     'product_avail': True,
                 }
                 context.update(context23)
-                if is_last_product_yes == 'yes':
-                    return redirect('/update_view_lead/' + str(id))
-                elif is_last_product_yes == 'no':
-                    return redirect('/select_product_followup/' + str(id))
+
             except Exception as e:
                 print(e)
-                print(e)
-                context23 = {
-                    'product_not_avail': True,
-                    'msg': str(e),
-                }
-                context.update(context23)
+                messages.success(request, "Selected Product does not exist in product master !!!")
 
-
+                return redirect('/select_product_followup/' + str(id))
+            if is_last_product_yes == 'yes':
+                return redirect('/update_view_lead/' + str(id))
+            elif is_last_product_yes == 'no':
+                return redirect('/select_product_followup/' + str(id))
 
     context2={
         'lead_id':lead_id,
@@ -3401,6 +3413,7 @@ def select_product_followup(request,id):
     context.update(context2)
     return render(request,'lead_management/select_product_followup.html', context)
 
+@login_required(login_url='/')
 def upload_requirement_hsc(request):
     context={}
     if request.method == 'POST' or request.method == 'FILES':
@@ -3409,6 +3422,7 @@ def upload_requirement_hsc(request):
         customer_email_id = request.POST.get('email_id')
 
         requirement = request.POST.get('requirement')
+        company_name = request.POST.get('company_name')
         upload_requirement_file = request.FILES.get('req_file')
 
         item2 = Lead()
@@ -3424,6 +3438,9 @@ def upload_requirement_hsc(request):
             if customer_email_id != '' and customer_email_id != None:
                 item3.customer_email_id = customer_email_id
                 item3.save(update_fields=['customer_email_id'])
+            if company_name != '' :
+                item3.company_name = company_name
+                item3.save(update_fields=['company_name'])
 
             item2.new_existing_customer = 'New'
 
@@ -3436,7 +3453,8 @@ def upload_requirement_hsc(request):
             new_cust.contact_no = contact_no
             if customer_email_id != '':
                 new_cust.customer_email_id = customer_email_id
-
+            if company_name != '' :
+                new_cust.company_name = company_name
             try:
                 new_cust.save()
                 item2.customer_id = Customer_Details.objects.get(id=new_cust.pk)
@@ -3503,6 +3521,7 @@ def upload_requirement_hsc(request):
     return render(request,'lead_management/upload_requirement_hsc.html',context)
 
 
+@login_required(login_url='/')
 def select_product(request,id):
     type_of_purchase_list =type_purchase.objects.all() #1
     lead_id = Lead.objects.get(id=id)
@@ -3536,12 +3555,22 @@ def select_product(request,id):
                 if quantity != 'None' or quantity != '':
                     item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
                 item.save()
-                if is_last_product_yes == 'yes':
-                    return redirect('/update_view_lead/' + str(id))
-                elif is_last_product_yes == 'no':
-                    return redirect('/select_product/' + str(id))
+            elif (sub_category != None and sub_category != ""):
+                item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
+                                                      sub_category=sub_category, sub_sub_category=None)
+                item.lead_id = Lead.objects.get(id=lead_id)
+                item.quantity = quantity
+                item.pf = pf
+                item.log_entered_by = request.user.name
+                if quantity != 'None' or quantity != '':
+                    item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
+                item.save()
+            if is_last_product_yes == 'yes':
+                return redirect('/update_view_lead/' + str(id))
+            elif is_last_product_yes == 'no':
+                return redirect('/select_product/' + str(id))
         except:
-            msg = "Selected Product does not exist!!!"
+            msg = "Selected Product does not exist in product master !!!"
             context1={
                 'msg':msg,
             }
@@ -3560,6 +3589,7 @@ def select_product(request,id):
     context.update(context2)
     return render(request, 'lead_management/select_product.html', context)
 
+@login_required(login_url='/')
 def lead_manager_view(request):
     loggedin_user = SiteUser.objects.get(id=request.user.id).name
     u_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__admin=loggedin_user).values_list("lead_id__owner_of_opportunity").distinct()
@@ -3596,6 +3626,7 @@ def lead_manager_view(request):
     return render(request,'lead_management/lead_manager.html',context)
 
 
+@login_required(login_url='/')
 def lead_follow_up_histroy(request,follow_up_id):
     context={}
     obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
@@ -3626,6 +3657,7 @@ def lead_follow_up_histroy(request,follow_up_id):
 
     return render(request,'lead_management/follow_up_history.html',context)
 
+@login_required(login_url='/')
 def pi_section_history(request,id):
     try:
         lead_id = Lead.objects.get(id=id)
@@ -3642,6 +3674,7 @@ def pi_section_history(request,id):
         pass
     return render(request,'lead_management/lead_history.html',context)
 
+@login_required(login_url='/')
 def lead_delete_product(request,id):
     leads = Pi_product.objects.filter(lead_id=id).order_by('-id')
     if request.method == 'POST' or request.method=='FILES':
@@ -3659,6 +3692,7 @@ def lead_delete_product(request,id):
     }
     return render(request,'lead_management/lead_delete_product.html',context)
 
+@login_required(login_url='/')
 def followup_delete_product(request,id):
     followup_products_list = Followup_product.objects.filter(lead_id=id)
     if request.method == 'POST' :
@@ -3676,6 +3710,7 @@ def followup_delete_product(request,id):
     }
     return render(request,'lead_management/followup_delete_product.html',context)
 
+@login_required(login_url='/')
 def lead_analytics(request):
     try:
         highest_lead_day_list = Pi_section.objects.filter().values('entry_timedate').order_by('entry_timedate').annotate(data_sum=Sum('grand_total'))
@@ -4001,6 +4036,7 @@ def lead_analytics(request):
 
     return render(request,'lead_management/lead_analytics.html',context)
 
+@login_required(login_url='/')
 def lead_employee_graph(request,id):
     lead_conversion = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',lead_id__owner_of_opportunity=SiteUser.objects.get(id=id),entry_timedate__month=datetime.now().month)\
             .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
@@ -4090,21 +4126,25 @@ def lead_employee_graph(request,id):
 
     return render(request,'lead_management/lead_employee_graph.html', context)
 
+@login_required(login_url='/')
 def lead_pi_form(request):
     return render(request,'lead_management/lead_pi_form.html')
 
+@login_required(login_url='/')
 def alpha_pi_form(request):
     return render(request,'lead_management/alpha_pi_template.html')
 
 
 
 
+@login_required(login_url='/')
 def download_pi_image(request):
     return render(request,'lead_management/download_pi_image.html')
 
 
 
 
+@login_required(login_url='/')
 def lead_logs(request):
     lead_logs = Log.objects.filter(module_name='Lead Module').order_by('-id')
     paginator = Paginator(lead_logs, 15)  # Show 25 contacts per page
@@ -4588,6 +4628,7 @@ def Payment_details_handler(sender, instance, update_fields=None, **kwargs):
         pass
 
 
+@login_required(login_url='/')
 def download_pi_image(request,id):
     lead_id = Lead.objects.get(id=id)
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
@@ -4630,6 +4671,7 @@ def link_callback(uri, rel):
     return path
 
 
+@login_required(login_url='/')
 def download_pi_pdf(request,id,download):
     lead_id=Lead.objects.get(id=id)
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
@@ -4668,6 +4710,7 @@ def download_pi_pdf(request,id,download):
 
     return render(request,'lead_management/download_pi_pdf.html',context)
 
+@login_required(login_url='/')
 def download_pi_second_pdf(request,id,download):
     lead_id=Lead.objects.get(id=id)
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))

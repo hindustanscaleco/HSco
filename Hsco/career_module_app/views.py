@@ -1,9 +1,13 @@
-from django.core.mail import send_mail
+from email.mime.text import MIMEText
+
+from django.core.mail import send_mail, EmailMessage
 
 from Hsco import settings
 from django.core.paginator import Paginator
 from django.db.models import Sum, Count, Q
 from django.shortcuts import render, redirect
+
+from lead_management.email_content import user
 from .forms import Career_moduleForm, EducationForm, WorkExpForm
 from .models import Career_module, EducationalDetails, WorkExperience, Position
 from datetime import datetime
@@ -375,10 +379,14 @@ def career_module_form(request):
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
-
-            send_mail('HSCo - Career, Form Submitted Successfully!!! ',
-                      msg, settings.EMAIL_HOST_USER,
+            email_send = EmailMessage('HSCo - Career, Form Submitted Successfully!!! ',
+                                      '', settings.EMAIL_HOST_USER,
                       [candidate_email, ])
+            part1 = MIMEText(msg, 'plain')
+            part2 = MIMEText(user(request), 'html')
+            email_send.attach(part1)
+            email_send.attach(part2)
+            email_send.send()
         except:
             print("exception occured!!")
             pass
@@ -528,9 +536,14 @@ def career_module_form_hsc(request):
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
 
-            send_mail('HSCo - Career, Form Submitted Successfully!!! ',
-                      msg, settings.EMAIL_HOST_USER,
-                      [candidate_email, ])
+            email_send = EmailMessage('HSCo - Career, Form Submitted Successfully!!! ',
+                                      '', settings.EMAIL_HOST_USER,
+                                      [candidate_email, ])
+            part1 = MIMEText(msg, 'plain')
+            part2 = MIMEText(user(request), 'html')
+            email_send.attach(part1)
+            email_send.attach(part2)
+            email_send.send()
         except:
             print("exception occured!!")
             pass

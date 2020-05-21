@@ -166,6 +166,28 @@ color:;
          <!-- Page Heading -->
             <h1 class="h3 mb-0 text-gray-800"> Add Product</h1>
 </center>
+            {% if msg %}
+
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> {{msg}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+            {% if messages %}
+
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {% for message in messages %}
+
+  <strong>Error : </strong> {{ message }}
+                         {% endfor %}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+{% endif %}
 <br>
 <br>
             <div id="rec_data"></div>

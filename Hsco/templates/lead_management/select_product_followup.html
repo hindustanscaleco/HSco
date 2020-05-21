@@ -167,7 +167,19 @@ color:;
             <h1 class="h3 mb-0 text-gray-800"> Add Product</h1>
 </center>
 <br>
+{% if messages %}
 
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {% for message in messages %}
+
+  <strong>Error : </strong> {{ message }}
+                         {% endfor %}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+{% endif %}
              {% if product_not_avail %}
 
                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -255,7 +267,7 @@ color:;
      </div>
   </div>
 
-                            <label class="col-md-2 control-label">Sub Sub Category *
+                            <label class="col-md-2 control-label">Sub Sub Category
 
 
 </label>
@@ -581,13 +593,13 @@ $("#sub_model").val(select.options[select.selectedIndex].value);
         success: function (data) {   // `data` is the return of the `load_cities` view function
     $("#id_subcat22").html(data);
 
-     if ($('#id_subcat22 option').length > 1)
+     if ($('#id_subcat2 option').length > 1)
     {
-    $('#id_subcat22').attr('required', '');
+    $('#id_subcat22').removeAttr('required');
 
     }
     else{
-    $('#id_subcat22').removeAttr('required');
+    $('#id_subcat22').attr('required', '');
 
     }
 
