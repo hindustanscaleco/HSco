@@ -408,7 +408,11 @@ def employee_profile(request,id):
         account_no = request.POST.get('account_no')
         branch_name = request.POST.get('branch_name')
         ifsc_code = request.POST.get('ifsc_code')
+        aadhar_card = request.POST.get('aadhar_card')
+        pancard = request.POST.get('pancard')
         photo = request.FILES.get('photo')
+        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
+        upload_pancard = request.FILES.get('upload_pancard')
 
         item = user_id
 
@@ -419,9 +423,13 @@ def employee_profile(request,id):
         item.account_number = account_no
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
+        item.aadhar_card = aadhar_card
+        item.pancard = pancard
         item.photo = photo
+        item.upload_aadhar_card = upload_aadhar_card
+        item.upload_pancard = upload_pancard
 
-        item.save(update_fields=['mobile','email', 'profile_name','bank_name','account_number','branch_name','ifsc_code','photo'])
+        item.save(update_fields=['mobile','email', 'profile_name','bank_name','account_number','branch_name','ifsc_code','photo','pancard','aadhar_card','upload_aadhar_card','upload_pancard'])
         return redirect('/employee_profile/' + str(id))
 
     elif request.method == 'POST' and 'submit3'  in request.POST:

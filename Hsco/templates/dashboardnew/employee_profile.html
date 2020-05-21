@@ -467,10 +467,11 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+        <input  name="photo" placeholder="Photo" class="form-control" value="user_id.photo"  type="file">
+
       {% if user_id.photo %}
       <img src="{{user_id.photo.url}}" width="150" height="150">
       {% endif %}
-<!--  <input  name="photo" placeholder="Photo" class="form-control" value="user_id.photo"  type="file">-->
     </div>
   </div>
 </div>
@@ -484,6 +485,28 @@ color:;
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
         <input name="pancard" placeholder="Upload Pan Card" class="form-control" value="{{user_id.pan_card}}" type="text">
 
+    </div>
+  </div>
+
+   <label class="col-md-2 control-label">Aadhar Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+      <input name="aadhar_card" placeholder="Upload Pan Card" class="form-control" value="{{user_id.aadhar_card}}" type="text">
+
+  </div>
+    </div>
+</div>
+
+      <div class="form-group row">
+   <label class="col-md-2 control-label"> Pan Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+        <input name="upload_pancard" placeholder="Upload Pan Card" class="form-control" type="file">
+
        {% if user_id.upload_pancard %}
       <img src="{{user_id.upload_pancard.url}}" width="150" height="150">
       {% endif %}
@@ -495,9 +518,9 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-      <input name="aadhar_card" placeholder="Upload Pan Card" class="form-control" value="{{user_id.aadhar_card}}" type="text">
+      <input name="upload_aadhar_card" placeholder="Upload Pan Card" class="form-control" type="file">
 
-       {% if user_id.upload_pancard %}
+       {% if user_id.upload_aadhar_card %}
       <img src="{{user_id.upload_aadhar_card.url}}" width="150" height="150">
       {% endif %}
   </div>
