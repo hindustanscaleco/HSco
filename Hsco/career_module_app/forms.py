@@ -140,7 +140,7 @@ class Career_moduleForm(forms.ModelForm):
 
            }))
 
-    candidate_resume = forms.FileField(
+    candidate_resume = forms.FileField(required=False,
         widget=forms.FileInput(
             attrs={
                 'type': 'file',

@@ -73,7 +73,7 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" ion="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
+    <form class="well form-horizontal" ion="" method="post" enctype="multipart/form-data"  id="contact_form" style="padding:20px;">{% csrf_token%}
 <fieldset>
     <center><h2>Career Module</h2></center>
     <br>
@@ -188,6 +188,18 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 {{career_form.date_of_birth}}
+
+    </div>
+  </div>
+
+           <label class="col-md-2 control-label">Resume
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+{{career_form.candidate_resume}}
 
     </div>
   </div>

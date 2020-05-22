@@ -280,6 +280,7 @@ def career_module_form(request):
         designation = request.POST.get('designation')
         date_of_birth = request.POST.get('date_of_birth')
         achievements = request.POST.get('achievements')
+        candidate_resume = request.FILES.get('candidate_resume')
         maxedu_id = request.POST.get('maxedu_id')
         maxwork_exp = request.POST.get('maxwork_exp')
 
@@ -288,7 +289,7 @@ def career_module_form(request):
         is_technical_candidate = True if choose_position == 'Technical Position' else False
 
         item = Career_module()
-
+        item.candidate_resume = candidate_resume
         item.current_stage = current_stage
         item.application_no = application_number
         item.phone_no = phone_no
@@ -658,9 +659,11 @@ def update_career_module_from(request,id):
         notes = request.POST.get('notes')
         maxedu_id = request.POST.get('maxedu_id')
         maxwork_exp = request.POST.get('maxwork_exp')
+        candidate_resume = request.FILES.get('candidate_resume')
 
 
         item = Career_module.objects.get(id=id)
+        item.candidate_resume = candidate_resume
         item.current_stage = current_stage
         item.application_no = application_no
         item.phone_no = phone_no
@@ -703,7 +706,7 @@ def update_career_module_from(request,id):
         item.value_of_resister = value_of_resister
         item.open_and_short_circuit = open_and_short_circuit
         item.notes = notes
-        item.save(update_fields=['current_stage','application_no','phone_no','candidate_name','choose_position','candidate_email',
+        item.save(update_fields=['candidate_resume','current_stage','application_no','phone_no','candidate_name','choose_position','candidate_email',
                                  'address','current_salary','aadhar_card','pan_card_availabe',
                                  'bank_account','say_yourself','confidance','without_job_with_reason','reason_for_last_job_before','working_from_10_to_8_and',
                                  'any_question_yes','comfortable_english','how_good_english','comfortable_marathi','working_from_10_to_8',

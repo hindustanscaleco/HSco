@@ -75,7 +75,7 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" ion="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
+    <form class="well form-horizontal" ion="" method="post" enctype="multipart/form-data"   id="contact_form" style="padding:20px;">{% csrf_token%}
 <fieldset>
     <center><h2>Career Module</h2></center>
     <br>
@@ -213,14 +213,19 @@ color:;
 
   <div class="form-group row">
 
-  <label class="col-md-2 control-label">Aadhar Card Available
+ <label class="col-md-2 control-label">Resume
+
 </label>
-  <div class="col-md-4 inputGroupContainer">
+
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-{{career_form.aadhar_card}}
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+{{career_form.candidate_resume}}
+      {% if career_module_id.candidate_resume %}
+                                  <a href="{{ career_module_id.candidate_resume.url }}" class="btn btn-primary">Old File</a>
+                                  {% endif %}
     </div>
   </div>
-
     <label class="col-md-2 control-label">Pan Card Available
 
 </label>
@@ -235,6 +240,13 @@ color:;
 
 
        <div class="form-group row">
+<label class="col-md-2 control-label">Aadhar Card Available
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+{{career_form.aadhar_card}}
+    </div>
+  </div>
 
   <label class="col-md-2 control-label">Bank Account Available
 </label>
