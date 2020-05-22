@@ -1939,6 +1939,7 @@ def update_view_lead(request,id):
             if customer_industry != '' and customer_industry != None:
                 item3.customer_industry = customer_industry
                 item3.save(update_fields=['customer_industry'])
+            messages.success(request, 'Customer Details Saved Successfully!!!')
             return redirect('/update_view_lead/'+str(id))
 
         if 'submit1' in request.POST:                                            #for customer and deal details section
@@ -1997,6 +1998,7 @@ def update_view_lead(request,id):
                                       'requirement','upload_requirement_file','owner_of_opportunity','log_entered_by',
                                       'lost_reason','postponed_reason','postpond_time_date'])
 
+            messages.success(request, 'Deal Details Saved Successfully!!!')
 
             return redirect('/update_view_lead/'+str(id))
 
@@ -2131,8 +2133,6 @@ def update_view_lead(request,id):
                 item2.discount_type = discount_type
                 item2.first_submit = True
                 item2.log_entered_by = request.user.name
-                print(grand_total)
-                print(item2.grand_total)
                 if grand_total != None and grand_total != '' and grand_total != 'None' and float(grand_total) != float(item2.grand_total):
                     item2.grand_total = float(grand_total)
 
@@ -2170,7 +2170,7 @@ def update_view_lead(request,id):
                     except:
                         print("product not added or debugging needed")
 
-
+                messages.success(request, 'PI Details Saved Successfully!!!')
 
                 item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call','net_total','cgst_sgst','igst',
                                           'round_up_total','grand_total','total_cost','notes','pf_total',
@@ -2238,6 +2238,7 @@ def update_view_lead(request,id):
                         print("product not added or debugging needed")
 
                 item2.save()
+                messages.success(request, 'PI Details Saved Successfully!!!')
 
             return redirect('/update_view_lead/'+str(lead_id.id))
 
@@ -2294,6 +2295,7 @@ def update_view_lead(request,id):
 
             del_all_sessions(request)
             request.session['expand_payment'] = True
+            messages.success(request, 'Payment Details Saved Successfully!!!')
 
             return redirect('/update_view_lead/' + str(id))
 
