@@ -189,12 +189,15 @@ function myFunction() {
          <div class="col-xl-12 col-lg-12">
 {% if messages %}
     {% for message in messages %}
+             {% if message.tags == 'success' %}
 <div class="alert alert-success alert-dismissible fade show" role="alert">
   <strong>Success : </strong> {{ message }}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
-</div>    {% endfor %}
+</div>
+             {% endif %}
+             {% endfor %}
 
 {% endif %}
               {% if request.session.context_sess.error_exist %}
@@ -567,7 +570,12 @@ myFunction225();
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-check-square faicons"></i></span>
                                 {{ form2.requirement }}
+                                  <br>
+
+
                             </div>
+                          <span style="padding: 5px; color: Gray;"> Total Characters Left: <span id="RequirementcharNum" >-</span></span>
+
                              </div>
 
 
@@ -1437,6 +1445,8 @@ tr:nth-child(even) {
 <br>
 
                         <div class="row col-md-12" style="margin-left:4%">
+
+
                               <br>
 
                                                                 {% if history_follow.is_whatsapp %}
@@ -1449,7 +1459,8 @@ tr:nth-child(even) {
                         {{ form6.wa_no }}
 
                                 <label class="col-md-3 control-label" style="float:left;">Content:</label>
-                                {{ form6.wa_msg }}
+                                {{ form6.wa_msg }}  <br>
+    <div style="padding: 5px; color: black;"> Total Characters Left: <span id="WhatsappcharNum" >-</span></div>
          <br>
 </div>
 
@@ -1466,6 +1477,7 @@ tr:nth-child(even) {
                         <br>
                                 <label class="col-md-5 control-label" style="float:left;">Content:</label>
                                 {{ form6.wa_msg }}
+
                                  <br>
 </div>
        {% endif %}
@@ -1481,6 +1493,8 @@ tr:nth-child(even) {
 
                            <label class="col-md-4 control-label">Email Message:</label>
                                 {{ form6.email_msg }}
+        <div style="padding: 5px; color: black;"> Total Characters Left: <span id="EmailcharNum" >-</span></div>
+
 
 </div>
 
@@ -1503,9 +1517,11 @@ tr:nth-child(even) {
                                 {% if history_follow.is_call %}
 
                             <div class="col-md-5 card shadow" id="mycall_follow_up" >
-                           <label class="col-md-4 control-label">Call Response:</label>
+                           <label class=" control-label">Call Response:</label>
 <br>
                                 {{ form6.call_response }}
+                           <div style="padding: 5px; color: black;"> Total Characters Left: <span id="CallcharNum" >-</span></div>
+
                                 <br>
                             </div>
     {% else %}
@@ -1529,6 +1545,9 @@ tr:nth-child(even) {
                                             <label class="col-md-4 control-label">SMS Content:</label>
 
                                 {{ form6.sms_msg }}
+
+                                  <div style="padding: 5px; color: black;"> Total Characters Left: <span id="SMScharNum" >-</span></div>
+
                                         </div>
 
 
@@ -1904,7 +1923,61 @@ function whosFunction() {
     </div>
   </div>
   </div>
-    <!-- Bootstrap core JavaScript-->
+
+<!--        Character count code-->
+          <script>
+      function WhatsappcountChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#WhatsappcharNum').text(1024 - len);
+        }
+      };
+
+
+            function EmailcountChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#EmailcharNum').text(1024 - len);
+        }
+      };
+
+
+
+            function CallcountChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#CallcharNum').text(1024 - len);
+        }
+      };
+
+
+
+
+            function SMScountChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#SMScharNum').text(1024 - len);
+        }
+      };
+
+            function RequirementcountChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#RequirementcharNum').text(1024 - len);
+        }
+      };
+    </script>
+
 
 <script>
 function show_external() {
