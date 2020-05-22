@@ -159,7 +159,7 @@ SESSION_SECURITY_EXPIRE_AFTER = 3600
 SESSION_SECURITY_WARN_AFTER = 3500
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
-DATA_UPLOAD_MAX_MEMORY_SIZE = 50242880      #increase size of upload file size to 5mb
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760      #increase size of upload file size to 5mb
 
 user = 'HSCo'
 #user_test = 'vikka'
