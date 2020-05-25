@@ -38,8 +38,7 @@ industory_dropdown = [
         ('Grocery/Retail','Grocery/Retail'),
         ('Bakery','Bakery'),
         ('Supplier','Supplier'),
-        ('BNI','BNI'),
-        ('Online Promotion','Online Promotion'),
+        ('Fishing','Fishing'),
 ]
 
 auto_manual_email = [
@@ -192,7 +191,16 @@ class Deal_detailForm(forms.ModelForm):
                                             widget=forms.TextInput(
                                                 attrs={
                                                     'type': 'text',
-                                                    'placeholder': "Channel",
+                                                    'placeholder': "Channel Of Sales",
+                                                    'class': 'form-control',
+                                                }
+                                            ))
+
+    channel_of_marketing = forms.CharField(max_length=80, required=True,
+                                            widget=forms.TextInput(
+                                                attrs={
+                                                    'type': 'text',
+                                                    'placeholder': "Channel Of Marketing",
                                                     'class': 'form-control',
                                                 }
                                             ))
