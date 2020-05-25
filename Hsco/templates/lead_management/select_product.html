@@ -317,7 +317,8 @@ color:;
      </div>
   </div>
 </div>
-
+<div id="product_details">
+</div>
                                 <div class="form-group row">
 
 
@@ -340,7 +341,10 @@ color:;
 
 
             <br>
-
+<input type="hidden" value="" id="type_of_scale" name="type_of_scale">
+  <input type="hidden" value="" id="model_of_purchase" name="model_of_purchase">
+  <input type="hidden" value="" id="sub_model" name="sub_model">
+  <input type="hidden" value="" id="sub_sub_model" name="sub_sub_model">
 
 <center>
     <button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Submit</button>
@@ -427,6 +431,21 @@ $("#model_of_purchase").val(select.options[select.selectedIndex].text);
 function choice_sub_model(select) {
 $("#sub_model").val(select.options[select.selectedIndex].text);
      //alert(select.options[select.selectedIndex].value);
+     $.ajax({                       // initialize an AJAX request
+            url: "/get_pi_product_details/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+            data: {
+              'model_of_purchase': $('#model_of_purchase').val(),     // add the country id to the GET parameters
+              'type_of_scale': $("#type_of_scale").val(),      // add the country id to the GET parameters
+              'sub_model': select.options[select.selectedIndex].value,       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+
+        $("#product_details").html(data);
+
+
+            }
+          });
+
     $.ajax({                       // initialize an AJAX request
         url: "/load_sub_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
         data: {
@@ -453,7 +472,22 @@ $("#sub_model").val(select.options[select.selectedIndex].text);
 
 function choice_sub_sub_model(select) {
 $("#sub_sub_model").val(select.options[select.selectedIndex].text);
+$.ajax({                       // initialize an AJAX request
+            url: "/get_pi_product_details/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+            data: {
+              'model_of_purchase': $('#model_of_purchase').val(),     // add the country id to the GET parameters
+              'type_of_scale': $("#type_of_scale").val(),      // add the country id to the GET parameters
+              'sub_model': $("#sub_model").val(),       // add the country id to the GET parameters
+              'sub_sub_model': select.options[select.selectedIndex].value,      // add the country id to the GET parameters
 
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+
+        $("#product_details").html(data);
+
+
+            }
+          });
 }
 
 function isOneChecked() {

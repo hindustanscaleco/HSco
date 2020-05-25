@@ -243,7 +243,7 @@ class Deal_detailForm(forms.ModelForm):
                        }
                    ))
 
-    lost_reason = forms.CharField(max_length=80, required=False,
+    lost_reason = forms.CharField( max_length=1024,required=False,
                                     widget=forms.Textarea(
                                         attrs={
                                             'type': 'text',

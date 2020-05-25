@@ -189,12 +189,15 @@ function myFunction() {
          <div class="col-xl-12 col-lg-12">
 {% if messages %}
     {% for message in messages %}
+             {% if message.tags == 'success' %}
 <div class="alert alert-success alert-dismissible fade show" role="alert">
   <strong>Success : </strong> {{ message }}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
-</div>    {% endfor %}
+</div>
+             {% endif %}
+             {% endfor %}
 
 {% endif %}
               {% if request.session.context_sess.error_exist %}
@@ -677,7 +680,7 @@ myFunction225();
                                   {% if lead_id.upload_requirement_file %}
                                   <a href="{{ lead_id.upload_requirement_file.url }}" class="btn btn-primary">Old File</a>
                                   {% endif %}
-                                <p>Note: File size must be less than 1 mb </p>
+                                <p>Note: File size must be less than 5 mb </p>
                             </div>
                             </div>
 
@@ -861,7 +864,7 @@ tr:nth-child(even) {
                                   {% if pi_id.upload_pi_file %}
                                   <a href="{{ pi_id.upload_pi_file.url }}" class="btn btn-primary">Old File</a>
                                   {% endif %}
-                                                                  <p>Note: File size must be less than 1 mb </p>
+                                                                  <p>Note: File size must be less than 5 mb </p>
 
                             </div>
                              </div>
@@ -969,7 +972,7 @@ tr:nth-child(even) {
                                   {% if pi_id.upload_pi_file %}
                                   <a href="{{ pi_id.upload_pi_file.url }}" class="btn btn-primary">Old File</a>
                                   {% endif %}
-                                                                  <p>Note: File size must be less than 1 mb </p>
+                                                                  <p>Note: File size must be less than 5 mb </p>
 
                             </div>
                              </div>
@@ -1771,7 +1774,7 @@ function whosFunction() {
                             <div class="form-group row">
 
                                    <label class="col-md-2 control-label">Notes</label>
-                              <div class="col-md-3 inputGroupContainer">
+                              <div class="col-md-6 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form5.Payment_notes }}

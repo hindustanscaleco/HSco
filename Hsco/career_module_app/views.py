@@ -12,9 +12,11 @@ from .forms import Career_moduleForm, EducationForm, WorkExpForm
 from .models import Career_module, EducationalDetails, WorkExperience, Position
 from datetime import datetime
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 import requests
 import json
 
+@login_required(login_url='/')
 def career_module_list(request):
     career_list = Career_module.objects.all().order_by('-id')
     paginator = Paginator(career_list, 25)  # Show 25 contacts per page
@@ -249,6 +251,7 @@ def career_module_list(request):
 
     return render(request,'career_module/career_module_list.html',context)
 
+@login_required(login_url='/')
 def career_module_form(request):
     if Career_module.objects.all().count() == 0:
         application_number = 166353
@@ -263,7 +266,6 @@ def career_module_form(request):
     workexp_form = WorkExpForm()
     if request.method == 'POST' or request.method == 'FILES':
         current_stage = request.POST.get('current_stage')
-        application_no = request.POST.get('application_no')
         phone_no = request.POST.get('phone_no')
         candidate_name = request.POST.get('candidate_name')
         choose_position = request.POST.get('choose_position')
@@ -284,6 +286,9 @@ def career_module_form(request):
         maxedu_id = request.POST.get('maxedu_id')
         maxwork_exp = request.POST.get('maxwork_exp')
 
+        if Career_module.objects.filter(phone_no=phone_no).count() > 0:
+            messages.error(request, "You have already applied! Our Team Will Get In Touch With You Soon!!!")
+            return redirect('/career_module_form/')
 
         is_sales_candidate = True if choose_position == 'Sales Position' else False
         is_technical_candidate = True if choose_position == 'Technical Position' else False
@@ -403,6 +408,7 @@ def career_module_form(request):
     }
     return render(request,'career_module/career_module_form.html',context)
 
+@login_required(login_url='/')
 def career_module_form_hsc(request):
     if Career_module.objects.all().count() == 0:
         application_number = 166353
@@ -423,7 +429,6 @@ def career_module_form_hsc(request):
         'positions': positions
     }
     if request.method == 'POST' or request.method == 'FILES':
-        current_stage = request.POST.get('current_stage')
         phone_no = request.POST.get('phone_no')
         candidate_name = request.POST.get('candidate_name')
         choose_position = request.POST.get('choose_position')
@@ -442,13 +447,15 @@ def career_module_form_hsc(request):
         maxedu_id = request.POST.get('maxedu_id')
         maxwork_exp = request.POST.get('maxwork_exp')
         candidate_resume = request.FILES.get('candidate_resume')
-
+        if Career_module.objects.filter(phone_no=phone_no).count()>0:
+            messages.error(request, "You have already applied! Our Team Will Get In Touch With You Soon!!!")
+            return redirect('http://139.59.76.87/career.hindustanscale.com/')
         is_sales_candidate = True if choose_position == 'Sales Position' else False
         is_technical_candidate = True if choose_position == 'Technical Position' else False
 
         item = Career_module()
 
-        item.current_stage = current_stage
+        item.current_stage = 'Applied but Not called for Interview'
         item.application_no = application_number
         item.phone_no = phone_no
         item.candidate_name = candidate_name
@@ -560,7 +567,7 @@ def career_module_form_hsc(request):
 
     return render(request, 'career_module/career_module_form_hsc.html',context)
 
-
+@login_required(login_url='/')
 def update_career_module_from(request,id):
 
     career_module_id = Career_module.objects.get(id=id)

@@ -5,7 +5,7 @@ from .views import lead_home, add_lead, lead_report, lead_manager_view, lead_fol
     lead_analytics, \
     lead_employee_graph, update_view_lead, lead_pi_form, select_product, pi_section_history, alpha_pi_form, \
     select_product_followup, final_lead_report, download_pi_image, download_pi_pdf, report_2, lead_logs, \
-    download_pi_second_pdf,followup_delete_product,upload_requirement_hsc, final_lead_report_test
+    download_pi_second_pdf,followup_delete_product,upload_requirement_hsc, final_lead_report_test, get_pi_product_details
 
 
 urlpatterns = [
@@ -31,6 +31,7 @@ urlpatterns = [
     path('download_pi_pdf/<int:id>/<int:download>',download_pi_pdf , name ='download_pi_pdf'), #<int:download> == 1 Download = True else Download = False
     path('download_pi_second_pdf/<int:id>/<int:download>',download_pi_second_pdf , name ='download_pi_second_pdf'), #<int:download> == 1 Download = True else Download = False
     path('lead_logs/',lead_logs , name ='lead_logs'),
+    path('get_pi_product_details/',get_pi_product_details , name ='get_pi_product_details'),
     path('requirement.hindustanscale.com/',upload_requirement_hsc , name ='upload_requirement_hsc'),
 
 ]
