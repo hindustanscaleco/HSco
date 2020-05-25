@@ -238,6 +238,8 @@ class Career_moduleForm(forms.ModelForm):
                                                'placeholder': "Reason",
                                                'class': 'form-control',
                                                'rows':'40',
+                                               'onkeyup': 'AnyQuestionChar(this)',
+
                                            }))
 
     comfortable_english = forms.CharField(
@@ -368,7 +370,8 @@ class Career_moduleForm(forms.ModelForm):
              'placeholder': "Notes",
              'class': 'form-control',
              'onkeyup': 'NotesChar(this)',
-             'rows': '15',
+             'rows': '40',
+
          }))
     class Meta:
         model = Career_module

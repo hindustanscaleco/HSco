@@ -26,6 +26,7 @@ class Purchase_Details(models.Model):   #cleaned
     upload_op_file = models.FileField(upload_to='',null=True,blank=True)
     po_number = models.CharField(max_length=150,null=True,blank=True)
     channel_of_sales = models.CharField(max_length=150,null=True,blank=True)
+    channel_of_marketing = models.CharField(max_length=150,null=True,blank=True)
     industry = models.CharField(max_length=150,null=True,blank=True)
     value_of_goods = models.FloatField(default=0.0,null=True,blank=True)
     channel_of_dispatch = models.CharField(max_length=150,null=True,blank=True)
