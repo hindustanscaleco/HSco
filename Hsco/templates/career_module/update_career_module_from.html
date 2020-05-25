@@ -556,6 +556,8 @@ color:;
   <div class="input-group">
 {{career_form.notes}}
     </div>
+<span style="padding: 5px; color: Gray;"> Total Characters Left: <span id="NotesCharNum" >-</span></span>
+
   </div>
 
         </div>
@@ -954,6 +956,17 @@ if ($("#maxedu_id").val() > $("#latest_edu_details_id").val()){
       }
         });
          });
+
+
+               function NotesChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 20000);
+        } else {
+          $('#NotesCharNum').text(20000 - len);
+        }
+      };
+
                          </script>
 
 
