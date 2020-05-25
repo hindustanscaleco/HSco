@@ -32,7 +32,7 @@ class Career_module(models.Model):
     reason_for_last_job_before = models.CharField(max_length=120,null=True,blank=True)
     working_from_10_to_8_and = models.CharField(max_length=10,null=True,blank=True)
     any_question = models.CharField(max_length=10,null=True,blank=True)
-    any_question_yes = models.CharField(max_length=10,null=True,blank=True)
+    any_question_yes = models.TextField(null=True,blank=True)
     comfortable_english = models.CharField(max_length=10,null=True,blank=True)
     comfortable_marathi = models.CharField(max_length=10,null=True,blank=True)
     how_good_english = models.CharField(max_length=10,null=True,blank=True)

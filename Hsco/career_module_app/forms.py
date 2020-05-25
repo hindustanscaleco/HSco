@@ -103,7 +103,7 @@ class Career_moduleForm(forms.ModelForm):
                'class': 'form-control',
            }))
 
-    address = forms.CharField(max_length=250, required=True,
+    address = forms.CharField(max_length=1024, required=True,
        widget=forms.Textarea(
            attrs={
                'type': 'textarea',
@@ -231,12 +231,15 @@ class Career_moduleForm(forms.ModelForm):
             }
         ))
 
-    any_question_yes = forms.CharField(max_length=100, required=False,
-                                       widget=forms.TextInput(
+    any_question_yes = forms.CharField(required=False,
+                                       widget=forms.Textarea(
                                            attrs={
                                                'type': 'text',
                                                'placeholder': "Reason",
                                                'class': 'form-control',
+                                               'rows':'40',
+                                               'onkeyup': 'AnyQuestionChar(this)',
+
                                            }))
 
     comfortable_english = forms.CharField(
@@ -360,13 +363,14 @@ class Career_moduleForm(forms.ModelForm):
             }
         ))
 
-    notes = forms.CharField(max_length=100, required=False,
+    notes = forms.CharField( required=False,
      widget=forms.Textarea(
          attrs={
              'type': 'text',
              'placeholder': "Notes",
              'class': 'form-control',
-             'rows': '7',
+             'onkeyup': 'NotesChar(this)',
+             'rows': '40',
 
          }))
     class Meta:
@@ -413,13 +417,15 @@ class EducationForm(forms.ModelForm):
 
            }))
 
-    achievements = forms.CharField(max_length=1024,required=False,
+    achievements = forms.CharField(required=False,
       widget=forms.Textarea(
           attrs={
               'type': 'textarea',
               'placeholder': "Achievements",
               'class': 'form-control',
-
+              'onkeyup': 'AchievementsChar(this)',
+              'rows': '10',
+              'cols': '4',
           }))
     class Meta:
         model = EducationalDetails
@@ -456,14 +462,15 @@ class WorkExpForm(forms.ModelForm):
         ))
 
 
-    work_expirance_details = forms.CharField(max_length=100, required=False,
+    work_expirance_details = forms.CharField(required=False,
        widget=forms.Textarea(
            attrs={
                'type': 'text',
                'placeholder': "Experience Details",
                'class': 'form-control',
-               'rows':'4',
+               'rows':'10',
                'cols':'4',
+               'onkeyup': 'ExpandAchChar(this)',
 
            }))
 

@@ -328,28 +328,6 @@ Format : (company name)
 
 
 
-
-
-    <!--<label class="col-md-2 control-label">Quantity-->
-
-<!--</label>-->
-
-    <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>-->
-  <!--<input  name="quantity" placeholder="Quantity" class="form-control"  type="text">-->
-    <!--</div>-->
-  <!--</div>-->
-
-
-
-
-
-
-
-
-
-
   <label class="col-md-2 control-label">PO Number
 
 
@@ -374,6 +352,8 @@ Format : (company name)
   <div class="input-group">
     <input type="file" name="upload_op_file" id="fileToUpload" class="form-control">
     </div>
+          <p>Note: File size must be less than 5 mb </p>
+
   </div>
 
     <label class="col-md-2 control-label">Bill No
@@ -430,8 +410,8 @@ Format : (company name)
     <datalist style="height:20px;" id="channel10">
       <option value="Retail through Physical Store"></option>
       <option value="Online Market Places"></option>
-      <option value="India Mart"></option>
       <option value="Website"></option>
+      <option value="Indiamart"></option>
       <option value="App"></option>
       <option value="Google"></option>
       <option value="Field Salesmen"></option>
@@ -474,6 +454,36 @@ Format : (company name)
   </div>
       </div>
 
+
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Channel of Marketing
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+ <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+    <input  type="text"  name="channel_of_marketing" placeholder="Channel of Marketing" class="form-control" list="channel110">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+    <datalist style="height:20px;" id="channel110">
+      <option value="Phone"></option>
+      <option value="Whatsapp"></option>
+      <option value="Ask"></option>
+      <option value="Hsc"></option>
+      <option value="Sales"></option>
+      <option value="Google"></option>
+      <option value="Justdial"></option>
+      <option value="Reference from Existing Customer"></option>
+      <option value="Existing Customer"></option>
+      <option value="BNI"></option>
+      <option value="Others"></option>
+    </datalist>
+    </div>
+  </div>
+
+
+      </div>
 
 <div class="form-group row">
 
@@ -542,6 +552,103 @@ Format : (company name)
     <!--</div>-->
   <!--</div>-->
   </div>
+
+      <div class="form-group row">
+
+  <label class="col-md-2 control-label">Payment Mode *
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="payment_mode" id="payment_mode" onchange="show()"  required class="form-control">
+  <option value="Cash">Cash</option>
+  <option  value="Cheque">Cheque</option>
+</select>
+    </div>
+  </div>
+
+
+
+
+</div>
+      <div id="payment_cheque" style="display: none;">
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Bank Name*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="bank_name" id="bank_name" placeholder="Bank Name" class="form-control"  type="text">
+    </div>
+  </div>
+
+  <label class="col-md-2 control-label">Cheque No*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_no" id="cheque_no" placeholder="Cheque Number" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+</div>
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Cheque Date*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_date" id="cheque_date" placeholder="Cheque Date" class="form-control"  type="date">
+    </div>
+  </div>
+
+  <label class="col-md-2 control-label">Cheque Notes*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+    <textarea   name="cheque_notes" id="cheque_notes" rows="6" placeholder="Cheque Notes" class="form-control" ></textarea>
+    </div>
+  </div>
+
+</div>
+      </div>
+      <script>
+      function show(){
+          var a = document.getElementById("payment_mode").value;
+          console.log(a);
+          var x = document.getElementById("payment_cheque");
+              console.log(x);
+
+          if (a == 'Cheque'){
+              x.style.display = "block";
+              $('#bank_name').attr('required', '');
+              $('#cheque_no').attr('required', '');
+              $('#cheque_date').attr('required', '');
+              $('#cheque_notes').attr('required', '');
+          }
+          if (a == 'Cash'){
+              x.style.display = "none";
+              $('#bank_name').removeAttr('required', '');
+              $('#cheque_no').removeAttr('required', '');
+              $('#cheque_date').removeAttr('required', '');
+              $('#cheque_notes').removeAttr('required', '');
+          }
+      }
+
+</script>
+
 <center>
    <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Add Product</button>
 </center>
@@ -559,7 +666,6 @@ Format : (company name)
             </div>
 
 <br>
-
 
 <script>
 function choice1(select) {

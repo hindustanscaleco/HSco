@@ -222,6 +222,13 @@ def add_purchase_details(request):
         # value_of_goods = request.POST.get('value_of_goods')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
+
+        payment_mode = request.POST.get('payment_mode')
+        bank_name = request.POST.get('bank_name')
+        cheque_no = request.POST.get('cheque_no')
+        cheque_date = request.POST.get('cheque_date')
+        cheque_notes = request.POST.get('cheque_notes')
+
         # feedback_form_filled = request.POST.get('feedback_form_filled')
 
         item2 = Purchase_Details()
@@ -274,6 +281,13 @@ def add_purchase_details(request):
                 pass
         site_user_id=SiteUser.objects.get(profile_name=sales_person).pk
         # item2.crm_no = Customer_Details.objects.get(id=item.pk)
+        item2.payment_mode = payment_mode
+        item2.bank_name = bank_name
+        item2.cheque_no = cheque_no
+        if cheque_date != None and cheque_date != '':
+            item2.cheque_date = cheque_date
+        item2.cheque_notes = cheque_notes
+
         item2.new_repeat_purchase = new_repeat_purchase
         item2.second_person=customer_name  #new1
         # item2.third_person=third_person
@@ -875,11 +889,25 @@ def update_customer_details(request,id):
             notes = request.POST.get('notes')
             # value_of_goods = request.POST.get('value_of_goods')
             # feedback_form_filled = request.POST.get('feedback_form_filled')
-
+            payment_mode = request.POST.get('payment_mode')
+            bank_name = request.POST.get('bank_name')
+            cheque_no = request.POST.get('cheque_no')
+            cheque_date = request.POST.get('cheque_date')
+            cheque_notes = request.POST.get('cheque_notes')
 
 
 
             item2 = purchase_id_id
+
+            item2.payment_mode = payment_mode
+            item2.bank_name = bank_name
+            item2.cheque_no = cheque_no
+            if cheque_date != None and cheque_date != '':
+                item2.cheque_date = cheque_date
+            item2.cheque_notes = cheque_notes
+            print(bank_name)
+            print(bank_name)
+            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','cheque_notes'])
 
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
@@ -2008,28 +2036,39 @@ def stock_does_not_exist(request):
         product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                          sub_category__name=sub_model, sub_sub_category__name=None)
     if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
-        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity:
-            success_message = 'Stock Available!!!'
-            context4={
-                'success_message': success_message,
-                'success': True,
-            }
-            context.update(context4)
-        else:
-            error1 = 'Insufficient Stock!!!'
+        godown_product_quantity = GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity
+        godown_product_critical_limit = GodownProduct.objects.get(godown_id=godown, product_id=product_id).critical_limit
+        if quantity > godown_product_quantity:
+            error1 = 'Insufficient Stock !!! Available Quantity:'+str(godown_product_quantity)
             context1 = {
                 'error1_msg':error1,
                 'error1':True,
             }
             context.update(context1)
-    else:
+        elif godown_product_quantity <= godown_product_critical_limit and quantity <= godown_product_quantity:
+            error3 = 'Stock Below Critical Limit !!! Available Quantity:'+str(godown_product_quantity)
+            context4={
+                'error3_msg': error3,
+                'error3': True,
+            }
+            context.update(context4)
+        elif godown_product_quantity > godown_product_critical_limit and quantity <= godown_product_quantity:
+            success_message = 'Stock Available !!! Available Quantity:'+str(godown_product_quantity)
+            context4={
+                'success_message': success_message,
+                'success': True,
+            }
+            context.update(context4)
 
-        error2 = 'Insufficient Stock!!!'
-        context2 = {
-            'error2': True,
-            'error2_msg': error2,
+
+
+    else:
+        error4 = 'Selected product does not exist in the selected godown !!!'
+        context4 = {
+            'error4_msg': error4,
+            'error4': True,
         }
-        context.update(context2)
+        context.update(context4)
     return render(request, 'AJAX/stock_does_not_exist.html',context)
 
 def get_product_details(request):

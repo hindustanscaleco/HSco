@@ -1593,15 +1593,10 @@ def update_view_lead(request,id):
                                                  product_id=product_id).update(quantity=F("quantity") - item.quantity)
                 list_count = list_count + 1
 
-
-
-
-
             if (len(delete_id)>0):
                 current_stage = lead_id.current_stage
                 is_entered_purchase = lead_id.is_entered_purchase
                 if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
-
                     purchase_det = Purchase_Details()
                     purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
                     purchase_det.company_address = lead_id.customer_id.address  # new2
@@ -1616,11 +1611,12 @@ def update_view_lead(request,id):
                     purchase_det.product_purchase_date = lead_id.entry_timedate
                     purchase_det.sales_person = lead_id.owner_of_opportunity.name
                     purchase_det.user_id = SiteUser.objects.get(name=lead_id.owner_of_opportunity.name)
-                    purchase_det.channel_of_sales = lead_id.channel
+                    # purchase_det.channel_of_sales = lead_id.channel
+                    purchase_det.channel_of_sales = ''
                     purchase_det.channel_of_dispatch = ''
                     purchase_det.industry = lead_id.customer_id.customer_industry
                     purchase_det.value_of_goods = 0.0
-                    # purchase_det.channel_of_dispatch = channel_of_dispatch
+                    purchase_det.channel_of_marketing = lead_id.channel
                     purchase_det.notes = "Entry From Lead Module\n"
                     purchase_det.feedback_form_filled = False
                     purchase_det.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -2271,8 +2267,6 @@ def update_view_lead(request,id):
             upload_pofile = request.FILES.get("upload_pofile")
             payment_received_date = request.POST.get("payment_recived_date")
             Payment_notes = request.POST.get("Payment_notes")
-
-
 
             if Payment_details.objects.filter(lead_id=id).count() == 0:
                 item10 = Payment_details()
@@ -3564,6 +3558,7 @@ def select_product(request,id):
         quantity = request.POST.get('quantity')
         is_last_product_yes = request.POST.get('is_last_product_yes')
         # model_of_purchase = request.POST.get('model_of_purchase')
+        rate = request.POST.get('rate')
         type_of_scale = request.POST.get('scale_type')
         main_category = request.POST.get('main_category')
         sub_category = request.POST.get('sub_category')
@@ -3574,17 +3569,7 @@ def select_product(request,id):
         #     item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
         #                                           sub_category=sub_category, sub_sub_category=sub_sub_category)
         try:
-            if (sub_sub_category != None and sub_sub_category != ""):
-                item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
-                                                      sub_category=sub_category, sub_sub_category=sub_sub_category)
-                item.lead_id = Lead.objects.get(id=lead_id)
-                item.quantity = quantity
-                item.pf = pf
-                item.log_entered_by = request.user.name
-                if quantity != 'None' or quantity != '':
-                    item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
-                item.save()
-            elif (sub_category != None and sub_category != ""):
+            if (sub_category != None and sub_category != ""):
                 item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
                                                       sub_category=sub_category, sub_sub_category=None)
                 item.lead_id = Lead.objects.get(id=lead_id)
@@ -3592,7 +3577,17 @@ def select_product(request,id):
                 item.pf = pf
                 item.log_entered_by = request.user.name
                 if quantity != 'None' or quantity != '':
-                    item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
+                    item.product_total_cost = float(rate) * float(quantity)
+                item.save()
+            elif (sub_sub_category != None and sub_sub_category != ""):
+                item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
+                                                      sub_category=sub_category, sub_sub_category=sub_sub_category)
+                item.lead_id = Lead.objects.get(id=lead_id)
+                item.quantity = quantity
+                item.pf = pf
+                item.log_entered_by = request.user.name
+                if quantity != 'None' or quantity != '':
+                    item.product_total_cost = float(rate) * float(quantity)
                 item.save()
             if is_last_product_yes == 'yes':
                 return redirect('/update_view_lead/' + str(id))
@@ -4758,6 +4753,36 @@ def download_pi_second_pdf(request,id,download):
     except:
         pass
     return render(request,'lead_management/download_pi_second_pdf.html',context)
+
+@login_required(login_url='/')
+def get_pi_product_details(request):
+    model_of_purchase = request.GET.get('model_of_purchase')
+    type_of_scale = request.GET.get('type_of_scale')
+    sub_model_var = request.GET.get('sub_model')
+    sub_sub_model_var = request.GET.get('sub_sub_model')
+
+
+    context={}
+
+    if sub_sub_model_var != '' and sub_sub_model_var != None  and sub_model_var != 'None':
+        sub_sub_model_var = sub_sub_model.objects.filter(id=sub_sub_model_var).first()
+
+        product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                         sub_category__name=sub_model_var, sub_sub_category__name=sub_sub_model_var)
+        context1={
+            'product_id' : product_id,
+        }
+        context.update(context1)
+    elif sub_model_var != '' and sub_model_var != None  and sub_model_var != 'None':
+        sub_model_var = sub_model.objects.filter(id=sub_model_var).first()
+
+        product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                         sub_category__name=sub_model_var, sub_sub_category__name=None)
+        context2={
+            'product_id' : product_id,
+        }
+        context.update(context2)
+    return render(request, 'AJAX/get_pi_product_details.html',context)
 
 @login_required(login_url='/')
 def check_admin_roles(request):

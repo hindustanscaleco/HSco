@@ -166,6 +166,7 @@ function myFunction() {
     document.getElementById("myText14").disabled = true;
     document.getElementById("myText15").disabled = false;
     document.getElementById("myText16").disabled = false;
+    document.getElementById("myText116").disabled = false;
     document.getElementById("myText17").disabled = false;
     document.getElementById("myText21").disabled = false;
     document.getElementById("myText22").disabled = false;
@@ -323,6 +324,8 @@ function myFunction() {
         {% if purchase_id_id.upload_op_file %}
         <a style="margin-left:30%;" href="{{purchase_id_id.upload_op_file.url}}">Download PO</a>
         {% endif %}
+                  <p>Note: File size must be less than 5 mb </p>
+
   </div>
 </div>
 
@@ -364,7 +367,34 @@ function myFunction() {
   </div>
 </div>
 
+            <div class="form-group row">
 
+<label class="col-md-2 control-label">Channel of Marketing
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+ <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+    <input  type="text"  name="channel_of_marketing" id="myText116" disabled placeholder="Channel of Marketing" class="form-control" list="channel110">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+    <datalist style="height:20px;" id="channel110">
+      <option value="Phone"></option>
+      <option value="Whatsapp"></option>
+      <option value="Ask"></option>
+      <option value="Hsc"></option>
+      <option value="Sales"></option>
+      <option value="Google"></option>
+      <option value="Justdial"></option>
+      <option value="Reference from Existing Customer"></option>
+      <option value="Existing Customer"></option>
+      <option value="BNI"></option>
+      <option value="Others"></option>
+    </datalist>
+    </div>
+  </div>
+
+
+      </div>
           <div class="form-group row">
   <label class="col-md-2 control-label">Bill Address
 
@@ -495,7 +525,184 @@ function myFunction() {
 
 
     </div>
+<div class="form-group row">
 
+  <label class="col-md-2 control-label">Payment Mode *
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="payment_mode" id="payment_mode"  onchange="show()"  required class="form-control">
+      <option value="{{purchase_id_id.payment_mode}}">{{purchase_id_id.payment_mode}}</option>
+    {% if purchase_id_id.payment_mode == 'Cheque' %}
+  <option value="Cash">Cash</option>
+    {% else %}
+  <option  value="Cheque">Cheque</option>
+    {% endif %}
+</select>
+    </div>
+  </div>
+
+
+
+
+</div>
+        {% if purchase_id_id.payment_mode == 'Cheque' %}
+
+      <div id="payment_cheque2" style="display: block;">
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Bank Name*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="bank_name" value="{{purchase_id_id.bank_name}}" id="bank_name" placeholder="Bank Name" class="form-control"  type="text">
+    </div>
+  </div>
+
+  <label class="col-md-2 control-label">Cheque No*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_no" id="cheque_no" value="{{purchase_id_id.cheque_no}}" placeholder="Cheque Number" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+</div>
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Cheque Date*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_date" id="cheque_date" value="{{purchase_id_id.cheque_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
+    </div>
+  </div>
+
+  <label class="col-md-2 control-label">Cheque Notes*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+    <textarea   name="cheque_notes" id="cheque_notes"  rows="6" placeholder="Cheque Notes" class="form-control" >{{purchase_id_id.cheque_notes}}</textarea>
+    </div>
+  </div>
+
+</div>
+      </div>
+      <script>
+      function show(){
+          var a = document.getElementById("payment_mode").value;
+          var x = document.getElementById("payment_cheque2");
+
+          if (a == 'Cheque'){
+              x.style.display = "block";
+              $('#bank_name').attr('required', '');
+              $('#cheque_no').attr('required', '');
+              $('#cheque_date').attr('required', '');
+              $('#cheque_notes').attr('required', '');
+          }
+          if (a == 'Cash'){
+              x.style.display = "none";
+              $('#bank_name').removeAttr('required', '');
+              $('#cheque_no').removeAttr('required', '');
+              $('#cheque_date').removeAttr('required', '');
+              $('#cheque_notes').removeAttr('required', '');
+          }
+      }
+
+</script>
+
+    {% else %}
+          <div id="payment_cheque" style="display: none;">
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Bank Name*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="bank_name" value="{{purchase_id_id.bank_name}}" id="bank_name" placeholder="Bank Name" class="form-control"  type="text">
+    </div>
+  </div>
+
+  <label class="col-md-2 control-label">Cheque No*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_no" id="cheque_no" value="{{purchase_id_id.cheque_no}}" placeholder="Cheque Number" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+</div>
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Cheque Date*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_date" id="cheque_date" value="{{purchase_id_id.cheque_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
+    </div>
+  </div>
+
+  <label class="col-md-2 control-label">Cheque Notes*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+    <textarea   name="cheque_notes" id="cheque_notes"  rows="6" placeholder="Cheque Notes" class="form-control" >{{purchase_id_id.cheque_notes}}</textarea>
+    </div>
+  </div>
+
+</div>
+      </div>
+      <script>
+      function show(){
+          var a = document.getElementById("payment_mode").value;
+          var x = document.getElementById("payment_cheque");
+
+          if (a == 'Cheque'){
+              x.style.display = "block";
+              $('#bank_name').attr('required', '');
+              $('#cheque_no').attr('required', '');
+              $('#cheque_date').attr('required', '');
+              $('#cheque_notes').attr('required', '');
+          }
+          if (a == 'Cash'){
+              x.style.display = "none";
+              $('#bank_name').removeAttr('required', '');
+              $('#cheque_no').removeAttr('required', '');
+              $('#cheque_date').removeAttr('required', '');
+              $('#cheque_notes').removeAttr('required', '');
+          }
+      }
+
+</script>
+
+    {% endif %}
 <br>
 
     <div class="col-md-12 ">
