@@ -231,12 +231,13 @@ class Career_moduleForm(forms.ModelForm):
             }
         ))
 
-    any_question_yes = forms.CharField(max_length=100, required=False,
-                                       widget=forms.TextInput(
+    any_question_yes = forms.CharField(required=False,
+                                       widget=forms.Textarea(
                                            attrs={
                                                'type': 'text',
                                                'placeholder': "Reason",
                                                'class': 'form-control',
+                                               'rows':'40',
                                            }))
 
     comfortable_english = forms.CharField(
