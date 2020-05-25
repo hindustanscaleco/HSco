@@ -20,6 +20,7 @@ class Lead(models.Model):
     new_existing_customer = models.CharField(max_length=50,null=True,blank=True)
     date_of_initiation = models.DateTimeField(default=timezone.now,)
     channel = models.CharField(max_length=50,null=True,blank=True)
+    channel_of_marketing = models.CharField(max_length=50,null=True,blank=True)
     requirement = models.TextField(null=True,blank=True)
     requirement_indiamart_unique = models.CharField(max_length=120,null=True,blank=True)
     lost_reason = models.CharField(blank= True, null=True, max_length=180)
