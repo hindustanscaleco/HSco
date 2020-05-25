@@ -367,6 +367,7 @@ class Career_moduleForm(forms.ModelForm):
              'type': 'text',
              'placeholder': "Notes",
              'class': 'form-control',
+             'onkeyup': 'NotesChar(this)',
              'rows': '15',
          }))
     class Meta:
@@ -419,6 +420,7 @@ class EducationForm(forms.ModelForm):
               'type': 'textarea',
               'placeholder': "Achievements",
               'class': 'form-control',
+              'onkeyup': 'AchievementsChar(this)',
               'rows': '10',
               'cols': '4',
           }))
@@ -465,6 +467,7 @@ class WorkExpForm(forms.ModelForm):
                'class': 'form-control',
                'rows':'10',
                'cols':'4',
+               'onkeyup': 'ExpandAchChar(this)',
 
            }))
 
