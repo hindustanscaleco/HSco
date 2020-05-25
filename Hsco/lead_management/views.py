@@ -1935,6 +1935,7 @@ def update_view_lead(request,id):
             if customer_industry != '' and customer_industry != None:
                 item3.customer_industry = customer_industry
                 item3.save(update_fields=['customer_industry'])
+            messages.success(request, 'Customer Details Saved Successfully!!!')
             return redirect('/update_view_lead/'+str(id))
 
         if 'submit1' in request.POST:                                            #for customer and deal details section
@@ -1993,6 +1994,7 @@ def update_view_lead(request,id):
                                       'requirement','upload_requirement_file','owner_of_opportunity','log_entered_by',
                                       'lost_reason','postponed_reason','postpond_time_date'])
 
+            messages.success(request, 'Deal Details Saved Successfully!!!')
 
             return redirect('/update_view_lead/'+str(id))
 
@@ -2127,8 +2129,6 @@ def update_view_lead(request,id):
                 item2.discount_type = discount_type
                 item2.first_submit = True
                 item2.log_entered_by = request.user.name
-                print(grand_total)
-                print(item2.grand_total)
                 if grand_total != None and grand_total != '' and grand_total != 'None' and float(grand_total) != float(item2.grand_total):
                     item2.grand_total = float(grand_total)
 
@@ -2166,7 +2166,7 @@ def update_view_lead(request,id):
                     except:
                         print("product not added or debugging needed")
 
-
+                messages.success(request, 'PI Details Saved Successfully!!!')
 
                 item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call','net_total','cgst_sgst','igst',
                                           'round_up_total','grand_total','total_cost','notes','pf_total',
@@ -2234,6 +2234,7 @@ def update_view_lead(request,id):
                         print("product not added or debugging needed")
 
                 item2.save()
+                messages.success(request, 'PI Details Saved Successfully!!!')
 
             return redirect('/update_view_lead/'+str(lead_id.id))
 
@@ -2288,6 +2289,7 @@ def update_view_lead(request,id):
 
             del_all_sessions(request)
             request.session['expand_payment'] = True
+            messages.success(request, 'Payment Details Saved Successfully!!!')
 
             return redirect('/update_view_lead/' + str(id))
 
@@ -3556,6 +3558,7 @@ def select_product(request,id):
         quantity = request.POST.get('quantity')
         is_last_product_yes = request.POST.get('is_last_product_yes')
         # model_of_purchase = request.POST.get('model_of_purchase')
+        rate = request.POST.get('rate')
         type_of_scale = request.POST.get('scale_type')
         main_category = request.POST.get('main_category')
         sub_category = request.POST.get('sub_category')
@@ -3566,17 +3569,7 @@ def select_product(request,id):
         #     item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
         #                                           sub_category=sub_category, sub_sub_category=sub_sub_category)
         try:
-            if (sub_sub_category != None and sub_sub_category != ""):
-                item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
-                                                      sub_category=sub_category, sub_sub_category=sub_sub_category)
-                item.lead_id = Lead.objects.get(id=lead_id)
-                item.quantity = quantity
-                item.pf = pf
-                item.log_entered_by = request.user.name
-                if quantity != 'None' or quantity != '':
-                    item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
-                item.save()
-            elif (sub_category != None and sub_category != ""):
+            if (sub_category != None and sub_category != ""):
                 item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
                                                       sub_category=sub_category, sub_sub_category=None)
                 item.lead_id = Lead.objects.get(id=lead_id)
@@ -3584,7 +3577,17 @@ def select_product(request,id):
                 item.pf = pf
                 item.log_entered_by = request.user.name
                 if quantity != 'None' or quantity != '':
-                    item.product_total_cost = float(item.product_id.selling_price) * float(quantity)
+                    item.product_total_cost = float(rate) * float(quantity)
+                item.save()
+            elif (sub_sub_category != None and sub_sub_category != ""):
+                item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
+                                                      sub_category=sub_category, sub_sub_category=sub_sub_category)
+                item.lead_id = Lead.objects.get(id=lead_id)
+                item.quantity = quantity
+                item.pf = pf
+                item.log_entered_by = request.user.name
+                if quantity != 'None' or quantity != '':
+                    item.product_total_cost = float(rate) * float(quantity)
                 item.save()
             if is_last_product_yes == 'yes':
                 return redirect('/update_view_lead/' + str(id))
@@ -4750,6 +4753,36 @@ def download_pi_second_pdf(request,id,download):
     except:
         pass
     return render(request,'lead_management/download_pi_second_pdf.html',context)
+
+@login_required(login_url='/')
+def get_pi_product_details(request):
+    model_of_purchase = request.GET.get('model_of_purchase')
+    type_of_scale = request.GET.get('type_of_scale')
+    sub_model_var = request.GET.get('sub_model')
+    sub_sub_model_var = request.GET.get('sub_sub_model')
+
+
+    context={}
+
+    if sub_sub_model_var != '' and sub_sub_model_var != None  and sub_model_var != 'None':
+        sub_sub_model_var = sub_sub_model.objects.filter(id=sub_sub_model_var).first()
+
+        product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                         sub_category__name=sub_model_var, sub_sub_category__name=sub_sub_model_var)
+        context1={
+            'product_id' : product_id,
+        }
+        context.update(context1)
+    elif sub_model_var != '' and sub_model_var != None  and sub_model_var != 'None':
+        sub_model_var = sub_model.objects.filter(id=sub_model_var).first()
+
+        product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                         sub_category__name=sub_model_var, sub_sub_category__name=None)
+        context2={
+            'product_id' : product_id,
+        }
+        context.update(context2)
+    return render(request, 'AJAX/get_pi_product_details.html',context)
 
 @login_required(login_url='/')
 def check_admin_roles(request):

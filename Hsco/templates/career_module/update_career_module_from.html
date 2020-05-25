@@ -75,7 +75,7 @@ color:;
 <br>
 
 
-    <form class="well form-horizontal" ion="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token%}
+    <form class="well form-horizontal" ion="" method="post" enctype="multipart/form-data"   id="contact_form" style="padding:20px;">{% csrf_token%}
 <fieldset>
     <center><h2>Career Module</h2></center>
     <br>
@@ -213,14 +213,19 @@ color:;
 
   <div class="form-group row">
 
-  <label class="col-md-2 control-label">Aadhar Card Available
+ <label class="col-md-2 control-label">Resume
+
 </label>
-  <div class="col-md-4 inputGroupContainer">
+
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
-{{career_form.aadhar_card}}
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+{{career_form.candidate_resume}}
+      {% if career_module_id.candidate_resume %}
+                                  <a href="{{ career_module_id.candidate_resume.url }}" class="btn btn-primary">Old File</a>
+                                  {% endif %}
     </div>
   </div>
-
     <label class="col-md-2 control-label">Pan Card Available
 
 </label>
@@ -235,6 +240,13 @@ color:;
 
 
        <div class="form-group row">
+<label class="col-md-2 control-label">Aadhar Card Available
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+{{career_form.aadhar_card}}
+    </div>
+  </div>
 
   <label class="col-md-2 control-label">Bank Account Available
 </label>
@@ -323,8 +335,8 @@ color:;
 {% endfor %}
       </div>
      <center>
-    <button type="button" class="add_edu_detail">Add </button>
-    <button type="button" class="delete_edu_detail">Delete </button>
+    <button type="button" class="add_edu_detail btn btn-primary" style="background-color: #FC6E20;">Add </button> &nbsp; &nbsp;
+    <button type="button" class="delete_edu_detail btn btn-primary" style="background-color: #FC6E20;">Delete </button>
          </center>
           <hr style="border:2px solid;">
 
@@ -393,8 +405,8 @@ color:;
     {% endfor %}
                   </div>
           <center>
-     <button type="button" class="add_work_exp">Add </button>
-    <button type="button" class="delete_work_exp">Delete </button>
+     <button type="button" class="add_work_exp btn btn-primary" style="background-color: #FC6E20;">Add </button> &nbsp; &nbsp;
+    <button type="button" class="delete_work_exp btn btn-primary" style="background-color: #FC6E20;">Delete </button>
           </center>
           <hr style="border:2px solid;">
 
@@ -476,15 +488,17 @@ color:;
 
 
 
-    <label class="col-md-2 control-label">Any Questions by Candidate
+    <label class="col-md-3 control-label">Any Questions by Candidate
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
+    <div class="col-md-12 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
 {{career_form.any_question_yes}}
     </div>
+        <span style="padding: 5px; color: Gray;"> Total Characters Left: <span id="AnyQuestionCharNum" >-</span></span>
+
   </div>
         </div>
         </div>
@@ -540,10 +554,12 @@ color:;
 
   <label class="col-md-2 control-label">Notes
 </label>
-  <div class="col-md-2 inputGroupContainer">
+  <div class="col-md-12 inputGroupContainer">
   <div class="input-group">
 {{career_form.notes}}
     </div>
+<span style="padding: 5px; color: Gray;"> Total Characters Left: <span id="NotesCharNum" >-</span></span>
+
   </div>
 
         </div>
@@ -814,7 +830,7 @@ color:;
 <br>
 
 <center>
-	<button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Update</button>
+	<button type="submit" value="submit" class="btn btn-primary" style="background-color: #FC6E20;">Update</button>
 
 </center>
 
@@ -942,6 +958,27 @@ if ($("#maxedu_id").val() > $("#latest_edu_details_id").val()){
       }
         });
          });
+
+
+               function NotesChar(val) {
+        var len = val.value.length;
+        if (len >= 20000) {
+          val.value = val.value.substring(0, 20000);
+        } else {
+          $('#NotesCharNum').text(20000 - len);
+        }
+      };
+
+
+
+               function AnyQuestionChar(val) {
+        var len = val.value.length;
+        if (len >= 20000) {
+          val.value = val.value.substring(0, 20000);
+        } else {
+          $('#AnyQuestionCharNum').text(20000 - len);
+        }
+      };
                          </script>
 
 

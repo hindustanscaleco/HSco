@@ -285,7 +285,23 @@ td {
         <div class="col-md-1"></div>
         <div class="col-md-1">Notes:</div>
         <div class="col-md-8">
-            <textarea type="text" class="form-control" name="notes" style="height:200px;width:500px;"> {{accepted_goods.0.accept_product_id.notes|default_if_none:''}} </textarea></div>
+            <textarea type="text" class="form-control" name="notes" style="height:200px;width:500px;" onkeyup="NotescountChar(this)" > {{accepted_goods.0.accept_product_id.notes|default_if_none:''}} </textarea>
+                                  <span style="padding: 5px; color: Gray;"> Total Characters Left: <span id="NotescharNum" >-</span></span>
+
+            <script>
+                      function NotescountChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#NotescharNum').text(1024 - len);
+        }
+      };
+
+            </script>
+
+        </div>
+
     </div>
 
     <div class="row">

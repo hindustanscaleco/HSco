@@ -38,8 +38,7 @@ industory_dropdown = [
         ('Grocery/Retail','Grocery/Retail'),
         ('Bakery','Bakery'),
         ('Supplier','Supplier'),
-        ('BNI','BNI'),
-        ('Online Promotion','Online Promotion'),
+        ('Fishing','Fishing'),
 ]
 
 auto_manual_email = [
@@ -180,6 +179,8 @@ class Deal_detailForm(forms.ModelForm):
                                             'type': 'text',
                                             'placeholder': "Requirement",
                                             'class': 'form-control',
+                                            'onkeyup': 'RequirementcountChar(this)',
+
                                         }
                                     ))
 
@@ -190,7 +191,16 @@ class Deal_detailForm(forms.ModelForm):
                                             widget=forms.TextInput(
                                                 attrs={
                                                     'type': 'text',
-                                                    'placeholder': "Channel",
+                                                    'placeholder': "Channel Of Sales",
+                                                    'class': 'form-control',
+                                                }
+                                            ))
+
+    channel_of_marketing = forms.CharField(max_length=80, required=True,
+                                            widget=forms.TextInput(
+                                                attrs={
+                                                    'type': 'text',
+                                                    'placeholder': "Channel Of Marketing",
                                                     'class': 'form-control',
                                                 }
                                             ))
@@ -241,7 +251,7 @@ class Deal_detailForm(forms.ModelForm):
                        }
                    ))
 
-    lost_reason = forms.CharField(max_length=80, required=False,
+    lost_reason = forms.CharField( max_length=1024,required=False,
                                     widget=forms.Textarea(
                                         attrs={
                                             'type': 'text',
@@ -467,15 +477,17 @@ class History_followupForm(forms.ModelForm):
                                          'type': 'text',
                                          'placeholder': "Whatsapp No",
                                          'class': 'form-control',
+
                                      }
                                  ))
 
-    wa_msg = forms.CharField(max_length=120, required=False,
+    wa_msg = forms.CharField(max_length=1024, required=False,
                              widget=forms.Textarea(
                                  attrs={
                                      'type': 'text',
                                      'placeholder': "Content",
                                      'class': 'form-control',
+                                     'onkeyup': 'WhatsappcountChar(this)',
                                  }))
     email_subject = forms.CharField(max_length=120, required=False,
                                     widget=forms.TextInput(
@@ -485,19 +497,23 @@ class History_followupForm(forms.ModelForm):
                                             'class': 'form-control',
                                         }
                                     ))
-    email_msg = forms.CharField(max_length=120, required=False,
+    email_msg = forms.CharField(max_length=1024, required=False,
                                     widget=forms.Textarea(
                                         attrs={
                                             'type': 'text',
                                             'placeholder': "Emai Content",
                                             'class': 'form-control',
+                                            'onkeyup': 'EmailcountChar(this)',
+
                                         }))
-    call_response = forms.CharField(max_length=120, required=False,
+    call_response = forms.CharField(max_length=1024, required=False,
                                     widget=forms.Textarea(
                                         attrs={
                                             'type': 'text',
                                             'placeholder': "Call Response",
                                             'class': 'form-control',
+                                            'onkeyup': 'CallcountChar(this)',
+
                                         }))
     sms_msg = forms.CharField(max_length=120, required=False,
                                     widget=forms.Textarea(
@@ -505,6 +521,8 @@ class History_followupForm(forms.ModelForm):
                                             'type': 'text',
                                             'placeholder': "Content",
                                             'class': 'form-control',
+                                            'onkeyup': 'SMScountChar(this)',
+
                                         }))
 
     class Meta:
