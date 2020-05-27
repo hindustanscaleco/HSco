@@ -448,6 +448,7 @@ class WorkExpForm(forms.ModelForm):
               'placeholder': "Date of Initiation",
               'class': 'form-control',
               'size':'1',
+              'type': 'date',
           }
       ))
 
@@ -456,6 +457,7 @@ class WorkExpForm(forms.ModelForm):
             attrs={
                 'placeholder': "Date of Initiation",
                 'class': 'form-control',
+                'type': 'date',
             }
         ))
 

@@ -289,6 +289,10 @@ def career_module_form(request):
         if Career_module.objects.filter(phone_no=phone_no).count() > 0:
             messages.error(request, "You have already applied! Our Team Will Get In Touch With You Soon!!!")
             return redirect('/career_module_form/')
+        # if work_expirance_from != '' and work_expirance_to != '':
+        #     if datetime.strptime(work_expirance_to, '%Y-%m-%d').date() <= datetime.strptime(work_expirance_to, '%Y-%m-%d').date():
+        #         messages.warning(request, "In Work Experience, date details are incorrect !!!")
+        #         return redirect('/career_module_form/')
 
         is_sales_candidate = True if choose_position == 'Sales Position' else False
         is_technical_candidate = True if choose_position == 'Technical Position' else False
@@ -362,7 +366,11 @@ def career_module_form(request):
                 work_expirance_to = request.POST.get('work_expirance_to'+str(i))
                 work_expirance_details = request.POST.get('work_expirance_details'+str(i))
                 designation = request.POST.get('designation'+str(i))
-
+                # if work_expirance_from != '' and work_expirance_to != '':
+                #     if datetime.strptime(work_expirance_to, '%Y-%m-%d').date() <= datetime.strptime(work_expirance_to,
+                #                                                                                     '%Y-%m-%d').date():
+                #         messages.warning(request, "In Work Experience, date details are incorrect !!!")
+                #         return redirect('/career_module_form/')
                 work_exp = WorkExperience()
 
                 if work_expirance_from != '':
@@ -453,6 +461,9 @@ def career_module_form_hsc(request):
         candidate_resume = request.FILES.get('candidate_resume')
         if Career_module.objects.filter(phone_no=phone_no).count()>0:
             messages.error(request, "You have already applied! Our Team Will Get In Touch With You Soon!!!")
+            return redirect('http://139.59.76.87/career.hindustanscale.com/')
+        # if work_expirance_to.strftime('%Y-%m-%d') <= work_expirance_from.strftime('%Y-%m-%d'):
+        #     messages.warning(request, "You have already applied! Our Team Will Get In Touch With You Soon!!!")
             return redirect('http://139.59.76.87/career.hindustanscale.com/')
         is_sales_candidate = True if choose_position == 'Sales Position' else False
         is_technical_candidate = True if choose_position == 'Technical Position' else False
