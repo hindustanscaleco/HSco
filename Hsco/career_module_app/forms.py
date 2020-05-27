@@ -448,7 +448,6 @@ class WorkExpForm(forms.ModelForm):
               'placeholder': "Date of Initiation",
               'class': 'form-control',
               'size':'1',
-              'id':'my_date_picker1',
           }
       ))
 
@@ -457,7 +456,6 @@ class WorkExpForm(forms.ModelForm):
             attrs={
                 'placeholder': "Date of Initiation",
                 'class': 'form-control',
-                'id': 'my_date_picker2',
             }
         ))
 

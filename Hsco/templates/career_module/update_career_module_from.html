@@ -383,12 +383,12 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
- <input  value="{{workexp_form.work_expirance_from|date:'Y-m-d'}}" name="work_expirance_from{{workexp_form.id}}" id="my_date_picker1" class="form-control">
+ <input  value="{{workexp_form.work_expirance_from|date:'Y-m-d'}}" name="work_expirance_from{{workexp_form.id}}" id="" class="form-control">
 &nbsp &nbsp
       To &nbsp &nbsp
 
 
-      <input value="{{workexp_form.work_expirance_to|date:'Y-m-d'}}" name="work_expirance_to{{workexp_form.id}}" id="my_date_picker2" class="form-control" >
+      <input value="{{workexp_form.work_expirance_to|date:'Y-m-d'}}" name="work_expirance_to{{workexp_form.id}}" id="" class="form-control" >
     </div>
 
 
@@ -897,7 +897,7 @@ $(add_work_exp).click(function(e){
     e.preventDefault();
     initial_count2++ ;
     initial_count3++ ;
-    $(wrapper2).append($('<div id="work_exp_id2" ><hr><div class="form-group row"><label class="col-md-2 control-label">Company Name*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="company_name'+initial_count2+'" type="text" class="form-control" placeholder="Company Name" required></div></div><label class="col-md-2 control-label">Experience*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="work_expirance_from'+initial_count2+'" id="my_date_picker'+initial_count3+'" class="form-control" required>&nbsp &nbsp To &nbsp &nbsp <input name="work_expirance_to'+initial_count2+'" id="my_date_picker'+initial_count3+'" class="form-control" required></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Experience and Achievements*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><textarea rows="4" cols="50" name="work_expirance_details'+initial_count2+'" class="form-control" required placeholder="Expirance Details"></textarea></div></div><label class="col-md-2 control-label">Designation*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="designation'+initial_count2+'" type="text" class="form-control" placeholder="Designation" required></div></div></div></div>'));
+    $(wrapper2).append($('<div id="work_exp_id2" ><hr><div class="form-group row"><label class="col-md-2 control-label">Company Name*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="company_name'+initial_count2+'" type="text" class="form-control" placeholder="Company Name" required></div></div><label class="col-md-2 control-label">Experience*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="work_expirance_from'+initial_count2+'" id="" class="form-control" required>&nbsp &nbsp To &nbsp &nbsp <input name="work_expirance_to'+initial_count2+'" id="" class="form-control" required></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Experience and Achievements*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><textarea rows="4" cols="50" name="work_expirance_details'+initial_count2+'" class="form-control" required placeholder="Expirance Details"></textarea></div></div><label class="col-md-2 control-label">Designation*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="designation'+initial_count2+'" type="text" class="form-control" placeholder="Designation" required></div></div></div></div>'));
 
     $('#maxwork_exp_id').val(initial_count2);
     console.log(initial_count2);
