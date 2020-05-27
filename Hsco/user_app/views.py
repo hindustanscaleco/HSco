@@ -31,7 +31,15 @@ class LoginView(FormView):
 
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect('/dashboard/')
+            next = request.GET.get('next', '/dashboard/')
+
+            if next!= None:
+
+                if not is_safe_url(next, allowed_hosts=None):
+                    next = '/dashboard/'
+                return redirect(next)
+            else:
+                return redirect('/dashboard/')
         else:
             request = self.request
             form = LoginForm(request.POST or None)
@@ -93,8 +101,13 @@ class LoginView(FormView):
                 request.session['user_password'] = password
                 registered_mobile = request.session['registered_mobile']
                 print(request.session['user_password'])
+                next = request.GET.get('next', '/dashboard/')
 
-                return redirect('/dashboard/')
+                if not is_safe_url(next, allowed_hosts=None):
+                    next = '/dashboard/'
+                return redirect(next)
+
+                # return redirect('/dashboard/')
 
             # print("NormalOGIN"+str(user))
 

@@ -38,7 +38,7 @@ from django.db.models.functions import TruncMonth
 from django.db.models import Count
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
-
+today_month = datetime.now().month
 
 @receiver(pre_save, sender=Purchase_Details)
 def purchase_handler(sender, instance, update_fields=None, **kwargs):
@@ -163,8 +163,6 @@ def purchase_product_handler(sender, instance, update_fields=None, **kwargs):
 
     except:
         pass
-
-
 
 @login_required(login_url='/')
 def add_purchase_details(request):
@@ -642,14 +640,14 @@ def view_customer_details(request):
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
                                                             user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-purchase_no')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-purchase_no')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter()
             context = {
                 'customer_list': cust_list,
@@ -661,14 +659,14 @@ def view_customer_details(request):
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
                                                             user_id__is_deleted=False,contact_no__icontains=contact).order_by('-purchase_no')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,contact_no__icontains=contact).order_by('-purchase_no')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(contact_no=contact)
             context = {
                 'customer_list': cust_list,
@@ -681,14 +679,14 @@ def view_customer_details(request):
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
                                                             user_id__is_deleted=False,company_email__icontains=email).order_by('-purchase_no')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-purchase_no')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(customer_email_id=email)
             context = {
                 'customer_list': cust_list,
@@ -700,14 +698,14 @@ def view_customer_details(request):
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
                                                             user_id__is_deleted=False,second_person__icontains=customer).order_by('-purchase_no')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-purchase_no')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(customer_name=customer)
             context = {
                 'customer_list': cust_list,
@@ -720,14 +718,14 @@ def view_customer_details(request):
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
                                                             user_id__is_deleted=False,second_company_name__icontains=company).order_by('-purchase_no')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-purchase_no')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(company_name=company)
             context = {
                 'customer_list': cust_list,
@@ -739,14 +737,14 @@ def view_customer_details(request):
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
                                                             user_id__is_deleted=False,crm_no__pk=crm).order_by('-purchase_no')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-purchase_no')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(crn_number=crm)
             context = {
                 'customer_list': cust_list,
@@ -758,14 +756,14 @@ def view_customer_details(request):
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
                                                             user_id__is_deleted=False,purchase_no__icontains=purchase_no).order_by('-purchase_no')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,purchase_no__icontains=purchase_no).order_by('-purchase_no')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(company_name=company)
             context = {
                 'customer_list': cust_list,
@@ -776,14 +774,14 @@ def view_customer_details(request):
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
             cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=True,user_id__modules_assigned__icontains='Customer Module').order_by('-purchase_no')
-            paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-            page = request.GET.get('page')
-            cust_list = paginator.get_page(page)
+            # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+            # page = request.GET.get('page')
+            # cust_list = paginator.get_page(page)
         else:  # For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-purchase_no')
-            paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-            page = request.GET.get('page')
-            cust_list = paginator.get_page(page)
+            # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+            # page = request.GET.get('page')
+            # cust_list = paginator.get_page(page)
 
         context = {
             'customer_list': cust_list,
@@ -793,15 +791,21 @@ def view_customer_details(request):
         return render(request, 'dashboardnew/cm.html', context)
     else:
         if check_admin_roles(request):  # For ADMIN
-            cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module').order_by('-purchase_no')
-            paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-            page = request.GET.get('page')
-            cust_list = paginator.get_page(page)
+            cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module',entry_timedate__month=today_month).order_by('-purchase_no')
+            # paginator = Paginator(cust_list, 15)
+            # page = request.GET.get('page')
+            # cust_list = paginator.get_page(page)
+
+            # item = Purchase_Details.objects.all().dates('entry_timedate', 'month', order='DESC')
+            # for it in item:
+            #     print(it.year)
+
+
         else:  # For EMPLOYEE
-            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-purchase_no')
-            paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-            page = request.GET.get('page')
-            cust_list = paginator.get_page(page)
+            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,entry_timedate__month=today_month).order_by('-purchase_no')
+            # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+            # page = request.GET.get('page')
+            # cust_list = paginator.get_page(page)
 
 
         context = {

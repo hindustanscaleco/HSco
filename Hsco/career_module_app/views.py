@@ -19,7 +19,7 @@ import json
 @login_required(login_url='/')
 def career_module_list(request):
     career_list = Career_module.objects.all().order_by('-id')
-    paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+    paginator = Paginator(career_list, 100)  # Show 25 contacts per page
     page = request.GET.get('page')
     career_list = paginator.get_page(page)
     context = {
@@ -92,7 +92,7 @@ def career_module_list(request):
             career_list = Career_module.objects.filter(entry_timedate__month=MONTH, entry_timedate__year=YEAR).order_by('-id')
 
             career_list_count = Career_module.objects.filter(entry_timedate__month=MONTH, entry_timedate__year=YEAR).count()
-            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+            paginator = Paginator(career_list, 50)  # Show 25 contacts per page
             page = request.GET.get('page')
             career_list = paginator.get_page(page)
             context1 = {
@@ -104,7 +104,7 @@ def career_module_list(request):
             return render(request, 'career_module/career_module_list.html', context)
         if 'submit1' in request.POST:
             career_list = Career_module.objects.filter( current_stage='Called for Interview',)
-            paginator = Paginator(career_list, 25)  # Show 25 contacts per page
+            paginator = Paginator(career_list, 50)  # Show 25 contacts per page
             page = request.GET.get('page')
             career_list = paginator.get_page(page)
             context2 = {

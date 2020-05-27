@@ -512,29 +512,27 @@ td {
 <br>
 
 
+<!--            <div class="pagination">-->
+<!--    <span class="step-links">-->
+<!--        {% if customer_list.has_previous %}-->
+<!--            <a href="?page=1"  class="btn btn-primary">&laquo; First</a>&nbsp;&nbsp;-->
+<!--            <a href="?page={{ customer_list.previous_page_number }}" class="btn btn-primary">Previous</a>&nbsp;-->
+<!--        {% endif %}-->
+
+<!--        <span class="current">-->
+<!--            Page {{ customer_list.number }} of {{ customer_list.paginator.num_pages }}.-->
+<!--        </span>-->
+
+<!--        {% if customer_list.has_next %}-->
+<!--        &nbsp;-->
+<!--            <a href="?page={{ customer_list.next_page_number }}" class="btn btn-primary">Next</a>&nbsp;&nbsp;-->
+<!--            <a href="?page={{ customer_list.paginator.num_pages }}" class="btn btn-primary">Last &raquo;</a>-->
+<!--        {% endif %}-->
+<!--    </span>-->
+<!--            </div>-->
 
 
 
-
-
-            <div class="pagination">
-    <span class="step-links">
-        {% if customer_list.has_previous %}
-            <a href="?page=1"  class="btn btn-primary">&laquo; First</a>&nbsp;&nbsp;
-            <a href="?page={{ customer_list.previous_page_number }}" class="btn btn-primary">Previous</a>&nbsp;
-        {% endif %}
-
-        <span class="current">
-            Page {{ customer_list.number }} of {{ customer_list.paginator.num_pages }}.
-        </span>
-
-        {% if customer_list.has_next %}
-        &nbsp;
-            <a href="?page={{ customer_list.next_page_number }}" class="btn btn-primary">Next</a>&nbsp;&nbsp;
-            <a href="?page={{ customer_list.paginator.num_pages }}" class="btn btn-primary">Last &raquo;</a>
-        {% endif %}
-    </span>
-            </div>
         </div>
               </div>
 

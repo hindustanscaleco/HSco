@@ -544,6 +544,7 @@ def final_report_dis_mod(request):
     }
 
     return render(request,"report/final_report_dis_mod.html",context)
+today_month = datetime.now().month
 
 def dispatch_view(request):
     context={}
@@ -554,9 +555,9 @@ def dispatch_view(request):
             if check_admin_roles(request):  # For ADMIN
                 dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.name,
                                                         user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-dispatch_no')
-                paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                dispatch_list = paginator.get_page(page)
+                #paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+                #page = request.GET.get('page')
+                #dispatch_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 dispatch_list = Dispatch.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-dispatch_no')
             paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
@@ -573,14 +574,14 @@ def dispatch_view(request):
             if check_admin_roles(request):  # For ADMIN
                 dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.name,
                                                         user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-dispatch_no')
-                paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                dispatch_list = paginator.get_page(page)
+                #paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+                #page = request.GET.get('page')
+                #dispatch_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 dispatch_list = Dispatch.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-dispatch_no')
-                paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                dispatch_list = paginator.get_page(page)
+                #paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+                #page = request.GET.get('page')
+                #dispatch_list = paginator.get_page(page)
             # dispatch_list = Dispatch.objects.filter(customer_no=contact)
             context = {
                 'dispatch_list': dispatch_list,
@@ -593,16 +594,16 @@ def dispatch_view(request):
             if check_admin_roles(request):  # For ADMIN
                 dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.name,
                                                         user_id__is_deleted=False,company_email__icontains=email).order_by('-dispatch_no')
-                paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                dispatch_list = paginator.get_page(page)
+                #paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+                #page = request.GET.get('page')
+                #dispatch_list = paginator.get_page(page)
             else:  # For EMPLOYEE
 
                 dispatch_list = Dispatch.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-dispatch_no')
             # dispatch_list = Dispatch.objects.filter(customer_email=email)
-                paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                dispatch_list = paginator.get_page(page)
+                #paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+                #page = request.GET.get('page')
+                #dispatch_list = paginator.get_page(page)
             context = {
                 'dispatch_list': dispatch_list,
                 'search_msg': 'Search result for Customer Email ID: ' + email,
@@ -613,14 +614,14 @@ def dispatch_view(request):
             if check_admin_roles(request):  # For ADMIN
                 dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.name,
                                                         user_id__is_deleted=False,second_person__icontains=customer).order_by('-dispatch_no')
-                paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                dispatch_list = paginator.get_page(page)
+                #paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+                #page = request.GET.get('page')
+                #dispatch_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 dispatch_list = Dispatch.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-dispatch_no')
-                paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                dispatch_list = paginator.get_page(page)
+                #paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+                #page = request.GET.get('page')
+                #dispatch_list = paginator.get_page(page)
             # dispatch_list = Dispatch.objects.filter(customer_name=customer)
             context = {
                 'dispatch_list': dispatch_list,
@@ -633,14 +634,14 @@ def dispatch_view(request):
             if check_admin_roles(request):  # For ADMIN
                 dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.name,
                                                         user_id__is_deleted=False,second_company_name__icontains=company).order_by('-dispatch_no')
-                paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                dispatch_list = paginator.get_page(page)
+                #paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+                #page = request.GET.get('page')
+                #dispatch_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 dispatch_list = Dispatch.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-dispatch_no')
-                paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                dispatch_list = paginator.get_page(page)
+                #paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+                #page = request.GET.get('page')
+                #dispatch_list = paginator.get_page(page)
                 # dispatch_list = Dispatch.objects.filter(company_name=company)
             context = {
                 'dispatch_list': dispatch_list,
@@ -652,14 +653,14 @@ def dispatch_view(request):
             if check_admin_roles(request):  # For ADMIN
                 dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.name,
                                                         user_id__is_deleted=False,crm_no__pk=crm).order_by('-dispatch_no')
-                paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                dispatch_list = paginator.get_page(page)
+                #paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+                #page = request.GET.get('page')
+                #dispatch_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 dispatch_list = Dispatch.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-dispatch_no')
-                paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                dispatch_list = paginator.get_page(page)
+                #paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+                #page = request.GET.get('page')
+                #dispatch_list = paginator.get_page(page)
             # dispatch_list = Dispatch.objects.filter(crn_number=crm)
             context = {
                 'dispatch_list': dispatch_list,
@@ -671,14 +672,14 @@ def dispatch_view(request):
             if check_admin_roles(request):  # For ADMIN
                 dispatch_list = Dispatch.objects.filter(user_id__group__icontains=request.user.name,
                                                         user_id__is_deleted=False,dispatch_no__icontains=dispatch_no).order_by('-dispatch_no')
-                paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                dispatch_list = paginator.get_page(page)
+                #paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+                #page = request.GET.get('page')
+                #dispatch_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 dispatch_list = Dispatch.objects.filter(user_id=request.user.pk,dispatch_no__icontains=dispatch_no).order_by('-dispatch_no')
-                paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                dispatch_list = paginator.get_page(page)
+                #paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+                #page = request.GET.get('page')
+                #dispatch_list = paginator.get_page(page)
             # dispatch_list = Dispatch.objects.filter(company_name=company)
             context = {
                 'dispatch_list': dispatch_list,
@@ -688,7 +689,7 @@ def dispatch_view(request):
 
     else:
         if request.user.role == 'Super Admin':     #For ADMIN
-            dispatch_list = Dispatch.objects.filter(Q(user_id__pk=request.user.pk) | (Q(user_id__group__icontains=request.user.name)& Q(user_id__is_deleted=False))).order_by('-dispatch_no')
+            dispatch_list = Dispatch.objects.filter(Q(user_id__pk=request.user.pk) & Q(entry_timedate__month=today_month) | (Q(user_id__group__icontains=request.user.name)& Q(user_id__is_deleted=False) & Q(entry_timedate__month=today_month)) ).order_by('-dispatch_no')
 
             stage1 = Dispatch.objects.filter((Q(user_id__pk=request.user.pk) & Q(current_stage='dispatch q'))|(Q(user_id__group__icontains=request.user.name)& Q(user_id__is_deleted=False)& Q(current_stage='dispatch q')) ).values('current_stage').annotate(
                 dcount=Count('current_stage'))
@@ -698,13 +699,13 @@ def dispatch_view(request):
 
             stage3 = Dispatch.objects.filter((Q(user_id__pk=request.user.pk) & Q(current_stage='dispatch completed'))|(Q(user_id__group__icontains=request.user.name)& Q(user_id__is_deleted=False)& Q(current_stage='dispatch completed'))).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
-            paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-            page = request.GET.get('page')
-            dispatch_list = paginator.get_page(page)
+            # paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+            # page = request.GET.get('page')
+            # dispatch_list = paginator.get_page(page)
 
         elif request.user.role == 'Admin' :
             admin = SiteUser.objects.get(id=request.user.pk).name
-            dispatch_list = Dispatch.objects.filter(Q(user_id__admin=admin) | Q(dispatch_by=request.user.name) | Q(user_id__name=admin)).order_by('-dispatch_no')
+            dispatch_list = Dispatch.objects.filter(Q(user_id__admin=admin) & Q(entry_timedate__month=today_month) | Q(dispatch_by=request.user.name) & Q(entry_timedate__month=today_month) | Q(user_id__name=admin)& Q(entry_timedate__month=today_month)).order_by('-dispatch_no')
 
             stage1 = Dispatch.objects.filter(
                 (Q(user_id__admin=admin) | Q(dispatch_by=request.user.name) | Q(user_id__name=admin)) & Q(
@@ -720,14 +721,14 @@ def dispatch_view(request):
                 (Q(user_id__admin=admin) | Q(dispatch_by=request.user.name) | Q(user_id__name=admin)) & Q(
                     current_stage='dispatch completed')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
-            paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-            page = request.GET.get('page')
-            dispatch_list = paginator.get_page(page)
+            # paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+            # page = request.GET.get('page')
+            # dispatch_list = paginator.get_page(page)
 
 
         elif request.user.role == 'Manager' :  #For EMPLOYEE
             admin=SiteUser.objects.get(id=request.user.pk).admin
-            dispatch_list = Dispatch.objects.filter(Q(dispatch_by=None)|Q(dispatch_by='')|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name)).order_by('-dispatch_no')
+            dispatch_list = Dispatch.objects.filter((Q(dispatch_by=None)|Q(dispatch_by='')|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))& Q(entry_timedate__month=today_month)).order_by('-dispatch_no')
 
             stage1 = Dispatch.objects.filter((Q(dispatch_by=None)|Q(dispatch_by='')|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))&Q(current_stage='dispatch q')).values('current_stage').annotate(
                 dcount=Count('current_stage'))
@@ -737,13 +738,13 @@ def dispatch_view(request):
 
             stage3 = Dispatch.objects.filter((Q(dispatch_by=None)|Q(dispatch_by='')|Q(user_id__admin=admin)|Q(dispatch_by=request.user.name))&Q(current_stage='dispatch completed')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
-            paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-            page = request.GET.get('page')
-            dispatch_list = paginator.get_page(page)
+            # paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+            # page = request.GET.get('page')
+            # dispatch_list = paginator.get_page(page)
 
         elif request.user.role == 'Employee' :  #For EMPLOYEE
             admin=SiteUser.objects.get(id=request.user.pk).admin
-            dispatch_list = Dispatch.objects.filter(Q(dispatch_by=request.user.name)|Q(dispatch_by=None)|Q(dispatch_by='') & Q(user_id__admin=admin)).order_by('-dispatch_no')
+            dispatch_list = Dispatch.objects.filter((Q(dispatch_by=request.user.name)|Q(dispatch_by=None)|Q(dispatch_by='') )& Q(user_id__admin=admin)& Q(entry_timedate__month=today_month)).order_by('-dispatch_no')
 
             stage1 = Dispatch.objects.filter((Q(dispatch_by=request.user.name)|Q(dispatch_by=None)|Q(dispatch_by='')) & Q(user_id__admin=admin)&Q(current_stage='dispatch q')).values('current_stage').annotate(
                 dcount=Count('current_stage'))
@@ -753,9 +754,9 @@ def dispatch_view(request):
 
             stage3 = Dispatch.objects.filter((Q(dispatch_by=request.user.name)|Q(dispatch_by=None)|Q(dispatch_by='')) & Q(user_id__admin=admin)&Q(current_stage='dispatch completed')).values(
                 'current_stage').annotate(dcount=Count('current_stage'))
-            paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
-            page = request.GET.get('page')
-            dispatch_list = paginator.get_page(page)
+            # paginator = Paginator(dispatch_list, 15)  # Show 25 contacts per page
+            # page = request.GET.get('page')
+            # dispatch_list = paginator.get_page(page)
 
 
 
@@ -802,9 +803,7 @@ def dispatch_view(request):
             for item in x:
                 # stage1 = item['dcount']
                 stage3 = item['dcount']
-                print(stage3)
-                print(stage3)
-                print(stage3)
+
             context10d = {
                 'stage3': stage3,
             }
