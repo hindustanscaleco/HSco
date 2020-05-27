@@ -276,23 +276,23 @@ td {
 </div>
             <br>
             <br>
-    <div class="pagination">
-    <span class="step-links">
-        {% if amc_list.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ amc_list.previous_page_number }}">previous</a>
-        {% endif %}
+<!--    <div class="pagination">-->
+<!--    <span class="step-links">-->
+<!--        {% if amc_list.has_previous %}-->
+<!--            <a href="?page=1">&laquo; first</a>-->
+<!--            <a href="?page={{ amc_list.previous_page_number }}">previous</a>-->
+<!--        {% endif %}-->
 
-        <span class="current">
-            Page {{ amc_list.number }} of {{ amc_list.paginator.num_pages }}.
-        </span>
+<!--        <span class="current">-->
+<!--            Page {{ amc_list.number }} of {{ amc_list.paginator.num_pages }}.-->
+<!--        </span>-->
 
-        {% if amc_list.has_next %}
-            <a href="?page={{ amc_list.next_page_number }}">next</a>
-            <a href="?page={{ amc_list.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-    </div>
+<!--        {% if amc_list.has_next %}-->
+<!--            <a href="?page={{ amc_list.next_page_number }}">next</a>-->
+<!--            <a href="?page={{ amc_list.paginator.num_pages }}">last &raquo;</a>-->
+<!--        {% endif %}-->
+<!--    </span>-->
+<!--    </div>-->
 
 </div>
 

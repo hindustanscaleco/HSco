@@ -685,23 +685,23 @@ td {
 <br>
 <br>
 
-            <div class="pagination">
-    <span class="step-links">
-        {% if lead_list.has_previous %}
-            <a class="btn btn-primary" href="?page=1">&laquo; first</a>
-            <a class="btn btn-primary" href="?page={{ lead_list.previous_page_number }}">previous</a>
-        {% endif %}
+<!--            <div class="pagination">-->
+<!--    <span class="step-links">-->
+<!--        {% if lead_list.has_previous %}-->
+<!--            <a class="btn btn-primary" href="?page=1">&laquo; first</a>-->
+<!--            <a class="btn btn-primary" href="?page={{ lead_list.previous_page_number }}">previous</a>-->
+<!--        {% endif %}-->
 
-        <span class="current">
-            Page {{ lead_list.number }} of {{ lead_list.paginator.num_pages }}.
-        </span>
+<!--        <span class="current">-->
+<!--            Page {{ lead_list.number }} of {{ lead_list.paginator.num_pages }}.-->
+<!--        </span>-->
 
-        {% if lead_list.has_next %}
-            <a class="btn btn-primary" href="?page={{ lead_list.next_page_number }}">next</a>
-            <a class="btn btn-primary" href="?page={{ lead_list.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-            </div>
+<!--        {% if lead_list.has_next %}-->
+<!--            <a class="btn btn-primary" href="?page={{ lead_list.next_page_number }}">next</a>-->
+<!--            <a class="btn btn-primary" href="?page={{ lead_list.paginator.num_pages }}">last &raquo;</a>-->
+<!--        {% endif %}-->
+<!--    </span>-->
+<!--            </div>-->
 
 
             </div>

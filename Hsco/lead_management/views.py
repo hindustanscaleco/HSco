@@ -41,7 +41,7 @@ from django.contrib import messages
 
 from stock_management_system_app.models import Godown,GodownProduct
 
-
+today_month = datetime.now().month
 @login_required(login_url='/')
 def lead_home(request):
     import requests
@@ -62,25 +62,25 @@ def lead_home(request):
     admin = SiteUser.objects.get(id=request.user.pk).admin
 
     if request.user.role == 'Super Admin':  # For SUPER ADMIN
-        lead_list = Lead.objects.all().order_by('-id')
-        paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-        page = request.GET.get('page')
-        lead_list = paginator.get_page(page)
+        lead_list = Lead.objects.filter(Q(entry_timedate__month=today_month)).order_by('-id')
+        # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+        # page = request.GET.get('page')
+        # lead_list = paginator.get_page(page)
     elif request.user.role == 'Admin':  # For ADMIN
-        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(owner_of_opportunity__admin__icontains=request.user.profile_name)).order_by('-id')
-        paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-        page = request.GET.get('page')
-        lead_list = paginator.get_page(page)
+        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month) | Q(owner_of_opportunity__admin__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month)).order_by('-id')
+        # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+        # page = request.GET.get('page')
+        # lead_list = paginator.get_page(page)
     elif request.user.role == 'Manager':  # For manager
-        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(owner_of_opportunity__manager__icontains=request.user.profile_name)).order_by('-id')
-        paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-        page = request.GET.get('page')
-        lead_list = paginator.get_page(page)
+        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month) | Q(owner_of_opportunity__manager__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month)).order_by('-id')
+        # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+        # page = request.GET.get('page')
+        # lead_list = paginator.get_page(page)
     elif request.user.role == 'Employee': #for employee
-        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
-        paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-        page = request.GET.get('page')
-        lead_list = paginator.get_page(page)
+        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)).order_by('-id')
+        # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+        # page = request.GET.get('page')
+        # lead_list = paginator.get_page(page)
     cust_sugg = Customer_Details.objects.all()
 
     context23 = {
@@ -1074,15 +1074,15 @@ def lead_home(request):
                                                 owner_of_opportunity__is_deleted=False,
                                                 entry_timedate__range=[start_date, end_date]).order_by('-id')
 
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk,
                                                 entry_timedate__range=[start_date, end_date]).order_by('-customer_id')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter()
             context = {
                 'lead_list': cust_list,
@@ -1095,15 +1095,15 @@ def lead_home(request):
                 cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
                                                 owner_of_opportunity__is_deleted=False, customer_id__contact_no__icontains=contact).order_by(
                     '-id')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Lead.objects.filter(owner_of_opportunity_id=request.user.pk, customer_id__contact_no__icontains=contact).order_by(
                     '-id')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(contact_no=contact)
             context = {
                 'lead_list': cust_list,
@@ -1117,15 +1117,15 @@ def lead_home(request):
                 cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
                                                 owner_of_opportunity__is_deleted=False, customer_id__customer_email_id__icontains=email).order_by(
                     '-id')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk, customer_id__customer_email_id__icontains=email).order_by(
                     '-id')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(customer_email_id=email)
             context = {
                 'lead_list': cust_list,
@@ -1138,15 +1138,15 @@ def lead_home(request):
                 cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
                                                 owner_of_opportunity__is_deleted=False, customer_id__second_person__icontains=customer).order_by(
                     '-id')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk, customer_id__second_person__icontains=customer).order_by(
                     '-id')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(customer_name=customer)
             context = {
                 'lead_list': cust_list,
@@ -1160,15 +1160,15 @@ def lead_home(request):
                 cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
                                                 owner_of_opportunity__is_deleted=False,
                                                 customer_id__company_name__icontains=company).order_by('-id')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk,
                                                 customer_id__company_name__icontains=company).order_by('-id')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(company_name=company)
             context = {
                 'lead_list': cust_list,
@@ -1182,15 +1182,15 @@ def lead_home(request):
                 cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
                                                 owner_of_opportunity__is_deleted=False, id__icontains=serial_no).order_by(
                     '-id')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk, id__icontains=serial_no).order_by(
                     '-id')
-                paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                cust_list = paginator.get_page(page)
+                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # cust_list = paginator.get_page(page)
             # cust_list = Customer_Details.objects.filter(company_name=company)
             context = {
                 'lead_list': cust_list,
@@ -1523,16 +1523,17 @@ def update_view_lead(request,id):
                     for item2 in product_id:
                         product_id = item2
                 else:
-                    context22 = {
-                        'error': "Product Having Scale Type:"+item.product_id.scale_type.name+"Main Category:"+item.product_id.main_category.name+" Sub Category:"+item.product_id.sub_category.name+"Sub Sub Category:"+item.product_id.sub_sub_category.name+" Does Not Exist In Product Database",
-                        'error_exist': True,
-                    }
-                    context.update(context22)
-                    try:
-                        del request.session['context_sess']
-                    except:
-                        pass
-                    request.session['context_sess'] = context22
+                    # context22 = {
+                    #     'error': "Product Having Scale Type:"+item.product_id.scale_type.name+"Main Category:"+item.product_id.main_category.name+" Sub Category:"+item.product_id.sub_category.name+"Sub Sub Category:"+item.product_id.sub_sub_category.name+" Does Not Exist In Product Database",
+                    #     'error_exist': True,
+                    # }
+                    # context.update(context22)
+                    # try:
+                    #     del request.session['context_sess']
+                    # except:
+                    #     pass
+                    # request.session['context_sess'] = context22
+                    messages.error(request, "Product Having Scale Type:"+item.product_id.scale_type.name+"Main Category:"+item.product_id.main_category.name+" Sub Category:"+item.product_id.sub_category.name+"Sub Sub Category:"+item.product_id.sub_sub_category.name+" Does Not Exist In Product Database")
                     return redirect('/update_view_lead/' + str(id))
                 godown = Godown.objects.get(id=godown_ids[list_count])
                 godown_product_exist = GodownProduct.objects.filter(godown_id=godown.id,product_id=product_id.id)
@@ -1542,46 +1543,50 @@ def update_view_lead(request,id):
                     for item3 in godown_product_exist:
                         quantity_available = item3.quantity
                 else:
-                    context22 = {
-                        'error': "Product Having Sub Category:"+product_id.sub_category.name+" and Sub Sub Category:"+product_id.sub_sub_category.name+" Does Not Exist in Godown:"+godown.name_of_godown,
-                        'error_exist': True,
-                    }
-                    context.update(context22)
-                    try:
-                        del request.session['context_sess']
-                    except:
-                        pass
-                    request.session['context_sess'] = context22
+                    # context22 = {
+                    #     'error': "Product Having Sub Category:"+product_id.sub_category.name+" and Sub Sub Category:"+product_id.sub_sub_category.name+" Does Not Exist in Godown:"+godown.name_of_godown,
+                    #     'error_exist': True,
+                    # }
+                    # context.update(context22)
+                    # try:
+                    #     del request.session['context_sess']
+                    # except:
+                    #     pass
+                    # request.session['context_sess'] = context22
+                    messages.error(request,"Product Having Sub Category:"+product_id.sub_category.name+" and Sub Sub Category:"+product_id.sub_sub_category.name+" Does Not Exist in Godown:"+godown.name_of_godown)
                     return redirect('/update_view_lead/' + str(id))
 
                 if (quantity_available > required_quantity):
                     is_sufficient_stock = False
                 else:
-                    context22 = {
-                        'error': "Insufficient Stock in Godown: " + Godown.objects.get(
-                            id=godown_ids[list_count]).name_of_godown + " Please Select Different Godown And Try Again",
-                        'error_exist': True,
-                    }
-                    context.update(context22)
-                    try:
-                        del request.session['context_sess']
-                    except:
-                        pass
-                    request.session['context_sess'] = context22
+                    # context22 = {
+                    #     'error': "Insufficient Stock in Godown: " + Godown.objects.get(
+                    #         id=godown_ids[list_count]).name_of_godown + " Please Select Different Godown And Try Again",
+                    #     'error_exist': True,
+                    # }
+                    # context.update(context22)
+                    # try:
+                    #     del request.session['context_sess']
+                    # except:
+                    #     pass
+                    # request.session['context_sess'] = context22
+                    messages.error(request,"Insufficient Stock in Godown: " + Godown.objects.get(
+                            id=godown_ids[list_count]).name_of_godown + " Please Select Different Godown And Try Again")
                     return redirect('/update_view_lead/' + str(id))
                 list_count = list_count + 1
             list_count = 0;
             if lead_id.customer_id.contact_no == '0000000000' or len(lead_id.customer_id.contact_no) < 10:
-                context22 = {
-                    'error': "Contact Number Is Not Valid!!!",
-                    'error_exist': True,
-                }
-                context.update(context22)
-                try:
-                    del request.session['context_sess']
-                except:
-                    pass
-                request.session['context_sess'] = context22
+                messages.error(request, "Contact Number Is Not Valid!!!")
+                # context22 = {
+                #     'error': "Contact Number Is Not Valid!!!",
+                #     'error_exist': True,
+                # }
+                # context.update(context22)
+                # try:
+                #     del request.session['context_sess']
+                # except:
+                #     pass
+                # request.session['context_sess'] = context22
                 return redirect('/update_view_lead/' + str(id))
             for item in pi_pro:
 
@@ -1714,16 +1719,17 @@ def update_view_lead(request,id):
                         Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=total_purchase_product_cost)
                         Lead.objects.filter(id=id).update(is_entered_purchase=True,current_stage='Dispatch Done - Closed')
                     except Exception as e :
-                        context22 = {
-                            'error': "Submit PI Details First!!!",
-                            'error_exist': True,
-                        }
-                        context.update(context22)
-                        try:
-                            del request.session['context_sess']
-                        except:
-                            pass
-                        request.session['context_sess'] = context22
+                        # context22 = {
+                        #     'error': "Submit PI Details First!!!",
+                        #     'error_exist': True,
+                        # }
+                        # context.update(context22)
+                        # try:
+                        #     del request.session['context_sess']
+                        # except:
+                        #     pass
+                        # request.session['context_sess'] = context22
+                        messages.error(request,"Submit PI Details First!!!")
                         return redirect('/update_view_lead/' + str(id))
 
 
@@ -1964,16 +1970,17 @@ def update_view_lead(request,id):
 
             if (current_stage=='Dispatch Done - Closed'):
                 if(not item2.is_entered_purchase):
-                    context22 = {
-                        'error': 'Make Entry In Purchase Module And Try Again!!!',
-                        'error_exist': True,
-                    }
-                    context.update(context22)
-                    try:
-                        del request.session['context_sess']
-                    except:
-                        pass
-                    request.session['context_sess'] = context22
+                    # context22 = {
+                    #     'error': 'Make Entry In Purchase Module And Try Again!!!',
+                    #     'error_exist': True,
+                    # }
+                    # context.update(context22)
+                    # try:
+                    #     del request.session['context_sess']
+                    # except:
+                    #     pass
+                    # request.session['context_sess'] = context22
+                    messages.error(request,'Make Entry In Purchase Module And Try Again!!!')
                     return redirect('/update_view_lead/' + str(id))
 
             item2.current_stage = current_stage
@@ -2243,7 +2250,7 @@ def update_view_lead(request,id):
             Follow_up_section.objects.filter(lead_id=id).update(fields=selected_fields)
             del_all_sessions(request)
             request.session['expand_followup'] = True
-
+            messages.success(request,"Products Fields Saved")
             return redirect('/update_view_lead/' + str(id))
 
 
@@ -2311,67 +2318,72 @@ def update_view_lead(request,id):
             request.session['expand_followup'] = True
 
             if wa_no == '0000000000' or len(wa_no) < 10 or len(customer_id.contact_no) < 10 or customer_id.contact_no == '0000000000' or customer_id.contact_no == '' or customer_id.contact_no == None:
-                context22 = {
-                    'error': "Contact Number Is  Invalid!!!",
-                    'error_exist': True,
-                }
-                context.update(context22)
-                try:
-                    del request.session['context_sess']
-                except:
-                    pass
-                request.session['context_sess'] = context22
+                # context22 = {
+                #     'error': "Contact Number Is  Invalid!!!",
+                #     'error_exist': True,
+                # }
+                # context.update(context22)
+                # try:
+                #     del request.session['context_sess']
+                # except:
+                #     pass
+                # request.session['context_sess'] = context22
+                messages.error(request, "Contact Number Is  Invalid!!!")
                 return redirect('/update_view_lead/' + str(id))
 
             if (selected_products!=None and len(selected_products)<1 and email_auto_manual == 'Manual' and not (is_call!='on' or is_call!='is_call')):
-                context22={
-                    'error':"No Product Selected\nPlease Select Products And Try Again",
-                    'error_exist':True,
-                }
-                context.update(context22)
-                try:
-                    del request.session['context_sess']
-                except:
-                    pass
-                request.session['context_sess'] = context22
+                # context22={
+                #     'error':"No Product Selected\nPlease Select Products And Try Again",
+                #     'error_exist':True,
+                # }
+                # context.update(context22)
+                # try:
+                #     del request.session['context_sess']
+                # except:
+                #     pass
+                # request.session['context_sess'] = context22
+                messages.error(request, "No Product Selected\nPlease Select Products And Try Again")
                 return redirect('/update_view_lead/' + str(id))
             if(is_call!='on' and is_sms!='on' and is_whatsapp!='on' and is_email!='on' and is_call!='is_call' and is_sms!='is_sms' and is_whatsapp!='is_whatsapp' and is_email !='is_email'):
-                context28 = {
-                    'error': "Please Select Atleast One Medium For Followup",
-                    'error_exist': True,
-                }
-                context.update(context28)
-                try:
-                    del request.session['context_sess']
-                except:
-                    pass
-                request.session['context_sess']=context28
+                # context28 = {
+                #     'error': "Please Select Atleast One Medium For Followup",
+                #     'error_exist': True,
+                # }
+                # context.update(context28)
+                # try:
+                #     del request.session['context_sess']
+                # except:
+                #     pass
+                # request.session['context_sess']=context28
+                messages.error(request, "Please Select Atleast One Medium For Followup")
                 return redirect('/update_view_lead/' + str(id))
             if (selected_fields !=None and len(selected_fields)<6):
 
-                context28 = {
-                    'error': "Please Select Atleast One Product Field",
-                    'error_exist': True,
-                }
-                context.update(context28)
-                try:
-                    del request.session['context_sess']
-                except:
-                    pass
-                request.session['context_sess']=context28
+                # context28 = {
+                #     'error': "Please Select Atleast One Product Field",
+                #     'error_exist': True,
+                # }
+                # context.update(context28)
+                # try:
+                #     del request.session['context_sess']
+                # except:
+                #     pass
+                # request.session['context_sess']=context28
+                messages.error(request, "Please Select Atleast One Product Field")
                 return redirect('/update_view_lead/' + str(id))
             if (email_auto_manual == 'Select Mode'):
 
-                context28 = {
-                    'error': "Please Select Follow Up Mode",
-                    'error_exist': True,
-                }
-                context.update(context28)
-                try:
-                    del request.session['context_sess']
-                except:
-                    pass
-                request.session['context_sess']=context28
+                # context28 = {
+                #     'error': "Please Select Follow Up Mode",
+                #     'error_exist': True,
+                # }
+                # context.update(context28)
+                # try:
+                #     del request.session['context_sess']
+                # except:
+                #     pass
+                # request.session['context_sess']=context28
+                messages.error(request, "Please Select Follow Up Mode")
                 return redirect('/update_view_lead/' + str(id))
             if(email_auto_manual == 'Manual'):
 
@@ -2530,11 +2542,12 @@ td {
                     history_follow.html_content = html_content
 
                     send_html_mail(email_subject, html_content, settings.EMAIL_HOST_USER, [customer_id.customer_email_id, ])
-                    context28 = {
-                        'success': "Email Sent on email Id: "+customer_id.customer_email_id,
-                        'success_exist': True,
-                    }
-                    context_session.update(context28)
+                    # context28 = {
+                    #     'success': "Email Sent on email Id: "+customer_id.customer_email_id,
+                    #     'success_exist': True,
+                    # }
+                    # context_session.update(context28)
+                    messages.success(request,"Email Sent on email Id: "+customer_id.customer_email_id)
 
 
                 if(is_whatsapp=='on' or is_whatsapp=='is_whatsapp'):
@@ -2559,11 +2572,12 @@ td {
                     request.session['wa_msg']=wa_msg
                     request.session['wa_content']=wa_content
                     request.session['wa_no']=wa_no
-                    context28 = {
-                        'success_2': "WhatsApp Redirect Successful On WhatsApp No : " + wa_no,
-                        'success_exist_2': True,
-                    }
-                    context_session.update(context28)
+                    # context28 = {
+                    #     'success_2': "WhatsApp Redirect Successful On WhatsApp No : " + wa_no,
+                    #     'success_exist_2': True,
+                    # }
+                    # context_session.update(context28)
+                    messages.success(request,"WhatsApp Redirect Successful On WhatsApp No : " + wa_no)
 
 
                 if(is_sms=='on' or is_sms=='is_sms'):
@@ -2579,21 +2593,25 @@ td {
                     response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
                     x = response.text
                     print(x)
-                    context28 = {
-                        'success_4': "SMS Sent Successfully To : " + customer_id.contact_no,
-                        'success_exist_4': True,
-                    }
-                    context_session.update(context28)
+                    # context28 = {
+                    #     'success_4': "SMS Sent Successfully To : " + customer_id.contact_no,
+                    #     'success_exist_4': True,
+                    # }
+                    # context_session.update(context28)
+                    messages.success(request,"SMS Sent Successfully To : " + customer_id.contact_no)
+
 
                 if(is_call=='on' or is_call=='is_call'):
                     call_response = request.POST.get('call_response')
                     history_follow.is_call = True
                     history_follow.call_response = call_response
-                    context28 = {
-                        'success_5': "Call Response Recorded Successfully" ,
-                        'success_exist_5': True,
-                    }
-                    context_session.update(context28)
+                    # context28 = {
+                    #     'success_5': "Call Response Recorded Successfully" ,
+                    #     'success_exist_5': True,
+                    # }
+                    # context_session.update(context28)
+                    messages.success(request,"Call Response Recorded Successfully")
+
 
                 history_follow.log_entered_by = request.user.name
 
@@ -2769,15 +2787,17 @@ td {
                     afd= Auto_followup_details()
                     afd.follow_up_history = History_followup.objects.get(id=history_follow.pk)
                     afd.save()
-                    context28 = {
-                        'success_6': "Followup Will Be Done Automatically After Every 2 Days",
-                        'success_exist_6': True,
-                    }
-                    try:
-                        del request.session['context_sess']
-                    except:
-                        pass
-                    request.session['context_sess'] = context28
+                    # context28 = {
+                    #     'success_6': "Followup Will Be Done Automatically After Every 2 Days",
+                    #     'success_exist_6': True,
+                    # }
+                    # try:
+                    #     del request.session['context_sess']
+                    # except:
+                    #     pass
+                    messages.success(request,"Followup Will Be Done Automatically After Every 2 Days")
+
+                    # request.session['context_sess'] = context28
                     return redirect('/update_view_lead/' + str(id))
                 elif(Auto_followup_details.objects.filter(follow_up_history__follow_up_section__lead_id__id=lead_id.id).count()>0):
                     context28 = {
@@ -2785,11 +2805,7 @@ td {
                         'error_exist': True,
                     }
                     context.update(context28)
-
-
-
-
-
+                    messages.error(request,"Auto Follow-Up is Already Set For This Lead\nTo Edit Auto Follow-Up Click On History Button In Follow-Up Section")
 
     return render(request, 'lead_management/update_view_lead.html',context)
 
