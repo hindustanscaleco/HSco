@@ -11,11 +11,25 @@
 
   <title>HSCO</title>
 
+
+     <link href=
+'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
+          rel='stylesheet'>
+
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" >
+    </script>
+
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" >
+    </script>
+
+
+
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
 
@@ -318,8 +332,14 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  {{workexp_form.work_expirance_from}}&nbsp &nbsp To &nbsp &nbsp {{workexp_form.work_expirance_to}}
+  {{workexp_form.work_expirance_from}}&nbsp &nbsp To &nbsp &nbsp {{workexp_form.work_expirance_to}} <br>
+
+
     </div>
+              <div id="tagscloud">
+       <span></span>
+</div>
+
   </div>
         </div>
             <div class="form-group row">
@@ -371,9 +391,27 @@ color:;
 
 
 
+    <script>
+        $(document).ready(function() {
 
+            $(function() {
+                $( "#my_date_picker" ).datepicker();
 
+            });
 
+             $('#my_date_picker').datepicker({
+  dateFormat: "yy-mm-dd",
+  maxDate: "-16y",
+      showButtonPanel: true,
+    changeMonth: true,
+    changeYear: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+         yearRange: "1950:2030"
+
+ });
+        })
+    </script>
 
 </fieldset>
 </form>
@@ -513,26 +551,104 @@ if ($('#maxedu_id').val() > 1){
           $('#AchievementsCharNum').text(1024 - len);
         }
       };
+
+
+$(document).ready(function(){
+
+ // String
+ $('#DOBcala').datepicker({
+  dateFormat: "yy-mm-dd",
+  minDate: "-3w"
+ });
+});
                          </script>
+
+
+        <script>
+
+        $(document).ready(function(){
+   var $datepicker1 =  $( "#my_date_picker1" );
+   var $datepicker2 =  $( "#my_date_picker2" );
+   $datepicker1.datepicker({
+                             showButtonPanel: true,
+    changeMonth: true,
+    changeYear: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+         dateFormat: 'yy-mm-dd',
+
+         yearRange: "1950:",
+
+   });
+   $datepicker2.datepicker({
+                             showButtonPanel: true,
+    changeMonth: true,
+    changeYear: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+         dateFormat: 'yy-mm-dd',
+
+         yearRange: "1950:",
+       onClose: function() {
+           var fromDate = $datepicker1.datepicker('getDate');
+           var toDate = $datepicker2.datepicker('getDate');
+           // date difference in millisec
+           var diff = new Date(toDate - fromDate);
+           // date difference in days
+           var days = diff/1000/60/60/24;
+           var days2 = days / 365;
+           var finalDate = days2.toFixed(2);
+$("#tagscloud span").text("Total experience is " + finalDate + " years.");
+
+
+
+       }
+   });
+});
+
+
+            $(document).ready(function() {
+
+
+
+                $('#my_date_picker1').change(function() {
+                    startDate = $(this).datepicker('getDate');
+                    $("#my_date_picker2").datepicker("option", "minDate", startDate);
+
+
+                })
+
+                $('#my_date_picker2').change(function() {
+                    endDate = $(this).datepicker('getDate');
+                    $("#my_date_picker1").datepicker("option", "maxDate", endDate);
+
+                })
+
+            })
+
+
+
+
+        </script>
 
 
 
   <!-- Bootstrap core JavaScript-->
-  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
-  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+<!--  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>-->
+<!--  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>-->
 
-  <!-- Core plugin JavaScript-->
-  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+<!--  &lt;!&ndash; Core plugin JavaScript&ndash;&gt;-->
+<!--  <script src="{% static 'js/dashboard/jquery.easing.min.js' %}"></script>-->
 
-  <!-- Custom scripts for all pages-->
-  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+<!--  &lt;!&ndash; Custom scripts for all pages&ndash;&gt;-->
+<!--  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>-->
 
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+<!--  &lt;!&ndash; Page level plugins &ndash;&gt;-->
+<!--  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>-->
 
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+<!--  &lt;!&ndash; Page level custom scripts &ndash;&gt;-->
+<!--  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>-->
+<!--  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>-->
 
 </body>
 

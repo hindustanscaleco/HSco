@@ -122,9 +122,9 @@ class Career_moduleForm(forms.ModelForm):
     date_of_birth = forms.DateField( required=True,
                                          widget=forms.DateInput(
                                              attrs={
-                                                 'type': 'date',
                                                  'placeholder': "Date of birth",
                                                  'class': 'form-control',
+                                                 'id': 'my_date_picker',
                                              }
                                          ))
 
@@ -445,19 +445,19 @@ class WorkExpForm(forms.ModelForm):
     work_expirance_from = forms.DateField(required=False,
       widget=forms.DateInput(
           attrs={
-              'type': 'date',
               'placeholder': "Date of Initiation",
               'class': 'form-control',
               'size':'1',
+              'id':'my_date_picker1',
           }
       ))
 
     work_expirance_to = forms.DateField(required=False,
         widget=forms.DateInput(
             attrs={
-                'type': 'date',
                 'placeholder': "Date of Initiation",
                 'class': 'form-control',
+                'id': 'my_date_picker2',
             }
         ))
 
