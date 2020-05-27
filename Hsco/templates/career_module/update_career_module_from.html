@@ -12,11 +12,26 @@
   <title>HSCO</title>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
+
+         <link href=
+'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
+          rel='stylesheet'>
+
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" >
+    </script>
+
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" >
+    </script>
+
+
+
+
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
@@ -194,7 +209,7 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-      <input name="date_of_birth" required type="date" class="form-control" value="{{ career_module_id.date_of_birth|date:'Y-m-d'}}">
+      <input name="date_of_birth" required id="my_date_picker" class="form-control" value="{{ career_module_id.date_of_birth|date:'Y-m-d'}}">
     </div>
   </div>
 
@@ -372,8 +387,19 @@ color:;
 &nbsp &nbsp
       To &nbsp &nbsp
 
+
       <input value="{{workexp_form.work_expirance_to|date:'Y-m-d'}}" name="work_expirance_to{{workexp_form.id}}" type="date" class="form-control" >
     </div>
+
+
+    </div>
+        <center>
+        <span>
+            <input style="border: 0px; background-color: white;" disabled value="Exp: {% if workexp_form.exp_yrs == 1 %}{{ workexp_form.exp_yrs }} year{% elif workexp_form.exp_yrs > 1 %}
+                    {{ workexp_form.exp_yrs }} years{% endif %}{% if workexp_form.exp_months == 1 %}{{ workexp_form.exp_months }} month{% elif workexp_form.exp_months > 1 %}{{ workexp_form.exp_months }} months{% endif %}">
+
+
+    </span></center>
   </div>
         </div>
 
@@ -865,11 +891,13 @@ var add_work_exp = $(".add_work_exp");
 var delete_work_exp = $(".delete_work_exp");
 
 var initial_count2 = $("#latest_work_exp_id").val();
+var initial_count3 = $("#latest_work_exp_id").val();
 
 $(add_work_exp).click(function(e){
     e.preventDefault();
     initial_count2++ ;
-    $(wrapper2).append($('<div id="work_exp_id2" ><hr><div class="form-group row"><label class="col-md-2 control-label">Company Name*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="company_name'+initial_count2+'" type="text" class="form-control" placeholder="Company Name" required></div></div><label class="col-md-2 control-label">Experience*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="work_expirance_from'+initial_count2+'" type="date" class="form-control" required>&nbsp &nbsp To &nbsp &nbsp <input name="work_expirance_to'+initial_count2+'" type="date" class="form-control" required></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Experience and Achievements*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><textarea rows="4" cols="50" name="work_expirance_details'+initial_count2+'" class="form-control" required placeholder="Expirance Details"></textarea></div></div><label class="col-md-2 control-label">Designation*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="designation'+initial_count2+'" type="text" class="form-control" placeholder="Designation" required></div></div></div></div>'));
+    initial_count3++ ;
+    $(wrapper2).append($('<div id="work_exp_id2" ><hr><div class="form-group row"><label class="col-md-2 control-label">Company Name*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><input name="company_name'+initial_count2+'" type="text" class="form-control" placeholder="Company Name" required></div></div><label class="col-md-2 control-label">Experience*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="work_expirance_from'+initial_count2+'" id="" class="form-control" required>&nbsp &nbsp To &nbsp &nbsp <input name="work_expirance_to'+initial_count2+'" id="" class="form-control" required></div></div> </div><div class="form-group row"><label class="col-md-2 control-label">Experience and Achievements*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span><textarea rows="4" cols="50" name="work_expirance_details'+initial_count2+'" class="form-control" required placeholder="Expirance Details"></textarea></div></div><label class="col-md-2 control-label">Designation*</label><div class="col-md-4 inputGroupContainer"><div class="input-group"><span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span><input name="designation'+initial_count2+'" type="text" class="form-control" placeholder="Designation" required></div></div></div></div>'));
 
     $('#maxwork_exp_id').val(initial_count2);
     console.log(initial_count2);
@@ -888,6 +916,92 @@ if ($("#maxwork_exp_id").val() > $("#latest_work_exp_id").val()){
         }
     });
 });
+
+
+
+
+        $(document).ready(function(){
+   var $datepicker1 =  $( "#my_date_picker + 'initial_count3+'" );
+   var $datepicker2 =  $( "#my_date_picker'+initial_count3+'" );
+
+
+
+   $datepicker1.datepicker({
+                             showButtonPanel: true,
+    changeMonth: true,
+     dateFormat: 'yy-mm-dd',
+    changeYear: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+         yearRange: "1950:",
+
+   });
+   $datepicker2.datepicker({
+                             showButtonPanel: true,
+    changeMonth: true,
+    changeYear: true,
+     dateFormat: 'yy-mm-dd',
+    showOtherMonths: true,
+    selectOtherMonths: true,
+         yearRange: "1950:",
+
+       onClose: function() {
+           var fromDate = $datepicker1.datepicker('getDate');
+           var toDate = $datepicker2.datepicker('getDate');
+           // date difference in millisec
+           var diff = new Date(toDate - fromDate);
+           // date difference in days
+           var days = diff/1000/60/60/24;
+           var days2 = days / 365;
+           var finalDate = days2.toFixed(2);
+$("#tagscloud span").text("Total experience is " + finalDate + " years.");
+
+
+
+       }
+   });
+
+      if($("#my_date_picker2").val() != "") {
+         var $datepicker1 =  $( "#my_date_picker1" );
+   var $datepicker2 =  $( "#my_date_picker2" );
+
+
+
+ var fromDate = $datepicker1.datepicker('getDate');
+           var toDate = $datepicker2.datepicker('getDate');
+           // date difference in millisec
+           var diff = new Date(toDate - fromDate);
+           // date difference in days
+           var days = diff/1000/60/60/24;
+           var days2 = days / 365;
+           var finalDate = days2.toFixed(2);
+$("#tagscloud span").text("Total experience is " + finalDate + " years.");
+}
+});
+
+
+            $(document).ready(function() {
+
+
+
+                $('#my_date_picker1').change(function() {
+                    startDate = $(this).datepicker('getDate');
+                    $("#my_date_picker2").datepicker("option", "minDate", startDate);
+
+
+                })
+
+                $('#my_date_picker2').change(function() {
+                    endDate = $(this).datepicker('getDate');
+                    $("#my_date_picker1").datepicker("option", "maxDate", endDate);
+
+                })
+
+            })
+
+
+
+
 </script>
 
 <script>
@@ -984,27 +1098,132 @@ if ($("#maxedu_id").val() > $("#latest_edu_details_id").val()){
 
 
 
+    <script>
+        $(document).ready(function() {
+
+            $(function() {
+                $( "#my_date_picker" ).datepicker();
+
+            });
+
+             $('#my_date_picker').datepicker({
+  dateFormat: "yy-mm-dd",
+  maxDate: "-16y",
+      showButtonPanel: true,
+    changeMonth: true,
+    changeYear: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+         yearRange: "1950:2030"
+
+ });
+        })
+    </script>
+
+
+  <script>
+
+        $(document).ready(function(){
+   var $datepicker1 =  $( "#my_date_picker1" );
+   var $datepicker2 =  $( "#my_date_picker2" );
+
+
+
+   $datepicker1.datepicker({
+                             showButtonPanel: true,
+    changeMonth: true,
+     dateFormat: 'yy-mm-dd',
+    changeYear: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+         yearRange: "1950:",
+
+   });
+   $datepicker2.datepicker({
+                             showButtonPanel: true,
+    changeMonth: true,
+    changeYear: true,
+     dateFormat: 'yy-mm-dd',
+    showOtherMonths: true,
+    selectOtherMonths: true,
+         yearRange: "1950:",
+
+       onClose: function() {
+           var fromDate = $datepicker1.datepicker('getDate');
+           var toDate = $datepicker2.datepicker('getDate');
+           // date difference in millisec
+           var diff = new Date(toDate - fromDate);
+           // date difference in days
+           var days = diff/1000/60/60/24;
+           var days2 = days / 365;
+           var finalDate = days2.toFixed(2);
+$("#tagscloud span").text("Total experience is " + finalDate + " years.");
+
+
+
+       }
+   });
+
+      if($("#my_date_picker2").val() != "") {
+         var $datepicker1 =  $( "#my_date_picker1" );
+   var $datepicker2 =  $( "#my_date_picker2" );
+
+
+
+ var fromDate = $datepicker1.datepicker('getDate');
+           var toDate = $datepicker2.datepicker('getDate');
+           // date difference in millisec
+           var diff = new Date(toDate - fromDate);
+           // date difference in days
+           var days = diff/1000/60/60/24;
+           var days2 = days / 365;
+           var finalDate = days2.toFixed(2);
+$("#tagscloud span").text("Total experience is " + finalDate + " years.");
+}
+});
+
+
+            $(document).ready(function() {
+
+
+
+                $('#my_date_picker1').change(function() {
+                    startDate = $(this).datepicker('getDate');
+                    $("#my_date_picker2").datepicker("option", "minDate", startDate);
+
+
+                })
+
+                $('#my_date_picker2').change(function() {
+                    endDate = $(this).datepicker('getDate');
+                    $("#my_date_picker1").datepicker("option", "maxDate", endDate);
+
+                })
+
+            })
+
+
+
+
+        </script>
 
 
 
 
 
+<!--<script src="{% static 'js/dashboard/jquery.min.js' %}"></script>-->
+<!--  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>-->
 
+<!--  &lt;!&ndash; Core plugin JavaScript&ndash;&gt;-->
+<!--  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>-->
 
+<!--  &lt;!&ndash; Custom scripts for all pages&ndash;&gt;-->
+<!--  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>-->
 
-<script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
-  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+<!--  &lt;!&ndash; Page level plugins &ndash;&gt;-->
+<!--  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>-->
 
-  <!-- Core plugin JavaScript-->
-  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
-
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
-
-  <!-- Page level custom scripts -->
+<!--  &lt;!&ndash; Page level custom scripts &ndash;&gt;-->
 
 
 </body>
