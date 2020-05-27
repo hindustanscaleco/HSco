@@ -222,6 +222,13 @@ def add_purchase_details(request):
         # value_of_goods = request.POST.get('value_of_goods')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
+
+        payment_mode = request.POST.get('payment_mode')
+        bank_name = request.POST.get('bank_name')
+        cheque_no = request.POST.get('cheque_no')
+        cheque_date = request.POST.get('cheque_date')
+        cheque_notes = request.POST.get('cheque_notes')
+
         # feedback_form_filled = request.POST.get('feedback_form_filled')
 
         item2 = Purchase_Details()
@@ -274,6 +281,13 @@ def add_purchase_details(request):
                 pass
         site_user_id=SiteUser.objects.get(profile_name=sales_person).pk
         # item2.crm_no = Customer_Details.objects.get(id=item.pk)
+        item2.payment_mode = payment_mode
+        item2.bank_name = bank_name
+        item2.cheque_no = cheque_no
+        if cheque_date != None and cheque_date != '':
+            item2.cheque_date = cheque_date
+        item2.cheque_notes = cheque_notes
+
         item2.new_repeat_purchase = new_repeat_purchase
         item2.second_person=customer_name  #new1
         # item2.third_person=third_person
@@ -875,11 +889,25 @@ def update_customer_details(request,id):
             notes = request.POST.get('notes')
             # value_of_goods = request.POST.get('value_of_goods')
             # feedback_form_filled = request.POST.get('feedback_form_filled')
-
+            payment_mode = request.POST.get('payment_mode')
+            bank_name = request.POST.get('bank_name')
+            cheque_no = request.POST.get('cheque_no')
+            cheque_date = request.POST.get('cheque_date')
+            cheque_notes = request.POST.get('cheque_notes')
 
 
 
             item2 = purchase_id_id
+
+            item2.payment_mode = payment_mode
+            item2.bank_name = bank_name
+            item2.cheque_no = cheque_no
+            if cheque_date != None and cheque_date != '':
+                item2.cheque_date = cheque_date
+            item2.cheque_notes = cheque_notes
+            print(bank_name)
+            print(bank_name)
+            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','cheque_notes'])
 
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
 

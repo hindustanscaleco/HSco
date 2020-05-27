@@ -146,3 +146,20 @@ class SiteUser(AbstractBaseUser):
     def is_staff(self, value):
         self._is_staff = value
 
+class AdminSeries(models.Model):
+    admin_id = models.ForeignKey(SiteUser,on_delete=models.CASCADE) #Name
+    purchase_no = models.BigIntegerField()
+    dispatch_no = models.BigIntegerField()
+    reparing_no = models.BigIntegerField()
+    amc_no = models.BigIntegerField()
+    restamping_no = models.BigIntegerField()
+    onsite_reparing_no = models.BigIntegerField()
+    career_no = models.BigIntegerField()
+    lead_no = models.BigIntegerField()
+    transaction_no = models.BigIntegerField()
+
+    def __str__(self):
+        return str(self.admin_id.name)
+
+
+

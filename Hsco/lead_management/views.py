@@ -1593,15 +1593,10 @@ def update_view_lead(request,id):
                                                  product_id=product_id).update(quantity=F("quantity") - item.quantity)
                 list_count = list_count + 1
 
-
-
-
-
             if (len(delete_id)>0):
                 current_stage = lead_id.current_stage
                 is_entered_purchase = lead_id.is_entered_purchase
                 if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
-
                     purchase_det = Purchase_Details()
                     purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
                     purchase_det.company_address = lead_id.customer_id.address  # new2
@@ -1616,11 +1611,12 @@ def update_view_lead(request,id):
                     purchase_det.product_purchase_date = lead_id.entry_timedate
                     purchase_det.sales_person = lead_id.owner_of_opportunity.name
                     purchase_det.user_id = SiteUser.objects.get(name=lead_id.owner_of_opportunity.name)
-                    purchase_det.channel_of_sales = lead_id.channel
+                    # purchase_det.channel_of_sales = lead_id.channel
+                    purchase_det.channel_of_sales = ''
                     purchase_det.channel_of_dispatch = ''
                     purchase_det.industry = lead_id.customer_id.customer_industry
                     purchase_det.value_of_goods = 0.0
-                    # purchase_det.channel_of_dispatch = channel_of_dispatch
+                    purchase_det.channel_of_marketing = lead_id.channel
                     purchase_det.notes = "Entry From Lead Module\n"
                     purchase_det.feedback_form_filled = False
                     purchase_det.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -2271,8 +2267,6 @@ def update_view_lead(request,id):
             upload_pofile = request.FILES.get("upload_pofile")
             payment_received_date = request.POST.get("payment_recived_date")
             Payment_notes = request.POST.get("Payment_notes")
-
-
 
             if Payment_details.objects.filter(lead_id=id).count() == 0:
                 item10 = Payment_details()

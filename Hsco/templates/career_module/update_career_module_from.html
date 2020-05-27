@@ -387,12 +387,19 @@ color:;
 &nbsp &nbsp
       To &nbsp &nbsp
 
+
       <input value="{{workexp_form.work_expirance_to|date:'Y-m-d'}}" name="work_expirance_to{{workexp_form.id}}" id="my_date_picker2" class="form-control" >
     </div>
 
-                      <div id="tagscloud">
-       <span></span>
-</div>
+
+    </div>
+        <center>
+        <span>
+            <input style="border: 0px; background-color: white;" disabled value="Exp: {% if workexp_form.exp_yrs == 1 %}{{ workexp_form.exp_yrs }} year{% elif workexp_form.exp_yrs > 1 %}
+                    {{ workexp_form.exp_yrs }} years{% endif %}{% if workexp_form.exp_months == 1 %}{{ workexp_form.exp_months }} month{% elif workexp_form.exp_months > 1 %}{{ workexp_form.exp_months }} months{% endif %}">
+
+
+    </span></center>
   </div>
         </div>
 
