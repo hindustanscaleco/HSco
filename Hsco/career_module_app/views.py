@@ -289,12 +289,17 @@ def career_module_form(request):
         if Career_module.objects.filter(phone_no=phone_no).count() > 0:
             messages.error(request, "You have already applied! Our Team Will Get In Touch With You Soon!!!")
             return redirect('/career_module_form/')
+        # if work_expirance_from != '' and work_expirance_to != '':
+        #     if datetime.strptime(work_expirance_to, '%Y-%m-%d').date() <= datetime.strptime(work_expirance_to, '%Y-%m-%d').date():
+        #         messages.warning(request, "In Work Experience, date details are incorrect !!!")
+        #         return redirect('/career_module_form/')
 
         is_sales_candidate = True if choose_position == 'Sales Position' else False
         is_technical_candidate = True if choose_position == 'Technical Position' else False
 
         item = Career_module()
-        item.candidate_resume = candidate_resume
+        if candidate_resume != '' and candidate_resume != None:
+            item.candidate_resume = candidate_resume
         item.current_stage = current_stage
         item.application_no = application_number
         item.phone_no = phone_no
@@ -361,7 +366,11 @@ def career_module_form(request):
                 work_expirance_to = request.POST.get('work_expirance_to'+str(i))
                 work_expirance_details = request.POST.get('work_expirance_details'+str(i))
                 designation = request.POST.get('designation'+str(i))
-
+                # if work_expirance_from != '' and work_expirance_to != '':
+                #     if datetime.strptime(work_expirance_to, '%Y-%m-%d').date() <= datetime.strptime(work_expirance_to,
+                #                                                                                     '%Y-%m-%d').date():
+                #         messages.warning(request, "In Work Experience, date details are incorrect !!!")
+                #         return redirect('/career_module_form/')
                 work_exp = WorkExperience()
 
                 if work_expirance_from != '':
@@ -376,7 +385,11 @@ def career_module_form(request):
                 work_exp.save()
 
         msg = "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!"
-
+        email_msg = "Thanks for showing interest in Hindustan Scale Co. We have received your application and your application number is " + str(
+            application_number) + ". We will connect with you soon and instruct you further.\n\n" \
+                                  "Established in the year 1955, Hindustan Scale Co is an ISO 9001:2015 certified organization, engaged in manufacturing, importing and exporting of a wide range of Digital Weighing Scales, Mechanical Weighing Scales, Weights and Weighing Software at economic cost with top notch quality. We also specialize in providing engineering solutions to handle weighing scales. These are acclaimed for high tensile strength, long service life and higher efficiency.\n\n" \
+                                  "Leveraging on advanced manufacturing facilities from different nations, we have been successfully catering to the Weights and Measures Legal Metrology approved Commercial and Domestic Weighing Needs of clients from Public sector, Private sector OEMs and Central & State Government Departments. Our team of scrupulous quality control professionals strictly monitor every stage to ensure International standards of quality. In addition, we also offer third party inspections from reputed agencies such as NABL etc. before the products are dispatched to the client.\n\n" \
+                                  "Due to our brilliant engineering and service-oriented attitude, we have successfully garnered the trust of most of the reputed global clients from across the world. "
         try:
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + phone_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
@@ -388,7 +401,7 @@ def career_module_form(request):
             email_send = EmailMessage('HSCo - Career, Form Submitted Successfully!!! ',
                                       '', settings.EMAIL_HOST_USER,
                       [candidate_email, ])
-            part1 = MIMEText(msg, 'plain')
+            part1 = MIMEText(email_msg, 'plain')
             part2 = MIMEText(user(request), 'html')
             email_send.attach(part1)
             email_send.attach(part2)
@@ -408,7 +421,6 @@ def career_module_form(request):
     }
     return render(request,'career_module/career_module_form.html',context)
 
-@login_required(login_url='/')
 def career_module_form_hsc(request):
     if Career_module.objects.all().count() == 0:
         application_number = 166353
@@ -450,6 +462,9 @@ def career_module_form_hsc(request):
         if Career_module.objects.filter(phone_no=phone_no).count()>0:
             messages.error(request, "You have already applied! Our Team Will Get In Touch With You Soon!!!")
             return redirect('http://139.59.76.87/career.hindustanscale.com/')
+        # if work_expirance_to.strftime('%Y-%m-%d') <= work_expirance_from.strftime('%Y-%m-%d'):
+        #     messages.warning(request, "You have already applied! Our Team Will Get In Touch With You Soon!!!")
+            return redirect('http://139.59.76.87/career.hindustanscale.com/')
         is_sales_candidate = True if choose_position == 'Sales Position' else False
         is_technical_candidate = True if choose_position == 'Technical Position' else False
 
@@ -470,10 +485,9 @@ def career_module_form_hsc(request):
         item.percentage = percentage
         item.is_technical_candidate = is_technical_candidate
         item.is_sales_candidate = is_sales_candidate
-        item.candidate_resume = candidate_resume
-
+        if candidate_resume != '' and candidate_resume != None:
+            item.candidate_resume = candidate_resume
         item.save()
-
         edu_detail = EducationalDetails()
         edu_detail.institute_name = institute_name
         edu_detail.course = course
@@ -532,10 +546,13 @@ def career_module_form_hsc(request):
                 work_exp.company_name = company_name
                 work_exp.career_id = Career_module.objects.get(id=item.id)
                 work_exp.save()
-                messages.success(request, "Thank You For Interest, Your application no is " + str(application_number) + ". Our Team Will Get In Touch With You Soon!!!")
 
+        messages.success(request, "Thank You For Interest, Your application no is " + str(application_number) + ". Our Team Will Get In Touch With You Soon!!!")
         msg = "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!"
-
+        email_msg = "Thanks for showing interest in Hindustan Scale Co. We have received your application and your application number is "+str(application_number)+". We will connect with you soon and instruct you further.\n\n" \
+            "Established in the year 1955, Hindustan Scale Co is an ISO 9001:2015 certified organization, engaged in manufacturing, importing and exporting of a wide range of Digital Weighing Scales, Mechanical Weighing Scales, Weights and Weighing Software at economic cost with top notch quality. We also specialize in providing engineering solutions to handle weighing scales. These are acclaimed for high tensile strength, long service life and higher efficiency.\n\n"\
+            "Leveraging on advanced manufacturing facilities from different nations, we have been successfully catering to the Weights and Measures Legal Metrology approved Commercial and Domestic Weighing Needs of clients from Public sector, Private sector OEMs and Central & State Government Departments. Our team of scrupulous quality control professionals strictly monitor every stage to ensure International standards of quality. In addition, we also offer third party inspections from reputed agencies such as NABL etc. before the products are dispatched to the client.\n\n"\
+            "Due to our brilliant engineering and service-oriented attitude, we have successfully garnered the trust of most of the reputed global clients from across the world. "
 
         try:
 
@@ -549,7 +566,7 @@ def career_module_form_hsc(request):
             email_send = EmailMessage('HSCo - Career, Form Submitted Successfully!!! ',
                                       '', settings.EMAIL_HOST_USER,
                                       [candidate_email, ])
-            part1 = MIMEText(msg, 'plain')
+            part1 = MIMEText(email_msg, 'plain')
             part2 = MIMEText(user(request), 'html')
             email_send.attach(part1)
             email_send.attach(part2)
@@ -557,13 +574,6 @@ def career_module_form_hsc(request):
         except:
             print("exception occured!!")
             pass
-
-
-        context = {
-        'career_form': career_form,
-        'education_form': education_form,
-        'workexp_form': workexp_form
-    }
 
     return render(request, 'career_module/career_module_form_hsc.html',context)
 
@@ -670,7 +680,8 @@ def update_career_module_from(request,id):
 
 
         item = Career_module.objects.get(id=id)
-        item.candidate_resume = candidate_resume
+        if candidate_resume != '' and candidate_resume != None:
+            item.candidate_resume = candidate_resume
         item.current_stage = current_stage
         item.application_no = application_no
         item.phone_no = phone_no
