@@ -53,6 +53,8 @@ class Career_module(models.Model):
     candidate_resume = models.FileField(upload_to='candidate_resume/',null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
 
+
+
     class Meta:
         unique_together = ('candidate_name','choose_position','phone_no','candidate_email')
 
@@ -89,7 +91,23 @@ class WorkExperience(models.Model):
     designation = models.CharField(max_length=80, null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
 
+    @property
+    def exp_yrs(self):
+        if self.work_expirance_to :
+            years = (self.work_expirance_to) - (self.work_expirance_from)
+            total_years = years.total_seconds() // 31536000
+            return (int(total_years))
 
+    @property
+    def exp_months(self):
+        if self.work_expirance_to:
+            duration_1 = (self.work_expirance_to) - (self.work_expirance_from)
+            duration = duration_1.total_seconds()
+            years = duration % 31536000
+
+            total_months = float(years) / 2628002.88
+
+            return (int(total_months))
     def __int__(self):
         return self.id
 
