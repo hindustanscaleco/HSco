@@ -31,7 +31,7 @@ import requests
 import json
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
-from .utils import send_html_mail
+from .utils import send_html_mail, send_text_mail
 from purchase_app.models import Purchase_Details
 from dispatch_app.models import Dispatch
 from purchase_app.models import Product_Details
@@ -1138,13 +1138,13 @@ def lead_home(request):
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
-                                                owner_of_opportunity__is_deleted=False, customer_id__second_person__icontains=customer).order_by(
+                                                owner_of_opportunity__is_deleted=False, customer_id__customer_name__icontains=customer).order_by(
                     '-id')
                 # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
-                cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk, customer_id__second_person__icontains=customer).order_by(
+                cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk, customer_id__customer_name__icontains=customer).order_by(
                     '-id')
                 # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 # page = request.GET.get('page')
@@ -1536,16 +1536,7 @@ def update_view_lead(request,id):
                     for item2 in product_id:
                         product_id = item2
                 else:
-                    # context22 = {
-                    #     'error': "Product Having Scale Type:"+item.product_id.scale_type.name+"Main Category:"+item.product_id.main_category.name+" Sub Category:"+item.product_id.sub_category.name+"Sub Sub Category:"+item.product_id.sub_sub_category.name+" Does Not Exist In Product Database",
-                    #     'error_exist': True,
-                    # }
-                    # context.update(context22)
-                    # try:
-                    #     del request.session['context_sess']
-                    # except:
-                    #     pass
-                    # request.session['context_sess'] = context22
+
                     messages.error(request, "Product Having Scale Type:"+item.product_id.scale_type.name+"Main Category:"+item.product_id.main_category.name+" Sub Category:"+item.product_id.sub_category.name+"Sub Sub Category:"+item.product_id.sub_sub_category.name+" Does Not Exist In Product Database")
                     return redirect('/update_view_lead/' + str(id))
                 godown = Godown.objects.get(id=godown_ids[list_count])
@@ -1556,33 +1547,14 @@ def update_view_lead(request,id):
                     for item3 in godown_product_exist:
                         quantity_available = item3.quantity
                 else:
-                    # context22 = {
-                    #     'error': "Product Having Sub Category:"+product_id.sub_category.name+" and Sub Sub Category:"+product_id.sub_sub_category.name+" Does Not Exist in Godown:"+godown.name_of_godown,
-                    #     'error_exist': True,
-                    # }
-                    # context.update(context22)
-                    # try:
-                    #     del request.session['context_sess']
-                    # except:
-                    #     pass
-                    # request.session['context_sess'] = context22
+
                     messages.error(request,"Product Having Sub Category:"+product_id.sub_category.name+" and Sub Sub Category:"+product_id.sub_sub_category.name+" Does Not Exist in Godown:"+godown.name_of_godown)
                     return redirect('/update_view_lead/' + str(id))
 
                 if (quantity_available > required_quantity):
                     is_sufficient_stock = False
                 else:
-                    # context22 = {
-                    #     'error': "Insufficient Stock in Godown: " + Godown.objects.get(
-                    #         id=godown_ids[list_count]).name_of_godown + " Please Select Different Godown And Try Again",
-                    #     'error_exist': True,
-                    # }
-                    # context.update(context22)
-                    # try:
-                    #     del request.session['context_sess']
-                    # except:
-                    #     pass
-                    # request.session['context_sess'] = context22
+
                     messages.error(request,"Insufficient Stock in Godown: " + Godown.objects.get(
                             id=godown_ids[list_count]).name_of_godown + " Please Select Different Godown And Try Again")
                     return redirect('/update_view_lead/' + str(id))
@@ -1590,26 +1562,9 @@ def update_view_lead(request,id):
             list_count = 0;
             if lead_id.customer_id.contact_no == '0000000000' or len(lead_id.customer_id.contact_no) < 10:
                 messages.error(request, "Contact Number Is Not Valid!!!")
-                # context22 = {
-                #     'error': "Contact Number Is Not Valid!!!",
-                #     'error_exist': True,
-                # }
-                # context.update(context22)
-                # try:
-                #     del request.session['context_sess']
-                # except:
-                #     pass
-                # request.session['context_sess'] = context22
-                return redirect('/update_view_lead/' + str(id))
-            for item in pi_pro:
 
-                product_id = Product.objects.get(scale_type=item.product_id.scale_type,
-                                                 main_category=item.product_id.main_category,
-                                                 sub_category=item.product_id.sub_category,
-                                                 sub_sub_category=item.product_id.sub_sub_category).id
-                GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown_ids[list_count]).id,
-                                                 product_id=product_id).update(quantity=F("quantity") - item.quantity)
-                list_count = list_count + 1
+                return redirect('/update_view_lead/' + str(id))
+
 
             if (len(delete_id)>0):
                 current_stage = lead_id.current_stage
@@ -1629,7 +1584,7 @@ def update_view_lead(request,id):
                     purchase_det.product_purchase_date = lead_id.entry_timedate
                     purchase_det.sales_person = lead_id.owner_of_opportunity.name
                     purchase_det.user_id = SiteUser.objects.get(name=lead_id.owner_of_opportunity.name)
-                    # purchase_det.channel_of_sales = lead_id.channel
+                    purchase_det.upload_op_file = Payment_details.objects.get(lead_id=id).upload_pofile
                     purchase_det.channel_of_sales = ''
                     purchase_det.channel_of_dispatch = ''
                     purchase_det.industry = lead_id.customer_id.customer_industry
@@ -1694,7 +1649,19 @@ def update_view_lead(request,id):
                         item_pro.log_entered_by = request.user.name
 
                         item_pro.save()
+
+                        product_id = Product.objects.get(scale_type=item.product_id.scale_type,
+                                                         main_category=item.product_id.main_category,
+                                                         sub_category=item.product_id.sub_category,
+                                                         sub_sub_category=item.product_id.sub_sub_category).id
+                        GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown_ids[list_count]).id,
+                                                     product_id=product_id).update(
+                            quantity=F("quantity") - item.quantity)
+
                         list_count=list_count+1
+                    # for item in pi_pro:
+                    #
+                    #     list_count = list_count + 1
 
                         # dispatch_id = Dispatch.objects.get(id=dispatch.id)
                         # dispatch_pro = Product_Details_Dispatch()
@@ -2305,9 +2272,6 @@ def update_view_lead(request,id):
                     pass
                 return redirect('https://api.whatsapp.com/send?phone=+91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
-
-
-
         if 'submit_payment' in request.POST:
             payment_channel = request.POST.get("payment_channel")
             payment_receipt = request.FILES.get("payment_receipt")
@@ -2341,7 +2305,6 @@ def update_view_lead(request,id):
             return redirect('/update_view_lead/' + str(id))
 
 
-
         elif 'submit5' in request.POST:
 
             is_email = request.POST.get('is_email')
@@ -2358,59 +2321,27 @@ def update_view_lead(request,id):
             request.session['expand_followup'] = True
 
             if wa_no == '0000000000' or len(wa_no) < 10 or len(customer_id.contact_no) < 10 or customer_id.contact_no == '0000000000' or customer_id.contact_no == '' or customer_id.contact_no == None:
-                # context22 = {
-                #     'error': "Contact Number Is  Invalid!!!",
-                #     'error_exist': True,
-                # }
-                # context.update(context22)
-                # try:
-                #     del request.session['context_sess']
-                # except:
-                #     pass
-                # request.session['context_sess'] = context22
+
                 messages.error(request, "Contact Number Is  Invalid!!!")
                 return redirect('/update_view_lead/' + str(id))
 
-            if (selected_products!=None and len(selected_products)<1 and email_auto_manual == 'Manual' and not (is_call!='on' or is_call!='is_call')):
-                # context22={
-                #     'error':"No Product Selected\nPlease Select Products And Try Again",
-                #     'error_exist':True,
-                # }
-                # context.update(context22)
-                # try:
-                #     del request.session['context_sess']
-                # except:
-                #     pass
-                # request.session['context_sess'] = context22
+            if (selected_products!=None and len(selected_products)<5 and email_auto_manual == 'Manual' and not (is_call!='on' or is_call!='is_call')):
+
                 messages.error(request, "No Product Selected\nPlease Select Products And Try Again")
                 return redirect('/update_view_lead/' + str(id))
+            elif not (is_call!='on' or is_call!='is_call'):
+                messages.error(request, "No Product Selected\nPlease Select Products And Try Again")
+                return redirect('/update_view_lead/' + str(id))
+
             if(is_call!='on' and is_sms!='on' and is_whatsapp!='on' and is_email!='on' and is_call!='is_call' and is_sms!='is_sms' and is_whatsapp!='is_whatsapp' and is_email !='is_email'):
-                # context28 = {
-                #     'error': "Please Select Atleast One Medium For Followup",
-                #     'error_exist': True,
-                # }
-                # context.update(context28)
-                # try:
-                #     del request.session['context_sess']
-                # except:
-                #     pass
-                # request.session['context_sess']=context28
+
                 messages.error(request, "Please Select Atleast One Medium For Followup")
                 return redirect('/update_view_lead/' + str(id))
-            if (selected_fields !=None and len(selected_fields)<6):
 
-                # context28 = {
-                #     'error': "Please Select Atleast One Product Field",
-                #     'error_exist': True,
-                # }
-                # context.update(context28)
-                # try:
-                #     del request.session['context_sess']
-                # except:
-                #     pass
-                # request.session['context_sess']=context28
+            if (selected_fields != None and len(selected_fields) < 6):
                 messages.error(request, "Please Select Atleast One Product Field")
                 return redirect('/update_view_lead/' + str(id))
+
             if (email_auto_manual == 'Select Mode'):
 
                 # context28 = {
@@ -2434,66 +2365,69 @@ def update_view_lead(request,id):
                 history_follow= History_followup()
                 history_follow.follow_up_section=Follow_up_section.objects.get(id=hfu.id)
                 history_follow.lead_id = Lead.objects.get(id=id)
-                selected_fields2 = selected_fields.replace("'", "").strip('][').split(', ')  # convert string to list
-                history_follow.fields = selected_fields2
-                history_follow.product_ids = selected_products
+                selected_fields2 = selected_fields.replace("'", "").strip('][').split(
+                    ', ') if selected_fields != None and len(selected_fields) > 4 else None
 
+                history_follow.fields = selected_fields2 if selected_fields2 != None else ''
+                history_follow.product_ids = selected_products
                 length_of_list = 1
                 count_list = 0
-
-                html_head = '''<thead> '''
-                for item in selected_fields2:
-                    pro_list = Followup_product.objects.filter(lead_id=id,pk__in=selected_products).values_list(item, flat=True)
-                    list_pro = []
-                    item=item.replace('product_id_id__','').replace('_',' ').title().replace('Category','Model')
-                    if (count_list == 0):
-                        for ite, lt in enumerate(pro_list):
-                            if (ite == 0):
-                                html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
-                            final_list.append([item + ' : ' + str(lt)])
-                        count_list = count_list + 1
-                    else:
-                        for ite, lt in enumerate(pro_list):
-                            if (ite == 0):
-                                html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
-                            final_list[ite] = final_list[ite] + [item + ' : ' + str(lt)]
-                            # final_list[ite].append(list_pro)
-                html_head = html_head + '''</thead> '''
-
-                html_rows = ''''''
-                count = 1
-                sms_content=''''''
-                wa_content=''''''
-                for count_for,single in enumerate(final_list):
-                    html_rows = html_rows + '''<tr> '''
-                    count = count + 1
-                    sms_content=sms_content+'''\nProduct No-'''+str(count_for+1)+''':'''
-                    wa_content=wa_content+'''\nProduct No - '''+str(count_for+1)+''':\n______________________________________________________\n'''
-                    for item in single:
-                        if item.partition(":")[0] == 'Product Image ':
-                            img_path = 'http://139.59.76.87/media/'+item.partition(":")[2][1:]
-                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + img_path + '''\n'''
-                            wa_content = wa_content + item.partition(":")[0] + ''' :''' + img_path + '''\n'''
-                            html_rows = html_rows + '''<td> <img height="150" width="150" src="'''+img_path+'''"> </td>'''
+                if selected_fields2!= None:
 
 
-                        elif item.partition(":")[0] == 'Product Brochure ':
-                            bro_link = 'http://139.59.76.87/media/'+item.partition(":")[2][1:]
-                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
-                            wa_content = wa_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
-                            html_rows = html_rows + '''<td> <a href="'''+bro_link+'''" target="_blank">View Brochure</a> </td>'''
-                        elif item.partition(":")[0] == 'Product Document ':
-                            bro_link = 'http://139.59.76.87/media/'+item.partition(":")[2][1:]
-                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
-                            wa_content = wa_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
-                            html_rows = html_rows + '''<td> <a href="'''+bro_link+'''" target="_blank">View Brochure</a> </td>'''
+                    html_head = '''<thead> '''
+                    for item in selected_fields2:
+                        pro_list = Followup_product.objects.filter(lead_id=id,pk__in=selected_products).values_list(item, flat=True)
+                        list_pro = []
+                        item=item.replace('product_id_id__','').replace('_',' ').title().replace('Category','Model')
+                        if (count_list == 0):
+                            for ite, lt in enumerate(pro_list):
+                                if (ite == 0):
+                                    html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
+                                final_list.append([item + ' : ' + str(lt)])
+                            count_list = count_list + 1
                         else:
-                            sms_content = sms_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
-                            wa_content = wa_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
-                            html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
+                            for ite, lt in enumerate(pro_list):
+                                if (ite == 0):
+                                    html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
+                                final_list[ite] = final_list[ite] + [item + ' : ' + str(lt)]
+                                # final_list[ite].append(list_pro)
+                    html_head = html_head + '''</thead> '''
 
-                    html_rows = html_rows + '''</tr>'''
-                context_session={}
+                    html_rows = ''''''
+                    count = 1
+                    sms_content=''''''
+                    wa_content=''''''
+                    for count_for,single in enumerate(final_list):
+                        html_rows = html_rows + '''<tr> '''
+                        count = count + 1
+                        sms_content=sms_content+'''\nProduct No-'''+str(count_for+1)+''':'''
+                        wa_content=wa_content+'''\nProduct No - '''+str(count_for+1)+''':\n______________________________________________________\n'''
+                        for item in single:
+                            if item.partition(":")[0] == 'Product Image ':
+                                img_path = 'http://139.59.76.87/media/'+item.partition(":")[2][1:]
+                                sms_content = sms_content + item.partition(":")[0] + ''' :''' + img_path + '''\n'''
+                                wa_content = wa_content + item.partition(":")[0] + ''' :''' + img_path + '''\n'''
+                                html_rows = html_rows + '''<td> <img height="150" width="150" src="'''+img_path+'''"> </td>'''
+
+
+                            elif item.partition(":")[0] == 'Product Brochure ':
+                                bro_link = 'http://139.59.76.87/media/'+item.partition(":")[2][1:]
+                                sms_content = sms_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
+                                wa_content = wa_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
+                                html_rows = html_rows + '''<td> <a href="'''+bro_link+'''" target="_blank">View Brochure</a> </td>'''
+                            elif item.partition(":")[0] == 'Product Document ':
+                                bro_link = 'http://139.59.76.87/media/'+item.partition(":")[2][1:]
+                                sms_content = sms_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
+                                wa_content = wa_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
+                                html_rows = html_rows + '''<td> <a href="'''+bro_link+'''" target="_blank">View Brochure</a> </td>'''
+                            else:
+                                sms_content = sms_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
+                                wa_content = wa_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
+                                html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
+
+                        html_rows = html_rows + '''</tr>'''
+                    context_session={}
 
 
                 if(is_email=='on' or is_email =='is_email'):
@@ -2503,85 +2437,90 @@ def update_view_lead(request,id):
                     history_follow.email_subject=email_subject
                     history_follow.email_msg=email_msg
                     Follow_up_section.objects.filter(lead_id=id).update(email_subject=email_subject, )
-
-                    html_content='''<html>
-    <head>
-      <title>
-        HSCO
-      </title>
-    
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-      <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-    
-    <body>
-    
-    <style>
-        .border_class {
-        border:1px solid black;
-        height:45px;
-        text-align:center;
-        vertical-align: middle;
-        line-height: 45px;
+                    if selected_fields2 != None:
+                        html_content='''<html>
+        <head>
+          <title>
+            HSCO
+          </title>
+        
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+          <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+        
+        <body>
+        
+        <style>
+            .border_class {
+            border:1px solid black;
+            height:45px;
+            text-align:center;
+            vertical-align: middle;
+            line-height: 45px;
+            }
+          table {
+          border-collapse: collapse;
+          width: 100%;
+          font-size: 12px;
+          border-color: black;
+          color: black;
         }
-      table {
-      border-collapse: collapse;
-      width: 100%;
-      font-size: 12px;
-      border-color: black;
-      color: black;
-    }
-    th {
+        th {
+          font-size: 13px;
+            border: 1px solid black;
+            text-align: left;
+            padding:5px;
+        }
+    td {
+      border: 1px solid black;
+      padding: 3px;
       font-size: 13px;
-        border: 1px solid black;
-        text-align: left;
-        padding:5px;
+      padding: 5px;
+      text-align: center;
     }
-td {
-  border: 1px solid black;
-  padding: 3px;
-  font-size: 13px;
-  padding: 5px;
-  text-align: center;
-}
-
-
-            </style>
-
-                          <div class="card shadow">
-
-<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
-    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
-
-              </div>
-          </style>
+    
+    
+                </style>
+    
                               <div class="card shadow">
     
     <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
         <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
-        
-        <h4>'''+email_msg+'''</h4>
-        
-        <table style="font-size: 14px;">
-        
-        '''+html_head+''' 
-        
-    '''+html_rows+''' 
-    </table>
+    
                   </div>
-                              </div>
-    </body>
-    </html>'''
-                    file = ContentFile(html_content)
-                    history_follow.followup_history_file.save('AutoFollowup.html', file, save=False)
-                    history_follow.html_content = html_content
+              </style>
+                                  <div class="card shadow">
+        
+        <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+            <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
+            
+            <h4>'''+email_msg+'''</h4>
+            
+            <table style="font-size: 14px;">
+            
+            '''+html_head+''' 
+            
+        '''+html_rows+''' 
+        </table>
+                      </div>
+                                  </div>
+        </body>
+        </html>'''
 
-                    send_html_mail(email_subject, html_content, settings.EMAIL_HOST_USER, [customer_id.customer_email_id, ])
+                        file = ContentFile(html_content)
+                        history_follow.followup_history_file.save('AutoFollowup.html', file, save=False)
+                        history_follow.html_content = html_content
+                        send_html_mail(email_subject, html_content, settings.EMAIL_HOST_USER,
+                                       [customer_id.customer_email_id, ])
+
+                    else:
+                        send_text_mail(email_subject, email_msg, settings.EMAIL_HOST_USER, [customer_id.customer_email_id, ])
+
                     # context28 = {
                     #     'success': "Email Sent on email Id: "+customer_id.customer_email_id,
                     #     'success_exist': True,
@@ -2656,11 +2595,7 @@ td {
                 history_follow.log_entered_by = request.user.name
 
                 history_follow.save()
-                try:
-                    del request.session['context_sess']
-                except:
-                    pass
-                request.session['context_sess']=context_session
+
                 return redirect('/update_view_lead/' + str(id))
 
 
@@ -2677,8 +2612,9 @@ td {
                     history_follow.lead_id = Lead.objects.get(id=id)
 
                     selected_fields2 = selected_fields.replace("'", "").strip('][').split(
-                        ', ')  # convert string to list
-                    history_follow.fields = selected_fields2
+                        ', ') if selected_fields != None and len(selected_fields) > 4 else None
+
+                    history_follow.fields = selected_fields2 if selected_fields2 != None else ''
                     history_follow.product_ids = selected_products
                     history_follow.is_manual_mode = False
                     history_follow.is_call = False
@@ -2687,45 +2623,46 @@ td {
 
                     length_of_list = 1
                     count_list = 0
+                    if selected_fields2 != None:
 
-                    html_head = '''<thead> '''
-                    for item in selected_fields2:
-                        pro_list = Followup_product.objects.filter(lead_id=id, pk__in=selected_products).values_list(
-                            item, flat=True)
-                        list_pro = []
-                        item = item.replace('product_id_id__', '').replace('_', ' ').title().replace('Category',
-                                                                                                     'Model')
-                        if (count_list == 0):
-                            for ite, lt in enumerate(pro_list):
-                                if (ite == 0):
-                                    html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
-                                final_list.append([item + ' : ' + str(lt)])
-                            count_list = count_list + 1
-                        else:
-                            for ite, lt in enumerate(pro_list):
-                                if (ite == 0):
-                                    html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
-                                final_list[ite] = final_list[ite] + [item + ' : ' + str(lt)]
-                                # final_list[ite].append(list_pro)
-                    html_head = html_head + '''</thead> '''
+                        html_head = '''<thead> '''
+                        for item in selected_fields2:
+                            pro_list = Followup_product.objects.filter(lead_id=id, pk__in=selected_products).values_list(
+                                item, flat=True)
+                            list_pro = []
+                            item = item.replace('product_id_id__', '').replace('_', ' ').title().replace('Category',
+                                                                                                         'Model')
+                            if (count_list == 0):
+                                for ite, lt in enumerate(pro_list):
+                                    if (ite == 0):
+                                        html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
+                                    final_list.append([item + ' : ' + str(lt)])
+                                count_list = count_list + 1
+                            else:
+                                for ite, lt in enumerate(pro_list):
+                                    if (ite == 0):
+                                        html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
+                                    final_list[ite] = final_list[ite] + [item + ' : ' + str(lt)]
+                                    # final_list[ite].append(list_pro)
+                        html_head = html_head + '''</thead> '''
 
-                    html_rows = ''''''
-                    count = 1
-                    sms_content = ''''''
-                    wa_content = ''''''
-                    for count_for, single in enumerate(final_list):
-                        html_rows = html_rows + '''<tr> '''
-                        count = count + 1
-                        sms_content = sms_content + '''\nProduct No-''' + str(count_for + 1) + ''':'''
-                        wa_content = wa_content + '''\nProduct No - ''' + str(
-                            count_for + 1) + ''':\n______________________________________________________\n'''
-                        for item in single:
-                            sms_content = sms_content + item.partition(":")[0] + ''' :''' + item.partition(":")[
-                                2] + '''\n'''
-                            wa_content = wa_content + item.partition(":")[0] + ''' :''' + item.partition(":")[
-                                2] + '''\n'''
-                            html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
-                        html_rows = html_rows + '''</tr>'''
+                        html_rows = ''''''
+                        count = 1
+                        sms_content = ''''''
+                        wa_content = ''''''
+                        for count_for, single in enumerate(final_list):
+                            html_rows = html_rows + '''<tr> '''
+                            count = count + 1
+                            sms_content = sms_content + '''\nProduct No-''' + str(count_for + 1) + ''':'''
+                            wa_content = wa_content + '''\nProduct No - ''' + str(
+                                count_for + 1) + ''':\n______________________________________________________\n'''
+                            for item in single:
+                                sms_content = sms_content + item.partition(":")[0] + ''' :''' + item.partition(":")[
+                                    2] + '''\n'''
+                                wa_content = wa_content + item.partition(":")[0] + ''' :''' + item.partition(":")[
+                                    2] + '''\n'''
+                                html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
+                            html_rows = html_rows + '''</tr>'''
 
 
 
@@ -2736,84 +2673,84 @@ td {
                         history_follow.email_subject = email_subject
                         history_follow.email_msg = email_msg
                         Follow_up_section.objects.filter(lead_id=id).update(email_subject=email_subject, )
-
-                        html_content = '''<html>
-                        <head>
-                          <title>
-                            HSCO
-                          </title>
-
-                          <meta name="viewport" content="width=device-width, initial-scale=1">
-                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-                          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-                          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-                          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-                          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-                          <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-
-                        <body>
-
-                        <style>
-                            .border_class {
-                            border:1px solid black;
-                            height:45px;
-                            text-align:center;
-                            vertical-align: middle;
-                            line-height: 45px;
+                        if selected_fields2 != None:
+                            html_content = '''<html>
+                            <head>
+                              <title>
+                                HSCO
+                              </title>
+    
+                              <meta name="viewport" content="width=device-width, initial-scale=1">
+                            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+                              <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+                              <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+                              <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+                              <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+                              <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    
+                            <body>
+    
+                            <style>
+                                .border_class {
+                                border:1px solid black;
+                                height:45px;
+                                text-align:center;
+                                vertical-align: middle;
+                                line-height: 45px;
+                                }
+                              table {
+                              border-collapse: collapse;
+                              width: 100%;
+                              font-size: 12px;
+                              border-color: black;
+                              color: black;
                             }
-                          table {
-                          border-collapse: collapse;
-                          width: 100%;
-                          font-size: 12px;
-                          border-color: black;
-                          color: black;
-                        }
-                        th {
+                            th {
+                              font-size: 13px;
+                                border: 1px solid black;
+                                text-align: left;
+                                padding:5px;
+                            }
+                        td {
+                          border: 1px solid black;
+                          padding: 3px;
                           font-size: 13px;
-                            border: 1px solid black;
-                            text-align: left;
-                            padding:5px;
+                          padding: 5px;
+                          text-align: center;
                         }
-                    td {
-                      border: 1px solid black;
-                      padding: 3px;
-                      font-size: 13px;
-                      padding: 5px;
-                      text-align: center;
-                    }
-
-
-                                </style>
-
-                                              <div class="card shadow">
-
-                    <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
-                        <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
-
-                                  </div>
-                              </style>
+    
+    
+                                    </style>
+    
                                                   <div class="card shadow">
-
+    
                         <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
                             <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
-
-                            <h4>''' + email_msg + '''</h4>
-
-                            <table style="font-size: 14px;">
-
-                            ''' + html_head + ''' 
-
-                        ''' + html_rows + ''' 
-                        </table>
+    
                                       </div>
-                                                  </div>
-                        </body>
-                        </html>'''
+                                  </style>
+                                                      <div class="card shadow">
+    
+                            <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+                                <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
+    
+                                <h4>''' + email_msg + '''</h4>
+    
+                                <table style="font-size: 14px;">
+    
+                                ''' + html_head + ''' 
+    
+                            ''' + html_rows + ''' 
+                            </table>
+                                          </div>
+                                                      </div>
+                            </body>
+                            </html>'''
 
-                        file = ContentFile(html_content)
-                        history_follow.followup_history_file.save('AutoFollowup.html', file, save=False)
-                        history_follow.html_content= html_content
+                            file = ContentFile(html_content)
+                            history_follow.followup_history_file.save('AutoFollowup.html', file, save=False)
+                            history_follow.html_content= html_content
 
                     if(is_sms=='on' or is_sms=='is_sms'):
                         sms_msg = request.POST.get('sms_msg')

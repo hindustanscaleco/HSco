@@ -20,7 +20,7 @@ from datetime import datetime, timedelta
 
 from lead_management.models import Auto_followup_details, Lead
 
-from lead_management.utils import send_html_mail
+from lead_management.utils import send_html_mail,send_text_mail
 
 
 
@@ -490,9 +490,10 @@ def dashboard(request):
     for item in afd:
 
         if (item.follow_up_history.is_email):
-
-            send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
-
+            if (item.follow_up_history.html_content != None and item.follow_up_history.html_content != '' and len(item.follow_up_history.html_content)>5):
+                send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
+            else:
+                send_text_mail(item.follow_up_history.email_subject, item.follow_up_history.email_msg, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
 
         if (item.follow_up_history.is_sms):
 
