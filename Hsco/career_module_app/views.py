@@ -15,6 +15,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import requests
 import json
+from django.core.mail import get_connection, send_mail
+from django.core.mail.message import EmailMessage
 
 @login_required(login_url='/')
 def career_module_list(request):
@@ -398,14 +400,24 @@ def career_module_form(request):
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
-            email_send = EmailMessage('HSCo - Career, Form Submitted Successfully!!! ',
-                                      '', settings.EMAIL_HOST_USER,
-                      [candidate_email, ])
-            part1 = MIMEText(email_msg, 'plain')
-            part2 = MIMEText(user(request), 'html')
-            email_send.attach(part1)
-            email_send.attach(part2)
-            email_send.send()
+
+
+            with get_connection(
+                    host='smtp.gmail.com',
+                    port=587,
+                    username='jobs.hindustanscalecompany@gmail.com',
+                    password='Hindustan@@1234',
+                    use_tls=True
+            ) as connection:
+
+                email_send = EmailMessage('HSCo - Career, Form Submitted Successfully!!! ',
+                                          '', settings.EMAIL_HOST_USER2,
+                          [candidate_email,'jobs@hindustanscale.com' ],connection=connection)
+                part1 = MIMEText(email_msg, 'plain')
+                part2 = MIMEText(user(request), 'html')
+                email_send.attach(part1)
+                email_send.attach(part2)
+                email_send.send()
         except:
             print("exception occured!!")
             pass
@@ -464,7 +476,7 @@ def career_module_form_hsc(request):
             return redirect('http://139.59.76.87/career.hindustanscale.com/')
         # if work_expirance_to.strftime('%Y-%m-%d') <= work_expirance_from.strftime('%Y-%m-%d'):
         #     messages.warning(request, "You have already applied! Our Team Will Get In Touch With You Soon!!!")
-            return redirect('http://139.59.76.87/career.hindustanscale.com/')
+        #     return redirect('http://139.59.76.87/career.hindustanscale.com/')
         is_sales_candidate = True if choose_position == 'Sales Position' else False
         is_technical_candidate = True if choose_position == 'Technical Position' else False
 
@@ -563,14 +575,23 @@ def career_module_form_hsc(request):
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
 
-            email_send = EmailMessage('HSCo - Career, Form Submitted Successfully!!! ',
-                                      '', settings.EMAIL_HOST_USER,
-                                      [candidate_email, ])
-            part1 = MIMEText(email_msg, 'plain')
-            part2 = MIMEText(user(request), 'html')
-            email_send.attach(part1)
-            email_send.attach(part2)
-            email_send.send()
+            with get_connection(
+                    host='smtp.gmail.com',
+                    port=587,
+                    username='jobs.hindustanscalecompany@gmail.com',
+                    password='Hindustan@@1234',
+                    use_tls=True
+            ) as connection:
+
+                email_send = EmailMessage('HSCo - Career, Form Submitted Successfully!!! ',
+                                          '', settings.EMAIL_HOST_USER2,
+                          [candidate_email,'jobs@hindustanscale.com' ],connection=connection)
+                part1 = MIMEText(email_msg, 'plain')
+                part2 = MIMEText(user(request), 'html')
+                email_send.attach(part1)
+                email_send.attach(part2)
+                email_send.send()
+
         except:
             print("exception occured!!")
             pass
@@ -657,7 +678,8 @@ def update_career_module_from(request,id):
         confidance = request.POST.get('confidance')
         without_job_with_reason = request.POST.get('without_job_with_reason')
         reason_for_last_job_before = request.POST.get('reason_for_last_job_before')
-        working_from_10_to_8_and = request.POST.get('working_from_10_to_8')
+        working_from_10_to_8_and = request.POST.get('working_from_10_to_8_and')
+        any_question = request.POST.get('any_question')
         any_question_yes = request.POST.get('any_question_yes')
         comfortable_english = request.POST.get('comfortable_english')
         how_good_english = request.POST.get('how_good_english')
@@ -707,7 +729,8 @@ def update_career_module_from(request,id):
         item.confidance = confidance
         item.without_job_with_reason = without_job_with_reason
         item.reason_for_last_job_before = reason_for_last_job_before
-        item.working_from_10_to_8 = working_from_10_to_8_and
+        item.working_from_10_to_8_and = working_from_10_to_8_and
+        item.any_question = any_question
         item.any_question_yes = any_question_yes
         item.comfortable_english = comfortable_english
         item.how_good_english = how_good_english
@@ -724,8 +747,9 @@ def update_career_module_from(request,id):
         item.value_of_resister = value_of_resister
         item.open_and_short_circuit = open_and_short_circuit
         item.notes = notes
+
         item.save(update_fields=['candidate_resume','current_stage','application_no','phone_no','candidate_name','choose_position','candidate_email',
-                                 'address','current_salary','aadhar_card','pan_card_availabe',
+                                 'address','current_salary','aadhar_card','pan_card_availabe','any_question',
                                  'bank_account','say_yourself','confidance','without_job_with_reason','reason_for_last_job_before','working_from_10_to_8_and',
                                  'any_question_yes','comfortable_english','how_good_english','comfortable_marathi','working_from_10_to_8',
                                  'weighting_scale_manufactures_mumbai','excel_formate','sum_in_excel','time_taken','take_out_60',

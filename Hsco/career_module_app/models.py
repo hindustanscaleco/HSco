@@ -88,7 +88,7 @@ class WorkExperience(models.Model):
     company_name = models.CharField(max_length=80, null=True, blank=True)
     work_expirance_from = models.DateTimeField(blank=True, null=True)
     work_expirance_to = models.DateTimeField(blank=True, null=True)
-    work_expirance_details = models.CharField(max_length=250, null=True, blank=True)
+    work_expirance_details = models.TextField(null=True, blank=True)
     designation = models.CharField(max_length=80, null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
 

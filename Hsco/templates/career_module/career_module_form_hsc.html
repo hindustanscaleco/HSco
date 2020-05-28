@@ -375,15 +375,15 @@ window.location.replace("https://hindustanscale.com/");
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
  {{education_form.achievements}}
-    </div>
+    </div>     <span style="padding: 5px; color: Gray;"> Total Characters Left: <span id="AchievementsCharNum" >-</span></span>
   </div>
 
         </div>
 
  </div>
      <center>
-    <button type="button" class="add_edu_detail">Add </button>
-    <button type="button" class="delete_edu_detail">Delete </button>
+    <button type="button" class="add_edu_detail btn btn-primary" style="background-color: #FC6E20;">Add </button> &nbsp; &nbsp;
+    <button type="button" class="delete_edu_detail btn btn-primary" style="background-color: #FC6E20;">Delete </button>
 </center>
                <hr style="border:2px solid;">
 
@@ -425,7 +425,7 @@ window.location.replace("https://hindustanscale.com/");
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
 {{workexp_form.work_expirance_details}}
-    </div>
+    </div>     <span style="padding: 5px; color: Gray;"> Total Characters Left: <span id="ExpandAchCharNum" >-</span></span>
   </div>
 
     <label class="col-md-2 control-label">Designation
@@ -441,8 +441,8 @@ window.location.replace("https://hindustanscale.com/");
         </div>
   </div>
           <center>
-     <button type="button" class="add_work_exp">Add </button>
-    <button type="button" class="delete_work_exp">Delete </button>
+     <button type="button" class="add_work_exp btn btn-primary" style="background-color: #FC6E20;">Add </button> &nbsp; &nbsp;
+    <button type="button" class="delete_work_exp btn btn-primary" style="background-color: #FC6E20;">Delete </button>
               </center>
 
  </div>
@@ -706,6 +706,25 @@ $("#tagscloud span").text("Total experience is " + finalDate + " years.");
 
             })
 
+
+
+               function AchievementsChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#AchievementsCharNum').text(1024 - len);
+        }
+      };
+
+                     function ExpandAchChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#ExpandAchCharNum').text(1024 - len);
+        }
+      };
 
 
 
