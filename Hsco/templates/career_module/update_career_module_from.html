@@ -410,7 +410,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-      <textarea style="height:80px;" name="work_expirance_details{{workexp_form.id}}" class="form-control" placeholder="Experience and Achievements">{{workexp_form.work_expirance_details}}</textarea>
+      <textarea style="height:120px;" name="work_expirance_details{{workexp_form.id}}" class="form-control" placeholder="Experience and Achievements">{{workexp_form.work_expirance_details}}</textarea>
     </div>
   </div>
 
@@ -508,7 +508,8 @@ color:;
   </div>
         </div>
 
-<div id="any_question" style="display: none;">
+
+    <div id="any_question" {% if career_form.any_question == 'Yes' %} style="display: none;" {% endif %}>
         <div class="form-group row">
 
 
@@ -527,6 +528,8 @@ color:;
   </div>
         </div>
         </div>
+
+
 
           <hr style="border:2px solid;">
      <br>
@@ -1067,7 +1070,7 @@ if ($("#maxedu_id").val() > $("#latest_edu_details_id").val()){
       }
       else
       {
-        $("#any_question").show();
+        $("#any_question").hide();
       }
         });
          });
