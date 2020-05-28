@@ -339,8 +339,9 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-      <textarea style="height:120px;" name="achievements{{education_form.id}}"  class="form-control" placeholder="Percentage or Grade">{{education_form.achievements}}</textarea>
-    </div>
+      <textarea style="height:120px;" name="achievements{{education_form.id}}"  class="form-control" placeholder="Percentage or Grade" onkeyup= "AchievementsChar(this)">{{education_form.achievements}}</textarea>
+    </div>              <span style="padding: 5px; color: Gray;"> Total Characters Left: <span id="AchievementsCharNum" >-</span></span>
+
   </div>
 
         </div>
@@ -376,11 +377,11 @@ color:;
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Experience:
+    <label class="col-md-1 control-label">Experience:
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
+    <div class="col-md-5 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
  <input  value="{{workexp_form.work_expirance_from|date:'Y-m-d'}}" name="work_expirance_from{{workexp_form.id}}" type="date" class="form-control">
@@ -410,15 +411,17 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-      <textarea style="height:120px;" name="work_expirance_details{{workexp_form.id}}" class="form-control" placeholder="Experience and Achievements">{{workexp_form.work_expirance_details}}</textarea>
-    </div>
+
+      <textarea style="height:120px;" name="work_expirance_details{{workexp_form.id}}" class="form-control" placeholder="Experience and Achievements" onkeyup = "ExpandAchChar(this)">{{workexp_form.work_expirance_details}}</textarea>
+    </div>        <span style="padding: 5px; color: Gray;"> Total Characters Left: <span id="ExpandAchCharNum" >-</span></span>
+
   </div>
 
-    <label class="col-md-2 control-label">Designation
+    <label class="col-md-1 control-label">Designation
 
 </label>
 
-    <div class="col-md-4 inputGroupContainer">
+    <div class="col-md-5 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
 <input name="designation{{workexp_form.id}}" type="text" class="form-control" placeholder="Designation" value="{{workexp_form.designation}}">
@@ -1204,6 +1207,23 @@ $("#tagscloud span").text("Total experience is " + finalDate + " years.");
 
             })
 
+               function AchievementsChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#AchievementsCharNum').text(1024 - len);
+        }
+      };
+
+                     function ExpandAchChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#ExpandAchCharNum').text(1024 - len);
+        }
+      };
 
 
 
