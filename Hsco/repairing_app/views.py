@@ -1069,23 +1069,75 @@ def update_repairing_details(request,id):
 today_month = datetime.now().month
 @login_required(login_url='/')
 def repairing_module_home(request):
+    if request.user.role == 'Super Admin':  # For ADMIN
+        # repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='') | Q(
+        #     user_id__name=request.user.name) | Q(taken_by=request.user.name) | Q(
+        #     user_id__group__icontains=request.user.name)) & Q(user_id__is_deleted=False) & Q(
+        #     user_id__modules_assigned__icontains="'Repairing Module'")).order_by('-repairing_no')
+        repair_list = Repairing_after_sales_service.objects.all().order_by('-repairing_no')
 
+        res = Repairing_after_sales_service.objects.filter(
+            Q(taken_by=None) | Q(taken_by='') | Q(user_id__name=request.user.name) | Q(taken_by=request.user.name) | Q(
+                user_id__group__icontains=request.user.name)).values(
+            'current_stage').annotate(
+            dcount=Count('current_stage'))
+        # paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+        # page = request.GET.get('page')
+        # repair_list = paginator.get_page(page)
+    elif request.user.role == 'Admin':
+        repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name) | Q(
+            user_id__group__icontains=request.user.name) | Q(user_id__name=request.user.name))).order_by(
+            '-repairing_no')
+
+        res = Repairing_after_sales_service.objects.filter(
+            (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='') | Q(
+                user_id__name=request.user.name))).values(
+            'current_stage').annotate(
+            dcount=Count('current_stage'))
+        # paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+        # page = request.GET.get('page')
+        # repair_list = paginator.get_page(page)
+    elif request.user.role == 'Manager':
+        admin = SiteUser.objects.get(id=request.user.pk).admin
+        repair_list = Repairing_after_sales_service.objects.filter(
+            (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='') | Q(
+                user_id__name=request.user.name)) & Q(user_id__admin=admin)).order_by(
+            '-repairing_no')
+
+        res = Repairing_after_sales_service.objects.filter(
+            (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='') | Q(
+                user_id__name=request.user.name)) & Q(user_id__admin=admin)).values(
+            'current_stage').annotate(
+            dcount=Count('current_stage'))
+        # paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+        # page = request.GET.get('page')
+        # repair_list = paginator.get_page(page)
+
+    else:  # For EMPLOYEE
+        admin = SiteUser.objects.get(id=request.user.pk).admin
+        repair_list = Repairing_after_sales_service.objects.filter(
+            (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)).order_by(
+            '-repairing_no')
+
+        res = Repairing_after_sales_service.objects.filter(
+            (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')) & Q(user_id__admin=admin)).values(
+            'current_stage').annotate(
+            dcount=Count('current_stage'))
+        # paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+        # page = request.GET.get('page')
+        # repair_list = paginator.get_page(page)
+        # repair_list2 = Repairing_after_sales_service.objects.filter(Q(taken_by='')).order_by('-repairing_no')
+        # repair_list = Repairing_after_sales_service.objects.filter(taken_by=request.user.name,).order_by('-repairing_no')
+    # repair_list = Repairing_after_sales_service.objects.all()
+
+    context = {
+        'repair_list': repair_list.filter(entry_timedate__month=today_month),
+    }
     if request.method == 'POST':
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
-            if check_admin_roles(request):  # For ADMIN
-                repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-repairing_no')
-                #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-                #page = request.GET.get('page')
-                #repair_list = paginator.get_page(page)
-            else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-repairing_no')
-                #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-                #page = request.GET.get('page')
-                #repair_list = paginator.get_page(page)
-            # repair_list = Repairing_after_sales_service.objects.filter(entry_timedate__range=[start_date, end_date])
+            repair_list = repair_list.filter(entry_timedate__range=[start_date, end_date]).order_by('-repairing_no')
             context = {
                 'repair_list': repair_list,
                 'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
@@ -1094,18 +1146,8 @@ def repairing_module_home(request):
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
-                repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-repairing_no')
-                #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-                #page = request.GET.get('page')
-                #repair_list = paginator.get_page(page)
+                repair_list = repair_list.filter(second_contact_no__icontains=contact).order_by('-repairing_no')
 
-            else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-repairing_no')
-                #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-                #page = request.GET.get('page')
-                #repair_list = paginator.get_page(page)
-            # repair_list = Repairing_after_sales_service.objects.filter(phone_no=contact)
             context = {
                 'repair_list': repair_list,
                 'search_msg': 'Search result for Customer Contact No: ' + contact,
@@ -1114,18 +1156,9 @@ def repairing_module_home(request):
 
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
-            if check_admin_roles(request):  # For ADMIN
-                repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,company_email__icontains=email).order_by('-repairing_no')
-                #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-                #page = request.GET.get('page')
-                #repair_list = paginator.get_page(page)
-            else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-repairing_no')
-                #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-                #page = request.GET.get('page')
-                #repair_list = paginator.get_page(page)
-            # repair_list = Repairing_after_sales_service.objects.filter(customer_email_id=email)
+
+            repair_list = repair_list.filter(company_email__icontains=email).order_by('-repairing_no')
+
             context = {
                 'repair_list': repair_list,
                 'search_msg': 'Search result for Customer Email ID: ' + email,
@@ -1133,18 +1166,9 @@ def repairing_module_home(request):
             return render(request, 'dashboardnew/repairing_module_home.html', context)
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
-            if check_admin_roles(request):  # For ADMIN
-                repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,second_person__icontains=customer).order_by('-repairing_no')
-                #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-                #page = request.GET.get('page')
-                #repair_list = paginator.get_page(page)
-            else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-repairing_no')
-                #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-                #page = request.GET.get('page')
-                #repair_list = paginator.get_page(page)
-            # repair_list = Repairing_after_sales_service.objects.filter(name=customer)
+
+            repair_list = repair_list.filter(second_person__icontains=customer).order_by('-repairing_no')
+
             context = {
                 'repair_list': repair_list,
                 'search_msg': 'Search result for Customer Name: ' + customer,
@@ -1153,18 +1177,9 @@ def repairing_module_home(request):
 
         elif  'submit5' in request.POST:
             company = request.POST.get('company')
-            if check_admin_roles(request):  # For ADMIN
-                repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,second_company_name__icontains=company).order_by('-repairing_no')
-                #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-                #page = request.GET.get('page')
-                #repair_list = paginator.get_page(page)
-            else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-repairing_no')
-                #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-                #page = request.GET.get('page')
-                #repair_list = paginator.get_page(page)
-            # repair_list = Repairing_after_sales_service.objects.filter(company_name=company)
+
+            repair_list = repair_list.filter(second_company_name__icontains=company).order_by('-repairing_no')
+
             context = {
                 'repair_list': repair_list,
                 'search_msg': 'Search result for Company Name: ' + company,
@@ -1172,140 +1187,204 @@ def repairing_module_home(request):
             return render(request, 'dashboardnew/repairing_module_home.html', context)
         elif request.method=='POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
-            if check_admin_roles(request):  # For ADMIN
-                repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                           user_id__is_deleted=False,crm_no__pk=crm).order_by('-repairing_no')
-                #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-                #page = request.GET.get('page')
-                #repair_list = paginator.get_page(page)
-            else:  # For EMPLOYEE
-                repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-repairing_no')
-                #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-                #page = request.GET.get('page')
-                #repair_list = paginator.get_page(page)
-            # repair_list = Repairing_after_sales_service.objects.filter(crn_number=crm)
+
+            repair_list = repair_list.filter(crm_no__pk=crm).order_by('-repairing_no')
+
             context = {
                 'repair_list': repair_list,
                 'search_msg': 'Search result for CRM No. : ' + crm,
             }
             return render(request, 'dashboardnew/repairing_module_home.html', context)
-    else:
-        if request.user.role =='Super Admin':     #For ADMIN
-            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=None) | Q(taken_by='') |Q(user_id__name=request.user.name)|Q(taken_by=request.user.name)| Q(user_id__group__icontains=request.user.name))&Q(user_id__is_deleted=False)&Q(user_id__modules_assigned__icontains="'Repairing Module'")).order_by('-repairing_no')
 
-            res = Repairing_after_sales_service.objects.filter(Q(taken_by=None) | Q(taken_by='') |Q(user_id__name=request.user.name)|Q(taken_by=request.user.name) | Q(user_id__group__icontains=request.user.name)).values(
-                'current_stage').annotate(
-                dcount=Count('current_stage'))
-            # paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-            # page = request.GET.get('page')
-            # repair_list = paginator.get_page(page)
-        elif request.user.role =='Admin':
-            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name)| Q(user_id__group__icontains=request.user.name)|Q(user_id__name=request.user.name))).order_by(
-                '-repairing_no')
-
-            res = Repairing_after_sales_service.objects.filter(
-                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')|Q(user_id__name=request.user.name)) ).values(
-                'current_stage').annotate(
-                dcount=Count('current_stage'))
-            # paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-            # page = request.GET.get('page')
-            # repair_list = paginator.get_page(page)
-        elif request.user.role =='Manager':
-            admin = SiteUser.objects.get(id=request.user.pk).admin
-            repair_list = Repairing_after_sales_service.objects.filter(
-                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')|Q(user_id__name=request.user.name)) & Q(user_id__admin=admin)).order_by(
-                '-repairing_no')
-
-            res = Repairing_after_sales_service.objects.filter(
-                (Q(taken_by=request.user.name) | Q(taken_by=None) | Q(taken_by='')|Q(user_id__name=request.user.name)) & Q(user_id__admin=admin)).values(
-                'current_stage').annotate(
-                dcount=Count('current_stage'))
-            # paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-            # page = request.GET.get('page')
-            # repair_list = paginator.get_page(page)
-
-        else:  #For EMPLOYEE
-            admin = SiteUser.objects.get(id=request.user.pk).admin
-            repair_list = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name)|Q(taken_by=None) | Q(taken_by=''))&Q(user_id__admin=admin)).order_by('-repairing_no')
-
-            res = Repairing_after_sales_service.objects.filter((Q(taken_by=request.user.name)|Q(taken_by=None) | Q(taken_by=''))&Q(user_id__admin=admin)).values('current_stage').annotate(
-                dcount=Count('current_stage'))
-            # paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
-            # page = request.GET.get('page')
-            # repair_list = paginator.get_page(page)
-            # repair_list2 = Repairing_after_sales_service.objects.filter(Q(taken_by='')).order_by('-repairing_no')
-            # repair_list = Repairing_after_sales_service.objects.filter(taken_by=request.user.name,).order_by('-repairing_no')
-        # repair_list = Repairing_after_sales_service.objects.all()
-
-        context = {
-            'repair_list': repair_list.filter(entry_timedate__month=today_month),
-        }
         # Using current time
-        ini_time_for_now = datetime.now()
 
-        new_final_time = ini_time_for_now - timedelta(days=4)
+    # if request.method == 'POST':
+    #     if'submit1' in request.POST:
+    #         start_date = request.POST.get('date1')
+    #         end_date = request.POST.get('date2')
+    #         if check_admin_roles(request):  # For ADMIN
+    #             repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
+    #                                                                        user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-repairing_no')
+    #             #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+    #             #page = request.GET.get('page')
+    #             #repair_list = paginator.get_page(page)
+    #         else:  # For EMPLOYEE
+    #             repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-repairing_no')
+    #             #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+    #             #page = request.GET.get('page')
+    #             #repair_list = paginator.get_page(page)
+    #         # repair_list = Repairing_after_sales_service.objects.filter(entry_timedate__range=[start_date, end_date])
+    #         context = {
+    #             'repair_list': repair_list,
+    #             'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
+    #         }
+    #         return render(request, 'dashboardnew/repairing_module_home.html', context)
+    #     elif 'submit2' in request.POST:
+    #         contact = request.POST.get('contact')
+    #         if check_admin_roles(request):  # For ADMIN
+    #             repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
+    #                                                                        user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-repairing_no')
+    #             #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+    #             #page = request.GET.get('page')
+    #             #repair_list = paginator.get_page(page)
+    #
+    #         else:  # For EMPLOYEE
+    #             repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-repairing_no')
+    #             #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+    #             #page = request.GET.get('page')
+    #             #repair_list = paginator.get_page(page)
+    #         # repair_list = Repairing_after_sales_service.objects.filter(phone_no=contact)
+    #         context = {
+    #             'repair_list': repair_list,
+    #             'search_msg': 'Search result for Customer Contact No: ' + contact,
+    #         }
+    #         return render(request, 'dashboardnew/repairing_module_home.html', context)
+    #
+    #     elif 'submit3' in request.POST:
+    #         email = request.POST.get('email')
+    #         if check_admin_roles(request):  # For ADMIN
+    #             repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
+    #                                                                        user_id__is_deleted=False,company_email__icontains=email).order_by('-repairing_no')
+    #             #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+    #             #page = request.GET.get('page')
+    #             #repair_list = paginator.get_page(page)
+    #         else:  # For EMPLOYEE
+    #             repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-repairing_no')
+    #             #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+    #             #page = request.GET.get('page')
+    #             #repair_list = paginator.get_page(page)
+    #         # repair_list = Repairing_after_sales_service.objects.filter(customer_email_id=email)
+    #         context = {
+    #             'repair_list': repair_list,
+    #             'search_msg': 'Search result for Customer Email ID: ' + email,
+    #         }
+    #         return render(request, 'dashboardnew/repairing_module_home.html', context)
+    #     elif 'submit4' in request.POST:
+    #         customer = request.POST.get('customer')
+    #         if check_admin_roles(request):  # For ADMIN
+    #             repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
+    #                                                                        user_id__is_deleted=False,second_person__icontains=customer).order_by('-repairing_no')
+    #             #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+    #             #page = request.GET.get('page')
+    #             #repair_list = paginator.get_page(page)
+    #         else:  # For EMPLOYEE
+    #             repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-repairing_no')
+    #             #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+    #             #page = request.GET.get('page')
+    #             #repair_list = paginator.get_page(page)
+    #         # repair_list = Repairing_after_sales_service.objects.filter(name=customer)
+    #         context = {
+    #             'repair_list': repair_list,
+    #             'search_msg': 'Search result for Customer Name: ' + customer,
+    #         }
+    #         return render(request, 'dashboardnew/repairing_module_home.html', context)
+    #
+    #     elif  'submit5' in request.POST:
+    #         company = request.POST.get('company')
+    #         if check_admin_roles(request):  # For ADMIN
+    #             repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
+    #                                                                        user_id__is_deleted=False,second_company_name__icontains=company).order_by('-repairing_no')
+    #             #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+    #             #page = request.GET.get('page')
+    #             #repair_list = paginator.get_page(page)
+    #         else:  # For EMPLOYEE
+    #             repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-repairing_no')
+    #             #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+    #             #page = request.GET.get('page')
+    #             #repair_list = paginator.get_page(page)
+    #         # repair_list = Repairing_after_sales_service.objects.filter(company_name=company)
+    #         context = {
+    #             'repair_list': repair_list,
+    #             'search_msg': 'Search result for Company Name: ' + company,
+    #         }
+    #         return render(request, 'dashboardnew/repairing_module_home.html', context)
+    #     elif request.method=='POST' and 'submit6' in request.POST:
+    #         crm = request.POST.get('crm')
+    #         if check_admin_roles(request):  # For ADMIN
+    #             repair_list = Repairing_after_sales_service.objects.filter(user_id__group__icontains=request.user.name,
+    #                                                                        user_id__is_deleted=False,crm_no__pk=crm).order_by('-repairing_no')
+    #             #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+    #             #page = request.GET.get('page')
+    #             #repair_list = paginator.get_page(page)
+    #         else:  # For EMPLOYEE
+    #             repair_list = Repairing_after_sales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-repairing_no')
+    #             #paginator = Paginator(repair_list, 15)  # Show 25 contacts per page
+    #             #page = request.GET.get('page')
+    #             #repair_list = paginator.get_page(page)
+    #         # repair_list = Repairing_after_sales_service.objects.filter(crn_number=crm)
+    #         context = {
+    #             'repair_list': repair_list,
+    #             'search_msg': 'Search result for CRM No. : ' + crm,
+    #         }
+    #         return render(request, 'dashboardnew/repairing_module_home.html', context)
+    #
+    #     # Using current time
 
-        res_4d = Repairing_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),Q(stage_update_timedate=new_final_time),Q(current_stage='Repaired but not collected')).values('current_stage').annotate(dcount=Count('current_stage'))
-        try:
-            x = res_4d
-            # if x['current_stage'] == 'Scale is collected but estimate is not given':
-            rep4_4d = x['dcount']
-            context4d = {
-                'rep4_4d': rep4_4d,
-            }
-            context.update(context4d)
-        except:
-            pass
+    ini_time_for_now = datetime.now()
 
-        new_final_time = ini_time_for_now - timedelta(days=10)
-        res_10d = Repairing_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),Q(stage_update_timedate=new_final_time),Q(current_stage='Repaired but not collected')).values('current_stage').annotate(dcount=Count('current_stage'))
-        x = res_10d
+    new_final_time = ini_time_for_now - timedelta(days=4)
+
+    res_4d = Repairing_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),Q(stage_update_timedate=new_final_time),Q(current_stage='Repaired but not collected')).values('current_stage').annotate(dcount=Count('current_stage'))
+    try:
+        x = res_4d
         # if x['current_stage'] == 'Scale is collected but estimate is not given':
-        try:
-            rep4_10d = x['dcount']
-            context10d = {
-                'rep4_10d': rep4_10d,
+        rep4_4d = x['dcount']
+        context4d = {
+            'rep4_4d': rep4_4d,
+        }
+        context.update(context4d)
+    except:
+        pass
+
+    new_final_time = ini_time_for_now - timedelta(days=10)
+    res_10d = Repairing_after_sales_service.objects.filter(Q(user_id=request.user.pk)|Q(user_id__manager=request.user.name)|Q(user_id__admin=request.user.name)|Q(user_id__super_admin=request.user.name),Q(stage_update_timedate=new_final_time),Q(current_stage='Repaired but not collected')).values('current_stage').annotate(dcount=Count('current_stage'))
+    x = res_10d
+    # if x['current_stage'] == 'Scale is collected but estimate is not given':
+    try:
+        rep4_10d = x['dcount']
+        context10d = {
+            'rep4_10d': rep4_10d,
+        }
+        context.update(context10d)
+    except:
+        pass
+    print(res)
+
+    for i in res:
+        x = i
+        if x['current_stage'] == 'Scale is collected but estimate is not given':
+            rep1 = x['dcount']
+            context1 = {
+                'rep1': rep1,
             }
-            context.update(context10d)
-        except:
-            pass
-        print(res)
+            context.update(context1)
 
-        for i in res:
-            x = i
-            if x['current_stage'] == 'Scale is collected but estimate is not given':
-                rep1 = x['dcount']
-                context1 = {
-                    'rep1': rep1,
-                }
-                context.update(context1)
+        if x['current_stage'] == 'Estimate is given but Estimate is not confirmed':
+            rep2 = x['dcount']
+            context2 = {
+                'rep2': rep2,
+            }
+            context.update(context2)
+        if x['current_stage'] == 'Estimate is confirmed but not repaired':
+            rep3 = x['dcount']
+            context3 = {
+                'rep3': rep3,
+            }
+            context.update(context3)
+        if x['current_stage'] == 'Repaired but not collected':
+            rep4 = x['dcount']
+            context4 = {
+                'rep4': rep4,
+            }
+            context.update(context4)
+        if x['current_stage'] == 'Finally Collected':
+            rep5 = x['dcount']
+            context5 = {
+                'rep5': rep5,
+            }
+            context.update(context5)
 
-            if x['current_stage'] == 'Estimate is given but Estimate is not confirmed':
-                rep2 = x['dcount']
-                context2 = {
-                    'rep2': rep2,
-                }
-                context.update(context2)
-            if x['current_stage'] == 'Estimate is confirmed but not repaired':
-                rep3 = x['dcount']
-                context3 = {
-                    'rep3': rep3,
-                }
-                context.update(context3)
-            if x['current_stage'] == 'Repaired but not collected':
-                rep4 = x['dcount']
-                context4 = {
-                    'rep4': rep4,
-                }
-                context.update(context4)
-            if x['current_stage'] == 'Finally Collected':
-                rep5 = x['dcount']
-                context5 = {
-                    'rep5': rep5,
-                }
-                context.update(context5)
-
-        return render(request, 'dashboardnew/repairing_module_home.html', context)
+    return render(request, 'dashboardnew/repairing_module_home.html', context)
 
 
 @login_required(login_url='/')

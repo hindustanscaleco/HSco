@@ -268,7 +268,7 @@ def restamping_manager(request):
                 #paginator = Paginator(restamp_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #restamp_list = paginator.get_page(page)
-            restamp_list = Restamping_after_sales_service.objects.filter(crn_number=crm)
+            # restamp_list = Restamping_after_sales_service.objects.filter(crn_number=crm)
 
             context = {
                 'restamp_list': restamp_list,
