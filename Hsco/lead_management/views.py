@@ -1338,9 +1338,9 @@ def update_view_lead(request,id):
     elif len(str(id)) == 2 :
         email_pi_id = '00'+str(id)
     elif len(str(id)) == 3 :
-        email_pi_id = '00'+str(id)
+        email_pi_id = '0'+str(id)
     elif len(str(id)) == 4 :
-        email_pi_id = '00'+str(id)
+        email_pi_id = str(id)
     else:
         email_pi_id = id
 
