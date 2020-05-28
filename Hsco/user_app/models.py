@@ -97,8 +97,8 @@ class SiteUser(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     can_reply_to_sa = models.BooleanField(default=False)
-    upload_pancard = models.FileField(upload_to='',null=True, blank=True)
-    upload_aadhar_card = models.FileField(upload_to='',null=True, blank=True)
+    upload_pancard = models.FileField(upload_to='employee_pancards/',null=True, blank=True)
+    upload_aadhar_card = models.FileField(upload_to='employee_aadharcards/',null=True, blank=True)
 
     details = models.CharField(max_length=250, null=True, blank=True)
     pancard = models.CharField(max_length=20, null=True, blank=True)

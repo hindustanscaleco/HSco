@@ -1138,13 +1138,13 @@ def lead_home(request):
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
-                                                owner_of_opportunity__is_deleted=False, customer_id__second_person__icontains=customer).order_by(
+                                                owner_of_opportunity__is_deleted=False, customer_id__customer_name__icontains=customer).order_by(
                     '-id')
                 # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
-                cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk, customer_id__second_person__icontains=customer).order_by(
+                cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk, customer_id__customer_name__icontains=customer).order_by(
                     '-id')
                 # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 # page = request.GET.get('page')
@@ -1536,16 +1536,7 @@ def update_view_lead(request,id):
                     for item2 in product_id:
                         product_id = item2
                 else:
-                    # context22 = {
-                    #     'error': "Product Having Scale Type:"+item.product_id.scale_type.name+"Main Category:"+item.product_id.main_category.name+" Sub Category:"+item.product_id.sub_category.name+"Sub Sub Category:"+item.product_id.sub_sub_category.name+" Does Not Exist In Product Database",
-                    #     'error_exist': True,
-                    # }
-                    # context.update(context22)
-                    # try:
-                    #     del request.session['context_sess']
-                    # except:
-                    #     pass
-                    # request.session['context_sess'] = context22
+
                     messages.error(request, "Product Having Scale Type:"+item.product_id.scale_type.name+"Main Category:"+item.product_id.main_category.name+" Sub Category:"+item.product_id.sub_category.name+"Sub Sub Category:"+item.product_id.sub_sub_category.name+" Does Not Exist In Product Database")
                     return redirect('/update_view_lead/' + str(id))
                 godown = Godown.objects.get(id=godown_ids[list_count])
@@ -1556,33 +1547,14 @@ def update_view_lead(request,id):
                     for item3 in godown_product_exist:
                         quantity_available = item3.quantity
                 else:
-                    # context22 = {
-                    #     'error': "Product Having Sub Category:"+product_id.sub_category.name+" and Sub Sub Category:"+product_id.sub_sub_category.name+" Does Not Exist in Godown:"+godown.name_of_godown,
-                    #     'error_exist': True,
-                    # }
-                    # context.update(context22)
-                    # try:
-                    #     del request.session['context_sess']
-                    # except:
-                    #     pass
-                    # request.session['context_sess'] = context22
+
                     messages.error(request,"Product Having Sub Category:"+product_id.sub_category.name+" and Sub Sub Category:"+product_id.sub_sub_category.name+" Does Not Exist in Godown:"+godown.name_of_godown)
                     return redirect('/update_view_lead/' + str(id))
 
                 if (quantity_available > required_quantity):
                     is_sufficient_stock = False
                 else:
-                    # context22 = {
-                    #     'error': "Insufficient Stock in Godown: " + Godown.objects.get(
-                    #         id=godown_ids[list_count]).name_of_godown + " Please Select Different Godown And Try Again",
-                    #     'error_exist': True,
-                    # }
-                    # context.update(context22)
-                    # try:
-                    #     del request.session['context_sess']
-                    # except:
-                    #     pass
-                    # request.session['context_sess'] = context22
+
                     messages.error(request,"Insufficient Stock in Godown: " + Godown.objects.get(
                             id=godown_ids[list_count]).name_of_godown + " Please Select Different Godown And Try Again")
                     return redirect('/update_view_lead/' + str(id))
@@ -1590,26 +1562,9 @@ def update_view_lead(request,id):
             list_count = 0;
             if lead_id.customer_id.contact_no == '0000000000' or len(lead_id.customer_id.contact_no) < 10:
                 messages.error(request, "Contact Number Is Not Valid!!!")
-                # context22 = {
-                #     'error': "Contact Number Is Not Valid!!!",
-                #     'error_exist': True,
-                # }
-                # context.update(context22)
-                # try:
-                #     del request.session['context_sess']
-                # except:
-                #     pass
-                # request.session['context_sess'] = context22
-                return redirect('/update_view_lead/' + str(id))
-            for item in pi_pro:
 
-                product_id = Product.objects.get(scale_type=item.product_id.scale_type,
-                                                 main_category=item.product_id.main_category,
-                                                 sub_category=item.product_id.sub_category,
-                                                 sub_sub_category=item.product_id.sub_sub_category).id
-                GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown_ids[list_count]).id,
-                                                 product_id=product_id).update(quantity=F("quantity") - item.quantity)
-                list_count = list_count + 1
+                return redirect('/update_view_lead/' + str(id))
+
 
             if (len(delete_id)>0):
                 current_stage = lead_id.current_stage
@@ -1629,7 +1584,7 @@ def update_view_lead(request,id):
                     purchase_det.product_purchase_date = lead_id.entry_timedate
                     purchase_det.sales_person = lead_id.owner_of_opportunity.name
                     purchase_det.user_id = SiteUser.objects.get(name=lead_id.owner_of_opportunity.name)
-                    # purchase_det.channel_of_sales = lead_id.channel
+                    purchase_det.upload_op_file = Payment_details.objects.get(lead_id=id).upload_pofile
                     purchase_det.channel_of_sales = ''
                     purchase_det.channel_of_dispatch = ''
                     purchase_det.industry = lead_id.customer_id.customer_industry
@@ -1694,7 +1649,19 @@ def update_view_lead(request,id):
                         item_pro.log_entered_by = request.user.name
 
                         item_pro.save()
+
+                        product_id = Product.objects.get(scale_type=item.product_id.scale_type,
+                                                         main_category=item.product_id.main_category,
+                                                         sub_category=item.product_id.sub_category,
+                                                         sub_sub_category=item.product_id.sub_sub_category).id
+                        GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown_ids[list_count]).id,
+                                                     product_id=product_id).update(
+                            quantity=F("quantity") - item.quantity)
+
                         list_count=list_count+1
+                    # for item in pi_pro:
+                    #
+                    #     list_count = list_count + 1
 
                         # dispatch_id = Dispatch.objects.get(id=dispatch.id)
                         # dispatch_pro = Product_Details_Dispatch()

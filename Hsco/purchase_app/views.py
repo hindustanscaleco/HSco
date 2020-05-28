@@ -1837,6 +1837,28 @@ def edit_product_customer(request,product_id_rec):
 
         item = product_id
 
+
+        #if product changed then update stock
+        if item.type_of_scale != type_of_scale or item.model_of_purchase != model_of_purchase or item.sub_model != sub_model or item.sub_sub_model != sub_sub_model:
+            try:
+                product_id_new = Product.objects.get(scale_type__name=type_of_scale,
+                                                        main_category__name=model_of_purchase,
+                                                        sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+                product_id_old = Product.objects.get(scale_type__name=item.type_of_scale,
+                                                     main_category__name=item.model_of_purchase,
+                                                     sub_category__name=item.sub_model, sub_sub_category__name=item.sub_sub_model)
+                # adding old products quantity to old/current godown
+                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=product_id_old).update(
+                    quantity=F("quantity") + item.quantity)
+
+                # subtracting new products quantity from current godown
+                GodownProduct.objects.filter(godown_id=godown, product_id=product_id_new).update(
+                    quantity=F("quantity") - quantity)
+            except Exception as e:
+                messages.error(request,"Error Updating Products Quantity In Selected Godown")
+                return redirect("/edit_product_customer/"+str(product_id_rec))
+
+
         item.quantity = quantity
         item.type_of_scale = type_of_scale
         item.model_of_purchase = model_of_purchase
