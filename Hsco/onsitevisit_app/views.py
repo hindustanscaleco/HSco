@@ -167,7 +167,7 @@ def onsite_views(request):
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
             if check_admin_roles(request):  # For ADMIN
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
+                onsite_list = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]) |Q(user_id__group__icontains=request.user.name),
                                                                        user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-onsite_no')
                 #paginator = Paginator(onsite_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
@@ -187,7 +187,7 @@ def onsite_views(request):
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
+                onsite_list = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk,second_contact_no__icontains=contact) |Q(user_id__group__icontains=request.user.name),
                                                                        user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-onsite_no')
                 #paginator = Paginator(onsite_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
@@ -207,13 +207,13 @@ def onsite_views(request):
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
             if check_admin_roles(request):  # For ADMIN
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,company_email=email).order_by('-onsite_no')
+                onsite_list = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk,company_email__icontains=email) |Q(user_id__group__icontains=request.user.name),
+                                                                       user_id__is_deleted=False,company_email__icontains=email).order_by('-onsite_no')
                 #paginator = Paginator(onsite_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #onsite_list = paginator.get_page(page)
             else:  # For EMPLOYEE
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,company_email=email).order_by('-onsite_no')
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-onsite_no')
                 #paginator = Paginator(onsite_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #onsite_list = paginator.get_page(page)
@@ -226,13 +226,13 @@ def onsite_views(request):
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,second_person=customer).order_by('-onsite_no')
+                onsite_list = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk,second_person__icontains=customer) |Q(user_id__group__icontains=request.user.name),
+                                                                       user_id__is_deleted=False,second_person__icontains=customer).order_by('-onsite_no')
                 #paginator = Paginator(onsite_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #onsite_list = paginator.get_page(page)
             else:  # For EMPLOYEE
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,second_person=customer).order_by('-onsite_no')
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-onsite_no')
                 #paginator = Paginator(onsite_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #onsite_list = paginator.get_page(page)
@@ -246,13 +246,13 @@ def onsite_views(request):
         elif  'submit5' in request.POST:
             company = request.POST.get('company')
             if check_admin_roles(request):  # For ADMIN
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,second_company_name=company).order_by('-onsite_no')
+                onsite_list = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk,second_company_name__icontains=company) |Q(user_id__group__icontains=request.user.name),
+                                                                       user_id__is_deleted=False,second_company_name__icontains=company).order_by('-onsite_no')
                 #paginator = Paginator(onsite_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #onsite_list = paginator.get_page(page)
             else:  # For EMPLOYEE
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,second_company_name=company).order_by('-onsite_no')
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-onsite_no')
                 #paginator = Paginator(onsite_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #onsite_list = paginator.get_page(page)
@@ -265,13 +265,13 @@ def onsite_views(request):
         elif request.method=='POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
             if check_admin_roles(request):  # For ADMIN
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id__group__icontains=request.user.name,
-                                                                       user_id__is_deleted=False,crm_no__pk=crm).order_by('-onsite_no')
+                onsite_list = Onsite_aftersales_service.objects.filter(Q(user_id=request.user.pk,crm_no__pk__icontains=crm) |Q(user_id__group__icontains=request.user.name),
+                                                                       user_id__is_deleted=False,crm_no__pk__icontains=crm).order_by('-onsite_no')
                 #paginator = Paginator(onsite_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #onsite_list = paginator.get_page(page)
             else:  # For EMPLOYEE
-                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-onsite_no')
+                onsite_list = Onsite_aftersales_service.objects.filter(user_id=request.user.pk,crm_no__pk__icontains=crm).order_by('-onsite_no')
                 #paginator = Paginator(onsite_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #onsite_list = paginator.get_page(page)

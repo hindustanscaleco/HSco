@@ -161,7 +161,7 @@ def restamping_manager(request):
             end_date = request.POST.get('date2')
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-restamping_no')
+                    Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name), user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-restamping_no')
                 #paginator = Paginator(restamp_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #restamp_list = paginator.get_page(page)
@@ -174,14 +174,13 @@ def restamping_manager(request):
             context = {
                 'restamp_list': restamp_list,
                 'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
-
             }
             return render(request, "manager/restamping_manager.html", context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-restamping_no')
+                    Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name), user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-restamping_no')
                 #paginator = Paginator(restamp_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #restamp_list = paginator.get_page(page)
@@ -202,7 +201,7 @@ def restamping_manager(request):
             email = request.POST.get('email')
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,company_email__icontains=email).order_by('-restamping_no')
+                    Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name), user_id__is_deleted=False,company_email__icontains=email).order_by('-restamping_no')
                 #paginator = Paginator(restamp_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #restamp_list = paginator.get_page(page)
@@ -222,7 +221,7 @@ def restamping_manager(request):
             restamp_list = Restamping_after_sales_service.objects.filter(name=customer)
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_person__icontains=customer).order_by('-restamping_no')
+                    Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name), user_id__is_deleted=False,second_person__icontains=customer).order_by('-restamping_no')
                 #paginator = Paginator(restamp_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #restamp_list = paginator.get_page(page)
@@ -242,7 +241,7 @@ def restamping_manager(request):
             # restamp_list = Restamping_after_sales_service.objects.filter(second_company_name=company)
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,second_company_name__icontains=company).order_by('-restamping_no')
+                    Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name), user_id__is_deleted=False,second_company_name__icontains=company).order_by('-restamping_no')
                 #paginator = Paginator(restamp_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #restamp_list = paginator.get_page(page)
@@ -260,7 +259,7 @@ def restamping_manager(request):
             crm = request.POST.get('crm')
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,crm_no__pk=crm).order_by('-restamping_no')
+                    Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name), user_id__is_deleted=False,crm_no__pk=crm).order_by('-restamping_no')
                 #paginator = Paginator(restamp_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #restamp_list = paginator.get_page(page)
@@ -281,7 +280,7 @@ def restamping_manager(request):
             # restamp_list = Restamping_after_sales_service.objects.filter(second_company_name=company)
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,company_email__icontains=email_id).order_by('-restamping_no')
+                    Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name), user_id__is_deleted=False,company_email__icontains=email_id).order_by('-restamping_no')
                 #paginator = Paginator(restamp_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #restamp_list = paginator.get_page(page)
@@ -300,7 +299,7 @@ def restamping_manager(request):
             # restamp_list = Restamping_after_sales_service.objects.filter(second_company_name=company)
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
-                    user_id__group__icontains=request.user.name, user_id__is_deleted=False,restamping_no__icontains=restamping_no).order_by('-restamping_no')
+                    Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name), user_id__is_deleted=False,restamping_no__icontains=restamping_no).order_by('-restamping_no')
                 #paginator = Paginator(restamp_list, 15)  # Show 25 contacts per page
                 #page = request.GET.get('page')
                 #restamp_list = paginator.get_page(page)

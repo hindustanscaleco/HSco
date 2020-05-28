@@ -11,6 +11,7 @@ class Position(models.Model):
     class  Meta():
         ordering = ['-id']
 
+
 class Career_module(models.Model):
     current_stage = models.CharField(max_length=50,null=True,blank=True)
     application_no = models.IntegerField(null=True,blank=True)
