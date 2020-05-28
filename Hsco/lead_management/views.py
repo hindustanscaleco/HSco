@@ -38,6 +38,8 @@ from purchase_app.models import Product_Details
 from dispatch_app.models import Product_Details_Dispatch
 from django.core.mail import EmailMessage
 from django.contrib import messages
+from django.core.mail import get_connection
+from django.core.mail.message import EmailMessage
 
 from stock_management_system_app.models import Godown,GodownProduct
 
@@ -1331,6 +1333,17 @@ def add_lead(request):
 
 @login_required(login_url='/')
 def update_view_lead(request,id):
+    if len(str(id)) == 1 :
+        email_pi_id = '000'+str(id)
+    elif len(str(id)) == 2 :
+        email_pi_id = '00'+str(id)
+    elif len(str(id)) == 3 :
+        email_pi_id = '0'+str(id)
+    elif len(str(id)) == 4 :
+        email_pi_id = str(id)
+    else:
+        email_pi_id = id
+
     lead_id = Lead.objects.get(id=id)
     users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module')& ~Q(profile_name=lead_id.owner_of_opportunity.profile_name))
     under_admin_users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module')&
@@ -1843,14 +1856,22 @@ def update_view_lead(request,id):
             request.session['is_file_pdf'] = True
             val = request.POST
             text='Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo\n\n'
-            email_send = EmailMessage('PI - HSCo ', '',
-                                      settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
-            part1 = MIMEText(text, 'plain')
-            part2 = MIMEText(user(request), 'html')
-            email_send.attach(part1)
-            email_send.attach(part2)
-            email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
-            email_send.send()
+            with get_connection(
+                    host='webmail.hindustanscale.com',
+                    port=587,
+                    username='pi@hindustanscale.com',
+                    password='Hindustan@@1234',
+                    use_tls=True
+            ) as connection:
+
+                email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, '',
+                                      settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],connection=connection)
+                part1 = MIMEText(text, 'plain')
+                part2 = MIMEText(user(request), 'html')
+                email_send.attach(part1)
+                email_send.attach(part2)
+                email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
+                email_send.send()
 
             history = Pi_History()
             lead_id = Lead.objects.get(id=id)
@@ -2083,14 +2104,25 @@ def update_view_lead(request,id):
                     history.log_entered_by = request.user.profile_name
                     history.medium_of_selection = 'Email'
                     history.save()
-                    email_send = EmailMessage('PI - HSCo ','',
-                                              settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
-                    part1 = MIMEText(text, 'plain')
-                    part2 = MIMEText(user(request), 'html')
-                    email_send.attach(part1)
-                    email_send.attach(part2)
-                    email_send.attach_file(history.pi_history_file.path)
-                    email_send.send()
+                    with get_connection(
+                            host='webmail.hindustanscale.com',
+                            port=587,
+                            username='pi@hindustanscale.com',
+                            password='Hindustan@@1234',
+                            use_tls=True
+                    ) as connection:
+
+                        email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, '',
+                                                  settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],
+                                                  connection=connection)
+                        part1 = MIMEText(text, 'plain')
+                        part2 = MIMEText(user(request), 'html')
+                        email_send.attach(part1)
+                        email_send.attach(part2)
+                        email_send.attach_file(history.pi_history_file.path)
+                        email_send.send()
+
+
                     messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
                 elif email == 'True' and upload_pi_file !=None and email_type == 'external_pi':
                     pi_file = upload_pi_file
@@ -2101,16 +2133,24 @@ def update_view_lead(request,id):
                     history.log_entered_by = request.user.profile_name
                     history.medium_of_selection = 'Email'
                     history.save()
+                    with get_connection(
+                            host='webmail.hindustanscale.com',
+                            port=587,
+                            username='pi@hindustanscale.com',
+                            password='Hindustan@@1234',
+                            use_tls=True
+                    ) as connection:
 
-                    email_send = EmailMessage('PI - HSCo ',
-                                              '',
-                                              settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id])
-                    part1 = MIMEText(text, 'plain')
-                    part2 = MIMEText(user(request), 'html')
-                    email_send.attach(part1)
-                    email_send.attach(part2)
-                    email_send.attach_file(history.pi_history_file.path)
-                    email_send.send()
+                        email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, '',
+                                                  settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],
+                                                  connection=connection)
+                        part1 = MIMEText(text, 'plain')
+                        part2 = MIMEText(user(request), 'html')
+                        email_send.attach(part1)
+                        email_send.attach(part2)
+                        email_send.attach_file(history.pi_history_file.path)
+                        email_send.send()
+
                     messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
 
             except Exception as pi_file_error:
@@ -3422,7 +3462,6 @@ def select_product_followup(request,id):
     context.update(context2)
     return render(request,'lead_management/select_product_followup.html', context)
 
-@login_required(login_url='/')
 def upload_requirement_hsc(request):
     context={}
     if request.method == 'POST' or request.method == 'FILES':
