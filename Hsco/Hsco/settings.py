@@ -149,11 +149,17 @@ EMAIL_PORT = 587
 # EMAIL_HOST_PASSWORD = 'ipv6netuser'
 
 EMAIL_HOST_USER = 'website.hindustanscale.com@gmail.com'
+EMAIL_HOST_PASSWORD = 'Hsco123456789@'
+
 # EMAIL_HOST_USER = 'vikas.pandey9323@gmail.com'
 # EMAIL_HOST_USER = 'leosagarfcb10@gmail.com'
-EMAIL_HOST_PASSWORD = 'Hsco123456789@'
 # EMAIL_HOST_PASSWORD = 'Vikas@7786'
 # EMAIL_HOST_PASSWORD = 'leosagar10'
+EMAIL_HOST_USER2 = 'jobs.hindustanscalecompany@gmail.com'  #for career module
+EMAIL_HOST_PASSWORD2 = 'Hindustan@@1234'
+
+EMAIL_HOST_USER3= 'pi@hindustanscale.com'    #for lead module pi
+EMAIL_HOST_PASSWORD3= 'Hindustan@@1234'
 
 SESSION_SECURITY_EXPIRE_AFTER = 3600
 SESSION_SECURITY_WARN_AFTER = 3500
