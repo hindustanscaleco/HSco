@@ -103,7 +103,7 @@ def lead_home(request):
     elif request.user.role == 'Manager':  # For manager
         total_stages = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(owner_of_opportunity__manager__icontains=request.user.profile_name)).values('current_stage').annotate(dcount=Count('current_stage'))
 
-    elif request.user.role == 'Employee': #for employee
+    else: #for employee
         total_stages = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)).values('current_stage').annotate(dcount=Count('current_stage'))
 
     admin = SiteUser.objects.get(id=request.user.pk).admin
@@ -585,9 +585,6 @@ def lead_home(request):
                         'error_exist': error_exist,
                     }
                     context.update(context23)
-
-
-
         # if (lead_count > 1):
         #     for item in response:
         #         item2 = Lead()
@@ -696,32 +693,32 @@ def lead_home(request):
             if request.user.role == 'Super Admin':  # For ADMIN
                 lead_list = Lead.objects.filter(current_stage='Not Yet Initiated').order_by('-id')
                 lead_list_count = Lead.objects.filter(current_stage='Not Yet Initiated').count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
 
             elif request.user.role == 'Admin':  # For ADMIN
                 lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
                     owner_of_opportunity__admin__icontains=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
                     owner_of_opportunity__admin__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             elif request.user.role == 'Manager':  # For manager
                 lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
                     owner_of_opportunity__manager__icontains=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
                     owner_of_opportunity__manager__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&Q(owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated') &Q(owner_of_opportunity__profile_name=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             context44 = {
                 'lead_list': lead_list,
                 'lead_list_count': True if lead_list_count != 0 else False,
@@ -732,38 +729,38 @@ def lead_home(request):
             if request.user.role == 'Super Admin':  # For ADMIN
                 lead_list = Lead.objects.filter(current_stage='Customer Called').order_by('-id')
                 lead_list_count = Lead.objects.filter(current_stage='Customer Called').count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
 
             elif request.user.role == 'Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(Q(current_stage='Customer Called') & Q(
+                lead_list = Lead.objects.filter(Q(current_stage='Customer Called') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='Customer Called') & Q(
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='Customer Called') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             elif request.user.role == 'Manager':  # For manager
-                lead_list = Lead.objects.filter(Q(current_stage='Customer Called') & Q(
+                lead_list = Lead.objects.filter(Q(current_stage='Customer Called') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='Customer Called') & Q(
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='Customer Called') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='Customer Called') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Customer Called') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             context44 = {
                 'lead_list': lead_list,
                 'lead_list_count': True if lead_list_count != 0 else False,
@@ -774,38 +771,38 @@ def lead_home(request):
             if request.user.role == 'Super Admin':  # For ADMIN
                 lead_list = Lead.objects.filter(current_stage='PI Sent & Follow-up').order_by('-id')
                 lead_list_count = Lead.objects.filter(current_stage='PI Sent & Follow-up').count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
 
             elif request.user.role == 'Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(Q(current_stage='PI Sent & Follow-up') & Q(
+                lead_list = Lead.objects.filter(Q(current_stage='PI Sent & Follow-up') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='PI Sent & Follow-up') & Q(
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='PI Sent & Follow-up') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             elif request.user.role == 'Manager':  # For manager
-                lead_list = Lead.objects.filter(Q(current_stage='PI Sent & Follow-up') & Q(
+                lead_list = Lead.objects.filter(Q(current_stage='PI Sent & Follow-up') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='PI Sent & Follow-up') & Q(
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='PI Sent & Follow-up') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='PI Sent & Follow-up') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='PI Sent & Follow-up') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             context44 = {
                 'lead_list': lead_list,
                 'lead_list_count': True if lead_list_count != 0 else False,
@@ -816,38 +813,38 @@ def lead_home(request):
             if request.user.role == 'Super Admin':  # For ADMIN
                 lead_list = Lead.objects.filter(current_stage='PO Issued - Payment not done').order_by('-id')
                 lead_list_count = Lead.objects.filter(current_stage='PO Issued - Payment not done').count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
 
             elif request.user.role == 'Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(Q(current_stage='PO Issued - Payment not done') & Q(
+                lead_list = Lead.objects.filter(Q(current_stage='PO Issued - Payment not done') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='PO Issued - Payment not done') & Q(
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='PO Issued - Payment not done') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             elif request.user.role == 'Manager':  # For manager
-                lead_list = Lead.objects.filter(Q(current_stage='PO Issued - Payment not done') & Q(
+                lead_list = Lead.objects.filter(Q(current_stage='PO Issued - Payment not done') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).order_by('-id')
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='PO Issued - Payment not done') & Q(
-                    owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__profile_name=request.user.profile_name) | (Q(
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='PO Issued - Payment not done') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='PO Issued - Payment not done') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             context44 = {
                 'lead_list': lead_list,
                 'lead_list_count': True if lead_list_count != 0 else False,
@@ -860,38 +857,38 @@ def lead_home(request):
                     '-id')
                 lead_list_count = Lead.objects.filter(
                     current_stage='PO Issued - Payment Done - Dispatch Pending').count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
 
             elif request.user.role == 'Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(Q(current_stage='PO Issued - Payment Done - Dispatch Pending') & Q(
+                lead_list = Lead.objects.filter(Q(current_stage='PO Issued - Payment Done - Dispatch Pending') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='PO Issued - Payment Done - Dispatch Pending') & Q(
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='PO Issued - Payment Done - Dispatch Pending') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             elif request.user.role == 'Manager':  # For manager
-                lead_list = Lead.objects.filter(Q(current_stage='PO Issued - Payment Done - Dispatch Pending') & Q(
+                lead_list = Lead.objects.filter(Q(current_stage='PO Issued - Payment Done - Dispatch Pending') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='PO Issued - Payment Done - Dispatch Pending') & Q(
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='PO Issued - Payment Done - Dispatch Pending') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='PO Issued - Payment Done - Dispatch Pending') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='PO Issued - Payment Done - Dispatch Pending') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             context44 = {
                 'lead_list': lead_list,
                 'lead_list_count': True if lead_list_count != 0 else False,
@@ -902,38 +899,38 @@ def lead_home(request):
             if request.user.role == 'Super Admin':  # For ADMIN
                 lead_list = Lead.objects.filter(current_stage='Dispatch Done - Closed').order_by('-id')
                 lead_list_count = Lead.objects.filter(current_stage='Dispatch Done - Closed').count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
 
             elif request.user.role == 'Admin':  # For ADMIN
                 lead_list = Lead.objects.filter(Q(current_stage='Dispatch Done - Closed') & Q(
-                    owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).order_by('-id')
+                    owner_of_opportunity__profile_name=request.user.profile_name) | (Q(
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Dispatch Done - Closed') & Q(
-                    owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__profile_name=request.user.profile_name) | (Q(
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             elif request.user.role == 'Manager':  # For manager
                 lead_list = Lead.objects.filter(Q(current_stage='Dispatch Done - Closed') & Q(
-                    owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).order_by('-id')
+                    owner_of_opportunity__profile_name=request.user.profile_name) | (Q(
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Dispatch Done - Closed') & Q(
-                    owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__profile_name=request.user.profile_name) | (Q(
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='Dispatch Done - Closed') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Dispatch Done - Closed') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             context44 = {
                 'lead_list': lead_list,
                 'lead_list_count': True if lead_list_count != 0 else False,
@@ -944,38 +941,38 @@ def lead_home(request):
             if request.user.role == 'Super Admin':  # For ADMIN
                 lead_list = Lead.objects.filter(current_stage='Lost').order_by('-id')
                 lead_list_count = Lead.objects.filter(current_stage='Lost').count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
 
             elif request.user.role == 'Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(Q(current_stage='Lost') & Q(
+                lead_list = Lead.objects.filter(Q(current_stage='Lost') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='Lost') & Q(
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='Lost') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             elif request.user.role == 'Manager':  # For manager
-                lead_list = Lead.objects.filter(Q(current_stage='Lost') & Q(
+                lead_list = Lead.objects.filter(Q(current_stage='Lost') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='Lost') & Q(
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='Lost') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='Lost') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Lost') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             context44 = {
                 'lead_list': lead_list,
                 'lead_list_count': True if lead_list_count != 0 else False,
@@ -985,38 +982,38 @@ def lead_home(request):
             if request.user.role == 'Super Admin':  # For ADMIN
                 lead_list = Lead.objects.filter(current_stage='Not Relevant').order_by('-id')
                 lead_list_count = Lead.objects.filter(current_stage='Not Relevant').count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
 
             elif request.user.role == 'Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(Q(current_stage='Not Relevant') & Q(
+                lead_list = Lead.objects.filter(Q(current_stage='Not Relevant') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='Not Relevant') & Q(
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='Not Relevant') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             elif request.user.role == 'Manager':  # For manager
-                lead_list = Lead.objects.filter(Q(current_stage='Not Relevant') & Q(
+                lead_list = Lead.objects.filter(Q(current_stage='Not Relevant') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='Not Relevant') & Q(
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='Not Relevant') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='Not Relevant') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Not Relevant') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             context44 = {
                 'lead_list': lead_list,
                 'lead_list_count': True if lead_list_count != 0 else False,
@@ -1026,38 +1023,38 @@ def lead_home(request):
             if request.user.role == 'Super Admin':  # For ADMIN
                 lead_list = Lead.objects.filter(current_stage='Postponed').order_by('-id')
                 lead_list_count = Lead.objects.filter(current_stage='Postponed').count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
 
             elif request.user.role == 'Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(Q(current_stage='Postponed') & Q(
+                lead_list = Lead.objects.filter(Q(current_stage='Postponed') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='Postponed') & Q(
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='Postponed') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             elif request.user.role == 'Manager':  # For manager
-                lead_list = Lead.objects.filter(Q(current_stage='Postponed') & Q(
+                lead_list = Lead.objects.filter(Q(current_stage='Postponed') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='Postponed') & Q(
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='Postponed') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).count()
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
             else:  # for employee
                 lead_list = Lead.objects.filter(Q(current_stage='Postponed') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Postponed') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
+                # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
+                # page = request.GET.get('page')
+                # lead_list = paginator.get_page(page)
 
 
             context44 = {
