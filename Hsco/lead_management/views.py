@@ -2207,6 +2207,7 @@ def update_view_lead(request,id):
                     item2.discount_type = discount_type
                 item2.lead_id = Lead.objects.get(id=id)
                 item2.log_entered_by = request.user.name
+
                 if grand_total != None and grand_total != '' and grand_total != 'None' :
                     item2.grand_total = float(grand_total)
                 else:
@@ -3560,17 +3561,7 @@ def select_product(request,id):
         #     item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
         #                                           sub_category=sub_category, sub_sub_category=sub_sub_category)
         try:
-            if (sub_category != None and sub_category != ""):
-                item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
-                                                      sub_category=sub_category, sub_sub_category=None)
-                item.lead_id = Lead.objects.get(id=lead_id)
-                item.quantity = quantity
-                item.pf = pf
-                item.log_entered_by = request.user.name
-                if quantity != 'None' or quantity != '':
-                    item.product_total_cost = float(rate) * float(quantity)
-                item.save()
-            elif (sub_sub_category != None and sub_sub_category != ""):
+            if (sub_sub_category != None and sub_sub_category != ""):
                 item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
                                                       sub_category=sub_category, sub_sub_category=sub_sub_category)
                 item.lead_id = Lead.objects.get(id=lead_id)
@@ -3580,6 +3571,17 @@ def select_product(request,id):
                 if quantity != 'None' or quantity != '':
                     item.product_total_cost = float(rate) * float(quantity)
                 item.save()
+            elif (sub_category != None and sub_category != ""):
+                item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
+                                                      sub_category=sub_category, sub_sub_category=None)
+                item.lead_id = Lead.objects.get(id=lead_id)
+                item.quantity = quantity
+                item.pf = pf
+                item.log_entered_by = request.user.name
+                if quantity != 'None' or quantity != '':
+                    item.product_total_cost = float(rate) * float(quantity)
+                item.save()
+
             if is_last_product_yes == 'yes':
                 return redirect('/update_view_lead/' + str(id))
             elif is_last_product_yes == 'no':
@@ -3592,8 +3594,6 @@ def select_product(request,id):
             context.update(context1)
         del_all_sessions(request)
         request.session['expand_pi_section'] = True
-
-
 
 
     context2 = {
