@@ -228,7 +228,7 @@ def lead_home(request):
                 not_relevant_stage_total += float(x['data_sum'])
         except:
             pass
-        postponed_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Postponed')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name)).values(
+        postponed_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Postponed')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         postponed_stage_total = 0.0
         try:
@@ -236,7 +236,7 @@ def lead_home(request):
                 postponed_stage_total += float(x['data_sum'])
         except:
             pass
-        pi_sent_stage = Pi_section.objects.filter(Q(lead_id__current_stage='PI Sent & Follow-up')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name)).values(
+        pi_sent_stage = Pi_section.objects.filter(Q(lead_id__current_stage='PI Sent & Follow-up')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         pi_sent_stage_total = 0.0
         try:
