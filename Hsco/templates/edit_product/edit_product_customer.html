@@ -194,9 +194,10 @@ function myFunction() {
     document.getElementById("godown").disabled = false;
     document.getElementById("myText10").style.display = "block";
     document.getElementById("myText11").disabled = false;
-    document.getElementById("countySel").disabled = false;
-    document.getElementById(stateSel).disabled = false;
-    document.getElementById(districtSel).disabled = false;
+    document.getElementById("divselector").disabled = false;
+    document.getElementById("id_subcat").disabled = false;
+    document.getElementById("id_subcat2").disabled = false;
+    document.getElementById("id_subcat22").disabled = false;
     <!--document.getElementById("myText11").disabled = false;-->
     <!--document.getElementById("myText12").disabled = false;-->
     <!--document.getElementById("myText13").disabled = false;-->
@@ -258,7 +259,17 @@ function myFunction() {
     <div class="col-md-4 inputGroupCont+-ainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-    <input type="text" name="type_of_scale" disabled placeholder="Type of Machine" id="myText" value="{{product_id.type_of_scale}}" class="form-control" list="type_of_scale">
+            <select id="divselector" required disabled onchange="choice1(this)" class="form-control">
+       <option value="">Select Scale Type</option>
+
+    {% for item in type_purchase %}
+  <option {% if item.name == product_id.type_of_scale %} selected {% endif %} value="{{item.pk}}">{{item.name}}</option>
+
+   {% endfor %}
+
+  </select>
+
+    <input type="hidden" name="type_of_scale" id="myText" value="{{product_id.type_of_scale}}">
     </div>
   </div>
 
@@ -274,7 +285,11 @@ function myFunction() {
       <div class="col-md-4 inputGroupCont+-ainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="model_of_purchase" disabled placeholder="Model of Purchase" id="myText2" value="{{product_id.model_of_purchase}}" class="form-control"  type="text">
+      <select id="id_subcat" disabled required onchange="choicemodel(this)" class="form-control">
+          <option value="0">{{product_id.model_of_purchase}}</option>
+
+  </select>
+  <input name="model_of_purchase" id="myText2" value="{{product_id.model_of_purchase}}" type="hidden">
     </div>
   </div>
 
@@ -288,7 +303,12 @@ function myFunction() {
       <div class="col-md-4 inputGroupCont+-ainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="sub_model" disabled placeholder="Sub Model" id="myText3" value="{{product_id.sub_model}}" class="form-control"  type="text">
+        <select id="id_subcat2" disabled onchange="choice_sub_model(this)" class="form-control">
+          <option value="0">{{product_id.sub_model}}</option>
+
+
+  </select>
+  <input  name="sub_model" id="myText3" value="{{product_id.sub_model}}" type="hidden">
     </div>
   </div>
 
@@ -300,7 +320,10 @@ function myFunction() {
       <div class="col-md-4 inputGroupCont+-ainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="sub_sub_model" disabled placeholder="Model of Purchase" id="myText4" value="{{product_id.sub_sub_model}}" class="form-control"  type="text">
+      <select required id="id_subcat22" disabled onchange="choice_sub_sub_model(this)" class="form-control">
+          <option value="0">{{product_id.sub_sub_model}}</option>
+  </select>
+  <input  name="sub_sub_model" id="myText4" value="{{product_id.sub_sub_model}}"  type="hidden">
     </div>
   </div>
 </div>
@@ -346,7 +369,7 @@ function myFunction() {
 
 </div>
 
-
+<div id="product_details">
 <div class="form-group row">
   <label class="col-md-2 control-label">Capacity(Product DB) *
 </label>
@@ -373,6 +396,8 @@ function myFunction() {
 
 
   </div>
+</div>
+
 
   <div class="form-group row">
 
@@ -447,7 +472,7 @@ function myFunction() {
 
 </div>
 
-
+  <input type="hidden" value="{{global_count}}"  name="global_count">
 
             <br>
                    <div class="col-md-12 ">
@@ -502,6 +527,8 @@ function myFunction() {
 }
   </script>
 
+
+
             <script>
   function choice5(select) {
 
@@ -529,159 +556,180 @@ function myFunction() {
 
   </script>
 
-                <script>
-
-$(function() {
-$("#stars").val("0");
-    $("div.star-rating > s").on("click", function(e) {
-
-    // remove all active classes first, needed if user clicks multiple times
-    $(this).closest('div').find('.active').removeClass('active');
-
-    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
-    $(e.target).addClass('active');  // the element user has clicked on
-
-
-        var numStars = $(e.target).parentsUntil("div").length+1;
-        $("#stars").val(numStars);
-
-
-    });
-});
-
-  window.onload = function() {
-document.getElementById("").style.display = "none";
-};
-
-
-</script>
            <script>
-var stateObject = {
-"Table Top Scales": {
-"ABS": ['ABS001','ABS002','ABS003','ABS004','ABS005','ABS006'],
-"MSS": ['MSS001','MSS002','MSS003','MSS004','MSS005','MSS006'],
-"SSS": ['SSS001','SSS002','SSS003','SSS004','SSS005','SSS006'],
-"MSB": ['MSB001','MSB002','MSB003','MSB004','MSB005','MSB006'],
-"SSB": ['SSB001','SSB002','SSB003','SSB004','SSB005','SSB006'],
-"MSBP":['MSBP001','MSBP002','MSBP003','MSBP004','MSBP005','MSBP006'],
-"SSBP":['SSBP001','SSBP002','SSBP003','SSBP004','SSBP005','SSBP006'],
-"PRCFB":['PRC001','PRC002','PRC003','PRC004','PRC005','PRC006'],
-"PRCP":['PRCP001','PRCP002','PRCP003','PRCP004','PRCP005','PRCP006']
-},
+ function choice1(select) {
+     //alert(select.options[select.selectedIndex].value);
 
 
-"POS Scales": {
-"PRCPT":['PRCPT001','PRCPT002','PRCPT003','PRCPT004'],
-"POSP": ['PRCPT005','PRCPT006','PRCPT007']
-},
+       $("#myText").val(select.options[select.selectedIndex].text);
 
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
 
-"Water Proof Scales": {
-"ABSWR": ['ABSWR001','ABSWR002','ABSWR003','ABSWR004','ABSWR005','ABSWR006','ABSWR007'],
-"SSWR" : ['SSWR001','SSWR002','SSWR003','SSWR004','SSWR005','SSWR006','SSWR007']
-},
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat").html(data);
 
-
-"Jewellery Scales": {
-"JEWE" :['JEWE001','JEWE002','JEWE003','JEWE004','JEWE005','JEWE006','JEWE007']
-},
+    if ($('#id_subcat option').length > 1)
+    {
+    $('#id_subcat').attr('required', '');
+    $('#id_subcat2').attr('required', '');
+    $('#id_subcat22').attr('required', '');
+    }
+    else{
+    $('#id_subcat').removeAttr('required');
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+    }
 
 
 
-"Lab Scales": {
-"LAB" :['LAB001','LAB002','LAB003','LAB004','LAB005','LAB006','LAB007','LAB008']
-},
+        }
+      });
+}
+function choicemodel(select) {
+$("#myText2").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat2").html(data);
+
+       if ($('#id_subcat2 option').length > 1)
+    {
+    $('#id_subcat2').attr('required', '');
+    $('#id_subcat22').attr('required', '');
 
 
+    }
+    else{
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
 
-"Hanging Scales": {
-"CRS" :['CRS001','CRS002','CRS003','CRS004','CRS005','CRS006']
-},
-
-
-
-"Crane Scales": {
-"CRH" :['CRH001','CRH002','CRH003','CRH004','CRH005','CRH006','CRH007'],
-"Crane Scales with Remote Display and Printer" : ['CRH008','CRH009','CRH010','CRH011'],
-"Crane Scale with Heat Shield": ['CRH012','CRH013','CRH014'],
-"Crane Scale with Hand Held Remote Display": ['CRH015','CRH016','CRH017']
-},
+    }
 
 
-"Platform Scales": {
-"PLSS" : ['PLSS001','PLSS002','PLSS003','PLSS004','PLSS005','PLSS006','PLSS007'],
-"PLCHQ" : ['PLCHQ001','PLCHQ002','PLCHQ003','PLCHQ004','PLCHQ005','PLCHQ006','PLCHQ007'],
-"PLCHQH" : ['PLCHQH008','PLCHQH009','PLCHQH010','PLCHQH011','PLCHQH012'],
-"PLCHQR": ['PLCHQR013','PLCHQR014','PLCHQR015','PLCHQR016','PLCHQR017'],
-"PLSSW": ['PLSSW001','PLSSW002','PLSSW003','PLSSW004','PLSSW005'],
-"PLSSWWR": ['PLSSWWR001','PLSSWWR002','PLSSWWR003','PLSSWWR004','PLSSWWR005','PLSSWWR006','PLSSWWR007']
-},
+        }
+      });
+}
+
+function choice_sub_model(select) {
+$("#myText3").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+     $.ajax({                       // initialize an AJAX request
+        url: "/get_product_details/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'model_of_purchase': $('#myText2').val(),     // add the country id to the GET parameters
+          'type_of_scale': $("#myText").val(),      // add the country id to the GET parameters
+          'sub_model': select.options[select.selectedIndex].value,       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+
+    $("#product_details").html(data);
 
 
-"Mobile Platforms": {
-"PLSSCHI": ['PLSSCHI001','PLSSCHI002','PLSSCHI003','PLSSCHI004','PLSSCHI005','PLSSCHI006','PLSSCHI007'],
-"PLCHQCHI": ['PLCHQCHI001','PLCHQCHI002','PLCHQCHI003','PLCHQCHI004','PLCHQCHI005','PLCHQCHI006','PLCHQCHI007','PLCHQCHI008','PLCHQCHI009','PLCHQCHI010']
-},
+        }
+      });
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_sub_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat22").html(data);
+
+     if ($('#id_subcat2 option').length > 1)
+    {
+    $('#id_subcat22').removeAttr('required');
+
+    }
+    else{
+    $('#id_subcat22').attr('required', '');
+
+    }
 
 
-"Infant Scales": {
-"BCI": ['BCI001','BCI002','BCI003','BCI004','BCIC005']
-},
+        }
+      });
 
-
-"Baby Cum Adult Scales": {
-"BCA": ['BCA001','BCA002','BCA003','BCA004']
-},
-
-
-"Animal Scales": {
-"AS": ['AS001','AS002','AS003','AS004','AS005']
-},
-
-
-"Cattle Scales": {
-"AWSSSG": ['ASSSG001','ASSSG002','ASSSG003','ASSSG004'],
-"AWSCIG": ['AWSCIG001','AWSCIG002','AWSCIG003','AWSCIG004','AWSCIG005','AWSCIG006']
-},
-
-
-"Supra Pall Scales": {
-"SUP": ['SUP001','SUP002','SUP003','SUP004','SUP005']
-},
-
-
-
-"Supra Pall Scales": {
-"LPG": ['LPG001']
-},
 
 }
-window.onload = function () {
-var countySel = document.getElementById("countySel"),
-stateSel = document.getElementById("stateSel"),
-districtSel = document.getElementById("districtSel");
-for (var country in stateObject) {
-countySel.options[countySel.options.length] = new Option(country, country);
+
+function choice_sub_sub_model(select) {
+$("#myText4").val(select.options[select.selectedIndex].text);
+    $.ajax({                       // initialize an AJAX request
+            url: "/get_product_details/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+            data: {
+              'model_of_purchase': $('#myText2').val(),     // add the country id to the GET parameters
+              'type_of_scale': $("#myText").val(),      // add the country id to the GET parameters
+              'sub_model': $("#myText3").val(),       // add the country id to the GET parameters
+              'sub_sub_model': select.options[select.selectedIndex].value,      // add the country id to the GET parameters
+
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+
+        $("#product_details").html(data);
+
+
+            }
+          });
 }
-countySel.onchange = function () {
-stateSel.length = 1; // remove all options bar first
-districtSel.length = 1; // remove all options bar first
-if (this.selectedIndex < 1) return; // done
-for (var state in stateObject[this.value]) {
-stateSel.options[stateSel.options.length] = new Option(state, state);
+
+function isOneChecked() {
+  // All <input> tags...
+  var chx = document.getElementsByTagName('input');
+  for (var i=0; i<chx.length; i++) {
+    // If you have more than one radio group, also check the name attribute
+    // for the one you want as in && chx[i].name == 'choose'
+    // Return true from the function on first match of a checked item
+    if (chx[i].type == 'radio' && chx[i].checked) {
+    alert("Are you sure it's last product?\n you will not be able to add product again.");
+      return true;
+    }
+  }
+  // End of the loop, return false
+  alert("Please Select any one radio buttons in last product field.");
+  return false;
 }
-}
-countySel.onchange(); // reset in case page is reloaded
-stateSel.onchange = function () {
-districtSel.length = 1; // remove all options bar first
-if (this.selectedIndex < 1) return; // done
-var district = stateObject[countySel.value][this.value];
-for (var i = 0; i < district.length; i++) {
-districtSel.options[districtSel.options.length] = new Option(district[i], district[i]);
-}
-}
-}
-</script>
+
+
+  </script>
+
+<!--                <script>-->
+
+<!--$(function() {-->
+<!--$("#stars").val("0");-->
+<!--    $("div.star-rating > s").on("click", function(e) {-->
+
+<!--    // remove all active classes first, needed if user clicks multiple times-->
+<!--    $(this).closest('div').find('.active').removeClass('active');-->
+
+<!--    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self-->
+<!--    $(e.target).addClass('active');  // the element user has clicked on-->
+
+
+<!--        var numStars = $(e.target).parentsUntil("div").length+1;-->
+<!--        $("#stars").val(numStars);-->
+
+
+<!--    });-->
+<!--});-->
+
+<!--  window.onload = function() {-->
+<!--document.getElementById("").style.display = "none";-->
+<!--};-->
+
+
+<!--</script>-->
+
       </div>
     </div>
   </div>

@@ -101,18 +101,31 @@
 
 
 
-
-
-
-
-
-
-
             </div>
 
 
 
                 </div>
+
+            {% if messages %}
+    {% for message in messages %}
+             {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% endif %}
+            {% endfor %}
+               {% endif %}
 
             {% if err %}
                        <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -463,7 +476,7 @@ $(function() {
         <td bgcolor="#32c932">Indiamart Enquiry</td>
         <td bgcolor="#FFA500">Lead From HSCo Website</td>
         <td bgcolor="red">Auto Follow-up (> 2 days) </td>
-        <td bgcolor="#FF8C00">Auto Follow-up (< 2 days) </td>
+        <td bgcolor="#FFD700">Auto Follow-up (< 2 days) </td>
     </tr>
 </table>
 
@@ -641,12 +654,12 @@ td {
  {% elif list.channel == 'Website' %}
   <tr bgcolor="#FFA500" style="cursor: pointer;" >
 
-       {% elif list.current_stage == 'PI Sent & Follow-up' or list.current_stage == 'PO Issued - Payment not done' %}
+       {% elif not list.is_manual_mode_followup %}
 
         {% if list.no_of_times_followup_done > 2 %}
   <tr bgcolor="red" style="cursor: pointer;" >
 {% else %}
-          <tr bgcolor="#FF8C00" style="cursor: pointer;" >
+          <tr bgcolor="#FFD700" style="cursor: pointer;" >
         {% endif %}
         {% else %}
                   <tr style="cursor: pointer;" >

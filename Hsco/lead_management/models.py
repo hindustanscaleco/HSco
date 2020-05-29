@@ -29,6 +29,7 @@ class Lead(models.Model):
     # owner_of_opportunity = models.CharField(max_length=80,null=True,blank=True)
     is_manual_mode_followup = models.BooleanField(default=True)
     no_of_times_followup_done = models.IntegerField(default=0)
+    indiamart_time = models.CharField(max_length=15,default='29-May-20')
 
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     entry_timedate = models.DateField(default=datetime.date.today)
@@ -39,7 +40,7 @@ class Lead(models.Model):
         return self.id
 
     class Meta:
-        unique_together = ('customer_id','channel','requirement_indiamart_unique','current_stage')
+        unique_together = ('customer_id','channel','requirement_indiamart_unique','indiamart_time')
 
 class Pi_section(models.Model):
     lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
