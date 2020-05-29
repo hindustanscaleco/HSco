@@ -2127,10 +2127,10 @@ def update_view_lead(request,id):
                 item2 = Pi_section.objects.filter(lead_id=id).first()
                 item2.discount = discount
 
-                if upload_pi_file != None or select_pi_template != '':
+                if upload_pi_file != None and select_pi_template != '':
                     item2.upload_pi_file = upload_pi_file
 
-                if select_pi_template != None or select_pi_template !=  '':
+                if select_pi_template != None and select_pi_template !=  '':
                     item2.select_pi_template = select_pi_template
                 item2.call = call
                 item2.email = email
@@ -2282,8 +2282,10 @@ def update_view_lead(request,id):
                 item10 = Payment_details.objects.get(lead_id=id)
             item10.lead_id=Lead.objects.get(id=id)
             item10.payment_channel = payment_channel
-            item10.payment_receipt = payment_receipt
-            item10.upload_pofile = upload_pofile
+            if payment_receipt != None and payment_receipt != '':
+                item10.payment_receipt = payment_receipt
+            if upload_pofile != None and upload_pofile != '':
+                item10.upload_pofile = upload_pofile
             item10.payment_recived_date = payment_received_date
             item10.Payment_notes = Payment_notes
 
