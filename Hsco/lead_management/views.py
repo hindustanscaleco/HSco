@@ -69,12 +69,12 @@ def lead_home(request):
         # page = request.GET.get('page')
         # lead_list = paginator.get_page(page)
     elif request.user.role == 'Admin':  # For ADMIN
-        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month) | Q(owner_of_opportunity__admin__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month)).order_by('-id')
+        lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)) | (Q(owner_of_opportunity__admin__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month))).order_by('-id')
         # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
         # page = request.GET.get('page')
         # lead_list = paginator.get_page(page)
     elif request.user.role == 'Manager':  # For manager
-        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month) | Q(owner_of_opportunity__manager__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month)).order_by('-id')
+        lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)) | (Q(owner_of_opportunity__manager__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month))).order_by('-id')
         # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
         # page = request.GET.get('page')
         # lead_list = paginator.get_page(page)
