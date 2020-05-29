@@ -40,7 +40,7 @@ class Lead(models.Model):
         return self.id
 
     class Meta:
-        unique_together = ('customer_id','channel','requirement_indiamart_unique','current_stage')
+        unique_together = ('customer_id','channel','requirement_indiamart_unique','indiamart_time')
 
 class Pi_section(models.Model):
     lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
