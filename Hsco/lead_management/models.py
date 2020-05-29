@@ -40,7 +40,7 @@ class Lead(models.Model):
         return self.id
 
     class Meta:
-        unique_together = ('customer_id','channel','requirement_indiamart_unique','indiamart_time')
+        unique_together = ()
 
 class Pi_section(models.Model):
     lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
@@ -75,6 +75,7 @@ class Pi_section(models.Model):
 
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
+
 
 
     def __int__(self):
