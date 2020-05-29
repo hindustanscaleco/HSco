@@ -698,18 +698,18 @@ def lead_home(request):
                 # lead_list = paginator.get_page(page)
 
             elif request.user.role == 'Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__admin__icontains=request.user.profile_name)).count()
+                lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
+                    owner_of_opportunity__admin__icontains=request.user.profile_name))).count()
                 # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
             elif request.user.role == 'Manager':  # For manager
-                lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name)).count()
+                lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
+                    owner_of_opportunity__manager__icontains=request.user.profile_name))).count()
                 # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
