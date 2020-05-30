@@ -626,6 +626,223 @@ def quick_purchase_entry(request):
     }
     return render(request, 'dashboardnew/add_product.html', context)
 
+@login_required(login_url='/')
+def edit_product_customer(request,product_id_rec):
+    purchase = Product_Details.objects.get(id=product_id_rec)
+    purchase_id = Purchase_Details.objects.get(id=purchase.purchase_id)
+    type_of_purchase_list = type_purchase.objects.all()  # 1
+
+    # dispatch_id_assigned = str(purchase_id.dispatch_id_assigned)
+    try:
+        dispatch_id_assigned = str(purchase.dispatch_id_assigned)
+    except:
+        dispatch_id_assigned=None
+    product_id = purchase
+    main_product = Product.objects.get(scale_type__name=product_id.type_of_scale, main_category__name=product_id.model_of_purchase,
+                                         sub_category__name=product_id.sub_model, sub_sub_category__name=product_id.sub_sub_model)
+    if request.user.role == 'Super Admin':
+        try:
+            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False))
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False))
+
+    elif request.user.role == 'Admin':
+        try:
+            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id) )
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id) )
+    elif request.user.role == 'Manager':
+        try:
+            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+    else:
+        try:
+            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+        except:
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+
+    if request.method == 'POST':
+        quantity = request.POST.get('quantity')
+        model_of_purchase = request.POST.get('model_of_purchase')
+        type_of_scale = request.POST.get('type_of_scale')
+        sub_model = request.POST.get('sub_model')
+        sub_sub_model = request.POST.get('sub_sub_model')
+        serial_no_scale = request.POST.get('serial_no_scale')
+        brand = request.POST.get('brand')
+        capacity = request.POST.get('capacity')
+        unit = request.POST.get('unit')
+        amount = request.POST.get('value_of_goods')
+        godown = request.POST.get('godown')
+
+        cost2 = purchase.amount
+        godown_product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+        # If godown is changed, add stored quantity in current godown and subtract new quantity from new godown
+        if (quantity != '') or  (godown != '') :
+            if  purchase.godown_id == None and godown != '':
+                # subtracting quantity from new godown
+                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                    quantity=F("quantity") - quantity)
+            elif purchase.godown_id.id != godown and quantity != purchase.quantity :
+                # adding stored quantity in current godown
+                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") + purchase.quantity)
+
+                # subtracting new quantity from new godown
+                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                    quantity=F("quantity") - quantity)
+            elif purchase.godown_id.id != godown :
+                # adding stored quantity in current godown
+                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") + purchase.quantity)
+
+                # subtracting new quantity from new godown
+                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                    quantity=F("quantity") - purchase.quantity)
+            elif quantity != purchase.quantity:
+                # adding old quantity to current godown
+                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") + purchase.quantity)
+
+                # subtracting new quantity from current godown
+                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
+                    quantity=F("quantity") - quantity)
+            else:
+                print('no godown changes')
+
+        Purchase_Details.objects.filter(id=purchase_id.pk).update(value_of_goods=F("value_of_goods") - cost2)
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
+        # if cost2 > 0.0:
+        Employee_Analysis_month.objects.filter(user_id=purchase_id.user_id,
+                                               entry_date__month=product_id.entry_timedate.month,
+                                               year=product_id.entry_timedate.year).update(
+            total_sales_done=F("total_sales_done") - cost2)
+
+        Employee_Analysis_date.objects.filter(user_id=purchase_id.user_id,
+                                              entry_date=product_id.entry_timedate,
+                                              year=product_id.entry_timedate.year).update(
+            total_sales_done_today=F("total_sales_done_today") - cost2)
+
+        item = product_id
+
+        print('item.type_of_scale')
+        print(item.type_of_scale)
+        print(type_of_scale)
+        print('item.model_of_purchase')
+        print(item.model_of_purchase)
+        print(model_of_purchase)
+        print(item.sub_model)
+        print(sub_model)
+        print(item.sub_sub_model)
+        print(sub_sub_model)
+        #if product changed then update stock
+        if item.type_of_scale != type_of_scale or item.model_of_purchase != model_of_purchase or item.sub_model != sub_model or item.sub_sub_model != sub_sub_model:
+            try:
+                print("inn try")
+                product_id_new = Product.objects.get(scale_type__name=type_of_scale,
+                                                        main_category__name=model_of_purchase,
+                                                        sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+                product_id_old = Product.objects.get(scale_type__name=item.type_of_scale,
+                                                     main_category__name=item.model_of_purchase,
+                                                     sub_category__name=item.sub_model, sub_sub_category__name=item.sub_sub_model)
+                # adding old products quantity to old/current godown
+                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=product_id_old).update(
+                    quantity=F("quantity") + item.quantity)
+
+                # subtracting new products quantity from current godown
+                GodownProduct.objects.filter(godown_id=godown, product_id=product_id_new).update(
+                    quantity=F("quantity") - quantity)
+            except Exception as e:
+                messages.error(request,"Error Updating Product's Quantity In Selected Godown")
+                return redirect("/edit_product_customer/"+str(product_id_rec))
+
+
+        item.quantity = quantity
+        item.type_of_scale = type_of_scale
+        item.model_of_purchase = model_of_purchase
+        item.sub_model = sub_model
+        item.sub_sub_model = sub_sub_model
+        item.serial_no_scale = serial_no_scale
+        item.brand = brand
+        item.capacity = capacity
+        item.unit = unit
+        item.amount = amount
+        item.godown_id = Godown.objects.get(id=godown)
+        item.log_entered_by = request.user.name
+        # item.purchase_id_id = purchase_id
+        # item.sales_person = sales_person
+        # item.purchase_type = purchase_type
+        # item.user_id = SiteUser.objects.get(id=request.user.pk)
+        # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        item.save(update_fields=['log_entered_by','quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
+                                 'serial_no_scale', 'brand', 'capacity', 'unit','amount','godown_id'
+                                 ])
+
+        Purchase_Details.objects.filter(id=purchase_id.pk).update(
+            value_of_goods=F("value_of_goods") + amount)
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
+        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
+
+        Employee_Analysis_month.objects.filter(user_id=purchase_id.user_id,
+                                               entry_date__month=purchase_id.entry_timedate.month,
+                                               year=purchase_id.entry_timedate.year).update(
+            total_sales_done=F("total_sales_done") + amount)
+
+        Employee_Analysis_date.objects.filter(user_id=purchase_id.user_id,
+                                              entry_date__month=purchase_id.entry_timedate.month,
+                                              year=purchase_id.entry_timedate.year).update(
+            total_sales_done_today=F("total_sales_done_today") + amount)
+
+
+
+        if product_id.product_dispatch_id != '' and product_id.product_dispatch_id != None:
+            if Product_Details_Dispatch.objects.filter(id=product_id.product_dispatch_id.pk).count()>0:
+                dispatch_pro = Product_Details_Dispatch.objects.get(id=product_id.product_dispatch_id.pk)
+
+                # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
+                # dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                # dispatch_pro.product_name = product_name
+                dispatch_pro.quantity = quantity
+                dispatch_pro.type_of_scale = type_of_scale
+                dispatch_pro.model_of_purchase = model_of_purchase
+                dispatch_pro.sub_model = sub_model
+                dispatch_pro.sub_sub_model = sub_sub_model
+                dispatch_pro.serial_no_scale = serial_no_scale
+                dispatch_pro.brand = brand
+                dispatch_pro.capacity = capacity
+                dispatch_pro.unit = unit
+                dispatch_pro.value_of_goods = amount
+                dispatch_pro.godown_id = Godown.objects.get(id=product_id.godown_id.pk)
+
+                # dispatch_pro.dispatch_id = dispatch_id
+                # dispatch_pro.sales_person = sales_person
+                # dispatch_pro.purchase_type = purchase_type
+                dispatch_pro.save(
+                    update_fields=['quantity', 'type_of_scale','value_of_goods', 'model_of_purchase', 'sub_model',
+                                   'sub_sub_model',
+                                   'serial_no_scale', 'brand', 'capacity', 'unit','godown_id'
+                                   ])
+
+        # try:
+        #     # dispatch_id = Dispatch.objects.get(id=dispatch_id_assigned)
+        #
+        # except:
+        #     pass
+
+        return redirect('/update_customer_details/' + str(purchase_id.id))
+
+    context = {
+        'product_id': product_id,
+        'godowns': godowns,
+        'main_product': main_product,
+        'type_purchase': type_of_purchase_list,  # 2
+    }
+
+    return render(request,'edit_product/edit_product_customer.html',context)
 
 
 @login_required(login_url='/')
@@ -1732,214 +1949,7 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
         }
         return render(request,"feedback/feedback_customer.html",context)
 
-@login_required(login_url='/')
-def edit_product_customer(request,product_id_rec):
-    purchase = Product_Details.objects.get(id=product_id_rec)
-    purchase_id = Purchase_Details.objects.get(id=purchase.purchase_id)
-    # dispatch_id_assigned = str(purchase_id.dispatch_id_assigned)
-    try:
-        dispatch_id_assigned = str(purchase.dispatch_id_assigned)
-    except:
-        dispatch_id_assigned=None
-    product_id = Product_Details.objects.get(id=product_id_rec)
-    main_product = Product.objects.get(scale_type__name=product_id.type_of_scale, main_category__name=product_id.model_of_purchase,
-                                         sub_category__name=product_id.sub_model, sub_sub_category__name=product_id.sub_sub_model)
-    if request.user.role == 'Super Admin':
-        try:
-            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False))
-        except:
-            godowns = Godown.objects.filter(Q(default_godown_purchase=False))
 
-    elif request.user.role == 'Admin':
-        try:
-            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id) )
-        except:
-            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id) )
-    elif request.user.role == 'Manager':
-        try:
-            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
-        except:
-            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
-
-    else:
-        try:
-            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
-        except:
-            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
-
-
-    if request.method == 'POST':
-        quantity = request.POST.get('quantity')
-        model_of_purchase = request.POST.get('model_of_purchase')
-        type_of_scale = request.POST.get('type_of_scale')
-        sub_model = request.POST.get('sub_model')
-        sub_sub_model = request.POST.get('sub_sub_model')
-        serial_no_scale = request.POST.get('serial_no_scale')
-        brand = request.POST.get('brand')
-        capacity = request.POST.get('capacity')
-        unit = request.POST.get('unit')
-        amount = request.POST.get('value_of_goods')
-        godown = request.POST.get('godown')
-
-        cost2 = purchase.amount
-        godown_product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                                sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
-        # If godown is changed, add stored quantity in current godown and subtract new quantity from new godown
-        if (quantity != '') or  (godown != '') :
-            if  purchase.godown_id == None and godown != '':
-                # subtracting quantity from new godown
-                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
-                    quantity=F("quantity") - quantity)
-            elif purchase.godown_id.id != godown and quantity != purchase.quantity :
-                # adding stored quantity in current godown
-                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
-                    quantity=F("quantity") + purchase.quantity)
-
-                # subtracting new quantity from new godown
-                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
-                    quantity=F("quantity") - quantity)
-            elif purchase.godown_id.id != godown :
-                # adding stored quantity in current godown
-                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
-                    quantity=F("quantity") + purchase.quantity)
-
-                # subtracting new quantity from new godown
-                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
-                    quantity=F("quantity") - purchase.quantity)
-            elif quantity != purchase.quantity:
-                # adding old quantity to current godown
-                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
-                    quantity=F("quantity") + purchase.quantity)
-
-                # subtracting new quantity from current godown
-                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
-                    quantity=F("quantity") - quantity)
-            else:
-                print('no godown changes')
-
-        Purchase_Details.objects.filter(id=purchase_id.pk).update(value_of_goods=F("value_of_goods") - cost2)
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
-        # if cost2 > 0.0:
-        Employee_Analysis_month.objects.filter(user_id=purchase_id.user_id,
-                                               entry_date__month=product_id.entry_timedate.month,
-                                               year=product_id.entry_timedate.year).update(
-            total_sales_done=F("total_sales_done") - cost2)
-
-        Employee_Analysis_date.objects.filter(user_id=purchase_id.user_id,
-                                              entry_date=product_id.entry_timedate,
-                                              year=product_id.entry_timedate.year).update(
-            total_sales_done_today=F("total_sales_done_today") - cost2)
-
-
-
-
-
-        item = product_id
-
-
-        #if product changed then update stock
-        if item.type_of_scale != type_of_scale or item.model_of_purchase != model_of_purchase or item.sub_model != sub_model or item.sub_sub_model != sub_sub_model:
-            try:
-                product_id_new = Product.objects.get(scale_type__name=type_of_scale,
-                                                        main_category__name=model_of_purchase,
-                                                        sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
-                product_id_old = Product.objects.get(scale_type__name=item.type_of_scale,
-                                                     main_category__name=item.model_of_purchase,
-                                                     sub_category__name=item.sub_model, sub_sub_category__name=item.sub_sub_model)
-                # adding old products quantity to old/current godown
-                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=product_id_old).update(
-                    quantity=F("quantity") + item.quantity)
-
-                # subtracting new products quantity from current godown
-                GodownProduct.objects.filter(godown_id=godown, product_id=product_id_new).update(
-                    quantity=F("quantity") - quantity)
-            except Exception as e:
-                messages.error(request,"Error Updating Products Quantity In Selected Godown")
-                return redirect("/edit_product_customer/"+str(product_id_rec))
-
-
-        item.quantity = quantity
-        item.type_of_scale = type_of_scale
-        item.model_of_purchase = model_of_purchase
-        item.sub_model = sub_model
-        item.sub_sub_model = sub_sub_model
-        item.serial_no_scale = serial_no_scale
-        item.brand = brand
-        item.capacity = capacity
-        item.unit = unit
-        item.amount = amount
-        item.godown_id = Godown.objects.get(id=godown)
-        item.log_entered_by = request.user.name
-        # item.purchase_id_id = purchase_id
-        # item.sales_person = sales_person
-        # item.purchase_type = purchase_type
-        # item.user_id = SiteUser.objects.get(id=request.user.pk)
-        # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item.save(update_fields=['log_entered_by','quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
-                                 'serial_no_scale', 'brand', 'capacity', 'unit','amount','godown_id'
-                                 ])
-
-        Purchase_Details.objects.filter(id=purchase_id.pk).update(
-            value_of_goods=F("value_of_goods") + amount)
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
-
-        Employee_Analysis_month.objects.filter(user_id=purchase_id.user_id,
-                                               entry_date__month=purchase_id.entry_timedate.month,
-                                               year=purchase_id.entry_timedate.year).update(
-            total_sales_done=F("total_sales_done") + amount)
-
-        Employee_Analysis_date.objects.filter(user_id=purchase_id.user_id,
-                                              entry_date__month=purchase_id.entry_timedate.month,
-                                              year=purchase_id.entry_timedate.year).update(
-            total_sales_done_today=F("total_sales_done_today") + amount)
-
-
-        if dispatch_id_assigned != '' or dispatch_id_assigned != None:
-            if product_id.product_dispatch_id != '' or product_id.product_dispatch_id != None:
-                if Product_Details_Dispatch.objects.filter(id=product_id.product_dispatch_id.pk).count()>0:
-                    dispatch_pro = Product_Details_Dispatch.objects.get(id=product_id.product_dispatch_id.pk)
-
-                    # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
-                    # dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
-                    # dispatch_pro.product_name = product_name
-                    dispatch_pro.quantity = quantity
-                    dispatch_pro.type_of_scale = type_of_scale
-                    dispatch_pro.model_of_purchase = model_of_purchase
-                    dispatch_pro.sub_model = sub_model
-                    dispatch_pro.sub_sub_model = sub_sub_model
-                    dispatch_pro.serial_no_scale = serial_no_scale
-                    dispatch_pro.brand = brand
-                    dispatch_pro.capacity = capacity
-                    dispatch_pro.unit = unit
-                    dispatch_pro.value_of_goods = amount
-                    dispatch_pro.godown_id = Godown.objects.get(id=product_id.godown_id.pk)
-
-                    # dispatch_pro.dispatch_id = dispatch_id
-                    # dispatch_pro.sales_person = sales_person
-                    # dispatch_pro.purchase_type = purchase_type
-                    dispatch_pro.save(
-                        update_fields=['quantity', 'type_of_scale','value_of_goods', 'model_of_purchase', 'sub_model',
-                                       'sub_sub_model',
-                                       'serial_no_scale', 'brand', 'capacity', 'unit','godown_id'
-                                       ])
-
-        # try:
-        #     # dispatch_id = Dispatch.objects.get(id=dispatch_id_assigned)
-        #
-        # except:
-        #     pass
-
-        return redirect('/update_customer_details/' + str(purchase_id.id))
-
-    context = {
-        'product_id': product_id,
-        'godowns': godowns,
-        'main_product': main_product,
-    }
-
-    return render(request,'edit_product/edit_product_customer.html',context)
 
 @login_required(login_url='/')
 def load_users(request):
