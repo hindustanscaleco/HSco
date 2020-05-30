@@ -758,12 +758,14 @@ tr:nth-child(even) {
   <tr>
     <td>Product Code: {{ product.product_id.sub_sub_category }}</td>
       <td rowspan="5">Product Image:
-          {% if product.product_id.product_image %}
+          {% if product.product_image %}
+          <img height="100px" width="100px" src="{{ product.product_image.url }}">
+          {% elif product.product_id.product_image %}
           <img height="100px" width="100px" src="{{ product.product_id.product_image.url }}">
       {% endif %}</td>
 
   </tr><tr>
-    <td>HSN Code: {{ product.product_id.hsn_code }}</td>
+    <td>HSN Code: {{ product.hsn_code }}</td>
 </tr>
 
 <tr>
@@ -771,11 +773,11 @@ tr:nth-child(even) {
                </tr>
 
 <tr>
-    <td>Product Description: {{ product.product_id.product_desc }}</td>
+    <td>Product Description: {{ product.product_desc }}</td>
                </tr>
 
 <tr>
-    <td>Rate : {{ product.product_id.selling_price }}</td>
+    <td>Rate : {{ product.rate }}</td>
 
   </tr>
 </table>

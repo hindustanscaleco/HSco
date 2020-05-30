@@ -7,10 +7,10 @@
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>
-  <input  name="capacity" id="capacity" disabled required placeholder="Capacity" class="form-control"  type="text" value="{{product_id.max_capacity}}">
+  <input  name="hsn_code" id="hsn_code"  required placeholder="HSN Code" class="form-control"  type="text" value="{{product_id.hsn_code}}">
     </div>
   </div>
-  <label class="col-md-2 control-label">Product Description(Product DB) *
+  <label class="col-md-2 control-label">Product Description(Product DB)
 
 
 
@@ -18,7 +18,7 @@
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-    <textarea style="height:120px;" id="prod_desc" disabled  class="form-control" >{{product_id.product_desc}}</textarea>
+    <textarea style="height:120px;" id="product_desc"  name="product_desc"   class="form-control" >{{product_id.product_desc}}</textarea>
     </div>
   </div>
 
@@ -37,7 +37,7 @@
     </div>
   </div>
     {% if product_id.product_image %}
-  <label class="col-md-2 control-label">Product Image(Product DB) *
+  <label class="col-md-2 control-label">Product Image(Product DB)
 
 
 
@@ -45,8 +45,11 @@
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"></span>
-    <img src="{{product_id.product_image.url}}" border="2" height="150" width="150">
+      <input name="product_image"    id="product_image" placeholder="Product Image" class="form-control"  type="file"  >
+
     </div>
+        <img src="{{product_id.product_image.url}}" border="2" height="150" width="150">
+
   </div>
     {% endif %}
 
