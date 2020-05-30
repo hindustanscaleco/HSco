@@ -3337,14 +3337,12 @@ def select_product_followup(request,id):
             sub_sub_model_str = request.POST.get('sub_sub_model')
             try:
                 if (sub_sub_model_str == None or sub_sub_model_str == ""):
-                    print('first')
                     product_avail = Product.objects.get(scale_type__id=type_purchase.objects.get(id=type_of_scale_str).id, main_category__id=main_model.objects.get(id=model_of_purchase_str).id,
                                                  sub_category__id=sub_model.objects.get(id=sub_model_str).id, sub_sub_category=None)
                     print(product_avail)
                     print(product_avail)
                     print(product_avail)
                 elif (sub_sub_model_str != None or sub_sub_model_str != ""):
-                    print('second')
                     product_avail = Product.objects.get(scale_type__id=type_purchase.objects.get(id=type_of_scale_str).id, main_category__id=main_model.objects.get(id=model_of_purchase_str).id,
                                                  sub_category__id=sub_model.objects.get(id=sub_model_str).id, sub_sub_category__id=sub_sub_model.objects.get(id=sub_sub_model_str).id)
                 requested_product = product_avail
@@ -3514,6 +3512,10 @@ def select_product(request,id):
         is_last_product_yes = request.POST.get('is_last_product_yes')
         # model_of_purchase = request.POST.get('model_of_purchase')
         rate = request.POST.get('rate')
+        product_desc = request.POST.get('product_desc')
+        hsn_code = request.POST.get('hsn_code')
+        product_image = request.POST.get('product_image')
+
         type_of_scale = request.POST.get('scale_type')
         main_category = request.POST.get('main_category')
         sub_category = request.POST.get('sub_category')
@@ -3529,6 +3531,11 @@ def select_product(request,id):
                                                       sub_category=sub_category, sub_sub_category=sub_sub_category)
                 item.lead_id = Lead.objects.get(id=lead_id)
                 item.quantity = quantity
+                item.rate = float(rate)
+                item.product_desc = product_desc
+                item.hsn_code = hsn_code
+                if product_image != '' and product_image != None:
+                    item.product_image = product_image
                 item.pf = pf
                 item.log_entered_by = request.user.name
                 if quantity != 'None' or quantity != '':
@@ -3538,6 +3545,11 @@ def select_product(request,id):
                 item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
                                                       sub_category=sub_category, sub_sub_category=None)
                 item.lead_id = Lead.objects.get(id=lead_id)
+                item.rate = float(rate)
+                item.product_desc = product_desc
+                item.hsn_code = hsn_code
+                if product_image != '' and product_image != None:
+                    item.product_image = product_image
                 item.quantity = quantity
                 item.pf = pf
                 item.log_entered_by = request.user.name

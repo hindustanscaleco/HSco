@@ -87,6 +87,11 @@ class Pi_product(models.Model):
     quantity = models.FloatField(null=True, blank=True)
     pf = models.FloatField(null=True, blank=True)
 
+    rate = models.FloatField( null=True, blank=True)
+    product_desc = models.TextField(null=True, blank=True)
+    hsn_code = models.CharField(max_length=150, null=True, blank=True)
+    product_image = models.ImageField(upload_to='lead_pi_product_image/', blank=True, null=True)
+
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
