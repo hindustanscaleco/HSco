@@ -3,9 +3,11 @@ from .models import Lead ,Pi_section, IndiamartLeadDetails
 
 from .models import Lead, Pi_section, Pi_product,Pi_History,Follow_up_section,Auto_followup_details,History_followup,Followup_product,Payment_details
 
+from import_export.admin import ImportExportModelAdmin
 
-class Lead_Admin(admin.ModelAdmin):
 
+
+class Lead_Admin(ImportExportModelAdmin):
     list_display = ('id','customer_id','current_stage','channel','entry_timedate')
 
 class Indiamart_Admin(admin.ModelAdmin):
