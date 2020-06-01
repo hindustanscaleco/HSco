@@ -22,7 +22,7 @@ from customer_app.models import Log
 from lead_management.email_content import user
 from .forms import Deal_detailForm, Customer_detailForm, Pi_sectionForm, Follow_up_sectionForm, History_followupForm, Payment_detailsForm
 from .form2 import Customer_detail_disabledForm
-from customer_app.models import Customer_Details
+from customer_app.models import Customer_Details, Lead_Customer_Details
 from .models import Lead, Pi_section, IndiamartLeadDetails, History_followup, Follow_up_section, Followup_product, \
     Auto_followup_details, Payment_details
 from .models import Lead, Pi_section, Pi_product, Pi_History
@@ -44,6 +44,7 @@ from django.core.mail.message import EmailMessage
 from stock_management_system_app.models import Godown,GodownProduct
 
 today_month = datetime.now().month
+
 @login_required(login_url='/')
 def lead_home(request):
     import requests
@@ -83,7 +84,7 @@ def lead_home(request):
         # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
         # page = request.GET.get('page')
         # lead_list = paginator.get_page(page)
-    cust_sugg = Customer_Details.objects.all()
+    cust_sugg = Lead_Customer_Details.objects.all()
 
     context23 = {
         'lead_list': lead_list,
@@ -473,12 +474,15 @@ def lead_home(request):
             url = "https://mapi.indiamart.com/wservce/enquiry/listing/GLUSR_MOBILE/" + mobile + "/GLUSR_MOBILE_KEY/" + api + "/Start_Time/" + from_date + "/End_Time/" + to_date + "/"
             response = requests.get(url=url).json()
             lead_count = len(response)
-            print(response[0]['Error_Message'])
+
             try:
                 if lead_count == 1 and response[0]['Error_Message'] == 'It is advised to hit this API once in every 15 minutes,but it seems that you have crossed this limit. please try again after 15 minutes.':
                     messages.error(request,"Try after 15 minutes.")
-
-            except:
+                if lead_count == 1 and response[0]['Error_Message'] == 'There are no leads in the given time duration.please try for a different duration.':
+                    messages.success(request, "Already Fetched!!!")
+            except Exception as e:
+                print('str(e)')
+                print(str(e))
                 pass
 
 
@@ -499,91 +503,112 @@ def lead_home(request):
             if (lead_count > 1 and response != None):
                 for item in response:
 
+                    requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME'] if item[
+                                                                                                      'SUBJECT'] != None and \
+                                                                                                  item[
+                                                                                                      'ENQ_MESSAGE'] != None and \
+                                                                                                  item[
+                                                                                                      'PRODUCT_NAME'] != None else \
+                        item['SUBJECT'] + item['ENQ_MESSAGE'] if item['SUBJECT'] != None and item[
+                            'ENQ_MESSAGE'] != None else item['SUBJECT']
+                    clean_requirement = requirement.replace('<b>', '\n')[:115]
+
+
                     if (item['MOB'] != None and item['MOB'] != '' and len(item['MOB']) > 3):
                         clean_mob = item['MOB'].partition('-')[2]
                     else:
+                        clean_mob = item['MOB']
+
+                    if clean_mob!= None and clean_mob!='' and len(clean_mob)>3:
+                        pass
+                    else:
                         clean_mob = '0000000000'
 
-                    print(clean_mob)
+
                     entered_customer_name = item['SENDERNAME']
                     if entered_customer_name == None or entered_customer_name == '':
                         entered_customer_name = 'NA'
-                    if entered_customer_name == 'NA' and clean_mob == '0000000000' and (item['SENDEREMAIL']== '' or item['SENDEREMAIL'] == None or item['SENDEREMAIL'] == ' '):
-                        lead_count = lead_count - 1
-                    else:
-                        cust_obj = Customer_Details.objects.filter(customer_name=entered_customer_name,
-                                                                   contact_no=clean_mob)
-                        if cust_obj.exists() and cust_obj.count() > 0:
-                            for item23 in cust_obj:
-                                exist_cust = item23.pk
-                            item3 = Customer_Details.objects.get(id=exist_cust)
-                            new_existing_customer = 'Existing'
-                        else:
-                            item3 = Customer_Details()
-                            item3.customer_name = entered_customer_name
-                            item3.company_name = item['GLUSR_USR_COMPANYNAME']
-                            item3.address = item['ENQ_ADDRESS']
-                            item3.customer_email_id = item['SENDEREMAIL']
 
-                            item3.contact_no = clean_mob
-                            item3.customer_industry = ''
-                            new_existing_customer = 'New'
-                            try:
-                                item3.save()
-                            except:
-                                pass
+                    if Lead.objects.filter(requirement_indiamart_unique=clean_requirement,
+                                           customer_id__contact_no=clean_mob,customer_id__customer_name=entered_customer_name,
+                                           channel='IndiaMart', indiamart_time=item['DATE_R']).count() == 0:
 
-                        try:
-                            requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME'] if item[
-                                                                                                              'SUBJECT'] != None and \
-                                                                                                          item[
-                                                                                                              'ENQ_MESSAGE'] != None and \
-                                                                                                          item[
-                                                                                                              'PRODUCT_NAME'] != None else \
-                                item['SUBJECT'] + item['ENQ_MESSAGE'] if item['SUBJECT'] != None and item[
-                                    'ENQ_MESSAGE'] != None else item['SUBJECT']
-                            clean_requirement = requirement.replace('<b>', '\n')[:115]
-                            if Lead.objects.filter(requirement_indiamart_unique = clean_requirement,customer_id=Customer_Details.objects.get(id=item3.pk),
-                                                channel='IndiaMart',indiamart_time=item['DATE_R']).count()==0:
-                                item2 = Lead()
-                                item2.new_existing_customer = new_existing_customer
-                                item2.customer_id = Customer_Details.objects.get(id=item3.pk)
-                                item2.current_stage = 'Not Yet Initiated'
-                                if item['QTYPE'] == 'B':
-                                    item2.is_indiamart_purchased_lead = True
-                                else:
-                                    item2.is_indiamart_purchased_lead = False
-
-                                item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
-                                item2.channel = 'IndiaMart'
-                                item2.owner_of_opportunity = request.user
-
-                                # requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
-                                item2.requirement = requirement.replace('<b>', '\n')
-                                item2.indiamart_time = item['DATE_R']
-                                item2.requirement_indiamart_unique = clean_requirement
-                                try:
-                                    item2.save()
-                                    fp = Follow_up_section()
-                                    fp.lead_id = Lead.objects.get(id=item2.pk)
-                                    fp.save()
-                                except Exception as e:
-                                    lead_count = lead_count -1
-                                    # error_exist = True
-                                    error_exist = False
-                                    # error2 = e
-                                    print('error2')
-                                    print(error2)
-                            else:
-                                print("lead already Exist")
-                                lead_count = lead_count - 1
-                        except Exception as e:
-                            # error_exist = True
+                        if entered_customer_name == 'NA' and clean_mob == '0000000000' and (item['SENDEREMAIL']== '' or item['SENDEREMAIL'] == None or item['SENDEREMAIL'] == ' '):
                             lead_count = lead_count - 1
-                            error_exist = False
-                            error = e
-                            print('e')
-                            print(e)
+                        else:
+                            cust_obj = Lead_Customer_Details.objects.filter(customer_name=entered_customer_name,
+                                                                       contact_no=clean_mob)
+                            if cust_obj.exists() and cust_obj.count() > 0:
+                                if item['SENDEREMAIL']== '' and item['SENDEREMAIL'] == None and item['SENDEREMAIL'] == ' ':
+                                    cust_obj.update(customer_email_id=item['SENDEREMAIL'])
+                                if item['GLUSR_USR_COMPANYNAME']!=None and item['GLUSR_USR_COMPANYNAME']!='':
+                                    cust_obj.update(company_name=item['GLUSR_USR_COMPANYNAME'])
+                                if item['ENQ_ADDRESS']!=None and item['ENQ_ADDRESS']!='':
+                                    cust_obj.update(address=item['ENQ_ADDRESS'])
+                                for item23 in cust_obj:
+                                    exist_cust = item23.pk
+                                item3 = Lead_Customer_Details.objects.get(id=exist_cust)
+                                new_existing_customer = 'Existing'
+                            else:
+                                item3 = Lead_Customer_Details()
+                                item3.customer_name = entered_customer_name
+                                item3.company_name = item['GLUSR_USR_COMPANYNAME']
+                                item3.address = item['ENQ_ADDRESS']
+                                item3.customer_email_id = item['SENDEREMAIL']
+
+                                item3.contact_no = clean_mob
+                                item3.customer_industry = ''
+                                new_existing_customer = 'New'
+                                try:
+                                    item3.save()
+                                except:
+                                    pass
+
+                            try:
+
+                                if Lead.objects.filter(requirement_indiamart_unique = clean_requirement,customer_id=Lead_Customer_Details.objects.get(id=item3.pk),
+                                                    channel='IndiaMart',indiamart_time=item['DATE_R']).count()==0:
+                                    item2 = Lead()
+                                    item2.new_existing_customer = new_existing_customer
+                                    item2.customer_id = Lead_Customer_Details.objects.get(id=item3.pk)
+                                    item2.current_stage = 'Not Yet Initiated'
+                                    if item['QTYPE'] == 'B':
+                                        item2.is_indiamart_purchased_lead = True
+                                    else:
+                                        item2.is_indiamart_purchased_lead = False
+
+                                    item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
+                                    item2.channel = 'IndiaMart'
+                                    item2.owner_of_opportunity = request.user
+
+                                    # requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
+                                    item2.requirement = requirement.replace('<b>', '\n')
+                                    item2.indiamart_time = item['DATE_R']
+                                    item2.requirement_indiamart_unique = clean_requirement
+                                    try:
+                                        item2.save()
+                                        fp = Follow_up_section()
+                                        fp.lead_id = Lead.objects.get(id=item2.pk)
+                                        fp.save()
+                                    except Exception as e:
+                                        lead_count = lead_count -1
+                                        # error_exist = True
+                                        error_exist = False
+                                        # error2 = e
+                                        print('error2')
+                                        print(error2)
+                                else:
+                                    print("lead already Exist")
+                                    lead_count = lead_count - 1
+                            except Exception as e:
+                                # error_exist = True
+                                lead_count = lead_count - 1
+                                error_exist = False
+                                error = e
+                                print('e')
+                                print(e)
+                    else:
+                        lead_count = lead_count - 1
 
                 obj = IndiamartLeadDetails()
                 obj.from_date = time.strftime("%Y-%m-%d", conv)
@@ -1044,7 +1069,7 @@ def lead_home(request):
                 # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # cust_list = paginator.get_page(page)
-            # cust_list = Customer_Details.objects.filter()
+            # cust_list = Lead_Customer_Details.objects.filter()
             context = {
                 'lead_list': cust_list,
                 'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
@@ -1065,7 +1090,7 @@ def lead_home(request):
                 # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # cust_list = paginator.get_page(page)
-            # cust_list = Customer_Details.objects.filter(contact_no=contact)
+            # cust_list = Lead_Customer_Details.objects.filter(contact_no=contact)
             context = {
                 'lead_list': cust_list,
                 'search_msg': 'Search result for Customer Contact No: ' + contact,
@@ -1087,7 +1112,7 @@ def lead_home(request):
                 # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # cust_list = paginator.get_page(page)
-            # cust_list = Customer_Details.objects.filter(customer_email_id=email)
+            # cust_list = Lead_Customer_Details.objects.filter(customer_email_id=email)
             context = {
                 'lead_list': cust_list,
                 'search_msg': 'Search result for Customer Email ID: ' + email,
@@ -1108,7 +1133,7 @@ def lead_home(request):
                 # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # cust_list = paginator.get_page(page)
-            # cust_list = Customer_Details.objects.filter(customer_name=customer)
+            # cust_list = Lead_Customer_Details.objects.filter(customer_name=customer)
             context = {
                 'lead_list': cust_list,
                 'search_msg': 'Search result for Customer Name: ' + customer,
@@ -1130,7 +1155,7 @@ def lead_home(request):
                 # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # cust_list = paginator.get_page(page)
-            # cust_list = Customer_Details.objects.filter(company_name=company)
+            # cust_list = Lead_Customer_Details.objects.filter(company_name=company)
             context = {
                 'lead_list': cust_list,
                 'search_msg': 'Search result for Company Name: ' + company,
@@ -1152,7 +1177,7 @@ def lead_home(request):
                 # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # cust_list = paginator.get_page(page)
-            # cust_list = Customer_Details.objects.filter(company_name=company)
+            # cust_list = Lead_Customer_Details.objects.filter(company_name=company)
             context = {
                 'lead_list': cust_list,
                 'search_msg': 'Search result for Sr no: ' + serial_no,
@@ -1184,7 +1209,7 @@ def add_lead(request):
     else:
         latest_lead_id = Lead.objects.latest('id').id
 
-    cust_sugg = Customer_Details.objects.all()
+    cust_sugg = Lead_Customer_Details.objects.all()
     form = Customer_detailForm()
     form2 = Deal_detailForm()
     if request.method == 'POST' or request.method=='FILES':
@@ -1209,12 +1234,12 @@ def add_lead(request):
 
 
         item2 = Lead()
-        if Customer_Details.objects.filter(customer_name=customer_name,
+        if Lead_Customer_Details.objects.filter(customer_name=customer_name,
                                            contact_no=contact_no).count() > 0:
 
-            item2.customer_id = Customer_Details.objects.filter(contact_no=contact_no).first()
+            item2.customer_id = Lead_Customer_Details.objects.filter(contact_no=contact_no).first()
 
-            item3 = Customer_Details.objects.filter(customer_name=customer_name,
+            item3 = Lead_Customer_Details.objects.filter(customer_name=customer_name,
                                                     contact_no=contact_no).first()
             if company_name != '' and company_name != None:
                 item3.company_name = company_name
@@ -1232,7 +1257,7 @@ def add_lead(request):
                 item3.customer_industry = customer_industry
                 item3.save(update_fields=['customer_industry'])
         else:
-            new_cust = Customer_Details()
+            new_cust = Lead_Customer_Details()
 
             new_cust.customer_name = customer_name
             if company_name != '':
@@ -1248,7 +1273,7 @@ def add_lead(request):
                 new_cust.customer_industry = customer_industry
             try:
                 new_cust.save()
-                item2.customer_id = Customer_Details.objects.get(id=new_cust.pk)
+                item2.customer_id = Lead_Customer_Details.objects.get(id=new_cust.pk)
             except:
                 pass
 
@@ -1329,7 +1354,7 @@ def update_view_lead(request,id):
             table2+=row2
     except:
         pass
-    customer_id = Customer_Details.objects.get(id=lead_id.customer_id)
+    customer_id = Lead_Customer_Details.objects.get(id=lead_id.customer_id)
     customer_initial_data = {
         'customer_name': customer_id.customer_name,
         'company_name': customer_id.company_name,
@@ -1529,13 +1554,27 @@ def update_view_lead(request,id):
                 current_stage = lead_id.current_stage
                 is_entered_purchase = lead_id.is_entered_purchase
                 if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
+                    lead_customer = Lead_Customer_Details.objects.get(id=lead_id.customer_id.pk)
+                    if Customer_Details.objects.filter(contact_no=lead_customer.contact_no,customer_name=lead_customer.customer_name).count()>0:
+                        sales_customer = Customer_Details.objects.filter(contact_no=lead_customer.contact_no,customer_name=lead_customer.customer_name).order_by('-id')[0]
+                    else:
+                        sales_customer = Customer_Details()
+                        sales_customer.contact_no = lead_customer.contact_no
+                        sales_customer.customer_name = lead_customer.customer_name
+                        sales_customer.company_name = lead_customer.company_name
+                        sales_customer.address = lead_customer.address
+                        sales_customer.customer_email_id = lead_customer.customer_email_id
+                        sales_customer.customer_gst_no = lead_customer.customer_gst_no
+                        sales_customer.customer_industry = lead_customer.customer_industry
+                        sales_customer.save()
+
                     purchase_det = Purchase_Details()
                     purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
                     purchase_det.company_address = lead_id.customer_id.address  # new2
                     purchase_det.bill_address = lead_id.customer_id.address  # new2
                     purchase_det.shipping_address = lead_id.customer_id.address  # new2
                     purchase_det.company_email = lead_id.customer_id.customer_email_id  # new2
-                    purchase_det.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
+                    purchase_det.crm_no = sales_customer
                     purchase_det.new_repeat_purchase = lead_id.new_existing_customer
                     purchase_det.second_person = lead_id.customer_id.customer_name  # new1
                     purchase_det.second_contact_no = lead_id.customer_id.contact_no  # new2
@@ -1557,9 +1596,10 @@ def update_view_lead(request,id):
                     purchase_det.save()
 
                     Lead.objects.filter(id=id).update(purchase_id=purchase_det.pk)
+                    Lead_Customer_Details.objects.filter(id=lead_id.customer_id.pk).update(is_entered_in_purchased=True)
 
                     # dispatch = Dispatch()
-                    # dispatch.crm_no = Customer_Details.objects.get(id=lead_id.customer_id.pk)
+                    # dispatch.crm_no = Lead_Customer_Details.objects.get(id=lead_id.customer_id.pk)
                     # dispatch.second_person = lead_id.customer_id.customer_name  # new1
                     # dispatch.second_contact_no = lead_id.customer_id.contact_no  # new2
                     # dispatch.second_company_name = lead_id.customer_id.company_name  # new2
@@ -1865,7 +1905,7 @@ def update_view_lead(request,id):
 
             item2 = Lead.objects.get(id=id)
 
-            item3 = Customer_Details.objects.get(id=lead_id.customer_id)
+            item3 = Lead_Customer_Details.objects.get(id=lead_id.customer_id)
 
             if customer_name != '' and customer_name != None:
                 item3.customer_name = customer_name
@@ -2853,9 +2893,9 @@ def final_lead_report(request):
 
             cursor.execute("SELECT " + (
             string_cust_detail + "," + string_deal_detail+ "," + string_pi_history+ "," + string_follow_up+ "," + string_pay_detail) +
-            " from customer_app_customer_details , lead_management_lead  , lead_management_pi_history  ,"
+            " from customer_app_lead_customer_details , lead_management_lead  , lead_management_pi_history  ,"
             " lead_management_history_followup  , lead_management_payment_details  where lead_management_pi_history.lead_id_id = lead_management_lead.id "
-            " and lead_management_history_followup.lead_id_id = lead_management_lead.id and lead_management_payment_details.lead_id_id = lead_management_lead.id and lead_management_lead.customer_id_id = customer_app_customer_details.id and "
+            " and lead_management_history_followup.lead_id_id = lead_management_lead.id and lead_management_payment_details.lead_id_id = lead_management_lead.id and lead_management_lead.customer_id_id = customer_app_lead_customer_details.id and "
             " lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
 
             row = cursor.fetchall()
@@ -2872,8 +2912,8 @@ def final_lead_report(request):
             selected_list =  string_cust_detail_list + string_deal_detail_list + string_pi_history_list + string_follow_up_list
 
             cursor.execute("SELECT " +(string_cust_detail + ","+ string_deal_detail+ ","+ string_pi_history+ "," + string_follow_up )+ " from  "
-            "lead_management_lead , customer_app_customer_details, lead_management_pi_history PI , lead_management_history_followup FOLLOWUP "
-            "  where lead_management_lead.customer_id_id = customer_app_customer_details.id and PI.lead_id_id = lead_management_lead.id "
+            "lead_management_lead , customer_app_lead_customer_details, lead_management_pi_history PI , lead_management_history_followup FOLLOWUP "
+            "  where lead_management_lead.customer_id_id = customer_app_lead_customer_details.id and PI.lead_id_id = lead_management_lead.id "
             "and FOLLOWUP.lead_id_id = lead_management_lead.id and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
             final_row_product = [list(x) for x in row]
@@ -2888,8 +2928,8 @@ def final_lead_report(request):
         elif  string_deal_detail != '' and string_cust_detail != '' and string_pi_history != '':
             selected_list =string_cust_detail_list +string_deal_detail_list +   string_pi_history_list
 
-            cursor.execute("SELECT " +(string_cust_detail + ","+ string_deal_detail+ ","+ string_pi_history )+ " from  lead_management_lead  , customer_app_customer_details, lead_management_pi_history  "
-            "  where lead_management_lead.customer_id_id = customer_app_customer_details.id and lead_management_pi_history.lead_id_id = lead_management_lead.id "
+            cursor.execute("SELECT " +(string_cust_detail + ","+ string_deal_detail+ ","+ string_pi_history )+ " from  lead_management_lead  , customer_app_lead_customer_details, lead_management_pi_history  "
+            "  where lead_management_lead.customer_id_id = customer_app_lead_customer_details.id and lead_management_pi_history.lead_id_id = lead_management_lead.id "
             "and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
             final_row_product = [list(x) for x in row]
@@ -2904,8 +2944,8 @@ def final_lead_report(request):
         elif  string_deal_detail != '' and string_cust_detail != '':
             selected_list =  string_cust_detail_list + string_deal_detail_list
 
-            cursor.execute("SELECT " +(string_cust_detail + ","+ string_deal_detail )+ " from  lead_management_lead  , customer_app_customer_details  "
-                                "  where lead_management_lead.customer_id_id = customer_app_customer_details.id and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+            cursor.execute("SELECT " +(string_cust_detail + ","+ string_deal_detail )+ " from  lead_management_lead  , customer_app_lead_customer_details  "
+                                "  where lead_management_lead.customer_id_id = customer_app_lead_customer_details.id and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
             final_row_product = [list(x) for x in row]
             repairing_data = []
@@ -2933,10 +2973,10 @@ def final_lead_report(request):
                 repairing_data.append(list(i))
 
     # if table_name == 'Customer Details Section':
-    #     # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+    #     # customer_list = Lead_Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
     #     with connection.cursor() as cursor:
     #         if string != '' :
-    #                 cursor.execute("SELECT " +  string + " from customer_app_customer_details  PRODUCT  where "
+    #                 cursor.execute("SELECT " +  string + " from customer_app_lead_customer_details  PRODUCT  where "
     #                 " entry_timedate between'" + start_date + "' and '" + end_date + "';")
     #                 row = cursor.fetchall()
     #                 final_row_product = [list(x) for x in row]
@@ -2958,7 +2998,7 @@ def final_lead_report(request):
     #         pass
     # if table_name == 'Deal Details Section':
     #
-    #     # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+    #     # customer_list = Lead_Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
     #     with connection.cursor() as cursor:
     #         if string != '' :
     #                 cursor.execute("SELECT " +  string + " from lead_management_lead  PRODUCT  where "
@@ -2982,7 +3022,7 @@ def final_lead_report(request):
     #     except:
     #         pass
     # if table_name == 'PI Section':
-    #     # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+    #     # customer_list = Lead_Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
     #     selected_list = ['lead_id','discount','discount_type','payment_channel','payment_received_date','notes','cgst_sgst','igst','grand_total','entry_timedate'
     #                      ,'quantity','P&F']
     #
@@ -3011,7 +3051,7 @@ def final_lead_report(request):
     #     except:
     #         pass
     # if table_name == 'Follow-up Section':
-    #     # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+    #     # customer_list = Lead_Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
     #     selected_list = ['lead_id', 'whatsappno', 'fields', 'email_subject','product_id', 'scale_type', 'main_category','sub_category', 'sub_sub_category',
     #                      'hsn_code','max_capacity', 'accuracy', 'platform_size','product_desc','cost_price','selling_price','carton_size',
     #                      'entry_timedate']
@@ -3042,7 +3082,7 @@ def final_lead_report(request):
     #     except:
     #         pass
     # if table_name == 'Payment Details Form':
-    #     # customer_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
+    #     # customer_list = Lead_Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
     #     with connection.cursor() as cursor:
     #         if string != '' :
     #                 cursor.execute("SELECT " +  string + " from lead_management_payment_details  PRODUCT  where "
@@ -3109,7 +3149,7 @@ def final_lead_report_test(request):
     context ={}
 
     from .models import Pi_section
-    # cust_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_cust_detail_list)
+    # cust_list = Lead_Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_cust_detail_list)
     # if string_deal_detail_list and  string_pi_history != '':
 
     if string_follow_up != '' and string_pi_history != '' and string_pay_detail != '' and string_cust_detail_list and string_deal_detail_list:
@@ -3131,7 +3171,7 @@ def final_lead_report_test(request):
             names = Pi_History.objects.filter(lead_id_id=lead['id']).values()
             names2 = History_followup.objects.filter(lead_id_id=lead['id']).values()
             names3 = Payment_details.objects.filter(lead_id_id__in=lead_list.values('id')).values(*string_pay_detail_list)
-            names4 = Customer_Details.objects.filter(id__in=lead_list.values('customer_id__id')).values(*string_cust_detail_list)
+            names4 = Lead_Customer_Details.objects.filter(id__in=lead_list.values('customer_id__id')).values(*string_cust_detail_list)
 
             lead['pi_history'] = list(names)
             lead['followup_history'] = list(names2)
@@ -3224,7 +3264,7 @@ def final_lead_report_test(request):
         pay_detail_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values('id')
 
     elif string_cust_detail_list != '':
-        lead_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_cust_detail_list)
+        lead_list = Lead_Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_cust_detail_list)
     context1 = {
         'lead_list': lead_list,
     }
@@ -3239,7 +3279,7 @@ def final_lead_report_test(request):
     #             lead['upload_requirement_file'] = Lead.objects.get(id=lead['id']).upload_requirement_file.path
     #
     # if string_cust_detail_list != '':
-    #     cust_list = Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_cust_detail_list)
+    #     cust_list = Lead_Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_cust_detail_list)
     #
     # if string_pi_history != '':
     #     pi_history_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values('id')
@@ -3403,13 +3443,13 @@ def upload_requirement_hsc(request):
         upload_requirement_file = request.FILES.get('req_file')
 
         item2 = Lead()
-        if Customer_Details.objects.filter(customer_name=customer_name,
+        if Lead_Customer_Details.objects.filter(customer_name=customer_name,
                                            contact_no=contact_no).count() > 0:
 
 
-            item2.customer_id = Customer_Details.objects.filter(contact_no=contact_no).first()
+            item2.customer_id = Lead_Customer_Details.objects.filter(contact_no=contact_no).first()
 
-            item3 = Customer_Details.objects.filter(customer_name=customer_name,
+            item3 = Lead_Customer_Details.objects.filter(customer_name=customer_name,
                                                     contact_no=contact_no).first()
 
             if customer_email_id != '' and customer_email_id != None:
@@ -3423,7 +3463,7 @@ def upload_requirement_hsc(request):
 
 
         else:
-            new_cust = Customer_Details()
+            new_cust = Lead_Customer_Details()
 
             new_cust.customer_name = customer_name
 
@@ -3434,7 +3474,7 @@ def upload_requirement_hsc(request):
                 new_cust.company_name = company_name
             try:
                 new_cust.save()
-                item2.customer_id = Customer_Details.objects.get(id=new_cust.pk)
+                item2.customer_id = Lead_Customer_Details.objects.get(id=new_cust.pk)
             except Exception as e:
                 context22 = {
                     'error_65': str(e),

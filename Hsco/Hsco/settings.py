@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'lead_management',
     'stock_management_system_app',
     'career_module_app',
+    'import_export',
 ]
 
 MIDDLEWARE = [

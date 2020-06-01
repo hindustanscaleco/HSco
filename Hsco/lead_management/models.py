@@ -1,7 +1,7 @@
 import datetime
 from django.db import models
 from django.utils import timezone
-from customer_app.models import Customer_Details
+from customer_app.models import Lead_Customer_Details
 from user_app.models import SiteUser
 from stock_management_system_app.models import Product
 from django.core.validators import URLValidator
@@ -11,7 +11,7 @@ from purchase_app.models import Purchase_Details
 
 class Lead(models.Model):
     purchase_id = models.ForeignKey(Purchase_Details, on_delete=models.CASCADE,null=True,blank=True)
-    customer_id = models.ForeignKey(Customer_Details,on_delete=models.CASCADE)
+    customer_id = models.ForeignKey(Lead_Customer_Details,on_delete=models.CASCADE)
     owner_of_opportunity = models.ForeignKey(SiteUser,null=True,blank=True,on_delete=models.CASCADE)
     current_stage = models.CharField(max_length=50,null=True,blank=True)
     new_existing_customer = models.CharField(max_length=50,null=True,blank=True)
@@ -193,7 +193,7 @@ class IndiamartLeadDetails(models.Model):
     from_date = models.DateField()
     to_date = models.DateField()
     lead_count = models.BigIntegerField()
-    # entry_timedate = models.DateTimeField(default=timezone.now, )
+    entry_datetime = models.DateTimeField(default=timezone.now, )
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)

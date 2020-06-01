@@ -3,7 +3,7 @@ from .models import Lead, Pi_section, Follow_up_section, History_followup, Payme
 
 import sys
 sys.path.append("..")
-from customer_app.models import Customer_Details
+from customer_app.models import Lead_Customer_Details
 
 auto_manual_email = [
     ('Automatic', 'Automatic'),
@@ -143,7 +143,7 @@ class Customer_detailForm(forms.ModelForm):
 
 
     class Meta:
-        model = Customer_Details
+        model = Lead_Customer_Details
         fields = "__all__"
 
 
