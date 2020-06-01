@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+      {% load static %}
+
 	<title></title>
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -21,31 +23,29 @@
 <div id="content">
 
 <div  id="html-content-holder" style=" margin-left: 5%; margin-right: 5%;">
-<div class="row" style="padding: 5px; border-bottom: 5px solid black;">
-    <div class="col-xl-2 col-md-2 ">
-<img src="/media/pi_history_file/hsco.jpg" class="img-rounded" width="160" height="80" style="float: right; padding-top:10px;">
+<div class="row" style="padding: 5px;">
+    <div class="col-xl-3 col-md-3">
+<img src="/media/pi_history_file/hsco_new_logo.png" class="img-rounded" width="120" height="120" style=" padding-top:10px;">
+<img src="/media/pi_history_file/alpha_new.png" class="img-rounded" width="110" height="110" style=" padding-top:10px;">
 </div>
-    <div class="col-xl-1 col-md-1 ">
-    </div>
+
     <div class="col-xl-4 col-md-4 ">
         <center>Subject to Mumbai Jurisdiction</center><br>
         <center><h3 style="font: italic bold 22px/30px Georgia, serif;">Proforma Invoice</h3></center>
 </div>
-    <div class="col-xl-1 col-md-1 ">
+    <div class="col-xl-2 col-md-2 ">
     </div>
-    <div class="col-xl-4 col-md-4 ">
-        <p>Ph: 022-23423183, 7045922250/51/52<br>
-Manufacture Licence No. LM/MH/H004<br>
-Dealer Licence No. LD/MH/H004<br>
-Repairing Licence No. LR/MH/H004</p>
+    <div class="col-xl-3 col-md-3 ">
+        <br>
+        <p> Ph:<b> 7045922553, 7045922208 </b> <br></p>
 </div>
 </div>
 
 
         <div class="row">
-         <div class="col-md-12" style="padding:10px;">
-        <center><h1 style="font-weight:bold;"> Hindustan Scale Company</h1>
-        </center></div>
+         <div class="col-md-12" style="padding:5px;">
+        <h1 style="font-weight:bold; font-size: 4.8vw; margin-left: 5vw; color: #606060;">Hindustan Sales and Consultancy</h1>
+        </div>
         </div>
         <div class="row">
          <div class="col-md-12" style="padding:0px;">
@@ -57,101 +57,80 @@ Repairing Licence No. LR/MH/H004</p>
     <div class="row">
          <div class="col-md-12" style="padding:10px;">
         <center><p style="font-weight:bold;"> All kinds of Mechanical and Digital Weighing Scales, Weights & Measures.<br>
-        186/188 Janjikar Street, Near Crawford Market, Mumbai- 400003/<font color="#FC6E20">www.hindustanscale.com/hsc@hindustanscale.com</font></p>
+        </p>
         </center></div>
         </div>
 
 
-    <div class="row">
-         <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> </p>
-        </center></div>
-        <div class="col-md-5">
-             </div>
-        <div class="col-md-1">
-             </div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> Date :</p>
-        </center></div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> {{todays_date}}</p>
-                            </center></div>
-                            </div>
+
+    <table align="left" cellspacing="0" style="border: 0px;">
+	<colgroup width="21"></colgroup>
+	<colgroup width="97"></colgroup>
+	<colgroup width="140"></colgroup>
+	<colgroup width="85"></colgroup>
+	<colgroup width="31"></colgroup>
+	<colgroup width="228"></colgroup>
+	<colgroup width="127"></colgroup>
+	<colgroup width="161"></colgroup>
+	<colgroup width="11"></colgroup>
 
 
-                            <div class="row">
-                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> Company Name :</p>
-                                </center></div>
-                                <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left; text-decoration: underline;"> {{lead_id.customer_id.company_name}}</p>
-                                </center></div>
+	<tr style="border: 0px;">
+		<td align="right" valign=bottom><b><font color="#404040">Messrs</font></b></td>
+		<td align="left" valign=bottom><font size=4 color="#000000"><br></font></td>
+		<td align="left" valign=bottom><font size=4 color="#000000"><br></font></td>
+		<td align="left" valign=bottom><font size=4 color="#000000"><br></font></td>
+		<td align="left" valign=bottom><font size=4 color="#000000"><br></font></td>		<td style="border-left: 0px solid #000000" height="27" border="0" align="left" valign=bottom><font color="#000000"><br></font></td>
 
-                                <div class="col-md-4">
-                                </div><div class="col-md-4">
-                                     <center><p style="font-weight:bold; float:left;">PI - XXXX{{lead_id.id}} - {{lead_id.customer_id.customer_name}} - {{lead_id.customer_id.company_name}}  </p>
-                                </center></div>
-                                </div>
+		<td align="right" valign=bottom><b><font color="#404040">Date:</font></b></td>
+		<td align="left" valign=bottom sdnum="1033;1033;M/D/YYYY"><font color="">{{todays_date}}</font></td>
+		<td  align="left" valign=bottom><font color="#000000"><br></font></td>
+	</tr>
+	<tr>
+        <td align="right" valign=bottom><font face="" color="#404040"><b>Company Name</b></font></td>
+		<td style="border-bottom: 1px solid #a6a6a6" colspan=3 align="left" valign=bottom><font face="" color="" >{{lead_id.customer_id.company_name}}</font></td>
+		<td align="left" valign=bottom><font color="#000000"><br></font></td>		<td style="border-left: 0px solid #000000" height="22" align="left" valign=bottom><font color="#000000"><br></font></td>
 
-                            <div class="row">
-                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;">Contact Person</p>
-                                </center></div>
-                                <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.customer_name}}</p>
-                                </center></div>
+        <td align="right" valign=bottom><font face="" color="#404040"><b>PI Number</b></font></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" align="left" valign=bottom><font face="" color="" >XXXX{{lead_id.id}} - {{lead_id.customer_id.customer_name}} - {{lead_id.customer_id.company_name}}</font></td>
+		<td style="border-right: 0px solid #000000" align="left" valign=bottom><font color="#000000"><br></font></td>
+	</tr>
+	<tr>
+        <td align="right" valign=bottom><font face="" color="#404040"><b>Contact Person</b></font></td>
+		<td style="border-bottom: 1px solid #a6a6a6" colspan=3 align="left" valign=bottom><font face="" color="" >{{lead_id.customer_id.customer_name}}</font></td>
+		<td align="left" valign=bottom><font color="#000000"><br></font></td>		<td style="border-left: 0px solid #000000" height="22" align="left" valign=bottom><font color="#000000"><br></font></td>
 
-                                <div class="col-md-1">
-                                     </div>
-                                <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;">Proforma Made By :</p>
-                                </center></div>
-                                <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> {{request.user.name}}</p>
-                                </center></div>
-                                </div>
+        <td align="right" valign=bottom><font face="" color="#404040"><b>Proforma Made By</b></font></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" align="left" valign=bottom><font face="" color="" > {{request.user.name}}</font></td>
+		<td style="border-right: 0px solid #000000" align="left" valign=bottom><font color="#000000"><br></font></td>
+	</tr>
+	<tr>
+        <td align="right" valign=bottom><font face="" color="#404040"><b>Address/State</b></font></td>
+		<td style="border-bottom: 1px solid #a6a6a6" colspan=3 align="left" valign=bottom><font face="" color="" > {{lead_id.customer_id.address}}</font></td>
+		<td align="right" valign=bottom><font face="" color="#404040"><br></font></td>		<td style="border-left: 0px solid #000000" height="22" align="left" valign=bottom><font color="#000000"><br></font></td>
 
+        <td align="right" valign=bottom><font face="" color="#404040"><b>Phone Number</b></font></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" align="left" valign=bottom>
+            <font face="" color="" >  {{request.user.mobile}}</font></td>
+		<td style="border-right: 0px solid #000000" align="left" valign=bottom><font color="#000000"><br></font></td>
+	</tr>
+	<tr>
+		<td align="right" valign=bottom><font face="" color="#404040"><b>Phone</b></font></td>
+		<td style="border-top: 1px solid #a6a6a6; border-bottom: 1px solid #a6a6a6" colspan=3 align="left" valign=bottom><font face="" color="" >{{lead_id.customer_id.contact_no}}</font></td>
+		<td align="left" valign=bottom><font color="#000000"></font></td>		<td style="border-left: 0px solid #000000" height="22" align="left" valign=bottom><font color="#000000"><br></font></td>
 
-                            <div class="row">
-                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;">Address/State</p>
-                                </center></div>
-                                <div class="col-md-5">
-                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.address}}</p>
-                                </center></div>
-
-                                <div class="col-md-1">
-                                     </div>
-                                <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;">Contact Number:</p>
-                                </center></div>
-                                <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> {{request.user.mobile}}</p>
-                                </center></div>
-                                </div>
+        <td align="right" valign=bottom><font face="" color="#404040"><b>GST No. </b></font></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"  align="left" valign=bottom>
+            <font face="" color="" >{{lead_id.customer_id.customer_gst_no}}  </font></td>
+		<td style="border-right: 0px solid #000000" align="left" valign=bottom><font color="#000000"></font></td>
+	</tr>
+    </table>
 
 
 
-
-                            <div class="row">
-                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;">Phone</p>
-                                </center></div>
-                                <div class="col-md-4">
-                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.contact_no}}</p>
-        </center></div>
-
-        <div class="col-md-1">
-             </div><div class="col-md-1">
-             </div>
-        <div class="col-md-2">
-          <p style="font-weight:bold; float:right;">Customer GST Number: </p>
-        </div>
-        <div class="col-md-2">
-             <center><p style="font-weight:bold; float:left;"> {{lead_id.customer_id.customer_gst_no}}</p>
-        </center></div>
-        </div>
-
+<br>
+&nbsp;
+    <br>
 
 
 
@@ -169,7 +148,6 @@ Repairing Licence No. LR/MH/H004</p>
   border-collapse: collapse;
   width: 100%;
   font-size: 12px;
-  border-color: black;
   color: black;
 
 
@@ -187,12 +165,14 @@ th {
 }
 
 td {
-  border: 1px solid black;
   padding: 3px;
-  font-size: 13px;
+  font-size: 15px;
   padding: 5px;
-  text-align: center;
+
+
+
 }
+
 
 
             </style>
@@ -203,15 +183,15 @@ td {
 
         <div class="row" id="id_manager_view">
 
-    <table>
+    <table class="mainTable" border="1">
         <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Quantity</td>
-            <td style="border: 0px solid gray;">HSN Code</td>
-            <td style="border: 0px solid gray;">Product Code</td>
-            <td style="border: 0px solid gray;">Product Image</td>
-            <td style="border: 0px solid gray;">Product Description</td>
-            <td style="border: 0px solid gray;">Rate</td>
-            <td style="border: 0px solid gray;">Total</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray; text-align: center;">Quantity</td>
+            <td style="border: 0px solid gray;text-align: center;">HSN Code</td>
+            <td style="border: 0px solid gray;text-align: center;">Product Code</td>
+            <td style="border: 0px solid gray;text-align: center;">Product Image</td>
+            <td style="border: 0px solid gray;text-align: center;">Product Description</td>
+            <td style="border: 0px solid gray;text-align: center;">Rate</td>
+            <td style="border: 0px solid gray;text-align: center;">Total</td>
         </tr>
 {% for product in pi_products %}
 <tr>
