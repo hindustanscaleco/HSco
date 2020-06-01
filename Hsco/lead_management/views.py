@@ -54,8 +54,14 @@ def lead_home(request):
     api = 'MTU4MzQ5OTg1NS42MTU2IzI5OTI4NzM='
     last_date = IndiamartLeadDetails.objects.latest('to_date').to_date.strftime('%d-%b-%Y')
     from_date = last_date
+    import datetime
+    to_date = datetime.datetime.today() + datetime.timedelta(days=1)
+    print('to_date')
+    print(to_date)
+    to_date= to_date.strftime('%d-%b-%Y')
+    print(to_date)
     from datetime import datetime
-    to_date = datetime.today().strftime('%d-%b-%Y')
+
     lead_count=0
     error2 = None
     error = None
