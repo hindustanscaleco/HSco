@@ -73,13 +73,20 @@ def update_product_master(request,update_id):
         fol_pro.cost_price = cost_price
         fol_pro.selling_price = selling_price
         fol_pro.carton_size = carton_size
-        fol_pro.product_image = product_image
-        fol_pro.product_brochure = product_brochure
-        fol_pro.product_document = product_document
+        if product_image != None and product_image != '':
+            fol_pro.product_image = product_image
+            fol_pro.save(update_fields=['product_image',])
+        if product_brochure != None and product_brochure != '':
+            fol_pro.product_brochure = product_brochure
+            fol_pro.save(update_fields=['product_brochure', ])
+        if product_document != None and product_document != '':
+            fol_pro.product_document = product_document
+            fol_pro.save(update_fields=['product_document', ])
 
         fol_pro.save(update_fields=['hsn_code','max_capacity','accuracy','platform_size',
                                     # 'product_desc','cost_price','selling_price','carton_size',])
-                                    'product_desc','cost_price','selling_price','carton_size','product_image','product_brochure','product_document',])
+                                    'product_desc','cost_price','selling_price','carton_size',])
+
         return redirect('/product_master_list/')
     context={
         'product_obj':product_obj,

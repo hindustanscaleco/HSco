@@ -127,7 +127,7 @@
             {% endfor %}
                {% endif %}
 
-            {% if err %}
+            {% if err and lead_count == 1 %}
                        <div class="alert alert-success alert-dismissible fade show" role="alert">
   <strong>Already Fetched!!!</strong>
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
