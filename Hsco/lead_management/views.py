@@ -58,7 +58,7 @@ def lead_home(request):
     print(from_date)
     print(from_date)
     # to_date = datetime.datetime.today() + datetime.timedelta(days=1)
-    to_date = IndiamartLeadDetails.objects.latest('to_date').to_date + datetime.timedelta(days=1)
+    to_date = IndiamartLeadDetails.objects.latest('to_date').to_date + datetime.timedelta(days=5)
     print('to_date')
     print(to_date)
     to_date= to_date.strftime('%d-%b-%Y')
