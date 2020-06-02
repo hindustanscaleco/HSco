@@ -3631,7 +3631,7 @@ def select_product(request,id):
         rate = request.POST.get('rate')
         product_desc = request.POST.get('product_desc')
         hsn_code = request.POST.get('hsn_code')
-        product_image = request.POST.get('product_image')
+        product_image = request.FILES.get('product_image')
 
         type_of_scale = request.POST.get('scale_type')
         main_category = request.POST.get('main_category')
