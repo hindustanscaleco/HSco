@@ -3220,7 +3220,7 @@ def final_lead_report_test(request):
     if  string_cust_detail_list:
         string_cust_detail_list=['id'] + string_cust_detail_list
     if  string_deal_detail_list:
-        string_deal_detail_list=['id'] + string_deal_detail_list
+        string_deal_detail_list=['id'] + ['customer_id_id']+ string_deal_detail_list
     if string_pay_detail != '':
         string_pay_detail_list=['lead_id_id'] +string_pay_detail_list
     context ={}
@@ -3234,26 +3234,24 @@ def final_lead_report_test(request):
         lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
 
         for lead in lead_list:
-            # names3 = Payment_details.objects.filter(lead_id_id__in=lead_list.values('id')).values(*string_pay_detail_list)
-            # for item in names3:
-            #     if lead['id'] == item['lead_id_id']:
-            #         lead.update(item)
-            # print(lead)
+            print(lead)
+
 
             if 'owner_of_opportunity_id' in lead_list :
                 lead['owner_of_opportunity_id'] = SiteUser.objects.get(id=lead['owner_of_opportunity_id']).profile_name
 
-            # if   Lead.objects.get(id=lead['id']).upload_requirement_file:
-            #     lead['upload_requirement_file'] = Lead.objects.get(id=lead['id']).upload_requirement_file.path
             names = Pi_History.objects.filter(lead_id_id=lead['id']).values()
             names2 = History_followup.objects.filter(lead_id_id=lead['id']).values()
             names3 = Payment_details.objects.filter(lead_id_id__in=lead_list.values('id')).values(*string_pay_detail_list)
-            names4 = Lead_Customer_Details.objects.filter(id__in=lead_list.values('customer_id__id')).values(*string_cust_detail_list)
+            names4 = Lead_Customer_Details.objects.filter(id=lead['customer_id_id']).values(*string_cust_detail_list)
 
             lead['pi_history'] = list(names)
             lead['followup_history'] = list(names2)
             lead['payment_details'] = list(names3)
-            lead['customer_details'] = list(names4)
+            for it in names4:
+                lead.update(it)
+
+
 
     elif string_follow_up != '' and string_pi_history != '' and string_pay_detail != ''  and string_deal_detail_list:
         lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
@@ -3731,6 +3729,7 @@ def lead_manager_view(request):
         'pi_list':result_list,
     }
     return render(request,'lead_management/lead_manager.html',context)
+
 
 
 @login_required(login_url='/')
