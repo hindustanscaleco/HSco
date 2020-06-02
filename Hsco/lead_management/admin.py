@@ -10,11 +10,9 @@ from import_export.admin import ImportExportModelAdmin
 class Lead_Admin(ImportExportModelAdmin):
     list_display = ('id','customer_id','current_stage','channel','entry_timedate')
 
-class Indiamart_Admin(admin.ModelAdmin):
+class Indiamart_Admin(ImportExportModelAdmin):
     list_display = ('id', 'from_date', 'to_date', 'lead_count', 'entry_timedate')
 
-
-    # search_fields = ('scale_type__name','main_category__name','sub_category__name','sub_sub_category__name')
 admin.site.register(Lead,Lead_Admin)
 admin.site.register(Pi_section)
 

@@ -72,16 +72,22 @@ def lead_home(request):
 
     if request.user.role == 'Super Admin':  # For SUPER ADMIN
         lead_list = Lead.objects.filter(Q(entry_timedate__month=today_month)).order_by('-id')
+        users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module'))
         # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
         # page = request.GET.get('page')
         # lead_list = paginator.get_page(page)
     elif request.user.role == 'Admin':  # For ADMIN
         lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)) | (Q(owner_of_opportunity__admin__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month))).order_by('-id')
+
+        users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module') &
+                                        Q(admin__icontains=request.user.profile_name))
         # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
         # page = request.GET.get('page')
         # lead_list = paginator.get_page(page)
     elif request.user.role == 'Manager':  # For manager
         lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)) | (Q(owner_of_opportunity__manager__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month))).order_by('-id')
+        users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module') &
+                                        Q(manager__icontains=request.user.profile_name))
         # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
         # page = request.GET.get('page')
         # lead_list = paginator.get_page(page)
@@ -92,6 +98,9 @@ def lead_home(request):
         # lead_list = paginator.get_page(page)
     cust_sugg = Lead_Customer_Details.objects.all()
 
+
+
+
     context23 = {
         'lead_list': lead_list,
         'lead_count': lead_count,
@@ -101,6 +110,8 @@ def lead_home(request):
         'error2': error2,
         'error_exist': error_exist,
         'cust_sugg': cust_sugg,
+        'users': users,
+
     }
     context.update(context23)
     if request.user.role == 'Super Admin':
@@ -678,9 +689,53 @@ def lead_home(request):
             return render(request, 'lead_management/lead_home.html', context)
 
         if 'delete_lead_id' in request.POST:
+            owner_of_opportunity = request.POST.get('owner_of_opportunity')
             delete_lead_id = request.POST.getlist('delete_lead_id')
-            Lead.objects.filter(pk__in=delete_lead_id).delete()
+
+            if owner_of_opportunity!= "" and owner_of_opportunity!= None:
+                if delete_lead_id == None or delete_lead_id == "":
+                    messages.error(request, "Select Leads To Assign")
+                    return redirect('/lead_home/')
+                if owner_of_opportunity!=None and owner_of_opportunity!="":
+                    new_user = SiteUser.objects.get(id=owner_of_opportunity)
+                    for item in delete_lead_id:
+                        lead_obj = Lead.objects.get(id=item)
+                        log = Log()
+                        log.entered_by = request.user.profile_name
+                        log.module_name = 'Lead Module'
+                        log.action_type = 'Update'
+                        log.table_name = 'Lead'
+                        log.reference = 'Lead Id:' + str(item)
+                        log.action = 'Owner Of Oppurtunity(old value): '+str(lead_obj.owner_of_opportunity.profile_name)+' Owner Of Oppurtunity(updated value): '+str(new_user.profile_name)
+
+                        log.save()
+                    Lead.objects.filter(pk__in=delete_lead_id).update(owner_of_opportunity=new_user)
+
+                    messages.success(request, "Leads assigned Successfully")
+                else:
+                    messages.error(request, "Select Valid Employee To Assign")
+            else:
+                for item in delete_lead_id:
+                    lead_obj=Lead.objects.get(id=item)
+                    log = Log()
+                    log.entered_by = request.user.profile_name
+                    log.module_name = 'Lead Module'
+                    log.action_type = 'Delete'
+                    log.table_name = 'Lead'
+                    log.reference = 'Lead Id:' +str(item)
+                    log.action = 'Customer Name: '+str(lead_obj.customer_id.customer_name)+' Contact No: '+str(lead_obj.customer_id.contact_no)+' Email: '+str(lead_obj.customer_id.customer_email_id)+' Indiamrt Date: '+str(lead_obj.indiamart_time)
+
+                    log.save()
+                Lead.objects.filter(pk__in=delete_lead_id).delete()
+                messages.success(request, "Leads deleted Successfully")
+
             return redirect('/lead_home/')
+
+        # if 'assign_lead' in request.POST:
+        #     print(request.POST)
+        #     delete_lead_id = request.POST.getlist('delete_lead_id')
+        #     print(delete_lead_id)
+
 
         if 'sub1' in request.POST:
             if request.user.role == 'Super Admin':  # For ADMIN
