@@ -3832,6 +3832,7 @@ def lead_analytics(request):
                                                        entry_timedate__month=previous_mon) \
             .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
 
+
         if request.method=='POST'   :
             if 'date1' in request.POST :
                 start_date = request.POST.get('date1')
@@ -4123,10 +4124,12 @@ def lead_analytics(request):
 
         }
         context.update(context14)
+        return render(request, 'lead_management/lead_analytics.html', context)
+
     except:
         pass
 
-    return render(request,'lead_management/lead_analytics.html',context)
+    return render(request,'lead_management/lead_analytics.html',)
 
 @login_required(login_url='/')
 def lead_employee_graph(request,id):
@@ -4725,13 +4728,23 @@ def download_pi_image(request,id):
     lead_id = Lead.objects.get(id=id)
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
     pi_id = Pi_section.objects.get(lead_id=id)
-
+    if len(str(id)) == 1 :
+        email_pi_id = '000'+str(id)
+    elif len(str(id)) == 2 :
+        email_pi_id = '00'+str(id)
+    elif len(str(id)) == 3 :
+        email_pi_id = '0'+str(id)
+    elif len(str(id)) == 4 :
+        email_pi_id = str(id)
+    else:
+        email_pi_id = id
     pi_products = Pi_product.objects.filter(lead_id=id)
     context = {
         'lead_id': lead_id,
         'todays_date': todays_date,
         'pi_id': pi_id,
         'pi_products': pi_products,
+        'email_pi_id': email_pi_id,
     }
     return render(request,'lead_management/download_pi_image.html',context)
 
@@ -4768,13 +4781,23 @@ def download_pi_pdf(request,id,download):
     lead_id=Lead.objects.get(id=id)
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
     pi_id = Pi_section.objects.get(lead_id=id)
-
+    if len(str(id)) == 1 :
+        email_pi_id = '000'+str(id)
+    elif len(str(id)) == 2 :
+        email_pi_id = '00'+str(id)
+    elif len(str(id)) == 3 :
+        email_pi_id = '0'+str(id)
+    elif len(str(id)) == 4 :
+        email_pi_id = str(id)
+    else:
+        email_pi_id = id
     pi_products = Pi_product.objects.filter(lead_id=id)
     context={
         'lead_id':lead_id,
         'todays_date':todays_date,
         'pi_id':pi_id,
         'pi_products':pi_products,
+        'email_pi_id':email_pi_id,
         'download':True if download == 1 else False,
     }
     try:
@@ -4807,12 +4830,22 @@ def download_pi_second_pdf(request,id,download):
     lead_id=Lead.objects.get(id=id)
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
     pi_id = Pi_section.objects.get(lead_id=id)
-
+    if len(str(id)) == 1 :
+        email_pi_id = '000'+str(id)
+    elif len(str(id)) == 2 :
+        email_pi_id = '00'+str(id)
+    elif len(str(id)) == 3 :
+        email_pi_id = '0'+str(id)
+    elif len(str(id)) == 4 :
+        email_pi_id = str(id)
+    else:
+        email_pi_id = id
     pi_products = Pi_product.objects.filter(lead_id=id)
     context={
         'lead_id':lead_id,
         'todays_date':todays_date,
         'pi_id':pi_id,
+        'email_pi_id':email_pi_id,
         'pi_products':pi_products,
         'download': True if download == 1 else False,
     }

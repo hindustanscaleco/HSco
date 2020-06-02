@@ -125,7 +125,7 @@ td {
 
                                 <div class="col-md-4">
                                 </div><div class="col-md-4">
-                                     <center><p style="font-weight:bold; float:left;">PI - XXXX{{lead_id.id}} - {{lead_id.customer_id.customer_name}} - {{lead_id.customer_id.company_name}}  </p>
+                                     <center><p style="font-weight:bold; float:left;">PI - {{email_pi_id}} - {{lead_id.customer_id.customer_name}} - {{lead_id.customer_id.company_name}}  </p>
                                 </center></div>
                                 </div>
 
@@ -250,9 +250,21 @@ td {
 {% for product in pi_products %}
 <tr>
         <td>{{product.quantity}}</td>
+    {% if product.hsn_code %}
+        <td>{{product.hsn_code}}</td>
+    {% else %}
         <td>{{product.product_id.hsn_code}}</td>
+    {% endif %}
+    {% if product.product_desc %}
+        <td>{{product.product_desc|default_if_none:""}}</td>
+    {% else %}
         <td>{{product.product_id.product_desc|default_if_none:""}}</td>
-        <td>{{product.product_id.selling_price}}</td>
+    {% endif %}
+    {% if product.rate %}
+        <td>{{product.rate |default_if_none:""}}</td>
+    {% else %}
+        <td>{{product.product_id.selling_price|default_if_none:""}}</td>
+    {% endif %}
         <td>{{product.product_total_cost}}</td>
         </tr>
 {% endfor %}
