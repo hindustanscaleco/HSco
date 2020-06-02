@@ -1610,6 +1610,10 @@ def update_view_lead(request,id):
                 messages.error(request, "Contact Number Is Not Valid!!!")
 
                 return redirect('/update_view_lead/' + str(id))
+            if Payment_details.objects.filter(lead_id=id).count() ==0:
+                messages.error(request, "Enter Payment Details First!!!")
+
+                return redirect('/update_view_lead/' + str(id))
 
 
             if (len(delete_id)>0):
@@ -1644,7 +1648,9 @@ def update_view_lead(request,id):
                     purchase_det.product_purchase_date = lead_id.entry_timedate
                     purchase_det.sales_person = lead_id.owner_of_opportunity.name
                     purchase_det.user_id = SiteUser.objects.get(name=lead_id.owner_of_opportunity.name)
-                    purchase_det.upload_op_file = Payment_details.objects.get(lead_id=id).upload_pofile
+                    if Payment_details.objects.get(lead_id=id).upload_pofile != None and Payment_details.objects.get(lead_id=id).upload_pofile!="":
+                        purchase_det.upload_op_file = Payment_details.objects.get(lead_id=id).upload_pofile
+
                     purchase_det.channel_of_sales = ''
                     purchase_det.channel_of_dispatch = ''
                     purchase_det.industry = lead_id.customer_id.customer_industry
@@ -2492,6 +2498,11 @@ def update_view_lead(request,id):
 
                         html_rows = html_rows + '''</tr>'''
                     context_session={}
+                else:
+                    html_rows = ''''''
+                    count = 1
+                    sms_content = ''''''
+                    wa_content = ''''''
 
 
                 if(is_email=='on' or is_email =='is_email'):
@@ -2727,7 +2738,11 @@ def update_view_lead(request,id):
                                     2] + '''\n'''
                                 html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
                             html_rows = html_rows + '''</tr>'''
+                    else:
+                        html_rows = ''''''
 
+                        sms_content = ''''''
+                        wa_content = ''''''
 
 
                     if(is_email=='on' or is_email =='is_email'):
