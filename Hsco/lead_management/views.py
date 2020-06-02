@@ -93,6 +93,7 @@ def lead_home(request):
         # lead_list = paginator.get_page(page)
     elif request.user.role == 'Employee': #for employee
         lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)).order_by('-id')
+        users = SiteUser.objects.filter(id=request.user.pk)
         # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
         # page = request.GET.get('page')
         # lead_list = paginator.get_page(page)
