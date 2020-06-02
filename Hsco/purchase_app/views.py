@@ -220,6 +220,7 @@ def add_purchase_details(request):
         # value_of_goods = request.POST.get('value_of_goods')
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         notes = request.POST.get('notes')
+        channel_of_marketing = request.POST.get('channel_of_marketing')
 
         payment_mode = request.POST.get('payment_mode')
         bank_name = request.POST.get('bank_name')
@@ -284,6 +285,8 @@ def add_purchase_details(request):
         item2.cheque_no = cheque_no
         if cheque_date != None and cheque_date != '':
             item2.cheque_date = cheque_date
+        if channel_of_marketing != None and channel_of_marketing != '':
+            item2.channel_of_marketing = channel_of_marketing
         item2.cheque_notes = cheque_notes
 
         item2.new_repeat_purchase = new_repeat_purchase
@@ -1105,7 +1108,7 @@ def update_customer_details(request,id):
             po_number = request.POST.get('po_number')
             channel_of_sales = request.POST.get('channel_of_sales')
             industry = request.POST.get('industry')
-            industry = request.POST.get('industry')
+            channel_of_marketing = request.POST.get('channel_of_marketing')
             # value_of_goods = request.POST.get('value_of_goods')
             notes = request.POST.get('notes')
             # value_of_goods = request.POST.get('value_of_goods')
@@ -1125,10 +1128,11 @@ def update_customer_details(request,id):
             item2.cheque_no = cheque_no
             if cheque_date != None and cheque_date != '':
                 item2.cheque_date = cheque_date
+            if channel_of_marketing != None and channel_of_marketing != '':
+                item2.channel_of_marketing = channel_of_marketing
             item2.cheque_notes = cheque_notes
-            print(bank_name)
-            print(bank_name)
-            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','cheque_notes'])
+
+            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','cheque_notes','channel_of_marketing'])
 
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
