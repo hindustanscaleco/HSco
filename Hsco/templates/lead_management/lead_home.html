@@ -637,7 +637,7 @@ td {
             <td style="border: 0px solid gray;">Company Name</td>
             <td style="border: 0px solid gray;">Email ID</td>
             <td style="border: 0px solid gray;">Owner of Opportunity</td>
-            <td style="border: 0px solid gray;">Indiamart Date</td>
+            <td style="border: 0px solid gray;">Current Stage</td>
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Selection</td>
         </tr>
                     {% for list in lead_list %}
@@ -673,8 +673,8 @@ td {
             <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{ list.customer_id.company_name }}</td>
             <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{ list.customer_id.customer_email_id}}</td>
             <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{list.owner_of_opportunity}}</td>
-            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{list.indiamart_time}}</td>
-<!--            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{list.current_stage}</td>-->
+<!--            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{list.indiamart_time}}</td>-->
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{list.current_stage}}</td>
             <td><input style="cursor: pointer;" type="checkbox" value="{{list.id}}" name="delete_lead_id"></td>
 
         </tr>
