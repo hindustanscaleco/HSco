@@ -142,7 +142,7 @@ Repairing Licence No. LR/MH/H004</p>
                                      <center><p style="font-weight:bold; float:left;">PI Number :</p>
                                 </center></div>
                                 <div class="col-md-2">
-                                     <center><p style="font-weight:bold; float:left;"> {{lead_id.id}}</p>
+                                     <center><p style="font-weight:bold; float:left;"> PI - {{email_pi_id}} - {{lead_id.customer_id.customer_name}} - {{lead_id.customer_id.company_name}}</p>
                                 </center></div>
                                 </div>
 
@@ -268,11 +268,32 @@ td {
 {% for product in pi_products %}
 <tr>
         <td>{{product.quantity}}</td>
+     {% if product.hsn_code %}
+        <td>{{product.hsn_code}}</td>
+    {% else %}
         <td>{{product.product_id.hsn_code}}</td>
-        <td>{{product.product_id.sub_sub_category}}</td>
-        <td>{% if product.product_id.product_image %}<img  src="{{product.product_id.product_image.url}}">{% endif %}</td>
+    {% endif %}
+
+            <td>{{product.product_id.sub_sub_category}}</td>
+
+    {% if product.product_image %}
+        <td><img  src="{{product.product_image.url}}"></td>
+    {% else %}
+        <td><img  src="{{product.product_id.product_image.url}}"></td>
+    {% endif %}
+
+    {% if product.product_desc %}
+        <td>{{product.product_desc|default_if_none:""}}</td>
+    {% else %}
         <td>{{product.product_id.product_desc|default_if_none:""}}</td>
-        <td>{{product.product_id.selling_price}}</td>
+    {% endif %}
+
+    {% if product.rate %}
+        <td>{{product.rate |default_if_none:""}}</td>
+    {% else %}
+        <td>{{product.product_id.selling_price|default_if_none:""}}</td>
+    {% endif %}
+
         <td>{{product.product_total_cost}}</td>
         </tr>
 {% endfor %}

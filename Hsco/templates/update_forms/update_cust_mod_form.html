@@ -375,7 +375,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input  type="text"  name="channel_of_marketing" id="myText116" disabled placeholder="Channel of Marketing" class="form-control" list="channel110">
+    <input  type="text"  name="channel_of_marketing" id="myText116" disabled placeholder="Channel of Marketing" value="{{purchase_id_id.channel_of_marketing|default_if_none:''}}" class="form-control" list="channel110">
     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
     <datalist style="height:20px;" id="channel110">
       <option value="Phone"></option>
