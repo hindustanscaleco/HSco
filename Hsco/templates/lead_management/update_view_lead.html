@@ -1861,7 +1861,7 @@ function whosFunction() {
 
                 {% for lead in lead_pi_products %}
                 <td style="border: 1px solid gray;"><label class="checkbox">
-                    <input type="checkbox" value="{{lead.id}}" name="check[]" >
+                    <input type="checkbox" onclick="check_required({{forloop.counter}});" id="check_box{{forloop.counter}}" value="{{lead.id}}" name="check[]" >
                 </label></td>
                 <td style="border-radius: 0px 0px 0px 0px; border: 1px solid gray;">{{lead.product_id.scale_type}}</td>
                 <td style="border: 1px solid gray;">{{lead.product_id.main_category}}</td>
@@ -1870,7 +1870,7 @@ function whosFunction() {
                                 <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{lead.quantity}}</td>
 
                   <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">
-                    <select required name="selected_dodown">
+                    <select id="select_{{forloop.counter}}" name="selected_dodown">
                         <option value="">Select Godown</option>
                         {% for item in work_area_godowns %}
                         <option value="{{item.pk}}">{{item.name_of_godown}}</option>
@@ -1989,6 +1989,16 @@ function whosFunction() {
           $('#RequirementcharNum').text(1024 - len);
         }
       };
+
+
+      function check_required(id){
+        var checkbox = document.getElementById("check_box"+id);
+        if (checkbox.checked){
+            $('#select_'+id).attr('required', '');
+        }else{
+        $('#select_'+id).removeAttr('required');
+      }
+      }
     </script>
 
 
