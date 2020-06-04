@@ -56,6 +56,8 @@ def lead_home(request):
     from_date = last_date
     import datetime
     to_date = datetime.datetime.today().strftime('%d-%b-%Y')
+    # to_date = IndiamartLeadDetails.objects.latest('to_date').to_date + datetime.timedelta(days = 5)
+    # to_date = to_date.strftime('%d-%b-%Y')
     print('to_date')
     print(to_date)
 
@@ -93,6 +95,7 @@ def lead_home(request):
         # lead_list = paginator.get_page(page)
     elif request.user.role == 'Employee': #for employee
         lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)).order_by('-id')
+        users = SiteUser.objects.filter(id=request.user.pk)
         # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
         # page = request.GET.get('page')
         # lead_list = paginator.get_page(page)
@@ -1609,6 +1612,10 @@ def update_view_lead(request,id):
                 messages.error(request, "Contact Number Is Not Valid!!!")
 
                 return redirect('/update_view_lead/' + str(id))
+            if Payment_details.objects.filter(lead_id=id).count() ==0:
+                messages.error(request, "Enter Payment Details First!!!")
+
+                return redirect('/update_view_lead/' + str(id))
 
 
             if (len(delete_id)>0):
@@ -1643,7 +1650,9 @@ def update_view_lead(request,id):
                     purchase_det.product_purchase_date = lead_id.entry_timedate
                     purchase_det.sales_person = lead_id.owner_of_opportunity.name
                     purchase_det.user_id = SiteUser.objects.get(name=lead_id.owner_of_opportunity.name)
-                    purchase_det.upload_op_file = Payment_details.objects.get(lead_id=id).upload_pofile
+                    if Payment_details.objects.get(lead_id=id).upload_pofile != None and Payment_details.objects.get(lead_id=id).upload_pofile!="":
+                        purchase_det.upload_op_file = Payment_details.objects.get(lead_id=id).upload_pofile
+
                     purchase_det.channel_of_sales = ''
                     purchase_det.channel_of_dispatch = ''
                     purchase_det.industry = lead_id.customer_id.customer_industry
@@ -1890,13 +1899,16 @@ def update_view_lead(request,id):
                     password='Hindustan@@1234',
                     use_tls=True
             ) as connection:
+                extra='''<h4>Hello Sir/Madam <br>PFA<br>Thanks<br>Sales Team - HSCo<br></h4>
+             
+              <br>'''
 
-                email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, '',
+                email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request,extra),
                                       settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],connection=connection)
-                part1 = MIMEText(text, 'plain')
-                part2 = MIMEText(user(request), 'html')
-                email_send.attach(part1)
-                email_send.attach(part2)
+                # part1 = MIMEText(text, 'plain')
+                # part2 = MIMEText(user(request), 'html')
+                # email_send.attach(part1)
+                email_send.content_subtype = 'html'
                 email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
                 email_send.send()
 
@@ -2491,6 +2503,11 @@ def update_view_lead(request,id):
 
                         html_rows = html_rows + '''</tr>'''
                     context_session={}
+                else:
+                    html_rows = ''''''
+                    count = 1
+                    sms_content = ''''''
+                    wa_content = ''''''
 
 
                 if(is_email=='on' or is_email =='is_email'):
@@ -2562,7 +2579,7 @@ def update_view_lead(request,id):
         <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
             <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
             
-            <h4>'''+email_msg+'''</h4>
+            <h4>'''+email_msg.replace('\n','<br>')+'''</h4>
             
             <table style="font-size: 14px;">
             
@@ -2572,17 +2589,50 @@ def update_view_lead(request,id):
         </table>
                       </div>
                                   </div>
+                                  <br>
+                                  <br>
+                       '''+user(request)+'''           
         </body>
         </html>'''
 
                         file = ContentFile(html_content)
                         history_follow.followup_history_file.save('AutoFollowup.html', file, save=False)
                         history_follow.html_content = html_content
-                        send_html_mail(email_subject, html_content, settings.EMAIL_HOST_USER,
-                                       [customer_id.customer_email_id, ])
+                        with get_connection(
+                                host='webmail.hindustanscale.com',
+                                port=587,
+                                username='pi@hindustanscale.com',
+                                password='Hindustan@@1234',
+                                use_tls=True
+                        ) as connection:
+                            email_send = EmailMessage(email_subject,
+                                                      html_content,
+                                                      settings.EMAIL_HOST_USER3,
+                                                      [customer_id.customer_email_id, ],
+                                                      connection=connection)
+
+                            email_send.content_subtype = 'html'
+                            email_send.send()
+                            # send_html_mail(email_subject, html_content, settings.EMAIL_HOST_USER,
+                            #                [customer_id.customer_email_id, ])
 
                     else:
-                        send_text_mail(email_subject, email_msg, settings.EMAIL_HOST_USER, [customer_id.customer_email_id, ])
+                        with get_connection(
+                                host='webmail.hindustanscale.com',
+                                port=587,
+                                username='pi@hindustanscale.com',
+                                password='Hindustan@@1234',
+                                use_tls=True
+                        ) as connection:
+                            email_send = EmailMessage(email_subject,
+                                                      user(request,email_msg.replace('\n','<br>')),
+                                                      settings.EMAIL_HOST_USER3,
+                                                      [customer_id.customer_email_id, ],
+                                                      connection=connection)
+
+                            email_send.content_subtype = 'html'
+                            email_send.send()
+                        # send_text_mail(email_subject, email_msg, settings.EMAIL_HOST_USER3, [customer_id.customer_email_id, ],connection=connection)
 
                     # context28 = {
                     #     'success': "Email Sent on email Id: "+customer_id.customer_email_id,
@@ -2726,7 +2776,11 @@ def update_view_lead(request,id):
                                     2] + '''\n'''
                                 html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
                             html_rows = html_rows + '''</tr>'''
+                    else:
+                        html_rows = ''''''
 
+                        sms_content = ''''''
+                        wa_content = ''''''
 
 
                     if(is_email=='on' or is_email =='is_email'):
@@ -2798,7 +2852,7 @@ def update_view_lead(request,id):
                             <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
                                 <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
     
-                                <h4>''' + email_msg + '''</h4>
+                                <h4>''' + email_msg.replace('\n','<br>') + '''</h4>
     
                                 <table style="font-size: 14px;">
     
@@ -2808,6 +2862,9 @@ def update_view_lead(request,id):
                             </table>
                                           </div>
                                                       </div>
+                                                       <br>
+                                  <br>
+                       '''+user(request)+'''     
                             </body>
                             </html>'''
 
@@ -3204,7 +3261,7 @@ def final_lead_report_test(request):
     if  string_cust_detail_list:
         string_cust_detail_list=['id'] + string_cust_detail_list
     if  string_deal_detail_list:
-        string_deal_detail_list=['id'] + string_deal_detail_list
+        string_deal_detail_list=['id'] + ['customer_id_id']+ string_deal_detail_list
     if string_pay_detail != '':
         string_pay_detail_list=['lead_id_id'] +string_pay_detail_list
     context ={}
@@ -3218,26 +3275,24 @@ def final_lead_report_test(request):
         lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
 
         for lead in lead_list:
-            # names3 = Payment_details.objects.filter(lead_id_id__in=lead_list.values('id')).values(*string_pay_detail_list)
-            # for item in names3:
-            #     if lead['id'] == item['lead_id_id']:
-            #         lead.update(item)
-            # print(lead)
+            print(lead)
+
 
             if 'owner_of_opportunity_id' in lead_list :
                 lead['owner_of_opportunity_id'] = SiteUser.objects.get(id=lead['owner_of_opportunity_id']).profile_name
 
-            # if   Lead.objects.get(id=lead['id']).upload_requirement_file:
-            #     lead['upload_requirement_file'] = Lead.objects.get(id=lead['id']).upload_requirement_file.path
             names = Pi_History.objects.filter(lead_id_id=lead['id']).values()
             names2 = History_followup.objects.filter(lead_id_id=lead['id']).values()
             names3 = Payment_details.objects.filter(lead_id_id__in=lead_list.values('id')).values(*string_pay_detail_list)
-            names4 = Lead_Customer_Details.objects.filter(id__in=lead_list.values('customer_id__id')).values(*string_cust_detail_list)
+            names4 = Lead_Customer_Details.objects.filter(id=lead['customer_id_id']).values(*string_cust_detail_list)
 
             lead['pi_history'] = list(names)
             lead['followup_history'] = list(names2)
             lead['payment_details'] = list(names3)
-            lead['customer_details'] = list(names4)
+            for it in names4:
+                lead.update(it)
+
+
 
     elif string_follow_up != '' and string_pi_history != '' and string_pay_detail != ''  and string_deal_detail_list:
         lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list)
@@ -3615,7 +3670,7 @@ def select_product(request,id):
         rate = request.POST.get('rate')
         product_desc = request.POST.get('product_desc')
         hsn_code = request.POST.get('hsn_code')
-        product_image = request.POST.get('product_image')
+        product_image = request.FILES.get('product_image')
 
         type_of_scale = request.POST.get('scale_type')
         main_category = request.POST.get('main_category')
@@ -3715,6 +3770,7 @@ def lead_manager_view(request):
         'pi_list':result_list,
     }
     return render(request,'lead_management/lead_manager.html',context)
+
 
 
 @login_required(login_url='/')

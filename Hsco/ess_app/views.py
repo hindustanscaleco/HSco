@@ -425,11 +425,17 @@ def employee_profile(request,id):
         item.ifsc_code = ifsc_code
         item.aadhar_card = aadhar_card
         item.pancard = pancard
-        item.photo = photo
-        item.upload_aadhar_card = upload_aadhar_card
-        item.upload_pancard = upload_pancard
+        if photo!=None and photo!="":
+            item.photo = photo
+            item.save(update_fields=['photo',])
+        if upload_aadhar_card != None and upload_aadhar_card != "":
+            item.upload_aadhar_card = upload_aadhar_card
+            item.save(update_fields=['upload_aadhar_card', ])
+        if upload_pancard != None and upload_pancard != "":
+            item.upload_pancard = upload_pancard
+            item.save(update_fields=['upload_pancard', ])
 
-        item.save(update_fields=['mobile','email', 'profile_name','bank_name','account_number','branch_name','ifsc_code','photo','pancard','aadhar_card','upload_aadhar_card','upload_pancard'])
+        item.save(update_fields=['mobile','email', 'profile_name','bank_name','account_number','branch_name','ifsc_code','pancard','aadhar_card',])
         return redirect('/employee_profile/' + str(id))
 
     elif request.method == 'POST' and 'submit3'  in request.POST:

@@ -467,7 +467,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-        <input  name="photo" placeholder="Photo" class="form-control" value="user_id.photo"  type="file">
+        <input  name="photo" placeholder="Photo" class="form-control" type="file">
 
       {% if user_id.photo %}
       <img src="{{user_id.photo.url}}" width="150" height="150">
@@ -483,7 +483,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-        <input name="pancard" placeholder="Pan Card Number" class="form-control" value="{{user_id.pan_card}}" min="11" max="12" type="number">
+        <input name="pancard" placeholder="Pan Card Number" class="form-control" value="{{user_id.pancard}}" min="11" max="12" type="number">
 
     </div>
   </div>
@@ -493,7 +493,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-      <input name="aadhar_card" placeholder="Aadhar Card Number" class="form-control" value="{{user_id.aadhar_card}}" type="text">
+      <input name="aadhar_card" placeholder="Aadhar Card Number" class="form-control" maxlength="12" value="{{user_id.aadhar_card}}" type="text">
 
   </div>
     </div>
