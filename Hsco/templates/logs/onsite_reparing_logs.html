@@ -175,56 +175,67 @@ $(function() {
 
 
 
+          <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  border-color: black;
+  color: black;
+}
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
 <div style="min-height: 26vw;">
 
-        <div class="row">
 
+<table>
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">TimeStamp</td>
+            <td style="border: 0px solid gray;">Entered By</td>
+            <td style="border: 0px solid gray;"> Action Type</td>
+            <td style="border: 0px solid gray;">Table Name</td>
+            <td style="border: 0px solid gray;"> Reference </td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Action</td>
+        </tr>
+                {% for log in onsite_repairing_logs %}
+<tr>
+<td>{{log.entry_timedate}}</td>
+<td>{{log.entered_by}}</td>
+<td>{{log.action_type}}</td>
+<td>{{log.table_name}}</td>
+<td>{{log.reference}}</td>
+<td>{{log.action}}</td>
+        </tr>
+            {% endfor %}
+    </table>
 
-              <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-<div class="col-xl-2 col-md-1 mb-1"><center>  TimeStamp </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center>  Entered By </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center> Action Type </center> </div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center> Table Name </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> Reference </center></div>|
-                    <div class="col-xl-4 col-md-1 mb-1"><center> Action </center></div>|
-                    </div>
-
-
-
-                </div>
-              </div>
-            </div>
-
-
-
-<br>
-<br>
-        <div class="row">
-                    {% for log in onsite_repairing_logs %}
-
-                <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-
-                           <div class="col-xl-2 col-md-1 mb-1"><center>  {{log.entry_timedate}} </center></div>|
-                           <div class="col-xl-1 col-md-1 mb-1"><center>  {{log.entered_by}} </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center> {{log.action_type}} </center> </div>|
-                    <div class="col-xl-1 col-md-1 mb-1"><center> {{log.table_name}} </center></div>|
-                    <div class="col-xl-2 col-md-1 mb-1"><center> {{log.reference}} </center></div>|
-                    <div class="col-xl-4 col-md-1 mb-1"><center> {{log.action}} </center></div>|
-
-
-                </div>
-              </div>
-            </div>
-                    {% endfor %}
-
-
-
-        </div>
 </div>
 
 
