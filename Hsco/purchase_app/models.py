@@ -49,8 +49,8 @@ class Purchase_Details(models.Model):   #cleaned
     cheque_no = models.TextField(null=True, blank=True)
     cheque_date = models.DateField(default=datetime.date.today)
     # cheque_notes = models.TextField( null=True, blank=True)
-    # tax_amount = models.FloatField(default=0.0)
-    # total_amount = models.FloatField(default=0.0)
+    tax_amount = models.FloatField(default=0.0)
+    total_amount = models.FloatField(default=0.0)
 
 
     def __int__(self):

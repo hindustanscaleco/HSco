@@ -1431,11 +1431,11 @@ def add_product_details(request,id):
                     purchase.second_person) + ',' \
                          ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
                 purchase.purchase_no) + '.' \
-                         ' Ww will love to hear your feedback to help us improve' \
+                         ' We will love to hear your feedback to help us improve' \
                        ' our customer experience. Please click on the link' \
-                         ' below: \n http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
+                         ' below: <br> http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
                 purchase.crm_no.pk) + '/' + str(
-                purchase.id) + '\n For more details contact us on - 7045922250 \n Order Details:\n '+ product_list
+                purchase.id) + '<br> For more details contact us on - 7045922250 <br> Order Details:<br>     '+ product_list
 
 
 
@@ -1443,19 +1443,21 @@ def add_product_details(request,id):
                 body = message
 
                 email_text = """\
-                From: %s
-                To: %s
-                Subject: %s
-
+               
                 %s
-                """ % (sent_from,purchase.company_email, subject, body)
+                """ % (body)
 
                 try:
-                    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-                    server.ehlo()
-                    server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-                    server.sendmail(sent_from, to, email_text)
-                    server.close()
+                    email_send = EmailMessage('Dispatched, Your Hsco Purchase is Dispatched from our end',
+                                              user(request, email_text),
+                                              settings.EMAIL_HOST_USER, to )
+                    email_send.content_subtype = 'html'
+                    email_send.send()
+                    # server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+                    # server.ehlo()
+                    # server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+                    # server.sendmail(sent_from, to, email_text)
+                    # server.close()
 
                     print('Email sent!')
                 except:
@@ -1471,7 +1473,7 @@ def add_product_details(request,id):
                 purchase.second_person) + ',' \
                                           ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
                 purchase.purchase_no) + '.' \
-                                        ' WE will love to hear your feedback to help us improve' \
+                                        ' We will love to hear your feedback to help us improve' \
                                         ' our customer experience. Please click on the link' \
                                         ' below: \n http://139.59.76.87/feedback_purchase/' + str(
                 request.user.pk) + '/' + str(
