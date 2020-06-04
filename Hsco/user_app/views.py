@@ -2,7 +2,7 @@ import json
 
 import requests
 from django.contrib.auth import authenticate, login, logout
-from django.core.mail import send_mail
+from django.core.mail import send_mail, get_connection, EmailMessage
 from django.db import connection
 from django.db.models import F
 from django.http import HttpResponse
@@ -22,6 +22,7 @@ from lead_management.models import Auto_followup_details, Lead
 
 from lead_management.utils import send_html_mail,send_text_mail
 
+from lead_management.email_content import user
 
 
 class LoginView(FormView):
@@ -491,9 +492,40 @@ def dashboard(request):
 
         if (item.follow_up_history.is_email):
             if (item.follow_up_history.html_content != None and item.follow_up_history.html_content != '' and len(item.follow_up_history.html_content)>5):
-                send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
+                with get_connection(
+                        host='webmail.hindustanscale.com',
+                        port=587,
+                        username='pi@hindustanscale.com',
+                        password='Hindustan@@1234',
+                        use_tls=True
+                ) as connection:
+                    email_send = EmailMessage(item.follow_up_history.email_subject,
+                                              item.follow_up_history.html_content,
+                                              settings.EMAIL_HOST_USER3, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
+                                              connection=connection)
+                    # part1 = MIMEText(text, 'plain')
+                    # part2 = MIMEText(user(request), 'html')
+                    # email_send.attach(part1)
+                    email_send.content_subtype = 'html'
+                    email_send.send()
+                # send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
             else:
-                send_text_mail(item.follow_up_history.email_subject, item.follow_up_history.email_msg, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
+                with get_connection(
+                        host='webmail.hindustanscale.com',
+                        port=587,
+                        username='pi@hindustanscale.com',
+                        password='Hindustan@@1234',
+                        use_tls=True
+                ) as connection:
+                    email_send = EmailMessage(item.follow_up_history.email_subject,
+                                              user(request, item.follow_up_history.email_msg),
+                                              settings.EMAIL_HOST_USER3,
+                                              [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
+                                              connection=connection)
+
+                    email_send.content_subtype = 'html'
+                    email_send.send()
+                # send_text_mail(item.follow_up_history.email_subject, item.follow_up_history.email_msg, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
 
         if (item.follow_up_history.is_sms):
 

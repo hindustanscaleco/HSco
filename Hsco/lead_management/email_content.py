@@ -1,6 +1,9 @@
-def user(request):
-    text_content = ''' <html><body>
-               
+def user(request,extra=''):
+    text_content = ''' <html>
+    <body>
+              <p>'''+extra+'''</p>
+               <br>
+               <br>
                <p>
 In case of any queries, please feel free to call us on the below numbers or visit our website at <br>
 <br>
@@ -25,9 +28,9 @@ Feedback & Complaints - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+91-7045922252<br>
 
  <br>
  
- <a href="https://hindustanscale.com/"> 	
+ <a href="https://hindustanscale.com/">
  <img  src="http://139.59.76.87/media/pi_history_file/hsco.jpg" style="width: 220px; height:100px;"></a>
- </a>
+</a>
 
  <br>
  <br>
@@ -49,3 +52,4 @@ Feedback & Complaints - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+91-7045922252<br>
 
          </body></html>'''
     return text_content
+
