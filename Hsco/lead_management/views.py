@@ -55,7 +55,9 @@ def lead_home(request):
     last_date = IndiamartLeadDetails.objects.latest('to_date').to_date.strftime('%d-%b-%Y')
     from_date = last_date
     import datetime
-    to_date = datetime.datetime.today().strftime('%d-%b-%Y')
+    # to_date = datetime.datetime.today().strftime('%d-%b-%Y')
+    to_date = IndiamartLeadDetails.objects.latest('to_date').to_date + datetime.timedelta(days = 8)
+    to_date = to_date.strftime('%d-%b-%Y')
     print('to_date')
     print(to_date)
 
@@ -1897,13 +1899,16 @@ def update_view_lead(request,id):
                     password='Hindustan@@1234',
                     use_tls=True
             ) as connection:
+                extra='''<h4>Hello Sir/Madam <br>PFA<br>Thanks<br>Sales Team - HSCo<br></h4>
+             
+              <br>'''
 
-                email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, '',
+                email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request,extra),
                                       settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],connection=connection)
-                part1 = MIMEText(text, 'plain')
-                part2 = MIMEText(user(request), 'html')
-                email_send.attach(part1)
-                email_send.attach(part2)
+                # part1 = MIMEText(text, 'plain')
+                # part2 = MIMEText(user(request), 'html')
+                # email_send.attach(part1)
+                email_send.content_subtype = 'html'
                 email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
                 email_send.send()
 
@@ -2125,7 +2130,7 @@ def update_view_lead(request,id):
                 history.save()
 
             try:
-                text = 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo\n\n'
+                extra = 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo\n\n'
 
                 if email == 'True' and upload_pi_file == None and email_type == 'external_pi':
                     pi_file = Pi_section.objects.filter(lead_id=id).latest('pk').upload_pi_file
@@ -2146,17 +2151,14 @@ def update_view_lead(request,id):
                             use_tls=True
                     ) as connection:
 
-                        email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, '',
+
+                        email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
+                                                  user(request, extra),
                                                   settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],
                                                   connection=connection)
-                        part1 = MIMEText(text, 'plain')
-                        part2 = MIMEText(user(request), 'html')
-                        email_send.attach(part1)
-                        email_send.attach(part2)
+                        email_send.content_subtype = 'html'
                         email_send.attach_file(history.pi_history_file.path)
                         email_send.send()
-
-
                     messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
                 elif email == 'True' and upload_pi_file !=None and email_type == 'external_pi':
                     pi_file = upload_pi_file
@@ -2175,16 +2177,13 @@ def update_view_lead(request,id):
                             use_tls=True
                     ) as connection:
 
-                        email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, '',
+                        email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
+                                                  user(request, extra),
                                                   settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],
                                                   connection=connection)
-                        part1 = MIMEText(text, 'plain')
-                        part2 = MIMEText(user(request), 'html')
-                        email_send.attach(part1)
-                        email_send.attach(part2)
+                        email_send.content_subtype = 'html'
                         email_send.attach_file(history.pi_history_file.path)
                         email_send.send()
-
                     messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
 
             except Exception as pi_file_error:
@@ -2574,7 +2573,7 @@ def update_view_lead(request,id):
         <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
             <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
             
-            <h4>'''+email_msg+'''</h4>
+            <h4>'''+email_msg.replace('\n','<br>')+'''</h4>
             
             <table style="font-size: 14px;">
             
@@ -2584,17 +2583,50 @@ def update_view_lead(request,id):
         </table>
                       </div>
                                   </div>
+                                  <br>
+                                  <br>
+                       '''+user(request)+'''           
         </body>
         </html>'''
 
                         file = ContentFile(html_content)
                         history_follow.followup_history_file.save('AutoFollowup.html', file, save=False)
                         history_follow.html_content = html_content
-                        send_html_mail(email_subject, html_content, settings.EMAIL_HOST_USER,
-                                       [customer_id.customer_email_id, ])
+                        with get_connection(
+                                host='webmail.hindustanscale.com',
+                                port=587,
+                                username='pi@hindustanscale.com',
+                                password='Hindustan@@1234',
+                                use_tls=True
+                        ) as connection:
+                            email_send = EmailMessage(email_subject,
+                                                      html_content,
+                                                      settings.EMAIL_HOST_USER3,
+                                                      [customer_id.customer_email_id, ],
+                                                      connection=connection)
+
+                            email_send.content_subtype = 'html'
+                            email_send.send()
+                            # send_html_mail(email_subject, html_content, settings.EMAIL_HOST_USER,
+                            #                [customer_id.customer_email_id, ])
 
                     else:
-                        send_text_mail(email_subject, email_msg, settings.EMAIL_HOST_USER, [customer_id.customer_email_id, ])
+                        with get_connection(
+                                host='webmail.hindustanscale.com',
+                                port=587,
+                                username='pi@hindustanscale.com',
+                                password='Hindustan@@1234',
+                                use_tls=True
+                        ) as connection:
+                            email_send = EmailMessage(email_subject,
+                                                      user(request,email_msg.replace('\n','<br>')),
+                                                      settings.EMAIL_HOST_USER3,
+                                                      [customer_id.customer_email_id, ],
+                                                      connection=connection)
+
+                            email_send.content_subtype = 'html'
+                            email_send.send()
+                        # send_text_mail(email_subject, email_msg, settings.EMAIL_HOST_USER3, [customer_id.customer_email_id, ],connection=connection)
 
                     # context28 = {
                     #     'success': "Email Sent on email Id: "+customer_id.customer_email_id,
@@ -2814,7 +2846,7 @@ def update_view_lead(request,id):
                             <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
                                 <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
     
-                                <h4>''' + email_msg + '''</h4>
+                                <h4>''' + email_msg.replace('\n','<br>') + '''</h4>
     
                                 <table style="font-size: 14px;">
     
@@ -2824,6 +2856,9 @@ def update_view_lead(request,id):
                             </table>
                                           </div>
                                                       </div>
+                                                       <br>
+                                  <br>
+                       '''+user(request)+'''     
                             </body>
                             </html>'''
 

@@ -493,6 +493,7 @@ def quick_purchase_entry(request):
 
                 item.save()
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
             site_user_id = SiteUser.objects.get(profile_name=request.user.profile_name).pk
             # item2.crm_no = Customer_Details.objects.get(id=item.pk)
@@ -500,7 +501,7 @@ def quick_purchase_entry(request):
             item2.second_person = "Small Sale"  # new1
             # item2.third_person=third_person
             item2.second_contact_no = "0000000000"  # new2
-
+            item2.payment_mode = "Cash"
             # item2.third_contact_no=third_contact_no
             item2.date_of_purchase = datetime.today().strftime('%Y-%m-%d')
             item2.product_purchase_date = datetime.today().strftime('%Y-%m-%d')
@@ -1430,11 +1431,11 @@ def add_product_details(request,id):
                     purchase.second_person) + ',' \
                          ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
                 purchase.purchase_no) + '.' \
-                         ' Ww will love to hear your feedback to help us improve' \
+                         ' We will love to hear your feedback to help us improve' \
                        ' our customer experience. Please click on the link' \
-                         ' below: \n http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
+                         ' below: <br> http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
                 purchase.crm_no.pk) + '/' + str(
-                purchase.id) + '\n For more details contact us on - 7045922250 \n Order Details:\n '+ product_list
+                purchase.id) + '<br> For more details contact us on - 7045922250 <br> Order Details:<br>     '+ product_list
 
 
 
@@ -1442,19 +1443,21 @@ def add_product_details(request,id):
                 body = message
 
                 email_text = """\
-                From: %s
-                To: %s
-                Subject: %s
-
+               
                 %s
-                """ % (sent_from,purchase.company_email, subject, body)
+                """ % (body)
 
                 try:
-                    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-                    server.ehlo()
-                    server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-                    server.sendmail(sent_from, to, email_text)
-                    server.close()
+                    email_send = EmailMessage('Dispatched, Your Hsco Purchase is Dispatched from our end',
+                                              user(request, email_text),
+                                              settings.EMAIL_HOST_USER, to )
+                    email_send.content_subtype = 'html'
+                    email_send.send()
+                    # server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+                    # server.ehlo()
+                    # server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+                    # server.sendmail(sent_from, to, email_text)
+                    # server.close()
 
                     print('Email sent!')
                 except:
@@ -1470,7 +1473,7 @@ def add_product_details(request,id):
                 purchase.second_person) + ',' \
                                           ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
                 purchase.purchase_no) + '.' \
-                                        ' WE will love to hear your feedback to help us improve' \
+                                        ' We will love to hear your feedback to help us improve' \
                                         ' our customer experience. Please click on the link' \
                                         ' below: \n http://139.59.76.87/feedback_purchase/' + str(
                 request.user.pk) + '/' + str(
@@ -1485,9 +1488,9 @@ def add_product_details(request,id):
             x = response.text
             print(x)
 
-
-
         Purchase_Details.objects.filter(id=purchase_id).update(value_of_goods=F("value_of_goods") + value_of_goods)
+        # Purchase_Details.objects.filter(id=purchase_id).update(tax_amount=F("value_of_goods") * 0.18)
+        # Purchase_Details.objects.filter(id=purchase_id).update(total_amount=F("value_of_goods") + F("tax_amount"))
 
         if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:

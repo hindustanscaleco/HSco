@@ -44,11 +44,14 @@ class Purchase_Details(models.Model):   #cleaned
     tracker = FieldTracker()
     is_quick_entry = models.BooleanField(default=False)
 
-    payment_mode = models.CharField(max_length=150, default='Cash')
+    payment_mode = models.CharField(max_length=150,null=True, blank=True )
     bank_name = models.CharField(max_length=150, null=True, blank=True)
     cheque_no = models.TextField(null=True, blank=True)
     cheque_date = models.DateField(default=datetime.date.today)
-    cheque_notes = models.TextField( null=True, blank=True)
+    # cheque_notes = models.TextField( null=True, blank=True)
+    tax_amount = models.FloatField(default=0.0)
+    total_amount = models.FloatField(default=0.0)
+
 
     def __int__(self):
         return self.id
