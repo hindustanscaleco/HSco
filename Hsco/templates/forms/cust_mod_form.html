@@ -487,18 +487,6 @@ Format : (company name)
 
 <div class="form-group row">
 
-  <!--<label class="col-md-2 control-label">Value of Goods-->
-
-
-
-<!--</label>-->
-  <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-  <!--<input  name="value_of_goods" required placeholder="Rate x quantity" class="form-control" step="0.2" type="number">-->
-    <!--</div>-->
-  <!--</div>-->
-
 
 
     <label class="col-md-2 control-label">Channel of Dispatch *
@@ -553,6 +541,7 @@ Format : (company name)
   <!--</div>-->
   </div>
 
+
       <div class="form-group row">
 
   <label class="col-md-2 control-label">Payment Mode *
@@ -561,16 +550,38 @@ Format : (company name)
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
 <select name="payment_mode" id="payment_mode" onchange="show()"  required class="form-control">
+  <option value="">Select</option>
   <option value="Cash">Cash</option>
   <option  value="Cheque">Cheque</option>
+  <!--<option  value="Credit">Credit</option>-->
+  <!--<option  value="Razorpay">Razorpay</option>-->
+  <!--<option  value="NEFT">NEFT</option>-->
 </select>
     </div>
   </div>
+
+<label class="col-md-2 control-label">GST*
+
+
+</label>
+
+              <div class="col xl-12">
+                  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+
+    <input type="checkbox" class="custom-control-input" id="gst_id"  name="gst"     >
+
+  <label class="custom-control-label"  for="gst_id"></label>
+  </div>
+</div>
+
+              </div>
 
 
 
 
 </div>
+
       <div id="payment_cheque" style="display: none;">
             <div class="form-group row">
 
@@ -611,16 +622,16 @@ Format : (company name)
     </div>
   </div>
 
-  <label class="col-md-2 control-label">Cheque Notes*
+  <!--<label class="col-md-2 control-label">Cheque Notes*-->
 
 
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-    <textarea   name="cheque_notes" id="cheque_notes" rows="6" placeholder="Cheque Notes" class="form-control" ></textarea>
-    </div>
-  </div>
+<!--</label>-->
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+    <!--<textarea   name="cheque_notes" id="cheque_notes" rows="6" placeholder="Cheque Notes" class="form-control" ></textarea>-->
+    <!--</div>-->
+  <!--</div>-->
 
 </div>
       </div>

@@ -1899,13 +1899,16 @@ def update_view_lead(request,id):
                     password='Hindustan@@1234',
                     use_tls=True
             ) as connection:
+                extra='''<h4>Hello Sir/Madam <br>PFA<br>Thanks<br>Sales Team - HSCo<br></h4>
+             
+              <br>'''
 
-                email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, '',
+                email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request,extra),
                                       settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],connection=connection)
-                part1 = MIMEText(text, 'plain')
-                part2 = MIMEText(user(request), 'html')
-                email_send.attach(part1)
-                email_send.attach(part2)
+                # part1 = MIMEText(text, 'plain')
+                # part2 = MIMEText(user(request), 'html')
+                # email_send.attach(part1)
+                email_send.content_subtype = 'html'
                 email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
                 email_send.send()
 
@@ -2576,7 +2579,7 @@ def update_view_lead(request,id):
         <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
             <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
             
-            <h4>'''+email_msg+'''</h4>
+            <h4>'''+email_msg.replace('\n','<br>')+'''</h4>
             
             <table style="font-size: 14px;">
             
@@ -2586,17 +2589,50 @@ def update_view_lead(request,id):
         </table>
                       </div>
                                   </div>
+                                  <br>
+                                  <br>
+                       '''+user(request)+'''           
         </body>
         </html>'''
 
                         file = ContentFile(html_content)
                         history_follow.followup_history_file.save('AutoFollowup.html', file, save=False)
                         history_follow.html_content = html_content
-                        send_html_mail(email_subject, html_content, settings.EMAIL_HOST_USER,
-                                       [customer_id.customer_email_id, ])
+                        with get_connection(
+                                host='webmail.hindustanscale.com',
+                                port=587,
+                                username='pi@hindustanscale.com',
+                                password='Hindustan@@1234',
+                                use_tls=True
+                        ) as connection:
+                            email_send = EmailMessage(email_subject,
+                                                      html_content,
+                                                      settings.EMAIL_HOST_USER3,
+                                                      [customer_id.customer_email_id, ],
+                                                      connection=connection)
+
+                            email_send.content_subtype = 'html'
+                            email_send.send()
+                            # send_html_mail(email_subject, html_content, settings.EMAIL_HOST_USER,
+                            #                [customer_id.customer_email_id, ])
 
                     else:
-                        send_text_mail(email_subject, email_msg, settings.EMAIL_HOST_USER, [customer_id.customer_email_id, ])
+                        with get_connection(
+                                host='webmail.hindustanscale.com',
+                                port=587,
+                                username='pi@hindustanscale.com',
+                                password='Hindustan@@1234',
+                                use_tls=True
+                        ) as connection:
+                            email_send = EmailMessage(email_subject,
+                                                      user(request,email_msg.replace('\n','<br>')),
+                                                      settings.EMAIL_HOST_USER3,
+                                                      [customer_id.customer_email_id, ],
+                                                      connection=connection)
+
+                            email_send.content_subtype = 'html'
+                            email_send.send()
+                        # send_text_mail(email_subject, email_msg, settings.EMAIL_HOST_USER3, [customer_id.customer_email_id, ],connection=connection)
 
                     # context28 = {
                     #     'success': "Email Sent on email Id: "+customer_id.customer_email_id,
@@ -2816,7 +2852,7 @@ def update_view_lead(request,id):
                             <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
                                 <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
     
-                                <h4>''' + email_msg + '''</h4>
+                                <h4>''' + email_msg.replace('\n','<br>') + '''</h4>
     
                                 <table style="font-size: 14px;">
     
@@ -2826,6 +2862,9 @@ def update_view_lead(request,id):
                             </table>
                                           </div>
                                                       </div>
+                                                       <br>
+                                  <br>
+                       '''+user(request)+'''     
                             </body>
                             </html>'''
 

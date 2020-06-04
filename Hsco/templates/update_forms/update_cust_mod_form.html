@@ -456,7 +456,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods" placeholder="Value of Goods"  value="{{purchase_id_id.value_of_goods}}" class="form-control" step="0.2" type="number" disabled id="myText25">
+  <input  name="value_of_goods"  placeholder="Value of Goods"  value="{{purchase_id_id.value_of_goods}}" class="form-control" step="0.2" type="number" disabled id="myText25">
     </div>
   </div>
     </div>
@@ -491,39 +491,56 @@ function myFunction() {
     </div>
 
 
-    <div class="form-group row">
-        <label class="col-md-2 control-label">Feedback Form Filled</label>
-    <div class="col-md-4 inputGroupContainer">
-      <div class="input-group">
-        <span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>
-        <input class="form-control" name="feedback_form_filled" placeholder="Yes or No" disabled id="myText23" list="rep_by" value="{% if purchase_id_id.feedback_form_filled %} YES {% else %} NO {% endif %}">
-            <datalist style="height:20px;" id="rep_by">
+    <!--<div class="form-group row">-->
+        <!--<label class="col-md-2 control-label">Feedback Form Filled</label>-->
+    <!--<div class="col-md-4 inputGroupContainer">-->
+      <!--<div class="input-group">-->
+        <!--<span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>-->
+        <!--<input class="form-control" name="feedback_form_filled" placeholder="Yes or No" disabled id="myText23" list="rep_by" value="{% if purchase_id_id.feedback_form_filled %} YES {% else %} NO {% endif %}">-->
+            <!--<datalist style="height:20px;" id="rep_by">-->
 
-      <option value="YES">
-      <option value="NO">
+      <!--<option value="YES">-->
+      <!--<option value="NO">-->
 
-    </datalist>
-      </div>
-    </div>
-
-
-
-    <label class="col-md-2 control-label">Dispatch ID Assigned
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
-  <input  name="dispatch_id_assigned" placeholder="Dispatch ID Assigned" class="form-control" disabled value="{{purchase_id_id.dispatch_id_assigned.dispatch_no}}" type="text">
-    </div>
-        {% if purchase_id_id.dispatch_id_assigned %}
-        <a style="margin-left:30%;" href="/update_dispatch_details/{{purchase_id_id.dispatch_id_assigned}}">Go To Dispatch --></a>
-        {% endif %}
-  </div>
+    <!--</datalist>-->
+      <!--</div>-->
+    <!--</div>-->
 
 
-    </div>
+
+    <!--<label class="col-md-2 control-label">Dispatch ID Assigned-->
+
+<!--</label>-->
+
+    <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>-->
+  <!--<input  name="dispatch_id_assigned" placeholder="Dispatch ID Assigned" class="form-control" disabled value="{{purchase_id_id.dispatch_id_assigned.dispatch_no}}" type="text">-->
+    <!--</div>-->
+        <!--{% if purchase_id_id.dispatch_id_assigned %}-->
+        <!--<a style="margin-left:30%;" href="/update_dispatch_details/{{purchase_id_id.dispatch_id_assigned}}">Go To Dispatch &ndash;&gt;</a>-->
+        <!--{% endif %}-->
+  <!--</div>-->
+
+
+    <!--</div>-->
+        <!--<div class="form-group row">-->
+        <!--<label class="col-md-2 control-label">Tax Amount</label>-->
+        <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+  <!--<input  name="tax_amount" id="tax_amt_id" onchange="calculate_total_amount()" value="{{purchase_id_id.tax_amount}}" placeholder="Tax Amount" class="form-control" step="0.2"  type="number">-->
+    <!--</div>-->
+  <!--</div>-->
+<!--<label class="col-md-2 control-label">Total Amount</label>-->
+        <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+  <!--<input  name="total_amount" id="total_amt_id" value="{{purchase_id_id.total_amount}}" placeholder="Total Amount" class="form-control" step="0.2"  type="number">-->
+    <!--</div>-->
+  <!--</div>-->
+    <!--</div>-->
+
 <div class="form-group row">
 
   <label class="col-md-2 control-label">Payment Mode *
@@ -965,7 +982,22 @@ tr:nth-child(even) {
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+<!--<script type="text/javascript">-->
+      <!--function tax_amount(){-->
+      <!--tax_amt = document.getElementById("tax_amt_id").value-->
+    <!--var value_of_goods = parseFloat(document.getElementById("myText25").value);-->
+            <!--var tax_amount =Math.floor(value_of_goods * 0.18);-->
+            <!--document.getElementById("tax_amt_id").value = tax_amount;-->
+<!--}-->
 
+<!--function calculate_total_amount(){-->
+    <!--var value_of_goods = parseFloat(document.getElementById("myText25").value);-->
+    <!--var tax_amount = parseFloat(document.getElementById("tax_amt_id").value);-->
+
+            <!--var total_amount =Math.floor(value_of_goods + tax_amount);-->
+            <!--document.getElementById("total_amt_id").value = total_amount;-->
+<!--}-->
+  <!--</script>-->
 
 
   <!-- Bootstrap core JavaScript-->
