@@ -1295,16 +1295,12 @@ def add_lead(request):
         lost_reason = request.POST.get('lost_reason')
         postponed_reason = request.POST.get('postponed_reason')
 
-
-
         item2 = Lead()
         if Lead_Customer_Details.objects.filter(customer_name=customer_name,
                                            contact_no=contact_no).count() > 0:
 
             item2.customer_id = Lead_Customer_Details.objects.filter(contact_no=contact_no).first()
-
-            item3 = Lead_Customer_Details.objects.filter(customer_name=customer_name,
-                                                    contact_no=contact_no).first()
+            item3 = Lead_Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).first()
             if company_name != '' and company_name != None:
                 item3.company_name = company_name
                 item3.save(update_fields=['company_name'])
