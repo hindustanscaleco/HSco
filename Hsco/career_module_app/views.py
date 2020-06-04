@@ -388,9 +388,9 @@ def career_module_form(request):
 
         msg = "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!"
         email_msg = "Thanks for showing interest in Hindustan Scale Co. We have received your application and your application number is " + str(
-            application_number) + ". We will connect with you soon and instruct you further.\n\n" \
-                                  "Established in the year 1955, Hindustan Scale Co is an ISO 9001:2015 certified organization, engaged in manufacturing, importing and exporting of a wide range of Digital Weighing Scales, Mechanical Weighing Scales, Weights and Weighing Software at economic cost with top notch quality. We also specialize in providing engineering solutions to handle weighing scales. These are acclaimed for high tensile strength, long service life and higher efficiency.\n\n" \
-                                  "Leveraging on advanced manufacturing facilities from different nations, we have been successfully catering to the Weights and Measures Legal Metrology approved Commercial and Domestic Weighing Needs of clients from Public sector, Private sector OEMs and Central & State Government Departments. Our team of scrupulous quality control professionals strictly monitor every stage to ensure International standards of quality. In addition, we also offer third party inspections from reputed agencies such as NABL etc. before the products are dispatched to the client.\n\n" \
+            application_number) + ". We will connect with you soon and instruct you further.<br><br>" \
+                                  "Established in the year 1955, Hindustan Scale Co is an ISO 9001:2015 certified organization, engaged in manufacturing, importing and exporting of a wide range of Digital Weighing Scales, Mechanical Weighing Scales, Weights and Weighing Software at economic cost with top notch quality. We also specialize in providing engineering solutions to handle weighing scales. These are acclaimed for high tensile strength, long service life and higher efficiency.<br><br>" \
+                                  "Leveraging on advanced manufacturing facilities from different nations, we have been successfully catering to the Weights and Measures Legal Metrology approved Commercial and Domestic Weighing Needs of clients from Public sector, Private sector OEMs and Central & State Government Departments. Our team of scrupulous quality control professionals strictly monitor every stage to ensure International standards of quality. In addition, we also offer third party inspections from reputed agencies such as NABL etc. before the products are dispatched to the client.<br><br>" \
                                   "Due to our brilliant engineering and service-oriented attitude, we have successfully garnered the trust of most of the reputed global clients from across the world. "
         try:
 
@@ -410,13 +410,11 @@ def career_module_form(request):
                     use_tls=True
             ) as connection:
 
-                email_send = EmailMessage('HSCo - Career, Form Submitted Successfully!!! ',
-                                          '', settings.EMAIL_HOST_USER2,
-                          [candidate_email,'jobs@hindustanscale.com' ],connection=connection)
-                part1 = MIMEText(email_msg, 'plain')
-                part2 = MIMEText(user(request), 'html')
-                email_send.attach(part1)
-                email_send.attach(part2)
+                email_send = EmailMessage('HSCo - Career, Form Submitted Successfully!!! ' ,
+                                          user(request, email_msg),
+                                          settings.EMAIL_HOST_USER2, [candidate_email,'jobs@hindustanscale.com' ],
+                                          connection=connection)
+                email_send.content_subtype = 'html'
                 email_send.send()
         except:
             print("exception occured!!")
@@ -561,9 +559,9 @@ def career_module_form_hsc(request):
 
         messages.success(request, "Thank You For Interest, Your application no is " + str(application_number) + ". Our Team Will Get In Touch With You Soon!!!")
         msg = "Thank You For Interest, Your application no is "+str(application_number)+". Our Team Will Get In Touch With You Soon!!!"
-        email_msg = "Thanks for showing interest in Hindustan Scale Co. We have received your application and your application number is "+str(application_number)+". We will connect with you soon and instruct you further.\n\n" \
-            "Established in the year 1955, Hindustan Scale Co is an ISO 9001:2015 certified organization, engaged in manufacturing, importing and exporting of a wide range of Digital Weighing Scales, Mechanical Weighing Scales, Weights and Weighing Software at economic cost with top notch quality. We also specialize in providing engineering solutions to handle weighing scales. These are acclaimed for high tensile strength, long service life and higher efficiency.\n\n"\
-            "Leveraging on advanced manufacturing facilities from different nations, we have been successfully catering to the Weights and Measures Legal Metrology approved Commercial and Domestic Weighing Needs of clients from Public sector, Private sector OEMs and Central & State Government Departments. Our team of scrupulous quality control professionals strictly monitor every stage to ensure International standards of quality. In addition, we also offer third party inspections from reputed agencies such as NABL etc. before the products are dispatched to the client.\n\n"\
+        email_msg = "Thanks for showing interest in Hindustan Scale Co. We have received your application and your application number is "+str(application_number)+". We will connect with you soon and instruct you further.<br><br>" \
+            "Established in the year 1955, Hindustan Scale Co is an ISO 9001:2015 certified organization, engaged in manufacturing, importing and exporting of a wide range of Digital Weighing Scales, Mechanical Weighing Scales, Weights and Weighing Software at economic cost with top notch quality. We also specialize in providing engineering solutions to handle weighing scales. These are acclaimed for high tensile strength, long service life and higher efficiency.<br><br>"\
+            "Leveraging on advanced manufacturing facilities from different nations, we have been successfully catering to the Weights and Measures Legal Metrology approved Commercial and Domestic Weighing Needs of clients from Public sector, Private sector OEMs and Central & State Government Departments. Our team of scrupulous quality control professionals strictly monitor every stage to ensure International standards of quality. In addition, we also offer third party inspections from reputed agencies such as NABL etc. before the products are dispatched to the client.<br><br>"\
             "Due to our brilliant engineering and service-oriented attitude, we have successfully garnered the trust of most of the reputed global clients from across the world. "
 
         try:
@@ -582,14 +580,11 @@ def career_module_form_hsc(request):
                     password='Hindustan@@1234',
                     use_tls=True
             ) as connection:
-
                 email_send = EmailMessage('HSCo - Career, Form Submitted Successfully!!! ',
-                                          '', settings.EMAIL_HOST_USER2,
-                          [candidate_email,'jobs@hindustanscale.com' ],connection=connection)
-                part1 = MIMEText(email_msg, 'plain')
-                part2 = MIMEText(user(request), 'html')
-                email_send.attach(part1)
-                email_send.attach(part2)
+                                          user(request, email_msg),
+                                          settings.EMAIL_HOST_USER2, [candidate_email, 'jobs@hindustanscale.com'],
+                                          connection=connection)
+                email_send.content_subtype = 'html'
                 email_send.send()
 
         except:

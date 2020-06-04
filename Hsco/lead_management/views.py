@@ -55,9 +55,9 @@ def lead_home(request):
     last_date = IndiamartLeadDetails.objects.latest('to_date').to_date.strftime('%d-%b-%Y')
     from_date = last_date
     import datetime
-    to_date = datetime.datetime.today().strftime('%d-%b-%Y')
-    # to_date = IndiamartLeadDetails.objects.latest('to_date').to_date + datetime.timedelta(days = 5)
-    # to_date = to_date.strftime('%d-%b-%Y')
+    # to_date = datetime.datetime.today().strftime('%d-%b-%Y')
+    to_date = IndiamartLeadDetails.objects.latest('to_date').to_date + datetime.timedelta(days = 8)
+    to_date = to_date.strftime('%d-%b-%Y')
     print('to_date')
     print(to_date)
 
@@ -2126,7 +2126,7 @@ def update_view_lead(request,id):
                 history.save()
 
             try:
-                text = 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo\n\n'
+                extra = 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo\n\n'
 
                 if email == 'True' and upload_pi_file == None and email_type == 'external_pi':
                     pi_file = Pi_section.objects.filter(lead_id=id).latest('pk').upload_pi_file
@@ -2147,17 +2147,14 @@ def update_view_lead(request,id):
                             use_tls=True
                     ) as connection:
 
-                        email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, '',
+
+                        email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
+                                                  user(request, extra),
                                                   settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],
                                                   connection=connection)
-                        part1 = MIMEText(text, 'plain')
-                        part2 = MIMEText(user(request), 'html')
-                        email_send.attach(part1)
-                        email_send.attach(part2)
+                        email_send.content_subtype = 'html'
                         email_send.attach_file(history.pi_history_file.path)
                         email_send.send()
-
-
                     messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
                 elif email == 'True' and upload_pi_file !=None and email_type == 'external_pi':
                     pi_file = upload_pi_file
@@ -2176,16 +2173,13 @@ def update_view_lead(request,id):
                             use_tls=True
                     ) as connection:
 
-                        email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, '',
+                        email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
+                                                  user(request, extra),
                                                   settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],
                                                   connection=connection)
-                        part1 = MIMEText(text, 'plain')
-                        part2 = MIMEText(user(request), 'html')
-                        email_send.attach(part1)
-                        email_send.attach(part2)
+                        email_send.content_subtype = 'html'
                         email_send.attach_file(history.pi_history_file.path)
                         email_send.send()
-
                     messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
 
             except Exception as pi_file_error:

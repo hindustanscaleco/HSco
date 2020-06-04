@@ -392,19 +392,19 @@ def dispatch_product(request,id):
         item.log_entered_by = request.user.name
         item.godown_id = Godown.objects.get(id=godown)
         try:
-            if sub_sub_model != '':
+            if (sub_sub_model != None and sub_sub_model != ""):
                 product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                                  sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
 
                 if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
-                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity:
+                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > float(quantity):
                         GodownProduct.objects.filter(godown_id=godown, product_id=product_id).update(
                             quantity=F("quantity") - quantity)
-            elif sub_model != '':
+            elif (sub_model != None and sub_model != ""):
                 product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                                  sub_category__name=sub_model, sub_sub_category__name=None)
                 if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
-                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity:
+                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > float(quantity):
                         GodownProduct.objects.filter(godown_id=godown, product_id=product_id).update(
                             quantity=F("quantity") - quantity)
         except:
@@ -1123,7 +1123,6 @@ def update_dispatch_details(request,update_id):
             product_list = ''' '''
             pro_lis = Product_Details_Dispatch.objects.filter(dispatch_id=dispatch_item.pk)
             if lr_no != dispatch_item.lr_no:
-
                 for idx, item2 in enumerate(pro_lis):
                     # for it in item:
 
@@ -1144,46 +1143,45 @@ def update_dispatch_details(request,update_id):
                         item2.value_of_goods,
                     )
                     product_list = product_list + '' + str(email_body_text)
-
                 try:
                     pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).purchase_no
-                    # msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through" \
-                    # " " + transport_name + ", having LR Number " + lr_no + ". Please track the" \
-                    # " details on the transporters website"+'\nHere is the list of product dispatched:\n' + product_list
-
-                    msg ='Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
-                         ' is dispatched from our end with Dispatch ID ' + str(
-                    item.dispatch_no) + ' and LR No '+ lr_no +' by ' + transport_name +'. For more details contact us on - 7045922252 \n Dispatch Details:\n'+product_list
-
-                    part1 = MIMEText(msg, 'plain')
-                    part2 = MIMEText(user(request), 'html')
-                    email_send = EmailMessage('Dispatched, Your Hsco Purchase is Dispatched from our end',
-                                              '', settings.EMAIL_HOST_USER,
-                                              [dispatch_item.company_email, ])
-                    email_send.attach(part1)
-                    email_send.attach(part2)
-                    email_send.send()
-
-                    print("send mail!!")
                 except:
-                    print("exception occured!!")
-                    pass
+                    pur_id = Dispatch.objects.get(id=update_id)
+                # msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through" \
+                # " " + transport_name + ", having LR Number " + lr_no + ". Please track the" \
+                # " details on the transporters website"+'\nHere is the list of product dispatched:\n' + product_list
+                msg ='Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
+                     ' is dispatched from our end with Dispatch ID ' + str(
+                item.dispatch_no) + ' and LR No '+ lr_no +' by ' + transport_name +'. For more details contact us on - 7045922252 \n Dispatch Details:\n'+product_list
+
+
+                email_send = EmailMessage('Dispatched, Your Hsco Purchase is Dispatched from our end',
+                                          user(request, msg),
+                                          settings.EMAIL_HOST_USER, [dispatch_item.company_email, ])
+                email_send.content_subtype = 'html'
+                email_send.send()
+                print(" mail send!!")
+
 
                 # msg_old = "Dear " + customer_name + ", Your goods have been successfully dispatched through " + transport_name + ", having LR Number " + lr_no + ". Please track the details on the transporters website"
                 try:
                     pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).purchase_no
                 except:
                     pur_id = Dispatch.objects.get(id=update_id)
-                msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
-                                                ' is dispatch from our end with Dispatch ID ' \
-                      + str(item.dispatch_no)+ ' and LR No ' + lr_no + ' by ' + transport_name + '. For more details contact us on - 7045922252'
+                try:
+                    msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
+                                                    ' is dispatch from our end with Dispatch ID ' \
+                          + str(item.dispatch_no)+ ' and LR No ' + str(lr_no) + ' by ' + str(transport_name) + '. For more details contact us on - 7045922252'
 
-                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
-                payload = ""
-                headers = {'content-type': 'application/x-www-form-urlencoded'}
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    payload = ""
+                    headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-                response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                x = response.text
+                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    x = response.text
+                except Exception as e:
+                    print('msg not send!!!')
+                    print(e)
 
 
         if (current_stage_in_db == 'dispatch q') and (dispatch_by != '' and dispatch_by != None) and dispatch_by != dispatch_item.dispatch_by  :
@@ -1241,7 +1239,7 @@ def update_dispatch_details(request,update_id):
 
         item.save(update_fields=['second_person','second_contact_no', 'dispatch_done_timedate','log_entered_by','packed_by',
                                  'hamal_name','no_bundles','transport_name','lr_no','photo_lr_no','channel_of_dispatch',
-                                 'notes','second_company_name','company_address','company_email','billing_address','shipping_address']),
+                                 'notes','second_company_name','company_address','company_email','bill_address','shipping_address']),
 
         # item.save(update_fields=[ ]),
         # item.save(update_fields=[ ]),
