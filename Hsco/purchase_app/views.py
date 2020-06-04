@@ -493,6 +493,7 @@ def quick_purchase_entry(request):
 
                 item.save()
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
+            item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
             site_user_id = SiteUser.objects.get(profile_name=request.user.profile_name).pk
             # item2.crm_no = Customer_Details.objects.get(id=item.pk)
@@ -500,7 +501,7 @@ def quick_purchase_entry(request):
             item2.second_person = "Small Sale"  # new1
             # item2.third_person=third_person
             item2.second_contact_no = "0000000000"  # new2
-
+            item2.payment_mode = "Cash"
             # item2.third_contact_no=third_contact_no
             item2.date_of_purchase = datetime.today().strftime('%Y-%m-%d')
             item2.product_purchase_date = datetime.today().strftime('%Y-%m-%d')
@@ -1485,9 +1486,9 @@ def add_product_details(request,id):
             x = response.text
             print(x)
 
-
-
         Purchase_Details.objects.filter(id=purchase_id).update(value_of_goods=F("value_of_goods") + value_of_goods)
+        # Purchase_Details.objects.filter(id=purchase_id).update(tax_amount=F("value_of_goods") * 0.18)
+        # Purchase_Details.objects.filter(id=purchase_id).update(total_amount=F("value_of_goods") + F("tax_amount"))
 
         if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
