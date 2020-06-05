@@ -639,18 +639,20 @@ def update_career_module_from(request,id):
         'open_and_short_circuit': career_module_id.open_and_short_circuit,
     }
     positions = Position.objects.filter(~Q(position=career_module_id.choose_position.position))
+    context = {}
 
-    latest_work_exp_id = WorkExperience.objects.filter(career_id=id).latest('id').id
-    latest_edu_details_id = EducationalDetails.objects.filter(career_id=id).latest('id').id
+    try:
+        latest_work_exp_id = WorkExperience.objects.filter(career_id=id).latest('id').id
+        latest_edu_details_id = EducationalDetails.objects.filter(career_id=id).latest('id').id
 
-    context = {
-        'work_exp_list': work_exp_list,
-        'edu_details_list': edu_details_list,
-        'career_module_id': career_module_id,
-        'latest_work_exp_id': latest_work_exp_id,
-        'latest_edu_details_id': latest_edu_details_id,
-        'positions': positions,
-    }
+        context1 = {
+            'latest_work_exp_id': latest_work_exp_id,
+            'latest_edu_details_id': latest_edu_details_id,
+        }
+        context.update(context1)
+
+    except:
+        pass
 
     career_form = Career_moduleForm(initial=career_module_initial_data)
     # education_form = EducationForm(initial=education_initial_data)
@@ -836,14 +838,12 @@ def update_career_module_from(request,id):
             edu_detail.save(update_fields=['institute_name', 'course', 'year_of_completion', 'percentage','achievements'])
         return redirect('/update_career_module_from/'+str(id))
 
-    context1 = {
+    context2= {
         'career_form':career_form,
         'work_exp_list':work_exp_list,
         'edu_details_list':edu_details_list,
         'career_module_id':career_module_id,
-        'latest_work_exp_id':latest_work_exp_id,
-        'latest_edu_details_id':latest_edu_details_id,
         'positions':positions,
     }
-    context.update(context1)
+    context.update(context2)
     return render(request,'career_module/update_career_module_from.html',context)
