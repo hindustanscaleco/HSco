@@ -58,7 +58,7 @@ class Employee_Leave(models.Model):
 
 
 class Employee_Analysis_month(models.Model):
-    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE, null=True, blank=True)
     manager_id = models.CharField(max_length=60, null=True, blank=True)
     is_employee_of_month = models.BooleanField(default=False,null=True, blank=True )
     #TARGETS_GIVEN

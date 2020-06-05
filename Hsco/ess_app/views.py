@@ -21,6 +21,7 @@ from .models import Employee_Leave, Defects_Warning, Employee_Analysis_month
 from purchase_app.models import Feedback
 from repairing_app.models import Repairing_Feedback
 from amc_visit_app.models import AMC_Feedback
+from django.contrib import messages
 
 def add_ess_details(request):
     if request.method == 'POST' or  request.method=='FILES':
@@ -383,7 +384,7 @@ def employee_profile(request,id):
         context.update(context2)
     if request.method == 'POST' and 'submit2' in request.POST:
         salary_date = request.POST.get('salary_date')
-        salary_date = datetime.strptime(salary_date, "%Y-%m-%d")
+        salary_date = datetime.strptime(salary_date, "%Y-%m")
         salary_date = salary_date.month
         salary_date2 = calendar.month_name[salary_date]
 
@@ -396,8 +397,10 @@ def employee_profile(request,id):
                 'salary_date': salary_date2,
             }
             context.update(context2)
+
         else:
-            pass
+            messages.error(request, 'Salary Slip for selected month does not exist !!!')
+            return redirect('/employee_profile/' + str(id))
 
 
     elif request.method == 'POST'  and 'submit1' in request.POST:
@@ -516,7 +519,7 @@ def employee_profile(request,id):
     elif request.method == 'POST' or request.method =='FILES' and 'submit6' in request.POST:
         upload_slip = request.FILES.get('upload_slip')
         salary_date = request.POST.get('salary_date')
-        salary_date = datetime.strptime(salary_date, "%Y-%m-%d")
+        salary_date = datetime.strptime(salary_date, "%Y-%m")
         salary_date = salary_date.month
         if Employee_Analysis_month.objects.filter(user_id=id, entry_date__month=salary_date).count() > 0:
 
@@ -524,12 +527,14 @@ def employee_profile(request,id):
 
             slip.salary_slip = upload_slip
             slip.save(update_fields=['salary_slip',])
-            return HttpResponse('Salary Slip Updated!!!')
+            messages.success(request, 'Salary Slip Updated!!!')
+            return redirect('/employee_profile/' + str(id))
         else:
             new_slip= Employee_Analysis_month()
             new_slip.salary_slip = upload_slip
             new_slip.save()
-            return HttpResponse('Salary Slip Uploaded!!!')
+            messages.success(request, 'Salary Slip Uploaded!!!')
+            return redirect('/employee_profile/' + str(id))
 
 
     return render(request,'dashboardnew/employee_profile.html',context)
