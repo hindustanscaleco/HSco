@@ -1975,28 +1975,55 @@ def update_view_lead(request,id):
             item2 = Lead.objects.get(id=id)
 
             item3 = Lead_Customer_Details.objects.get(id=lead_id.customer_id)
+            if Lead_Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).count()>0:
+                item3 = Lead_Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).order_by('-id')[0]
+                if customer_name != '' and customer_name != None:
+                    item3.customer_name = customer_name
+                    item3.save(update_fields=['customer_name'])
+                if contact_no != '' and contact_no != None:
+                    item3.contact_no = contact_no
+                    item3.save(update_fields=['contact_no'])
+                if company_name != '' and company_name != None:
+                    item3.company_name = company_name
+                    item3.save(update_fields=['company_name'])
+                if address != '' and address != None:
+                    item3.address = address
+                    item3.save(update_fields=['address'])
+                if customer_email_id != '' and customer_email_id != None:
+                    item3.customer_email_id = customer_email_id
+                    item3.save(update_fields=['customer_email_id'])
+                if customer_gst_no != '' and customer_gst_no != None:
+                    item3.customer_gst_no = customer_gst_no
+                    item3.save(update_fields=['customer_gst_no'])
+                if customer_industry != '' and customer_industry != None:
+                    item3.customer_industry = customer_industry
+                    item3.save(update_fields=['customer_industry'])
+                Lead.objects.filter(id=id).update(customer_id=item3)
+                # Lead_Customer_Details.objects.filter(id=lead_id.customer_id).update()
+                    
+            else:
+                if customer_name != '' and customer_name != None:
+                    item3.customer_name = customer_name
+                    item3.save(update_fields=['customer_name'])
+                if contact_no != '' and contact_no != None:
+                    item3.contact_no = contact_no
+                    item3.save(update_fields=['contact_no'])
+                if company_name != '' and company_name != None:
+                    item3.company_name = company_name
+                    item3.save(update_fields=['company_name'])
+                if address != '' and address != None:
+                    item3.address = address
+                    item3.save(update_fields=['address'])
+                if customer_email_id != '' and customer_email_id != None:
+                    item3.customer_email_id = customer_email_id
+                    item3.save(update_fields=['customer_email_id'])
+                if customer_gst_no != '' and customer_gst_no != None:
+                    item3.customer_gst_no = customer_gst_no
+                    item3.save(update_fields=['customer_gst_no'])
+                if customer_industry != '' and customer_industry != None:
+                    item3.customer_industry = customer_industry
+                    item3.save(update_fields=['customer_industry'])
 
-            if customer_name != '' and customer_name != None:
-                item3.customer_name = customer_name
-                item3.save(update_fields=['customer_name'])
-            if contact_no != '' and contact_no != None:
-                item3.contact_no = contact_no
-                item3.save(update_fields=['contact_no'])
-            if company_name != '' and company_name != None:
-                item3.company_name = company_name
-                item3.save(update_fields=['company_name'])
-            if address != '' and address != None:
-                item3.address = address
-                item3.save(update_fields=['address'])
-            if customer_email_id != '' and customer_email_id != None:
-                item3.customer_email_id = customer_email_id
-                item3.save(update_fields=['customer_email_id'])
-            if customer_gst_no != '' and customer_gst_no != None:
-                item3.customer_gst_no = customer_gst_no
-                item3.save(update_fields=['customer_gst_no'])
-            if customer_industry != '' and customer_industry != None:
-                item3.customer_industry = customer_industry
-                item3.save(update_fields=['customer_industry'])
             messages.success(request, 'Customer Details Saved Successfully!!!')
             return redirect('/update_view_lead/'+str(id))
 
