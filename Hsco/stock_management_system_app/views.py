@@ -386,8 +386,8 @@ def update_godown(request,godown_id):
         assign_users = SiteUser.objects.filter(~Q(id=godown.goddown_assign_to.id))
     elif request.user.role == 'Admin':
         assign_users = SiteUser.objects.filter(Q(modules_assigned__icontains= 'Stock')&Q(admin__contains= request.user.profile_name)
-                                           &~Q(id=godown.goddown_assign_to.id))| \
-                   SiteUser.objects.filter(Q(modules_assigned__icontains='Stock')&Q(id=request.user.id)&~Q(id=godown.goddown_assign_to.id))
+                                               )| \
+                       SiteUser.objects.filter(Q(modules_assigned__icontains='Stock')&Q(id=request.user.id))
 
     type_of_purchase_list = type_purchase.objects.all()  # 1
     products = Product.objects.all()
@@ -434,7 +434,8 @@ def update_godown(request,godown_id):
             return render(request, 'stock_management_system/update_godown.html', context)
         if 'submit2' in request.POST:
             product_id = request.POST.get('product_id')
-            GodownProduct.objects.get(id=product_id).delete()
+
+            GodownProduct.objects.get(godown_id=godown_id,product_id__id=product_id).delete()
             context1 = {
                 'product_deleted': "Product Removed From Godown Successfully!!!",
                 'godown_products': godown_products,

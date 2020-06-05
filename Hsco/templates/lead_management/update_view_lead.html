@@ -645,7 +645,6 @@ myFunction225();
 
                               <option value="{{request.user.profile_name}}">{{request.user.profile_name}}</option>
                     {% for user in under_admin_users %}
-              <option value="{{lead_id.owner_of_opportunity.name}}">{{lead_id.owner_of_opportunity.name}}</option>
       <option value="{{user.profile_name}}">{{user.profile_name}}</option>
           {% endfor %}
     </select>                           </div>
@@ -844,7 +843,7 @@ tr:nth-child(even) {
 
 
                           </div>
-               {% if pi_id.first_submit == True  %}
+               {% if pi_id.select_gst_type !=  None  %}
 
                          <center>
 <button type="button" onclick="pdf_download_manual()" name="download_pi"  style="background-color: #FC6E20;" class="btn btn-primary">Download PI</button>
@@ -952,7 +951,7 @@ tr:nth-child(even) {
                          <!--<center>-->
                  <!--<button type="button" onclick="document.getElementById('primaryButton').click()" name="secondaryButton"  style="background-color: #FC6E20;" class="btn btn-primary">Save</button>-->
 <!--</center>-->
-               {% if pi_id.first_submit == True  %}
+               {% if pi_id.select_gst_type !=  None  %}
 
       <center>
 <button type="button" onclick="pdf_download_manual()" name="download_pi"  style="background-color: #FC6E20;" class="btn btn-primary">Download PI</button>
