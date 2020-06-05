@@ -82,6 +82,27 @@ color:;
 <br>
 <br>
   </div>
+   {% if messages %}
+    {% for message in messages %}
+             {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% endif %}
+
+             {% endfor %}
+
+{% endif %}
 <br>
 
 
@@ -663,7 +684,7 @@ if(regpan.test(panVal)){
     <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="salary_date" placeholder="Sales Target" class="form-control"  type=date >
+  <input  name="salary_date" placeholder="Sales Target" class="form-control"  type=month  >
     </div>
   </div>
                          <br>  <button style="background-color: #FC6E20;" name="submit2" type="submit" >Submit</button>
@@ -683,12 +704,12 @@ if(regpan.test(panVal)){
                      <form method="post" enctype="multipart/form-data">{% csrf_token %}
                          <div class="form-group row">
 
-<label class="col-md-1 control-label">Salary Slip
+<label class="col-md-1 control-label">Salary Slip*
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="upload_slip" placeholder="Salary Slip" class="form-control"  type="file">
+  <input required  name="upload_slip" placeholder="Salary Slip" class="form-control"  type="file">
     </div>
   </div>
 
@@ -697,7 +718,7 @@ if(regpan.test(panVal)){
     <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="salary_date"  class="form-control"  type=date >
+  <input  name="salary_date"  class="form-control"  type=month >
     </div>
   </div>  <br>  <button style="background-color: #FC6E20;" name="submit6" type="submit" >Upload</button>
                          </div>      </form>
