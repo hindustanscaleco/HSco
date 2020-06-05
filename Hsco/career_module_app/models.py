@@ -92,6 +92,16 @@ class WorkExperience(models.Model):
     designation = models.CharField(max_length=80, null=True, blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
 
+    # @property
+    # def is_valid_date_range(self):
+    #     if self.work_expirance_to and self.work_expirance_from:
+    #
+    #         if self.work_expirance_to.date() < self.work_expirance_from.date():
+    #             return False
+    #         else:
+    #             return True
+
+
     @property
     def exp_yrs(self):
         if self.work_expirance_to :

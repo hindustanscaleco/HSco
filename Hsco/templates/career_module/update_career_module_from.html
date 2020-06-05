@@ -395,6 +395,19 @@ color:;
             <input style="border: 0px; background-color: white;" disabled value="Experience: {% if workexp_form.exp_yrs == 1 %}{{ workexp_form.exp_yrs }} year{% elif workexp_form.exp_yrs > 1 %}
                     {{ workexp_form.exp_yrs }} years{% endif %}{% if workexp_form.exp_months == 1 %}{{ workexp_form.exp_months }} month{% elif workexp_form.exp_months > 1 %}{{ workexp_form.exp_months }} months{% endif %}">
 
+{% if workexp_form.date_error %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> Invalid "To" Date
+
+</div>
+            {% endif %}
+            {% if workexp_form.error %}
+
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> This Date Range Overlaps With Any Of The Above Range
+
+</div>
+{% endif %}
 
     </span>
 
