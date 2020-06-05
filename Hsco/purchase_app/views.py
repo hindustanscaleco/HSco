@@ -1131,9 +1131,9 @@ def update_customer_details(request,id):
                 item2.cheque_date = cheque_date
             if channel_of_marketing != None and channel_of_marketing != '':
                 item2.channel_of_marketing = channel_of_marketing
-            item2.cheque_notes = cheque_notes
+            # item2.cheque_notes = cheque_notes
 
-            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','cheque_notes','channel_of_marketing'])
+            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','channel_of_marketing'])
 
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
