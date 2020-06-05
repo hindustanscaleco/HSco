@@ -658,23 +658,25 @@ def update_career_module_from(request,id):
     #     delta = (earliest_end - latest_start).days + 1
     #     print("max(0, delta)"+str(from_list[ite].date()))
     # print("max(0, delta)")
-    todays_date = datetime.now().date()
-    for count, ele in enumerate(work_exp_list):
-        print(ele.id)
-        if to_list[count].date() > todays_date or from_list[count].date() > todays_date:
-            ele.invalid_date = True
-        if to_list[count].date() < from_list[count].date():
-            ele.date_error = True
-        if count !=0:
-
-            r1 = Range(start=from_list[count-1].date(), end=to_list[count-1].date())
-            r2 = Range(start=from_list[count].date(), end=to_list[count].date())
-            latest_start = max(r1.start, r2.start)
-            earliest_end = min(r1.end, r2.end)
-            delta = (earliest_end - latest_start).days + 1
-            val = max(0, delta)
-            if val > 0:
-                ele.error = True
+    try:
+        todays_date = datetime.now().date()
+        for count, ele in enumerate(work_exp_list):
+            print(ele.id)
+            if to_list[count].date() >= todays_date or from_list[count].date() >= todays_date:
+                ele.invalid_date = True
+            if to_list[count].date() < from_list[count].date():
+                ele.date_error = True
+            if count !=0:
+                r1 = Range(start=from_list[count-1].date(), end=to_list[count-1].date())
+                r2 = Range(start=from_list[count].date(), end=to_list[count].date())
+                latest_start = max(r1.start, r2.start)
+                earliest_end = min(r1.end, r2.end)
+                delta = (earliest_end - latest_start).days + 1
+                val = max(0, delta)
+                if val > 0:
+                    ele.error = True
+    except Exception as e:
+        print(str(e))
 
 
     try:
