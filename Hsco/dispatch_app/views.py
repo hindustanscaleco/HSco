@@ -40,6 +40,7 @@ from purchase_app.forms import Product_Details_Form
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
 from customer_app.models import Log
+today_month = datetime.now().month
 
 @receiver(pre_save, sender=Dispatch)
 def dispatch_handler(sender, instance, update_fields=None, **kwargs):
