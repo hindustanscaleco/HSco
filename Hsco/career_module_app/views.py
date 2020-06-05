@@ -658,8 +658,11 @@ def update_career_module_from(request,id):
     #     delta = (earliest_end - latest_start).days + 1
     #     print("max(0, delta)"+str(from_list[ite].date()))
     # print("max(0, delta)")
+    todays_date = datetime.now().date()
     for count, ele in enumerate(work_exp_list):
         print(ele.id)
+        if to_list[count].date() > todays_date or from_list[count].date() > todays_date:
+            ele.invalid_date = True
         if to_list[count].date() < from_list[count].date():
             ele.date_error = True
         if count !=0:

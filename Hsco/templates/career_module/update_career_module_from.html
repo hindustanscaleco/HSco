@@ -398,7 +398,14 @@ color:;
 
 {% if workexp_form.date_error %}
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>Error : </strong> Invalid "To" Date
+  <strong>Error : </strong> "To" Date Is Greater Than "From" Date
+
+</div>
+            {% endif %}
+            
+            {% if workexp_form.invalid_date %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> Date Cannot be Greater Than Today's Date
 
 </div>
             {% endif %}
