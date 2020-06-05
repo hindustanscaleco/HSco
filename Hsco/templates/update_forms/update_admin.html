@@ -539,7 +539,7 @@ color:;
     </form>
   <!--Product List-->
 <script>
-    $('[data-type="adhaar-number"]').keyup(function() {
+$('[data-type="adhaar-number"]').keyup(function() {
   var value = $(this).val();
   value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
   $(this).val(value);
@@ -549,24 +549,41 @@ $('[data-type="adhaar-number"]').on("change, blur", function() {
   var value = $(this).val();
   var maxLength = $(this).attr("maxLength");
   if (value.length != maxLength) {
-    $(this).addClass("highlight-error");
+    alert("Invalid Aadhar Card Number");
+   return false;
   } else {
-    $(this).removeClass("highlight-error");
+    return true;
   }
 });
 
 
+
 function isOneChecked(){
-var panVal = $('#pancard').val();
-var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+    var panVal = $('#pancard').val();
+    var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 
 if(panVal == ""){
-return true;
+
+  if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
+       alert("Invalid Aadhar Card Number");
+       return false;
+  } else {
+       return true;
+  }
+
 }
 else{
 
 if(regpan.test(panVal)){
-   return true;
+
+  if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
+    alert("Invalid Aadhar Card Number");
+   return false;
+  } else {
+    return true;
+  }
+
+
 } else {
    alert("Invalid Pancard Number");
    return false;

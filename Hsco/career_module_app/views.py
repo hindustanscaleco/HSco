@@ -641,6 +641,39 @@ def update_career_module_from(request,id):
     positions = Position.objects.filter(~Q(position=career_module_id.choose_position.position))
     context = {}
 
+    from_list =[]
+    to_list =[]
+
+    for item in work_exp_list:
+        print(item.id)
+        from_list.append(item.work_expirance_from)
+        to_list.append(item.work_expirance_to)
+    from collections import namedtuple
+    Range = namedtuple('Range', ['start', 'end'])
+    # for ite in range(0,len(from_list)-1):
+    #     r1 = Range(start=from_list[ite].date(), end=to_list[ite].date())
+    #     r2 = Range(start=from_list[ite+1].date(), end=to_list[ite+1].date())
+    #     latest_start = max(r1.start, r2.start)
+    #     earliest_end = min(r1.end, r2.end)
+    #     delta = (earliest_end - latest_start).days + 1
+    #     print("max(0, delta)"+str(from_list[ite].date()))
+    # print("max(0, delta)")
+    for count, ele in enumerate(work_exp_list):
+        print(ele.id)
+        if to_list[count].date() < from_list[count].date():
+            ele.date_error = True
+        if count !=0:
+
+            r1 = Range(start=from_list[count-1].date(), end=to_list[count-1].date())
+            r2 = Range(start=from_list[count].date(), end=to_list[count].date())
+            latest_start = max(r1.start, r2.start)
+            earliest_end = min(r1.end, r2.end)
+            delta = (earliest_end - latest_start).days + 1
+            val = max(0, delta)
+            if val > 0:
+                ele.error = True
+
+
     try:
         latest_work_exp_id = WorkExperience.objects.filter(career_id=id).latest('id').id
         latest_edu_details_id = EducationalDetails.objects.filter(career_id=id).latest('id').id
@@ -820,6 +853,7 @@ def update_career_module_from(request,id):
             work_exp.designation = designation
             work_exp.company_name = company_name
             work_exp.save(update_fields=['work_expirance_from', 'work_expirance_to', 'work_expirance_details', 'designation','company_name'])
+
         for i in edu_details_list_id:
 
             institute_name = request.POST.get('institute_name' +str(i['id']))

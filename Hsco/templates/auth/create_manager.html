@@ -622,18 +622,19 @@ var phoneno = /^\d{10}$/
      var panVal = $('#pancard').val();
 var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 
-if(panVal == ""){
-return true;
-}
-else{
-
 if(regpan.test(panVal)){
-   return true;
+
+  if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
+    alert("Invalid Aadhar Card Number");
+   return false;
+  } else {
+    return true;
+  }
+
+
 } else {
    alert("Invalid Pancard Number");
    return false;
-}
-
 }
 
 
