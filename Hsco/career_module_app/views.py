@@ -657,7 +657,7 @@ def update_career_module_from(request,id):
     #     earliest_end = min(r1.end, r2.end)
     #     delta = (earliest_end - latest_start).days + 1
     #     print("max(0, delta)"+str(from_list[ite].date()))
-    print("max(0, delta)")
+    # print("max(0, delta)")
     for count, ele in enumerate(work_exp_list):
         print(ele.id)
         if to_list[count].date() < from_list[count].date():
