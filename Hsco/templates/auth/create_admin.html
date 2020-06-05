@@ -76,7 +76,7 @@ color:;
 
 
 
-    <form class="well form-horizontal" ion="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
+    <form class="well form-horizontal" action="" method="POST" onsubmit="return isOneChecked();" id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
@@ -462,6 +462,28 @@ color:;
     </div>
 </div>
 
+       <div class="form-group row">
+   <label class="col-md-2 control-label"> Pan Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+        <input name="pancard" id="pancard" placeholder="Pan Card Number" class="form-control" value="{{user_id.pancard}}" type="text">
+
+    </div>
+  </div>
+
+   <label class="col-md-2 control-label">Aadhar Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+      <input type="text" name="aadhar_card" placeholder="Aadhar Card Number" data-type="adhaar-number" maxLength="19" class="form-control" value="{{user_id.aadhar_card}}" >
+
+  </div>
+    </div>
+</div>
+
 <div class="form-group row">
    <label class="col-md-2 control-label">Upload Pan Card
 </label>
@@ -493,6 +515,48 @@ color:;
 </fieldset>
     </form>
   <!--Product List-->
+
+            <script>
+    $('[data-type="adhaar-number"]').keyup(function() {
+  var value = $(this).val();
+  value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
+  $(this).val(value);
+});
+
+$('[data-type="adhaar-number"]').on("change, blur", function() {
+  var value = $(this).val();
+  var maxLength = $(this).attr("maxLength");
+  if (value.length != maxLength) {
+    $(this).addClass("highlight-error");
+  } else {
+    $(this).removeClass("highlight-error");
+  }
+});
+
+
+function isOneChecked(){
+var panVal = $('#pancard').val();
+var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+
+if(panVal == ""){
+return true;
+}
+else{
+
+if(regpan.test(panVal)){
+   return true;
+} else {
+   alert("Invalid Pancard Number");
+   return false;
+}
+
+}
+
+
+}
+
+
+</script>
 
 
                 </div>

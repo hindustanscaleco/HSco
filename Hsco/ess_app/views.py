@@ -302,6 +302,7 @@ def ess_all_user(request):
     }
     return render(request,'dashboardnew/ess_all_user.html',context)
 
+@login_required(login_url='/')
 def employee_profile(request,id):
     valid_user=False
     valid_Manager=False

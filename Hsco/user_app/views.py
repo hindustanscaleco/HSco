@@ -155,6 +155,9 @@ def create_admin(request):
         upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         salary_slip = request.FILES.get('salary_slip')
 
+        aadhar_card = request.POST.get('aadhar_card')
+        pancard = request.POST.get('pancard')
+
         item=SiteUser()
 
 
@@ -173,6 +176,8 @@ def create_admin(request):
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.photo = photo
+        item.aadhar_card = aadhar_card
+        item.pancard = pancard
         item.salary_slip = salary_slip
         item.upload_pancard = upload_pancard
         item.upload_aadhar_card = upload_aadhar_card
@@ -227,6 +232,8 @@ def create_manager(request):
         salary_slip = request.FILES.get('salary_slip')
         upload_pancard = request.FILES.get('upload_pancard')
         upload_aadhar_card = request.FILES.get('upload_aadhar_card')
+        aadhar_card = request.POST.get('aadhar_card')
+        pancard = request.POST.get('pancard')
         item = SiteUser()
 
         item.mobile = mobile
@@ -255,6 +262,8 @@ def create_manager(request):
         item.ifsc_code = ifsc_code
         item.employee_number = employee_number
         item.photo = photo
+        item.aadhar_card = aadhar_card
+        item.pancard = pancard
         item.salary_slip = salary_slip
         item.password_text = request.POST.get('password')
         item.super_admin = SiteUser.objects.get(role='Super Admin').name
@@ -331,6 +340,9 @@ def create_employee(request):
         upload_pancard = request.FILES.get('upload_pancard')
         upload_aadhar_card = request.FILES.get('upload_aadhar_card')
 
+        aadhar_card = request.POST.get('aadhar_card')
+        pancard = request.POST.get('pancard')
+
         item = SiteUser()
 
         item.mobile = mobile
@@ -349,6 +361,8 @@ def create_employee(request):
         item.employee_number = employee_number
         item.ifsc_code = ifsc_code
         item.photo = photo
+        item.aadhar_card = aadhar_card
+        item.pancard = pancard
         item.salary_slip = salary_slip
         item.super_admin = SiteUser.objects.get(role='Super Admin').name
         item.admin = admin
@@ -481,7 +495,7 @@ def navbar(request):
     return render(request,"base_templates/navbar_for_dashboard.html",)
 
 
-
+@login_required(login_url='/')
 def dashboard(request):
     todays_date = datetime.now().date()
 
@@ -548,7 +562,7 @@ def dashboard(request):
 def graph(request):
     return render(request,"graphs/sales_graph.html",)
 
-
+@login_required(login_url='/')
 def update_admin(request,id):
     admin_id = SiteUser.objects.get(id=id)
     form = SiteUser_Form(request.POST or None)
@@ -566,6 +580,9 @@ def update_admin(request,id):
         ifsc_code = request.POST.get('ifsc_code')
         photo = request.FILES.get('photo')
         salary_slip = request.FILES.get('salary_slip')
+        aadhar_card = request.POST.get('aadhar_card')
+        pancard = request.POST.get('pancard')
+
         upload_pancard = request.FILES.get('upload_pancard')
         upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         if is_deleted == 'on':
@@ -586,14 +603,26 @@ def update_admin(request,id):
         item.employee_number = employee_number
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
-        item.photo = photo
+        item.aadhar_card = aadhar_card
+        item.pancard = pancard
         item.salary_slip = salary_slip
         item.password_text = request.POST.get('password')
-        item.upload_pancard = upload_pancard
-        item.upload_aadhar_card = upload_aadhar_card
+
+        if photo != None and photo != "":
+            item.photo = photo
+            item.save(update_fields=['photo', ])
+        if upload_aadhar_card != None and upload_aadhar_card != "":
+            item.upload_aadhar_card = upload_aadhar_card
+            item.save(update_fields=['upload_aadhar_card', ])
+        if upload_pancard != None and upload_pancard != "":
+            item.upload_pancard = upload_pancard
+            item.save(update_fields=['upload_pancard', ])
+
         item.set_password(request.POST.get('password'))
 
-        item.save(update_fields=['upload_pancard','upload_aadhar_card','password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        item.save(update_fields=['password_text',
+                                 'employee_number','mobile','email', 'profile_name','role','group','is_deleted',
+                                 'modules_assigned','bank_name','account_number','branch_name','ifsc_code','password','aadhar_card','pancard'])
         return redirect('/admin_list/')
     context = {
         'form': form,
@@ -601,7 +630,7 @@ def update_admin(request,id):
     }
     return render(request,"update_forms/update_admin.html",context)
 
-
+@login_required(login_url='/')
 def update_manager(request,id):
     manager_id = SiteUser.objects.get(id=id)
     admin = SiteUser.objects.get(id=id).admin
@@ -623,6 +652,8 @@ def update_manager(request,id):
         salary_slip = request.FILES.get('salary_slip')
         upload_pancard = request.FILES.get('upload_pancard')
         upload_aadhar_card = request.FILES.get('upload_aadhar_card')
+        aadhar_card = request.POST.get('aadhar_card')
+        pancard = request.POST.get('pancard')
         if is_deleted == 'on':
             is_deleted = True
         else:
@@ -641,13 +672,20 @@ def update_manager(request,id):
         item.account_number = account_no
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
-        item.photo = photo
         item.salary_slip = salary_slip
         item.password_text = request.POST.get('password')
         item.set_password(request.POST.get('password'))
-        item.upload_pancard = upload_pancard
-        item.upload_aadhar_card = upload_aadhar_card
-        item.save(update_fields=['upload_pancard','upload_aadhar_card','password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        if photo != None and photo != "":
+            item.photo = photo
+            item.save(update_fields=['photo', ])
+        if upload_aadhar_card != None and upload_aadhar_card != "":
+            item.upload_aadhar_card = upload_aadhar_card
+            item.save(update_fields=['upload_aadhar_card', ])
+        if upload_pancard != None and upload_pancard != "":
+            item.upload_pancard = upload_pancard
+            item.save(update_fields=['upload_pancard', ])
+
+        item.save(update_fields=['password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','password'])
         return redirect('/manager_list/')
     context = {
         'form': form,
@@ -656,6 +694,7 @@ def update_manager(request,id):
     }
     return render(request,"update_forms/update_manager_add.html",context)
 
+@login_required(login_url='/')
 def update_employee(request,id):
     employee_id = SiteUser.objects.get(id=id)
     manager = SiteUser.objects.get(id=id).manager
@@ -677,6 +716,8 @@ def update_employee(request,id):
         salary_slip = request.FILES.get('salary_slip')
         upload_pancard = request.FILES.get('upload_pancard')
         upload_aadhar_card = request.FILES.get('upload_aadhar_card')
+        aadhar_card = request.POST.get('aadhar_card')
+        pancard = request.POST.get('pancard')
         if is_deleted == 'on':
             is_deleted = True
         else:
@@ -695,13 +736,21 @@ def update_employee(request,id):
         item.account_number = account_no
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
-        item.photo = photo
         item.salary_slip = salary_slip
+        item.pancard = pancard
+        item.aadhar_card = aadhar_card
         item.password_text = request.POST.get('password')
         item.set_password(request.POST.get('password'))
-        item.upload_pancard = upload_pancard
-        item.upload_aadhar_card = upload_aadhar_card
-        item.save(update_fields=['upload_pancard','upload_aadhar_card','password_text','mobile','email','employee_number', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','photo','password'])
+        if photo != None and photo != "":
+            item.photo = photo
+            item.save(update_fields=['photo', ])
+        if upload_aadhar_card != None and upload_aadhar_card != "":
+            item.upload_aadhar_card = upload_aadhar_card
+            item.save(update_fields=['upload_aadhar_card', ])
+        if upload_pancard != None and upload_pancard != "":
+            item.upload_pancard = upload_pancard
+            item.save(update_fields=['upload_pancard', ])
+        item.save(update_fields=['pancard','aadhar_card','password_text','mobile','email','employee_number', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','password'])
         return redirect('/employee_list/')
     context = {
         'form': form,

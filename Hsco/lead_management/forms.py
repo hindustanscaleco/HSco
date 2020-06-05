@@ -23,6 +23,7 @@ payment_method = [
 ]
 
 industory_dropdown = [
+        ('Select industry','Select industry'),
         ('Energy industry','Energy industry'),
         ('Chemicals','Chemicals'),
         ('Industrial Metals ','Industrial Metals '),
