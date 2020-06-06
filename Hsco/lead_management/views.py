@@ -1895,9 +1895,24 @@ def update_view_lead(request,id):
                     password='Hindustan@@1234',
                     use_tls=True
             ) as connection:
-                extra='''<h4>Hello Sir/Madam <br>PFA<br>Thanks<br>Sales Team - HSCo<br></h4>
-             
-              <br>'''
+                # Yours
+                # Sincerely,
+                # Name
+                # of
+                # the
+                # salesman
+                # Phone
+                # of
+                # the
+                # salesman
+                extra = '''
+                Dear '''+lead_id.customer_id.customer_name+''',<br>
+We thank you for showing interest in HSCo  products. Attached is the Proforma Invoice that you have requested.
+
+                '''
+              #   extra='''<h4>Hello Sir/Madam <br>PFA<br>Thanks<br>Sales Team - HSCo<br></h4>
+              #
+              # <br>'''
 
                 email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request,extra),
                                       settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],connection=connection)
