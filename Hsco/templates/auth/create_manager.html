@@ -577,15 +577,7 @@ color:;
   $(this).val(value);
 });
 
-$('[data-type="adhaar-number"]').on("change, blur", function() {
-  var value = $(this).val();
-  var maxLength = $(this).attr("maxLength");
-  if (value.length != maxLength) {
-    $(this).addClass("highlight-error");
-  } else {
-    $(this).removeClass("highlight-error");
-  }
-});
+
 
             function toggleCheckbox2(select) {
 
@@ -622,20 +614,23 @@ var phoneno = /^\d{10}$/
      var panVal = $('#pancard').val();
 var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 
-if(regpan.test(panVal)){
+    if(regpan.test(panVal)){
+        if ($('[data-type="adhaar-number"]').val() !== ""){
+              if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
+                alert("Invalid Aadhar Card Number");
+               return false;
+              } else {
+                return true;
+              }
+        }else{
+            return true;
+        }
 
-  if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
-    alert("Invalid Aadhar Card Number");
-   return false;
-  } else {
-    return true;
-  }
 
-
-} else {
-   alert("Invalid Pancard Number");
-   return false;
-}
+    } else {
+           alert("Invalid Pancard Number");
+           return false;
+    }
 
 
 }

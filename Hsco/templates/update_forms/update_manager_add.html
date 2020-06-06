@@ -508,7 +508,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-        <input name="pancard" id="pancard" placeholder="Pan Card Number" class="form-control" value="{{user_id.pancard}}" type="text">
+        <input name="pancard" id="pancard" placeholder="Pan Card Number" class="form-control" value="{{manager_id.pancard}}" type="text">
 
     </div>
   </div>
@@ -518,7 +518,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-      <input type="text" name="aadhar_card" placeholder="Aadhar Card Number" data-type="adhaar-number" maxLength="19" class="form-control" value="{{user_id.aadhar_card}}" >
+      <input type="text" name="aadhar_card" placeholder="Aadhar Card Number" data-type="adhaar-number" maxLength="19" class="form-control" value="{{manager_id.aadhar_card}}" >
 
   </div>
     </div>
@@ -572,17 +572,6 @@ $('[data-type="adhaar-number"]').keyup(function() {
   $(this).val(value);
 });
 
-$('[data-type="adhaar-number"]').on("change, blur", function() {
-  var value = $(this).val();
-  var maxLength = $(this).attr("maxLength");
-  if (value.length != maxLength) {
-    alert("Invalid Aadhar Card Number");
-   return false;
-  } else {
-    return true;
-  }
-});
-
 
 
 function isOneChecked(){
@@ -591,24 +580,32 @@ function isOneChecked(){
 
 if(panVal == ""){
 
+if ($('[data-type="adhaar-number"]').val() !== ""){
   if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
        alert("Invalid Aadhar Card Number");
        return false;
   } else {
        return true;
   }
+}else{
+return true;
+}
+
 
 }
 else{
 
 if(regpan.test(panVal)){
-
+if ($('[data-type="adhaar-number"]').val() !== ""){
   if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
     alert("Invalid Aadhar Card Number");
    return false;
   } else {
     return true;
   }
+}else{
+return true;
+}
 
 
 } else {
@@ -623,6 +620,8 @@ if(regpan.test(panVal)){
 
 
 </script>
+
+
                 </div>
               </div>
             </div>
