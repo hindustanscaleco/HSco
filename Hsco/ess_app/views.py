@@ -384,13 +384,14 @@ def employee_profile(request,id):
         }
         context.update(context2)
     if request.method == 'POST' and 'submit2' in request.POST:
-        salary_date = request.POST.get('salary_date')
-        salary_date = datetime.strptime(salary_date, "%Y-%m")
-        salary_date = salary_date.month
+        form_salary_date = request.POST.get('salary_date')
+        final_salary_date = datetime.strptime(form_salary_date, "%Y-%m")
+        salary_date = final_salary_date.month
+        salary_date_year = final_salary_date.year
         salary_date2 = calendar.month_name[salary_date]
 
-        if Employee_Analysis_month.objects.filter(user_id=id,entry_date__month=salary_date).count()>0:
-            salary_slip = Employee_Analysis_month.objects.get(user_id=id,entry_date__month=salary_date).salary_slip
+        if Employee_Analysis_month.objects.filter(user_id=id,entry_date__month=salary_date,entry_date__year=salary_date_year).count()>0:
+            salary_slip = Employee_Analysis_month.objects.get(user_id=id,entry_date__month=salary_date,entry_date__year=salary_date_year).salary_slip
             context2 = {
                 'user_id': user_id,
                 'leave_list': leave_list,
@@ -519,12 +520,18 @@ def employee_profile(request,id):
 
     elif request.method == 'POST' or request.method =='FILES' and 'submit6' in request.POST:
         upload_slip = request.FILES.get('upload_slip')
-        salary_date = request.POST.get('salary_date')
-        salary_date = datetime.strptime(salary_date, "%Y-%m")
-        salary_date = salary_date.month
-        if Employee_Analysis_month.objects.filter(user_id=id, entry_date__month=salary_date).count() > 0:
+        form_salary_date = request.POST.get('salary_date')
+        final_salary_date = datetime.strptime(form_salary_date, "%Y-%m")
+        salary_date = final_salary_date.month
+        salary_date_year = final_salary_date.year
 
-            slip = Employee_Analysis_month.objects.get(user_id=id,entry_date__month=salary_date)
+        from datetime import date
+        # if date.strptime(form_salary_date, '%Y-%m') > date.today() :
+        #     messages.error(request, 'Please select correct month and year !!!')
+        #     return redirect('/employee_profile/' + str(id))
+        if Employee_Analysis_month.objects.filter(user_id=id, entry_date__month=salary_date,entry_date__year=salary_date_year).count() > 0:
+
+            slip = Employee_Analysis_month.objects.get(user_id=id,entry_date__month=salary_date_year,entry_date__year=salary_date_year)
 
             slip.salary_slip = upload_slip
             slip.save(update_fields=['salary_slip',])
@@ -533,6 +540,8 @@ def employee_profile(request,id):
         else:
             new_slip= Employee_Analysis_month()
             new_slip.salary_slip = upload_slip
+            new_slip.entry_date = form_salary_date + '-1'
+            new_slip.user_id = SiteUser.objects.get(id=id)
             new_slip.save()
             messages.success(request, 'Salary Slip Uploaded!!!')
             return redirect('/employee_profile/' + str(id))

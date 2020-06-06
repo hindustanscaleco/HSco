@@ -87,8 +87,13 @@ DATABASES = {
  'default': {
     'ENGINE': 'django.db.backends.mysql',
     'NAME': 'hsco_db',
+<<<<<<< HEAD
     'USER': 'root2',
     'PASSWORD': '',
+=======
+    'USER': 'root',
+    'PASSWORD': 'sagar123',
+>>>>>>> 73cf3b95c4fe572b1d46810ca88ac84cb4634e2c
     'HOST': '127.0.0.1',
     'PORT': '3306',
     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",

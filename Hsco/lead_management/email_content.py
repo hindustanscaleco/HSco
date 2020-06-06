@@ -1,4 +1,10 @@
 def user(request,extra=''):
+    if request.user:
+        name_mobile = str(request.user.profile_name )+'''<br>
+                        +91-'''+str( request.user.mobile )+'''<br>
+                        <br>'''
+    else:
+        name_mobile = 'Team HSCo'
     text_content = ''' <html>
     <body>
               <p>'''+extra+'''</p>
@@ -12,10 +18,7 @@ In case of any queries, please feel free to call us on the below numbers or visi
 Thanks and Regards<br>
 <br>
 
-'''+str(request.user.profile_name )+'''<br>
-
-+91-'''+str( request.user.mobile )+'''<br>
-<br>
+'''+name_mobile+'''
  
 
 Hindustan Scale Company<br>
