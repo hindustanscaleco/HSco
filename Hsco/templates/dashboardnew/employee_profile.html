@@ -696,7 +696,7 @@ if(regpan.test(panVal)){
 
  <div class="form-group row">
 
-                       <label class="col-md-3 control-label">Check Salary Slip by entering any date:
+                       <label class="col-md-3 control-label">Check Salary Slip by month and year*:
 </label>
     <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
@@ -708,16 +708,20 @@ if(regpan.test(panVal)){
  </div>
                      </form>
 
-<br>
                      {% if  salary_slip %}
+
                      Salary Slip For Month "{{salary_date}}" Found!! Click button to download.
-         <button style="background-color: #FC6E20; width: 15%; " onclick="location.href='{{salary_slip.url}}'" class="form-control"> Download </button>
+        <a href="{{salary_slip.url}}" download> <button style="background-color: #FC6E20; width: 15%; "  class="form-control"> Download </button></a>
+<br>
 
                      {% endif %}
 
 
-<br>
 {% if user.role == 'Super Admin' or valid_Manager or valid_user %}
+
+                     <hr>
+                                                               <br>
+
                      <form method="post" enctype="multipart/form-data">{% csrf_token %}
                          <div class="form-group row">
 
@@ -730,7 +734,7 @@ if(regpan.test(panVal)){
     </div>
   </div>
 
-                         <label class="col-md-2 control-label">Salary Slip Month & Year: (Choose any date)
+                         <label class="col-md-2 control-label">Salary Slip Month & Year*:
 </label>
     <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
