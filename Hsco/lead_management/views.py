@@ -1895,9 +1895,24 @@ def update_view_lead(request,id):
                     password='Hindustan@@1234',
                     use_tls=True
             ) as connection:
-                extra='''<h4>Hello Sir/Madam <br>PFA<br>Thanks<br>Sales Team - HSCo<br></h4>
-             
-              <br>'''
+                # Yours
+                # Sincerely,
+                # Name
+                # of
+                # the
+                # salesman
+                # Phone
+                # of
+                # the
+                # salesman
+                extra = '''
+                Dear '''+lead_id.customer_id.customer_name+''',<br>
+We thank you for showing interest in HSCo  products. Attached is the Proforma Invoice that you have requested.
+
+                '''
+              #   extra='''<h4>Hello Sir/Madam <br>PFA<br>Thanks<br>Sales Team - HSCo<br></h4>
+              #
+              # <br>'''
 
                 email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request,extra),
                                       settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],connection=connection)
@@ -1977,12 +1992,12 @@ def update_view_lead(request,id):
             item3 = Lead_Customer_Details.objects.get(id=lead_id.customer_id)
             if Lead_Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).count()>0:
                 item3 = Lead_Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).order_by('-id')[0]
-                if customer_name != '' and customer_name != None:
-                    item3.customer_name = customer_name
-                    item3.save(update_fields=['customer_name'])
-                if contact_no != '' and contact_no != None:
-                    item3.contact_no = contact_no
-                    item3.save(update_fields=['contact_no'])
+                # if customer_name != '' and customer_name != None:
+                #     item3.customer_name = customer_name
+                #     item3.save(update_fields=['customer_name'])
+                # if contact_no != '' and contact_no != None:
+                #     item3.contact_no = contact_no
+                #     item3.save(update_fields=['contact_no'])
                 if company_name != '' and company_name != None:
                     item3.company_name = company_name
                     item3.save(update_fields=['company_name'])
@@ -2000,7 +2015,7 @@ def update_view_lead(request,id):
                     item3.save(update_fields=['customer_industry'])
                 Lead.objects.filter(id=id).update(customer_id=item3)
                 # Lead_Customer_Details.objects.filter(id=lead_id.customer_id).update()
-                    
+
             else:
                 if customer_name != '' and customer_name != None:
                     item3.customer_name = customer_name
