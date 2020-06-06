@@ -14,6 +14,7 @@
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
@@ -508,6 +509,28 @@ color:;
     </div>
 </div>
 
+    <div class="form-group row">
+   <label class="col-md-2 control-label"> Pan Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+        <input name="pancard" id="pancard" placeholder="Pan Card Number" class="form-control" value="{{user_id.pancard}}" type="text">
+
+    </div>
+  </div>
+
+   <label class="col-md-2 control-label">Aadhar Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+      <input type="text" name="aadhar_card" placeholder="Aadhar Card Number" data-type="adhaar-number" maxLength="19" class="form-control" value="{{user_id.aadhar_card}}" >
+
+  </div>
+    </div>
+</div>
+
 <div class="form-group row">
    <label class="col-md-2 control-label">Upload Pan Card
 </label>
@@ -548,6 +571,14 @@ color:;
 
 
 <script>
+    $('[data-type="adhaar-number"]').keyup(function() {
+  var value = $(this).val();
+  value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
+  $(this).val(value);
+});
+
+
+
             function toggleCheckbox2(select) {
 
 document.getElementById("tp").value = select.options[select.selectedIndex].value
@@ -579,6 +610,29 @@ var phoneno = /^\d{10}$/
    alert("Mobile Number is not valid.");
    return false;
      }
+
+     var panVal = $('#pancard').val();
+var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+
+    if(regpan.test(panVal)){
+        if ($('[data-type="adhaar-number"]').val() !== ""){
+              if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
+                alert("Invalid Aadhar Card Number");
+               return false;
+              } else {
+                return true;
+              }
+        }else{
+            return true;
+        }
+
+
+    } else {
+           alert("Invalid Pancard Number");
+           return false;
+    }
+
+
 }
 </script>
 
@@ -608,12 +662,7 @@ var phoneno = /^\d{10}$/
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
 
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
 
 
 </body>

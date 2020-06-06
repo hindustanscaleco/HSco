@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-      {% load static %}
-
 	<title></title>
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -12,6 +10,7 @@
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
+
 <style>
     .border_class {
     border:1px solid black;
@@ -53,11 +52,8 @@ font-size: 13px;
 
             </style>
 
-
 </head>
 <body>
-
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 
@@ -67,29 +63,31 @@ font-size: 13px;
 <div id="content">
 
 <div  id="html-content-holder" style=" margin-left: 5%; margin-right: 5%;">
-<div class="row" style="padding: 5px;">
-    <div class="col-xl-3 col-md-3">
-<img src="/media/pi_history_file/hsco_new_logo.png" class="img-rounded" width="120" height="120" style=" padding-top:10px;">
-<img src="/media/pi_history_file/alpha_new.png" class="img-rounded" width="110" height="110" style=" padding-top:10px;">
+<div class="row" style="padding: 5px; border-bottom: 5px solid black;">
+    <div class="col-xl-2 col-md-2 ">
+<img src="/media/pi_history_file/hsco.jpg" class="img-rounded" width="160" height="80" style="float: right; padding-top:10px;">
 </div>
-
+    <div class="col-xl-1 col-md-1 ">
+    </div>
     <div class="col-xl-4 col-md-4 ">
         <center>Subject to Mumbai Jurisdiction</center><br>
         <center><h3 style="font: italic bold 22px/30px Georgia, serif;">Proforma Invoice</h3></center>
 </div>
-    <div class="col-xl-2 col-md-2 ">
+    <div class="col-xl-1 col-md-1 ">
     </div>
-    <div class="col-xl-3 col-md-3 ">
-        <br>
-        <p> Ph:<b> 7045922553, 7045922208 </b> <br></p>
+    <div class="col-xl-4 col-md-4 ">
+        <p>Ph: 022-23423183, 7045922250/51/52<br>
+Manufacture Licence No. LM/MH/H004<br>
+Dealer Licence No. LD/MH/H004<br>
+Repairing Licence No. LR/MH/H004</p>
 </div>
 </div>
 
 
         <div class="row">
-         <div class="col-md-12" style="padding:5px;">
-        <h1 style="font-weight:bold; font-size: 4.8vw; margin-left: 5vw; color: #606060;">Hindustan Sales and Consultancy</h1>
-        </div>
+         <div class="col-md-12" style="padding:10px;">
+        <center><h1 style="font-weight:bold;"> Hindustan Scale Company</h1>
+        </center></div>
         </div>
         <div class="row">
          <div class="col-md-12" style="padding:0px;">
@@ -106,7 +104,7 @@ font-size: 13px;
         </div>
 
 
-<br>
+
     <table align="left" cellspacing="0" style="border: 0px;">
 	<colgroup width="21"></colgroup>
 	<colgroup width="97"></colgroup>
@@ -127,57 +125,50 @@ font-size: 13px;
 		<td align="left" valign=bottom><font size=4 color="#000000"><br></font></td>		<td style="border-left: 0px solid #000000" height="27" border="0" align="left" valign=bottom><font color="#000000"><br></font></td>
 
 		<td align="right" valign=bottom><b><font color="#404040">Date:</font></b></td>
-		<td align="left" valign=bottom sdnum="1033;1033;M/D/YYYY"><font color="">{{todays_date}}</font></td>
+		<td align="left" valign=bottom sdnum="1033;1033;M/D/YYYY"><font color="">2020-06-06</font></td>
 	</tr>
 	<tr>
         <td align="right" valign=bottom><font face="" color="#404040"><b>Company Name</b></font></td>
-		<td style="border-bottom: 1px solid #a6a6a6" colspan=3 align="left" valign=bottom><font face="" color="" >{{lead_id.customer_id.company_name}}</font></td>
+		<td style="border-bottom: 1px solid #a6a6a6" colspan=3 align="left" valign=bottom><font face="" color="" >mega programmers</font></td>
 		<td align="left" valign=bottom><font color="#000000"><br></font></td>		<td style="border-left: 0px solid #000000" height="22" align="left" valign=bottom><font color="#000000"><br></font></td>
 
         <td align="right" valign=bottom><font face="" color="#404040"><b>PI Number</b></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" align="left" valign=bottom><font face="" color="" >PI - {{email_pi_id}} - {{lead_id.customer_id.customer_name}} - {{lead_id.customer_id.company_name}}</font></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" align="left" valign=bottom><font face="" color="" >PI -  - Harsh Pathak - mega programmers</font></td>
 	</tr>
 	<tr>
         <td align="right" valign=bottom><font face="" color="#404040"><b>Contact Person</b></font></td>
-		<td style="border-bottom: 1px solid #a6a6a6" colspan=3 align="left" valign=bottom><font face="" color="" >{{lead_id.customer_id.customer_name}}</font></td>
+		<td style="border-bottom: 1px solid #a6a6a6" colspan=3 align="left" valign=bottom><font face="" color="" >Harsh Pathak</font></td>
 		<td align="left" valign=bottom><font color="#000000"><br></font></td>		<td style="border-left: 0px solid #000000" height="22" align="left" valign=bottom><font color="#000000"><br></font></td>
 
         <td align="right" valign=bottom><font face="" color="#404040"><b>Proforma Made By</b></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" align="left" valign=bottom><font face="" color="" > {{request.user.name}}</font></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" align="left" valign=bottom><font face="" color="" > </font></td>
 	</tr>
 	<tr>
         <td align="right" valign=bottom><font face="" color="#404040"><b>Address/State</b></font></td>
-		<td style="border-bottom: 1px solid #a6a6a6" colspan=3 align="left" valign=bottom><font face="" color="" > {{lead_id.customer_id.address}}</font></td>
+		<td style="border-bottom: 1px solid #a6a6a6" colspan=3 align="left" valign=bottom><font face="" color="" > rameshwaram park, 101 flatno. badlapur west, sdsds</font></td>
 		<td align="right" valign=bottom><font face="" color="#404040"><br></font></td>		<td style="border-left: 0px solid #000000" height="22" align="left" valign=bottom><font color="#000000"><br></font></td>
 
         <td align="right" valign=bottom><font face="" color="#404040"><b>Phone Number</b></font></td>
 		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" align="left" valign=bottom>
-            <font face="" color="" >  {{request.user.mobile}}</font></td>
+            <font face="" color="" >  </font></td>
 	</tr>
 	<tr>
 		<td align="right" valign=bottom><font face="" color="#404040"><b>Phone</b></font></td>
-		<td style="border-top: 1px solid #a6a6a6; border-bottom: 1px solid #a6a6a6" colspan=3 align="left" valign=bottom><font face="" color="" >{{lead_id.customer_id.contact_no}}</font></td>
+		<td style="border-top: 1px solid #a6a6a6; border-bottom: 1px solid #a6a6a6" colspan=3 align="left" valign=bottom><font face="" color="" >09766323877</font></td>
 		<td align="left" valign=bottom><font color="#000000"></font></td>		<td style="border-left: 0px solid #000000" height="22" align="left" valign=bottom><font color="#000000"><br></font></td>
 
         <td align="right" valign=bottom><font face="" color="#404040"><b>GST No. </b></font></td>
 		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"  align="left" valign=bottom>
-            <font face="" color="" >{{lead_id.customer_id.customer_gst_no}}  </font></td>
+            <font face="" color="" >None  </font></td>
 	</tr>
     </table>
-
-<br>
-&nbsp;
-    <br>
-
-
-
 
 <div style="min-height: 26vw;">
 
 
         <div class="row" id="id_manager_view">
 
- <table border="1" style="margin-top: 20px;">
+    <table border="1" style="margin-top: 20px;">
         <tr style="background-color: gray; color: white;">
             <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Quantity</td>
             <td style="border: 0px solid gray;">HSN Code</td>
@@ -187,17 +178,27 @@ font-size: 13px;
             <td style="border: 0px solid gray;">Rate</td>
             <td style="border: 0px solid gray;">Total</td>
         </tr>
-{% for product in pi_products %}
+
 <tr>
-        <td>{{product.quantity}}</td>
-        <td>{{product.product_id.hsn_code}}</td>
-        <td>{{product.product_id.sub_sub_category}}</td>
-        <td><center> {% if product.product_id.product_image %}<img  src="{{product.product_id.product_image.url}}">{% endif %}</center></td>
-        <td>{{product.product_id.product_desc|default_if_none:""}}</td>
-        <td>{{product.product_id.selling_price}}</td>
-        <td>{{product.product_total_cost}}</td>
+        <td>1.0</td>
+        <td>sdf23423</td>
+        <td>asfsaf</td>
+        <td><center> <img  src="/media/lead_product_image/image006.png"></center></td>
+        <td>Get there amazingly fast.</td>
+        <td>25000.0</td>
+        <td>25000.0</td>
         </tr>
-{% endfor %}
+
+<tr>
+        <td>1.0</td>
+        <td>sdf23423</td>
+        <td>asfsaf</td>
+        <td><center> <img  src="/media/lead_product_image/image006.png"></center></td>
+        <td>Get there amazingly fast.</td>
+        <td>25000.0</td>
+        <td>25000.0</td>
+        </tr>
+
         <tr>
         <td></td>
         <td></td>
@@ -205,7 +206,7 @@ font-size: 13px;
         <td></td>
         <td></td>
         <td>Total</td>
-        <td>{{pi_id.total_cost}} INR</td>
+        <td>50000.0 INR</td>
         </tr>
 
         <tr>
@@ -215,7 +216,7 @@ font-size: 13px;
         <td></td>
         <td></td>
         <td>Discount</td>
-        <td>{{pi_id.discount}}{% if pi_id.discount_type == "percent" %} % {% elif pi_id.discount_type == "rupee" %} INR {% else %} {% endif %}</td>
+        <td>1 INR </td>
         </tr>
 
 
@@ -226,7 +227,7 @@ font-size: 13px;
         <td></td>
         <td></td>
         <td>Net Total</td>
-        <td>{{pi_id.net_total}}</td>
+        <td>49999.0</td>
         </tr>
 
 
@@ -238,7 +239,7 @@ font-size: 13px;
         <td></td>
         <td></td>
         <td>P&F</td>
-        <td>{{pi_id.pf_total}} </td>
+        <td>0.0 </td>
         </tr>
 
 
@@ -249,7 +250,7 @@ font-size: 13px;
         <td></td>
         <td></td>
         <td>CGST @ 9%</td>
-        <td>{% if pi_id.select_gst_type == "CGST / SGST" %} {{pi_id.cgst_sgst}} {% endif %}</td>
+        <td> 4499.91 </td>
         </tr>
 
 
@@ -262,7 +263,7 @@ font-size: 13px;
         <td></td>
         <td></td>
         <td>SGST @ 9%</td>
-        <td>{% if pi_id.select_gst_type == "CGST / SGST" %} {{pi_id.cgst_sgst}} {% endif %}</td>
+        <td> 4499.91 </td>
         </tr>
 
 
@@ -275,7 +276,7 @@ font-size: 13px;
         <td></td>
         <td></td>
         <td>IGST @ 18%</td>
-        <td>{% if pi_id.select_gst_type == "IGST" %} {{pi_id.igst}} {% endif %}</td>
+        <td></td>
         </tr>
 
 
@@ -287,7 +288,7 @@ font-size: 13px;
         <td></td>
         <td></td>
         <td>Round Up</td>
-        <td>{{pi_id.round_up_total}} INR</td>
+        <td>58999.0 INR</td>
         </tr>
 
         <tr>
@@ -297,7 +298,7 @@ font-size: 13px;
         <td></td>
         <td></td>
         <td>Grand Total</td>
-        <td>{{pi_id.round_up_total}} INR</td>
+        <td>58999.0 INR</td>
         </tr>
 
 
@@ -307,8 +308,8 @@ font-size: 13px;
         <div class="row">
             <div class="col-md-5" style="padding:10px;">
                 <p style="padding-top:30px;">GST ID - <b>27AACFH2329F1ZP</b><br>
-<!--                    PAN Number - <b>AACFH2329F</b><br>-->
-<!--                    TAN Number - <b>MUMH17092F</b></p>-->
+                    PAN Number - <b>AACFH2329F</b><br>
+                    TAN Number - <b>MUMH17092F</b></p>
             </div>
          <div class="col-md-2" style="padding-left:10px; float:left;">
 <img src="/media/pi_history_file/okay.png" style="width: 80%; height:90%;">
@@ -322,12 +323,13 @@ font-size: 13px;
     <div class="row">
             <div class="col-md-12" style="padding:10px;"><p>
                 I/We hereby certify that my/our registration certificate under the Goods and Service Tax Laws is in force on
-                the date of which the sale of goods specified in this ‚ÄúProforma Invoice‚Äù is made by me/us and that the transaction of sale is covered
+                the date of which the sale of goods specified in this ìProforma Invoiceî is made by me/us and that the transaction of sale is covered
                 by this and has been effected by me/us and it shall be accounted for in the turnover of sales while filing of return and the due tax,
                 if any, payable on the sale has been paid
   </center> </p>     </div>
         </div>
 </div>
+
 
 
 <div class="row">
@@ -340,15 +342,14 @@ font-size: 13px;
                 This offer is valid for the next 10 days <br>
     Cheque should be in the name of "Hindustan Scale Co".</p>
             <br>
-                <p style="padding-left:34px;">Bank details are as follows<br>
+<p style="padding-left:40px;">Bank details are as follows<br>
                 <b>DCB Bank<br>
-               Hindustan Sales And Consultancy<br>
-                    Mohamedali Road Branch <br>
-                A/C - 01922407052012<br>
+                Name ñ Hindustan Scale Co.<br>
+                Acct No ñ 01922412121947<br>
                 IFSC Code-DCBL0000019<br>
-                Current Account <br>
-                <br>
-                   </b></p>
+                Type of account ñ Current Account <br>
+                Bank Name ñ DCB Bank<br>
+                    Address Mohamedali Road Branch</b></p>
             </div>
 
     <div class="col-md-5" style="padding-left: 40px;">
@@ -407,7 +408,7 @@ xhr.onload = function (e) {
         console.log(result);
     }
 }
-xhr.open('POST', '/update_view_lead/{{lead_id.pk}}', true);
+xhr.open('POST', '/update_view_lead/364', true);
 xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
 xhr.send(formData);
 
@@ -418,16 +419,6 @@ xhr.send(formData);
 
 
 </script>
-{% if download %}
-<script type="text/javascript">
-doc.addHTML(document.body,function() {
 
-
-    doc.save('ProformaInvoice.pdf');
-
-
-});
-</script>
-{% endif %}
 </body>
 </html>

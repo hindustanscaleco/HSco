@@ -28,23 +28,22 @@ Feedback & Complaints - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+91-7045922252<br>
 
  <br>
  
- <a href="https://hindustanscale.com/">
- <img  src="http://139.59.76.87/media/pi_history_file/hsco.jpg" style="width: 220px; height:100px;"></a>
-</a>
+ <img  src="http://139.59.76.87/media/pi_history_file/hsco.jpg" style="width: 200px; height:100px;">
+
 
  <br>
  <br>
 
 <span style="color: #ff6600;"> <b> An ISO 9001:2015 Certified Company  </b> </span> <br> <br>
 
- <img  src="http://139.59.76.87/media/pi_history_file/image002.jpg" style="width: 350px; height:120px;"></a>
- <img  src="http://139.59.76.87/media/pi_history_file/image003.png" style="width: 180px; height:100px;"></a> <br>
+ <img  src="http://139.59.76.87/media/pi_history_file/image002.jpg" style="width: 350px; height:120px;">
+ <img  src="http://139.59.76.87/media/pi_history_file/image003.png" style="width: 180px; height:100px;"><br>
 
   <a href="https://play.google.com/store/apps/details?id=com.spryox.hsco&hl=en"> 	
   <img  src="http://139.59.76.87/media/pi_history_file/image004.png" style="width: 120px; height:100px;"></a>
 </a>
- <img  src="http://139.59.76.87/media/pi_history_file/image005.png" style="width: 120px; height:100px;"></a>
- <img  src="http://139.59.76.87/media/pi_history_file/image006.png" style="width: 120px; height:100px;"></a>
+ <img  src="http://139.59.76.87/media/pi_history_file/image005.png" style="width: 120px; height:100px;">
+ <img  src="http://139.59.76.87/media/pi_history_file/image006.png" style="width: 120px; height:100px;">
 
 
 </p>

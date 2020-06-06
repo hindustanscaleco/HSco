@@ -15,6 +15,7 @@
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
@@ -114,7 +115,7 @@ color:;
 
               <div class="col-xl-8 col-md-8 mb-5">
              <div style="border: 1px solid #C0C0C0	; border-radius: 10px;">
-  <form class="well form-horizontal" action="" method="POST" id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
+  <form class="well form-horizontal" action="" onsubmit="return isOneChecked();" method="POST" id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
 <fieldset>
 
 <div class="form-group row">
@@ -490,10 +491,13 @@ color:;
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
         <input  name="photo" placeholder="Photo" class="form-control" type="file">
 
+
+    </div>
       {% if user_id.photo %}
       <img src="{{user_id.photo.url}}" width="150" height="150">
+      <br>
+      NOTE: Right click on image to download
       {% endif %}
-    </div>
   </div>
 </div>
 
@@ -504,7 +508,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-        <input name="pancard" placeholder="Pan Card Number" class="form-control" value="{{user_id.pancard}}" min="11" max="12" type="number">
+        <input name="pancard" id="pancard" placeholder="Pan Card Number" class="form-control" value="{{user_id.pancard}}" type="text">
 
     </div>
   </div>
@@ -514,7 +518,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-      <input name="aadhar_card" placeholder="Aadhar Card Number" class="form-control" maxlength="12" value="{{user_id.aadhar_card}}" type="text">
+      <input type="text" name="aadhar_card" placeholder="Aadhar Card Number" data-type="adhaar-number" maxLength="19" class="form-control" value="{{user_id.aadhar_card}}" >
 
   </div>
     </div>
@@ -532,6 +536,8 @@ color:;
     </div>
       {% if user_id.upload_pancard %}
       <img src="{{user_id.upload_pancard.url}}" width="150" height="150">
+      <br>
+      NOTE: Right click on image to download
       {% endif %}
   </div>
 
@@ -546,6 +552,8 @@ color:;
   </div>
        {% if user_id.upload_aadhar_card %}
       <img src="{{user_id.upload_aadhar_card.url}}" width="150" height="150">
+      <br>
+      NOTE: Right click on image to download
       {% endif %}
     </div>
 </div>
@@ -557,9 +565,69 @@ color:;
           <button style="background-color: #FC6E20;" name="submit1" type="submit"> Submit</button>
       </center>
     </form>
+
+
+<script>
+$('[data-type="adhaar-number"]').keyup(function() {
+  var value = $(this).val();
+  value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
+  $(this).val(value);
+});
+
+$('[data-type="adhaar-number"]').on("change, blur", function() {
+  var value = $(this).val();
+  var maxLength = $(this).attr("maxLength");
+  if (value.length != maxLength) {
+    alert("Invalid Aadhar Card Number");
+   return false;
+  } else {
+    return true;
+  }
+});
+
+
+
+function isOneChecked(){
+    var panVal = $('#pancard').val();
+    var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+
+if(panVal == ""){
+
+  if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
+       alert("Invalid Aadhar Card Number");
+       return false;
+  } else {
+       return true;
+  }
+
+}
+else{
+
+if(regpan.test(panVal)){
+
+  if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
+    alert("Invalid Aadhar Card Number");
+   return false;
+  } else {
+    return true;
+  }
+
+
+} else {
+   alert("Invalid Pancard Number");
+   return false;
+}
+
+}
+
+
+}
+
+
+</script>
+
              </div>
               </div>
-
 
 
              <div class="col-xl-4 col-md-4 mb-12">
@@ -588,6 +656,7 @@ color:;
 <br>
                  {% if request.user.is_authenticated  %}
                                   {% if  user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+                 {% if user.pk != user_id.pk %}
             <form method="post"> {% csrf_token %}
                  <div style="border: 1px solid #C0C0C0	; border-radius: 10px; padding: 5px;">
                   <center>
@@ -605,6 +674,7 @@ color:;
 
               </div>
 </form>
+{% endif %}
 {% endif %}
                  {% endif %}
               </div>
@@ -1212,17 +1282,10 @@ color:;
   <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
 
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
 
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
 
 
 </body>

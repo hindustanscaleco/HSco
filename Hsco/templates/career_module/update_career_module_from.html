@@ -340,7 +340,8 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
       <textarea style="height:120px;" name="achievements{{education_form.id}}"  class="form-control" placeholder="Percentage or Grade" onkeyup= "AchievementsChar(this)">{{education_form.achievements}}</textarea>
-    </div>              <span style="padding: 5px; color: Gray;"> Total Characters Left: <span id="AchievementsCharNum" >-</span></span>
+    </div>
+<!--      <span style="padding: 5px; color: Gray;"> Total Characters Left: <span id="AchievementsCharNum" >-</span></span>-->
 
   </div>
 
@@ -395,6 +396,26 @@ color:;
             <input style="border: 0px; background-color: white;" disabled value="Experience: {% if workexp_form.exp_yrs == 1 %}{{ workexp_form.exp_yrs }} year{% elif workexp_form.exp_yrs > 1 %}
                     {{ workexp_form.exp_yrs }} years{% endif %}{% if workexp_form.exp_months == 1 %}{{ workexp_form.exp_months }} month{% elif workexp_form.exp_months > 1 %}{{ workexp_form.exp_months }} months{% endif %}">
 
+{% if workexp_form.date_error %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> "To" Date Is Greater Than "From" Date
+
+</div>
+            {% endif %}
+
+            {% if workexp_form.invalid_date %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> Date Cannot be Greater Than Today's Date
+
+</div>
+            {% endif %}
+            {% if workexp_form.error %}
+
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> This Date Range Overlaps With Any Of The Above Range
+
+</div>
+{% endif %}
 
     </span>
 
@@ -412,7 +433,9 @@ color:;
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
 
       <textarea style="height:120px;" name="work_expirance_details{{workexp_form.id}}" class="form-control" placeholder="Experience and Achievements" onkeyup = "ExpandAchChar(this)">{{workexp_form.work_expirance_details}}</textarea>
-    </div>        <span style="padding: 5px; color: Gray;"> Total Characters Left: <span id="ExpandAchCharNum" >-</span></span>
+    </div>
+<!--        <span style="padding: 5px; color: Gray;"> Total Characters Left: <span id="ExpandAchCharNum" >-</span>-->
+<!--        </span>-->
 
   </div>
 

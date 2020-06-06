@@ -23,6 +23,7 @@ payment_method = [
 ]
 
 industory_dropdown = [
+        ('','Select industry'),
         ('Energy industry','Energy industry'),
         ('Chemicals','Chemicals'),
         ('Industrial Metals ','Industrial Metals '),
@@ -49,8 +50,8 @@ auto_manual_email = [
 
 select_pi_template = [
     ('','Select'),
-    ('1','Proforma Invoice Hindustan Sales and Consultancy'),
-    ('2','HSI PI Format'),
+    ('1','Proforma Invoice For Hindustan Scale Company'),
+    ('2','Proforma Invoice For Hindustan Scales And Consultancy'),
 ]
 
 

@@ -99,7 +99,7 @@ class Career_moduleForm(forms.ModelForm):
        widget=forms.TextInput(
            attrs={
                'type': 'email',
-               'placeholder': "Customer Email ID",
+               'placeholder': "Your Email ID",
                'class': 'form-control',
            }))
 

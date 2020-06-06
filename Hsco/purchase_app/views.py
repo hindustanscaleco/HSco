@@ -1131,9 +1131,9 @@ def update_customer_details(request,id):
                 item2.cheque_date = cheque_date
             if channel_of_marketing != None and channel_of_marketing != '':
                 item2.channel_of_marketing = channel_of_marketing
-            item2.cheque_notes = cheque_notes
+            # item2.cheque_notes = cheque_notes
 
-            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','cheque_notes','channel_of_marketing'])
+            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','channel_of_marketing'])
 
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
@@ -1164,7 +1164,9 @@ def update_customer_details(request,id):
             item2.bill_no = bill_no
             item2.bill_address = bill_address
             item2.shipping_address = shipping_address
-            item2.upload_op_file = upload_op_file
+            if upload_op_file!= None and upload_op_file!="":
+                item2.upload_op_file = upload_op_file
+                item2.save(update_fields=['upload_op_file',])
             item2.po_number = po_number
             item2.channel_of_sales = channel_of_sales
             item2.industry = industry
@@ -1264,8 +1266,9 @@ def update_customer_details(request,id):
             # item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
             item2.log_entered_by = request.user.profile_name
 
-            item2.save(update_fields=['log_entered_by','date_of_purchase','sales_person','bill_no','upload_op_file','po_number','new_repeat_purchase',
-                                      'channel_of_sales','shipping_address','bill_address','industry','channel_of_dispatch','notes','second_person','second_contact_no','second_company_name','company_address','company_email',
+            item2.save(update_fields=['log_entered_by','date_of_purchase','sales_person','bill_no','po_number','new_repeat_purchase',
+                                      'channel_of_sales','shipping_address','bill_address','industry','channel_of_dispatch','notes','second_person',
+                                      'second_contact_no','second_company_name','company_address','company_email',
                                       ])  #new6
 
 
