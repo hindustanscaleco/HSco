@@ -1,10 +1,10 @@
 def user(request,extra=''):
-    if request.user:
+    if request.user.is_authenticated:
         name_mobile = str(request.user.profile_name )+'''<br>
                         +91-'''+str( request.user.mobile )+'''<br>
                         <br>'''
     else:
-        name_mobile = 'Team HSCo'
+        name_mobile = 'Team HSCo'+'''<br><br>'''
     text_content = ''' <html>
     <body>
               <p>'''+extra+'''</p>
