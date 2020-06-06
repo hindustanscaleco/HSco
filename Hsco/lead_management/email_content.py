@@ -11,13 +11,10 @@ def user(request,extra=''):
                <br>
                <br>
                <p>
-In case of any queries, please feel free to call us on the below numbers or visit our website at <br>
-<br>
-<a href="www.hindustanscale.com"> www.hindustanscale.com</a><br>
+In case of any queries, please feel free to call us on the below numbers or visit our website at<a href="www.hindustanscale.com"> www.hindustanscale.com</a><br>
 <br>
 Thanks and Regards<br>
 <br>
-
 '''+name_mobile+'''
  
 
@@ -30,9 +27,9 @@ Queries & Repairs - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Feedback & Complaints - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+91-7045922252<br>
 
  <br>
- 
+ <a href="www.hindustanscale.com">
  <img  src="http://139.59.76.87/media/pi_history_file/hsco.jpg" style="width: 200px; height:100px;">
-
+</a>
 
  <br>
  <br>
