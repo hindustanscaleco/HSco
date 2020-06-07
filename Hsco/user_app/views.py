@@ -673,6 +673,8 @@ def update_manager(request,id):
         item.branch_name = branch_name
         item.ifsc_code = ifsc_code
         item.salary_slip = salary_slip
+        item.pancard = pancard
+        item.aadhar_card = aadhar_card
         item.password_text = request.POST.get('password')
         item.set_password(request.POST.get('password'))
         if photo != None and photo != "":
@@ -685,7 +687,7 @@ def update_manager(request,id):
             item.upload_pancard = upload_pancard
             item.save(update_fields=['upload_pancard', ])
 
-        item.save(update_fields=['password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','password'])
+        item.save(update_fields=['pancard','aadhar_card','password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','password'])
         return redirect('/manager_list/')
     context = {
         'form': form,

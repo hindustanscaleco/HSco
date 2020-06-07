@@ -531,7 +531,7 @@ def employee_profile(request,id):
         #     return redirect('/employee_profile/' + str(id))
         if Employee_Analysis_month.objects.filter(user_id=id, entry_date__month=salary_date,entry_date__year=salary_date_year).count() > 0:
 
-            slip = Employee_Analysis_month.objects.get(user_id=id,entry_date__month=salary_date_year,entry_date__year=salary_date_year)
+            slip = Employee_Analysis_month.objects.get(user_id=id,entry_date__month=salary_date,entry_date__year=salary_date_year)
 
             slip.salary_slip = upload_slip
             slip.save(update_fields=['salary_slip',])
