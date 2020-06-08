@@ -181,11 +181,33 @@ Dealer Licence No.<b> LD/MH/H004</b><br>
 {% for product in pi_products %}
 <tr>
         <td>{{product.quantity}}</td>
+    
+{% if product.hsn_code %}
+        <td>{{product.hsn_code}}</td>
+    {% else %}
         <td>{{product.product_id.hsn_code}}</td>
+    {% endif %}
+
         <td>{{product.product_id.sub_sub_category}}</td>
-        <td><center> {% if product.product_id.product_image %}<img  src="{{product.product_id.product_image.url}}">{% endif %}</center></td>
+
+{% if product.product_image %}
+        <td><img  src="{{product.product_image.url}}"></td>
+    {% else %}
+        <td><img  src="{{product.product_id.product_image.url}}"></td>
+    {% endif %}
+
+    {% if product.product_desc %}
+        <td>{{product.product_desc|default_if_none:""}}</td>
+    {% else %}
         <td>{{product.product_id.product_desc|default_if_none:""}}</td>
-        <td>{{product.product_id.selling_price}}</td>
+    {% endif %}
+
+        {% if product.rate %}
+        <td>{{product.rate |default_if_none:""}}</td>
+    {% else %}
+        <td>{{product.product_id.selling_price|default_if_none:""}}</td>
+    {% endif %}
+
         <td>{{product.product_total_cost}}</td>
         </tr>
 {% endfor %}
