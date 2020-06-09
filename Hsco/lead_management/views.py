@@ -44,6 +44,7 @@ from django.core.mail.message import EmailMessage
 from stock_management_system_app.models import Godown,GodownProduct
 
 today_month = datetime.now().month
+host_file = 'webmail.hindustanscale.com'
 
 @login_required(login_url='/')
 def lead_home(request):
@@ -1469,11 +1470,14 @@ def update_view_lead(request,id):
 
     form6 = History_followupForm(initial={'wa_no':wa_no,'email_subject':hfu.email_subject,'wa_msg':wa_msg,'email_msg':email_msg,
                                           'sms_msg':sms_msg,'is_email':is_email,'call_response':call_response,'is_call':is_call,'is_sms':is_sms,'is_whatsapp':is_whatsapp})
-
+    cc_list = []
     if request.user.role == 'Employee':
-
+        manager_email = SiteUser.objects.get(profile_name=request.user.manager).professional_email
+        cc_list.append(manager_email)
         work_area_godowns = Godown.objects.filter(Q(godown_admin__profile_name=request.user.admin) | Q(goddown_assign_to__profile_name=request.user.profile_name))
     elif request.user.role == 'Manager':
+        admin_email = SiteUser.objects.get(profile_name=request.user.admin).professional_email
+        cc_list.append(admin_email)
         work_area_godowns = Godown.objects.filter(Q(godown_admin__profile_name=request.user.admin) | Q(goddown_assign_to__profile_name=request.user.profile_name))
     elif request.user.role == 'Admin':
         work_area_godowns = Godown.objects.filter(godown_admin__profile_name=request.user.profile_name)
@@ -1864,6 +1868,7 @@ def update_view_lead(request,id):
                         return redirect('/update_customer_details/' + str(purchase_det.pk))
 
             else:
+                messages.error(request, "No Product Selected\nPlease Select Products And Try Again")
                 context22 = {
                     'error': "No Product Selected\nPlease Select Products And Try Again",
                     'error_exist': True,
@@ -1887,66 +1892,64 @@ def update_view_lead(request,id):
                 pass
             request.session['is_file_pdf'] = True
             val = request.POST
-            text='Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo\n\n'
-            with get_connection(
-                    host='webmail.hindustanscale.com',
-                    port=587,
-                    username='pi@hindustanscale.com',
-                    password='Hindustan@@1234',
-                    use_tls=True
-            ) as connection:
-                # Yours
-                # Sincerely,
-                # Name
-                # of
-                # the
-                # salesman
-                # Phone
-                # of
-                # the
-                # salesman
-                extra = '''
-                Dear '''+lead_id.customer_id.customer_name+''',<br>
-We thank you for showing interest in HSCo  products. Attached is the Proforma Invoice that you have requested.
+            try:
+                if request.user.professional_email == None or request.user.professional_email =='' or request.user.professional_email == 'None':
+                    messages.error(request, "Invalid Professional Email Credentials\nplease update credentials and try again")
+                    return redirect('/update_view_lead/' + str(lead_id.id))
+                if lead_id.customer_id.customer_email_id == None or lead_id.customer_id.customer_email_id == '' or lead_id.customer_id.customer_email_id == 'None':
+                    messages.error(request, "Invalid Email Id\nplease update customer's email Id and try agin")
+                    return redirect('/update_view_lead/' + str(lead_id.id))
 
-                '''
-              #   extra='''<h4>Hello Sir/Madam <br>PFA<br>Thanks<br>Sales Team - HSCo<br></h4>
-              #
-              # <br>'''
 
-                email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request,extra),
-                                      settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],connection=connection)
-                # part1 = MIMEText(text, 'plain')
-                # part2 = MIMEText(user(request), 'html')
-                # email_send.attach(part1)
-                email_send.content_subtype = 'html'
-                email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
-                email_send.send()
+                with get_connection(
+                        host=host_file,
+                        port=587,
+                        username=request.user.professional_email,
+                        password=request.user.professional_email_password,
+                        use_tls=True
+                ) as connection:
 
-            history = Pi_History()
-            lead_id = Lead.objects.get(id=id)
-            todays_date = str(datetime.now().strftime("%Y-%m-%d"))
-            history.medium_of_selection = 'Email'
-            pi_id = Pi_section.objects.get(lead_id=id)
+                    extra = '''
+                    Dear '''+lead_id.customer_id.customer_name+''',<br>
+                    We thank you for showing interest in HSCo  products. Attached is the Proforma Invoice that you have requested.
+    
+                    '''
 
-            pi_products = Pi_product.objects.filter(lead_id=id)
-            context22 = {
-                'lead_id': lead_id,
-                'todays_date': todays_date,
-                'pi_id': pi_id,
-                'pi_products': pi_products,
-            }
-            template = get_template('lead_management/download_pi_pdf.html')
-            html = template.render(context22)
-            file_pdf = ContentFile(html)
-            # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
-            history.pi_history_file.save('PI.html', file_pdf, save=False)
-            history.lead_id = Lead.objects.get(id=id)
-            history.log_entered_by = request.user.profile_name
-            history.medium_of_selection = 'Email'
-            history.call_detail = ''
-            history.save()
-            messages.success(request, "Email Sent on email Id: "+customer_id.customer_email_id)
+                    email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request,extra),
+                                          request.user.professional_email, [lead_id.customer_id.customer_email_id],connection=connection,cc=cc_list)
+                    email_send.content_subtype = 'html'
+                    email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
+                    email_send.send()
+
+                history = Pi_History()
+                lead_id = Lead.objects.get(id=id)
+                todays_date = str(datetime.now().strftime("%Y-%m-%d"))
+                history.medium_of_selection = 'Email'
+                pi_id = Pi_section.objects.get(lead_id=id)
+
+                pi_products = Pi_product.objects.filter(lead_id=id)
+                context22 = {
+                    'lead_id': lead_id,
+                    'todays_date': todays_date,
+                    'pi_id': pi_id,
+                    'pi_products': pi_products,
+                }
+                template = get_template('lead_management/download_pi_pdf.html')
+                html = template.render(context22)
+                file_pdf = ContentFile(html)
+                # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
+                history.pi_history_file.save('PI.html', file_pdf, save=False)
+                history.lead_id = Lead.objects.get(id=id)
+                history.log_entered_by = request.user.profile_name
+                history.medium_of_selection = 'Email'
+                history.call_detail = ''
+                history.save()
+                messages.success(request, "Email Sent on email Id: "+customer_id.customer_email_id)
+            except Exception as e:
+                messages.error(request, str(e))
+            print("mail sending...")
+            print("mail sending...")
+
 
             try:
                 del request.session['email']
@@ -1957,6 +1960,7 @@ We thank you for showing interest in HSCo  products. Attached is the Proforma In
                 del request.session['email_type']
             except:
                 pass
+            return redirect('/update_view_lead/' + str(lead_id.id))
 
         if 'submit' in request.POST:
             customer_name = request.POST.get('customer_name')
@@ -2168,7 +2172,11 @@ We thank you for showing interest in HSCo  products. Attached is the Proforma In
                 history.save()
 
             try:
-                extra = 'Hello Sir/Madam \nPFA\nThanks\nSales Team - HSCo\n\n'
+                extra = '''
+                                  Dear ''' + lead_id.customer_id.customer_name + ''',<br>
+                                  We thank you for showing interest in HSCo  products. Attached is the Proforma Invoice that you have requested.
+
+                                  '''
 
                 if email == 'True' and upload_pi_file == None and email_type == 'external_pi':
                     pi_file = Pi_section.objects.filter(lead_id=id).latest('pk').upload_pi_file
@@ -2181,23 +2189,34 @@ We thank you for showing interest in HSCo  products. Attached is the Proforma In
                     history.log_entered_by = request.user.profile_name
                     history.medium_of_selection = 'Email'
                     history.save()
-                    with get_connection(
-                            host='webmail.hindustanscale.com',
-                            port=587,
-                            username='pi@hindustanscale.com',
-                            password='Hindustan@@1234',
-                            use_tls=True
-                    ) as connection:
+                    try:
+                        if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
+                            messages.error(request,
+                                           "Invalid Professional Email Credentials\nplease update credentials and try again")
+                            return redirect('/update_view_lead/' + str(lead_id.id))
+                        if lead_id.customer_id.customer_email_id == None or lead_id.customer_id.customer_email_id == '' or lead_id.customer_id.customer_email_id == 'None':
+                            messages.error(request, "Invalid Email Id\nplease update customer's email Id and try agin")
+                            return redirect('/update_view_lead/' + str(lead_id.id))
+                        with get_connection(
+                                host=host_file,
+                                port=587,
+                                username=request.user.professional_email,
+                                password=request.user.professional_email_password,
+                                use_tls=True
+                        ) as connection:
 
 
-                        email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
-                                                  user(request, extra),
-                                                  settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],
-                                                  connection=connection)
-                        email_send.content_subtype = 'html'
-                        email_send.attach_file(history.pi_history_file.path)
-                        email_send.send()
-                    messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
+                            email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
+                                                      user(request, extra),
+                                                      request.user.professional_email, [lead_id.customer_id.customer_email_id],
+                                                      connection=connection,cc=cc_list)
+                            email_send.content_subtype = 'html'
+                            email_send.attach_file(history.pi_history_file.path)
+                            email_send.send()
+                        messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
+                    except Exception as e:
+                        messages.error(request, str(e))
+
                 elif email == 'True' and upload_pi_file !=None and email_type == 'external_pi':
                     pi_file = upload_pi_file
                     history = Pi_History()
@@ -2207,22 +2226,33 @@ We thank you for showing interest in HSCo  products. Attached is the Proforma In
                     history.log_entered_by = request.user.profile_name
                     history.medium_of_selection = 'Email'
                     history.save()
-                    with get_connection(
-                            host='webmail.hindustanscale.com',
-                            port=587,
-                            username='pi@hindustanscale.com',
-                            password='Hindustan@@1234',
-                            use_tls=True
-                    ) as connection:
+                    try:
+                        if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
+                            messages.error(request,
+                                           "Invalid Professional Email Credentials\nplease update credentials and try again")
+                            return redirect('/update_view_lead/' + str(lead_id.id))
+                        if lead_id.customer_id.customer_email_id == None or lead_id.customer_id.customer_email_id == '' or lead_id.customer_id.customer_email_id == 'None':
+                            messages.error(request, "Invalid Email Id\nplease update customer's email Id and try agin")
+                            return redirect('/update_view_lead/' + str(lead_id.id))
+                        with get_connection(
+                                host=host_file,
+                                port=587,
+                                username=request.user.professional_email,
+                                password=request.user.professional_email_password,
+                                use_tls=True
+                        ) as connection:
 
-                        email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
-                                                  user(request, extra),
-                                                  settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],
-                                                  connection=connection)
-                        email_send.content_subtype = 'html'
-                        email_send.attach_file(history.pi_history_file.path)
-                        email_send.send()
-                    messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
+                            email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
+                                                      user(request, extra),
+                                                      request.user.professional_email, [lead_id.customer_id.customer_email_id],
+                                                      connection=connection,cc=cc_list)
+                            email_send.content_subtype = 'html'
+                            email_send.attach_file(history.pi_history_file.path)
+                            email_send.send()
+                        messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
+                    except Exception as e:
+                        messages.error(request, str(e))
+
 
             except Exception as pi_file_error:
                 print(pi_file_error)
@@ -2630,48 +2660,74 @@ We thank you for showing interest in HSCo  products. Attached is the Proforma In
                         file = ContentFile(html_content)
                         history_follow.followup_history_file.save('AutoFollowup.html', file, save=False)
                         history_follow.html_content = html_content
-                        with get_connection(
-                                host='webmail.hindustanscale.com',
-                                port=587,
-                                username='pi@hindustanscale.com',
-                                password='Hindustan@@1234',
-                                use_tls=True
-                        ) as connection:
-                            email_send = EmailMessage(email_subject,
-                                                      html_content,
-                                                      settings.EMAIL_HOST_USER3,
-                                                      [customer_id.customer_email_id, ],
-                                                      connection=connection)
+                        try:
+                            if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
+                                messages.error(request,
+                                               "Invalid Professional Email Credentials\nplease update credentials and try again")
+                                return redirect('/update_view_lead/' + str(lead_id.id))
+                            if customer_id.customer_email_id == None or customer_id.customer_email_id == '' or lead_id.customer_id.customer_email_id == 'None':
+                                messages.error(request,
+                                               "Invalid Email Id\nplease update customer's email Id and try agin")
+                                return redirect('/update_view_lead/' + str(lead_id.id))
+                            with get_connection(
+                                    host=host_file,
+                                    port=587,
+                                    username=request.user.professional_email,
+                                    password=request.user.professional_email_password,
+                                    use_tls=True
+                            ) as connection:
+                                email_send = EmailMessage(email_subject,
+                                                          html_content,
+                                                          request.user.professional_email,
+                                                          [customer_id.customer_email_id, ],
+                                                          connection=connection
+                                                          # cc=cc_list
+                                                          )
 
-                            email_send.content_subtype = 'html'
-                            email_send.send()
+                                email_send.content_subtype = 'html'
+                                email_send.send()
+                            messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
+
+                        except Exception as e:
+                            messages.error(request, str(e))
+
                             # send_html_mail(email_subject, html_content, settings.EMAIL_HOST_USER,
                             #                [customer_id.customer_email_id, ])
 
                     else:
-                        with get_connection(
-                                host='webmail.hindustanscale.com',
-                                port=587,
-                                username='pi@hindustanscale.com',
-                                password='Hindustan@@1234',
-                                use_tls=True
-                        ) as connection:
-                            email_send = EmailMessage(email_subject,
-                                                      user(request,email_msg.replace('\n','<br>')),
-                                                      settings.EMAIL_HOST_USER3,
-                                                      [customer_id.customer_email_id, ],
-                                                      connection=connection)
+                        try:
+                            if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
+                                messages.error(request,
+                                               "Invalid Professional Email Credentials\nplease update credentials and try again")
+                                return redirect('/update_view_lead/' + str(lead_id.id))
+                            if customer_id.customer_email_id == None or customer_id.customer_email_id == '' or lead_id.customer_id.customer_email_id == 'None':
+                                messages.error(request,
+                                               "Invalid Email Id\nplease update customer's email Id and try agin")
+                                return redirect('/update_view_lead/' + str(lead_id.id))
+                            with get_connection(
+                                    host=host_file,
+                                    port=587,
+                                    username=request.user.professional_email,
+                                    password=request.user.professional_email_password,
+                                    use_tls=True
+                            ) as connection:
+                                email_send = EmailMessage(email_subject,
+                                                          user(request,email_msg.replace('\n','<br>')),
+                                                          request.user.professional_email,
+                                                          [customer_id.customer_email_id, ],
+                                                          connection=connection
+                                                          # cc=cc_list
+                                                          )
 
-                            email_send.content_subtype = 'html'
-                            email_send.send()
+                                email_send.content_subtype = 'html'
+                                email_send.send()
+                                messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
+
+                        except Exception as e:
+                            messages.error(request, str(e))
+
                         # send_text_mail(email_subject, email_msg, settings.EMAIL_HOST_USER3, [customer_id.customer_email_id, ],connection=connection)
 
-                    # context28 = {
-                    #     'success': "Email Sent on email Id: "+customer_id.customer_email_id,
-                    #     'success_exist': True,
-                    # }
-                    # context_session.update(context28)
-                    messages.success(request,"Email Sent on email Id: "+customer_id.customer_email_id)
 
 
                 if(is_whatsapp=='on' or is_whatsapp=='is_whatsapp'):
