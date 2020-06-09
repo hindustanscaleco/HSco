@@ -17,6 +17,7 @@ from .models import SiteUser
 import secrets
 import string
 from datetime import datetime, timedelta
+from django.contrib import messages
 
 from lead_management.models import Auto_followup_details, Lead
 
@@ -24,6 +25,8 @@ from lead_management.utils import send_html_mail,send_text_mail
 
 from lead_management.email_content import user
 
+
+host_file = 'webmail.hindustanscale.com'
 
 class LoginView(FormView):
 
@@ -45,9 +48,7 @@ class LoginView(FormView):
             request = self.request
             form = LoginForm(request.POST or None)
             if request.session.has_key('registered_mobile'):
-                print('fdsjk')
-                print('fdsjk')
-                print('fdsjk')
+
                 mobile = request.session['registered_mobile']
                 password = request.session['user_password']
 
@@ -157,6 +158,8 @@ def create_admin(request):
 
         aadhar_card = request.POST.get('aadhar_card')
         pancard = request.POST.get('pancard')
+        professional_email = request.POST.get('professional_email')
+        professional_email_password = request.POST.get('professional_email_password')
 
         item=SiteUser()
 
@@ -181,6 +184,8 @@ def create_admin(request):
         item.salary_slip = salary_slip
         item.upload_pancard = upload_pancard
         item.upload_aadhar_card = upload_aadhar_card
+        item.professional_email_password = professional_email_password
+        item.professional_email = professional_email
         item.password_text = request.POST.get('password')
         item.super_admin = SiteUser.objects.get(role='Super Admin').name
         item.set_password(request.POST.get('password'))
@@ -234,6 +239,8 @@ def create_manager(request):
         upload_aadhar_card = request.FILES.get('upload_aadhar_card')
         aadhar_card = request.POST.get('aadhar_card')
         pancard = request.POST.get('pancard')
+        professional_email = request.POST.get('professional_email')
+        professional_email_password = request.POST.get('professional_email_password')
         item = SiteUser()
 
         item.mobile = mobile
@@ -271,6 +278,8 @@ def create_manager(request):
         #     item.admin = admin
         item.upload_pancard = upload_pancard
         item.upload_aadhar_card = upload_aadhar_card
+        item.professional_email_password = professional_email_password
+        item.professional_email = professional_email
 
         item.set_password(request.POST.get('password'))
 
@@ -342,6 +351,8 @@ def create_employee(request):
 
         aadhar_card = request.POST.get('aadhar_card')
         pancard = request.POST.get('pancard')
+        professional_email = request.POST.get('professional_email')
+        professional_email_password = request.POST.get('professional_email_password')
 
         item = SiteUser()
 
@@ -368,6 +379,8 @@ def create_employee(request):
         item.admin = admin
         item.upload_pancard = upload_pancard
         item.upload_aadhar_card = upload_aadhar_card
+        item.professional_email_password = professional_email_password
+        item.professional_email = professional_email
         if is_admin:
 
             if manager == '' or manager == None or manager == '---------':
@@ -501,57 +514,62 @@ def dashboard(request):
 
 
     afd=Auto_followup_details.objects.filter(followup_date=todays_date)
+    if afd.count()>0:
+        try:
+            for item in afd:
 
-    for item in afd:
+                if (item.follow_up_history.is_email):
+                        if (item.follow_up_history.html_content != None and item.follow_up_history.html_content != '' and len(item.follow_up_history.html_content)>5):
+                            with get_connection(
+                                    host=host_file,
+                                    port=587,
+                                    username=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
+                                    password=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email_password,
+                                    use_tls=True
+                            ) as connection:
+                                email_send = EmailMessage(item.follow_up_history.email_subject,
+                                                          item.follow_up_history.html_content,
+                                                          item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email
+                                                          , [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
+                                                          connection=connection)
+                                # part1 = MIMEText(text, 'plain')
+                                # part2 = MIMEText(user(request), 'html')
+                                # email_send.attach(part1)
+                                email_send.content_subtype = 'html'
+                                email_send.send()
+                            # send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
+                        else:
+                            with get_connection(
+                                    host=host_file,
+                                    port=587,
+                                    username=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
+                                    password=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email_password,
+                                    use_tls=True
+                            ) as connection:
+                                email_send = EmailMessage(item.follow_up_history.email_subject,
+                                                          user(request, item.follow_up_history.email_msg),
+                                                          item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
+                                                          [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
+                                                          connection=connection)
 
-        if (item.follow_up_history.is_email):
-            if (item.follow_up_history.html_content != None and item.follow_up_history.html_content != '' and len(item.follow_up_history.html_content)>5):
-                with get_connection(
-                        host='webmail.hindustanscale.com',
-                        port=587,
-                        username='pi@hindustanscale.com',
-                        password='Hindustan@@1234',
-                        use_tls=True
-                ) as connection:
-                    email_send = EmailMessage(item.follow_up_history.email_subject,
-                                              item.follow_up_history.html_content,
-                                              settings.EMAIL_HOST_USER3, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
-                                              connection=connection)
-                    # part1 = MIMEText(text, 'plain')
-                    # part2 = MIMEText(user(request), 'html')
-                    # email_send.attach(part1)
-                    email_send.content_subtype = 'html'
-                    email_send.send()
-                # send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
-            else:
-                with get_connection(
-                        host='webmail.hindustanscale.com',
-                        port=587,
-                        username='pi@hindustanscale.com',
-                        password='Hindustan@@1234',
-                        use_tls=True
-                ) as connection:
-                    email_send = EmailMessage(item.follow_up_history.email_subject,
-                                              user(request, item.follow_up_history.email_msg),
-                                              settings.EMAIL_HOST_USER3,
-                                              [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
-                                              connection=connection)
+                                email_send.content_subtype = 'html'
+                                email_send.send()
 
-                    email_send.content_subtype = 'html'
-                    email_send.send()
-                # send_text_mail(item.follow_up_history.email_subject, item.follow_up_history.email_msg, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
 
-        if (item.follow_up_history.is_sms):
+        # send_text_mail(item.follow_up_history.email_subject, item.follow_up_history.email_msg, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.follow_up_history.follow_up_section.lead_id.customer_id.contact_no + "&message=" + item.follow_up_history.sms_msg+'\n'+item.follow_up_history.sms_con + "&senderid=" + settings.senderid + "&type=txt"
-            payload = ""
-            headers = {'content-type': 'application/x-www-form-urlencoded'}
-            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                if (item.follow_up_history.is_sms):
 
-        end_date = todays_date + timedelta(days=2)
-        Auto_followup_details.objects.filter(id=item.id).update(followup_date=end_date,no_of_times_fdone=F('no_of_times_fdone')+1)
-        Lead.objects.filter(id=item.follow_up_history.follow_up_section.lead_id).update(no_of_times_followup_done=F('no_of_times_followup_done')+1)
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.follow_up_history.follow_up_section.lead_id.customer_id.contact_no + "&message=" + item.follow_up_history.sms_msg+'\n'+item.follow_up_history.sms_con + "&senderid=" + settings.senderid + "&type=txt"
+                    payload = ""
+                    headers = {'content-type': 'application/x-www-form-urlencoded'}
+                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
 
+                end_date = todays_date + timedelta(days=2)
+                Auto_followup_details.objects.filter(id=item.id).update(followup_date=end_date,no_of_times_fdone=F('no_of_times_fdone')+1)
+                Lead.objects.filter(id=item.follow_up_history.follow_up_section.lead_id).update(no_of_times_followup_done=F('no_of_times_followup_done')+1)
+        except Exception as e:
+            messages.error(request, str(e))
 
 
 
@@ -567,63 +585,116 @@ def update_admin(request,id):
     admin_id = SiteUser.objects.get(id=id)
     form = SiteUser_Form(request.POST or None)
     if request.method == 'POST' or request.method == 'FILES':
-        mobile = request.POST.get('mobile')
-        email = request.POST.get('email')
-        name = request.POST.get('name')
-        group = request.POST.get('group')
-        is_deleted = request.POST.get('is_deleted')
-        modules_assigned = request.POST.getlist('checks[]')
-        employee_number = request.POST.get('employee_number')
-        bank_name = request.POST.get('bank_name')
-        account_no = request.POST.get('account_no')
-        branch_name = request.POST.get('branch_name')
-        ifsc_code = request.POST.get('ifsc_code')
-        photo = request.FILES.get('photo')
-        salary_slip = request.FILES.get('salary_slip')
-        aadhar_card = request.POST.get('aadhar_card')
-        pancard = request.POST.get('pancard')
+        if 'test_submit' in request.POST:
+            test_professional_email = request.POST.get('test_professional_email')
+            test_professional_email_password = request.POST.get('test_professional_email_password')
+            test_to = request.POST.get('test_to')
+            try:
+                with get_connection(
+                        host=host_file,
+                        port=587,
+                        username=test_professional_email,
+                        password=test_professional_email_password,
+                        use_tls=True
+                ) as connection:
+                    email_send = EmailMessage('Testing Email Credentials',
+                                              "Testing Email Credentials",
+                                              test_professional_email,
+                                              [test_to, ],
+                                              connection=connection)
 
-        upload_pancard = request.FILES.get('upload_pancard')
-        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
-        if is_deleted == 'on':
-            is_deleted = True
-        else:
-            is_deleted = False
-        item = admin_id
+                    # email_send.content_subtype = 'html'
+                    email_send.send()
+                messages.success(request,"Email Sent!!!")
+                return redirect('/update_admin/'+str(id))
+            except Exception as e:
+                messages.error(request, str(e))
+                return redirect('/update_admin/' + str(id))
 
-        item.mobile = mobile
-        item.email = email
-        item.profile_name = name
-        item.role = 'Admin'
-        item.group = group
-        item.is_deleted = is_deleted
-        item.modules_assigned = modules_assigned
-        item.bank_name = bank_name
-        item.account_number = account_no
-        item.employee_number = employee_number
-        item.branch_name = branch_name
-        item.ifsc_code = ifsc_code
-        item.aadhar_card = aadhar_card
-        item.pancard = pancard
-        item.salary_slip = salary_slip
-        item.password_text = request.POST.get('password')
+        if 'mobile' in request.POST or request.method == 'FILES':
+            mobile = request.POST.get('mobile')
+            email = request.POST.get('email')
+            name = request.POST.get('name')
+            group = request.POST.get('group')
+            is_deleted = request.POST.get('is_deleted')
+            modules_assigned = request.POST.getlist('checks[]')
+            employee_number = request.POST.get('employee_number')
+            bank_name = request.POST.get('bank_name')
+            account_no = request.POST.get('account_no')
+            branch_name = request.POST.get('branch_name')
+            ifsc_code = request.POST.get('ifsc_code')
+            photo = request.FILES.get('photo')
+            salary_slip = request.FILES.get('salary_slip')
+            aadhar_card = request.POST.get('aadhar_card')
+            pancard = request.POST.get('pancard')
+            professional_email = request.POST.get('professional_email')
+            professional_email_password = request.POST.get('professional_email_password')
 
-        if photo != None and photo != "":
-            item.photo = photo
-            item.save(update_fields=['photo', ])
-        if upload_aadhar_card != None and upload_aadhar_card != "":
-            item.upload_aadhar_card = upload_aadhar_card
-            item.save(update_fields=['upload_aadhar_card', ])
-        if upload_pancard != None and upload_pancard != "":
-            item.upload_pancard = upload_pancard
-            item.save(update_fields=['upload_pancard', ])
+            upload_pancard = request.FILES.get('upload_pancard')
+            upload_aadhar_card = request.FILES.get('upload_aadhar_card')
+            if is_deleted == 'on':
+                is_deleted = True
+            else:
+                is_deleted = False
+            item = admin_id
+            if item.professional_email_password != professional_email_password:
+                try:
+                    with get_connection(
+                            host=host_file,
+                            port=587,
+                            username=professional_email,
+                            password=professional_email_password,
+                            use_tls=True
+                    ) as connection:
+                        email_send = EmailMessage('Password Updated',
+                                                  "New Password :"+str(professional_email_password),
+                                                  professional_email,
+                                                  [professional_email, ],
+                                                  connection=connection)
 
-        item.set_password(request.POST.get('password'))
+                        # email_send.content_subtype = 'html'
+                        email_send.send()
+                    messages.success(request, "Updated Password Sent To Email: "+professional_email)
 
-        item.save(update_fields=['password_text',
-                                 'employee_number','mobile','email', 'profile_name','role','group','is_deleted',
-                                 'modules_assigned','bank_name','account_number','branch_name','ifsc_code','password','aadhar_card','pancard'])
-        return redirect('/admin_list/')
+                except Exception as e:
+                    messages.error(request, str(e))
+
+
+            item.mobile = mobile
+            item.email = email
+            item.profile_name = name
+            item.role = 'Admin'
+            item.group = group
+            item.is_deleted = is_deleted
+            item.modules_assigned = modules_assigned
+            item.bank_name = bank_name
+            item.account_number = account_no
+            item.employee_number = employee_number
+            item.branch_name = branch_name
+            item.ifsc_code = ifsc_code
+            item.aadhar_card = aadhar_card
+            item.pancard = pancard
+            item.salary_slip = salary_slip
+            item.professional_email_password = professional_email_password
+            item.professional_email = professional_email
+            item.password_text = request.POST.get('password')
+
+            if photo != None and photo != "":
+                item.photo = photo
+                item.save(update_fields=['photo', ])
+            if upload_aadhar_card != None and upload_aadhar_card != "":
+                item.upload_aadhar_card = upload_aadhar_card
+                item.save(update_fields=['upload_aadhar_card', ])
+            if upload_pancard != None and upload_pancard != "":
+                item.upload_pancard = upload_pancard
+                item.save(update_fields=['upload_pancard', ])
+
+            item.set_password(request.POST.get('password'))
+
+            item.save(update_fields=['password_text','professional_email','professional_email_password',
+                                     'employee_number','mobile','email', 'profile_name','role','group','is_deleted',
+                                     'modules_assigned','bank_name','account_number','branch_name','ifsc_code','password','aadhar_card','pancard'])
+            return redirect('/admin_list/')
     context = {
         'form': form,
         'admin_id': admin_id,
@@ -637,58 +708,110 @@ def update_manager(request,id):
     admin_id = SiteUser.objects.get(name=admin)
     form = SiteUser_Form(request.POST or None)
     if request.method == 'POST' or request.method == 'FILES':
-        mobile = request.POST.get('mobile')
-        email = request.POST.get('email')
-        name = request.POST.get('name')
-        group = request.POST.get('group')
-        is_deleted = request.POST.get('is_deleted')
-        employee_number = request.POST.get('employee_number')
-        modules_assigned = request.POST.getlist('checks[]')
-        bank_name = request.POST.get('bank_name')
-        account_no = request.POST.get('account_no')
-        branch_name = request.POST.get('branch_name')
-        ifsc_code = request.POST.get('ifsc_code')
-        photo = request.FILES.get('photo')
-        salary_slip = request.FILES.get('salary_slip')
-        upload_pancard = request.FILES.get('upload_pancard')
-        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
-        aadhar_card = request.POST.get('aadhar_card')
-        pancard = request.POST.get('pancard')
-        if is_deleted == 'on':
-            is_deleted = True
-        else:
-            is_deleted = False
-        item = manager_id
+        if 'test_submit' in request.POST:
+            test_professional_email = request.POST.get('test_professional_email')
+            test_professional_email_password = request.POST.get('test_professional_email_password')
+            test_to = request.POST.get('test_to')
+            print(test_professional_email)
+            print(test_professional_email_password)
+            try:
+                with get_connection(
+                        host=host_file,
+                        port=587,
+                        username=test_professional_email,
+                        password=test_professional_email_password,
+                        use_tls=True
+                ) as connection:
+                    email_send = EmailMessage('Testing Email Credentials',
+                                              "Testing Email Credentials",
+                                              test_professional_email,
+                                              [test_to, ],
+                                              connection=connection)
 
-        item.mobile = mobile
-        item.email = email
-        item.profile_name = name
-        item.role = 'Manager'
-        item.group = group
-        item.employee_number = employee_number
-        item.is_deleted = is_deleted
-        item.modules_assigned = modules_assigned
-        item.bank_name = bank_name
-        item.account_number = account_no
-        item.branch_name = branch_name
-        item.ifsc_code = ifsc_code
-        item.salary_slip = salary_slip
-        item.pancard = pancard
-        item.aadhar_card = aadhar_card
-        item.password_text = request.POST.get('password')
-        item.set_password(request.POST.get('password'))
-        if photo != None and photo != "":
-            item.photo = photo
-            item.save(update_fields=['photo', ])
-        if upload_aadhar_card != None and upload_aadhar_card != "":
-            item.upload_aadhar_card = upload_aadhar_card
-            item.save(update_fields=['upload_aadhar_card', ])
-        if upload_pancard != None and upload_pancard != "":
-            item.upload_pancard = upload_pancard
-            item.save(update_fields=['upload_pancard', ])
+                    # email_send.content_subtype = 'html'
+                    email_send.send()
+                messages.success(request, "Email Sent!!!")
+                return redirect('/update_manager/' + str(id))
+            except Exception as e:
+                messages.error(request, str(e))
+                return redirect('/update_manager/' + str(id))
+        if 'mobile' in request.POST or request.method == 'FILES':
+            mobile = request.POST.get('mobile')
+            email = request.POST.get('email')
+            name = request.POST.get('name')
+            group = request.POST.get('group')
+            is_deleted = request.POST.get('is_deleted')
+            employee_number = request.POST.get('employee_number')
+            modules_assigned = request.POST.getlist('checks[]')
+            bank_name = request.POST.get('bank_name')
+            account_no = request.POST.get('account_no')
+            branch_name = request.POST.get('branch_name')
+            ifsc_code = request.POST.get('ifsc_code')
+            photo = request.FILES.get('photo')
+            salary_slip = request.FILES.get('salary_slip')
+            upload_pancard = request.FILES.get('upload_pancard')
+            upload_aadhar_card = request.FILES.get('upload_aadhar_card')
+            aadhar_card = request.POST.get('aadhar_card')
+            pancard = request.POST.get('pancard')
+            professional_email = request.POST.get('professional_email')
+            professional_email_password = request.POST.get('professional_email_password')
+            if is_deleted == 'on':
+                is_deleted = True
+            else:
+                is_deleted = False
+            item = manager_id
+            if item.professional_email_password != professional_email_password:
+                try:
+                    with get_connection(
+                            host=host_file,
+                            port=587,
+                            username=professional_email,
+                            password=professional_email_password,
+                            use_tls=True
+                    ) as connection:
+                        email_send = EmailMessage('Password Updated',
+                                                  "New Password :" + str(professional_email_password),
+                                                  professional_email,
+                                                  [professional_email, ],
+                                                  connection=connection)
 
-        item.save(update_fields=['pancard','aadhar_card','password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','password'])
-        return redirect('/manager_list/')
+                        # email_send.content_subtype = 'html'
+                        email_send.send()
+                    messages.success(request, "Updated Password Sent To Email: " + professional_email)
+
+                except Exception as e:
+                    messages.error(request, str(e))
+            item.mobile = mobile
+            item.email = email
+            item.profile_name = name
+            item.role = 'Manager'
+            item.group = group
+            item.employee_number = employee_number
+            item.is_deleted = is_deleted
+            item.modules_assigned = modules_assigned
+            item.bank_name = bank_name
+            item.account_number = account_no
+            item.branch_name = branch_name
+            item.ifsc_code = ifsc_code
+            item.salary_slip = salary_slip
+            item.pancard = pancard
+            item.aadhar_card = aadhar_card
+            item.professional_email_password = professional_email_password
+            item.professional_email = professional_email
+            item.password_text = request.POST.get('password')
+            item.set_password(request.POST.get('password'))
+            if photo != None and photo != "":
+                item.photo = photo
+                item.save(update_fields=['photo', ])
+            if upload_aadhar_card != None and upload_aadhar_card != "":
+                item.upload_aadhar_card = upload_aadhar_card
+                item.save(update_fields=['upload_aadhar_card', ])
+            if upload_pancard != None and upload_pancard != "":
+                item.upload_pancard = upload_pancard
+                item.save(update_fields=['upload_pancard', ])
+
+            item.save(update_fields=['professional_email_password','professional_email','pancard','aadhar_card','password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','password'])
+            return redirect('/manager_list/')
     context = {
         'form': form,
         'manager_id': manager_id,
@@ -703,57 +826,108 @@ def update_employee(request,id):
     manager_id = SiteUser.objects.get(name=manager)
     form = SiteUser_Form(request.POST or None)
     if request.method == 'POST' or request.method == 'FILES':
-        mobile = request.POST.get('mobile')
-        email = request.POST.get('email')
-        name = request.POST.get('name')
-        group = request.POST.get('group')
-        is_deleted = request.POST.get('is_deleted')
-        modules_assigned = request.POST.getlist('checks[]')
-        bank_name = request.POST.get('bank_name')
-        account_no = request.POST.get('account_no')
-        branch_name = request.POST.get('branch_name')
-        employee_number = request.POST.get('employee_number')
-        ifsc_code = request.POST.get('ifsc_code')
-        photo = request.POST.get('photo')
-        salary_slip = request.FILES.get('salary_slip')
-        upload_pancard = request.FILES.get('upload_pancard')
-        upload_aadhar_card = request.FILES.get('upload_aadhar_card')
-        aadhar_card = request.POST.get('aadhar_card')
-        pancard = request.POST.get('pancard')
-        if is_deleted == 'on':
-            is_deleted = True
-        else:
-            is_deleted = False
-        item = employee_id
+        if 'test_submit' in request.POST:
+            test_professional_email = request.POST.get('test_professional_email')
+            test_professional_email_password = request.POST.get('test_professional_email_password')
+            test_to = request.POST.get('test_to')
+            try:
+                with get_connection(
+                        host=host_file,
+                        port=587,
+                        username=test_professional_email,
+                        password=test_professional_email_password,
+                        use_tls=True
+                ) as connection:
+                    email_send = EmailMessage('Testing Email Credentials',
+                                              "Testing Email Credentials",
+                                              test_professional_email,
+                                              [test_to, ],
+                                              connection=connection)
 
-        item.mobile = mobile
-        item.email = email
-        item.profile_name = name
-        item.role = 'Employee'
-        item.group = group
-        item.employee_number = employee_number
-        item.is_deleted = is_deleted
-        item.modules_assigned = modules_assigned
-        item.bank_name = bank_name
-        item.account_number = account_no
-        item.branch_name = branch_name
-        item.ifsc_code = ifsc_code
-        item.salary_slip = salary_slip
-        item.pancard = pancard
-        item.aadhar_card = aadhar_card
-        item.password_text = request.POST.get('password')
-        item.set_password(request.POST.get('password'))
-        if photo != None and photo != "":
-            item.photo = photo
-            item.save(update_fields=['photo', ])
-        if upload_aadhar_card != None and upload_aadhar_card != "":
-            item.upload_aadhar_card = upload_aadhar_card
-            item.save(update_fields=['upload_aadhar_card', ])
-        if upload_pancard != None and upload_pancard != "":
-            item.upload_pancard = upload_pancard
-            item.save(update_fields=['upload_pancard', ])
-        item.save(update_fields=['pancard','aadhar_card','password_text','mobile','email','employee_number', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','password'])
-        return redirect('/employee_list/')
+                    # email_send.content_subtype = 'html'
+                    email_send.send()
+                messages.success(request, "Email Sent!!!")
+                return redirect('/update_employee/' + str(id))
+            except Exception as e:
+                messages.error(request, str(e))
+                return redirect('/update_employee/' + str(id))
+
+        if 'mobile' in request.POST or request.method == 'FILES':
+            mobile = request.POST.get('mobile')
+            email = request.POST.get('email')
+            name = request.POST.get('name')
+            group = request.POST.get('group')
+            is_deleted = request.POST.get('is_deleted')
+            modules_assigned = request.POST.getlist('checks[]')
+            bank_name = request.POST.get('bank_name')
+            account_no = request.POST.get('account_no')
+            branch_name = request.POST.get('branch_name')
+            employee_number = request.POST.get('employee_number')
+            ifsc_code = request.POST.get('ifsc_code')
+            photo = request.POST.get('photo')
+            salary_slip = request.FILES.get('salary_slip')
+            upload_pancard = request.FILES.get('upload_pancard')
+            upload_aadhar_card = request.FILES.get('upload_aadhar_card')
+            aadhar_card = request.POST.get('aadhar_card')
+            pancard = request.POST.get('pancard')
+            professional_email_password = request.POST.get('professional_email_password')
+            professional_email = request.POST.get('professional_email')
+            if is_deleted == 'on':
+                is_deleted = True
+            else:
+                is_deleted = False
+            item = employee_id
+            if item.professional_email_password != professional_email_password:
+                try:
+                    with get_connection(
+                            host=host_file,
+                            port=587,
+                            username=professional_email,
+                            password=professional_email_password,
+                            use_tls=True
+                    ) as connection:
+                        email_send = EmailMessage('Password Updated',
+                                                  "New Password :" + str(professional_email_password),
+                                                  professional_email,
+                                                  [professional_email, ],
+                                                  connection=connection)
+
+                        # email_send.content_subtype = 'html'
+                        email_send.send()
+                    messages.success(request, "Updated Password Sent To Email: " + professional_email)
+
+                except Exception as e:
+                    messages.error(request, str(e))
+            item.mobile = mobile
+            item.email = email
+            item.profile_name = name
+            item.role = 'Employee'
+            item.group = group
+            item.employee_number = employee_number
+            item.is_deleted = is_deleted
+            item.modules_assigned = modules_assigned
+            item.bank_name = bank_name
+            item.account_number = account_no
+            item.branch_name = branch_name
+            item.ifsc_code = ifsc_code
+            item.salary_slip = salary_slip
+            item.pancard = pancard
+            item.aadhar_card = aadhar_card
+            item.professional_email_password = professional_email_password
+            item.professional_email = professional_email
+            item.password_text = request.POST.get('password')
+            item.set_password(request.POST.get('password'))
+            if photo != None and photo != "":
+                item.photo = photo
+                item.save(update_fields=['photo', ])
+            if upload_aadhar_card != None and upload_aadhar_card != "":
+                item.upload_aadhar_card = upload_aadhar_card
+                item.save(update_fields=['upload_aadhar_card', ])
+            if upload_pancard != None and upload_pancard != "":
+                item.upload_pancard = upload_pancard
+                item.save(update_fields=['upload_pancard', ])
+            item.save(update_fields=['professional_email_password','professional_email','pancard','aadhar_card','password_text','mobile','email','employee_number', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','password'])
+            return redirect('/employee_list/')
     context = {
         'form': form,
         'employee_id': employee_id,
