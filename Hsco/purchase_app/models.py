@@ -45,13 +45,24 @@ class Purchase_Details(models.Model):   #cleaned
     is_quick_entry = models.BooleanField(default=False)
 
     payment_mode = models.CharField(max_length=150,null=True, blank=True )
+    #cheque details
     bank_name = models.CharField(max_length=150, null=True, blank=True)
     cheque_no = models.TextField(null=True, blank=True)
     cheque_date = models.DateField(default=datetime.date.today)
-    # cheque_notes = models.TextField( null=True, blank=True)
+
+    #neft details
+    neft_bank_name = models.CharField(max_length=150, null=True, blank=True)
+    neft_date = models.DateField(default=datetime.date.today)
+    reference_no = models.CharField(max_length=150, null=True, blank=True)
+
+    #credit details
+    credit_pending_amount =  models.FloatField(default=0.0,null=True,blank=True)
+    credit_authorised_by = models.CharField(max_length=250,null=True, blank=True )
+
     tax_amount = models.FloatField(default=0.0)
     total_amount = models.FloatField(default=0.0)
-
+    total_pf = models.FloatField(default=0.0)
+    is_gst = models.BooleanField(default=False)
 
     def __int__(self):
         return self.id

@@ -222,12 +222,19 @@ def add_purchase_details(request):
         notes = request.POST.get('notes')
         channel_of_marketing = request.POST.get('channel_of_marketing')
 
+        total_pf = request.POST.get('total_pf')
+        gst_id = request.POST.get('gst_id')
         payment_mode = request.POST.get('payment_mode')
         bank_name = request.POST.get('bank_name')
         cheque_no = request.POST.get('cheque_no')
         cheque_date = request.POST.get('cheque_date')
-        cheque_notes = request.POST.get('cheque_notes')
 
+        neft_bank_name = request.POST.get('neft_bank_name')
+        neft_date = request.POST.get('neft_date')
+        reference_no = request.POST.get('reference_no')
+
+        credit_pending_amount = request.POST.get('credit_pending_amount')
+        credit_authorised_by = request.POST.get('credit_authorised_by')
         # feedback_form_filled = request.POST.get('feedback_form_filled')
 
         item2 = Purchase_Details()
@@ -280,6 +287,18 @@ def add_purchase_details(request):
                 pass
         site_user_id=SiteUser.objects.get(profile_name=sales_person).pk
         # item2.crm_no = Customer_Details.objects.get(id=item.pk)
+        if gst_id == 'on':
+            item2.is_gst = True
+        item2.total_pf = float(total_pf)
+
+        item2.neft_bank_name = neft_bank_name
+        item2.reference_no = reference_no
+        if neft_date != None and neft_date != '':
+            item2.neft_date = neft_date
+
+        item2.credit_pending_amount = float(credit_pending_amount)
+        item2.credit_authorised_by = credit_authorised_by
+
         item2.payment_mode = payment_mode
         item2.bank_name = bank_name
         item2.cheque_no = cheque_no
@@ -287,7 +306,6 @@ def add_purchase_details(request):
             item2.cheque_date = cheque_date
         if channel_of_marketing != None and channel_of_marketing != '':
             item2.channel_of_marketing = channel_of_marketing
-        item2.cheque_notes = cheque_notes
 
         item2.new_repeat_purchase = new_repeat_purchase
         item2.second_person=customer_name  #new1
@@ -1112,28 +1130,52 @@ def update_customer_details(request,id):
             channel_of_marketing = request.POST.get('channel_of_marketing')
             # value_of_goods = request.POST.get('value_of_goods')
             notes = request.POST.get('notes')
+            tax_amount = request.POST.get('tax_amount')
+            total_amount = request.POST.get('total_amount')
             # value_of_goods = request.POST.get('value_of_goods')
             # feedback_form_filled = request.POST.get('feedback_form_filled')
             payment_mode = request.POST.get('payment_mode')
+            total_pf = request.POST.get('total_pf')
+            gst_id = request.POST.get('gst_id')
+
             bank_name = request.POST.get('bank_name')
             cheque_no = request.POST.get('cheque_no')
             cheque_date = request.POST.get('cheque_date')
-            cheque_notes = request.POST.get('cheque_notes')
 
+            neft_bank_name = request.POST.get('neft_bank_name')
+            neft_date = request.POST.get('neft_date')
+            reference_no = request.POST.get('reference_no')
 
-
+            credit_pending_amount = request.POST.get('credit_pending_amount')
+            credit_authorised_by = request.POST.get('credit_authorised_by')
             item2 = purchase_id_id
 
+            if gst_id == 'on':
+                item2.is_gst = True
             item2.payment_mode = payment_mode
+            item2.total_pf = total_pf
+
             item2.bank_name = bank_name
             item2.cheque_no = cheque_no
             if cheque_date != None and cheque_date != '':
                 item2.cheque_date = cheque_date
+
+            item2.neft_bank_name = neft_bank_name
+            item2.reference_no = reference_no
+            if neft_date != None and neft_date != '':
+                item2.neft_date = neft_date
+
+            item2.credit_pending_amount = credit_pending_amount
+            item2.credit_authorised_by = credit_authorised_by
+
+            item2.total_amount = total_amount
+            item2.tax_amount = tax_amount
+
             if channel_of_marketing != None and channel_of_marketing != '':
                 item2.channel_of_marketing = channel_of_marketing
-            # item2.cheque_notes = cheque_notes
 
-            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','channel_of_marketing'])
+            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','channel_of_marketing','tax_amount',
+                                      'total_pf','neft_bank_name','reference_no','neft_date','credit_pending_amount','credit_authorised_by','is_gst'])
 
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
@@ -1492,8 +1534,8 @@ def add_product_details(request,id):
             print(x)
 
         Purchase_Details.objects.filter(id=purchase_id).update(value_of_goods=F("value_of_goods") + value_of_goods)
-        # Purchase_Details.objects.filter(id=purchase_id).update(tax_amount=F("value_of_goods") * 0.18)
-        # Purchase_Details.objects.filter(id=purchase_id).update(total_amount=F("value_of_goods") + F("tax_amount"))
+        Purchase_Details.objects.filter(id=purchase_id).update(tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
+        Purchase_Details.objects.filter(id=purchase_id).update(total_amount=F("value_of_goods") + F("tax_amount") + F("total_pf"))
 
         if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
