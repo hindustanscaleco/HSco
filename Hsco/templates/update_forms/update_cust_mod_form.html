@@ -142,6 +142,7 @@ function myFunction() {
 
   var x = document.getElementById("myText19");
   var y = document.getElementById("myText20");
+  var mode = document.getElementById("payment_mode_id").value;
   if (x != null){
     if (x.style.display === "none") {
     x.style.display = "block";
@@ -154,7 +155,7 @@ function myFunction() {
 
 
 
-  document.getElementById("myText").disabled = false;
+    document.getElementById("myText").disabled = false;
     document.getElementById("myText2").disabled = false;
     document.getElementById("myText3").disabled = false;
     document.getElementById("myText4").disabled = false;
@@ -175,7 +176,23 @@ function myFunction() {
     document.getElementById("total_pf_id").disabled = false;
     document.getElementById("gst_id").disabled = false;
 
-    document.getElementById("myText23").disabled = true;
+
+    <!--if (mode == 'Cheque'){-->
+        <!--document.getElementById("bank_name2").disabled = false;-->
+        <!--document.getElementById("cheque_no2").disabled = false;-->
+        <!--document.getElementById("cheque_date2").disabled = false;-->
+
+    <!--}-->
+    <!--else if (mode == 'Credit'){-->
+        <!--document.getElementById("credit_authorised_by_id").disabled = false;-->
+        <!--document.getElementById("credit_authorised_by_id").disabled = false;-->
+    <!--}-->
+    <!--else if (mode == 'NEFT'){-->
+        <!--document.getElementById("neft_bank_name2").disabled = false;-->
+        <!--document.getElementById("neft_date2").disabled = false;-->
+        <!--document.getElementById("reference_no2").disabled = false;-->
+    <!--}-->
+
     document.getElementById("myText25").disabled = true;
 
     document.getElementById("myText19").style.display = "block";
@@ -183,6 +200,7 @@ function myFunction() {
 }
 
 </script>
+
 {% if channel_error %}
 <script>
     alert("Please Select Valid Channel Of Dispatch");
@@ -610,7 +628,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="bank_name" value="{{purchase_id_id.bank_name|default_if_none:''}}" id="bank_name" placeholder="Bank Name" class="form-control"  type="text">
+  <input  name="bank_name"  value="{{purchase_id_id.bank_name|default_if_none:''}}" id="bank_name2" placeholder="Bank Name" class="form-control"  type="text">
     </div>
   </div>
 
@@ -621,7 +639,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="cheque_no" id="cheque_no" value="{{purchase_id_id.cheque_no|default_if_none:''}}" placeholder="Cheque Number" class="form-control"  type="text">
+  <input  name="cheque_no" id="cheque_no2"  value="{{purchase_id_id.cheque_no|default_if_none:''}}" placeholder="Cheque Number" class="form-control"  type="text">
     </div>
   </div>
 
@@ -636,7 +654,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="cheque_date" id="cheque_date" value="{{purchase_id_id.cheque_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
+  <input  name="cheque_date"  id="cheque_date2" value="{{purchase_id_id.cheque_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
     </div>
   </div>
 
@@ -663,7 +681,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="neft_bank_name" value="{{purchase_id_id.neft_bank_name|default_if_none:''}}" id="neft_bank_name2" placeholder="Bank Name" class="form-control"  type="text">
+  <input  name="neft_bank_name"  value="{{purchase_id_id.neft_bank_name|default_if_none:''}}" id="neft_bank_name2" placeholder="Bank Name" class="form-control"  type="text">
     </div>
   </div>
 
@@ -674,7 +692,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="cheque_date" id="neft_date2" value="{{purchase_id_id.neft_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
+  <input  name="cheque_date" id="neft_date2"  value="{{purchase_id_id.neft_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
     </div>
   </div>
 
@@ -690,7 +708,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="reference_no" id="reference_no2" value="{{purchase_id_id.reference_no|default_if_none:''}}" placeholder="Reference Number" class="form-control"  type="text">
+  <input  name="reference_no" id="reference_no2"  value="{{purchase_id_id.reference_no|default_if_none:''}}" placeholder="Reference Number" class="form-control"  type="text">
     </div>
   </div>
 
@@ -706,7 +724,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="credit_authorised_by_id" value="{{purchase_id_id.credit_authorised_by|default_if_none:''}}"  placeholder="Authorised By" class="form-control"  type="text">
+  <input  id="credit_authorised_by_id"  name="credit_authorised_by" value="{{purchase_id_id.credit_authorised_by|default_if_none:''}}"  placeholder="Authorised By" class="form-control"  type="text">
     </div>
   </div>
 
@@ -717,7 +735,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="credit_pending_amount" id="credit_pending_amount_id" value="{{purchase_id_id.credit_pending_amount|default_if_none:''}}" placeholder="Pending Amount" class="form-control" step="any" type="number">
+  <input  name="credit_pending_amount"  id="credit_pending_amount_id" value="{{purchase_id_id.credit_pending_amount|default_if_none:''}}" placeholder="Pending Amount" class="form-control" step="any" type="number">
     </div>
   </div>
 
@@ -748,6 +766,7 @@ function myFunction() {
 
                   $('#neft_bank_name2').removeAttr('required', '');
                   $('#neft_date2').removeAttr('required', '');
+                  document.getElementById("gst_id").checked = true;
               }
 
              else if (mode == 'NEFT'){
@@ -765,6 +784,7 @@ function myFunction() {
                   $('#bank_name2').removeAttr('required', '');
                   $('#cheque_no2').removeAttr('required', '');
                   $('#cheque_date2').removeAttr('required', '');
+                  document.getElementById("gst_id").checked = true;
               }
               else if (mode == 'Credit'){
                   x.style.display = "none";
@@ -780,10 +800,14 @@ function myFunction() {
                   $('#bank_name2').removeAttr('required', '');
                   $('#cheque_no2').removeAttr('required', '');
                   $('#cheque_date2').removeAttr('required', '');
+                  document.getElementById("gst_id").checked = false;
               }
               else{
                   if (mode == 'Razorpay'){
                     document.getElementById("gst_id").checked = true;
+                  }
+                  else{
+                    document.getElementById("gst_id").checked = false;
                   }
                   x.style.display = "none";
                   y.style.display = "none";

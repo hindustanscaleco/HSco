@@ -468,6 +468,7 @@ td {
         <div class="row" id="id_manager_view">
 
     <table>
+
         <tr style="background-color: gray; color: white;">
             <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Dispatch Id</td>
             <td style="border: 0px solid gray;">Date </td>
@@ -479,8 +480,12 @@ td {
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Feedback</td>
         </tr>
                     {% for list1 in customer_list %}
+        {% if list1.payment_mode == 'Credit' %}
+            <tr bgcolor="red" style="background-color:red; cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+        {% else %}
+            <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+        {% endif %}
 
-        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
                         <td>{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>
 
             <td>{{ list1.entry_timedate|date:'Y-m-d'}}</td>
