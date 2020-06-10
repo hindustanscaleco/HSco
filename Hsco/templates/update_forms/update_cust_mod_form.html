@@ -170,12 +170,18 @@ function myFunction() {
     document.getElementById("myText17").disabled = false;
     document.getElementById("myText21").disabled = false;
     document.getElementById("myText22").disabled = false;
+    document.getElementById("tax_amt_id").disabled = false;
+    document.getElementById("payment_mode_id").disabled = false;
+    document.getElementById("total_pf_id").disabled = false;
+    document.getElementById("gst_id").disabled = false;
+
     document.getElementById("myText23").disabled = true;
     document.getElementById("myText25").disabled = true;
 
     document.getElementById("myText19").style.display = "block";
 
 }
+
 </script>
 {% if channel_error %}
 <script>
@@ -392,6 +398,22 @@ function myFunction() {
     </datalist>
     </div>
   </div>
+ <label class="col-md-2 control-label">Channel of Dispatch *
+</label>
+      <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+  <input  type="text" name="channel_of_dispatch" placeholder="Channel of Dispatch" required class="form-control" disabled id="myText21" value="{{purchase_id_id.channel_of_dispatch}}" list="channel">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="channel">
+      <option value="Courier">
+      <option value="Transport">
+      <option value="Franchisee Store">
+      <option value="Online Market Places">
+      <option value="Delivery Boys">
+    </datalist>
+    </div>
+  </div>
 
 
       </div>
@@ -464,22 +486,6 @@ function myFunction() {
 
     <div class="form-group row">
 
-    <label class="col-md-2 control-label">Channel of Dispatch *
-</label>
-      <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-  <input  type="text" name="channel_of_dispatch" placeholder="Channel of Dispatch" required class="form-control" disabled id="myText21" value="{{purchase_id_id.channel_of_dispatch}}" list="channel">
-    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-      <datalist style="height:20px;" id="channel">
-      <option value="Courier">
-      <option value="Transport">
-      <option value="Franchisee Store">
-      <option value="Online Market Places">
-      <option value="Delivery Boys">
-    </datalist>
-    </div>
-  </div>
 
   <label class="col-md-2 control-label">Notes
 </label>
@@ -488,6 +494,17 @@ function myFunction() {
   <span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>
 <input name="notes" class="form-control" value="{{purchase_id_id.notes}}" placeholder="Notes" disabled id="myText22">
 </div>
+  </div>
+
+<label class="col-md-2 control-label">P&F
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="total_pf" id="total_pf_id" onkeyup="calculate_total_amount()"  value="{{purchase_id_id.total_pf|default_if_none:''}}" placeholder="P&F Amount" class="form-control" step="any" type="number">
+    </div>
   </div>
     </div>
 
@@ -525,22 +542,22 @@ function myFunction() {
 
 
     <!--</div>-->
-        <!--<div class="form-group row">-->
-        <!--<label class="col-md-2 control-label">Tax Amount</label>-->
-        <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-  <!--<input  name="tax_amount" id="tax_amt_id" onchange="calculate_total_amount()" value="{{purchase_id_id.tax_amount}}" placeholder="Tax Amount" class="form-control" step="0.2"  type="number">-->
-    <!--</div>-->
-  <!--</div>-->
-<!--<label class="col-md-2 control-label">Total Amount</label>-->
-        <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-  <!--<input  name="total_amount" id="total_amt_id" value="{{purchase_id_id.total_amount}}" placeholder="Total Amount" class="form-control" step="0.2"  type="number">-->
-    <!--</div>-->
-  <!--</div>-->
-    <!--</div>-->
+        <div class="form-group row">
+        <label class="col-md-2 control-label">Tax Amount</label>
+        <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="tax_amount" id="tax_amt_id" onkeyup="calculate_total_amount()" value="{{purchase_id_id.tax_amount}}" disabled placeholder="Tax Amount" class="form-control" step="0.2"  type="number">
+    </div>
+  </div>
+<label class="col-md-2 control-label">Total Amount</label>
+        <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="total_amount" id="total_amt_id" value="{{purchase_id_id.total_amount}}" placeholder="Total Amount" disabled class="form-control" step="0.2"  type="number">
+    </div>
+  </div>
+    </div>
 
 <div class="form-group row">
 
@@ -549,24 +566,41 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="payment_mode" id="payment_mode"  onchange="show()"  required class="form-control">
-      <option value="{{purchase_id_id.payment_mode}}">{{purchase_id_id.payment_mode}}</option>
-    {% if purchase_id_id.payment_mode == 'Cheque' %}
-  <option value="Cash">Cash</option>
-    {% else %}
+<select name="payment_mode" id="payment_mode_id"  onchange="show()"  required disabled class="form-control">
+      <option  value="{{purchase_id_id.payment_mode}}">{{purchase_id_id.payment_mode}}</option>
+    <option value="Cash">Cash</option>
+      <option  value="Credit">Credit</option>
   <option  value="Cheque">Cheque</option>
-    {% endif %}
+  <option  value="Razorpay">Razorpay</option>
+  <option  value="NEFT">NEFT</option>
 </select>
     </div>
   </div>
 
+<label class="col-md-2 control-label">GST*
+
+
+</label>
+
+              <div class="col xl-12">
+                  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+
+    <input type="checkbox" class="custom-control-input" id="gst_id"  name="gst_id" {% if purchase_id_id.is_gst == True %} checked {% endif %}  >
+
+  <label class="custom-control-label"  for="gst_id"></label>
+  </div>
+</div>
+
+              </div>
+
 
 
 
 </div>
-        {% if purchase_id_id.payment_mode == 'Cheque' %}
 
-      <div id="payment_cheque2" style="display: block;">
+
+          <div id="payment_cheque2" style="display: none;">
             <div class="form-group row">
 
 <label class="col-md-2 control-label">Bank Name*
@@ -576,7 +610,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="bank_name" value="{{purchase_id_id.bank_name}}" id="bank_name" placeholder="Bank Name" class="form-control"  type="text">
+  <input  name="bank_name" value="{{purchase_id_id.bank_name|default_if_none:''}}" id="bank_name" placeholder="Bank Name" class="form-control"  type="text">
     </div>
   </div>
 
@@ -587,84 +621,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="cheque_no" id="cheque_no" value="{{purchase_id_id.cheque_no}}" placeholder="Cheque Number" class="form-control"  type="text">
-    </div>
-  </div>
-
-
-</div>
-            <div class="form-group row">
-
-<label class="col-md-2 control-label">Cheque Date*
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="cheque_date" id="cheque_date" value="{{purchase_id_id.cheque_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
-    </div>
-  </div>
-
-<!--  <label class="col-md-2 control-label">Cheque Notes*-->
-
-
-<!--</label>-->
-<!--  <div class="col-md-4 inputGroupContainer">-->
-<!--  <div class="input-group">-->
-<!--  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-<!--    <textarea   name="cheque_notes" id="cheque_notes"  rows="6" placeholder="Cheque Notes" class="form-control" >{{purchase_id_id.cheque_notes}}</textarea>-->
-<!--    </div>-->
-<!--  </div>-->
-
-</div>
-      </div>
-      <script>
-      function show(){
-          var a = document.getElementById("payment_mode").value;
-          var x = document.getElementById("payment_cheque2");
-
-          if (a == 'Cheque'){
-              x.style.display = "block";
-              $('#bank_name').attr('required', '');
-              $('#cheque_no').attr('required', '');
-              $('#cheque_date').attr('required', '');
-              $('#cheque_notes').attr('required', '');
-          }
-          if (a == 'Cash'){
-              x.style.display = "none";
-              $('#bank_name').removeAttr('required', '');
-              $('#cheque_no').removeAttr('required', '');
-              $('#cheque_date').removeAttr('required', '');
-              $('#cheque_notes').removeAttr('required', '');
-          }
-      }
-
-</script>
-
-    {% else %}
-          <div id="payment_cheque" style="display: none;">
-            <div class="form-group row">
-
-<label class="col-md-2 control-label">Bank Name*
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="bank_name" value="{{purchase_id_id.bank_name}}" id="bank_name" placeholder="Bank Name" class="form-control"  type="text">
-    </div>
-  </div>
-
-  <label class="col-md-2 control-label">Cheque No*
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="cheque_no" id="cheque_no" value="{{purchase_id_id.cheque_no}}" placeholder="Cheque Number" class="form-control"  type="text">
+  <input  name="cheque_no" id="cheque_no" value="{{purchase_id_id.cheque_no|default_if_none:''}}" placeholder="Cheque Number" class="form-control"  type="text">
     </div>
   </div>
 
@@ -696,30 +653,156 @@ function myFunction() {
 
 </div>
       </div>
+          <div id="payment_neft2" style="display: none;">
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Bank Name*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="neft_bank_name" value="{{purchase_id_id.neft_bank_name|default_if_none:''}}" id="neft_bank_name2" placeholder="Bank Name" class="form-control"  type="text">
+    </div>
+  </div>
+
+<label class="col-md-2 control-label">NEFT Date*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_date" id="neft_date2" value="{{purchase_id_id.neft_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
+    </div>
+  </div>
+
+
+
+</div>
+            <div class="form-group row">
+
+ <label class="col-md-2 control-label">Reference No
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="reference_no" id="reference_no2" value="{{purchase_id_id.reference_no|default_if_none:''}}" placeholder="Reference Number" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
+      </div>
+          <div id="payent_credit2" style="display: none;">
+                          <div class="form-group row">
+
+<label class="col-md-2 control-label">Authorised By*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="credit_authorised_by_id" value="{{purchase_id_id.credit_authorised_by|default_if_none:''}}"  placeholder="Authorised By" class="form-control"  type="text">
+    </div>
+  </div>
+
+<label class="col-md-2 control-label">Pending Amount*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="credit_pending_amount" id="credit_pending_amount_id" value="{{purchase_id_id.credit_pending_amount|default_if_none:''}}" placeholder="Pending Amount" class="form-control" step="any" type="number">
+    </div>
+  </div>
+
+
+
+</div>
+
+          </div>
       <script>
-      function show(){
-          var a = document.getElementById("payment_mode").value;
-          var x = document.getElementById("payment_cheque");
 
-          if (a == 'Cheque'){
-              x.style.display = "block";
-              $('#bank_name').attr('required', '');
-              $('#cheque_no').attr('required', '');
-              $('#cheque_date').attr('required', '');
-              $('#cheque_notes').attr('required', '');
-          }
-          if (a == 'Cash'){
-              x.style.display = "none";
-              $('#bank_name').removeAttr('required', '');
-              $('#cheque_no').removeAttr('required', '');
-              $('#cheque_date').removeAttr('required', '');
-              $('#cheque_notes').removeAttr('required', '');
-          }
-      }
+          function show(){
+              var mode = document.getElementById("payment_mode_id").value;
+              var x = document.getElementById("payment_cheque2");
+              var y = document.getElementById("payment_neft2");
+              var z = document.getElementById("payent_credit2");
+              if (mode == 'Cheque'){
+                  document.getElementById("gst_id").checked = true;
+                  y.style.display = "none";
+                  z.style.display = "none";
+                  x.style.display = "block";
 
+                  $('#bank_name2').attr('required', '');
+                  $('#cheque_no2').attr('required', '');
+                  $('#cheque_date2').attr('required', '');
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '')
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+              }
+
+             else if (mode == 'NEFT'){
+                  document.getElementById("gst_id").checked = true;
+                  x.style.display = "none";
+                  z.style.display = "none";
+                  y.style.display = "block";
+
+                  $('#neft_bank_name2').attr('required', '');
+                  $('#neft_date2').attr('required', '');
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '')
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+              }
+              else if (mode == 'Credit'){
+                  x.style.display = "none";
+                  y.style.display = "none";
+                  z.style.display = "block";
+
+                  $('#credit_authorised_by_id').attr('required', '');
+                  $('#credit_pending_amount_id').attr('required', '');
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+              }
+              else{
+                  if (mode == 'Razorpay'){
+                    document.getElementById("gst_id").checked = true;
+                  }
+                  x.style.display = "none";
+                  y.style.display = "none";
+                  z.style.display = "none";
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '');
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+              }
+          }
+          show();
 </script>
 
-    {% endif %}
 <br>
 
     <div class="col-md-12 ">
@@ -983,22 +1066,19 @@ tr:nth-child(even) {
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-<!--<script type="text/javascript">-->
-      <!--function tax_amount(){-->
-      <!--tax_amt = document.getElementById("tax_amt_id").value-->
-    <!--var value_of_goods = parseFloat(document.getElementById("myText25").value);-->
-            <!--var tax_amount =Math.floor(value_of_goods * 0.18);-->
-            <!--document.getElementById("tax_amt_id").value = tax_amount;-->
-<!--}-->
+<script type="text/javascript">
 
-<!--function calculate_total_amount(){-->
-    <!--var value_of_goods = parseFloat(document.getElementById("myText25").value);-->
-    <!--var tax_amount = parseFloat(document.getElementById("tax_amt_id").value);-->
+function calculate_total_amount(){
+    var value_of_goods = parseFloat(document.getElementById("myText25").value);
+    var tax_amount = parseFloat(document.getElementById("tax_amt_id").value);
+    var  pf = parseFloat(document.getElementById("total_pf_id").value);
 
-            <!--var total_amount =Math.floor(value_of_goods + tax_amount);-->
-            <!--document.getElementById("total_amt_id").value = total_amount;-->
-<!--}-->
-  <!--</script>-->
+
+            var total_amount =Math.floor(value_of_goods + tax_amount + pf);
+            document.getElementById("total_amt_id").value = total_amount;
+
+}
+  </script>
 
 
   <!-- Bootstrap core JavaScript-->

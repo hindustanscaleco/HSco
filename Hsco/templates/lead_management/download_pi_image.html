@@ -307,6 +307,7 @@ td {
         <td>{{pi_id.total_cost}} INR</td>
         </tr>
 
+        {% if pi_id.discount != '0' %}
         <tr>
         <td></td>
         <td></td>
@@ -316,7 +317,7 @@ td {
         <td>Discount</td>
         <td>{{pi_id.discount}}{% if pi_id.discount_type == "percent" %} % {% elif pi_id.discount_type == "rupee" %} INR {% else %} {% endif %}</td>
         </tr>
-
+        {% endif %}
 
         <tr>
         <td></td>

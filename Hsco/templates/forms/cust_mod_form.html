@@ -485,13 +485,6 @@ Format : (company name)
     </div>
   </div>
 
-
-      </div>
-
-<div class="form-group row">
-
-
-
     <label class="col-md-2 control-label">Channel of Dispatch *
 
 
@@ -515,6 +508,14 @@ Format : (company name)
 
 
 
+      </div>
+
+<div class="form-group row">
+
+
+
+
+
 
 
   <label class="col-md-2 control-label">Notes
@@ -527,6 +528,17 @@ Format : (company name)
   <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
 <textarea name="notes" placeholder="Notes" class="form-control"></textarea>
 </div>
+
+  </div>
+    <label class="col-md-2 control-label">P&F
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="total_pf" id="total_pf_id" onkeyup="calculate_total_amount()"  value="0.0" placeholder="P&F Amount" class="form-control" step="any" type="number">
+    </div>
   </div>
 
 
@@ -552,40 +564,39 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="payment_mode" id="payment_mode" onchange="show()"  required class="form-control">
+<select name="payment_mode" id="payment_mode_id" onchange="show()"  required class="form-control">
   <option value="">Select</option>
   <option value="Cash">Cash</option>
   <option  value="Cheque">Cheque</option>
-  <!--<option  value="Credit">Credit</option>-->
-  <!--<option  value="Razorpay">Razorpay</option>-->
-  <!--<option  value="NEFT">NEFT</option>-->
+  <option  value="Credit">Credit</option>
+  <option  value="Razorpay">Razorpay</option>
+  <option  value="NEFT">NEFT</option>
 </select>
     </div>
   </div>
 
-<!--<label class="col-md-2 control-label">GST*-->
+<label class="col-md-2 control-label">GST
 
 
-<!--</label>-->
+</label>
 
-              <!--<div class="col xl-12">-->
-                  <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="custom-control custom-checkbox">-->
+              <div class="col xl-12">
+                  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
 
-    <!--<input type="checkbox" class="custom-control-input" id="gst_id"  name="gst"     >-->
+    <input type="checkbox" class="custom-control-input" id="gst_id"  name="gst"     >
 
-  <!--<label class="custom-control-label"  for="gst_id"></label>-->
-  <!--</div>-->
-<!--</div>-->
+  <label class="custom-control-label"  for="gst_id"></label>
+  </div>
+</div>
 
-              <!--</div>-->
+              </div>
 
 
 
 
 </div>
-
-      <div id="payment_cheque" style="display: none;">
+<div id="payment_cheque2" style="display: none;">
             <div class="form-group row">
 
 <label class="col-md-2 control-label">Bank Name*
@@ -595,7 +606,7 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="bank_name" id="bank_name" placeholder="Bank Name" class="form-control"  type="text">
+  <input  name="bank_name" value="" id="bank_name" placeholder="Bank Name" class="form-control"  type="text">
     </div>
   </div>
 
@@ -606,7 +617,7 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="cheque_no" id="cheque_no" placeholder="Cheque Number" class="form-control"  type="text">
+  <input  name="cheque_no" id="cheque_no" value="" placeholder="Cheque Number" class="form-control"  type="text">
     </div>
   </div>
 
@@ -621,48 +632,171 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="cheque_date" id="cheque_date" placeholder="Cheque Date" class="form-control"  type="date">
+  <input  name="cheque_date" id="cheque_date" value="" placeholder="Cheque Date" class="form-control"  type="date">
     </div>
   </div>
 
-  <!--<label class="col-md-2 control-label">Cheque Notes*-->
+<!--  <label class="col-md-2 control-label">Cheque Notes*-->
 
 
 <!--</label>-->
-  <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-    <!--<textarea   name="cheque_notes" id="cheque_notes" rows="6" placeholder="Cheque Notes" class="form-control" ></textarea>-->
-    <!--</div>-->
-  <!--</div>-->
+<!--  <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+<!--    <textarea name="cheque_notes" id="cheque_notes"  rows="6" placeholder="Cheque Notes" class="form-control" >{purchase_id_id.cheque_notes}</textarea>-->
+<!--    </div>-->
+<!--  </div>-->
 
 </div>
       </div>
-      <script>
-      function show(){
-          var a = document.getElementById("payment_mode").value;
-          console.log(a);
-          var x = document.getElementById("payment_cheque");
-              console.log(x);
+          <div id="payment_neft2" style="display: none;">
+            <div class="form-group row">
 
-          if (a == 'Cheque'){
-              x.style.display = "block";
-              $('#bank_name').attr('required', '');
-              $('#cheque_no').attr('required', '');
-              $('#cheque_date').attr('required', '');
-              $('#cheque_notes').attr('required', '');
-          }
-          if (a == 'Cash'){
-              x.style.display = "none";
-              $('#bank_name').removeAttr('required', '');
-              $('#cheque_no').removeAttr('required', '');
-              $('#cheque_date').removeAttr('required', '');
-              $('#cheque_notes').removeAttr('required', '');
-          }
-      }
+<label class="col-md-2 control-label">Bank Name*
 
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="neft_bank_name" value="" id="neft_bank_name2" placeholder="Bank Name" class="form-control"  type="text">
+    </div>
+  </div>
+
+<label class="col-md-2 control-label">NEFT Date*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_date" id="neft_date2" value="" placeholder="Cheque Date" class="form-control"  type="date">
+    </div>
+  </div>
+
+
+
+</div>
+            <div class="form-group row">
+
+ <label class="col-md-2 control-label">Reference No
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="reference_no" id="reference_no2" value="" placeholder="Reference Number" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
+      </div>
+          <div id="payent_credit2" style="display: none;">
+                          <div class="form-group row">
+
+<label class="col-md-2 control-label">Authorised By*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="credit_authorised_by_id" value=""  placeholder="Authorised By" class="form-control"  type="text">
+    </div>
+  </div>
+
+<label class="col-md-2 control-label">Pending Amount*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="credit_pending_amount" id="credit_pending_amount_id" value="0.0" placeholder="Pending Amount" class="form-control" step="any" type="number">
+    </div>
+  </div>
+
+
+
+</div>
+
+          </div>
+<script>
+
+          function show(){
+              var mode = document.getElementById("payment_mode_id").value;
+              var x = document.getElementById("payment_cheque2");
+              var y = document.getElementById("payment_neft2");
+              var z = document.getElementById("payent_credit2");
+              if (mode == 'Cheque'){
+                  y.style.display = "none";
+                  z.style.display = "none";
+                  x.style.display = "block";
+
+                  $('#bank_name2').attr('required', '');
+                  $('#cheque_no2').attr('required', '');
+                  $('#cheque_date2').attr('required', '');
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '')
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+                  document.getElementById("gst_id").checked = true;
+              }
+
+             else if (mode == 'NEFT'){
+                  x.style.display = "none";
+                  z.style.display = "none";
+                  y.style.display = "block";
+
+                  $('#neft_bank_name2').attr('required', '');
+                  $('#neft_date2').attr('required', '');
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '')
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+                  document.getElementById("gst_id").checked = true;
+              }
+              else if (mode == 'Credit'){
+                  x.style.display = "none";
+                  y.style.display = "none";
+                  z.style.display = "block";
+
+                  $('#credit_authorised_by_id').attr('required', '');
+                  $('#credit_pending_amount_id').attr('required', '');
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+              }
+              else{
+                  if (mode == 'Razorpay'){
+                  document.getElementById("gst_id").checked = true;
+                  }
+                  x.style.display = "none";
+                  y.style.display = "none";
+                  z.style.display = "none";
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '');
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+              }
+          }
 </script>
-
 <center>
    <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Add Product</button>
 </center>
