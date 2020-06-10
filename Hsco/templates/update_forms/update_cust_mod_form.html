@@ -520,7 +520,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="total_pf" id="total_pf_id" onkeyup="calculate_total_amount()"  value="{{purchase_id_id.total_pf|default_if_none:''}}" placeholder="P&F Amount" class="form-control" step="any" type="number">
+  <input  name="total_pf" disabled id="total_pf_id" onkeyup="calculate_total_amount()"  value="{{purchase_id_id.total_pf|default_if_none:''}}" placeholder="P&F Amount" class="form-control" step="any" type="number">
     </div>
   </div>
     </div>
@@ -603,9 +603,9 @@ function myFunction() {
                   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
 
-    <input type="checkbox" class="custom-control-input" id="gst_id"  name="gst_id" {% if purchase_id_id.is_gst == True %} checked {% endif %}  >
+    <input type="checkbox" class="custom-control-input" id="gst_id"  name="gst_id" {% if purchase_id_id.is_gst == True %} checked {% endif %}   >
 
-  <label class="custom-control-label"  for="gst_id"></label>
+  <label class="custom-control-label" for="gst_id"></label>
   </div>
 </div>
 
@@ -750,6 +750,7 @@ function myFunction() {
               var x = document.getElementById("payment_cheque2");
               var y = document.getElementById("payment_neft2");
               var z = document.getElementById("payent_credit2");
+
               if (mode == 'Cheque'){
                   document.getElementById("gst_id").checked = true;
                   y.style.display = "none";
@@ -822,10 +823,38 @@ function myFunction() {
                   $('#cheque_no2').removeAttr('required', '');
                   $('#cheque_date2').removeAttr('required', '');
               }
+              var gst_id = document.getElementById("gst_id").checked;
+              var value_of_goods = parseFloat(document.getElementById("myText25").value);
+              var tax_amount = parseFloat(document.getElementById("tax_amt_id").value);
+              var  pf = parseFloat(document.getElementById("total_pf_id").value);
+              if (gst_id == true){
+                  document.getElementById("tax_amt_id").value = Math.floor( (value_of_goods  + pf) * 0.18);
+                  calculate_total_amount();
+              }
+              else if(gst_id == false){
+                  document.getElementById("tax_amt_id").value = '0.0';
+                  calculate_total_amount();
+              }
+
           }
           show();
 </script>
+<script>
+    var checkbox = document.querySelector("input[id=gst_id]");
 
+checkbox.addEventListener( 'change', function() {
+    var value_of_goods = parseFloat(document.getElementById("myText25").value);
+    var tax_amount = parseFloat(document.getElementById("tax_amt_id").value);
+    var  pf = parseFloat(document.getElementById("total_pf_id").value);
+    if(this.checked) {
+        document.getElementById("tax_amt_id").value = Math.floor( (value_of_goods  + pf) * 0.18);
+        calculate_total_amount();
+    } else {
+        document.getElementById("tax_amt_id").value = '0.0';
+        calculate_total_amount();
+    }
+});
+</script>
 <br>
 
     <div class="col-md-12 ">

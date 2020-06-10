@@ -1536,7 +1536,8 @@ def add_product_details(request,id):
             print(x)
 
         Purchase_Details.objects.filter(id=purchase_id).update(value_of_goods=F("value_of_goods") + value_of_goods)
-        Purchase_Details.objects.filter(id=purchase_id).update(tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
+        if purchase.is_gst == True:
+            Purchase_Details.objects.filter(id=purchase_id).update(tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
         Purchase_Details.objects.filter(id=purchase_id).update(total_amount=F("value_of_goods") + F("tax_amount") + F("total_pf"))
 
         if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
