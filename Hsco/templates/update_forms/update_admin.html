@@ -74,7 +74,29 @@ color:;
 
         <div class="container-fluid" >
 
+{% if messages %}
+    {% for message in messages %}
+             {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% endif %}
 
+
+             {% endfor %}
+
+{% endif %}
+            <br>
 
 
 
@@ -489,7 +511,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-      <input type="text" name="aadhar_card" placeholder="Aadhar Card Number" data-type="adhaar-number" maxLength="19" class="form-control" value="{% if admin_id.aadhar_card == None %}{% else %}{{admin_id.aadhar_card}}{% endif %}" >
+      <input type="text" name="aadhar_card" placeholder="Aadhar Card Number" data-type="adhaar-number" maxLength="19" class="form-control" value="{% if admin_id.aadhar_card == None or admin_id.aadhar_card == 'None' %}{% else %}{{admin_id.aadhar_card}}{% endif %}" >
 
   </div>
     </div>
@@ -527,7 +549,31 @@ color:;
 
     </div>
 </div>
+    <div class="separator"><b>Professional Email configuration</b></div>
+<br>
+    <div class="form-group row">
+   <label class="col-md-2 control-label">Email ID
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+        <input name="professional_email" placeholder="Enter Email" class="form-control" value="{% if admin_id.professional_email == None %}{% else %}{{admin_id.professional_email}}{% endif %}" type="text">
 
+    </div>
+  </div>
+
+   <label class="col-md-2 control-label">Password
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+      <input type="text" name="professional_email_password" placeholder="Enter Password" class="form-control" value="{% if admin_id.professional_email_password == None %}{% else %}{{admin_id.professional_email_password}}{% endif %}" >
+
+  </div>
+    </div>
+</div>
+
+<br>
 <center>
    <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Submit</button>
 </center>
@@ -537,8 +583,11 @@ color:;
   <br>
 </fieldset>
     </form>
+            <center>
+               <button style="background-color: #FC6E20;" data-toggle="modal" data-target="#myModal" class="btn btn-primary">Test Email Credentials</button>
+            </center>
   <!--Product List-->
-
+<br>
 <script>
 $('[data-type="adhaar-number"]').keyup(function() {
   var value = $(this).val();
@@ -600,11 +649,69 @@ return true;
               </div>
             </div>
       </div>
+
+
+
+
+ <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Test Email Credentials</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+        </div>
+        <div class="modal-body">
+
+
+        <div class="row" >
+
+           <div class="col-md-12">
+               <h5>Credentials:</h5>
+               <span>Email Id: {% if admin_id.professional_email == None %}{% else %}{{admin_id.professional_email}}{% endif %}</span><br>
+               <span>Password: {% if admin_id.professional_email_password == None %}{% else %}{{admin_id.professional_email_password}}{% endif %}</span>
+           </div>
+  <br>
+            <div class="col-md-12">
+            <form action="" method="post" >{% csrf_token %}
+                <input type="hidden" name="test_professional_email" value="{{admin_id.professional_email}}">
+                <input type="hidden" name="test_professional_email_password" value="{{admin_id.professional_email_password}}">
+<!--                <span>To:</span>-->
+                <br>
+                <input required placeholder="Your Email *" name="test_to" class="form-control">
+
+                <center>
 <br>
+            <button type="submit" id="test_submit" name="test_submit" class="btn btn-primary">CHECK</button><br><br>
+                    <div id="spinner-border" class="spinner-border text-info" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                    <script>
+$(document).ready(function(){
+$("#spinner-border").hide();
+  $("#test_submit").click(function(){
+    $("#spinner-border").show();
+  });
+
+});
+</script>
+        </center>
+            </form>
+            </div>
+        </div>
 
 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
 
-
+    </div>
+  </div>
 
 
 
@@ -630,9 +737,6 @@ return true;
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
 
-
-    </div>
-  </div>
 
 </body>
 

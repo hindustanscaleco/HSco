@@ -83,6 +83,8 @@ class SiteUser(AbstractBaseUser):
     profile_name = models.CharField(max_length=30,null=True, blank=True, unique=True)
     mobile = models.CharField(validators=[phone_regex], max_length=10, unique=True)
     email = models.EmailField( 'Email-id', max_length=255,)
+    professional_email = models.EmailField( 'Professional Email-id', max_length=255,null=True,blank=True)
+    professional_email_password = models.CharField( 'Email Password', max_length=255,null=True,blank=True)
     name =models.CharField('Name',max_length=50,null=True,blank=True, unique=True)
 
     role = models.CharField('Role  Of User',max_length=20, choices=choices,null=True,blank=True)
