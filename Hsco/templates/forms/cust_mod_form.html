@@ -603,7 +603,7 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="bank_name" value="" id="bank_name" placeholder="Bank Name" class="form-control"  type="text">
+  <input  name="bank_name" value="" id="bank_name2" placeholder="Bank Name" class="form-control"  type="text">
     </div>
   </div>
 
@@ -614,7 +614,7 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="cheque_no" id="cheque_no" value="" placeholder="Cheque Number" class="form-control"  type="text">
+  <input  name="cheque_no" id="cheque_no2" value="" placeholder="Cheque Number" class="form-control"  type="text">
     </div>
   </div>
 
@@ -629,7 +629,7 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="cheque_date" id="cheque_date" value="" placeholder="Cheque Date" class="form-control"  type="date">
+  <input  name="cheque_date" id="cheque_date2" value="" placeholder="Cheque Date" class="form-control"  type="date">
     </div>
   </div>
 
@@ -699,7 +699,7 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="credit_authorised_by_id" value=""  placeholder="Authorised By" class="form-control"  type="text">
+  <input  name="credit_authorised_by" id="credit_authorised_by_id"  placeholder="Authorised By" class="form-control"  type="text">
     </div>
   </div>
 
@@ -773,10 +773,14 @@ Format : (company name)
                   $('#bank_name2').removeAttr('required', '');
                   $('#cheque_no2').removeAttr('required', '');
                   $('#cheque_date2').removeAttr('required', '');
+                  document.getElementById("gst_id").checked = false;
               }
               else{
                   if (mode == 'Razorpay'){
                   document.getElementById("gst_id").checked = true;
+                  }
+                  else{
+                    document.getElementById("gst_id").checked = false;
                   }
                   x.style.display = "none";
                   y.style.display = "none";

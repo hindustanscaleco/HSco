@@ -1153,7 +1153,8 @@ def update_customer_details(request,id):
             if gst_id == 'on':
                 item2.is_gst = True
             item2.payment_mode = payment_mode
-            item2.total_pf = total_pf
+            if total_pf != '':
+                item2.total_pf = float(total_pf)
 
             item2.bank_name = bank_name
             item2.cheque_no = cheque_no
@@ -1165,7 +1166,8 @@ def update_customer_details(request,id):
             if neft_date != None and neft_date != '':
                 item2.neft_date = neft_date
 
-            item2.credit_pending_amount = credit_pending_amount
+            if credit_pending_amount != '':
+                item2.credit_pending_amount = float(credit_pending_amount)
             item2.credit_authorised_by = credit_authorised_by
 
             item2.total_amount = total_amount
