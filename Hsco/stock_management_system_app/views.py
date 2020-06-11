@@ -9,6 +9,69 @@ from .models import Godown, GodownProduct, RequestedProducts, GoodsRequest, Prod
     GodownTransactions
 from user_app.models import SiteUser
 from customer_app.models import sub_model, main_model, sub_sub_model, type_purchase
+from django.db.models.signals import pre_save,post_save
+from django.dispatch import receiver
+
+# @receiver(post_save, sender=GodownProduct)
+# def purchase_handler(sender, instance, update_fields=None, **kwargs):
+#     try:
+#         if instance.id == None or instance.id == '' or instance.id == 'None' :
+#             #########for insert action##########
+#             new_instance = instance
+#             log = GodownTransactions()
+#
+#             log.entered_by = new_instance.log_entered_by
+#             log.module_name = 'Purchase Module'
+#             log.action_type = 'Insert'
+#             log.table_name = 'Purchase_Details'
+#
+#             log.reference = 'Purchase No: ' + str(new_instance.purchase_no)
+#
+#             # log.action = old_list
+#             log.save()
+#         elif instance.id != None or instance.id !='' or instance.id !='None':
+#
+#             #########for update action##########
+#             old_instance = instance
+#             new_instance = Purchase_Details.objects.get(id=instance.id)
+#
+#             track = instance.tracker.changed()
+#             if 'log_entered_by' in track :
+#                 del track['log_entered_by']
+#             # string = ''
+#             # new_list = []
+#             # for key in track:
+#             #     new_list.append(key)
+#             #     string = string+str(key)+','
+#             #     print('New value:'+str(key) + old_instance.key)
+#
+#
+#             # with connection.cursor() as cursor:
+#                 # if new_string != '' :
+#                 #     print('something 1')
+#                 #     new = Repairing_after_sales_service.objects.filter(id=instance.id).values(new_list)
+#                 #     cursor.execute("SELECT " + (
+#                 #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
+#                 #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
+#             if  track:
+#                 old_list = []
+#                 for key, value in track.items():
+#                     if value != '' and str(value) != getattr(instance,key):
+#                         old_list.append(key +':Old value= '+str(value) + ', New value='+getattr(instance,key) )
+#                 log = Log()
+#                 log.entered_by = instance.log_entered_by
+#                 log.module_name = 'Purchase Module'
+#                 log.action_type = 'Update'
+#                 log.table_name = 'Purchase_Details'
+#
+#                 log.reference = 'Purchase No: '+str(new_instance.purchase_no)
+#
+#                 log.action = old_list
+#                 if old_list != []:
+#                     log.save()
+#
+#     except:
+#         pass
 
 @login_required(login_url='/')
 def product_master_list(request):
