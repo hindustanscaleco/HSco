@@ -551,9 +551,13 @@ def update_godown(request,godown_id):
             return render(request, 'stock_management_system/update_godown.html', context)
         if 'update_stock' in request.POST:
             quantity = request.POST.get('quantity')
+            faulty_quantity = request.POST.get('faulty_quantity')
+            faulty_carton = request.POST.get('faulty_carton')
             carton_count = request.POST.get('carton_count')
             product_id = request.POST.get('product_id')
 
+            faulty_quantity = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).faulty_quantity
+            faulty_carton = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).faulty_carton
             product_carton_count = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).carton_count
             product_quantity = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).quantity
             if float(product_carton_count) !=  float(carton_count):
@@ -1327,3 +1331,7 @@ def request_admin(request):
 
 
     return render(request,'stock_management_system/request_admin_page.html',context)
+
+
+def stock_report(request):
+    return render(request,'stock_management_system/stock_system_report.html')

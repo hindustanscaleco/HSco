@@ -143,6 +143,8 @@ class GodownTransactions(models.Model):
     goods_req_id = models.OneToOneField(GoodsRequest, on_delete=models.CASCADE,null=True, blank=True)
     accept_goods_id = models.OneToOneField(AcceptGoods, on_delete=models.CASCADE,null=True, blank=True)
     purchase_id = models.OneToOneField(Purchase_Details, on_delete=models.CASCADE,null=True, blank=True)
+    # type=['purchase','adjustment','faulty','sale','tranfer']
+
     # lead_id = models.OneToOneField(Lead, on_delete=models.CASCADE,)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
