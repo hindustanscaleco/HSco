@@ -27,6 +27,17 @@
     font-family: 'Poppins';
 }
 
+
+.dot {
+  height: 15px;
+  width: 15px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left:-8px;
+  margin-bottom:12px;
+}
+
 </style>
 </head>
 
@@ -54,7 +65,7 @@
         <div class="container-fluid ">
 
           <!-- Page Heading -->
-            <div class="row">
+            <div class="row col-md-12">
 
 
                 <div class="col-md-5">
@@ -65,6 +76,11 @@
                           <b>Godown Name:  {{godown_id.name_of_godown}}</b>
 
 </div>
+                <div class="col-xl-2 col-md-2"></div>
+                                            <div class="col-xl-1 col-md-1">
+
+    <a style="padding-left: 2px;" href="/stock_transaction_history_list/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Report </button></a>
+                </div>
             </div>
 
 <br>
@@ -72,27 +88,37 @@
             {% elif request.user.role == 'Manager' and godown_id.goddown_assign_to.id != request.user.id %}
 
             {% else %}
+            <br>
 <div class="row">
-                <div class="col-xl-3 col-md-3">
-                    &nbsp &nbsp &nbsp &nbsp
+
+    <div class="col-xl-1 col-md-1"></div>
+                <div class="col-xl-2 col-md-2">
+
     <a style="padding: 2px;" href="/stock_good_request/{{godown_id.id}}/{{new_good_request_id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Good Request </button></a>
                 </div>
+    <div class="col-xl-1 col-md-1"></div>
 
-                <div class="col-xl-3 col-md-3">
+                <div class="col-xl-2 col-md-2">
 
 
     <a style="padding: 2px;" href="/stock_accpet_goods_list/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Purchase Goods </button></a>
                 </div>
+    <div class="col-xl-1 col-md-1"></div>
 
-                <div class="col-xl-3 col-md-3">
+                <div class="col-xl-2 col-md-2">
     {% if pending_req_indication %}
-    <a style="padding: 2px;" href="/stock_pending_request/{{godown_id.id}}"><button style="background-color: #FC6E20;  border-color: #2196F3; color: blue;" class="btn btn-primary"> Pending Request </button></a>
+    <a style="padding: 2px;" href="/stock_pending_request/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Pending Request </button><span class="dot"></span></a>
+                    <div class="ripple" style="animation-delay: 0s"></div>
                     {% else %}
     <a style="padding: 2px;" href="/stock_pending_request/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Pending Request </button></a>
                     {% endif %}
                                 </div>
 
-                    <div class="col-xl-3 col-md-3">
+
+
+    <div class="col-xl-1 col-md-1"></div>
+
+                    <div class="col-xl-2 col-md-2">
 
     <a style="padding: 2px;" href="/stock_transaction_history_list/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Transaction History </button></a>
                 </div>

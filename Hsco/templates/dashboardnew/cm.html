@@ -488,7 +488,7 @@ td {
 
                         <td>{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>
 
-            <td>{{ list1.entry_timedate|date:'Y-m-d'}}</td>
+            <td>{{ list1.date_of_purchase|date:'Y-m-d'}}</td>
             <td>{{ list1.purchase_no}}</td>
             <td>{{ list1.second_person }}</td>
             <td>{% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</td>
