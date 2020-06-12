@@ -177,31 +177,31 @@ td {
 <table>
                     <tr style="background-color: gray; color: white;">
 
-                    <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Category  </td>
+                    <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Scale Type  </td>
+                    <td style=" width: 15%; border: 0px solid gray;">  Category  </td>
                     <td style=" width: 15%; border: 0px solid gray;">Sub Category </td>
                     <td style=" width: 18%; border: 0px solid gray;">Sub Sub Category</td>
-                    <td style=" width: 20%; border: 0px solid gray;">Sub Sub Sub Category</td>
                     <td style=" width: 15%; border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Opening Stock</td>
                 </tr>
 
 <br>
 
 
-
+{% for item in pro_list %}
               <tr style="cursor: pointer;" class="col-xl-12 col-md-12 mb-12">
 
 
 
-                                        <td style="width: 8%;"></td>
+                                        <td style="width: 8%;">{% ifchanged item.scale_type %}{{item.scale_type}}{% endifchanged %}</td>
 
-                    <td style="width: 15%;">Hello  </td>
-                    <td style="width: 18%;">{{list.second_person}}</td>
-                    <td style="width: 20%;">{% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</td>
-                    <td style="width: 15%;">{{list.second_contact_no}} </center> </td>
+                    <td style="width: 15%;">{% ifchanged item.sub_category %}{{item.main_category}} {% endifchanged %} </td>
+                    <td style="width: 18%;">{% ifchanged item.sub_category %}{{item.sub_category}}{% endifchanged %}</td>
+                    <td style="width: 20%;">{{item.sub_sub_category}}</td>
+                    <td style="width: 15%;"> </td>
 
 
               </tr>
-
+{% endfor %}
            </table>
 <!--</div>-->
         </div>
