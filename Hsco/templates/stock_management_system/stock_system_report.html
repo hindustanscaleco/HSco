@@ -6,8 +6,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="checks[]" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="checks[]" content="">
-  <meta name="checks[]" content="">
+
 
   <title>HSCO</title>
 
@@ -116,32 +115,32 @@ td {
 
         <!-- Begin Page Content -->
         <div class="container-fluid" >
-         <center>  <h1>Repairing Module</h1>  </center>
+         <center>  <h1>Stock Module Report</h1>  </center>
 
 
 <br>
 
 
-    <form class="well form-horizontal" action=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
+    <form class="well form-horizontal" action="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
 
 <fieldset>
 
 <div class="form-group row">
-     <label class="col-md-1 control-label">From(Month) :
+     <label class="col-md-1 control-label">From(Month):
 
 
 </label>
 
     <div class="col-md-2">
    <div class="custom-control ">
-<input type="month" name="date1" placeholder="Search 1" class="form-control">
+<input type="month" name="from_month" placeholder="Search 1" class="form-control">
 
 </div>
   </div>
 
 
 
-    <label class="col-md-1 control-label">To(Month) :
+    <label class="col-md-1 control-label">To(Month):
 
 
 
@@ -149,31 +148,27 @@ td {
 
     <div class="col-md-2">
 <div class="custom-control">
-<input type="month" name="date2" placeholder="Search 1" class="form-control">
+<input type="month" name="to_month" placeholder="Search 1" class="form-control">
 </div>
   </div>
-  <div class="col-md-1"></div>
 
-  <label class="col-md-2 control-label">Select Day or Month :
-</label>
-
-  <div class="col-md-1">
+  <div class="col-md-2">
   <select class="form-control btn btn-secondary" id="cars" name="cars">
-    <option value="Day">Day</option>
-    <option value="Month">Month</option>
+    <option value="Day">Day Wise</option>
+    <option value="Month">Month Wise</option>
   </select>
 
   </div>
-<div class="col-md-1">
-  <input  style="background-color: #FC6E20;" class="form-control btn btn-secondary" type="submit">
+<div class="col-md-2">
+  <input style="background-color: #FC6E20;" class="form-control btn btn-secondary" value="Generate" type="submit">
 </div>
 
-  <div class="col-md-1">
-  <input  style="background-color: #FC6E20;" class="form-control btn btn-secondary" value="Download" type="button">
+  <div class="col-md-2">
+  <input style="background-color: #FC6E20;" class="form-control btn btn-secondary" value="Download" type="button">
 </div>
 </div>
-
-
+</fieldset>
+    </form>
 
       <br>
          <div id="id_manager_view" >
@@ -213,9 +208,9 @@ td {
 
 
 
-</fieldset>
 
-    </form>
+
+
 <br>
 </div>
       </div>
