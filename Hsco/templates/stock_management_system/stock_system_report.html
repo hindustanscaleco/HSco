@@ -182,7 +182,8 @@ td {
                     <td style=" width: 15%; border: 0px solid gray;"> Category </td>
                     <td style=" width: 18%; border: 0px solid gray;"> Sub Category</td>
                     <td style=" width: 20%; border: 0px solid gray;"> Sub Sub Category</td>
-                    <td style=" width: 15%; border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Opening Stock</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Opening Stock</td>
+                    <td colspan="30" style=" width: 15%; border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Month</td>
                 </tr>
 
 <br>
@@ -193,12 +194,21 @@ td {
 
 
 
-                                        <td style="width: 8%;">{% ifchanged item.scale_type %}{{item.scale_type}}{% endifchanged %}</td>
+                                        <td style="width: auto;">{% ifchanged item.scale_type %}{{item.scale_type}}{% endifchanged %}</td>
 
-                    <td style="width: 15%;">{% ifchanged item.sub_category %}{{item.main_category}} {% endifchanged %} </td>
-                    <td style="width: 18%;">{% ifchanged item.sub_category %}{{item.sub_category}}{% endifchanged %}</td>
-                    <td style="width: 20%;">{{item.sub_sub_category}}</td>
-                    <td style="width: 15%;"> </td>
+                    <td style="width: auto;">{% ifchanged item.main_category %}{{item.main_category}} {% endifchanged %} </td>
+                    <td style="width: auto;">{% ifchanged item.sub_category %}{{item.sub_category}}{% endifchanged %}</td>
+                  {% ifchanged item.sub_category %}<td></td>{% else %}<td style="width: auto;">{% if item.sub_sub_category != None %}{{item.sub_sub_category}}{% endif %}</td>{% endifchanged %}
+                  <td style="width: auto;">c </td>
+                    {% ifchanged item.sub_category %}<td colspan="30" style="width: auto;">Month1 </td>
+                  {% else %}
+                  <td style="width: auto;"> a</td>
+                    <td style="width: auto;">s </td>
+                    <td style="width: auto;">a </td>
+                    <td style="width: auto;"> s</td>
+                    <td style="width: auto;">as </td>
+                  {% endifchanged %}
+
 
 
               </tr>
