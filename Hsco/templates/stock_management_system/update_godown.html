@@ -76,6 +76,8 @@ color:;
 
         <!-- Begin Page Content -->
         <center><h3>Stock Management System</h3></center>
+               <div class="container-fluid" >
+
           {% if godown_msg %}
 
                      <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -106,12 +108,13 @@ color:;
 {% endif %}
 
 
-        <div class="container-fluid" >
+
 
           <!--<div class="row" style="padding:20px;">-->
                <!--&lt;!&ndash;<label class="col-md-6 control-label">CRM Number:</label>&ndash;&gt;-->
 
           <!--</div>-->
+
 
 
 
@@ -313,7 +316,6 @@ $(document).ready(function(){
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Count</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Individual Faulty</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Faulty</td>
                                 {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Update</td>
             {% endif %}
@@ -338,12 +340,12 @@ $(document).ready(function(){
 
                     <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input  value="{{product.carton_count|floatformat:2}}" name="carton_count"></td>
     <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input value="{{product.quantity|floatformat:2}}" name="quantity"></td> <input type="hidden" value="{{product.product_id.id}}" name="product_id">
-    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input value="{{product.individual_faulty|floatformat:2 }}" name="individual_faulty"></td> <input type="hidden" value="{{product.product_id.id}}" name="product_id">
-    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input value="{{product.carton_faulty|floatformat:2 }}" name="carton_faulty"></td> <input type="hidden" value="{{product.product_id.id}}" name="product_id">
+    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input value="{{product.individual_faulty|floatformat:2 }}" name="individual_faulty"></td>
                     <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">   <button type="submit" name="update_stock" class="btn btn-primary">Update</button></td>
                     {% else %}
-    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input value="{{product.individual_faulty|floatformat:2 }}" name="individual_faulty"></td> <input type="hidden" value="{{product.product_id.id}}" name="product_id">
-    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input value="{{product.carton_faulty|floatformat:2 }}" name="carton_faulty"></td> <input type="hidden" value="{{product.product_id.id}}" name="product_id">
+        <td style="border: 0px solid gray;">{{product.carton_count|floatformat:2}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.quantity|floatformat:2}}</td>
+                    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.individual_faulty|floatformat:2 }}</td>
             {% endif %}
             <td id="image" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{% if product.product_id.product_image %}<img height="40" width="40" src="{{product.product_id.product_image.url}}">{% endif %}</td>
         </tr>
