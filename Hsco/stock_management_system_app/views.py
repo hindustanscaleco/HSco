@@ -551,13 +551,16 @@ def update_godown(request,godown_id):
             return render(request, 'stock_management_system/update_godown.html', context)
         if 'update_stock' in request.POST:
             quantity = request.POST.get('quantity')
-            faulty_quantity = request.POST.get('faulty_quantity')
-            faulty_carton = request.POST.get('faulty_carton')
+            individual_faulty = request.POST.get('individual_faulty')
             carton_count = request.POST.get('carton_count')
             product_id = request.POST.get('product_id')
 
-            faulty_quantity = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).faulty_quantity
-            faulty_carton = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).faulty_carton
+            product_individual_faulty = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).individual_faulty
+            print(individual_faulty)
+            print(product_individual_faulty)
+            if float(product_individual_faulty) !=  float(individual_faulty):
+                GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
+                    individual_faulty=individual_faulty)
             product_carton_count = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).carton_count
             product_quantity = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).quantity
             if float(product_carton_count) !=  float(carton_count):
@@ -570,7 +573,7 @@ def update_godown(request,godown_id):
             elif  float(product_quantity) !=  float(quantity):
                 GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
                     quantity=quantity)
-            messages.success(request, "Product quantity updated!!! " )
+            messages.success(request, "Product updated!!! " )
 
     return render(request, 'stock_management_system/update_godown.html',context)
 
