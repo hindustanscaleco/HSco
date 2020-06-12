@@ -51,50 +51,82 @@ color:;
 
 </style>
 
-
-
-                <style>
-                .border_class {
-                border:1px solid black;
-                height:45px;
-                text-align:center;
-                vertical-align: middle;
-                line-height: 45px;
-                }
-
-
-  table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 14px;
-  border-color: black;
-  color: black;
-
-
-
+  <style type="text/css">
+    body {
+  color: #6a6c6f;
+  background-color: #f1f3f6;
+  margin-top: 30px;
 }
 
-
-th {
-
-  font-size: 13px;
-    border: 1px solid black;
-    text-align: left;
-    padding:5px;
-
+.container {
+  max-width: 960px;
 }
 
-td {
-  border: 1px solid black;
-  padding: 3px;
-  font-size: 13px;
-  padding: 5px;
+.table>tbody>tr.active>td,
+.table>tbody>tr.active>th,
+.table>tbody>tr>td.active,
+.table>tbody>tr>th.active,
+.table>tfoot>tr.active>td,
+.table>tfoot>tr.active>th,
+.table>tfoot>tr>td.active,
+.table>tfoot>tr>th.active,
+.table>thead>tr.active>td,
+.table>thead>tr.active>th,
+.table>thead>tr>td.active,
+.table>thead>tr>th.active {
+  background-color: #fff;
+}
+
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+  border-color: #e4e5e7;
+}
+
+.table tr.header {
+  font-weight: bold;
+  background-color: #fff;
+  cursor: pointer;
+  -webkit-user-select: none;
+  /* Chrome all / Safari all */
+  -moz-user-select: none;
+  /* Firefox all */
+  -ms-user-select: none;
+  /* IE 10+ */
+  user-select: none;
+  /* Likely future */
+}
+
+.table tr:not(.header) {
+  display: none;
+}
+
+.table .header td:after {
+  content: "\002b";
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  float: right;
+  color: #999;
   text-align: center;
+  padding: 3px;
+  transition: transform .25s linear;
+  -webkit-transition: -webkit-transform .25s linear;
 }
 
-
-            </style>
-
+.table .header.active td:after {
+  content: "\2212";
+}
+  </style>
   <!-- Page Wrapper -->
   <div id="wrapper">
   {% include 'base_templates/sidebar.html' %}
@@ -174,46 +206,33 @@ td {
          <div id="id_manager_view" >
 
 <!--<div class="" id="id_subcat" style="min-height: 15vw;">-->
-<table>
-                    <tr style="background-color: gray; color: white;">
-
-                    <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Scale Type  </td>
-
-                    <td style=" width: 15%; border: 0px solid gray;"> Category </td>
-                    <td style=" width: 18%; border: 0px solid gray;"> Sub Category</td>
-                    <td style=" width: 20%; border: 0px solid gray;"> Sub Sub Category</td>
-                    <td style=" width: 20%; border: 0px solid gray;"> Opening Stock</td>
-                    <td colspan="30" style=" width: 15%; border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Month</td>
-                </tr>
-
-<br>
-
-
-{% for item in pro_list %}
-              <tr style="cursor: pointer;" class="col-xl-12 col-md-12 mb-12">
-
-
-
-                                        <td style="width: auto;">{% ifchanged item.scale_type %}{{item.scale_type}}{% endifchanged %}</td>
-
-                    <td style="width: auto;">{% ifchanged item.main_category %}{{item.main_category}} {% endifchanged %} </td>
-                    <td style="width: auto;">{% ifchanged item.sub_category %}{{item.sub_category}}{% endifchanged %}</td>
-                  {% ifchanged item.sub_category %}<td></td>{% else %}<td style="width: auto;">{% if item.sub_sub_category != None %}{{item.sub_sub_category}}{% endif %}</td>{% endifchanged %}
-                  <td style="width: auto;">c </td>
-                    {% ifchanged item.sub_category %}<td colspan="30" style="width: auto;">Month1 </td>
-                  {% else %}
-                  <td style="width: auto;"> a</td>
-                    <td style="width: auto;">s </td>
-                    <td style="width: auto;">a </td>
-                    <td style="width: auto;"> s</td>
-                    <td style="width: auto;">as </td>
-                  {% endifchanged %}
+             <hr>
+             <div class="container">
+  <table class="table table-bordered">
+    <tr class="header">
+      <th colspan="7"><center>Product 1 </center></th>
+    </tr>
+    <tr>
+      <td>Scale</td>
+      <td>Type</td>
+      <td>Category</td>
+      <td>Sub Category</td>
+      <td>Sub Sub Category</td>
+      <td>Opening Stock</td>
+      <td>Month</td>
+    </tr>
+  </table>
+</div>
 
 
 
-              </tr>
-{% endfor %}
-           </table>
+
+
+
+
+
+
+
 <!--</div>-->
         </div>
 
@@ -237,7 +256,20 @@ td {
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
   <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
-
+<script type="text/javascript">
+  $(document).ready(function() {
+  //Fixing jQuery Click Events for the iPad
+  var ua = navigator.userAgent,
+    event = (ua.match(/iPad/i)) ? "touchstart" : "click";
+  if ($('.table').length > 0) {
+    $('.table .header').on(event, function() {
+      $(this).toggleClass("active", "").nextUntil('.header').css('display', function(i, v) {
+        return this.style.display === 'table-row' ? 'none' : 'table-row';
+      });
+    });
+  }
+})
+</script>
   <!-- Core plugin JavaScript-->
   <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
 
