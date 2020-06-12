@@ -1349,6 +1349,14 @@ def request_admin(request):
 
     return render(request,'stock_management_system/request_admin_page.html',context)
 
-
+@login_required(login_url='/')
 def stock_report(request):
     return render(request,'stock_management_system/stock_system_report.html')
+
+@login_required(login_url='/')
+def stock_godown_report(request,godown_id):
+    godown = Godown.objects.get(id=godown_id)
+    context={
+        'godown': godown,
+    }
+    return render(request,'stock_management_system/stock_system_report.html',context)
