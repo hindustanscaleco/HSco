@@ -431,6 +431,7 @@ def add_godown(request):
         item.contact_no=contact_no
         item.log_entered_by = request.user.name
         item.save()
+        messages.success(request, "Godown Created Please Add Products")
 
         return redirect('/update_godown/'+str(item.id))
 
@@ -484,6 +485,7 @@ def update_godown(request,godown_id):
             item.contact_no = contact_no
             item.log_entered_by = request.user.name
             item.save(update_fields=['name_of_godown','goddown_assign_to','location','contact_no','log_entered_by'])
+
             context1={
                 'godown_msg' : "Godown Updated Successfully!!!",
                 'godown_products': godown_products,
@@ -494,6 +496,7 @@ def update_godown(request,godown_id):
                 'products': products,
             }
             context.update(context1)
+
             return render(request, 'stock_management_system/update_godown.html', context)
         if 'submit2' in request.POST:
             product_id = request.POST.get('product_id')
@@ -539,6 +542,7 @@ def update_godown(request,godown_id):
 
             elif (type_of_scale != None and type_of_scale != ''):
                 godown_products = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale)
+
             context1 = {
                 'godown_products': godown_products,
                 'godown': godown,
@@ -548,6 +552,7 @@ def update_godown(request,godown_id):
                 'products': products,
             }
             context.update(context1)
+
             return render(request, 'stock_management_system/update_godown.html', context)
         if 'update_stock' in request.POST:
             quantity = request.POST.get('quantity')
@@ -567,10 +572,10 @@ def update_godown(request,godown_id):
 
                 GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
                     quantity=individual_quantity)
-            elif  float(product_quantity) !=  float(quantity):
+            elif float(product_quantity) != float(quantity):
                 GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
                     quantity=quantity)
-            messages.success(request, "Product quantity updated!!! " )
+
 
     return render(request, 'stock_management_system/update_godown.html',context)
 
@@ -703,8 +708,10 @@ def add_product_godown(request, godown_id):
                     item.save()
 
             if is_last_product_yes == 'yes':
+                messages.success(request, "Product Added Successfully")
                 return redirect('/update_godown/' + str(godown_id))
             elif is_last_product_yes == 'no':
+                messages.success(request, "Product Added Successfully, Add Another")
                 return redirect('/add_product_godown/' + str(godown_id))
         except Exception as e:
             print(e)
@@ -862,6 +869,7 @@ def stock_good_request(request,godown_id, request_id):
                 item3 = GoodsRequest.objects.get(id=request_id)
             item2.goods_req_id = item3
             item2.save(update_fields=['goods_req_id',])
+            messages.success(request, "Product Added In Request List!")
             return redirect('/stock_good_request/'+str(godown_id)+'/'+str(request_id))
         elif 'submit2' in request.POST:
             req_to_godown = request.POST.get('req_to_godown')
@@ -880,11 +888,13 @@ def stock_good_request(request,godown_id, request_id):
             item2.entered_by = SiteUser.objects.get(id=request.user.id)
             item2.status = 'Pending From Target'
             item2.save(update_fields=['req_from_godown','is_all_req','req_to_godown','log_entered_by','entered_by','status','request_admin','outside_workstation'])
+            messages.success(request, "Request Sent Successfully")
             return redirect('/stock_pending_request/'+str(godown_id))
 
         elif 'submit3' in request.POST:
             request_id = request.POST.get('request_id')
             RequestedProducts.objects.get(id=request_id).delete()
+            messages.success(request, "Product Removed From Request List!")
 
         elif 'submit4' in request.POST:
             type_of_scale = request.POST.get('scale_type')
@@ -1043,7 +1053,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                 if good_request.goods_sent == False:
                     for good in requested_goods:
 
-                        if good_request.req_to_godown :
+                        if good_request.req_to_godown:
                             godown_product_sent = GodownProduct.objects.get(godown_id=good_request.req_to_godown.id,
                                                             product_id=good.godown_product_id.product_id)
                             if godown_product_sent.quantity < good.sent_quantity:
@@ -1096,12 +1106,14 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                                 #for mismatch
 
                                 if good.sent_quantity != (good.faulty_quantity + good.received_quantity):
+                                    messages.success(request, 'Mismatch Occured')
                                     print('something')
                                     good_request.status = 'Mismatch occured'
                                     good_request.notify = True
                                     print('something23')
                                     good_request.save(update_fields=['status','notify'])
                                     print('something2')
+
                                     return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
                                 elif good.sent_quantity == (good.faulty_quantity + good.received_quantity):
                                     good_request.status = 'Confirms the transformation'
@@ -1111,12 +1123,14 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                                 GodownProduct.objects.filter(godown_id=from_godown_id,
                                                              product_id=good.godown_product_id.product_id).update(
                                     individual_faulty=F("individual_faulty") + good.faulty_quantity)
+
                             elif good.req_type == 'Carton':
                                 #for mismatch
                                 if good.sent_carton_count != (good.faulty_carton + good.received_carton_count):
                                     good_request.status = 'Mismatch occured'
                                     good_request.notify = True
                                     good_request.save(update_fields=['status', 'notify'])
+                                    messages.success(request, 'Mismatch Occured')
                                     return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
                                 elif good.sent_carton_count == (good.faulty_carton + good.received_carton_count):
                                     good_request.status = 'Confirms the transformation'
