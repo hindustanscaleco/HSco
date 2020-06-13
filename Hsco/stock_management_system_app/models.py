@@ -153,8 +153,16 @@ class GodownTransactions(models.Model):
     def __int__(self):
         return self.id
 
-
-
+    @property
+    def type(self):
+        type = ''
+        if self.goods_req_id:
+            type = 'transfer'
+        if self.accept_goods_id:
+            type = 'purchase'
+        if self.purchase_id:
+            type = 'sale'
+        return (str(type))
 
 
 
