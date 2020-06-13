@@ -569,12 +569,25 @@ def update_godown(request,godown_id):
                     GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
                         quantity=float(quantity) + float(convert_faulty_quantity))
 
-                    messages.success(request, convert_faulty_quantity+ "Product shifted from Faulty to Repaired!!! ")
+                    messages.success(request, convert_faulty_quantity+ " Product shifted from Faulty to Repaired!!! ")
+                    #save transaction
+                    new_transaction = GodownTransactions()
+                    new_transaction.godown_product_id = GodownProduct.objects.get(id=product_id)
+                    new_transaction.adjustment_quantity = convert_faulty_quantity
+                    new_transaction.notes = 'Faulty to Repaired by Emp id:'+request.user.employee_number+', Name:'+request.user.profile_name+', Contact:'+request.user.mobile
+                    new_transaction.save()
+
                     return redirect('/update_godown/'+str(godown_id))
                 elif faulty_type == 'Scrap':
                     GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
                         individual_faulty=float(individual_faulty) - float(convert_faulty_quantity) )
                     messages.success(request, convert_faulty_quantity+ " Product shifted from Faulty to Scrap!!! ")
+                    # save transaction
+                    new_transaction = GodownTransactions()
+                    new_transaction.godown_product_id = GodownProduct.objects.get(id=product_id)
+                    new_transaction.loss_quantity = convert_faulty_quantity
+                    new_transaction.notes = 'Faulty to Scrap by Emp id:'+request.user.employee_number+', Name:'+request.user.profile_name+', Contact:'+request.user.mobile
+                    new_transaction.save()
                     return redirect('/update_godown/'+str(godown_id))
             product_carton_count = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).carton_count
             product_quantity = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).quantity
@@ -1168,6 +1181,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                             good_request.status = status
                             good_request.goods_received = True
                             good_request.save(update_fields=['status','req_to_godown','goods_received'])
+                            # save transaction
                             new_transaction = GodownTransactions()
                             new_transaction.goods_req_id = good_request
                             new_transaction.save()
@@ -1230,6 +1244,7 @@ def stock_accpet_goods(request, godown_id, accept_id):
             item2.notes = notes
             item2.save(update_fields=['notes', 'log_entered_by', 'from_godown','good_added'])
             accepted_goods = AGProducts.objects.filter(godown_id_id=godown_id,accept_product_id_id =accept_id)
+            # save transaction
             new_transaction = GodownTransactions()
             new_transaction.accept_goods_id = item2
             new_transaction.save()
