@@ -1390,6 +1390,10 @@ def stock_godown_report(request,godown_id):
 from datetime import datetime
 @login_required(login_url='/')
 def stock_report(request):
+    products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
+    context={
+        'pro_list':products_list,
+    }
     if request.method == 'POST' or request.method == 'FILES':
         from_month = request.POST.get('from_month')
         to_month = request.POST.get('to_month')
@@ -1401,4 +1405,6 @@ def stock_report(request):
         to_year = to_month2.year
         gt_list = GodownTransactions.objects.filter(Q(entry_timedate__month__gte=from_month,entry_timedate__year=from_year) & Q(entry_timedate__month__lte=to_month,entry_timedate__year=to_year))
         print(gt_list)
-    return render(request,'stock_management_system/stock_system_report.html')
+
+    return render(request,'stock_management_system/stock_system_report.html',context)
+
