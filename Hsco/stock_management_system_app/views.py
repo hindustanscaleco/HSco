@@ -1001,7 +1001,7 @@ def stock_good_request(request,godown_id, request_id):
 def stock_pending_request(request,godown_id):
     godown = Godown.objects.get(id=godown_id)
     if request.user.role == 'Super Admin':
-        pending_list = GoodsRequest.objects.filter(~Q(status=None)).order_by('-id')
+        pending_list = GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)).order_by('-id')
     else:
         pending_list = GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_to_godown__goddown_assign_to__id=request.user.id)&Q(req_to_godown__id=godown_id)).order_by('-id')    | \
                        GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_from_godown__goddown_assign_to__id=request.user.id)&Q(req_from_godown__id=godown_id)).order_by('-id') | \
@@ -1023,6 +1023,8 @@ def stock_transaction_status(request,from_godown_id, trans_id):
     requested_goods = RequestedProducts.objects.filter(godown_id=from_godown_id,goods_req_id =good_request)
     godown_assign_employee = Godown.objects.filter(Q(goddown_assign_to__id=request.user.id)&~Q(id=good_request.req_from_godown.id))
     godown_assign_admin = Godown.objects.filter(Q(godown_admin__id=request.user.id)&~Q(id=good_request.req_from_godown.id))
+    godown_assign_superadmin = Godown.objects.filter(~Q(id=good_request.req_from_godown.id))
+
     if request.method == 'POST' or request.method == 'FILES':
         if 'submit1' in request.POST:
             number = request.POST.get('number')
@@ -1192,6 +1194,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
         'requested_goods': requested_goods,
         'godown_assign_admin': godown_assign_admin,
         'godown_assign_employee': godown_assign_employee,
+        'godown_assign_superadmin': godown_assign_superadmin,
 
     }
     return render(request,'stock_management_system/stock_transaction_status.html',context)

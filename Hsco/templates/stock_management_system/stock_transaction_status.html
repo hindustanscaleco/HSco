@@ -362,21 +362,31 @@ td {
       <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
     {% endif %}
 {% else %}
-      <option class="btn btn-success" value="{{good_request.status}}">{{good_request.status}}</option>
-    {% if request.user.id == good_request.req_to_godown.godown_admin.id and good_request.goods_sent == False %}
-      <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
-        {% elif request.user.id == good_request.req_to_godown.goddown_assign_to.id  and good_request.goods_sent == False %}
-      <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
-    {% elif not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == False %}
-      <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
-            {% endif %}
+    {% if request.user.role == 'Super Admin' %}
+              <option class="btn btn-success" value="{{good_request.status}}">{{good_request.status}}</option>
+      {% if good_request.status == 'Confirmation of goods transformation' %}
+              <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
+      {% else %}
+          <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
+      {% endif %}
+
+    {% else %}
+          <option class="btn btn-success" value="{{good_request.status}}">{{good_request.status}}</option>
+        {% if request.user.id == good_request.req_to_godown.godown_admin.id and good_request.goods_sent == False %}
+          <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
+            {% elif request.user.id == good_request.req_to_godown.goddown_assign_to.id  and good_request.goods_sent == False %}
+          <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
+        {% elif not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == False %}
+          <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
+                {% endif %}
 
 
-            {% if request.user.id == good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == True %}
-      <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
-        {% elif request.user.id == good_request.req_from_godown.godown_admin.id and good_request.goods_sent == True %}
-      <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
-            {% endif %}
+                {% if request.user.id == good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == True %}
+          <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
+            {% elif request.user.id == good_request.req_from_godown.godown_admin.id and good_request.goods_sent == True %}
+          <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
+                {% endif %}
+    {% endif %}
 {% endif %}
 </select>
                                                            </div></div>
@@ -494,11 +504,21 @@ Submit
            </td>
             {% endif %}
 
-        {% elif request.user.role == 'Admin' or request.user.role == 'Super Admin' %}
+        {% elif request.user.role == 'Admin'  %}
            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
                <div class="btn-group">
                 <select class="form-control" name="req_to_godown" >
                     {% for godown in godown_assign_admin %}
+                        <option class="form-control" value="{{godown.id}}">{{godown.name_of_godown}}</option>
+                    {% endfor %}
+                </select>
+               </div>
+           </td>
+        {% elif request.user.role == 'Super Admin' %}
+           <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+               <div class="btn-group">
+                <select class="form-control" name="req_to_godown" >
+                    {% for godown in godown_assign_superadmin %}
                         <option class="form-control" value="{{godown.id}}">{{godown.name_of_godown}}</option>
                     {% endfor %}
                 </select>
