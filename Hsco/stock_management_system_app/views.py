@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from customer_app.models import type_purchase
 from .forms import GodownForm
 from .models import Godown, GodownProduct, RequestedProducts, GoodsRequest, Product, AGProducts, AcceptGoods, \
-    GodownTransactions
+    GodownTransactions, DailyStock
 from user_app.models import SiteUser
 from customer_app.models import sub_model, main_model, sub_sub_model, type_purchase
 from django.db.models.signals import pre_save,post_save
@@ -1375,21 +1375,27 @@ def stock_godown_report(request,godown_id):
 from datetime import datetime
 @login_required(login_url='/')
 def stock_report(request):
-    products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
-    context={
-        'pro_list':products_list,
-    }
+    context={}
     if request.method == 'POST' or request.method == 'FILES':
-        from_month = request.POST.get('from_month')
-        to_month = request.POST.get('to_month')
-        from_month2 = datetime.strptime(from_month, "%Y-%m")
-        to_month2 = datetime.strptime(to_month, "%Y-%m")
+        from_month_str = request.POST.get('from_month')
+        to_month_str = request.POST.get('to_month')
+        from_month2 = datetime.strptime(from_month_str, "%Y-%m")
+        to_month2 = datetime.strptime(to_month_str, "%Y-%m")
         from_month = from_month2.month
         to_month = to_month2.month
         from_year = from_month2.year
         to_year = to_month2.year
-        gt_list = GodownTransactions.objects.filter(Q(entry_timedate__month__gte=from_month,entry_timedate__year=from_year) & Q(entry_timedate__month__lte=to_month,entry_timedate__year=to_year))
-        print(gt_list)
-
+        products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
+        for product in products_list:
+            gt_list = DailyStock.objects.filter(
+                Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
+                Q(entry_timedate__month__lte=to_month, entry_timedate__year=to_year) &
+                Q(godown_products__product_id__id=product.pk))
+            product.gt_list = gt_list
+            if gt_list:
+                product.month = gt_list[0].entry_timedate.month
+        context = {
+            'pro_list': products_list,
+        }
     return render(request,'stock_management_system/stock_system_report.html',context)
 
