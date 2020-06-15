@@ -21,6 +21,8 @@
 
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 </head>
 
 <body id="page-top">
@@ -315,7 +317,7 @@ $(document).ready(function(){
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Add/Remove</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Count</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
-            <!--<td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Individual Faulty</td>-->
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Individual Faulty</td>
                                 {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Update</td>
             {% endif %}
@@ -334,19 +336,23 @@ $(document).ready(function(){
     {% endif %}            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{product.product_id.scale_type}}</td>
             <td style="border: 0px solid gray;">{{product.product_id.main_category}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.product_id.sub_category}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.product_id.sub_sub_category}} <input hidden name="product_id" value="{{product.id}}"></td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.product_id.sub_sub_category}} <input hidden name="product_id" id="product_id" value="{{product.id}}"></td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{% if product.quantity == 0 %}<button name="submit2" type="submit"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></button>{% endif %}</td>
                                                     {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' %}
 
-                    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input  value="{{product.carton_count|floatformat:2}}" name="carton_count"></td>
-    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input value="{{product.quantity|floatformat:2}}" name="quantity"></td> <input type="hidden" value="{{product.product_id.id}}" name="product_id">
-    <!--<td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">-->
-        <!--<select name="faulty_type" >-->
-            <!--<option value="Repaired">Repaired</option>-->
-            <!--<option value="Scrap">Scrap</option>-->
-        <!--</select>-->
-        <!--<input value="{{product.individual_faulty|floatformat:2 }}" id="individual_faulty_id"  name="individual_faulty">-->
-    <!--</td>-->
+                    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input  value="{{product.carton_count|floatformat:2}}" onchange="faulty_type_req()" name="carton_count"></td>
+    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input value="{{product.quantity|floatformat:2}}" onchange="faulty_type_req()" name="quantity"></td> <input type="hidden" value="{{product.product_id.id}}" name="product_id">
+    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+
+        <input value="{{product.individual_faulty|floatformat:2 }}" id="individual_faulty_id{{product.pk}}" name="individual_faulty" readonly type="number" step="0.2">
+        <select style="height:25px;" name="faulty_type" class="faulty_type_id" required >
+            <option value="">Select</option>
+            <option value="Repaired">Repaired</option>
+            <option value="Scrap">Scrap</option>
+        </select>
+        <select style="height:25px;" id="sel{{product.pk}}" name="convert_faulty_quantity" class="select_faulty" ></select>
+
+    </td>
                     <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">  <button type="submit" name="update_stock" class="btn btn-primary">Update</button></td>
                     {% else %}
         <td style="border: 0px solid gray;">{{product.carton_count|floatformat:2}}</td>
@@ -356,6 +362,19 @@ $(document).ready(function(){
             <td id="image" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{% if product.product_id.product_image %}<img height="40" width="40" src="{{product.product_id.product_image.url}}">{% endif %}</td>
         </tr>
             </form>
+        <script>
+function write_opt(ID){
+    var num = parseFloat(document.getElementById("individual_faulty_id"+ID).value)
+var $select = $("#sel"+ID);
+    for (i=0;i<=num;i++){
+        $select.append($('<option></option>').val(i).html(i))
+    }
+}
+write_opt({{product.pk}});
+
+</script>
+
+
 {% endfor %}
 
 
@@ -363,8 +382,13 @@ $(document).ready(function(){
     </table>
 
 
+<script>
 
+function faulty_type_req(){
+        $('.faulty_type_id').removeAttr('required');
+    }
 
+</script>
 
 
         </div>
@@ -457,11 +481,7 @@ $(document).ready(function(){
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-<script>
-    function faulty_type(){
-        $('#individual_faulty_id').attr('required','');
-    }
-</script>
+
 <script>
 function choice1(select) {
      //alert(select.options[select.selectedIndex].value);
@@ -584,12 +604,6 @@ function isOneChecked() {
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
 
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
     </div>
   </div>
 
