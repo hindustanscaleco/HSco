@@ -1474,14 +1474,18 @@ def update_view_lead(request,id):
     if request.user.role == 'Employee':
         manager_email = SiteUser.objects.get(profile_name=request.user.manager).professional_email
         cc_list.append(manager_email)
+        cc_list.append(request.user.professional_email)
         work_area_godowns = Godown.objects.filter(Q(godown_admin__profile_name=request.user.admin) | Q(goddown_assign_to__profile_name=request.user.profile_name))
     elif request.user.role == 'Manager':
         admin_email = SiteUser.objects.get(profile_name=request.user.admin).professional_email
         cc_list.append(admin_email)
+        cc_list.append(request.user.professional_email)
         work_area_godowns = Godown.objects.filter(Q(godown_admin__profile_name=request.user.admin) | Q(goddown_assign_to__profile_name=request.user.profile_name))
     elif request.user.role == 'Admin':
+        cc_list.append(request.user.professional_email)
         work_area_godowns = Godown.objects.filter(godown_admin__profile_name=request.user.profile_name)
     elif request.user.role == 'Super Admin':
+        cc_list.append(request.user.professional_email)
         work_area_godowns = Godown.objects.all()
     context = {
         'under_admin_users': under_admin_users,
@@ -1894,7 +1898,7 @@ def update_view_lead(request,id):
             val = request.POST
             try:
                 if request.user.professional_email == None or request.user.professional_email =='' or request.user.professional_email == 'None':
-                    messages.error(request, "Invalid Professional Email Credentials\nplease update credentials and try again")
+                    messages.error(request, "Invalid Professional Email ID\nplease update professional email id and try again")
                     return redirect('/update_view_lead/' + str(lead_id.id))
                 if lead_id.customer_id.customer_email_id == None or lead_id.customer_id.customer_email_id == '' or lead_id.customer_id.customer_email_id == 'None':
                     messages.error(request, "Invalid Email Id\nplease update customer's email Id and try agin")
@@ -1904,8 +1908,8 @@ def update_view_lead(request,id):
                 with get_connection(
                         host=host_file,
                         port=587,
-                        username=request.user.professional_email,
-                        password=request.user.professional_email_password,
+                        username=settings.EMAIL_HOST_USER,
+                        password=settings.EMAIL_HOST_PASSWORD,
                         use_tls=True
                 ) as connection:
 
@@ -1916,7 +1920,7 @@ def update_view_lead(request,id):
                     '''
 
                     email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request,extra),
-                                          request.user.professional_email, [lead_id.customer_id.customer_email_id],connection=connection,cc=cc_list)
+                                          settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id],connection=connection,cc=cc_list)
                     email_send.content_subtype = 'html'
                     email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
                     email_send.send()
@@ -2192,7 +2196,7 @@ def update_view_lead(request,id):
                     try:
                         if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
                             messages.error(request,
-                                           "Invalid Professional Email Credentials\nplease update credentials and try again")
+                                           "Invalid Professional Email ID\nplease update professional email id and try again")
                             return redirect('/update_view_lead/' + str(lead_id.id))
                         if lead_id.customer_id.customer_email_id == None or lead_id.customer_id.customer_email_id == '' or lead_id.customer_id.customer_email_id == 'None':
                             messages.error(request, "Invalid Email Id\nplease update customer's email Id and try agin")
@@ -2200,15 +2204,15 @@ def update_view_lead(request,id):
                         with get_connection(
                                 host=host_file,
                                 port=587,
-                                username=request.user.professional_email,
-                                password=request.user.professional_email_password,
+                                username=settings.EMAIL_HOST_USER,
+                                password=settings.EMAIL_HOST_PASSWORD,
                                 use_tls=True
                         ) as connection:
 
 
                             email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
                                                       user(request, extra),
-                                                      request.user.professional_email, [lead_id.customer_id.customer_email_id],
+                                                      settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id],
                                                       connection=connection,cc=cc_list)
                             email_send.content_subtype = 'html'
                             email_send.attach_file(history.pi_history_file.path)
@@ -2229,7 +2233,7 @@ def update_view_lead(request,id):
                     try:
                         if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
                             messages.error(request,
-                                           "Invalid Professional Email Credentials\nplease update credentials and try again")
+                                           "Invalid Professional Email ID\nplease update professional email id and try again")
                             return redirect('/update_view_lead/' + str(lead_id.id))
                         if lead_id.customer_id.customer_email_id == None or lead_id.customer_id.customer_email_id == '' or lead_id.customer_id.customer_email_id == 'None':
                             messages.error(request, "Invalid Email Id\nplease update customer's email Id and try agin")
@@ -2237,14 +2241,14 @@ def update_view_lead(request,id):
                         with get_connection(
                                 host=host_file,
                                 port=587,
-                                username=request.user.professional_email,
-                                password=request.user.professional_email_password,
+                                username=settings.EMAIL_HOST_USER,
+                                password=settings.EMAIL_HOST_PASSWORD,
                                 use_tls=True
                         ) as connection:
 
                             email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
                                                       user(request, extra),
-                                                      request.user.professional_email, [lead_id.customer_id.customer_email_id],
+                                                      settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id],
                                                       connection=connection,cc=cc_list)
                             email_send.content_subtype = 'html'
                             email_send.attach_file(history.pi_history_file.path)
@@ -2663,7 +2667,7 @@ def update_view_lead(request,id):
                         try:
                             if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
                                 messages.error(request,
-                                               "Invalid Professional Email Credentials\nplease update credentials and try again")
+                                               "Invalid Professional Email ID\nplease update professional email id and try again")
                                 return redirect('/update_view_lead/' + str(lead_id.id))
                             if customer_id.customer_email_id == None or customer_id.customer_email_id == '' or lead_id.customer_id.customer_email_id == 'None':
                                 messages.error(request,
@@ -2672,16 +2676,16 @@ def update_view_lead(request,id):
                             with get_connection(
                                     host=host_file,
                                     port=587,
-                                    username=request.user.professional_email,
-                                    password=request.user.professional_email_password,
+                                    username=settings.EMAIL_HOST_USER,
+                                    password=settings.EMAIL_HOST_PASSWORD,
                                     use_tls=True
                             ) as connection:
                                 email_send = EmailMessage(email_subject,
                                                           html_content,
-                                                          request.user.professional_email,
+                                                          settings.EMAIL_HOST_USER,
                                                           [customer_id.customer_email_id, ],
-                                                          connection=connection
-                                                          # cc=cc_list
+                                                          connection=connection,
+                                                          cc=[request.user.professional_email]
                                                           )
 
                                 email_send.content_subtype = 'html'
@@ -2698,7 +2702,7 @@ def update_view_lead(request,id):
                         try:
                             if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
                                 messages.error(request,
-                                               "Invalid Professional Email Credentials\nplease update credentials and try again")
+                                               "Invalid Professional Email ID\nplease update professional email id and try again")
                                 return redirect('/update_view_lead/' + str(lead_id.id))
                             if customer_id.customer_email_id == None or customer_id.customer_email_id == '' or lead_id.customer_id.customer_email_id == 'None':
                                 messages.error(request,
@@ -2707,16 +2711,16 @@ def update_view_lead(request,id):
                             with get_connection(
                                     host=host_file,
                                     port=587,
-                                    username=request.user.professional_email,
-                                    password=request.user.professional_email_password,
+                                    username=settings.EMAIL_HOST_USER,
+                                    password=settings.EMAIL_HOST_PASSWORD,
                                     use_tls=True
                             ) as connection:
                                 email_send = EmailMessage(email_subject,
                                                           user(request,email_msg.replace('\n','<br>')),
-                                                          request.user.professional_email,
+                                                          settings.EMAIL_HOST_USER,
                                                           [customer_id.customer_email_id, ],
-                                                          connection=connection
-                                                          # cc=cc_list
+                                                          connection=connection,
+                                                          cc=[request.user.professional_email]
                                                           )
 
                                 email_send.content_subtype = 'html'

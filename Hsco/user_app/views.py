@@ -520,43 +520,46 @@ def dashboard(request):
 
                 if (item.follow_up_history.is_email):
                         if (item.follow_up_history.html_content != None and item.follow_up_history.html_content != '' and len(item.follow_up_history.html_content)>5):
-                            with get_connection(
-                                    host=host_file,
-                                    port=587,
-                                    username=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
-                                    password=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email_password,
-                                    use_tls=True
-                            ) as connection:
-                                email_send = EmailMessage(item.follow_up_history.email_subject,
-                                                          item.follow_up_history.html_content,
-                                                          item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email
-                                                          , [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
-                                                          connection=connection)
-                                # part1 = MIMEText(text, 'plain')
-                                # part2 = MIMEText(user(request), 'html')
-                                # email_send.attach(part1)
-                                email_send.content_subtype = 'html'
-                                email_send.send()
-                            # send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
+                            # with get_connection(
+                            #         host=host_file,
+                            #         port=587,
+                            #         username=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
+                            #         password=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email_password,
+                            #         use_tls=True
+                            # ) as connection:
+                            #     email_send = EmailMessage(item.follow_up_history.email_subject,
+                            #                               item.follow_up_history.html_content,
+                            #                               item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email
+                            #                               , [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
+                            #                               connection=connection)
+                            #     # part1 = MIMEText(text, 'plain')
+                            #     # part2 = MIMEText(user(request), 'html')
+                            #     # email_send.attach(part1)
+                            #     email_send.content_subtype = 'html'
+                            #     email_send.send()
+                            send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],cc=[request.user.professional_email])
                         else:
-                            with get_connection(
-                                    host=host_file,
-                                    port=587,
-                                    username=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
-                                    password=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email_password,
-                                    use_tls=True
-                            ) as connection:
-                                email_send = EmailMessage(item.follow_up_history.email_subject,
-                                                          user(request, item.follow_up_history.email_msg),
-                                                          item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
-                                                          [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
-                                                          connection=connection)
+                            send_text_mail(item.follow_up_history.email_subject, item.follow_up_history.email_msg,
+                                           settings.EMAIL_HOST_USER, [
+                                               item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],cc=[request.user.professional_email])
 
-                                email_send.content_subtype = 'html'
-                                email_send.send()
+                            # with get_connection(
+                            #         host=host_file,
+                            #         port=587,
+                            #         username=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
+                            #         password=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email_password,
+                            #         use_tls=True
+                            # ) as connection:
+                            #     email_send = EmailMessage(item.follow_up_history.email_subject,
+                            #                               user(request, item.follow_up_history.email_msg),
+                            #                               item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
+                            #                               [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
+                            #                               connection=connection)
+                            #
+                            #     email_send.content_subtype = 'html'
+                            #     email_send.send()
 
 
-        # send_text_mail(item.follow_up_history.email_subject, item.follow_up_history.email_msg, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
 
                 if (item.follow_up_history.is_sms):
 
