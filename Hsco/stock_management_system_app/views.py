@@ -560,12 +560,35 @@ def update_godown(request,godown_id):
             carton_count = request.POST.get('carton_count')
             product_id = request.POST.get('product_id')
 
-            product_individual_faulty = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).individual_faulty
-            print(individual_faulty)
-            print(product_individual_faulty)
-            if float(product_individual_faulty) !=  float(individual_faulty):
-                GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
-                    individual_faulty=individual_faulty)
+            faulty_type = request.POST.get('faulty_type')
+            convert_faulty_quantity = request.POST.get('convert_faulty_quantity')
+            if faulty_type != None and convert_faulty_quantity != None and convert_faulty_quantity != '0':
+                if faulty_type == 'Repaired':
+                    GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
+                        individual_faulty=float(individual_faulty) - float(convert_faulty_quantity) )
+                    GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
+                        quantity=float(quantity) + float(convert_faulty_quantity))
+
+                    messages.success(request, convert_faulty_quantity+ " Product shifted from Faulty to Repaired!!! ")
+                    #save transaction
+                    new_transaction = GodownTransactions()
+                    new_transaction.godown_product_id = GodownProduct.objects.get(id=product_id)
+                    new_transaction.adjustment_quantity = convert_faulty_quantity
+                    new_transaction.notes = 'Faulty to Repaired by Emp id:'+request.user.employee_number+', Name:'+request.user.profile_name+', Contact:'+request.user.mobile
+                    new_transaction.save()
+
+                    return redirect('/update_godown/'+str(godown_id))
+                elif faulty_type == 'Scrap':
+                    GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
+                        individual_faulty=float(individual_faulty) - float(convert_faulty_quantity) )
+                    messages.success(request, convert_faulty_quantity+ " Product shifted from Faulty to Scrap!!! ")
+                    # save transaction
+                    new_transaction = GodownTransactions()
+                    new_transaction.godown_product_id = GodownProduct.objects.get(id=product_id)
+                    new_transaction.loss_quantity = convert_faulty_quantity
+                    new_transaction.notes = 'Faulty to Scrap by Emp id:'+request.user.employee_number+', Name:'+request.user.profile_name+', Contact:'+request.user.mobile
+                    new_transaction.save()
+                    return redirect('/update_godown/'+str(godown_id))
             product_carton_count = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).carton_count
             product_quantity = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).quantity
             if float(product_carton_count) !=  float(carton_count):
@@ -575,10 +598,13 @@ def update_godown(request,godown_id):
 
                 GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
                     quantity=individual_quantity)
+                messages.success(request, "Product updated !!! Carton Quantity:- "+carton_count )
+
             elif float(product_quantity) != float(quantity):
                 GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
                     quantity=quantity)
-            messages.success(request, "Product updated!!! " )
+                messages.success(request, "Product updated!!! Individual Quantity:- "+quantity)
+            return redirect('/update_godown/' + str(godown_id))
 
     return render(request, 'stock_management_system/update_godown.html',context)
 
@@ -975,7 +1001,7 @@ def stock_good_request(request,godown_id, request_id):
 def stock_pending_request(request,godown_id):
     godown = Godown.objects.get(id=godown_id)
     if request.user.role == 'Super Admin':
-        pending_list = GoodsRequest.objects.filter(~Q(status=None)).order_by('-id')
+        pending_list = GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)).order_by('-id')
     else:
         pending_list = GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_to_godown__goddown_assign_to__id=request.user.id)&Q(req_to_godown__id=godown_id)).order_by('-id')    | \
                        GoodsRequest.objects.filter(~Q(status='Confirms the transformation')&~Q(status=None)&Q(req_from_godown__goddown_assign_to__id=request.user.id)&Q(req_from_godown__id=godown_id)).order_by('-id') | \
@@ -997,6 +1023,8 @@ def stock_transaction_status(request,from_godown_id, trans_id):
     requested_goods = RequestedProducts.objects.filter(godown_id=from_godown_id,goods_req_id =good_request)
     godown_assign_employee = Godown.objects.filter(Q(goddown_assign_to__id=request.user.id)&~Q(id=good_request.req_from_godown.id))
     godown_assign_admin = Godown.objects.filter(Q(godown_admin__id=request.user.id)&~Q(id=good_request.req_from_godown.id))
+    godown_assign_superadmin = Godown.objects.filter(~Q(id=good_request.req_from_godown.id))
+
     if request.method == 'POST' or request.method == 'FILES':
         if 'submit1' in request.POST:
             number = request.POST.get('number')
@@ -1155,6 +1183,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                             good_request.status = status
                             good_request.goods_received = True
                             good_request.save(update_fields=['status','req_to_godown','goods_received'])
+                            # save transaction
                             new_transaction = GodownTransactions()
                             new_transaction.goods_req_id = good_request
                             new_transaction.save()
@@ -1165,6 +1194,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
         'requested_goods': requested_goods,
         'godown_assign_admin': godown_assign_admin,
         'godown_assign_employee': godown_assign_employee,
+        'godown_assign_superadmin': godown_assign_superadmin,
 
     }
     return render(request,'stock_management_system/stock_transaction_status.html',context)
@@ -1217,6 +1247,7 @@ def stock_accpet_goods(request, godown_id, accept_id):
             item2.notes = notes
             item2.save(update_fields=['notes', 'log_entered_by', 'from_godown','good_added'])
             accepted_goods = AGProducts.objects.filter(godown_id_id=godown_id,accept_product_id_id =accept_id)
+            # save transaction
             new_transaction = GodownTransactions()
             new_transaction.accept_goods_id = item2
             new_transaction.save()
@@ -1350,5 +1381,48 @@ def request_admin(request):
     return render(request,'stock_management_system/request_admin_page.html',context)
 
 
+@login_required(login_url='/')
+def stock_godown_report(request,godown_id):
+    godown = Godown.objects.get(id=godown_id)
+    godown_products = GodownProduct.objects.filter(godown_id=godown_id)
+
+    if request.method == 'POST' or request.method == 'FILES':
+        from_month = request.POST.get('from_month')
+        to_month = request.POST.get('to_month')
+        from_month2 = datetime.strptime(from_month, "%Y-%m")
+        to_month2 = datetime.strptime(to_month, "%Y-%m")
+        from_month = from_month2.month
+        to_month = to_month2.month
+        from_year = from_month2.year
+        to_year = to_month2.year
+        gt_list = GodownTransactions.objects.filter(Q(entry_timedate__month__gte=from_month,entry_timedate__year=from_year) & Q(entry_timedate__month__lte=to_month,entry_timedate__year=to_year))
+        for trans in gt_list:
+            print(trans.type)
+    context={
+        'godown': godown,
+        # 'gt_list': gt_list,
+        'godown_products': godown_products,
+    }
+    return render(request,'stock_management_system/stock_godown_report.html',context)
+
+from datetime import datetime
+@login_required(login_url='/')
 def stock_report(request):
-    return render(request,'stock_management_system/stock_system_report.html')
+    products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
+    context={
+        'pro_list':products_list,
+    }
+    if request.method == 'POST' or request.method == 'FILES':
+        from_month = request.POST.get('from_month')
+        to_month = request.POST.get('to_month')
+        from_month2 = datetime.strptime(from_month, "%Y-%m")
+        to_month2 = datetime.strptime(to_month, "%Y-%m")
+        from_month = from_month2.month
+        to_month = to_month2.month
+        from_year = from_month2.year
+        to_year = to_month2.year
+        gt_list = GodownTransactions.objects.filter(Q(entry_timedate__month__gte=from_month,entry_timedate__year=from_year) & Q(entry_timedate__month__lte=to_month,entry_timedate__year=to_year))
+        print(gt_list)
+
+    return render(request,'stock_management_system/stock_system_report.html',context)
+

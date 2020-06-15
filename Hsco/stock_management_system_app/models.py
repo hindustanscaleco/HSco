@@ -150,15 +150,46 @@ class GodownTransactions(models.Model):
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
 
+    godown_product_id = models.ForeignKey(GodownProduct, on_delete=models.CASCADE,null=True,blank=True)
+    loss_quantity = models.FloatField(default=0.0 )
+    adjustment_quantity = models.FloatField(default=0.0 )
+    notes = models.TextField(null=True,blank=True)
+
     def __int__(self):
         return self.id
 
+    @property
+    def type(self):
+        type = ''
+        if self.goods_req_id:
+            type = 'transfer'
+        elif self.accept_goods_id:
+            type = 'purchase'
+        elif self.purchase_id:
+            type = 'sale'
+        elif self.loss_quantity != 0.0:
+            type = 'loss'
+        elif self.adjustment_quantity != 0.0:
+            type = 'adjustment'
+        return (str(type))
 
-
-
-
-
-
+# class Faulty_History(models.Model):
+#     godown_product_id = models.ForeignKey(GodownProduct, on_delete=models.CASCADE,null=True,blank=True)
+#     quantity = models.FloatField(default=0.0 )
+#     notes = models.TextField(null=True,blank=True)
+#     entry_timedate = models.DateField(default=datetime.date.today)
+#
+#     def __int__(self):
+#         return self.id
+#
+# class Adjustment_History(models.Model):
+#     godown_product_id = models.ForeignKey(GodownProduct, on_delete=models.CASCADE,null=True,blank=True)
+#     quantity = models.FloatField(default=0.0 )
+#     notes = models.TextField(null=True,blank=True)
+#     entry_timedate = models.DateField(default=datetime.date.today)
+#
+#     def __int__(self):
+#         return self.id
 
 
 
