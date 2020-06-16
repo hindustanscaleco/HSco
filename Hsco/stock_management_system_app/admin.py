@@ -1,11 +1,18 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 
-from .models import Product,Godown,GodownProduct,GoodsRequest,RequestedProducts,AcceptGoods,AGProducts,GodownTransactions
+from .models import Product, Godown, GodownProduct, GoodsRequest, RequestedProducts, AcceptGoods, AGProducts, \
+    GodownTransactions, DailyStock
+
+
 class Product_Admin(admin.ModelAdmin):
 
     list_display = ('scale_type','main_category','sub_category','sub_sub_category')
 
     search_fields = ('scale_type__name','main_category__name','sub_category__name','sub_sub_category__name')
+
+class DailyStock_Admin(ImportExportModelAdmin):
+    list_display = ('id', 'godown_products', 'closing_stock', 'sales_quantity', 'entry_timedate')
 
 admin.site.register(Product, Product_Admin)
 admin.site.register(Godown)
@@ -15,3 +22,4 @@ admin.site.register(RequestedProducts)
 admin.site.register(AcceptGoods)
 admin.site.register(AGProducts)
 admin.site.register(GodownTransactions)
+admin.site.register(DailyStock,DailyStock_Admin)

@@ -77,7 +77,6 @@ class GodownProduct(models.Model):
         return self.id
 
 
-
 class GoodsRequest(models.Model):
     req_from_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,related_name='Godown1',null=True,blank=True)
     req_to_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,related_name='Godown2',null=True,blank=True)
@@ -195,6 +194,48 @@ class GodownTransactions(models.Model):
 #
 #     def __int__(self):
 #         return self.id
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class DailyStock(models.Model):
+    godown_products = models.ForeignKey(GodownProduct,on_delete=models.DO_NOTHING)
+    closing_stock = models.FloatField()
+    sales_quantity = models.FloatField()
+    goods_request_quantity = models.FloatField()
+    accept_goods_quantity = models.FloatField() #Purchase_quantity
+    faulty_quantity = models.FloatField()
+    adjustment_quantity = models.FloatField()
+    losses_quantity = models.FloatField()
+    returned_quantity = models.FloatField()
+    sales_ids = models.CharField(max_length=120)
+    accept_goods_ids = models.CharField(max_length=120) #Purchase_ids
+    goods_request_ids = models.CharField(max_length=120)
+    entry_timedate = models.DateField(default=datetime.date.today)
+
 
 
 
