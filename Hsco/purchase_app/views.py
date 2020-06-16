@@ -27,6 +27,12 @@ from stock_management_system_app.models import Godown
 from stock_management_system_app.models import GodownProduct
 
 from stock_management_system_app.models import Product
+
+from stock_management_system_app.models import GodownTransactions
+
+from stock_management_system_app.models import AGProducts
+
+from stock_management_system_app.models import AcceptGoods
 from .models import  Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
 from _datetime import datetime
@@ -700,71 +706,19 @@ def edit_product_customer(request,product_id_rec):
         godown = request.POST.get('godown')
 
         cost2 = purchase.amount
-        godown_product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                                sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
-        # If godown is changed, add stored quantity in current godown and subtract new quantity from new godown
-        if (quantity != '') or  (godown != '') :
-            if  purchase.godown_id == None and godown != '':
-                # subtracting quantity from new godown
-                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
-                    quantity=F("quantity") - quantity)
-            elif purchase.godown_id.id != godown and quantity != purchase.quantity :
-                # adding stored quantity in current godown
-                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
-                    quantity=F("quantity") + purchase.quantity)
-
-                # subtracting new quantity from new godown
-                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
-                    quantity=F("quantity") - quantity)
-            elif purchase.godown_id.id != godown :
-                # adding stored quantity in current godown
-                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
-                    quantity=F("quantity") + purchase.quantity)
-
-                # subtracting new quantity from new godown
-                GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
-                    quantity=F("quantity") - purchase.quantity)
-            elif quantity != purchase.quantity:
-                # adding old quantity to current godown
-                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
-                    quantity=F("quantity") + purchase.quantity)
-
-                # subtracting new quantity from current godown
-                GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
-                    quantity=F("quantity") - quantity)
-            else:
-                print('no godown changes')
-
-        Purchase_Details.objects.filter(id=purchase_id.pk).update(value_of_goods=F("value_of_goods") - cost2)
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + float(cost))
-        # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") + 100.0)
-        # if cost2 > 0.0:
-        Employee_Analysis_month.objects.filter(user_id=purchase_id.user_id,
-                                               entry_date__month=product_id.entry_timedate.month,
-                                               year=product_id.entry_timedate.year).update(
-            total_sales_done=F("total_sales_done") - cost2)
-
-        Employee_Analysis_date.objects.filter(user_id=purchase_id.user_id,
-                                              entry_date=product_id.entry_timedate,
-                                              year=product_id.entry_timedate.year).update(
-            total_sales_done_today=F("total_sales_done_today") - cost2)
+        if sub_sub_model != '' or sub_sub_model != None:
+            godown_product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                    sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+        else:
+            godown_product_id = Product.objects.get(scale_type__name=type_of_scale,
+                                                    main_category__name=model_of_purchase,
+                                                    sub_category__name=sub_model)
 
         item = product_id
 
-        print('item.type_of_scale')
-        print(item.type_of_scale)
-        print(type_of_scale)
-        print('item.model_of_purchase')
-        print(item.model_of_purchase)
-        print(model_of_purchase)
-        print(item.sub_model)
-        print(sub_model)
-        print(item.sub_sub_model)
-        print(sub_sub_model)
         #if product changed then update stock
         if item.type_of_scale != type_of_scale or item.model_of_purchase != model_of_purchase or item.sub_model != sub_model or item.sub_sub_model != sub_sub_model:
             try:
-                print("inn try")
                 product_id_new = Product.objects.get(scale_type__name=type_of_scale,
                                                         main_category__name=model_of_purchase,
                                                         sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
@@ -774,14 +728,182 @@ def edit_product_customer(request,product_id_rec):
                 # adding old products quantity to old/current godown
                 GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=product_id_old).update(
                     quantity=F("quantity") + item.quantity)
+                item3 = AcceptGoods()
+                item3.from_godown = Godown.objects.get(id=purchase.godown_id.id)
+                item3.good_added = True
+                item3.log_entered_by = request.user.name
+                item3.notes = 'Returned from Sales'
+                item3.save()
 
+                item2 = AGProducts()
+                item2.type = 'Individual'
+                item2.quantity = float(item.quantity)
+                item2.godown_id = Godown.objects.get(id=purchase.godown_id.id)
+                item2.accept_product_id = AcceptGoods.objects.get(id=item3.id)
+                item2.godown_product_id = GodownProduct.objects.get(godown_id=purchase.godown_id.id,
+                                                                    product_id=godown_product_id)
+                item2.log_entered_by = request.user.name
+                item2.save()
+
+                new_transaction = GodownTransactions()
+                new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
+                new_transaction.notes = 'Product Returned from Sales by Emp id: ' + request.user.employee_number + ',\nName: ' + request.user.profile_name \
+                                        + ', Contact: ' + request.user.mobile + ',\nProduct changed' + \
+                                        '\nPurchase Id:' + str(purchase_id.id)
+                new_transaction.save()
                 # subtracting new products quantity from current godown
                 GodownProduct.objects.filter(godown_id=godown, product_id=product_id_new).update(
                     quantity=F("quantity") - quantity)
+                new_transaction = GodownTransactions()
+                new_transaction.purchase_product_id = Product_Details.objects.get(id=product_id_rec)
+                new_transaction.purchase_quantity = float(quantity)
+                new_transaction.notes = 'Product Added to Sales by Emp id: ' + request.user.employee_number + ',\nName: ' + request.user.profile_name \
+                                        + ', Contact: ' + request.user.mobile + ',\nProduct changed'+ \
+                                        '\nPurchase Id:' + str(purchase_id.id)
+                new_transaction.save()
             except Exception as e:
                 messages.error(request,"Error Updating Product's Quantity In Selected Godown")
                 return redirect("/edit_product_customer/"+str(product_id_rec))
+        else:
+            new_godown_name = Godown.objects.get(id=godown).name_of_godown
+            # If godown is changed, add stored quantity in current godown and subtract new quantity from new godown
+            if (quantity != '') or (godown != ''):
+                if purchase.godown_id == None and godown != '':
+                    # subtracting quantity from new godown
+                    GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                        quantity=F("quantity") - quantity)
+                elif float(purchase.godown_id.id) != float(godown) and float(quantity) != float(purchase.quantity):
+                    # adding stored quantity in current godown
+                    GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
+                        quantity=F("quantity") + purchase.quantity)
+                    item3 = AcceptGoods()
+                    item3.from_godown = Godown.objects.get(id=purchase.godown_id.id)
+                    item3.good_added = True
+                    item3.log_entered_by = request.user.name
+                    item3.notes = 'Returned from Sales'
+                    item3.save()
 
+                    item2 = AGProducts()
+                    item2.type = 'Individual'
+                    item2.quantity = purchase.quantity
+                    item2.godown_id = Godown.objects.get(id=purchase.godown_id.id)
+                    item2.accept_product_id = AcceptGoods.objects.get(id=item3.id)
+                    item2.godown_product_id = GodownProduct.objects.get(godown_id=purchase.godown_id.id,
+                                                                        product_id=godown_product_id)
+                    item2.log_entered_by = request.user.name
+                    item2.save()
+
+                    new_transaction = GodownTransactions()
+                    new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
+                    new_transaction.notes = 'Product Returned from Sales by Emp id: ' + request.user.employee_number + ',\nName: ' + request.user.profile_name \
+                                            + ', Contact: ' + request.user.mobile + ',\nGodown changed:- Old: ' + purchase.godown_id.name_of_godown + ', New: ' + new_godown_name + \
+                                            '\nPurchase Id:' + str(purchase_id.id)
+                    new_transaction.save()
+
+                    # subtracting new quantity from new godown
+                    GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                        quantity=F("quantity") - quantity)
+                    new_transaction = GodownTransactions()
+                    new_transaction.purchase_product_id = Product_Details.objects.get(id=product_id_rec)
+                    new_transaction.purchase_quantity = quantity
+                    new_transaction.notes = 'Product Added to Sales by Emp id: ' + request.user.employee_number + ',\nName: ' + request.user.profile_name \
+                                            + ', Contact: ' + request.user.mobile + ',\nGodown changed:- Old: ' + purchase.godown_id.name_of_godown + ', New: ' + new_godown_name + \
+                                            '\nPurchase Id:' + str(purchase_id.id)
+                    new_transaction.save()
+                elif float(purchase.godown_id.id) != float(godown):
+
+                    # adding stored quantity in current godown
+                    GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
+                        quantity=F("quantity") + purchase.quantity)
+                    item3 = AcceptGoods()
+                    item3.from_godown = Godown.objects.get(id=purchase.godown_id.id)
+                    item3.good_added = True
+                    item3.log_entered_by = request.user.name
+                    item3.notes = 'Returned from Sales'
+                    item3.save()
+
+                    item2 = AGProducts()
+                    item2.type = 'Individual'
+                    item2.quantity = purchase.quantity
+                    item2.godown_id = Godown.objects.get(id=purchase.godown_id.id)
+                    item2.accept_product_id = AcceptGoods.objects.get(id=item3.id)
+                    item2.godown_product_id = GodownProduct.objects.get(godown_id=purchase.godown_id.id,
+                                                                        product_id=godown_product_id)
+                    item2.log_entered_by = request.user.name
+                    item2.save()
+
+                    new_transaction = GodownTransactions()
+                    new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
+                    new_transaction.notes = 'Product Returned from Sales by Emp id: ' + request.user.employee_number + ',\nName: ' + request.user.profile_name \
+                                            + ', Contact: ' + request.user.mobile + ',\nGodown changed:- Old: ' + purchase.godown_id.name_of_godown + ', New: ' + new_godown_name + \
+                                            '\nPurchase Id:' + str(purchase_id.id)
+                    new_transaction.save()
+
+                    # subtracting new quantity from new godown
+                    GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                        quantity=F("quantity") - purchase.quantity)
+
+                    new_transaction = GodownTransactions()
+                    new_transaction.purchase_product_id = Product_Details.objects.get(id=product_id_rec)
+                    new_transaction.purchase_quantity = quantity
+                    new_transaction.notes = 'Product Added to Sales by Emp id: ' + request.user.employee_number + ',\nName: ' + request.user.profile_name \
+                                            + ', Contact: ' + request.user.mobile + ',\nGodown changed:- Old: ' + purchase.godown_id.name_of_godown + ', New: ' + new_godown_name + \
+                                            '\nPurchase Id:' + str(purchase_id.id)
+                    new_transaction.save()
+                elif quantity != purchase.quantity:
+                    # adding old quantity to current godown
+                    GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
+                        quantity=F("quantity") + purchase.quantity)
+
+                    # subtracting new quantity from current godown
+                    GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
+                        quantity=F("quantity") - quantity)
+
+                    if quantity < purchase.quantity:
+                        item3 = AcceptGoods()
+                        item3.from_godown = Godown.objects.get(id=purchase.godown_id.id)
+                        item3.good_added = True
+                        item3.log_entered_by = request.user.name
+                        item3.notes = 'Returned from Sales'
+                        item3.save()
+
+                        item2 = AGProducts()
+                        item2.type = 'Individual'
+                        item2.quantity = float(purchase.quantity) - float(quantity)
+                        item2.godown_id = Godown.objects.get(id=purchase.godown_id.id)
+                        item2.accept_product_id = AcceptGoods.objects.get(id=item3.id)
+                        item2.godown_product_id = GodownProduct.objects.get(godown_id=purchase.godown_id.id,
+                                                                            product_id=godown_product_id)
+                        item2.log_entered_by = request.user.name
+                        item2.save()
+
+                        new_transaction = GodownTransactions()
+                        new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
+                        new_transaction.notes = 'Product Returned from Sales by Emp id: ' + request.user.employee_number + ',\nName: ' + request.user.profile_name \
+                                                + ', Contact: ' + request.user.mobile + ',\nQuantity changed:- Old: ' + purchase.quantity + ', New: ' + quantity + \
+                                                '\nPurchase Id:' + str(purchase_id.id)
+                        new_transaction.save()
+                    elif quantity > purchase.quantity:
+                        new_transaction = GodownTransactions()
+                        new_transaction.purchase_product_id = Product_Details.objects.get(id=product_id_rec)
+                        new_transaction.purchase_quantity = float(quantity) - float(purchase.quantity)
+                        new_transaction.notes = 'Product Added to Sales by Emp id: ' + request.user.employee_number + ',\nName: ' + request.user.profile_name \
+                                                + ', Contact: ' + request.user.mobile + ',\nQuantity changed:- Old: ' + purchase.quantity + ', New: ' + quantity + \
+                                                '\nPurchase Id:' + str(purchase_id.id)
+                        new_transaction.save()
+                else:
+                    print('no godown changes')
+
+            Purchase_Details.objects.filter(id=purchase_id.pk).update(value_of_goods=F("value_of_goods") - cost2)
+            Employee_Analysis_month.objects.filter(user_id=purchase_id.user_id,
+                                                   entry_date__month=product_id.entry_timedate.month,
+                                                   year=product_id.entry_timedate.year).update(
+                total_sales_done=F("total_sales_done") - cost2)
+
+            Employee_Analysis_date.objects.filter(user_id=purchase_id.user_id,
+                                                  entry_date=product_id.entry_timedate,
+                                                  year=product_id.entry_timedate.year).update(
+                total_sales_done_today=F("total_sales_done_today") - cost2)
 
         item.quantity = quantity
         item.type_of_scale = type_of_scale
@@ -1420,21 +1542,35 @@ def add_product_details(request,id):
                                                       sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
 
                 if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
-                        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
+                        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity :
                             GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
                             quantity=F("quantity") - quantity)
+                        elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
+                            messages.success(request, "Insufficient stock !!! Available Quantity:" + str(
+                                GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
+                            return redirect('/add_product_details/' + str(purchase_id))
 
             elif sub_model != '':
                 product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                                       sub_category__name=sub_model, sub_sub_category__name=None)
                 if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
-                        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity :
+                        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity :
                             GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
                             quantity=F("quantity") - quantity)
+                        elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
+                            messages.success(request, "Insufficient stock !!! Available Quantity:"+str(
+                                GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
+                            return redirect('/add_product_details/' + str(purchase_id))
+
         except:
             messages.success(request, "Selected Product does not exist in product master !!!")
             return redirect('/add_product_details/' + str(purchase_id))
         item.save()
+        new_transaction = GodownTransactions()
+        new_transaction.purchase_product_id = Product_Details.objects.get(id=item.id)
+        new_transaction.purchase_quantity = quantity
+        new_transaction.notes = 'Product Added to Sales by Emp id:' + request.user.employee_number + ', Name:' + request.user.profile_name + ', Contact:' + request.user.mobile
+        new_transaction.save()
 
         if is_last_product_yes == 'yes':
             Purchase_Details.objects.filter(id=id).update(is_last_product=True)

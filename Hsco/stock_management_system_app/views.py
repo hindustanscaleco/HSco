@@ -1221,7 +1221,6 @@ def stock_accpet_goods(request, godown_id, accept_id):
 
                 item2.carton_count = number
                 item2.quantity = individual_quantity
-                print(item2.carton_count)
 
             item2.godown_id = Godown.objects.get(id=godown_id)
             item2.godown_product_id = GodownProduct.objects.filter(product_id=product_id, godown_id=godown_id).first()
@@ -1297,7 +1296,10 @@ def stock_accpet_goods_list(request, godown_id):
 def stock_transaction_history_list(request, godown_id):
     trans_history = GodownTransactions.objects.filter(goods_req_id__req_from_godown=godown_id, goods_req_id__status='Confirms the transformation').order_by('-id') | \
                     GodownTransactions.objects.filter(goods_req_id__req_to_godown=godown_id,goods_req_id__status='Confirms the transformation').order_by('-id') | \
-                    GodownTransactions.objects.filter(accept_goods_id__from_godown=godown_id).order_by('-id')
+                    GodownTransactions.objects.filter(accept_goods_id__from_godown=godown_id).order_by('-id') | \
+                    GodownTransactions.objects.filter(godown_product_id__godown_id=godown_id).order_by('-id') | \
+                    GodownTransactions.objects.filter(purchase_product_id__godown_id=godown_id).order_by('-id')
+
 
     context={
         'trans_history': trans_history,

@@ -480,7 +480,7 @@ td {
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Feedback</td>
         </tr>
                     {% for list1 in customer_list %}
-        {% if list1.payment_mode == 'Credit' %}
+        {% if list1.payment_mode == 'Credit' and list1.credit_pending_amount != 0.0 %}
             <tr bgcolor="red" style="background-color:red; cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
         {% else %}
             <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">

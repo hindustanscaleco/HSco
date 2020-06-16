@@ -6,6 +6,8 @@ import datetime
 from purchase_app.models import Purchase_Details
 from django.utils import timezone
 
+from purchase_app.models import Product_Details
+
 
 class Product(models.Model):
     # lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
@@ -149,6 +151,9 @@ class GodownTransactions(models.Model):
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
+
+    purchase_product_id = models.ForeignKey(Product_Details, on_delete=models.CASCADE,null=True,blank=True)
+    purchase_quantity = models.FloatField(default=0.0 )
 
     godown_product_id = models.ForeignKey(GodownProduct, on_delete=models.CASCADE,null=True,blank=True)
     loss_quantity = models.FloatField(default=0.0 )
