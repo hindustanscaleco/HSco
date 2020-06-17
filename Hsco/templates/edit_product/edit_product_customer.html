@@ -313,14 +313,14 @@ function myFunction() {
   </div>
 
 
-  <label class="col-md-2 control-label">Sub Sub Model *
+  <label class="col-md-2 control-label">Sub Sub Model
 
 
 </label>
       <div class="col-md-4 inputGroupCont+-ainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-      <select required id="id_subcat22" disabled onchange="choice_sub_sub_model(this)" class="form-control">
+      <select  id="id_subcat22" disabled onchange="choice_sub_sub_model(this)" class="form-control">
           <option value="0">{{product_id.sub_sub_model}}</option>
   </select>
   <input  name="sub_sub_model" id="myText4" value="{{product_id.sub_sub_model}}"  type="hidden">
@@ -371,18 +371,18 @@ function myFunction() {
 
 <div id="product_details">
 <div class="form-group row">
-  <label class="col-md-2 control-label">Capacity(Product DB) *
+  <label class="col-md-2 control-label">Capacity
 </label>
 
     <div class="col-md-4 inputGroupCont+-ainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
-  <input  name="capacity" id="capacity" disabled placeholder="Max Capacity" id="myText7" value="{{main_product.max_capacity}}" class="form-control"  type="text">
+  <input  name="capacity" id="capacity" disabled placeholder="Max Capacity" id="myText7" value="{{product_id.capacity}}" class="form-control"  type="text">
     </div>
   </div>
 
 
-                    <label class="col-md-2 control-label">Rate(Product DB) *
+                    <label class="col-md-2 control-label">Rate *
 
 
 
@@ -390,7 +390,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="rate" id="rate" required placeholder="Rate"  onkeyup="total_product_amount()"  value="{{main_product.selling_price}}"  disabled class="form-control" step="0.2" type="number">
+  <input  name="rate" id="rate" required placeholder="Rate"  onkeyup="total_product_amount()"  value="{{product_id.amount}}"  disabled class="form-control" step="0.2" type="number">
     </div>
   </div>
 
@@ -649,6 +649,7 @@ $("#myText3").val(select.options[select.selectedIndex].text);
      if ($('#id_subcat2 option').length > 1)
     {
     $('#id_subcat22').removeAttr('required');
+    $('#myText4').val("");
 
     }
     else{

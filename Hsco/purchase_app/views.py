@@ -666,8 +666,7 @@ def edit_product_customer(request,product_id_rec):
     except:
         dispatch_id_assigned=None
     product_id = purchase
-    main_product = Product.objects.get(scale_type__name=product_id.type_of_scale, main_category__name=product_id.model_of_purchase,
-                                         sub_category__name=product_id.sub_model, sub_sub_category__name=product_id.sub_sub_model)
+
     if request.user.role == 'Super Admin':
         try:
             godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False))
@@ -704,9 +703,8 @@ def edit_product_customer(request,product_id_rec):
         unit = request.POST.get('unit')
         amount = request.POST.get('value_of_goods')
         godown = request.POST.get('godown')
-
         cost2 = purchase.amount
-        if sub_sub_model != '' or sub_sub_model != None:
+        if sub_sub_model != '' and sub_sub_model != 'None':
             godown_product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                                     sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
         else:
@@ -719,12 +717,15 @@ def edit_product_customer(request,product_id_rec):
         #if product changed then update stock
         if item.type_of_scale != type_of_scale or item.model_of_purchase != model_of_purchase or item.sub_model != sub_model or item.sub_sub_model != sub_sub_model:
             try:
-                product_id_new = Product.objects.get(scale_type__name=type_of_scale,
-                                                        main_category__name=model_of_purchase,
-                                                        sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
-                product_id_old = Product.objects.get(scale_type__name=item.type_of_scale,
-                                                     main_category__name=item.model_of_purchase,
-                                                     sub_category__name=item.sub_model, sub_sub_category__name=item.sub_sub_model)
+                product_id_new = Product.objects.get(id=godown_product_id.id)
+                if item.sub_sub_model != '' and item.sub_sub_model != 'None':
+                    product_id_old = Product.objects.get(scale_type__name=item.type_of_scale,
+                                                         main_category__name=item.model_of_purchase,
+                                                         sub_category__name=item.sub_model, sub_sub_category__name=item.sub_sub_model)
+                else:
+                    product_id_old = Product.objects.get(scale_type__name=item.type_of_scale,
+                                                            main_category__name=item.model_of_purchase,
+                                                            sub_category__name=item.sub_model)
                 # adding old products quantity to old/current godown
                 GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=product_id_old).update(
                     quantity=F("quantity") + item.quantity)
@@ -741,7 +742,7 @@ def edit_product_customer(request,product_id_rec):
                 item2.godown_id = Godown.objects.get(id=purchase.godown_id.id)
                 item2.accept_product_id = AcceptGoods.objects.get(id=item3.id)
                 item2.godown_product_id = GodownProduct.objects.get(godown_id=purchase.godown_id.id,
-                                                                    product_id=godown_product_id)
+                                                                    product_id=product_id_old)
                 item2.log_entered_by = request.user.name
                 item2.save()
 
@@ -762,7 +763,7 @@ def edit_product_customer(request,product_id_rec):
                                         '\nPurchase Id:' + str(purchase_id.id)
                 new_transaction.save()
             except Exception as e:
-                messages.error(request,"Error Updating Product's Quantity In Selected Godown")
+                messages.error(request,"Selected Product does not exist In Selected Godown !!! "+str(e))
                 return redirect("/edit_product_customer/"+str(product_id_rec))
         else:
             new_godown_name = Godown.objects.get(id=godown).name_of_godown
@@ -773,6 +774,7 @@ def edit_product_customer(request,product_id_rec):
                     GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
                         quantity=F("quantity") - quantity)
                 elif float(purchase.godown_id.id) != float(godown) and float(quantity) != float(purchase.quantity):
+                    print('dsfjk3')
                     # adding stored quantity in current godown
                     GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
                         quantity=F("quantity") + purchase.quantity)
@@ -851,6 +853,8 @@ def edit_product_customer(request,product_id_rec):
                                             '\nPurchase Id:' + str(purchase_id.id)
                     new_transaction.save()
                 elif quantity != purchase.quantity:
+                    print('dsfjk34')
+
                     # adding old quantity to current godown
                     GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
                         quantity=F("quantity") + purchase.quantity)
@@ -982,7 +986,6 @@ def edit_product_customer(request,product_id_rec):
     context = {
         'product_id': product_id,
         'godowns': godowns,
-        'main_product': main_product,
         'type_purchase': type_of_purchase_list,  # 2
     }
 
