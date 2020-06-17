@@ -562,11 +562,15 @@ def update_godown(request,godown_id):
 
             faulty_type = request.POST.get('faulty_type')
             convert_faulty_quantity = request.POST.get('convert_faulty_quantity')
+
+            print(product_id)
+            print(product_id)
+            print(product_id)
             if faulty_type != None and convert_faulty_quantity != None and convert_faulty_quantity != '0':
                 if faulty_type == 'Repaired':
-                    GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
+                    GodownProduct.objects.filter(godown_id=godown_id, id=product_id).update(
                         individual_faulty=float(individual_faulty) - float(convert_faulty_quantity) )
-                    GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
+                    GodownProduct.objects.filter(godown_id=godown_id, id=product_id).update(
                         quantity=float(quantity) + float(convert_faulty_quantity))
 
                     messages.success(request, convert_faulty_quantity+ " Product shifted from Faulty to Repaired!!! ")
@@ -574,35 +578,45 @@ def update_godown(request,godown_id):
                     new_transaction = GodownTransactions()
                     new_transaction.godown_product_id = GodownProduct.objects.get(id=product_id)
                     new_transaction.adjustment_quantity = convert_faulty_quantity
-                    new_transaction.notes = 'Faulty to Repaired by Emp id:'+request.user.employee_number+', Name:'+request.user.profile_name+', Contact:'+request.user.mobile
+                    new_transaction.notes = 'Adjustment - Faulty to Repaired by id:'+request.user.employee_number+', Name:'+request.user.profile_name+', Contact:'+request.user.mobile
                     new_transaction.save()
 
                     return redirect('/update_godown/'+str(godown_id))
                 elif faulty_type == 'Scrap':
-                    GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
+                    GodownProduct.objects.filter(godown_id=godown_id, id=product_id).update(
                         individual_faulty=float(individual_faulty) - float(convert_faulty_quantity) )
                     messages.success(request, convert_faulty_quantity+ " Product shifted from Faulty to Scrap!!! ")
                     # save transaction
                     new_transaction = GodownTransactions()
                     new_transaction.godown_product_id = GodownProduct.objects.get(id=product_id)
                     new_transaction.loss_quantity = convert_faulty_quantity
-                    new_transaction.notes = 'Faulty to Scrap by Emp id:'+request.user.employee_number+', Name:'+request.user.profile_name+', Contact:'+request.user.mobile
+                    new_transaction.notes = 'Loss - Faulty to Scrap by id:'+request.user.employee_number+', Name:'+request.user.profile_name+', Contact:'+request.user.mobile
                     new_transaction.save()
                     return redirect('/update_godown/'+str(godown_id))
-            product_carton_count = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).carton_count
-            product_quantity = GodownProduct.objects.get(godown_id=godown_id, product_id__id=product_id).quantity
+            product_carton_count = GodownProduct.objects.get(godown_id=godown_id, id=product_id).carton_count
+            product_quantity = GodownProduct.objects.get(godown_id=godown_id, id=product_id).quantity
             if float(product_carton_count) !=  float(carton_count):
 
                 product = Product.objects.get(id=product_id)
                 individual_quantity = (float(product.carton_size) * float(carton_count))
 
-                GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
+                GodownProduct.objects.filter(godown_id=godown_id, id=product_id).update(
                     quantity=individual_quantity)
+                new_transaction = GodownTransactions()
+                new_transaction.godown_product_id = GodownProduct.objects.get(id=product_id)
+                new_transaction.adjustment_quantity = float(carton_count) - float(product_carton_count)
+                new_transaction.notes = 'Adjustment in stock by id:' + request.user.employee_number + ', Name:' + request.user.profile_name + ', Contact:' + request.user.mobile+'\nOld Carton Count: '+str(product_carton_count)+', New Carton Count: '+str(carton_count)
+                new_transaction.save()
                 messages.success(request, "Product updated !!! Carton Quantity:- "+carton_count )
 
             elif float(product_quantity) != float(quantity):
-                GodownProduct.objects.filter(godown_id=godown_id, product_id__id=product_id).update(
+                GodownProduct.objects.filter(godown_id=godown_id, id=product_id).update(
                     quantity=quantity)
+                new_transaction = GodownTransactions()
+                new_transaction.godown_product_id = GodownProduct.objects.get(id=product_id)
+                new_transaction.adjustment_quantity = float(quantity) - float(product_quantity)
+                new_transaction.notes = 'Adjustment in stock by id:' + request.user.employee_number + ', Name:' + request.user.profile_name + ', Contact:' + request.user.mobile + '\nOld Carton Count: '+str(product_quantity)+', New Carton Count: '+str(quantity)
+                new_transaction.save()
                 messages.success(request, "Product updated!!! Individual Quantity:- "+quantity)
             return redirect('/update_godown/' + str(godown_id))
 
