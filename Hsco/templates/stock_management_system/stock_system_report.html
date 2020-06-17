@@ -9,7 +9,7 @@
 
 
   <title>HSCO</title>
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -51,82 +51,43 @@ color:;
 
 </style>
 
-  <style type="text/css">
-    body {
-  color: #6a6c6f;
-  background-color: #f1f3f6;
-  margin-top: 30px;
-}
+ <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
 
-.container {
-  max-width: 960px;
-}
 
-.table>tbody>tr.active>td,
-.table>tbody>tr.active>th,
-.table>tbody>tr>td.active,
-.table>tbody>tr>th.active,
-.table>tfoot>tr.active>td,
-.table>tfoot>tr.active>th,
-.table>tfoot>tr>td.active,
-.table>tfoot>tr>th.active,
-.table>thead>tr.active>td,
-.table>thead>tr.active>th,
-.table>thead>tr>td.active,
-.table>thead>tr>th.active {
-  background-color: #fff;
-}
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  border-color: black;
+  color: black;
 
-.table-bordered > tbody > tr > td,
-.table-bordered > tbody > tr > th,
-.table-bordered > tfoot > tr > td,
-.table-bordered > tfoot > tr > th,
-.table-bordered > thead > tr > td,
-.table-bordered > thead > tr > th {
-  border-color: #e4e5e7;
-}
+  }
+  th {
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
 
-.table tr.header {
-  font-weight: bold;
-  background-color: #fff;
-  cursor: pointer;
-  -webkit-user-select: none;
-  /* Chrome all / Safari all */
-  -moz-user-select: none;
-  /* Firefox all */
-  -ms-user-select: none;
-  /* IE 10+ */
-  user-select: none;
-  /* Likely future */
-}
+    }
 
-.table tr:not(.header) {
-  display: none;
-}
-
-.table .header td:after {
-  content: "\002b";
-  position: relative;
-  top: 1px;
-  display: inline-block;
-  font-family: 'Glyphicons Halflings';
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  float: right;
-  color: #999;
-  text-align: center;
+td {
+  border: 1px solid black;
   padding: 3px;
-  transition: transform .25s linear;
-  -webkit-transition: -webkit-transform .25s linear;
-}
+  font-size: 13px;
+  padding: 5px;
 
-.table .header.active td:after {
-  content: "\2212";
-}
-  </style>
+  }
+
+
+            </style>
+
   <!-- Page Wrapper -->
   <div id="wrapper">
   {% include 'base_templates/sidebar.html' %}
@@ -201,96 +162,82 @@ color:;
 </div>
 </fieldset>
     </form>
+            <hr>
 
-      <br>
-         <div id="id_manager_view" >
+              <table>
+                    <tr style="background-color: gray; color: white;">
 
-<!--<div class="" id="id_subcat" style="min-height: 15vw;">-->
-             <hr>
-             <div class="container">
-  <table class="table table-bordered">
-    <tr class="header">
-      <th colspan="7"><center>Product 1 </center></th>
-    </tr>
-    <tr>
-      <td>Scale</td>
-      <td>Type</td>
-      <td>Category</td>
-      <td>Sub Category</td>
-      <td>Sub Sub Category</td>
-      <td>Opening Stock</td>
-      <td>Month</td>
-    </tr>
-  </table>
-</div>
+                    <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Scale Type  </td>
 
+                    <td style=" width: 15%; border: 0px solid gray;"> Category </td>
+                    <td style=" width: 18%; border: 0px solid gray;"> Sub Category</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Sub Sub Category</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Opening Stock</td>
+                    <td colspan="30" style=" width: 15%; border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Month</td>
+                </tr>
+              
+{% for item in pro_list %}
+
+              <tr style="cursor: pointer;" class="col-xl-12 col-md-12 mb-12">
+                                        <td style="width: auto;">{% ifchanged item.scale_type %}{{item.scale_type}}{% endifchanged %}</td>
 
                     <td style="width: auto;">{% ifchanged item.main_category %}{{item.main_category}} {% endifchanged %} </td>
                     <td style="width: auto;">{% ifchanged item.sub_category %}{{item.sub_category}}{% endifchanged %}</td>
                   {% ifchanged item.sub_category %}<td></td>{% else %}<td style="width: auto;">{% if item.sub_sub_category != None %}{{item.sub_sub_category}}{% endif %}</td>{% endifchanged %}
                   <td style="width: auto;">c </td>
-                    {% ifchanged item.sub_category %}<td colspan="30" style="width: auto;">Month1 </td>
+                    {% ifchanged item.sub_category %}<td colspan="30" style="width: auto;">{{item.month}} </td>
                   {% else %}
-                  <td style="width: auto;"> a</td>
-                    <td style="width: auto;">s </td>
-                    <td style="width: auto;">a </td>
-                    <td style="width: auto;"> s</td>
-                    <td style="width: auto;">as </td>
-                    <td style="width: auto;">as </td>
+                   {% for obj in item.gt_list %}
+                  <td style="width: auto;">{{obj.entry_timedate}} </td>
+                    {% endfor %}
                   {% endifchanged %}
-
 
 
               </tr>
     {% ifchanged item.sub_category %}
     {% else %}
-    <tr>
+    <tr >
         <td></td>
         <td></td>
         <td></td>
         <td></td>
         <td></td>
-        <td><td style="width: auto;"> a</td>
-                    <td style="width: auto;">s </td>
-                    <td style="width: auto;">a </td>
-                    <td style="width: auto;"> s</td>
-                    <td style="width: auto;">as </td></td>
+                  {% for obj in item.gt_list %}
+
+        <td style="background-color: green; ">{{obj.accept_goods_quantity}}</td>
+
+        {% endfor %}
     </tr>
-    <tr>
+    <tr >
         <td></td>
         <td></td>
         <td></td>
         <td></td>
         <td></td>
-        <td><td style="width: auto;"> a</td>
-                    <td style="width: auto;">s </td>
-                    <td style="width: auto;">a </td>
-                    <td style="width: auto;"> s</td>
-                    <td style="width: auto;">as </td></td>
+        {% for obj in item.gt_list %}
+        <td style="background-color: yellow; "> {{obj.sales_quantity}}</td>
+        {% endfor %}
     </tr>
-    <tr>
+    <tr >
         <td></td>
         <td></td>
         <td></td>
         <td></td>
         <td></td>
-        <td><td style="width: auto;"> a</td>
-                    <td style="width: auto;">s </td>
-                    <td style="width: auto;">a </td>
-                    <td style="width: auto;"> s</td>
-                    <td style="width: auto;">as </td></td>
+         {% for obj in item.gt_list %}
+        <td style="background-color: lightblue; ">{{obj.goods_request_quantity}}</td>
+                    {% endfor %}
     </tr>
-    <tr>
+    <tr >
         <td></td>
         <td></td>
         <td></td>
         <td></td>
         <td></td>
-        <td><td style="width: auto;"> a</td>
-                    <td style="width: auto;">s </td>
-                    <td style="width: auto;">a </td>
-                    <td style="width: auto;"> s</td>
-                    <td style="width: auto;">as </td></td>
+         {% for obj in item.gt_list %}
+        <td style="background-color: orange; ">{{obj.closing_stock}}</td>
+                    {% endfor %}
+
     </tr>
     {% endifchanged %}
 {% endfor %}
@@ -305,7 +252,7 @@ color:;
 
 
 <br>
-</div>
+
       </div>
   <!-- End of Page Wrapper -->
 
@@ -313,8 +260,64 @@ color:;
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+    </div>
+  </div>
 
 
+  <script>
+
+$('.item-content').hide();
+$(document).on('click','.item-title', function(e){
+   e.preventDefault();
+   $(this).next('.item-content').toggle();
+    $(this).find('i').toggleClass('fa-plus-circle fa-minus-circle')
+
+});
+
+
+ $(function() {
+    $("#sortable tbody").sortable({
+      cursor: "move",
+      placeholder: "sortable-placeholder",
+      helper: function(e, tr)
+      {
+        var $originals = tr.children();
+        var $helper = tr.clone();
+        $helper.children().each(function(index)
+
+        {
+
+        $(this).width($originals.eq(index).width());
+
+        });
+
+        return $helper;
+
+      }
+
+    }).disableSelection();
+
+  });
+
+</script>
+
+<script>
+    function hideDiv(x) {
+
+}
+
+
+
+  function fafaToggle(x) {
+  x.classList.toggle("fa-angle-right");
+    var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
@@ -334,19 +337,12 @@ color:;
 })
 </script>
   <!-- Core plugin JavaScript-->
-  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/jquery.easing.min.js' %}"></script>
 
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
 
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
-    </div>
-  </div>
 
 </body>
 

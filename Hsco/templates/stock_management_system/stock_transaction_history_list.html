@@ -271,7 +271,30 @@ td {
             <td style="border: 0px solid gray;"></td>
             <td style="border: 0px solid gray;">{{list.accept_goods_id.from_godown.name_of_godown}}</td>
         </tr>
-        {% endif %}
+        {% elif list.purchase_product_id  %}
+<tr style="cursor: pointer;" onclick="">
+            <td style="border: 0px solid gray;">{{list.id}}</td>
+            <td style="border: 0px solid gray;">Own WorkStation</td>
+            <td style="border: 0px solid gray;">Sales</td>
+            <td style="border: 0px solid gray;"></td>
+        </tr>
+        {% elif list.adjustment_quantity != 0.0  %}
+<tr style="cursor: pointer;" onclick="">
+            <td style="border: 0px solid gray;">{{list.id}}</td>
+            <td style="border: 0px solid gray;">Own WorkStation</td>
+            <td style="border: 0px solid gray;">Adjustment</td>
+            <td style="border: 0px solid gray;"></td>
+        </tr>
+        {% elif list.loss_quantity != 0.0  %}
+<tr style="cursor: pointer;" onclick="">
+            <td style="border: 0px solid gray;">{{list.id}}</td>
+            <td style="border: 0px solid gray;">Own WorkStation</td>
+            <td style="border: 0px solid gray;">Loss</td>
+            <td style="border: 0px solid gray;"></td>
+        </tr>
+
+                {% endif %}
+
         {% endfor %}
     </table>
         </div>

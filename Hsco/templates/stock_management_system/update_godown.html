@@ -341,7 +341,7 @@ $(document).ready(function(){
                                                     {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' %}
 
                     <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input  value="{{product.carton_count|floatformat:2}}" onchange="faulty_type_req()" name="carton_count"></td>
-    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input value="{{product.quantity|floatformat:2}}" onchange="faulty_type_req()" name="quantity"></td> <input type="hidden" value="{{product.product_id.id}}" name="product_id">
+    <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input value="{{product.quantity|floatformat:2}}" onchange="faulty_type_req()" name="quantity"></td>
     <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 
         <input value="{{product.individual_faulty|floatformat:2 }}" id="individual_faulty_id{{product.pk}}" name="individual_faulty" readonly type="number" step="0.2">

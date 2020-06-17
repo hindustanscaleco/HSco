@@ -520,43 +520,46 @@ def dashboard(request):
 
                 if (item.follow_up_history.is_email):
                         if (item.follow_up_history.html_content != None and item.follow_up_history.html_content != '' and len(item.follow_up_history.html_content)>5):
-                            with get_connection(
-                                    host=host_file,
-                                    port=587,
-                                    username=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
-                                    password=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email_password,
-                                    use_tls=True
-                            ) as connection:
-                                email_send = EmailMessage(item.follow_up_history.email_subject,
-                                                          item.follow_up_history.html_content,
-                                                          item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email
-                                                          , [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
-                                                          connection=connection)
-                                # part1 = MIMEText(text, 'plain')
-                                # part2 = MIMEText(user(request), 'html')
-                                # email_send.attach(part1)
-                                email_send.content_subtype = 'html'
-                                email_send.send()
-                            # send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
+                            # with get_connection(
+                            #         host=host_file,
+                            #         port=587,
+                            #         username=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
+                            #         password=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email_password,
+                            #         use_tls=True
+                            # ) as connection:
+                            #     email_send = EmailMessage(item.follow_up_history.email_subject,
+                            #                               item.follow_up_history.html_content,
+                            #                               item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email
+                            #                               , [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
+                            #                               connection=connection)
+                            #     # part1 = MIMEText(text, 'plain')
+                            #     # part2 = MIMEText(user(request), 'html')
+                            #     # email_send.attach(part1)
+                            #     email_send.content_subtype = 'html'
+                            #     email_send.send()
+                            send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],cc=[request.user.professional_email])
                         else:
-                            with get_connection(
-                                    host=host_file,
-                                    port=587,
-                                    username=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
-                                    password=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email_password,
-                                    use_tls=True
-                            ) as connection:
-                                email_send = EmailMessage(item.follow_up_history.email_subject,
-                                                          user(request, item.follow_up_history.email_msg),
-                                                          item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
-                                                          [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
-                                                          connection=connection)
+                            send_text_mail(item.follow_up_history.email_subject, item.follow_up_history.email_msg,
+                                           settings.EMAIL_HOST_USER, [
+                                               item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],cc=[request.user.professional_email])
 
-                                email_send.content_subtype = 'html'
-                                email_send.send()
+                            # with get_connection(
+                            #         host=host_file,
+                            #         port=587,
+                            #         username=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
+                            #         password=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email_password,
+                            #         use_tls=True
+                            # ) as connection:
+                            #     email_send = EmailMessage(item.follow_up_history.email_subject,
+                            #                               user(request, item.follow_up_history.email_msg),
+                            #                               item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
+                            #                               [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
+                            #                               connection=connection)
+                            #
+                            #     email_send.content_subtype = 'html'
+                            #     email_send.send()
 
 
-        # send_text_mail(item.follow_up_history.email_subject, item.follow_up_history.email_msg, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ])
 
                 if (item.follow_up_history.is_sms):
 
@@ -585,31 +588,31 @@ def update_admin(request,id):
     admin_id = SiteUser.objects.get(id=id)
     form = SiteUser_Form(request.POST or None)
     if request.method == 'POST' or request.method == 'FILES':
-        if 'test_submit' in request.POST:
-            test_professional_email = request.POST.get('test_professional_email')
-            test_professional_email_password = request.POST.get('test_professional_email_password')
-            test_to = request.POST.get('test_to')
-            try:
-                with get_connection(
-                        host=host_file,
-                        port=587,
-                        username=test_professional_email,
-                        password=test_professional_email_password,
-                        use_tls=True
-                ) as connection:
-                    email_send = EmailMessage('Testing Email Credentials',
-                                              "Testing Email Credentials",
-                                              test_professional_email,
-                                              [test_to, ],
-                                              connection=connection)
-
-                    # email_send.content_subtype = 'html'
-                    email_send.send()
-                messages.success(request,"Email Sent!!!")
-                return redirect('/update_admin/'+str(id))
-            except Exception as e:
-                messages.error(request, str(e))
-                return redirect('/update_admin/' + str(id))
+        # if 'test_submit' in request.POST:
+        #     test_professional_email = request.POST.get('test_professional_email')
+        #     test_professional_email_password = request.POST.get('test_professional_email_password')
+        #     test_to = request.POST.get('test_to')
+        #     try:
+        #         with get_connection(
+        #                 host=host_file,
+        #                 port=587,
+        #                 username=test_professional_email,
+        #                 password=test_professional_email_password,
+        #                 use_tls=True
+        #         ) as connection:
+        #             email_send = EmailMessage('Testing Email Credentials',
+        #                                       "Testing Email Credentials",
+        #                                       test_professional_email,
+        #                                       [test_to, ],
+        #                                       connection=connection)
+        #
+        #             # email_send.content_subtype = 'html'
+        #             email_send.send()
+        #         messages.success(request,"Email Sent!!!")
+        #         return redirect('/update_admin/'+str(id))
+        #     except Exception as e:
+        #         messages.error(request, str(e))
+        #         return redirect('/update_admin/' + str(id))
 
         if 'mobile' in request.POST or request.method == 'FILES':
             mobile = request.POST.get('mobile')
@@ -637,27 +640,27 @@ def update_admin(request,id):
             else:
                 is_deleted = False
             item = admin_id
-            if item.professional_email_password != professional_email_password:
-                try:
-                    with get_connection(
-                            host=host_file,
-                            port=587,
-                            username=professional_email,
-                            password=professional_email_password,
-                            use_tls=True
-                    ) as connection:
-                        email_send = EmailMessage('Password Updated',
-                                                  "New Password :"+str(professional_email_password),
-                                                  professional_email,
-                                                  [professional_email, ],
-                                                  connection=connection)
-
-                        # email_send.content_subtype = 'html'
-                        email_send.send()
-                    messages.success(request, "Updated Password Sent To Email: "+professional_email)
-
-                except Exception as e:
-                    messages.error(request, str(e))
+            # if item.professional_email_password != professional_email_password:
+            #     try:
+            #         with get_connection(
+            #                 host=host_file,
+            #                 port=587,
+            #                 username=professional_email,
+            #                 password=professional_email_password,
+            #                 use_tls=True
+            #         ) as connection:
+            #             email_send = EmailMessage('Password Updated',
+            #                                       "New Password :"+str(professional_email_password),
+            #                                       professional_email,
+            #                                       [professional_email, ],
+            #                                       connection=connection)
+            #
+            #             # email_send.content_subtype = 'html'
+            #             email_send.send()
+            #         messages.success(request, "Updated Password Sent To Email: "+professional_email)
+            #
+            #     except Exception as e:
+            #         messages.error(request, str(e))
 
 
             item.mobile = mobile
@@ -708,33 +711,33 @@ def update_manager(request,id):
     admin_id = SiteUser.objects.get(name=admin)
     form = SiteUser_Form(request.POST or None)
     if request.method == 'POST' or request.method == 'FILES':
-        if 'test_submit' in request.POST:
-            test_professional_email = request.POST.get('test_professional_email')
-            test_professional_email_password = request.POST.get('test_professional_email_password')
-            test_to = request.POST.get('test_to')
-            print(test_professional_email)
-            print(test_professional_email_password)
-            try:
-                with get_connection(
-                        host=host_file,
-                        port=587,
-                        username=test_professional_email,
-                        password=test_professional_email_password,
-                        use_tls=True
-                ) as connection:
-                    email_send = EmailMessage('Testing Email Credentials',
-                                              "Testing Email Credentials",
-                                              test_professional_email,
-                                              [test_to, ],
-                                              connection=connection)
-
-                    # email_send.content_subtype = 'html'
-                    email_send.send()
-                messages.success(request, "Email Sent!!!")
-                return redirect('/update_manager/' + str(id))
-            except Exception as e:
-                messages.error(request, str(e))
-                return redirect('/update_manager/' + str(id))
+        # if 'test_submit' in request.POST:
+        #     test_professional_email = request.POST.get('test_professional_email')
+        #     test_professional_email_password = request.POST.get('test_professional_email_password')
+        #     test_to = request.POST.get('test_to')
+        #     print(test_professional_email)
+        #     print(test_professional_email_password)
+        #     try:
+        #         with get_connection(
+        #                 host=host_file,
+        #                 port=587,
+        #                 username=test_professional_email,
+        #                 password=test_professional_email_password,
+        #                 use_tls=True
+        #         ) as connection:
+        #             email_send = EmailMessage('Testing Email Credentials',
+        #                                       "Testing Email Credentials",
+        #                                       test_professional_email,
+        #                                       [test_to, ],
+        #                                       connection=connection)
+        #
+        #             # email_send.content_subtype = 'html'
+        #             email_send.send()
+        #         messages.success(request, "Email Sent!!!")
+        #         return redirect('/update_manager/' + str(id))
+        #     except Exception as e:
+        #         messages.error(request, str(e))
+        #         return redirect('/update_manager/' + str(id))
         if 'mobile' in request.POST or request.method == 'FILES':
             mobile = request.POST.get('mobile')
             email = request.POST.get('email')
@@ -760,27 +763,27 @@ def update_manager(request,id):
             else:
                 is_deleted = False
             item = manager_id
-            if item.professional_email_password != professional_email_password:
-                try:
-                    with get_connection(
-                            host=host_file,
-                            port=587,
-                            username=professional_email,
-                            password=professional_email_password,
-                            use_tls=True
-                    ) as connection:
-                        email_send = EmailMessage('Password Updated',
-                                                  "New Password :" + str(professional_email_password),
-                                                  professional_email,
-                                                  [professional_email, ],
-                                                  connection=connection)
-
-                        # email_send.content_subtype = 'html'
-                        email_send.send()
-                    messages.success(request, "Updated Password Sent To Email: " + professional_email)
-
-                except Exception as e:
-                    messages.error(request, str(e))
+            # if item.professional_email_password != professional_email_password:
+            #     try:
+            #         with get_connection(
+            #                 host=host_file,
+            #                 port=587,
+            #                 username=professional_email,
+            #                 password=professional_email_password,
+            #                 use_tls=True
+            #         ) as connection:
+            #             email_send = EmailMessage('Password Updated',
+            #                                       "New Password :" + str(professional_email_password),
+            #                                       professional_email,
+            #                                       [professional_email, ],
+            #                                       connection=connection)
+            #
+            #             # email_send.content_subtype = 'html'
+            #             email_send.send()
+            #         messages.success(request, "Updated Password Sent To Email: " + professional_email)
+            #
+            #     except Exception as e:
+            #         messages.error(request, str(e))
             item.mobile = mobile
             item.email = email
             item.profile_name = name
@@ -826,31 +829,31 @@ def update_employee(request,id):
     manager_id = SiteUser.objects.get(name=manager)
     form = SiteUser_Form(request.POST or None)
     if request.method == 'POST' or request.method == 'FILES':
-        if 'test_submit' in request.POST:
-            test_professional_email = request.POST.get('test_professional_email')
-            test_professional_email_password = request.POST.get('test_professional_email_password')
-            test_to = request.POST.get('test_to')
-            try:
-                with get_connection(
-                        host=host_file,
-                        port=587,
-                        username=test_professional_email,
-                        password=test_professional_email_password,
-                        use_tls=True
-                ) as connection:
-                    email_send = EmailMessage('Testing Email Credentials',
-                                              "Testing Email Credentials",
-                                              test_professional_email,
-                                              [test_to, ],
-                                              connection=connection)
-
-                    # email_send.content_subtype = 'html'
-                    email_send.send()
-                messages.success(request, "Email Sent!!!")
-                return redirect('/update_employee/' + str(id))
-            except Exception as e:
-                messages.error(request, str(e))
-                return redirect('/update_employee/' + str(id))
+        # if 'test_submit' in request.POST:
+        #     test_professional_email = request.POST.get('test_professional_email')
+        #     test_professional_email_password = request.POST.get('test_professional_email_password')
+        #     test_to = request.POST.get('test_to')
+        #     try:
+        #         with get_connection(
+        #                 host=host_file,
+        #                 port=587,
+        #                 username=test_professional_email,
+        #                 password=test_professional_email_password,
+        #                 use_tls=True
+        #         ) as connection:
+        #             email_send = EmailMessage('Testing Email Credentials',
+        #                                       "Testing Email Credentials",
+        #                                       test_professional_email,
+        #                                       [test_to, ],
+        #                                       connection=connection)
+        #
+        #             # email_send.content_subtype = 'html'
+        #             email_send.send()
+        #         messages.success(request, "Email Sent!!!")
+        #         return redirect('/update_employee/' + str(id))
+        #     except Exception as e:
+        #         messages.error(request, str(e))
+        #         return redirect('/update_employee/' + str(id))
 
         if 'mobile' in request.POST or request.method == 'FILES':
             mobile = request.POST.get('mobile')
@@ -877,27 +880,27 @@ def update_employee(request,id):
             else:
                 is_deleted = False
             item = employee_id
-            if item.professional_email_password != professional_email_password:
-                try:
-                    with get_connection(
-                            host=host_file,
-                            port=587,
-                            username=professional_email,
-                            password=professional_email_password,
-                            use_tls=True
-                    ) as connection:
-                        email_send = EmailMessage('Password Updated',
-                                                  "New Password :" + str(professional_email_password),
-                                                  professional_email,
-                                                  [professional_email, ],
-                                                  connection=connection)
-
-                        # email_send.content_subtype = 'html'
-                        email_send.send()
-                    messages.success(request, "Updated Password Sent To Email: " + professional_email)
-
-                except Exception as e:
-                    messages.error(request, str(e))
+            # if item.professional_email_password != professional_email_password:
+            #     try:
+            #         with get_connection(
+            #                 host=host_file,
+            #                 port=587,
+            #                 username=professional_email,
+            #                 password=professional_email_password,
+            #                 use_tls=True
+            #         ) as connection:
+            #             email_send = EmailMessage('Password Updated',
+            #                                       "New Password :" + str(professional_email_password),
+            #                                       professional_email,
+            #                                       [professional_email, ],
+            #                                       connection=connection)
+            #
+            #             # email_send.content_subtype = 'html'
+            #             email_send.send()
+            #         messages.success(request, "Updated Password Sent To Email: " + professional_email)
+            #
+            #     except Exception as e:
+            #         messages.error(request, str(e))
             item.mobile = mobile
             item.email = email
             item.profile_name = name

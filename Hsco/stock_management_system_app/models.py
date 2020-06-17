@@ -6,6 +6,8 @@ import datetime
 from purchase_app.models import Purchase_Details
 from django.utils import timezone
 
+from purchase_app.models import Product_Details
+
 
 class Product(models.Model):
     # lead_id = models.ForeignKey(Lead,on_delete=models.CASCADE, null=True, blank=True)
@@ -75,7 +77,6 @@ class GodownProduct(models.Model):
         return self.id
 
 
-
 class GoodsRequest(models.Model):
     req_from_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,related_name='Godown1',null=True,blank=True)
     req_to_godown = models.ForeignKey(Godown,on_delete=models.CASCADE,related_name='Godown2',null=True,blank=True)
@@ -143,16 +144,15 @@ class GodownTransactions(models.Model):
     goods_req_id = models.OneToOneField(GoodsRequest, on_delete=models.CASCADE,null=True, blank=True)
     accept_goods_id = models.OneToOneField(AcceptGoods, on_delete=models.CASCADE,null=True, blank=True)
     purchase_id = models.OneToOneField(Purchase_Details, on_delete=models.CASCADE,null=True, blank=True)
-    # type=['purchase','adjustment','faulty','sale','tranfer']
+    purchase_product_id = models.ForeignKey(Product_Details, on_delete=models.CASCADE,null=True,blank=True)
+    purchase_quantity = models.FloatField(default=0.0)
+    godown_product_id = models.ForeignKey(GodownProduct, on_delete=models.CASCADE,null=True,blank=True)
+    loss_quantity = models.FloatField(default=0.0)
+    adjustment_quantity = models.FloatField(default=0.0)
 
-    # lead_id = models.OneToOneField(Lead, on_delete=models.CASCADE,)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
-
-    godown_product_id = models.ForeignKey(GodownProduct, on_delete=models.CASCADE,null=True,blank=True)
-    loss_quantity = models.FloatField(default=0.0 )
-    adjustment_quantity = models.FloatField(default=0.0 )
     notes = models.TextField(null=True,blank=True)
 
     def __int__(self):
@@ -190,6 +190,22 @@ class GodownTransactions(models.Model):
 #
 #     def __int__(self):
 #         return self.id
+
+
+class DailyStock(models.Model):
+    godown_products = models.ForeignKey(GodownProduct,on_delete=models.DO_NOTHING) #Done
+    closing_stock = models.FloatField() #Done
+    sales_quantity = models.FloatField(default=0.0) #Done
+    goods_request_quantity = models.FloatField(default=0.0)
+    accept_goods_quantity = models.FloatField(default=0.0) #Purchase_quantity
+    faulty_quantity = models.FloatField(default=0.0)
+    adjustment_quantity = models.FloatField(default=0.0)
+    losses_quantity = models.FloatField(default=0.0)
+    sales_ids = models.CharField(max_length=120)  #Done
+    accept_goods_ids = models.CharField(max_length=120) #Purchase_ids
+    goods_request_ids = models.CharField(max_length=120)
+    entry_timedate = models.DateField(default=datetime.date.today)
+
 
 
 
