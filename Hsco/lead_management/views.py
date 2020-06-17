@@ -41,10 +41,11 @@ from django.contrib import messages
 from django.core.mail import get_connection
 from django.core.mail.message import EmailMessage
 
-from stock_management_system_app.models import Godown,GodownProduct
+from stock_management_system_app.models import Godown,GodownProduct,GodownTransactions
+
 
 today_month = datetime.now().month
-host_file = 'webmail.hindustanscale.com'
+host_file = 'smtp.gmail.com'
 
 @login_required(login_url='/')
 def lead_home(request):
@@ -1730,6 +1731,11 @@ def update_view_lead(request,id):
                         GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown_ids[list_count]).id,
                                                      product_id=product_id).update(
                             quantity=F("quantity") - item.quantity)
+                        new_transaction = GodownTransactions()
+                        new_transaction.purchase_product_id = Product_Details.objects.get(id=item_pro.id)
+                        new_transaction.purchase_quantity = item.quantity
+                        new_transaction.notes = 'Product Transferred to Sales From Lead Module by Emp id:' + request.user.employee_number + '(' + request.user.profile_name + ' - ' + request.user.mobile + ')'
+                        new_transaction.save()
 
                         list_count=list_count+1
                     # for item in pi_pro:
@@ -1920,7 +1926,7 @@ def update_view_lead(request,id):
                     '''
 
                     email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request,extra),
-                                          settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id],connection=connection,cc=cc_list)
+                                          settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id,],connection=connection,cc=cc_list)
                     email_send.content_subtype = 'html'
                     email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
                     email_send.send()
