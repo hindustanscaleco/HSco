@@ -853,7 +853,6 @@ def edit_product_customer(request,product_id_rec):
                                             '\nPurchase Id:' + str(purchase_id.id)
                     new_transaction.save()
                 elif quantity != purchase.quantity:
-                    print('dsfjk34')
 
                     # adding old quantity to current godown
                     GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=godown_product_id).update(
@@ -1540,7 +1539,7 @@ def add_product_details(request,id):
         item.log_entered_by = request.user.name
         item.godown_id = Godown.objects.get(id=godown)
         try:
-            if sub_sub_model != '':
+            if sub_sub_model != '' and sub_sub_model != None and sub_sub_model != 'None':
                 product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                                       sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
 
@@ -1552,6 +1551,8 @@ def add_product_details(request,id):
                             messages.success(request, "Insufficient stock !!! Available Quantity:" + str(
                                 GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
                             return redirect('/add_product_details/' + str(purchase_id))
+                else:
+                    messages.success(request, "Selected Product does not exist in selected godown !!!")
 
             elif sub_model != '':
                 product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
@@ -1564,6 +1565,8 @@ def add_product_details(request,id):
                             messages.success(request, "Insufficient stock !!! Available Quantity:"+str(
                                 GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
                             return redirect('/add_product_details/' + str(purchase_id))
+                else:
+                    messages.success(request, "Selected Product does not exist in selected godown !!!")
             item.save()
             new_transaction = GodownTransactions()
             new_transaction.purchase_product_id = Product_Details.objects.get(id=item.id)
