@@ -910,7 +910,7 @@ def edit_product_customer(request,product_id_rec):
                     total_sales_done_today=F("total_sales_done_today") - cost2)
 
         except Exception as e:
-            messages.error(request,"Selected Product does not exist In Selected Godown !!! ")
+            messages.error(request,"Selected Product does not exist In Selected Godown !!! "+str(e))
             return redirect("/edit_product_customer/"+str(product_id_rec))
 
         item.quantity = quantity
