@@ -829,7 +829,7 @@ def edit_product_customer(request,product_id_rec):
                         item2.godown_id = Godown.objects.get(id=purchase.godown_id.id)
                         item2.accept_product_id = AcceptGoods.objects.get(id=item3.id)
                         item2.godown_product_id = GodownProduct.objects.get(godown_id=purchase.godown_id.id,
-                                                                            product_id=godown_product_id)
+                                                                            product_id=godown_product_id.id)
                         item2.log_entered_by = request.user.name
                         item2.save()
 
@@ -841,7 +841,7 @@ def edit_product_customer(request,product_id_rec):
                         new_transaction.save()
 
                         # subtracting new quantity from new godown
-                        GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
+                        GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id.id).update(
                             quantity=F("quantity") - purchase.quantity)
 
                         new_transaction = GodownTransactions()
