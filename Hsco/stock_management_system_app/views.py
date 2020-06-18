@@ -448,7 +448,7 @@ def update_godown(request,godown_id):
     godown_products = GodownProduct.objects.filter(godown_id=godown_id)
     if request.user.role == 'Super Admin':
         assign_users = SiteUser.objects.filter(~Q(id=godown.goddown_assign_to.id))
-    elif request.user.role == 'Admin':
+    else:
         assign_users = SiteUser.objects.filter(Q(modules_assigned__icontains= 'Stock')&Q(admin__contains= request.user.profile_name)
                                                )| \
                        SiteUser.objects.filter(Q(modules_assigned__icontains='Stock')&Q(id=request.user.id))
@@ -501,7 +501,7 @@ def update_godown(request,godown_id):
         if 'submit2' in request.POST:
             product_id = request.POST.get('product_id')
 
-            GodownProduct.objects.get(godown_id=godown_id,product_id__id=product_id).delete()
+            GodownProduct.objects.get(godown_id=godown_id,id=product_id).delete()
             context1 = {
                 'product_deleted': "Product Removed From Godown Successfully!!!",
                 'godown_products': godown_products,
@@ -559,17 +559,16 @@ def update_godown(request,godown_id):
             individual_faulty = request.POST.get('individual_faulty')
             carton_count = request.POST.get('carton_count')
             product_id = request.POST.get('product_id')
+            product_master_id = request.POST.get('product_master_id')
 
             faulty_type = request.POST.get('faulty_type')
             convert_faulty_quantity = request.POST.get('convert_faulty_quantity')
 
-            print(product_id)
-            print(product_id)
-            print(product_id)
+
             if faulty_type != None and convert_faulty_quantity != None and convert_faulty_quantity != '0':
                 if faulty_type == 'Repaired':
                     GodownProduct.objects.filter(godown_id=godown_id, id=product_id).update(
-                        individual_faulty=float(individual_faulty) - float(convert_faulty_quantity) )
+                        individual_faulty=float(individual_faulty) - float(convert_faulty_quantity))
                     GodownProduct.objects.filter(godown_id=godown_id, id=product_id).update(
                         quantity=float(quantity) + float(convert_faulty_quantity))
 
@@ -595,9 +594,10 @@ def update_godown(request,godown_id):
                     return redirect('/update_godown/'+str(godown_id))
             product_carton_count = GodownProduct.objects.get(godown_id=godown_id, id=product_id).carton_count
             product_quantity = GodownProduct.objects.get(godown_id=godown_id, id=product_id).quantity
-            if float(product_carton_count) !=  float(carton_count):
+            format_carton_count ="{:.2f}".format(float(product_carton_count))
+            if float(format_carton_count) !=  float(carton_count):
 
-                product = Product.objects.get(id=product_id)
+                product = Product.objects.get(id=product_master_id)
                 individual_quantity = (float(product.carton_size) * float(carton_count))
 
                 GodownProduct.objects.filter(godown_id=godown_id, id=product_id).update(
@@ -645,10 +645,6 @@ def add_product_godown(request, godown_id):
 
         item = GodownProduct()
         try:
-            print(sub_sub_category)
-            print(sub_sub_category)
-            print(sub_category)
-            print(sub_category)
             if sub_sub_category != '':
                 Godown_product_filter = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,product_id__main_category=main_category,
                 product_id__sub_category=sub_category,product_id__sub_sub_category=sub_sub_category)

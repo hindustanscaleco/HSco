@@ -336,8 +336,8 @@ $(document).ready(function(){
     {% endif %}            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{product.product_id.scale_type}}</td>
             <td style="border: 0px solid gray;">{{product.product_id.main_category}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.product_id.sub_category}}</td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.product_id.sub_sub_category}} <input hidden name="product_id" id="product_id" value="{{product.id}}"></td>
-            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{% if product.quantity == 0 %}<button name="submit2" type="submit"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></button>{% endif %}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{product.product_id.sub_sub_category}} <input hidden name="product_id" id="product_id" value="{{product.id}}"><input hidden name="product_master_id"  value="{{product.product_id.id}}"></td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{% if product.quantity == 0 %}<button onclick="faulty_type_req()" name="submit2" type="submit"><i class="fa fa-times" aria-hidden="true" style="font-size:15px;"></i></button>{% endif %}</td>
                                                     {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' %}
 
                     <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;"><input  value="{{product.carton_count|floatformat:2}}" onchange="faulty_type_req()" name="carton_count"></td>
