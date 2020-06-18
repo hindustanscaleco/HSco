@@ -6,6 +6,7 @@ from customer_app.models import Customer_Details
 from user_app.models import SiteUser
 from model_utils import FieldTracker
 
+
 choices = (('NO', 'NO'),
     ('YES', 'YES'),)
 
@@ -95,6 +96,21 @@ class Product_Details(models.Model):
 
     def __int__(self):
         return self.purchase_id
+
+    @property
+    def product_master_obj(self):
+        if self.sub_sub_model != None and self.sub_sub_model!= "" and self.sub_sub_model!= 'None':
+            product = stock_management_system_app.models.Product.objects.get(scale_type=self.type_of_scale,
+                            main_category=self.model_of_purchase,
+                            sub_category=self.sub_model,
+                            sub_sub_category=self.sub_sub_model)
+        else:
+            product = stock_management_system_app.models.Product.objects.get(scale_type=self.type_of_scale,
+                                          main_category=self.model_of_purchase,
+                                          sub_category=self.sub_model)
+        godown_pro = stock_management_system_app.models.GodownProduct.objects.filter(godown_id=self.godown_id, product_id=product)
+        godown_pro = godown_pro[0] if godown_pro.count() > 0 else None
+        return (godown_pro)
 
 class Feedback(models.Model):
     user_id = models.ForeignKey(SiteUser,on_delete=models.CASCADE)

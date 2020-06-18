@@ -1567,16 +1567,17 @@ def add_product_details(request,id):
                             return redirect('/add_product_details/' + str(purchase_id))
                 else:
                     messages.success(request, "Selected Product does not exist in selected godown !!!")
+            item.save()
+            new_transaction = GodownTransactions()
+            new_transaction.purchase_product_id = Product_Details.objects.get(id=item.id)
+            new_transaction.purchase_quantity = quantity
+            new_transaction.notes = 'Product Added to Sales by Emp id:' + request.user.employee_number + '(' + request.user.profile_name + ' - ' + request.user.mobile+')'
+            new_transaction.save()
 
         except:
             messages.success(request, "Selected Product does not exist in product master !!!")
             return redirect('/add_product_details/' + str(purchase_id))
-        item.save()
-        new_transaction = GodownTransactions()
-        new_transaction.purchase_product_id = Product_Details.objects.get(id=item.id)
-        new_transaction.purchase_quantity = quantity
-        new_transaction.notes = 'Product Added to Sales by Emp id:' + request.user.employee_number + ', Name:' + request.user.profile_name + ', Contact:' + request.user.mobile
-        new_transaction.save()
+
 
         if is_last_product_yes == 'yes':
             Purchase_Details.objects.filter(id=id).update(is_last_product=True)
