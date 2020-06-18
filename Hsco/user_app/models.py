@@ -82,7 +82,7 @@ class SiteUser(AbstractBaseUser):
     #user details(i.e super admin,admin, manager, employee)
     profile_name = models.CharField(max_length=30,null=True, blank=True, unique=True)
     mobile = models.CharField(validators=[phone_regex], max_length=10, unique=True)
-    email = models.EmailField( 'Email-id', max_length=255,)
+    email = models.EmailField( 'Email-id', max_length=255,null=True,blank=True)
     professional_email = models.EmailField( 'Professional Email-id', max_length=255,null=True,blank=True)
     professional_email_password = models.CharField( 'Email Password', max_length=255,null=True,blank=True)
     name =models.CharField('Name',max_length=50,null=True,blank=True, unique=True)
