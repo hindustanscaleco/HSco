@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.db.models import Q, F
+from django.db.models import Q, F, Sum
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
@@ -1436,11 +1436,22 @@ def stock_report(request):
             gt_list = DailyStock.objects.filter(
                 Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
                 Q(entry_timedate__month__lte=to_month, entry_timedate__year=to_year) &
-                Q(godown_products__product_id__id=product.pk))
-
+                Q(godown_products__product_id__id=product.pk)).values('entry_timedate')\
+                .annotate(sales_quantity=Sum('sales_quantity'))\
+                .annotate(goods_request_quantity=Sum('goods_request_quantity'))\
+                .annotate(accept_goods_quantity=Sum('accept_goods_quantity'))\
+                .annotate(closing_stock=Sum('closing_stock'))
+            # for x in gt_list:
+            #     product.sales_quantity = x['data_sum']
+            #     product.sales_date = x['entry_timedate'].strftime('%d-%m-%Y')
+            #
+            # gt_sales=gt_list.aggregate(Sum('sales_quantity'))
+            # # gt_list = gt_list.values('godown_products__product_id').distinct()
+            # print(gt_sales)
             product.gt_list = gt_list
-            if gt_list:
-                product.month = gt_list[0].entry_timedate.month
+            # print(gt_list)
+            # if gt_list:
+            #     product.month = gt_list[0].entry_timedate.month
 
         context = {
             'pro_list': products_list,
