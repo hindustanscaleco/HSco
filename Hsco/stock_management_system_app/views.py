@@ -1421,6 +1421,7 @@ from datetime import datetime
 @login_required(login_url='/')
 def stock_report(request):
     context={}
+    # from . import cron_job_daily
     if request.method == 'POST' or request.method == 'FILES':
         from_month_str = request.POST.get('from_month')
         to_month_str = request.POST.get('to_month')
@@ -1436,11 +1437,15 @@ def stock_report(request):
                 Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
                 Q(entry_timedate__month__lte=to_month, entry_timedate__year=to_year) &
                 Q(godown_products__product_id__id=product.pk))
+
             product.gt_list = gt_list
             if gt_list:
                 product.month = gt_list[0].entry_timedate.month
+
         context = {
             'pro_list': products_list,
         }
     return render(request,'stock_management_system/stock_system_report.html',context)
+
+
 

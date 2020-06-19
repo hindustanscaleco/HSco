@@ -2353,7 +2353,22 @@ def get_product_details(request):
     return render(request, 'AJAX/get_product_details.html',context)
 
 
+def return_product(type_of_scale,model_of_purchase,sub_model,sub_sub_model):
+    pro_obj = Product.objects.get(scale_type=type_of_scale,
+                        main_category=model_of_purchase,
+                        sub_category=sub_model,
+                        sub_sub_category=sub_sub_model)
+    return pro_obj
 
+def return_product_sub_model(type_of_scale,model_of_purchase,sub_model):
+    pro_obj = Product.objects.get(scale_type=type_of_scale,
+                        main_category=model_of_purchase,
+                        sub_category=sub_model)
+    return pro_obj
+
+def return_godown_pro(godown_id,product):
+    godown_pro = GodownProduct.objects.filter(godown_id=godown_id, product_id=product)
+    return godown_pro
 
 
 

@@ -5,6 +5,7 @@ from .models import Product, Godown, GodownProduct, GoodsRequest, RequestedProdu
     GodownTransactions, DailyStock
 
 
+
 class Product_Admin(admin.ModelAdmin):
 
     list_display = ('scale_type','main_category','sub_category','sub_sub_category')
@@ -13,7 +14,7 @@ class Product_Admin(admin.ModelAdmin):
 
 class DailyStock_Admin(ImportExportModelAdmin):
     list_display = ('id', 'godown_products', 'closing_stock', 'sales_quantity', 'entry_timedate')
-
+    search_fields = ('godown_products__product_id__sub_sub_category__name',)
 admin.site.register(Product, Product_Admin)
 admin.site.register(Godown)
 admin.site.register(GodownProduct)

@@ -317,18 +317,6 @@ def employee_profile(request,id):
     if user_id.admin == SiteUser.objects.get(id=request.user.pk).name:
         valid_user = True
 
-    # for item in x:
-    #     name = SiteUser.objects.filter(name=item)
-    #     for i in name:
-    #         if i.role == 'Admin':
-    #             valid_user=True
-    # for item in x:
-    #     name = SiteUser.objects.filter(name=item)
-    #     for i in name:
-    #         if i.role == 'Manager':
-    #             valid_Manager = True
-
-
 
     leave_list = Employee_Leave.objects.filter(user_id=id)
     context={}
@@ -439,8 +427,10 @@ def employee_profile(request,id):
         if upload_pancard != None and upload_pancard != "":
             item.upload_pancard = upload_pancard
             item.save(update_fields=['upload_pancard', ])
-
-        item.save(update_fields=['mobile','email', 'profile_name','bank_name','account_number','branch_name','ifsc_code','pancard','aadhar_card',])
+        try:
+            item.save(update_fields=['mobile','email', 'profile_name','bank_name','account_number','branch_name','ifsc_code','pancard','aadhar_card',])
+        except Exception as e:
+            messages.error(request, str(e))
         return redirect('/employee_profile/' + str(id))
 
     elif request.method == 'POST' and 'submit3'  in request.POST:

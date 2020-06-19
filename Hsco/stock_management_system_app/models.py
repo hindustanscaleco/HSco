@@ -196,14 +196,14 @@ class DailyStock(models.Model):
     godown_products = models.ForeignKey(GodownProduct,on_delete=models.DO_NOTHING) #Done
     closing_stock = models.FloatField() #Done
     sales_quantity = models.FloatField(default=0.0) #Done
-    goods_request_quantity = models.FloatField(default=0.0)
+    goods_request_quantity = models.FloatField(default=0.0) #Done
     accept_goods_quantity = models.FloatField(default=0.0) #Purchase_quantity
-    faulty_quantity = models.FloatField(default=0.0)
+    faulty_quantity = models.FloatField(default=0.0) #Done
     adjustment_quantity = models.FloatField(default=0.0)
-    losses_quantity = models.FloatField(default=0.0)
-    sales_ids = models.CharField(max_length=120)  #Done
-    accept_goods_ids = models.CharField(max_length=120) #Purchase_ids
-    goods_request_ids = models.CharField(max_length=120)
+    loss_quantity = models.FloatField(default=0.0)
+    sales_ids = models.CharField(max_length=120)  #doubt
+    accept_goods_ids = models.CharField(max_length=120) #doubt
+    goods_request_ids = models.CharField(max_length=120) #doubt
     entry_timedate = models.DateField(default=datetime.date.today)
 
 
