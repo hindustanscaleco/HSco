@@ -1591,7 +1591,7 @@ def add_product_details(request,id):
         new_transaction = GodownTransactions()
         new_transaction.purchase_product_id = Product_Details.objects.get(id=item.id)
         new_transaction.purchase_quantity = quantity
-        new_transaction.notes = 'Product Added to Sales by Emp id:' + request.user.employee_number + '(' + request.user.profile_name + ' - ' + request.user.mobile+')'
+        new_transaction.notes = 'Product Added to Sales by Emp id:' + str(request.user.employee_number) + ', Name' + str(request.user.profile_name) + ', Contact:-' + str(request.user.mobile)
         new_transaction.save()
 
 
