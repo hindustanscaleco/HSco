@@ -632,6 +632,7 @@ $("#myText3").val(select.options[select.selectedIndex].text);
         success: function (data) {   // `data` is the return of the `load_cities` view function
 
     $("#product_details").html(data);
+        total_product_amount();
 
 
         }
@@ -678,6 +679,7 @@ $("#myText4").val(select.options[select.selectedIndex].text);
             success: function (data) {   // `data` is the return of the `load_cities` view function
 
         $("#product_details").html(data);
+        total_product_amount();
 
 
             }
