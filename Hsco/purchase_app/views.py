@@ -1554,50 +1554,47 @@ def add_product_details(request,id):
         item.capacity = capacity
         item.unit = unit
         item.amount = value_of_goods
-        item.purchase_id_id = purchase_id
+        item.purchase_id_id = Purchase_Details.objects.get(id=purchase_id)
         item.user_id = SiteUser.objects.get(id=request.user.pk)
         item.manager_id = SiteUser.objects.get(id=request.user.pk).group
         item.log_entered_by = request.user.name
         item.godown_id = Godown.objects.get(id=godown)
-        try:
-            if sub_sub_model != '' and sub_sub_model != None and sub_sub_model != 'None':
-                product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                                      sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+        if sub_sub_model != '' and sub_sub_model != None and sub_sub_model != 'None':
+            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                  sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
 
-                if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
-                        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity :
-                            GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
-                            quantity=F("quantity") - quantity)
-                        elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
-                            messages.success(request, "Insufficient stock !!! Available Quantity:" + str(
-                                GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
-                            return redirect('/add_product_details/' + str(purchase_id))
-                else:
-                    messages.success(request, "Selected Product does not exist in selected godown !!!")
+            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
+                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity :
+                        GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                        quantity=F("quantity") - quantity)
+                    elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
+                        messages.success(request, "Insufficient stock !!! Available Quantity:" + str(
+                            GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
+                        return redirect('/add_product_details/' + str(purchase_id))
+            else:
+                messages.success(request, "Selected Product does not exist in selected godown !!!")
 
-            elif sub_model != '':
-                product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                                      sub_category__name=sub_model, sub_sub_category__name=None)
-                if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
-                        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity :
-                            GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
-                            quantity=F("quantity") - quantity)
-                        elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
-                            messages.success(request, "Insufficient stock !!! Available Quantity:"+str(
-                                GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
-                            return redirect('/add_product_details/' + str(purchase_id))
-                else:
-                    messages.success(request, "Selected Product does not exist in selected godown !!!")
-            item.save()
-            new_transaction = GodownTransactions()
-            new_transaction.purchase_product_id = Product_Details.objects.get(id=item.id)
-            new_transaction.purchase_quantity = quantity
-            new_transaction.notes = 'Product Added to Sales by Emp id:' + request.user.employee_number + '(' + request.user.profile_name + ' - ' + request.user.mobile+')'
-            new_transaction.save()
+        elif sub_model != '':
+            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                                  sub_category__name=sub_model, sub_sub_category__name=None)
+            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
+                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity :
+                        GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                        quantity=F("quantity") - quantity)
+                    elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
+                        messages.success(request, "Insufficient stock !!! Available Quantity:"+str(
+                            GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
+                        return redirect('/add_product_details/' + str(purchase_id))
+            else:
+                messages.success(request, "Selected Product does not exist in selected godown !!!")
+        item.save()
+        new_transaction = GodownTransactions()
+        new_transaction.purchase_product_id = Product_Details.objects.get(id=item.id)
+        new_transaction.purchase_quantity = quantity
+        new_transaction.notes = 'Product Added to Sales by Emp id:' + request.user.employee_number + '(' + request.user.profile_name + ' - ' + request.user.mobile+')'
+        new_transaction.save()
 
-        except:
-            messages.success(request, "Selected Product does not exist in product master !!!")
-            return redirect('/add_product_details/' + str(purchase_id))
+
 
 
         if is_last_product_yes == 'yes':
