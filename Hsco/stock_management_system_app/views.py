@@ -1421,7 +1421,7 @@ from datetime import datetime
 @login_required(login_url='/')
 def stock_report(request):
     context={}
-    # from . import cron_job_daily
+    from . import cron_job_daily
     if request.method == 'POST' or request.method == 'FILES':
         from_month_str = request.POST.get('from_month')
         to_month_str = request.POST.get('to_month')
