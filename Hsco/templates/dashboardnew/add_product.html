@@ -513,7 +513,6 @@ color:;
             document.getElementById("amount").value = total;
 }
 // create an interval calling the specified function every 10 seconds.
-setInterval('total_product_amount()',3000);
   </script>
 <script>
  function choice1(select) {
@@ -579,6 +578,7 @@ $("#model_of_purchase").val(select.options[select.selectedIndex].text);
 }
 
 function choice_sub_model(select) {
+
 $("#sub_model").val(select.options[select.selectedIndex].text);
      //alert(select.options[select.selectedIndex].value);
      $.ajax({                       // initialize an AJAX request
@@ -591,7 +591,7 @@ $("#sub_model").val(select.options[select.selectedIndex].text);
         success: function (data) {   // `data` is the return of the `load_cities` view function
 
     $("#product_details").html(data);
-
+total_product_amount();
 
         }
       });
@@ -611,6 +611,8 @@ $("#sub_model").val(select.options[select.selectedIndex].text);
 
     }
     else{
+
+
     $('#id_subcat22').attr('required', '');
 
     }
@@ -636,6 +638,7 @@ $("#sub_sub_model").val(select.options[select.selectedIndex].text);
             success: function (data) {   // `data` is the return of the `load_cities` view function
 
         $("#product_details").html(data);
+        total_product_amount();
 
 
             }
