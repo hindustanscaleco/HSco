@@ -1416,8 +1416,8 @@ def stock_godown_report(request,godown_id):
         from_year = from_month2.year
         to_year = to_month2.year
         opening_stock_date_first = DailyStock.objects.first().entry_timedate  # removeaftermonth
-        opening_stock_date = calendar.monthrange(from_year, from_month-1)[1]
-        opening_stock_date = datetime.strptime(str(from_year)+"-"+str(from_month-1)+"-"+str(opening_stock_date), "%Y-%m-%d")
+        opening_stock_date = calendar.monthrange(from_year, from_month-1 if from_month > 1 else 12)[1]
+        opening_stock_date = datetime.strptime(str(from_year)+"-"+str(from_month-1 if from_month > 1 else 12 )+"-"+str(opening_stock_date), "%Y-%m-%d")
         if select_type == 'Day':
             products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('-product_id__sub_sub_category').order_by('product_id__sub_category')
             for godown_product in products_list:
@@ -1430,6 +1430,19 @@ def stock_godown_report(request,godown_id):
                     .annotate(accept_goods_quantity=Sum('accept_goods_quantity'))\
                     .annotate(closing_stock=Sum('closing_stock'))
                 godown_product.gt_list = gt_list
+                try:
+                    opening_stock = DailyStock.objects.get(
+                        Q(entry_timedate=opening_stock_date)&
+                        Q(godown_products__product_id__id=godown_product.pk)).closing_stock
+
+                except:
+                    try:
+                        opening_stock = DailyStock.objects.get(
+                            Q(entry_timedate=opening_stock_date_first) &
+                            Q(godown_products__product_id__id=godown_product.pk)).closing_stock
+                    except:
+                        opening_stock = 0
+                godown_product.opening_stock = opening_stock
         else:
             products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('-product_id__sub_sub_category').order_by('product_id__sub_category')
 
@@ -1445,7 +1458,6 @@ def stock_godown_report(request,godown_id):
                     .annotate(goods_request_quantity_sum=Sum('goods_request_quantity'))\
                     .annotate(accept_goods_quantity_sum=Sum('accept_goods_quantity'))\
                     .annotate(closing_stock_sum=Sum('closing_stock'))
-                godown_product.gt_list = gt_list
                 try:
                     opening_stock = DailyStock.objects.get(
                         Q(entry_timedate=opening_stock_date)&
@@ -1458,6 +1470,19 @@ def stock_godown_report(request,godown_id):
                             Q(godown_products__product_id__id=godown_product.pk)).closing_stock
                     except:
                         opening_stock = 0
+
+                try:
+                    godown_product.faulty_quantity_sum = gt_list[0]['faulty_quantity_sum']
+                    godown_product.adjustment_quantity_sum = gt_list[0]['adjustment_quantity_sum']
+                    godown_product.loss_quantity_sum = gt_list[0]['loss_quantity_sum']
+                    godown_product.sales_quantity_sum = gt_list[0]['sales_quantity_sum']
+                    godown_product.goods_request_quantity_sum = gt_list[0]['goods_request_quantity_sum']
+                    godown_product.accept_goods_quantity_sum = gt_list[0]['accept_goods_quantity_sum']
+                    godown_product.closing_stock_sum = gt_list[0]['closing_stock_sum']
+                except:
+                    print('no transaction of this product'+str(godown_product))
+                    pass
+
                 godown_product.opening_stock = opening_stock
 
 
@@ -1487,8 +1512,9 @@ def stock_report(request):
         from_year = from_month2.year
         to_year = to_month2.year
         opening_stock_date_first = DailyStock.objects.first().entry_timedate  #removeaftermonth
-        opening_stock_date = calendar.monthrange(from_year, from_month-1)[1]
-        opening_stock_date = datetime.strptime(str(from_year)+"-"+str(from_month-1)+"-"+str(opening_stock_date), "%Y-%m-%d")
+
+        opening_stock_date = calendar.monthrange(from_year, from_month-1 if from_month > 1 else 12)[1]
+        opening_stock_date = datetime.strptime(str(from_year)+"-"+str(from_month-1 if from_month > 1 else 12 )+"-"+str(opening_stock_date), "%Y-%m-%d")
 
 
         if select_type == 'Day':
@@ -1502,7 +1528,24 @@ def stock_report(request):
                     .annotate(goods_request_quantity=Sum('goods_request_quantity'))\
                     .annotate(accept_goods_quantity=Sum('accept_goods_quantity'))\
                     .annotate(closing_stock=Sum('closing_stock'))
+                try:
+                    opening_stock = DailyStock.objects.filter(
+                        Q(entry_timedate=opening_stock_date)&
+                        Q(godown_products__product_id__id=product.pk)).values('godown_products__product_id').annotate(closing_stock_sum=Sum('closing_stock'))
+
+                    opening_stock=opening_stock[0]['closing_stock_sum']
+                except:
+                    try:
+                        opening_stock = DailyStock.objects.filter(
+                            Q(entry_timedate=opening_stock_date_first) &
+                            Q(godown_products__product_id__id=product.pk)).values('godown_products__product_id').annotate(
+                            closing_stock_sum=Sum('closing_stock'))
+
+                        opening_stock = opening_stock[0]['closing_stock_sum']
+                    except:
+                        opening_stock=0
                 product.gt_list = gt_list
+                product.opening_stock = opening_stock
         else:
             products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
 
@@ -1536,9 +1579,16 @@ def stock_report(request):
                     except:
                         opening_stock=0
 
-
-
-                product.gt_list = gt_list
+                try:
+                    product.faulty_quantity_sum = gt_list[0]['faulty_quantity_sum']
+                    product.adjustment_quantity_sum = gt_list[0]['adjustment_quantity_sum']
+                    product.loss_quantity_sum = gt_list[0]['loss_quantity_sum']
+                    product.sales_quantity_sum = gt_list[0]['sales_quantity_sum']
+                    product.goods_request_quantity_sum = gt_list[0]['goods_request_quantity_sum']
+                    product.accept_goods_quantity_sum = gt_list[0]['accept_goods_quantity_sum']
+                    product.closing_stock_sum = gt_list[0]['closing_stock_sum']
+                except:
+                    print('no transaction of this product'+str(product))
                 product.opening_stock = opening_stock
 
         context = {

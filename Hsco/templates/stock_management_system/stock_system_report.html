@@ -188,7 +188,7 @@ td {
                     <td style="width: auto;">{% ifchanged item.main_category %}{{item.main_category}} {% endifchanged %} </td>
                     <td style="width: auto;">{% ifchanged item.sub_category %}{{item.sub_category}}{% endifchanged %}</td>
                   {% ifchanged item.sub_category %}<td></td>{% else %}<td style="width: auto;">{% if item.sub_sub_category != None %}{{item.sub_sub_category}}{% endif %}</td>{% endifchanged %}
-                  <td style="width: auto;">c </td>
+                  <td style="width: auto;">{{item.opening_stock}} </td>
                     {% ifchanged item.sub_category %}<td colspan="30" style="width: auto;">{{item.month}} </td>
                   {% else %}
                    {% for obj in item.gt_list %}
@@ -274,13 +274,13 @@ td {
           {% ifchanged item.product_id.sub_category %}<td></td>{% else %}<td style="width: auto;">{% if item.sub_sub_category != None %}{{item.sub_sub_category}}{% endif %}</td>{% endifchanged %}
             <td style="width: auto;">{{item.opening_stock}}</td>
 
-        <td style="width: auto;">{% for pro in item.gt_list %} {{pro.accept_goods_quantity_sum}} {% endfor %}</td>
-        <td style="width: auto;">{% for pro in item.gt_list %} {{pro.goods_request_quantity_sum}} {% endfor %}</td>
-        <td style="width: auto;">{% for pro in item.gt_list %} {{pro.sales_quantity_sum}} {% endfor %}</td>
-        <td style="width: auto;">{% for pro in item.gt_list %} {{pro.faulty_quantity_sum}} {% endfor %}</td>
-        <td style="width: auto;">{% for pro in item.gt_list %} {{pro.adjustment_quantity_sum}} {% endfor %}</td>
-        <td style="width: auto;">{% for pro in item.gt_list %} {{pro.loss_quantity_sum}} {% endfor %}</td>
-        <td style="width: auto;">{% for pro in item.gt_list %} {{pro.closing_stock_sum}} {% endfor %}</td>
+        <td style="width: auto;">{{item.accept_goods_quantity_sum}}</td>
+        <td style="width: auto;">{{item.goods_request_quantity_sum}}</td>
+        <td style="width: auto;">{{item.sales_quantity_sum}} </td>
+        <td style="width: auto;"> {{item.faulty_quantity_sum}} </td>
+        <td style="width: auto;"> {{item.adjustment_quantity_sum}} </td>
+        <td style="width: auto;"> {{item.loss_quantity_sum}}</td>
+        <td style="width: auto;">{{item.closing_stock_sum}}</td>
 
 
 
