@@ -11,6 +11,8 @@ from .models import Godown, GodownProduct, RequestedProducts, GoodsRequest, Prod
     GodownTransactions, DailyStock
 from user_app.models import SiteUser
 from customer_app.models import sub_model, main_model, sub_sub_model, type_purchase
+from purchase_app.models import Product_Details
+
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
 
@@ -1545,5 +1547,59 @@ def stock_report(request):
         }
     return render(request,'stock_management_system/stock_system_report.html',context)
 
+def load_popup_details(request):
+    date2 = datetime.strptime(request.GET.get('date2'), "%B %d, %Y").strftime('%Y-%m-%d')
+    item = request.GET.get('item')
+    type = request.GET.get('type')
 
 
+    if type == 'sales':
+        sales_list = DailyStock.objects.filter(
+                            Q(entry_timedate=date2) &
+                            Q(godown_products__product_id__id=item)).values('sales_ids')
+        item_list=''
+        for item in sales_list:
+            if item['sales_ids'] != '' and len(item['sales_ids'])>1:
+                item_list=item_list+item['sales_ids']
+        sales_list = item_list.replace("'", "").replace("\"", "").split(', ')
+        sales_list=[x for x in sales_list if x]
+        pro_id = Product_Details.objects.filter(pk__in=sales_list)
+
+        context={
+            'pro_id':pro_id,
+            'type':type,
+        }
+    if type == 'purchase':
+        sales_list = DailyStock.objects.filter(
+                            Q(entry_timedate=date2) &
+                            Q(godown_products__product_id__id=item)).values('accept_goods_ids')
+        item_list=''
+        for item in sales_list:
+            if item['sales_ids'] != '' and len(item['sales_ids'])>1:
+                item_list=item_list+item['sales_ids']
+        sales_list = item_list.replace("'", "").replace("\"", "").split(', ')
+        sales_list=[x for x in sales_list if x]
+        pro_id = AGProducts.objects.filter(pk__in=sales_list)
+
+        context={
+            'pro_id':pro_id,
+            'type':type,
+        }
+    if type == 'transfer':
+        sales_list = DailyStock.objects.filter(
+                            Q(entry_timedate=date2) &
+                            Q(godown_products__product_id__id=item)).values('goods_request_ids')
+        item_list=''
+        for item in sales_list:
+            if item['sales_ids'] != '' and len(item['sales_ids'])>1:
+                item_list=item_list+item['sales_ids']
+        sales_list = item_list.replace("'", "").replace("\"", "").split(', ')
+        sales_list=[x for x in sales_list if x]
+        pro_id = GoodsRequest.objects.filter(pk__in=sales_list)
+
+        context={
+            'pro_id':pro_id,
+            'type':type,
+        }
+
+    return render(request,"stock_management_system/load_popup_details.html",context)

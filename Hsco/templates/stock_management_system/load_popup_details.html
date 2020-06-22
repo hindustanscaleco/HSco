@@ -1,0 +1,24 @@
+<table>
+
+
+{% for item in pro_id %}
+    <tr style="background-color: white; color: grey;">
+
+                <td style="border-radius: 0px 0px 0px 0px; border: 1px solid gray;">{{forloop.counter}}. </td>
+        {% if type == 'sales' %}
+                <td style="border: 1px solid gray;"><a target="_blank" href="/edit_product_customer/{{item.pk}}">{{item.pk}}</a></td>
+        {% elif type == 'purchase' %}
+                        <td style="border: 1px solid gray;"><a target="_blank" href="/stock_accpet_goods/{{item.from_godown}}/{{item.pk}}">{{item.pk}}</a></td>
+
+        {% else %}
+                        <td style="border: 1px solid gray;"><a target="_blank" href="/stock_accpet_goods/{{item.req_to_godown.pk}}/{{item.req_from_godown.pk}}">{{item.pk}}</a></td>
+{% endif %}
+                <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{item.entry_timedate}}</td>
+                <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{item.log_entered_by}}</td>
+                <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{item.quantity}}</td>
+
+                </tr>
+
+{% endfor %}
+
+    </table>
