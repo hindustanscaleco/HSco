@@ -1,3 +1,5 @@
+import calendar
+
 from django.contrib import messages
 from django.db.models import Q, F, Sum
 from django.shortcuts import render, redirect
@@ -1411,6 +1413,9 @@ def stock_godown_report(request,godown_id):
         to_month = to_month2.month
         from_year = from_month2.year
         to_year = to_month2.year
+        opening_stock_date = DailyStock.objects.first().entry_timedate  # removeaftermonth
+        # opening_stock_date = calendar.monthrange(from_year, from_month-1)[1]
+        # opening_stock_date = datetime.strptime(str(from_year)+"-"+str(from_month-1)+"-"+str(opening_stock_date), "%Y-%m-%d")
         if select_type == 'Day':
             products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('-product_id__sub_sub_category').order_by('product_id__sub_category')
             for godown_product in products_list:
@@ -1439,6 +1444,14 @@ def stock_godown_report(request,godown_id):
                     .annotate(accept_goods_quantity_sum=Sum('accept_goods_quantity'))\
                     .annotate(closing_stock_sum=Sum('closing_stock'))
                 godown_product.gt_list = gt_list
+                try:
+                    opening_stock = DailyStock.objects.get(
+                        Q(entry_timedate=opening_stock_date)&
+                        Q(godown_products__product_id__id=godown_product.pk)).closing_stock
+
+                except:
+                    opening_stock = 0
+                godown_product.opening_stock = opening_stock
 
 
         context={
@@ -1461,11 +1474,15 @@ def stock_report(request):
         to_month_str = request.POST.get('to_month')
         from_month2 = datetime.strptime(from_month_str, "%Y-%m")
         to_month2 = datetime.strptime(to_month_str, "%Y-%m")
-        opening_stock_date = from_month_str+'-01'
+
         from_month = from_month2.month
         to_month = to_month2.month
         from_year = from_month2.year
         to_year = to_month2.year
+        opening_stock_date = DailyStock.objects.first().entry_timedate  #removeaftermonth
+        # opening_stock_date = calendar.monthrange(from_year, from_month-1)[1]
+        # opening_stock_date = datetime.strptime(str(from_year)+"-"+str(from_month-1)+"-"+str(opening_stock_date), "%Y-%m-%d")
+
 
         if select_type == 'Day':
             products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
@@ -1494,12 +1511,18 @@ def stock_report(request):
                     .annotate(goods_request_quantity_sum=Sum('goods_request_quantity'))\
                     .annotate(accept_goods_quantity_sum=Sum('accept_goods_quantity'))\
                     .annotate(closing_stock_sum=Sum('closing_stock'))
-                # opening_stock = DailyStock.objects.filter(
-                #     Q(entry_timedate=opening_stock_date)&
-                #     Q(godown_products__product_id__id=product.pk)).values('godown_products__product_id') \
-                #     .annotate(closing_stock_sum=Sum('closing_stock'))
-                # print(opening_stock)
+
+                try:
+                    opening_stock = DailyStock.objects.filter(
+                        Q(entry_timedate=opening_stock_date)&
+                        Q(godown_products__product_id__id=product.pk)).values('godown_products__product_id').annotate(closing_stock_sum=Sum('closing_stock'))
+
+                    opening_stock=opening_stock[0]['closing_stock_sum']
+                except:
+                    opening_stock = 0
+
                 product.gt_list = gt_list
+                product.opening_stock = opening_stock
 
         context = {
             'pro_list': products_list,
