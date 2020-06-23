@@ -1,6 +1,6 @@
 def user(request,extra=''):
     if request.user.is_authenticated:
-        name_mobile = str(request.user.profile_name )+'''<br>
+        name_mobile = str(request.user.name )+'''<br>
                         +91-'''+str( request.user.mobile )+'''<br>
                         <br>'''
     else:

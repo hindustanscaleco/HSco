@@ -266,7 +266,6 @@ td {
                 </tr>
 
 {% for item in pro_list %}
-
               <tr style="cursor: pointer;" class="col-xl-12 col-md-12 mb-12">
                 <td style="width: auto;">{% ifchanged item.product_id.scale_type %}{{item.product_id.scale_type}}{% endifchanged %}</td>
             <td style="width: auto;">{% ifchanged item.product_id.main_category %}{{item.product_id.main_category}} {% endifchanged %} </td>
