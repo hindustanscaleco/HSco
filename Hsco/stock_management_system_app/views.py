@@ -1,3 +1,5 @@
+import calendar
+
 from django.contrib import messages
 from django.db.models import Q, F, Sum
 from django.shortcuts import render, redirect
@@ -9,6 +11,8 @@ from .models import Godown, GodownProduct, RequestedProducts, GoodsRequest, Prod
     GodownTransactions, DailyStock
 from user_app.models import SiteUser
 from customer_app.models import sub_model, main_model, sub_sub_model, type_purchase
+from purchase_app.models import Product_Details
+
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
 
@@ -1395,10 +1399,14 @@ def request_admin(request):
 
 @login_required(login_url='/')
 def stock_godown_report(request,godown_id):
+    context={}
+    from . import cron_job_daily
+
     godown = Godown.objects.get(id=godown_id)
     godown_products = GodownProduct.objects.filter(godown_id=godown_id)
 
     if request.method == 'POST' or request.method == 'FILES':
+        select_type = request.POST.get('select_type')
         from_month = request.POST.get('from_month')
         to_month = request.POST.get('to_month')
         from_month2 = datetime.strptime(from_month, "%Y-%m")
@@ -1407,14 +1415,84 @@ def stock_godown_report(request,godown_id):
         to_month = to_month2.month
         from_year = from_month2.year
         to_year = to_month2.year
-        gt_list = GodownTransactions.objects.filter(Q(entry_timedate__month__gte=from_month,entry_timedate__year=from_year) & Q(entry_timedate__month__lte=to_month,entry_timedate__year=to_year))
-        for trans in gt_list:
-            print(trans.type)
-    context={
-        'godown': godown,
-        # 'gt_list': gt_list,
-        'godown_products': godown_products,
-    }
+        opening_stock_date_first = DailyStock.objects.first().entry_timedate  # removeaftermonth
+        opening_stock_date = calendar.monthrange(from_year, from_month-1 if from_month > 1 else 12)[1]
+        opening_stock_date = datetime.strptime(str(from_year)+"-"+str(from_month-1 if from_month > 1 else 12 )+"-"+str(opening_stock_date), "%Y-%m-%d")
+        if select_type == 'Day':
+            products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('-product_id__sub_sub_category').order_by('product_id__sub_category')
+            for godown_product in products_list:
+                gt_list = DailyStock.objects.filter(
+                    Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
+                    Q(entry_timedate__month__lte=to_month, entry_timedate__year=to_year) &
+                    Q(godown_products__id=godown_product.pk)).values('entry_timedate')\
+                    .annotate(sales_quantity=Sum('sales_quantity'))\
+                    .annotate(goods_request_quantity=Sum('goods_request_quantity'))\
+                    .annotate(accept_goods_quantity=Sum('accept_goods_quantity'))\
+                    .annotate(closing_stock=Sum('closing_stock'))
+                godown_product.gt_list = gt_list
+                try:
+                    opening_stock = DailyStock.objects.get(
+                        Q(entry_timedate=opening_stock_date)&
+                        Q(godown_products__product_id__id=godown_product.pk)).closing_stock
+
+                except:
+                    try:
+                        opening_stock = DailyStock.objects.get(
+                            Q(entry_timedate=opening_stock_date_first) &
+                            Q(godown_products__product_id__id=godown_product.pk)).closing_stock
+                    except:
+                        opening_stock = 0
+                godown_product.opening_stock = opening_stock
+        else:
+            products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('-product_id__sub_sub_category').order_by('product_id__sub_category')
+
+            for godown_product in products_list:
+                gt_list = DailyStock.objects.filter(
+                    Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
+                    Q(entry_timedate__month__lte=to_month, entry_timedate__year=to_year) &
+                    Q(godown_products__id=godown_product.pk)).values('godown_products')\
+                    .annotate(faulty_quantity_sum=Sum('faulty_quantity'))\
+                    .annotate(adjustment_quantity_sum=Sum('adjustment_quantity'))\
+                    .annotate(loss_quantity_sum=Sum('loss_quantity'))\
+                    .annotate(sales_quantity_sum=Sum('sales_quantity'))\
+                    .annotate(goods_request_quantity_sum=Sum('goods_request_quantity'))\
+                    .annotate(accept_goods_quantity_sum=Sum('accept_goods_quantity'))\
+                    .annotate(closing_stock_sum=Sum('closing_stock'))
+                try:
+                    opening_stock = DailyStock.objects.get(
+                        Q(entry_timedate=opening_stock_date)&
+                        Q(godown_products__product_id__id=godown_product.pk)).closing_stock
+
+                except:
+                    try:
+                        opening_stock = DailyStock.objects.get(
+                            Q(entry_timedate=opening_stock_date_first) &
+                            Q(godown_products__product_id__id=godown_product.pk)).closing_stock
+                    except:
+                        opening_stock = 0
+
+                try:
+                    godown_product.faulty_quantity_sum = gt_list[0]['faulty_quantity_sum']
+                    godown_product.adjustment_quantity_sum = gt_list[0]['adjustment_quantity_sum']
+                    godown_product.loss_quantity_sum = gt_list[0]['loss_quantity_sum']
+                    godown_product.sales_quantity_sum = gt_list[0]['sales_quantity_sum']
+                    godown_product.goods_request_quantity_sum = gt_list[0]['goods_request_quantity_sum']
+                    godown_product.accept_goods_quantity_sum = gt_list[0]['accept_goods_quantity_sum']
+                    godown_product.closing_stock_sum = gt_list[0]['closing_stock_sum']
+                except:
+                    print('no transaction of this product'+str(godown_product))
+                    pass
+
+                godown_product.opening_stock = opening_stock
+
+
+        context={
+            'godown': godown,
+            # 'gt_list': gt_list,
+            'pro_list': products_list,
+            'godown_products': godown_products,
+            'select_type': select_type,
+        }
     return render(request,'stock_management_system/stock_godown_report.html',context)
 
 from datetime import datetime
@@ -1423,40 +1501,155 @@ def stock_report(request):
     context={}
     from . import cron_job_daily
     if request.method == 'POST' or request.method == 'FILES':
+        select_type = request.POST.get('select_type')
         from_month_str = request.POST.get('from_month')
         to_month_str = request.POST.get('to_month')
         from_month2 = datetime.strptime(from_month_str, "%Y-%m")
         to_month2 = datetime.strptime(to_month_str, "%Y-%m")
+
         from_month = from_month2.month
         to_month = to_month2.month
         from_year = from_month2.year
         to_year = to_month2.year
-        products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
-        for product in products_list:
-            gt_list = DailyStock.objects.filter(
-                Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
-                Q(entry_timedate__month__lte=to_month, entry_timedate__year=to_year) &
-                Q(godown_products__product_id__id=product.pk)).values('entry_timedate')\
-                .annotate(sales_quantity=Sum('sales_quantity'))\
-                .annotate(goods_request_quantity=Sum('goods_request_quantity'))\
-                .annotate(accept_goods_quantity=Sum('accept_goods_quantity'))\
-                .annotate(closing_stock=Sum('closing_stock'))
-            # for x in gt_list:
-            #     product.sales_quantity = x['data_sum']
-            #     product.sales_date = x['entry_timedate'].strftime('%d-%m-%Y')
-            #
-            # gt_sales=gt_list.aggregate(Sum('sales_quantity'))
-            # # gt_list = gt_list.values('godown_products__product_id').distinct()
-            # print(gt_sales)
-            product.gt_list = gt_list
-            # print(gt_list)
-            # if gt_list:
-            #     product.month = gt_list[0].entry_timedate.month
+        opening_stock_date_first = DailyStock.objects.first().entry_timedate  #removeaftermonth
+
+        opening_stock_date = calendar.monthrange(from_year, from_month-1 if from_month > 1 else 12)[1]
+        opening_stock_date = datetime.strptime(str(from_year)+"-"+str(from_month-1 if from_month > 1 else 12 )+"-"+str(opening_stock_date), "%Y-%m-%d")
+
+
+        if select_type == 'Day':
+            products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
+            for product in products_list:
+                gt_list = DailyStock.objects.filter(
+                    Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
+                    Q(entry_timedate__month__lte=to_month, entry_timedate__year=to_year) &
+                    Q(godown_products__product_id__id=product.pk)).values('entry_timedate')\
+                    .annotate(sales_quantity=Sum('sales_quantity'))\
+                    .annotate(goods_request_quantity=Sum('goods_request_quantity'))\
+                    .annotate(accept_goods_quantity=Sum('accept_goods_quantity'))\
+                    .annotate(closing_stock=Sum('closing_stock'))
+                try:
+                    opening_stock = DailyStock.objects.filter(
+                        Q(entry_timedate=opening_stock_date)&
+                        Q(godown_products__product_id__id=product.pk)).values('godown_products__product_id').annotate(closing_stock_sum=Sum('closing_stock'))
+
+                    opening_stock=opening_stock[0]['closing_stock_sum']
+                except:
+                    try:
+                        opening_stock = DailyStock.objects.filter(
+                            Q(entry_timedate=opening_stock_date_first) &
+                            Q(godown_products__product_id__id=product.pk)).values('godown_products__product_id').annotate(
+                            closing_stock_sum=Sum('closing_stock'))
+
+                        opening_stock = opening_stock[0]['closing_stock_sum']
+                    except:
+                        opening_stock=0
+                product.gt_list = gt_list
+                product.opening_stock = opening_stock
+        else:
+            products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
+
+            for product in products_list:
+                gt_list = DailyStock.objects.filter(
+                    Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
+                    Q(entry_timedate__month__lte=to_month, entry_timedate__year=to_year) &
+                    Q(godown_products__product_id__id=product.pk)).values('godown_products__product_id')\
+                    .annotate(faulty_quantity_sum=Sum('faulty_quantity'))\
+                    .annotate(adjustment_quantity_sum=Sum('adjustment_quantity'))\
+                    .annotate(loss_quantity_sum=Sum('loss_quantity'))\
+                    .annotate(sales_quantity_sum=Sum('sales_quantity'))\
+                    .annotate(goods_request_quantity_sum=Sum('goods_request_quantity'))\
+                    .annotate(accept_goods_quantity_sum=Sum('accept_goods_quantity'))\
+                    .annotate(closing_stock_sum=Sum('closing_stock'))
+
+                try:
+                    opening_stock = DailyStock.objects.filter(
+                        Q(entry_timedate=opening_stock_date)&
+                        Q(godown_products__product_id__id=product.pk)).values('godown_products__product_id').annotate(closing_stock_sum=Sum('closing_stock'))
+
+                    opening_stock=opening_stock[0]['closing_stock_sum']
+                except:
+                    try:
+                        opening_stock = DailyStock.objects.filter(
+                            Q(entry_timedate=opening_stock_date_first) &
+                            Q(godown_products__product_id__id=product.pk)).values('godown_products__product_id').annotate(
+                            closing_stock_sum=Sum('closing_stock'))
+
+                        opening_stock = opening_stock[0]['closing_stock_sum']
+                    except:
+                        opening_stock=0
+
+                try:
+                    product.faulty_quantity_sum = gt_list[0]['faulty_quantity_sum']
+                    product.adjustment_quantity_sum = gt_list[0]['adjustment_quantity_sum']
+                    product.loss_quantity_sum = gt_list[0]['loss_quantity_sum']
+                    product.sales_quantity_sum = gt_list[0]['sales_quantity_sum']
+                    product.goods_request_quantity_sum = gt_list[0]['goods_request_quantity_sum']
+                    product.accept_goods_quantity_sum = gt_list[0]['accept_goods_quantity_sum']
+                    product.closing_stock_sum = gt_list[0]['closing_stock_sum']
+                except:
+                    print('no transaction of this product'+str(product))
+                product.opening_stock = opening_stock
 
         context = {
             'pro_list': products_list,
+            'select_type': select_type,
         }
     return render(request,'stock_management_system/stock_system_report.html',context)
 
+def load_popup_details(request):
+    date2 = datetime.strptime(request.GET.get('date2'), "%B %d, %Y").strftime('%Y-%m-%d')
+    item = request.GET.get('item')
+    type = request.GET.get('type')
 
 
+    if type == 'sales':
+        sales_list = DailyStock.objects.filter(
+                            Q(entry_timedate=date2) &
+                            Q(godown_products__product_id__id=item)).values('sales_ids')
+        item_list=''
+        for item in sales_list:
+            if item['sales_ids'] != '' and len(item['sales_ids'])>1:
+                item_list=item_list+item['sales_ids']
+        sales_list = item_list.replace("'", "").replace("\"", "").split(', ')
+        sales_list=[x for x in sales_list if x]
+        pro_id = Product_Details.objects.filter(pk__in=sales_list)
+
+        context={
+            'pro_id':pro_id,
+            'type':type,
+        }
+    if type == 'purchase':
+        sales_list = DailyStock.objects.filter(
+                            Q(entry_timedate=date2) &
+                            Q(godown_products__product_id__id=item)).values('accept_goods_ids')
+        item_list=''
+        for item in sales_list:
+            if item['sales_ids'] != '' and len(item['sales_ids'])>1:
+                item_list=item_list+item['sales_ids']
+        sales_list = item_list.replace("'", "").replace("\"", "").split(', ')
+        sales_list=[x for x in sales_list if x]
+        pro_id = AGProducts.objects.filter(pk__in=sales_list)
+
+        context={
+            'pro_id':pro_id,
+            'type':type,
+        }
+    if type == 'transfer':
+        sales_list = DailyStock.objects.filter(
+                            Q(entry_timedate=date2) &
+                            Q(godown_products__product_id__id=item)).values('goods_request_ids')
+        item_list=''
+        for item in sales_list:
+            if item['sales_ids'] != '' and len(item['sales_ids'])>1:
+                item_list=item_list+item['sales_ids']
+        sales_list = item_list.replace("'", "").replace("\"", "").split(', ')
+        sales_list=[x for x in sales_list if x]
+        pro_id = GoodsRequest.objects.filter(pk__in=sales_list)
+
+        context={
+            'pro_id':pro_id,
+            'type':type,
+        }
+
+    return render(request,"stock_management_system/load_popup_details.html",context)

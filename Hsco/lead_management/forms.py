@@ -40,6 +40,7 @@ industory_dropdown = [
         ('Bakery','Bakery'),
         ('Supplier','Supplier'),
         ('Fishing','Fishing'),
+        ('Dealer','Dealer'),
 ]
 
 auto_manual_email = [
