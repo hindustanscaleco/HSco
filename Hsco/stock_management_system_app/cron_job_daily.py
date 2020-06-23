@@ -34,6 +34,7 @@ if daily_count == 0:
 
 
         item = DailyStock.objects.filter(entry_timedate=todays_date,godown_products=godown_pro)
+        old_ids=""
         for id in item:
             old_ids=id.sales_ids
 
