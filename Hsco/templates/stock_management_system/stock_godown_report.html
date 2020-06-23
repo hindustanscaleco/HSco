@@ -9,7 +9,7 @@
 
 
   <title>HSCO</title>
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -51,9 +51,7 @@ color:;
 
 </style>
 
-
-
-                <style>
+ <style>
                 .border_class {
                 border:1px solid black;
                 height:45px;
@@ -70,27 +68,22 @@ color:;
   border-color: black;
   color: black;
 
-
-
-}
-
-
-th {
-
+  }
+  th {
   font-size: 13px;
     border: 1px solid black;
     text-align: left;
     padding:5px;
 
-}
+    }
 
 td {
   border: 1px solid black;
   padding: 3px;
   font-size: 13px;
   padding: 5px;
-  text-align: center;
-}
+
+  }
 
 
             </style>
@@ -153,7 +146,7 @@ td {
   </div>
 
   <div class="col-md-2">
-  <select class="form-control btn btn-secondary" id="cars" name="cars">
+  <select class="form-control btn btn-secondary" id="cars" name="select_type">
     <option value="Day">Day Wise</option>
     <option value="Month">Month Wise</option>
   </select>
@@ -164,45 +157,140 @@ td {
 </div>
 
   <div class="col-md-2">
-  <input style="background-color: #FC6E20;" class="form-control btn btn-secondary" value="Download" type="button">
+          {% if select_type == 'Day' %}
+  <input style="background-color: #FC6E20;" onclick="tableToExcel(&#39;testTable1&#39;, &#39;W3C Example Table&#39;)" class="form-control btn btn-secondary" value="Download" type="button">
+      {% else %}
+  <input style="background-color: #FC6E20;" onclick="tableToExcel(&#39;testTable2&#39;, &#39;W3C Example Table&#39;)" class="form-control btn btn-secondary" value="Download" type="button">
+      {% endif %}
 </div>
 </div>
 </fieldset>
     </form>
-
-      <br>
-         <div id="id_manager_view" >
-
-<!--<div class="" id="id_subcat" style="min-height: 15vw;">-->
-<table>
+            <hr>
+    {% if select_type == 'Day' %}
+              <table id="testTable1">
                     <tr style="background-color: gray; color: white;">
 
-                    <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;"> Scale Type </td>
+                    <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Scale Type  </td>
+
                     <td style=" width: 15%; border: 0px solid gray;"> Category </td>
                     <td style=" width: 18%; border: 0px solid gray;"> Sub Category</td>
-                    <td style=" width: 20%; border: 0px solid gray;">Sub Sub Sub Category</td>
-                    <td style=" width: 15%; border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Opening Stock</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Sub Sub Category</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Opening Stock</td>
+                    <td colspan="30" style=" width: 15%; border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Month</td>
                 </tr>
 
-<br>
+{% for item in pro_list %}
 
-
-{% for list in godown_products %}
               <tr style="cursor: pointer;" class="col-xl-12 col-md-12 mb-12">
+                                        <td style="width: auto;">{% ifchanged item.product_id.scale_type %}{{item.product_id.scale_type}}{% endifchanged %}</td>
 
-
-
-                                        <td style="width: 8%;">{{ list.product_id.scale_type}}</td>
-
-                    <td style="width: 15%;">{{ list.product_id.main_category }}  </td>
-                    <td style="width: 18%;">{{ list.product_id.sub_category }}</td>
-                    <td style="width: 20%;">{{ list.product_id.sub_sub_category  }}</td>
-                    <td style="width: 15%;">{{list.quantity}}  </td>
+                    <td style="width: auto;">{% ifchanged item.product_id.main_category %}{{item.product_id.main_category}} {% endifchanged %} </td>
+                    <td style="width: auto;">{% ifchanged item.product_id.sub_category %}{{item.product_id.sub_category}}{% endifchanged %}</td>
+                  {% ifchanged item.product_id.sub_category %}<td></td>{% else %}<td style="width: auto;">{% if item.product_id.sub_sub_category != None %}{{item.product_id.sub_sub_category}}{% endif %}</td>{% endifchanged %}
+                  <td style="width: auto;">{{item.opening_stock}} </td>
+                    {% ifchanged item.product_id.sub_category %}<td colspan="30" style="width: auto;">{{item.product_id.month}} </td>
+                  {% else %}
+                   {% for obj in item.gt_list %}
+                  <td style="width: auto;">{{obj.entry_timedate}} </td>
+                    {% endfor %}
+                  {% endifchanged %}
 
 
               </tr>
+    {% ifchanged item.product_id.sub_category %}
+    {% else %}
+    <tr >
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+                  {% for obj in item.gt_list %}
+
+        <td style="background-color: green; ">{{obj.accept_goods_quantity}}</td>
+
+        {% endfor %}
+    </tr>
+    <tr >
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        {% for obj in item.gt_list %}
+        <td style="background-color: yellow; "> {{obj.sales_quantity}}</td>
+        {% endfor %}
+    </tr>
+    <tr >
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+         {% for obj in item.gt_list %}
+        <td style="background-color: lightblue; ">{{obj.goods_request_quantity}}</td>
+                    {% endfor %}
+    </tr>
+    <tr >
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+         {% for obj in item.gt_list %}
+        <td style="background-color: orange; ">{{obj.closing_stock}}</td>
+                    {% endfor %}
+
+    </tr>
+    {% endifchanged %}
 {% endfor %}
            </table>
+            {% else %}
+              <table id="testTable2">
+                    <tr style="background-color: gray; color: white;">
+
+                    <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Scale Type  </td>
+
+                    <td style=" width: 15%; border: 0px solid gray;"> Category </td>
+                    <td style=" width: 18%; border: 0px solid gray;"> Sub Category</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Sub Sub Category</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Opening Stock</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Purchase</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Transferred Unit</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Sale</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Faulty Stock</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Adjustments</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Losses </td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Closing Stock</td>
+                </tr>
+
+{% for item in pro_list %}
+
+              <tr style="cursor: pointer;" class="col-xl-12 col-md-12 mb-12">
+                <td style="width: auto;">{% ifchanged item.product_id.scale_type %}{{item.product_id.scale_type}}{% endifchanged %}</td>
+            <td style="width: auto;">{% ifchanged item.product_id.main_category %}{{item.product_id.main_category}} {% endifchanged %} </td>
+            <td style="width: auto;">{% ifchanged item.product_id.sub_category %}{{item.product_id.sub_category}}{% endifchanged %}</td>
+          {% ifchanged item.product_id.sub_category %}<td></td>{% else %}<td style="width: auto;">{% if item.product_id.sub_sub_category != None %}{{item.product_id.sub_sub_category}}{% endif %}</td>{% endifchanged %}
+            <td style="width: auto;">{{item.opening_stock}}</td>
+
+        <td style="width: auto;">{{item.accept_goods_quantity_sum}}</td>
+        <td style="width: auto;">{{item.goods_request_quantity_sum}}</td>
+        <td style="width: auto;">{{item.sales_quantity_sum}} </td>
+        <td style="width: auto;"> {{item.faulty_quantity_sum}} </td>
+        <td style="width: auto;"> {{item.adjustment_quantity_sum}} </td>
+        <td style="width: auto;"> {{item.loss_quantity_sum}}</td>
+        <td style="width: auto;">{{item.closing_stock_sum}}</td>
+
+
+
+
+
+              </tr>
+
+{% endfor %}
+           </table>
+    {% endif %}
 <!--</div>-->
         </div>
 
@@ -212,7 +300,7 @@ td {
 
 
 <br>
-</div>
+
       </div>
   <!-- End of Page Wrapper -->
 
@@ -220,27 +308,103 @@ td {
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+    </div>
+  </div>
 
 
+  <script>
+
+$('.item-content').hide();
+$(document).on('click','.item-title', function(e){
+   e.preventDefault();
+   $(this).next('.item-content').toggle();
+    $(this).find('i').toggleClass('fa-plus-circle fa-minus-circle')
+
+});
+
+
+ $(function() {
+    $("#sortable tbody").sortable({
+      cursor: "move",
+      placeholder: "sortable-placeholder",
+      helper: function(e, tr)
+      {
+        var $originals = tr.children();
+        var $helper = tr.clone();
+        $helper.children().each(function(index)
+
+        {
+
+        $(this).width($originals.eq(index).width());
+
+        });
+
+        return $helper;
+
+      }
+
+    }).disableSelection();
+
+  });
+
+</script>
+
+<script>
+    function hideDiv(x) {
+
+}
+
+
+
+  function fafaToggle(x) {
+  x.classList.toggle("fa-angle-right");
+    var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
   <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
-
+<script type="text/javascript">
+  $(document).ready(function() {
+  //Fixing jQuery Click Events for the iPad
+  var ua = navigator.userAgent,
+    event = (ua.match(/iPad/i)) ? "touchstart" : "click";
+  if ($('.table').length > 0) {
+    $('.table .header').on(event, function() {
+      $(this).toggleClass("active", "").nextUntil('.header').css('display', function(i, v) {
+        return this.style.display === 'table-row' ? 'none' : 'table-row';
+      });
+    });
+  }
+})
+</script>
   <!-- Core plugin JavaScript-->
-  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/jquery.easing.min.js' %}"></script>
 
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+<script>
 
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
 
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
-    </div>
-  </div>
+</script>
+
 
 </body>
 
