@@ -182,7 +182,7 @@ td {
 
 {% for item in pro_list %}
 
-              <tr style="cursor: pointer;" class="col-xl-12 col-md-12 mb-12">
+              <tr class="col-xl-12 col-md-12 mb-12">
                                         <td style="width: auto;">{% ifchanged item.product_id.scale_type %}{{item.product_id.scale_type}}{% endifchanged %}</td>
 
                     <td style="width: auto;">{% ifchanged item.product_id.main_category %}{{item.product_id.main_category}} {% endifchanged %} </td>
@@ -208,7 +208,7 @@ td {
         <td></td>
                   {% for obj in item.gt_list %}
 
-        <td style="background-color: green; ">{{obj.accept_goods_quantity}}</td>
+        <td style="background-color: green; cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','purchase')">{{obj.accept_goods_quantity}}</td>
 
         {% endfor %}
     </tr>
@@ -219,7 +219,7 @@ td {
         <td></td>
         <td></td>
         {% for obj in item.gt_list %}
-        <td style="background-color: yellow; "> {{obj.sales_quantity}}</td>
+        <td style="background-color: yellow;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','sales')"> {{obj.sales_quantity}}</td>
         {% endfor %}
     </tr>
     <tr >
@@ -229,7 +229,7 @@ td {
         <td></td>
         <td></td>
          {% for obj in item.gt_list %}
-        <td style="background-color: lightblue; ">{{obj.goods_request_quantity}}</td>
+        <td style="background-color: lightblue;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','transfer')">{{obj.goods_request_quantity}}</td>
                     {% endfor %}
     </tr>
     <tr >
@@ -310,7 +310,69 @@ td {
   </a>
     </div>
   </div>
+<script>
+    function sales_popup(event,date2,item,type){
+          $.ajax({
+        url: "/load_popup_details/",
+        data: {
+          'date2': date2,
+          'item': item,
+          'type': type,
+          'product_type': 'Godown'
 
+        },
+        success: function (data) {
+            $("#id_subcat22").html(data);
+            $('#myModal').modal('toggle');
+        }
+      });
+      event.stopPropagation();
+    }
+</script>
+
+
+               <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Details</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+        </div>
+        <div class="modal-body">
+
+               <form method="POST" >{% csrf_token %}
+        <div class="row" >
+
+            <table>
+                <tr style="background-color: gray; color: white;">
+                    <td style="border: 1px solid gray;">Sr. No.</td>
+                    <td style="border-radius: 0px 0px 0px 0px; border: 1px solid gray;">ID</td>
+                    <td style="border: 1px solid gray;">Date</td>
+                    <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">By</td>
+                    <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Quantity</td>
+                </tr>
+   </table>
+               <div id="id_subcat22">
+
+               </div>
+
+
+
+        </div>
+
+    </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <script>
 
