@@ -153,7 +153,7 @@ td {
 
   </div>
 <div class="col-md-2">
-  <input style="background-color: #FC6E20;" class="form-control btn btn-secondary" value="Generate" type="submit">
+  <input style="background-color: #FC6E20;" onclick="function hi(){$('#loader').show();};hi()" class="form-control btn btn-secondary" value="Generate" type="submit">
 </div>
 
   <div class="col-md-2">
@@ -166,6 +166,11 @@ td {
 </div>
 </fieldset>
     </form>
+             <center>
+
+                <div id="loader" style="display:none;" class="spinner-border text-success"></div>
+
+            </center>
             <hr>
     {% if select_type == 'Day' %}
               <table id="testTable1">
@@ -244,6 +249,11 @@ td {
 
     </tr>
     {% endifchanged %}
+                   {% if forloop.last %}
+                  <script>
+                      $("#loader").hide();
+                  </script>
+                  {% endif %}
 {% endfor %}
            </table>
             {% else %}
@@ -286,7 +296,11 @@ td {
 
 
               </tr>
-
+ {% if forloop.last %}
+                  <script>
+                      $("#loader").hide();
+                  </script>
+                  {% endif %}
 {% endfor %}
            </table>
     {% endif %}
