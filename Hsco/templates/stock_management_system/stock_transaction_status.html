@@ -146,6 +146,12 @@ input:checked + .slider:before {
 .divs{
 display:none;
 }
+
+  div.ex1 {
+  width: 100%;
+  height: 400px;
+  overflow: scroll;
+}
 </style>
 
 
@@ -401,7 +407,7 @@ td {
                         <br>
                         <br>
 
-                            <div class="row" id="abhish123">
+                            <div class="row ex1" id="abhish123">
 
     <table>
         <tr style="background-color: gray; color: white;">
@@ -455,13 +461,11 @@ Submit
                 </td>
             {% else %}
             {% endif %}
-            {% if request.user.role == 'Admin' or request.user.role == 'Super Admin' %}
-            {% if not good_request.req_to_godown and good_request.goods_sent == False %}
+            {% if  request.user.role == 'Super Admin' %}
 <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
 Submit
 
                 </td>
-            {% endif %}
         {% elif request.user.role == 'Manager' or request.user.role == 'Employee' %}
             {% if not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == False %}
          <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
@@ -575,13 +579,11 @@ Submit
                 </td>
             {% else %}
             {% endif %}
-        {% if request.user.role == 'Admin' or request.user.role == 'Super Admin' %}
-            {% if not good_request.req_to_godown and good_request.goods_sent == False %}
+        {% if request.user.role == 'Super Admin' %}
 <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
                     <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
 
                 </td>
-            {% endif %}
         {% elif request.user.role == 'Manager' or request.user.role == 'Employee' %}
             {% if not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == False %}
             <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">

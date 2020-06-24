@@ -86,7 +86,13 @@ td {
   }
 
 
+
+
+
             </style>
+
+
+
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -113,7 +119,29 @@ td {
 
 <br>
 
+<script>
 
+    function get_subcat(item){
+    var arr=[];
+var a = document.getElementsByClassName(item);
+var d=0;
+for(i=0;i<a.length;i++){
+c=parseFloat(a[i].textContent);
+if (c > 0){
+    d=d+c;
+}
+}
+if (isNaN(d)){
+    document.getElementById(item).innerHTML =  '';
+
+    }
+else{
+    document.getElementById(item).innerHTML =  d;
+
+    }
+}
+
+</script>
     <form class="well form-horizontal" action="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
 
 <fieldset>
@@ -153,7 +181,7 @@ td {
 
   </div>
 <div class="col-md-2">
-  <input style="background-color: #FC6E20;" class="form-control btn btn-secondary" value="Generate" type="submit">
+  <input style="background-color: #FC6E20;" onclick="function hi(){$('#loader').show();};hi()" class="form-control btn btn-secondary" value="Generate" type="submit">
 </div>
 
   <div class="col-md-2">
@@ -166,7 +194,21 @@ td {
 </div>
 </fieldset>
     </form>
+            <center>
+
+                <div id="loader" style="display:none;" class="spinner-border text-success"></div>
+
+            </center>
             <hr>
+
+            <div class="row col-md-12"><a id="shift" href="#"><button class="btn btn-dark" onclick="myFunction()" style="opacity: 0.9; position:fixed; margin-left:76%;">Scroll Down</button></a></div>
+                    <br>
+                    <br>
+            <div class="row col-md-12">
+<a id="shift2" href="#"><button class="btn btn-dark" onclick="yourFunction()" style="opacity: 0.9; position:fixed; margin-left:76%;">Scroll Up</button></a>
+</div>
+
+
     {% if select_type == 'Day' %}
               <table id="testTable1">
                     <tr style="background-color: gray; color: white;">
@@ -244,6 +286,13 @@ td {
 
     </tr>
     {% endifchanged %}
+
+ {% if forloop.last %}
+                  <script>
+                      $("#loader").hide();
+                  </script>
+                  {% endif %}
+
 {% endfor %}
            </table>
 {% else %}
@@ -266,28 +315,109 @@ td {
                 </tr>
 
 {% for item in pro_list %}
+{% ifchanged item.scale_type %}
+                  <tr  class="col-xl-12 col-md-12 mb-12">
 
-              <tr style="cursor: pointer;" class="col-xl-12 col-md-12 mb-12">
-                <td style="width: auto;">{% ifchanged item.scale_type %}{{item.scale_type}}{% endifchanged %}</td>
-            <td style="width: auto;">{% ifchanged item.main_category %}{{item.main_category}} {% endifchanged %} </td>
-            <td style="width: auto;">{% ifchanged item.sub_category %}{{item.sub_category}}{% endifchanged %}</td>
-          {% ifchanged item.product_id.sub_category %}<td></td>{% else %}<td style="width: auto;">{% if item.sub_sub_category != None %}{{item.sub_sub_category}}{% endif %}</td>{% endifchanged %}
-            <td style="width: auto;">{{item.opening_stock}}</td>
+                       <td style="width: auto;">{% ifchanged item.scale_type %}{{item.scale_type}}{% endifchanged %}</td>
+                                                                                    <td style="width: auto;">&nbsp;</td>
 
-        <td style="width: auto;">{{item.accept_goods_quantity_sum}}</td>
-        <td style="width: auto;">{{item.goods_request_quantity_sum}}</td>
-        <td style="width: auto;">{{item.sales_quantity_sum}} </td>
-        <td style="width: auto;"> {{item.faulty_quantity_sum}} </td>
-        <td style="width: auto;"> {{item.adjustment_quantity_sum}} </td>
-        <td style="width: auto;"> {{item.loss_quantity_sum}}</td>
-        <td style="width: auto;">{{item.closing_stock_sum}}</td>
+                                        <td style="width: auto;">&nbsp;</td>
 
 
+                      <td style="width: auto;">&nbsp;</td>
+                      <td id="scale{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="purchase_scale{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="transferred_scale{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="sale_scale{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="faulty_scale{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="adjust_scale{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="losses_scale{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="closing_scale{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                  </tr>
+{% endifchanged %}
+{% ifchanged item.main_category %}
+                  <tr  class="col-xl-12 col-md-12 mb-12">
+                                                              <td style="width: auto;">&nbsp;</td>
+
+            <td style="width: auto;">{{item.main_category}} </td>
+
+                                        <td style="width: auto;">&nbsp;</td>
+                      <td style="width: auto;">&nbsp;</td>
+                      <td class="scale{{item.sub_category}}" id="{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="purchase_scale{{item.sub_category}}"  id="purchase{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="transferred_scale{{item.sub_category}}"  id="transferred{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="sale_scale{{item.sub_category}}" id="sale{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="faulty_scale{{item.sub_category}}" id="faulty{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="adjust_scale{{item.sub_category}}" id="adjust{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="losses_scale{{item.sub_category}}" id="losses{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="closing_scale{{item.sub_category}}" id="closing{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+
+                  </tr>
+{% endifchanged %}
+{% ifchanged item.sub_category %}
+          <tr  class="col-xl-12 col-md-12 mb-12">
+                                                      <td style="width: auto;">&nbsp;</td>
+                                                      <td style="width: auto;">&nbsp;</td>
+
+    <td style="width: auto;">{{item.sub_category}} </td>
+
+              <td  style="width: auto;">&nbsp;</td>
+              <td  style="width: auto;">&nbsp;</td>
+              <td  style="width: auto;">&nbsp;</td>
+              <td style="width: auto;">&nbsp;</td>
+              <td  style="width: auto;">&nbsp;</td>
+              <td  style="width: auto;">&nbsp;</td>
+              <td  style="width: auto;">&nbsp;</td>
+              <td  style="width: auto;">&nbsp;</td>
+              <td  style="width: auto;">&nbsp;</td>
+
+                  </tr>
+{% endifchanged %}
+              <tr style="cursor: pointer;"class="col-xl-12 col-md-12 mb-12">
+ <td style="width: auto;">&nbsp;</td>
+                      <td style="width: auto;">&nbsp;</td>
+                      <td style="width: auto;">&nbsp;</td>
 
 
+                  {% if item.sub_sub_category != None %}<td style="width: auto;">{{item.sub_sub_category}}</td>{% else %}<td style="width: auto;"></td>{% endif %}
+                <td class="{{item.sub_category}}" style="width: auto;">{% if item.opening_stock != 0 %} {{item.opening_stock}} {% endif %}</td>
+
+        <td class="purchase{{item.sub_category}}" style="width: auto;">{{item.accept_goods_quantity_sum}}</td>
+        <td class="transferred{{item.sub_category}}" style="width: auto;">{{item.goods_request_quantity_sum}}</td>
+        <td class="sale{{item.sub_category}}" style="width: auto;">{{item.sales_quantity_sum}} </td>
+        <td class="faulty{{item.sub_category}}" style="width: auto;"> {{item.faulty_quantity_sum}} </td>
+        <td class="adjust{{item.sub_category}}" style="width: auto;"> {{item.adjustment_quantity_sum}} </td>
+        <td class="losses{{item.sub_category}}" style="width: auto;"> {{item.loss_quantity_sum}}</td>
+        <td class="closing{{item.sub_category}}" style="width: auto;">{{item.closing_stock_sum}}</td>
 
               </tr>
+<script>
+        get_subcat("{{item.sub_category}}");
+        get_subcat("purchase{{item.sub_category}}");
+        get_subcat("transferred{{item.sub_category}}");
+        get_subcat("sale{{item.sub_category}}");
+        get_subcat("faulty{{item.sub_category}}");
+        get_subcat("adjust{{item.sub_category}}");
+        get_subcat("losses{{item.sub_category}}");
+        get_subcat("closing{{item.sub_category}}");
 
+</script>
+<script>
+        get_subcat("scale{{item.sub_category}}");
+        get_subcat("purchase_scale{{item.sub_category}}");
+        get_subcat("transferred_scale{{item.sub_category}}");
+        get_subcat("sale_scale{{item.sub_category}}");
+        get_subcat("faulty_scale{{item.sub_category}}");
+        get_subcat("adjust_scale{{item.sub_category}}");
+        get_subcat("losses_scale{{item.sub_category}}");
+        get_subcat("closing_scale{{item.sub_category}}");
+
+</script>
+ {% if forloop.last %}
+                  <script>
+                      $("#loader").hide();
+                  </script>
+                  {% endif %}
 {% endfor %}
            </table>
     {% endif %}
@@ -326,6 +456,9 @@ td {
       });
       event.stopPropagation();
     }
+
+
+
 </script>
 
 
@@ -443,6 +576,12 @@ $(document).on('click','.item-title', function(e){
     });
   }
 })
+
+
+
+
+
+
 </script>
   <!-- Core plugin JavaScript-->
   <script src="{% static 'js/dashboard/jquery.easing.min.js' %}"></script>
@@ -464,6 +603,34 @@ var tableToExcel = (function() {
 })()
 
 </script>
+
+<script type="text/javascript">
+
+a=1;
+count = 0;
+
+if(count==10){
+	alert(" can't score further")
+}
+else{
+	console.log("hello world")
+}
+
+function myFunction() {
+	b=a++;
+	count=b;
+	c="#"+b;
+  	document.getElementById("shift").href = c;
+}
+  	function yourFunction() {
+	b=count--;
+	a=b;
+	c="#"+b;
+  	document.getElementById("shift2").href = c;
+}
+</script>
+
+
 
 
 </body>

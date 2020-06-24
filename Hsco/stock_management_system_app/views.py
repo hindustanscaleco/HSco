@@ -786,7 +786,6 @@ def stock_godown(request,id):
     GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None) & Q(req_to_godown__godown_admin__profile_name=request.user.admin) & Q( req_to_godown__id=id)& Q(goods_sent=False))| \
     GoodsRequest.objects.filter(Q(status='Confirmation of goods transformation') & ~Q(status=None) & Q(req_from_godown__godown_admin__profile_name=request.user.admin) & Q( req_from_godown__id=id))| \
     GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None)& ~Q(req_from_godown__id=id) & Q(req_to_godown=None) & Q(is_all_req=True)& Q(goods_sent=False))
-    print(pending_req_indication)
     context={
         'godown_id': godown_id,
         'new_good_request_id': new_good_request_id,
@@ -1120,7 +1119,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                                 good_request.goods_sent = True
                                 good_request.save(update_fields=['goods_sent',])
                                 messages.success(request, 'Stock Transferred!!!')
-
+                                return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
                         else:
                             if good.req_type == 'Individual':
                                 GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown.id),
@@ -1137,7 +1136,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                             good_request.req_to_godown = Godown.objects.get(id=godown.id)
                             good_request.save(update_fields=['goods_sent','req_to_godown'])
                             messages.success(request, 'Stock Transferred!!!')
-
+                            return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
                 return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
 
             if status == 'Confirms the transformation' :
@@ -1149,19 +1148,16 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                         if GodownProduct.objects.filter(godown_id=from_godown_id, product_id=good.godown_product_id.product_id):
                             if good.req_type == 'Individual':
                                 #for mismatch
-
                                 if good.sent_quantity != (good.faulty_quantity + good.received_quantity):
                                     messages.success(request, 'Mismatch Occured')
-                                    print('something')
                                     good_request.status = 'Mismatch occured'
                                     good_request.notify = True
-                                    print('something23')
                                     good_request.save(update_fields=['status','notify'])
-                                    print('something2')
-
                                     return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
                                 elif good.sent_quantity == (good.faulty_quantity + good.received_quantity):
                                     good_request.status = 'Confirms the transformation'
+                                    good_request.goods_received = True
+
                                 GodownProduct.objects.filter(godown_id=from_godown_id,
                                                              product_id=good.godown_product_id.product_id).update(
                                     quantity=F("quantity") + good.received_quantity)
@@ -1179,6 +1175,8 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                                     return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
                                 elif good.sent_carton_count == (good.faulty_carton + good.received_carton_count):
                                     good_request.status = 'Confirms the transformation'
+                                    good_request.goods_received = True
+
                                 #converting carton quantity to individual quantity
                                 product = Product.objects.get(id=good.godown_product_id.product_id)
                                 individual_quantity = (float(product.carton_size) * float(good.received_carton_count))
@@ -1192,10 +1190,8 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                                 GodownProduct.objects.filter(godown_id=from_godown_id,
                                                              product_id=good.godown_product_id.product_id).update(
                                     individual_faulty=F("individual_faulty") + individual_faulty)
-                            good_request.goods_received = True
 
                             good_request.status = status
-                            good_request.goods_received = True
                             good_request.save(update_fields=['status','req_to_godown','goods_received'])
                             # save transaction
                             new_transaction = GodownTransactions()
@@ -1443,6 +1439,13 @@ def stock_godown_report(request,godown_id):
                     except:
                         opening_stock = 0
                 godown_product.opening_stock = opening_stock
+            context22 = {
+                'godown': godown,
+                'pro_list': products_list,
+                'godown_products': godown_products,
+                'select_type': select_type,
+            }
+            context.update(context22)
         else:
             products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('-product_id__sub_sub_category').order_by('product_id__sub_category')
 
@@ -1484,15 +1487,21 @@ def stock_godown_report(request,godown_id):
                     pass
 
                 godown_product.opening_stock = opening_stock
+            context22 = {
+                'godown': godown,
+                'pro_list': products_list,
+                'godown_products': godown_products,
+                'select_type': select_type,
+            }
+            context.update(context22)
 
 
-        context={
-            'godown': godown,
-            # 'gt_list': gt_list,
-            'pro_list': products_list,
-            'godown_products': godown_products,
-            'select_type': select_type,
-        }
+        # context={
+        #     'godown': godown,
+        #     'pro_list': products_list,
+        #     'godown_products': godown_products,
+        #     'select_type': select_type,
+        # }
     return render(request,'stock_management_system/stock_godown_report.html',context)
 
 from datetime import datetime
@@ -1546,12 +1555,18 @@ def stock_report(request):
                         opening_stock=0
                 product.gt_list = gt_list
                 product.opening_stock = opening_stock
+            context22 = {
+                'pro_list': products_list,
+                'select_type': select_type,
+                'loading': True,
+            }
+            context.update(context22)
         else:
             products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
 
             for product in products_list:
                 gt_list = DailyStock.objects.filter(
-                    Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
+                     Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
                     Q(entry_timedate__month__lte=to_month, entry_timedate__year=to_year) &
                     Q(godown_products__product_id__id=product.pk)).values('godown_products__product_id')\
                     .annotate(faulty_quantity_sum=Sum('faulty_quantity'))\
@@ -1589,24 +1604,36 @@ def stock_report(request):
                     product.closing_stock_sum = gt_list[0]['closing_stock_sum']
                 except:
                     print('no transaction of this product'+str(product))
-                product.opening_stock = opening_stock
 
-        context = {
-            'pro_list': products_list,
-            'select_type': select_type,
-        }
+
+
+                product.opening_stock = opening_stock
+            context22 = {
+                'pro_list': products_list,
+                'select_type': select_type,
+                'loading': True,
+            }
+            context.update(context22)
+
     return render(request,'stock_management_system/stock_system_report.html',context)
 
 def load_popup_details(request):
     date2 = datetime.strptime(request.GET.get('date2'), "%B %d, %Y").strftime('%Y-%m-%d')
     item = request.GET.get('item')
     type = request.GET.get('type')
-
+    product_type = request.GET.get('product_type')
+    context ={}
 
     if type == 'sales':
-        sales_list = DailyStock.objects.filter(
-                            Q(entry_timedate=date2) &
-                            Q(godown_products__product_id__id=item)).values('sales_ids')
+        if product_type == 'Godown':
+            sales_list = DailyStock.objects.filter(
+                Q(entry_timedate=date2) &
+                Q(godown_products__id=item)).values('sales_ids')
+        else:
+            sales_list = DailyStock.objects.filter(
+                Q(entry_timedate=date2) &
+                Q(godown_products__product_id__id=item)).values('sales_ids')
+
         item_list=''
         for item in sales_list:
             if item['sales_ids'] != '' and len(item['sales_ids'])>1:
@@ -1619,10 +1646,15 @@ def load_popup_details(request):
             'pro_id':pro_id,
             'type':type,
         }
-    if type == 'purchase':
-        sales_list = DailyStock.objects.filter(
-                            Q(entry_timedate=date2) &
-                            Q(godown_products__product_id__id=item)).values('accept_goods_ids')
+    elif type == 'purchase':
+        if product_type == 'Godown':
+            sales_list = DailyStock.objects.filter(
+                Q(entry_timedate=date2) &
+                Q(godown_products__id=item)).values('accept_goods_ids')
+        else:
+            sales_list = DailyStock.objects.filter(
+                Q(entry_timedate=date2) &
+                Q(godown_products__product_id__id=item)).values('accept_goods_ids')
         item_list=''
         for item in sales_list:
             if item['sales_ids'] != '' and len(item['sales_ids'])>1:
@@ -1635,10 +1667,15 @@ def load_popup_details(request):
             'pro_id':pro_id,
             'type':type,
         }
-    if type == 'transfer':
-        sales_list = DailyStock.objects.filter(
-                            Q(entry_timedate=date2) &
-                            Q(godown_products__product_id__id=item)).values('goods_request_ids')
+    elif type == 'transfer':
+        if product_type == 'Godown':
+            sales_list = DailyStock.objects.filter(
+                Q(entry_timedate=date2) &
+                Q(godown_products__id=item)).values('goods_request_ids')
+        else:
+            sales_list = DailyStock.objects.filter(
+                Q(entry_timedate=date2) &
+                Q(godown_products__product_id__id=item)).values('goods_request_ids')
         item_list=''
         for item in sales_list:
             if item['sales_ids'] != '' and len(item['sales_ids'])>1:
