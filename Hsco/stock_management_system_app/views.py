@@ -1439,6 +1439,13 @@ def stock_godown_report(request,godown_id):
                     except:
                         opening_stock = 0
                 godown_product.opening_stock = opening_stock
+            context22 = {
+                'godown': godown,
+                'pro_list': products_list,
+                'godown_products': godown_products,
+                'select_type': select_type,
+            }
+            context.update(context22)
         else:
             products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('-product_id__sub_sub_category').order_by('product_id__sub_category')
 
@@ -1480,15 +1487,21 @@ def stock_godown_report(request,godown_id):
                     pass
 
                 godown_product.opening_stock = opening_stock
+            context22 = {
+                'godown': godown,
+                'pro_list': products_list,
+                'godown_products': godown_products,
+                'select_type': select_type,
+            }
+            context.update(context22)
 
 
-        context={
-            'godown': godown,
-            # 'gt_list': gt_list,
-            'pro_list': products_list,
-            'godown_products': godown_products,
-            'select_type': select_type,
-        }
+        # context={
+        #     'godown': godown,
+        #     'pro_list': products_list,
+        #     'godown_products': godown_products,
+        #     'select_type': select_type,
+        # }
     return render(request,'stock_management_system/stock_godown_report.html',context)
 
 from datetime import datetime
