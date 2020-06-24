@@ -1546,12 +1546,18 @@ def stock_report(request):
                         opening_stock=0
                 product.gt_list = gt_list
                 product.opening_stock = opening_stock
+            context22 = {
+                'pro_list': products_list,
+                'select_type': select_type,
+                'loading': True,
+            }
+            context.update(context22)
         else:
             products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
 
             for product in products_list:
                 gt_list = DailyStock.objects.filter(
-                    Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
+                     Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
                     Q(entry_timedate__month__lte=to_month, entry_timedate__year=to_year) &
                     Q(godown_products__product_id__id=product.pk)).values('godown_products__product_id')\
                     .annotate(faulty_quantity_sum=Sum('faulty_quantity'))\
@@ -1589,12 +1595,17 @@ def stock_report(request):
                     product.closing_stock_sum = gt_list[0]['closing_stock_sum']
                 except:
                     print('no transaction of this product'+str(product))
-                product.opening_stock = opening_stock
 
-        context = {
-            'pro_list': products_list,
-            'select_type': select_type,
-        }
+
+
+                product.opening_stock = opening_stock
+            context22 = {
+                'pro_list': products_list,
+                'select_type': select_type,
+                'loading': True,
+            }
+            context.update(context22)
+
     return render(request,'stock_management_system/stock_system_report.html',context)
 
 def load_popup_details(request):
