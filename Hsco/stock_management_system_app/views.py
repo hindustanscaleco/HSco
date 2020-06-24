@@ -1612,12 +1612,19 @@ def load_popup_details(request):
     date2 = datetime.strptime(request.GET.get('date2'), "%B %d, %Y").strftime('%Y-%m-%d')
     item = request.GET.get('item')
     type = request.GET.get('type')
-
+    product_type = request.GET.get('product_type')
+    context ={}
 
     if type == 'sales':
-        sales_list = DailyStock.objects.filter(
-                            Q(entry_timedate=date2) &
-                            Q(godown_products__product_id__id=item)).values('sales_ids')
+        if product_type == 'Godown':
+            sales_list = DailyStock.objects.filter(
+                Q(entry_timedate=date2) &
+                Q(godown_products__id=item)).values('sales_ids')
+        else:
+            sales_list = DailyStock.objects.filter(
+                Q(entry_timedate=date2) &
+                Q(godown_products__product_id__id=item)).values('sales_ids')
+
         item_list=''
         for item in sales_list:
             if item['sales_ids'] != '' and len(item['sales_ids'])>1:
@@ -1630,10 +1637,15 @@ def load_popup_details(request):
             'pro_id':pro_id,
             'type':type,
         }
-    if type == 'purchase':
-        sales_list = DailyStock.objects.filter(
-                            Q(entry_timedate=date2) &
-                            Q(godown_products__product_id__id=item)).values('accept_goods_ids')
+    elif type == 'purchase':
+        if product_type == 'Godown':
+            sales_list = DailyStock.objects.filter(
+                Q(entry_timedate=date2) &
+                Q(godown_products__id=item)).values('accept_goods_ids')
+        else:
+            sales_list = DailyStock.objects.filter(
+                Q(entry_timedate=date2) &
+                Q(godown_products__product_id__id=item)).values('accept_goods_ids')
         item_list=''
         for item in sales_list:
             if item['sales_ids'] != '' and len(item['sales_ids'])>1:
@@ -1646,10 +1658,15 @@ def load_popup_details(request):
             'pro_id':pro_id,
             'type':type,
         }
-    if type == 'transfer':
-        sales_list = DailyStock.objects.filter(
-                            Q(entry_timedate=date2) &
-                            Q(godown_products__product_id__id=item)).values('goods_request_ids')
+    elif type == 'transfer':
+        if product_type == 'Godown':
+            sales_list = DailyStock.objects.filter(
+                Q(entry_timedate=date2) &
+                Q(godown_products__id=item)).values('goods_request_ids')
+        else:
+            sales_list = DailyStock.objects.filter(
+                Q(entry_timedate=date2) &
+                Q(godown_products__product_id__id=item)).values('goods_request_ids')
         item_list=''
         for item in sales_list:
             if item['sales_ids'] != '' and len(item['sales_ids'])>1:

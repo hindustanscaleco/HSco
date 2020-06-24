@@ -113,7 +113,20 @@ td {
 
 <br>
 
+<script>
 
+    function get_subcat(item){
+    var arr=[];
+var a = document.getElementsByClassName(item);
+var d=0;
+for(i=0;i<a.length;i++){
+c=parseFloat(a[i].textContent);
+d=d+c;
+}
+document.getElementById(item).innerHTML = "the total is " + d;
+    }
+
+</script>
     <form class="well form-horizontal" action="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
 
 <fieldset>
@@ -244,6 +257,9 @@ td {
 
     </tr>
     {% endifchanged %}
+
+
+
 {% endfor %}
            </table>
 {% else %}
@@ -266,27 +282,60 @@ td {
                 </tr>
 
 {% for item in pro_list %}
-
-              <tr style="cursor: pointer;" class="col-xl-12 col-md-12 mb-12">
-                <td style="width: auto;">{% ifchanged item.scale_type %}{{item.scale_type}}{% endifchanged %}</td>
+{% ifchanged item.sub_category %}
+                  <tr  class="col-xl-12 col-md-12 mb-12">
+                       <td style="width: auto;">{% ifchanged item.scale_type %}{{item.scale_type}}{% endifchanged %}</td>
             <td style="width: auto;">{% ifchanged item.main_category %}{{item.main_category}} {% endifchanged %} </td>
-            <td style="width: auto;">{% ifchanged item.sub_category %}{{item.sub_category}}{% endifchanged %}</td>
-          {% ifchanged item.product_id.sub_category %}<td></td>{% else %}<td style="width: auto;">{% if item.sub_sub_category != None %}{{item.sub_sub_category}}{% endif %}</td>{% endifchanged %}
-            <td style="width: auto;">{{item.opening_stock}}</td>
+{% if forloop.first %}
+                                        <td style="width: auto;">&nbsp;</td>
 
-        <td style="width: auto;">{{item.accept_goods_quantity_sum}}</td>
-        <td style="width: auto;">{{item.goods_request_quantity_sum}}</td>
-        <td style="width: auto;">{{item.sales_quantity_sum}} </td>
-        <td style="width: auto;"> {{item.faulty_quantity_sum}} </td>
-        <td style="width: auto;"> {{item.adjustment_quantity_sum}} </td>
-        <td style="width: auto;"> {{item.loss_quantity_sum}}</td>
-        <td style="width: auto;">{{item.closing_stock_sum}}</td>
+                      {% else %}
+                                        {% ifchanged item.sub_category %}<td style="width: auto;">{{item.sub_category}}</td>{% else %}<td style="width: auto;">&nbsp;</td>{% endifchanged %}
 
+                  {% endif %}
+                      <td style="width: auto;">&nbsp;</td>
+                      <td id="{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="purchase{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="transferred{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="sale{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="faulty{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="adjust{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="losses{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="closing{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                  </tr>
+{% endifchanged %}
+              <tr style="cursor: pointer;" class="col-xl-12 col-md-12 mb-12">
+ <td style="width: auto;">&nbsp;</td>
+                      <td style="width: auto;">&nbsp;</td>
+                                  {% if forloop.first %}
 
+                  {% ifchanged item.sub_category %}<td id="{{item.sub_category}}" style="width: auto;">{{item.sub_category}}</td>{% else %}<td style="width: auto;">&nbsp;</td>{% endifchanged %}
+                  {% else %}
+                  <td style="width: auto;">&nbsp;</td>
+                  {% endif %}
+                  {% ifchanged item.product_id.sub_category %}<td></td>{% else %}{% if item.sub_sub_category != None %}<td style="width: auto;">{{item.sub_sub_category}}</td>{% else %}<td style="width: auto;"></td>{% endif %}{% endifchanged %}
+                                    <td class="{{item.sub_category}}" style="width: auto;">{{item.opening_stock}}</td>
 
-
+        <td class="purchase{{item.sub_category}}" style="width: auto;">{{item.accept_goods_quantity_sum}}</td>
+        <td class="transferred{{item.sub_category}}" style="width: auto;">{{item.goods_request_quantity_sum}}</td>
+        <td class="sale{{item.sub_category}}" style="width: auto;">{{item.sales_quantity_sum}} </td>
+        <td class="faulty{{item.sub_category}}" style="width: auto;"> {{item.faulty_quantity_sum}} </td>
+        <td class="adjust{{item.sub_category}}" style="width: auto;"> {{item.adjustment_quantity_sum}} </td>
+        <td class="losses{{item.sub_category}}" style="width: auto;"> {{item.loss_quantity_sum}}</td>
+        <td class="closing{{item.sub_category}}" style="width: auto;">{{item.closing_stock_sum}}</td>
 
               </tr>
+<script>
+        get_subcat("{{item.sub_category}}");
+        get_subcat("purchase{{item.sub_category}}");
+        get_subcat("transferred{{item.sub_category}}");
+        get_subcat("sale{{item.sub_category}}");
+        get_subcat("faulty{{item.sub_category}}");
+        get_subcat("adjust{{item.sub_category}}");
+        get_subcat("losses{{item.sub_category}}");
+        get_subcat("closing{{item.sub_category}}");
+
+</script>
 
 {% endfor %}
            </table>
@@ -326,6 +375,9 @@ td {
       });
       event.stopPropagation();
     }
+
+
+
 </script>
 
 
@@ -443,6 +495,12 @@ $(document).on('click','.item-title', function(e){
     });
   }
 })
+
+
+
+
+
+
 </script>
   <!-- Core plugin JavaScript-->
   <script src="{% static 'js/dashboard/jquery.easing.min.js' %}"></script>
@@ -464,6 +522,8 @@ var tableToExcel = (function() {
 })()
 
 </script>
+
+
 
 
 </body>
