@@ -86,7 +86,13 @@ td {
   }
 
 
+
+
+
             </style>
+
+
+
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -185,6 +191,15 @@ document.getElementById(item).innerHTML = "the total is " + d;
 
             </center>
             <hr>
+
+            <div class="row col-md-12"><a id="shift" href="#"><button class="btn btn-dark" onclick="myFunction()" style="opacity: 0.9; position:fixed; margin-left:76%;">Scroll Down</button></a></div>
+                    <br>
+                    <br>
+            <div class="row col-md-12">
+<a id="shift2" href="#"><button class="btn btn-dark" onclick="yourFunction()" style="opacity: 0.9; position:fixed; margin-left:76%;">Scroll Up</button></a>
+</div>
+
+
     {% if select_type == 'Day' %}
               <table id="testTable1">
                     <tr style="background-color: gray; color: white;">
@@ -534,6 +549,32 @@ var tableToExcel = (function() {
   }
 })()
 
+</script>
+
+<script type="text/javascript">
+
+a=1;
+count = 0;
+
+if(count==10){
+	alert(" can't score further")
+}
+else{
+	console.log("hello world")
+}
+
+function myFunction() {
+	b=a++;
+	count=b;
+	c="#"+b;
+  	document.getElementById("shift").href = c;
+}
+  	function yourFunction() {
+	b=count--;
+	a=b;
+	c="#"+b;
+  	document.getElementById("shift2").href = c;
+}
 </script>
 
 
