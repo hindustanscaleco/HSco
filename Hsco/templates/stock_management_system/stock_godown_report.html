@@ -51,6 +51,18 @@ color:;
 
 </style>
 
+	<style>
+div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: yellow;
+  padding-left: 50px;
+  font-size: 20px;
+}
+</style>
+
+
  <style>
                 .border_class {
                 border:1px solid black;
@@ -113,6 +125,29 @@ td {
 
 <br>
 
+<script>
+
+    function get_subcat(item){
+    var arr=[];
+var a = document.getElementsByClassName(item);
+var d=0;
+for(i=0;i<a.length;i++){
+c=parseFloat(a[i].textContent);
+if (c > 0){
+    d=d+c;
+}
+}
+if (isNaN(d)){
+    document.getElementById(item).innerHTML =  '';
+
+    }
+else{
+    document.getElementById(item).innerHTML =  d;
+
+    }
+}
+
+</script>
 
     <form class="well form-horizontal" action="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
 
@@ -172,6 +207,8 @@ td {
 
             </center>
             <hr>
+
+
     {% if select_type == 'Day' %}
               <table id="testTable1">
                     <tr style="background-color: gray; color: white;">
@@ -205,7 +242,7 @@ td {
               </tr>
     {% ifchanged item.product_id.sub_category %}
     {% else %}
-    <tr >
+    <tr>
         <td></td>
         <td></td>
         <td></td>
@@ -261,7 +298,6 @@ td {
                     <tr style="background-color: gray; color: white;">
 
                     <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Scale Type  </td>
-
                     <td style=" width: 15%; border: 0px solid gray;"> Category </td>
                     <td style=" width: 18%; border: 0px solid gray;"> Sub Category</td>
                     <td style=" width: 20%; border: 0px solid gray;"> Sub Sub Category</td>
@@ -276,26 +312,105 @@ td {
                 </tr>
 
 {% for item in pro_list %}
-              <tr style="cursor: pointer;" class="col-xl-12 col-md-12 mb-12">
-                <td style="width: auto;">{% ifchanged item.product_id.scale_type %}{{item.product_id.scale_type}}{% endifchanged %}</td>
-            <td style="width: auto;">{% ifchanged item.product_id.main_category %}{{item.product_id.main_category}} {% endifchanged %} </td>
-            <td style="width: auto;">{% ifchanged item.product_id.sub_category %}{{item.product_id.sub_category}}{% endifchanged %}</td>
-          {% ifchanged item.product_id.sub_category %}<td></td>{% else %}<td style="width: auto;">{% if item.product_id.sub_sub_category != None %}{{item.product_id.sub_sub_category}}{% endif %}</td>{% endifchanged %}
-            <td style="width: auto;">{{item.opening_stock}}</td>
+{% ifchanged item.product_id.scale_type %}
+                  <tr  class="col-xl-12 col-md-12 mb-12">
 
-        <td style="width: auto;">{{item.accept_goods_quantity_sum}}</td>
-        <td style="width: auto;">{{item.goods_request_quantity_sum}}</td>
-        <td style="width: auto;">{{item.sales_quantity_sum}} </td>
-        <td style="width: auto;"> {{item.faulty_quantity_sum}} </td>
-        <td style="width: auto;"> {{item.adjustment_quantity_sum}} </td>
-        <td style="width: auto;"> {{item.loss_quantity_sum}}</td>
-        <td style="width: auto;">{{item.closing_stock_sum}}</td>
+                       <td style="width: auto;">{% ifchanged item.product_id.scale_type %}{{item.product_id.scale_type}}{% endifchanged %}</td>
+                                                                                    <td style="width: auto;">&nbsp;</td>
+
+                                        <td style="width: auto;">&nbsp;</td>
 
 
+                      <td style="width: auto;">&nbsp;</td>
+                      <td id="scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="purchase_scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="transferred_scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="sale_scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="faulty_scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="adjust_scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="losses_scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="closing_scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                  </tr>
+{% endifchanged %}
+{% ifchanged item.product_id.main_category %}
+                  <tr  class="col-xl-12 col-md-12 mb-12">
+                                                              <td style="width: auto;">&nbsp;</td>
+
+            <td style="width: auto;">{{item.product_id.main_category}} </td>
+
+                                        <td style="width: auto;">&nbsp;</td>
+                      <td style="width: auto;">&nbsp;</td>
+                      <td class="scale{{item.product_id.sub_category}}" id="{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="purchase_scale{{item.product_id.sub_category}}"  id="purchase{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="transferred_scale{{item.product_id.sub_category}}"  id="transferred{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="sale_scale{{item.product_id.sub_category}}" id="sale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="faulty_scale{{item.product_id.sub_category}}" id="faulty{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="adjust_scale{{item.product_id.sub_category}}" id="adjust{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="losses_scale{{item.product_id.sub_category}}" id="losses{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="closing_scale{{item.product_id.sub_category}}" id="closing{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+
+                  </tr>
+{% endifchanged %}
+{% ifchanged item.product_id.sub_category %}
+          <tr  class="col-xl-12 col-md-12 mb-12">
+                                                      <td style="width: auto;">&nbsp;</td>
+                                                      <td style="width: auto;">&nbsp;</td>
+
+    <td style="width: auto;">{{item.product_id.sub_category}} </td>
+
+              <td  style="width: auto;">&nbsp;</td>
+              <td  style="width: auto;">&nbsp;</td>
+              <td  style="width: auto;">&nbsp;</td>
+              <td style="width: auto;">&nbsp;</td>
+              <td  style="width: auto;">&nbsp;</td>
+              <td  style="width: auto;">&nbsp;</td>
+              <td  style="width: auto;">&nbsp;</td>
+              <td  style="width: auto;">&nbsp;</td>
+              <td  style="width: auto;">&nbsp;</td>
+
+                  </tr>
+{% endifchanged %}
+              <tr style="cursor: pointer;"class="col-xl-12 col-md-12 mb-12">
+ <td style="width: auto;">&nbsp;</td>
+                      <td style="width: auto;">&nbsp;</td>
+                      <td style="width: auto;">&nbsp;</td>
 
 
+                  {% if item.product_id.sub_sub_category != None %}<td style="width: auto;">{{item.product_id.sub_sub_category}}</td>{% else %}<td style="width: auto;"></td>{% endif %}
+                <td class="{{item.product_id.sub_category}}" style="width: auto;">{% if item.opening_stock != 0 %} {{item.opening_stock}} {% endif %}</td>
+
+        <td class="purchase{{item.product_id.sub_category}}" style="width: auto;">{{item.accept_goods_quantity_sum}}</td>
+        <td class="transferred{{item.product_id.sub_category}}" style="width: auto;">{{item.goods_request_quantity_sum}}</td>
+        <td class="sale{{item.product_id.sub_category}}" style="width: auto;">{{item.sales_quantity_sum}} </td>
+        <td class="faulty{{item.product_id.sub_category}}" style="width: auto;"> {{item.faulty_quantity_sum}} </td>
+        <td class="adjust{{item.product_id.sub_category}}" style="width: auto;"> {{item.adjustment_quantity_sum}} </td>
+        <td class="losses{{item.product_id.sub_category}}" style="width: auto;"> {{item.loss_quantity_sum}}</td>
+        <td class="closing{{item.product_id.sub_category}}" style="width: auto;">{{item.closing_stock_sum}}</td>
 
               </tr>
+<script>
+        get_subcat("{{item.product_id.sub_category}}");
+        get_subcat("purchase{{item.product_id.sub_category}}");
+        get_subcat("transferred{{item.product_id.sub_category}}");
+        get_subcat("sale{{item.product_id.sub_category}}");
+        get_subcat("faulty{{item.product_id.sub_category}}");
+        get_subcat("adjust{{item.product_id.sub_category}}");
+        get_subcat("losses{{item.product_id.sub_category}}");
+        get_subcat("closing{{item.product_id.sub_category}}");
+
+</script>
+<script>
+        get_subcat("scale{{item.product_id.sub_category}}");
+        get_subcat("purchase_scale{{item.product_id.sub_category}}");
+        get_subcat("transferred_scale{{item.product_id.sub_category}}");
+        get_subcat("sale_scale{{item.product_id.sub_category}}");
+        get_subcat("faulty_scale{{item.product_id.sub_category}}");
+        get_subcat("adjust_scale{{item.product_id.sub_category}}");
+        get_subcat("losses_scale{{item.product_id.sub_category}}");
+        get_subcat("closing_scale{{item.product_id.sub_category}}");
+
+</script>
+
  {% if forloop.last %}
                   <script>
                       $("#loader").hide();
@@ -479,7 +594,31 @@ var tableToExcel = (function() {
 })()
 
 </script>
+<script type="text/javascript">
 
+a=1;
+count = 0;
+
+if(count==10){
+	alert(" can't score further")
+}
+else{
+	console.log("hello world")
+}
+
+function myFunction() {
+	b=a++;
+	count=b;
+	c="#"+b;
+  	document.getElementById("shift").href = c;
+}
+  	function yourFunction() {
+	b=count--;
+	a=b;
+	c="#"+b;
+  	document.getElementById("shift2").href = c;
+}
+</script>
 
 </body>
 

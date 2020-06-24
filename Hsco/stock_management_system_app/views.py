@@ -786,7 +786,6 @@ def stock_godown(request,id):
     GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None) & Q(req_to_godown__godown_admin__profile_name=request.user.admin) & Q( req_to_godown__id=id)& Q(goods_sent=False))| \
     GoodsRequest.objects.filter(Q(status='Confirmation of goods transformation') & ~Q(status=None) & Q(req_from_godown__godown_admin__profile_name=request.user.admin) & Q( req_from_godown__id=id))| \
     GoodsRequest.objects.filter(~Q(status='Confirms the transformation') & ~Q(status=None)& ~Q(req_from_godown__id=id) & Q(req_to_godown=None) & Q(is_all_req=True)& Q(goods_sent=False))
-    print(pending_req_indication)
     context={
         'godown_id': godown_id,
         'new_good_request_id': new_good_request_id,
@@ -1120,7 +1119,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                                 good_request.goods_sent = True
                                 good_request.save(update_fields=['goods_sent',])
                                 messages.success(request, 'Stock Transferred!!!')
-
+                                return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
                         else:
                             if good.req_type == 'Individual':
                                 GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown.id),
@@ -1137,7 +1136,7 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                             good_request.req_to_godown = Godown.objects.get(id=godown.id)
                             good_request.save(update_fields=['goods_sent','req_to_godown'])
                             messages.success(request, 'Stock Transferred!!!')
-
+                            return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
                 return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
 
             if status == 'Confirms the transformation' :
@@ -1149,19 +1148,16 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                         if GodownProduct.objects.filter(godown_id=from_godown_id, product_id=good.godown_product_id.product_id):
                             if good.req_type == 'Individual':
                                 #for mismatch
-
                                 if good.sent_quantity != (good.faulty_quantity + good.received_quantity):
                                     messages.success(request, 'Mismatch Occured')
-                                    print('something')
                                     good_request.status = 'Mismatch occured'
                                     good_request.notify = True
-                                    print('something23')
                                     good_request.save(update_fields=['status','notify'])
-                                    print('something2')
-
                                     return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
                                 elif good.sent_quantity == (good.faulty_quantity + good.received_quantity):
                                     good_request.status = 'Confirms the transformation'
+                                    good_request.goods_received = True
+
                                 GodownProduct.objects.filter(godown_id=from_godown_id,
                                                              product_id=good.godown_product_id.product_id).update(
                                     quantity=F("quantity") + good.received_quantity)
@@ -1179,6 +1175,8 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                                     return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
                                 elif good.sent_carton_count == (good.faulty_carton + good.received_carton_count):
                                     good_request.status = 'Confirms the transformation'
+                                    good_request.goods_received = True
+
                                 #converting carton quantity to individual quantity
                                 product = Product.objects.get(id=good.godown_product_id.product_id)
                                 individual_quantity = (float(product.carton_size) * float(good.received_carton_count))
@@ -1192,10 +1190,8 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                                 GodownProduct.objects.filter(godown_id=from_godown_id,
                                                              product_id=good.godown_product_id.product_id).update(
                                     individual_faulty=F("individual_faulty") + individual_faulty)
-                            good_request.goods_received = True
 
                             good_request.status = status
-                            good_request.goods_received = True
                             good_request.save(update_fields=['status','req_to_godown','goods_received'])
                             # save transaction
                             new_transaction = GodownTransactions()
