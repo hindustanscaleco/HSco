@@ -178,31 +178,6 @@ Format : (contact no)
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Company Name
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text">
-    </div>
-  </div>
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Address *
-
-</label>
-
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input class="form-control" name="customer_address" placeholder="Address"/>
-    </div>
-  </div>
-
     <label class="col-md-2 control-label">Contact Number *
 
 </label>
@@ -213,9 +188,30 @@ Format : (contact no)
   <input  name="contact_no" placeholder="Contact No" class="form-control" onkeypress="return isNumber(event)" maxlength="10" minlength="10" required type="text" >
     </div>
   </div>
+</div>
 
 
 
+<div class="form-group row">
+    <label class="col-md-2 control-label">Company Name
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text">
+    </div>
+  </div>
+        <label class="col-md-2 control-label">Address *
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input class="form-control" name="customer_address" placeholder="Address"/>
+    </div>
+  </div>
 </div>
 
 
@@ -234,99 +230,9 @@ Format : (contact no)
 </div>
 
 </div>
-
-<!--<div class="form-group row">-->
-
- <!--<label class="col-md-2 control-label">Second Person-->
-
-<!--</label>-->
-
-    <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-      <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-    <!--<input type="text" name="second_person" placeholder="Name" class="form-control">-->
-    <!--</div>-->
-  <!--</div>-->
-
-    <!--<label class="col-md-2 control-label">Contact No-->
-
-<!--</label>-->
-
-    <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-  <!--<input  name="second_contact_no" placeholder="Contact No" class="form-control"  type="number">-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
-
-<!--<div class="form-group row">-->
-
- <!--<label class="col-md-2 control-label">Third Person-->
-
-<!--</label>-->
-
-    <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-      <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-    <!--<input type="text" name="third_person" placeholder="Name" class="form-control">-->
-    <!--</div>-->
-  <!--</div>-->
-
-    <!--<label class="col-md-2 control-label">Contact No-->
-
-<!--</label>-->
-
-    <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
-  <!--<input name="third_contact_no" placeholder="Contact No" class="form-control"  type="number">-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
-
+        <hr>
 
   <div class="form-group row">
-
-
-    <label class="col-md-2 control-label">Date of Purchase *
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="date_of_purchase" id="date_of_purchase" required placeholder="Date of Purchase"  class="form-control"  type="date">
-    </div>
-  </div>
-
-
-
-
-
-
-      <label class="col-md-2 control-label">Sales Person *
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="sales_person" placeholder="Sales Person" value="{{ user.profile_name }}" required class="form-control" list="channel101" type="text">
-    <datalist style="height:20px;" id="channel101">
-      {% for item in sales_person_sugg %}
-      <option value="{{item.profile_name}}"></option>
-    {% endfor %}
-    </datalist>
-    </div>
-  </div>
-  </div>
-
-
-
-
-
-
-<div class="form-group row">
 
   <label class="col-md-2 control-label">New/Repeat Purchase *
 </label>
@@ -342,33 +248,8 @@ Format : (contact no)
 
 
 
-  <label class="col-md-2 control-label">PO Number
 
 
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="po_number" placeholder="PO Number" class="form-control"  type="text">
-    </div>
-  </div>
-</div>
-
-
-
-<div class="form-group row">
-
- <label class="col-md-2 control-label">Upload PO File
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-    <input type="file" name="upload_op_file" id="fileToUpload" class="form-control">
-    </div>
-          <p>Note: File size must be less than 5 mb </p>
-
-  </div>
 
     <label class="col-md-2 control-label">Bill No
 
@@ -380,55 +261,36 @@ Format : (contact no)
   <input  name="bill_no" placeholder="Bill No" class="form-control"  type="text">
     </div>
   </div>
-</div>
-
-
-
-      <div class="form-group row">
-  <label class="col-md-2 control-label">Bill Address
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="bill_address" placeholder="Bill Address" class="form-control"  type="text">
-    </div>
   </div>
-
-    <label class="col-md-2 control-label">Shipping Address
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="shipping_address" placeholder="Shipping Address" class="form-control"  type="text">
-    </div>
-  </div>
-</div>
+<hr>
 
 
 
-      <div class="form-group row">
 
-<label class="col-md-2 control-label">Channel of Sales *
+
+<div class="form-group row">
+
+<label class="col-md-2 control-label">Channel of Marketing
 
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input  type="text" required name="channel_of_sales" placeholder="Channel of Sales" class="form-control" list="channel10">
+    <input  type="text"  name="channel_of_marketing" placeholder="Channel of Marketing" class="form-control" list="channel110">
     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-    <datalist style="height:20px;" id="channel10">
-      <option value="Retail through Physical Store"></option>
-      <option value="Online Market Places"></option>
-      <option value="Website"></option>
-      <option value="Indiamart"></option>
-      <option value="App"></option>
-      <option value="Field Salesmen"></option>
-      <option value="Fairs and Trade Shows"></option>
+    <datalist style="height:20px;" id="channel110">
+      <option value="Phone"></option>
+      <option value="Whatsapp"></option>
+      <option value="Email"></option>
+<!--      <option value="Hsc"></option>-->
+<!--      <option value="Sales"></option>-->
+      <option value="Google"></option>
+      <option value="Justdial"></option>
+      <option value="Reference"></option>
+      <option value="Existing Customer"></option>
+      <option value="BNI"></option>
+      <option value="Others"></option>
     </datalist>
     </div>
   </div>
@@ -467,32 +329,29 @@ Format : (contact no)
     </datalist>
     </div>
   </div>
-      </div>
+</div>
 
 
-            <div class="form-group row">
 
-<label class="col-md-2 control-label">Channel of Marketing
+<div class="form-group row">
+
+<label class="col-md-2 control-label">Channel of Sales *
 
 
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input  type="text"  name="channel_of_marketing" placeholder="Channel of Marketing" class="form-control" list="channel110">
+    <input  type="text" required name="channel_of_sales" placeholder="Channel of Sales" class="form-control" list="channel10">
     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-    <datalist style="height:20px;" id="channel110">
-      <option value="Phone"></option>
-      <option value="Whatsapp"></option>
-      <option value="Email"></option>
-<!--      <option value="Hsc"></option>-->
-<!--      <option value="Sales"></option>-->
-      <option value="Google"></option>
-      <option value="Justdial"></option>
-      <option value="Reference"></option>
-      <option value="Existing Customer"></option>
-      <option value="BNI"></option>
-      <option value="Others"></option>
+    <datalist style="height:20px;" id="channel10">
+      <option value="Retail through Physical Store"></option>
+      <option value="Online Market Places"></option>
+      <option value="Website"></option>
+      <option value="Indiamart"></option>
+      <option value="App"></option>
+      <option value="Field Salesmen"></option>
+      <option value="Fairs and Trade Shows"></option>
     </datalist>
     </div>
   </div>
@@ -517,34 +376,13 @@ Format : (contact no)
     </datalist>
     </div>
   </div>
-
-
-
       </div>
 
-<div class="form-group row">
 
+<hr>
 
-
-
-
-
-
-  <label class="col-md-2 control-label">Notes
-
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
-<textarea name="notes" placeholder="Notes" class="form-control"></textarea>
-</div>
-
-  </div>
+      <div class="form-group row">
     <label class="col-md-2 control-label">P&F
-
-
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -553,20 +391,8 @@ Format : (contact no)
     </div>
   </div>
 
+</div>
 
-
-    <!--<label class="col-md-2 control-label">Feedback Form Filled-->
-<!--</label>-->
-    <!--<div class="col-md-4 inputGroupContainer">-->
-    <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
-<!--<select name="feedback_form_filled" placeholder="New/Repeat Purchase" class="form-control" value="False" class="form-control">-->
-  <!--<option value="False">No</option>-->
-  <!--<option value="True">Yes</option>-->
-<!--</select>-->
-    <!--</div>-->
-  <!--</div>-->
-  </div>
 
 
       <div class="form-group row">
@@ -587,6 +413,25 @@ Format : (contact no)
     </div>
   </div>
 
+      </div>
+
+
+            <div class="form-group row">
+
+  <label class="col-md-2 control-label">Notes
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
+<textarea name="notes" placeholder="Notes" class="form-control"></textarea>
+</div>
+
+  </div>
+
+
 <label class="col-md-2 control-label">GST
 
 
@@ -603,11 +448,92 @@ Format : (contact no)
 </div>
 
               </div>
+            </div>
+<hr>
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Date of Purchase *
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="date_of_purchase" id="date_of_purchase" required placeholder="Date of Purchase"  class="form-control"  type="date">
+    </div>
+  </div>
 
 
+      <label class="col-md-2 control-label">Sales Person *
 
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="sales_person" placeholder="Sales Person" value="{{ user.profile_name }}" required class="form-control" list="channel101" type="text">
+    <datalist style="height:20px;" id="channel101">
+      {% for item in sales_person_sugg %}
+      <option value="{{item.profile_name}}"></option>
+    {% endfor %}
+    </datalist>
+    </div>
+  </div>
+  </div>
+
+
+      <div class="form-group row">
+ <label class="col-md-2 control-label">PO Number
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="po_number" placeholder="PO Number" class="form-control"  type="text">
+    </div>
+  </div>
+
+           <label class="col-md-2 control-label">Upload PO File
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+    <input type="file" name="upload_op_file" id="fileToUpload" class="form-control">
+    </div>
+          <p>Note: File size must be less than 5 mb </p>
+
+  </div>
 
 </div>
+              <div class="form-group row">
+  <label class="col-md-2 control-label">Bill Address
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="bill_address" placeholder="Bill Address" class="form-control"  type="text">
+    </div>
+  </div>
+<label class="col-md-2 control-label">Shipping Address
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="shipping_address" placeholder="Shipping Address" class="form-control"  type="text">
+    </div>
+  </div>
+              </div>
+
+
+
+
+
+        <hr>
 <div id="payment_cheque2" style="display: none;">
             <div class="form-group row">
 

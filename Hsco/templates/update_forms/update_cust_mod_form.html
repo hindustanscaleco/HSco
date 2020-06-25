@@ -222,33 +222,6 @@ function myFunction() {
     </div>
   </div>
 
-    <label class="col-md-2 control-label">Company Name
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled id="myText2" value="{% if purchase_id_id.second_company_name != None and purchase_id_id.second_company_name != '' %}{{purchase_id_id.second_company_name}}{% else %}{% endif %}">
-
-    </div>
-  </div>
-</div>
-
-
-
-<div class="form-group row">
-  <label class="col-md-2 control-label">Address *
-
-</label>
-
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input class="form-control" name="customer_address" placeholder="Address" disabled id="myText3" value="{{purchase_id_id.company_address}}">
-
-    </div>
-  </div>
-
     <label class="col-md-2 control-label">Contact Number *
 
 </label>
@@ -265,6 +238,32 @@ function myFunction() {
 
 
 <div class="form-group row">
+     <label class="col-md-2 control-label">Company Name
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled id="myText2" value="{% if purchase_id_id.second_company_name != None and purchase_id_id.second_company_name != '' %}{{purchase_id_id.second_company_name}}{% else %}{% endif %}">
+
+    </div>
+  </div>
+    <label class="col-md-2 control-label">Address *
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input class="form-control" name="customer_address" placeholder="Address" disabled id="myText3" value="{{purchase_id_id.company_address}}">
+
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
   <label class="col-md-2 control-label">E-mail Id
   </label>
   <div class="col-md-4 inputGroupContainer">
@@ -273,91 +272,20 @@ function myFunction() {
   <input name="customer_email_id" placeholder="E-mail Id" class="form-control"  type="email" disabled id="myText5" value="{% if purchase_id_id.company_email != None and purchase_id_id.company_email != '' %}{{purchase_id_id.company_email}}{% else %}{% endif %}">
     </div>
   </div>
-
-    <label class="col-md-2 control-label">Date of Purchase *
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="date_of_purchase" placeholder="Date of Purchase" required class="form-control"  type="date" disabled id="myText6" value="{{purchase_id_id.date_of_purchase|date:'Y-m-d'}}">
-    </div>
-  </div>
 </div>
 
 
-
-
+<hr>
 <div class="form-group row">
 
-
-
-
-
-
-
-    <label class="col-md-2 control-label">Sales Person *
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="sales_person" placeholder="Sales Person" value="{{purchase_id_id.sales_person}}" id="myText7" disabled class="form-control"  type="text">
-    </div>
-  </div>
-
-
-
-
-
-
-
-
-  <label class="col-md-2 control-label">New/Repeat Purchase *</label>
+    <label class="col-md-2 control-label">New/Repeat Purchase *</label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope-open faicons"></i></span>
   <input name="new_repeat_purchase" value="{{purchase_id_id.new_repeat_purchase}}" placeholder="New/Repeat Purchase" disabled id="myText8" class="form-control"  type="text">
     </div>
   </div>
-</div>
-
-
-<div class="form-group row" >
-
- <label class="col-md-2 control-label">PO Number</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="po_number" placeholder="PO Number"  class="form-control"  type="text" disabled id="myText9" value="{{purchase_id_id.po_number}}">
-
-    </div>
-  </div>
-
-
- <label class="col-md-2 control-label">Upload PO File
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-    <input type="file" name="upload_op_file"  class="form-control" disabled id="myText14" value="{{purchase_id_id.upload_op_file}}">
-
-   </div>
-        {% if purchase_id_id.upload_op_file %}
-        <a style="margin-left:30%;" href="{{purchase_id_id.upload_op_file.url}}">Download PO</a>
-        {% endif %}
-                  <p>Note: File size must be less than 5 mb </p>
-
-  </div>
-</div>
-
-
-<div class="form-group row">
-
-
-    <label class="col-md-2 control-label">Bill No</label>
+      <label class="col-md-2 control-label">Bill No</label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -365,31 +293,11 @@ function myFunction() {
   <input  name="bill_no" placeholder="Bill No" class="form-control"  type="text" disabled id="myText15" value="{{purchase_id_id.bill_no}}">
   </div>
   </div>
-
-
-  <label class="col-md-2 control-label">Channel of Sales *
-
-
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
- <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input type="text" required name="channel_of_sales" placeholder="Channel of Sales" class="form-control" disabled id="myText16" value="{{purchase_id_id.channel_of_sales}}" list="channel10">
-    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-      <datalist style="height:20px;" id="channel10">
-      <option value="Retail through Physical Store"></option>
-      <option value="Online Market Places"></option>
-      <option value="India Mart"></option>
-      <option value="Website"></option>
-      <option value="App"></option>
-      <option value="Field Salesmen"></option>
-      <option value="Fairs and Trade Shows"></option>
-    </datalist>
-    </div>
-  </div>
 </div>
+    <hr>
 
-            <div class="form-group row">
+
+<div class="form-group row">
 
 <label class="col-md-2 control-label">Channel of Marketing
 </label>
@@ -414,53 +322,9 @@ function myFunction() {
     </datalist>
     </div>
   </div>
- <label class="col-md-2 control-label">Channel of Dispatch *
-</label>
-      <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-  <input  type="text" name="channel_of_dispatch" placeholder="Channel of Dispatch" required class="form-control" disabled id="myText21" value="{{purchase_id_id.channel_of_dispatch}}" list="channel">
-    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-      <datalist style="height:20px;" id="channel">
-      <option value="Courier">
-      <option value="Transport">
-      <option value="Franchisee Store">
-      <option value="Online Market Places">
-      <option value="Delivery Boys">
-    </datalist>
-    </div>
-  </div>
 
 
-      </div>
-          <div class="form-group row">
-  <label class="col-md-2 control-label">Bill Address
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="bill_address" placeholder="Bill Address" class="form-control" disabled id="myText16" value="{{purchase_id_id.bill_address}}" type="text">
-    </div>
-  </div>
-
-    <label class="col-md-2 control-label">Shipping Address
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="shipping_address" placeholder="Shipping Address" class="form-control" disabled id="myText17" value="{{purchase_id_id.shipping_address}}" type="text">
-    </div>
-  </div>
-</div>
-
-    <div class="form-group row">
-
-
-    <label class="col-md-2 control-label">Industry * </label>
+   <label class="col-md-2 control-label">Industry * </label>
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
@@ -490,30 +354,55 @@ function myFunction() {
     </datalist>
     </div>
   </div>
-
-
-
-  <label class="col-md-2 control-label">Value of Goods *
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="value_of_goods"  placeholder="Value of Goods"  value="{{purchase_id_id.value_of_goods}}" class="form-control" step="0.2" type="number" disabled id="myText25">
-    </div>
-  </div>
-    </div>
-
-    <div class="form-group row">
-
-
-  <label class="col-md-2 control-label">Notes
-</label>
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>
-<input name="notes" class="form-control" value="{{purchase_id_id.notes}}" placeholder="Notes" disabled id="myText22">
 </div>
+
+
+<div class="form-group row" >
+
+  <label class="col-md-2 control-label">Channel of Sales *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+ <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+    <input type="text" required name="channel_of_sales" placeholder="Channel of Sales" class="form-control" disabled id="myText16" value="{{purchase_id_id.channel_of_sales}}" list="channel10">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="channel10">
+      <option value="Retail through Physical Store"></option>
+      <option value="Online Market Places"></option>
+      <option value="India Mart"></option>
+      <option value="Website"></option>
+      <option value="App"></option>
+      <option value="Field Salesmen"></option>
+      <option value="Fairs and Trade Shows"></option>
+    </datalist>
+    </div>
   </div>
+
+
+ <label class="col-md-2 control-label">Channel of Dispatch *
+</label>
+      <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+  <input  type="text" name="channel_of_dispatch" placeholder="Channel of Dispatch" required class="form-control" disabled id="myText21" value="{{purchase_id_id.channel_of_dispatch}}" list="channel">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <datalist style="height:20px;" id="channel">
+      <option value="Courier">
+      <option value="Transport">
+      <option value="Franchisee Store">
+      <option value="Online Market Places">
+      <option value="Delivery Boys">
+    </datalist>
+    </div>
+  </div>
+</div>
+    <hr>
+
+
+<div class="form-group row">
+
 
 <label class="col-md-2 control-label">P&F
 
@@ -525,60 +414,9 @@ function myFunction() {
   <input  name="total_pf" disabled id="total_pf_id" onkeyup="calculate_total_amount()"  value="{{purchase_id_id.total_pf|default_if_none:''}}" placeholder="P&F Amount" class="form-control" step="any" type="number">
     </div>
   </div>
-    </div>
+</div>
+    <div class="form-group row">
 
-
-    <!--<div class="form-group row">-->
-        <!--<label class="col-md-2 control-label">Feedback Form Filled</label>-->
-    <!--<div class="col-md-4 inputGroupContainer">-->
-      <!--<div class="input-group">-->
-        <!--<span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>-->
-        <!--<input class="form-control" name="feedback_form_filled" placeholder="Yes or No" disabled id="myText23" list="rep_by" value="{% if purchase_id_id.feedback_form_filled %} YES {% else %} NO {% endif %}">-->
-            <!--<datalist style="height:20px;" id="rep_by">-->
-
-      <!--<option value="YES">-->
-      <!--<option value="NO">-->
-
-    <!--</datalist>-->
-      <!--</div>-->
-    <!--</div>-->
-
-
-
-    <!--<label class="col-md-2 control-label">Dispatch ID Assigned-->
-
-<!--</label>-->
-
-    <!--<div class="col-md-4 inputGroupContainer">-->
-  <!--<div class="input-group">-->
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>-->
-  <!--<input  name="dispatch_id_assigned" placeholder="Dispatch ID Assigned" class="form-control" disabled value="{{purchase_id_id.dispatch_id_assigned.dispatch_no}}" type="text">-->
-    <!--</div>-->
-        <!--{% if purchase_id_id.dispatch_id_assigned %}-->
-        <!--<a style="margin-left:30%;" href="/update_dispatch_details/{{purchase_id_id.dispatch_id_assigned}}">Go To Dispatch &ndash;&gt;</a>-->
-        <!--{% endif %}-->
-  <!--</div>-->
-
-
-    <!--</div>-->
-        <div class="form-group row">
-        <label class="col-md-2 control-label">Tax Amount</label>
-        <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="tax_amount" id="tax_amt_id" onkeyup="calculate_total_amount()" value="{{purchase_id_id.tax_amount}}" disabled placeholder="Tax Amount" class="form-control" step="0.2"  type="number">
-    </div>
-  </div>
-<label class="col-md-2 control-label">Total Amount</label>
-        <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="total_amount" id="total_amt_id" value="{{purchase_id_id.total_amount}}" placeholder="Total Amount" disabled class="form-control" step="0.2"  type="number">
-    </div>
-  </div>
-    </div>
-
-<div class="form-group row">
 
   <label class="col-md-2 control-label">Payment Mode *
 </label>
@@ -595,27 +433,109 @@ function myFunction() {
 </select>
     </div>
   </div>
+</div>
+
+            <div class="form-group row">
+
+  <label class="col-md-2 control-label">Notes
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-file faicons"></i></span>
+<input name="notes" class="form-control" value="{{purchase_id_id.notes}}" placeholder="Notes" disabled id="myText22">
+</div>
+  </div>
 
 <label class="col-md-2 control-label">GST*
-
-
 </label>
-
-              <div class="col xl-12">
-                  <div class="col-md-4 inputGroupContainer">
-  <div class="custom-control custom-checkbox">
-
-    <input type="checkbox" class="custom-control-input" id="gst_id"  name="gst_id" {% if purchase_id_id.is_gst == True %} checked {% endif %}   >
-
+<div class="col xl-12">
+<div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+<input type="checkbox" class="custom-control-input" id="gst_id"  name="gst_id" {% if purchase_id_id.is_gst == True %} checked {% endif %}   >
   <label class="custom-control-label" for="gst_id"></label>
   </div>
 </div>
+</div>
+</div>
+<hr>
 
-              </div>
+          <div class="form-group row">
+    <label class="col-md-2 control-label">Date of Purchase *
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="date_of_purchase" placeholder="Date of Purchase" required class="form-control"  type="date" disabled id="myText6" value="{{purchase_id_id.date_of_purchase|date:'Y-m-d'}}">
+    </div>
+  </div>
 
 
 
+    <label class="col-md-2 control-label">Sales Person *
 
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="sales_person" placeholder="Sales Person" value="{{purchase_id_id.sales_person}}" id="myText7" disabled class="form-control"  type="text">
+    </div>
+  </div>
+</div>
+
+    <div class="form-group row">
+
+
+ <label class="col-md-2 control-label">PO Number</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="po_number" placeholder="PO Number"  class="form-control"  type="text" disabled id="myText9" value="{{purchase_id_id.po_number}}">
+
+    </div>
+  </div>
+
+
+
+ <label class="col-md-2 control-label">Upload PO File
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+    <input type="file" name="upload_op_file"  class="form-control" disabled id="myText14" value="{{purchase_id_id.upload_op_file}}">
+
+   </div>
+        {% if purchase_id_id.upload_op_file %}
+        <a style="margin-left:30%;" href="{{purchase_id_id.upload_op_file.url}}">Download PO</a>
+        {% endif %}
+                  <p>Note: File size must be less than 5 mb </p>
+
+  </div>
+    </div>
+
+    <div class="form-group row">
+  <label class="col-md-2 control-label">Bill Address
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="bill_address" placeholder="Bill Address" class="form-control" disabled id="myText16" value="{{purchase_id_id.bill_address}}" type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Shipping Address
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="shipping_address" placeholder="Shipping Address" class="form-control" disabled id="myText17" value="{{purchase_id_id.shipping_address}}" type="text">
+    </div>
+  </div>
 </div>
 
 
