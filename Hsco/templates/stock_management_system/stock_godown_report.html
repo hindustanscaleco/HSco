@@ -347,7 +347,7 @@ else{
                   <tr  class="col-xl-12 col-md-12 mb-12">
                                                               <td style="width: auto;">&nbsp;</td>
 
-            <td style="width: auto;" class="newclass" id="id_id{{item.product_id.main_category}}">{{item.product_id.main_category}} </td>
+            <td style="width: auto;" class="newclass" id="id_id{{item.product_id.scale_type}}{{item.product_id.main_category}}">{{item.product_id.main_category}} </td>
 
 
                                         <td style="width: auto;">&nbsp;</td>
@@ -625,18 +625,17 @@ b=okay[i].id;
 a.push(b);
 }
 
-var x=0;
+var b=0;
 
 function myFunction() {
-	var d=x++;
-	var c="#"+a[d];
+	var c=b++;
+	var c="#"+a[c];
   	document.getElementById("shift").href = c;
 
 }
   	function yourFunction() {
-	count=d--;
-	x=count;
-	c="#"+a[count];
+	var d=b--;
+	var c="#"+a[d];
   	document.getElementById("shift2").href = c;
 }
 </script>
