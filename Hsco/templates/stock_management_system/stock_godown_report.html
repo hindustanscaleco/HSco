@@ -308,6 +308,7 @@ else{
                     <tr style="background-color: gray; color: white;">
 
                     <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Scale Type  </td>
+
                     <td style=" width: 15%; border: 0px solid gray;"> Category </td>
                     <td style=" width: 18%; border: 0px solid gray;"> Sub Category</td>
                     <td style=" width: 20%; border: 0px solid gray;"> Sub Sub Category</td>
@@ -332,14 +333,14 @@ else{
 
 
                       <td style="width: auto;">&nbsp;</td>
-                      <td id="scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-                      <td id="purchase_scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-                      <td id="transferred_scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-                      <td id="sale_scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-                      <td id="faulty_scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-                      <td id="adjust_scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-                      <td id="losses_scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-                      <td id="closing_scale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td id="scale{{item.product_id.scale_type}}" style="width: auto;">&nbsp;</td>
+                      <td id="purchase_scale{{item.product_id.scale_type}}" style="width: auto;">&nbsp;</td>
+                      <td id="transferred_scale{{item.product_id.scale_type}}" style="width: auto;">&nbsp;</td>
+                      <td id="sale_scale{{item.product_id.scale_type}}" style="width: auto;">&nbsp;</td>
+                      <td id="faulty_scale{{item.product_id.scale_type}}" style="width: auto;">&nbsp;</td>
+                      <td id="adjust_scale{{item.product_id.scale_type}}" style="width: auto;">&nbsp;</td>
+                      <td id="losses_scale{{item.product_id.scale_type}}" style="width: auto;">&nbsp;</td>
+                      <td id="closing_scale{{item.product_id.scale_type}}" style="width: auto;">&nbsp;</td>
                   </tr>
 {% endifchanged %}
 {% ifchanged item.product_id.main_category %}
@@ -348,16 +349,17 @@ else{
 
             <td style="width: auto;" class="newclass" id="id_id{{item.product_id.main_category}}">{{item.product_id.main_category}} </td>
 
+
                                         <td style="width: auto;">&nbsp;</td>
                       <td style="width: auto;">&nbsp;</td>
-                      <td class="scale{{item.product_id.sub_category}}" id="{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-                      <td class="purchase_scale{{item.product_id.sub_category}}"  id="purchase{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-                      <td class="transferred_scale{{item.product_id.sub_category}}"  id="transferred{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-                      <td class="sale_scale{{item.product_id.sub_category}}" id="sale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-                      <td class="faulty_scale{{item.product_id.sub_category}}" id="faulty{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-                      <td class="adjust_scale{{item.product_id.sub_category}}" id="adjust{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-                      <td class="losses_scale{{item.product_id.sub_category}}" id="losses{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-                      <td class="closing_scale{{item.product_id.sub_category}}" id="closing{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+                      <td class="scale{{item.product_id.scale_type}}" id="subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="purchase_scale{{item.product_id.scale_type}}"  id="purchase_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="transferred_scale{{item.product_id.scale_type}}"  id="transferred_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="sale_scale{{item.product_id.scale_type}}" id="sale_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="faulty_scale{{item.product_id.scale_type}}" id="faulty_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="adjust_scale{{item.product_id.scale_type}}" id="adjust_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="losses_scale{{item.product_id.scale_type}}" id="losses_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="closing_scale{{item.product_id.scale_type}}" id="closing_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" style="width: auto;">&nbsp;</td>
 
                   </tr>
 {% endifchanged %}
@@ -367,17 +369,15 @@ else{
                                                       <td style="width: auto;">&nbsp;</td>
 
     <td style="width: auto;">{{item.product_id.sub_category}} </td>
-
-              <td  style="width: auto;">&nbsp;</td>
-              <td  style="width: auto;">&nbsp;</td>
-              <td  style="width: auto;">&nbsp;</td>
-              <td style="width: auto;">&nbsp;</td>
-              <td  style="width: auto;">&nbsp;</td>
-              <td  style="width: auto;">&nbsp;</td>
-              <td  style="width: auto;">&nbsp;</td>
-              <td  style="width: auto;">&nbsp;</td>
-              <td  style="width: auto;">&nbsp;</td>
-
+          <td style="width: auto;">&nbsp;</td>
+          <td class="subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" id="{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="purchase_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}"  id="purchase{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="transferred_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}"  id="transferred{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="sale_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" id="sale{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="faulty_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" id="faulty{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="adjust_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" id="adjust{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="losses_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" id="losses{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="closing_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" id="closing{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
                   </tr>
 {% endifchanged %}
               <tr style="cursor: pointer;"class="col-xl-12 col-md-12 mb-12">
@@ -409,18 +409,29 @@ else{
         get_subcat("closing{{item.product_id.sub_category}}");
 
 </script>
-<script>
-        get_subcat("scale{{item.product_id.sub_category}}");
-        get_subcat("purchase_scale{{item.product_id.sub_category}}");
-        get_subcat("transferred_scale{{item.product_id.sub_category}}");
-        get_subcat("sale_scale{{item.product_id.sub_category}}");
-        get_subcat("faulty_scale{{item.product_id.sub_category}}");
-        get_subcat("adjust_scale{{item.product_id.sub_category}}");
-        get_subcat("losses_scale{{item.product_id.sub_category}}");
-        get_subcat("closing_scale{{item.product_id.sub_category}}");
+
+                  <script>
+        get_subcat("subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}");
+        get_subcat("purchase_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}");
+        get_subcat("transferred_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}");
+        get_subcat("sale_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}");
+        get_subcat("faulty_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}");
+        get_subcat("adjust_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}");
+        get_subcat("losses_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}");
+        get_subcat("closing_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}");
 
 </script>
+                  <script>
+        get_subcat("scale{{item.product_id.scale_type}}");
+        get_subcat("purchase_scale{{item.product_id.scale_type}}");
+        get_subcat("transferred_scale{{item.product_id.scale_type}}");
+        get_subcat("sale_scale{{item.product_id.scale_type}}");
+        get_subcat("faulty_scale{{item.product_id.scale_type}}");
+        get_subcat("adjust_scale{{item.product_id.scale_type}}");
+        get_subcat("losses_scale{{item.product_id.scale_type}}");
+        get_subcat("closing_scale{{item.product_id.scale_type}}");
 
+</script>
  {% if forloop.last %}
                   <script>
                       $("#loader").hide();

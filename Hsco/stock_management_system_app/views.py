@@ -1415,7 +1415,7 @@ def stock_godown_report(request,godown_id):
         opening_stock_date = calendar.monthrange(from_year, from_month-1 if from_month > 1 else 12)[1]
         opening_stock_date = datetime.strptime(str(from_year)+"-"+str(from_month-1 if from_month > 1 else 12 )+"-"+str(opening_stock_date), "%Y-%m-%d")
         if select_type == 'Day':
-            products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('-product_id__sub_sub_category').order_by('product_id__sub_category')
+            products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('product_id__scale_type__id').order_by('product_id__main_category')
             for godown_product in products_list:
                 gt_list = DailyStock.objects.filter(
                     Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
@@ -1447,7 +1447,7 @@ def stock_godown_report(request,godown_id):
             }
             context.update(context22)
         else:
-            products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('-product_id__sub_sub_category').order_by('product_id__sub_category')
+            products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('product_id__scale_type__id').order_by('product_id__main_category')
 
             for godown_product in products_list:
                 gt_list = DailyStock.objects.filter(
@@ -1525,9 +1525,14 @@ def stock_report(request):
         opening_stock_date = calendar.monthrange(from_year, from_month-1 if from_month > 1 else 12)[1]
         opening_stock_date = datetime.strptime(str(from_year)+"-"+str(from_month-1 if from_month > 1 else 12 )+"-"+str(opening_stock_date), "%Y-%m-%d")
 
-
+        # phase 7
+        # type_purchase_all = type_purchase.objects.all()
+        #
+        # if select_type == 'Day':
+        #     for item_obj in type_purchase_all:
+        #         print(item.name)
         if select_type == 'Day':
-            products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
+            products_list = Product.objects.all().order_by('scale_type__id').order_by('main_category')
             for product in products_list:
                 gt_list = DailyStock.objects.filter(
                     Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
@@ -1562,7 +1567,7 @@ def stock_report(request):
             }
             context.update(context22)
         else:
-            products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
+            products_list = Product.objects.all().order_by('scale_type__id').order_by('main_category')
 
             for product in products_list:
                 gt_list = DailyStock.objects.filter(
