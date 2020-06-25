@@ -1466,11 +1466,8 @@ def stock_report(request):
         to_month = to_month2.month
         from_year = from_month2.year
         to_year = to_month2.year
-        print(select_type)
-        print(select_type)
-        print(select_type)
+
         if select_type == 'Day':
-            print('this 1')
             products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
             for product in products_list:
                 gt_list = DailyStock.objects.filter(
@@ -1483,7 +1480,6 @@ def stock_report(request):
                     .annotate(closing_stock=Sum('closing_stock'))
                 product.gt_list = gt_list
         else:
-            print('this 2')
             products_list = Product.objects.all().order_by('-sub_sub_category').order_by('sub_category')
 
             for product in products_list:
