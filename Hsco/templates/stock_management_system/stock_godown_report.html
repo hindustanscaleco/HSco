@@ -208,13 +208,15 @@ else{
             </center>
             <hr>
 
-
-                        <div class="row col-md-12"><a id="shift" href="#"><button class="btn btn-dark" onclick="myFunction()" style="opacity: 0.9; position:fixed; margin-left:76%;">Scroll Down</button></a></div>
-                    <br>
-                    <br>
             <div class="row col-md-12">
 <a id="shift2" href="#"><button class="btn btn-dark" onclick="yourFunction()" style="opacity: 0.9; position:fixed; margin-left:76%;">Scroll Up</button></a>
 </div>
+                                <br>
+                    <br>
+
+<div class="row col-md-12"><a id="shift" href="#"><button class="btn btn-dark" onclick="myFunction()" style="opacity: 0.9; position:fixed; margin-left:76%;">Scroll Down</button></a></div>
+
+
 
 
     {% if select_type == 'Day' %}
@@ -344,7 +346,9 @@ else{
 {% ifchanged item.product_id.main_category %}
                   <tr  class="col-xl-12 col-md-12 mb-12">
                                                               <td style="width: auto;">&nbsp;</td>
-            <td style="width: auto;">{{item.product_id.main_category}} </td>
+
+            <td style="width: auto;" class="newclass" id="id_id{{item.product_id.scale_type}}{{item.product_id.main_category}}">{{item.product_id.main_category}} </td>
+
 
                                         <td style="width: auto;">&nbsp;</td>
                       <td style="width: auto;">&nbsp;</td>
@@ -613,26 +617,25 @@ var tableToExcel = (function() {
 </script>
 <script type="text/javascript">
 
-a=1;
-count = 0;
+var okay=document.getElementsByClassName("newclass");
+var a=[];
 
-if(count==10){
-	alert(" can't score further")
+for(i=0;i<okay.length;i++){
+b=okay[i].id;
+a.push(b);
 }
-else{
-	console.log("hello world")
-}
+
+var b=0;
 
 function myFunction() {
-	b=a++;
-	count=b;
-	c="#"+b;
+	var c=b++;
+	var c="#"+a[c];
   	document.getElementById("shift").href = c;
+
 }
   	function yourFunction() {
-	b=count--;
-	a=b;
-	c="#"+b;
+	var d=b--;
+	var c="#"+a[d];
   	document.getElementById("shift2").href = c;
 }
 </script>

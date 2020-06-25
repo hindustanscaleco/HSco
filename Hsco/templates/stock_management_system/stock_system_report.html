@@ -201,12 +201,16 @@ else{
             </center>
             <hr>
 
-            <div class="row col-md-12"><a id="shift" href="#"><button class="btn btn-dark" onclick="scroll_down()" style="opacity: 0.9; position:fixed; margin-left:76%;">Scroll Down</button></a></div>
-                    <br>
-                    <br>
-            <div class="row col-md-12">
-<a id="shift2" href="#"><button class="btn btn-dark" onclick="scroll_up()" style="opacity: 0.9; position:fixed; margin-left:76%;">Scroll Up</button></a>
+                        <div class="row col-md-12">
+<a id="shift2" href="#"><button class="btn btn-dark" onclick="yourFunction()" style="opacity: 0.9; position:fixed; margin-left:76%;">Scroll Up</button></a>
+
 </div>
+<br>
+<br>
+
+
+            <div class="row col-md-12"><a id="shift" href="#"><button class="btn btn-dark" onclick="myFunction()" style="opacity: 0.9; position:fixed; margin-left:76%;">Scroll Down</button></a></div>
+
 
 
     {% if select_type == 'Day' %}
@@ -338,7 +342,9 @@ else{
 {% ifchanged item.main_category %}
                   <tr  class="col-xl-12 col-md-12 mb-12">
                                                               <td style="width: auto;">&nbsp;</td>
-            <td style="width: auto;">{{item.main_category}} </td>
+
+            <td style="width: auto;" class="newclass" id="id_id{{item.scale_type}}{{item.main_category}}">{{item.main_category}} </td>
+
 
                                         <td style="width: auto;">&nbsp;</td>
                       <td style="width: auto;">&nbsp;</td>
@@ -615,26 +621,25 @@ var tableToExcel = (function() {
 
 <script type="text/javascript">
 
-a=1;
-count = 0;
+var okay=document.getElementsByClassName("newclass");
+var a=[];
 
-if(count==10){
-	alert(" can't score further")
-}
-else{
-	console.log("hello world")
+for(i=0;i<okay.length;i++){
+b=okay[i].id;
+a.push(b);
 }
 
-function scroll_down() {
-	b=a++;
-	count=b;
-	c="#"+b;
+var b=0;
+
+function myFunction() {
+	var c=b++;
+	var c="#"+a[c];
   	document.getElementById("shift").href = c;
+
 }
-  	function scroll_up() {
-	b=count--;
-	a=b;
-	c="#"+b;
+  	function yourFunction() {
+	var d=b--;
+	var c="#"+a[d];
   	document.getElementById("shift2").href = c;
 }
 </script>
