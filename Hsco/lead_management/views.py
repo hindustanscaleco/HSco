@@ -1772,6 +1772,7 @@ def update_view_lead(request,id):
 
                         # Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
                         Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=total_purchase_product_cost)
+                        Purchase_Details.objects.filter(id=customer_id.pk).update(total_amount=total_purchase_product_cost)
                         Lead.objects.filter(id=id).update(is_entered_purchase=True,current_stage='Dispatch Done - Closed')
                     except Exception as e :
                         # context22 = {
@@ -4580,7 +4581,7 @@ def pi_product_handler(sender, instance, update_fields=None, **kwargs):
     except:
         pass
 
-@receiver(pre_save, sender=Pi_History)
+@receiver(post_save, sender=Pi_History)
 def Pi_History_handler(sender, instance, update_fields=None, **kwargs):
     try:
         if instance.id == None or instance.id == '' or instance.id == 'None' :
