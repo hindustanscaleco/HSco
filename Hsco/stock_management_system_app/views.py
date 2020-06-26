@@ -1534,7 +1534,7 @@ def stock_report(request):
         if select_type == 'Day':
             products_list = []
             for item_obj in type_purchase_all:
-                products_list1 = Product.objects.filter(scale_type=item_obj.id).order_by('sub_sub_category')
+                products_list1 = Product.objects.filter(scale_type=item_obj.id).order_by('main_category__id','sub_category','sub_sub_category')
                 products_list.append(products_list1)
 
             for outer_loop in products_list:
@@ -1574,7 +1574,7 @@ def stock_report(request):
         else:
             products_list = []
             for item_obj in type_purchase_all:
-                products_list1 = ((Product.objects.filter(scale_type=item_obj.id).order_by('sub_sub_category')).order_by('sub_category')).order_by('main_category')
+                products_list1 = Product.objects.filter(scale_type=item_obj.id).order_by('main_category__id','sub_category','sub_sub_category')
                 products_list.append(products_list1)
 
             for outer_loop in products_list:

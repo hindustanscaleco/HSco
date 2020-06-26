@@ -4,8 +4,6 @@ from import_export.admin import ImportExportModelAdmin
 from .models import Product, Godown, GodownProduct, GoodsRequest, RequestedProducts, AcceptGoods, AGProducts, \
     GodownTransactions, DailyStock
 
-
-
 class Product_Admin(admin.ModelAdmin):
 
     list_display = ('scale_type','main_category','sub_category','sub_sub_category')

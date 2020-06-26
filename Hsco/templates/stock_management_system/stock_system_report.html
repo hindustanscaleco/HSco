@@ -323,13 +323,9 @@ else{
 {% for item in outerloop %}
 {% ifchanged item.scale_type %}
                   <tr  class="col-xl-12 col-md-12 mb-12">
-
-                       <td style="width: auto;">{{item.scale_type}}</td>
-                                                                                    <td style="width: auto;">&nbsp;</td>
-
-                                        <td style="width: auto;">&nbsp;</td>
-
-
+                      <td style="width: auto;">{{item.scale_type}}</td>
+                      <td style="width: auto;">&nbsp;</td>
+                      <td style="width: auto;">&nbsp;</td>
                       <td style="width: auto;">&nbsp;</td>
                       <td id="scale{{item.scale_type}}" style="width: auto;">&nbsp;</td>
                       <td id="purchase_scale{{item.scale_type}}" style="width: auto;">&nbsp;</td>
@@ -351,8 +347,8 @@ else{
                                         <td style="width: auto;">&nbsp;</td>
                       <td style="width: auto;">&nbsp;</td>
                       <td class="scale{{item.scale_type}}" id="subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
-                      <td class="purchase_scale{{item.scale_type}}"  id="purchase_subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
-                      <td class="transferred_scale{{item.scale_type}}"  id="transferred_subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="purchase_scale{{item.scale_type}}" id="purchase_subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="transferred_scale{{item.scale_type}}" id="transferred_subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
                       <td class="sale_scale{{item.scale_type}}" id="sale_subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
                       <td class="faulty_scale{{item.scale_type}}" id="faulty_subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
                       <td class="adjust_scale{{item.scale_type}}" id="adjust_subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
