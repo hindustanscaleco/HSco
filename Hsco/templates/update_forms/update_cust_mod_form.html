@@ -690,10 +690,13 @@ function myFunction() {
   </div>
 </div>
 
-
+<input hidden id="gst_check" value="{{purchase_id_id.is_gst}}" >
 
       <script>
-
+              var gst_check = document.getElementById("gst_check").value;
+                if (gst_check == True){
+                  document.getElementById("gst_id").checked = true;
+                }
           function show(){
               var mode = document.getElementById("payment_mode_id").value;
               var x = document.getElementById("payment_cheque2");

@@ -1297,6 +1297,9 @@ def update_customer_details(request,id):
 
             if gst_id == 'on':
                 item2.is_gst = True
+            else:
+                item2.is_gst = False
+
             item2.payment_mode = payment_mode
             if total_pf != '':
                 item2.total_pf = float(total_pf)
