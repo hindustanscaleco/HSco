@@ -1194,9 +1194,12 @@ def stock_transaction_status(request,from_godown_id, trans_id):
                             good_request.status = status
                             good_request.save(update_fields=['status','req_to_godown','goods_received'])
                             # save transaction
-                            new_transaction = GodownTransactions()
-                            new_transaction.goods_req_id = good_request
-                            new_transaction.save()
+                            try:
+                                new_transaction = GodownTransactions()
+                                new_transaction.goods_req_id = good_request
+                                new_transaction.save()
+                            except:
+                                print('Transaction already created !!!')
             return redirect('/stock_pending_request/'+str(from_godown_id))
     context = {
         'good_request': good_request,
@@ -1396,7 +1399,6 @@ def request_admin(request):
 @login_required(login_url='/')
 def stock_godown_report(request,godown_id):
     context={}
-    from . import cron_job_daily
 
     godown = Godown.objects.get(id=godown_id)
     godown_products = GodownProduct.objects.filter(godown_id=godown_id)
@@ -1415,7 +1417,7 @@ def stock_godown_report(request,godown_id):
         opening_stock_date = calendar.monthrange(from_year, from_month-1 if from_month > 1 else 12)[1]
         opening_stock_date = datetime.strptime(str(from_year)+"-"+str(from_month-1 if from_month > 1 else 12 )+"-"+str(opening_stock_date), "%Y-%m-%d")
         if select_type == 'Day':
-            products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('product_id__scale_type__id').order_by('product_id__main_category').order_by('product_id__sub_category')
+            products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('product_id__main_category__id','product_id__sub_category','product_id__sub_sub_category')
             for godown_product in products_list:
                 gt_list = DailyStock.objects.filter(
                     Q(entry_timedate__month__gte=from_month, entry_timedate__year=from_year) &
@@ -1447,7 +1449,7 @@ def stock_godown_report(request,godown_id):
             }
             context.update(context22)
         else:
-            products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('product_id__scale_type__id').order_by('product_id__main_category')
+            products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('product_id__main_category__id','product_id__sub_category','product_id__sub_sub_category')
 
             for godown_product in products_list:
                 gt_list = DailyStock.objects.filter(
@@ -1508,7 +1510,6 @@ from datetime import datetime
 @login_required(login_url='/')
 def stock_report(request):
     context={}
-    from . import cron_job_daily
     if request.method == 'POST' or request.method == 'FILES':
         select_type = request.POST.get('select_type')
         from_month_str = request.POST.get('from_month')
@@ -1534,7 +1535,7 @@ def stock_report(request):
         if select_type == 'Day':
             products_list = []
             for item_obj in type_purchase_all:
-                products_list1 = Product.objects.filter(scale_type=item_obj.id).order_by('sub_sub_category')
+                products_list1 = Product.objects.filter(scale_type=item_obj.id).order_by('main_category__id','sub_category','sub_sub_category')
                 products_list.append(products_list1)
 
             for outer_loop in products_list:
@@ -1574,7 +1575,7 @@ def stock_report(request):
         else:
             products_list = []
             for item_obj in type_purchase_all:
-                products_list1 = ((Product.objects.filter(scale_type=item_obj.id).order_by('sub_sub_category')).order_by('sub_category')).order_by('main_category')
+                products_list1 = Product.objects.filter(scale_type=item_obj.id).order_by('main_category__id','sub_category','sub_sub_category')
                 products_list.append(products_list1)
 
             for outer_loop in products_list:
@@ -1646,7 +1647,8 @@ def load_popup_details(request):
         else:
             sales_list = DailyStock.objects.filter(
                 Q(entry_timedate=date2) &
-                Q(godown_products__product_id__id=item)).values('sales_ids')
+                Q(godown_products__product_id__id=item) &
+                ~Q(sales_ids=None)).values('sales_ids')
 
         item_list=''
         for item in sales_list:
@@ -1668,14 +1670,15 @@ def load_popup_details(request):
         else:
             sales_list = DailyStock.objects.filter(
                 Q(entry_timedate=date2) &
-                Q(godown_products__product_id__id=item)).values('accept_goods_ids')
+                Q(godown_products__product_id__id=item)  &
+                ~Q(accept_goods_ids=None)).values('accept_goods_ids')
         item_list=''
         for item in sales_list:
-            if item['sales_ids'] != '' and len(item['sales_ids'])>1:
-                item_list=item_list+item['sales_ids']
-        sales_list = item_list.replace("'", "").replace("\"", "").split(', ')
-        sales_list=[x for x in sales_list if x]
-        pro_id = AGProducts.objects.filter(pk__in=sales_list)
+            if item['accept_goods_ids'] != '' and len(item['accept_goods_ids'])>1:
+                item_list=item_list+item['accept_goods_ids']
+        trans_list = item_list.replace("'", "").replace("\"", "").split(', ')
+        trans_list=[x for x in trans_list if x]
+        pro_id = GodownTransactions.objects.filter(pk__in=trans_list)
 
         context={
             'pro_id':pro_id,
@@ -1689,14 +1692,16 @@ def load_popup_details(request):
         else:
             sales_list = DailyStock.objects.filter(
                 Q(entry_timedate=date2) &
-                Q(godown_products__product_id__id=item)).values('goods_request_ids')
+                Q(godown_products__product_id__id=item) &
+                ~Q(goods_request_ids=None)).values('goods_request_ids')
         item_list=''
         for item in sales_list:
-            if item['sales_ids'] != '' and len(item['sales_ids'])>1:
-                item_list=item_list+item['sales_ids']
-        sales_list = item_list.replace("'", "").replace("\"", "").split(', ')
-        sales_list=[x for x in sales_list if x]
-        pro_id = GoodsRequest.objects.filter(pk__in=sales_list)
+            if item['goods_request_ids'] != '' and len(item['goods_request_ids'])>1:
+                item_list=item_list+item['goods_request_ids']
+
+        trans_list2 = item_list.replace("'", "").replace("\"", "").split(', ')
+        trans_list2=[x for x in trans_list2 if x]
+        pro_id = GodownTransactions.objects.filter(pk__in=trans_list2)
 
         context={
             'pro_id':pro_id,

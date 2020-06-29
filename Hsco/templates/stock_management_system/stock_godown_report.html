@@ -209,12 +209,12 @@ else{
             <hr>
 
             <div class="row col-md-12">
-<a id="shift2" href="#"><button class="btn btn-dark" onclick="yourFunction()" style="opacity: 0.9; position:fixed; margin-left:76%;"><i class="fa fa-arrow-up" aria-hidden="true"></i></button></a>
+<a id="shift2" href="#"><button class="btn btn-dark" onclick="yourFunction()" style="opacity: 0.9; position:fixed; margin-left:81%;"><i class="fa fa-arrow-up" aria-hidden="true"></i></button></a>
 </div>
                                 <br>
                     <br>
 
-<div class="row col-md-12"><a id="shift" href="#"><button class="btn btn-dark" onclick="myFunction()" style="opacity: 0.9; position:fixed; margin-left:76%;"><i class="fa fa-arrow-down" aria-hidden="true"></i></button></a></div>
+<div class="row col-md-12"><a id="shift" href="#"><button class="btn btn-dark" onclick="myFunction()" style="opacity: 0.9; position:fixed; margin-left:81%;"><i class="fa fa-arrow-down" aria-hidden="true"></i></button></a></div>
 
 
 
@@ -229,7 +229,7 @@ else{
                     <td style=" width: 18%; border: 0px solid gray;"> Sub Category</td>
                     <td style=" width: 20%; border: 0px solid gray;"> Sub Sub Category</td>
                     <td style=" width: 20%; border: 0px solid gray;"> Opening Stock</td>
-                    <td colspan="30" style=" width: 15%; border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Month</td>
+                    <td colspan="30" style=" width: 15%; border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Date</td>
                 </tr>
 
 {% for item in pro_list %}
@@ -237,18 +237,16 @@ else{
               <tr class="col-xl-12 col-md-12 mb-12">
                                         <td style="width: auto;">{% ifchanged item.product_id.scale_type %}{{item.product_id.scale_type}}{% endifchanged %}</td>
 
-                    <td style="width: auto;">{% ifchanged item.product_id.main_category %}{{item.product_id.main_category}} {% endifchanged %} </td>
+                                        {% ifchanged item.product_id.main_category %}<td style="width: auto;" class="newclass" id="id_id{{item.product_id.main_category}}_{{item.product_id.sub_category}}">{{item.product_id.main_category}}  </td>{% else %}<td> </td>{% endifchanged %}
                     <td style="width: auto;">{% ifchanged item.product_id.sub_category %}{{item.product_id.sub_category}}{% endifchanged %}</td>
                   {% ifchanged item.product_id.sub_sub_category %}<td style="width: auto;">{% if item.product_id.sub_sub_category != None %}{{item.product_id.sub_sub_category}}{% endif %}</td>{% else %}<td></td>{% endifchanged %}
-                  <td style="width: auto;">{{item.opening_stock}} </td>
-                    {% ifchanged item.product_id.sub_category %}<td colspan="30" style="width: auto;">{{item.product_id.month}} </td>
-                  {% else %}
+                  {% ifchanged item.product_id.sub_sub_category %}<td style="width: auto;">{{item.opening_stock}} </td>{% endifchanged %}
+
                    {% for obj in item.gt_list %}
                   <td style="width: auto;">{{obj.entry_timedate}} </td>
                     {% endfor %}
-                  {% endifchanged %}
 
-
+<td></td>
               </tr>
     {% ifchanged item.product_id.sub_category %}
     {% else %}
@@ -260,9 +258,11 @@ else{
         <td></td>
                   {% for obj in item.gt_list %}
 
-        <td style="background-color: green; cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','purchase')">{{obj.accept_goods_quantity}}</td>
+        <td class="purchase_day{{item.sub_sub_category}}" style="background-color: green; cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','purchase')">{{obj.accept_goods_quantity}}</td>
 
         {% endfor %}
+                <td id="purchase_day{{item.sub_sub_category}}" ></td>
+
     </tr>
     <tr >
         <td></td>
@@ -271,8 +271,10 @@ else{
         <td></td>
         <td></td>
         {% for obj in item.gt_list %}
-        <td style="background-color: yellow;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','sales')"> {{obj.sales_quantity}}</td>
+        <td class="sales_day{{item.sub_sub_category}}" style="background-color: yellow;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','sales')"> {{obj.sales_quantity}}</td>
         {% endfor %}
+                        <td id="sales_day{{item.sub_sub_category}}" ></td>
+
     </tr>
     <tr >
         <td></td>
@@ -281,8 +283,10 @@ else{
         <td></td>
         <td></td>
          {% for obj in item.gt_list %}
-        <td style="background-color: lightblue;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','transfer')">{{obj.goods_request_quantity}}</td>
+        <td class="transfer_day{{item.sub_sub_category}}" style="background-color: lightblue;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','transfer')">{{obj.goods_request_quantity}}</td>
                     {% endfor %}
+                        <td id="transfer_day{{item.sub_sub_category}}" ></td>
+
     </tr>
     <tr >
         <td></td>
@@ -291,11 +295,21 @@ else{
         <td></td>
         <td></td>
          {% for obj in item.gt_list %}
-        <td style="background-color: orange; ">{{obj.closing_stock}}</td>
+        <td class="closing_stock_day{{item.sub_sub_category}}" style="background-color: orange; ">{{obj.closing_stock}}</td>
                     {% endfor %}
+        <td id="closing_stock_day{{item.sub_sub_category}}"></td>
 
     </tr>
     {% endifchanged %}
+
+                  <script>
+        get_subcat("purchase_day{{item.sub_sub_category}}");
+        get_subcat("sales_day{{item.sub_sub_category}}");
+        get_subcat("transfer_day{{item.sub_sub_category}}");
+        get_subcat("closing_stock_day{{item.sub_sub_category}}");
+
+
+</script>
                    {% if forloop.last %}
                   <script>
                       $("#loader").hide();
@@ -493,27 +507,11 @@ else{
         </div>
         <div class="modal-body">
 
-               <form method="POST" >{% csrf_token %}
-        <div class="row" >
-
-            <table>
-                <tr style="background-color: gray; color: white;">
-                    <td style="border: 1px solid gray;">Sr. No.</td>
-                    <td style="border-radius: 0px 0px 0px 0px; border: 1px solid gray;">ID</td>
-                    <td style="border: 1px solid gray;">Date</td>
-                    <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">By</td>
-                    <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Quantity</td>
-                </tr>
-   </table>
                <div id="id_subcat22">
 
                </div>
 
 
-
-        </div>
-
-    </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -622,7 +620,9 @@ var a=[];
 
 for(i=0;i<okay.length;i++){
 b=okay[i].id;
-a.push(b);
+if (a.includes(b) === false){
+    a.push(b);
+    }
 }
 
 var b=0;
