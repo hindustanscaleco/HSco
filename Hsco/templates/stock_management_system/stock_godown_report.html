@@ -209,12 +209,12 @@ else{
             <hr>
 
             <div class="row col-md-12">
-<a id="shift2" href="#"><button class="btn btn-dark" onclick="yourFunction()" style="opacity: 0.9; position:fixed; margin-left:76%;"><i class="fa fa-arrow-up" aria-hidden="true"></i></button></a>
+<a id="shift2" href="#"><button class="btn btn-dark" onclick="yourFunction()" style="opacity: 0.9; position:fixed; margin-left:81%;"><i class="fa fa-arrow-up" aria-hidden="true"></i></button></a>
 </div>
                                 <br>
                     <br>
 
-<div class="row col-md-12"><a id="shift" href="#"><button class="btn btn-dark" onclick="myFunction()" style="opacity: 0.9; position:fixed; margin-left:76%;"><i class="fa fa-arrow-down" aria-hidden="true"></i></button></a></div>
+<div class="row col-md-12"><a id="shift" href="#"><button class="btn btn-dark" onclick="myFunction()" style="opacity: 0.9; position:fixed; margin-left:81%;"><i class="fa fa-arrow-down" aria-hidden="true"></i></button></a></div>
 
 
 
@@ -237,7 +237,7 @@ else{
               <tr class="col-xl-12 col-md-12 mb-12">
                                         <td style="width: auto;">{% ifchanged item.product_id.scale_type %}{{item.product_id.scale_type}}{% endifchanged %}</td>
 
-                    <td style="width: auto;">{% ifchanged item.product_id.main_category %}{{item.product_id.main_category}} {% endifchanged %} </td>
+                                        {% ifchanged item.product_id.main_category %}<td style="width: auto;" class="newclass" id="id_id{{item.product_id.main_category}}_{{item.product_id.sub_category}}">{{item.product_id.main_category}}  </td>{% else %}<td> </td>{% endifchanged %}
                     <td style="width: auto;">{% ifchanged item.product_id.sub_category %}{{item.product_id.sub_category}}{% endifchanged %}</td>
                   {% ifchanged item.product_id.sub_sub_category %}<td style="width: auto;">{% if item.product_id.sub_sub_category != None %}{{item.product_id.sub_sub_category}}{% endif %}</td>{% else %}<td></td>{% endifchanged %}
                   <td style="width: auto;">{{item.opening_stock}} </td>
@@ -606,7 +606,9 @@ var a=[];
 
 for(i=0;i<okay.length;i++){
 b=okay[i].id;
-a.push(b);
+if (a.includes(b) === false){
+    a.push(b);
+    }
 }
 
 var b=0;
