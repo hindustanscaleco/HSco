@@ -85,8 +85,11 @@ td {
 
   }
 
-
-
+table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
 
 
             </style>
@@ -234,19 +237,16 @@ else{
 
                     <td style="width: auto;">{% ifchanged item.main_category %}{{item.main_category}} {% endifchanged %} </td>
                     <td style="width: auto;">{% ifchanged item.sub_category %}{{item.sub_category}}{% endifchanged %}</td>
-                  {% ifchanged item.sub_category %}<td></td>{% else %}<td style="width: auto;">{% if item.sub_sub_category != None %}{{item.sub_sub_category}}{% endif %}</td>{% endifchanged %}
-                  {% ifchanged item.sub_sub_category %}<td style="width: auto;">{{item.opening_stock}} </td>{% endifchanged %}
-                    {% ifchanged item.sub_category %}<td colspan="30" style="width: auto;">{{item.month}} </td>
-                  {% else %}
+                  <td style="width: auto;">{% if item.sub_sub_category != None %}{{item.sub_sub_category}}{% endif %}</td>
+                   {% ifchanged item.sub_sub_category %}<td style="width: auto;">{{item.opening_stock}} </td>{% endifchanged %}
+
                    {% for obj in item.gt_list %}
                   <td style="width: auto;">{{obj.entry_timedate}} </td>
                     {% endfor %}
-                  {% endifchanged %}
 
 
               </tr>
-    {% ifchanged item.sub_category %}
-    {% else %}
+
     <tr >
         <td></td>
         <td></td>
@@ -290,7 +290,6 @@ else{
                     {% endfor %}
 
     </tr>
-    {% endifchanged %}
 
  {% if forloop.last %}
                   <script>
@@ -374,6 +373,7 @@ else{
           <td class="closing_subcat{{item.scale_type.id}}_{{item.main_category.id}}" id="closing{{item.sub_category}}" style="width: auto;">&nbsp;</td>
                   </tr>
 {% endifchanged %}
+                  {% if item.sub_sub_category != None %}
               <tr style="cursor: pointer;"class="col-xl-12 col-md-12 mb-12">
  <td style="width: auto;">&nbsp;</td>
                       <td style="width: auto;">&nbsp;</td>
@@ -392,6 +392,7 @@ else{
         <td class="closing{{item.sub_category}}" style="width: auto;">{{item.closing_stock_sum}}</td>
 
               </tr>
+                  {% endif %}
 <script>
         get_subcat("{{item.sub_category}}");
         get_subcat("purchase{{item.sub_category}}");
@@ -489,27 +490,13 @@ else{
         </div>
         <div class="modal-body">
 
-               <form method="POST" >{% csrf_token %}
-        <div class="row" >
 
-            <table>
-                <tr style="background-color: gray; color: white;">
-                    <td style="border: 1px solid gray;">Sr. No.</td>
-                    <td style="border-radius: 0px 0px 0px 0px; border: 1px solid gray;">ID</td>
-                    <td style="border: 1px solid gray;">Date</td>
-                    <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">By</td>
-                    <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Quantity</td>
-                </tr>
-   </table>
                <div id="id_subcat22">
 
                </div>
 
 
 
-        </div>
-
-    </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

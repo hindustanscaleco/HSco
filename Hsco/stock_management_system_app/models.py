@@ -201,9 +201,9 @@ class DailyStock(models.Model):
     faulty_quantity = models.FloatField(default=0.0) #Done
     adjustment_quantity = models.FloatField(default=0.0)
     loss_quantity = models.FloatField(default=0.0)
-    sales_ids = models.CharField(max_length=120)  #doubt
-    accept_goods_ids = models.CharField(max_length=120) #doubt
-    goods_request_ids = models.CharField(max_length=120) #doubt
+    sales_ids = models.TextField(null=True,blank=True)  #doubt
+    accept_goods_ids = models.TextField(null=True,blank=True) #doubt
+    goods_request_ids = models.TextField(null=True,blank=True) #doubt
     entry_timedate = models.DateField(default=datetime.date.today)
 
 
