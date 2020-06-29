@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'stock_management_system_app',
     'career_module_app',
     'import_export',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -173,3 +174,7 @@ user = 'HSCo'
 api = 'PF8MzCBOGTopfpYFlSZT'
 #api_test = 'puU087yJ0uAQdhggM3T0'
 senderid = 'HSCALE'
+
+CRONJOBS = [
+    ('12 9 * * *','stock_management_system_app.cron_job_daily.hello')
+]
