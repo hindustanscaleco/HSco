@@ -256,7 +256,7 @@ td {
 
         <tr style="border-top: 5px solid #FC6E20; border-left: 5px solid #FC6E20; border-right:  5px solid #FC6E20;">
             <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"> {{forloop.counter}}</td>
-            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"> {{ item.entry_timedate_time.time }}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"> {{ item.entry_timedate_time }}</td>
             <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"> {{form4.email_auto_manual}}</td>
             <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"> {% if item.is_email %} Email {% endif %} {% if item.is_whatsapp %}| Whatsapp {% endif %} {% if item.is_call %}| Call {% endif %} {% if item.is_sms %}| SMS {% endif %}</td>
             <td colspan="2" style="border-radius: 0px 0px 0px 0px; border:1px solid gray; ;"> {{ item.wa_no }}</td>
