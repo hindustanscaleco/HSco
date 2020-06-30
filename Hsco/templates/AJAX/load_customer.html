@@ -12,7 +12,7 @@
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
 
-  <input  name="customer_name" required placeholder="Customer Name" class="form-control" value="{{cust_list.customer_name}}" type="text">
+  <input  name="customer_name" id="customer_name" required placeholder="Customer Name" class="form-control" value="{{cust_list.customer_name}}" type="text">
     </div>
   </div>
 
@@ -26,7 +26,7 @@
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" value="{% if cust_list.company_name != None and cust_list.company_name != '' %}{{cust_list.company_name}}{% else %}{% endif %}" class="form-control"  type="text">
+  <input  name="company_name" id="company_name" placeholder="Company Name" value="{% if cust_list.company_name != None and cust_list.company_name != '' %}{{cust_list.company_name}}{% else %}{% endif %}" class="form-control"  type="text">
 
 
      </div>
@@ -45,7 +45,7 @@
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input name="contact_no" required placeholder="Phone Number" value="{{cust_list.contact_no}}" onkeypress="return isNumber(event)" maxlength="10" minlength="10" class="form-control" type="text">
+  <input name="contact_no" id="contact_no" required placeholder="Phone Number" value="{{cust_list.contact_no}}" onkeypress="return isNumber(event)" maxlength="10" minlength="10" class="form-control" type="text">
     </div>
   </div>
 
@@ -56,7 +56,7 @@
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Email-id" value="{% if cust_list.customer_email_id != None and cust_list.customer_email_id != '' %}{{cust_list.customer_email_id}}{% else %}{% endif %}" class="form-control" >
+  <input type="email" id="customer_email_id" name="customer_email_id" placeholder="Email-id" value="{% if cust_list.customer_email_id != None and cust_list.customer_email_id != '' %}{{cust_list.customer_email_id}}{% else %}{% endif %}" class="form-control" >
     </div>
   </div>
 </div>
@@ -71,7 +71,7 @@
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input  name="customer_address" placeholder="Address" value="{{cust_list.address}}" class="form-control"  type="text">
+  <input  name="customer_address" id="customer_address" placeholder="Address" value="{{cust_list.address}}" class="form-control"  type="text">
     </div>
   </div>
 
