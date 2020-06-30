@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db import connection
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from customer_app.models import Customer_Details
 from user_app.models import SiteUser
@@ -2373,7 +2373,19 @@ def return_godown_pro(godown_id,product):
     godown_pro = GodownProduct.objects.filter(godown_id=godown_id, product_id=product)
     return godown_pro
 
-
+def autocomplete(request):
+    if request.is_ajax():
+        queryset = Customer_Details.objects.filter(customer_name__startswith=request.GET.get('search', None))
+        print(queryset)
+        print(queryset)
+        print(queryset)
+        list = []
+        for i in queryset:
+            list.append(i.customer_name)
+        data = {
+            'list': list,
+        }
+        return JsonResponse(data)
 
 
 

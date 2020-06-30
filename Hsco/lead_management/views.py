@@ -1384,7 +1384,7 @@ def update_view_lead(request,id):
     elif len(str(id)) == 4 :
         email_pi_id = str(id)
     else:
-        email_pi_id = id
+        email_pi_id = str(id)
 
     lead_id = Lead.objects.get(id=id)
     users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module')& ~Q(profile_name=lead_id.owner_of_opportunity.profile_name))
@@ -3792,6 +3792,8 @@ def select_product(request,id):
                 if quantity != 'None' or quantity != '':
                     item.product_total_cost = float(rate) * float(quantity)
                 item.save()
+                Pi_section.objects.filter(lead_id=id).update(select_gst_type=None)
+
             elif (sub_category != None and sub_category != ""):
                 item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
                                                       sub_category=sub_category, sub_sub_category=None)
@@ -3807,7 +3809,7 @@ def select_product(request,id):
                 if quantity != 'None' or quantity != '':
                     item.product_total_cost = float(rate) * float(quantity)
                 item.save()
-
+                Pi_section.objects.filter(lead_id=id).update(select_gst_type=None)
             if is_last_product_yes == 'yes':
                 return redirect('/update_view_lead/' + str(id))
             elif is_last_product_yes == 'no':
@@ -4887,7 +4889,7 @@ def download_pi_image(request,id):
     elif len(str(id)) == 4 :
         email_pi_id = str(id)
     else:
-        email_pi_id = id
+        email_pi_id = str(id)
     pi_products = Pi_product.objects.filter(lead_id=id)
     context = {
         'lead_id': lead_id,
@@ -4940,7 +4942,7 @@ def download_pi_pdf(request,id,download):
     elif len(str(id)) == 4 :
         email_pi_id = str(id)
     else:
-        email_pi_id = id
+        email_pi_id = str(id)
     pi_products = Pi_product.objects.filter(lead_id=id)
     context={
         'lead_id':lead_id,
@@ -4989,7 +4991,7 @@ def download_pi_second_pdf(request,id,download):
     elif len(str(id)) == 4 :
         email_pi_id = str(id)
     else:
-        email_pi_id = id
+        email_pi_id = str(id)
     pi_products = Pi_product.objects.filter(lead_id=id)
     context={
         'lead_id':lead_id,

@@ -9,6 +9,17 @@
   <meta name="author" content="">
 
   <title>HSCO</title>
+<link href=
+'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
+          rel='stylesheet'>
+
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" >
+    </script>
+
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" >
+    </script>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -91,13 +102,13 @@ color:;
     <div class="col-md-2 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-    <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
-    <option value="-----">---------</option>
+    <input name="customer_number" id="cust_id" list="display_limit1" onchange="choice1(this)" class="form-control">
+        <datalist id="display_limit1">
        {% for item in cust_sugg %}
-  <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
+  <option value="{{item.pk}}">{{item.pk}}</option>
 
    {% endfor %}
-</select>
+            </datalist>
 
     </div>
 Format : (crm no)
@@ -107,13 +118,12 @@ Format : (crm no)
     <div class="col-md-2 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-    <select name="customer_number" id="display_limit2" onchange="choice1(this)" class="form-control">
-    <option value="-----">---------</option>
+    <input name="customer_number" id="cust_id1" list="display_limit2" onchange="choice2(this)" class="form-control">
+        <datalist id="display_limit2">
        {% for item in cust_sugg %}
-  <option value="{{item.pk}}">{{item.customer_name}} - {{item.company_name}}</option>
-
+  <option value="{{item.pk}}">{{item.customer_name}}</option>
    {% endfor %}
-</select>
+            </datalist>
 
     </div>
 Format : (customer name)
@@ -123,13 +133,12 @@ Format : (customer name)
       <div class="col-md-2 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-    <select name="customer_number" id="display_limit3" onchange="choice1(this)" class="form-control">
-    <option value="-----">---------</option>
+    <input name="customer_number" id="cust_id2" list="display_limit3" onchange="choice3(this)" class="form-control">
+        <datalist id="display_limit3">
        {% for item in cust_sugg %}
-  <option value="{{item.pk}}">{{item.company_name}} - {{item.customer_name}}</option>
-
+  <option value="{{item.pk}}">{{item.company_name}}</option>
    {% endfor %}
-</select>
+            </datalist>
 
     </div>
 Format : (company name)
@@ -138,20 +147,22 @@ Format : (company name)
     <div class="col-md-2 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-    <select name="customer_number" id="display_limit4" onchange="choice1(this)" class="form-control">
-    <option value="-----">---------</option>
+     <input name="customer_number" id="cust_id3" list="display_limit4" onchange="choice4(this)" class="form-control">
+        <datalist id="display_limit4">
        {% for item in cust_sugg %}
-  <option value="{{item.pk}}">{{item.contact_no}} - {{item.customer_name}} - {{item.company_name}}</option>
+  <option value="{{item.pk}}">{{item.contact_no}}</option>
 
    {% endfor %}
-</select>
+            </datalist>
 
     </div>
 Format : (contact no)
-  </div>
-</div>
-<hr>
+  </div><button style="height:40px;">Search</button> &nbsp; <button style="height:40px;" type="button" onclick="clearData()"><i class="fa fa-close" style="font-size:24px"> Clear Data</i></button>
 
+</div>
+    <!--<input type="text" id="id_input"   >-->
+
+<hr>
   <!--<div class="col-md-4 inputGroupContainer">-->
   <!--<div class="input-group">-->
   <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
@@ -174,7 +185,7 @@ Format : (contact no)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="customer_name" placeholder="Full Name" required class="form-control"  type="text">
+  <input  name="customer_name" placeholder="Full Name" required class="form-control" id="customer_name"  type="text">
     </div>
   </div>
 
@@ -185,7 +196,7 @@ Format : (contact no)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" placeholder="Contact No" class="form-control" onkeypress="return isNumber(event)" maxlength="10" minlength="10" required type="text" >
+  <input  name="contact_no" placeholder="Contact No" class="form-control" onkeypress="return isNumber(event)" id="contact_no" maxlength="10" minlength="10" required type="text" >
     </div>
   </div>
 </div>
@@ -199,7 +210,7 @@ Format : (contact no)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="company_name" placeholder="Company Name" class="form-control"  type="text">
+  <input  name="company_name" placeholder="Company Name" class="form-control" id="company_name"  type="text">
     </div>
   </div>
         <label class="col-md-2 control-label">Address *
@@ -209,7 +220,7 @@ Format : (contact no)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input class="form-control" name="customer_address" placeholder="Address"/>
+  <input class="form-control" name="customer_address" id="customer_address"  placeholder="Address"/>
     </div>
   </div>
 </div>
@@ -222,7 +233,7 @@ Format : (contact no)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer Email Id" class="form-control" >
+  <input type="email" name="customer_email_id" placeholder="Customer Email Id" id="customer_email_id"  class="form-control" >
     </div>
   </div>
 
@@ -752,12 +763,28 @@ Format : (contact no)
 <br>
 
 <script>
+function clearData() {
+
+  document.getElementById("customer_name").value = "";
+  document.getElementById("contact_no").value = "";
+  document.getElementById("company_name").value = "";
+  document.getElementById("customer_address").value = "";
+  document.getElementById("customer_email_id").value = "";
+  document.getElementById("cust_id").value = "";
+  document.getElementById("cust_id1").value = "";
+  document.getElementById("cust_id2").value = "";
+  document.getElementById("cust_id3").value = "";
+}
+</script>
+<script>
 function choice1(select) {
      //alert(select.options[select.selectedIndex].value);
+     var cust_id = document.getElementById('cust_id').value;
+
     $.ajax({                       // initialize an AJAX request
         url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
         data: {
-          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+          'item_id': cust_id      // add the country id to the GET parameters
 
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
@@ -766,7 +793,54 @@ function choice1(select) {
         }
       });
 }
+function choice2(select) {
+     //alert(select.options[select.selectedIndex].value);
+     var cust_id1 = document.getElementById('cust_id1').value;
 
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': cust_id1      // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#loaded_customer").html(data);
+    alert("Customer details loaded sucessfully!");
+        }
+      });
+}
+function choice3(select) {
+     //alert(select.options[select.selectedIndex].value);
+     var cust_id2 = document.getElementById('cust_id2').value;
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': cust_id2     // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#loaded_customer").html(data);
+    alert("Customer details loaded sucessfully!");
+        }
+      });
+}
+function choice4(select) {
+     //alert(select.options[select.selectedIndex].value);
+     var cust_id3 = document.getElementById('cust_id3').value;
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': cust_id3     // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#loaded_customer").html(data);
+    alert("Customer details loaded sucessfully!");
+        }
+      });
+}
   document.getElementById("date_of_purchase").valueAsDate = new Date();
 </script>
   <!-- End of Page Wrapper -->
@@ -788,12 +862,7 @@ function choice1(select) {
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
 
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
     </div>
   </div>
 
