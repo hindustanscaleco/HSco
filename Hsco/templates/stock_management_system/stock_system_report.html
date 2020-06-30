@@ -226,7 +226,7 @@ else{
                     <td style=" width: 18%; border: 0px solid gray;"> Sub Category</td>
                     <td style=" width: 20%; border: 0px solid gray;"> Sub Sub Category</td>
                     <td style=" width: 20%; border: 0px solid gray;"> Opening Stock</td>
-                    <td colspan="30" style=" width: 15%; border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Month</td>
+                    <td colspan="30" style=" width: 15%; border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Date</td>
                 </tr>
               
 {% for outerloop in pro_list %}
@@ -243,6 +243,7 @@ else{
                    {% for obj in item.gt_list %}
                   <td style="width: auto;">{{obj.entry_timedate}} </td>
                     {% endfor %}
+        <td>  </td>
 
 
               </tr>
@@ -255,9 +256,10 @@ else{
         <td></td>
                   {% for obj in item.gt_list %}
 
-        <td style="background-color: green; cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','purchase')">{{obj.accept_goods_quantity}}</td>
+        <td class="purchase_day{{item.sub_sub_category}}" style="background-color: green; cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','purchase')">{{obj.accept_goods_quantity}}</td>
 
         {% endfor %}
+        <td id="purchase_day{{item.sub_sub_category}}" ></td>
     </tr>
     <tr >
         <td></td>
@@ -266,8 +268,10 @@ else{
         <td></td>
         <td></td>
         {% for obj in item.gt_list %}
-        <td style="background-color: yellow;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','sales')"> {{obj.sales_quantity}}</td>
+        <td  class="sales_day{{item.sub_sub_category}}" style="background-color: yellow;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','sales')"> {{obj.sales_quantity}}</td>
         {% endfor %}
+                <td id="sales_day{{item.sub_sub_category}}" ></td>
+
     </tr>
     <tr >
         <td></td>
@@ -276,8 +280,10 @@ else{
         <td></td>
         <td></td>
          {% for obj in item.gt_list %}
-        <td style="background-color: lightblue;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','transfer')">{{obj.goods_request_quantity}}</td>
+        <td class="transfer_day{{item.sub_sub_category}}" style="background-color: lightblue;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','transfer')">{{obj.goods_request_quantity}}</td>
                     {% endfor %}
+                <td id="transfer_day{{item.sub_sub_category}}" ></td>
+
     </tr>
     <tr >
         <td></td>
@@ -286,11 +292,19 @@ else{
         <td></td>
         <td></td>
          {% for obj in item.gt_list %}
-        <td style="background-color: orange;cursor: pointer;">{{obj.closing_stock}}</td>
+        <td class="closing_stock_day{{item.sub_sub_category}}" style="background-color: orange;cursor: pointer;">{{obj.closing_stock}}</td>
                     {% endfor %}
+        <td id="closing_stock_day{{item.sub_sub_category}}"></td>
 
     </tr>
+<script>
+        get_subcat("purchase_day{{item.sub_sub_category}}");
+        get_subcat("sales_day{{item.sub_sub_category}}");
+        get_subcat("transfer_day{{item.sub_sub_category}}");
+        get_subcat("closing_stock_day{{item.sub_sub_category}}");
 
+
+</script>
  {% if forloop.last %}
                   <script>
                       $("#loader").hide();

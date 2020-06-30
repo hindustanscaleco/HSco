@@ -5,7 +5,7 @@ import datetime
 todays_date = datetime.datetime.today()
 
 # all_godown_products = GodownProduct.objects.all()
-all_godown_products = GodownProduct.objects.filter(product_id__sub_sub_category__name='MSS002')
+all_godown_products = GodownProduct.objects.all()
 daily_count = DailyStock.objects.filter(entry_timedate=todays_date).count()
 if daily_count == 0:
     for product in all_godown_products:
