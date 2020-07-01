@@ -94,10 +94,7 @@ color:;
     <form class="well form-horizontal" ion="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
 
 <div class="form-group row">
-    <label class="col-md-2 control-label">Customer Number
 
-
-</label>
 
     <div class="col-md-2 inputGroupContainer">
   <div class="input-group">
@@ -115,7 +112,7 @@ Format : (crm no)
   </div>
 
 
-    <div class="col-md-2 inputGroupContainer">
+    <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
     <input name="customer_number" id="cust_id1" list="display_limit2" onchange="choice2(this)" class="form-control">
@@ -130,7 +127,7 @@ Format : (customer name)
   </div>
 
 
-      <div class="col-md-2 inputGroupContainer">
+      <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
     <input name="customer_number" id="cust_id2" list="display_limit3" onchange="choice3(this)" class="form-control">
@@ -157,8 +154,16 @@ Format : (company name)
 
     </div>
 Format : (contact no)
-  </div><button style="height:40px;">Search</button> &nbsp; <button style="height:40px;" type="button" onclick="clearData()"><i class="fa fa-close" style="font-size:24px"> Clear Data</i></button>
+  </div>
+        <div class="col-md-2 inputGroupContainer row">
+        <div class="col-md-4">
+    <button style="width: 40px;" class="btn btn-success"><i class="fa fa-search" style=""></i></button>
+        </div>
+                    <div class="col-md-6">
+    <button style="width:40px;" type="button" onclick="clearData()" class="btn btn-warning"><i class="fa fa-close" style=""></i></button>
+        </div>
 
+        </div>
 </div>
     <!--<input type="text" id="id_input"   >-->
 <hr style="background-color: gray;">
