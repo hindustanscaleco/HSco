@@ -708,12 +708,19 @@ var b=0;
 function myFunction() {
 	var c=b++;
 	var c="#"+a[c];
+	  	if(c=="#undefined"){
+  	    alert("Can't Scroll further")
+  	}
   	document.getElementById("shift").href = c;
+
 
 }
   	function yourFunction() {
 	var d=b--;
 	var c="#"+a[d];
+	  	if(c=="#undefined"){
+  	    alert("Can't Scroll further")
+  	}
   	document.getElementById("shift2").href = c;
 }
 </script>
