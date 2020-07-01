@@ -8,10 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-
-
-
   <title>Career | HSCO</title>
+
 <link href=
 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
           rel='stylesheet'>
@@ -63,9 +61,7 @@ color:;
 
   }
 
-</style>
 
-<style>
 .dropbtn {
   background-color: white;
   color: black;
@@ -136,6 +132,38 @@ color:;
   left: 100%;
   margin-top: -1px;
 }
+
+<!--Modal Css-->
+
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+  display: block; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+
+
+
 </style>
 
   <!-- Page Wrapper -->
@@ -156,6 +184,64 @@ color:;
 
 
 {% include 'base_templates/hsco_website_nav.html' %}
+<button id="myBtn" style="visibility: hidden;">Open Modal</button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+      <center>
+      <h1 style="color: black;"> Instructions For Candidate </h1>
+      </center>
+<br>
+    <p style="color: black;">
+
+        1-	YOU CAN APPLY ONCE. Please Double check the details before submitting your details. <br>
+2-	You increase your chances of shortlisting by entering your educational details and work experience. If you need to mention any extra curricular activities please mention in the Notes section. <br>
+3-	Upload your Resume. Its important. Not uploading your resume lowers your chances of selection. <br>
+4-	Please donot mail us your resume or call us. Once your resume is shortlisted you will get a call from our HR Department. <br>
+5-	When you submit your application, you will receive an SMS mentioning your candidate number. All further processing will be done using that number only. <br>
+6-	Enter your mobile number and email id the ones that you check frequently. All communication will be done on emails and smses via the system. You don’t need to mention the country code. <br>
+    </p>
+      <center>
+
+    <button type="button" class="delete_edu_detail btn btn-success " style="background-color: #FC6E20; width: 60px;"><span class="close">Ok</span>
+ </button>
+      </center>
+
+
+  </div>
+
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "block";
+  }
+}
+</script>
 
 
     <form class="well form-horizontal" action="" method="post" enctype="multipart/form-data" id="contact_form" style="padding:20px;">{% csrf_token%}
@@ -747,6 +833,7 @@ $("#tagscloud span").text("Total experience is " + finalDate + " years.");
   <!--&lt;!&ndash; Page level custom scripts &ndash;&gt;-->
   <!--<script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>-->
   <!--<script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>-->
+
 
 </body>
 
