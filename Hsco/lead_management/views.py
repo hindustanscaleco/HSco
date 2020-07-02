@@ -1719,18 +1719,23 @@ def update_view_lead(request,id):
                         item_pro.log_entered_by = request.user.name
 
                         item_pro.save()
+                        if item.product_id.sub_sub_category != None and item.product_id.sub_sub_category != '' and item.product_id.sub_sub_category != 'None':
+                            product_id = Product.objects.get(scale_type=item.product_id.scale_type,
+                                                             main_category=item.product_id.main_category,
+                                                             sub_category=item.product_id.sub_category,
+                                                             sub_sub_category=item.product_id.sub_sub_category).id
+                        elif item.product_id.sub_sub_category == None or item.product_id.sub_sub_category == '':
+                            product_id = Product.objects.get(scale_type=item.product_id.scale_type,
+                                                             main_category=item.product_id.main_category,
+                                                             sub_category=item.product_id.sub_category).id
 
-                        product_id = Product.objects.get(scale_type=item.product_id.scale_type,
-                                                         main_category=item.product_id.main_category,
-                                                         sub_category=item.product_id.sub_category,
-                                                         sub_sub_category=item.product_id.sub_sub_category).id
                         GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown_ids[list_count]).id,
                                                      product_id=product_id).update(
                             quantity=F("quantity") - item.quantity)
                         new_transaction = GodownTransactions()
                         new_transaction.purchase_product_id = Product_Details.objects.get(id=item_pro.id)
                         new_transaction.purchase_quantity = item.quantity
-                        new_transaction.notes = 'Product Transferred to Sales From Lead Module by Emp id:' + request.user.employee_number + '(' + request.user.profile_name + ' - ' + request.user.mobile + ')'
+                        new_transaction.notes = 'Product Transferred to Sales From Lead Module by Emp id:' + request.user.employee_number if request.user.employee_number else '' + '(' + request.user.profile_name if request.user.profile_name else '' + ' - ' + request.user.mobile if request.user.mobile else '' + ')'
                         new_transaction.save()
 
                         list_count=list_count+1
