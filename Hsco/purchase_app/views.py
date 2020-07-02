@@ -803,8 +803,8 @@ def edit_product_customer(request,product_id_rec):
 
                     new_transaction = GodownTransactions()
                     new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
-                    new_transaction.notes = 'Product Returned from Sales by Emp id: ' + request.user.employee_number + ',\nName: ' + request.user.profile_name \
-                                            + ', Contact: ' + request.user.mobile + ',\nGodown changed:- Old: ' + purchase.godown_id.name_of_godown + ', New: ' + new_godown_name + \
+                    new_transaction.notes = 'Product Returned from Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
+                                            + ', Contact: ' + str(request.user.mobile) + ',\nGodown changed:- Old: ' + str(purchase.godown_id.name_of_godown) + ', New: ' + str(new_godown_name) + \
                                             '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
                     new_transaction.save()
 
@@ -814,8 +814,8 @@ def edit_product_customer(request,product_id_rec):
                     new_transaction = GodownTransactions()
                     new_transaction.purchase_product_id = Product_Details.objects.get(id=product_id_rec)
                     new_transaction.purchase_quantity = quantity
-                    new_transaction.notes = 'Product Added to Sales by Emp id: ' + request.user.employee_number + ',\nName: ' + request.user.profile_name \
-                                            + ', Contact: ' + request.user.mobile + ',\nGodown changed:- Old: ' + purchase.godown_id.name_of_godown + ', New: ' + new_godown_name + \
+                    new_transaction.notes = 'Product Added to Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
+                                            + ', Contact: ' + str(request.user.mobile) + ',\nGodown changed:- Old: ' + str(purchase.godown_id.name_of_godown) + ', New: ' + str(new_godown_name) + \
                                             '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
                     new_transaction.save()
                 elif float(purchase.godown_id.id) != float(godown):
@@ -850,8 +850,8 @@ def edit_product_customer(request,product_id_rec):
 
                     new_transaction = GodownTransactions()
                     new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
-                    new_transaction.notes = 'Product Returned from Sales by Emp id: ' + request.user.employee_number + ',\nName: ' + request.user.profile_name \
-                                            + ', Contact: ' + request.user.mobile + ',\nGodown changed:- Old: ' + purchase.godown_id.name_of_godown + ', New: ' + new_godown_name + \
+                    new_transaction.notes = 'Product Returned from Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
+                                            + ', Contact: ' + str(request.user.mobile) + ',\nGodown changed:- Old: ' + str(purchase.godown_id.name_of_godown) + ', New: ' + str(new_godown_name) + \
                                             '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
                     new_transaction.save()
 
@@ -862,8 +862,8 @@ def edit_product_customer(request,product_id_rec):
                     new_transaction = GodownTransactions()
                     new_transaction.purchase_product_id = Product_Details.objects.get(id=product_id_rec)
                     new_transaction.purchase_quantity = quantity
-                    new_transaction.notes = 'Product Added to Sales by Emp id: ' + request.user.employee_number + ',\nName: ' + request.user.profile_name \
-                                            + ', Contact: ' + request.user.mobile + ',\nGodown changed:- Old: ' + purchase.godown_id.name_of_godown + ', New: ' + new_godown_name + \
+                    new_transaction.notes = 'Product Added to Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
+                                            + ', Contact: ' + str(request.user.mobile) + ',\nGodown changed:- Old: ' + str(purchase.godown_id.name_of_godown) + ', New: ' + str(new_godown_name) + \
                                             '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
                     new_transaction.save()
                 elif quantity != purchase.quantity:
@@ -903,7 +903,7 @@ def edit_product_customer(request,product_id_rec):
                         new_transaction = GodownTransactions()
                         new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
                         new_transaction.notes = 'Product Returned from Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
-                                                + ', Contact: ' + str(request.user.mobile) + ',\nQuantity changed:- Old: ' + purchase.quantity + ', New: ' + quantity + \
+                                                + ', Contact: ' + str(request.user.mobile) + ',\nQuantity changed:- Old: ' + str(purchase.quantity) + ', New: ' + str(quantity) + \
                                                 '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
                         new_transaction.save()
                     elif quantity > purchase.quantity:
@@ -911,7 +911,7 @@ def edit_product_customer(request,product_id_rec):
                         new_transaction.purchase_product_id = Product_Details.objects.get(id=product_id_rec)
                         new_transaction.purchase_quantity = float(quantity) - float(purchase.quantity)
                         new_transaction.notes = 'Product Added to Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
-                                                + ', Contact: ' + str(request.user.mobile) + ',\nQuantity changed:- Old: ' + purchase.quantity + ', New: ' + quantity + \
+                                                + ', Contact: ' + str(request.user.mobile) + ',\nQuantity changed:- Old: ' + str(purchase.quantity) + ', New: ' + str(quantity) + \
                                                 '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
                         new_transaction.save()
                 else:
