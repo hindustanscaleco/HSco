@@ -193,7 +193,7 @@ class GodownTransactions(models.Model):
 
 
 class DailyStock(models.Model):
-    godown_products = models.ForeignKey(GodownProduct,on_delete=models.DO_NOTHING) #Done
+    godown_products = models.ForeignKey(GodownProduct,on_delete=models.CASCADE) #Done
     closing_stock = models.FloatField() #Done
     sales_quantity = models.FloatField(default=0.0) #Done
     goods_request_quantity = models.FloatField(default=0.0) #Done

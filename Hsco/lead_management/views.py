@@ -2310,16 +2310,16 @@ def update_view_lead(request,id):
                             total_discount = (float(total_cost) * float(discount))/100.0  #converting discount percentage to discount total
                             net_total = float(total_cost) - float(total_discount)
                             item2.net_total = net_total
-                            item2.cgst_sgst = (9.0 * net_total) / 100.0
-                            igst = (18.0 * net_total) / 100.0
+                            item2.cgst_sgst = (9.0 * (net_total + pf_total)) / 100.0
+                            igst = (18.0 * (net_total+ pf_total)) / 100.0
                             item2.igst = igst
                             item2.round_up_total = round(net_total + pf_total + igst)
                             item2.grand_total = round(net_total + pf_total + igst)
                         elif discount_type == 'rupee' and discount != '' and total_cost != '':
                             net_total = float(total_cost) - float(discount)
                             item2.net_total = net_total
-                            item2.cgst_sgst = (9.0 * net_total)/100.0
-                            igst = (18.0 * item2.net_total)/100.0
+                            item2.cgst_sgst = (9.0 * (net_total+ pf_total))/100.0
+                            igst = (18.0 * (item2.net_total+ pf_total))/100.0
                             item2.igst = igst
                             item2.round_up_total = round(item2.net_total + pf_total + igst)
                             item2.grand_total = round(item2.net_total + pf_total + igst)
@@ -2378,16 +2378,16 @@ def update_view_lead(request,id):
                                 discount)) / 100.0  # converting discount percentage to discount total
                             net_total = float(total_cost) - float(total_discount)
                             item2.net_total = net_total
-                            item2.cgst_sgst = (9.0 * net_total) / 100.0
-                            igst = (18.0 * net_total) / 100.0
+                            item2.cgst_sgst = (9.0 * (net_total+ pf_total)) / 100.0
+                            igst = (18.0 * (net_total+ pf_total)) / 100.0
                             item2.igst = igst
                             item2.round_up_total = round(net_total + pf_total + igst)
                             item2.grand_total = item2.round_up_total
                         elif discount_type == 'rupee' and discount != '' and total_cost != '':
                             net_total = float(total_cost) - float(discount)
                             item2.net_total = net_total
-                            item2.cgst_sgst = (9.0 * net_total) / 100.0
-                            igst = (18.0 * item2.net_total) / 100.0
+                            item2.cgst_sgst = (9.0 * (net_total+ pf_total)) / 100.0
+                            igst = (18.0 * (net_total+ pf_total)) / 100.0
                             item2.igst = igst
                             item2.round_up_total = round(item2.net_total + pf_total + igst)
                             item2.grand_total = item2.round_up_total
