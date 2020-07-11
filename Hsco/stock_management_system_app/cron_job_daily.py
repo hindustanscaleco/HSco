@@ -39,13 +39,12 @@ def main():
 
                     item = DailyStock.objects.filter(entry_timedate=todays_date, godown_products=godown_pro)
 
-                    val = transaction.purchase_product_id
                     old_ids = ''
                     for daily_stock in item:
                         old_ids = daily_stock.sales_ids
 
 
-                    sales_ids= str(old_ids) + str(transaction.purchase_product_id.pk)+', '
+                    sales_ids= str(old_ids) + str(transaction.pk)+', '
                     item.update(sales_quantity= F("sales_quantity") + transaction.purchase_quantity, sales_ids= sales_ids.replace('None','') )
                 except:
                     print('Not sales')

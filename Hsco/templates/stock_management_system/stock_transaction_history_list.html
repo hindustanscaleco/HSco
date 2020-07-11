@@ -277,7 +277,7 @@ td {
 
         </tr>
         {% elif list.purchase_product_id  %}
-<tr style="cursor: pointer;" onclick="location.href='/edit_product_customer/{{list.purchase_product_id.id}}'">
+<tr style="cursor: pointer;" onclick="location.href='/stock_transaction_history/{{list.purchase_product_id.godown_id.id}}/{{list.pk}}'">
             <td style="border: 0px solid gray;">{{list.id}}</td>
             <td style="border: 0px solid gray;">Own WorkStation</td>
             <td style="border: 0px solid gray;">Sales</td>
