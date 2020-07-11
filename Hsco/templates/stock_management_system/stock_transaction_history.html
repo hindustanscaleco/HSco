@@ -574,6 +574,42 @@ td {
 
 
         </div>
+{% elif godown_transaction.purchase_product_id  %}
+            <center><h3>Sales Goods</h3></center>
+<br>
+<br>
+                <div class="row" id="abhish123">
+
+    <table>
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
+            <td style="border: 0px solid gray;">Model</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
+        </tr>
+
+
+
+      {% for good in requested_goods %}
+        <tr>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{good.type_of_scale}}</td>
+            <td style="border: 0px solid gray;">{{good.model_of_purchase}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.sub_model}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.sub_sub_model}} </td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{good.quantity}}</td>
+        </tr>
+{% endfor %}
+
+
+
+    </table>
+
+
+
+
+
+        </div>
 
             {% endif%}
 
