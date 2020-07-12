@@ -1328,7 +1328,7 @@ def stock_transaction_history(request, from_godown_id, trans_id):
         requested_goods = RequestedProducts.objects.filter(godown_id=godown_id.id, goods_req_id=godown_transaction.goods_req_id.id)
     elif godown_transaction.accept_goods_id:
         requested_goods = AGProducts.objects.filter(godown_id=godown_id.id, accept_product_id=godown_transaction.accept_goods_id.id)
-    elif godown_transaction.purchase_product_id:
+    else:
         requested_goods = Product_Details.objects.filter(godown_id=godown_id.id, id=godown_transaction.purchase_product_id.id)
     context = {
         'godown_transaction': godown_transaction,
