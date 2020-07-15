@@ -275,7 +275,7 @@ Format : (contact no)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="bill_no" placeholder="Bill No" class="form-control"  type="text">
+  <input  name="bill_no" id="bill_no" placeholder="Bill No" class="form-control"  type="text">
     </div>
   </div>
   </div>
@@ -294,7 +294,7 @@ Format : (contact no)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input  type="text"  name="channel_of_marketing" placeholder="Channel of Marketing" class="form-control" list="channel110">
+    <input  type="text"  name="channel_of_marketing" id="channel_of_marketing" placeholder="Channel of Marketing" class="form-control" list="channel110">
     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
     <datalist style="height:20px;" id="channel110">
       <option value="Phone"></option>
@@ -450,9 +450,9 @@ Format : (contact no)
                   <div class="col-md-4 inputGroupContainer">
   <div class="custom-control custom-checkbox">
 
-    <input type="checkbox" class="custom-control-input" id="gst_id"  name="gst"     >
+    <input type="checkbox" class="custom-control-input" onclick="on_gst()" id="gst_id"  name="gst"     >
 
-  <label class="custom-control-label"  for="gst_id"></label>
+  <label class="custom-control-label"    for="gst_id"></label>
   </div>
 </div>
 
@@ -672,7 +672,15 @@ Format : (contact no)
         <hr style="background-color: gray;">
 
 <script>
-
+          function on_gst(){
+                gst_selected = document.getElementById("gst_id").checked;
+                if (gst_selected == true){
+                      $('#bill_no').attr('required', '');
+                }
+                else{
+                      $('#bill_no').removeAttr('required', '');
+                }
+          }
           function show(){
               var mode = document.getElementById("payment_mode_id").value;
               var x = document.getElementById("payment_cheque2");
@@ -686,6 +694,7 @@ Format : (contact no)
                   $('#bank_name2').attr('required', '');
                   $('#cheque_no2').attr('required', '');
                   $('#cheque_date2').attr('required', '');
+                  $('#bill_no').attr('required', '');
 
                   $('#credit_authorised_by_id').removeAttr('required', '');
                   $('#credit_pending_amount_id').removeAttr('required', '')
@@ -702,6 +711,7 @@ Format : (contact no)
 
                   $('#neft_bank_name2').attr('required', '');
                   $('#neft_date2').attr('required', '');
+                  $('#bill_no').attr('required', '');
 
                   $('#credit_authorised_by_id').removeAttr('required', '');
                   $('#credit_pending_amount_id').removeAttr('required', '')
@@ -737,6 +747,7 @@ Format : (contact no)
                   x.style.display = "none";
                   y.style.display = "none";
                   z.style.display = "none";
+                  $('#bill_no').attr('required', '');
 
                   $('#credit_authorised_by_id').removeAttr('required', '');
                   $('#credit_pending_amount_id').removeAttr('required', '');
@@ -798,6 +809,7 @@ function choice1(select) {
     alert("Customer details loaded sucessfully!");
         }
       });
+      document.getElementById('channel_of_marketing').value = 'Existing Customer';
 }
 function choice2(select) {
      //alert(select.options[select.selectedIndex].value);
@@ -814,6 +826,8 @@ function choice2(select) {
     alert("Customer details loaded sucessfully!");
         }
       });
+            document.getElementById('channel_of_marketing').value = 'Existing Customer';
+
 }
 function choice3(select) {
      //alert(select.options[select.selectedIndex].value);
@@ -830,6 +844,8 @@ function choice3(select) {
     alert("Customer details loaded sucessfully!");
         }
       });
+            document.getElementById('channel_of_marketing').value = 'Existing Customer';
+
 }
 function choice4(select) {
      //alert(select.options[select.selectedIndex].value);
@@ -846,6 +862,8 @@ function choice4(select) {
     alert("Customer details loaded sucessfully!");
         }
       });
+            document.getElementById('channel_of_marketing').value = 'Existing Customer';
+
 }
   document.getElementById("date_of_purchase").valueAsDate = new Date();
 </script>

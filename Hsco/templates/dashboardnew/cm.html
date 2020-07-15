@@ -482,6 +482,10 @@ td {
                     {% for list1 in customer_list %}
         {% if list1.payment_mode == 'Credit' and list1.credit_pending_amount != 0.0 %}
             <tr bgcolor="red" style="background-color:red; cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+        {% elif list1.payment_mode == 'Credit' and list1.is_gst == True %}
+            <tr bgcolor="#ffbf00" style="background-color:#ffbf00; cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+        {% elif list1.is_gst == True %}
+            <tr bgcolor="green" style="background-color:green; cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
         {% else %}
             <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
         {% endif %}

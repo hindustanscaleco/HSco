@@ -693,6 +693,8 @@ function myFunction() {
 <input hidden id="gst_check" value="{{purchase_id_id.is_gst}}" >
 
       <script>
+                show();
+
               var gst_check = document.getElementById("gst_check").value;
                 if (gst_check == True){
                   document.getElementById("gst_id").checked = true;
@@ -789,7 +791,6 @@ function myFunction() {
               }
 
           }
-          show();
 </script>
 <script>
     var checkbox = document.querySelector("input[id=gst_id]");
