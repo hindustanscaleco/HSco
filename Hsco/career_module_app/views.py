@@ -798,46 +798,48 @@ def update_career_module_from(request,id):
                                  'any_question_yes','comfortable_english','how_good_english','comfortable_marathi','working_from_10_to_8',
                                  'weighting_scale_manufactures_mumbai','excel_formate','sum_in_excel','time_taken','take_out_60',
                                  'time_to_disorder_wire_pcb','time_to_solder_wire_back','soldering_strong','value_of_resister','open_and_short_circuit','date_of_birth','notes'])
+        try:
+            if int(maxwork_exp) > latest_work_exp_id:
+                for i in range(latest_work_exp_id, int(maxwork_exp) ):
+                    company_name = request.POST.get('company_name'+str(i))
+                    work_expirance_from = request.POST.get('work_expirance_from'+str(i))
+                    work_expirance_to = request.POST.get('work_expirance_to'+str(i))
+                    work_expirance_details = request.POST.get('work_expirance_details'+str(i))
+                    designation = request.POST.get('designation'+str(i))
 
-        if int(maxwork_exp) > latest_work_exp_id:
-            for i in range(latest_work_exp_id, int(maxwork_exp) ):
-                company_name = request.POST.get('company_name'+str(i))
-                work_expirance_from = request.POST.get('work_expirance_from'+str(i))
-                work_expirance_to = request.POST.get('work_expirance_to'+str(i))
-                work_expirance_details = request.POST.get('work_expirance_details'+str(i))
-                designation = request.POST.get('designation'+str(i))
+                    work_exp = WorkExperience()
 
-                work_exp = WorkExperience()
+                    if work_expirance_from != '':
+                        work_exp.work_expirance_from = work_expirance_from
+                    if work_expirance_to != '':
+                        work_exp.work_expirance_to = work_expirance_to
+                    if work_expirance_details != '':
+                        work_exp.work_expirance_details = work_expirance_details
+                    work_exp.designation = designation
+                    work_exp.company_name = company_name
+                    work_exp.career_id = Career_module.objects.get(id=id)
+                    work_exp.save()
 
-                if work_expirance_from != '':
-                    work_exp.work_expirance_from = work_expirance_from
-                if work_expirance_to != '':
-                    work_exp.work_expirance_to = work_expirance_to
-                if work_expirance_details != '':
-                    work_exp.work_expirance_details = work_expirance_details
-                work_exp.designation = designation
-                work_exp.company_name = company_name
-                work_exp.career_id = Career_module.objects.get(id=id)
-                work_exp.save()
+            if int(maxedu_id) > latest_edu_details_id:
+                for i in range(latest_edu_details_id, int(maxedu_id) ):
 
-        if int(maxedu_id) > latest_edu_details_id:
-            for i in range(latest_edu_details_id, int(maxedu_id) ):
+                    institute_name = request.POST.get('institute_name'+str(i))
+                    course = request.POST.get('course'+str(i))
+                    year_of_completion = request.POST.get('year_of_completion'+str(i))
+                    percentage = request.POST.get('percentage'+str(i))
+                    achievements = request.POST.get('achievements'+str(i))
 
-                institute_name = request.POST.get('institute_name'+str(i))
-                course = request.POST.get('course'+str(i))
-                year_of_completion = request.POST.get('year_of_completion'+str(i))
-                percentage = request.POST.get('percentage'+str(i))
-                achievements = request.POST.get('achievements'+str(i))
+                    edu_detail = EducationalDetails()
 
-                edu_detail = EducationalDetails()
-
-                edu_detail.institute_name = institute_name
-                edu_detail.course = course
-                edu_detail.year_of_completion = year_of_completion
-                edu_detail.percentage = percentage
-                edu_detail.achievements = achievements
-                edu_detail.career_id = Career_module.objects.get(id=id)
-                edu_detail.save()
+                    edu_detail.institute_name = institute_name
+                    edu_detail.course = course
+                    edu_detail.year_of_completion = year_of_completion
+                    edu_detail.percentage = percentage
+                    edu_detail.achievements = achievements
+                    edu_detail.career_id = Career_module.objects.get(id=id)
+                    edu_detail.save()
+        except:
+            pass
 
 
         for i in work_exp_list_id:

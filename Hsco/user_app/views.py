@@ -160,6 +160,7 @@ def create_admin(request):
         pancard = request.POST.get('pancard')
         professional_email = request.POST.get('professional_email')
         professional_email_password = request.POST.get('professional_email_password')
+        product_master = request.POST.get('product_master')
 
         item=SiteUser()
 
@@ -186,6 +187,10 @@ def create_admin(request):
         item.upload_aadhar_card = upload_aadhar_card
         item.professional_email_password = professional_email_password
         item.professional_email = professional_email
+        if product_master == 'True':
+            item.product_master_access = True
+        elif product_master == None:
+            item.product_master_access = False
         item.password_text = request.POST.get('password')
         item.super_admin = SiteUser.objects.get(role='Super Admin').name
         item.set_password(request.POST.get('password'))
@@ -241,6 +246,7 @@ def create_manager(request):
         pancard = request.POST.get('pancard')
         professional_email = request.POST.get('professional_email')
         professional_email_password = request.POST.get('professional_email_password')
+        product_master = request.POST.get('product_master')
         item = SiteUser()
 
         item.mobile = mobile
@@ -282,7 +288,10 @@ def create_manager(request):
         item.professional_email = professional_email
 
         item.set_password(request.POST.get('password'))
-
+        if product_master == 'True':
+            item.product_master_access = True
+        elif product_master == None:
+            item.product_master_access = False
 
         item.save()
         return redirect('/manager_list/')
@@ -353,6 +362,7 @@ def create_employee(request):
         pancard = request.POST.get('pancard')
         professional_email = request.POST.get('professional_email')
         professional_email_password = request.POST.get('professional_email_password')
+        product_master = request.POST.get('product_master')
 
         item = SiteUser()
 
@@ -391,7 +401,10 @@ def create_employee(request):
         else:
             item.group = group
             item.manager = manager
-
+        if product_master == 'True':
+            item.product_master_access = True
+        elif product_master == None:
+            item.product_master_access = False
         item.password_text = request.POST.get('password')
         item.set_password(request.POST.get('password'))
 
@@ -635,6 +648,8 @@ def update_admin(request,id):
 
             upload_pancard = request.FILES.get('upload_pancard')
             upload_aadhar_card = request.FILES.get('upload_aadhar_card')
+            product_master = request.POST.get('product_master')
+
             if is_deleted == 'on':
                 is_deleted = True
             else:
@@ -681,7 +696,10 @@ def update_admin(request,id):
             item.professional_email_password = professional_email_password
             item.professional_email = professional_email
             item.password_text = request.POST.get('password')
-
+            if product_master == 'True':
+                item.product_master_access = True
+            elif product_master == None:
+                item.product_master_access = False
             if photo != None and photo != "":
                 item.photo = photo
                 item.save(update_fields=['photo', ])
@@ -696,7 +714,7 @@ def update_admin(request,id):
 
             item.save(update_fields=['password_text','professional_email','professional_email_password',
                                      'employee_number','mobile','email', 'profile_name','role','group','is_deleted',
-                                     'modules_assigned','bank_name','account_number','branch_name','ifsc_code','password','aadhar_card','pancard'])
+                                     'modules_assigned','bank_name','account_number','branch_name','ifsc_code','password','aadhar_card','pancard','product_master_access'])
             return redirect('/admin_list/')
     context = {
         'form': form,
@@ -758,6 +776,7 @@ def update_manager(request,id):
             pancard = request.POST.get('pancard')
             professional_email = request.POST.get('professional_email')
             professional_email_password = request.POST.get('professional_email_password')
+            product_master = request.POST.get('product_master')
             if is_deleted == 'on':
                 is_deleted = True
             else:
@@ -812,8 +831,11 @@ def update_manager(request,id):
             if upload_pancard != None and upload_pancard != "":
                 item.upload_pancard = upload_pancard
                 item.save(update_fields=['upload_pancard', ])
-
-            item.save(update_fields=['professional_email_password','professional_email','pancard','aadhar_card','password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','password'])
+            if product_master == 'True':
+                item.product_master_access = True
+            elif product_master == None:
+                item.product_master_access = False
+            item.save(update_fields=['product_master_access','professional_email_password','professional_email','pancard','aadhar_card','password_text','employee_number','mobile','email', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','password'])
             return redirect('/manager_list/')
     context = {
         'form': form,
@@ -875,6 +897,7 @@ def update_employee(request,id):
             pancard = request.POST.get('pancard')
             professional_email_password = request.POST.get('professional_email_password')
             professional_email = request.POST.get('professional_email')
+            product_master = request.POST.get('product_master')
             if is_deleted == 'on':
                 is_deleted = True
             else:
@@ -920,6 +943,10 @@ def update_employee(request,id):
             item.professional_email = professional_email
             item.password_text = request.POST.get('password')
             item.set_password(request.POST.get('password'))
+            if product_master == 'True':
+                item.product_master_access = True
+            elif product_master == None:
+                item.product_master_access = False
             if photo != None and photo != "":
                 item.photo = photo
                 item.save(update_fields=['photo', ])
@@ -929,7 +956,7 @@ def update_employee(request,id):
             if upload_pancard != None and upload_pancard != "":
                 item.upload_pancard = upload_pancard
                 item.save(update_fields=['upload_pancard', ])
-            item.save(update_fields=['professional_email_password','professional_email','pancard','aadhar_card','password_text','mobile','email','employee_number', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','password'])
+            item.save(update_fields=['professional_email_password','product_master_access','professional_email','pancard','aadhar_card','password_text','mobile','email','employee_number', 'profile_name','role','group','is_deleted','modules_assigned','bank_name','account_number','branch_name','ifsc_code','password'])
             return redirect('/employee_list/')
     context = {
         'form': form,
