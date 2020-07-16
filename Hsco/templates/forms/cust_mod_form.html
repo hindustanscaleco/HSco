@@ -672,6 +672,7 @@ Format : (contact no)
         <hr style="background-color: gray;">
 
 <script>
+
           function on_gst(){
                 gst_selected = document.getElementById("gst_id").checked;
                 if (gst_selected == true){
@@ -740,14 +741,17 @@ Format : (contact no)
               else{
                   if (mode == 'Razorpay'){
                   document.getElementById("gst_id").checked = true;
+                  $('#bill_no').attr('required', '');
+
                   }
                   else{
                     document.getElementById("gst_id").checked = false;
+                    $('#bill_no').removeAttr('required', '');
+
                   }
                   x.style.display = "none";
                   y.style.display = "none";
                   z.style.display = "none";
-                  $('#bill_no').attr('required', '');
 
                   $('#credit_authorised_by_id').removeAttr('required', '');
                   $('#credit_pending_amount_id').removeAttr('required', '');
