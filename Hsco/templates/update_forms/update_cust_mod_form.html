@@ -693,12 +693,22 @@ function myFunction() {
 <input hidden id="gst_check" value="{{purchase_id_id.is_gst}}" >
 
       <script>
+      function on_gst(){
+                gst_selected = document.getElementById("gst_id").checked;
+                if (gst_selected == true){
+                      $('#bill_no').attr('required', '');
+                }
+                else{
+                      $('#bill_no').removeAttr('required', '');
+                }
+          }
                 show();
 
               var gst_check = document.getElementById("gst_check").value;
                 if (gst_check == True){
                   document.getElementById("gst_id").checked = true;
                 }
+
           function show(){
               var mode = document.getElementById("payment_mode_id").value;
               var x = document.getElementById("payment_cheque2");
@@ -714,6 +724,7 @@ function myFunction() {
                   $('#bank_name2').attr('required', '');
                   $('#cheque_no2').attr('required', '');
                   $('#cheque_date2').attr('required', '');
+                  $('#bill_no').attr('required', '');
 
                   $('#credit_authorised_by_id').removeAttr('required', '');
                   $('#credit_pending_amount_id').removeAttr('required', '')
@@ -731,6 +742,7 @@ function myFunction() {
 
                   $('#neft_bank_name2').attr('required', '');
                   $('#neft_date2').attr('required', '');
+                  $('#bill_no').attr('required', '');
 
                   $('#credit_authorised_by_id').removeAttr('required', '');
                   $('#credit_pending_amount_id').removeAttr('required', '')
@@ -759,9 +771,13 @@ function myFunction() {
               else{
                   if (mode == 'Razorpay'){
                     document.getElementById("gst_id").checked = true;
+                                      $('#bill_no').attr('required', '');
+
                   }
                   else{
                     document.getElementById("gst_id").checked = false;
+                                        $('#bill_no').removeAttr('required', '');
+
                   }
                   x.style.display = "none";
                   y.style.display = "none";
