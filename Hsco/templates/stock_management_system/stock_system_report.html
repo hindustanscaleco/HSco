@@ -9,27 +9,15 @@
 
 
   <title>HSCO</title>
-
-     <link href=
-'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css'
-          rel='stylesheet'>
-
-    <script src=
-"https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" >
-    </script>
-
-    <script src=
-"https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" >
-    </script>
-
-
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
 </head>
 
 <body id="page-top">
@@ -60,9 +48,7 @@ color:;
   color: black;
 
   }
-.ui-datepicker-calendar {
-    display: none;
-    }
+
 </style>
 
  <style>
@@ -171,15 +157,12 @@ else{
 
     <div class="col-md-2">
    <div class="custom-control ">
-<input  name="from_month"   required class="date-picker" >
+<input type="month" name="from_month" required placeholder="Search 1" class="form-control">
+
 </div>
   </div>
 
 
-
-<style>
-
-</style>
 
     <label class="col-md-1 control-label">To(Month):
 
@@ -189,7 +172,7 @@ else{
 
     <div class="col-md-2">
 <div class="custom-control">
-<input  name="to_month" required placeholder="Search 1" class="date-picker">
+<input type="month" name="to_month" required placeholder="Search 1" class="form-control">
 </div>
   </div>
 
@@ -609,41 +592,6 @@ else{
     </div>
   </div>
 
-<script type="text/javascript">
-$(document).ready(function(){
-    $('.date-picker').datepicker( {
-            changeMonth: true,
-            changeYear: true,
-            showButtonPanel: true,
-            dateFormat: 'MM yy',
-            onClose: function(dateText, inst) {
-
-
-
-                function isDonePressed(){
-                                return ($('#ui-datepicker-div').html().indexOf('ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all ui-state-hover') > -1);
-                            }
-
-                            if (isDonePressed()){
-
-                                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                                $(this).datepicker('setDate', new Date(year, month, 1));
-                                 console.log('Done is pressed')
-
-                            }
-
-
-
-            }
-        });
-    });
-	$('.date-picker').datepicker();
-
-
-</script>
-
-
   <script>
 
 $('.item-content').hide();
@@ -776,6 +724,7 @@ function myFunction() {
   	document.getElementById("shift2").href = c;
 }
 </script>
+
 
 
 
