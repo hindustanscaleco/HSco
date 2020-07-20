@@ -10,7 +10,9 @@
 
   <title>HSCO</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
   <!-- Custom fonts for this template-->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" rel="stylesheet" type="text/css">
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -147,6 +149,7 @@ else{
 </script>
     <form class="well form-horizontal" action="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
 
+
 <fieldset>
 
 <div class="form-group row">
@@ -157,7 +160,7 @@ else{
 
     <div class="col-md-2">
    <div class="custom-control ">
-<input type="month" name="from_month" required placeholder="Search 1" class="form-control">
+    <input type="text" class="form-control form-control-1 input-sm from" name="from_month" required>
 
 </div>
   </div>
@@ -172,9 +175,44 @@ else{
 
     <div class="col-md-2">
 <div class="custom-control">
-<input type="month" name="to_month" required placeholder="Search 1" class="form-control">
+    <input type="text" class="form-control form-control-1 input-sm from" name="to_month" required>
 </div>
   </div>
+
+<!--    Do not remove the datepicker script.-->
+
+
+<script>
+    var startDate = new Date();
+var fechaFin = new Date();
+var FromEndDate = new Date();
+var ToEndDate = new Date();
+
+
+
+
+$('.from').datepicker({
+    autoclose: true,
+    minViewMode: 1,
+    format: 'mm/yyyy'
+}).on('changeDate', function(selected){
+        startDate = new Date(selected.date.valueOf());
+        startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+        $('.to').datepicker('setStartDate', startDate);
+    });
+
+$('.to').datepicker({
+    autoclose: true,
+    minViewMode: 1,
+    format: 'mm/yyyy'
+}).on('changeDate', function(selected){
+        FromEndDate = new Date(selected.date.valueOf());
+        FromEndDate.setDate(FromEndDate.getDate(new Date(selected.date.valueOf())));
+        $('.from').datepicker('setEndDate', FromEndDate);
+    });
+
+
+</script>
 
   <div class="col-md-2">
   <select class="form-control btn btn-secondary" id="cars" name="select_type">
