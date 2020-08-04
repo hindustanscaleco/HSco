@@ -88,8 +88,7 @@ td {
   }
 
 table {
-    display: block;
-    overflow-x: auto;
+    overflow-x: scroll;
     white-space: nowrap;
 }
 
@@ -241,7 +240,17 @@ $('.to').datepicker({
 
             </center>
             <hr>
+                {% if select_type == 'Day' %}
 
+<div class="col-md-12">
+<table >
+        <td   bgcolor="green"><center>Purchase</center></td>
+        <td  bgcolor="yellow"><center>Sales</center></td>
+        <td  bgcolor="lightblue"><center>Transfer</center></td>
+        <td  bgcolor="orange"><center>Closing Stock</center></td>
+</table>
+</div>
+            {% endif %}
                         <div class="row col-md-12">
 <a id="shift2" href="#"><button class="btn btn-dark" onclick="yourFunction()" style="opacity: 0.9; position:fixed; margin-left:81%;"><i class="fa fa-arrow-up" aria-hidden="true"></i></button></a>
 
