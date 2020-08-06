@@ -88,8 +88,7 @@ td {
   }
 
 table {
-    display: block;
-    overflow-x: auto;
+    overflow-x: scroll;
     white-space: nowrap;
 }
 
@@ -241,7 +240,17 @@ $('.to').datepicker({
 
             </center>
             <hr>
+                {% if select_type == 'Day' %}
 
+<div class="col-md-12">
+<table >
+        <td   bgcolor="green"><center>Purchase</center></td>
+        <td  bgcolor="yellow"><center>Sales</center></td>
+        <td  bgcolor="lightblue"><center>Transfer</center></td>
+        <td  bgcolor="orange"><center>Closing Stock</center></td>
+</table>
+</div>
+            {% endif %}
                         <div class="row col-md-12">
 <a id="shift2" href="#"><button class="btn btn-dark" onclick="yourFunction()" style="opacity: 0.9; position:fixed; margin-left:81%;"><i class="fa fa-arrow-up" aria-hidden="true"></i></button></a>
 
@@ -343,8 +352,10 @@ $('.to').datepicker({
         <td></td>
          {% for obj in item.gt_list %}
         <td class="closing_stock_day{{item.sub_sub_category}}" style="background-color: orange;cursor: pointer;">{{obj.closing_stock}}</td>
+{% if forloop.last %}
+                <td >{{obj.closing_stock}}</td>
+{% endif %}
                     {% endfor %}
-        <td id="closing_stock_day{{item.sub_sub_category}}"></td>
 
     </tr>
                   {% else %}
@@ -392,9 +403,11 @@ $('.to').datepicker({
         <td></td>
         <td></td>
          {% for obj in item.gt_list %}
-        <td class="closing_stock_day{{item.sub_category}}" style="background-color: orange;cursor: pointer;">{{obj.closing_stock}}</td>
+        <td class="closing_stock_day1{{item.sub_sub_category}}" style="background-color: orange;cursor: pointer;">{{obj.closing_stock}}</td>
+        {% if forloop.last %}
+                <td >{{obj.closing_stock}}</td>
+{% endif %}
                     {% endfor %}
-        <td id="closing_stock_day{{item.sub_category}}"></td>
 
     </tr>
                   {% endif %}
@@ -402,7 +415,6 @@ $('.to').datepicker({
         get_subcat("purchase_day{{item.sub_category}}");
         get_subcat("sales_day{{item.sub_category}}");
         get_subcat("transfer_day{{item.sub_category}}");
-        get_subcat("closing_stock_day{{item.sub_category}}");
 
 
 </script>
@@ -411,7 +423,6 @@ $('.to').datepicker({
         get_subcat("purchase_day{{item.sub_sub_category}}");
         get_subcat("sales_day{{item.sub_sub_category}}");
         get_subcat("transfer_day{{item.sub_sub_category}}");
-        get_subcat("closing_stock_day{{item.sub_sub_category}}");
 
 
 </script>

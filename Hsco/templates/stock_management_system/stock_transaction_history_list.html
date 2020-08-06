@@ -242,7 +242,8 @@ td {
 
     <table >
         <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Transaction ID</td>
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Date</td>
+            <td style="border: 0px solid gray;">Transaction ID</td>
             <td style="border: 0px solid gray;">Work Station</td>
             <td style="border: 0px solid gray;">Transaction Status</td>
             <td style="border: 0px solid gray;">From</td>
@@ -252,6 +253,7 @@ td {
         {% for list in trans_history %}
         {% if list.goods_req_id  %}
 <tr style="cursor: pointer;" onclick="location.href='/stock_transaction_history/{{list.goods_req_id.req_from_godown.id}}/{{list.id}}'">
+            <td style="border: 0px solid gray;">{{list.entry_timedate}}</td>
             <td style="border: 0px solid gray;">{{list.id}}</td>
             <td style="border: 0px solid gray;">
                 {% if list.goods_req_id.outside_workstation == False  %}
@@ -268,6 +270,7 @@ td {
         </tr>
         {% elif list.accept_goods_id  %}
 <tr style="cursor: pointer;" onclick="location.href='/stock_transaction_history/{{list.accept_goods_id.from_godown.id}}/{{list.id}}'">
+            <td style="border: 0px solid gray;">{{list.entry_timedate}}</td>
             <td style="border: 0px solid gray;">{{list.id}}</td>
             <td style="border: 0px solid gray;">Own WorkStation</td>
             <td style="border: 0px solid gray;">Purchase Goods</td>
@@ -278,6 +281,7 @@ td {
         </tr>
         {% elif list.purchase_product_id  %}
 <tr style="cursor: pointer;" onclick="location.href='/stock_transaction_history/{{list.purchase_product_id.godown_id.id}}/{{list.pk}}'">
+            <td style="border: 0px solid gray;">{{list.entry_timedate}}</td>
             <td style="border: 0px solid gray;">{{list.id}}</td>
             <td style="border: 0px solid gray;">Own WorkStation</td>
             <td style="border: 0px solid gray;">Sales</td>
@@ -287,6 +291,7 @@ td {
         </tr>
         {% elif list.adjustment_quantity != 0.0  %}
 <tr style="cursor: pointer;" onclick="">
+            <td style="border: 0px solid gray;">{{list.entry_timedate}}</td>
             <td style="border: 0px solid gray;">{{list.id}}</td>
             <td style="border: 0px solid gray;">Own WorkStation</td>
             <td style="border: 0px solid gray;">Adjustment</td>
@@ -297,6 +302,7 @@ td {
         </tr>
         {% elif list.loss_quantity != 0.0  %}
 <tr style="cursor: pointer;" onclick="">
+            <td style="border: 0px solid gray;">{{list.entry_timedate}}</td>
             <td style="border: 0px solid gray;">{{list.id}}</td>
             <td style="border: 0px solid gray;">Own WorkStation</td>
             <td style="border: 0px solid gray;">Loss</td>

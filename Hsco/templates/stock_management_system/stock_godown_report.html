@@ -101,6 +101,10 @@ td {
   padding: 5px;
 
   }
+table {
+    overflow-x: auto;
+    white-space: nowrap;
+}
 
 
             </style>
@@ -124,7 +128,7 @@ td {
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid" >
+            <div class="container-fluid" >
          <center>  <h1>Stock Module Report</h1>  </center>
 
 
@@ -248,6 +252,17 @@ $('.to').datepicker({
 
             </center>
             <hr>
+                {% if select_type == 'Day' %}
+
+<div class="col-md-12">
+<table  >
+        <td   bgcolor="green"><center>Purchase</center></td>
+        <td  bgcolor="yellow"><center>Sales</center></td>
+        <td  bgcolor="lightblue"><center>Transfer</center></td>
+        <td  bgcolor="orange"><center>Closing Stock</center></td>
+</table>
+</div>
+                        {% endif %}
 
             <div class="row col-md-12">
 <a id="shift2" href="#"><button class="btn btn-dark" onclick="yourFunction()" style="opacity: 0.9; position:fixed; margin-left:81%;"><i class="fa fa-arrow-up" aria-hidden="true"></i></button></a>
@@ -258,10 +273,8 @@ $('.to').datepicker({
 <div class="row col-md-12"><a id="shift" href="#"><button class="btn btn-dark" onclick="myFunction()" style="opacity: 0.9; position:fixed; margin-left:81%;"><i class="fa fa-arrow-down" aria-hidden="true"></i></button></a></div>
 
 
-
-
     {% if select_type == 'Day' %}
-              <table id="testTable1">
+              <table id="testTable1" >
                     <tr style="background-color: gray; color: white;">
 
                     <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Scale Type  </td>
@@ -348,8 +361,10 @@ $('.to').datepicker({
         <td></td>
          {% for obj in item.gt_list %}
         <td class="closing_stock_day{{item.product_id.sub_sub_category}}" style="background-color: orange; ">{{obj.closing_stock}}</td>
+        {% if forloop.last %}
+                <td >{{obj.closing_stock}}</td>
+{% endif %}
                     {% endfor %}
-        <td id="closing_stock_day{{item.product_id.sub_sub_category}}"></td>
 
     </tr>
                   {% else %}
@@ -399,8 +414,10 @@ $('.to').datepicker({
         <td></td>
          {% for obj in item.gt_list %}
         <td class="closing_stock_day{{item.product_id.sub_category}}" style="background-color: orange; ">{{obj.closing_stock}}</td>
+        {% if forloop.last %}
+                <td >{{obj.closing_stock}}</td>
+{% endif %}
                     {% endfor %}
-        <td id="closing_stock_day{{item.product_id.sub_category}}"></td>
 
     </tr>
 {% endif %}
@@ -408,7 +425,6 @@ $('.to').datepicker({
 get_subcat("purchase_day{{item.product_id.sub_category}}");
 get_subcat("sales_day{{item.product_id.sub_category}}");
 get_subcat("transfer_day{{item.product_id.sub_category}}");
-get_subcat("closing_stock_day{{item.product_id.sub_category}}");
 
 
 </script>
@@ -417,7 +433,6 @@ get_subcat("closing_stock_day{{item.product_id.sub_category}}");
         get_subcat("purchase_day{{item.product_id.sub_sub_category}}");
         get_subcat("sales_day{{item.product_id.sub_sub_category}}");
         get_subcat("transfer_day{{item.product_id.sub_sub_category}}");
-        get_subcat("closing_stock_day{{item.product_id.sub_sub_category}}");
 
 
 </script>
@@ -429,7 +444,7 @@ get_subcat("closing_stock_day{{item.product_id.sub_category}}");
 {% endfor %}
            </table>
             {% else %}
-              <table id="testTable2">
+              <table id="testTable2"  >
                     <tr style="background-color: gray; color: white;">
 
                     <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Scale Type  </td>
