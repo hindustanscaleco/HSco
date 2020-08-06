@@ -128,7 +128,7 @@ table {
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid" >
+            <div class="container-fluid" >
          <center>  <h1>Stock Module Report</h1>  </center>
 
 
@@ -361,8 +361,10 @@ $('.to').datepicker({
         <td></td>
          {% for obj in item.gt_list %}
         <td class="closing_stock_day{{item.product_id.sub_sub_category}}" style="background-color: orange; ">{{obj.closing_stock}}</td>
+        {% if forloop.last %}
+                <td >{{obj.closing_stock}}</td>
+{% endif %}
                     {% endfor %}
-        <td id="closing_stock_day{{item.product_id.sub_sub_category}}"></td>
 
     </tr>
                   {% else %}
@@ -412,8 +414,10 @@ $('.to').datepicker({
         <td></td>
          {% for obj in item.gt_list %}
         <td class="closing_stock_day{{item.product_id.sub_category}}" style="background-color: orange; ">{{obj.closing_stock}}</td>
+        {% if forloop.last %}
+                <td >{{obj.closing_stock}}</td>
+{% endif %}
                     {% endfor %}
-        <td id="closing_stock_day{{item.product_id.sub_category}}"></td>
 
     </tr>
 {% endif %}
@@ -421,7 +425,6 @@ $('.to').datepicker({
 get_subcat("purchase_day{{item.product_id.sub_category}}");
 get_subcat("sales_day{{item.product_id.sub_category}}");
 get_subcat("transfer_day{{item.product_id.sub_category}}");
-get_subcat("closing_stock_day{{item.product_id.sub_category}}");
 
 
 </script>
@@ -430,7 +433,6 @@ get_subcat("closing_stock_day{{item.product_id.sub_category}}");
         get_subcat("purchase_day{{item.product_id.sub_sub_category}}");
         get_subcat("sales_day{{item.product_id.sub_sub_category}}");
         get_subcat("transfer_day{{item.product_id.sub_sub_category}}");
-        get_subcat("closing_stock_day{{item.product_id.sub_sub_category}}");
 
 
 </script>
