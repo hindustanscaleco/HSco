@@ -13,7 +13,7 @@
     <tr style="background-color: white; color: grey;">
         <td style="border-radius: 0px 0px 0px 0px; border: 1px solid gray;">{{forloop.counter}}. </td>
         {% if type == 'sales' %}
-        <td style="border: 1px solid gray;"><a target="_blank" href="/update_customer_details/{{item.purchase_product_id.purchase_id.id}}">{{item.purchase_product_id.purchase_id.id}}</a></td>
+        <td style="border: 1px solid gray;"><a target="_blank" href="/update_customer_details/{{item.purchase_product_id.purchase_id.id}}">{{item.purchase_product_id.purchase_no}}</a></td>
         <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{item.entry_timedate}}</td>
         <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{item.log_entered_by}}</td>
         <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{item.purchase_quantity}}</td>
