@@ -59,6 +59,7 @@ color:;
 	<style>
 div.sticky {
   position: -webkit-sticky;
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   background-color: yellow;
@@ -67,7 +68,13 @@ div.sticky {
 }
 </style>
 
-
+<style>
+div.ex1 {
+  width: 100%;
+  height: 90%;
+  overflow: scroll;
+}
+</style>
  <style>
                 .border_class {
                 border:1px solid black;
@@ -101,9 +108,11 @@ td {
   padding: 5px;
 
   }
+
 table {
-    overflow-x: auto;
+    overflow-x: scroll;
     white-space: nowrap;
+    overflow: auto;
 }
 
 
@@ -254,7 +263,7 @@ $('.to').datepicker({
             <hr>
                 {% if select_type == 'Day' %}
 
-<div class="col-md-12">
+<div class="col-md-12 ex1">
 <table  >
         <td   bgcolor="green"><center>Purchase</center></td>
         <td  bgcolor="yellow"><center>Sales</center></td>
