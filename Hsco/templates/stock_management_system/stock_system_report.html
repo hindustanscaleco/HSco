@@ -52,6 +52,14 @@ color:;
   }
 
 </style>
+<style>
+div.ex1 {
+  overflow: scroll;
+  height: 800px;
+  width: 1250px;
+  overflow-y: scroll;
+}
+</style>
 
  <style>
                 .border_class {
@@ -87,11 +95,6 @@ td {
 
   }
 
-table {
-    overflow-x: scroll;
-    white-space: nowrap;
-    display : block;
-}
 
 
             </style>
@@ -265,7 +268,9 @@ $('.to').datepicker({
 
 
     {% if select_type == 'Day' %}
+            <div class="ex1">
               <table id="testTable1">
+
                     <tr style="background-color: gray; color: white;">
 
                     <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Scale Type  </td>
@@ -276,6 +281,7 @@ $('.to').datepicker({
                     <td style=" width: 20%; border: 0px solid gray;"> Opening Stock</td>
                     <td colspan="30" style=" width: 15%; border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Date</td>
                 </tr>
+
               
 {% for outerloop in pro_list %}
 {% for item in outerloop %}
@@ -436,7 +442,9 @@ $('.to').datepicker({
 {% endfor %}
 {% endfor %}
            </table>
+            </div>
 {% else %}
+            <div class="ex1">
               <table id="testTable2">
                     <tr style="background-color: gray; color: white;">
 
@@ -571,6 +579,7 @@ $('.to').datepicker({
 {% endfor %}
 {% endfor %}
            </table>
+            </div>
     {% endif %}
 <!--</div>-->
         </div>
