@@ -596,7 +596,6 @@ def dashboard(request):
 def graph(request):
     return render(request,"graphs/sales_graph.html",)
 
-@login_required(login_url='/')
 def update_admin(request,id):
     admin_id = SiteUser.objects.get(id=id)
     form = SiteUser_Form(request.POST or None)
