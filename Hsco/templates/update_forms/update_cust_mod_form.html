@@ -465,8 +465,13 @@ function myFunction() {
 <div class="col xl-12">
 <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
-<input type="checkbox" class="custom-control-input" id="gst_id"  name="gst_id" {% if purchase_id_id.is_gst == True %} checked {% endif %}   >
+    {% if purchase_id_id.is_gst == True %}
+<input type="checkbox" class="custom-control-input" id="gst_id"  name="gst_id"  checked   >
   <label class="custom-control-label" for="gst_id"></label>
+    {% else %}
+    <input type="checkbox" class="custom-control-input" id="gst_id"  name="gst_id"    >
+  <label class="custom-control-label" for="gst_id"></label>
+    {% endif %}
   </div>
 </div>
 </div>
