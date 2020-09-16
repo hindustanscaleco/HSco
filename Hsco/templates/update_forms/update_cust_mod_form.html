@@ -721,7 +721,6 @@ function myFunction() {
               var z = document.getElementById("payent_credit2");
 
               if (mode == 'Cheque'){
-                  document.getElementById("gst_id").checked = true;
                   y.style.display = "none";
                   z.style.display = "none";
                   x.style.display = "block";
@@ -736,11 +735,9 @@ function myFunction() {
 
                   $('#neft_bank_name2').removeAttr('required', '');
                   $('#neft_date2').removeAttr('required', '');
-                  document.getElementById("gst_id").checked = true;
               }
 
              else if (mode == 'NEFT'){
-                  document.getElementById("gst_id").checked = true;
                   x.style.display = "none";
                   z.style.display = "none";
                   y.style.display = "block";
@@ -755,7 +752,6 @@ function myFunction() {
                   $('#bank_name2').removeAttr('required', '');
                   $('#cheque_no2').removeAttr('required', '');
                   $('#cheque_date2').removeAttr('required', '');
-                  document.getElementById("gst_id").checked = true;
               }
               else if (mode == 'Credit'){
                   x.style.display = "none";
@@ -775,7 +771,6 @@ function myFunction() {
               }
               else{
                   if (mode == 'Razorpay'){
-                    document.getElementById("gst_id").checked = true;
                                       $('#bill_no').attr('required', '');
 
                   }
