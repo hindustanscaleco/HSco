@@ -334,7 +334,7 @@ $('.to').datepicker({
         <td></td>
                   {% for obj in item.gt_list %}
 
-        <td class="purchase_day{{item.product_id.sub_sub_category}}" style="background-color: green; cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','purchase')">{{obj.accept_goods_quantity}}</td>
+        <td class="purchase_day{{item.product_id.sub_sub_category}}" style="background-color: green; cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate|date:'Y-m-d'}}','{{item.pk}}','purchase')">{{obj.accept_goods_quantity}}</td>
 
         {% endfor %}
                 <td id="purchase_day{{item.product_id.sub_sub_category}}" ></td>
@@ -347,7 +347,7 @@ $('.to').datepicker({
         <td></td>
         <td></td>
         {% for obj in item.gt_list %}
-        <td class="sales_day{{item.product_id.sub_sub_category}}" style="background-color: yellow;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','sales')"> {{obj.sales_quantity}}</td>
+        <td class="sales_day{{item.product_id.sub_sub_category}}" style="background-color: yellow;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate|date:'Y-m-d'}}','{{item.pk}}','sales')"> {{obj.sales_quantity}}</td>
         {% endfor %}
                         <td id="sales_day{{item.product_id.sub_sub_category}}" ></td>
 
@@ -359,7 +359,7 @@ $('.to').datepicker({
         <td></td>
         <td></td>
          {% for obj in item.gt_list %}
-        <td class="transfer_day{{item.product_id.sub_sub_category}}" style="background-color: lightblue;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','transfer')">{{obj.goods_request_quantity}}</td>
+        <td class="transfer_day{{item.product_id.sub_sub_category}}" style="background-color: lightblue;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate|date:'Y-m-d'}}','{{item.pk}}','transfer')">{{obj.goods_request_quantity}}</td>
                     {% endfor %}
                         <td id="transfer_day{{item.product_id.sub_sub_category}}" ></td>
 
@@ -387,7 +387,7 @@ $('.to').datepicker({
         <td></td>
                   {% for obj in item.gt_list %}
 
-        <td class="purchase_day{{item.product_id.sub_category}}" style="background-color: green; cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','purchase')">{{obj.accept_goods_quantity}}</td>
+        <td class="purchase_day{{item.product_id.sub_category}}" style="background-color: green; cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate|date:'Y-m-d'}}','{{item.pk}}','purchase')">{{obj.accept_goods_quantity}}</td>
 
         {% endfor %}
                 <td id="purchase_day{{item.product_id.sub_category}}" ></td>
@@ -400,7 +400,7 @@ $('.to').datepicker({
         <td></td>
         <td></td>
         {% for obj in item.gt_list %}
-        <td class="sales_day{{item.product_id.sub_category}}" style="background-color: yellow;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','sales')"> {{obj.sales_quantity}}</td>
+        <td class="sales_day{{item.product_id.sub_category}}" style="background-color: yellow;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate|date:'Y-m-d'}}','{{item.pk}}','sales')"> {{obj.sales_quantity}}</td>
         {% endfor %}
                         <td id="sales_day{{item.product_id.sub_category}}" ></td>
 
@@ -412,7 +412,7 @@ $('.to').datepicker({
         <td></td>
         <td></td>
          {% for obj in item.gt_list %}
-        <td class="transfer_day{{item.product_id.sub_category}}" style="background-color: lightblue;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate}}','{{item.pk}}','transfer')">{{obj.goods_request_quantity}}</td>
+        <td class="transfer_day{{item.product_id.sub_category}}" style="background-color: lightblue;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate|date:'Y-m-d'}}','{{item.pk}}','transfer')">{{obj.goods_request_quantity}}</td>
                     {% endfor %}
                         <td id="transfer_day{{item.product_id.sub_category}}" ></td>
 
@@ -530,7 +530,7 @@ get_subcat("transfer_day{{item.product_id.sub_category}}");
           <td class="faulty_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" id="faulty{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
           <td class="adjust_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" id="adjust{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
           <td class="losses_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" id="losses{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
-          <td class="closing_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" id="closing{{item.product_id.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="closing_subcat{{item.product_id.scale_type.id}}_{{item.product_id.main_category.id}}" id="closing{{item.product_id.sub_category}}" style="width: auto;">{{item.closing_stock}}</td>
                   </tr>
 {% endifchanged %}
               <tr style="cursor: pointer;"class="col-xl-12 col-md-12 mb-12">
@@ -548,7 +548,7 @@ get_subcat("transfer_day{{item.product_id.sub_category}}");
         <td class="faulty{{item.product_id.sub_category}}" style="width: auto;"> {{item.faulty_quantity_sum}} </td>
         <td class="adjust{{item.product_id.sub_category}}" style="width: auto;"> {{item.adjustment_quantity_sum}} </td>
         <td class="losses{{item.product_id.sub_category}}" style="width: auto;"> {{item.loss_quantity_sum}}</td>
-        <td class="closing{{item.product_id.sub_category}}" style="width: auto;">{{item.closing_stock_sum}}</td>
+        <td class="closing{{item.product_id.sub_category}}" style="width: auto;">{{item.closing_stock}}</td>
 
               </tr>
 <script>
