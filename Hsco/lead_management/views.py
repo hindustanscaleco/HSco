@@ -3138,8 +3138,7 @@ def final_lead_report(request):
             repairing_data = []
             for i in row:
                 repairing_data.append(list(i))
-
-            final_row = [list(x) for x in row]
+                final_row = [list(x) for x in row]
             repairing_data = []
             for i in row:
                 repairing_data.append(list(i))
@@ -3377,9 +3376,12 @@ def final_lead_report_test(request):
         for lead in lead_list:
             print(lead)
 
-
-            if 'owner_of_opportunity_id' in lead_list :
-                lead['owner_of_opportunity_id'] = SiteUser.objects.get(id=lead['owner_of_opportunity_id']).profile_name
+            try :
+                owner = SiteUser.objects.get(id=lead['owner_of_opportunity_id']).profile_name
+                del lead['owner_of_opportunity_id']
+                lead['owner_of_opportunity_id'] = owner
+            except :
+                print('no lead owner id error')
 
             names = Pi_History.objects.filter(lead_id_id=lead['id']).values()
             names2 = History_followup.objects.filter(lead_id_id=lead['id']).values()
