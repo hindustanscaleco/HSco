@@ -166,11 +166,11 @@ td {
 
 
                                             <tr>
-                                                 <td>{{ val.pi_history_file }}</td>
+                                                 <td>{{ val.id }}</td>
+                                                <td><a href="http://139.59.76.87/media/{{ val.pi_history_file }}" >PI File</a></td>
                                                 <td>{{ val.medium_of_selection }}</td>
                                                 <td>{{ val.call_detail }}</td>
                                                 <td>{{ val.entry_timedate_time }}</td>
-                                                <td>{{ val.log_entered_by }}</td>
                                             </tr>
 
                                         {% endfor %}
