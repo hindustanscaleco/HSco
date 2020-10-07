@@ -3080,7 +3080,7 @@ def report_2(request):
 
         # return redirect('/final_lead_report/')
         return redirect('/final_lead_report_test/')
-    return render(request,'lead_management/lead_report_form.html')
+    return render(request,'lead_management/report_2.html')
 
 @login_required(login_url='/')
 def final_lead_report(request):
