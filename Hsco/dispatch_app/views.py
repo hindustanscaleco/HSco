@@ -525,7 +525,7 @@ def final_report_dis_mod(request):
     with connection.cursor() as cursor:
         cursor.execute(
             "SELECT  " + string + " from dispatch_app_dispatch , customer_app_customer_details"
-                                  "  where dispatch_app_dispatch.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + start_date + "' and '" + end_date + "';")
+                                  "  where dispatch_app_dispatch.crm_no_id = customer_app_customer_details.id and dispatch_app_dispatch.entry_timedate between '" + start_date + "' and '" + end_date + "';")
         row = cursor.fetchall()
         final_row = [list(x) for x in row]
         list3 = []
