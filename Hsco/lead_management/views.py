@@ -42,7 +42,7 @@ from django.core.mail import get_connection
 from django.core.mail.message import EmailMessage
 
 from stock_management_system_app.models import Godown,GodownProduct,GodownTransactions
-
+import re
 
 today_month = datetime.now().month
 host_file = 'smtp.gmail.com'
@@ -1421,6 +1421,7 @@ def update_view_lead(request,id):
         'address': customer_id.address,
         'customer_industry': customer_id.customer_industry,
         'customer_gst_no': customer_id.customer_gst_no,
+        'optional_email': customer_id.optional_email,
     }
     deal_details_initial_data = {
         'current_stage': lead_id.current_stage,
@@ -1893,6 +1894,7 @@ def update_view_lead(request,id):
                 request.session['context_sess'] = context22
                 return redirect('/update_view_lead/' + str(id))
 
+        # send pi mail manually
         if 'file_pdf' in request.POST and (email == 'True' or email == True) and email_type == 'internal_pi':
             try:
                 del request.session['download_pdf_exist']
@@ -1916,8 +1918,8 @@ def update_view_lead(request,id):
                 with get_connection(
                         host=host_file,
                         port=587,
-                        username=settings.EMAIL_HOST_USER,
-                        password=settings.EMAIL_HOST_PASSWORD,
+                        username=settings.EMAIL_HOST_USER3,
+                        password=settings.EMAIL_HOST_PASSWORD3,
                         use_tls=True
                 ) as connection:
 
@@ -1926,9 +1928,17 @@ def update_view_lead(request,id):
                     We thank you for showing interest in HSCo  products. Attached is the Proforma Invoice that you have requested.
     
                     '''
+                    #adding optional emails in cc for internal pi
+                    optional_email = re.sub(r"[\n\t\s]*", "", lead_id.customer_id.optional_email)           # remove tabs,spaces and new lines in optional email
+                    optional_email = optional_email.split(",")
+
+
+                    for _email in optional_email:
+                        cc_list.append(_email)
+
 
                     email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request,extra),
-                                          settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id,],connection=connection,cc=cc_list)
+                                          settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id,],connection=connection,cc=cc_list)
                     email_send.content_subtype = 'html'
                     email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
                     email_send.send()
@@ -1959,7 +1969,7 @@ def update_view_lead(request,id):
                 messages.success(request, "Email Sent on email Id: "+customer_id.customer_email_id)
             except Exception as e:
                 messages.error(request, str(e))
-            print("mail sending...")
+                print(e)
             print("mail sending...")
 
 
@@ -1974,6 +1984,7 @@ def update_view_lead(request,id):
                 pass
             return redirect('/update_view_lead/' + str(lead_id.id))
 
+        # customer details form
         if 'submit' in request.POST:
             customer_name = request.POST.get('customer_name')
             company_name = request.POST.get('company_name')
@@ -1982,20 +1993,8 @@ def update_view_lead(request,id):
             customer_industry = request.POST.get('customer_industry')
             customer_email_id = request.POST.get('customer_email_id')
             customer_gst_no = request.POST.get('customer_gst_no')
-            current_stage = request.POST.get('current_stage')
-            new_existing_customer = request.POST.get('new_existing_customer')
-            date_of_initiation = request.POST.get('date_of_initiation')
-            channel = request.POST.get('channel')
-            requirement = request.POST.get('requirement')
-            upload_requirement_file = request.FILES.get('upload_requirement_file')
-            owner_of_opportunity = request.POST.get('owner_of_opportunity')
-            lost_reason = request.POST.get('lost_reason')
-            postponed_reason = request.POST.get('postponed_reason')
+            optional_email = request.POST.get('optional_email')
 
-            payment_channel = request.POST.get('payment_channel')
-            payment_receipt = request.POST.get('payment_receipt')
-            upload_pofile = request.POST.get('upload_pofile')
-            payment_received_date = request.POST.get('payment_received_date')
 
             del_all_sessions(request)
             request.session['expand_customer'] = True
@@ -2029,6 +2028,9 @@ def update_view_lead(request,id):
                 if customer_industry != '' and customer_industry != None:
                     item3.customer_industry = customer_industry
                     item3.save(update_fields=['customer_industry'])
+                if optional_email != '' and optional_email != None:
+                    item3.optional_email = optional_email
+                    item3.save(update_fields=['optional_email'])
                 Lead.objects.filter(id=id).update(customer_id=item3)
                 # Lead_Customer_Details.objects.filter(id=lead_id.customer_id).update()
 
@@ -2054,10 +2056,14 @@ def update_view_lead(request,id):
                 if customer_industry != '' and customer_industry != None:
                     item3.customer_industry = customer_industry
                     item3.save(update_fields=['customer_industry'])
+                if optional_email != '' and optional_email != None:
+                    item3.optional_email = optional_email
+                    item3.save(update_fields=['optional_email'])
 
             messages.success(request, 'Customer Details Saved Successfully!!!')
             return redirect('/update_view_lead/'+str(id))
 
+        # deal details form
         if 'submit1' in request.POST:                                            #for customer and deal details section
 
             new_existing_customer = request.POST.get('new_existing_customer')
@@ -2119,6 +2125,7 @@ def update_view_lead(request,id):
 
             return redirect('/update_view_lead/'+str(id))
 
+        #pi section form
         elif 'submit2' in request.POST:
             del_all_sessions(request)
             request.session['expand_pi_section'] = True
@@ -2201,6 +2208,13 @@ def update_view_lead(request,id):
                     history.log_entered_by = request.user.profile_name
                     history.medium_of_selection = 'Email'
                     history.save()
+
+                    # adding optional emails in cc for external pi
+                    optional_email = re.sub(r"[\n\t\s]*", "",lead_id.customer_id.optional_email)  # remove tabs,spaces and new lines in optional email
+                    optional_email = optional_email.split(",")
+                    for _email in optional_email:
+                        cc_list.append(_email)
+
                     try:
                         if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
                             messages.error(request,
@@ -2212,15 +2226,15 @@ def update_view_lead(request,id):
                         with get_connection(
                                 host=host_file,
                                 port=587,
-                                username=settings.EMAIL_HOST_USER,
-                                password=settings.EMAIL_HOST_PASSWORD,
+                                username=settings.EMAIL_HOST_USER3,
+                                password=settings.EMAIL_HOST_PASSWORD3,
                                 use_tls=True
                         ) as connection:
 
 
                             email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
                                                       user(request, extra),
-                                                      settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id],
+                                                      settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],
                                                       connection=connection,cc=cc_list)
                             email_send.content_subtype = 'html'
                             email_send.attach_file(history.pi_history_file.path)
@@ -2238,6 +2252,14 @@ def update_view_lead(request,id):
                     history.log_entered_by = request.user.profile_name
                     history.medium_of_selection = 'Email'
                     history.save()
+
+                    # adding optional emails in cc for external pi
+                    optional_email = re.sub(r"[\n\t\s]*", "",lead_id.customer_id.optional_email)  # remove tabs,spaces and new lines in optional email
+                    optional_email = optional_email.split(",")
+
+                    for _email in optional_email:
+                        cc_list.append(_email)
+                    
                     try:
                         if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
                             messages.error(request,
@@ -2249,14 +2271,14 @@ def update_view_lead(request,id):
                         with get_connection(
                                 host=host_file,
                                 port=587,
-                                username=settings.EMAIL_HOST_USER,
+                                username=settings.EMAIL_HOST_USER3,
                                 password=settings.EMAIL_HOST_PASSWORD,
                                 use_tls=True
                         ) as connection:
 
                             email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
                                                       user(request, extra),
-                                                      settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id],
+                                                      settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],
                                                       connection=connection,cc=cc_list)
                             email_send.content_subtype = 'html'
                             email_send.attach_file(history.pi_history_file.path)
@@ -2399,6 +2421,7 @@ def update_view_lead(request,id):
 
             return redirect('/update_view_lead/'+str(lead_id.id))
 
+        #follow up section form
         elif 'submit3' in request.POST:
             selected_fields = request.POST.getlist('checks[]')
             Follow_up_section.objects.filter(lead_id=id).update(fields=selected_fields)
@@ -2419,6 +2442,7 @@ def update_view_lead(request,id):
                     pass
                 return redirect('https://api.whatsapp.com/send?phone=+91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
+        #payment form
         if 'submit_payment' in request.POST:
             payment_channel = request.POST.get("payment_channel")
             payment_receipt = request.FILES.get("payment_receipt")

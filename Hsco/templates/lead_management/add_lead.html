@@ -197,7 +197,7 @@ Format : (company name)
                             </div>
                           </div>
 
-                                <label class="col-md-2 control-label">Customer Email ID</label>
+                                <label class="col-md-2 control-label">Customer Email ID: </label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
@@ -215,7 +215,15 @@ Format : (company name)
                                 {{ form.address }}
                             </div>
                             </div>
+<label class="col-md-2 control-label">Customer GST No</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form.customer_gst_no }}
                             </div>
+                             </div>
+
+                        </div>
 
     </div>
 
@@ -229,19 +237,19 @@ Format : (company name)
                             </div>
                              </div>
 
+<label class="col-md-2 control-label">Optional Email(Comma Separated): </label>
+                          <div class="col-md-3 inputGroupContainer">
+                          <div class="input-group">
+                          <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                            {{ form.optional_email }}
+                        </div>
+                        </div>
 
 
 
 
 
 
-                                <label class="col-md-2 control-label">Customer GST No</label>
-                              <div class="col-md-3 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-                                {{ form.customer_gst_no }}
-                            </div>
-                             </div>
                           </div>
     <br>
 
@@ -933,8 +941,8 @@ function choice1(select) {
     $.ajax({                       // initialize an AJAX request
         url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
         data: {
-          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
-
+          'item_id': select.options[select.selectedIndex].value,       // add the country id to the GET parameters
+          'type' :  'lead'
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
     $("#loaded_customer").html(data);

@@ -118,13 +118,22 @@ class Customer_detailForm(forms.ModelForm):
            }))
 
     address = forms.CharField(max_length=100, required=True,
-       widget=forms.TextInput(
+       widget=forms.Textarea(
            attrs={
                'type': 'textarea',
                'placeholder': "Address",
                'class': 'form-control',
 
            }))
+
+    optional_email = forms.CharField(max_length=100, required=True,
+      widget=forms.Textarea(
+          attrs={
+              'type': 'textarea',
+              'placeholder': "Optional Email(Comma Separated)",
+              'class': 'form-control',
+
+          }))
 
     customer_industry = forms.CharField(max_length=80, required=True,
     widget=forms.Select(
