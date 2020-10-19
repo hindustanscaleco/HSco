@@ -176,5 +176,5 @@ api = 'PF8MzCBOGTopfpYFlSZT'
 senderid = 'HSCALE'
 
 CRONJOBS = [
-    ('12 9 * * *','stock_management_system_app.cron_job_daily.hello')
+    ('6 16 * * *','stock_management_system_app.cron_job_daily.main')
 ]
