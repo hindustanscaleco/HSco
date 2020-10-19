@@ -11,7 +11,7 @@ from django.core.paginator import Paginator
 from email.mime.text import MIMEText
 from django.core.mail import send_mail, EmailMessage
 from lead_management.email_content import user
-from customer_app.models import Customer_Details
+from customer_app.models import Customer_Details, Lead_Customer_Details
 
 from purchase_app.views import check_admin_roles
 
@@ -35,6 +35,8 @@ from .serializers import CustomerSerializer
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
 from django.core.signals import request_finished
+
+
 
 @receiver(pre_save, sender=Repairing_after_sales_service)
 def repairing_main_handler(sender, instance, update_fields=None, **kwargs):
@@ -1975,15 +1977,20 @@ def load_reparing_manager(request):
 def load_customer(request):
     cust_id = request.GET.get('item_id')
 
-    cust_list = Customer_Details.objects.get(id=cust_id)
-    # serialize_cust_list = CustomerSerializer(cust_list)
-    # cust_list = CustomerSerializer.objects.get(id=cust_id)
+    # for lead management customer details is fetched from lead_customer_details
+    if request.GET.get('type') == 'lead':
+        cust_list = Lead_Customer_Details.objects.get(id=cust_id)
+    else:
+        cust_list = Customer_Details.objects.get(id=cust_id)
+
     context = {
         'cust_list': cust_list,
 
     }
 
     return render(request, 'AJAX/load_customer.html', context)
+
+
 
 
 @login_required(login_url='/')

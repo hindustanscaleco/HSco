@@ -341,7 +341,7 @@ myFunction225();
                             </div>
                           </div>
 
-                                <label class="col-md-2 control-label">Customer Email ID</label>
+                                <label class="col-md-2 control-label">Customer Email ID: </label>
                               <div class="col-md-5 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-at faicons"></i></span>
@@ -353,7 +353,29 @@ myFunction225();
 
                             <div class="form-group row">
 
-                                   <label class="col-md-2 control-label">Industry: *</label>
+
+
+                                <label class="col-md-2 control-label">Address: *</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-home faicons" aria-hidden="true"></i></span>
+                                  {{ form.address }}
+                            </div>
+                            </div>
+
+                                <label class="col-md-2 control-label">Optional Email(Comma Separated): </label>
+                          <div class="col-md-3 inputGroupContainer">
+                          <div class="input-group">
+                          <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                            {{ form.optional_email }}
+                        </div>
+                        </div>
+
+                          </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-md-2 control-label">Industry: *</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">
                               <span class="input-group-addon icon-border"><i class="fa fa-industry faicons"></i></span>
@@ -361,18 +383,6 @@ myFunction225();
                             </div>
                              </div>
 
-                                <label class="col-md-2 control-label">Address: *</label>
-                              <div class="col-md-5 inputGroupContainer">
-                              <div class="input-group">
-                              <span class="input-group-addon icon-border"><i class="fa fa-home faicons" aria-hidden="true"></i></span>
-                                  {{ form.address }}
-                            </div>
-                            </div>
-
-                          </div>
-
-
-                            <div class="form-group row">
                                 <label class="col-md-2 control-label">Customer GST No</label>
                               <div class="col-md-3 inputGroupContainer">
                               <div class="input-group">

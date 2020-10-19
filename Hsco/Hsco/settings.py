@@ -160,8 +160,8 @@ EMAIL_HOST_PASSWORD = 'Hsco123456789@'
 EMAIL_HOST_USER2 = 'jobs.hindustanscalecompany@gmail.com'  #for career module
 EMAIL_HOST_PASSWORD2 = 'Hindustan@@1234'
 
-EMAIL_HOST_USER3= 'pi@hindustanscale.com'    #for lead module pi
-EMAIL_HOST_PASSWORD3= 'Hindustan@@1234'
+EMAIL_HOST_USER3= 'pi.hindustanscale@gmail.com'    #for lead module pi
+EMAIL_HOST_PASSWORD3= 'Hindustan@@9526'
 
 SESSION_SECURITY_EXPIRE_AFTER = 3600
 SESSION_SECURITY_WARN_AFTER = 3500
