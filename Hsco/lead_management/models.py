@@ -96,7 +96,7 @@ class Pi_product(models.Model):
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
     product_total_cost = models.FloatField(null=True,blank=True)
-
+    add_brochure = models.BooleanField(default=True)
     def __int__(self):
         return self.id
 
