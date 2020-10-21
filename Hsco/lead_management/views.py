@@ -1932,15 +1932,23 @@ def update_view_lead(request,id):
                     optional_email = re.sub(r"[\n\t\s]*", "", lead_id.customer_id.optional_email)           # remove tabs,spaces and new lines in optional email
                     optional_email = optional_email.split(",")
 
-
                     for _email in optional_email:
                         cc_list.append(_email)
+
+
 
 
                     email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request,extra),
                                           settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id,],connection=connection,cc=cc_list)
                     email_send.content_subtype = 'html'
                     email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
+
+                    #add brochure in pi email
+                    pi_products = Pi_product.objects.filter(lead_id=lead_id)
+                    for pi_product in pi_products:
+                        if pi_product.add_brochure == True:
+                            email_send.attach_file(pi_product.product_id.product_brochure.path)
+
                     email_send.send()
 
                 history = Pi_History()
@@ -2238,9 +2246,17 @@ def update_view_lead(request,id):
                                                       connection=connection,cc=cc_list)
                             email_send.content_subtype = 'html'
                             email_send.attach_file(history.pi_history_file.path)
+                            email_send.attach_file()
+                            # add brochure in pi email
+                            pi_products = Pi_product.objects.filter(lead_id=lead_id)
+                            for pi_product in pi_products:
+                                if pi_product.add_brochure == True:
+                                    email_send.attach_file(pi_product.product_id.product_brochure.path)
                             email_send.send()
                         messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
                     except Exception as e:
+                        print('exception')
+                        print(e)
                         messages.error(request, str(e))
 
                 elif email == 'True' and upload_pi_file !=None and email_type == 'external_pi':
@@ -2282,6 +2298,11 @@ def update_view_lead(request,id):
                                                       connection=connection,cc=cc_list)
                             email_send.content_subtype = 'html'
                             email_send.attach_file(history.pi_history_file.path)
+                            # add brochure in pi email
+                            pi_products = Pi_product.objects.filter(lead_id=lead_id)
+                            for pi_product in pi_products:
+                                if pi_product.add_brochure == True:
+                                    email_send.attach_file(pi_product.product_id.product_brochure.path)
                             email_send.send()
                         messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
                     except Exception as e:
@@ -3817,6 +3838,12 @@ def select_product(request,id):
         main_category = request.POST.get('main_category')
         sub_category = request.POST.get('sub_category')
         sub_sub_category = request.POST.get('sub_sub_category')    #product code or sub_sub_category
+        add_brochure = request.POST.get('product_brochure')
+
+        if add_brochure == 'on':
+            add_brochure = True
+        else:
+            add_brochure =False
 
         item = Pi_product()
         # if sub_sub_category != '':
@@ -3837,6 +3864,8 @@ def select_product(request,id):
                 item.log_entered_by = request.user.name
                 if quantity != 'None' or quantity != '':
                     item.product_total_cost = float(rate) * float(quantity)
+                item.add_brochure = add_brochure
+
                 item.save()
                 Pi_section.objects.filter(lead_id=id).update(select_gst_type=None)
 
@@ -3854,6 +3883,8 @@ def select_product(request,id):
                 item.log_entered_by = request.user.name
                 if quantity != 'None' or quantity != '':
                     item.product_total_cost = float(rate) * float(quantity)
+                item.add_brochure = add_brochure
+
                 item.save()
                 Pi_section.objects.filter(lead_id=id).update(select_gst_type=None)
             if is_last_product_yes == 'yes':
