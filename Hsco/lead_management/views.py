@@ -1931,9 +1931,9 @@ def update_view_lead(request,id):
                     #adding optional emails in cc for internal pi
                     optional_email = re.sub(r"[\n\t\s]*", "", lead_id.customer_id.optional_email)           # remove tabs,spaces and new lines in optional email
                     optional_email = optional_email.split(",")
-
-                    for _email in optional_email:
-                        cc_list.append(_email)
+                    if optional_email != '' or optional_email != 'None':
+                        for _email in optional_email:
+                            cc_list.append(_email)
 
 
 
@@ -2220,8 +2220,9 @@ def update_view_lead(request,id):
                     # adding optional emails in cc for external pi
                     optional_email = re.sub(r"[\n\t\s]*", "",lead_id.customer_id.optional_email)  # remove tabs,spaces and new lines in optional email
                     optional_email = optional_email.split(",")
-                    for _email in optional_email:
-                        cc_list.append(_email)
+                    if optional_email != '' or optional_email != 'None':
+                        for _email in optional_email:
+                            cc_list.append(_email)
 
                     try:
                         if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
@@ -2272,9 +2273,9 @@ def update_view_lead(request,id):
                     # adding optional emails in cc for external pi
                     optional_email = re.sub(r"[\n\t\s]*", "",lead_id.customer_id.optional_email)  # remove tabs,spaces and new lines in optional email
                     optional_email = optional_email.split(",")
-
-                    for _email in optional_email:
-                        cc_list.append(_email)
+                    if optional_email != '' or optional_email != 'None':
+                        for _email in optional_email:
+                            cc_list.append(_email)
                     
                     try:
                         if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
