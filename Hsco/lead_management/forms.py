@@ -126,7 +126,7 @@ class Customer_detailForm(forms.ModelForm):
 
            }))
 
-    optional_email = forms.CharField(max_length=700,
+    optional_email = forms.CharField(max_length=700, required=False,
       widget=forms.Textarea(
           attrs={
               'type': 'textarea',
