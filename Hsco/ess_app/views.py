@@ -412,6 +412,7 @@ def employee_profile(request,id):
         item.mobile = mobile
         item.email = email
         item.profile_name = name
+        item.name = name
         item.bank_name = bank_name
         item.account_number = account_no
         item.branch_name = branch_name
@@ -428,7 +429,7 @@ def employee_profile(request,id):
             item.upload_pancard = upload_pancard
             item.save(update_fields=['upload_pancard', ])
         try:
-            item.save(update_fields=['mobile','email', 'profile_name','bank_name','account_number','branch_name','ifsc_code','pancard','aadhar_card',])
+            item.save(update_fields=['mobile','email', 'profile_name','bank_name','account_number','branch_name','ifsc_code','pancard','aadhar_card','name'])
         except Exception as e:
             messages.error(request, str(e))
         return redirect('/employee_profile/' + str(id))
