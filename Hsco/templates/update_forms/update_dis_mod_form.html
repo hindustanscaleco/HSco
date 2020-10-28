@@ -165,7 +165,7 @@ function myFunction() {
     document.getElementById("myText26").disabled = false;
     document.getElementById("myText27").disabled = false;
     document.getElementById("myText28").disabled = false;
-    document.getElementById("myText15").style.display = "block";
+    document.getElementById("myText15").disabled = false;
 
 }
 </script>
@@ -442,7 +442,7 @@ function myFunction() {
       <div style="padding-left:11px;" class="row">
                   <span style="padding-right:10px; width:35px;"  class="input-group-addon icon-border"><i class="fa fa-drivers-license faicons"></i></span>
           <div style="padding-left:0px;" class="col-xl-8">
-  <input size="1" name="photo_lr_no" placeholder="Photo of LR No" class="form-control" id="myText15" type="file" disabled value="{{dispatch_item.photo_lr_no}}">
+  <input size="1" name="photo_lr_no" placeholder="Photo of LR No" class="form-control" id="myText15" type="file"  value="{{dispatch_item.photo_lr_no}}">
           </div>
           {% if dispatch_item.photo_lr_no %}
           <div class="col-xl-3">
