@@ -915,8 +915,12 @@ def update_dispatch_details(request,update_id):
     dispatch_item=Dispatch.objects.get(id=update_id)
     product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
     # customer_id = Dispatch.objects.get(id=update_id).crm_no
-
-    customer_id = Customer_Details.objects.get(id=dispatch_item.crm_no)
+    print(dispatch_item)
+    print('dispatch')
+    try:
+        customer_id = Customer_Details.objects.get(id=dispatch_item.crm_no)
+    except:
+        pass
 
     if request.user.role == 'Super Admin':
         user_list = SiteUser.objects.filter(group__icontains=request.user.name,
