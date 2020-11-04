@@ -259,7 +259,8 @@ def add_dispatch_details(request):
             if address != '':
                 item.address = address
                 item2.company_address = address  # new2
-            item.contact_no = contact_no
+            if contact_no != '':
+                item.contact_no = contact_no
             if customer_email_id != '':
                 item2.company_email = customer_email_id  # new2
                 item.customer_email_id = customer_email_id
@@ -269,7 +270,8 @@ def add_dispatch_details(request):
             try:
                 item.save()
                 item2.crm_no = Customer_Details.objects.get(id=item.pk)
-            except:
+            except Exception as e:
+                print(e)
                 pass
 
         item2.user_id = SiteUser.objects.get(id=request.user.pk)
