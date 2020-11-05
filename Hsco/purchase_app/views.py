@@ -1816,20 +1816,22 @@ def add_product_details(request,id):
 @login_required(login_url='/')
 def report(request):
     if request.method =='POST':
-        selected_list = request.POST.getlist('checks[]')
+        selected_purchase_list = request.POST.getlist('checks[]')
         selected_product_list = request.POST.getlist('products[]')
+        selected_customer_list = request.POST.getlist('customer[]')
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        string = ','.join(selected_list)
+        string = ','.join(selected_purchase_list)
         string_product = ','.join(selected_product_list)
 
 
         request.session['start_date'] = start_date
         request.session['end_date'] = end_date
-        request.session['string'] = string
-        request.session['string_product'] = string_product
-        request.session['selected_list'] = selected_list
+        request.session['string'] = selected_purchase_list
+        request.session['string_product'] = selected_product_list
+        request.session['selected_list'] = selected_purchase_list
         request.session['selected_product_list'] = selected_product_list
+        request.session['selected_customer_list'] = selected_customer_list
         return redirect('/final_report/')
     return render(request,"report/report_cust_mod_form.html",)
 
@@ -1838,10 +1840,12 @@ def report(request):
 def final_report(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
-    string = request.session.get('string')
-    string_product = request.session.get('string_product')
-    selected_list = request.session.get('selected_list')
-    selected_product_list = request.session.get('selected_product_list')
+    string_purchase = request.session.get('string')+ ['crm_no_id']
+    string_product = request.session.get('string_product')+ ['purchase_id_id']
+    selected_customer_list = request.session.get('selected_customer_list')
+
+    selected_list = request.session.get('selected_list')+ ['crm_no_id']
+    selected_product_list = request.session.get('selected_product_list')+ ['Purchase ID']
     final_row_product = []
     final_row=[]
 
@@ -1855,22 +1859,45 @@ def final_report(request):
         if i == 'second_person':
             selected_list[n] = 'Customer Name'
 
-    with connection.cursor() as cursor:
-        if string != '' and string_product != '':
+    product_query = Product_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_product)
 
-                cursor.execute("SELECT " + (string_product +","+ string) + " from purchase_app_product_details  PRODUCT , purchase_app_purchase_details "
-                 "REP , customer_app_customer_details CRM where PRODUCT.purchase_id_id = REP.id and REP.crm_no_id = CRM.id and "
-                " PRODUCT.entry_timedate between'" + start_date + "' and '" + end_date + "';")
-                row = cursor.fetchall()
-                final_row_product = [list(x) for x in row]
-                repairing_data = []
-                for i in row:
-                    repairing_data.append(list(i))
+    for product in product_query:
+        sales_query = Purchase_Details.objects.filter(id=product['purchase_id_id']).values(*string_purchase)
+        customer_query = Customer_Details.objects.filter(id=list(sales_query)[0]['crm_no_id']).values(*selected_customer_list)
+        product['sales']= sales_query
+        product['sales_customer']= customer_query
 
-                final_row = [list(x) for x in row]
-                repairing_data = []
-                for i in row:
-                    repairing_data.append(list(i))
+    print('product query')
+    print(product_query)
+    # for sale in sales_query:
+    #     customer_query = Customer_Details.objects.filter(id=sale['crm_no_id']).values(*selected_customer_list)
+    #     print('customer query')
+    #     print(customer_query)
+
+        # if string != '' and string_product != '':
+
+
+
+
+
+                # print(product_query)
+                # print('hjsdf')
+                # print(customer_query)
+                # print('fsdaf')
+                # print(sales_query)
+                # cursor.execute("SELECT " + (string_product +","+ string) + " from purchase_app_product_details  PRODUCT , purchase_app_purchase_details "
+                #  "REP , customer_app_customer_details CRM where PRODUCT.purchase_id_id = REP.id and REP.crm_no_id = CRM.id and "
+                # " PRODUCT.entry_timedate between'" + start_date + "' and '" + end_date + "';")
+                # row = cursor.fetchall()
+                # final_row_product = [list(x) for x in row]
+                # repairing_data = []
+                # for i in row:
+                #     repairing_data.append(list(i))
+                #
+                # final_row = [list(x) for x in row]
+                # repairing_data = []
+                # for i in row:
+                #     repairing_data.append(list(i))
 
     # with connection.cursor() as cursor:
     #     if string!='':
@@ -1907,6 +1934,7 @@ def final_report(request):
         pass
 
     context={
+        'product_query':product_query,
         'final_row':final_row,
         'final_row_product':final_row_product,
         'selected_list':selected_list,

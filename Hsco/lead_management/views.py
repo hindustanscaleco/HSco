@@ -3111,6 +3111,7 @@ def report_2(request):
         string_follow_up = ','.join(follow_up)
         string_pay_detail = ','.join(pay_detail)
 
+
         request.session['start_date'] = start_date
         request.session['end_date'] = end_date
         request.session['string_cust_detail'] = string_cust_detail
@@ -3414,14 +3415,12 @@ def final_lead_report_test(request):
     from .models import Pi_section
     # cust_list = Lead_Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_cust_detail_list)
     # if string_deal_detail_list and  string_pi_history != '':
-
     if string_follow_up != '' and string_pi_history != '' and string_pay_detail != '' and string_cust_detail_list and string_deal_detail_list:
 
         lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list).order_by('-id')
 
 
         for lead in lead_list:
-            print(lead)
 
             try :
                 owner = SiteUser.objects.get(id=lead['owner_of_opportunity_id']).profile_name
