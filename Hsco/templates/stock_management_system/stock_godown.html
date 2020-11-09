@@ -495,11 +495,30 @@ $(document).ready(function(){
             <td style="border: 1px solid gray;">{{product.product_id.main_category}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.product_id.sub_category}}</td>
             <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.product_id.sub_sub_category}}</td>
+        {% if product.carton_count != "0" %}
           <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.carton_count|floatformat:2}}</td>
+        {% else %}
+        <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.carton_count}}</td>
+        {% endif %}
+
+        {% if product.carton_count != "0" %}
             <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.quantity|floatformat:2}}</td>
+        {% else %}
+            <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.quantity}}</td>
+        {% endif %}
         {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or godown_id.goddown_assign_to.id == request.user.id %}
-            <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.individual_faulty|floatformat:2 }}</td>
+        {% if product.carton_count != "0" %}
+        <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.individual_faulty|floatformat:2 }}</td>
+        {% else %}
+        <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.individual_faulty }}</td>
+        {% endif %}
+
+        {% if product.carton_count != "0" %}
             <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.carton_faulty|floatformat:2 }}</td>
+        {% else %}
+            <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.carton_faulty }}</td>
+        {% endif %}
+
         {% endif %}
             <td id="image" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{% if product.product_id.product_image %}<img height="40" width="40" src="{{product.product_id.product_image.url}}">{% endif %}</td>
         </tr>
