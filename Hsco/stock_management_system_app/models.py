@@ -59,7 +59,10 @@ class GodownProduct(models.Model):
     def carton_count(self):
         product = Product.objects.get(id=self.product_id)
         quantity = self.quantity
-        return (float(quantity) / float(product.carton_size))
+        if product.carton_size != 0:
+            return (float(quantity) / float(product.carton_size))
+        else:
+            return "N/A"
 
     @property
     def carton_critical_limit(self):
