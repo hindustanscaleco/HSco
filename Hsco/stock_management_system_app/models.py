@@ -68,13 +68,19 @@ class GodownProduct(models.Model):
     def carton_critical_limit(self):
         product = Product.objects.get(id=self.product_id)
         critical_limit = self.critical_limit
-        return (float(critical_limit) / float(product.carton_size))
+        if product.carton_size != "" and float(product.carton_size) != 0.0 and float(product.carton_size) != 0:
+            return (float(critical_limit) / float(product.carton_size))
+        else:
+            return "N/A"
 
     @property
     def carton_faulty(self):
         product = Product.objects.get(id=self.product_id)
         individual_faulty = self.individual_faulty
-        return (float(individual_faulty) / float(product.carton_size))
+        if product.carton_size != "" and float(product.carton_size) != 0.0 and float(product.carton_size) != 0:
+            return (float(individual_faulty) / float(product.carton_size))
+        else:
+            return "N/A"
 
     def __int__(self):
         return self.id
