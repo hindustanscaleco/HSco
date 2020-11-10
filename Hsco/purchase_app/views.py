@@ -1843,7 +1843,6 @@ def final_report(request):
     string_purchase = request.session.get('string') + ['crm_no_id'] + ['id']
     string_product = request.session.get('string_product') + ['purchase_id_id'] + ['id']
     selected_customer_list = request.session.get('selected_customer_list')
-
     selected_list = request.session.get('selected_list') + ['crm_no_id']
     selected_product_list = request.session.get('selected_product_list') + ['Purchase ID']
     final_row_product = []
@@ -1860,7 +1859,6 @@ def final_report(request):
             selected_list[n] = 'Customer Name'
 
     product_query = Product_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_product)
-
     for product in product_query:
         sales_query = Purchase_Details.objects.filter(id=product['purchase_id_id']).values(*string_purchase)
         customer_query = Customer_Details.objects.filter(id=list(sales_query)[0]['crm_no_id']).values(*selected_customer_list)
@@ -1870,11 +1868,12 @@ def final_report(request):
             product.update(item)
         for item in customer_query:
             product.update(item)
-        print(product['id'])
-        print(Product_Details.objects.filter(id=product['id']).values('entry_timedate'))
-        for item in Product_Details.objects.filter(id=product['id']).values('entry_timedate'):
-            product['entry_timedate'] = item['entry_timedate']
+        # print(product['id'])
+        # print(Product_Details.objects.filter(id=product['id']).values('entry_timedate'))
+        # for item in Product_Details.objects.filter(id=product['id']).values('entry_timedate'):
+        #     product['entry_timedate'] = item['entry_timedate']
         # product['sales'] = sales_query
+
         # product['sales_customer'] = customer_query
 
     # with connection.cursor() as cursor:
