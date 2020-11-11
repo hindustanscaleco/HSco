@@ -1841,7 +1841,8 @@ def final_report(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
     string_purchase = request.session.get('string') + ['crm_no_id'] + ['id']
-    string_product = request.session.get('string_product') + ['purchase_id_id'] + ['id']
+    string_product = request.session.get('string_product')  + ['id']
+
     selected_customer_list = request.session.get('selected_customer_list')
     selected_list = request.session.get('selected_list') + ['crm_no_id']
     selected_product_list = request.session.get('selected_product_list') + ['Purchase ID']
@@ -1860,14 +1861,24 @@ def final_report(request):
 
     product_query = Product_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_product)
     for product in product_query:
-        sales_query = Purchase_Details.objects.filter(id=product['purchase_id_id']).values(*string_purchase)
-        customer_query = Customer_Details.objects.filter(id=list(sales_query)[0]['crm_no_id']).values(*selected_customer_list)
+        sales_query = Purchase_Details.objects.filter(id=product['id']).values(*string_purchase)
+        print('selected customer list')
+        print(selected_customer_list)
+        # print(list(sales_query)[0])
+        try:
+            if selected_customer_list:
+                customer_query = Customer_Details.objects.filter(id=list(sales_query)[0]['crm_no_id']).values(*selected_customer_list)
+                for item in customer_query:
+                    product.update(item)
+        except:
+            print('no customer error')
+            pass
+        
         for item in sales_query:
             print(item)
             print('entry_timedate' in item)
             product.update(item)
-        for item in customer_query:
-            product.update(item)
+        
         # print(product['id'])
         # print(Product_Details.objects.filter(id=product['id']).values('entry_timedate'))
         # for item in Product_Details.objects.filter(id=product['id']).values('entry_timedate'):

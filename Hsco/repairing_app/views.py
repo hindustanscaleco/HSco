@@ -1438,15 +1438,21 @@ def repairing_report_module(request):
     if request.method == 'POST' or None:
         selected_list = request.POST.getlist('checks[]')
         selected_product_list = request.POST.getlist('products[]')
+        selected_customer_list = request.POST.getlist('customer[]')
         repair_start_date = request.POST.get('date1')
         repair_end_date = request.POST.get('date2')
-        repair_string = ','.join(selected_list)
-        repair_product_string = ','.join(selected_product_list)
-        request.session['start_date'] = repair_start_date
+
+        # repair_string = ','.join(selected_list)
+        # repair_product_string = ','.join(selected_product_list)
+
+        request.session['repair_start_date'] = repair_start_date
         request.session['repair_end_date'] = repair_end_date
-        request.session['repair_string'] = repair_string
+
+        request.session['selected_customer_list'] = selected_customer_list
         request.session['selected_product_list'] = selected_product_list
-        request.session['repair_product_string'] = repair_product_string
+
+        request.session['repair_string'] = selected_list
+        request.session['repair_product_string'] = selected_product_list
         request.session['selected_list'] = selected_list
         return redirect('/final_repairing_report_module/')
     return render(request,'report/report_rep_mod_form.html',)
@@ -1456,13 +1462,14 @@ def repairing_report_module(request):
 def final_repairing_report_module(request):
     repair_start_date = str(request.session.get('repair_start_date'))
     repair_end_date = str(request.session.get('repair_end_date'))
-    repair_string = request.session.get('repair_string')
-    repair_product_string = request.session.get('repair_product_string')
+    repair_string = request.session.get('repair_string') + ['crm_no_id'] 
+    repair_product_string = request.session.get('repair_product_string') + ['repairing_id']
+    selected_customer_list = request.session.get('selected_customer_list')
+    selected_list = request.session.get('selected_list') + ['crm_no_id']
     selected_product_list = request.session.get('selected_product_list')
     final_row = []
     final_row_product = []
 
-    selected_list = request.session.get('selected_list')
     for n, i in enumerate(selected_list):
         if i == 'repairing_app_repairing_after_sales_service.id':
             selected_list[n] = 'Reparing ID'
@@ -1471,24 +1478,43 @@ def final_repairing_report_module(request):
         if i == 'today_date':
             selected_list[n] = 'Entry Date'
 
+    
+    product_query = Repairing_Product.objects.filter(entry_timedate__range=(repair_start_date, repair_end_date)).values(*repair_product_string)
+    for product in product_query:
+        repairing_query = Repairing_after_sales_service.objects.filter(id=product['repairing_id']).values(*repair_string)
+        print('repairing customer')
+        print(selected_customer_list)
+        try:
+            if selected_customer_list:
+                customer_query = Customer_Details.objects.filter(id=list(repairing_query)[0]['crm_no_id']).values(*selected_customer_list)
+                for item in customer_query:
+                    product.update(item)
+        except:
+            print('no customer error')
+            pass
+            
+        for item in repairing_query:
+            print(item)
+            print('entry_timedate' in item)
+            product.update(item)
+        
+    # with connection.cursor() as cursor:
 
-    with connection.cursor() as cursor:
+    #     if repair_product_string != '' and repair_string != '':
 
-        if repair_product_string != '' and repair_string != '':
+    #         cursor.execute("SELECT " + (repair_product_string +","+ repair_string) + " from repairing_app_repairing_product  PRODUCT , repairing_app_repairing_after_sales_service "
+    #         "REP , customer_app_customer_details CRM where PRODUCT.repairing_id_id = REP.id and REP.crm_no_id = CRM.id and "
+    #         " PRODUCT.entry_timedate between'" + repair_start_date + "' and '" + repair_end_date + "';")
+    #         row = cursor.fetchall()
+    #         final_row_product = [list(x) for x in row]
+    #         repairing_data = []
+    #         for i in row:
+    #             repairing_data.append(list(i))
 
-            cursor.execute("SELECT " + (repair_product_string +","+ repair_string) + " from repairing_app_repairing_product  PRODUCT , repairing_app_repairing_after_sales_service "
-            "REP , customer_app_customer_details CRM where PRODUCT.repairing_id_id = REP.id and REP.crm_no_id = CRM.id and "
-            " PRODUCT.entry_timedate between'" + repair_start_date + "' and '" + repair_end_date + "';")
-            row = cursor.fetchall()
-            final_row_product = [list(x) for x in row]
-            repairing_data = []
-            for i in row:
-                repairing_data.append(list(i))
-
-            final_row = [list(x) for x in row]
-            repairing_data = []
-            for i in row:
-                repairing_data.append(list(i))
+    #         final_row = [list(x) for x in row]
+    #         repairing_data = []
+    #         for i in row:
+    #             repairing_data.append(list(i))
 
     try:
         del request.session['repair_start_date']
@@ -1497,6 +1523,7 @@ def final_repairing_report_module(request):
         del request.session['selected_list']
         del request.session['repair_product_string']
         del request.session['selected_product_list']
+        del request.session['selected_customer_list']
     except:
         pass
 
@@ -1505,6 +1532,8 @@ def final_repairing_report_module(request):
         'repair_end_date': repair_end_date,
         'final_row': final_row,
         'final_row_product': final_row_product,
+        'final_row_product': final_row_product,
+        'repairing_query':product_query,
         # 'selected_list': selected_list,
         'selected_product_list': selected_product_list+selected_list,
     }
