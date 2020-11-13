@@ -1841,7 +1841,7 @@ def final_report(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
     string_purchase = request.session.get('string') + ['crm_no_id'] + ['id']
-    string_product = request.session.get('string_product')  + ['id']
+    string_product = request.session.get('string_product')  + ['id'] + ['purchase_id']
 
     selected_customer_list = request.session.get('selected_customer_list')
     selected_list = request.session.get('selected_list') + ['crm_no_id']
@@ -1861,10 +1861,10 @@ def final_report(request):
 
     product_query = Product_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_product)
     for product in product_query:
-        sales_query = Purchase_Details.objects.filter(id=product['id']).values(*string_purchase)
+        sales_query = Purchase_Details.objects.filter(id=product['purchase_id']).values(*string_purchase)
         print('selected customer list')
-        print(selected_customer_list)
-        # print(list(sales_query)[0])
+        # print(selected_customer_list)
+        print(sales_query)
         try:
             if selected_customer_list:
                 customer_query = Customer_Details.objects.filter(id=list(sales_query)[0]['crm_no_id']).values(*selected_customer_list)
