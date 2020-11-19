@@ -413,6 +413,9 @@ $(function() {
 a:hover {
   text-decoration: none;
 }
+    #btn-delete{
+
+    }
 
 </style>
 
@@ -465,6 +468,8 @@ td {
                   <center> <p>list of deleted users</p></center>
                     {% endif %}
      <center><p>{{search_msg}}</p></center>
+
+<!--    <form action="" method="post">{% csrf_token %}-->
         <div class="row" id="id_manager_view">
 
     <table>
@@ -477,27 +482,28 @@ td {
             <td style="border: 0px solid gray;"> Company Name </td>
             <td style="border: 0px solid gray;">Contact No.</td>
             <td style="border: 0px solid gray;">Sales Person  </td>
-            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Feedback</td>
-        </tr>
+            <td style="border: 0px solid gray;">Feedback  </td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Selection</td>
+        </tr>{% csrf_token %}
                     {% for list1 in customer_list %}
         {% if list1.payment_mode == 'Credit' and list1.credit_pending_amount != 0.0 %}
-            <tr bgcolor="red" style="background-color:red; cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+            <tr bgcolor="red" style="background-color:red; cursor: pointer; ">
         {% elif list1.payment_mode == 'Credit' and list1.is_gst == True %}
-            <tr bgcolor="#ffbf00" style="background-color:#ffbf00; cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+            <tr bgcolor="#ffbf00" style="background-color:#ffbf00; cursor: pointer; ">
         {% elif list1.is_gst == True %}
-            <tr bgcolor="green" style="background-color:green; cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+            <tr bgcolor="green" style="background-color:green; cursor: pointer; ">
         {% else %}
-            <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+            <tr style="cursor: pointer; " id="{{list1.purchase_no}}">
         {% endif %}
 
-                        <td>{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>
+                        <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>
 
-            <td>{{ list1.date_of_purchase|date:'Y-m-d'}}</td>
-            <td>{{ list1.purchase_no}}</td>
-            <td>{{ list1.second_person }}</td>
-            <td>{% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</td>
-            <td>{{ list1.second_contact_no}}</td>
-            <td>{{list1.sales_person}}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{ list1.date_of_purchase|date:'Y-m-d'}}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{ list1.purchase_no}}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{ list1.second_person }}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{ list1.second_contact_no }}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{list1.sales_person}}</td>
             <td>
                        {% for avg in  list1.feedback_stars|rjust:'5'  %}
 							{% if forloop.counter <= list1.feedback_stars %}
@@ -507,13 +513,69 @@ td {
 							{% endif %}
 						{% endfor %}
             </td>
+            <td>
+                <input type="checkbox" name="delete_purchase_id" value="{{list1.purchase_no}}">
+            </td>
 
         </tr>
                           {% endfor %}
 
     </table>
-
+            {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin' %}
+            <div>
+                <button style="cursor: pointer;" type="submit" name="delete_purchase" id="delete_btn" class="btn-danger">Delete Selected Customer</button>
+                <div>
+                    {% for message in messages %}
+                        <h4>{{message}}</h4>
+                    {% endfor %}
+                </div>
+                <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+                <script>
+                    $(document).ready(function(){
+                        $('#delete_btn').click(function () {
+                            if(confirm("Are you sure want to delete selected items?")){
+                                let id=[];
+                                let csrf=$('input[name=csrfmiddlewaretoken]').val();
+                                $(':checkbox:checked').each(function(i){
+                                    id[i]=$(this).val();
+                                });
+                                if(id.length===0){
+                                    alert("Please select item first!!");
+                                }
+                                else{
+                                    console.log(id)
+                                    $.ajax({
+                                        url:"/view_customer_details/",
+                                        method:"POST",
+                                        data:{
+                                        id,
+                                        csrfmiddlewaretoken:csrf,
+                                        },
+                                        success:function(response) {
+                                            for (let i = 0; i < id.length; i++) {
+                                                $('tr#' + id[i] + '').css('background-color', '#ccc');
+                                                $('tr#' + id[i] + '').fadeOut('slow');
+                                            }//for
+                                        },
+                                        fail:function(response){
+                                            $('#delete_btn').css('background-color', 'red');
+                                        }//success
+                                });//ajax
+                            }//else
+                        }
+                    })})
+                </script>
+            </div>
         </div>
+
+<!--    </form>-->
+            <br>
+
+
+
+            {% endif %}
+
+
 
 
 
