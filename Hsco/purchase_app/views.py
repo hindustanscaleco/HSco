@@ -1230,7 +1230,9 @@ def view_customer_details(request, *args, **kwargs):
             'deleted': True,
         }
         return render(request, 'dashboardnew/cm.html', context)
-    elif  'delete_purchase_id' in request.POST:
+
+
+    elif 'delete_purchase_id' in request.POST:
         purchase_ids = request.POST.getlist('delete_purchase_id[]')
         print('purchase id')
         print(purchase_ids)
@@ -1252,6 +1254,8 @@ def view_customer_details(request, *args, **kwargs):
         # messages.success(request, "Customers deleted Successfully")
         # return redirect('/')
         return redirect('/view_customer_details/')
+
+    
     else:
         if check_admin_roles(request):  # For ADMIN
             cust_list = Purchase_Details.objects.filter(

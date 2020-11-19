@@ -109,7 +109,7 @@ class Customer_detailForm(forms.ModelForm):
                'class': 'form-control',
            }))
 
-    customer_email_id = forms.CharField(max_length=80, required=False,
+    customer_email_id = forms.EmailField(max_length=80, required=False,
        widget=forms.TextInput(
            attrs={
                'type': 'email',

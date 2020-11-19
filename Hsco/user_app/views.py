@@ -587,14 +587,12 @@ def dashboard(request):
         except Exception as e:
             messages.error(request, str(e))
 
+    return render(request, "dashboardnew/dashboard.html")
 
 
-
-
-    return render(request,"dashboardnew/dashboard.html",)
 
 def graph(request):
-    return render(request,"graphs/sales_graph.html",)
+    return render(request, "graphs/sales_graph.html",)
 
 @login_required(login_url='/')
 def update_admin(request,id):

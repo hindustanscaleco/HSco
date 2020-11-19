@@ -6,6 +6,7 @@ from .views import feedback_purchase, autocomplete
 from .views import edit_product_customer,load_users, purchase_logs, stock_does_not_exist, quick_purchase_entry,get_product_details
 
 
+
 urlpatterns = [
     path('add_purchase_details/',add_purchase_details , name ='add_purchase_details'),
     path('view_customer_details/',view_customer_details , name ='view_customer_details'),

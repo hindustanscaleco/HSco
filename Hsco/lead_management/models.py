@@ -97,6 +97,11 @@ class Pi_product(models.Model):
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
     product_total_cost = models.FloatField(null=True,blank=True)
     add_brochure = models.BooleanField(default=True)
+
+    # #Technical Specification
+    # add_technical_specification = models.BooleanField(default=True)
+    # technical_specification = models.CharField(max_length=200, blank=True, null=True)
+
     def __int__(self):
         return self.id
 
@@ -192,7 +197,7 @@ class Followup_product(models.Model):
     # sms_check = models.BooleanField(default=False, null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
-    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
+    log_entered_by = models.CharField(blank=True, null=True, max_length=100)
 
 class IndiamartLeadDetails(models.Model):
     from_date = models.DateField()

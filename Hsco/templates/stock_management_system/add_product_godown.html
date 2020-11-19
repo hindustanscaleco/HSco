@@ -68,7 +68,7 @@ $(document).ready(function(){
 
 <style>
 
-* {
+    * {
 color:;
 }
   .faicons {
@@ -362,19 +362,27 @@ color:;
 </label>
 
     <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
-  YES:<input  name="is_last_product_yes" value="yes" placeholder="Is deleted" class="form-control" type="radio">
-  NO:<input  name="is_last_product_yes" value="no" placeholder="Is deleted" class="form-control" type="radio">
+        <div class="input-group">
+            <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
+            YES:<input  name="is_last_product_yes" value="yes" placeholder="Is deleted" class="form-control" type="radio">
+            NO:<input  name="is_last_product_yes" value="no" placeholder="Is deleted" class="form-control" type="radio">
 
+<!--            YES:<input  name="is_last_product_yes" id="is_yes" value="yes" placeholder="Is deleted" class="form-control" type="radio" onClick="check_product()">-->
+<!--            NO:<input  name="is_last_product_yes" id="is_no" value="no" placeholder="Is deleted" class="form-control" type="radio" onClick="check_product()">-->
+<!--            <br>-->
+<!--            <script>-->
+<!--                var yes_value = document.getElementById("is_yes").value;-->
+<!--                var no_value = document.getElementById("is_no").value;-->
+<!--                if(yes_value){-->
+<!--                    document.writeln("<h3> Error!</h3>");-->
+<!--                }-->
+<!--                else{-->
+<!--                    document.writeln("<h3>Product is accepted</h3>");-->
+<!--                }-->
+<!--            </script>-->
     </div>
-  </div>
+    </div>
 </div>
-
-
-
-
-
 
             <br>
 

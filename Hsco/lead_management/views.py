@@ -1371,7 +1371,7 @@ def add_lead(request):
         'under_manager_users':under_manager_users,
     }
     context.update(context22)
-    return render(request, 'lead_management/add_lead.html',context)
+    return render(request, 'lead_management/add_lead.html', context)
 
 @login_required(login_url='/')
 def update_view_lead(request,id):

@@ -80,7 +80,7 @@ class Customer_detail_disabledForm(forms.ModelForm):
            }
        ))
 
-    customer_email_id = forms.CharField(max_length=80, required=True,
+    customer_email_id = forms.EmailField(max_length=80, required=True,
        widget=forms.TextInput(
            attrs={
                'type': 'email',
