@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'career_module_app',
     'import_export',
     'django_crontab',
+    'expense_app',
+
 ]
 
 MIDDLEWARE = [

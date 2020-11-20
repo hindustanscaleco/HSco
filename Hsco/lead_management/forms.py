@@ -117,7 +117,7 @@ class Customer_detailForm(forms.ModelForm):
                'class': 'form-control',
            }))
 
-    address = forms.CharField(max_length=100, required=True,
+    address = forms.CharField(max_length=1000, required=True,
        widget=forms.Textarea(
            attrs={
                'type': 'textarea',

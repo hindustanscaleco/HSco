@@ -85,7 +85,7 @@
 
  <a style="padding: 2px;" href="/purchase_logs/"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
  <a style="padding: 2px;" href="/report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
- <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Purchase </button></a>
+ <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Sales </button></a>
                        <a style="padding: 2px;" href="/quick_purchase_entry/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Rush Hour Entry </button></a>
 
 {% else %}
@@ -208,7 +208,7 @@ $(function() {
      <option value="d4">Search By Customer Name</option>
      <option value="d5">Search By Company Name</option>
      <option value="d6">Search By CRM No.</option>
-     <option value="d7">Search By Purchase No.</option>
+     <option value="d7">Search By Sales No.</option>
      <!--<option value="d7">Search By CRM Number Range</option>-->
   </select>
 </div>
@@ -465,6 +465,27 @@ td {
                   <center> <p>list of deleted users</p></center>
                     {% endif %}
      <center><p>{{search_msg}}</p></center>
+
+<!--    <form action="" method="post">{% csrf_token %}-->
+{% if messages %}
+    {% for message in messages %}
+             {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% endif %}
+            {% endfor %}
+               {% endif %}
         <div class="row" id="id_manager_view">
 
     <table>
@@ -472,7 +493,7 @@ td {
         <tr style="background-color: gray; color: white;">
             <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Dispatch Id</td>
             <td style="border: 0px solid gray;">Date </td>
-            <td style="border: 0px solid gray;"> Purchase ID</td>
+            <td style="border: 0px solid gray;"> Sales ID</td>
             <td style="border: 0px solid gray;">Customer Name</td>
             <td style="border: 0px solid gray;"> Company Name </td>
             <td style="border: 0px solid gray;">Contact No.</td>
@@ -512,6 +533,62 @@ td {
                           {% endfor %}
 
     </table>
+            {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin' %}
+            <div>
+                <button style="cursor: pointer;" type="submit" name="delete_purchase_id" id="delete_btn" class="btn-danger">Delete Selected Sales</button>
+                <div>
+                    {% for message in messages %}
+                        <h4>{{message}}</h4>
+                    {% endfor %}
+                </div>
+                <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+                <script>
+                    $(document).ready(function(){
+                        $('#delete_btn').click(function () {
+                            if(confirm("Are you sure want to delete selected items?")){
+                                let delete_purchase_id='';
+                                let id=[];
+                                let csrf=$('input[name=csrfmiddlewaretoken]').val();
+                                $(':checkbox:checked').each(function(i){
+                                    id[i]=$(this).val();
+                                });
+                                if(id.length===0){
+                                    alert("Please select item first!!");
+                                }
+                                else{
+                                    console.log(id)
+                                    $.ajax({
+                                        url:"/view_customer_details/",
+                                        method:"POST",
+                                        data:{
+                                        delete_purchase_id,
+                                        id,
+                                        csrfmiddlewaretoken:csrf,
+                                        },
+                                        success:function(response) {
+                                            for (let i = 0; i < id.length; i++) {
+                                                $('tr#' + id[i] + '').css('background-color', '#ccc');
+                                                $('tr#' + id[i] + '').fadeOut('slow');
+                                            }//for
+                                        },
+                                        fail:function(response){
+                                            $('#delete_btn').css('background-color', 'red');
+                                        }//success
+                                });//ajax
+                            }//else
+                        }
+                    })})
+                </script>
+            </div>
+        </div>
+
+<!--    </form>-->
+            <br>
+
+
+
+            {% endif %}
+
 
         </div>
 

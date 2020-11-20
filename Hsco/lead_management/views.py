@@ -1292,6 +1292,7 @@ def add_lead(request):
         owner_of_opportunity = request.POST.get('owner_of_opportunity')
         lost_reason = request.POST.get('lost_reason')
         postponed_reason = request.POST.get('postponed_reason')
+        optional_email = request.POST.get('optional_email')
 
         item2 = Lead()
         if Lead_Customer_Details.objects.filter(customer_name=customer_name,
@@ -1314,6 +1315,9 @@ def add_lead(request):
             if customer_industry != '' and customer_industry != None:
                 item3.customer_industry = customer_industry
                 item3.save(update_fields=['customer_industry'])
+            if optional_email != '' and optional_email != None:
+                item3.optional_email = optional_email
+                item3.save(update_fields=['optional_email'])
         else:
             new_cust = Lead_Customer_Details()
 
@@ -1329,6 +1333,8 @@ def add_lead(request):
                 new_cust.customer_gst_no = customer_gst_no
             if customer_industry != '':
                 new_cust.customer_industry = customer_industry
+            if optional_email != '':
+                new_cust.optional_email = optional_email
             try:
                 new_cust.save()
                 item2.customer_id = Lead_Customer_Details.objects.get(id=new_cust.pk)
@@ -1354,9 +1360,10 @@ def add_lead(request):
             fp.lead_id= Lead.objects.get(id=item2.pk)
             fp.save()
             return redirect('/update_view_lead/'+str(item2.id))
-        except:
+        except Exception as e:
             context25={
                 'already_exist':True,
+                'error_msg':str(e),
             }
             context.update(context25)
 
