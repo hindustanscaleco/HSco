@@ -133,7 +133,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 
           <div class="row" style="padding:20px;">
                <label class="col-md-6 control-label">CRM Number: {{customer_id.pk}}</label>
-               <label class="col-md-6 control-label">Purchase ID: {{purchase_id_id.purchase_no}}</label>
+               <label class="col-md-6 control-label">Sales ID: {{purchase_id_id.purchase_no}}</label>
 
           </div>
 <br>
@@ -280,7 +280,7 @@ function myFunction() {
 <hr style="background-color: gray;">
 <div class="form-group row">
 
-    <label class="col-md-2 control-label">New/Repeat Purchase *</label>
+    <label class="col-md-2 control-label">New/Repeat Sale *</label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope-open faicons"></i></span>
@@ -617,13 +617,13 @@ function myFunction() {
 <hr style="background-color: gray;">
 
           <div class="form-group row">
-    <label class="col-md-2 control-label">Date of Purchase *
+    <label class="col-md-2 control-label">Date of Sale *
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="date_of_purchase" placeholder="Date of Purchase" required class="form-control"  type="date" disabled id="myText6" value="{{purchase_id_id.date_of_purchase|date:'Y-m-d'}}">
+  <input  name="date_of_purchase" placeholder="Date of Sale" required class="form-control"  type="date" disabled id="myText6" value="{{purchase_id_id.date_of_purchase|date:'Y-m-d'}}">
     </div>
   </div>
 

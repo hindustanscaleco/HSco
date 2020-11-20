@@ -1017,6 +1017,27 @@ def view_customer_details(request):
     date_today= datetime.now().strftime('%Y-%m-%d')
     message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
 
+    #for deleting purchase entries
+    if request.method == 'POST' and 'delete_purchase_id' in request.POST:
+        purchase_ids = request.POST.getlist('id[]')
+        for id in purchase_ids[1:]:
+            try:
+                purchase_obj=Purchase_Details.objects.get(purchase_no=id)
+                log = Log()
+                log.entered_by = request.user.profile_name
+                log.module_name = 'Purchase Module'
+                log.action_type = 'Delete'
+                log.table_name = 'Purchase_Details'
+                log.reference = 'Purchase Id:' +str(id)
+                log.save()
+                Purchase_Details.objects.filter(purchase_no=id).delete()
+            except:
+                print('Purchase with this id does not exist: '+str(id))
+                pass
+        messages.success(request, "Deleted Successfully!")
+        print('message sent!!!')
+        return redirect('/view_customer_details/')
+
     if request.method == 'POST' and 'deleted' not in request.POST:
         if'submit1' in request.POST:
             start_date = request.POST.get('date1')
@@ -1157,15 +1178,13 @@ def view_customer_details(request):
 
     elif 'deleted' in request.POST:
         if check_admin_roles(request):  # For ADMIN
-            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,user_id__is_deleted=True,user_id__modules_assigned__icontains='Customer Module').order_by('-purchase_no')
-            # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-            # page = request.GET.get('page')
-            # cust_list = paginator.get_page(page)
+            cust_list = Purchase_Details.objects.filter(user_id__group__icontains=request.user.name,
+                                                        user_id__is_deleted=True,
+                                                        user_id__modules_assigned__icontains='Customer Module').order_by(
+                '-purchase_no')
         else:  # For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-purchase_no')
-            # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-            # page = request.GET.get('page')
-            # cust_list = paginator.get_page(page)
+            
 
         context = {
             'customer_list': cust_list,
@@ -1173,23 +1192,21 @@ def view_customer_details(request):
             'deleted': True,
         }
         return render(request, 'dashboardnew/cm.html', context)
+
+
+    
+    
     else:
         if check_admin_roles(request):  # For ADMIN
-            cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),user_id__is_deleted=False,user_id__modules_assigned__icontains='Customer Module',entry_timedate__month=today_month).order_by('-purchase_no')
-            # paginator = Paginator(cust_list, 15)
-            # page = request.GET.get('page')
-            # cust_list = paginator.get_page(page)
-
-            # item = Purchase_Details.objects.all().dates('entry_timedate', 'month', order='DESC')
-            # for it in item:
-            #     print(it.year)
-
-
+            cust_list = Purchase_Details.objects.filter(
+                Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+                user_id__is_deleted=False, user_id__modules_assigned__icontains='Customer Module',
+                entry_timedate__month=today_month).order_by('-purchase_no')
+            
         else:  # For EMPLOYEE
-            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,entry_timedate__month=today_month).order_by('-purchase_no')
-            # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-            # page = request.GET.get('page')
-            # cust_list = paginator.get_page(page)
+            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,
+                                                        entry_timedate__month=today_month).order_by('-purchase_no')
+            
 
 
         context = {
@@ -2313,8 +2330,9 @@ def stock_does_not_exist(request):
     godown = request.GET.get('godown')
     quantity =request.GET.get('quantity')
     godown = Godown.objects.get(id=godown)
-    quantity =float(quantity) if quantity != '' and quantity!=None else 0
-    context={}
+    
+    quantity = float(quantity) if quantity != '' and quantity != None else 0
+    context = {}
     if sub_sub_model != '':
         product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                          sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
@@ -2325,22 +2343,22 @@ def stock_does_not_exist(request):
         godown_product_quantity = GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity
         godown_product_critical_limit = GodownProduct.objects.get(godown_id=godown, product_id=product_id).critical_limit
         if quantity > godown_product_quantity:
-            error1 = 'Insufficient Stock !!! Available Quantity:'+str(godown_product_quantity)
+            error1 = 'Insufficient Stock !!! Available Quantity:' + str(godown_product_quantity)
             context1 = {
                 'error1_msg':error1,
                 'error1':True,
             }
             context.update(context1)
         elif godown_product_quantity <= godown_product_critical_limit and quantity <= godown_product_quantity:
-            error3 = 'Stock Below Critical Limit !!! Available Quantity:'+str(godown_product_quantity)
-            context4={
+            error3 = 'Stock Below Critical Limit !!! Available Quantity:' + str(godown_product_quantity)
+            context4 = {
                 'error3_msg': error3,
                 'error3': True,
             }
             context.update(context4)
         elif godown_product_quantity > godown_product_critical_limit and quantity <= godown_product_quantity:
-            success_message = 'Stock Available !!! Available Quantity:'+str(godown_product_quantity)
-            context4={
+            success_message = 'Stock Available !!! Available Quantity:' + str(godown_product_quantity)
+            context4 = {
                 'success_message': success_message,
                 'success': True,
             }
