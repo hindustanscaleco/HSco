@@ -1955,11 +1955,10 @@ def update_view_lead(request,id):
                     for pi_product in pi_products:
                         if pi_product.add_brochure == True:
                             email_send.attach_file(pi_product.product_id.product_brochure.path)
-                        # if pi_product.add_product_document == True:
-                        #     email_send.attach_file(pi_product.product_id.product_document.path)
+                        if pi_product.add_product_document == True:
+                            email_send.attach_file(pi_product.product_id.product_document.path)
 
                     email_send.send()
-                    print('email send')
 
                 history = Pi_History()
                 lead_id = Lead.objects.get(id=id)
@@ -2263,11 +2262,9 @@ def update_view_lead(request,id):
                             for pi_product in pi_products:
                                 if pi_product.add_brochure == True:
                                     email_send.attach_file(pi_product.product_id.product_brochure.path)
-                                # if pi_product.add_product_document == True:
-                                #     email_send.attach_file(pi_product.product_id.product_document.path)
+                                if pi_product.add_product_document == True:
+                                    email_send.attach_file(pi_product.product_id.product_document.path)
                             email_send.send()
-                            print('email send')
-
                         messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
                     except Exception as e:
                         print('exception')
@@ -2318,11 +2315,9 @@ def update_view_lead(request,id):
                             for pi_product in pi_products:
                                 if pi_product.add_brochure == True:
                                     email_send.attach_file(pi_product.product_id.product_brochure.path)
-                                # if pi_product.add_product_document == True:
-                                #     email_send.attach_file(pi_product.product_id.product_document.path)
+                                if pi_product.add_product_document == True:
+                                    email_send.attach_file(pi_product.product_id.product_document.path)
                             email_send.send()
-                            print('email send')
-
                         messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
                     except Exception as e:
                         messages.error(request, str(e))
