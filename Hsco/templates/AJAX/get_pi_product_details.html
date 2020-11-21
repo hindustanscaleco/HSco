@@ -89,3 +89,38 @@
   </div>
     {% endif %}
 </div>
+
+<div class="form-group row">
+
+    {% if product_id.product_document %}
+
+  <label class="col-md-2 control-label">Technical Specification(Product DB)
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"></span>
+                                  <a href="{{product_id.product_document.url}}" class="btn btn-primary">Technical Specification File</a>
+
+    </div>
+<!--    <input type="file" src="{{product_id.product_brochure.url}}" class="form-control"  border="2" height="150" width="150">-->
+<!--        <img src="{{product_id.product_image.url}}" border="2" height="150" width="150">-->
+
+  </div>
+
+  <label class="col-md-2 control-label">Add Technical Specification to PI Email?
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+
+    <input type="checkbox" class="custom-control-input" id="product_document_id" checked name="product_document"     />
+
+  <label class="custom-control-label"    for="product_document_id"></label>
+  </div>
+  </div>
+    {% endif %}
+</div>
