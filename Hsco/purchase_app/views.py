@@ -2326,11 +2326,13 @@ def stock_does_not_exist(request):
     type_of_scale = request.GET.get('type_of_scale')
     sub_model = request.GET.get('sub_model')
     sub_sub_model = request.GET.get('sub_sub_model')
+    product_id = request.GET.get('product_id')
 
     godown = request.GET.get('godown')
     quantity =request.GET.get('quantity')
     godown = Godown.objects.get(id=godown)
     print('stock')
+    print(request.GET)
     print(model_of_purchase)
     print(type_of_scale)
     print(sub_model)
@@ -2338,12 +2340,16 @@ def stock_does_not_exist(request):
     print(quantity)
     quantity = float(quantity) if quantity != '' and quantity != None else 0
     context = {}
-    if sub_sub_model != '':
-        product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                         sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
-    elif sub_model != '':
-        product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                         sub_category__name=sub_model, sub_sub_category__name=None)
+    if 'product_id' in request.GET:
+        product_id = Product.objects.get(id=product_id)
+        print(product_id)
+    else:
+        if sub_sub_model != '':
+            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                            sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+        elif sub_model != '':
+            product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
+                                            sub_category__name=sub_model, sub_sub_category__name=None)
     if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
         godown_product_quantity = GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity
         godown_product_critical_limit = GodownProduct.objects.get(godown_id=godown, product_id=product_id).critical_limit
