@@ -89,7 +89,7 @@
                        <a style="padding: 2px;" href="/quick_purchase_entry/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Rush Hour Entry </button></a>
 
 {% else %}
- <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Purchase </button></a>
+ <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Sales </button></a>
  <a style="padding: 2px;" href="/quick_purchase_entry/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Quick Entry </button></a>
 {% endif %}
 {% endif %}
@@ -292,7 +292,7 @@ $(function() {
                        <form method="POST">{% csrf_token%}
 
     <div id="d7" class="divs d7">
-      <input type="text" name="purchase_no" placeholder="Purchase No." class="form-control" style="width: 25%;float: left;">
+      <input type="text" name="purchase_no" placeholder="Sales No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
       <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
 </form>
@@ -413,6 +413,9 @@ $(function() {
 a:hover {
   text-decoration: none;
 }
+    #btn-delete{
+
+    }
 
 </style>
 
@@ -467,25 +470,6 @@ td {
      <center><p>{{search_msg}}</p></center>
 
 <!--    <form action="" method="post">{% csrf_token %}-->
-{% if messages %}
-    {% for message in messages %}
-             {% if message.tags == 'success' %}
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-      <strong>Success : </strong> {{ message }}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-    {% elif message.tags == 'error' %}
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <strong>Error : </strong> {{ message }}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-    {% endif %}
-            {% endfor %}
-               {% endif %}
         <div class="row" id="id_manager_view">
 
     <table>
@@ -498,27 +482,28 @@ td {
             <td style="border: 0px solid gray;"> Company Name </td>
             <td style="border: 0px solid gray;">Contact No.</td>
             <td style="border: 0px solid gray;">Sales Person  </td>
-            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Feedback</td>
-        </tr>
+            <td style="border: 0px solid gray;">Feedback  </td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Selection</td>
+        </tr>{% csrf_token %}
                     {% for list1 in customer_list %}
         {% if list1.payment_mode == 'Credit' and list1.credit_pending_amount != 0.0 %}
-            <tr bgcolor="red" style="background-color:red; cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+            <tr bgcolor="red" style="background-color:red; cursor: pointer; ">
         {% elif list1.payment_mode == 'Credit' and list1.is_gst == True %}
-            <tr bgcolor="#ffbf00" style="background-color:#ffbf00; cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+            <tr bgcolor="#ffbf00" style="background-color:#ffbf00; cursor: pointer; ">
         {% elif list1.is_gst == True %}
-            <tr bgcolor="green" style="background-color:green; cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+            <tr bgcolor="green" style="background-color:green; cursor: pointer; ">
         {% else %}
-            <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+            <tr style="cursor: pointer; " id="{{list1.purchase_no}}">
         {% endif %}
 
-                        <td>{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>
+                        <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>
 
-            <td>{{ list1.date_of_purchase|date:'Y-m-d'}}</td>
-            <td>{{ list1.purchase_no}}</td>
-            <td>{{ list1.second_person }}</td>
-            <td>{% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</td>
-            <td>{{ list1.second_contact_no}}</td>
-            <td>{{list1.sales_person}}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{ list1.date_of_purchase|date:'Y-m-d'}}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{ list1.purchase_no}}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{ list1.second_person }}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{ list1.second_contact_no }}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{list1.sales_person}}</td>
             <td>
                        {% for avg in  list1.feedback_stars|rjust:'5'  %}
 							{% if forloop.counter <= list1.feedback_stars %}
@@ -528,12 +513,15 @@ td {
 							{% endif %}
 						{% endfor %}
             </td>
+            <td>
+                <input type="checkbox" name="delete_purchase_id" value="{{list1.purchase_no}}">
+            </td>
 
         </tr>
                           {% endfor %}
 
     </table>
-            {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin' %}
+        {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin' %}
             <div>
                 <button style="cursor: pointer;" type="submit" name="delete_purchase_id" id="delete_btn" class="btn-danger">Delete Selected Sales</button>
                 <div>
@@ -590,7 +578,6 @@ td {
             {% endif %}
 
 
-        </div>
 
 
 
