@@ -2355,13 +2355,13 @@ def stock_does_not_exist(request):
     godown = request.GET.get('godown')
     quantity =request.GET.get('quantity')
     godown = Godown.objects.get(id=godown)
-    print('stock')
-    print(request.GET)
-    print(model_of_purchase)
-    print(type_of_scale)
-    print(sub_model)
-    print(sub_sub_model)
-    print(quantity)
+    # print('stock')
+    # print(request.GET)
+    # print(model_of_purchase)
+    # print(type_of_scale)
+    # print(sub_model)
+    # print(sub_sub_model)
+    # print(quantity)
     quantity = float(quantity) if quantity != '' and quantity != None else 0
     context = {}
     if 'product_id' in request.GET:
