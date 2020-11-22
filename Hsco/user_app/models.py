@@ -81,7 +81,7 @@ class SiteUserManager(BaseUserManager):
 class SiteUser(AbstractBaseUser):
     #user details(i.e super admin,admin, manager, employee)
     profile_name = models.CharField(max_length=30,null=True, blank=True, unique=True)
-    mobile = models.CharField(validators=[phone_regex], max_length=10, unique=True)
+    mobile = models.CharField(validators=[phone_regex], max_length=10)
     email = models.EmailField( 'Email-id', max_length=255,null=True,blank=True)
     professional_email = models.EmailField( 'Professional Email-id', max_length=255,null=True,blank=True)
     professional_email_password = models.CharField( 'Email Password', max_length=255,null=True,blank=True)
@@ -126,7 +126,7 @@ class SiteUser(AbstractBaseUser):
 
     objects = SiteUserManager()
 
-    USERNAME_FIELD = 'mobile'
+    USERNAME_FIELD = 'employee_number'
     REQUIRED_FIELDS = ['email',]
 
     def __str__(self):
