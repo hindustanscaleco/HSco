@@ -46,7 +46,7 @@ class UserAdmin(ImportExportModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('email', 'name','mobile',  'role')
+    list_display = ('email', 'employee_number', 'name','mobile',  'role')
     list_filter = ( 'role',)
 
     fieldsets = (
