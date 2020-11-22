@@ -1879,10 +1879,9 @@ function whosFunction() {
                 <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"><input id="sub_model" name="sub_model"  value="{{lead.product_id.sub_category}}" disabled size="4"></td>
                 <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"><input id="sub_sub_model" name="sub_sub_model"   value="{{lead.product_id.sub_sub_category}}" disabled size="4"></td>
                                 <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"><input id="quantity" value="{{lead.quantity}}" disabled size="4"></td>
-                                <input  id="{{lead.product_id.id}}" name="product_id"   value="{{lead.product_id.id}}" disabled size="4">
 
                   <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">
-                    <select id="select_{{forloop.counter}}" name="selected_dodown" onchange="check_stock_available(this)">
+                    <select id="select_{{forloop.counter}}" name="selected_dodown" onchange="check_stock_available(this,{{lead.product_id.id}})">
                         <option value="">Select Godown</option>
                         {% for item in work_area_godowns %}
                         <option value="{{item.pk}}">{{item.name_of_godown}}</option>
@@ -1892,8 +1891,8 @@ function whosFunction() {
                 </td>
                 </tr>
                 <script>
-  function check_stock_available(select) {
-    var product__id = $("#{{lead.product_id.id}}").val();
+  function check_stock_available(select, product__id) {
+    var product__id = product__id;
     console.log(product__id);
 
     $.ajax({                       // initialize an AJAX request
