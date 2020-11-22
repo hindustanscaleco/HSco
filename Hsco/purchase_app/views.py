@@ -1836,6 +1836,8 @@ def report(request):
         selected_purchase_list = request.POST.getlist('checks[]')
         selected_product_list = request.POST.getlist('products[]')
         selected_customer_list = request.POST.getlist('customer[]')
+        payment_details = request.POST.get('payment_details')
+
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
         string = ','.join(selected_purchase_list)
@@ -1849,6 +1851,7 @@ def report(request):
         request.session['selected_list'] = selected_purchase_list
         request.session['selected_product_list'] = selected_product_list
         request.session['selected_customer_list'] = selected_customer_list
+        request.session['payment_details'] = payment_details
         return redirect('/final_report/')
     return render(request,"report/report_cust_mod_form.html",)
 
@@ -1863,6 +1866,9 @@ def final_report(request):
     selected_customer_list = request.session.get('selected_customer_list')
     selected_list = request.session.get('selected_list') + ['crm_no_id']
     selected_product_list = request.session.get('selected_product_list') + ['Purchase ID']
+    payment_details = request.session.get('payment_details')
+    print('payment details')
+    print(payment_details)
     final_row_product = []
     final_row = []
 
@@ -1879,8 +1885,7 @@ def final_report(request):
     product_query = Product_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_product)
     for product in product_query:
         sales_query = Purchase_Details.objects.filter(id=product['purchase_id']).values(*string_purchase)
-        print('selected customer list')
-        # print(selected_customer_list)
+        
         print(sales_query)
         try:
             if selected_customer_list:
@@ -1892,6 +1897,25 @@ def final_report(request):
             pass
         
         for item in sales_query:
+            #payment details in sales report
+            if payment_details != 'None':
+                sale = Purchase_Details.objects.get(id=product['purchase_id'])
+                if sale.payment_mode == 'Cash' or sale.payment_mode == 'Razorpay':
+                    item['payment_mode'] = sale.payment_mode
+                elif sale.payment_mode == 'Credit':
+                    item['payment_mode'] = sale.payment_mode
+                    item['credit_authorised_by'] = 'Authorised by: '+str(sale.credit_authorised_by)
+                    item['credit_pending_amount'] = 'Pending Amount: '+str(sale.credit_pending_amount)
+                elif sale.payment_mode == 'Cheque':
+                    item['payment_mode'] = sale.payment_mode
+                    item['bank_name'] = 'Bank Name: '+str(sale.bank_name)
+                    item['cheque_no'] = 'Cheque No: '+str(sale.cheque_no)
+                    item['cheque_date'] = 'Cheque Date: '+str(sale.cheque_date)
+                elif sale.payment_mode == 'NEFT':
+                    item['payment_mode'] = sale.payment_mode
+                    item['neft_bank_name'] = 'Bank Name: '+str(sale.neft_bank_name)
+                    item['neft_date'] = 'NEFT Date: '+str(sale.neft_date)
+                    item['reference_no'] = 'Reference No: '+str(sale.reference_no)
             print(item)
             print('entry_timedate' in item)
             product.update(item)
