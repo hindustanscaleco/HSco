@@ -1879,6 +1879,7 @@ function whosFunction() {
                 <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"><input id="sub_model" name="sub_model"  value="{{lead.product_id.sub_category}}" disabled size="4"></td>
                 <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"><input id="sub_sub_model" name="sub_sub_model"   value="{{lead.product_id.sub_sub_category}}" disabled size="4"></td>
                                 <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"><input id="quantity" value="{{lead.quantity}}" disabled size="4"></td>
+                                <input  id="{{lead.product_id.id}}" name="product_id"   value="{{lead.product_id.id}}" disabled size="4">
 
                   <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">
                     <select id="select_{{forloop.counter}}" name="selected_dodown" onchange="check_stock_available(this)">
@@ -1890,6 +1891,34 @@ function whosFunction() {
 
                 </td>
                 </tr>
+                <script>
+  function check_stock_available(select) {
+    var product__id = $("#{{lead.product_id.id}}").val();
+    console.log(product__id);
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/stock_does_not_exist/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'model_of_purchase': $('#model_of_purchase').val(),     // add the country id to the GET parameters
+          'type_of_scale': $("#type_of_scale").val(),      // add the country id to the GET parameters
+          'sub_model': $("#sub_model").val(),       // add the country id to the GET parameters
+          'sub_sub_model': $("#sub_sub_model").val(),      // add the country id to the GET parameters
+          'godown': select.options[select.selectedIndex].value ,      // add the country id to the GET parameters
+          'quantity': $("#quantity").val(),     // add the country id to the GET parameters
+          'product_id': product__id,      // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+
+    $("#rec_data_quantity").html(data);
+
+
+        }
+      });
+}
+
+
+  </script>
                 {% endfor %}
 
             </table>
@@ -2160,32 +2189,7 @@ function pdf_download_manual(){
  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
 
 
-<script>
-  function check_stock_available(select) {
 
-
-    $.ajax({                       // initialize an AJAX request
-        url: "/stock_does_not_exist/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
-        data: {
-          'model_of_purchase': $('#model_of_purchase').val(),     // add the country id to the GET parameters
-          'type_of_scale': $("#type_of_scale").val(),      // add the country id to the GET parameters
-          'sub_model': $("#sub_model").val(),       // add the country id to the GET parameters
-          'sub_sub_model': $("#sub_sub_model").val(),      // add the country id to the GET parameters
-          'godown': select.options[select.selectedIndex].value ,      // add the country id to the GET parameters
-          'quantity': $("#quantity").val(),     // add the country id to the GET parameters
-
-        },
-        success: function (data) {   // `data` is the return of the `load_cities` view function
-
-    $("#rec_data_quantity").html(data);
-
-
-        }
-      });
-}
-
-
-  </script>
 
     <script  src="{% static 'js/dashboard/upload-images.js' %}"></script>
 
