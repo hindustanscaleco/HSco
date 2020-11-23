@@ -1607,8 +1607,8 @@ def update_view_lead(request,id):
 
                     messages.error(request,"Product Having Sub Category:"+product_id.sub_category.name+" and Sub Sub Category:"+product_id.sub_sub_category.name+" Does Not Exist in Godown:"+godown.name_of_godown)
                     return redirect('/update_view_lead/' + str(id))
-
-                if (quantity_available > required_quantity):
+                
+                if (quantity_available >= required_quantity):
                     is_sufficient_stock = False
                 else:
 
