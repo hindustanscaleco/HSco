@@ -286,9 +286,9 @@ def report_amc(request):
 
 @login_required(login_url='/')
 def final_report_amc(request):
-    start_date =    request.session.get('start_date')
-    end_date =      request.session.get('end_date')
-    string =        request.session.get('string')
+    start_date = request.session.get('start_date')
+    end_date = request.session.get('end_date')
+    string = request.session.get('string')
     selected_list = request.session.get('selected_list')
 
     for n, i in enumerate(selected_list):
@@ -301,14 +301,15 @@ def final_report_amc(request):
 
     with connection.cursor() as cursor:
         cursor.execute(
-            "SELECT  " + string + " from amc_visit_app_amc_after_sales , customer_app_customer_details"
-                                          "  where amc_visit_app_amc_after_sales.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + start_date + "' and '" + end_date + "';")
+            "SELECT " + string + " from amc_visit_app_amc_after_sales , customer_app_customer_details where amc_visit_app_amc_after_sales.crm_no_id = customer_app_customer_details.id and amc_visit_app_amc_after_sales.entry_timedate between '" + start_date + "' and '" + end_date + "';")
         row = cursor.fetchall()
 
-        final_row= [list(x) for x in row]
+        final_row = [list(x) for x in row]
         list3=[]
         for i in row:
             list3.append(list(i))
+
+        print(list3)
     try:
         del request.session['start_date']
         del request.session['end_date']
@@ -318,12 +319,13 @@ def final_report_amc(request):
         pass
 
     context={
-        'final_row':final_row,
-        'selected_list':selected_list,
+        'final_row': final_row,
+        'selected_list' : selected_list,
     }
     return render(request,"report/amc_final_report.html",context)
 
 today_month = datetime.datetime.now().month
+
 @login_required(login_url='/')
 def amc_views(request):
     if request.method == 'POST':

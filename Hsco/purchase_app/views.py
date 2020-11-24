@@ -1122,6 +1122,7 @@ def view_customer_details(request, *args, **kwargs):
                 'search_msg': 'Search result for Customer Email ID: ' + email,
             }
             return render(request, 'dashboardnew/cm.html', context)
+
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
@@ -1232,7 +1233,7 @@ def view_customer_details(request, *args, **kwargs):
         return render(request, 'dashboardnew/cm.html', context)
 
 
-    elif 'delete_purchase_id' in request.POST:
+    elif 'deleted' in request.POST:
         purchase_ids = request.POST.getlist('delete_purchase_id[]')
         print('purchase id')
         print(purchase_ids)
@@ -1949,7 +1950,7 @@ def final_report(request):
             pass
 
         for item in sales_query:
-            print(item)
+            # print(item['entry_timedate'])
             print('entry_timedate' in item)
             product.update(item)
 

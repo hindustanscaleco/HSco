@@ -1462,7 +1462,7 @@ def repairing_report_module(request):
 def final_repairing_report_module(request):
     repair_start_date = str(request.session.get('repair_start_date'))
     repair_end_date = str(request.session.get('repair_end_date'))
-    repair_string = request.session.get('repair_string') + ['crm_no_id'] 
+    repair_string = request.session.get('repair_string') + ['crm_no_id']
     repair_product_string = request.session.get('repair_product_string') + ['repairing_id']
     selected_customer_list = request.session.get('selected_customer_list')
     selected_list = request.session.get('selected_list') + ['crm_no_id']
@@ -1478,12 +1478,12 @@ def final_repairing_report_module(request):
         if i == 'today_date':
             selected_list[n] = 'Entry Date'
 
-    
+
     product_query = Repairing_Product.objects.filter(entry_timedate__range=(repair_start_date, repair_end_date)).values(*repair_product_string)
     for product in product_query:
         repairing_query = Repairing_after_sales_service.objects.filter(id=product['repairing_id']).values(*repair_string)
-        print('repairing customer')
-        print(selected_customer_list)
+        # print('repairing customer')
+        # print(selected_customer_list)
         try:
             if selected_customer_list:
                 customer_query = Customer_Details.objects.filter(id=list(repairing_query)[0]['crm_no_id']).values(*selected_customer_list)
@@ -1492,12 +1492,12 @@ def final_repairing_report_module(request):
         except:
             print('no customer error')
             pass
-            
+
         for item in repairing_query:
-            print(item)
+            # print(item['entry_timedate'])
             print('entry_timedate' in item)
             product.update(item)
-        
+
     # with connection.cursor() as cursor:
 
     #     if repair_product_string != '' and repair_string != '':
@@ -1532,7 +1532,7 @@ def final_repairing_report_module(request):
         'repair_end_date': repair_end_date,
         'final_row': final_row,
         'final_row_product': final_row_product,
-        'final_row_product': final_row_product,
+        # 'final_row_product': final_row_product,
         'repairing_query':product_query,
         # 'selected_list': selected_list,
         'selected_product_list': selected_product_list+selected_list,
