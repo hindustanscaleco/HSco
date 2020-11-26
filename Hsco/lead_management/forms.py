@@ -179,6 +179,7 @@ class Deal_detailForm(forms.ModelForm):
                                             'type': 'text',
                                             'placeholder': "Person",
                                             'class': 'form-control',
+                                            'id': 'new_existing_customer_id',
                                         }
                                     ))
 

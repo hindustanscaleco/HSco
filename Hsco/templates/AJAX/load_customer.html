@@ -1,4 +1,10 @@
 <!--Do not edit without permission-->
+<input hidden type="text"  id="latest_sale_industry_id" value="{{customer_latest_sale.industry}}"/>
+<input hidden type="text"  id="latest_sale_channel_dispatch_id" value="{{customer_latest_sale.channel_of_dispatch}}"/>
+<input hidden type="text"  id="latest_sale_channel_sales_id" value="{{customer_latest_sale.channel_of_sales}}"/>
+<textarea hidden id="latest_sale_notes_id">{{customer_latest_sale.notes}}</textarea>
+<textarea hidden id="latest_sale_shipping_id">{{customer_latest_sale.shipping_address}}</textarea>
+<textarea hidden id="latest_sale_billing_id">{{customer_latest_sale.bill_address}}</textarea>
 <div class="form-group row">
 
 
@@ -71,10 +77,11 @@
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-    <textarea name="customer_address" id="customer_address" placeholder="Address" value="{{cust_list.address}}" class="form-control"  type="text"></textarea>
+    <textarea name="customer_address" id="customer_address" placeholder="Address"  class="form-control"  type="text">{% if cust_list.address != None and cust_list.address != '' %}{{cust_list.address}}{% else %}{% endif %}</textarea>
     </div>
   </div>
 
+{% if customer_latest_lead %}
 <label class="col-md-2 control-label">Customer GST No
 
 
@@ -87,8 +94,55 @@
   <input  name="customer_gst_no" id="customer_gst_no" placeholder="GST No" value="{{cust_list.customer_gst_no}}" class="form-control"  type="text">
     </div>
   </div>
+  </div>
+<div class="form-group row">
 
+                                   <label class="col-md-2 control-label">Industry: *</label>
+                              <div class="col-md-4 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                <select name="customer_industry" id="customer_industry" class="form-control">
+  <option value="{{cust_list.customer_industry}}">{{cust_list.customer_industry}}</option>
+  <option value="Energy industry">Energy industry</option>
+  <option value="Chemicals">Chemicals</option>
+  <option value="Industrial Metals">Industrial Metals</option>
+  <option value="Gold/Gems and precious Metals">Gold/Gems and precious Metals</option>
+  <option value="Home and Heavy Construction companies">Home and Heavy Construction companies</option>
+  <option value="Electrical and Electronic Manufacturers">Electrical and Electronic Manufacturers</option>
+  <option value="Industrial Transportation">Industrial Transportation</option>
+  <option value="Agriculture">Agriculture</option>
+  <option value="Poultry/Livestock">Poultry/Livestock</option>
+  <option value="Healthcare Equipment and Services">Healthcare Equipment and Services</option>
+  <option value="Textiles">Textiles</option>
+  <option value="Hotels">Hotels</option>
+  <option value="Grocery/Retail">Grocery/Retail</option>
+  <option value="Bakery">Bakery</option>
+  <option value="Supplier">Supplier</option>
+  <option value="Fishing">Fishing</option>
+  <option value="Dealer">Dealer</option>
+</select>
+
+                            </div>
+                             </div>
+
+<label class="col-md-2 control-label">Optional Email(Comma Separated): </label>
+                          <div class="col-md-4 inputGroupContainer">
+                          <div class="input-group">
+                          <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+    <textarea name="optional_email" id="optional_email" placeholder="Optional Email"  class="form-control"  type="text">{% if cust_list.optional_email != None and cust_list.optional_email != '' %}{{cust_list.optional_email}}{% else %}{% endif %}</textarea>
+                        </div>
+                        </div>
+
+
+
+
+
+
+                          </div>
 
 
 
 </div>
+
+<input hidden name="latest_lead_channel" id="latest_lead_channel_id" value="{{customer_latest_lead.channel}}"/>
+{% endif %}
