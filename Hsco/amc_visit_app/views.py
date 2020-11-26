@@ -302,7 +302,7 @@ def final_report_amc(request):
     with connection.cursor() as cursor:
         cursor.execute(
             "SELECT  " + string + " from amc_visit_app_amc_after_sales , customer_app_customer_details"
-                                          "  where amc_visit_app_amc_after_sales.crm_no_id = customer_app_customer_details.id and entry_timedate between '" + start_date + "' and '" + end_date + "';")
+                                          "  where amc_visit_app_amc_after_sales.crm_no_id = customer_app_customer_details.id and amc_visit_app_amc_after_sales.entry_timedate between '" + start_date + "' and '" + end_date + "';")
         row = cursor.fetchall()
 
         final_row= [list(x) for x in row]

@@ -256,7 +256,7 @@ Format : (contact no)
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="new_repeat_purchase" required class="form-control">
+<select name="new_repeat_purchase" id="new_repeat_purchase_id" required class="form-control">
   <option value="New">New</option>
   <option value="Repeat">Repeat</option>
 </select>
@@ -321,7 +321,7 @@ Format : (contact no)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input  type="text" required name="industry" placeholder="Industry" class="form-control" list="channel2">
+    <input id="industry_id" type="text" required name="industry" placeholder="Industry" class="form-control" list="channel2">
         <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
     <datalist style="height:20px;" id="channel2">
       <option value="Energy industry"></option>
@@ -359,7 +359,7 @@ Format : (contact no)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input  type="text" required name="channel_of_sales" placeholder="Channel of Sales" class="form-control" list="channel10">
+    <input  type="text" required name="channel_of_sales" id="channel_of_sales_id" placeholder="Channel of Sales" class="form-control" list="channel10">
     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
     <datalist style="height:20px;" id="channel10">
       <option value="Retail through Physical Store"></option>
@@ -381,7 +381,7 @@ Format : (contact no)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  type="text" name="channel_of_dispatch" placeholder="Channel of Dispatch" required class="form-control" list="channel">
+  <input  type="text" name="channel_of_dispatch" id="channel_of_dispatch_id" placeholder="Channel of Dispatch" required class="form-control" list="channel">
         <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
 
     <datalist style="height:20px;" id="channel">
@@ -415,7 +415,7 @@ Format : (contact no)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
-<textarea name="notes" placeholder="Notes" class="form-control"></textarea>
+<textarea name="notes" id="notes_id" placeholder="Notes" class="form-control"></textarea>
 </div>
 
   </div>
@@ -650,7 +650,7 @@ Format : (contact no)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="bill_address" placeholder="Bill Address" class="form-control"  type="text">
+  <textarea id="bill_address_id" name="bill_address" placeholder="Bill Address" class="form-control"></textarea>
     </div>
   </div>
 <label class="col-md-2 control-label">Shipping Address
@@ -660,7 +660,8 @@ Format : (contact no)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="shipping_address" placeholder="Shipping Address" class="form-control"  type="text">
+    <textarea id="shipping_address_id" name="shipping_address" placeholder="Shipping Address" class="form-control"></textarea>
+
     </div>
   </div>
               </div>
@@ -810,6 +811,13 @@ function choice1(select) {
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
     $("#loaded_customer").html(data);
+      $("#industry_id").val($("#latest_sale_industry_id").val());
+      $("#channel_of_dispatch_id").val($("#latest_sale_channel_dispatch_id").val());
+      $("#channel_of_sales_id").val($("#latest_sale_channel_sales_id").val());
+      $("#notes_id").val($("#latest_sale_notes_id").val());    
+      $("#shipping_address_id").val($("#latest_sale_shipping_id").val());    
+      $("#bill_address_id").val($("#latest_sale_billing_id").val());    
+
     alert("Customer details loaded sucessfully!");
         }
       });
@@ -827,6 +835,12 @@ function choice2(select) {
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
     $("#loaded_customer").html(data);
+      $("#industry_id").val($("#latest_sale_industry_id").val());
+      $("#channel_of_dispatch_id").val($("#latest_sale_channel_dispatch_id").val());
+      $("#channel_of_sales_id").val($("#latest_sale_channel_sales_id").val());
+      $("#notes_id").val($("#latest_sale_notes_id").val());    
+      $("#shipping_address_id").val($("#latest_sale_shipping_id").val());    
+      $("#bill_address_id").val($("#latest_sale_billing_id").val()); 
     alert("Customer details loaded sucessfully!");
         }
       });
@@ -845,6 +859,12 @@ function choice3(select) {
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
     $("#loaded_customer").html(data);
+      $("#industry_id").val($("#latest_sale_industry_id").val());
+      $("#channel_of_dispatch_id").val($("#latest_sale_channel_dispatch_id").val());
+      $("#channel_of_sales_id").val($("#latest_sale_channel_sales_id").val());    
+      $("#notes_id").val($("#latest_sale_notes_id").val());    
+      $("#shipping_address_id").val($("#latest_sale_shipping_id").val());    
+      $("#bill_address_id").val($("#latest_sale_billing_id").val()); 
     alert("Customer details loaded sucessfully!");
         }
       });
@@ -863,6 +883,12 @@ function choice4(select) {
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
     $("#loaded_customer").html(data);
+      $("#industry_id").val($("#latest_sale_industry_id").val());
+      $("#channel_of_dispatch_id").val($("#latest_sale_channel_dispatch_id").val());
+      $("#channel_of_sales_id").val($("#latest_sale_channel_sales_id").val());    
+      $("#notes_id").val($("#latest_sale_notes_id").val());  
+      $("#shipping_address_id").val($("#latest_sale_shipping_id").val());    
+      $("#bill_address_id").val($("#latest_sale_billing_id").val());   
     alert("Customer details loaded sucessfully!");
         }
       });

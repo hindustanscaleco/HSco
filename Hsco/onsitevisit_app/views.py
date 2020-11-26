@@ -1129,8 +1129,12 @@ def final_report_onsite(request):
             selected_list[n] = 'Onsite Rep ID'
         if i == 'customer_app_customer_details.id':
             selected_list[n] = 'CRM No.'
-        if i == 'today_date':
+        if i == 'REP.crm_no_id':
+            selected_list[n] = 'CRM No.'
+        if i == 'REP.entry_timedate':
             selected_list[n] = 'Entry Date'
+
+    
 
     with connection.cursor() as cursor:
 

@@ -12,10 +12,12 @@ from email.mime.text import MIMEText
 from django.core.mail import send_mail, EmailMessage
 from lead_management.email_content import user
 from customer_app.models import Customer_Details, Lead_Customer_Details
+from lead_management.models import Lead
 
 from purchase_app.views import check_admin_roles
 
 from customer_app.models import type_purchase
+from purchase_app.models import Purchase_Details
 
 from ess_app.models import Defects_Warning
 
@@ -1477,8 +1479,13 @@ def final_repairing_report_module(request):
             selected_list[n] = 'Customer No'
         if i == 'today_date':
             selected_list[n] = 'Entry Date'
+        if i == 'entry_timedate':
+            selected_list[n] = 'Entry Date'
+             
+    for n, i in enumerate(selected_product_list):
+        if i == 'entry_timedate':
+            selected_list[n] = 'Entry Date'            
 
-    
     product_query = Repairing_Product.objects.filter(entry_timedate__range=(repair_start_date, repair_end_date)).values(*repair_product_string)
     for product in product_query:
         repairing_query = Repairing_after_sales_service.objects.filter(id=product['repairing_id']).values(*repair_string)
@@ -2005,17 +2012,49 @@ def load_reparing_manager(request):
 @login_required(login_url='/')
 def load_customer(request):
     cust_id = request.GET.get('item_id')
+    context = {
 
-    # for lead management customer details is fetched from lead_customer_details
+    }
+    # for lead management customer details are fetched from lead_customer_details
     if request.GET.get('type') == 'lead':
         cust_list = Lead_Customer_Details.objects.get(id=cust_id)
+        context = {
+            'cust_list': cust_list,
+        }
+        context.update(context)
+        try:
+            customer_latest_lead = Lead.objects.filter(customer_id=cust_id).latest('customer_id')
+            context = {
+                'cust_list': cust_list,
+                'customer_latest_lead': customer_latest_lead,
+            }
+            context.update(context)
+        except Exception as e:
+            print(e)
+            pass
+        
     else:
         cust_list = Customer_Details.objects.get(id=cust_id)
 
-    context = {
-        'cust_list': cust_list,
 
-    }
+        context = {
+            'cust_list': cust_list,
+        }
+        context.update(context)
+
+        try:
+            customer_latest_sale = Purchase_Details.objects.filter(crm_no_id=cust_id).latest('crm_no')
+            print(customer_latest_sale.industry)
+            print(customer_latest_sale.channel_of_dispatch)
+            print(customer_latest_sale.channel_of_sales)
+            context = {
+                'cust_list': cust_list,
+                'customer_latest_sale': customer_latest_sale,
+            }
+            context.update(context)
+        except Exception as e:
+            print(e)
+            pass
 
     return render(request, 'AJAX/load_customer.html', context)
 
