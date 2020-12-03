@@ -1721,7 +1721,7 @@ def add_product_details(request,id):
             Purchase_Details.objects.filter(id=purchase_id).update(tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
         Purchase_Details.objects.filter(id=purchase_id).update(total_amount=F("value_of_goods") + F("tax_amount") + F("total_pf"))
 
-        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),
+        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(year=datetime.now.year()),
                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
             Employee_Analysis_date.objects.filter(user_id=purchase.user_id,
                                                   entry_date=datetime.now().date(),
@@ -1742,7 +1742,7 @@ def add_product_details(request,id):
             ead.save()
 
 
-        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(year=datetime.now.year()),
                                                   Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
             if Employee_Analysis_month.objects.get(user_id=purchase.user_id,
                                                    entry_date__month=datetime.now().month,

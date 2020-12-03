@@ -1744,13 +1744,169 @@ function whosFunction() {
 
 
                               <div class="form-group row">
-                              <label class="col-md-2 control-label">Payment Channel:</label>
+                              <label class="col-md-2 control-label">Payment Mode *
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="payment_mode" id="payment_mode_id"  onchange="show()"  required  class="form-control">
+    <option value="{{payment_id.payment_mode}}"> {{payment_id.payment_mode}} </option>
+    <option value="Cash">Cash</option>
+      <option  value="Credit">Credit</option>
+  <option  value="Cheque">Cheque</option>
+  <option  value="Razorpay">Razorpay</option>
+  <option  value="NEFT">NEFT</option>
+</select>
+    </div>
+  </div>
+        {% comment %} <label class="col-md-2 control-label">GST*
+</label> {% endcomment %}
+<div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+    {% comment %} {% if purchase_id_id.is_gst == True %}
+<input hidden type="checkbox" class="custom-control-input" id="gst_id"  name="gst_id"  checked   >
+  <label class="custom-control-label" for="gst_id"></label>
+    {% else %}
+    <input hidden type="checkbox" class="custom-control-input" id="gst_id"  name="gst_id"    >
+  <label class="custom-control-label" for="gst_id"></label>
+    {% endif %} {% endcomment %}
+  </div>
+</div>
+</div>
+
+<div id="payment_cheque2" style="display: none;">
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Bank Name*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="bank_name" value="{{payment_id.bank_name}}" id="bank_name2" placeholder="Bank Name" class="form-control"  type="text">
+    </div>
+  </div>
+
+  <label class="col-md-2 control-label">Cheque No*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_no" id="cheque_no2" value="{{payment_id.cheque_no}}" placeholder="Cheque Number" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+</div>
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Cheque Date*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_date" id="cheque_date2" value="{{payment_id.cheque_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
+    </div>
+  </div>
+
+<!--  <label class="col-md-2 control-label">Cheque Notes*-->
+
+
+<!--</label>-->
+<!--  <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+<!--    <textarea name="cheque_notes" id="cheque_notes"  rows="6" placeholder="Cheque Notes" class="form-control" >{purchase_id_id.cheque_notes}</textarea>-->
+<!--    </div>-->
+<!--  </div>-->
+
+</div>
+      </div>
+          <div id="payment_neft2" style="display: none;">
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Bank Name*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="neft_bank_name" value="{{payment_id.neft_bank_name}}" id="neft_bank_name2" placeholder="Bank Name" class="form-control"  type="text">
+    </div>
+  </div>
+
+<label class="col-md-2 control-label">NEFT Date*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="neft_date" id="neft_date2" value="{{payment_id.neft_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
+    </div>
+  </div>
+
+
+
+</div>
+            <div class="form-group row">
+
+ <label class="col-md-2 control-label">Reference No
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="reference_no" id="reference_no2" value="{{payment_id.reference_no}}" placeholder="Reference Number" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
+      </div>
+          <div id="payent_credit2" style="display: none;">
+                          <div class="form-group row">
+
+<label class="col-md-2 control-label">Authorised By*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="credit_authorised_by" value="{{payment_id.credit_authorised_by}}" id="credit_authorised_by_id"  placeholder="Authorised By" class="form-control"  type="text">
+    </div>
+  </div>
+
+<label class="col-md-2 control-label">Pending Amount*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="credit_pending_amount" id="credit_pending_amount_id" value="{{payment_id.credit_pending_amount}}" placeholder="Pending Amount" class="form-control" step="any" type="number">
+    </div>
+  </div>
+
+
+
+</div>
+</div>
+                              {% comment %} <label class="col-md-2 control-label">Payment Channel:</label>
                                   <div class="col-md-3 inputGroupContainer">
                                   <div class="input-group">
                                 {{ form5.payment_channel }}
                           </div>
-                        </div>
+                        </div>{% endcomment %}
 
+                            <div class="form-group row">
 
                                 <label class="col-md-2 control-label">Payment Receipt</label>
                               <div class="col-md-3 inputGroupContainer">
@@ -1765,7 +1921,7 @@ function whosFunction() {
                              </div>
                           </div>
 
-
+{% comment %}
                             <div class="form-group row">
                                 <label class="col-md-2 control-label">Payment Received Date*</label>
                               <div class="col-md-3 inputGroupContainer">
@@ -1788,7 +1944,7 @@ function whosFunction() {
                    </div>
                              </div>
                           </div>
-
+{% endcomment %}
 
                             <div class="form-group row">
 
@@ -1798,7 +1954,7 @@ function whosFunction() {
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form5.Payment_notes }}
                             </div>
-                             </div>
+                             </div> 
 
 
 
@@ -2192,6 +2348,96 @@ function pdf_download_manual(){
 
     <script  src="{% static 'js/dashboard/upload-images.js' %}"></script>
 
+<script>
+      
+                show();
+
+              
+
+          function show(){
+              var mode = document.getElementById("payment_mode_id").value;
+              console.log(mode);
+              console.log("mode");
+              var x = document.getElementById("payment_cheque2");
+              var y = document.getElementById("payment_neft2");
+              var z = document.getElementById("payent_credit2");
+
+              if (mode == 'Cheque'){
+                  y.style.display = "none";
+                  z.style.display = "none";
+                  x.style.display = "block";
+
+                  $('#bank_name2').attr('required', '');
+                  $('#cheque_no2').attr('required', '');
+                  $('#cheque_date2').attr('required', '');
+                  $('#bill_no').attr('required', '');
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '')
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+              }
+
+             else if (mode == 'NEFT'){
+                  x.style.display = "none";
+                  z.style.display = "none";
+                  y.style.display = "block";
+
+                  $('#neft_bank_name2').attr('required', '');
+                  $('#neft_date2').attr('required', '');
+                  $('#bill_no').attr('required', '');
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '')
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+              }
+              else if (mode == 'Credit'){
+                  x.style.display = "none";
+                  y.style.display = "none";
+                  z.style.display = "block";
+
+                  $('#credit_authorised_by_id').attr('required', '');
+                  $('#credit_pending_amount_id').attr('required', '');
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+              }
+              else{
+                  if (mode == 'Razorpay'){
+                                      $('#bill_no').attr('required', '');
+
+                  }
+                  else{
+                                        $('#bill_no').removeAttr('required', '');
+
+                  }
+                  x.style.display = "none";
+                  y.style.display = "none";
+                  z.style.display = "none";
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '');
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+              }
+
+              
+
+          }
+</script>
   <script>
 
 
@@ -2270,7 +2516,9 @@ function change( el )
 
 
   </script>
-
+  <script>
+  
+  </script>
 
 </body>
 

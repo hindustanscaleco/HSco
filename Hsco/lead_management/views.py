@@ -1511,12 +1511,22 @@ def update_view_lead(request,id):
 
     try:
         payment_id = Payment_details.objects.get(lead_id=id)
+
         payment_detail_initial_data = {
             'payment_channel': payment_id.payment_channel,
             'payment_receipt': payment_id.payment_receipt,
             'upload_pofile': payment_id.upload_pofile,
-            'payment_recived_date': payment_id.payment_recived_date,
-            'Payment_notes': payment_id.Payment_notes
+            # 'payment_received_date': payment_id.payment_recived_date,
+            'Payment_notes': payment_id.Payment_notes,
+            'payment_mode': payment_id.payment_mode,
+            'bank_name': payment_id.bank_name,
+            'cheque_no': payment_id.cheque_no,
+            'cheque_date': payment_id.cheque_date,
+            'neft_bank_name': payment_id.neft_bank_name,
+            'neft_date': payment_id.neft_date,
+            'reference_no': payment_id.reference_no,
+            'credit_pending_amount': payment_id.credit_pending_amount,
+            'credit_authorised_by': payment_id.credit_authorised_by,
         }
         form5 = Payment_detailsForm(initial=payment_detail_initial_data)
         context1 = {
@@ -1643,6 +1653,7 @@ def update_view_lead(request,id):
                         sales_customer.save()
 
                     purchase_det = Purchase_Details()
+                    #purchase details
                     purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
                     purchase_det.company_address = lead_id.customer_id.address  # new2
                     purchase_det.bill_address = lead_id.customer_id.address  # new2
@@ -1655,6 +1666,18 @@ def update_view_lead(request,id):
                     purchase_det.date_of_purchase = lead_id.entry_timedate
                     purchase_det.product_purchase_date = lead_id.entry_timedate
                     purchase_det.sales_person = lead_id.owner_of_opportunity.name
+
+                    #payment details
+                    purchase_det.payment_mode = payment_id.payment_mode
+                    purchase_det.bank_name = payment_id.bank_name
+                    purchase_det.cheque_no = payment_id.cheque_no
+                    purchase_det.cheque_date = payment_id.cheque_date
+                    purchase_det.neft_bank_name = payment_id.neft_bank_name
+                    purchase_det.neft_date = payment_id.neft_date
+                    purchase_det.reference_no = payment_id.reference_no
+                    purchase_det.credit_pending_amount = payment_id.credit_pending_amount
+                    purchase_det.credit_authorised_by = payment_id.credit_authorised_by
+
                     purchase_det.user_id = SiteUser.objects.get(name=lead_id.owner_of_opportunity.name)
                     if Payment_details.objects.get(lead_id=id).upload_pofile != None and Payment_details.objects.get(lead_id=id).upload_pofile!="":
                         purchase_det.upload_op_file = Payment_details.objects.get(lead_id=id).upload_pofile
@@ -2479,29 +2502,63 @@ def update_view_lead(request,id):
             payment_channel = request.POST.get("payment_channel")
             payment_receipt = request.FILES.get("payment_receipt")
             upload_pofile = request.FILES.get("upload_pofile")
-            payment_received_date = request.POST.get("payment_recived_date")
+            # payment_recived_date = request.POST.get("payment_recived_date")
             Payment_notes = request.POST.get("Payment_notes")
 
-            if Payment_details.objects.filter(lead_id=id).count() == 0:
+            payment_mode = request.POST.get('payment_mode')
+            gst_id = request.POST.get('gst_id')
+
+            bank_name = request.POST.get('bank_name')
+            cheque_no = request.POST.get('cheque_no')
+            cheque_date = request.POST.get('cheque_date')
+
+            neft_bank_name = request.POST.get('neft_bank_name')
+            neft_date = request.POST.get('neft_date')
+            reference_no = request.POST.get('reference_no')
+
+            credit_pending_amount = request.POST.get('credit_pending_amount')
+            credit_authorised_by = request.POST.get('credit_authorised_by')
+            
+            if Payment_details.objects.filter(lead_id__id=id).count() == 0:
                 item10 = Payment_details()
             else:
-                item10 = Payment_details.objects.get(lead_id=id)
+                item10 = Payment_details.objects.get(lead_id__id=id)
+            
+            item10.payment_mode = payment_mode
+            
+            
+            item10.bank_name = bank_name
+            item10.cheque_no = cheque_no
+            if cheque_date != None and cheque_date != '':
+                print('cheque date')
+                print(cheque_date)
+                item10.cheque_date = cheque_date
+
+            item10.neft_bank_name = neft_bank_name
+            item10.reference_no = reference_no
+            if neft_date != None and neft_date != '':
+                print('neft date')
+                print(neft_date)
+                item10.neft_date = neft_date
+
+            if credit_pending_amount != '':
+                item10.credit_pending_amount = float(credit_pending_amount)
+            item10.credit_authorised_by = credit_authorised_by
+
             item10.lead_id=Lead.objects.get(id=id)
             item10.payment_channel = payment_channel
             if payment_receipt != None and payment_receipt != '':
                 item10.payment_receipt = payment_receipt
             if upload_pofile != None and upload_pofile != '':
                 item10.upload_pofile = upload_pofile
-            item10.payment_recived_date = payment_received_date
+            # item10.payment_recived_date = payment_recived_date
             item10.Payment_notes = Payment_notes
 
             if Payment_details.objects.filter(lead_id=id).count()==0:
                 item10.save()
             else:
                 item10.save(
-                    update_fields=['payment_channel', 'payment_receipt', 'upload_pofile', 'payment_recived_date', 'Payment_notes'])
-
-
+                    update_fields=['payment_mode','bank_name','cheque_no','cheque_date','neft_bank_name','reference_no','neft_date','credit_pending_amount','credit_authorised_by','payment_channel', 'payment_receipt', 'upload_pofile', 'Payment_notes'])
 
             del_all_sessions(request)
             request.session['expand_payment'] = True
@@ -3296,7 +3353,7 @@ def final_lead_report(request):
     #         pass
     # if table_name == 'PI Section':
     #     # customer_list = Lead_Customer_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values_list(string)
-    #     selected_list = ['lead_id','discount','discount_type','payment_channel','payment_received_date','notes','cgst_sgst','igst','grand_total','entry_timedate'
+    #     selected_list = ['lead_id','discount','discount_type','payment_channel','payment_recived_date','notes','cgst_sgst','igst','grand_total','entry_timedate'
     #                      ,'quantity','P&F']
     #
     #
@@ -3444,7 +3501,7 @@ def final_lead_report_test(request):
 
             names = Pi_History.objects.filter(lead_id_id=lead['id']).values('id','pi_history_file','medium_of_selection','call_detail','entry_timedate_time','pi_history_file')
             names2 = History_followup.objects.filter(lead_id_id=lead['id']).values()
-            names3 = Payment_details.objects.filter(lead_id_id=lead['id']).values('id','lead_id','payment_channel','payment_recived_date','Payment_notes','entry_timedate')
+            names3 = Payment_details.objects.filter(lead_id_id=lead['id']).values('id','lead_id','payment_channel','payment_received_date','Payment_notes','entry_timedate')
             names4 = Lead_Customer_Details.objects.filter(id=lead['customer_id_id']).values(*string_cust_detail_list)
 
             lead['pi_history'] = list(names)
@@ -3472,7 +3529,7 @@ def final_lead_report_test(request):
                                                                             'entry_timedate_time', 'lead_id__id')
             names2 = History_followup.objects.filter(lead_id_id=lead['id']).values()
             names3 = Payment_details.objects.filter(lead_id_id=lead['id']).values('id', 'lead_id', 'payment_channel',
-                                                                                  'payment_recived_date',
+                                                                                  'payment_received_date',
                                                                                   'Payment_notes', 'entry_timedate')
 
             lead['pi_history'] = list(names)

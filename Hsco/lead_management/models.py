@@ -212,9 +212,26 @@ class Payment_details(models.Model):
     lead_id = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, blank=True)
     payment_channel = models.CharField(max_length=60, null=True, blank=True)
     payment_receipt = models.FileField(upload_to='payment_receipt/',null=True,blank=True)
-    payment_recived_date = models.DateTimeField(default=timezone.now)
+    # payment_recived_date = models.DateField(default=datetime.date.today)
     upload_pofile = models.FileField(upload_to='payment_section_po_file/',null=True,blank=True)
     Payment_notes = models.TextField(null=True, blank=True)
+
+    payment_mode = models.CharField(max_length=150,null=True, blank=True )
+    #cheque details
+    bank_name = models.CharField(max_length=150, null=True, blank=True)
+    cheque_no = models.TextField(null=True, blank=True)
+    cheque_date = models.DateField(null=True,blank=True)
+
+    #neft details
+    neft_bank_name = models.CharField(max_length=150, null=True, blank=True)
+    neft_date = models.DateField(null=True, blank=True)
+    reference_no = models.CharField(max_length=150, null=True, blank=True)
+
+    #credit details
+    credit_pending_amount =  models.FloatField(default=0.0,null=True,blank=True)
+    credit_authorised_by = models.CharField(max_length=250,null=True, blank=True )
+
+
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
