@@ -1721,51 +1721,51 @@ def add_product_details(request,id):
             Purchase_Details.objects.filter(id=purchase_id).update(tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
         Purchase_Details.objects.filter(id=purchase_id).update(total_amount=F("value_of_goods") + F("tax_amount") + F("total_pf"))
 
-        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(year=datetime.now.year()),
-                                                 Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            Employee_Analysis_date.objects.filter(user_id=purchase.user_id,
-                                                  entry_date=datetime.now().date(),
-                                                  year=datetime.now().year).update(
-                total_sales_done_today=F("total_sales_done_today") + value_of_goods)
-            # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
+        # if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(year=datetime.now.year()),
+        #                                          Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+        #     Employee_Analysis_date.objects.filter(user_id=purchase.user_id,
+        #                                           entry_date=datetime.now().date(),
+        #                                           year=datetime.now().year).update(
+        #         total_sales_done_today=F("total_sales_done_today") + value_of_goods)
+        #     # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
-            # ead.save(update_fields=['total_sales_done_today'])
+        #     # ead.save(update_fields=['total_sales_done_today'])
 
-        else:
-            ead = Employee_Analysis_date()
-            ead.user_id = SiteUser.objects.get(id=request.user.pk)
-            ead.total_sales_done_today = value_of_goods
-            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        # else:
+        #     ead = Employee_Analysis_date()
+        #     ead.user_id = SiteUser.objects.get(id=request.user.pk)
+        #     ead.total_sales_done_today = value_of_goods
+        #     ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
 
-            ead.month = datetime.now().month
-            ead.year = datetime.now().year
-            ead.save()
-
-
-        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(year=datetime.now.year()),
-                                                  Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            if Employee_Analysis_month.objects.get(user_id=purchase.user_id,
-                                                   entry_date__month=datetime.now().month,
-                                                   year=datetime.now().year).total_sales_done == None:
-                Employee_Analysis_month.objects.filter(user_id=purchase.user_id,
-                                                       entry_date__month=datetime.now().month,
-                                                       year=datetime.now().year).update(
-                    total_sales_done=0)
-            Employee_Analysis_month.objects.filter(user_id=purchase.user_id,
-                                                   entry_date__month=datetime.now().month,
-                                                   year=datetime.now().year).update(
-                total_sales_done=F("total_sales_done") + value_of_goods)
+        #     ead.month = datetime.now().month
+        #     ead.year = datetime.now().year
+        #     ead.save()
 
 
-        else:
-            ead = Employee_Analysis_month()
-            ead.user_id = SiteUser.objects.get(id=request.user.pk)
-            ead.total_sales_done = value_of_goods
-            ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+        # if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(year=datetime.now.year()),
+        #                                           Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+        #     if Employee_Analysis_month.objects.get(user_id=purchase.user_id,
+        #                                            entry_date__month=datetime.now().month,
+        #                                            year=datetime.now().year).total_sales_done == None:
+        #         Employee_Analysis_month.objects.filter(user_id=purchase.user_id,
+        #                                                entry_date__month=datetime.now().month,
+        #                                                year=datetime.now().year).update(
+        #             total_sales_done=0)
+        #     Employee_Analysis_month.objects.filter(user_id=purchase.user_id,
+        #                                            entry_date__month=datetime.now().month,
+        #                                            year=datetime.now().year).update(
+        #         total_sales_done=F("total_sales_done") + value_of_goods)
 
-            ead.month = datetime.now().month
-            ead.year = datetime.now().year
-            ead.save()
+
+        # else:
+        #     ead = Employee_Analysis_month()
+        #     ead.user_id = SiteUser.objects.get(id=request.user.pk)
+        #     ead.total_sales_done = value_of_goods
+        #     ead.manager_id = SiteUser.objects.get(id=request.user.pk).group
+
+        #     ead.month = datetime.now().month
+        #     ead.year = datetime.now().year
+        #     ead.save()
 
         # Employee_Analysis_month.objects.filter(user_id=purchase.user_id,
         #                                        entry_date__month=datetime.now().month,
