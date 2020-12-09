@@ -216,15 +216,17 @@ class Payment_details(models.Model):
     upload_pofile = models.FileField(upload_to='payment_section_po_file/',null=True,blank=True)
     Payment_notes = models.TextField(null=True, blank=True)
 
+    import datetime
+
     payment_mode = models.CharField(max_length=150,null=True, blank=True )
     #cheque details
     bank_name = models.CharField(max_length=150, null=True, blank=True)
     cheque_no = models.TextField(null=True, blank=True)
-    cheque_date = models.DateField(null=True,blank=True)
+    cheque_date = models.DateField(default=datetime.date.today)
 
     #neft details
     neft_bank_name = models.CharField(max_length=150, null=True, blank=True)
-    neft_date = models.DateField(null=True, blank=True)
+    neft_date = models.DateField(default=datetime.date.today)
     reference_no = models.CharField(max_length=150, null=True, blank=True)
 
     #credit details

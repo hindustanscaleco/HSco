@@ -72,8 +72,8 @@
                  <div class="col-xl-4 col-md-4 mb-4 ">
                 <div class="card-body" style="padding: 2px;">
                   <div class="row no-gutters align-items-right">
-<a style="padding: 2px;" href="/add_expense/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Sub Master </button></a>
- <a style="padding: 2px;" href="/report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Sub Sub Master</button></a>
+<a style="padding: 2px;" href="/expense_type_sub_master/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Sub Master </button></a>
+ <a style="padding: 2px;" href="/expense_type_sub_sub_master/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Sub Sub Master</button></a>
                 </div>
               </div>
             </div>
@@ -260,10 +260,20 @@ td {
     <table>
 
         <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Date</td>
-            <td style="border: 0px solid gray;">Expense ID </td>
-            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;"> Bill No</td>
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Id</td>
+            <td style="border: 0px solid gray;">Expense Master</td>
+            <td style="border: 0px solid gray;">Expense Type Sub Master </td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Expense Type Sub Sub Master</td>
         </tr>
+
+        <tr >
+        {% for item in expense_masters %}
+            <td >{{item.id}}</td>
+            <td >{{item.expense_type_sub_master_id.expense_type_master}}</td>
+            <td >{{item.expense_type_sub_master_id.expense_type_sub_master}}</td>
+            <td >{{item.expense_type_sub_sub_master}}</td>
+        </tr>    
+        {% endfor %}    
 
     </table>
 

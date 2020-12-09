@@ -91,24 +91,25 @@ color:;
 <div id="loaded_customer">
 
   <div class="form-group row">
-  <label class="col-md-2 control-label">Expense Type Master
+  <label class="col-md-2 control-label">Expense Type Master*
 </label>
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expensetype_subMater" class="form-control">
-  <option value="value">value</option>
-  <option value="value2">value2</option>
+<select name="expense_type_master" class="form-control" required>
+  <option value="">Select</option>
+  <option value="Purchase of Goods">Purchase of Goods</option>
+  <option value="Not Purchase">Not Purchase</option>
 </select>
     </div>
   </div>
 
-      <label class="col-md-2 control-label">Expense Type Sub Master
+      <label class="col-md-2 control-label">Expense Type Sub Master*
 </label>
    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="expense_sub_master" id="expense_sub_master" placeholder="Brand" class="form-control"  type="text">
+  <input  name="expense_type_sub_master" id="expense_type_sub_master"  class="form-control"  type="text" required>
     </div>
   </div>
 </div>
@@ -133,7 +134,7 @@ color:;
 
 <center>
   <a href="/expense_product/"><button style="background-color: #FC6E20;" type="button" value="Submit" class="btn btn-primary">Edit</button></a>
-  <a href="/expense_product/"><button style="background-color: #FC6E20;" type="button" value="Submit" class="btn btn-primary">Submit</button></a>
+  <a href="/expense_product/"><button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Submit</button></a>
   <a href="/expense_product/"><button style="background-color: #FC6E20;" type="button" value="Submit" class="btn btn-primary">Delete</button></a>
 </center>
 

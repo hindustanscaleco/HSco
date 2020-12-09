@@ -374,6 +374,7 @@ Module
             </div>
             {% endif %}
 
+{% if request.user.role == 'Super Admin' %}
 
        <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-primary shadow">
@@ -393,9 +394,10 @@ Module
                 </div>
                          </a>
               </div>
-            </div>
+            </div> 
 
           </div>
+          {% endif %}
 
           <!-- Content Row -->
 <br>
