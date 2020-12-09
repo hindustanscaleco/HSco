@@ -1,5 +1,6 @@
 from django.urls import path, include
-from .views import expense_dashboard,add_expense,expense_product,vendor_master,expense_details,expense_report,expense_report_dashboard,expense_master,expense_type_sub_master,expense_type_sub_sub_master
+from .views import expense_dashboard,add_expense,expense_product,vendor_master,expense_details,expense_report, \
+expense_report_dashboard,expense_master,expense_type_sub_master,expense_type_sub_sub_master, load_expense_sub_master, load_expense_sub_sub_master
 
 urlpatterns = [
     path('expense_dashboard/', expense_dashboard, name='expense_dashboard'),
@@ -12,4 +13,6 @@ urlpatterns = [
     path('expense_master/',expense_master,name='expense_master'),
     path('expense_type_sub_master/',expense_type_sub_master,name='expense_type_sub_master'),
     path('expense_type_sub_sub_master/',expense_type_sub_sub_master,name='expense_type_sub_sub_master'),
+    path('load_expense_sub_master/',load_expense_sub_master,name='load_expense_sub_master'),
+    path('load_expense_sub_sub_master/',load_expense_sub_sub_master,name='load_expense_sub_sub_master'),
     ]

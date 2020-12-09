@@ -68,13 +68,15 @@
 
 
 
-                <div class="col-xl-4 col-md-4 mb-4 "></div>
-                 <div class="col-xl-4 col-md-4 mb-4 ">
+                <div class="col-xl-2 col-md-2 mb-2 "></div>
+                 <div class="col-xl-6 col-md-6 mb-6 ">
                 <div class="card-body" style="padding: 2px;">
                   <div class="row no-gutters align-items-right">
      {% if request.user.is_authenticated %}
 <a style="padding: 2px;" href="/add_expense/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Expense </button></a>
- <a style="padding: 2px;" href="/report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
+<a style="padding: 2px;" href="/vendor_master/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Vendor </button></a>
+<a style="padding: 2px;" href="/expense_master/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Expense Master </button></a>
+ <a style="padding: 2px;" href="/expense_report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
 {% endif %}
                 </div>
               </div>

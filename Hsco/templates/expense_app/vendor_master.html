@@ -96,9 +96,10 @@ color:;
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expensetype_subMater" class="form-control">
-  <option value="value">value</option>
-  <option value="value2">value2</option>
+<select name="expense_type_master" class="form-control" onchange="on_type_master(this)" required>
+  <option value="">Select</option>
+  <option value="Purchase of Goods">Purchase of Goods</option>
+  <option value="Not Purchase">Not Purchase</option>
 </select>
     </div>
   </div>
@@ -108,9 +109,8 @@ color:;
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expensetype_subMater" class="form-control">
-  <option value="value">value</option>
-  <option value="value2">value2</option>
+<select name="expense_type_sub_master" class="form-control" id="expense_type_sub_master_id" onchange="on_type_sub_master(this)" required>
+  
 </select>
     </div>
   </div>
@@ -124,9 +124,8 @@ color:;
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expensetype_subMater" class="form-control">
-  <option value="value">value</option>
-  <option value="value2">value2</option>
+<select name="expense_type_sub_sub_master" id="expense_type_sub_sub_master_id" class="form-control" required>
+  
 </select>
     </div>
   </div>
@@ -155,33 +154,33 @@ color:;
   </div>
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Total Basic Amount *
+  <label class="col-md-2 control-label">Company Name
 </label>
    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="bill_no" id="total_basic_amount" placeholder="Customer Bill No" class="form-control"  type="text">
+  <input  name="total_basic_amount" id="total_basic_amount" placeholder="Total Basic Amount" class="form-control"  type="text">
     </div>
   </div>
 
 
-<label class="col-md-2 control-label">P & F</label>
+<label class="col-md-2 control-label">Detailed Address</label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="bill_date" id="p_andF" class="form-control" type="text">
+  <textarea size="20" name="detailed_address" placeholder="Detailed Address" ></textarea>
     </div>
   </div>
   </div>
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">GST *
+  <label for="email" class="col-md-2 control-label">Email id
 </label>
-   <div class="col-md-1 inputGroupContainer">
+   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="gst" id="gst" class="form-control"  type="text">
+  <input  name="email_id" id="email_id" placeholder="Email id" class="form-control"  type="email">
     </div>
   </div>
   </div>
@@ -202,36 +201,21 @@ color:;
     </div>
   </div>
 
-
-<label class="col-md-2 control-label">SGST Amt</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="sgst_amt" id="sgst_amt" class="form-control" placeholder="SGST Amt" type="text">
-    </div>
-  </div>
-  </div>
-
-        <div class="form-group row">
-  <label class="col-md-2 control-label">CGST %
+<label class="col-md-2 control-label">CGST %
 </label>
    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="cgst_per" id="cgst_per" placeholder="CGST %" class="form-control"  type="text">
     </div>
+
+  </div>
+
+        <div class="form-group row">
+  
   </div>
 
 
-<label class="col-md-2 control-label">CGST Amt:</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="cgst_amt" id="cgst_amt" placeholder="CGST Amt" class="form-control" type="text">
-    </div>
-  </div>
   </div>
 
         <div class="form-group row">
@@ -244,25 +228,18 @@ color:;
     </div>
   </div>
 
-
-<label class="col-md-2 control-label">IGST Amt</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="igst_amt" id="igst_amt" placeholder="IGST Amt" class="form-control" type="text">
-    </div>
-  </div>
-  </div>
-
-        <div class="form-group row">
-  <label class="col-md-2 control-label">TDS %
+<label class="col-md-2 control-label">TDS %
 </label>
    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="tds_per" id="tds_per" placeholder="TDS %" class="form-control"  type="text">
     </div>
+    
+  </div>
+
+        <div class="form-group row">
+  
   </div>
 
 
@@ -330,7 +307,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="date_of_purchase" id="date_of_purchase" placeholder="Date of Purchase"  class="form-control"  type="date">
+  <input  name="date_of_payment" id="date_of_payment" placeholder="Date of Payment"  class="form-control"  type="date">
     </div>
   </div>
 
@@ -342,7 +319,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="name_of_payee" id="name_of_payee" placeholder="Name of Payee"  class="form-control"  type="date">
+  <input  name="name_of_payee" id="name_of_payee" placeholder="Name of Payee"  class="form-control"  type="text">
     </div>
   </div>
   </div>
@@ -390,9 +367,13 @@ color:;
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expensetype_subMater" class="form-control">
-  <option value="value">Cash</option>
-  <option value="value2">value2</option>
+<select name="payment_mode" id="payment_mode_id" onchange="show()"  required class="form-control">
+  <option value="">Select</option>
+  <option value="Cash">Cash</option>
+  <option  value="Cheque">Cheque</option>
+  <option  value="Credit">Credit</option>
+  <option  value="Razorpay">Razorpay</option>
+  <option  value="NEFT">NEFT</option>
 </select>
     </div>
   </div>
@@ -401,7 +382,7 @@ color:;
 
 
 <center>
-  <a href="/expense_product/"><button style="background-color: #FC6E20;" type="button" value="Submit" class="btn btn-primary">Submit</button></a>
+  <a href="/expense_product/"><button style="background-color: #FC6E20;" type="Submit" value="Submit" class="btn btn-primary">Submit</button></a>
 </center>
 
 
@@ -423,7 +404,43 @@ color:;
   <!-- Scroll to Top Button-->
 
 
+  <script>
+  function on_type_master(select) {
 
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_expense_sub_master/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'expense_type_master': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#expense_type_sub_master_id").html(data);
+
+    
+
+
+
+        }
+      });
+}
+
+function on_type_sub_master(select) {
+
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_expense_sub_sub_master/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'expense_type_master': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#expense_type_sub_sub_master_id").html(data);
+
+        }
+      });
+}
+  </script>
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
   <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
