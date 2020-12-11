@@ -266,8 +266,8 @@ td {
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Expense Type Sub Sub Master</td>
         </tr>
 
-        <tr >
         {% for item in expense_masters %}
+                <tr >
             <td >{{item.id}}</td>
             <td >{{item.expense_type_sub_master_id.expense_type_master}}</td>
             <td >{{item.expense_type_sub_master_id.expense_type_sub_master}}</td>

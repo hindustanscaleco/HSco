@@ -90,76 +90,108 @@ color:;
 
 <div id="loaded_customer">
 
-  <div class="form-group row">
+  {% comment %} <div class="form-group row">
   <label class="col-md-2 control-label">Expense Type
 </label>
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expensetype_subMater" class="form-control">
-  <option value="value">value</option>
-  <option value="value2">value2</option>
+<select name="expense_type" class="form-control">
+  <option value="">Select</option>
+  <option value="Purchase of Goods">Purchase of Goods</option>
+  <option value="Not Purchase">Not Purchase</option>
 </select>
     </div>
   </div>
 
-</div>
+</div> {% endcomment %}
 
 
 
 <div class="form-group row">
-    <label class="col-md-2 control-label">Type Of Scale
+
+        <label class="col-md-2 control-label">Type of Scale *
+
+
 </label>
   <div class="col-md-4 inputGroupContainer">
-    <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expensetype_subMater" class="form-control">
-  <option value="value">value</option>
-  <option value="value2">value2</option>
-</select>
-    </div>
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+      <select id="divselector" required onchange="choice1(this)" class="form-control">
+       <option value="">Select Scale Type</option>
+
+    {% for item in type_purchase %}
+  <option value="{{item.pk}}">{{item.name}}</option>
+
+   {% endfor %}
+
+  </select>
+
+
+     </div>
   </div>
 
-    <label class="col-md-2 control-label">Model Of Purchase
+            <label class="col-md-2 control-label">Model *
+
+
 </label>
   <div class="col-md-4 inputGroupContainer">
-    <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expensetype_subMater" class="form-control">
-  <option value="value">value</option>
-  <option value="value2">value2</option>
-</select>
-    </div>
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+      <select id="id_subcat" required onchange="choicemodel(this)" class="form-control">
+
+
+  </select>
+
+
+     </div>
   </div>
 </div>
-
 
 
 <div class="form-group row">
-  <label class="col-md-2 control-label">Sub Model
-  </label>
+
+
+
+
+                            <label class="col-md-2 control-label">Sub Model *
+
+
+</label>
   <div class="col-md-4 inputGroupContainer">
-    <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expensetype_subMater" class="form-control">
-  <option value="value">value</option>
-  <option value="value2">value2</option>
-</select>
-    </div>
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+      <select id="id_subcat2" onchange="choice_sub_model(this)" class="form-control">
+
+
+  </select>
+
+
+     </div>
   </div>
 
-      <label class="col-md-2 control-label">Sub Sub Model
-  </label>
+                            <label class="col-md-2 control-label">Sub Sub Model *
+
+
+</label>
   <div class="col-md-4 inputGroupContainer">
-    <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expensetype_subMater" class="form-control">
-  <option value="value">value</option>
-  <option value="value2">value2</option>
-</select>
-    </div>
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+      <select required id="id_subcat22" onchange="choice_sub_sub_model(this)" class="form-control">
+
+
+
+  </select>
+
+
+     </div>
   </div>
 </div>
+
 
 
     <div class="form-group row">
@@ -178,11 +210,12 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="unit" id="units" placeholder="units" class="form-control" type="text">
+  <input name="unit" id="Unit" placeholder="Unit" class="form-control" type="text">
     </div>
   </div>
   </div>
 
+<div id="product_details">
     <div class="form-group row">
   <label class="col-md-2 control-label">Capacity
 </label>
@@ -199,10 +232,13 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="rate" id="rate" placeholder="Rate" class="form-control" type="text">
+  <input name="rate" id="rate" placeholder="Rate" onkeyup="total_product_amount()"  class="form-control" type="text">
     </div>
   </div>
   </div>
+
+  </div>
+
 
     <div class="form-group row">
   <label class="col-md-2 control-label">Quantity
@@ -210,7 +246,7 @@ color:;
    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="quantity" id="quantity" placeholder="Quantity" class="form-control"  type="text">
+  <input  name="quantity" id="quantity" value="1" placeholder="Quantity" onkeyup="total_product_amount()"  class="form-control"  type="text">
     </div>
   </div>
 
@@ -220,10 +256,11 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="amount" id="amount" placeholder="amount" class="form-control" type="text">
+  <input name="amount" value="0.0" id="amount" placeholder="Rate x quantity" class="form-control" onclick="total_product_amount()" type="text">
     </div>
   </div>
   </div>
+
 
     <div class="form-group row">
   <label class="col-md-2 control-label">Serial No
@@ -240,36 +277,53 @@ color:;
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expensetype_subMater" class="form-control">
-  <option value="value">value</option>
-  <option value="value2">value2</option>
+<select required id="godown" name="godown"  class="form-control">
+    
+              <option value="">Select</option>
+
+
+  {% for godown in godowns %}
+  <option value="{{godown.id}}">{{godown.name_of_godown}}</option>
+
+  {% endfor %}
 </select>
     </div>
   </div>
   </div>
 
     <div class="form-group row">
-   <label class="col-md-2 control-label">Last Product
+
+
+                    <label class="col-md-2 control-label">Last Product ?
 </label>
-  <div class="col-md-2 inputGroupContainer">
-    <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expensetype_subMater" class="form-control">
-  <option value="value">Yes</option>
-  <option value="value2">No</option>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
+ <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="is_last_product_yes" class="form-control">
+  <option value="Yes">Yes</option>
+  <option value="No">No</option>
 </select>
     </div>
   </div>
-  </div>
+</div>
+        
 
 
 <center>
-  <a href="/expense_product/"><button style="background-color: #FC6E20;" type="button" value="Submit" class="btn btn-primary">Submit</button></a>
+  <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Submit</button></a>
 </center>
 
 
 
   <br>
+  
+  <input type="hidden" value="" id="type_of_scale" name="type_of_scale">
+  <input type="hidden" value="" id="model_of_purchase" name="model_of_purchase">
+  <input type="hidden" value="" id="sub_model" name="sub_model">
+  <input type="hidden" value="" id="sub_sub_model" name="sub_sub_model">
+  <input type="hidden" value="{{global_count}}"  name="global_count">
 </fieldset>
     </form>
   <!--Product List-->
@@ -285,7 +339,193 @@ color:;
 
   <!-- Scroll to Top Button-->
 
+<script>
+  function choice5(select) {
 
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/stock_does_not_exist/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'model_of_purchase': $('#model_of_purchase').val(),     // add the country id to the GET parameters
+          'type_of_scale': $("#type_of_scale").val(),      // add the country id to the GET parameters
+          'sub_model': $("#sub_model").val(),       // add the country id to the GET parameters
+          'sub_sub_model': $("#sub_sub_model").val(),      // add the country id to the GET parameters
+          'godown': select.options[select.selectedIndex].value ,      // add the country id to the GET parameters
+          'quantity': $("#quantity").val(),     // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+
+    $("#rec_data").html(data);
+
+
+        }
+      });
+}
+
+
+  </script>
+  <script type="text/javascript">
+      function total_product_amount(){
+    var rate = parseFloat(document.getElementById("rate").value);
+            var quantity = parseFloat(document.getElementById("quantity").value);
+
+            var total =Math.round(rate * quantity);
+
+            document.getElementById("amount").value = total;
+}
+// create an interval calling the specified function every 10 seconds.
+  </script>
+<script>
+ function choice1(select) {
+     //alert(select.options[select.selectedIndex].value);
+
+
+       $("#type_of_scale").val(select.options[select.selectedIndex].text);
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat").html(data);
+
+    if ($('#id_subcat option').length > 1)
+    {
+    $('#id_subcat').attr('required', '');
+    $('#id_subcat2').attr('required', '');
+    $('#id_subcat22').attr('required', '');
+    }
+    else{
+    $('#id_subcat').removeAttr('required');
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+    }
+
+
+
+        }
+      });
+}
+function choicemodel(select) {
+$("#model_of_purchase").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat2").html(data);
+
+       if ($('#id_subcat2 option').length > 1)
+    {
+    $('#id_subcat2').attr('required', '');
+    $('#id_subcat22').attr('required', '');
+
+
+    }
+    else{
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+
+    }
+
+
+        }
+      });
+}
+
+function choice_sub_model(select) {
+
+$("#sub_model").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+     $.ajax({                       // initialize an AJAX request
+        url: "/get_product_details/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'model_of_purchase': $('#model_of_purchase').val(),     // add the country id to the GET parameters
+          'type_of_scale': $("#type_of_scale").val(),      // add the country id to the GET parameters
+          'sub_model': select.options[select.selectedIndex].value,       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+
+    $("#product_details").html(data);
+total_product_amount();
+
+        }
+      });
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_sub_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat22").html(data);
+
+     if ($('#id_subcat2 option').length > 1)
+    {
+    $('#id_subcat22').removeAttr('required');
+
+    }
+    else{
+
+
+    $('#id_subcat22').attr('required', '');
+
+    }
+
+
+        }
+      });
+
+
+}
+
+function choice_sub_sub_model(select) {
+$("#sub_sub_model").val(select.options[select.selectedIndex].text);
+    $.ajax({                       // initialize an AJAX request
+            url: "/get_product_details/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+            data: {
+              'model_of_purchase': $('#model_of_purchase').val(),     // add the country id to the GET parameters
+              'type_of_scale': $("#type_of_scale").val(),      // add the country id to the GET parameters
+              'sub_model': $("#sub_model").val(),       // add the country id to the GET parameters
+              'sub_sub_model': select.options[select.selectedIndex].value,      // add the country id to the GET parameters
+
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+
+        $("#product_details").html(data);
+        total_product_amount();
+
+
+            }
+          });
+}
+
+function isOneChecked() {
+  // All <input> tags...
+  var chx = document.getElementsByTagName('input');
+  for (var i=0; i<chx.length; i++) {
+    // If you have more than one radio group, also check the name attribute
+    // for the one you want as in && chx[i].name == 'choose'
+    // Return true from the function on first match of a checked item
+    if (chx[i].type == 'radio' && chx[i].checked) {
+    alert("Are you sure it's last product?\n you will not be able to add product again.");
+      return true;
+    }
+  }
+  // End of the loop, return false
+  alert("Please Select any one radio buttons in last product field.");
+  return false;
+}
+
+
+  </script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>

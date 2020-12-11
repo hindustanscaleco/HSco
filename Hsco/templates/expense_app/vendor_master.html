@@ -159,7 +159,7 @@ color:;
    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="total_basic_amount" id="total_basic_amount" placeholder="Total Basic Amount" class="form-control"  type="text">
+  <input  name="company_name" id="company_name" placeholder="Company Name" class="form-control"  type="text">
     </div>
   </div>
 
@@ -169,7 +169,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <textarea size="20" name="detailed_address" placeholder="Detailed Address" ></textarea>
+  <textarea size="20" name="detailed_address" placeholder="Detailed Address" class="form-control"></textarea>
     </div>
   </div>
   </div>
@@ -181,6 +181,15 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="email_id" id="email_id" placeholder="Email id" class="form-control"  type="email">
+    </div>
+  </div>
+
+  <label class="col-md-2 control-label">GST No</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="gst_no" id="gst_no" placeholder="GST No" class="form-control"  type="text">
     </div>
   </div>
   </div>
@@ -235,47 +244,38 @@ color:;
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="tds_per" id="tds_per" placeholder="TDS %" class="form-control"  type="text">
     </div>
-    
   </div>
+
+        
+</div>
+
+
 
         <div class="form-group row">
-  
-  </div>
-
-
-<label class="col-md-2 control-label">TDS Amt</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="tds_amt" id="tds_amt" placeholder="TDS Amt" class="form-control" type="text">
-    </div>
-  </div>
-  </div>
-
-        <div class="form-group row">
-  <label class="col-md-2 control-label">Discount %
+        <label class="col-md-2 control-label">HSN Code
 </label>
    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="discount_per" id="discount_per" placeholder="Discount %" class="form-control"  type="text">
+  <input  name="hsn_code" id="hsn_code" placeholder="HSN Code" class="form-control"  type="text">
     </div>
   </div>
 
-
-<label class="col-md-2 control-label">Discount Amt</label>
-
-    <div class="col-md-4 inputGroupContainer">
+  <label class="col-md-2 control-label">Notes
+</label>
+   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="discount_amt" id="discount_amt" placeholder="Discount Amt" class="form-control" type="text">
+  <textarea size="20" name="notes" placeholder="Notes" class="form-control" ></textarea>
     </div>
   </div>
+
+
+
   </div>
 
 
-<hr style="background-color: gray;">
+{% comment %} <hr style="background-color: gray;">
      <div class="form-group row">
   <label class="col-md-2 control-label">Total Amount *
 </label>
@@ -376,7 +376,7 @@ color:;
   <option  value="NEFT">NEFT</option>
 </select>
     </div>
-  </div>
+  </div> {% endcomment %}
   </div>
 
 
@@ -440,6 +440,7 @@ function on_type_sub_master(select) {
         }
       });
 }
+
   </script>
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>

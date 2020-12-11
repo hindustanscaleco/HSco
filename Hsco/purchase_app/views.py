@@ -1045,15 +1045,10 @@ def view_customer_details(request):
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
                                                             user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-purchase_no')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
+
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-purchase_no')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
-            # cust_list = Customer_Details.objects.filter()
+
             context = {
                 'customer_list': cust_list,
                 'search_msg': 'Search result for date range: '+start_date+' TO '+end_date,
@@ -1064,15 +1059,10 @@ def view_customer_details(request):
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
                                                             user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-purchase_no')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
+
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-purchase_no')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
-            # cust_list = Customer_Details.objects.filter(contact_no=contact)
+
             context = {
                 'customer_list': cust_list,
                 'search_msg': 'Search result for Customer Contact No: ' + contact,
@@ -1084,15 +1074,10 @@ def view_customer_details(request):
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
                                                             user_id__is_deleted=False,company_email__icontains=email).order_by('-purchase_no')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
+
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-purchase_no')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
-            # cust_list = Customer_Details.objects.filter(customer_email_id=email)
+
             context = {
                 'customer_list': cust_list,
                 'search_msg': 'Search result for Customer Email ID: ' + email,
@@ -1103,15 +1088,10 @@ def view_customer_details(request):
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
                                                             user_id__is_deleted=False,second_person__icontains=customer).order_by('-purchase_no')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
+
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-purchase_no')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
-            # cust_list = Customer_Details.objects.filter(customer_name=customer)
+
             context = {
                 'customer_list': cust_list,
                 'search_msg': 'Search result for Customer Name: ' +customer,
@@ -1123,15 +1103,10 @@ def view_customer_details(request):
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
                                                             user_id__is_deleted=False,second_company_name__icontains=company).order_by('-purchase_no')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
+
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-purchase_no')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
-            # cust_list = Customer_Details.objects.filter(company_name=company)
+
             context = {
                 'customer_list': cust_list,
                 'search_msg': 'Search result for Company Name: ' + company,
@@ -1142,15 +1117,10 @@ def view_customer_details(request):
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
                                                             user_id__is_deleted=False,crm_no__pk=crm).order_by('-purchase_no')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
+
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-purchase_no')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
-            # cust_list = Customer_Details.objects.filter(crn_number=crm)
+
             context = {
                 'customer_list': cust_list,
                 'search_msg': 'Search result for CRM No. : ' + crm,
@@ -1161,15 +1131,10 @@ def view_customer_details(request):
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
                                                             user_id__is_deleted=False,purchase_no__icontains=purchase_no).order_by('-purchase_no')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
+
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,purchase_no__icontains=purchase_no).order_by('-purchase_no')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
-            # cust_list = Customer_Details.objects.filter(company_name=company)
+
             context = {
                 'customer_list': cust_list,
                 'search_msg': 'Search result for Purchase No: ' + purchase_no,
