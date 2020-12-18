@@ -1030,9 +1030,39 @@ def view_customer_details(request):
                 log.table_name = 'Purchase_Details'
                 log.reference = 'Purchase Id:' +str(id)
                 log.save()
+
+                purchase_products= Product_Details.objects.filter(purchase_id__purchase_no=id)
+                for product in purchase_products:
+                    GodownProduct.objects.filter(godown_id=product.godown_id.id, product_id__scale_type__name=product.type_of_scale,product_id__main_category__name=product.model_of_purchase,product_id__sub_category__name=product.sub_model,product_id__sub_sub_category__name=product.sub_sub_model).update(
+                    quantity=F("quantity") + product.quantity)
+
+                    item3 = AcceptGoods()
+                    item3.from_godown = Godown.objects.get(id=product.godown_id.id)
+                    item3.good_added = True
+                    item3.log_entered_by = request.user.name
+                    item3.notes = 'Deleted from Sales'
+                    item3.save()
+
+                    item2 = AGProducts()
+                    item2.type = 'Individual'
+                    item2.quantity = float(product.quantity)
+                    item2.godown_id = Godown.objects.get(id=product.godown_id.id)
+                    item2.accept_product_id = AcceptGoods.objects.get(id=item3.id)
+                    item2.godown_product_id = GodownProduct.objects.get(godown_id=product.godown_id.id, product_id__scale_type__name=product.type_of_scale,product_id__main_category__name=product.model_of_purchase,product_id__sub_category__name=product.sub_model,product_id__sub_sub_category__name=product.sub_sub_model)
+                    item2.log_entered_by = request.user.name
+                    item2.save()
+
+                    new_transaction = GodownTransactions()
+                    new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
+                    new_transaction.notes = 'Product Deleted from Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
+                                            + ', Contact: ' + str(request.user.mobile) + ',\nProduct Deleted' + \
+                                            '\nPurchase Id:' + str(purchase_obj.id)+ ', Purchase Product Id: ' + str(product.id)
+                    new_transaction.save()
                 Purchase_Details.objects.filter(purchase_no=id).delete()
-            except:
+
+            except Exception as e:
                 print('Purchase with this id does not exist: '+str(id))
+                print(e)
                 pass
         messages.success(request, "Deleted Successfully!")
         print('message sent!!!')
