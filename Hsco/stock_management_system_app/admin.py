@@ -12,8 +12,9 @@ class Product_Admin(admin.ModelAdmin):
 
 class GodownProduct_Admin(admin.ModelAdmin):
 
+    list_display = ('id', 'product_id','entry_timedate')
 
-    search_fields = ('product_id__scale_type__name','product_id__main_category__name','product_id__sub_category__name','product_id__sub_sub_category__name')
+    search_fields = ('product_id__id','product_id__scale_type__name','product_id__main_category__name','product_id__sub_category__name','product_id__sub_sub_category__name')
 
 class DailyStock_Admin(ImportExportModelAdmin):
     list_display = ('id', 'godown_products', 'closing_stock', 'sales_quantity', 'entry_timedate')

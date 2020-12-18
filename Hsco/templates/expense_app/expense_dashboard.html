@@ -178,10 +178,10 @@ $(function() {
      <option value="d1">Search By Date Range</option>
      <option value="d2">Search By Mobile Number</option>
      <option value="d3">Search By Email Id</option>
-     <option value="d4">Search By Customer Name</option>
+     <option value="d4">Search By Vendor Name</option>
      <option value="d5">Search By Company Name</option>
-     <option value="d6">Search By CRM No.</option>
-     <option value="d7">Search By Purchase No.</option>
+     <option value="d6">Search By Expense ID</option>
+     {% comment %} <option value="d7">Search By ID</option> {% endcomment %}
      <!--<option value="d7">Search By CRM Number Range</option>-->
   </select>
 </div>
@@ -242,7 +242,7 @@ $(function() {
 
     <div id="d4" class="divs d4">
         <form method="POST">{% csrf_token%}
-      <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
+      <input type="text" name="name"  placeholder="Vendor Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
       <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button>
     </form>
@@ -258,17 +258,17 @@ $(function() {
                                <form method="POST">{% csrf_token%}
 
     <div id="d6" class="divs d6">
-      <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
+      <input type="text" name="id" placeholder="Expense ID" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
       <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
 </form>
-                       <form method="POST">{% csrf_token%}
+                       {% comment %} <form method="POST">{% csrf_token%}
 
     <div id="d7" class="divs d7">
       <input type="text" name="purchase_no" placeholder="Purchase No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
       <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
-</form>
+</form> {% endcomment %}
 </div>
 
                 </div>
@@ -282,12 +282,11 @@ $(function() {
                     <div class="col-md-2">
                       <input type="date" class="form-control">
                     </div>
-                    <div class="col-md-2">
-                      <select class="form-control" name="dropdown" id="cars">
-                        <option value="Option1">Option 1</option>
-                        <option value="Option2">Option 2</option>
-                        <option value="Option3">Option 3</option>
-                        <option value="Option4">Option 4</option>
+                    <div class="col-md-3">
+                      <select class="form-control" name="dropdown" onchange="filterby_company(this)" id="cars">
+                        <option value="">Select Our Company</option>
+                        <option value="Sale">Sales</option>
+                        <option value="Scale">Scales</option>
                       </select>
                     </div>
                   </div>
@@ -401,10 +400,9 @@ td {
 
 <div >
      <center><p>{{search_msg}}</p></center>
-        <div class="row" id="id_manager_view">
+        <div class="row" id="expense_table_list">
 
     <table>
-
         <tr style="background-color: gray; color: white;">
             <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Date</td>
             <td style="border: 0px solid gray;">Expense ID </td>
@@ -412,7 +410,7 @@ td {
             <td style="border: 0px solid gray;">Vendor Name</td>
             <td style="border: 0px solid gray;">Contact No.</td>
             {% if request.user.is_authenticated %}
-            {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+            {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager' %}
             <td style="border: 0px solid gray;">Basic Amount</td>
             <td style="border: 0px solid gray;">P & F</td>
             <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Discount</td>
@@ -424,7 +422,25 @@ td {
             {% endif %}
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Grand Total</td>
         </tr>
-
+      <tr>
+      {% for expense in expense_list %}
+          <td>{{expense.entry_date|date:'Y-m-d'}}</td>
+          <td>{{expense.id}}</td>
+          <td>{{expense.bill_no}}</td>
+          <td>{{expense.vendor.name}}</td>
+          <td>{{expense.vendor.phone_no}}</td>
+        {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager' %}
+          <td>{{expense.total_basic_amount}}</td>
+          <td>{{expense.pf}}</td>
+          <td>{{expense.discount_per}}</td>
+          <td>{{expense.cgst_per}}</td>
+          <td>{{expense.sgst_per}}</td>
+          <td>{{expense.igst_per}}</td>
+          <td>{{expense.tds_per}}</td>
+        {% endif %}
+          <td>{{expense.total_amount}}</td>
+          </tr>
+      {% endfor %}
     </table>
 
         </div>
@@ -453,7 +469,23 @@ td {
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+  <script>
+  function filterby_company(select) {
+//$("#model_of_purchase").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/expense_dashboard/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'company_type': select.options[select.selectedIndex].value       // add the country id to the GET parameters
 
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#expense_table_list").html(data);
+
+        }
+      });
+}
+  </script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
