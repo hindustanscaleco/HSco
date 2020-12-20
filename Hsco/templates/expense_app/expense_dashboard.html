@@ -422,10 +422,10 @@ td {
             {% endif %}
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Grand Total</td>
         </tr>
-      <tr>
+      <tr >
       {% for expense in expense_list %}
-          <td>{{expense.entry_date|date:'Y-m-d'}}</td>
-          <td>{{expense.id}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.entry_date|date:'Y-m-d'}}</td>
+          <td >{{expense.id}}</td>
           <td>{{expense.bill_no}}</td>
           <td>{{expense.vendor.name}}</td>
           <td>{{expense.vendor.phone_no}}</td>

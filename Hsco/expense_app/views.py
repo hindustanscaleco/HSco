@@ -269,6 +269,7 @@ def expense_product(request, expense_id):
         if amount == '' or amount == None:
             amount=0.0
 
+        
         item = Expense_Product()
 
         item.user_id = SiteUser.objects.get(id=request.user.id)
@@ -302,6 +303,77 @@ def expense_product(request, expense_id):
             'godowns':godowns,
         }         
     return render(request,"expense_app/expense_product.html",context)
+
+def update_expense_product(request, expense_id, product_id):
+    expense_product = Expense_Product.objects.get(id=product_id)
+    type_of_purchase_list =type_purchase.objects.all() #1
+    if request.user.role == 'Super Admin':
+        godowns = Godown.objects.filter(default_godown_purchase=False)
+
+    elif request.user.role == 'Admin':
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id ))
+
+    elif request.user.role == 'Manager':
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+    else:
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+
+    if request.method == 'POST':
+        quantity = float(request.POST.get('quantity'))
+        expense_type = request.POST.get('expense_type')
+        model_of_purchase = request.POST.get('model_of_purchase')
+        type_of_scale = request.POST.get('type_of_scale')
+        sub_model = request.POST.get('sub_model')
+        sub_sub_model = request.POST.get('sub_sub_model')
+        serial_no = request.POST.get('serial_no')
+        brand = request.POST.get('brand')
+        capacity = request.POST.get('capacity')
+        unit = request.POST.get('unit')
+        amount = request.POST.get('amount')
+        rate = request.POST.get('rate')
+        is_last_product_yes = request.POST.get('is_last_product_yes')
+        godown = request.POST.get('godown')
+
+        if amount == '' or amount == None:
+            amount=0.0
+
+        
+        item = Expense_Product.objects.get(id=product_id)
+
+        item.user_id = SiteUser.objects.get(id=request.user.id)
+        item.expense_id = Expense.objects.get(id=expense_id)
+        item.godown_id = Godown.objects.get(id=godown)
+
+        item.expense_type = expense_type
+
+        item.type_of_scale = type_of_scale
+        item.model_of_purchase = model_of_purchase
+        item.sub_model = sub_model
+        item.sub_sub_model = sub_sub_model
+        item.serial_no = serial_no
+        item.brand = brand
+        item.capacity = capacity
+        item.unit = unit
+        item.amount = amount            
+        item.rate = rate 
+        item.quantity = quantity
+        item.log_entered_by = request.user.name
+
+        item.save(update_fields=['type_of_scale','model_of_purchase','sub_model','sub_sub_model','serial_no','brand','capacity','unit','amount','rate','quantity','log_entered_by','expense_type','godown_id'])  
+
+        if is_last_product_yes == 'Yes':
+            return redirect('/expense_dashboard/' )
+        elif is_last_product_yes == 'No':
+            return redirect('/expense_product/'+str(expense_id))  
+        
+    context={
+            'type_purchase':type_of_purchase_list,
+            'godowns':godowns,
+            'expense_product':expense_product,
+        }         
+    return render(request,"expense_app/update_expense_product.html",context)
+
 
 def vendor_master(request):
     if request.method == 'POST' or request.method == 'FILES' :
@@ -346,8 +418,14 @@ def vendor_master(request):
 
     return render(request,"expense_app/vendor_master.html")
 
-def expense_details(request):
-    return render(request,'expense_app/expense_details.html')
+def expense_details(request, expense_id):
+    expense = Expense.objects.get(id=expense_id)
+    expense_products = Expense_Product.objects.filter(expense_id=expense_id)
+    context={
+        'expense' : expense,
+        'expense_products' : expense_products,
+    }
+    return render(request,'expense_app/expense_details.html',context)
 
 def expense_report(request):
     if request.method =='POST':
