@@ -1,0 +1,534 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+<link href=
+'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
+          rel='stylesheet'>
+
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" >
+    </script>
+
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" >
+    </script>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <center><h3>Expense Product Details</h3></center>
+
+        <div class="container-fluid" >
+<br>
+
+
+    <form class="well form-horizontal" ion="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
+
+<div id="loaded_customer">
+
+  {% comment %} <div class="form-group row">
+  <label class="col-md-2 control-label">Expense Type
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="expense_type" class="form-control">
+  <option value="">Select</option>
+  <option value="Purchase of Goods">Purchase of Goods</option>
+  <option value="Not Purchase">Not Purchase</option>
+</select>
+    </div>
+  </div>
+
+</div> {% endcomment %}
+
+
+
+<div class="form-group row">
+
+        <label class="col-md-2 control-label">Type of Scale *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+      <select id="divselector" required onchange="choice1(this)" class="form-control">
+       <option value="{{expense_product.type_of_scale}}">{{expense_product.type_of_scale}}</option>
+
+    {% for item in type_purchase %}
+  <option value="{{item.pk}}">{{item.name}}</option>
+
+   {% endfor %}
+
+  </select>
+
+
+     </div>
+  </div>
+
+            <label class="col-md-2 control-label">Model *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+      <select id="id_subcat" required onchange="choicemodel(this)" class="form-control">
+       <option value="{{expense_product.model_of_purchase}}">{{expense_product.model_of_purchase}}</option>
+
+
+  </select>
+
+
+     </div>
+  </div>
+</div>
+
+
+<div class="form-group row">
+
+
+
+
+                            <label class="col-md-2 control-label">Sub Model *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+      <select id="id_subcat2" onchange="choice_sub_model(this)" class="form-control">
+       <option value="{{expense_product.sub_model}}">{{expense_product.sub_model}}</option>
+
+
+  </select>
+
+
+     </div>
+  </div>
+
+                            <label class="col-md-2 control-label">Sub Sub Model *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+      <select required id="id_subcat22" onchange="choice_sub_sub_model(this)" class="form-control">
+
+       <option value="{{expense_product.sub_sub_model}}">{{expense_product.sub_sub_model}}</option>
+
+
+  </select>
+
+
+     </div>
+  </div>
+</div>
+
+
+
+    <div class="form-group row">
+  <label class="col-md-2 control-label">Brand
+</label>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="brand" value="{{expense_product.brand}}" id="brand" placeholder="Brand" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+<label class="col-md-2 control-label">Unit</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="unit" value="{{expense_product.unit}}" id="Unit" placeholder="Unit" class="form-control" type="text">
+    </div>
+  </div>
+  </div>
+
+<div id="product_details">
+    <div class="form-group row">
+  <label class="col-md-2 control-label">Capacity
+</label>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="capacity" value="{{expense_product.capacity}}" id="capacity" placeholder="Capacity" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+<label class="col-md-2 control-label">Rate</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="rate" value="{{expense_product.rate}}" id="rate" placeholder="Rate" onkeyup="total_product_amount()"  class="form-control" type="text">
+    </div>
+  </div>
+  </div>
+
+  </div>
+
+
+    <div class="form-group row">
+  <label class="col-md-2 control-label">Quantity
+</label>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="quantity" value="{{expense_product.quantity}}" id="quantity" value="1" placeholder="Quantity" onkeyup="total_product_amount()"  class="form-control"  type="text">
+    </div>
+  </div>
+
+
+<label class="col-md-2 control-label">Amount</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="amount" value="{{expense_product.amount}}" value="0.0" id="amount" placeholder="Rate x quantity" class="form-control" onclick="total_product_amount()" type="text">
+    </div>
+  </div>
+  </div>
+
+
+    <div class="form-group row">
+  <label class="col-md-2 control-label">Serial No
+</label>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="serial_no" value="{{expense_product.serial_no}}" id="serial_no" placeholder="Serial No" class="form-control"  type="text">
+    </div>
+  </div>
+
+   <label class="col-md-2 control-label">Godown
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select required id="godown" name="godown"  class="form-control">
+    
+
+       <option value="{{expense_product.godown_id.id}}">{{expense_product.godown_id.name_of_godown}}</option>
+
+  {% for godown in godowns %}
+  <option value="{{godown.id}}">{{godown.name_of_godown}}</option>
+
+  {% endfor %}
+</select>
+    </div>
+  </div>
+  </div>
+
+    
+        
+
+
+<center>
+  <button style="background-color: #FC6E20;" type="button" value="Submit" class="btn btn-primary">Edit</button>
+  <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Submit</button>
+</center>
+
+
+
+  <br>
+  
+  <input type="hidden" value="" id="type_of_scale" name="type_of_scale">
+  <input type="hidden" value="" id="model_of_purchase" name="model_of_purchase">
+  <input type="hidden" value="" id="sub_model" name="sub_model">
+  <input type="hidden" value="" id="sub_sub_model" name="sub_sub_model">
+  <input type="hidden" value="{{global_count}}"  name="global_count">
+</fieldset>
+    </form>
+  <!--Product List-->
+
+
+                </div>
+              </div>
+            </div>
+
+<br>
+
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+
+<script>
+  function choice5(select) {
+
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/stock_does_not_exist/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'model_of_purchase': $('#model_of_purchase').val(),     // add the country id to the GET parameters
+          'type_of_scale': $("#type_of_scale").val(),      // add the country id to the GET parameters
+          'sub_model': $("#sub_model").val(),       // add the country id to the GET parameters
+          'sub_sub_model': $("#sub_sub_model").val(),      // add the country id to the GET parameters
+          'godown': select.options[select.selectedIndex].value ,      // add the country id to the GET parameters
+          'quantity': $("#quantity").val(),     // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+
+    $("#rec_data").html(data);
+
+
+        }
+      });
+}
+
+
+  </script>
+  <script type="text/javascript">
+      function total_product_amount(){
+    var rate = parseFloat(document.getElementById("rate").value);
+            var quantity = parseFloat(document.getElementById("quantity").value);
+
+            var total =Math.round(rate * quantity);
+
+            document.getElementById("amount").value = total;
+}
+// create an interval calling the specified function every 10 seconds.
+  </script>
+<script>
+ function choice1(select) {
+     //alert(select.options[select.selectedIndex].value);
+
+
+       $("#type_of_scale").val(select.options[select.selectedIndex].text);
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat").html(data);
+
+    if ($('#id_subcat option').length > 1)
+    {
+    $('#id_subcat').attr('required', '');
+    $('#id_subcat2').attr('required', '');
+    $('#id_subcat22').attr('required', '');
+    }
+    else{
+    $('#id_subcat').removeAttr('required');
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+    }
+
+
+
+        }
+      });
+}
+function choicemodel(select) {
+$("#model_of_purchase").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat2").html(data);
+
+       if ($('#id_subcat2 option').length > 1)
+    {
+    $('#id_subcat2').attr('required', '');
+    $('#id_subcat22').attr('required', '');
+
+
+    }
+    else{
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+
+    }
+
+
+        }
+      });
+}
+
+function choice_sub_model(select) {
+
+$("#sub_model").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+     $.ajax({                       // initialize an AJAX request
+        url: "/get_product_details/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'model_of_purchase': $('#model_of_purchase').val(),     // add the country id to the GET parameters
+          'type_of_scale': $("#type_of_scale").val(),      // add the country id to the GET parameters
+          'sub_model': select.options[select.selectedIndex].value,       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+
+    $("#product_details").html(data);
+total_product_amount();
+
+        }
+      });
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_sub_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat22").html(data);
+
+     if ($('#id_subcat2 option').length > 1)
+    {
+    $('#id_subcat22').removeAttr('required');
+
+    }
+    else{
+
+
+    $('#id_subcat22').attr('required', '');
+
+    }
+
+
+        }
+      });
+
+
+}
+
+function choice_sub_sub_model(select) {
+$("#sub_sub_model").val(select.options[select.selectedIndex].text);
+    $.ajax({                       // initialize an AJAX request
+            url: "/get_product_details/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+            data: {
+              'model_of_purchase': $('#model_of_purchase').val(),     // add the country id to the GET parameters
+              'type_of_scale': $("#type_of_scale").val(),      // add the country id to the GET parameters
+              'sub_model': $("#sub_model").val(),       // add the country id to the GET parameters
+              'sub_sub_model': select.options[select.selectedIndex].value,      // add the country id to the GET parameters
+
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+
+        $("#product_details").html(data);
+        total_product_amount();
+
+
+            }
+          });
+}
+
+function isOneChecked() {
+  // All <input> tags...
+  var chx = document.getElementsByTagName('input');
+  for (var i=0; i<chx.length; i++) {
+    // If you have more than one radio group, also check the name attribute
+    // for the one you want as in && chx[i].name == 'choose'
+    // Return true from the function on first match of a checked item
+    if (chx[i].type == 'radio' && chx[i].checked) {
+    alert("Are you sure it's last product?\n you will not be able to add product again.");
+      return true;
+    }
+  }
+  // End of the loop, return false
+  alert("Please Select any one radio buttons in last product field.");
+  return false;
+}
+
+
+  </script>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+
+    </div>
+  </div>
+
+</body>
+
+</html>
