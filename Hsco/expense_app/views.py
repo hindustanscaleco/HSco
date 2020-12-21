@@ -590,10 +590,10 @@ def expense_report_dashboard(request):
     return render(request,'expense_app/expense_report_dashboard.html')
 
 def expense_master(request):
-    expense_masters = Expense_Type_Sub_Sub_Master.objects.all()
-    context={
-        'expense_masters' : expense_masters,
-    }
+    # expense_masters = Expense_Type_Sub_Sub_Master.objects.all()
+    # context={
+    #     'expense_masters' : expense_masters,
+    # }
     return render(request,'expense_app/expense_master.html', context)
 
 def expense_type_sub_master(request):
