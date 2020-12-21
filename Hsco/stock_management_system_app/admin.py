@@ -16,9 +16,18 @@ class GodownProduct_Admin(admin.ModelAdmin):
 
     search_fields = ('product_id__id','product_id__scale_type__name','product_id__main_category__name','product_id__sub_category__name','product_id__sub_sub_category__name')
 
+class GodownTransactions_Admin(admin.ModelAdmin):
+
+    list_display = ('id','adjustment_quantity','loss_quantity', 'type','entry_timedate')
+
+    search_fields = ('adjustment_quantity','loss_quantity','goods_req_id__id','accept_goods__id','purchase_id__id','loss_quantity','adjustment_quantity','godown_product_id__id')
+
+    list_filter = ('adjustment_quantity', )
+
 class DailyStock_Admin(ImportExportModelAdmin):
-    list_display = ('id', 'godown_products', 'closing_stock', 'sales_quantity', 'entry_timedate')
+    list_display = ('id', 'godown_products','adjustment_quantity','loss_quantity', 'closing_stock', 'sales_quantity', 'entry_timedate')
     search_fields = ('godown_products__product_id__sub_sub_category__name',)
+    list_filter = ('adjustment_quantity', 'loss_quantity',)
 
 admin.site.register(Product, Product_Admin)
 admin.site.register(Godown)
@@ -27,5 +36,5 @@ admin.site.register(GoodsRequest)
 admin.site.register(RequestedProducts)
 admin.site.register(AcceptGoods)
 admin.site.register(AGProducts)
-admin.site.register(GodownTransactions)
+admin.site.register(GodownTransactions, GodownTransactions_Admin)
 admin.site.register(DailyStock,DailyStock_Admin)

@@ -126,7 +126,7 @@ color:;
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
 <select name="expense_type_sub_sub_master" id="expense_type_sub_sub_master_id" class="form-control" required>
-    <option value="{{expense.expense_type_sub_sub_master_id.expense_type_sub_sub_master}}">{{expense.expense_type_sub_sub_master_id.expense_type_sub_sub_master}}</option>
+    <option value="{{expense.expense_type_sub_sub_master_id.id}}">{{expense.expense_type_sub_sub_master_id.expense_type_sub_sub_master}}</option>
 
 </select>
     </div>
@@ -471,9 +471,9 @@ color:;
 
 <br>
 <center>
-  <button style="background-color: #FC6E20;" type="Submit" value="Submit" class="btn btn-primary">Edit</button>
+  <button style="background-color: #FC6E20;" type="Button" value="Submit" class="btn btn-primary">Edit</button>
   <button style="background-color: #FC6E20;" type="Submit" value="Submit" class="btn btn-primary">Submit</button>
-  <button style="background-color: #FC6E20;" type="Submit" value="Submit" class="btn btn-primary">Delete</button>
+  <button style="background-color: #FC6E20;" type="Submit" value="delete" class="btn btn-primary">Delete</button>
 </center>
 
 
@@ -562,9 +562,144 @@ color:;
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
+<script>
+  function show(){
+              var mode = document.getElementById("payment_mode_id").value;
+              var x = document.getElementById("payment_cheque2");
+              var y = document.getElementById("payment_neft2");
+              var z = document.getElementById("payent_credit2");
+              if (mode == 'Cheque'){
+                  y.style.display = "none";
+                  z.style.display = "none";
+                  x.style.display = "block";
+
+                  $('#bank_name2').attr('required', '');
+                  $('#cheque_no2').attr('required', '');
+                  $('#cheque_date2').attr('required', '');
+                  $('#bill_no').attr('required', '');
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '')
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+                  document.getElementById("gst_id").checked = true;
+              }
+
+             else if (mode == 'NEFT'){
+                  x.style.display = "none";
+                  z.style.display = "none";
+                  y.style.display = "block";
+
+                  $('#neft_bank_name2').attr('required', '');
+                  $('#neft_date2').attr('required', '');
+                  $('#bill_no').attr('required', '');
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '')
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+                  document.getElementById("gst_id").checked = true;
+              }
+              else if (mode == 'Credit'){
+                  x.style.display = "none";
+                  y.style.display = "none";
+                  z.style.display = "block";
+
+                  $('#credit_authorised_by_id').attr('required', '');
+                  $('#credit_pending_amount_id').attr('required', '');
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+                  document.getElementById("gst_id").checked = false;
+              }
+              else{
+                  if (mode == 'Razorpay'){
+                  document.getElementById("gst_id").checked = true;
+                  $('#bill_no').attr('required', '');
+
+                  }
+                  else{
+                    document.getElementById("gst_id").checked = false;
+                    $('#bill_no').removeAttr('required', '');
+
+                  }
+                  x.style.display = "none";
+                  y.style.display = "none";
+                  z.style.display = "none";
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '');
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+              }
+          }
+  </script>
+
+  <script>
+  function on_type_master(select) {
 
 
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_expense_sub_master/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'expense_type_master': select.options[select.selectedIndex].value       // add the country id to the GET parameters
 
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#expense_type_sub_master_id").html(data);
+
+        }
+      });
+}
+
+function on_type_sub_master(select) {
+
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_expense_sub_sub_master/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'expense_type_master': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#expense_type_sub_sub_master_id").html(data);
+
+        }
+      });
+}
+
+function on_change_vendor(select) {
+
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_vendor_details/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'vendor_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+
+$('input[name=sgst_per]').val(data.vendor_detail[0].sgst_per);
+$('input[name=cgst_per]').val(data.vendor_detail[0].cgst_per);
+$('input[name=igst_per]').val(data.vendor_detail[0].igst_per);
+$('input[name=tds_per]').val(data.vendor_detail[0].tds_per);
+$('textarea[name=notes]').val(data.vendor_detail[0].notes);
+        }
+      });
+}
+  </script>
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
   <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
