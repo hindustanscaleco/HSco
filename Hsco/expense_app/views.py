@@ -123,7 +123,7 @@ def expense_dashboard(request):
             return render(request, 'expense_app/expense_dashboard.html', context)
         
     context={
-        'expense_list': expense_list,
+        # 'expense_list': expense_list,
     }
     return render(request,"expense_app/expense_dashboard.html", context)
 
