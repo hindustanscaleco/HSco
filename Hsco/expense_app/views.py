@@ -11,7 +11,7 @@ from django.db.models import Q, F, Min, Avg
 # Create your views here.
 
 def expense_dashboard(request):
-    expense_list = Expense.objects.all()
+    # expense_list = Expense.objects.all()
 
     #filter by company type (sales or scales)
     if request.method == 'GET' and 'company_type' in request.GET:
