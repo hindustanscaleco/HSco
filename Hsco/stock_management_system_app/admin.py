@@ -27,9 +27,11 @@ class GodownTransactions_Admin(admin.ModelAdmin):
     list_filter = ('adjustment_quantity', 'godown_product_id__product_id__sub_sub_category',)
 
 class DailyStock_Admin(ImportExportModelAdmin):
-    list_display = ('id', 'godown_products','adjustment_quantity','loss_quantity', 'closing_stock', 'sales_quantity', 'entry_timedate')
+    def godown_product(self, obj):
+        return obj.godown_products.product_id.sub_sub_category
+    list_display = ('id', 'godown_product','adjustment_quantity','loss_quantity', 'closing_stock', 'sales_quantity', 'entry_timedate')
     search_fields = ('godown_products__product_id__sub_sub_category__name',)
-    list_filter = ('adjustment_quantity', 'loss_quantity',)
+    list_filter = ('adjustment_quantity', 'loss_quantity','godown_products__product_id__sub_sub_category','godown_products__product_id__sub_category',)
 
 admin.site.register(Product, Product_Admin)
 admin.site.register(Godown)
