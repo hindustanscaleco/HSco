@@ -20,7 +20,7 @@ class GodownTransactions_Admin(admin.ModelAdmin):
     def godown_product(self, obj):
         return obj.godown_product_id
 
-    list_display = ('id','godown_product','adjustment_quantity','loss_quantity', 'type','entry_timedate')
+    list_display = ('id','godown_product','purchase_id','purchase_quantity','adjustment_quantity','loss_quantity', 'type','entry_timedate')
 
     search_fields = ('adjustment_quantity','loss_quantity','goods_req_id__id','accept_goods__id','purchase_id__id','loss_quantity','adjustment_quantity','godown_product_id__id')
 
