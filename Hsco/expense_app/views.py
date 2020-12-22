@@ -687,7 +687,7 @@ def load_expense_sub_master(request):
 def load_expense_sub_sub_master(request):
     expense_type_sub_master = request.GET.get('expense_type_sub_master')
 
-    expense_type_sub_sub_masters = Expense_Type_Sub_Sub_Master.objects.filter(expense_type_sub_master_id=expense_type_sub_master)
+    expense_type_sub_sub_masters = Expense_Type_Sub_Sub_Master.objects.filter(expense_type_sub_master_id__id=expense_type_sub_master)
     return render(request, 'AJAX_dropdowns/expense_sub_sub_master_dropdown.html', {'expense_type_sub_sub_masters': expense_type_sub_sub_masters})
 
 def load_vendor_details(request):
