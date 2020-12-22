@@ -11,7 +11,7 @@ from django.db.models import Q, F, Min, Avg
 # Create your views here.
 
 def expense_dashboard(request):
-    # expense_list = Expense.objects.all()
+    expense_list = Expense.objects.all()
 
     #filter by company type (sales or scales)
     if request.method == 'GET' and 'company_type' in request.GET:
@@ -123,7 +123,7 @@ def expense_dashboard(request):
             return render(request, 'expense_app/expense_dashboard.html', context)
         
     context={
-        # 'expense_list': expense_list,
+        'expense_list': expense_list,
     }
     return render(request,"expense_app/expense_dashboard.html", context)
 
@@ -590,9 +590,9 @@ def expense_report_dashboard(request):
     return render(request,'expense_app/expense_report_dashboard.html')
 
 def expense_master(request):
-    # expense_masters = Expense_Type_Sub_Sub_Master.objects.all()
+    expense_masters = Expense_Type_Sub_Sub_Master.objects.all()
     context={
-    #     'expense_masters' : expense_masters,
+        'expense_masters' : expense_masters,
     }
     return render(request,'expense_app/expense_master.html', context)
 
