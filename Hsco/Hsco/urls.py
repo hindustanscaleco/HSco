@@ -37,7 +37,7 @@ urlpatterns = [
     path('', include('stock_management_system_app.urls')),
     path('', include('career_module_app.urls')),
     path('session_security/', include('session_security.urls')),
-    # path('', include('expense_app.urls')),
+    path('', include('expense_app.urls')),
 
 
 ]
