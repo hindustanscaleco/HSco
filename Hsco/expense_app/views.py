@@ -413,7 +413,7 @@ def vendor_master(request):
         item.notes = notes
 
         item.save()
-        return redirect('/expense_master/')  
+        return redirect('/expense_dashboard/')  
 
     return render(request,"expense_app/vendor_master.html")
 
