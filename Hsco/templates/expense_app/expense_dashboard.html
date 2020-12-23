@@ -425,20 +425,20 @@ td {
       {% for expense in expense_list %}
         <tr >
           <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.entry_date|date:'Y-m-d'}}</td>
-          <td >{{expense.id}}</td>
-          <td>{{expense.bill_no}}</td>
-          <td>{{expense.vendor.name}}</td>
-          <td>{{expense.vendor.phone_no}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.id}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.bill_no}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.vendor.name}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.vendor.phone_no}}</td>
         {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager' %}
-          <td>{{expense.total_basic_amount}}</td>
-          <td>{{expense.pf}}</td>
-          <td>{{expense.discount_per}}</td>
-          <td>{{expense.cgst_per}}</td>
-          <td>{{expense.sgst_per}}</td>
-          <td>{{expense.igst_per}}</td>
-          <td>{{expense.tds_per}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.total_basic_amount}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.pf}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.discount_per}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.cgst_per}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.sgst_per}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.igst_per}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.tds_per}}</td>
         {% endif %}
-          <td>{{expense.total_amount}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.total_amount}}</td>
           </tr>
       {% endfor %}
     </table>
