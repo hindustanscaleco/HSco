@@ -411,7 +411,7 @@ color:;
     $.ajax({                       // initialize an AJAX request
         url: "/load_expense_sub_master/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
         data: {
-          'expense_type_master': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+          'expense_type_sub_master': select.options[select.selectedIndex].value       // add the country id to the GET parameters
 
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
@@ -426,7 +426,6 @@ color:;
 }
 
 function on_type_sub_master(select) {
-
 
     $.ajax({                       // initialize an AJAX request
         url: "/load_expense_sub_sub_master/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
