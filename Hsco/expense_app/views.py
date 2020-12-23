@@ -723,3 +723,6 @@ def load_expense_by_company(request):
     }
     return JsonResponse(data)
 
+def showBill(request):
+    return render(request,'bills/billsNew.html')
+
