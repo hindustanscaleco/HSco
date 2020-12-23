@@ -7,6 +7,8 @@ from customer_app.models import type_purchase,main_model,sub_model,sub_sub_model
 from stock_management_system_app.models import Godown
 from purchase_app.views import check_admin_roles
 from django.db.models import Q, F, Min, Avg
+from django.contrib import messages
+
 
 # Create your views here.
 
@@ -320,6 +322,10 @@ def update_expense_product(request, expense_id, product_id):
         godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
 
     if request.method == 'POST':
+        if 'delete' in request.POST:
+            Expense_Product.objects.get(id=product_id).delete()
+            messages.success(request, 'Expense Product with ID:-'+str(product_id)+' deleted successfully!')
+            return redirect('/expense_details/'+str(expense_id))
         quantity = float(request.POST.get('quantity'))
         expense_type = request.POST.get('expense_type')
         model_of_purchase = request.POST.get('model_of_purchase')
@@ -422,6 +428,10 @@ def expense_details(request, expense_id):
     vendors_list = Vendor.objects.all()
     expense_products = Expense_Product.objects.filter(expense_id=expense_id)
     if request.method == 'POST' or request.method == 'FILES' :
+        if 'delete' in request.POST:
+            Expense.objects.get(id=expense_id).delete()
+            messages.success(request, 'Expense with ID:-'+str(expense_id)+' deleted successfully!')
+            return redirect('/expense_dashboard/')
         expense_type_master = request.POST.get('expense_type_master')
         expense_type_sub_master = request.POST.get('expense_type_sub_master')
         expense_type_sub_sub_master = request.POST.get('expense_type_sub_sub_master')
