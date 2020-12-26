@@ -1289,7 +1289,7 @@ def update_customer_details(request,id):
             notes = request.POST.get('notes')
             tax_amount = request.POST.get('tax_amount')
             total_amount = request.POST.get('total_amount')
-            # value_of_goods = request.POST.get('value_of_goods')
+            value_of_goods = request.POST.get('value_of_goods')
             # feedback_form_filled = request.POST.get('feedback_form_filled')
             payment_mode = request.POST.get('payment_mode')
             total_pf = request.POST.get('total_pf')
@@ -1302,7 +1302,7 @@ def update_customer_details(request,id):
             neft_bank_name = request.POST.get('neft_bank_name')
             neft_date = request.POST.get('neft_date')
             reference_no = request.POST.get('reference_no')
-
+            
             credit_pending_amount = request.POST.get('credit_pending_amount')
             credit_authorised_by = request.POST.get('credit_authorised_by')
             item2 = purchase_id_id
@@ -1332,11 +1332,12 @@ def update_customer_details(request,id):
 
             item2.total_amount = total_amount
             item2.tax_amount = tax_amount
+            item2.value_of_goods = value_of_goods
 
             if channel_of_marketing != None and channel_of_marketing != '':
                 item2.channel_of_marketing = channel_of_marketing
 
-            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','channel_of_marketing','tax_amount',
+            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','channel_of_marketing','tax_amount','total_amount','value_of_goods',
                                       'total_pf','neft_bank_name','reference_no','neft_date','credit_pending_amount','credit_authorised_by','is_gst'])
 
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
