@@ -194,6 +194,8 @@ function myFunction() {
     document.getElementById("godown").disabled = false;
     document.getElementById("myText10").style.display = "block";
     document.getElementById("myText11").disabled = false;
+    document.getElementById("myText111").disabled = false;
+    document.getElementById("myText91").disabled = false;
     document.getElementById("divselector").disabled = false;
     document.getElementById("id_subcat").disabled = false;
     document.getElementById("id_subcat2").disabled = false;
@@ -400,31 +402,18 @@ function myFunction() {
 
 
   <div class="form-group row">
-
-
-
    <label class="col-md-2 control-label">Quantity *
-
-
-
-
 </label>
 
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
-  <input  name="quantity" disabled placeholder="Quantity
-
-
-" class="form-control" id="myText9" onkeyup="total_product_amount()" value="{{product_id.quantity}}" type="text">
+  <input  name="quantity" disabled placeholder="Quantity" class="form-control" id="myText9" onkeyup="total_product_amount()" value="{{product_id.quantity}}" type="text">
     </div>
 </div>
 
 
-                    <label class="col-md-2 control-label">Amount
-
-
-
+<label class="col-md-2 control-label">Amount
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -432,8 +421,6 @@ function myFunction() {
   <input  name="value_of_goods" required placeholder="Rate x quantity" onclick="total_product_amount()" id="myText11" value="{{product_id.amount}}" disabled class="form-control" step="0.2" type="number">
     </div>
   </div>
-
-
 </div>
 
 
@@ -454,9 +441,6 @@ function myFunction() {
 
 
   <label class="col-md-2 control-label"> Godown
-
-
-
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -470,6 +454,28 @@ function myFunction() {
   </div>
   </div>
 
+</div>
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Return ?
+</label>
+
+   <div class="col-md-4 inputGroupContainer">
+ <div class="input-group">
+ <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+ <input name="quantity" disabled placeholder="Quantity" class="form-control" id="myText91" value="{{product_id.quantity}}" type="checkbox">
+   </div>
+</div>
+
+
+<label class="col-md-2 control-label">Reason:
+</label>
+<select name="cars" class="form-control" id="cars">
+  <option value="volvo">Volvo</option>
+  <option value="saab">Saab</option>
+  <option value="mercedes">Mercedes</option>
+  <option value="audi">Audi</option>
+</select>
 </div>
 
   <input type="hidden" value="{{global_count}}"  name="global_count">

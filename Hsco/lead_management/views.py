@@ -1677,7 +1677,8 @@ def update_view_lead(request,id):
                     purchase_det.reference_no = payment_id.reference_no
                     purchase_det.credit_pending_amount = payment_id.credit_pending_amount
                     purchase_det.credit_authorised_by = payment_id.credit_authorised_by
-
+                    if payment_id.payment_mode == 'Cheque' or payment_id.payment_mode == 'Razorpay' or payment_id.payment_mode == 'NEFT'  :
+                        purchase_det.is_gst = True
                     purchase_det.user_id = SiteUser.objects.get(name=lead_id.owner_of_opportunity.name)
                     if Payment_details.objects.get(lead_id=id).upload_pofile != None and Payment_details.objects.get(lead_id=id).upload_pofile!="":
                         purchase_det.upload_op_file = Payment_details.objects.get(lead_id=id).upload_pofile
@@ -1806,6 +1807,12 @@ def update_view_lead(request,id):
                         # Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
                         Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=total_purchase_product_cost)
                         Purchase_Details.objects.filter(id=customer_id.pk).update(total_amount=total_purchase_product_cost)
+                        if payment_id.payment_mode == 'Cheque' or payment_id.payment_mode == 'Razorpay' or payment_id.payment_mode == 'NEFT'  :
+                            tax_amt =  round(total_purchase_product_cost * 0.18)
+                            Purchase_Details.objects.filter(id=customer_id.pk).update(tax_amount=tax_amt)
+                            Purchase_Details.objects.filter(id=customer_id.pk).update(total_amount=(total_purchase_product_cost+tax_amt))
+                        else:
+                            Purchase_Details.objects.filter(id=customer_id.pk).update(total_amount=total_purchase_product_cost)
                         Lead.objects.filter(id=id).update(is_entered_purchase=True,current_stage='Dispatch Done - Closed')
                     except Exception as e :
                         # context22 = {
