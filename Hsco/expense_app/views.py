@@ -726,3 +726,9 @@ def load_expense_by_company(request):
 def showBill(request):
     return render(request,'bills/billsNew.html')
 
+def showBillModule(request):
+    return render(request,'bills/billsModuleDashboard.html')
+
+def add_sales(request):
+    return render(request,'bills/add_sales.html')
+
