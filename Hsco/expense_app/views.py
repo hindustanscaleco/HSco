@@ -8,9 +8,11 @@ from stock_management_system_app.models import Godown
 from purchase_app.views import check_admin_roles
 from django.db.models import Q, F, Min, Avg
 from django.contrib import messages
+from lead_management.models import Pi_section
 
 
 # Create your views here.
+
 
 def expense_dashboard(request):
     expense_list = Expense.objects.all()
@@ -727,7 +729,114 @@ def showBill(request):
     return render(request,'bills/billsNew.html')
 
 def showBillModule(request):
-    return render(request,'bills/billsModuleDashboard.html')
+    bills_list = Pi_section.objects.all()
+    # search by options
+    if request.method == 'POST':
+        if 'submit1' in request.POST:
+            start_date = request.POST.get('date1')
+            end_date = request.POST.get('date2')
+            if check_admin_roles(request):  # For ADMIN
+                bills_list = Pi_section.objects.filter(
+                    Q(lead_id__owner_of_opportunity__name=request.user.name) | Q(lead_id__owner_of_opportunity__group__icontains=request.user.name),
+                    lead_id__owner_of_opportunity___is_deleted=False, entry_date__range=[start_date, end_date]).order_by('-id')
+
+            else:  # For EMPLOYEE
+                bills_list = Pi_section.objects.filter(lead_id__owner_of_opportunity__user_id=request.user.pk,
+                                                      entry_date__range=[start_date, end_date]).order_by('-id')
+
+            context = {
+                'bills_list': bills_list,
+                'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
+            }
+            return render(request,'bills/billsModuleDashboard.html',context)
+        elif 'submit2' in request.POST:
+            contact = request.POST.get('contact')
+            if check_admin_roles(request):  # For ADMIN
+                bills_list = Pi_section.objects.filter(
+                    Q(lead_id__owner_of_opportunity__name=request.user.name) | Q(lead_id__owner_of_opportunity__group__icontains=request.user.name),
+                    lead_id__owner_of_opportunity__is_deleted=False).order_by('-id')
+
+            else:  # For EMPLOYEE
+                bills_list = Pi_section.objects.filter(lead_id__owner_of_opportunity__id=request.user.pk,
+                                                      vendor__phone_no__icontains=contact).order_by('-id')
+
+            context = {
+                'bills_list': bills_list,
+                'search_msg': 'Search result for Vendor Contact No: ' + contact,
+            }
+            return render(request,'bills/billsModuleDashboard.html',context)
+
+        elif 'submit3' in request.POST:
+            email = request.POST.get('email')
+
+            if check_admin_roles(request):  # For ADMIN
+                bills_list = Pi_section.objects.filter(
+                    Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+                    user_id__is_deleted=False, vendor__email_id__icontains=email).order_by('-id')
+
+            else:  # For EMPLOYEE
+                bills_list = Pi_section.objects.filter(user_id=request.user.pk,
+                                                      vendor__email_id__icontains=email).order_by('-id')
+
+            context = {
+                'bills_list': bills_list,
+                'search_msg': 'Search result for Vendor Email ID: ' + email,
+            }
+            return render(request,'bills/billsModuleDashboard.html',context)
+        elif 'submit4' in request.POST:
+            name = request.POST.get('name')
+
+            if check_admin_roles(request):  # For ADMIN
+                bills_list = Pi_section.objects.filter(
+                    Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+                    user_id__is_deleted=False, vendor__name__icontains=name).order_by('-id')
+
+            else:  # For EMPLOYEE
+                bills_list = Pi_section.objects.filter(user_id=request.user.pk, vendor__name__icontains=name).order_by(
+                    '-id')
+
+            context = {
+                'bills_list': bills_list,
+                'search_msg': 'Search result for Vendor Name: ' + name,
+            }
+            return render(request,'bills/billsModuleDashboard.html',context)
+
+        elif 'submit5' in request.POST:
+            company = request.POST.get('company')
+
+            if check_admin_roles(request):  # For ADMIN
+                bills_list = Pi_section.objects.filter(
+                    Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+                    user_id__is_deleted=False, vendor__company_name__icontains=company).order_by('-id')
+
+            else:  # For EMPLOYEE
+                bills_list = Pi_section.objects.filter(user_id=request.user.pk,
+                                                      vendor__company_name__icontains=company).order_by('-id')
+
+            context = {
+                'bills_list': bills_list,
+                'search_msg': 'Search result for Company Name: ' + company,
+            }
+            return render(request,'bills/billsModuleDashboard.html',context)
+        elif request.method == 'POST' and 'submit6' in request.POST:
+            id = request.POST.get('id')
+            if check_admin_roles(request):  # For ADMIN
+                bills_list = Pi_section.objects.filter(
+                    Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+                    user_id__is_deleted=False, id=id).order_by('-id')
+
+            else:  # For EMPLOYEE
+                bills_list = Pi_section.objects.filter(user_id=request.user.pk, id=id).order_by('-id')
+
+            context = {
+                'bills_list': bills_list,
+                'search_msg': 'Search result for Expense ID. : ' + str(id),
+            }
+            return render(request, 'bills/billsModuleDashboard.html', context)
+    context={
+        "bills_list":bills_list,
+    }
+    return render(request,'bills/billsModuleDashboard.html',context)
 
 def add_sales(request):
     return render(request,'bills/add_sales.html')
