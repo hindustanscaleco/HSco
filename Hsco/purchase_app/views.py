@@ -1894,7 +1894,9 @@ def final_report(request):
         
         for item in sales_query:
             #payment details in sales report
-            if payment_details != 'None':
+            if payment_details == 'payment_details':
+                print('payment details')
+                print(payment_details)
                 sale = Purchase_Details.objects.get(id=product['purchase_id'])
                 if sale.payment_mode == 'Cash' or sale.payment_mode == 'Razorpay':
                     item['payment_mode'] = sale.payment_mode
