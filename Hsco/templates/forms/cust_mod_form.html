@@ -676,7 +676,7 @@ Format : (contact no)
                   <div class="col-md-4 inputGroupContainer">
                     <div class="input-group">
                     <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-                    <textarea id="bill_address_id" name="bill_address" placeholder="Bill Notes" class="form-control"></textarea>
+                    <textarea id="bill_address_note_id" name="bill_address" placeholder="Bill Notes" class="form-control"></textarea>
                   </div>
                 </div>
               </div>
@@ -781,9 +781,19 @@ Format : (contact no)
               }
           }
 </script>
-<center>
+
+<div class="row" style="
+    margin: 0;
+    position: relative;
+    left:38%;">
    <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Add Product</button>
-</center>
+   <button style="background-color: #FC6E20;" type="button" value="button1" class="btn btn-primary">Bill</button>
+    <select style="width:150px; background-color: #FC6E20; color:white;" name="payment_mode" id="billBUtton" class="form-control">
+  <option value="">Select</option>
+  <option value="Cash">Scale</option>
+  <option  value="Cheque">Sales</option>
+</select>
+</div>
 
 
 
