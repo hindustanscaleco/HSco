@@ -65,9 +65,19 @@ class Purchase_Details(models.Model):   #cleaned
     total_pf = models.FloatField(default=0.0)
     is_gst = models.BooleanField(default=False)
 
+    bill_notes = models.TextField(null=True, blank=True)
+
     def __int__(self):
         return self.id
 
+    @property
+    def grand_total(self):
+        if self.tax_amount!=None and self.total_amount!=None and self.total_pf!=None:
+            return self.tax_amount+self.total_amount+self.total_pf
+        elif self.total_amount!=None and self.total_pf!=None:
+            return self.total_amount + self.total_pf
+        else:
+            return 0.0
 # def save_purchase_details(sender,instance, **kwargs):
 #
 # post_save.connect(save_purchase_details, sender = Purchase_Details)

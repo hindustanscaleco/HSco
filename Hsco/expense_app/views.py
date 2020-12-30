@@ -4,12 +4,12 @@ from django.shortcuts import render, redirect
 from user_app.models import SiteUser
 from django.http import HttpResponse, JsonResponse
 from customer_app.models import type_purchase,main_model,sub_model,sub_sub_model
-from stock_management_system_app.models import Godown
+from stock_management_system_app.models import Godown, Product
 from purchase_app.views import check_admin_roles
 from django.db.models import Q, F, Min, Avg
 from django.contrib import messages
 from lead_management.models import Pi_section
-
+from purchase_app.models import Purchase_Details,Product_Details
 
 # Create your views here.
 
@@ -725,11 +725,34 @@ def load_expense_by_company(request):
     }
     return JsonResponse(data)
 
-def showBill(request):
-    return render(request,'bills/billsNew.html')
+def showBill(request,sales_id):
+    purchase_details = Purchase_Details.objects.filter(id=sales_id).values('total_amount','crm_no__company_name','crm_no__customer_gst_no','bill_no','second_person',
+                                                                           'sales_person','crm_no__address','po_number','second_contact_no','bill_address','shipping_address',
+                                                                           'value_of_goods','bank_name','total_pf','date_of_purchase','reference_no','tax_amount',)
+    products_details = Product_Details.objects.filter(purchase_id=sales_id).values()
+    for item in products_details:
+        product = Product.objects.get(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
+                                                  sub_category__name=item['sub_model'], sub_sub_category__name=item['sub_sub_model'])
+        item['rate'] = product.cost_price
+        item['hsn_code'] = product.hsn_code
+    print("purchase_details")
+    print(purchase_details)
+    for obj in purchase_details:
+        if obj['crm_no__customer_gst_no']!=None:
+            if '27' in obj['crm_no__customer_gst_no'] or (len(obj['crm_no__customer_gst_no'])==1 and 'A' in obj['crm_no__customer_gst_no']):
+                obj['is_cgst']=True
+            else:
+                obj['is_cgst'] = False
+        else:
+            obj['is_cgst'] = False
+    context={
+        'invoice_details':purchase_details[0],
+        'products_details':products_details,
+    }
+    return render(request,'bills/billsNew.html',context)
 
 def showBillModule(request):
-    bills_list = Pi_section.objects.all()
+    bills_list = Purchase_Details.objects.all()
     # search by options
     if request.method == 'POST':
         if 'submit1' in request.POST:
