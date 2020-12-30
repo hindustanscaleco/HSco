@@ -1017,6 +1017,12 @@ def view_customer_details(request):
     date_today= datetime.now().strftime('%Y-%m-%d')
     message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
 
+    #for updating total amount in all sales entry
+    sales_list = Purchase_Details.objects.all()
+    for sale in sales_list:
+        if sale.total_amount == 0:
+            Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
+
     #for deleting purchase entries
     if request.method == 'POST' and 'delete_purchase_id' in request.POST:
         purchase_ids = request.POST.getlist('id[]')
@@ -2052,7 +2058,7 @@ def customer_employee_sales_graph(request,user_id):
     # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
     #                                                                                                      'total_sales_done_today').order_by('entry_date')
     this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
-        .values('entry_timedate').annotate(data_sum=Sum('value_of_goods'))
+        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
@@ -2067,7 +2073,7 @@ def customer_employee_sales_graph(request,user_id):
     else:
         previous_mon = (datetime.now().month) - 1
     previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=previous_mon)\
-        .values('entry_timedate').annotate(data_sum=Sum('value_of_goods'))
+        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -2080,7 +2086,7 @@ def customer_employee_sales_graph(request,user_id):
         end_date = request.POST.get('date2')
 
         qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__range=(start_date, end_date))\
-        .values('entry_timedate').annotate(data_sum=Sum('value_of_goods'))
+        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
         lis_date = []
         lis_sum = []
         for i in qs:
