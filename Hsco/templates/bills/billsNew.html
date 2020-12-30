@@ -113,7 +113,7 @@ td {
           <center><p style="font-weight:bold; float:left;"> Company Name</p>
           </center></div>
           <div class="col-md-5">
-          <center><p style="font-weight:bold; float:left; text-decoration: underline;"> ambrosial</p>
+          <center><p style="font-weight:bold; float:left; text-decoration: underline;"> {{invoice_details.crm_no__company_name}}</p>
           </center></div>
           
           <div class="col-md-1">
@@ -122,7 +122,7 @@ td {
           <center><p style="font-weight:bold; float:left;">GST Invoice:</p>
           </center></div>
           <div class="col-md-2">
-          <center><p style="font-weight:bold; float:left;"> 2</p>
+          <center><p style="font-weight:bold; float:left;"> {{invoice_details.bill_no}}</p>
           </center></div>
           </div>
           
@@ -131,7 +131,7 @@ td {
           <center><p style="font-weight:bold; float:left;">Contact Person</p>
           </center></div>
           <div class="col-md-5">
-          <center><p style="font-weight:bold; float:left;"> pandey</p>
+          <center><p style="font-weight:bold; float:left;"> {{invoice_details.second_person}}</p>
           </center></div>
           
           <div class="col-md-1">
@@ -140,7 +140,7 @@ td {
           <center><p style="font-weight:bold; float:left;">Sales Person :</p>
           </center></div>
           <div class="col-md-2">
-          <center><p style="font-weight:bold; float:left;"> Vikas(Man)</p>
+          <center><p style="font-weight:bold; float:left;"> {{invoice_details.sales_person}}</p>
           </center></div>
           </div>
          
@@ -150,7 +150,7 @@ td {
           <center><p style="font-weight:bold; float:left;">Address/State</p>
           </center></div>
           <div class="col-md-5">
-          <center><p style="font-weight:bold; float:left;"> 101,a wing,shree pushpam complex,gaondevi road, badlapur(e)</p>
+          <center><p style="font-weight:bold; float:left;">  {{invoice_details.crm_no__address}}</p>
           </center></div>
           
           <div class="col-md-1">
@@ -159,7 +159,7 @@ td {
           <center><p style="font-weight:bold; float:left;">PO Number:</p>
           </center></div>
           <div class="col-md-2">
-          <center><p style="font-weight:bold; float:left;"> 9323296538</p>
+          <center><p style="font-weight:bold; float:left;"> {{invoice_details.po_number}}</p>
           </center></div>
           </div>
           
@@ -171,7 +171,7 @@ td {
           <center><p style="font-weight:bold; float:left;">Phone</p>
           </center></div>
           <div class="col-md-5">
-          <center><p style="font-weight:bold; float:left;"> 9860918453</p>
+          <center><p style="font-weight:bold; float:left;"> {{invoice_details.second_contact_no}}</p>
           </center></div>
          
           <div class="col-md-1">
@@ -180,7 +180,7 @@ td {
           <center><p style="font-weight:bold; float:left;">Customer GST Number: </p>
           </center></div>
           <div class="col-md-2">
-          <center><p style="font-weight:bold; float:left;"> 123456789852</p>
+          <center><p style="font-weight:bold; float:left;"> {{invoice_details.crm_no__customer_gst_no}}</p>
           </center></div>
           </div>
           
@@ -189,7 +189,7 @@ td {
           <center><p style="font-weight:bold; float:left;">Billing Address</p>
           </center></div>
           <div class="col-md-5">
-          <center><p style="font-weight:bold; float:left;"> Address</p>
+          <center><p style="font-weight:bold; float:left;"> {{invoice_details.bill_address}}</p>
           </center></div>
          
           <div class="col-md-1">
@@ -208,7 +208,7 @@ td {
           <center><p style="font-weight:bold; float:left;">Shipping Address</p>
           </center></div>
           <div class="col-md-5">
-          <center><p style="font-weight:bold; float:left;"> Address</p>
+          <center><p style="font-weight:bold; float:left;"> {{invoice_details.shipping_address}}</p>
           </center></div>
          
           <div class="col-md-1">
@@ -285,59 +285,38 @@ td {
             <td style="border-radius: 0px 20px 0px 0px; border: 0px solid gray;">Amount</td>
         </tr>
 
-
+{% for item in products_details %}
     <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-    </tr>
+        <td> {{item.quantity}}</td>
+        <td> {{item.hsn_code}}</td>
+        <td> {{item.sub_sub_model}}</td>
+        <td> {{item.rate}}</td>
+        <td> {{item.amount}}</td>
 
-    <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
     </tr>
+{% endfor %}
 
-    <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-    </tr>
-
-    <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-    </tr>
 
     <tr>
         <td> &nbsp</td>
         <td> &nbsp</td>
         <td> &nbsp</td>
         <td> Total</td>
-        <td> XXXX</td>
+        <td> {{invoice_details.value_of_goods}}</td>
     </tr>
 
     <tr>
         <td> &nbsp</td>
         <td> &nbsp</td>
-        <td> Bank</td>
-        <td> P2F</td>
-        <td> XXX</td>
+        <td> Bank : {{invoice_details.bank_name}}</td>
+        <td> P&F</td>
+        <td> {{invoice_details.total_pf}}</td>
     </tr>
 
     <tr>
         <td> &nbsp</td>
         <td> &nbsp</td>
-        <td> Date</td>
+        <td> Date : {{invoice_details.date_of_purchase}}</td>
         <td> Discount</td>
         <td> XXX</td>
     </tr>
@@ -345,7 +324,7 @@ td {
     <tr>
         <td> &nbsp</td>
         <td> &nbsp</td>
-        <td> Referance No</td>
+        <td> Reference No: {{invoice_details.reference_no}}</td>
         <td> &nbsp</td>
         <td> &nbsp</td>
     </tr>
@@ -363,7 +342,7 @@ td {
         <td> &nbsp</td>
         <td> &nbsp</td>
         <td>CGST</td>
-        <td> &nbsp</td>
+        <td> {% if invoice_details.is_cgst %}{{invoice_details.tax_amount}}{% else %}0.0{% endif %}</td>
     </tr>
 
     <tr>
@@ -371,7 +350,7 @@ td {
         <td> &nbsp</td>
         <td> &nbsp</td>
         <td>SGST</td>
-        <td> &nbsp</td>
+        <td> {% if invoice_details.is_cgst %}{{invoice_details.tax_amount}}{% else %}0.0{% endif %}</td>
     </tr>
 
     <tr>
@@ -379,7 +358,7 @@ td {
         <td> &nbsp</td>
         <td> &nbsp</td>
         <td>IGST</td>
-        <td> &nbsp</td>
+        <td> {% if not invoice_details.is_cgst %}{{invoice_details.tax_amount}}{% else %}0.0{% endif %}</td>
     </tr>
 
     <tr>
@@ -394,7 +373,7 @@ td {
         <td> &nbsp</td>
         <td> Amount in Words</td>
         <td>Grand Total</td>
-        <td> &nbsp</td>
+        <td> {{invoice_details.total_amount}}</td>
     </tr>
 
 
@@ -402,6 +381,13 @@ td {
     </table>
         </div>
             </div>
+    <br>
+    <center>
+        <button style="background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Edit</button>
+        <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Submit & Print</button>
+    </center>
+        <br>
+
         <div class="row">
             <div class="col-md-3" style="padding:10px;">
                 <p>GST ID - <b>27AACFH2329F1ZP</b><br>

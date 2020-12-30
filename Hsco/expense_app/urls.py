@@ -23,7 +23,7 @@ urlpatterns = [
     path('update_expense_product/<str:expense_id>/<str:product_id>',update_expense_product,name='update_expense_product'),
     path('update_expense_type_sub_master/<str:sub_master_id>/',update_expense_type_sub_master,name='update_expense_type_sub_master'),
     path('update_expense_type_sub_sub_master/<str:sub_master_id>/',update_expense_type_sub_master,name='update_expense_type_sub_master'),
-    path('showBill/',showBill,name='showBill'),
+    path('showBill/<str:sales_id>',showBill,name='showBill'),
     path('showBillModule/',showBillModule,name='showBillModule'),
     # path('add_sales/',add_sales,name='add_sales'),
     ]
