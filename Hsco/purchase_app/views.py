@@ -1016,14 +1016,7 @@ def view_customer_details(request):
     date_today= datetime.now().strftime('%Y-%m-%d')
     message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
 
-    #for updating total amount in all sales entry
-    sales_list = Purchase_Details.objects.all()
-    for sale in sales_list:
-        if sale.total_amount == None or sale.total_amount == 'None' :
-            Purchase_Details.objects.filter(id=sale.id).update(total_amount=0.0 )
-
-        if sale.total_amount == 0:
-            Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
+    
 
     #for deleting purchase entries
     if request.method == 'POST' and 'delete_purchase_id' in request.POST:
@@ -1226,6 +1219,15 @@ def update_customer_details(request,id):
     # customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
     context ={}
+
+    #for updating total amount in all sales entry\
+    try:
+        if customer_id.total_amount == 0:
+            Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
+    except Exception as e:
+        print(e)
+        pass
+
     if 'product_saved' in request.session:
         if request.session.get('product_saved'):
             pass
