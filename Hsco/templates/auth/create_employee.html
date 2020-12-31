@@ -1,0 +1,708 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+
+        <div class="container-fluid" >
+
+
+
+
+
+    <form class="well form-horizontal" ion="" method="POST" onsubmit="return isOneChecked();" id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
+<fieldset>
+
+<div class="form-group row">
+  <label class="col-md-2 control-label ">Name
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="name" placeholder="Full Name"  class="form-control"  type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Email
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="email" placeholder="Email" class="form-control"  type="email">
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Mobile
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+    <input  name="mobile" placeholder="Phone No" required class="form-control"  type="number"></div>
+    </div>
+
+
+    <label class="col-md-2 control-label">Role
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="role" placeholder="Role" class="form-control" value="Employee" type="text" disabled>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Group
+  </label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+  <input  name="group" value="{{group}}" placeholder="Group" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+     <label class="col-md-2 control-label">Admin
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <input  name="admin" placeholder="Admin" readonly class="form-control" value="{{admin_logged}}" type="text">
+
+    </div>
+        <p style="margin-left:30%;">(ReadOnly Field)</p>
+  </div>
+
+</div>
+<div class="form-group row">
+    {% if user.role == 'Admin' %}
+   <label class="col-md-2 control-label">Manager
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <!--<input  name="manager" placeholder="Manager" class="form-control" value="{{manager_logged}}" type="text">-->
+      <select name="manager" onchange="toggleCheckbox2(this)" class="form-control">
+                <option value="---------">-----------</option>
+                 {% for item in manager_list %}
+         <option value="{{item.name}}">{{item.name}}</option>
+ {% endfor %}
+
+</select>
+    </div>
+  </div>
+    {% endif %}
+
+        {% if user.role == 'Manager' %}
+   <label class="col-md-2 control-label">Manager
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <input  name="manager" placeholder="Manager" class="form-control" readonly value="{{manager_logged}}" type="text">
+    </div>
+        (ReadOnly Field)
+  </div>
+    {% endif %}
+</div>
+
+
+
+
+
+
+
+
+
+<div class="form-group row" >
+
+
+ <label class="col-md-2 control-label">Modules Assigned
+
+</label>
+
+  <div id="id_loaded_view" class="col xl-12">
+
+  <div class="form-group row">
+                      {% if request.user.is_authenticated and 'Customer Module' in request.user.modules_assigned %}
+
+  <label class="col-md-2 control-label ">Sales Module
+
+
+
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Customer Module" id="customCheck1">
+  <label class="custom-control-label" for="customCheck1"></label>
+  </div>
+</div>
+        {% endif %}
+
+{% if request.user.is_authenticated and 'Repairing Module' in request.user.modules_assigned %}
+    <label class="col-md-2 control-label">Repairing Module
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Repairing Module" id="customCheck2">
+  <label class="custom-control-label" for="customCheck2"></label>
+  </div>
+
+
+</div>
+    {% endif %}
+
+</div>
+
+
+
+<div class="form-group row">
+                      {% if request.user.is_authenticated and 'Restamping Module' in request.user.modules_assigned %}
+
+  <label class="col-md-2 control-label">Restamping Module
+
+
+
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Restamping Module" id="customCheck3">
+  <label class="custom-control-label" for="customCheck3"></label>
+  </div>
+</div>
+{% endif %}
+
+      <!-- Divider -->
+                    {% if request.user.is_authenticated and 'Dispatch Module' in request.user.modules_assigned %}
+    <label class="col-md-2 control-label">Dispatch Module
+
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Dispatch Module" id="customCheck4">
+  <label class="custom-control-label" for="customCheck4"></label>
+  </div>
+
+</div>
+                    {% endif %}
+
+</div>
+
+
+
+<div class="form-group row">
+                              {% if request.user.is_authenticated and 'AMC Module' in request.user.modules_assigned %}
+
+  <label class="col-md-2 control-label">AMC Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="AMC Module" id="customCheck5">
+  <label class="custom-control-label" for="customCheck5"></label>
+  </div>
+  </div>
+        {% endif %}
+
+                    {% if request.user.is_authenticated and 'Onsite Repairing Module' in request.user.modules_assigned %}
+    <label class="col-md-2 control-label">Onsite Repairing Module
+
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Onsite Repairing Module" id="customCheck6">
+  <label class="custom-control-label" for="customCheck6"></label>
+  </div>
+</div>
+          {% endif %}
+
+</div>
+
+
+<div class="form-group row">
+                              {% if request.user.is_authenticated and 'Lead Module' in request.user.modules_assigned %}
+
+   <label class="col-md-2 control-label">Lead Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Lead Module" id="customCheck7">
+  <label class="custom-control-label" for="customCheck7"></label>
+  </div>
+  </div>
+        {% endif %}
+
+
+                              {% if request.user.is_authenticated and 'Stock Module' in request.user.modules_assigned %}
+
+   <label class="col-md-2 control-label">Stock Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Stock Module" id="customCheck8">
+  <label class="custom-control-label" for="customCheck8"></label>
+  </div>
+  </div>
+        {% endif %}
+</div>
+
+      <div class="form-group row">
+                              {% if request.user.is_authenticated and 'Career Module' in request.user.modules_assigned %}
+
+   <label class="col-md-2 control-label">Career Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Career Module" id="customCheck9">
+  <label class="custom-control-label" for="customCheck9"></label>
+  </div>
+  </div>
+        {% endif %}
+
+</div>
+
+         <div class="form-group row">
+                              {% if request.user.is_authenticated and 'Indiamart Leads' in request.user.modules_assigned %}
+
+   <label class="col-md-2 control-label">Indiamart Leads
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Indiamart Leads" id="customCheck10">
+  <label class="custom-control-label" for="customCheck10"></label>
+  </div>
+  </div>
+        {% endif %}
+                                 {% if request.user.is_authenticated and 'Hsco Website Leads' in request.user.modules_assigned %}
+
+   <label class="col-md-2 control-label">Hsco Website Leads
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Hsco Website Leads" id="customCheck11">
+  <label class="custom-control-label" for="customCheck11"></label>
+  </div>
+  </div>
+        {% endif %}
+
+</div>
+      {% if user.product_master_access %}
+         <div class="form-group row">
+             <label class="col-md-2 control-label">Product Master
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="product_master" value="True" id="customCheck12">
+  <label class="custom-control-label" for="customCheck12"></label>
+  </div>
+  </div>
+         </div>
+      {% endif %}
+
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Date of joining
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="date_of_joining"  placeholder="PO Number" class="form-control" type="date">
+    </div>
+  </div>
+
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Bank Name
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="bank_name" placeholder="Bank Name" class="form-control"  type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Account no
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="account_no" placeholder="Account no" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Branch Name
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="branch_name" placeholder="Branch Name" class="form-control"  type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">IFSC Code
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  type="text" name="ifsc_code" class="form-control" >
+    </div>
+  </div>
+
+</div>
+
+<div class="form-group row">
+   <label class="col-md-2 control-label">Photo
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="photo" placeholder="Photo" class="form-control"  type="file">
+    </div>
+  </div>
+
+  <label class="col-md-2 control-label">Password
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="password" placeholder="Password" required class="form-control"  type="text">
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="form-group row">
+   <label class="col-md-2 control-label">Salary Slip
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="salary_slip" placeholder="Salary Slip" class="form-control"  type="file">
+    </div>
+  </div>
+       <label class="col-md-2 control-label">Employee Number *
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="employee_number" placeholder="Employee Number" class="form-control" type="text" required>
+    </div>
+  </div>
+</div>
+
+ <div class="form-group row">
+   <label class="col-md-2 control-label"> Pan Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+        <input name="pancard" id="pancard" placeholder="Pan Card Number" class="form-control" value="{{user_id.pancard}}" type="text">
+
+    </div>
+  </div>
+
+   <label class="col-md-2 control-label">Aadhar Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+      <input type="text" name="aadhar_card" placeholder="Aadhar Card Number" data-type="adhaar-number" maxLength="19" class="form-control" value="{{user_id.aadhar_card}}" >
+
+  </div>
+    </div>
+</div>
+
+<div class="form-group row">
+   <label class="col-md-2 control-label">Upload Pan Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="upload_pancard" placeholder="Upload Pan Card" class="form-control"  type="file">
+    </div>
+  </div>
+
+   <label class="col-md-2 control-label">Upload Aadhar Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="upload_aadhar_card" placeholder="Upload Aadhar Card" class="form-control" type="file" >
+  </div>
+    </div>
+</div>
+
+        	{% include 'professional_email/pemail_fields.html' %}
+
+
+<center>
+   <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Submit</button>
+</center>
+
+
+
+  <br>
+</fieldset>
+    </form>
+  <!--Product List-->
+
+
+        <script>
+$('[data-type="adhaar-number"]').keyup(function() {
+  var value = $(this).val();
+  value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
+  $(this).val(value);
+});
+
+
+
+function isOneChecked(){
+    var panVal = $('#pancard').val();
+    var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+
+if(panVal == ""){
+
+if ($('[data-type="adhaar-number"]').val() !== ""){
+  if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
+       alert("Invalid Aadhar Card Number");
+       return false;
+  } else {
+       return true;
+  }
+}else{
+return true;
+}
+
+
+}
+else{
+
+if(regpan.test(panVal)){
+if ($('[data-type="adhaar-number"]').val() !== ""){
+  if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
+    alert("Invalid Aadhar Card Number");
+   return false;
+  } else {
+    return true;
+  }
+}else{
+return true;
+}
+
+
+} else {
+   alert("Invalid Pancard Number");
+   return false;
+}
+
+}
+
+
+}
+
+
+</script>
+
+
+                </div>
+              </div>
+            </div>
+      </div>
+<br>
+
+
+
+
+
+<script>
+            function toggleCheckbox2(select) {
+//value = !select.checked;
+
+    $.ajax({
+        url: "/load_modules/",
+        data: {
+          'item_name':select.options[select.selectedIndex].value,
+        },
+        success: function (data) {
+           $("#id_loaded_view").html(data);
+        }
+      });
+}
+</script>
+
+
+
+
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,457 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<style>
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+
+}
+input[type=date]::-webkit-inner-spin-button,
+input[type=date]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+
+}
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+  .cardText{
+  font-size: 13px;
+  }
+
+</style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid" >
+                                  {% if request.user.role != 'Super Admin' %}
+
+
+            <form action="" method="POST"> {% csrf_token %}
+
+
+<center>
+  <div style="width: 98%;" class="card shadow">
+
+<br>
+    <h3 style="color: black;" class="col-xl-12 col-md-12">Apply For Leave</h3>
+
+<br>
+
+      {% if success %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Applied Successfully!!! </strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+      {% endif %}
+
+{% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Employee' %}
+
+
+       <div class="form-group row">
+
+               <label class="col-md-2 control-label">Days *
+</label>
+  <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+   <input type="number" id="num_of_days" onInput="change_date()" name="days" class="form-control" placeholder="Holiday" required>
+
+
+     </div>
+  </div>
+
+            <label class="col-md-2 control-label">Reason *
+</label>
+  <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+   <input type="text" name="reason" class="form-control" placeholder="Reason" required>
+
+
+     </div>
+  </div>
+
+      </div>
+
+      <div class="form-group row">
+
+        <label class="col-md-2 control-label">From Date *
+
+
+</label>
+  <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+   <input id="from_date" type="date" min="16/05/2020" required name="from" class="form-control" >
+
+
+     </div>
+  </div>
+
+            <label class="col-md-2 control-label">To Date *
+
+
+</label>
+  <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+   <input type="date" id="to_date" required name="to" class="form-control" > &nbsp;
+
+
+     </div>
+  </div>
+
+</div>
+
+
+<center>
+       <button style="background-color: #FC6E20;font-size: 14px;" class="btn btn-primary">Submit</button>
+
+</center>
+      <br>
+
+      {% endif %}
+  </div>
+
+<br>
+
+
+
+</center>
+                   </form>
+                    {% endif %}
+
+<br>
+
+     <style>
+
+         .border-approve {
+         border: 3px solid #00FF00;
+         }
+
+         .border-disapprove {
+         border: 3px solid red;
+         }
+         .border-process {
+         border: 3px solid orange;
+         }
+
+       .no_button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+
+
+     </style>
+
+
+
+                                  {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager' %}
+
+           <div class="row">
+                            <div class="col-xl-12 col-md-12 mb-12">
+
+<center>
+    <h3 style="color: black;" class="col-xl-12 col-md-12">Approve Leaves</h3>
+</center>
+                            </div>
+           </div>
+                           <div class="row" style="max-height: 600px; overflow-y: scroll;">
+
+{% for item in leave_req_list %}
+             <div class="col-xl-12 col-md-12 mb-12" >
+                 {% if item.is_approved %}
+              <div class="card shadow border-approve">
+                    <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
+                    <div class="col-xl-2 col-md-2 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.reason}} </center></div>|
+                    {% if is_employee_of_month %}<div class="col-xl-1 col-md-1 mb-1"> &nbsp;
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+
+                        </div>{% endif %}
+
+                    </div>
+                </div>
+                  {% elif item.in_process %}
+                  <div class="card shadow border-process">
+                        <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
+                    <div class="col-xl-2 col-md-2 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.reason}} </center></div>|
+                   {% if is_employee_of_month %} <div class="col-xl-1 col-md-1 mb-1"> &nbsp;
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+
+                        </div>{% endif %}
+                        <div class="col-xl-2 col-md-1 mb-1">
+                               <form method="post">{% csrf_token %}
+                      <button style="background-color: #FC6E20;" name="list[]" value="no" id="no" type="submit"  class="no_button"><i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i></button>
+&nbsp; <input type="hidden"  name="user_id" value="{{item.pk}}">
+
+                        <button name="list[]" value="yes" onclick="myFunction()" type="submit" class="no_button"><i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i></button>
+                    </form>
+                        </div>
+                    </div>
+                </div>
+                     {% elif not item.is_approved %}
+                      <div class="card shadow border-disapprove">
+                            <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
+                    <div class="col-xl-2 col-md-2 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.reason}} </center></div>|
+                    {% if is_employee_of_month %}<div class="col-xl-1 col-md-1 mb-1"> &nbsp;
+
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+
+
+
+                    </div>{% endif %}
+                        <div class="col-xl-2 col-md-1 mb-1">
+                             <form method="post">{% csrf_token %}
+&nbsp; <input type="hidden"  name="user_id" value="{{item.pk}}">
+
+                        <button name="list[]" value="yes" onclick="myFunction()" type="submit" class="no_button"><i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i></button>
+                    </form>
+                        </div>
+                    </div>
+                </div>
+                      {% endif %}
+
+
+                </div>
+
+
+{% endfor %}
+                                 </div>
+
+            {% endif %}
+
+{% if user.role != 'Super Admin' %}
+             <p style="font-size: 25px; text-align: center; color: black;">Leaves Applied</p>
+
+
+<div class="col-xl-12 col-md-12 mb-12" >
+
+              <div class="card shadow">
+
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;max-height: 300px; overflow-y: scroll;">
+
+{% for item in leave_list %}
+
+               <div class="col-xl-12 col-md-12 mb-12">
+                 {% if item.is_approved %}
+              <div class="card shadow border-approve">
+                    <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;  {% if is_employee_of_month %}
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+
+                        {% endif %}</div>
+                        <div class="col-xl-2 col-md-1 mb-1">
+{{item.reason}}
+                        </div>
+                    </div>
+                </div>
+                  {% elif item.in_process %}
+                  <div class="card shadow border-process">
+                        <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;  {% if is_employee_of_month %}
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+
+                        {% endif %}</div>
+                        <div class="col-xl-2 col-md-1 mb-1">
+                            {{item.reason}}
+                               <!--<form method="post">{% csrf_token %}-->
+                      <!--<button name="list[]" value="no" id="no" type="submit"  class="no_button"><i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i></button>-->
+<!--&nbsp; <input type="hidden"  name="user_id" value="{{item.pk}}">-->
+
+                        <!--<button name="list[]" value="yes" onclick="myFunction()" type="submit" class="no_button"><i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i></button>-->
+                    <!--</form>-->
+                        </div>
+                    </div>
+                </div>
+                     {% elif not item.is_approved %}
+                      <div class="card shadow border-disapprove">
+                            <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;
+                        {% if is_employee_of_month %}
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+
+                        {% endif %}
+
+                    </div>
+                        <div class="col-xl-2 col-md-1 mb-1">
+                             {{item.reason}}
+                             <!--<form method="post">{% csrf_token %}-->
+<!--&nbsp; <input type="hidden"  name="user_id" value="{{item.pk}}">-->
+
+                        <!--<button name="list[]" value="yes" onclick="myFunction()" type="submit" class="no_button"><i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i></button>-->
+                    <!--</form>-->
+                        </div>
+                    </div>
+                </div>
+                      {% endif %}
+
+
+                </div>
+
+                    {% endfor %}
+                </div>
+              </div>
+</div>
+
+{% endif %}
+
+
+
+<script>
+    function myFunction(){
+        document.getElementById('timer').style.color = '#ADFF2F'
+        document.getElementById('no').style.display = 'none'
+
+    }
+        </script>
+            </div>
+
+</div>
+
+<!--<p>"Below Provide Various button to send various SMS and E-mail  like-->
+<!--1) Scale Submit sms-->
+<!--2) Estimate informed sms-->
+<!--3) Repairing done sms-->
+<!--4) Late mark sms-->
+<!--5) Final Deleviry sms"-->
+<!--</p>-->
+
+
+
+
+<br>
+
+
+
+
+
+
+
+</div>
+    </div>
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+<script>
+var today = new Date().toISOString().split('T')[0];
+document.getElementById("to_date").setAttribute('min', today);
+function change_date(){
+var num_of_days = document.getElementById("num_of_days").value;
+var targetDate = new Date(Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/ * 24 /*day*/ * num_of_days);
+var targetDate2 = new Date(Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/ * 24 /*day*/ * num_of_days*2);
+document.getElementById("from_date").setAttribute('min', targetDate.toISOString().split('T')[0]);
+document.getElementById("to_date").setAttribute('min', targetDate2.toISOString().split('T')[0]);
+
+
+}
+
+</script>
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+
+  <!-- Page level custom scripts -->
+
+
+</body>
+
+</html>

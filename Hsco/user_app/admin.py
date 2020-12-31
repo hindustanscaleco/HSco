@@ -3,6 +3,8 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from import_export.admin import ImportExportModelAdmin
+
 from .models import SiteUser
 
 
@@ -12,7 +14,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = SiteUser
-        fields = ('email', 'mobile', 'first_name', 'last_name')
+        fields = ('email', 'mobile',)
 
     def clean_password2(self):
         password = self.cleaned_data.get("password")
@@ -34,33 +36,34 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = SiteUser
-        fields = ('email', 'password', 'mobile', 'first_name', 'last_name', 'is_active', 'is_admin', 'user_type')
+        fields = ('name','email', 'password', 'mobile',  'role')
 
     def clean_password(self):
         return self.initial["password"]
 
 
-class UserAdmin(BaseUserAdmin):
+class UserAdmin(ImportExportModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('email', 'mobile', 'first_name', 'last_name', 'is_admin', 'is_staff', 'is_active', 'user_type')
-    list_filter = ('is_admin', 'user_type')
+    list_display = ('email', 'employee_number', 'name','mobile',  'role')
+    list_filter = ( 'role',)
 
     fieldsets = (
-        ('Login Credentials', {'fields': ('mobile', 'password')}),
-        ('Personal info', {'fields': ('email', 'first_name', 'last_name', 'dob', 'user_type', 'image')}),
-        ('Permissions', {'fields': ('is_admin', 'is_active')}),
+                ('Login Credentials', {'fields': ('mobile', 'password', 'name','employee_number','can_reply_to_sa','product_master_access','professional_email','professional_email_password',)}),
+        ('Personal info', {'fields': ('modules_assigned','email', 'profile_name', 'role','manager','admin','super_admin','date_of_joining','average_rating','group','pancard','aadhar_card','photo','upload_pancard','upload_aadhar_card','is_deleted','is_admin')}),
+        ('Bank Details', {'fields': ('bank_name', 'account_number', 'branch_name','ifsc_code')}),
         ('Seen', {'fields': ('last_login',)}),
     )
 
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('mobile', 'email', 'first_name', 'last_name', 'password', 'password2', 'image', )}
+            'fields': ('mobile', 'email', 'name','role','date_of_joining','average_rating',
+                       'bank_name','account_number','branch_name','ifsc_code','auto_timedate','password', 'password2', )}
          ),
     )
-    search_fields = ('mobile', 'first_name')
+    search_fields = ('mobile', 'name')
     ordering = ('id',)
     filter_horizontal = ()
 

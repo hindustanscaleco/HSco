@@ -1,0 +1,793 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+<style>
+    * {
+    font-family: 'Poppins';
+}
+
+</style>
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+
+        <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid ">
+
+          <!-- Page Heading -->
+            <div class="row">
+           <div class="col-xl-4 col-md-3 mb-3 ">
+
+
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+<h1 class="h3 mb-0 text-gray-800 ">Sales Module</h1>
+
+
+                </div>
+              </div>
+            </div>
+
+
+
+                 <div class="col-xl-8 col-md-9 mb-9 ">
+
+
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+
+     {% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+<a style="padding: 2px; " href="/purchase_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
+
+
+<form method="POST" ion="">{%csrf_token%}
+ <a href="#"><button style="background-color: #FC6E20; margin-top: 3px;" name="deleted" type="submit" class="btn btn-primary" >Deleted User</button></a>
+</form>
+
+ <a style="padding: 2px;" href="/purchase_logs/"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
+ <a style="padding: 2px;" href="/report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
+ <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Sales </button></a>
+                       <a style="padding: 2px;" href="/quick_purchase_entry/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Rush Hour Entry </button></a>
+
+{% else %}
+ <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Sales </button></a>
+ <a style="padding: 2px;" href="/quick_purchase_entry/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Quick Entry </button></a>
+{% endif %}
+{% endif %}
+
+
+
+
+
+                </div>
+              </div>
+
+
+
+
+            </div>
+
+
+
+                </div>
+
+
+
+<br>
+
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
+
+                        <style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: green;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.divs{
+display:none;
+}
+</style>
+
+
+
+            <script>
+//$( document ).ready(function() {
+  //      $('.divs').hide();});
+$(function() {
+  $('#divselector').change(function(){
+    $('.divs').hide();
+    $('#' + $(this).val()).show();
+  });
+});
+            </script>
+                    <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
+            <div class="row">
+
+                <div  class="col-xl-3 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+  <select id="divselector" class="form-control">
+     <option value="d0">Select Search Type</option>
+     <option value="d1">Search By Date Range</option>
+     <option value="d2">Search By Mobile Number</option>
+     <option value="d3">Search By Email Id</option>
+     <option value="d4">Search By Customer Name</option>
+     <option value="d5">Search By Company Name</option>
+     <option value="d6">Search By CRM No.</option>
+     <option value="d7">Search By Sales No.</option>
+     <!--<option value="d7">Search By CRM Number Range</option>-->
+  </select>
+</div>
+
+<br>
+                </div>
+
+
+                <div  class="col-xl-6 col-md-6 col-mb-8">
+
+
+<div class="output">
+                                                              <form method="POST" autocomplete="off">{% csrf_token%}
+  <div id="d1" class="divs d1 row">
+
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date1" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date2" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
+
+      </div>
+                               </form>
+
+
+  <div id="d2" class="divs d2">
+      <form method="POST" >{% csrf_token%}
+      <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Search</button>
+  </form>
+  </div>
+
+
+
+
+  <div id="d3" class="divs d3">
+      <form method="POST">{% csrf_token%}
+      <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+
+      <button style="background-color: #FC6E20;" name="submit3" class="btn btn-primary">Search</button>
+          </form>
+  </div>
+
+
+
+    <div id="d4" class="divs d4">
+        <form method="POST">{% csrf_token%}
+      <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button>
+    </form>
+    </div>
+
+                               <form method="POST">{% csrf_token%}
+  <div id="d5" class="divs d5">
+      <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button></div>
+</form>
+
+                               <form method="POST">{% csrf_token%}
+
+    <div id="d6" class="divs d6">
+      <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
+</form>
+                       <form method="POST">{% csrf_token%}
+
+    <div id="d7" class="divs d7">
+      <input type="text" name="purchase_no" placeholder="Sales No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
+</form>
+                               <!--<form method="POST">{% csrf_token%}-->
+
+  <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
+      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
+                <!--<input name="crm1" type="text" placeholder="CRM No." class="form-control">-->
+
+      <!--</div>-->
+
+      <!--<div class="col-xl-0 col-md-0 col-mb-0">-->
+                <!--<p style="font-weight: 600;">_</p>-->
+
+      <!--</div>-->
+
+      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
+                <!--<input name="crm2" type="text" placeholder="CRM No." class="form-control">-->
+
+      <!--</div>-->
+      <!--<div class="col-xl-2 col-md-2 col-mb-2">-->
+                <!--<button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>-->
+
+      <!--</div>-->
+                               <!--</form>-->
+</div>
+
+                </div>
+
+
+                                 <div class="col-xl-3 col-md-2 col-mb-8 row" style="color: black;">
+
+
+{% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+                     <div class="col-xl-12 col-md-2 col-mb-8 row">
+                         <div class="col-xl-4 col-md-2 col-mb-8">
+    <p> Manager</p>
+                     </div>
+                     <div class="col-xl-3 col-md-2 col-mb-8">
+                         <label class="switch ">
+  <input name="deleted" type="checkbox" id="checker" checked onchange="toggleCheckbox2(this)">
+  <span class="slider round"></span>
+</label>
+                     </div>
+                     <div class="col-xl-5 col-md-2 col-mb-8">
+                         <p>Employee</p>
+
+                     </div>
+                     </div>
+{% else %}
+                     {% endif %}
+                     {% endif %}
+
+
+
+                </div>
+
+            </div>
+
+
+                <div class="row" id="date_year" style="display:none;">
+
+                       <div  class="col-xl-2 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+                    <select id="selected_year" class="form-control">
+     <option value="2020">2020</option>
+     <option value="2021">2021</option>
+     <option value="2022">2022</option>
+
+                    </select>
+                    </div>
+                    </div>
+<br>
+                    <div class="col-xl-3 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+                    <select id="selected_month" onchange="toggleCheckbo(this)" class="form-control">
+     <option value="0">Select Month</option>
+     <option value="1">January</option>
+     <option value="2">February</option>
+     <option value="3">March</option>
+     <option value="4">April</option>
+     <option value="5">May</option>
+     <option value="6">June</option>
+     <option value="7">July</option>
+     <option value="8">August</option>
+     <option value="9">September</option>
+     <option value="10">October</option>
+     <option value="11">November</option>
+     <option value="12">December</option>
+                    </select>
+                    </div>
+                    </div>
+
+
+
+
+                </div>
+
+
+
+
+               <style>
+        .border-right-primarya {
+        border-right: 4px solid blue;
+        }
+        .border-left-primarya {
+        border-left: 4px solid blue;
+        }
+    </style>
+<style>
+  .border-left-primary {
+    border-left: .09rem solid #4e73df!important;
+    font-size: 12px;
+
+}
+
+a:hover {
+  text-decoration: none;
+}
+    #btn-delete{
+
+    }
+
+</style>
+
+                        <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+
+<div >
+
+        {% if deleted %}
+                  <center> <p>list of deleted users</p></center>
+                    {% endif %}
+     <center><p>{{search_msg}}</p></center>
+
+<!--    <form action="" method="post">{% csrf_token %}-->
+        <div class="row" id="id_manager_view">
+
+    <table>
+
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Dispatch Id</td>
+            <td style="border: 0px solid gray;">Date </td>
+            <td style="border: 0px solid gray;"> Sales ID</td>
+            <td style="border: 0px solid gray;">Customer Name</td>
+            <td style="border: 0px solid gray;"> Company Name </td>
+            <td style="border: 0px solid gray;">Contact No.</td>
+            <td style="border: 0px solid gray;">Sales Person  </td>
+            <td style="border: 0px solid gray;">Feedback  </td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Selection</td>
+        </tr>{% csrf_token %}
+                    {% for list1 in customer_list %}
+        {% if list1.payment_mode == 'Credit' and list1.credit_pending_amount != 0.0 %}
+            <tr bgcolor="red" style="background-color:red; cursor: pointer; ">
+        {% elif list1.payment_mode == 'Credit' and list1.is_gst == True %}
+            <tr bgcolor="#ffbf00" style="background-color:#ffbf00; cursor: pointer; ">
+        {% elif list1.is_gst == True %}
+            <tr bgcolor="green" style="background-color:green; cursor: pointer; ">
+        {% else %}
+            <tr style="cursor: pointer; " id="{{list1.purchase_no}}">
+        {% endif %}
+
+                        <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{% if list1.dispatch_id_assigned == None %} N/A {% else %}{{ list1.dispatch_id_assigned.dispatch_no }}{% endif %}</td>
+
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{ list1.date_of_purchase|date:'Y-m-d'}}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{ list1.purchase_no}}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{ list1.second_person }}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{% if list1.second_company_name != None and list1.second_company_name != '' %}{{list1.second_company_name}}{% else %}{% endif %}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{ list1.second_contact_no }}</td>
+            <td onclick="location.href='/update_customer_details/{{list1.pk}}';">{{list1.sales_person}}</td>
+            <td>
+                       {% for avg in  list1.feedback_stars|rjust:'5'  %}
+							{% if forloop.counter <= list1.feedback_stars %}
+									<i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
+							{% else %}
+									<i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
+							{% endif %}
+						{% endfor %}
+            </td>
+            <td>
+                <input type="checkbox" name="delete_purchase_id" value="{{list1.purchase_no}}">
+            </td>
+
+        </tr>
+                          {% endfor %}
+
+    </table>
+        {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin' %}
+            <div>
+                <button style="cursor: pointer;" type="submit" name="delete_purchase_id" id="delete_btn" class="btn-danger">Delete Selected Sales</button>
+                <div>
+                    {% for message in messages %}
+                        <h4>{{message}}</h4>
+                    {% endfor %}
+                </div>
+                <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+                <script>
+                    $(document).ready(function(){
+                        $('#delete_btn').click(function () {
+                            if(confirm("Are you sure want to delete selected items?")){
+                                let delete_purchase_id='';
+                                let id=[];
+                                let csrf=$('input[name=csrfmiddlewaretoken]').val();
+                                $(':checkbox:checked').each(function(i){
+                                    id[i]=$(this).val();
+                                });
+                                if(id.length===0){
+                                    alert("Please select item first!!");
+                                }
+                                else{
+                                    console.log(id)
+                                    $.ajax({
+                                        url:"/view_customer_details/",
+                                        method:"POST",
+                                        data:{
+                                        delete_purchase_id,
+                                        id,
+                                        csrfmiddlewaretoken:csrf,
+                                        },
+                                        success:function(response) {
+                                            for (let i = 0; i < id.length; i++) {
+                                                $('tr#' + id[i] + '').css('background-color', '#ccc');
+                                                $('tr#' + id[i] + '').fadeOut('slow');
+                                            }//for
+                                        },
+                                        fail:function(response){
+                                            $('#delete_btn').css('background-color', 'red');
+                                        }//success
+                                });//ajax
+                            }//else
+                        }
+                    })})
+                </script>
+            </div>
+        </div>
+
+<!--    </form>-->
+            <br>
+
+
+
+            {% endif %}
+
+
+
+
+
+
+<br>
+
+
+<!--            <div class="pagination">-->
+<!--    <span class="step-links">-->
+<!--        {% if customer_list.has_previous %}-->
+<!--            <a href="?page=1"  class="btn btn-primary">&laquo; First</a>&nbsp;&nbsp;-->
+<!--            <a href="?page={{ customer_list.previous_page_number }}" class="btn btn-primary">Previous</a>&nbsp;-->
+<!--        {% endif %}-->
+
+<!--        <span class="current">-->
+<!--            Page {{ customer_list.number }} of {{ customer_list.paginator.num_pages }}.-->
+<!--        </span>-->
+
+<!--        {% if customer_list.has_next %}-->
+<!--        &nbsp;-->
+<!--            <a href="?page={{ customer_list.next_page_number }}" class="btn btn-primary">Next</a>&nbsp;&nbsp;-->
+<!--            <a href="?page={{ customer_list.paginator.num_pages }}" class="btn btn-primary">Last &raquo;</a>-->
+<!--        {% endif %}-->
+<!--    </span>-->
+<!--            </div>-->
+
+
+
+        </div>
+              </div>
+
+</div>
+<br>
+
+  </div>
+
+  <!-- End of Page Wrapper -->
+  </div>
+
+
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+             <script>
+
+        function toggleCheckbox(select) {
+value = select.checked;
+
+    $.ajax({
+        url: "/load_dispatch_done/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_subcat").html(data);
+        }
+      });
+}
+        function toggleCheckbox2(select) {
+value = !select.checked;
+if(!select.checked == true){
+
+    document.getElementById("date_year").style.display = "block";
+}else{
+document.getElementById("date_year").style.display = "none";
+}
+
+
+    $.ajax({
+        url: "/load_users/",
+        data: {
+          'loc_id':value,
+          'sel_month':value,
+          'sel_year':value,
+
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+function toggleCheckbo(select) {
+sel_month = select.options[select.selectedIndex].value;
+sel_month_text = select.options[select.selectedIndex].text;
+sel_year = document.getElementById("selected_year")
+sel_year= sel_year.options[sel_year.selectedIndex].value;
+value = !document.getElementById("checker").checked;
+
+
+    $.ajax({
+        url: "/load_users/",
+        data: {
+          'loc_id':value,
+          'sel_month':sel_month,
+          'sel_month_text':sel_month_text,
+          'sel_year':sel_year,
+
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+    </script>
+    <!--<div class="row" style="width: 100%; margin-top: 20%;">-->
+
+        <!--{% if request.user.is_authenticated %}-->
+<!--{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}-->
+                <!--<div class="col-xl-3 col-md-3 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col ">-->
+ <!--<a href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"Add Purchase</button></a>-->
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+
+
+
+        <!--<div class="col-xl-3 col-md-3 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col ">-->
+                        <!--<form method="POST" ion="">{%csrf_token%}-->
+ <!--<a href="#"><button name="deleted" type="submit" class="btn btn-primary">Deleted User</button></a>-->
+                              <!--</form>-->
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+
+                <!--<div class="col-xl-3 col-md-12 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col mr-2">-->
+                        <!--<a href="/user_logs/"> <button style="background-color: #FC6E20;" class="btn btn-primary"Log</button></a>&nbsp; &nbsp;-->
+                        <!--<a href="/report/"> <button style="background-color: #FC6E20;" class="btn btn-primary"Report</button></a>&nbsp;-->
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+
+        <!--&lt;!&ndash; Earnings (Monthly) Card Example &ndash;&gt;-->
+            <!--<div class="col-xl-3 col-md-12 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col mr-2">-->
+                        <!--<a href="/purchase_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary"Analytics</button></a>-->
+
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+<!--{% else %}-->
+          <!--<div class="col-xl-3 col-md-3 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col ">-->
+ <!--<a href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"Add Purchase</button></a>-->
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+<!--{% endif %}-->
+<!--{% endif %}-->
+
+
+          <!--</div>-->
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
+</body>
+
+</html>

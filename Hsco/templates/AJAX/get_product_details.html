@@ -1,0 +1,30 @@
+
+<div class="form-group row">
+
+    <label class="col-md-2 control-label">Capacity(Product DB) *
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>
+  <input  name="capacity" id="capacity"  required placeholder="Capacity" class="form-control"  type="text" value="{{product_id.max_capacity}}">
+    </div>
+  </div>
+  <label class="col-md-2 control-label">Rate(Product DB) *
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="rate"   required id="rate" placeholder="Rate" class="form-control" step="0.2" type="number" onkeyup="total_product_amount()"  value="{{product_id.selling_price}}">
+    </div>
+  </div>
+
+
+
+
+
+</div>

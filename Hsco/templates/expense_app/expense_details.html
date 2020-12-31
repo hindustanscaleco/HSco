@@ -1,0 +1,731 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+<link href=
+'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
+          rel='stylesheet'>
+
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" >
+    </script>
+
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" >
+    </script>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <center><h3>Expense Details</h3></center>
+
+        <div class="container-fluid" >
+<br>
+
+
+    <form class="well form-horizontal" ion="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
+
+<div id="loaded_customer">
+  {% if messages %}
+
+                     <div class="alert alert-success alert-dismissible fade show" role="alert">
+                             {% for message in messages %}
+
+  <strong>Success : </strong> {{ message }}
+                         {% endfor %}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+{% endif %}
+  <div class="form-group row">
+  <label class="col-md-2 control-label">Expense Type Master *
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="expense_type_master" class="form-control" onchange="on_type_master(this)" required>
+  <option value="{{expense.expense_type_sub_sub_master_id.expense_type_sub_master_id.expense_type_master}}">{{expense.expense_type_sub_sub_master_id.expense_type_sub_master_id.expense_type_master}}</option>
+  <option value="Purchase of Goods">Purchase of Goods</option>
+  <option value="Not Purchase">Not Purchase</option>
+</select>
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Expense Type Sub Master *
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="expense_type_sub_master" class="form-control" id="expense_type_sub_master_id" onchange="on_type_sub_master(this)" required>
+    <option value="{{expense.expense_type_sub_sub_master_id.expense_type_sub_master_id.expense_type_sub_master}}">{{expense.expense_type_sub_sub_master_id.expense_type_sub_master_id.expense_type_sub_master}}</option>
+
+</select>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+    <label class="col-md-2 control-label">Expense Type Sub Sub Master *
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="expense_type_sub_sub_master" id="expense_type_sub_sub_master_id" class="form-control" required>
+    <option value="{{expense.expense_type_sub_sub_master_id.id}}">{{expense.expense_type_sub_sub_master_id.expense_type_sub_sub_master}}</option>
+
+</select>
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Name Of Vendor *
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select onchange="on_change_vendor(this)" name="name" class="form-control" required>
+  <option value="{{expense.vendor.id}}">{{expense.vendor.name}}</option>
+{% for vendor in vendors_list %}
+  <option value="{{vendor.id}}">{{vendor.name}}</option>
+  {% endfor %}
+</select>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Our Company Name *
+  </label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="our_company_name" class="form-control" required>
+  <option value="{{expense.our_company_name}}">{{expense.our_company_name}}</option>
+  <option value="Hindustan Scale Company">Hindustan Scale Company</option>
+  <option value="Hindustan Sales and Consultancy">Hindustan Sales and Consultancy</option>
+</select>
+    </div>
+  </div>
+
+<label class="col-md-2 control-label">Notes</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
+<textarea name="notes" placeholder="Notes" class="form-control">{{expense.notes}}</textarea>
+</div>
+  </div>
+ </div>
+
+        <hr style="background-color: gray;">
+
+  <div class="form-group row">
+
+  <label class="col-md-2 control-label">Customer Bill No
+</label>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="bill_no" id="cust_bill_no" value="{{expense.bill_no}}" placeholder="Customer Bill No" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+<label class="col-md-2 control-label">Bill Date</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="bill_date" id="bill_date" value="{{expense.bill_date|date:'Y-m-d'}}" class="form-control" type="date">
+    </div>
+  </div>
+  </div>
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Total Basic Amount *
+</label>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="total_basic_amount" value="{{expense.total_basic_amount}}" id="total_basic_amount" placeholder="Total Basic Amount" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+<label class="col-md-2 control-label">P & F</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="pf" id="pf" value="{{expense.pf}}" placeholder="PF" class="form-control" type="text">
+    </div>
+  </div>
+  </div>
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">GST *
+</label>
+   <div class="col-md-1 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+
+    <input type="checkbox" value="{{expense.gst}}" class="custom-control-input"  id="gst_id"  name="gst"     >
+
+  <label class="custom-control-label"    for="gst_id"></label>
+  </div>
+  </div>
+  </div>
+
+
+
+<hr style="background-color: gray;">
+
+
+
+        <div class="form-group row">
+  <label class="col-md-2 control-label">SGST %
+</label>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="sgst_per" value="{{expense.sgst_per}}" id="sgst_per" placeholder="SGST %" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+<label class="col-md-2 control-label">SGST Amt</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="sgst_amt" value="{{expense.sgst_amt}}" id="sgst_amt" class="form-control" placeholder="SGST Amt" type="text">
+    </div>
+  </div>
+  </div>
+
+        <div class="form-group row">
+  <label class="col-md-2 control-label">CGST %
+</label>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cgst_per" value="{{expense.cgst_per}}" id="cgst_per" placeholder="CGST %" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+<label class="col-md-2 control-label">CGST Amt:</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="cgst_amt" value="{{expense.cgst_amt}}" id="cgst_amt" placeholder="CGST Amt" class="form-control" type="text">
+    </div>
+  </div>
+  </div>
+
+        <div class="form-group row">
+  <label class="col-md-2 control-label">IGST %
+</label>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="igst_per" value="{{expense.igst_per}}" id="igst_per" placeholder="IGST %" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+<label class="col-md-2 control-label">IGST Amt</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="igst_amt" value="{{expense.igst_amt}}" id="igst_amt" placeholder="IGST Amt" class="form-control" type="text">
+    </div>
+  </div>
+  </div>
+
+        <div class="form-group row">
+  <label class="col-md-2 control-label">TDS %
+</label>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="tds_per" value="{{expense.tds_per}}" id="tds_per" placeholder="TDS %" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+<label class="col-md-2 control-label">TDS Amt</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="tds_amt" value="{{expense.tds_amt}}" id="tds_amt" placeholder="TDS Amt" class="form-control" type="text">
+    </div>
+  </div>
+  </div>
+
+        <div class="form-group row">
+  <label class="col-md-2 control-label">Discount %
+</label>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="discount_per" value="{{expense.discount_per}}" id="discount_per" placeholder="Discount %" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+<label class="col-md-2 control-label">Discount Amt</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="discount_amt" value="{{expense.discount_amt}}" id="discount_amt" placeholder="Discount Amt" class="form-control" type="text">
+    </div>
+  </div>
+  </div>
+
+
+<hr style="background-color: gray;">
+     <div class="form-group row">
+  <label class="col-md-2 control-label">Total Amount
+</label>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="total_amount" value="{{expense.total_amount}}" id="total_amount" placeholder="Total Amount" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+<label class="col-md-2 control-label">GST No</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="gst_no" id="gst_no" value="{{expense.gst_no}}" placeholder="GST No" class="form-control" type="text">
+    </div>
+  </div>
+  </div>
+
+        <hr style="background-color: gray;">
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Date of Payment
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="date_of_payment" value="{{expense.date_of_payment|date:'Y-m-d'}}" id="date_of_purchase" placeholder="Date of Purchase"  class="form-control"  type="date">
+    </div>
+  </div>
+
+
+      <label class="col-md-2 control-label">Name Of Payee
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="name_of_payee" value="{{expense.name_of_payee}}" id="name_of_payee" placeholder="Name of Payee"  class="form-control"  type="text">
+    </div>
+  </div>
+  </div>
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">PO Issued
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+        <div style="padding-left:11px;" class="row">
+
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+    <div style="padding-left:0px;" class="col-xl-8">
+      <input  name="po_issued"   id="po_issued" class="form-control" type="file">
+    </div>
+  {% if expense.po_issued %}
+          <div class="col-xl-3">
+              <a href="{{expense.po_issued.url}}" class="btn btn-primary">Old File</a>
+          </div>
+  {% endif %}
+          </div>
+    </div>
+  </div>
+
+
+      <label class="col-md-2 control-label">Bill Copy
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <div style="padding-left:11px;" class="row">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+      <div style="padding-left:0px;" class="col-xl-8">
+  <input  name="bill_copy"  id="bill_copy" class="form-control" type="file">
+  </div>
+  {% if expense.bill_copy %}
+          <div class="col-xl-3">
+              <a href="{{expense.bill_copy.url}}" class="btn btn-primary">Old File</a>
+          </div>
+  {% endif %}
+    </div>
+    </div>
+  </div>
+  </div>
+
+        <div class="form-group row">
+  <label class="col-md-2 control-label">Voucher No
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input name="voucher_no" value="{{expense.voucher_no}}" id="voucher_no" placeholder="Voucher No"  class="form-control"  type="number">
+    </div>
+  </div>
+
+
+       <label class="col-md-2 control-label">Payment Type
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="payment_type" id="payment_mode_id" onchange="show()"   class="form-control">
+  <option value="{{expense.payment_type}} ">{{expense.payment_type}} </option>
+  <option value="Cash">Cash</option>
+  <option  value="Cheque">Cheque</option>
+  <option  value="Credit">Credit</option>
+  <option  value="NEFT">NEFT</option>
+  <option  value="Paytm">Paytm</option>
+  <option  value="Google Pay">Google Pay</option>
+  <option  value="Misc">Misc</option>
+
+</select>
+    </div>
+  </div>
+  </div>
+
+
+<br>
+<center>
+  <button style="background-color: #FC6E20;" type="Button" value="Submit" class="btn btn-primary">Edit</button>
+  <button style="background-color: #FC6E20;" type="Submit" value="Submit" class="btn btn-primary">Submit</button>
+  <button style="background-color: #FC6E20;" type="Submit" name="delete" value="delete" class="btn btn-primary">Delete</button>
+</center>
+
+
+
+  <br>
+</fieldset>
+</div>
+    </form>
+<style>
+    table {
+      font-family: arial, sans-serif;
+      width: 100%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 5px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+</style>
+  <!--Product List-->
+<h1 style="font-size: 25px; color: black; text-align: center;"> Added Product List </h1>
+                  {% for product in expense_products %}
+
+          <div class="col-xl-12 col-md-12 mb-12">
+
+              <div class="card shadow">
+
+<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
+               <table style="font-size: 14px;">
+  <tr>
+    <td>Expense Type:</td>
+        <td>{{product.expense_type}}</td>
+  </tr>
+  <tr>
+    <td>Type of Scale:</td>
+        <td>{{product.type_of_scale}}</td>
+  </tr><tr>
+    <td>Model of Purchase:</td>
+  <td>{{product.model_of_purchase}}</td></tr>
+               <tr>
+<td>Sub Model:</td>
+<td>{{product.sub_model}} </td></tr>
+<tr>
+    <td>Sub Sub Model:</td>
+  <td>{{product.sub_sub_model}} </td></tr>
+
+<tr>
+    <td>Brand:</td>
+        <td>{{product.brand}}</td></tr>
+<tr>
+    <td>Amount:</td>
+        <td>{{product.amount}} </td></tr>
+<tr>
+    <td>Godown:</td>
+        <td>{{product.godown_id.name_of_godown}} </td></tr>
+</table>
+              </div>
+
+          <br><center>
+                   <a href="/update_expense_product/{{product.expense_id.id}}/{{product.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
+
+
+<!--                                             not purchase_id_id.dispatch_id_assigned and not purchase_id_id.is_quick_entry -->
+<!--                  <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>-->
+
+<!--                   endif -->
+
+              </center>
+                  <br>
+      </div>
+      </div>
+                    {% endfor %}
+
+            <br>
+                </div>
+              </div>
+            </div>
+<br>
+
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+<script>
+  function show(){
+              var mode = document.getElementById("payment_mode_id").value;
+              var x = document.getElementById("payment_cheque2");
+              var y = document.getElementById("payment_neft2");
+              var z = document.getElementById("payent_credit2");
+              if (mode == 'Cheque'){
+                  y.style.display = "none";
+                  z.style.display = "none";
+                  x.style.display = "block";
+
+                  $('#bank_name2').attr('required', '');
+                  $('#cheque_no2').attr('required', '');
+                  $('#cheque_date2').attr('required', '');
+                  $('#bill_no').attr('required', '');
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '')
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+                  document.getElementById("gst_id").checked = true;
+              }
+
+             else if (mode == 'NEFT'){
+                  x.style.display = "none";
+                  z.style.display = "none";
+                  y.style.display = "block";
+
+                  $('#neft_bank_name2').attr('required', '');
+                  $('#neft_date2').attr('required', '');
+                  $('#bill_no').attr('required', '');
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '')
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+                  document.getElementById("gst_id").checked = true;
+              }
+              else if (mode == 'Credit'){
+                  x.style.display = "none";
+                  y.style.display = "none";
+                  z.style.display = "block";
+
+                  $('#credit_authorised_by_id').attr('required', '');
+                  $('#credit_pending_amount_id').attr('required', '');
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+                  document.getElementById("gst_id").checked = false;
+              }
+              else{
+                  if (mode == 'Razorpay'){
+                  document.getElementById("gst_id").checked = true;
+                  $('#bill_no').attr('required', '');
+
+                  }
+                  else{
+                    document.getElementById("gst_id").checked = false;
+                    $('#bill_no').removeAttr('required', '');
+
+                  }
+                  x.style.display = "none";
+                  y.style.display = "none";
+                  z.style.display = "none";
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '');
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+              }
+          }
+  </script>
+
+  <script>
+  function on_type_master(select) {
+
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_expense_sub_master/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'expense_type_master': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#expense_type_sub_master_id").html(data);
+
+        }
+      });
+}
+
+function on_type_sub_master(select) {
+
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_expense_sub_sub_master/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'expense_type_master': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#expense_type_sub_sub_master_id").html(data);
+
+        }
+      });
+}
+
+function on_change_vendor(select) {
+
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_vendor_details/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'vendor_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+
+$('input[name=sgst_per]').val(data.vendor_detail[0].sgst_per);
+$('input[name=cgst_per]').val(data.vendor_detail[0].cgst_per);
+$('input[name=igst_per]').val(data.vendor_detail[0].igst_per);
+$('input[name=tds_per]').val(data.vendor_detail[0].tds_per);
+$('textarea[name=notes]').val(data.vendor_detail[0].notes);
+        }
+      });
+}
+  </script>
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+
+    </div>
+  </div>
+
+</body>
+
+</html>

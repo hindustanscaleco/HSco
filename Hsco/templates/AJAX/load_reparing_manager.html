@@ -1,0 +1,95 @@
+
+  {% if manager %}
+
+    <table>
+        <tr style="background-color: gray; color: white;">
+
+
+
+
+
+                    <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;"> Employee Name </td>
+                    <td style="border: 0px solid gray;">Repairing done </td>
+                    <td style="border: 0px solid gray;">Target achieved </td>
+                    <td style="border: 0px solid gray;">Average time to repair scale </td>
+                    <td style="border: 0px solid gray;">Average time to give Estimate after Scale is submitted </td>
+                    <td style="border: 0px solid gray;">Feedback</td>
+                                <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Month/Year</td>
+
+                  </tr>
+
+
+
+                {% for list in user_list%}
+              <tr style="cursor: pointer; " onclick="location.href='/repairing_employee_graph/{{list.user_id}}';" class="col-xl-12 col-md-12 mb-12">
+
+                     <td> {{list.user_id.name}}</td>
+                    <td> {{list.total_reparing_done| floatformat}} </td>
+                    <td> {{list.reparing_target_given| floatformat}} </td>
+                    <td> {{list.avg_time_to_repair_single_scale| floatformat}} hrs</td>
+                    <td> Need some value </td>
+                     <td>
+                         {% for avg in  list1.start_rating_feedback_reparing|rjust:'5'  %}
+              {% if forloop.counter <= list1.start_rating_feedback_reparing %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow; font-size: 12px;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true" style=" font-size: 12px;"></i>
+              {% endif %}
+            {% endfor %}
+                     </td>
+                      <td>{{list.entry_timedate.month}}/{{list.entry_timedate.year}}</td>
+
+</tr>{% endfor %}
+</table>
+
+
+
+
+{% else %}
+<table>
+                    <tr style="background-color: gray; color: white;">
+
+                    <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Date </center> </td>
+                    <td style=" width: 15%; border: 0px solid gray;">Repairing No. </td>
+                    <td style=" width: 18%; border: 0px solid gray;">Customer Name</td>
+                    <td style=" width: 20%; border: 0px solid gray;">Company Name</td>
+                    <td style=" width: 15%; border: 0px solid gray;">Contact No.</td>
+
+                    <td style=" width: 12%; border: 0px solid gray;"><center class=""> Entered By </center> </td>
+
+                    {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
+                    <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;"><center> Taken By </center> </td>
+                    {% else %}
+                    {% endif %}
+                </tr>
+
+<br>
+
+                <div id="id_subcat" class="row">
+ <center><p>{{search_msg}}</p></center>
+
+                {% for list in repair_list %}
+              <tr style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
+
+
+
+                                        <td style="width: 8%;">{{list.entry_timedate|date:'Y-m-d'}}</td>
+
+                    <td style="width: 15%;">{{list.repairing_no}}  </td>
+                    <td style="width: 18%;">{{list.second_person}}</td>
+                    <td style="width: 20%;">{% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</td>
+                    <td style="width: 15%;">{{list.second_contact_no}} </center> </td>
+
+                    <td style="width: 12%;">{{list.entered_by}}</td>
+
+                    {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
+                    <td> {{list.taken_by}}  </td>
+                    {% endif %}
+
+
+                {% endfor %}
+              </tr>
+                </div>
+           </table>
+
+  {% endif %}

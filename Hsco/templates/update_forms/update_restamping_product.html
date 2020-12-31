@@ -1,0 +1,554 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+        {% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+
+        <!-- Topbar -->
+        {% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+         <style>
+          .editableBox {
+    width: 70%;
+    height: 30px;
+}
+
+.timeTextBox {
+    width: 65%;
+    margin-left: -70%;
+    height: 25px;
+    border: none;
+}
+
+
+.editableBoxa {
+    width: 70%;
+    height: 30px;
+}
+
+.timeTextBoxa {
+    width: 65%;
+    margin-left: -70%;
+    height: 25px;
+    border: none;
+}
+
+
+.editableBoxz {
+    width: 70%;
+    height: 30px;
+}
+
+.timeTextBoxz {
+    width: 65%;
+    margin-left: -78px;
+    height: 25px;
+    border: none;
+}
+
+        </style>
+
+<script>
+$(document).ready(function(){
+
+    $(".editableBox").change(function(){
+        $(".timeTextBox").val($(".editableBox option:selected").html());
+    });
+});
+
+$(document).ready(function(){
+
+    $(".editableBoxa").change(function(){
+        $(".timeTextBoxa").val($(".editableBoxa option:selected").html());
+    });
+});
+
+
+$(document).ready(function(){
+
+    $(".editableBoxz").change(function(){
+        $(".timeTextBoxz").val($(".editableBoxz option:selected").html());
+    });
+});
+</script>
+
+ <script> function disable() {
+  document.getElementById("name").disabled = true;
+  }
+
+  function enable() {
+   document.getElementById("name").disabled = false;
+  }
+
+var form = document.getElementById("contact_form");
+var elements = form.elements;
+for (var i = 0, len = elements.length; i < len; ++i) {
+    elements[i].disabled = true;
+}
+</script>
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+<center>
+         <!-- Page Heading -->
+            <h1 class="h3 mb-0 text-gray-800"> Restamping Product</h1>
+</center>
+<br>
+<br>
+
+
+
+<script>
+function myFunction() {
+
+  var x = document.getElementById("myText10");
+  var y = document.getElementById("myText11");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.display = "none";
+  } else {
+    x.style.display = "none";
+    y.style.display = "block";
+  }
+
+    document.getElementById("myText").disabled = false;
+    document.getElementById("myText2").disabled = false;
+    document.getElementById("myText3").disabled = false;
+    document.getElementById("myText4").disabled = false;
+    document.getElementById("myText5").disabled = false;
+    document.getElementById("myText6").disabled = false;
+    document.getElementById("myText7").disabled = false;
+    document.getElementById("myText8").disabled = false;
+    document.getElementById("myText9").style.display = "block";
+
+
+}
+</script>
+
+            <form method="POST">{%csrf_token%}
+
+
+
+
+
+
+
+
+
+
+<div class="form-group row">
+   <label class="col-md-2 control-label">Scale Type *
+</label>
+
+    <div class="col-md-4 inputGroupCont+-ainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+    <input type="text" name="scale_type" disabled placeholder="Type of Machine" id="myText" value="{{restamping_product_id.scale_type}}" class="form-control" list="type_of_scale">
+    </div>
+  </div>
+
+
+       <label class="col-md-2 control-label">Models *
+</label>
+
+    <div class="col-md-4 inputGroupCont+-ainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+    <input type="text" name="model_of_purchase" disabled placeholder="Models" id="myText2" value="{{restamping_product_id.model_of_purchase}}" class="form-control" list="type_of_scale">
+    </div>
+  </div>
+
+</div>
+                <div class="form-group row">
+
+ <label class="col-md-2 control-label">Sub Model *
+
+
+
+</label>
+
+      <div class="col-md-4 inputGroupCont+-ainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+  <input  name="sub_model" disabled placeholder="Sub Model" id="myText3" value="{{restamping_product_id.sub_model}}" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+
+              <label class="col-md-2 control-label">New Serial No
+           </label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-desc faicons"></i></span>
+    <input  type="text" name="new_sr_no" id="myText4" disabled placeholder="New Serial No" class="form-control" value="{{restamping_product_id.new_sr_no}}" >
+
+    </div>
+  </div>
+
+     <label class="col-md-2 control-label">Old Serial No *
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
+    <input required type="text" name="old_serial_no" disabled id="myText5" value="{{restamping_product_id.old_serial_no}}" placeholder="Old Serial No" class="form-control" >
+
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+  <div class="form-group row">
+   <label class="col-md-2 control-label">Brand
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-institution faicons"></i></span>
+    <input  type="text" name="brand" disabled id="myText6" value="{{restamping_product_id.brand}}" placeholder="Brand" class="form-control" >
+
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Amount *
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <input required name="amount" disabled id="myText7" value="{{restamping_product_id.amount}}" placeholder="Amount" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
+
+       <div class="form-group row">
+
+
+                   <label class="col-md-2 control-label">Capacity *
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>
+    <input required type="text" name="capacity" disabled id="myText8" value="{{restamping_product_id.capacity}}" placeholder="Capacity" class="form-control" >
+
+    </div>
+  </div>
+           <div class="col-md-4 inputGroupContainer" style="display:none">
+   <div class="wrapper">
+    <select class="editableBoxaa" style="display:none" id="districtSel" size="1" name="district" style="border: 1px solid grey; border-radius: 5px;">
+<option value="" selected="selected">Select</option>
+    </select>
+    <input class="timeTextBoxaa" style="display:none" id="myText9" maxlength="30"/>
+
+</div>
+  </div>
+       </div>
+
+
+            <br>
+    <div class="col-md-12 ">
+      <br>
+    <center>
+        <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" id="myText11" type="reset" style="">Edit</button>
+        <br>
+        <br>
+        <button style="display:none; background-color: #FC6E20;" id="myText10" type="submit" value="Submit" class="btn btn-primary">Save</button>
+      </center>
+    </div>
+            </form>
+
+
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+       <script>
+
+$(function() {
+$("#stars").val("0");
+    $("div.star-rating > s").on("click", function(e) {
+
+    // remove all active classes first, needed if user clicks multiple times
+    $(this).closest('div').find('.active').removeClass('active');
+
+    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+    $(e.target).addClass('active');  // the element user has clicked on
+
+
+        var numStars = $(e.target).parentsUntil("div").length+1;
+        $("#stars").val(numStars);
+
+
+    });
+});
+
+</script>
+                  <script>
+var stateObject = {
+"Table Top Scales": {
+"ABS": ['ABS001','ABS002','ABS003','ABS004','ABS005','ABS006'],
+"MSS": ['MSS001','MSS002','MSS003','MSS004','MSS005','MSS006'],
+"SSS": ['SSS001','SSS002','SSS003','SSS004','SSS005','SSS006'],
+"MSB": ['MSB001','MSB002','MSB003','MSB004','MSB005','MSB006'],
+"SSB": ['SSB001','SSB002','SSB003','SSB004','SSB005','SSB006'],
+"MSBP":['MSBP001','MSBP002','MSBP003','MSBP004','MSBP005','MSBP006'],
+"SSBP":['SSBP001','SSBP002','SSBP003','SSBP004','SSBP005','SSBP006'],
+"PRCFB":['PRC001','PRC002','PRC003','PRC004','PRC005','PRC006'],
+"PRCP":['PRCP001','PRCP002','PRCP003','PRCP004','PRCP005','PRCP006']
+},
+
+
+"POS Scales": {
+"PRCPT":['PRCPT001','PRCPT002','PRCPT003','PRCPT004'],
+"POSP": ['PRCPT005','PRCPT006','PRCPT007']
+},
+
+
+"Water Proof Scales": {
+"ABSWR": ['ABSWR001','ABSWR002','ABSWR003','ABSWR004','ABSWR005','ABSWR006','ABSWR007'],
+"SSWR" : ['SSWR001','SSWR002','SSWR003','SSWR004','SSWR005','SSWR006','SSWR007']
+},
+
+
+"Jewellery Scales": {
+"JEWE" :['JEWE001','JEWE002','JEWE003','JEWE004','JEWE005','JEWE006','JEWE007']
+},
+
+
+
+"Lab Scales": {
+"LAB" :['LAB001','LAB002','LAB003','LAB004','LAB005','LAB006','LAB007','LAB008']
+},
+
+
+
+"Hanging Scales": {
+"CRS" :['CRS001','CRS002','CRS003','CRS004','CRS005','CRS006']
+},
+
+
+
+"Crane Scales": {
+"CRH" :['CRH001','CRH002','CRH003','CRH004','CRH005','CRH006','CRH007'],
+"Crane Scales with Remote Display and Printer" : ['CRH008','CRH009','CRH010','CRH011'],
+"Crane Scale with Heat Shield": ['CRH012','CRH013','CRH014'],
+"Crane Scale with Hand Held Remote Display": ['CRH015','CRH016','CRH017']
+},
+
+
+"Platform Scales": {
+"PLSS" : ['PLSS001','PLSS002','PLSS003','PLSS004','PLSS005','PLSS006','PLSS007'],
+"PLCHQ" : ['PLCHQ001','PLCHQ002','PLCHQ003','PLCHQ004','PLCHQ005','PLCHQ006','PLCHQ007'],
+"PLCHQH" : ['PLCHQH008','PLCHQH009','PLCHQH010','PLCHQH011','PLCHQH012'],
+"PLCHQR": ['PLCHQR013','PLCHQR014','PLCHQR015','PLCHQR016','PLCHQR017'],
+"PLSSW": ['PLSSW001','PLSSW002','PLSSW003','PLSSW004','PLSSW005'],
+"PLSSWWR": ['PLSSWWR001','PLSSWWR002','PLSSWWR003','PLSSWWR004','PLSSWWR005','PLSSWWR006','PLSSWWR007']
+},
+
+
+"Mobile Platforms": {
+"PLSSCHI": ['PLSSCHI001','PLSSCHI002','PLSSCHI003','PLSSCHI004','PLSSCHI005','PLSSCHI006','PLSSCHI007'],
+"PLCHQCHI": ['PLCHQCHI001','PLCHQCHI002','PLCHQCHI003','PLCHQCHI004','PLCHQCHI005','PLCHQCHI006','PLCHQCHI007','PLCHQCHI008','PLCHQCHI009','PLCHQCHI010']
+},
+
+
+"Infant Scales": {
+"BCI": ['BCI001','BCI002','BCI003','BCI004','BCIC005']
+},
+
+
+"Baby Cum Adult Scales": {
+"BCA": ['BCA001','BCA002','BCA003','BCA004']
+},
+
+
+"Animal Scales": {
+"AS": ['AS001','AS002','AS003','AS004','AS005']
+},
+
+
+"Cattle Scales": {
+"AWSSSG": ['ASSSG001','ASSSG002','ASSSG003','ASSSG004'],
+"AWSCIG": ['AWSCIG001','AWSCIG002','AWSCIG003','AWSCIG004','AWSCIG005','AWSCIG006']
+},
+
+
+"Supra Pall Scales": {
+"SUP": ['SUP001','SUP002','SUP003','SUP004','SUP005']
+},
+
+
+
+"Supra Pall Scales": {
+"LPG": ['LPG001']
+},
+
+
+}
+window.onload = function () {
+var countySel = document.getElementById("countySel"),
+stateSel = document.getElementById("stateSel"),
+districtSel = document.getElementById("districtSel");
+for (var country in stateObject) {
+countySel.options[countySel.options.length] = new Option(country, country);
+}
+countySel.onchange = function () {
+stateSel.length = 1; // remove all options bar first
+districtSel.length = 1; // remove all options bar first
+if (this.selectedIndex < 1) return; // done
+for (var state in stateObject[this.value]) {
+stateSel.options[stateSel.options.length] = new Option(state, state);
+}
+}
+countySel.onchange(); // reset in case page is reloaded
+stateSel.onchange = function () {
+districtSel.length = 1; // remove all options bar first
+if (this.selectedIndex < 1) return; // done
+var district = stateObject[countySel.value][this.value];
+for (var i = 0; i < district.length; i++) {
+districtSel.options[districtSel.options.length] = new Option(district[i], district[i]);
+}
+}
+}
+</script>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

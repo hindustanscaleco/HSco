@@ -732,6 +732,8 @@ def showBill(request,sales_id):
                                                                            'credit_pending_amount','credit_authorised_by','neft_bank_name','neft_date','reference_no','cheque_no','cheque_date')
     # print(purchase_details.channel_of_dispatch)
 
+                                                                       
+
     products_details = Product_Details.objects.filter(purchase_id=sales_id).values()
     for item in products_details:
         product = Product.objects.get(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],

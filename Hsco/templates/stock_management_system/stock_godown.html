@@ -1,0 +1,751 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <script src = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+<style>
+    * {
+    font-family: 'Poppins';
+}
+
+
+.dot {
+  height: 15px;
+  width: 15px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left:-8px;
+  margin-bottom:12px;
+}
+
+  div.ex1 {
+  width: 100%;
+  height: 400px;
+  overflow: scroll;
+}
+
+</style>
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+
+        <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid ">
+
+          <!-- Page Heading -->
+            <div class="row col-md-12">
+
+
+                <div class="col-md-5">
+
+<h1 class="h3 mb-0 text-gray-800 ">Stock Management System</h1>
+</div>
+ <div class="col-md-3 mt-2">
+                          <b>Godown Name:  {{godown_id.name_of_godown}}</b>
+
+</div>
+                <div class="col-xl-2 col-md-2"></div>
+                {% if request.user.role == 'Super Admin' or godown_id.godown_admin.id == request.user.id or godown_id.goddown_assign_to.id == request.user.id %}
+                                            <div class="col-xl-1 col-md-1">
+
+    <a style="padding-left: 2px;" href="/stock_godown_report/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Report </button></a>
+                </div>
+                {% endif %}
+            </div>
+
+<br>
+{% if request.user.role == 'Employee' and godown_id.goddown_assign_to.id != request.user.id %}
+            {% elif request.user.role == 'Manager' and godown_id.goddown_assign_to.id != request.user.id %}
+
+            {% else %}
+            <br>
+<div class="row">
+
+    <div class="col-xl-1 col-md-1"></div>
+                <div class="col-xl-2 col-md-2">
+
+    <a style="padding: 2px;" href="/stock_good_request/{{godown_id.id}}/{{new_good_request_id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Good Request </button></a>
+                </div>
+    <div class="col-xl-1 col-md-1"></div>
+
+                <div class="col-xl-2 col-md-2">
+
+
+    <a style="padding: 2px;" href="/stock_accpet_goods_list/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Purchase Goods </button></a>
+                </div>
+    <div class="col-xl-1 col-md-1"></div>
+
+                <div class="col-xl-2 col-md-2">
+    {% if pending_req_indication %}
+    <a style="padding: 2px;" href="/stock_pending_request/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Pending Request </button><span class="dot"></span></a>
+                    <div class="ripple" style="animation-delay: 0s"></div>
+                    {% else %}
+    <a style="padding: 2px;" href="/stock_pending_request/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Pending Request </button></a>
+                    {% endif %}
+                                </div>
+
+
+
+    <div class="col-xl-1 col-md-1"></div>
+
+                    <div class="col-xl-2 col-md-2">
+
+    <a style="padding: 2px;" href="/stock_transaction_history_list/{{godown_id.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Transaction History </button></a>
+                </div>
+                </div>
+            {% endif %}
+
+
+
+
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
+
+                        <style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: green;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.divs{
+display:none;
+}
+</style>
+
+
+
+            <script>
+//$( document ).ready(function() {
+  //      $('.divs').hide();});
+$(function() {
+  $('#divselector').change(function(){
+    $('.divs').hide();
+    $('#' + $(this).val()).show();
+  });
+});
+            </script>
+                    <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
+            <div class="row">
+
+                <div  class="col-xl-3 col-md-3 col-mb-3">
+
+
+<br>
+                </div>
+
+
+                <div  class="col-xl-6 col-md-6 col-mb-8">
+
+
+<div class="output">
+                                                              <form method="POST" autocomplete="off">{% csrf_token%}
+  <div id="d1" class="divs d1 row">
+
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date1" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date2" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
+
+      </div>
+                               </form>
+
+
+  <div id="d2" class="divs d2">
+      <form method="POST" >{% csrf_token%}
+      <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Search</button>
+  </form>
+  </div>
+
+
+
+
+  <div id="d3" class="divs d3">
+      <form method="POST">{% csrf_token%}
+      <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+
+      <button style="background-color: #FC6E20;" name="submit3" class="btn btn-primary">Search</button>
+          </form>
+  </div>
+
+
+
+    <div id="d4" class="divs d4">
+        <form method="POST">{% csrf_token%}
+      <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button>
+    </form>
+    </div>
+
+                               <form method="POST">{% csrf_token%}
+  <div id="d5" class="divs d5">
+      <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button></div>
+</form>
+
+                               <form method="POST">{% csrf_token%}
+
+    <div id="d6" class="divs d6">
+      <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
+</form>
+                       <form method="POST">{% csrf_token%}
+
+    <div id="d7" class="divs d7">
+      <input type="text" name="purchase_no" placeholder="Purchase No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
+</form>
+</div>
+                </div>
+
+
+
+            </div>
+
+
+               <style>
+        .border-right-primarya {
+        border-right: 4px solid blue;
+        }
+        .border-left-primarya {
+        border-left: 4px solid blue;
+        }
+    </style>
+<style>
+  .border-left-primary {
+    border-left: .09rem solid #4e73df!important;
+    font-size: 12px;
+
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.card + .card {
+    margin:0px;
+    box-shadow: 0 8px 6px -6px #e47312;
+    box-shadow: inset 0 0 4px #e47312;
+
+
+
+
+
+
+</style>
+
+                                                <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+          <form method="POST" autocomplete="off">{% csrf_token%}
+
+            <div class="row">
+
+                            <div  class="col-xl-2 col-md-2">
+                    <div class="button dropdown">
+  <select id="divselector" name="scale_type"  onchange="choice1(this)" class="form-control btn btn-secondary">
+       <option value="">Select Scale Type</option>
+
+    {% for item in type_of_purchase_list %}
+  <option value="{{item.pk}}">{{item.name}}</option>
+
+   {% endfor %}
+
+  </select>
+</div>
+                            </div>
+
+<div  class="col-xl-2 col-md-2">
+    <div class="button dropdown">
+
+      <select id="id_subcat" name="main_category"  onchange="choice_model(this)" class="form-control btn btn-secondary">
+  </select>
+    </div>
+</div>
+
+<div  class="col-xl-2 col-md-2">
+    <div class="button dropdown">
+        <select id="id_subcat2" name="sub_category" onchange="choice_sub_model(this)" class="form-control btn btn-secondary">
+
+
+  </select>
+    </div>
+</div>
+<div  class="col-xl-2 col-md-2">
+    <div class="button dropdown">
+         <select  id="id_subcat22" name="sub_sub_category" onchange="choice_sub_sub_model(this)" class="form-control btn btn-secondary">
+
+
+  </select>
+    </div>
+</div>
+                                     <div  class="col-xl-1 col-md-1">
+                    <button type="submit"  class="btn btn-secondary">Sort</button>
+                </div>
+
+                <div class="col-md-1"></div>
+           <button id="display_image" type="button" class="btn btn-primary" style="background-color:#FC6E20">List / Image</button>
+
+
+                </div>
+                      </form>
+
+
+<br>
+
+            <script>
+$(document).ready(function(){
+    $("#image_title , #image ").toggle();
+  $("#display_image").click(function(){
+    $("#image_title , #image ").toggle();
+  });
+});
+</script>
+            <hr>
+            <div class="row">
+                <div class="col-xl-9">
+<h3 style="padding-left:30%;" ><center>Products Of Godown</center></h3>
+                    </div>
+                {% if request.user.role == 'Employee' and godown_id.goddown_assign_to.id != request.user.id %}
+                {% elif request.user.role == 'Manager' and godown_id.goddown_assign_to.id != request.user.id %}
+                {% else %}
+                                <div class="col-xl-2">
+            <button onclick="tableToExcel(&#39;testTable&#39;, &#39;W3C Example Table&#39;)"  type="button" class="btn btn-primary" style="background-color:#FC6E20">Download Stock</button>
+                                </div>
+                {% endif %}
+                </div>
+            <hr>
+            <div class="row ex1" id="abhish123">
+    <table id="testTable">
+        <!--<tr style="border: 0px solid gray; color: white;"  >Godown Name:  {{godown_id.name_of_godown}}</tr>-->
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
+            <td style="border: 0px solid gray;">Model</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Count</td>
+
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Quantity</td>
+{% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or godown_id.goddown_assign_to.id == request.user.id %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Individual Faulty</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Carton Faulty</td>
+            {% endif %}
+            <td id="image_title" style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Image</td>
+
+
+        </tr>
+
+{% for product in godown_products %}
+    {% if product.quantity <= product.critical_limit %}
+
+        <tr bgcolor="red" style="border: 1px solid gray;">
+    {% else %}
+        <tr style="border: 1px solid gray;">
+    {% endif %}
+                <td style="border-radius: 0px 0px 0px 0px; border: 1px solid gray;">{{product.product_id.scale_type}}</td>
+            <td style="border: 1px solid gray;">{{product.product_id.main_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.product_id.sub_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.product_id.sub_sub_category}}</td>
+        {% if product.carton_count != "N/A" %}
+          <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.carton_count|floatformat:2}}</td>
+        {% else %}
+        <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.carton_count}}</td>
+        {% endif %}
+
+        {% if product.quantity != "N/A" %}
+            <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.quantity|floatformat:2}}</td>
+        {% else %}
+            <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.quantity}}</td>
+        {% endif %}
+        {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or godown_id.goddown_assign_to.id == request.user.id %}
+        {% if product.individual_faulty != "N/A" %}
+        <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.individual_faulty|floatformat:2 }}</td>
+        {% else %}
+        <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.individual_faulty }}</td>
+        {% endif %}
+
+        {% if product.carton_faulty != "N/A" %}
+            <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.carton_faulty|floatformat:2 }}</td>
+        {% else %}
+            <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{product.carton_faulty }}</td>
+        {% endif %}
+
+        {% endif %}
+            <td id="image" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{% if product.product_id.product_image %}<img height="40" width="40" src="{{product.product_id.product_image.url}}">{% endif %}</td>
+        </tr>
+
+{% endfor %}
+
+
+
+    </table>
+
+
+
+
+
+        </div>
+
+<br>
+<br>
+<br>
+     </div>
+{% if request.user.role == 'Employee' and godown_id.goddown_assign_to.id != request.user.id %}
+                          {% elif request.user.role == 'Manager' and godown_id.goddown_assign_to.id != request.user.id %}
+
+                {% else %}
+    <div class="row">
+
+    <div class="col-md-12">
+    <center>
+
+<a href="/update_godown/{{godown_id.id}}"><button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Edit</button></a>
+
+</center>
+    </div>
+
+    </div>
+        {% endif %}
+      </div>
+
+
+<br>
+
+
+  </div>
+
+  <!-- End of Page Wrapper -->
+  </div>
+
+
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+<script>
+function choice1(select) {
+     //alert(select.options[select.selectedIndex].value);
+
+
+       $("#type_of_scale").val(select.options[select.selectedIndex].text);
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat").html(data);
+
+    if ($('#id_subcat option').length > 1)
+    {
+
+    }
+    else{
+    $('#id_subcat').removeAttr('required');
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+    }
+
+
+
+        }
+      });
+}
+function choice_model(select) {
+$("#model_of_purchase").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat2").html(data);
+
+       if ($('#id_subcat2 option').length > 1)
+    {
+
+
+
+    }
+    else{
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+
+    }
+
+
+        }
+      });
+}
+
+function choice_sub_model(select) {
+$("#sub_model").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_sub_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat22").html(data);
+
+     if ($('#id_subcat22 option').length > 1)
+    {
+
+    }
+    else{
+    $('#id_subcat22').removeAttr('required');
+
+    }
+
+
+        }
+      });
+}
+
+function choice_sub_sub_model(select) {
+$("#sub_sub_model").val(select.options[select.selectedIndex].text);
+
+}
+
+function isOneChecked() {
+  // All <input> tags...
+  var chx = document.getElementsByTagName('input');
+  for (var i=0; i<chx.length; i++) {
+    // If you have more than one radio group, also check the name attribute
+    // for the one you want as in && chx[i].name == 'choose'
+    // Return true from the function on first match of a checked item
+    if (chx[i].type == 'radio' && chx[i].checked) {
+    alert("Are you sure it's last product?\n you will not be able to add product again.");
+      return true;
+    }
+  }
+  // End of the loop, return false
+  alert("Please Select any one radio buttons in last product field.");
+  return false;
+}
+
+
+  </script>
+
+             <script>
+
+        function toggleCheckbox(select) {
+value = select.checked;
+
+    $.ajax({
+        url: "/load_dispatch_done/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_subcat").html(data);
+        }
+      });
+}
+        function toggleCheckbox2(select) {
+value = !select.checked;
+
+    $.ajax({
+        url: "/load_users/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+    </script>
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+<script>
+
+var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+
+</script>
+</body>
+
+</html>

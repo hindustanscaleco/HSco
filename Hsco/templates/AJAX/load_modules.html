@@ -1,0 +1,218 @@
+ <div class="form-group row">
+                      {% if 'Customer Module' in valid_modules.modules_assigned %}
+
+  <label class="col-md-2 control-label ">Sales Module
+
+
+
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Customer Module" id="customCheck1">
+  <label class="custom-control-label" for="customCheck1"></label>
+  </div>
+</div>
+        {% endif %}
+
+{% if "'Repairing Module'" in valid_modules.modules_assigned %}
+    <label class="col-md-2 control-label">Repairing Module
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Repairing Module" id="customCheck2">
+  <label class="custom-control-label" for="customCheck2"></label>
+  </div>
+
+
+</div>
+    {% endif %}
+
+</div>
+
+
+
+<div class="form-group row">
+                      {% if 'Restamping Module' in valid_modules.modules_assigned %}
+
+  <label class="col-md-2 control-label">Restamping Module
+
+
+
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Restamping Module" id="customCheck3">
+  <label class="custom-control-label" for="customCheck3"></label>
+  </div>
+</div>
+{% endif %}
+
+      <!-- Divider -->
+                    {% if 'Dispatch Module' in valid_modules.modules_assigned %}
+    <label class="col-md-2 control-label">Dispatch Module
+
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Dispatch Module" id="customCheck4">
+  <label class="custom-control-label" for="customCheck4"></label>
+  </div>
+
+</div>
+                    {% endif %}
+
+</div>
+
+
+
+<div class="form-group row">
+                              {% if 'AMC Module' in valid_modules.modules_assigned %}
+
+  <label class="col-md-2 control-label">AMC Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="AMC Module" id="customCheck5">
+  <label class="custom-control-label" for="customCheck5"></label>
+  </div>
+  </div>
+        {% endif %}
+
+                    {% if 'Onsite Repairing Module' in valid_modules.modules_assigned %}
+    <label class="col-md-2 control-label">Onsite Repairing Module
+
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Onsite Repairing Module" id="customCheck6">
+  <label class="custom-control-label" for="customCheck6"></label>
+  </div>
+</div>
+          {% endif %}
+
+</div>
+
+ <div class="form-group row">
+                              {% if 'Lead Module' in valid_modules.modules_assigned %}
+
+  <label class="col-md-2 control-label">Lead Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Lead Module" id="customCheck7">
+  <label class="custom-control-label" for="customCheck7"></label>
+  </div>
+  </div>
+        {% endif %}
+
+                    {% if 'Stock Module' in valid_modules.modules_assigned %}
+    <label class="col-md-2 control-label">Stock Module
+
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Stock Module" id="customCheck8">
+  <label class="custom-control-label" for="customCheck8"></label>
+  </div>
+</div>
+          {% endif %}
+
+</div>
+
+ <div class="form-group row">
+      {% if 'Career Module' in valid_modules.modules_assigned %}
+    <label class="col-md-2 control-label">Career Module
+
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Career Module" id="customCheck11">
+  <label class="custom-control-label" for="customCheck11"></label>
+  </div>
+</div>
+          {% endif %}
+
+</div>
+
+ <div class="form-group row">
+                              {% if 'Indiamart Leads' in valid_modules.modules_assigned %}
+
+  <label class="col-md-2 control-label">Indiamart Leads
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Indiamart Leads" id="customCheck9">
+  <label class="custom-control-label" for="customCheck9"></label>
+  </div>
+  </div>
+        {% endif %}
+
+                    {% if 'Hsco Website Leads' in valid_modules.modules_assigned %}
+    <label class="col-md-2 control-label">Hsco Website Leads
+
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Hsco Website Leads" id="customCheck10">
+  <label class="custom-control-label" for="customCheck10"></label>
+  </div>
+</div>
+          {% endif %}
+
+</div>
+
+ {% if valid_modules.product_master_access %}
+         <div class="form-group row">
+             <label class="col-md-2 control-label">Product Master
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="product_master" value="True" id="customCheck12">
+  <label class="custom-control-label" for="customCheck12"></label>
+  </div>
+  </div>
+         </div>
+      {% endif %}

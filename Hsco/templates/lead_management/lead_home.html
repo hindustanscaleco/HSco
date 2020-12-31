@@ -1,0 +1,808 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+<style>
+    * {
+    font-family: 'Poppins';
+}
+
+</style>
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+  {% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+
+        <!-- Topbar -->
+  {% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid ">
+
+          <!-- Page Heading -->
+            <div class="row">
+           <div class="col-xl-5 col-md-3 mb-3 ">
+
+
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+<h1 class="h3 mb-0 text-gray-800 ">Lead Management</h1>
+
+
+                </div>
+              </div>
+            </div>
+
+
+
+                 <div class="col-xl-7 col-md-9 mb-9 ">
+
+
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+
+
+ <a style="padding: 2px;" href="{% url 'add_lead' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Lead </button></a>
+                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Share</button></a>
+                      <a style="padding: 2px;" href="{% url 'lead_logs' %}"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
+                      {% if user.role == 'Super Admin' or user.role == 'Manager' or user.role == 'Admin' %}
+<a style="padding: 2px;" href="{% url 'report_2' %}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
+                      {% endif %}
+ <a style="padding: 2px;" href="{% url 'lead_analytics' %}"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
+                      {% if request.user.is_authenticated and 'Indiamart Leads' in user.modules_assigned %}
+                      <form action="" method="post">{% csrf_token %}
+                          <input type="hidden" name="from_date_form" value="{{from_date}}">
+                           <input type="hidden" name="to_date_form" value="{{to_date}}">
+                          <button style="background-color: #FC6E20;" type="submit" name="fetch_lead" class="btn btn-primary">Fetch Lead</button>
+
+                      </form>
+                      {% endif %}
+<!--                      <form action="" method="post">{% csrf_token %}-->
+<!--                          <input type="hidden" name="from_date_form" value="{{from_date}}">-->
+<!--                           <input type="hidden" name="to_date_form" value="{{to_date}}">-->
+<!--                          <button style="background-color: #FC6E20;" type="submit" name="fetch_website_lead" class="btn btn-primary">Fetch Website Lead</button>-->
+
+<!--                      </form>-->
+                </div>
+              </div>
+
+
+
+            </div>
+
+
+
+                </div>
+
+            {% if messages %}
+    {% for message in messages %}
+             {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% endif %}
+            {% endfor %}
+               {% endif %}
+
+            {% if err and lead_count == 1 %}
+                       <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Already Fetched!!!</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+            {% endif %}
+            {% if err2 %}
+                       <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Something Went Wrong!!!</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+            {% endif %}
+
+
+             {% if lead_count > 1 and error_exist %}
+             <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>{{error}} </strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+                {% elif lead_count > 1 %}
+
+
+                     <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Total Lead Fetched : </strong> {{lead_count}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+
+ {% elif error_exist %}
+
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error Fetching Lead From Indiamart : </strong> {{error}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+
+
+<br>
+
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
+
+                        <style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: green;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.divs{
+display:none;
+}
+
+.card-body{
+font-size: 12px;
+}
+</style>
+
+
+
+            <script>
+//$( document ).ready(function() {
+  //      $('.divs').hide();});
+$(function() {
+  $('#divselector').change(function(){
+    $('.divs').hide();
+    $('#' + $(this).val()).show();
+  });
+});
+            </script>
+                    <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
+            <div class="row">
+
+                <div  class="col-xl-3 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+  <select id="divselector" class="form-control">
+     <option value="d0">Select Search Type</option>
+     <option value="d1">Search By Date Range</option>
+     <option value="d2">Search By Mobile Number</option>
+     <option value="d3">Search By Email Id</option>
+     <option value="d4">Search By Customer Name</option>
+     <option value="d5">Search By Company Name</option>
+     <!--<option value="d6">Search By CRM No.</option>-->
+     <option value="d7">Search By Serial No.</option>
+     <!--<option value="d7">Search By CRM Number Range</option>-->
+  </select>
+</div>
+
+
+                </div>
+
+
+                <div  class="col-xl-6 col-md-6 col-mb-8">
+
+
+<div class="output">
+  <div id="d1" class="divs d1 row">
+                                                              <form method="POST" autocomplete="off">{% csrf_token%}
+
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date1" type="date"  class="form-control">
+      </div>
+
+      <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+      </div>
+
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date2" type="date"  class="form-control">
+      </div>
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button>
+      </div>
+                               </form>
+
+      </div>
+
+
+  <div id="d2" class="divs d2">
+      <form method="POST" >{% csrf_token%}
+      <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Search</button>
+  </form>
+  </div>
+
+
+
+
+  <div id="d3" class="divs d3">
+      <form method="POST">{% csrf_token%}
+      <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+
+      <button style="background-color: #FC6E20;" name="submit3" class="btn btn-primary">Search</button>
+          </form>
+  </div>
+
+
+
+    <div id="d4" class="divs d4">
+        <form method="POST">{% csrf_token%}
+      <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button>
+    </form>
+    </div>
+
+  <div id="d5" class="divs d5">
+                                     <form method="POST">{% csrf_token%}
+
+      <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button>
+  </form>
+
+  </div>
+
+
+    <div id="d6" class="divs d6">
+                                       <form method="POST">{% csrf_token%}
+
+      <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+    <div id="d7" class="divs d7">
+                               <form method="POST">{% csrf_token%}
+
+      <input type="text" name="serial_no" placeholder="Serial No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button>
+    </form>
+</div>
+                               <!--<form method="POST">{% csrf_token%}-->
+
+  <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
+      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
+                <!--<input name="crm1" type="text" placeholder="CRM No." class="form-control">-->
+
+      <!--</div>-->
+
+      <!--<div class="col-xl-0 col-md-0 col-mb-0">-->
+                <!--<p style="font-weight: 600;">_</p>-->
+
+      <!--</div>-->
+
+      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
+                <!--<input name="crm2" type="text" placeholder="CRM No." class="form-control">-->
+
+      <!--</div>-->
+      <!--<div class="col-xl-2 col-md-2 col-mb-2">-->
+                <!--<button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>-->
+
+      <!--</div>-->
+                               <!--</form>-->
+</div>
+                </div>
+
+
+                 <div class="col-xl-2 col-md-9 mb-9 ">
+                 </div>
+                                 <div class="col-xl-1 col-md-2 col-mb-8 row" style="color: black;">
+
+
+{% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+                     <div class="col-xl-12 col-md-2 col-mb-8 row">
+
+<a href="{% url 'lead_manager_view' %}"><button type="button" class="btn btn-primary" style="background-color:#FC6E20; ">Manager</button></a>
+
+                     </div>
+{% else %}
+                     {% endif %}
+                     {% endif %}
+
+
+
+                </div>
+
+            </div>
+            <br>
+            <form action="" method="post" >{% csrf_token %}
+
+            <div class="row">
+
+
+                <div  class="col-xl-2 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+  <select id="select" name="MONTH" class="form-control">
+     <option value="0">Month </option>
+     <option value="1">Jan </option>
+     <option value="2">Feb </option>
+     <option value="3">Mar </option>
+     <option value="4">Apr </option>
+     <option value="5">May </option>
+     <option value="6">Jun </option>
+     <option value="7">Jul </option>
+     <option value="8">Aug </option>
+     <option value="9">Sep </option>
+     <option value="10">Oct </option>
+     <option value="11">Nov </option>
+     <option value="12">Dec </option>
+  </select>
+</div>
+                            </div>
+
+
+                 <div  class="col-xl-2 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+  <select id="divsossrt" name="YEAR" class="form-control">
+     <option value="2020">2020</option>
+     <option value="2021">2021</option>
+     <option value="2022">2022</option>
+     <option value="2023">2023</option>
+     <option value="2024">2024</option>
+     <option value="2025">2025</option>
+  </select>
+</div>
+                            </div>
+
+                <div  class="col-xl-1 col-md-3 col-mb-3">
+                    <div class="button">
+ <input style="background-color:#FC6E20;" class="btn btn-primary" type="submit" value="GO" name="sort_submit">
+</div>
+                            </div>
+
+
+
+
+
+                </div>
+</form>
+<br>
+<table>
+    <tr>
+        <td bgcolor="#7CFC00">Indiamart Purchased Leads</td>
+        <td bgcolor="#32c932">Indiamart Enquiry</td>
+        <td bgcolor="#FFA500">Lead From HSCo Website</td>
+        <td bgcolor="red">Auto Follow-up (> 2 days) </td>
+        <td bgcolor="#FFD700">Auto Follow-up (< 2 days) </td>
+    </tr>
+</table>
+
+
+<br>
+            <form action="" method="post">{% csrf_token %}
+               <div class="row" style="margin-left:0%;">
+                   <div class="row col-xl-1 col-md-3 mb-12"></div>
+
+            <button class="col-xl-1 btn btn-primary" type="submit" name="sub1" style="background: #35477d !important;">
+                  <center style="font-size: 15px;"> Not Yet Initiated <br> ( {{not_yet_stage}} ) </center></button>
+
+
+                   &nbsp&nbsp&nbsp&nbsp&nbsp
+
+      <button class="col-xl-1 btn btn-primary"  name="sub2" style="background: #7FA998 !important;">
+                   <center>Customer Called&nbsp;<br> ( {{cust_called_stage}}  )</center></button>
+
+&nbsp&nbsp&nbsp&nbsp&nbsp
+              <button class="col-xl-1 btn btn-primary"  name="sub3" style="background: #12CAD6 !important">
+                  <center><p style="margin-top:10px; font-size: 15px;"> PI Sent & Follow-up <br> ( {{pi_sent_stage}} ) <br>( {{pi_sent_stage_total}} ) </p></center></button>
+&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <button class="col-xl-1 btn btn-primary"  name="sub4" style="background: rgba(252,98,98,.9)">
+                  <center><p style="margin-top:8px; font-size: 12px;"> PO Issued - Payment not done <br> ( {{po_no_payment}} ) <br> ( {{po_no_payment_total}} ) </p></center>
+</button>
+
+&nbsp&nbsp&nbsp&nbsp&nbsp
+            <button class="col-xl-1 btn btn-primary"  name="sub5" style="background: #015668">
+
+                   <center><p style="margin-top:0px; font-size: 12px;"> PO Issued - Payment Done - Dispatch Pending <br> ( {{po_payment_done}} ) <br> ( {{po_payment_done_total}} )</p></center>
+</button>
+&nbsp&nbsp&nbsp&nbsp&nbsp
+            <button class="col-xl-1 btn btn-primary"  name="sub6" style="background: #8B2F97">
+
+                   <center><p style="margin-top:0 px; font-size: 12px;"> Dispatch Done - Closed <br> ( {{dispatch_stage}} )<br> ( {{dispatch_done_stage_total}} ) </p></center>
+</button>
+
+&nbsp&nbsp&nbsp&nbsp&nbsp
+
+            <button class="col-xl-1 btn btn-primary"  name="sub7" style="background: rgba(214,186,277,.9)">
+
+                    <center><p style="margin-top:15px font-size: 12px;"> Lost <br> ( {{lost_stage}} )<br> ( {{lost_stage_total}} ) </p></center>
+</button>
+                   &nbsp&nbsp&nbsp&nbsp&nbsp
+            <button class="col-xl-1 btn btn-primary"  name="sub8" style="background: #fd5e53">
+
+                   <center><p style="margin-top:10px font-size: 12px;"> Not Relevant <br> ( {{not_relevant_stage}} )<br> ( {{not_relevant_stage_total}} ) </p></center>
+</button>
+
+&nbsp&nbsp&nbsp&nbsp&nbsp
+
+
+            <button class="col-xl-1 btn btn-primary"  name="sub9" style="background: #ffba5a">
+                  <center><p style="margin-top:15px"> Postponed <br>( {{postponed_stage}} )<br> ( {{postponed_stage_total}} ) </p></center>
+</button>
+ </div>
+</form>
+
+
+                </form>
+
+               <style>
+        .border-right-primarya {
+        border-right: 4px solid blue;
+        }
+        .border-left-primarya {
+        border-left: 4px solid blue;
+        }
+    </style>
+<style>
+  .border-left-primary {
+    border-left: .09rem solid #4e73df!important;
+    font-size: 12px;
+
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+</style>
+            <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+            {% if lead_list_count %}
+                <br>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Data Exist</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+                {% endif %}
+                {% if lead_lis %}
+                <br>
+           <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong></strong>Nothing Found Try Changing Month & Year
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+                {% endif %}
+
+<div style="min-height: 26vw;">
+
+        {% if deleted %}
+                  <center> <p>list of deleted users</p></center>
+                    {% endif %}
+     <center><p>{{search_msg}}</p></center>
+    <form method="post" action="">{% csrf_token %}
+        <div class="row" id="id_manager_view">
+
+    <table>
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No</td>
+            <td style="border: 0px solid gray;">Date</td>
+            <td style="border: 0px solid gray;">Name</td>
+            <td style="border: 0px solid gray;">Contact No</td>
+            <td style="border: 0px solid gray;">Company Name</td>
+            <td style="border: 0px solid gray;">Email ID</td>
+            <td style="border: 0px solid gray;">Owner of Opportunity</td>
+            <td style="border: 0px solid gray;">Current Stage</td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Selection</td>
+        </tr>
+                    {% for list in lead_list %}
+
+
+{% if list.channel == 'IndiaMart' or list.channel == 'Indiamart' or list.channel == 'India Mart' %}
+        {% if list.is_indiamart_purchased_lead %}
+            <tr bgcolor="#7CFC00" style="cursor: pointer;" >
+        {% else %}
+        <tr bgcolor="#32c932" style="cursor: pointer;" >
+        {% endif %}
+
+
+ {% elif list.channel == 'Website' %}
+  <tr bgcolor="#FFA500" style="cursor: pointer;" >
+
+       {% elif not list.is_manual_mode_followup %}
+
+        {% if list.no_of_times_followup_done > 2 %}
+  <tr bgcolor="red" style="cursor: pointer;" >
+{% else %}
+          <tr bgcolor="#FFD700" style="cursor: pointer;" >
+        {% endif %}
+        {% else %}
+                  <tr style="cursor: pointer;" >
+
+        {% endif %}
+
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';">{{ list.id}}</td>
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{ list.date_of_initiation|date:'Y-m-d'}}</td>
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{ list.customer_id.customer_name}}</td>
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{ list.customer_id.contact_no }}</td>
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{ list.customer_id.company_name }}</td>
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{ list.customer_id.customer_email_id}}</td>
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{list.owner_of_opportunity}}</td>
+<!--            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{list.indiamart_time}}</td>-->
+            <td onclick="location.href='/update_view_lead/{{list.pk}}';" >{{list.current_stage}}</td>
+            <td><input style="cursor: pointer;" type="checkbox" value="{{list.id}}" name="delete_lead_id"></td>
+
+        </tr>
+
+                          {% endfor %}
+
+    </table>
+
+        </div>
+        <br>
+        {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin' %}
+<div class="row" style="float:right;">
+
+      <select name="owner_of_opportunity" class="form-control col-md-5">
+                <option value="">Assign To</option>
+
+                    {% for user in users %}
+      <option value="{{user.id}}">{{user.profile_name}}</option>
+          {% endfor %}
+      </select>
+    <div class="col-md-1"></div>
+
+            <button style="cursor: pointer;" type="submit" name="assign_lead" class="col-md-6 btn-success">Assign Leads</button>
+
+</div>
+        {% endif %}
+
+
+          {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin' %}
+<div>
+
+            <button style="cursor: pointer;" type="submit" name="delete_lead" class="btn-danger">Delete Selected Leads</button>
+
+</div>
+        {% endif %}
+</form>
+
+
+
+
+<br>
+<br>
+
+<!--            <div class="pagination">-->
+<!--    <span class="step-links">-->
+<!--        {% if lead_list.has_previous %}-->
+<!--            <a class="btn btn-primary" href="?page=1">&laquo; first</a>-->
+<!--            <a class="btn btn-primary" href="?page={{ lead_list.previous_page_number }}">previous</a>-->
+<!--        {% endif %}-->
+
+<!--        <span class="current">-->
+<!--            Page {{ lead_list.number }} of {{ lead_list.paginator.num_pages }}.-->
+<!--        </span>-->
+
+<!--        {% if lead_list.has_next %}-->
+<!--            <a class="btn btn-primary" href="?page={{ lead_list.next_page_number }}">next</a>-->
+<!--            <a class="btn btn-primary" href="?page={{ lead_list.paginator.num_pages }}">last &raquo;</a>-->
+<!--        {% endif %}-->
+<!--    </span>-->
+<!--            </div>-->
+
+
+            </div>
+
+
+
+        </div>
+</div>
+<br>
+  </div>
+  <!-- End of Page Wrapper -->
+  </div>
+
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+             <script>
+
+        function toggleCheckbox(select) {
+value = select.checked;
+
+    $.ajax({
+        url: "/load_dispatch_done/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_subcat").html(data);
+        }
+      });
+}
+        function toggleCheckbox2(select) {
+value = !select.checked;
+
+    $.ajax({
+        url: "/load_users/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+    </script>
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
+</body>
+
+</html>

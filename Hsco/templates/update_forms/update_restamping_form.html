@@ -1,0 +1,519 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+  <script> function disable() {
+  document.getElementById("name").disabled = true;
+  }
+
+  function enable() {
+   document.getElementById("name").disabled = false;
+  }
+
+var form = document.getElementById("contact_form");
+var elements = form.elements;
+for (var i = 0, len = elements.length; i < len; ++i) {
+    elements[i].disabled = true;
+}
+</script>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+     <div class="container-fluid" >
+         <br>
+
+<center>
+    <h1 style="font-size: 25px; color: black;">Restamping Module</h1>
+
+</center>
+
+<br>
+<script>
+function myFunction() {
+
+  var x = document.getElementById("myText14");
+  var y = document.getElementById("myText13");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.display = "none";
+  } else {
+    x.style.display = "none";
+    y.style.display = "block";
+  }
+  document.getElementById("myText").disabled = false;
+    document.getElementById("myText2").disabled = false;
+    document.getElementById("myText3").disabled = false;
+    document.getElementById("myText4").disabled = false;
+    document.getElementById("myText5").disabled = false;
+    document.getElementById("myText6").disabled = true;
+    document.getElementById("myText7").disabled = false;
+    document.getElementById("myText8").disabled = true;
+    document.getElementById("myText9").disabled = false;
+    document.getElementById("myText10").disabled = false;
+    document.getElementById("myText11").disabled = false;
+    document.getElementById("myText12").disabled = true;
+    document.getElementById("myText13").disabled = false;
+    document.getElementById("myText14").disabled = false;
+    document.getElementById("myText15").disabled = false;
+    document.getElementById("myText13").style.display = "block";
+}
+</script>
+
+
+
+<fieldset>
+<div class="form-group row">
+  <label class="col-md-3 control-label ">Restamping Number * :- {{personal_id.pk}}
+
+
+
+</label>
+
+  <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Customer Number :- {{personal_id.crm_no.pk}}
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+
+    </div>
+  </div>
+
+
+
+</div>
+</fieldset>
+ <form class="well form-horizontal" action="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
+<fieldset>
+
+<div class="form-group row">
+    <label class="col-md-2 control-label">Customer Name *
+
+    </label>
+    <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+            <input  name="customer_name" required placeholder="Customer Name" class="form-control" type="text" disabled id="myText" value="{{personal_id.second_person}}">
+        </div>
+    </div>
+
+
+    <label class="col-md-2 control-label">Company Name
+    </label>
+
+    <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+      <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+      <input name="company_name" placeholder="Company Name" class="form-control"  type="text" disabled id="myText2" value="{% if personal_id.second_company_name != None and personal_id.second_company_name != '' %}{{personal_id.second_company_name}}{% else %}{% endif %}">
+  </div>
+    </div>
+</div>
+
+  <div class="form-group row">
+
+
+
+  <label class="col-md-2 control-label">Mobile No *
+
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
+  <input name="contact_no" placeholder="Mobile No" class="form-control" required type="text" onkeypress="return isNumber(event)" maxlength="10" minlength="10"  disabled id="myText3" value="{{personal_id.second_contact_no}}">
+    </div>
+  </div>
+
+  <label class="col-md-2 control-label">Customer Email
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
+  <input name="customer_email_id" placeholder="Customer Email
+" class="form-control" type="email" disabled id="myText4" value="{% if personal_id.company_email != None and personal_id.company_email != '' %}{{personal_id.company_email}}{% else %}{% endif %}">
+    </div>
+  </div>
+</div>
+
+
+      <div class="form-group row">
+
+    <label class="col-md-2 control-label">Address *
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="customer_address" placeholder="Customer Address" class="form-control" required type="text" disabled id="myText5" value="{{personal_id.crm_no.address}}">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Entry date
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input  name="today_date" placeholder="Todays date" class="form-control" required type="date" disabled id="myText6" value="{{personal_id.today_date|date:'Y-m-d'}}">
+    </div>
+  </div>
+
+
+</div>
+
+
+<!--<div class="form-group row">-->
+
+<!-- <label class="col-md-2 control-label">Second Person-->
+
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+<!--    <input type="text" name="second_person" placeholder="Name" class="form-control" disabled id="" value="{{personal_id.second_person}}">-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--    <label class="col-md-2 control-label">Contact No-->
+
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+<!--  <input name="second_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="" value="{{personal_id.second_contact_no}}">-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div class="form-group row">-->
+
+<!-- <label class="col-md-2 control-label">Third Person-->
+
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--      <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+<!--    <input type="text" name="third_person" placeholder="Name" class="form-control" disabled id="" value="{{personal_id.third_person}}">-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--    <label class="col-md-2 control-label">Contact No-->
+
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+<!--  <input name="third_contact_no" placeholder="Contact No" class="form-control" type="number" disabled id="" value="{{personal_id.third_contact_no}}">-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+
+    <div class="form-group row">
+
+    <label class="col-md-2 control-label">Scale Delivery Date
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input type="date" name="scale_delivery_date" placeholder="Scale Delivery Date
+
+
+" class="form-control"   disabled id="myText7" value="{{personal_id.scale_delivery_date|date:'Y-m-d'}}">
+    </div>
+  </div>
+
+            <label class="col-md-2 control-label">Total Amount
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
+  <input type="number" name="total_amount" placeholder="Total Amount
+
+
+" class="form-control"   disabled id="myText8" value="{{personal_id.total_amount}}">
+    </div>
+  </div>
+
+
+
+
+</div>
+<!--<div class="form-group row">-->
+
+  <!--<label class="col-md-2 control-label">Address-->
+
+<!--</label>-->
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
+  <!--<input  name="address" placeholder="Address" class="form-control" type="text" disabled id="myText9" value="{{personal_id.crm_no.address}}">-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+  <div class="col-md-12 ">
+      <br>
+    <center>
+        <button style="background-color: #FC6E20;" onclick="myFunction()" class="btn btn-primary" id="myText13" type="reset" style="">Edit</button>
+        <br>
+        <br>
+        <button style="display:none; background-color: #FC6E20;" id="myText14" type="submit" value="Submit" class="btn btn-primary">Save</button>
+      </center>
+    </div>
+
+</fieldset>
+</form>
+
+
+
+<br>
+
+
+                <style>
+table {
+  font-family: arial, sans-serif;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 5px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+
+
+<center><a href="/restamping_product/{{personal_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a></center>
+
+
+</div>
+          <br>
+          <br>
+<h1 style="font-size: 25px; color: black; text-align: center;"> Products to be Stampped </h1>
+  <br>
+
+
+                <div class="col-xl-12 col-md-12 mb-12">
+                        {% for list in restamp_product_list %}
+
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+
+                  <table style="font-size: 14px;">
+
+
+
+<tr>
+
+    <td>Scale Type:  </td>
+  <td> {{list.scale_type}}</td>
+
+</tr>
+<tr>
+
+
+<tr>
+    <td>Model:</td>
+  <td>{{list.model_of_purchase}} </td></tr>
+<tr>
+
+
+    <td>Sub Model:</td>
+        <td>{{list.sub_model}}</td>
+
+</tr>
+<tr>
+
+    <td>Capacity:</td>
+        <td>{{list.capacity}} </td></tr>
+<tr>
+
+    <td>Old Serial No:</td>
+        <td> {{list.old_serial_no}} </td></tr>
+                      <tr>
+
+    <td>New Serial No:</td>
+        <td> {{list.new_sr_no}} </td></tr>
+<tr>
+
+    <td> Brand:</td>
+        <td> {{list.brand}}</td></tr>
+<tr>
+
+    <td> Amount: </td>
+        <td>{{list.amount}} </td></tr>
+
+
+
+</table>
+
+
+                    </div>
+                               <center><a href="/update_restamping_product/{{list.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a></center>
+
+                <br>
+              </div>
+          {% endfor %}
+
+
+      </div>
+           </div>
+  </div>
+  </div>
+
+
+
+
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+           <script>
+$(function() {
+$("#stars").val("0");
+    $("div.star-rating > s").on("click", function(e) {
+
+    // remove all active classes first, needed if user clicks multiple times
+    $(this).closest('div').find('.active').removeClass('active');
+
+    $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+    $(e.target).addClass('active');  // the element user has clicked on
+
+
+        var numStars = $(e.target).parentsUntil("div").length+1;
+        $("#stars").val(numStars);
+
+
+    });
+});
+
+  window.onload = function() {
+document.getElementById("").style.display = "none";
+};
+
+</script>
+
+</body>
+
+</html>
