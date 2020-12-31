@@ -61,7 +61,7 @@ class Purchase_Details(models.Model):   #cleaned
     credit_authorised_by = models.CharField(max_length=250,null=True, blank=True )
 
     tax_amount = models.FloatField(default=0.0)
-    total_amount = models.FloatField(default=0.0)
+    total_amount = models.FloatField(null=True,blank=True)
     total_pf = models.FloatField(default=0.0)
     is_gst = models.BooleanField(default=False)
 
