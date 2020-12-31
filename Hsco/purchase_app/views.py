@@ -1019,6 +1019,9 @@ def view_customer_details(request):
     #for updating total amount in all sales entry
     sales_list = Purchase_Details.objects.all()
     for sale in sales_list:
+        if sale.total_amount == None or if sale.total_amount == 'None' :
+            Purchase_Details.objects.filter(id=sale.id).update(total_amount=0.0 )
+
         if sale.total_amount == 0:
             Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
 
