@@ -421,23 +421,24 @@ td {
         {% for item in bills_list %}
       <tr>
           <td>{{item.entry_timedate}}</td>
-          <td>{{item.lead_id.purchase_id.pk}}</td>
-          <td>{{item.manual_pi_no}}</td>
-          <td>{{item.lead_id.customer_id.customer_name}}</td>
-          <td>{{item.lead_id.customer_id.contact_no}}</td>
-          <td>{{item.total_cost}}</td>
-          <td>{{item.pf_total}}</td>
-          <td>{{item.cgst_sgst}}</td>
-          <td>{{item.cgst_sgst}}</td>
-          <td>{{item.igst}}</td>
+          <td>{{item.purchase_no}}</td>
+          <td>{{item.bill_no}}</td>
+          <td>{{item.second_company_name}}</td>
+          <td>{{item.second_contact_no}}</td>
+          <td>{{item.total_amount}}</td>
+          <td>{{item.total_pf}}</td>
+          <td>{{item.tax_amount}}</td>
+          <td>{{item.tax_amount}}</td>
+          <td>{{item.tax_amount}}</td>
           <td>{{item.entry_timedate}}</td>
           <td>{{item.grand_total}}</td>
 
           <td>
-              <span><i class="fa fa-print" aria-hidden="true"></i></span>
-              <span><i class="fa fa-download" aria-hidden="true"></i></span>
-              <span><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
-              <span><i class="fa fa-trash" aria-hidden="true"></i></span>
+              <span><i style="color: #FC6E20;" class="fa fa-print" aria-hidden="true"></i></span>
+              <span><i style="color: #FC6E20;" class="fa fa-download" aria-hidden="true"></i></span>
+              <span><i style="color: #FC6E20;" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+              <span><i style="color: #FC6E20;" class="fa fa-trash" aria-hidden="true"></i></span>
+
           </td>
         </tr>
         {% endfor %}

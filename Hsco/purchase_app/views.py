@@ -202,9 +202,6 @@ def add_purchase_details(request):
         sales_person_sugg = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=list_group),
                                             modules_assigned__icontains='Customer Module', is_deleted=False)
 
-
-
-
     form = Purchase_Details_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
@@ -238,6 +235,7 @@ def add_purchase_details(request):
         neft_bank_name = request.POST.get('neft_bank_name')
         neft_date = request.POST.get('neft_date')
         reference_no = request.POST.get('reference_no')
+        bill_notes = request.POST.get('bill_notes')
 
         credit_pending_amount = request.POST.get('credit_pending_amount')
         credit_authorised_by = request.POST.get('credit_authorised_by')
@@ -333,6 +331,7 @@ def add_purchase_details(request):
         item2.value_of_goods = 0.0
         item2.channel_of_dispatch = channel_of_dispatch
         item2.notes = notes
+        item2.bill_notes = bill_notes
         item2.feedback_form_filled = False
         # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -1308,7 +1307,8 @@ def update_customer_details(request,id):
             neft_bank_name = request.POST.get('neft_bank_name')
             neft_date = request.POST.get('neft_date')
             reference_no = request.POST.get('reference_no')
-            
+            bill_notes = request.POST.get('bill_notes')
+
             credit_pending_amount = request.POST.get('credit_pending_amount')
             credit_authorised_by = request.POST.get('credit_authorised_by')
             item2 = purchase_id_id
@@ -1339,12 +1339,13 @@ def update_customer_details(request,id):
             item2.total_amount = total_amount
             item2.tax_amount = tax_amount
             item2.value_of_goods = value_of_goods
+            item2.bill_notes = bill_notes
 
             if channel_of_marketing != None and channel_of_marketing != '':
                 item2.channel_of_marketing = channel_of_marketing
 
             item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','channel_of_marketing','tax_amount','total_amount','value_of_goods',
-                                      'total_pf','neft_bank_name','reference_no','neft_date','credit_pending_amount','credit_authorised_by','is_gst'])
+                                      'total_pf','neft_bank_name','reference_no','neft_date','credit_pending_amount','credit_authorised_by','is_gst','bill_notes'])
 
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
