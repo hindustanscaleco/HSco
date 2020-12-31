@@ -728,7 +728,12 @@ def load_expense_by_company(request):
 def showBill(request,sales_id):
     purchase_details = Purchase_Details.objects.filter(id=sales_id).values('total_amount','crm_no__company_name','crm_no__customer_gst_no','bill_no','second_person',
                                                                            'sales_person','crm_no__address','po_number','second_contact_no','bill_address','shipping_address',
-                                                                           'value_of_goods','bank_name','total_pf','date_of_purchase','reference_no','tax_amount',)
+                                                                           'value_of_goods','bank_name','total_pf','date_of_purchase','reference_no','tax_amount','channel_of_dispatch','payment_mode',
+                                                                           'credit_pending_amount','credit_authorised_by','neft_bank_name','neft_date','reference_no','cheque_no','cheque_date')
+    # print(purchase_details.channel_of_dispatch)
+
+                                                                       
+
     products_details = Product_Details.objects.filter(purchase_id=sales_id).values()
     for item in products_details:
         product = Product.objects.get(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
@@ -738,6 +743,15 @@ def showBill(request,sales_id):
     print("purchase_details")
     print(purchase_details)
     for obj in purchase_details:
+        # print('sqddqsfwdwffewfewqfefefefeqwe',obj['channel_of_dispatch'])
+        if obj['channel_of_dispatch'] == "Franchisee Store":
+            obj['shipping_address']=obj['crm_no__address']
+            obj['bill_address']=obj['crm_no__address']
+
+        if obj['channel_of_dispatch'] != "Franchisee Store" and obj['shipping_address'] == obj['bill_address']:
+            obj['shipping_address']=obj['bill_address']
+            # obj['bill_address']=obj['crm_no__address']
+
         if obj['crm_no__customer_gst_no']!=None:
             if '27' in obj['crm_no__customer_gst_no'] or (len(obj['crm_no__customer_gst_no'])==1 and 'A' in obj['crm_no__customer_gst_no']):
                 obj['is_cgst']=True

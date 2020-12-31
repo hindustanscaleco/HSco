@@ -222,7 +222,7 @@ td {
             <!-- <p style="font-weight:bold; float:left;"> 123456789852</p> -->
           </center></div>
           </div>
-         
+
 
 
 <style>
@@ -305,6 +305,54 @@ td {
         <td> {{invoice_details.value_of_goods}}</td>
     </tr>
 
+{% if invoice_details.payment_mode == 'Cash' %}
+    <tr>
+        <td> &nbsp</td>
+        <td> &nbsp</td>
+        <td> Payment Mode : {{invoice_details.payment_mode}}</td>
+        <td></td>
+        <td></td>
+    </tr>
+ {% endif %}
+
+{% if invoice_details.payment_mode == 'Credit' %}
+        <tr>
+        <td> &nbsp</td>
+        <td> &nbsp</td>
+        <td> Payment Mode : {{invoice_details.payment_mode}}, Credit Pending Amount: {{invoice_details.credit_pending_amount}}, Credit Authorised By: {{invoice_details.credit_authorised_by}}</td>
+        <td> P&F</td>
+        <td></td>
+    </tr>
+ {% endif %}
+
+{% if invoice_details.payment_mode == 'Credit' %}
+        <tr>
+        <td> &nbsp</td>
+        <td> &nbsp</td>
+        <td> Payment Mode : {{invoice_details.payment_mode}}, Credit Pending Amount: {{invoice_details.credit_pending_amount}}, Credit Authorised By: {{invoice_details.credit_authorised_by}}</td>
+        <td> P&F</td>
+        <td></td>
+    </tr>
+ {% endif %}
+{% if invoice_details.payment_mode == 'NEFT' %}
+        <tr>
+        <td> &nbsp</td>
+        <td> &nbsp</td>
+        <td> Payment Mode : {{invoice_details.payment_mode}}, NEFT Bank: {{invoice_details.neft_bank_name}}, NEFT date: {{invoice_details.neft_date}}, Referance No.: {{invoice_details.reference_no}}</td>
+        <td> P&F</td>
+        <td></td>
+    </tr>
+ {% endif %}
+{% if invoice_details.payment_mode == 'Cheque' %}
+        <tr>
+        <td> &nbsp</td>
+        <td> &nbsp</td>
+        <td> Payment Mode : {{invoice_details.payment_mode}}, Cheque No: {{invoice_details.cheque_no}}, Cheque Date: {{invoice_details.cheque_date}}</td>
+        <td></td>
+        <td></td>
+    </tr>
+ {% endif %}
+
     <tr>
         <td> &nbsp</td>
         <td> &nbsp</td>
@@ -384,7 +432,9 @@ td {
     <br>
     <center>
         <button style="background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Edit</button>
-        <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Submit & Print</button>
+
+        <button style="background-color: #FC6E20;" type="submit" onclick="window.print()" value="Submit" class="btn btn-primary">Submit & Print</button>
+
     </center>
         <br>
 
