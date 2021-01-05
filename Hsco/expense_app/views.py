@@ -762,6 +762,7 @@ def showBill(request,sales_id):
     context={
         'invoice_details':purchase_details[0],
         'products_details':products_details,
+        'sales_id':sales_id,
     }
     return render(request,'bills/billsNew.html',context)
 
