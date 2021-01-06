@@ -736,6 +736,10 @@ def showBill(request,sales_id):
 
     products_details = Product_Details.objects.filter(purchase_id=sales_id).values()
     for item in products_details:
+# <<<<<<< development
+#         product = Product.objects.filter(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
+#                                                   sub_category__name=item['sub_model'])[0]
+
         try:
             product = Product.objects.get(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
                                                     sub_category__name=item['sub_model'], sub_sub_category__name=item['sub_sub_model'])
