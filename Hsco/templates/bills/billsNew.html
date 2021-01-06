@@ -76,22 +76,19 @@ td {
     </div>
     <div class="col-xl-3 col-md-3 ">
         <center><i><b style="font: italic bold 22px/30px Georgia, serif;">Tax Invoice</b></i></center><br>
-        <center><h3>Original for Customer</h3></center>
+        <center><h5>Original for Customer</h5></center>
 </div>
     <div class="col-xl-2 col-md-2 ">
     </div>
     <div class="col-xl-3 col-md-3 ">
-    <p>Ph:<b> 022-23423183, 7045922250/51/52</b><br>
-    Manufacture Licence No.<b>LM/MH/H004</b><br>
-    Dealer Licence No. <b>LD/MH/H004</b><br>
-    Repairing Licence No. <b>LR/MH/H004</b></p>
+    <p>Ph:<b> 022-23423183, 7045922250/51/52</b></p>
     </div>
     </div>
 
 
         <div class="row">
          <div class="col-md-12" style="padding:10px;">
-        <center><h1 style="font-weight:bold;"> Hindustan Scale Company</h1>
+        <center><h1 style="font-weight:bold; font-size:50px;"> Hindustan Scale Company</h1>
         </center></div>
         </div>
         <div class="row">
@@ -101,11 +98,12 @@ td {
         </div>
 
 
-    <div class="row">
-         <div class="col-md-12" style="padding:10px;">
-        <center><p style="font-weight:bold;"> All kinds of Mechanical and Digital Weighing Scales, Weights & Measures.</p>
-        </center></div>
-        </div>
+  <div class="row">
+ <div class="col-md-12" style="padding:10px;">
+ <center><p style="font-weight:bold;"> All kinds of Mechanical and Digital Weighing Scales, Weights & Measures.<br>
+ 186/188 Janjikar Street, Near Crawford Market, Mumbai- 400003/<font color="#FC6E20">www.hindustanscale.com/hsc@hindustanscale.com</font></p>
+ </center></div>
+ </div>
 
  
         <div class="row">
@@ -147,10 +145,10 @@ td {
          
           <div class="row">
           <div class="col-md-2">
-          <center><p style="font-weight:bold; float:left;">Address/State</p>
+          <center><p style="font-weight:bold; float:left;">Billing Address</p>
           </center></div>
           <div class="col-md-5">
-          <center><p style="font-weight:bold; float:left;">  {{invoice_details.crm_no__address}}</p>
+          <center><p style="font-weight:bold; float:left;">  {{invoice_details.bill_address}}</p>
           </center></div>
           
           <div class="col-md-1">
@@ -183,26 +181,7 @@ td {
           <center><p style="font-weight:bold; float:left;"> {{invoice_details.crm_no__customer_gst_no}}</p>
           </center></div>
           </div>
-          
-          <div class="row">
-          <div class="col-md-2">
-          <center><p style="font-weight:bold; float:left;">Billing Address</p>
-          </center></div>
-          <div class="col-md-5">
-          <center><p style="font-weight:bold; float:left;"> {{invoice_details.bill_address}}</p>
-          </center></div>
-         
-          <div class="col-md-1">
-          </div>
-          <div class="col-md-2">
-          <center>
-            <!-- <p style="font-weight:bold; float:left;">Customer GST Number: </p> -->
-          </center></div>
-          <div class="col-md-2">
-          <center>
-            <!-- <p style="font-weight:bold; float:left;"> 123456789852</p> -->
-          </center></div>
-          </div>
+
           <div class="row">
           <div class="col-md-2">
           <center><p style="font-weight:bold; float:left;">Shipping Address</p>
@@ -242,18 +221,6 @@ td {
   border-color: black;
   color: black;
 
-
-
-}
-
-
-th {
-
-  font-size: 13px;
-    border: 1px solid black;
-    text-align: left;
-    padding:5px;
-
 }
 
 td {
@@ -261,8 +228,16 @@ td {
   padding: 3px;
   font-size: 13px;
   padding: 5px;
-  text-align: center;
+  text-align: left;
 }
+
+th {
+    font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+}
+
 
 
             </style>
@@ -280,7 +255,7 @@ td {
         <tr style="background-color: gray; color: white;">
             <td style="border-radius: 20px 0px 0px 0px; border: 0px solid gray;">QTY</td>
             <td style="border: 0px solid gray;">HSN</td>
-            <td style="border: 0px solid gray;">Sub Sub Model</td>
+            <td style="border: 0px solid gray;">Description</td>
             <td style="border: 0px solid gray;">Rate</td>
             <td style="border-radius: 0px 20px 0px 0px; border: 0px solid gray;">Amount</td>
         </tr>
@@ -292,7 +267,6 @@ td {
         <td> {{item.sub_sub_model}}</td>
         <td> {{item.rate}}</td>
         <td> {{item.amount}}</td>
-
     </tr>
 {% endfor %}
 
