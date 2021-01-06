@@ -461,23 +461,28 @@ function myFunction() {
 </label>
 
    <div class="col-md-4 inputGroupContainer">
- <div class="input-group">
- <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
- <input name="quantity" disabled placeholder="Quantity" class="form-control" id="myText91" value="{{product_id.quantity}}" type="checkbox">
-   </div>
+  <div class="custom-control custom-checkbox">
+  
+<input type="checkbox" class="custom-control-input" onclick="on_return()" id="return_id"  name="return"  >
+
+  <label class="custom-control-label"    for="return_id"></label>   
+  </div>
 </div>
 
 
-<label class="col-md-2 control-label">Reason:
+<label class="col-md-2 control-label">Return Reason:
 </label>
-<select name="cars" class="form-control" id="cars">
-  <option value="volvo">Volvo</option>
-  <option value="saab">Saab</option>
-  <option value="mercedes">Mercedes</option>
-  <option value="audi">Audi</option>
-</select>
+<div class="col-md-4 inputGroupContainer">
+ <div class="input-group">
+<input  type="text" disabled name="return_reason" id="return_reason_id" placeholder="Return Reason"  class="form-control" list="return10">
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+    <datalist style="height:20px;" id="return10">
+      <option value="Exchanged for another product"></option>
+      <option value="Faulty and Returned"></option>
+      <option value="Misc"></option>  
+    </datalist>
+     </div>
 </div>
-
   <input type="hidden" value="{{global_count}}"  name="global_count">
 
             <br>
@@ -524,6 +529,16 @@ function myFunction() {
   <!--<script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>-->
   <!--<script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>-->
                       <script type="text/javascript">
+      function on_return(){
+        if (document.getElementById("return_id").value == 'on' ){
+          $('#return_id').attr('required', '');
+        document.getElementById("return_reason_id").disabled = false;
+        }
+      else{
+          $('#return_id').removeAttr('required');
+          }
+      } 
+
       function total_product_amount(){
     var rate = parseFloat(document.getElementById("rate").value);
             var quantity = parseFloat(document.getElementById("myText9").value);

@@ -691,6 +691,7 @@ def edit_product_customer(request,product_id_rec):
 
 
     if request.method == 'POST':
+        is_return = request.POST.get('return')
         quantity = request.POST.get('quantity')
         model_of_purchase = request.POST.get('model_of_purchase')
         type_of_scale = request.POST.get('type_of_scale')
@@ -702,7 +703,9 @@ def edit_product_customer(request,product_id_rec):
         unit = request.POST.get('unit')
         amount = request.POST.get('value_of_goods')
         godown = request.POST.get('godown')
+        return_reason = request.POST.get('return_reason')
         cost2 = purchase.amount
+            
         if sub_sub_model != '' and sub_sub_model != 'None':
             godown_product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                                     sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
@@ -713,9 +716,47 @@ def edit_product_customer(request,product_id_rec):
 
         item = product_id
 
+        # if is_return == 'on':
+        if is_return == 'on':
+            if item.sub_sub_model != '' and item.sub_sub_model != 'None':
+                product_id_old = Product.objects.get(scale_type__name=item.type_of_scale,
+                                                     main_category__name=item.model_of_purchase,
+                                                     sub_category__name=item.sub_model, sub_sub_category__name=item.sub_sub_model)
+            else:
+                product_id_old = Product.objects.get(scale_type__name=item.type_of_scale,
+                                                        main_category__name=item.model_of_purchase,
+                                                        sub_category__name=item.sub_model)
+            # adding old products quantity to old/current godown
+            GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=product_id_old).update(
+                quantity=F("quantity") + item.quantity)
+            item3 = AcceptGoods()
+            item3.from_godown = Godown.objects.get(id=purchase.godown_id.id)
+            item3.good_added = True
+            item3.log_entered_by = request.user.name
+            item3.notes = 'Returned from Sales, Reason:-'+str(return_reason)
+            item3.save()
 
+            item2 = AGProducts()
+            item2.type = 'Individual'
+            item2.quantity = float(item.quantity)
+            item2.godown_id = Godown.objects.get(id=purchase.godown_id.id)
+            item2.accept_product_id = AcceptGoods.objects.get(id=item3.id)
+            item2.godown_product_id = GodownProduct.objects.get(godown_id=purchase.godown_id.id,
+                                                                product_id=product_id_old)
+            item2.log_entered_by = request.user.name
+            item2.save()
+
+            new_transaction = GodownTransactions()
+            new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
+            new_transaction.notes = 'Product Returned from Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
+                                    + ', Contact: ' + str(request.user.mobile) + ',\nProduct changed' + \
+                                    '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
+            new_transaction.save()
+            Product_Details.objects.filter(id=product_id_rec).delete()
+            messages.success(request, 'Purchase Product with ID:-'+str(product_id_rec)+' returned to Godown successfully!')
+            return redirect('/update_customer_details/'+str(purchase_id.id))                                                
         # if product changed then update stock
-        if item.type_of_scale != type_of_scale or item.model_of_purchase != model_of_purchase or item.sub_model != sub_model or item.sub_sub_model != sub_sub_model:
+        if item.type_of_scale != type_of_scale or item.model_of_purchase != model_of_purchase or item.sub_model != sub_model or item.sub_sub_model != sub_sub_model or is_return == 'on':
             product_id_new = Product.objects.get(id=godown_product_id.id)
             if item.sub_sub_model != '' and item.sub_sub_model != 'None':
                 product_id_old = Product.objects.get(scale_type__name=item.type_of_scale,
@@ -1016,6 +1057,8 @@ def view_customer_details(request):
     date_today= datetime.now().strftime('%Y-%m-%d')
     message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
 
+    
+
     #for deleting purchase entries
     if request.method == 'POST' and 'delete_purchase_id' in request.POST:
         purchase_ids = request.POST.getlist('id[]')
@@ -1217,6 +1260,15 @@ def update_customer_details(request,id):
     # customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
     context ={}
+
+    #for updating total amount in all sales entry\
+    try:
+        if customer_id.total_amount == 0:
+            Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
+    except Exception as e:
+        print(e)
+        pass
+
     if 'product_saved' in request.session:
         if request.session.get('product_saved'):
             pass
@@ -2053,7 +2105,7 @@ def customer_employee_sales_graph(request,user_id):
     # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
     #                                                                                                      'total_sales_done_today').order_by('entry_date')
     this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
-        .values('entry_timedate').annotate(data_sum=Sum('value_of_goods'))
+        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
@@ -2068,7 +2120,7 @@ def customer_employee_sales_graph(request,user_id):
     else:
         previous_mon = (datetime.now().month) - 1
     previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=previous_mon)\
-        .values('entry_timedate').annotate(data_sum=Sum('value_of_goods'))
+        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -2081,7 +2133,7 @@ def customer_employee_sales_graph(request,user_id):
         end_date = request.POST.get('date2')
 
         qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__range=(start_date, end_date))\
-        .values('entry_timedate').annotate(data_sum=Sum('value_of_goods'))
+        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
         lis_date = []
         lis_sum = []
         for i in qs:

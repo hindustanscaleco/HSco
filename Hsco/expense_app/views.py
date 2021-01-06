@@ -736,8 +736,17 @@ def showBill(request,sales_id):
 
     products_details = Product_Details.objects.filter(purchase_id=sales_id).values()
     for item in products_details:
-        product = Product.objects.filter(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
-                                                  sub_category__name=item['sub_model'])[0]
+# <<<<<<< development
+#         product = Product.objects.filter(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
+#                                                   sub_category__name=item['sub_model'])[0]
+
+        try:
+            product = Product.objects.get(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
+                                                    sub_category__name=item['sub_model'], sub_sub_category__name=item['sub_sub_model'])
+        except:     
+            product = Product.objects.get(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
+                                                    sub_category__name=item['sub_model'])
+                                                       
         item['rate'] = product.cost_price
         item['hsn_code'] = product.hsn_code
     print("purchase_details")
@@ -762,6 +771,7 @@ def showBill(request,sales_id):
     context={
         'invoice_details':purchase_details[0],
         'products_details':products_details,
+        'sales_id':sales_id,
     }
     return render(request,'bills/billsNew.html',context)
 
