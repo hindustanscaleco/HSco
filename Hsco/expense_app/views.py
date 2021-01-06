@@ -9,7 +9,7 @@ from purchase_app.views import check_admin_roles
 from django.db.models import Q, F, Min, Avg
 from django.contrib import messages
 from lead_management.models import Pi_section
-from purchase_app.models import Purchase_Details,Product_Details
+from purchase_app.models import Purchase_Details,Product_Details, Bill
 
 # Create your views here.
 
@@ -764,6 +764,20 @@ def showBill(request,sales_id):
                 obj['is_cgst'] = False
         else:
             obj['is_cgst'] = False
+    if request.method == 'POST':
+        bill_file = request.POST.get('bill_file')
+        print('bill file')
+        print(bill_file)
+        
+        item = Bill
+
+        item.user_id = SiteUser.objects.get(id=request.user.id)
+        item.log_entered_by = request.user.name
+        item.purchase_id = Purchase_Details.objects.get(id=sales_id)
+        item.bill_file = bill_file
+        item.save()
+        messages.success('Bill saved successfully !')
+        return redirect('/update_customer_details/'+str(sales_id))
     context={
         'invoice_details':purchase_details[0],
         'products_details':products_details,
