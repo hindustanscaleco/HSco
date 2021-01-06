@@ -2525,6 +2525,12 @@ def autocomplete(request):
 # def bills_dashboard(request):
 #     return render()
 
+def gstvsCash(request):
+    return render(request,'gstVScash/gstvscash.html')
+
+def reportCustomerPage(request):
+    return render(request,'gstVScash/customerDetailsinReportSales.html')
+
 
 
 

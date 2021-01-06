@@ -3,7 +3,7 @@ from django.urls import path, include, re_path
 from .views import add_purchase_details, view_customer_details, update_customer_details, manager_report, report, \
     final_report, add_product_details, customer_employee_sales_graph, feedbacka, purchase_analytics
 from .views import feedback_purchase, autocomplete
-from .views import edit_product_customer,load_users, purchase_logs, stock_does_not_exist, quick_purchase_entry,get_product_details
+from .views import edit_product_customer,load_users, purchase_logs, stock_does_not_exist, quick_purchase_entry,get_product_details,gstvsCash,reportCustomerPage
 
 
 urlpatterns = [
@@ -25,5 +25,7 @@ urlpatterns = [
     path('quick_purchase_entry/',quick_purchase_entry, name = 'quick_purchase_entry'),
     path('get_product_details/',get_product_details, name = 'get_product_details'),
     path('autocomplete/',autocomplete, name = 'ajax_autocomplete'),
+    path('gstvsCash/',gstvsCash, name = 'gstvsCash'),
+    path('reportCustomerPage/',reportCustomerPage, name = 'reportCustomerPage'),
 
 ]
