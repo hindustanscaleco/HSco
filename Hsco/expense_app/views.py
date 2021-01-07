@@ -9,7 +9,7 @@ from purchase_app.views import check_admin_roles
 from django.db.models import Q, F, Min, Avg
 from django.contrib import messages
 from lead_management.models import Pi_section
-from purchase_app.models import Purchase_Details,Product_Details
+from purchase_app.models import Purchase_Details,Product_Details, Bill
 
 # Create your views here.
 
@@ -736,8 +736,17 @@ def showBill(request,sales_id):
 
     products_details = Product_Details.objects.filter(purchase_id=sales_id).values()
     for item in products_details:
-        product = Product.objects.get(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
-                                                  sub_category__name=item['sub_model'], sub_sub_category__name=item['sub_sub_model'])
+# <<<<<<< development
+#         product = Product.objects.filter(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
+#                                                   sub_category__name=item['sub_model'])[0]
+
+        try:
+            product = Product.objects.get(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
+                                                    sub_category__name=item['sub_model'], sub_sub_category__name=item['sub_sub_model'])
+        except:     
+            product = Product.objects.get(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
+                                                    sub_category__name=item['sub_model'])
+                                                       
         item['rate'] = product.cost_price
         item['hsn_code'] = product.hsn_code
     print("purchase_details")
@@ -759,28 +768,35 @@ def showBill(request,sales_id):
                 obj['is_cgst'] = False
         else:
             obj['is_cgst'] = False
+    if request.method == 'POST':
+        bill_file = request.POST.get('bill_file')
+        print('bill file')
+        print(bill_file)
+        
+        item = Bill()
+
+        item.user_id = SiteUser.objects.get(id=request.user.id)
+        item.log_entered_by = request.user.name
+        item.purchase_id = Purchase_Details.objects.get(id=sales_id)
+        item.bill_file = bill_file
+        item.save()
+        messages.success('Bill saved successfully !')
+        return redirect('/update_customer_details/'+str(sales_id))
     context={
         'invoice_details':purchase_details[0],
         'products_details':products_details,
+        'sales_id':sales_id,
     }
     return render(request,'bills/billsNew.html',context)
 
 def showBillModule(request):
-    bills_list = Purchase_Details.objects.all()
+    bills_list = Bill.objects.all()
     # search by options
     if request.method == 'POST':
         if 'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Pi_section.objects.filter(
-                    Q(lead_id__owner_of_opportunity__name=request.user.name) | Q(lead_id__owner_of_opportunity__group__icontains=request.user.name),
-                    lead_id__owner_of_opportunity___is_deleted=False, entry_date__range=[start_date, end_date]).order_by('-id')
-
-            else:  # For EMPLOYEE
-                bills_list = Pi_section.objects.filter(lead_id__owner_of_opportunity__user_id=request.user.pk,
-                                                      entry_date__range=[start_date, end_date]).order_by('-id')
-
+            bills_list = Bill.objects.filter( entry_date__range=[start_date, end_date]).order_by('-id')
             context = {
                 'bills_list': bills_list,
                 'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
@@ -788,14 +804,7 @@ def showBillModule(request):
             return render(request,'bills/billsModuleDashboard.html',context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Pi_section.objects.filter(
-                    Q(lead_id__owner_of_opportunity__name=request.user.name) | Q(lead_id__owner_of_opportunity__group__icontains=request.user.name),
-                    lead_id__owner_of_opportunity__is_deleted=False).order_by('-id')
-
-            else:  # For EMPLOYEE
-                bills_list = Pi_section.objects.filter(lead_id__owner_of_opportunity__id=request.user.pk,
-                                                      vendor__phone_no__icontains=contact).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__crm_no__contact_no=contact).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
@@ -806,14 +815,7 @@ def showBillModule(request):
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
 
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Pi_section.objects.filter(
-                    Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
-                    user_id__is_deleted=False, vendor__email_id__icontains=email).order_by('-id')
-
-            else:  # For EMPLOYEE
-                bills_list = Pi_section.objects.filter(user_id=request.user.pk,
-                                                      vendor__email_id__icontains=email).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__crm_no__customer_email_id=email).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
@@ -823,14 +825,8 @@ def showBillModule(request):
         elif 'submit4' in request.POST:
             name = request.POST.get('name')
 
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Pi_section.objects.filter(
-                    Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
-                    user_id__is_deleted=False, vendor__name__icontains=name).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__crm_no__customer_name=name).order_by('-id')
 
-            else:  # For EMPLOYEE
-                bills_list = Pi_section.objects.filter(user_id=request.user.pk, vendor__name__icontains=name).order_by(
-                    '-id')
 
             context = {
                 'bills_list': bills_list,
@@ -841,14 +837,7 @@ def showBillModule(request):
         elif 'submit5' in request.POST:
             company = request.POST.get('company')
 
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Pi_section.objects.filter(
-                    Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
-                    user_id__is_deleted=False, vendor__company_name__icontains=company).order_by('-id')
-
-            else:  # For EMPLOYEE
-                bills_list = Pi_section.objects.filter(user_id=request.user.pk,
-                                                      vendor__company_name__icontains=company).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__crm_no__company_name=company).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
@@ -857,13 +846,7 @@ def showBillModule(request):
             return render(request,'bills/billsModuleDashboard.html',context)
         elif request.method == 'POST' and 'submit6' in request.POST:
             id = request.POST.get('id')
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Pi_section.objects.filter(
-                    Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
-                    user_id__is_deleted=False, id=id).order_by('-id')
-
-            else:  # For EMPLOYEE
-                bills_list = Pi_section.objects.filter(user_id=request.user.pk, id=id).order_by('-id')
+            bills_list = Bill.objects.filter(id=id).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
