@@ -128,7 +128,8 @@ class Bill(models.Model):
     purchase_id = models.ForeignKey(Purchase_Details,on_delete=models.CASCADE, null=True, blank=True)
     bill_file = models.FileField(upload_to='',null=True,blank=True)
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
-    entry_timedate = models.DateTimeField(default=timezone.now,)
+    # entry_timedate = models.DateTimeField(default=timezone.now,)
+    entry_date = models.DateField(default=datetime.date.today)
 
 
 

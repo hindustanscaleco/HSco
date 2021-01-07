@@ -8,6 +8,8 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -480,6 +482,44 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
      document.body.innerHTML = originalContents;
 
 }
+function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+
+    let doc = new jsPDF('p','pt','a4');
+
+    doc.addHTML(document.body,function() {
+
+    var formData = new FormData();
+    formData.append('bill_file', doc.output());
+    var pdf = btoa(doc.output());
+    //console.log(doc);
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function (e) {
+        if (xhr.readyState === 4 && xhr.status === 200){
+            result=xhr.responseText;
+            console.log(result);
+        }
+    }
+    xhr.open('POST', '/showBill/{{sales_id}}', true);
+    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+    xhr.send(formData);
+
+    });
+
+
 </script>
 
 </body>

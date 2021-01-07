@@ -421,22 +421,22 @@ td {
         {% for item in bills_list %}
 <!--      <tr onclick="location.href='/showBill/{{item.user_id}}';">-->
       <tr>
-          <td>{{item.entry_timedate}}</td>
-          <td>{{item.purchase_no}}</td>
-          <td>{{item.bill_no}}</td>
-          <td>{{item.second_company_name}}</td>
-          <td>{{item.second_contact_no}}</td>
-          <td>{{item.total_amount}}</td>
-          <td>{{item.total_pf}}</td>
-          <td>{{item.tax_amount}}</td>
-          <td>{{item.tax_amount}}</td>
-          <td>{{item.tax_amount}}</td>
-          <td>{{item.entry_timedate}}</td>
-          <td>{{item.grand_total}}</td>
+          <td>{{item.entry_date}}</td>
+          <td>{{item.purchase_id.purchase_no}}</td>
+          <td>{{item.purchase_id.bill_no}}</td>
+          <td>{{item.purchase_id.second_company_name}}</td>
+          <td>{{item.purchase_id.second_contact_no}}</td>
+          <td>{{item.purchase_id.total_amount}}</td>
+          <td>{{item.purchase_id.total_pf}}</td>
+          <td>{{item.purchase_id.tax_amount}}</td>
+          <td>{{item.purchase_id.tax_amount}}</td>
+          <td>{{item.purchase_id.tax_amount}}</td>
+          <td>{{item.purchase_id.tax_amount}}</td>
+          <td>{{item.purchase_id.grand_total}}</td>
 
           <td>
               <span><i style="color: #FC6E20;" class="fa fa-print" aria-hidden="true"></i></span>
-              <span><i style="color: #FC6E20;" class="fa fa-download" aria-hidden="true"></i></span>
+              <a href="{{item.bill_file.url}}"><span><i style="color: #FC6E20;" class="fa fa-download" aria-hidden="true"></i></span></a>
               <span><i style="color: #FC6E20;" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
               <span><i style="color: #FC6E20;" class="fa fa-trash" aria-hidden="true"></i></span>
 
