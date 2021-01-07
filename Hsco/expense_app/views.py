@@ -866,6 +866,115 @@ def showBillModule(request):
     }
     return render(request,'bills/billsModuleDashboard.html',context)
 
+
+def report_bill_form(request):
+    if request.method =='POST':
+        selected_purchase_list = request.POST.getlist('checks[]')
+        selected_product_list = request.POST.getlist('products[]')
+        selected_customer_list = request.POST.getlist('customer[]')
+        payment_details = request.POST.get('payment_details')
+
+        start_date = request.POST.get('date1')
+        end_date = request.POST.get('date2')
+        string = ','.join(selected_purchase_list)
+        string_product = ','.join(selected_product_list)
+
+
+        request.session['start_date'] = start_date
+        request.session['end_date'] = end_date
+        request.session['string'] = selected_purchase_list
+        request.session['string_product'] = selected_product_list
+        request.session['selected_list'] = selected_purchase_list
+        request.session['selected_product_list'] = selected_product_list
+        request.session['selected_customer_list'] = selected_customer_list
+        request.session['payment_details'] = payment_details
+        return redirect('/final_bill_report/')
+    return render(request,"report/report_bill_form.html",)
+
+def final_bill_report(request):
+    start_date = request.session.get('start_date')
+    end_date = request.session.get('end_date')
+    string_purchase = request.session.get('string') + ['crm_no_id'] + ['id']
+    string_product = request.session.get('string_product')  + ['id'] + ['purchase_id']
+
+    selected_customer_list = request.session.get('selected_customer_list')
+    selected_list = request.session.get('selected_list') + ['crm_no_id']
+    selected_product_list = request.session.get('selected_product_list') + ['Purchase ID']
+    payment_details = request.session.get('payment_details')
+    print('payment details')
+    print(payment_details)
+    final_row_product = []
+    final_row = []
+
+    for n, i in enumerate(selected_list):
+        if i == 'purchase_app_purchase_details.id':
+            selected_list[n] = 'Purchase ID'
+        if i == 'customer_app_customer_details.id':
+            selected_list[n] = 'Customer No'
+        if i == 'today_date':
+            selected_list[n] = 'Entry Date'
+        if i == 'second_person':
+            selected_list[n] = 'Customer Name'
+
+    product_query = Product_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_product)
+    for product in product_query:
+        sales_query = Purchase_Details.objects.filter(id=product['purchase_id']).values(*string_purchase)
+        
+        try:
+            if selected_customer_list:
+                customer_query = Customer_Details.objects.filter(id=list(sales_query)[0]['crm_no_id']).values(*selected_customer_list)
+                for item in customer_query:
+                    product.update(item)
+        except:
+            print('no customer error')
+            pass
+        
+        for item in sales_query:
+            #payment details in sales report
+            if payment_details == 'payment_details':
+                print('payment details')
+                print(payment_details)
+                sale = Purchase_Details.objects.get(id=product['purchase_id'])
+                if sale.payment_mode == 'Cash' or sale.payment_mode == 'Razorpay':
+                    item['payment_mode'] = sale.payment_mode
+                elif sale.payment_mode == 'Credit':
+                    item['payment_mode'] = sale.payment_mode
+                    item['credit_authorised_by'] = 'Authorised by: '+str(sale.credit_authorised_by)
+                    item['credit_pending_amount'] = 'Pending Amount: '+str(sale.credit_pending_amount)
+                elif sale.payment_mode == 'Cheque':
+                    item['payment_mode'] = sale.payment_mode
+                    item['bank_name'] = 'Bank Name: '+str(sale.bank_name)
+                    item['cheque_no'] = 'Cheque No: '+str(sale.cheque_no)
+                    item['cheque_date'] = 'Cheque Date: '+str(sale.cheque_date)
+                elif sale.payment_mode == 'NEFT':
+                    item['payment_mode'] = sale.payment_mode
+                    item['neft_bank_name'] = 'Bank Name: '+str(sale.neft_bank_name)
+                    item['neft_date'] = 'NEFT Date: '+str(sale.neft_date)
+                    item['reference_no'] = 'Reference No: '+str(sale.reference_no)
+            print(item)
+            print('entry_timedate' in item)
+            product.update(item)
+
+    try:
+        del request.session['start_date']
+        del request.session['end_date']
+        del request.session['string']
+        del request.session['selected_list']
+        del request.session['string_product']
+        del request.session['selected_product_list']
+    except:
+        pass
+
+    context={
+        'final_row':final_row,
+        'final_row_product':final_row_product,
+        'selected_list':selected_list,
+        'selected_product_list':selected_product_list+selected_list,
+        'sales_query':product_query,
+    }
+    return render(request,"report/final_bill_report.html",context)
+
+
 def add_sales(request):
     return render(request,'bills/add_sales.html')
 
