@@ -780,7 +780,7 @@ def showBill(request,sales_id):
         item.purchase_id = Purchase_Details.objects.get(id=sales_id)
         item.bill_file = bill_file
         item.save()
-        messages.success('Bill saved successfully !')
+        messages.success(request,'Bill saved successfully !')
         return redirect('/update_customer_details/'+str(sales_id))
     context={
         'invoice_details':purchase_details[0],
@@ -853,6 +853,14 @@ def showBillModule(request):
                 'search_msg': 'Search result for Expense ID. : ' + str(id),
             }
             return render(request, 'bills/billsModuleDashboard.html', context)
+        elif request.method == 'POST' and 'delete_bill' in request.POST:
+            bill_id = request.POST.get('bill_id')
+            print('bill_id')
+            print(bill_id)
+            bills_list = Bill.objects.filter(id=bill_id).delete()
+            messages.success(request,"Bill Deleted Successfully!")
+            return redirect('/showBillModule/')
+            return render(request, 'bills/billsModuleDashboard.html', context)    
     context={
         "bills_list":bills_list,
     }
