@@ -59,7 +59,7 @@
 
                 <div class="card-body" style="padding: 2px;">
                   <div class="row no-gutters align-items-right">
-<h1 class="h3 mb-0 text-gray-800 ">Customer Performance</h1>
+<h1 class="h3 mb-0 text-gray-800 ">Customer Analytics</h1>
 
 
                 </div>
@@ -197,6 +197,8 @@ $(function() {
 });
             </script>
                     <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
+<form action="" method="post">{% csrf_token %}
+
 
 <div class="row">
 
@@ -215,10 +217,10 @@ $(function() {
 
       </div>
       <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
-                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
+                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">GO</button></div>
 
       </div>
-
+</form>
 
 
                <style>
@@ -301,13 +303,25 @@ td {
     <table>
 
         <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Customer Name</td>
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Customer ID</td>
+            <td style="border: 0px solid gray;">Customer Name</td>
             <td style="border: 0px solid gray;">Customer Email ID </td>
             <td style="border: 0px solid gray;"> Customer Mobile No</td>
             <td style="border: 0px solid gray;">Sales</td>
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Sales Count</td>
         </tr>
-        {% csrf_token %}
+
+
+        {% for obj in this_month %}
+        <tr>
+            <td style="border: 1px solid gray;">{{obj.crm_no__id}}</td>
+            <td style="border: 1px solid gray;">{{obj.crm_no__customer_name}}</td>
+            <td style="border: 1px solid gray;">{{obj.crm_no__customer_email_id}}</td>
+            <td style="border: 1px solid gray;">{{obj.crm_no__contact_no}}</td>
+            <td style="border: 1px solid gray;">{{obj.data_sum}}</td>
+            <td style="border: 1px solid gray;">{{obj.data_count}}</td>
+        </tr>
+        {% endfor %}
 
     </table>
 
