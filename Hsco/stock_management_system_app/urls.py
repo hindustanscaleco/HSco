@@ -2,7 +2,7 @@ from django.urls import path, include, re_path
 
 from .views import stock_godown_list,add_godown,stock_godown,stock_godown_images,stock_good_request,stock_pending_request,stock_transaction_status, \
                     stock_accpet_goods,stock_accpet_goods_list,stock_transaction_history_list,stock_transaction_history, update_godown,\
-add_product_godown,request_admin, add_product_master, product_master_list, update_product_master,stock_report, stock_godown_report, load_popup_details
+add_product_godown,request_admin, add_product_master, product_master_list, update_product_master,stock_report, stock_godown_report, load_popup_details, stock_quick_transfer
 
 urlpatterns = [
     path('add_product_master/',add_product_master , name ='add_product_master'),
@@ -13,6 +13,7 @@ urlpatterns = [
     path('stock_godown/<str:id>',stock_godown, name ='stock_godown'),
     path('stock_godown_images/',stock_godown_images , name ='stock_godown_images'),
     path('stock_good_request/<int:godown_id>/<int:request_id>',stock_good_request , name ='stock_good_request'),
+    path('stock_quick_transfer/<int:godown_id>/<int:request_id>',stock_quick_transfer , name ='stock_quick_transfer'),
     path('stock_pending_request/<int:godown_id>',stock_pending_request , name ='stock_pending_request'),
     path('stock_transaction_status/<int:from_godown_id>/<int:trans_id>',stock_transaction_status , name ='stock_transaction_status'),
     path('stock_accpet_goods/<int:godown_id>/<int:accept_id>',stock_accpet_goods , name ='stock_accpet_goods'),

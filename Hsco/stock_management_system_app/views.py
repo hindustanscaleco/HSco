@@ -9,9 +9,13 @@ from customer_app.models import type_purchase
 from .forms import GodownForm
 from .models import Godown, GodownProduct, RequestedProducts, GoodsRequest, Product, AGProducts, AcceptGoods, \
     GodownTransactions, DailyStock
+from Hsco import settings
+
 from user_app.models import SiteUser
 from customer_app.models import sub_model, main_model, sub_sub_model, type_purchase
 from purchase_app.models import Product_Details
+import requests
+import json
 
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
@@ -1011,6 +1015,240 @@ def stock_good_request(request,godown_id, request_id):
     return render(request,'stock_management_system/stock_good_request.html',context)
 
 @login_required(login_url='/')
+def stock_quick_transfer(request,godown_id, request_id):
+    # good_request = GoodsRequest.objects.get(id=request_id)
+    godowns = Godown.objects.filter(Q(goddown_assign_to__name=request.user.admin)& ~Q(id=godown_id))| \
+              Godown.objects.filter(Q(godown_admin__id=request.user.id)& ~Q(id=godown_id)) | \
+              Godown.objects.filter(Q(godown_admin__profile_name=request.user.admin) & ~Q(id=godown_id))
+    godowns_superadmin = Godown.objects.filter(~Q(id=godown_id))
+    godown_goods = GodownProduct.objects.filter(godown_id=godown_id)
+    requested_goods = RequestedProducts.objects.filter(godown_id=godown_id,goods_req_id =request_id)
+    type_of_purchase_list = type_purchase.objects.all()  # 1
+    products = Product.objects.all()
+    context = {
+        'godown_goods': godown_goods,
+        'requested_goods': requested_goods,
+        'godowns': godowns,
+        'godowns_superadmin': godowns_superadmin,
+        'type_of_purchase_list': type_of_purchase_list,
+        'products': products,
+    }
+    if request.method == 'POST' or request.method == 'FILES':
+        if 'submit1' in request.POST:
+            product_id = request.POST.get('product_id')
+
+            req_type = request.POST.get('req_type')
+            number = request.POST.get('number')
+
+            item2 = RequestedProducts()
+
+            item2.req_type = req_type
+            if req_type == 'Individual':
+                item2.req_quantity = number
+                item2.received_quantity = number
+                item2.sent_quantity = number
+            elif req_type == 'Carton':
+                item2.req_carton_count = number
+                item2.sent_carton_count = number
+                item2.received_carton_count = number
+
+            item2.godown_id = Godown.objects.get(id=godown_id)
+            item2.godown_product_id = GodownProduct.objects.get(product_id=product_id,godown_id=godown_id)
+            item2.log_entered_by = request.user.name
+            item2.save()
+            if GoodsRequest.objects.filter(id=request_id).count() == 0:
+                item3 = GoodsRequest()
+                item3.save()
+            else:
+                item3 = GoodsRequest.objects.get(id=request_id)
+            item2.goods_req_id = item3
+            item2.save(update_fields=['goods_req_id',])
+            messages.success(request, "Product Added In Request List!")
+            return redirect('/stock_quick_transfer/'+str(godown_id)+'/'+str(request_id))
+        elif 'submit2' in request.POST:
+            req_to_godown = request.POST.get('req_to_godown')
+            good_request = GoodsRequest.objects.get(id=request_id)
+
+            requested_goods = RequestedProducts.objects.filter(godown_id=godown_id,goods_req_id =good_request)
+
+            good_request.req_from_godown = Godown.objects.get(id=godown_id)
+            
+            good_request.req_to_godown = Godown.objects.get(id=req_to_godown)
+            good_request.log_entered_by = request.user.name
+            good_request.entered_by = SiteUser.objects.get(id=request.user.id)
+            good_request.status = 'Confirms the transformation'
+            # good_request.goods_sent = True
+            # good_request.goods_received = True
+            if good_request.goods_sent == False:
+                    for good in requested_goods:
+
+                        if good_request.req_to_godown:
+                            godown_product_sent = GodownProduct.objects.get(godown_id=good_request.req_to_godown.id,
+                                                            product_id=good.godown_product_id.product_id)
+                            if godown_product_sent.quantity < good.sent_quantity:
+
+                                messages.success(request, 'Insufficient Stock to Transfer, Please Update Your Stock!!!')
+
+                            elif GodownProduct.objects.filter(godown_id=good_request.req_to_godown.id,
+                                                            product_id=good.godown_product_id.product_id):
+                                if good.req_type == 'Individual':
+                                    GodownProduct.objects.filter(godown_id=good_request.req_to_godown.id,
+                                                                 product_id=good.godown_product_id.product_id).update(
+                                        quantity=F("quantity") - good.sent_quantity)
+                                elif good.req_type == 'Carton':
+                                    product = Product.objects.get(id=good.godown_product_id.product_id)
+                                    individual_quantity = (float(product.carton_size) * float(good.sent_carton_count))
+                                    GodownProduct.objects.filter(godown_id=good_request.req_to_godown.id,
+                                                                 product_id=good.godown_product_id.product_id).update(
+                                        quantity=F("quantity") - individual_quantity)
+                                good_request.goods_sent = True
+                                good_request.goods_received = True
+                                good_request.save(update_fields=['goods_sent',])
+                                # messages.success(request, 'Stock Transferred!!!')
+                                # return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
+                        else:
+                            if good.req_type == 'Individual':
+                                GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown.id),
+                                                             product_id=good.godown_product_id.product_id).update(
+                                    quantity=F("quantity") - good.sent_quantity)
+                            elif good.req_type == 'Carton':
+                                product = Product.objects.get(id=good.godown_product_id.product_id)
+                                individual_quantity = (float(product.carton_size) * float(good.sent_carton_count))
+                                GodownProduct.objects.filter(godown_id=Godown.objects.get(id=godown.id),
+                                                             product_id=good.godown_product_id.product_id).update(
+                                    quantity=F("quantity") - individual_quantity)
+                            good_request.req_to_godown = Godown.objects.get(id=godown.id)
+                            good_request.goods_sent = True
+                            good_request.req_to_godown = Godown.objects.get(id=godown.id)
+                            good_request.save(update_fields=['goods_sent','req_to_godown'])
+                            # messages.success(request, 'Stock Transferred!!!')
+                            # return redirect('/stock_transaction_status/' + str(from_godown_id) + '/' + str(trans_id))
+            good_request.save(update_fields=['req_from_godown','is_all_req','req_to_godown','log_entered_by','entered_by','status','request_admin','outside_workstation'])
+            requested_goods = RequestedProducts.objects.filter(godown_id=godown_id,goods_req_id =good_request)
+            if good_request.goods_received == False:
+                    print('first')
+                    for good in requested_goods:
+                        print('second')
+                        if GodownProduct.objects.filter(godown_id=godown_id, product_id=good.godown_product_id.product_id):
+                            print('product exist')
+                            if good.req_type == 'Individual':
+                                
+
+                                GodownProduct.objects.filter(godown_id=godown_id,
+                                                             product_id=good.godown_product_id.product_id).update(
+                                    quantity=F("quantity") + good.received_quantity)
+                                GodownProduct.objects.filter(godown_id=godown_id,
+                                                             product_id=good.godown_product_id.product_id).update(
+                                    individual_faulty=F("individual_faulty") + good.faulty_quantity)
+                                print('product added to godown')
+                            elif good.req_type == 'Carton':
+                                
+                                #converting carton quantity to individual quantity
+                                product = Product.objects.get(id=good.godown_product_id.product_id)
+                                individual_quantity = (float(product.carton_size) * float(good.received_carton_count))
+
+                                GodownProduct.objects.filter(godown_id=godown_id,
+                                                             product_id=good.godown_product_id.product_id).update(
+                                    quantity=F("quantity") + individual_quantity)
+
+                                #converting faulty carton to individual faulty
+                                individual_faulty = (float(product.carton_size) * float(good.faulty_carton))
+                                GodownProduct.objects.filter(godown_id=godown_id,
+                                                             product_id=good.godown_product_id.product_id).update(
+                                    individual_faulty=F("individual_faulty") + individual_faulty)
+
+                            good_request.goods_received == True
+                            good_request.save(update_fields=['status','req_to_godown','goods_received'])
+            # save transaction
+            try:
+                new_transaction = GodownTransactions()
+                new_transaction.goods_req_id = good_request
+                new_transaction.notes = 'Quick Transfer by Emp id: ' + str(request.user.employee_number)+ ',\nName: ' + str(request.user.profile_name) \
+                                    + ', Contact: ' + str(request.user.mobile)
+                new_transaction.save()
+            except:
+                print('Transaction already created !!!')
+            messages.success(request, "Quick Transfer Done Successfully to Godown: "+good_request.req_from_godown.name_of_godown)
+            return redirect('/stock_pending_request/'+str(godown_id))
+
+        elif 'submit3' in request.POST:
+            request_id = request.POST.get('request_id')
+            RequestedProducts.objects.get(id=request_id).delete()
+            messages.success(request, "Product Removed From Request List!")
+
+        elif 'submit4' in request.POST:
+            type_of_scale = request.POST.get('scale_type')
+            main_category = request.POST.get('main_category')
+            sub_category = request.POST.get('sub_category')
+            sub_sub_category = request.POST.get('sub_sub_category')
+
+            if ((sub_sub_category != None and sub_sub_category != '') and (
+                    sub_category != None and sub_category != '') and (
+                    main_category != None and main_category != '') and (
+                    type_of_scale != None and type_of_scale != '')):
+                sort = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,
+                                                    product_id__main_category=main_category,
+                                                    product_id__sub_category=sub_category,
+                                                    product_id__sub_sub_category=sub_sub_category)
+                context1 = {
+                    'godown_goods': sort,
+                    'requested_goods': requested_goods,
+                    'godowns': godowns,
+                    'type_of_purchase_list': type_of_purchase_list,
+                    'products': products,
+                }
+                context.update(context1)
+                return render(request, 'stock_management_system/stock_quick_transfer.html', context)
+
+
+            elif ((sub_category != None and sub_category != '') and (
+                    main_category != None and main_category != '') and (
+                          type_of_scale != None and type_of_scale != '')):
+                sort = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,
+                                                    product_id__main_category=main_category,
+                                                    product_id__sub_category=sub_category)
+                context1 = {
+                    'godown_goods': sort,
+                    'requested_goods': requested_goods,
+                    'godowns': godowns,
+                    'type_of_purchase_list': type_of_purchase_list,
+                    'products': products,
+                }
+                context.update(context1)
+                return render(request, 'stock_management_system/stock_quick_transfer.html', context)
+
+
+            elif ((main_category != None and main_category != '') and (
+                    type_of_scale != None and type_of_scale != '')):
+                sort = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale,
+                                                    product_id__main_category=main_category)
+                context1 = {
+                    'godown_goods': sort,
+                    'requested_goods': requested_goods,
+                    'godowns': godowns,
+                    'type_of_purchase_list': type_of_purchase_list,
+                    'products': products,
+                }
+                context.update(context1)
+                return render(request, 'stock_management_system/stock_quick_transfer.html', context)
+
+
+            elif (type_of_scale != None and type_of_scale != ''):
+                sort = GodownProduct.objects.filter(godown_id=godown_id,product_id__scale_type=type_of_scale)
+                context1 = {
+                    'godown_goods': sort,
+                    'requested_goods': requested_goods,
+                    'godowns': godowns,
+                    'type_of_purchase_list': type_of_purchase_list,
+                    'products': products,
+                }
+                context.update(context1)
+                return render(request, 'stock_management_system/stock_quick_transfer.html', context)
+
+
+    return render(request,'stock_management_system/stock_quick_transfer.html',context)
+
+@login_required(login_url='/')
 def stock_pending_request(request,godown_id):
     godown = Godown.objects.get(id=godown_id)
     if request.user.role == 'Super Admin':
@@ -1259,6 +1497,17 @@ def stock_accpet_goods(request, godown_id, accept_id):
             item2.notes = notes
             item2.save(update_fields=['notes', 'log_entered_by', 'from_godown','good_added'])
             accepted_goods = AGProducts.objects.filter(godown_id_id=godown_id,accept_product_id_id =accept_id)
+            #send message to user (godown assigned)
+            message = 'Testing:- Product added to godown ' + str(
+                item2.from_godown.name_of_godown) 
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item2.from_godown.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            payload = ""
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            x = response.text
+            print(x)
             # save transaction
             new_transaction = GodownTransactions()
             new_transaction.accept_goods_id = item2
