@@ -1278,7 +1278,10 @@ def update_customer_details(request,id):
     # customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
     context ={}
-
+    channel_sales = DynamicDropdown.objects.filter(type="CHANNEL OF SALES",is_enabled=True)
+    channel_marketing = DynamicDropdown.objects.filter(type="CHANNEL OF MARKETING",is_enabled=True)
+    channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
+    indutry = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
     #for updating total amount in all sales entry\
     try:
         if customer_id.total_amount == 0:
