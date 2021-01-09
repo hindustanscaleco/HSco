@@ -3,6 +3,10 @@ import uuid
 from django.db import models
 from django.utils import timezone
 
+dropdown_choices = (('CHANNEL OF MARKETING', 'CHANNEL OF MARKETING'),
+    ('CHANNEL OF SALES', 'CHANNEL OF SALES'),
+   ('INDUSTRY', 'INDUSTRY'),
+   ('CHANNEL OF DISPATCH', 'CHANNEL OF DISPATCH'),)
 
 
 class Customer_Details(models.Model):
@@ -17,6 +21,8 @@ class Customer_Details(models.Model):
     customer_industry = models.CharField(max_length=80,null=True,blank=True)
     # entry_timedate = models.DateTimeField(default=timezone.now, )
     entry_timedate = models.DateField(default=datetime.date.today)
+    latitude = models.DecimalField(max_digits=22, decimal_places=15,null=True,blank=True)
+    longitude = models.DecimalField(max_digits=22, decimal_places=15,null=True,blank=True)
 
     class Meta:
         unique_together = ('customer_name','contact_no')
@@ -101,3 +107,17 @@ class Log(models.Model):
 
     def __int__(self):
         return self.pk
+
+
+class DynamicDropdown(models.Model):
+    name = models.CharField(max_length=90)
+    type = models.CharField(max_length=20,choices=dropdown_choices)
+    is_enabled = models.BooleanField(default=True)
+    entry_timedate = models.DateTimeField(default=timezone.now, )
+
+    def __str__(self):
+        return self.name
+
+
+
+

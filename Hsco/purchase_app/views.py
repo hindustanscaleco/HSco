@@ -44,6 +44,13 @@ from django.db.models.functions import TruncMonth
 from django.db.models import Count
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
+
+from customer_app.models import DynamicDropdown
+
+from restamping_app.models import Restamping_after_sales_service
+
+from amc_visit_app.models import Amc_After_Sales
+
 today_month = datetime.now().month
 
 @receiver(pre_save, sender=Purchase_Details)
@@ -188,6 +195,10 @@ def add_purchase_details(request):
         except:
             pass
     cust_sugg = Customer_Details.objects.all()
+    channel_sales = DynamicDropdown.objects.filter(type="CHANNEL OF SALES",is_enabled=True)
+    channel_marketing = DynamicDropdown.objects.filter(type="CHANNEL OF MARKETING",is_enabled=True)
+    channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
+    indutry = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
     if request.user.role == 'Super Admin':
         sales_person_sugg=SiteUser.objects.filter(Q(id=request.user.id) | Q(group__icontains=request.user.name),modules_assigned__icontains='Customer Module', is_deleted=False)
 
@@ -308,8 +319,14 @@ def add_purchase_details(request):
         item2.cheque_no = cheque_no
         if cheque_date != None and cheque_date != '':
             item2.cheque_date = cheque_date
+
+
         if channel_of_marketing != None and channel_of_marketing != '':
-            item2.channel_of_marketing = channel_of_marketing
+            item2.channel_of_marketing = DynamicDropdown.objects.get(id=channel_of_marketing)
+        item2.channel_of_sales = DynamicDropdown.objects.get(id=channel_of_sales)
+        item2.channel_of_dispatch = DynamicDropdown.objects.get(id=channel_of_dispatch)
+        item2.industry = DynamicDropdown.objects.get(id=industry)
+
 
         item2.new_repeat_purchase = new_repeat_purchase
         item2.second_person=customer_name  #new1
@@ -326,10 +343,8 @@ def add_purchase_details(request):
         item2.shipping_address = shipping_address
         item2.upload_op_file = upload_op_file
         item2.po_number = po_number
-        item2.channel_of_sales = channel_of_sales
-        item2.industry = industry
+
         item2.value_of_goods = 0.0
-        item2.channel_of_dispatch = channel_of_dispatch
         item2.notes = notes
         item2.bill_notes = bill_notes
         item2.feedback_form_filled = False
@@ -440,11 +455,14 @@ def add_purchase_details(request):
         return redirect('/add_product_details/'+str(item2.pk))
 
 
-
     context = {
         'form': form,
         'cust_sugg': cust_sugg,
         'sales_person_sugg': sales_person_sugg,
+        'channel_sales': channel_sales,
+        'channel_marketing': channel_marketing,
+        'channel_dispatch': channel_dispatch,
+        'indutry': indutry,
     }
 
     return render(request,'forms/cust_mod_form.html',context)
@@ -1260,7 +1278,10 @@ def update_customer_details(request,id):
     # customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
     context ={}
-
+    channel_sales = DynamicDropdown.objects.filter(type="CHANNEL OF SALES",is_enabled=True)
+    channel_marketing = DynamicDropdown.objects.filter(type="CHANNEL OF MARKETING",is_enabled=True)
+    channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
+    indutry = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
     #for updating total amount in all sales entry\
     try:
         if customer_id.total_amount == 0:
@@ -1512,10 +1533,6 @@ def update_customer_details(request,id):
                     Dispatch.objects.get(id=item2.dispatch_id_assigned.pk).delete()
                 except:
                     pass
-
-
-
-
 
             item2.channel_of_dispatch = channel_of_dispatch
             item2.notes = notes
@@ -2461,6 +2478,60 @@ def stock_does_not_exist(request):
         context.update(context4)
     return render(request, 'AJAX/stock_does_not_exist.html',context)
 
+def modules_map(request):
+    from geopy.geocoders import Nominatim
+    geolocator = Nominatim(user_agent="hsc")
+    lat_lon_list=[
+      ['sample1', 18.9977, 72.8376, 1],
+      ['sample2', 19.2183, 72.9781, 2],
+    ]
+
+
+
+    if request.method =='POST':
+        from_date = request.POST.get('from_date')
+        to_date = request.POST.get('to_date')
+        selected_module = request.POST.get('selected_module')
+
+        address_list = Customer_Details.objects.filter(latitude=None, longitude=None,
+                                                       entry_timedate__range=[from_date, to_date]).values(
+            "address", ).distinct()
+        for item in address_list:
+            location = geolocator.geocode(item['address'])
+            if location != None:
+                location = geolocator.geocode(location.address)
+                if location != None:
+                    customer_object = Customer_Details.objects.filter(address=item['address'])
+                    customer_object.update(latitude=location.latitude, longitude=location.longitude)
+
+
+        if 'sales' in selected_module:
+            customers_id = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date]).values_list("crm_no__id",flat=True)
+        elif 'restamping' in selected_module:
+            customers_id = Restamping_after_sales_service.objects.filter(entry_timedate__range=[from_date, to_date]).values_list("crm_no__id",flat=True)
+        elif 'amc' in selected_module:
+            customers_id = Amc_After_Sales.objects.filter(entry_timedate__range=[from_date, to_date]).values_list("crm_no__id",flat=True)
+
+        address_list = Customer_Details.objects.filter(pk__in=customers_id).values("latitude","longitude","customer_name","id")
+
+        lat_lon_list=[]
+
+        for obj in address_list:
+
+            if obj['latitude'] != None and obj['longitude']!= None:
+                temp_list = []
+                temp_list.append(obj['customer_name'])
+                temp_list.append(float(obj['latitude']))
+                temp_list.append(float(obj['longitude']))
+                temp_list.append(obj['id'])
+                lat_lon_list.append(temp_list)
+
+    context={
+        "address_list":lat_lon_list,
+    }
+    return render(request, 'location_analytics/moduleswise_map.html',context)
+
+
 def get_product_details(request):
     model_of_purchase = request.GET.get('model_of_purchase')
     type_of_scale = request.GET.get('type_of_scale')
@@ -2526,10 +2597,47 @@ def autocomplete(request):
 #     return render()
 
 def gstvsCash(request):
-    return render(request,'gstVScash/gstvscash.html')
+    gst_sales=[]
+    if request.method =='POST':
+        from_date = request.POST.get('date1')
+        to_date = request.POST.get('date2')
+
+        gst_sales = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date],is_gst=True).values('entry_timedate').annotate(
+            data_sum=Sum('total_amount')).values('entry_timedate', 'data_sum',)
+
+        cash_sales = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date], payment_mode='Cash').values(
+            'entry_timedate').annotate(
+            cash_sum=Sum('total_amount')).values('entry_timedate', 'cash_sum',)
+
+        total_gst = 0.0
+        total_cash = 0.0
+        for elm2 in cash_sales:
+            total_cash = total_cash + elm2['cash_sum']
+        for elm2 in gst_sales:
+            total_gst = total_gst + elm2['data_sum']
+            for elm1 in cash_sales:
+                if elm2['entry_timedate'] == elm1['entry_timedate']:
+                    elm2.update({'cash_sum':elm1['cash_sum']})
+
+    context={
+        "gst_sales":gst_sales,
+        "total_gst":total_gst,
+        "total_cash":total_cash,
+    }
+    return render(request,'gstVScash/gstvscash.html',context)
 
 def reportCustomerPage(request):
-    return render(request,'gstVScash/customerDetailsinReportSales.html')
+    this_month=[]
+    if request.method == 'POST':
+        from_date = request.POST.get('date1')
+        to_date = request.POST.get('date2')
+        this_month = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date]).values('crm_no__id').annotate(
+            data_count=Count('crm_no__id')).annotate(
+            data_sum=Sum('total_amount')).values('crm_no__id', 'crm_no__customer_name','data_sum','crm_no__customer_email_id','crm_no__contact_no','data_count')
+    context = {
+        "this_month": this_month,
+    }
+    return render(request,'gstVScash/customerDetailsinReportSales.html',context)
 
 
 

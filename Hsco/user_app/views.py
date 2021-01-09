@@ -51,12 +51,37 @@ class LoginView(FormView):
 
                 mobile = request.session['registered_mobile']
                 password = request.session['user_password']
+                latitude = request.session['latitude']
+                longitude = request.session['longitude']
 
                 user = authenticate(request, employee_number=mobile, password=password)
                 if user is not None:
                     login(request, user)
                     request.session['registered_mobile'] = mobile
                     request.session['user_password'] = password
+
+
+                    dev_fam = request.user_agent.device.family
+                    os_fam = request.user_agent.os.family
+                    browser_fam = request.user_agent.browser.family
+                    is_mobile = request.user_agent.is_mobile
+
+                    msg ='''
+                    User : '''+mobile+'''
+                    Is Mobile User : '''+str(is_mobile)+'''
+                    Os : '''+str(os_fam)+'''
+                    Browser : '''+str(browser_fam)+'''
+                    Device : '''+str(dev_fam)+'''
+                    Location : '''+str(latitude)+''', '''+str(longitude)+'''
+                    '''
+
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9284336756&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    payload = ""
+                    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+                    # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    # x = response.text
+                    # print(x)
 
                     return redirect('/dashboard/')
             return render(request, self.template_name, {'form': form})
@@ -67,30 +92,81 @@ class LoginView(FormView):
         if request.session.has_key('registered_mobile'):
             mobile = request.session['registered_mobile']
             password = request.session['user_password']
+            latitude = request.session['latitude']
+            longitude = request.session['longitude']
+
             user = authenticate(request, employee_number=mobile, password=password)
             if user is not None:
                 login(request, user)
                 request.session['registered_mobile'] = mobile
                 request.session['user_password'] = password
+
                 next = request.GET.get('next', '/dashboard/')
 
                 if not is_safe_url(next,allowed_hosts=None):
+                    dev_fam = request.user_agent.device.family
+                    os_fam = request.user_agent.os.family
+                    browser_fam = request.user_agent.browser.family
+                    is_mobile = request.user_agent.is_mobile
+
+                    msg = '''
+                                      User : ''' + mobile + '''
+                                      Is Mobile User : ''' + str(is_mobile) + '''
+                                      Os : ''' + str(os_fam) + '''
+                                      Browser : ''' + str(browser_fam) + '''
+                                      Device : ''' + str(dev_fam) + '''
+                                      Location : ''' + str(latitude) + ''', ''' + str(longitude) + '''
+                                      '''
+
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9284336756&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    payload = ""
+                    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+                    # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    # x = response.text
+                    # print(x)
                     next = '/dashboard/'
                 return redirect(next)
         else:
             employee_number = form.cleaned_data.get('mobile')
             password = form.cleaned_data.get('password')
-            
+            latitude = form.cleaned_data.get('latitude')
+            longitude = form.cleaned_data.get('longitude')
+
             user = authenticate(request, employee_number=employee_number, password=password)
             if user is not None:
                 login(request, user)
                 request.session['registered_mobile'] = employee_number
                 request.session['user_password'] = password
+                request.session['latitude'] = latitude
+                request.session['longitude'] = longitude
                 registered_mobile = request.session['registered_mobile']
                 print(request.session['user_password'])
                 next = request.GET.get('next', '/dashboard/')
 
                 if not is_safe_url(next, allowed_hosts=None):
+
+                    dev_fam = request.user_agent.device.family
+                    os_fam = request.user_agent.os.family
+                    browser_fam = request.user_agent.browser.family
+                    is_mobile = request.user_agent.is_mobile
+
+                    msg = '''
+                                      User : ''' + employee_number + '''
+                                      Is Mobile User : ''' + str(is_mobile) + '''
+                                      Os : ''' + str(os_fam) + '''
+                                      Browser : ''' + str(browser_fam) + '''
+                                      Device : ''' + str(dev_fam) + '''
+                                      Location : ''' + str(latitude) + ''', ''' + str(longitude) + '''
+                                      '''
+
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9284336756&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    payload = ""
+                    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+                    # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    # x = response.text
+                    # print(x)
                     next = '/dashboard/'
                 return redirect(next)
 
