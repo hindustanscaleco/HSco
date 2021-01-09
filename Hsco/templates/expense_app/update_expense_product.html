@@ -299,7 +299,7 @@ color:;
 
 
 <center>
-  <button style="background-color: #FC6E20;" type="button" value="Submit" class="btn btn-primary">Edit</button>
+  <button style="background-color: #FC6E20;" type="button" value="Submit" class="btn btn-primary" onclick="editableButton()">Edit</button>
   <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Submit</button>
   <button style="background-color: #FC6E20;" type="Submit" name="delete" value="delete" class="btn btn-primary">Delete</button>
 </center>
@@ -355,6 +355,14 @@ color:;
 
   </script>
   <script type="text/javascript">
+
+const editableButton=()=>{
+let inputFields = document.querySelectorAll('input,select,textarea');
+for(i=0; i<=inputFields.length; i++){
+inputFields[i].disabled = false;
+}
+}
+
       function total_product_amount(){
     var rate = parseFloat(document.getElementById("rate").value);
             var quantity = parseFloat(document.getElementById("quantity").value);
@@ -512,6 +520,17 @@ function isOneChecked() {
   alert("Please Select any one radio buttons in last product field.");
   return false;
 }
+
+
+const disabledEnable =() =>{
+let inputFields = document.querySelectorAll('input,select,textarea');
+for(i=0; i<=inputFields.length; i++){
+inputFields[i].disabled = true;
+}
+}
+disabledEnable();
+
+
 
 
   </script>
