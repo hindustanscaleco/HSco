@@ -97,7 +97,7 @@ color:;
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
 <select name="expense_type_sub_master" class="form-control" required>
-  <option value="">Select</option>
+  <option value="{{sub_sub_master.expense_type_sub_master_id.id}}">{{sub_sub_master.expense_type_sub_master_id.expense_type_sub_master}}</option>
 {% for item in sub_master %}
   <option value="{{item.id}}">{{item.expense_type_sub_master}}</option>
 {% endfor %}
@@ -110,7 +110,7 @@ color:;
    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="expense_type_sub_sub_master" id="expense_sub_master"  class="form-control"  type="text" required>
+  <input  name="expense_type_sub_sub_master" id="expense_sub_master" value="{{sub_sub_master.expense_type_sub_sub_master}}" class="form-control"  type="text" required>
     </div>
   </div>
 </div>
@@ -123,7 +123,7 @@ color:;
    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-      <textarea  name="notes" id="notes" class="form-control"> </textarea>
+      <textarea  name="notes" id="notes" class="form-control">{{sub_sub_master.notes}} </textarea>
     </div>
   </div>
 

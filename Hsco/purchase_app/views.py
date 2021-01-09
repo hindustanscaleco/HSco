@@ -1263,7 +1263,7 @@ def update_customer_details(request,id):
 
     #for updating total amount in all sales entry\
     try:
-        if customer_id.total_amount == 0:
+        if purchase_id_id.total_amount == 0 or purchase_id_id.total_amount == "None":
             Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
     except Exception as e:
         print(e)
@@ -1343,6 +1343,7 @@ def update_customer_details(request,id):
             value_of_goods = request.POST.get('value_of_goods')
             # feedback_form_filled = request.POST.get('feedback_form_filled')
             payment_mode = request.POST.get('payment_mode')
+            payment_type = request.POST.get('payment_type')
             total_pf = request.POST.get('total_pf')
             gst_id = request.POST.get('gst_id')
 
@@ -1364,7 +1365,7 @@ def update_customer_details(request,id):
             else:
                 item2.is_gst = False
 
-            item2.payment_mode = payment_mode
+            item2.payment_mode = payment_type
             if total_pf != '':
                 item2.total_pf = float(total_pf)
 

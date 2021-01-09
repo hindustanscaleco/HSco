@@ -80,7 +80,7 @@ color:;
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <center><h3>Expense Type Sub Master</h3></center>
+        <center><h3>Expense Type Sub Sub Master</h3></center>
 
         <div class="container-fluid" >
 <br>
@@ -91,25 +91,26 @@ color:;
 <div id="loaded_customer">
 
   <div class="form-group row">
-  <label class="col-md-2 control-label">Expense Type Master*
+  <label class="col-md-2 control-label">Expense Type Sub Master*
 </label>
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expense_type_master" class="form-control" required>
+<select name="expense_type_sub_master" class="form-control" required>
   <option value="">Select</option>
-  <option value="Purchase of Goods">Purchase of Goods</option>
-  <option value="Not Purchase">Not Purchase</option>
+{% for item in sub_master %}
+  <option value="{{item.id}}">{{item.expense_type_sub_master}}</option>
+{% endfor %}
 </select>
     </div>
   </div>
 
-      <label class="col-md-2 control-label">Expense Type Sub Master*
+      <label class="col-md-2 control-label">Expense Type Sub Sub Master*
 </label>
    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="expense_type_sub_master" id="expense_type_sub_master"  class="form-control"  type="text" required>
+  <input  name="expense_type_sub_sub_master" id="expense_sub_master"  class="form-control"  type="text" required>
     </div>
   </div>
 </div>
@@ -133,7 +134,9 @@ color:;
 
 
 <center>
-  <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Submit</button>
+  <button style="background-color: #FC6E20;" name="edit" type="submit" value="Submit" class="btn btn-primary">Edit</button>
+  <button style="background-color: #FC6E20;" type="submit" name="update" value="Submit" class="btn btn-primary">Submit</button>
+  <button style="background-color: #FC6E20;" type="submit" name="delete" value="Submit" class="btn btn-primary">Delete</button>
 </center>
 
 

@@ -148,6 +148,14 @@
           <span>Career Module</span></a>
       </li>
                     {% endif %}
+                     {% if request.user.is_authenticated  %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/expense_dashboard/">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Expense Module</span></a>
+      </li>
+                    {% endif %}
 
   <li class="nav-item ">
         <a class="nav-link" href="/chat_with_user/">
