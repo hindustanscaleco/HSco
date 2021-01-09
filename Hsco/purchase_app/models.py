@@ -2,7 +2,7 @@ import datetime
 from django.db import models
 from django.db.models.signals import post_save
 from django.utils import timezone
-from customer_app.models import Customer_Details
+from customer_app.models import Customer_Details,DynamicDropdown
 from user_app.models import SiteUser
 from model_utils import FieldTracker
 
@@ -26,11 +26,18 @@ class Purchase_Details(models.Model):   #cleaned
     third_contact_no = models.CharField(max_length=150,null=True,blank=True)
     upload_op_file = models.FileField(upload_to='',null=True,blank=True)
     po_number = models.CharField(max_length=150,null=True,blank=True)
+    #old fields
     channel_of_sales = models.CharField(max_length=150,null=True,blank=True)
     channel_of_marketing = models.CharField(max_length=150,null=True,blank=True)
     industry = models.CharField(max_length=150,null=True,blank=True)
-    value_of_goods = models.FloatField(default=0.0,null=True,blank=True)
     channel_of_dispatch = models.CharField(max_length=150,null=True,blank=True)
+    #new fields
+    channel_of_sales_id = models.ForeignKey(DynamicDropdown,on_delete=models.CASCADE,related_name='channel_sales', null=True, blank=True)
+    channel_of_marketing_id = models.ForeignKey(DynamicDropdown,on_delete=models.CASCADE,related_name='channel_marketing', null=True, blank=True)
+    industry_id = models.ForeignKey(DynamicDropdown,on_delete=models.CASCADE,related_name='industry', null=True, blank=True)
+    channel_of_dispatch_id = models.ForeignKey(DynamicDropdown,on_delete=models.CASCADE,related_name='channel_dispatch', null=True, blank=True)
+
+    value_of_goods = models.FloatField(default=0.0,null=True,blank=True)
     notes = models.CharField(max_length=300,null=True,blank=True)
     feedback_form_filled = models.BooleanField(default=False)
     sales_person = models.CharField(max_length=150, null=True, blank=True)

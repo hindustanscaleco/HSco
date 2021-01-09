@@ -44,6 +44,8 @@ from django.core.mail.message import EmailMessage
 from stock_management_system_app.models import Godown,GodownProduct,GodownTransactions
 import re
 
+from customer_app.models import DynamicDropdown
+
 today_month = datetime.now().month
 host_file = 'smtp.gmail.com'
 
@@ -1685,9 +1687,11 @@ def update_view_lead(request,id):
 
                     purchase_det.channel_of_sales = ''
                     purchase_det.channel_of_dispatch = ''
-                    purchase_det.industry = lead_id.customer_id.customer_industry
+                    # purchase_det.industry = lead_id.customer_id.customer_industry
+                    purchase_det.industry_id = DynamicDropdown.objects.get(type="INDUSTRY",name=lead_id.customer_id.customer_industry)
                     purchase_det.value_of_goods = 0.0
-                    purchase_det.channel_of_marketing = lead_id.channel
+                    # purchase_det.channel_of_marketing = lead_id.channel
+                    purchase_det.channel_of_marketing_id = DynamicDropdown.objects.get(type="CHANNEL OF MARKETING",name=lead_id.channel)
                     purchase_det.notes = "Entry From Lead Module\n"
                     purchase_det.feedback_form_filled = False
                     purchase_det.manager_id = SiteUser.objects.get(id=request.user.pk).group

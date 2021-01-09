@@ -468,15 +468,14 @@ Format : (company name)
        <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  type="text" name="channel_of_dispatch" placeholder="Channel of Dispatch" required class="form-control" list="channel">
-    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-    <datalist style="height:20px;" id="channel">
-      <option value="Courier">
-      <option value="Transport">
-      <option value="Franchisee Store">
-      <option value="Online Market Places">
-      <option value="Delivery Boys">
-    </datalist>
+
+    <select name="channel_of_dispatch" required class="form-control" >
+  <option value="">Select Channel Of Dispatch</option>
+  {% for item in channel_dispatch %}
+          <option value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+</select>
+
     </div>
   </div>
 

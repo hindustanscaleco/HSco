@@ -322,10 +322,13 @@ def add_purchase_details(request):
 
 
         if channel_of_marketing != None and channel_of_marketing != '':
-            item2.channel_of_marketing = DynamicDropdown.objects.get(id=channel_of_marketing)
-        item2.channel_of_sales = DynamicDropdown.objects.get(id=channel_of_sales)
-        item2.channel_of_dispatch = DynamicDropdown.objects.get(id=channel_of_dispatch)
-        item2.industry = DynamicDropdown.objects.get(id=industry)
+            item2.channel_of_marketing_id = DynamicDropdown.objects.get(id=channel_of_marketing)
+        if channel_of_sales != None and channel_of_sales != '':
+            item2.channel_of_sales_id = DynamicDropdown.objects.get(id=channel_of_sales)
+        if channel_of_dispatch != None and channel_of_dispatch != '':
+            item2.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)
+        if industry != None and industry != '':
+            item2.industry_id = DynamicDropdown.objects.get(id=industry)
 
 
         item2.new_repeat_purchase = new_repeat_purchase
@@ -364,8 +367,11 @@ def add_purchase_details(request):
 
         request.session['purchase_id'] = item2.pk
         request.session['user_id'] = request.user.pk
-
-        if not (channel_of_dispatch == 'Franchisee Store'):
+        if channel_of_dispatch != None and channel_of_dispatch != "":
+            dispatch_text = DynamicDropdown.objects.get(id=channel_of_dispatch).name
+        else:
+            dispatch_text = None
+        if not (dispatch_text == 'Franchisee Store'):
             dispatch = Dispatch()
 
             if Customer_Details.objects.filter(customer_name=customer_name,
@@ -382,7 +388,9 @@ def add_purchase_details(request):
             dispatch.second_company_name = company_name  # new2
             dispatch.company_email = customer_email_id
             dispatch.company_address = address  # new2
-            dispatch.channel_of_dispatch = channel_of_dispatch   # new2
+            # dispatch.channel_of_dispatch = channel_of_dispatch   # new2
+            if channel_of_dispatch!=None and channel_of_dispatch!="":
+                dispatch.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)   # new2
             dispatch.bill_address = bill_address   # new2
             dispatch.shipping_address = shipping_address   # new2
             if notes != None or notes != 'None' or notes != '':
@@ -553,12 +561,13 @@ def quick_purchase_entry(request):
             item2.shipping_address = ''
             item2.upload_op_file = ''
             item2.po_number = ''
-            item2.channel_of_sales = "Retail Through Physical Store"
-            item2.industry = "Small Sale"
+            item2.channel_of_sales_id = DynamicDropdown.objects.get(name="Retail Through Physical Store",type="CHANNEL OF SALES")
+            item2.industry_id = DynamicDropdown.objects.get(name="Small Sale",type="INDUSTRY")
             if value_of_goods == '' or value_of_goods == None:
                 value_of_goods = 0.0
             item2.value_of_goods = value_of_goods
-            item2.channel_of_dispatch = "Franchisee Store"
+            # item2.channel_of_dispatch = "Franchisee Store"
+            item2.channel_of_dispatch_id = DynamicDropdown.objects.get(name="Franchisee Store",type="CHANNEL OF DISPATCH")
             item2.notes = "Small Sale"
             item2.feedback_form_filled = False
             item2.is_quick_entry = True
@@ -1270,6 +1279,65 @@ def view_customer_details(request):
         }
         return render(request,'dashboardnew/cm.html',context )
 
+def one_time_dd():
+    purchase_id = Purchase_Details.objects.filter(Q(channel_of_dispatch_id=None)&Q(channel_of_marketing_id=None)&Q(channel_of_sales_id=None)&Q(industry_id=None)).values('id')
+    for item in purchase_id:
+        purchase_id_id = Purchase_Details.objects.get(id=item['id'])
+        print(purchase_id_id.channel_of_sales+'fh')
+        # print(DynamicDropdown.objects.get(name=purchase_id_id.channel_of_sales,type="CHANNEL OF SALES").name)
+        if purchase_id_id.channel_of_sales != None and purchase_id_id.channel_of_sales != "":
+            refined_sales = purchase_id_id.channel_of_sales
+            if purchase_id_id.channel_of_sales == 'IndiaMart' or purchase_id_id.channel_of_sales == 'Indiamart':
+                refined_sales= 'India Mart'
+            if purchase_id_id.channel_of_sales == 'Market' or purchase_id_id.channel_of_sales == 'Retail through Physical Storebhan' or purchase_id_id.channel_of_sales =='Retail through Physical Store+':
+                refined_sales = 'Retail through Physical Store'
+            purchase_id_id.channel_of_sales_id=DynamicDropdown.objects.get(name=refined_sales.replace("'",""),type="CHANNEL OF SALES")
+        if purchase_id_id.channel_of_marketing!=None and purchase_id_id.channel_of_marketing!="":
+            print(purchase_id_id.channel_of_marketing)
+            refined = purchase_id_id.channel_of_marketing
+            if purchase_id_id.channel_of_marketing == 'markett' or purchase_id_id.channel_of_marketing =='MARKRT':
+                refined = 'Market'
+            if purchase_id_id.channel_of_marketing == 'IndiaMart' or purchase_id_id.channel_of_marketing == 'Indiamart':
+                refined= 'India Mart'
+
+            purchase_id_id.channel_of_marketing_id=DynamicDropdown.objects.get(name=refined,type="CHANNEL OF MARKETING")
+        if purchase_id_id.industry != None and purchase_id_id.industry!="e" and purchase_id_id.industry!="" and purchase_id_id.industry!='2238':
+            print(purchase_id_id.industry)
+            refined_d = purchase_id_id.industry
+            if purchase_id_id.industry == 'Grocery/Retailp':
+                refined_d = 'Grocery/Retail'
+            if purchase_id_id.industry == 'hotel':
+                refined_d = 'Hotels'
+            if purchase_id_id.industry == 'Poultry/Livestock[[':
+                refined_d = 'Poultry/Livestock'
+
+            if purchase_id_id.industry == ' Fishing':
+                refined_d = 'Fishing'
+            if purchase_id_id.industry == 'trasport':
+                refined_d = 'Transport'
+            if purchase_id_id.industry == ' Bakery':
+                refined_d = 'Bakery'
+
+
+
+
+            purchase_id_id.industry_id=DynamicDropdown.objects.get(name=refined_d,type="INDUSTRY",)
+        if purchase_id_id.channel_of_dispatch != None and purchase_id_id.channel_of_dispatch!="" and purchase_id_id.channel_of_dispatch!="NA" and purchase_id_id.channel_of_dispatch!="XYZ" and purchase_id_id.channel_of_dispatch!= 'Na':
+            print(purchase_id_id.channel_of_dispatch+'fhh')
+            refine_s= purchase_id_id.channel_of_dispatch
+            if purchase_id_id.channel_of_dispatch=='Franchisee StoreSure' or purchase_id_id.channel_of_dispatch=='Franchisee StoreTejas' or \
+                    purchase_id_id.channel_of_dispatch=='Franchisee StoreBhairav Jwellers' or purchase_id_id.channel_of_dispatch=='Franchisee Storecas' or purchase_id_id.channel_of_dispatch=='Franchisee Storecasc':
+                refine_s = 'Franchisee Store'
+            if purchase_id_id.channel_of_dispatch == 'Taxi' or purchase_id_id.channel_of_dispatch == 'wefast' or purchase_id_id.channel_of_dispatch == 'Wefast':
+                refine_s = 'Transport'
+
+            if purchase_id_id.channel_of_dispatch == 'By Hand' or purchase_id_id.channel_of_dispatch =='Self':
+                refine_s = 'Delivery Boys'
+            if purchase_id_id.channel_of_dispatch == 'DTDC' or purchase_id_id.channel_of_dispatch =='DTDC Courier':
+                refine_s = 'Courier'
+
+            purchase_id_id.channel_of_dispatch_id=DynamicDropdown.objects.get(name=refine_s.replace("`",""),type="CHANNEL OF DISPATCH",)
+        purchase_id_id.save(update_fields=['channel_of_sales_id','channel_of_marketing_id','channel_of_dispatch_id','industry_id'])
 
 @login_required(login_url='/')
 def update_customer_details(request,id):
@@ -1278,11 +1346,13 @@ def update_customer_details(request,id):
     # customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
     context ={}
+    one_time_dd()
     channel_sales = DynamicDropdown.objects.filter(type="CHANNEL OF SALES",is_enabled=True)
     channel_marketing = DynamicDropdown.objects.filter(type="CHANNEL OF MARKETING",is_enabled=True)
     channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
-    indutry = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
-    #for updating total amount in all sales entry\
+    industry_list = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
+
+    #for updating total amount in all sales entry
     try:
         if customer_id.total_amount == 0:
             Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
@@ -1322,7 +1392,7 @@ def update_customer_details(request,id):
         customer_email_id = request.POST.get('customer_email_id')
 
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
-        if channel_of_dispatch == None or channel_of_dispatch == '' or len(channel_of_dispatch) < 2:
+        if channel_of_dispatch == None or channel_of_dispatch == '' or len(channel_of_dispatch) < 1:
             context22 = {
                 'product_id': product_id,
                 'customer_id': customer_id,
@@ -1409,9 +1479,10 @@ def update_customer_details(request,id):
             item2.bill_notes = bill_notes
 
             if channel_of_marketing != None and channel_of_marketing != '':
-                item2.channel_of_marketing = channel_of_marketing
+                # item2.channel_of_marketing = channel_of_marketing
+                item2.channel_of_marketing_id = DynamicDropdown.objects.get(id=channel_of_marketing)
 
-            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','channel_of_marketing','tax_amount','total_amount','value_of_goods',
+            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','channel_of_marketing_id','tax_amount','total_amount','value_of_goods',
                                       'total_pf','neft_bank_name','reference_no','neft_date','credit_pending_amount','credit_authorised_by','is_gst','bill_notes'])
 
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
@@ -1447,12 +1518,12 @@ def update_customer_details(request,id):
                 item2.upload_op_file = upload_op_file
                 item2.save(update_fields=['upload_op_file',])
             item2.po_number = po_number
-            item2.channel_of_sales = channel_of_sales
-            item2.industry = industry
+            item2.channel_of_sales_id = DynamicDropdown.objects.get(id=channel_of_sales)
+            item2.industry_id = DynamicDropdown.objects.get(id=industry)
             # item2.value_of_goods = value_of_goods
 
-
-            if (purchase_id_id.dispatch_id_assigned == None and channel_of_dispatch != 'Franchisee Store')  or (item2.channel_of_dispatch =='Franchisee Store' and channel_of_dispatch != 'Franchisee Store') :
+            channel_of_dispatch_test = DynamicDropdown.objects.get(id=channel_of_dispatch).name
+            if (purchase_id_id.dispatch_id_assigned == None and channel_of_dispatch_test != 'Franchisee Store')  or (item2.channel_of_dispatch_id.name =='Franchisee Store' and channel_of_dispatch_test != 'Franchisee Store') :
                 dispatch = Dispatch()
 
                 if Customer_Details.objects.filter(customer_name=customer_name,
@@ -1469,7 +1540,8 @@ def update_customer_details(request,id):
                 dispatch.second_company_name = company_name  # new2
                 dispatch.company_email = customer_email_id
                 dispatch.company_address = address  # new2
-                dispatch.channel_of_dispatch = channel_of_dispatch  # new2
+                # dispatch.channel_of_dispatch = channel_of_dispatch  # new2
+                dispatch.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)  # new2
                 dispatch.bill_address = bill_address  # new2
                 dispatch.shipping_address = shipping_address  # new2
                 dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
@@ -1524,8 +1596,8 @@ def update_customer_details(request,id):
                     # nobj.__dict__ = oobj.__dict__.copy()
                     Product_Details.objects.filter(id=item).update(product_dispatch_id=dispatch_pro.pk)
 
-
-            if item2.channel_of_dispatch != 'Franchisee Store' and channel_of_dispatch == 'Franchisee Store' :
+            channel_of_dispatch_test = DynamicDropdown.objects.get(id=channel_of_dispatch).name
+            if item2.channel_of_dispatch_id.name != 'Franchisee Store' and channel_of_dispatch_test == 'Franchisee Store' :
                 customer_id = Purchase_Details.objects.get(id=item2.pk)
                 customer_id.dispatch_id_assigned = None  # str(dispatch.pk + 00000)
                 customer_id.save(update_fields=['dispatch_id_assigned'])
@@ -1534,7 +1606,8 @@ def update_customer_details(request,id):
                 except:
                     pass
 
-            item2.channel_of_dispatch = channel_of_dispatch
+            # item2.channel_of_dispatch = channel_of_dispatch
+            item2.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)
             item2.notes = notes
             # item2.feedback_form_filled = feedback_form_filled
             # item2.user_id = SiteUser.objects.get(id=request.user.pk)
@@ -1542,7 +1615,7 @@ def update_customer_details(request,id):
             item2.log_entered_by = request.user.profile_name
 
             item2.save(update_fields=['log_entered_by','date_of_purchase','sales_person','bill_no','po_number','new_repeat_purchase',
-                                      'channel_of_sales','shipping_address','bill_address','industry','channel_of_dispatch','notes','second_person',
+                                      'channel_of_sales_id','shipping_address','bill_address','industry_id','channel_of_dispatch_id','notes','second_person',
                                       'second_contact_no','second_company_name','company_address','company_email',
                                       ])  #new6
 
@@ -1571,11 +1644,16 @@ def update_customer_details(request,id):
         'customer_id': customer_id,
         'purchase_id_id': purchase_id_id,
         'feedback': feedback,
+        'channel_sales': channel_sales,
+        'channel_marketing': channel_marketing,
+        'channel_dispatch': channel_dispatch,
+        'industry_list': industry_list,
     }
     context.update(context2)
 
 
     return render(request,'update_forms/update_cust_mod_form.html',context)
+
 
 
 @login_required(login_url='/')

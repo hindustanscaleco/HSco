@@ -338,9 +338,9 @@ function myFunction() {
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
     <select name="channel_of_marketing" id="channel_of_marketing" class="form-control" id="myText116">
-  <option value="{{purchase_id_id.channel_of_marketing|default_if_none:''}}">{{purchase_id_id.channel_of_marketing|default_if_none:''}}</option>
+<!--  <option value="{{purchase_id_id.channel_of_marketing|default_if_none:''}}">{{purchase_id_id.channel_of_marketing|default_if_none:''}}</option>-->
   {% for item in channel_marketing %}
-          <option value="{{item.id}}">{{item.name}}</option>
+          <option {% if purchase_id_id.channel_of_marketing_id.pk == item.id %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
           {% endfor %}
 </select>
     </div>
@@ -352,9 +352,9 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
       <select name="industry"  id="industry" required class="form-control" id="myText18">
-  <option value="{{purchase_id_id.industry}}">{{purchase_id_id.industry}}</option>
-  {% for item in indutry %}
-          <option value="{{item.id}}">{{item.name}}</option>
+<!--  <option value="{{purchase_id_id.industry}}">{{purchase_id_id.industry}}</option>-->
+  {% for item in industry_list %}
+          <option {% if purchase_id_id.industry_id.pk == item.id %} selected="selected" {% endif %}  value="{{item.id}}">{{item.name}}</option>
           {% endfor %}
 </select>
     </div>
@@ -372,9 +372,9 @@ function myFunction() {
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
  <select name="channel_of_sales" id="channel_of_sales_id" required class="form-control"  id="myText16">
-            <option value="{{purchase_id_id.channel_of_sales}}">{{purchase_id_id.channel_of_sales}}</option>
+<!--            <option value="{{purchase_id_id.channel_of_sales}}">{{purchase_id_id.channel_of_sales}}</option>-->
   {% for item in channel_sales %}
-          <option value="{{item.id}}">{{item.name}}</option>
+          <option {% if purchase_id_id.channel_of_sales_id.pk == item.id %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
           {% endfor %}
           </select>
       
@@ -388,9 +388,9 @@ function myFunction() {
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
       <select name="channel_of_dispatch" id="channel_of_dispatch_id" required class="form-control" id="myText21">
-  <option value="{{purchase_id_id.channel_of_dispatch}}">{{purchase_id_id.channel_of_dispatch}}</option>
-  {% for item in channel_sales %}
-          <option value="{{item.id}}">{{item.name}}</option>
+<!--  <option value="{{purchase_id_id.channel_of_dispatch}}">{{purchase_id_id.channel_of_dispatch}}</option>-->
+  {% for item in channel_dispatch %}
+          <option {% if purchase_id_id.channel_of_dispatch_id.pk == item.id %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
           {% endfor %}
 </select>
     </div>
