@@ -15,8 +15,13 @@ from purchase_app.models import Purchase_Details,Product_Details, Bill
 
 
 def expense_dashboard(request):
-    expense_list = Expense.objects.all()
-
+    if check_admin_roles(request):  # For ADMIN
+        expense_list = Expense.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
+                        user_id__is_deleted=False).order_by('-id')
+            
+    else:  # For EMPLOYEE
+        expense_list = Expense.objects.filter(user_id=request.user.pk).order_by('-id')
+            
     #filter by company type (sales or scales)
     if request.method == 'GET' and 'company_type' in request.GET:
         company_type = request.GET.get('company_type')
@@ -132,8 +137,20 @@ def expense_dashboard(request):
     return render(request,"expense_app/expense_dashboard.html", context)
 
 def add_expense(request):
-    vendors_list = Vendor.objects.all()
     expense_masters = Expense_Type_Sub_Sub_Master.objects.all()
+    context={
+        'expense_masters' : expense_masters,
+    }
+    # get vendor list according to expense sub sub master
+    if request.method == 'GET' and 'expense_type_sub_sub_master' in request.GET:
+        expense_type_sub_sub_master_id = request.GET.get('expense_type_sub_sub_master')
+        vendors_list = Vendor.objects.filter(expense_type_sub_sub_master_id=expense_type_sub_sub_master_id)
+        context={
+            'vendors_list' : vendors_list,
+            'expense_masters' : expense_masters,
+        }
+        context.update(context)
+        return render(request, 'expense_app/load_vendor_list_expense.html', context)
     if request.method == 'POST' or request.method == 'FILES' :
         expense_type_master = request.POST.get('expense_type_master')
         expense_type_sub_master = request.POST.get('expense_type_sub_master')
@@ -213,12 +230,15 @@ def add_expense(request):
         if date_of_payment != None and date_of_payment != '':
             item.date_of_payment  = date_of_payment 
         item.name_of_payee   = name_of_payee  
-        item.po_issued   = po_issued  
-        item.bill_copy   = bill_copy  
+        if po_issued != None and po_issued != '':
+            item.po_issued   = po_issued 
+        if bill_copy != None and bill_copy != '':
+            item.bill_copy   = bill_copy  
         item.voucher_no   = voucher_no  
         item.payment_type   = payment_type  
 
         item.cheque_no = cheque_no
+        item.bank_name = bank_name
         if cheque_date != None and cheque_date != '':
             item.cheque_date = cheque_date
 
@@ -234,10 +254,7 @@ def add_expense(request):
         item.save()
         return redirect('/expense_product/'+str(item.pk))  
 
-    context={
-        'expense_masters' : expense_masters,
-        'vendors_list' : vendors_list,
-    }
+    
     return render(request,"expense_app/add_expense.html", context)
 
 def expense_product(request, expense_id):
@@ -512,8 +529,10 @@ def expense_details(request, expense_id):
         if date_of_payment != None and date_of_payment != '':
             item.date_of_payment  = date_of_payment 
         item.name_of_payee   = name_of_payee  
-        item.po_issued   = po_issued  
-        item.bill_copy   = bill_copy  
+        if po_issued != None and po_issued != '':
+            item.po_issued   = po_issued 
+        if bill_copy != None and bill_copy != '':
+            item.bill_copy   = bill_copy  
         item.voucher_no   = voucher_no  
         item.payment_type   = payment_type  
 
@@ -642,8 +661,10 @@ def update_expense_type_sub_master(request, sub_master_id):
         item.notes = notes
         item.save(update_fields=['log_entered_by','notes','expense_type_sub_master','expense_type_master','user_id',])
         return redirect('/expense_master/')  
-
-    return render(request,'expense_app/expense_type_sub_master.html')
+    context = {
+        'sub_master': sub_master,
+    }
+    return render(request,'expense_app/update_expense_type_sub_master.html',context)
 
 def expense_type_sub_sub_master(request):
     sub_master = Expense_Type_Sub_Master.objects.all()
@@ -687,7 +708,7 @@ def update_expense_type_sub_sub_master(request, sub_sub_master_id):
         item.notes = notes
         item.save(update_fields=['user_id','log_entered_by','expense_type_sub_master_id','expense_type_sub_sub_master','notes',])
         return redirect('/expense_master/')  
-    return render(request,'expense_app/expense_type_sub_sub_master.html', context)
+    return render(request,'expense_app/update_expense_type_sub_sub_master.html', context)
 
 
 def load_expense_sub_master(request):

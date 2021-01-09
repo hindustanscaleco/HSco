@@ -1,0 +1,9 @@
+<div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select onchange="on_change_vendor(this)" name="name" class="form-control" required>
+  <option value="">Select</option>
+{% for vendor in vendors_list %}
+  <option value="{{vendor.id}}">{{vendor.name}}</option>
+  {% endfor %}
+</select>
+    </div>

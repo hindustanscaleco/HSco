@@ -124,7 +124,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expense_type_sub_sub_master" id="expense_type_sub_sub_master_id" class="form-control" required>
+<select name="expense_type_sub_sub_master" id="expense_type_sub_sub_master_id" onchange="on_type_sub_sub_master(this)" class="form-control" required>
   
 </select>
     </div>
@@ -133,7 +133,7 @@ color:;
     <label class="col-md-2 control-label">Name Of Vendor *
 </label>
   <div class="col-md-4 inputGroupContainer">
-    <div class="input-group">
+    <div id="load_vendor_list_id"class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
 <select onchange="on_change_vendor(this)" name="name" class="form-control" required>
   <option value="">Select</option>
@@ -711,6 +711,22 @@ function on_type_sub_master(select) {
         }
       });
 }
+
+function on_type_sub_sub_master(select) {
+
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/add_expense/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'expense_type_sub_sub_master': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#load_vendor_list_id").html(data);
+        }
+      });
+}
+
 
 function on_change_vendor(select) {
 

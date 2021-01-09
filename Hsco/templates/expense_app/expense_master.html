@@ -270,8 +270,8 @@ td {
                 <tr >
             <td >{{item.id}}</td>
             <td >{{item.expense_type_sub_master_id.expense_type_master}}</td>
-            <td >{{item.expense_type_sub_master_id.expense_type_sub_master}}</td>
-            <td >{{item.expense_type_sub_sub_master}}</td>
+            <td onclick="location.href='/update_expense_type_sub_master/{{item.expense_type_sub_master_id.id}}/';">{{item.expense_type_sub_master_id.expense_type_sub_master}}</td>
+            <td onclick="location.href='/update_expense_type_sub_sub_master/{{item.id}}/';">{{item.expense_type_sub_sub_master}}</td>
         </tr>    
         {% endfor %}    
 
