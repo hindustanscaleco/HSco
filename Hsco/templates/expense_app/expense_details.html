@@ -80,7 +80,7 @@ color:;
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <center><h3>Expense Details</h3></center>
+        <center><h3>View Expense Details</h3></center>
 
         <div class="container-fluid" >
 <br>
@@ -137,7 +137,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expense_type_sub_sub_master" id="expense_type_sub_sub_master_id" class="form-control" required>
+<select name="expense_type_sub_sub_master" id="expense_type_sub_sub_master_id" class="form-control" onchange="on_type_sub_sub_master(this)" required>
     <option value="{{expense.expense_type_sub_sub_master_id.id}}">{{expense.expense_type_sub_sub_master_id.expense_type_sub_sub_master}}</option>
 
 </select>
@@ -147,7 +147,7 @@ color:;
     <label class="col-md-2 control-label">Name Of Vendor *
 </label>
   <div class="col-md-4 inputGroupContainer">
-    <div class="input-group">
+    <div id="load_vendor_list_id"class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
 <select onchange="on_change_vendor(this)" name="name" class="form-control" required>
   <option value="{{expense.vendor.id}}">{{expense.vendor.name}}</option>
@@ -808,6 +808,21 @@ function on_type_sub_master(select) {
         success: function (data) {   // `data` is the return of the `load_cities` view function
     $("#expense_type_sub_sub_master_id").html(data);
 
+        }
+      });
+}
+
+function on_type_sub_sub_master(select) {
+
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/add_expense/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'expense_type_sub_sub_master': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#load_vendor_list_id").html(data);
         }
       });
 }

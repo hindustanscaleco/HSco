@@ -446,6 +446,16 @@ def expense_details(request, expense_id):
     expense = Expense.objects.get(id=expense_id)
     vendors_list = Vendor.objects.all()
     expense_products = Expense_Product.objects.filter(expense_id=expense_id)
+    # get vendor list according to expense sub sub master
+    if request.method == 'GET' and 'expense_type_sub_sub_master' in request.GET:
+        expense_type_sub_sub_master_id = request.GET.get('expense_type_sub_sub_master')
+        vendors_list = Vendor.objects.filter(expense_type_sub_sub_master_id=expense_type_sub_sub_master_id)
+        context={
+            'vendors_list' : vendors_list,
+            'expense_masters' : expense_masters,
+        }
+        context.update(context)
+        return render(request, 'expense_app/load_vendor_list_expense.html', context)
     if request.method == 'POST' or request.method == 'FILES' :
         if 'delete' in request.POST:
             Expense.objects.get(id=expense_id).delete()
