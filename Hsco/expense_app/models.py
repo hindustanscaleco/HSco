@@ -19,7 +19,7 @@ class Expense_Type_Sub_Master(models.Model):
 
 class Expense_Type_Sub_Sub_Master(models.Model):
     user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE,null=True,blank=True)
-    expense_type_sub_master_id = models.ForeignKey(Expense_Type_Sub_Master,on_delete=models.CASCADE,null=True,blank=True)
+    expense_type_sub_master_id = models.ForeignKey(Expense_Type_Sub_Master,on_delete=models.SET_NULL,null=True,blank=True)
     expense_type_sub_sub_master = models.CharField(max_length=250,null=True,blank=True)
     notes = models.CharField(max_length=300,null=True,blank=True)
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)

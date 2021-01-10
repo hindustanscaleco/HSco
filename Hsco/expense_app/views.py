@@ -641,13 +641,19 @@ def expense_type_sub_master(request):
         item.expense_type_sub_master = expense_type_sub_master
         item.notes = notes
         item.save()
-        return redirect('/expense_master/')  
+        messages.success(request,"Expense Type Sub Master : "+str(expense_type_sub_master)+" created successfully!")
+        return redirect('/expense_type_sub_sub_master/')  
 
     return render(request,'expense_app/expense_type_sub_master.html')
 
 def update_expense_type_sub_master(request, sub_master_id):
+    
     sub_master =  Expense_Type_Sub_Master.objects.get(id=sub_master_id)
     if request.method == 'POST' or request.method == 'FILES' :
+        if 'delete' in request.POST:
+            Expense_Type_Sub_Master.objects.filter(id=sub_master_id).delete()
+            messages.success(request,"Expense Sub Master with ID: "+str(sub_master_id)+" deleted successfully!")
+            return redirect('/expense_master/')
         expense_type_master = request.POST.get('expense_type_master')
         expense_type_sub_master = request.POST.get('expense_type_sub_master')
         notes = request.POST.get('notes')
@@ -684,17 +690,22 @@ def expense_type_sub_sub_master(request):
         item.expense_type_sub_sub_master = expense_type_sub_sub_master
         item.notes = notes
         item.save()
+        messages.success(request,"Expense Type Sub Sub Master : "+str(expense_type_sub_sub_master)+" created successfully!")
         return redirect('/expense_master/')  
     return render(request,'expense_app/expense_type_sub_sub_master.html', context)
 
 def update_expense_type_sub_sub_master(request, sub_sub_master_id):
     sub_master = Expense_Type_Sub_Master.objects.all()
-    sub_sub_master =  Expense_Type_Sub_Master.objects.get(id=sub_sub_master_id)
+    sub_sub_master =  Expense_Type_Sub_Sub_Master.objects.get(id=sub_sub_master_id)
     context = {
         'sub_master': sub_master,
         'sub_sub_master': sub_sub_master,
     }
     if request.method == 'POST' or request.method == 'FILES' :
+        if 'delete' in request.POST:
+            Expense_Type_Sub_Sub_Master.objects.filter(id=sub_sub_master_id).delete()
+            messages.success(request,"Expense Type Sub Sub Master with ID: "+str(sub_sub_master_id)+" deleted successfully!")
+            return redirect('/expense_master/')
         expense_type_sub_master = request.POST.get('expense_type_sub_master')
         expense_type_sub_sub_master = request.POST.get('expense_type_sub_sub_master')
         notes = request.POST.get('notes')
@@ -721,9 +732,6 @@ def load_expense_sub_sub_master(request):
     expense_type_sub_master = request.GET.get('expense_type_sub_master')
 
     expense_type_sub_sub_masters = Expense_Type_Sub_Sub_Master.objects.filter(expense_type_sub_master_id__id=expense_type_sub_master)
-    print('expense type')
-    print(expense_type_sub_master)
-    print(expense_type_sub_sub_masters)
     return render(request, 'AJAX_dropdowns/expense_sub_sub_master_dropdown.html', {'expense_type_sub_sub_masters': expense_type_sub_sub_masters})
 
 def load_vendor_details(request):

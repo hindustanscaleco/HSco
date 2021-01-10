@@ -29,6 +29,15 @@
   <!-- Custom styles for this template-->
   <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
 
+<script>
+function myFunction() {
+
+
+    document.getElementById("myText1").disabled = false;
+    document.getElementById("myText2").disabled = false;
+    document.getElementById("myText3").disabled = false;
+}
+  </script>
 </head>
 
 <body id="page-top">
@@ -96,7 +105,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expense_type_master" class="form-control" required>
+<select id="myText1" disabled  name="expense_type_master" class="form-control" required>
   <option value="{{sub_master.expense_type_master}}">{{sub_master.expense_type_master}}</option>
   <option value="Purchase of Goods">Purchase of Goods</option>
   <option value="Not Purchase">Not Purchase</option>
@@ -109,7 +118,7 @@ color:;
    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="expense_type_sub_master" id="expense_type_sub_master" value="{{sub_master.expense_type_sub_master}}"  class="form-control"  type="text" required>
+  <input id="myText2" disabled name="expense_type_sub_master" id="expense_type_sub_master" value="{{sub_master.expense_type_sub_master}}"  class="form-control"  type="text" required>
     </div>
   </div>
 </div>
@@ -122,7 +131,7 @@ color:;
    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-      <textarea  name="notes" id="notes" class="form-control" >{{sub_master.notes|default_if_none:""}} </textarea>
+      <textarea  id="myText3" disabled name="notes" id="notes" class="form-control" >{{sub_master.notes|default_if_none:""}} </textarea>
     </div>
   </div>
 
@@ -133,7 +142,7 @@ color:;
 
 
 <center>
-  <button style="background-color: #FC6E20;" name="edit" type="submit" value="Submit" class="btn btn-primary">Edit</button>
+  <button style="background-color: #FC6E20;" onclick="myFunction()" name="edit" type="reset" value="Submit" class="btn btn-primary">Edit</button>
   <button style="background-color: #FC6E20;" type="submit" name="update" value="Submit" class="btn btn-primary">Submit</button>
   <button style="background-color: #FC6E20;" type="submit" name="delete" value="Submit" class="btn btn-primary">Delete</button>
 </center>
@@ -157,7 +166,8 @@ color:;
 
   <!-- Scroll to Top Button-->
 
-
+  <script>
+  
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
