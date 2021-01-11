@@ -1346,7 +1346,7 @@ def update_customer_details(request,id):
     # customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
     context ={}
-    # one_time_dd()
+    one_time_dd()
     channel_sales = DynamicDropdown.objects.filter(type="CHANNEL OF SALES",is_enabled=True)
     channel_marketing = DynamicDropdown.objects.filter(type="CHANNEL OF MARKETING",is_enabled=True)
     channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
@@ -1456,7 +1456,7 @@ def update_customer_details(request,id):
                 item2.is_gst = False
 
             item2.payment_mode = payment_mode
-            if total_pf != '':
+            if total_pf != '' and total_pf != None:
                 item2.total_pf = float(total_pf)
 
             item2.bank_name = bank_name

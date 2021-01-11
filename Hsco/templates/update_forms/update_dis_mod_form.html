@@ -464,17 +464,15 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+<select name="channel_of_dispatch" required class="form-control" id="myText16" disabled>
+  <option value="{{dispatch_item.channel_of_dispatch_id.id}}">{{dispatch_item.channel_of_dispatch_id.name}}</option>
+  {% for item in channel_dispatch %}
+          <option value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+</select>
 
-  <input  name="channel_of_dispatch" placeholder="Channel of Dispatch" class="form-control" id="myText16" list="channel" type="text" disabled value="{{dispatch_item.channel_of_dispatch}}">
-     <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
 
-    <datalist style="height:20px;" id="channel">
-      <option value="Courier">
-      <option value="Transport">
-      <option value="Franchisee Store">
-      <option value="Online Market Places">
-      <option value="Delivery Boys">
-    </datalist>
+    
 
     </div>
 

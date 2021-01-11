@@ -942,6 +942,10 @@ def dispatch_view(request):
     return render(request, "manager/dispatch_view.html", context)
 
 def update_dispatch_details(request,update_id):
+    one_time_dd()
+    channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
+
+
     dispatch_item=Dispatch.objects.get(id=update_id)
     product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
     # customer_id = Dispatch.objects.get(id=update_id).crm_no
@@ -1287,17 +1291,18 @@ def update_dispatch_details(request,update_id):
         # item.save(update_fields=[ ]),
         dispatch_item = Dispatch.objects.get(id=update_id)
         product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
-
-        context = {
-            'dispatch_item': dispatch_item,
-            'product_list': product_list,
-        }
-        return render(request, "update_forms/update_dis_mod_form.html", context)
+        return redirect('/update_dispatch_details/'+str(update_id))
+        # context = {
+        #     'dispatch_item': dispatch_item,
+        #     'product_list': product_list,
+        # }
+        # return render(request, "update_forms/update_dis_mod_form.html", context)
 
     context = {
             'dispatch_item': dispatch_item,
             'product_list': product_list,
             'user_list': user_list,
+            'channel_dispatch': channel_dispatch,
         }
     return render(request, "update_forms/update_dis_mod_form.html", context)
        # item.save(update_fields=[''])
