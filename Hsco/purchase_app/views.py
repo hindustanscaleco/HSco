@@ -1060,7 +1060,7 @@ def view_customer_details(request):
     #for updating total amount in all sales entry
     sales_list = Purchase_Details.objects.all()
     for sale in sales_list:
-        if sale.value_of_goods == 'None' and sale.total_amount == 'None':
+        if sale.value_of_goods == None and sale.total_amount == None:
             print(sale.id)
             pro_sum = Product_Details.objects.filter(purchase_id__id=sale.id).aggregate(Sum('amount'))
             total_value =  pro_sum['amount__sum'] if pro_sum['amount__sum'] != None else 0 + sale.total_pf if sale.total_pf != None else 0  + sale.tax_amount if sale.tax_amount  != None else 0 
