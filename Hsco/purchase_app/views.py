@@ -1057,7 +1057,11 @@ def view_customer_details(request):
     date_today= datetime.now().strftime('%Y-%m-%d')
     message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
 
-    
+    #for updating total amount in all sales entry
+    sales_list = Purchase_Details.objects.all()
+    for sale in sales_list:
+        if sale.total_amount == 0 or sale.total_amount == None or sale.total_amount == 'None':
+            Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
 
     #for deleting purchase entries
     if request.method == 'POST' and 'delete_purchase_id' in request.POST:
