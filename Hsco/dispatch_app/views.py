@@ -196,7 +196,7 @@ def one_time_dd():
 
 def add_dispatch_details(request):
     # form = Customer_Details_Form(request.POST or None, request.FILES or None)
-    one_time_dd()
+    # one_time_dd()
     cust_sugg=Customer_Details.objects.all()
     channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
 
