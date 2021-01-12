@@ -1339,8 +1339,9 @@ def one_time_dd():
             if purchase_id_id.channel_of_dispatch=='Franchisee StoreSure' or purchase_id_id.channel_of_dispatch=='Franchisee StoreTejas' or \
                     purchase_id_id.channel_of_dispatch=='Franchisee StoreBhairav Jwellers' or purchase_id_id.channel_of_dispatch=='Franchisee Storecas' or purchase_id_id.channel_of_dispatch=='Franchisee Storecasc':
                 refine_s = 'Franchisee Store'
-	    if purchase_id_id.channel_of_dispatch =='FraDE Store':
-   	        refine_s = 'Franchisee Store'
+            if purchase_id_id.channel_of_dispatch =='FraDE Store':
+                refine_s = 'Franchisee Store'
+
             if purchase_id_id.channel_of_dispatch == 'Taxi' or purchase_id_id.channel_of_dispatch == 'wefast' or purchase_id_id.channel_of_dispatch == 'Wefast':
                 refine_s = 'Transport'
 
