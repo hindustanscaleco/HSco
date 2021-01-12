@@ -1084,7 +1084,18 @@ def view_customer_details(request):
     date_today= datetime.now().strftime('%Y-%m-%d')
     message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
 
-    
+    #for updating total amount in all sales entry
+    sales_list = Purchase_Details.objects.all()
+    for sale in sales_list:
+        if (sale.value_of_goods == None and sale.total_amount == None) or (sale.value_of_goods == 'None' and sale.total_amount == 'None'):
+            print(sale.id)
+            pro_sum = Product_Details.objects.filter(purchase_id__id=sale.id).aggregate(Sum('amount'))
+            total_value =  pro_sum['amount__sum'] if pro_sum['amount__sum'] != None else 0 + sale.total_pf if sale.total_pf != None else 0  + sale.tax_amount if sale.tax_amount  != None else 0 
+            print(total_value)
+            Purchase_Details.objects.filter(id=sale.id).update(total_amount=total_value )
+            Purchase_Details.objects.filter(id=sale.id).update(value_of_goods=pro_sum['amount__sum'] )
+        if sale.total_amount == 0 or sale.total_amount == None or sale.total_amount == 'None':
+            Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
 
     #for deleting purchase entries
     if request.method == 'POST' and 'delete_purchase_id' in request.POST:
@@ -1354,7 +1365,7 @@ def update_customer_details(request,id):
 
     #for updating total amount in all sales entry
     try:
-        if customer_id.total_amount == 0:
+        if purchase_id_id.total_amount == 0 or purchase_id_id.total_amount == "None":
             Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
     except Exception as e:
         print(e)
@@ -1434,6 +1445,7 @@ def update_customer_details(request,id):
             value_of_goods = request.POST.get('value_of_goods')
             # feedback_form_filled = request.POST.get('feedback_form_filled')
             payment_mode = request.POST.get('payment_mode')
+            payment_type = request.POST.get('payment_type')
             total_pf = request.POST.get('total_pf')
             gst_id = request.POST.get('gst_id')
 
@@ -1454,6 +1466,7 @@ def update_customer_details(request,id):
                 item2.is_gst = True
             else:
                 item2.is_gst = False
+
 
             item2.payment_mode = payment_mode
             if total_pf != '' and total_pf != None:

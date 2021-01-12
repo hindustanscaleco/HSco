@@ -76,7 +76,9 @@
 <a style="padding: 2px;" href="/add_expense/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Expense </button></a>
 <a style="padding: 2px;" href="/vendor_master/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Vendor </button></a>
 <a style="padding: 2px;" href="/expense_master/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Expense Master </button></a>
+                          {% if request.user.role == 'Super Admin' %}
  <a style="padding: 2px;" href="/expense_report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
+ {% endif %}
 {% endif %}
                 </div>
               </div>
@@ -179,7 +181,7 @@ $(function() {
      <option value="d2">Search By Mobile Number</option>
      <option value="d3">Search By Email Id</option>
      <option value="d4">Search By Vendor Name</option>
-     <option value="d5">Search By Company Name</option>
+     {% comment %} <option value="d5">Search By Company Name</option> {% endcomment %}
      <option value="d6">Search By Expense ID</option>
      {% comment %} <option value="d7">Search By ID</option> {% endcomment %}
      <!--<option value="d7">Search By CRM Number Range</option>-->
@@ -276,12 +278,12 @@ $(function() {
             </div>
                 <form>
                   <div class="row">
-                    <div class="col-md-2">
+                    {% comment %} <div class="col-md-2">
                       <input type="date" class="form-control">
                     </div>
                     <div class="col-md-2">
                       <input type="date" class="form-control">
-                    </div>
+                    </div> {% endcomment %}
                     <div class="col-md-3">
                       <select class="form-control" name="dropdown" onchange="filterby_company(this)" id="cars">
                         <option value="">Select Our Company</option>

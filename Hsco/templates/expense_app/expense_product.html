@@ -215,7 +215,7 @@ color:;
   </div>
   </div>
 
-<div id="product_details">
+<div >
     <div class="form-group row">
   <label class="col-md-2 control-label">Capacity
 </label>
@@ -453,7 +453,6 @@ $("#sub_model").val(select.options[select.selectedIndex].text);
         success: function (data) {   // `data` is the return of the `load_cities` view function
 
     $("#product_details").html(data);
-total_product_amount();
 
         }
       });
@@ -500,7 +499,6 @@ $("#sub_sub_model").val(select.options[select.selectedIndex].text);
             success: function (data) {   // `data` is the return of the `load_cities` view function
 
         $("#product_details").html(data);
-        total_product_amount();
 
 
             }

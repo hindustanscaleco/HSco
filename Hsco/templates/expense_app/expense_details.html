@@ -80,7 +80,7 @@ color:;
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <center><h3>Expense Details</h3></center>
+        <center><h3>View Expense Details</h3></center>
 
         <div class="container-fluid" >
 <br>
@@ -137,7 +137,7 @@ color:;
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="expense_type_sub_sub_master" id="expense_type_sub_sub_master_id" class="form-control" required>
+<select name="expense_type_sub_sub_master" id="expense_type_sub_sub_master_id" class="form-control" onchange="on_type_sub_sub_master(this)" required>
     <option value="{{expense.expense_type_sub_sub_master_id.id}}">{{expense.expense_type_sub_sub_master_id.expense_type_sub_sub_master}}</option>
 
 </select>
@@ -147,7 +147,7 @@ color:;
     <label class="col-md-2 control-label">Name Of Vendor *
 </label>
   <div class="col-md-4 inputGroupContainer">
-    <div class="input-group">
+    <div id="load_vendor_list_id"class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
 <select onchange="on_change_vendor(this)" name="name" class="form-control" required>
   <option value="{{expense.vendor.id}}">{{expense.vendor.name}}</option>
@@ -480,7 +480,122 @@ color:;
   </div>
   </div>
 
+<div id="payment_cheque2" style="display: none;">
+            <div class="form-group row">
 
+<label class="col-md-2 control-label">Bank Name*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="bank_name"  value="{{expense.bank_name|default_if_none:''}}" id="bank_name2" placeholder="Bank Name" class="form-control"  type="text">
+    </div>
+  </div>
+
+  <label class="col-md-2 control-label">Cheque No*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_no" id="cheque_no2"  value="{{expense.cheque_no|default_if_none:''}}" placeholder="Cheque Number" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+</div>
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Cheque Date*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_date"  id="cheque_date2" value="{{expense.cheque_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
+    </div>
+  </div>
+
+</div>
+      </div>
+          <div id="payment_neft2" style="display: none;">
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Bank Name*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="neft_bank_name"  value="{{expense.neft_bank_name|default_if_none:''}}" id="neft_bank_name2" placeholder="Bank Name" class="form-control"  type="text">
+    </div>
+  </div>
+
+<label class="col-md-2 control-label">NEFT Date*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_date" id="neft_date2"  value="{{expense.neft_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
+    </div>
+  </div>
+
+
+
+</div>
+            <div class="form-group row">
+
+ <label class="col-md-2 control-label">Reference No
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="reference_no" id="reference_no2"  value="{{expense.reference_no|default_if_none:''}}" placeholder="Reference Number" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
+      </div>
+          <div id="payent_credit2" style="display: none;">
+                          <div class="form-group row">
+
+<label class="col-md-2 control-label">Authorised By*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  id="credit_authorised_by_id"  name="credit_authorised_by" value="{{expense.credit_authorised_by|default_if_none:''}}"  placeholder="Authorised By" class="form-control"  type="text">
+    </div>
+  </div>
+
+<label class="col-md-2 control-label">Pending Amount*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="credit_pending_amount"  id="credit_pending_amount_id" value="{{expense.credit_pending_amount|default_if_none:''}}" placeholder="Pending Amount" class="form-control" step="any" type="number">
+    </div>
+  </div>
+
+
+
+</div>
+
+          </div>
+            
 <br>
 <center>
   <button style="background-color: #FC6E20;" type="Button" value="Submit" class="btn btn-primary" onclick="editableButton()">Edit</button>
@@ -574,6 +689,7 @@ color:;
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
+
 <script>
 
 const editableButton=()=>{
@@ -607,6 +723,7 @@ inputFields[i].disabled = false;
               }
 
              else if (mode == 'NEFT'){
+                  console.log("NEft ")
                   x.style.display = "none";
                   z.style.display = "none";
                   y.style.display = "block";
@@ -665,6 +782,8 @@ inputFields[i].disabled = false;
                   $('#cheque_date2').removeAttr('required', '');
               }
           }
+            show();
+
   </script>
 
   <script>
@@ -696,6 +815,21 @@ function on_type_sub_master(select) {
         success: function (data) {   // `data` is the return of the `load_cities` view function
     $("#expense_type_sub_sub_master_id").html(data);
 
+        }
+      });
+}
+
+function on_type_sub_sub_master(select) {
+
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/add_expense/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'expense_type_sub_sub_master': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#load_vendor_list_id").html(data);
         }
       });
 }

@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Purchase_Details, Product_Details, Feedback
+from .models import Purchase_Details, Product_Details, Feedback, Bill
 
 class Purchase_DetailsAdmin(admin.ModelAdmin):
 
@@ -19,3 +19,4 @@ class Product_DetailsAdmin(admin.ModelAdmin):
 admin.site.register(Purchase_Details , Purchase_DetailsAdmin)
 admin.site.register(Product_Details, Product_DetailsAdmin)
 admin.site.register(Feedback)
+admin.site.register(Bill)

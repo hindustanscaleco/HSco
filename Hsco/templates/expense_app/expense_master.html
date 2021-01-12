@@ -255,6 +255,28 @@ td {
 
 <div >
      <center><p>{{search_msg}}</p></center>
+     {% if messages %}
+    {% for message in messages %}
+             {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% endif %}
+
+
+             {% endfor %}
+
+{% endif %}
         <div class="row" id="id_manager_view">
 
     <table>
@@ -270,8 +292,8 @@ td {
                 <tr >
             <td >{{item.id}}</td>
             <td >{{item.expense_type_sub_master_id.expense_type_master}}</td>
-            <td >{{item.expense_type_sub_master_id.expense_type_sub_master}}</td>
-            <td >{{item.expense_type_sub_sub_master}}</td>
+            <td onclick="location.href='/update_expense_type_sub_master/{{item.expense_type_sub_master_id.id}}/';">{{item.expense_type_sub_master_id.expense_type_sub_master}}</td>
+            <td onclick="location.href='/update_expense_type_sub_sub_master/{{item.id}}/';">{{item.expense_type_sub_sub_master}}</td>
         </tr>    
         {% endfor %}    
 

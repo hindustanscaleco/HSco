@@ -9,14 +9,19 @@ from purchase_app.views import check_admin_roles
 from django.db.models import Q, F, Min, Avg
 from django.contrib import messages
 from lead_management.models import Pi_section
-from purchase_app.models import Purchase_Details,Product_Details
+from purchase_app.models import Purchase_Details,Product_Details, Bill
 
 # Create your views here.
 
 
 def expense_dashboard(request):
-    expense_list = Expense.objects.all()
-
+    if check_admin_roles(request):  # For ADMIN
+        expense_list = Expense.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
+                        user_id__is_deleted=False).order_by('-id')
+            
+    else:  # For EMPLOYEE
+        expense_list = Expense.objects.filter(user_id=request.user.pk).order_by('-id')
+            
     #filter by company type (sales or scales)
     if request.method == 'GET' and 'company_type' in request.GET:
         company_type = request.GET.get('company_type')
@@ -132,8 +137,20 @@ def expense_dashboard(request):
     return render(request,"expense_app/expense_dashboard.html", context)
 
 def add_expense(request):
-    vendors_list = Vendor.objects.all()
     expense_masters = Expense_Type_Sub_Sub_Master.objects.all()
+    context={
+        'expense_masters' : expense_masters,
+    }
+    # get vendor list according to expense sub sub master
+    if request.method == 'GET' and 'expense_type_sub_sub_master' in request.GET:
+        expense_type_sub_sub_master_id = request.GET.get('expense_type_sub_sub_master')
+        vendors_list = Vendor.objects.filter(expense_type_sub_sub_master_id=expense_type_sub_sub_master_id)
+        context={
+            'vendors_list' : vendors_list,
+            'expense_masters' : expense_masters,
+        }
+        context.update(context)
+        return render(request, 'expense_app/load_vendor_list_expense.html', context)
     if request.method == 'POST' or request.method == 'FILES' :
         expense_type_master = request.POST.get('expense_type_master')
         expense_type_sub_master = request.POST.get('expense_type_sub_master')
@@ -213,12 +230,15 @@ def add_expense(request):
         if date_of_payment != None and date_of_payment != '':
             item.date_of_payment  = date_of_payment 
         item.name_of_payee   = name_of_payee  
-        item.po_issued   = po_issued  
-        item.bill_copy   = bill_copy  
+        if po_issued != None and po_issued != '':
+            item.po_issued   = po_issued 
+        if bill_copy != None and bill_copy != '':
+            item.bill_copy   = bill_copy  
         item.voucher_no   = voucher_no  
         item.payment_type   = payment_type  
 
         item.cheque_no = cheque_no
+        item.bank_name = bank_name
         if cheque_date != None and cheque_date != '':
             item.cheque_date = cheque_date
 
@@ -234,10 +254,7 @@ def add_expense(request):
         item.save()
         return redirect('/expense_product/'+str(item.pk))  
 
-    context={
-        'expense_masters' : expense_masters,
-        'vendors_list' : vendors_list,
-    }
+    
     return render(request,"expense_app/add_expense.html", context)
 
 def expense_product(request, expense_id):
@@ -429,6 +446,16 @@ def expense_details(request, expense_id):
     expense = Expense.objects.get(id=expense_id)
     vendors_list = Vendor.objects.all()
     expense_products = Expense_Product.objects.filter(expense_id=expense_id)
+    # get vendor list according to expense sub sub master
+    if request.method == 'GET' and 'expense_type_sub_sub_master' in request.GET:
+        expense_type_sub_sub_master_id = request.GET.get('expense_type_sub_sub_master')
+        vendors_list = Vendor.objects.filter(expense_type_sub_sub_master_id=expense_type_sub_sub_master_id)
+        context={
+            'vendors_list' : vendors_list,
+            'expense_masters' : expense_masters,
+        }
+        context.update(context)
+        return render(request, 'expense_app/load_vendor_list_expense.html', context)
     if request.method == 'POST' or request.method == 'FILES' :
         if 'delete' in request.POST:
             Expense.objects.get(id=expense_id).delete()
@@ -512,8 +539,10 @@ def expense_details(request, expense_id):
         if date_of_payment != None and date_of_payment != '':
             item.date_of_payment  = date_of_payment 
         item.name_of_payee   = name_of_payee  
-        item.po_issued   = po_issued  
-        item.bill_copy   = bill_copy  
+        if po_issued != None and po_issued != '':
+            item.po_issued   = po_issued 
+        if bill_copy != None and bill_copy != '':
+            item.bill_copy   = bill_copy  
         item.voucher_no   = voucher_no  
         item.payment_type   = payment_type  
 
@@ -622,13 +651,19 @@ def expense_type_sub_master(request):
         item.expense_type_sub_master = expense_type_sub_master
         item.notes = notes
         item.save()
-        return redirect('/expense_master/')  
+        messages.success(request,"Expense Type Sub Master : "+str(expense_type_sub_master)+" created successfully!")
+        return redirect('/expense_type_sub_sub_master/')  
 
     return render(request,'expense_app/expense_type_sub_master.html')
 
 def update_expense_type_sub_master(request, sub_master_id):
+    
     sub_master =  Expense_Type_Sub_Master.objects.get(id=sub_master_id)
     if request.method == 'POST' or request.method == 'FILES' :
+        if 'delete' in request.POST:
+            Expense_Type_Sub_Master.objects.filter(id=sub_master_id).delete()
+            messages.success(request,"Expense Sub Master with ID: "+str(sub_master_id)+" deleted successfully!")
+            return redirect('/expense_master/')
         expense_type_master = request.POST.get('expense_type_master')
         expense_type_sub_master = request.POST.get('expense_type_sub_master')
         notes = request.POST.get('notes')
@@ -642,8 +677,10 @@ def update_expense_type_sub_master(request, sub_master_id):
         item.notes = notes
         item.save(update_fields=['log_entered_by','notes','expense_type_sub_master','expense_type_master','user_id',])
         return redirect('/expense_master/')  
-
-    return render(request,'expense_app/expense_type_sub_master.html')
+    context = {
+        'sub_master': sub_master,
+    }
+    return render(request,'expense_app/update_expense_type_sub_master.html',context)
 
 def expense_type_sub_sub_master(request):
     sub_master = Expense_Type_Sub_Master.objects.all()
@@ -663,17 +700,22 @@ def expense_type_sub_sub_master(request):
         item.expense_type_sub_sub_master = expense_type_sub_sub_master
         item.notes = notes
         item.save()
+        messages.success(request,"Expense Type Sub Sub Master : "+str(expense_type_sub_sub_master)+" created successfully!")
         return redirect('/expense_master/')  
     return render(request,'expense_app/expense_type_sub_sub_master.html', context)
 
 def update_expense_type_sub_sub_master(request, sub_sub_master_id):
     sub_master = Expense_Type_Sub_Master.objects.all()
-    sub_sub_master =  Expense_Type_Sub_Master.objects.get(id=sub_sub_master_id)
+    sub_sub_master =  Expense_Type_Sub_Sub_Master.objects.get(id=sub_sub_master_id)
     context = {
         'sub_master': sub_master,
         'sub_sub_master': sub_sub_master,
     }
     if request.method == 'POST' or request.method == 'FILES' :
+        if 'delete' in request.POST:
+            Expense_Type_Sub_Sub_Master.objects.filter(id=sub_sub_master_id).delete()
+            messages.success(request,"Expense Type Sub Sub Master with ID: "+str(sub_sub_master_id)+" deleted successfully!")
+            return redirect('/expense_master/')
         expense_type_sub_master = request.POST.get('expense_type_sub_master')
         expense_type_sub_sub_master = request.POST.get('expense_type_sub_sub_master')
         notes = request.POST.get('notes')
@@ -687,7 +729,7 @@ def update_expense_type_sub_sub_master(request, sub_sub_master_id):
         item.notes = notes
         item.save(update_fields=['user_id','log_entered_by','expense_type_sub_master_id','expense_type_sub_sub_master','notes',])
         return redirect('/expense_master/')  
-    return render(request,'expense_app/expense_type_sub_sub_master.html', context)
+    return render(request,'expense_app/update_expense_type_sub_sub_master.html', context)
 
 
 def load_expense_sub_master(request):
@@ -700,9 +742,6 @@ def load_expense_sub_sub_master(request):
     expense_type_sub_master = request.GET.get('expense_type_sub_master')
 
     expense_type_sub_sub_masters = Expense_Type_Sub_Sub_Master.objects.filter(expense_type_sub_master_id__id=expense_type_sub_master)
-    print('expense type')
-    print(expense_type_sub_master)
-    print(expense_type_sub_sub_masters)
     return render(request, 'AJAX_dropdowns/expense_sub_sub_master_dropdown.html', {'expense_type_sub_sub_masters': expense_type_sub_sub_masters})
 
 def load_vendor_details(request):
@@ -768,6 +807,20 @@ def showBill(request,sales_id):
                 obj['is_cgst'] = False
         else:
             obj['is_cgst'] = False
+    if request.method == 'POST':
+        bill_file = request.POST.get('bill_file')
+        print('bill file')
+        print(bill_file)
+        
+        item = Bill()
+
+        item.user_id = SiteUser.objects.get(id=request.user.id)
+        item.log_entered_by = request.user.name
+        item.purchase_id = Purchase_Details.objects.get(id=sales_id)
+        item.bill_file = bill_file
+        item.save()
+        messages.success(request,'Bill saved successfully !')
+        return redirect('/update_customer_details/'+str(sales_id))
     context={
         'invoice_details':purchase_details[0],
         'products_details':products_details,
@@ -776,21 +829,13 @@ def showBill(request,sales_id):
     return render(request,'bills/billsNew.html',context)
 
 def showBillModule(request):
-    bills_list = Purchase_Details.objects.all()
+    bills_list = Bill.objects.all()
     # search by options
     if request.method == 'POST':
         if 'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Pi_section.objects.filter(
-                    Q(lead_id__owner_of_opportunity__name=request.user.name) | Q(lead_id__owner_of_opportunity__group__icontains=request.user.name),
-                    lead_id__owner_of_opportunity___is_deleted=False, entry_date__range=[start_date, end_date]).order_by('-id')
-
-            else:  # For EMPLOYEE
-                bills_list = Pi_section.objects.filter(lead_id__owner_of_opportunity__user_id=request.user.pk,
-                                                      entry_date__range=[start_date, end_date]).order_by('-id')
-
+            bills_list = Bill.objects.filter( entry_date__range=[start_date, end_date]).order_by('-id')
             context = {
                 'bills_list': bills_list,
                 'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
@@ -798,14 +843,7 @@ def showBillModule(request):
             return render(request,'bills/billsModuleDashboard.html',context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Pi_section.objects.filter(
-                    Q(lead_id__owner_of_opportunity__name=request.user.name) | Q(lead_id__owner_of_opportunity__group__icontains=request.user.name),
-                    lead_id__owner_of_opportunity__is_deleted=False).order_by('-id')
-
-            else:  # For EMPLOYEE
-                bills_list = Pi_section.objects.filter(lead_id__owner_of_opportunity__id=request.user.pk,
-                                                      vendor__phone_no__icontains=contact).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__crm_no__contact_no=contact).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
@@ -816,14 +854,7 @@ def showBillModule(request):
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
 
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Pi_section.objects.filter(
-                    Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
-                    user_id__is_deleted=False, vendor__email_id__icontains=email).order_by('-id')
-
-            else:  # For EMPLOYEE
-                bills_list = Pi_section.objects.filter(user_id=request.user.pk,
-                                                      vendor__email_id__icontains=email).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__crm_no__customer_email_id=email).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
@@ -833,14 +864,8 @@ def showBillModule(request):
         elif 'submit4' in request.POST:
             name = request.POST.get('name')
 
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Pi_section.objects.filter(
-                    Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
-                    user_id__is_deleted=False, vendor__name__icontains=name).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__crm_no__customer_name=name).order_by('-id')
 
-            else:  # For EMPLOYEE
-                bills_list = Pi_section.objects.filter(user_id=request.user.pk, vendor__name__icontains=name).order_by(
-                    '-id')
 
             context = {
                 'bills_list': bills_list,
@@ -851,14 +876,7 @@ def showBillModule(request):
         elif 'submit5' in request.POST:
             company = request.POST.get('company')
 
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Pi_section.objects.filter(
-                    Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
-                    user_id__is_deleted=False, vendor__company_name__icontains=company).order_by('-id')
-
-            else:  # For EMPLOYEE
-                bills_list = Pi_section.objects.filter(user_id=request.user.pk,
-                                                      vendor__company_name__icontains=company).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__crm_no__company_name=company).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
@@ -867,23 +885,134 @@ def showBillModule(request):
             return render(request,'bills/billsModuleDashboard.html',context)
         elif request.method == 'POST' and 'submit6' in request.POST:
             id = request.POST.get('id')
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Pi_section.objects.filter(
-                    Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
-                    user_id__is_deleted=False, id=id).order_by('-id')
-
-            else:  # For EMPLOYEE
-                bills_list = Pi_section.objects.filter(user_id=request.user.pk, id=id).order_by('-id')
+            bills_list = Bill.objects.filter(id=id).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
                 'search_msg': 'Search result for Expense ID. : ' + str(id),
             }
             return render(request, 'bills/billsModuleDashboard.html', context)
+        elif request.method == 'POST' and 'delete_bill' in request.POST:
+            bill_id = request.POST.get('bill_id')
+            print('bill_id')
+            print(bill_id)
+            bills_list = Bill.objects.filter(id=bill_id).delete()
+            messages.success(request,"Bill Deleted Successfully!")
+            return redirect('/showBillModule/')
+            return render(request, 'bills/billsModuleDashboard.html', context)    
     context={
         "bills_list":bills_list,
     }
     return render(request,'bills/billsModuleDashboard.html',context)
+
+
+def report_bill_form(request):
+    if request.method =='POST':
+        selected_purchase_list = request.POST.getlist('checks[]')
+        selected_product_list = request.POST.getlist('products[]')
+        selected_customer_list = request.POST.getlist('customer[]')
+        payment_details = request.POST.get('payment_details')
+
+        start_date = request.POST.get('date1')
+        end_date = request.POST.get('date2')
+        string = ','.join(selected_purchase_list)
+        string_product = ','.join(selected_product_list)
+
+
+        request.session['start_date'] = start_date
+        request.session['end_date'] = end_date
+        request.session['string'] = selected_purchase_list
+        request.session['string_product'] = selected_product_list
+        request.session['selected_list'] = selected_purchase_list
+        request.session['selected_product_list'] = selected_product_list
+        request.session['selected_customer_list'] = selected_customer_list
+        request.session['payment_details'] = payment_details
+        return redirect('/final_bill_report/')
+    return render(request,"report/report_bill_form.html",)
+
+def final_bill_report(request):
+    start_date = request.session.get('start_date')
+    end_date = request.session.get('end_date')
+    string_purchase = request.session.get('string') + ['crm_no_id'] + ['id']
+    string_product = request.session.get('string_product')  + ['id'] + ['purchase_id']
+
+    selected_customer_list = request.session.get('selected_customer_list')
+    selected_list = request.session.get('selected_list') + ['crm_no_id']
+    selected_product_list = request.session.get('selected_product_list') + ['Purchase ID']
+    payment_details = request.session.get('payment_details')
+    print('payment details')
+    print(payment_details)
+    final_row_product = []
+    final_row = []
+
+    for n, i in enumerate(selected_list):
+        if i == 'purchase_app_purchase_details.id':
+            selected_list[n] = 'Purchase ID'
+        if i == 'customer_app_customer_details.id':
+            selected_list[n] = 'Customer No'
+        if i == 'today_date':
+            selected_list[n] = 'Entry Date'
+        if i == 'second_person':
+            selected_list[n] = 'Customer Name'
+
+    product_query = Product_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_product)
+    for product in product_query:
+        sales_query = Purchase_Details.objects.filter(id=product['purchase_id']).values(*string_purchase)
+        
+        try:
+            if selected_customer_list:
+                customer_query = Customer_Details.objects.filter(id=list(sales_query)[0]['crm_no_id']).values(*selected_customer_list)
+                for item in customer_query:
+                    product.update(item)
+        except:
+            print('no customer error')
+            pass
+        
+        for item in sales_query:
+            #payment details in sales report
+            if payment_details == 'payment_details':
+                print('payment details')
+                print(payment_details)
+                sale = Purchase_Details.objects.get(id=product['purchase_id'])
+                if sale.payment_mode == 'Cash' or sale.payment_mode == 'Razorpay':
+                    item['payment_mode'] = sale.payment_mode
+                elif sale.payment_mode == 'Credit':
+                    item['payment_mode'] = sale.payment_mode
+                    item['credit_authorised_by'] = 'Authorised by: '+str(sale.credit_authorised_by)
+                    item['credit_pending_amount'] = 'Pending Amount: '+str(sale.credit_pending_amount)
+                elif sale.payment_mode == 'Cheque':
+                    item['payment_mode'] = sale.payment_mode
+                    item['bank_name'] = 'Bank Name: '+str(sale.bank_name)
+                    item['cheque_no'] = 'Cheque No: '+str(sale.cheque_no)
+                    item['cheque_date'] = 'Cheque Date: '+str(sale.cheque_date)
+                elif sale.payment_mode == 'NEFT':
+                    item['payment_mode'] = sale.payment_mode
+                    item['neft_bank_name'] = 'Bank Name: '+str(sale.neft_bank_name)
+                    item['neft_date'] = 'NEFT Date: '+str(sale.neft_date)
+                    item['reference_no'] = 'Reference No: '+str(sale.reference_no)
+            print(item)
+            print('entry_timedate' in item)
+            product.update(item)
+
+    try:
+        del request.session['start_date']
+        del request.session['end_date']
+        del request.session['string']
+        del request.session['selected_list']
+        del request.session['string_product']
+        del request.session['selected_product_list']
+    except:
+        pass
+
+    context={
+        'final_row':final_row,
+        'final_row_product':final_row_product,
+        'selected_list':selected_list,
+        'selected_product_list':selected_product_list+selected_list,
+        'sales_query':product_query,
+    }
+    return render(request,"report/final_bill_report.html",context)
+
 
 def add_sales(request):
     return render(request,'bills/add_sales.html')
