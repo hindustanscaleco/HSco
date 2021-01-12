@@ -2,7 +2,7 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
-from customer_app.models import Customer_Details
+from customer_app.models import Customer_Details, DynamicDropdown
 from user_app.models import SiteUser
 from model_utils import FieldTracker
 
@@ -38,6 +38,8 @@ class Dispatch(models.Model):
     lr_no = models.CharField(max_length=150,null=True,blank=True)
     photo_lr_no = models.ImageField(upload_to='',null=True,blank=True)
     channel_of_dispatch = models.CharField(max_length=150,null=True,blank=True)
+    channel_of_dispatch_id = models.ForeignKey(DynamicDropdown,on_delete=models.CASCADE,null=True, blank=True)
+
     notes = models.CharField(max_length=300,null=True,blank=True)
     current_stage = models.CharField(max_length=150,null=True,blank=True)
     entry_timedate = models.DateField(default=datetime.date.today,null=True,blank=True)

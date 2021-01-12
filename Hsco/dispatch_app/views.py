@@ -40,6 +40,9 @@ from purchase_app.forms import Product_Details_Form
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
 from customer_app.models import Log
+
+from customer_app.models import DynamicDropdown
+
 today_month = datetime.now().month
 
 @receiver(pre_save, sender=Dispatch)
@@ -167,11 +170,33 @@ def dispatch_productss_handler(sender, instance, update_fields=None, **kwargs):
     except:
         pass
 
+def one_time_dd():
+    dis_id = Dispatch.objects.filter(channel_of_dispatch_id=None).values('id')
+    for obj in dis_id:
+        dispatch_id = Dispatch.objects.get(id=obj['id'])
+        print(dispatch_id.channel_of_dispatch)
+        if dispatch_id.channel_of_dispatch!="" and dispatch_id.channel_of_dispatch!="na" and dispatch_id.channel_of_dispatch!="NA" and dispatch_id.channel_of_dispatch!="XYZ" and dispatch_id.channel_of_dispatch!="Na":
+            refine_s = dispatch_id.channel_of_dispatch
+            if dispatch_id.channel_of_dispatch == 'Franchisee StoreSure' or dispatch_id.channel_of_dispatch == 'Franchisee StoreTejas' or \
+                    dispatch_id.channel_of_dispatch == 'Franchisee StoreBhairav Jwellers' or dispatch_id.channel_of_dispatch == 'Franchisee Storecas' or dispatch_id.channel_of_dispatch == 'Franchisee Storecasc':
+                refine_s = 'Franchisee Store'
+            if dispatch_id.channel_of_dispatch == 'Taxi' or dispatch_id.channel_of_dispatch == 'wefast' or dispatch_id.channel_of_dispatch == 'Wefast':
+                refine_s = 'Transport'
+
+            if dispatch_id.channel_of_dispatch == 'By Hand' or dispatch_id.channel_of_dispatch == 'Self':
+                refine_s = 'Delivery Boys'
+            if dispatch_id.channel_of_dispatch == 'DTDC' or dispatch_id.channel_of_dispatch == 'DTDC Courier':
+                refine_s = 'Courier'
+            dispatch_id.channel_of_dispatch_id = DynamicDropdown.objects.get(type="CHANNEL OF DISPATCH",name=refine_s.replace("`",""))
+            dispatch_id.save(
+                update_fields=['channel_of_dispatch_id',])
+
 
 def add_dispatch_details(request):
     # form = Customer_Details_Form(request.POST or None, request.FILES or None)
+    one_time_dd()
     cust_sugg=Customer_Details.objects.all()
-
+    channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
 
     if request.user.role == 'Super Admin':
         user_list=SiteUser.objects.filter(Q(id=request.user.id) | Q(group__icontains=request.user.name),modules_assigned__icontains='Dispatch Module', is_deleted=False)
@@ -296,7 +321,9 @@ def add_dispatch_details(request):
         item2.bill_address = bill_address
         item2.lr_no = lr_no
         item2.photo_lr_no = photo_lr_no
-        item2.channel_of_dispatch = channel_of_dispatch
+
+        # item2.channel_of_dispatch = channel_of_dispatch
+        item2.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)
         item2.notes = notes
         item2.dispatch_start_timedate = timezone.now()
         if Dispatch.objects.all().count()==0:
@@ -335,6 +362,7 @@ def add_dispatch_details(request):
     context = {
         'cust_sugg': cust_sugg,
         'user_list': user_list,
+        'channel_dispatch': channel_dispatch,
     }
     return render(request,'forms/dis_mod_form.html',context)
 
@@ -914,6 +942,10 @@ def dispatch_view(request):
     return render(request, "manager/dispatch_view.html", context)
 
 def update_dispatch_details(request,update_id):
+    one_time_dd()
+    channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
+
+
     dispatch_item=Dispatch.objects.get(id=update_id)
     product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
     # customer_id = Dispatch.objects.get(id=update_id).crm_no
@@ -982,9 +1014,10 @@ def update_dispatch_details(request,update_id):
 
             purchase_id.second_person = customer_name
             purchase_id.second_contact_no = contact_no
-            purchase_id.channel_of_dispatch = channel_of_dispatch
+            # purchase_id.channel_of_dispatch = channel_of_dispatch
+            purchase_id.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)
             # channel_of_dispatch = request.POST.get('channel_of_dispatch')
-            purchase_id.save(update_fields=['second_person', 'second_contact_no','channel_of_dispatch' ])
+            purchase_id.save(update_fields=['second_person', 'second_contact_no','channel_of_dispatch_id' ])
 
 
 
@@ -1113,7 +1146,8 @@ def update_dispatch_details(request,update_id):
         item.transport_name = transport_name
         item.lr_no = lr_no
         item.photo_lr_no = photo_lr_no
-        item.channel_of_dispatch = channel_of_dispatch
+        # item.channel_of_dispatch = channel_of_dispatch
+        item.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)
         item.notes = notes
 
         current_stage_in_db = Dispatch.objects.get(id=update_id).current_stage  # updatestage3
@@ -1241,7 +1275,7 @@ def update_dispatch_details(request,update_id):
         item.log_entered_by = request.user.name
 
         item.save(update_fields=['second_person','second_contact_no', 'dispatch_done_timedate','log_entered_by','packed_by',
-                                 'hamal_name','no_bundles','transport_name','lr_no','photo_lr_no','channel_of_dispatch',
+                                 'hamal_name','no_bundles','transport_name','lr_no','photo_lr_no','channel_of_dispatch_id',
                                  'notes','second_company_name','company_address','company_email','bill_address','shipping_address']),
 
         # item.save(update_fields=[ ]),
@@ -1257,17 +1291,18 @@ def update_dispatch_details(request,update_id):
         # item.save(update_fields=[ ]),
         dispatch_item = Dispatch.objects.get(id=update_id)
         product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
-
-        context = {
-            'dispatch_item': dispatch_item,
-            'product_list': product_list,
-        }
-        return render(request, "update_forms/update_dis_mod_form.html", context)
+        return redirect('/update_dispatch_details/'+str(update_id))
+        # context = {
+        #     'dispatch_item': dispatch_item,
+        #     'product_list': product_list,
+        # }
+        # return render(request, "update_forms/update_dis_mod_form.html", context)
 
     context = {
             'dispatch_item': dispatch_item,
             'product_list': product_list,
             'user_list': user_list,
+            'channel_dispatch': channel_dispatch,
         }
     return render(request, "update_forms/update_dis_mod_form.html", context)
        # item.save(update_fields=[''])

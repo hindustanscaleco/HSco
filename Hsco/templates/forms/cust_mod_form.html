@@ -298,21 +298,31 @@ Format : (contact no)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input  type="text"  name="channel_of_marketing" id="channel_of_marketing" placeholder="Channel of Marketing" class="form-control" list="channel110">
-    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-    <datalist style="height:20px;" id="channel110">
-      <option value="Phone"></option>
-      <option value="Whatsapp"></option>
-      <option value="Email"></option>
-<!--      <option value="Hsc"></option>-->
-<!--      <option value="Sales"></option>-->
-      <option value="Google"></option>
-      <option value="Justdial"></option>
-      <option value="Reference"></option>
-      <option value="Existing Customer"></option>
-      <option value="BNI"></option>
-      <option value="Others"></option>
-    </datalist>
+
+      <select name="channel_of_marketing" id="channel_of_marketing" class="form-control">
+  <option value="">Select Channel of Marketing</option>
+  {% for item in channel_marketing %}
+          <option value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+</select>
+
+
+<!--    <input  type="text"  name="channel_of_marketing" id="channel_of_marketing" placeholder="Channel of Marketing" class="form-control" list="channel110">-->
+<!--    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
+<!--    <datalist style="height:20px;" id="channel110">-->
+<!--      <option value="Phone"></option>-->
+<!--      <option value="Whatsapp"></option>-->
+<!--      <option value="Email"></option>-->
+<!--&lt;!&ndash;      <option value="Hsc"></option>&ndash;&gt;-->
+<!--&lt;!&ndash;      <option value="Sales"></option>&ndash;&gt;-->
+<!--      <option value="Google"></option>-->
+<!--      <option value="Justdial"></option>-->
+<!--      <option value="Reference"></option>-->
+<!--      <option value="Existing Customer"></option>-->
+<!--      <option value="BNI"></option>-->
+<!--      <option value="Others"></option>-->
+<!--    </datalist>-->
+
     </div>
   </div>
 
@@ -325,29 +335,37 @@ Format : (contact no)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input id="industry_id" type="text" required name="industry" placeholder="Industry" class="form-control" list="channel2">
-        <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-    <datalist style="height:20px;" id="channel2">
-      <option value="Energy industry"></option>
-      <option value="Chemicals"></option>
-      <option value="Industrial Metals "></option>
-      <option value="Gold/Gems and precious Metals "></option>
-      <option value="Home and Heavy Construction companies "></option>
-      <option value="Electrical and Electronic Manufacturers"></option>
-      <option value="Industrial Transportation"></option>
-      <option value="Agriculture"></option>
-      <option value="Poultry/Livestock"></option>
-      <option value="Healthcare Equipment and Services"></option>
-      <option value="Textiles"></option>
-      <option value="Hotels"></option>
-      <option value="Grocery/Retail"></option>
-      <option value="Bakery"></option>
-      <option value="Supplier"></option>
-      <option value="BNI"></option>
-      <option value="Online Promotion"></option>
-      <option value="Fishing"></option>
-      <option value="Dealer"></option>
-    </datalist>
+
+        <select name="industry" id="industry" required class="form-control">
+  <option value="">Select Industry</option>
+  {% for item in indutry %}
+          <option value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+</select>
+
+<!--    <input id="industry_id" type="text" required name="industry" placeholder="Industry" class="form-control" list="channel2">-->
+<!--        <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
+<!--    <datalist style="height:20px;" id="channel2">-->
+<!--      <option value="Energy industry"></option>-->
+<!--      <option value="Chemicals"></option>-->
+<!--      <option value="Industrial Metals "></option>-->
+<!--      <option value="Gold/Gems and precious Metals "></option>-->
+<!--      <option value="Home and Heavy Construction companies "></option>-->
+<!--      <option value="Electrical and Electronic Manufacturers"></option>-->
+<!--      <option value="Industrial Transportation"></option>-->
+<!--      <option value="Agriculture"></option>-->
+<!--      <option value="Poultry/Livestock"></option>-->
+<!--      <option value="Healthcare Equipment and Services"></option>-->
+<!--      <option value="Textiles"></option>-->
+<!--      <option value="Hotels"></option>-->
+<!--      <option value="Grocery/Retail"></option>-->
+<!--      <option value="Bakery"></option>-->
+<!--      <option value="Supplier"></option>-->
+<!--      <option value="BNI"></option>-->
+<!--      <option value="Online Promotion"></option>-->
+<!--      <option value="Fishing"></option>-->
+<!--      <option value="Dealer"></option>-->
+<!--    </datalist>-->
     </div>
   </div>
 </div>
@@ -363,17 +381,26 @@ Format : (contact no)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input  type="text" required name="channel_of_sales" id="channel_of_sales_id" placeholder="Channel of Sales" class="form-control" list="channel10">
-    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-    <datalist style="height:20px;" id="channel10">
-      <option value="Retail through Physical Store"></option>
-      <option value="Online Market Places"></option>
-      <option value="Website"></option>
-      <option value="Indiamart"></option>
-      <option value="App"></option>
-      <option value="Field Salesmen"></option>
-      <option value="Fairs and Trade Shows"></option>
-    </datalist>
+
+            <select name="channel_of_sales" id="channel_of_sales_id" required class="form-control">
+  <option value="">Select Channel of Sales</option>
+  {% for item in channel_sales %}
+          <option value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+</select>
+
+
+<!--    <input  type="text" required name="channel_of_sales" id="channel_of_sales_id" placeholder="Channel of Sales" class="form-control" list="channel10">-->
+<!--    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
+<!--    <datalist style="height:20px;" id="channel10">-->
+<!--      <option value="Retail through Physical Store"></option>-->
+<!--      <option value="Online Market Places"></option>-->
+<!--      <option value="Website"></option>-->
+<!--      <option value="Indiamart"></option>-->
+<!--      <option value="App"></option>-->
+<!--      <option value="Field Salesmen"></option>-->
+<!--      <option value="Fairs and Trade Shows"></option>-->
+<!--    </datalist>-->
     </div>
   </div>
 
@@ -385,16 +412,26 @@ Format : (contact no)
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  type="text" name="channel_of_dispatch" id="channel_of_dispatch_id" placeholder="Channel of Dispatch" required class="form-control" list="channel">
-        <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
 
-    <datalist style="height:20px;" id="channel">
-              <option value="Franchisee Store">
-              <option value="Transport">
-      <option value="Courier">
-      <option value="Online Market Places">
-      <option value="Delivery Boys">
-    </datalist>
+
+           <select name="channel_of_dispatch" id="channel_of_dispatch_id" required class="form-control">
+  <option value="">Select Channel of Dispatch</option>
+  {% for item in channel_sales %}
+          <option value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+</select>
+
+
+<!--  <input  type="text" name="channel_of_dispatch" id="channel_of_dispatch_id" placeholder="Channel of Dispatch" required class="form-control" list="channel">-->
+<!--        <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
+
+<!--    <datalist style="height:20px;" id="channel">-->
+<!--              <option value="Franchisee Store">-->
+<!--              <option value="Transport">-->
+<!--      <option value="Courier">-->
+<!--      <option value="Online Market Places">-->
+<!--      <option value="Delivery Boys">-->
+<!--    </datalist>-->
     </div>
   </div>
       </div>
@@ -411,10 +448,8 @@ Format : (contact no)
   <input  name="total_pf" id="total_pf_id" onkeyup="calculate_total_amount()"  value="0.0" placeholder="P&F Amount" class="form-control" step="any" type="number">
     </div>
   </div>
+
 <label class="col-md-2 control-label">Notes
-
-
-
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
