@@ -180,6 +180,8 @@ def one_time_dd():
             if dispatch_id.channel_of_dispatch == 'Franchisee StoreSure' or dispatch_id.channel_of_dispatch == 'Franchisee StoreTejas' or \
                     dispatch_id.channel_of_dispatch == 'Franchisee StoreBhairav Jwellers' or dispatch_id.channel_of_dispatch == 'Franchisee Storecas' or dispatch_id.channel_of_dispatch == 'Franchisee Storecasc':
                 refine_s = 'Franchisee Store'
+            if dispatch_id.channel_of_dispatch =='FraDE Store':
+                refine_s = 'Franchisee Store'
             if dispatch_id.channel_of_dispatch == 'Taxi' or dispatch_id.channel_of_dispatch == 'wefast' or dispatch_id.channel_of_dispatch == 'Wefast' or dispatch_id.channel_of_dispatch == 'Sanjay Transport':
                 refine_s = 'Transport'
 
