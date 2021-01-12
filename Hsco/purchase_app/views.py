@@ -1334,15 +1334,17 @@ def one_time_dd():
 
             purchase_id_id.industry_id=DynamicDropdown.objects.get(name=refined_d,type="INDUSTRY",)
         if purchase_id_id.channel_of_dispatch != None and purchase_id_id.channel_of_dispatch!="" and purchase_id_id.channel_of_dispatch!="NA" and purchase_id_id.channel_of_dispatch!="XYZ" and purchase_id_id.channel_of_dispatch!= 'Na':
-            print(purchase_id_id.channel_of_dispatch+'fhh')
+            print(purchase_id_id.channel_of_dispatch+'f23')
             refine_s= purchase_id_id.channel_of_dispatch
             if purchase_id_id.channel_of_dispatch=='Franchisee StoreSure' or purchase_id_id.channel_of_dispatch=='Franchisee StoreTejas' or \
                     purchase_id_id.channel_of_dispatch=='Franchisee StoreBhairav Jwellers' or purchase_id_id.channel_of_dispatch=='Franchisee Storecas' or purchase_id_id.channel_of_dispatch=='Franchisee Storecasc':
                 refine_s = 'Franchisee Store'
+	    if purchase_id_id.channel_of_dispatch =='FraDE Store':
+   	        refine_s = 'Franchisee Store'
             if purchase_id_id.channel_of_dispatch == 'Taxi' or purchase_id_id.channel_of_dispatch == 'wefast' or purchase_id_id.channel_of_dispatch == 'Wefast':
                 refine_s = 'Transport'
 
-            if purchase_id_id.channel_of_dispatch == 'By Hand' or purchase_id_id.channel_of_dispatch =='Self':
+            if purchase_id_id.channel_of_dispatch == 'By Hand' or purchase_id_id.channel_of_dispatch == 'By hand' or purchase_id_id.channel_of_dispatch =='Self':
                 refine_s = 'Delivery Boys'
             if purchase_id_id.channel_of_dispatch == 'DTDC' or purchase_id_id.channel_of_dispatch =='DTDC Courier':
                 refine_s = 'Courier'
