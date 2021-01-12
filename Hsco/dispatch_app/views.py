@@ -183,7 +183,7 @@ def one_time_dd():
             if dispatch_id.channel_of_dispatch == 'Taxi' or dispatch_id.channel_of_dispatch == 'wefast' or dispatch_id.channel_of_dispatch == 'Wefast' or dispatch_id.channel_of_dispatch == 'Sanjay Transport':
                 refine_s = 'Transport'
 
-            if dispatch_id.channel_of_dispatch == 'By Hand' or dispatch_id.channel_of_dispatch == 'Self':
+            if dispatch_id.channel_of_dispatch == 'By Hand' or dispatch_id.channel_of_dispatch == 'By hand' or dispatch_id.channel_of_dispatch == 'Self':
                 refine_s = 'Delivery Boys'
             if dispatch_id.channel_of_dispatch == 'DTDC' or dispatch_id.channel_of_dispatch == 'DTDC Courier':
                 refine_s = 'Courier'
