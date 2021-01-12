@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'import_export',
     'django_crontab',
     'expense_app',
+    'django_user_agents',
 
 ]
 
@@ -55,7 +56,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'session_security.middleware.SessionSecurityMiddleware'
+    'session_security.middleware.SessionSecurityMiddleware',
+    'django_user_agents.middleware.UserAgentMiddleware',
+
 ]
 AUTH_USER_MODEL = 'user_app.SiteUser'
 ROOT_URLCONF = 'Hsco.urls'
@@ -117,6 +120,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Cache backend is optional, but recommended to speed up user agent parsing
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#         'LOCATION': '127.0.0.1:11211',
+#     }
+# }
+
+USER_AGENTS_CACHE = 'default'
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 

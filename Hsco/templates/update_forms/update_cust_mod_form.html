@@ -340,21 +340,12 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input  type="text"  name="channel_of_marketing" id="myText116" disabled placeholder="Channel of Marketing" value="{{purchase_id_id.channel_of_marketing|default_if_none:''}}" class="form-control" list="channel110">
-    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-    <datalist style="height:20px;" id="channel110">
-      <option value="Phone"></option>
-      <option value="Whatsapp"></option>
-      <option value="Ask"></option>
-      <option value="Hsc"></option>
-      <option value="Sales"></option>
-      <option value="Google"></option>
-      <option value="Justdial"></option>
-      <option value="Reference from Existing Customer"></option>
-      <option value="Existing Customer"></option>
-      <option value="BNI"></option>
-      <option value="Others"></option>
-    </datalist>
+    <select name="channel_of_marketing" id="channel_of_marketing" class="form-control" id="myText116">
+<!--  <option value="{{purchase_id_id.channel_of_marketing|default_if_none:''}}">{{purchase_id_id.channel_of_marketing|default_if_none:''}}</option>-->
+  {% for item in channel_marketing %}
+          <option {% if purchase_id_id.channel_of_marketing_id.pk == item.id %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+</select>
     </div>
   </div>
 
@@ -363,31 +354,12 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input  type="text" required name="industry" placeholder="Industry" class="form-control" disabled id="myText18" value="{{purchase_id_id.industry}}" list="channel2">
-        <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-      <datalist style="height:20px;" id="channel2">
-      <option value="Energy industry"></option>
-      <option value="Chemicals"></option>
-      <option value="Industrial Metals "></option>
-      <option value="Gold/Gems and precious Metals "></option>
-      <option value="Home and Heavy Construction companies "></option>
-      <option value="Electrical and Electronic Manufacturers"></option>
-      <option value="Industrial Transportation"></option>
-      <option value="Agriculture"></option>
-      <option value="Poultry/Livestock"></option>
-      <option value="Healthcare Equipment and Services"></option>
-      <option value="Textiles"></option>
-      <option value="Hotels"></option>
-      <option value="Grocery/Retail"></option>
-      <option value="Bakery"></option>
-
-      <option value="Supplier"></option>
-      <option value="BNI"></option>
-      <option value="Online Promotion"></option>
-      <option value="Fishing"></option>
-      <option value="Dealer"></option>
-
-    </datalist>
+      <select name="industry"  id="industry" required class="form-control" id="myText18">
+<!--  <option value="{{purchase_id_id.industry}}">{{purchase_id_id.industry}}</option>-->
+  {% for item in industry_list %}
+          <option {% if purchase_id_id.industry_id.pk == item.id %} selected="selected" {% endif %}  value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+</select>
     </div>
   </div>
 </div>
@@ -402,17 +374,13 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input type="text" required name="channel_of_sales" placeholder="Channel of Sales" class="form-control" disabled id="myText16" value="{{purchase_id_id.channel_of_sales}}" list="channel10">
-    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-      <datalist style="height:20px;" id="channel10">
-      <option value="Retail through Physical Store"></option>
-      <option value="Online Market Places"></option>
-      <option value="India Mart"></option>
-      <option value="Website"></option>
-      <option value="App"></option>
-      <option value="Field Salesmen"></option>
-      <option value="Fairs and Trade Shows"></option>
-    </datalist>
+ <select name="channel_of_sales" id="channel_of_sales_id" required class="form-control"  id="myText16">
+<!--            <option value="{{purchase_id_id.channel_of_sales}}">{{purchase_id_id.channel_of_sales}}</option>-->
+  {% for item in channel_sales %}
+          <option {% if purchase_id_id.channel_of_sales_id.pk == item.id %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+          </select>
+      
     </div>
   </div>
 
@@ -422,15 +390,12 @@ function myFunction() {
       <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-  <input  type="text" name="channel_of_dispatch" placeholder="Channel of Dispatch" required class="form-control" disabled id="myText21" value="{{purchase_id_id.channel_of_dispatch}}" list="channel">
-    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-      <datalist style="height:20px;" id="channel">
-      <option value="Courier">
-      <option value="Transport">
-      <option value="Franchisee Store">
-      <option value="Online Market Places">
-      <option value="Delivery Boys">
-    </datalist>
+      <select name="channel_of_dispatch" id="channel_of_dispatch_id" required class="form-control" id="myText21">
+<!--  <option value="{{purchase_id_id.channel_of_dispatch}}">{{purchase_id_id.channel_of_dispatch}}</option>-->
+  {% for item in channel_dispatch %}
+          <option {% if purchase_id_id.channel_of_dispatch_id.pk == item.id %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+</select>
     </div>
   </div>
 </div>

@@ -465,8 +465,8 @@ color:;
   <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-<select name="payment_type" id="payment_mode_id" onchange="show()"   class="form-control">
-  <option value="{{expense.payment_type}}">{{expense.payment_type}} </option>
+<select name="payment_type" id="payment_mode_id" onchange="show()" class="form-control">
+  <option value="{{expense.payment_type}} ">{{expense.payment_type}} </option>
   <option value="Cash">Cash</option>
   <option  value="Cheque">Cheque</option>
   <option  value="Credit">Credit</option>
@@ -598,8 +598,8 @@ color:;
             
 <br>
 <center>
-  <button style="background-color: #FC6E20;" type="Button" value="Submit" class="btn btn-primary">Edit</button>
-  <button style="background-color: #FC6E20;" type="Submit" value="Submit" class="btn btn-primary">Submit</button>
+  <button style="background-color: #FC6E20;" type="Button" value="Submit" class="btn btn-primary" onclick="editableButton()">Edit</button>
+  <button style="background-color: #FC6E20;" type="Submit" value="Submit" class="btn btn-primary" onclick="disabledEnable()">Submit</button>
   <button style="background-color: #FC6E20;" type="Submit" name="delete" value="delete" class="btn btn-primary">Delete</button>
 </center>
 
@@ -691,6 +691,13 @@ color:;
   <!-- Scroll to Top Button-->
 
 <script>
+
+const editableButton=()=>{
+let inputFields = document.querySelectorAll('input,select,textarea');
+for(i=0; i<=inputFields.length; i++){
+inputFields[i].disabled = false;
+}
+}
 
   function show(){
               var mode = document.getElementById("payment_mode_id").value;
@@ -846,6 +853,15 @@ $('textarea[name=notes]').val(data.vendor_detail[0].notes);
         }
       });
 }
+
+const disabledEnable =() =>{
+let inputFields = document.querySelectorAll('input,select,textarea');
+for(i=0; i<=inputFields.length; i++){
+inputFields[i].disabled = true;
+}
+}
+disabledEnable();
+
   </script>
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
