@@ -416,7 +416,7 @@ Format : (contact no)
 
            <select name="channel_of_dispatch" id="channel_of_dispatch_id" required class="form-control">
   <option value="">Select Channel of Dispatch</option>
-  {% for item in channel_sales %}
+  {% for item in channel_dispatch %}
           <option value="{{item.id}}">{{item.name}}</option>
           {% endfor %}
 </select>
