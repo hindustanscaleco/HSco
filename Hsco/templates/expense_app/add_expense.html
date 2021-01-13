@@ -343,6 +343,15 @@ color:;
 
 <hr style="background-color: gray;">
      <div class="form-group row">
+     <label class="col-md-2 control-label">GST No</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="gst_no" id="gst_no" placeholder="GST No" class="form-control" type="text">
+    </div>
+  </div>
+  
   <label class="col-md-2 control-label">Total Amount
 </label>
    <div class="col-md-4 inputGroupContainer">
@@ -353,14 +362,7 @@ color:;
   </div>
 
 
-<label class="col-md-2 control-label">GST No</label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="gst_no" id="gst_no" placeholder="GST No" class="form-control" type="text">
-    </div>
-  </div>
   </div>
 
         <hr style="background-color: gray;">
@@ -385,7 +387,7 @@ color:;
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="name_of_payee" id="name_of_payee" placeholder="Name of Payee"  class="form-control"  type="text">
+  <input  name="name_of_payee" id="name_of_payee" value="{{request.user.name}}" placeholder="Name of Payee"  class="form-control"  type="text">
     </div>
   </div>
   </div>
@@ -596,6 +598,8 @@ color:;
   <!-- Scroll to Top Button-->
 
 <script>
+  document.getElementById("date_of_payment").valueAsDate = new Date();
+
   function show(){
               var mode = document.getElementById("payment_mode_id").value;
               var x = document.getElementById("payment_cheque2");
@@ -743,6 +747,7 @@ $('input[name=sgst_per]').val(data.vendor_detail[0].sgst_per);
 $('input[name=cgst_per]').val(data.vendor_detail[0].cgst_per);
 $('input[name=igst_per]').val(data.vendor_detail[0].igst_per);
 $('input[name=tds_per]').val(data.vendor_detail[0].tds_per);
+$('input[name=gst_no]').val(data.vendor_detail[0].gst_no);
 $('textarea[name=notes]').val(data.vendor_detail[0].notes);
         }
       });

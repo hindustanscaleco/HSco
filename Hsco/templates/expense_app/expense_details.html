@@ -356,6 +356,15 @@ color:;
 
 <hr style="background-color: gray;">
      <div class="form-group row">
+     <label class="col-md-2 control-label">GST No</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="gst_no" id="gst_no" value="{{expense.gst_no}}" placeholder="GST No" class="form-control" type="text">
+    </div>
+  </div>
+  
   <label class="col-md-2 control-label">Total Amount
 </label>
    <div class="col-md-4 inputGroupContainer">
@@ -366,14 +375,7 @@ color:;
   </div>
 
 
-<label class="col-md-2 control-label">GST No</label>
 
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input name="gst_no" id="gst_no" value="{{expense.gst_no}}" placeholder="GST No" class="form-control" type="text">
-    </div>
-  </div>
   </div>
 
         <hr style="background-color: gray;">
@@ -656,6 +658,15 @@ color:;
 <tr>
     <td>Brand:</td>
         <td>{{product.brand}}</td></tr>
+<tr>
+    <td>Capacity:</td>
+        <td>{{product.capacity}}</td></tr>
+<tr>
+    <td>Unit:</td>
+        <td>{{product.unit}}</td></tr>
+<tr>
+    <td>Quantity:</td>
+        <td>{{product.quantity}}</td></tr>                        
 <tr>
     <td>Amount:</td>
         <td>{{product.amount}} </td></tr>

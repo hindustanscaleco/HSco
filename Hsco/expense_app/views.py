@@ -450,6 +450,9 @@ def expense_details(request, expense_id):
     if request.method == 'GET' and 'expense_type_sub_sub_master' in request.GET:
         expense_type_sub_sub_master_id = request.GET.get('expense_type_sub_sub_master')
         vendors_list = Vendor.objects.filter(expense_type_sub_sub_master_id=expense_type_sub_sub_master_id)
+        print('venodr list')
+        print(vendors_list)
+        print('jlkdfsklj')
         context={
             'vendors_list' : vendors_list,
             'expense_masters' : expense_masters,

@@ -76,7 +76,7 @@
 <a style="padding: 2px;" href="/add_expense/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Expense </button></a>
 <a style="padding: 2px;" href="/vendor_master/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Vendor </button></a>
 <a style="padding: 2px;" href="/expense_master/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Expense Master </button></a>
-                          {% if request.user.role == 'Super Admin' %}
+                          {% if request.user.role != 'Employee' %}
  <a style="padding: 2px;" href="/expense_report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
  {% endif %}
 {% endif %}
