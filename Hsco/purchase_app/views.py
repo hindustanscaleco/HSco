@@ -2692,6 +2692,8 @@ def autocomplete(request):
 
 def gstvsCash(request):
     gst_sales=[]
+    total_gst = 0.0
+    total_cash = 0.0
     if request.method =='POST':
         from_date = request.POST.get('date1')
         to_date = request.POST.get('date2')
