@@ -71,16 +71,30 @@
                 <div class="card-body" style="padding: 2px;">
                   <div class="row no-gutters align-items-right">
      {% if request.user.is_authenticated %}
- <a style="padding: 2px;" href="/report_bill_form/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
- <a style="padding: 2px;" href="/expense_report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Bill Number</button></a>
+ {% comment %} <a style="padding: 2px;" href="/report_bill_form/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a> {% endcomment %}
+ 
 {% endif %}
                 </div>
               </div>
+              
             </div>
+            
                 </div>
+            <div class="row" style="float:right ; text-align:right;">
+            <div class="col-xl-5 col-md-5">
+ <button style="background-color: #FC6E20;" onclick="increase_billno()" type="reset" class="btn btn-primary">Bill Number</button>
+ </div>
+ <div id="div_bill_no" style="display:none;" class="col-xl-3 col-md-5">
+ <input  class="form-control"/>
+ </div>
+ <div id="div_bill_submit" style="display:none;" class="col-xl-2 col-md-5">
+ <button  type="submit" class="btn btn-primary">Submit</button>
+ </div>
+ 
+ </div>
 
 
-
+<br>
 <br>
 
 <style>
@@ -272,12 +286,12 @@ $(function() {
             </div>
                 <form>
                   <div class="row">
-                    <div class="col-md-2">
+                    {% comment %} <div class="col-md-2">
                       <input type="date" class="form-control">
                     </div>
                     <div class="col-md-2">
                       <input type="date" class="form-control">
-                    </div>
+                    </div> {% endcomment %}
                     <div class="col-md-3">
                       <select class="form-control" name="dropdown" onchange="filterby_company(this)" id="cars">
                         <option value="">Select Our Company</option>
@@ -503,6 +517,18 @@ td {
     <i class="fas fa-angle-up"></i>
   </a>
   <script>
+  function increase_billno(){
+    var bill_no = document.getElementById("div_bill_no");
+    var bill_submit = document.getElementById("div_bill_submit");
+    if (bill_no.style.display == "none"){
+    bill_no.style.display = "block";
+    bill_submit.style.display = "block";
+    }
+    else{
+    bill_no.style.display = "none";
+    bill_submit.style.display = "none";
+    }
+  }
   function filterby_company(select) {
 //$("#model_of_purchase").val(select.options[select.selectedIndex].text);
      //alert(select.options[select.selectedIndex].value);

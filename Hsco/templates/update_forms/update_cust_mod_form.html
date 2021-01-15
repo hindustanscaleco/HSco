@@ -95,7 +95,7 @@ font-size: 14px;
         </style>
 
 
-  <script> function disable() {
+  {% comment %} <script> function disable() {
   document.getElementById("name").disabled = true;
   }
 
@@ -108,7 +108,7 @@ var elements = form.elements;
 for (var i = 0, len = elements.length; i < len; ++i) {
     elements[i].disabled = true;
 }
-</script>
+</script> {% endcomment %}
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -138,7 +138,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
           </div>
 <br>
 <script>
-function myFunction() {
+{% comment %} function myFunction() {
 
   var x = document.getElementById("myText19");
   var y = document.getElementById("myText20");
@@ -166,8 +166,8 @@ function myFunction() {
     document.getElementById("myText9").disabled = false;
     document.getElementById("myText14").disabled = false;
     document.getElementById("myText15").disabled = false;
+    document.getElementById("myText81").disabled = false;
     document.getElementById("myText16").disabled = false;
-    document.getElementById("myText116").disabled = false;
     document.getElementById("myText17").disabled = false;
     document.getElementById("myText18").disabled = false;
     document.getElementById("myText21").disabled = false;
@@ -176,7 +176,7 @@ function myFunction() {
     document.getElementById("tax_amt_id").disabled = false;
     document.getElementById("payment_mode_id").disabled = false;
     document.getElementById("total_pf_id").disabled = false;
-    document.getElementById("gst_id").disabled = false;
+    document.getElementById("gst_id").disabled = false; 
 
 
     <!--if (mode == 'Cheque'){-->
@@ -196,9 +196,9 @@ function myFunction() {
     <!--}-->
 
 
-    document.getElementById("myText19").style.display = "block";
+    document.getElementById("myText19").style.display = "block"; 
 
-}
+}{% endcomment %}
 
 </script>
 {% if messages %}
@@ -340,8 +340,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <select name="channel_of_marketing" id="channel_of_marketing" class="form-control" id="myText116">
-<!--  <option value="{{purchase_id_id.channel_of_marketing|default_if_none:''}}">{{purchase_id_id.channel_of_marketing|default_if_none:''}}</option>-->
+    <select name="channel_of_marketing" id="channel_of_marketing" class="form-control" disabled id="myText81" >
   {% for item in channel_marketing %}
           <option {% if purchase_id_id.channel_of_marketing_id.pk == item.id %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
           {% endfor %}
@@ -354,7 +353,7 @@ function myFunction() {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-      <select name="industry"  id="industry" required class="form-control" id="myText18">
+      <select name="industry"  id="industry" required class="form-control" disabled id="myText18" >
 <!--  <option value="{{purchase_id_id.industry}}">{{purchase_id_id.industry}}</option>-->
   {% for item in industry_list %}
           <option {% if purchase_id_id.industry_id.pk == item.id %} selected="selected" {% endif %}  value="{{item.id}}">{{item.name}}</option>
@@ -374,7 +373,7 @@ function myFunction() {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
- <select name="channel_of_sales" id="channel_of_sales_id" required class="form-control"  id="myText16">
+ <select name="channel_of_sales" id="channel_of_sales_id" required class="form-control" id="myText16" disabled  >
 <!--            <option value="{{purchase_id_id.channel_of_sales}}">{{purchase_id_id.channel_of_sales}}</option>-->
   {% for item in channel_sales %}
           <option {% if purchase_id_id.channel_of_sales_id.pk == item.id %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
@@ -390,7 +389,7 @@ function myFunction() {
       <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-      <select name="channel_of_dispatch" id="channel_of_dispatch_id" required class="form-control" id="myText21">
+      <select name="channel_of_dispatch" disabled id="channel_of_dispatch_id" required class="form-control" id="myText21">
 <!--  <option value="{{purchase_id_id.channel_of_dispatch}}">{{purchase_id_id.channel_of_dispatch}}</option>-->
   {% for item in channel_dispatch %}
           <option {% if purchase_id_id.channel_of_dispatch_id.pk == item.id %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
@@ -465,10 +464,10 @@ function myFunction() {
 <div class="col-md-4 inputGroupContainer">
 <div class="custom-control custom-checkbox">
     {% if purchase_id_id.is_gst == True %}
-<input type="checkbox" class="custom-control-input" id="gst_id"  name="gst_id"  checked   >
+<input type="checkbox" class="custom-control-input" id="gst_id" onclick="on_gst()" name="gst_id"  checked   >
   <label class="custom-control-label" for="gst_id"></label>
     {% else %}
-    <input type="checkbox" class="custom-control-input" id="gst_id"  name="gst_id"    >
+    <input type="checkbox" class="custom-control-input" id="gst_id" onclick="on_gst()"  name="gst_id"    >
   <label class="custom-control-label" for="gst_id"></label>
     {% endif %}
   </div>
@@ -708,15 +707,20 @@ function myFunction() {
 <input hidden id="gst_check" value="{{purchase_id_id.is_gst}}" >
 
       <script>
+      
       function on_gst(){
-                gst_selected = document.getElementById("gst_id").checked;
-                if (gst_selected == true){
-                      $('#bill_no').attr('required', '');
-                }
-                else{
-                      $('#bill_no').removeAttr('required', '');
+        console.log("fhdkjshfkds");
+        console.log("fhdkjshfkds");
+                bill = document.getElementById("bill_id");
+                var gst_id = document.getElementById("gst_id").checked;
+                if (gst_id ==true){
+                  bill.style.display = "block";
+                }else{
+                  bill.style.display = "none";
                 }
           }
+                
+
                 show();
 
               var gst_check = document.getElementById("gst_check").value;
@@ -808,6 +812,7 @@ function myFunction() {
               var tax_amount = parseFloat(document.getElementById("tax_amt_id").value);
               var  pf = parseFloat(document.getElementById("total_pf_id").value);
               if (gst_id == true){
+                  bill.style.display = "block";
                   document.getElementById("tax_amt_id").value = Math.floor( (value_of_goods  + pf) * 0.18);
                   calculate_total_amount();
               }
@@ -841,7 +846,7 @@ checkbox.addEventListener( 'change', function() {
     <center>
 
 {% if not purchase_id_id.dispatch_id_assigned and not purchase_id_id.is_quick_entry %}
-        <button style="background-color: #FC6E20;" onclick="myFunction()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
+        <button style="background-color: #FC6E20;" onclick="editableButton()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
 
                                           {% endif %}
 
@@ -861,7 +866,7 @@ checkbox.addEventListener( 'change', function() {
 
           {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None and not purchase_id_id.is_quick_entry %}
 
-        <button style="background-color: #FC6E20;" onclick="myFunction()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
+        <button style="background-color: #FC6E20;" onclick="editableButton()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
                                   {% endif %}
 
 
@@ -875,8 +880,7 @@ checkbox.addEventListener( 'change', function() {
   <option value="Cash">Scale</option>
   <option  value="Cheque">Sales</option>
 </select>
-
-                  <button style="background-color: #FC6E20;" type="button" value="button1" class="btn btn-primary"><a href="/showBill/{{purchase_id_id.pk}}" target="_blank">Bill</a></button>
+                  <button style="background-color: #FC6E20; " type="button" value="button1" id="bill_id"  class="btn btn-primary"><a href="/showBill/{{purchase_id_id.pk}}" target="_blank">Bill</a></button>
 
 
       </center>
@@ -1108,7 +1112,28 @@ tr:nth-child(even) {
     <i class="fas fa-angle-up"></i>
   </a>
 <script type="text/javascript">
+const editableButton=()=>{
+  var x = document.getElementById("myText19");
+  
+  var y = document.getElementById("myText20");
+  var mode = document.getElementById("payment_mode_id").value;
+  if (x != null){
+    if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.display = "none";
+  } else {
+    x.style.display = "none";
+    y.style.display = "block";
+  }
+  }
+  
+let inputFields = document.querySelectorAll('input,select,textarea');
+for(i=0; i<=inputFields.length; i++){
+inputFields[i].disabled = false;
+}
 
+on_gst();
+}
 function calculate_total_amount(){
     var value_of_goods = parseFloat(document.getElementById("myText25").value);
     var tax_amount = parseFloat(document.getElementById("tax_amt_id").value);
@@ -1119,6 +1144,18 @@ function calculate_total_amount(){
             document.getElementById("total_amt_id").value = total_amount;
 
 }
+
+const disabledEnable =() =>{
+  on_gst();
+let inputFields = document.querySelectorAll('input,select,textarea');
+for(i=0; i<=inputFields.length; i++){
+inputFields[i].disabled = true;
+}
+on_gst();
+}
+disabledEnable();
+
+console.log("on gst called");
   </script>
 
 

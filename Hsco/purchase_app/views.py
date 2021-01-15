@@ -1471,7 +1471,7 @@ def update_customer_details(request,id):
                 item2.is_gst = False
 
 
-            item2.payment_mode = payment_mode
+            item2.payment_mode = payment_type
             if total_pf != '' and total_pf != None:
                 item2.total_pf = float(total_pf)
 
