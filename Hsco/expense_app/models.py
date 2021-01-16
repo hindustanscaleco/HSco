@@ -2,6 +2,7 @@ from django.db import models
 from user_app.models import SiteUser
 from stock_management_system_app.models import Godown
 import datetime
+from purchase_app.models import Purchase_Details
 # Create your models here.
 
 # class Expense_Details(models.Model):   
@@ -115,4 +116,13 @@ class Expense_Product(models.Model):
     rate = models.CharField(max_length=30,null=True,blank=True)
 
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
+    entry_date = models.DateField(default=datetime.date.today)
+
+class Bill(models.Model):
+    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE, null=True, blank=True)
+    bill_no = models.CharField(max_length=30,null=True,blank=True, unique=True)
+    purchase_id = models.ForeignKey(Purchase_Details,on_delete=models.CASCADE, null=True, blank=True)
+    bill_file = models.FileField(upload_to='',null=True,blank=True)
+    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
+    # entry_timedate = models.DateTimeField(default=timezone.now,)
     entry_date = models.DateField(default=datetime.date.today)

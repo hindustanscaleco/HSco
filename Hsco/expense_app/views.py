@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Expense_Type_Sub_Master, Expense_Type_Sub_Sub_Master, Vendor, Expense, Expense_Product
+from .models import Expense_Type_Sub_Master, Expense_Type_Sub_Sub_Master, Vendor, Expense, Expense_Product , Bill
 from django.shortcuts import render, redirect
 from user_app.models import SiteUser
 from django.http import HttpResponse, JsonResponse
@@ -9,7 +9,7 @@ from purchase_app.views import check_admin_roles
 from django.db.models import Q, F, Min, Avg
 from django.contrib import messages
 from lead_management.models import Pi_section
-from purchase_app.models import Purchase_Details,Product_Details, Bill
+from purchase_app.models import Purchase_Details,Product_Details
 
 # Create your views here.
 
@@ -819,6 +819,7 @@ def showBill(request,sales_id):
 
         item.user_id = SiteUser.objects.get(id=request.user.id)
         item.log_entered_by = request.user.name
+        item.bill_no = str(Bill.objects.latest('id').bill_no + 1).zfill(10)
         item.purchase_id = Purchase_Details.objects.get(id=sales_id)
         item.bill_file = bill_file
         item.save()
@@ -897,10 +898,28 @@ def showBillModule(request):
             return render(request, 'bills/billsModuleDashboard.html', context)
         elif request.method == 'POST' and 'delete_bill' in request.POST:
             bill_id = request.POST.get('bill_id')
-            print('bill_id')
-            print(bill_id)
+            
             bills_list = Bill.objects.filter(id=bill_id).delete()
             messages.success(request,"Bill Deleted Successfully!")
+            return redirect('/showBillModule/')
+            return render(request, 'bills/billsModuleDashboard.html', context) 
+        elif 'increase_bill_no' in request.POST:
+            new_bill_no = request.POST.get('new_bill_no')
+            new_bill_no = str(new_bill_no).zfill(10)
+            print('new_bill_no')
+            print(new_bill_no)
+            if new_bill_no < Bill.objects.latest('bill_no').bill_no :
+                messages.error(request,"Bill no cannot be decreased !")
+            elif new_bill_no == Bill.objects.filter(bill_no = new_bill_no):
+                messages.error(request,"Bill no already exists !")    
+            else:
+                try:
+                    del request.session['new_bill_no']
+                    request.session['new_bill_no'] = new_bill_no
+                except:
+                    pass
+                bill_no = request.session.get('new_bill_no')
+                messages.error(request,"Bills will be now created from bill id "+str(bill_no))
             return redirect('/showBillModule/')
             return render(request, 'bills/billsModuleDashboard.html', context)    
     context={

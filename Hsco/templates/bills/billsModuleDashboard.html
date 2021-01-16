@@ -80,20 +80,25 @@
             </div>
             
                 </div>
+<form method="POST" autocomplete="off">{% csrf_token %}
+
             <div class="row" style="float:right ; text-align:right;">
             <div class="col-xl-5 col-md-5">
  <button style="background-color: #FC6E20;" onclick="increase_billno()" type="reset" class="btn btn-primary">Bill Number</button>
  </div>
- <div id="div_bill_no" style="display:none;" class="col-xl-3 col-md-5">
- <input  class="form-control"/>
- </div>
- <div id="div_bill_submit" style="display:none;" class="col-xl-2 col-md-5">
- <button  type="submit" class="btn btn-primary">Submit</button>
- </div>
+  <div id="div_bill_no" style="display:none;" class="col-xl-5 col-md-5">
+  <input name="new_bill_no" type="number" class="form-control" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;" />
+
+  </div>
+  <div id="div_bill_submit" style="display:none;" class="col-xl-2 col-md-5">
+  <button  type="submit" name="increase_bill_no" class="btn btn-primary">Submit</button>
+  </div>
  
  </div>
 
+ </form>
 
+<br>
 <br>
 <br>
 
@@ -479,8 +484,8 @@ td {
           <td>
           <form method="POST">{% csrf_token %}
             <input type="hidden" name="bill_id" value={{item.id}}></input>
-              <a href="{{item.bill_file.url}}"><span><i style="color: #FC6E20;" class="fa fa-print" aria-hidden="true"></i></span></a>
-              <a href="{{item.bill_file.url}}"><span><i style="color: #FC6E20;" class="fa fa-download" aria-hidden="true"></i></span></a>
+              <a href="{% if item.bill_file %} {{item.bill_file.url}} {% endif %}"><span><i style="color: #FC6E20;" class="fa fa-print" aria-hidden="true"></i></span></a>
+              <a href="{% if item.bill_file %} {{item.bill_file.url}} {% endif %}"><span><i style="color: #FC6E20;" class="fa fa-download" aria-hidden="true"></i></span></a>
               <a href="/update_customer_details/{{item.purchase_id.id}}"><span><i style="color: #FC6E20;" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
               <button type="submit"  name="delete_bill"><span><i style="color: #FC6E20;" class="fa fa-trash" aria-hidden="true"></i></span></button>
           </form>
