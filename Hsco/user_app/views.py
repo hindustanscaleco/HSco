@@ -146,16 +146,15 @@ class LoginView(FormView):
                     browser_fam = request.user_agent.browser.family
                     is_mobile = 'No' if request.user_agent.is_mobile == False else 'Yes'
 
-                    msg = '''
-                                      User : ''' + employee_number + '''
-                                      Is Mobile User : ''' + str(is_mobile) + '''
-                                      Os : ''' + str(os_fam) + '''
-                                      Browser : ''' + str(browser_fam) + '''
-                                      Device : ''' + str(dev_fam) + '''
-                                      Location : ''' + str(latitude) + ''', ''' + str(longitude) + '''
-                                      '''
+                    msg = '''User : ''' + employee_number + '''\n
+Is Mobile User : ''' + str(is_mobile) + '''\n
+Os : ''' + str(os_fam) + '''\n
+Browser : ''' + str(browser_fam) + '''\n
+Device : ''' + str(dev_fam) + '''\n
+Location : ''' + str(latitude) + ''', ''' + str(longitude) + '''\n
+                            '''
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9284336756&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=8237620548&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 
