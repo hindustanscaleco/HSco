@@ -812,14 +812,17 @@ def showBill(request,sales_id):
             obj['is_cgst'] = False
     if request.method == 'POST':
         bill_file = request.POST.get('bill_file')
-        print('bill file')
-        print(bill_file)
         
         item = Bill()
 
         item.user_id = SiteUser.objects.get(id=request.user.id)
         item.log_entered_by = request.user.name
-        item.bill_no = str(Bill.objects.latest('id').bill_no + 1).zfill(10)
+        print(request.session.get('new_bill_no'))
+        session_billno = request.session.get('new_bill_no')
+        if (session_billno != '' or session_billno != 'None') and Bill.objects.filter(bill_no=session_billno).count() == 0 :
+            item.bill_no = str(session_billno)
+        else:
+            item.bill_no = str(Bill.objects.latest('id').bill_no + 1).zfill(10)
         item.purchase_id = Purchase_Details.objects.get(id=sales_id)
         item.bill_file = bill_file
         item.save()
