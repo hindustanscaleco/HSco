@@ -610,7 +610,6 @@ def final_expense_report(request):
     for product in product_query:
         expense_query = Expense.objects.filter(id=product['id']).values(*string_expense)
         
-        print(sales_query)
     try:
         del request.session['start_date']
         del request.session['end_date']

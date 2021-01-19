@@ -128,8 +128,9 @@ class LoginView(FormView):
         else:
             employee_number = form.cleaned_data.get('mobile')
             password = form.cleaned_data.get('password')
-            latitude = form.cleaned_data.get('latitude')
-            longitude = form.cleaned_data.get('longitude')
+            latitude = request.POST.get('latitude')
+            longitude = request.POST.get('longitude')
+            
             user = authenticate(request, employee_number=employee_number, password=password)
             if user is not None:
                 login(request, user)
@@ -151,10 +152,10 @@ Is Mobile User : ''' + str(is_mobile) + '''\n
 Os : ''' + str(os_fam) + '''\n
 Browser : ''' + str(browser_fam) + '''\n
 Device : ''' + str(dev_fam) + '''\n
-Location : ''' + str(latitude) + ''', ''' + str(longitude) + '''\n
+Location : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
                             '''
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=8237620548&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9730644834&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 
