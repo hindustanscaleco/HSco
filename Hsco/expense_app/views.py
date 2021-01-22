@@ -602,14 +602,20 @@ def final_expense_report(request):
     end_date = request.session.get('end_date')
 
     selected_expense_list = request.session.get('selected_expense_list')    
-    selected_product_list = request.session.get('selected_product_list')    
+    selected_product_list = ['expense_id'] + request.session.get('selected_product_list')    
     string_expense = request.session.get('string_expense')    
     string_product = request.session.get('string_product')    
+    final_row_product = []
+    final_row = []
+    product_query = Expense_Product.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_product_list)
+    print('product query')
+    print(product_query)
+    from django.db.models import F
 
-    product_query = Expense_Product.objects.filter(entry_date__range=(start_date, end_date)).values(*string_product)
     for product in product_query:
-        expense_query = Expense.objects.filter(id=product['id']).values(*string_expense)
-        
+        expense_query = Expense.objects.filter(id=product['expense_id']).values(*selected_expense_list)
+    
+    
     try:
         del request.session['start_date']
         del request.session['end_date']
@@ -623,9 +629,9 @@ def final_expense_report(request):
     context={
         'final_row':final_row,
         'final_row_product':final_row_product,
-        'selected_list':selected_list,
-        'selected_product_list':selected_product_list+selected_list,
-        'sales_query':product_query,
+        'selected_list':selected_expense_list,
+        'selected_product_list':selected_product_list+selected_expense_list,
+        'expense_query':expense_query,
     }
     return render(request,'expense_app/final_expense_report.html', context)
 
