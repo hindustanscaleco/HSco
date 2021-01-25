@@ -876,12 +876,12 @@ checkbox.addEventListener( 'change', function() {
         <br>
         <button style="display:none; background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
 
-    <select style="width:150px; background-color: #FC6E20; color:white;" name="payment_mode" id="billBUtton" class="form-control">
+    <select style="width:150px; background-color: #FC6E20; color:white;" name="bill_company_type"  id="billBUtton" class="form-control">
   <option value="">Select</option>
-  <option value="Cash">Scale</option>
-  <option  value="Cheque">Sales</option>
+  <option value="Scale">Scale</option>
+  <option  value="Sales">Sales</option>
 </select>
-                  <button style="background-color: #FC6E20; " type="button" value="button1" id="bill_id"  class="btn btn-primary"><a href="/showBill/{{purchase_id_id.pk}}" target="_blank">Bill</a></button>
+                  <button style="background-color: #FC6E20; " type="submit" name="generate_bill" id="bill_id"  class="btn btn-primary">Bill</button>
 
 
       </center>
@@ -1156,7 +1156,6 @@ on_gst();
 }
 disabledEnable();
 
-console.log("on gst called");
   </script>
 
 

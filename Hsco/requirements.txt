@@ -47,3 +47,4 @@ user-agents==2.2.0
 django-user-agents==0.4.0
 geographiclib==1.50
 geopy==2.1.0
+django-mathfilters==1.0.0

@@ -3,6 +3,8 @@
 
 <head>
   {% load static %}
+  {% load mathfilters %}
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -86,9 +88,15 @@
             <div class="col-xl-5 col-md-5">
  <button style="background-color: #FC6E20;" onclick="increase_billno()" type="reset" class="btn btn-primary">Bill Number</button>
  </div>
-  <div id="div_bill_no" style="display:none;" class="col-xl-5 col-md-5">
+  <div id="div_bill_no" style="display:none;" class="col-xl-3 col-md-3">
   <input name="new_bill_no" type="number" class="form-control" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;" />
 
+  </div>
+  <div id="div_company_type" style="display:none;" class="col-xl-2 col-md-2">
+<select name="company_type" id="company_type_id" required class="form-control">
+  <option value="Sales">Sales</option>
+  <option value="Scale">Scale</option>
+</select>
   </div>
   <div id="div_bill_submit" style="display:none;" class="col-xl-2 col-md-5">
   <button  type="submit" name="increase_bill_no" class="btn btn-primary">Submit</button>
@@ -469,16 +477,17 @@ td {
           <td>{{item.purchase_id.second_contact_no}}</td>
           <td>{{item.purchase_id.total_amount}}</td>
           <td>{{item.purchase_id.total_pf}}</td>
-          {% comment %} {% if  item.purchase_id.total_pf  %} {% endcomment %}
-            <td>{{item.purchase_id.tax_amount}}</td>
-            <td>{{item.purchase_id.tax_amount}}</td>
-          {% comment %} {% elif %}
-            <td>0</td>
-            <td>0</td>
-            <td>{{item.purchase_id.tax_amount}}</td>
-          {% endif %} {% endcomment %}
-          <td>{{item.purchase_id.tax_amount}}</td>
-          <td>{{item.purchase_id.tax_amount}}</td>
+          {% if item.purchase_id.crm_no.customer_gst_no|slice:":2" == "27" or item.purchase_id.crm_no.customer_gst_no|length < 5 or item.purchase_id.crm_no.customer_gst_no == None  %}
+        		<td>{{item.purchase_id.tax_amount|div:2}} </td>
+        		<td>{{item.purchase_id.tax_amount|div:2}} </td>
+            <td></td>
+          {% else %}
+          <td></td>
+            <td></td>
+        		<td>{{item.purchase_id.tax_amount}}</td>
+            
+          {% endif %}
+          <td></td>
           <td>{{item.purchase_id.grand_total}}</td>
 
           <td>
@@ -525,13 +534,16 @@ td {
   function increase_billno(){
     var bill_no = document.getElementById("div_bill_no");
     var bill_submit = document.getElementById("div_bill_submit");
+    var div_company_type = document.getElementById("div_company_type");
     if (bill_no.style.display == "none"){
     bill_no.style.display = "block";
     bill_submit.style.display = "block";
+    div_company_type.style.display = "block";
     }
     else{
     bill_no.style.display = "none";
     bill_submit.style.display = "none";
+    div_company_type.style.display = "none";
     }
   }
   function filterby_company(select) {

@@ -159,9 +159,9 @@ Location : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                    x = response.text
-                    print(x)
+                    # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    # x = response.text
+                    # print(x)
                     next = '/dashboard/'
                 return redirect(next)
 

@@ -1399,6 +1399,11 @@ def update_customer_details(request,id):
         feedback = None
 
     if request.method=='POST':
+        if 'generate_bill' in request.POST:
+            bill_company_type = request.POST.get('bill_company_type')
+            if bill_company_type == '' :
+                bill_company_type = None
+            return redirect('/showBill/'+str(id)+'/'+str(bill_company_type))
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('customer_address')

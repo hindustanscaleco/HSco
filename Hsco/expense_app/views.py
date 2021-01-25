@@ -772,14 +772,39 @@ def load_expense_by_company(request):
     }
     return JsonResponse(data)
 
-def showBill(request,sales_id):
+def showBill(request,sales_id,bill_company_type):
     purchase_details = Purchase_Details.objects.filter(id=sales_id).values('total_amount','crm_no__company_name','crm_no__customer_gst_no','bill_no','second_person',
-                                                                           'sales_person','crm_no__address','po_number','second_contact_no','bill_address','shipping_address',
-                                                                           'value_of_goods','bank_name','total_pf','date_of_purchase','reference_no','tax_amount','channel_of_dispatch','payment_mode',
-                                                                           'credit_pending_amount','credit_authorised_by','neft_bank_name','neft_date','reference_no','cheque_no','cheque_date')
-    # print(purchase_details.channel_of_dispatch)
+                                                                        'sales_person','crm_no__address','po_number','second_contact_no','bill_address','shipping_address',
+                                                                        'value_of_goods','bank_name','total_pf','date_of_purchase','reference_no','tax_amount','channel_of_dispatch','payment_mode',
+                                                                        'credit_pending_amount','credit_authorised_by','neft_bank_name','neft_date','reference_no','cheque_no','cheque_date','purchase_no',)
 
-                                                                       
+    if request.method == 'POST' and 'submit' in request.POST:
+        bill_file = request.POST.get('bill_file')
+        print('bill called')
+        item = Bill()
+
+        item.user_id = SiteUser.objects.get(id=request.user.id)
+        item.log_entered_by = request.user.name
+        item.company_type = bill_company_type
+        print(request.session.get('new_bill_no'))
+        session_billno = request.session.get('new_bill_no')
+        session_bill_no_company_type = request.session.get('bill_no_company_type')
+        if (session_billno != '' and session_billno != None ) and Bill.objects.filter(bill_no=session_billno, company_type=session_bill_no_company_type).count() == 0 :
+            item.bill_no = str(session_billno)
+            print('session called')
+        else:
+            item.bill_no = str((int(Bill.objects.latest('id').bill_no) + 1)).zfill(10)
+            print('bill no incresed')
+        item.purchase_id = Purchase_Details.objects.get(id=sales_id)
+        item.bill_file = bill_file
+        item.save()
+        try:
+            del request.session['new_bill_no']
+            del request.session['bill_no_company_type']
+        except:
+            pass
+        messages.success(request,'Bill saved successfully !')
+        return redirect('/update_customer_details/'+str(sales_id))                                                                   
 
     products_details = Product_Details.objects.filter(purchase_id=sales_id).values()
     for item in products_details:
@@ -815,30 +840,22 @@ def showBill(request,sales_id):
                 obj['is_cgst'] = False
         else:
             obj['is_cgst'] = False
-    if request.method == 'POST':
-        bill_file = request.POST.get('bill_file')
-        
-        item = Bill()
-
-        item.user_id = SiteUser.objects.get(id=request.user.id)
-        item.log_entered_by = request.user.name
-        print(request.session.get('new_bill_no'))
-        session_billno = request.session.get('new_bill_no')
-        if (session_billno != '' or session_billno != 'None') and Bill.objects.filter(bill_no=session_billno).count() == 0 :
-            item.bill_no = str(session_billno)
-        else:
-            item.bill_no = str(Bill.objects.latest('id').bill_no + 1).zfill(10)
-        item.purchase_id = Purchase_Details.objects.get(id=sales_id)
-        item.bill_file = bill_file
-        item.save()
-        messages.success(request,'Bill saved successfully !')
-        return redirect('/update_customer_details/'+str(sales_id))
+    
     context={
         'invoice_details':purchase_details[0],
         'products_details':products_details,
         'sales_id':sales_id,
     }
-    return render(request,'bills/billsNew.html',context)
+    if bill_company_type == 'Sales':
+        return render(request,"bills/sales_bill.html", context)
+    elif bill_company_type == 'Scale':
+        return render(request,"bills/scales_bill.html", context)
+    else:
+        print('fdskjfdskj')
+        messages.error(request,'Please select company type - Sales or Scales to generate a bill !')
+        return redirect('/update_customer_details/'+str(sales_id))
+    return redirect('/update_customer_details/'+str(sales_id))
+        
 
 def showBillModule(request):
     bills_list = Bill.objects.all()
@@ -913,23 +930,31 @@ def showBillModule(request):
             return render(request, 'bills/billsModuleDashboard.html', context) 
         elif 'increase_bill_no' in request.POST:
             new_bill_no = request.POST.get('new_bill_no')
+            company_type = request.POST.get('company_type')
             new_bill_no = str(new_bill_no).zfill(10)
             print('new_bill_no')
             print(new_bill_no)
-            if new_bill_no < Bill.objects.latest('bill_no').bill_no :
-                messages.error(request,"Bill no cannot be decreased !")
-            elif new_bill_no == Bill.objects.filter(bill_no = new_bill_no):
-                messages.error(request,"Bill no already exists !")    
+            print(Bill.objects.filter(company_type=company_type).latest('id').bill_no)
+            if new_bill_no < Bill.objects.filter(company_type=company_type).latest('id').bill_no :
+                messages.error(request,"Bill no cannot be decreased  !")
+            elif new_bill_no == Bill.objects.filter(bill_no = new_bill_no, company_type=company_type):
+                messages.error(request,"Bill no already exists for company type "+company_type +"!")    
             else:
                 try:
                     del request.session['new_bill_no']
-                    request.session['new_bill_no'] = new_bill_no
+                    del request.session['bill_no_company_type']
                 except:
                     pass
-                bill_no = request.session.get('new_bill_no')
-                messages.error(request,"Bills will be now created from bill id "+str(bill_no))
+                try:
+                    request.session['new_bill_no'] = new_bill_no
+                    request.session['bill_no_company_type'] = company_type
+                except:
+                    pass
+                # bill_no = request.session.get('new_bill_no')
+                print(request.session.get('bill_no_company_type'))
+                messages.success(request,"Bills will be now created from bill id "+str(new_bill_no)+" for company type - "+str(company_type))
+            print('session bill no')
             return redirect('/showBillModule/')
-            return render(request, 'bills/billsModuleDashboard.html', context)    
     context={
         "bills_list":bills_list,
     }
