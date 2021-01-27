@@ -576,6 +576,8 @@ function getCookie(name) {
     formData.append('bill_file', doc.output());
     var pdf = btoa(doc.output());
     //console.log(doc);
+    console.log("doc");
+    console.log(doc);
     var xhr = new XMLHttpRequest();
     xhr.onload = function (e) {
         if (xhr.readyState === 4 && xhr.status === 200){

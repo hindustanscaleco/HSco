@@ -546,8 +546,10 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 		
         <a href="/update_customer_details/{{sales_id}}"><button style="background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Edit</button>
         </a>
+        <form method="POST" >{% csrf_token %}
 
-        <button style="background-color: #FC6E20;" type="submit" onclick="window.print()" value="Submit" class="btn btn-primary">Submit & Print</button>
+        <button style="background-color: #FC6E20;" name="submit" value="submit" type="submit" onclick="window.print()" value="Submit" class="btn btn-primary">Submit & Print</button>
+        </form>
 	</div>
 
     </center>

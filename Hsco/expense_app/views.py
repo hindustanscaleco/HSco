@@ -10,7 +10,7 @@ from django.db.models import Q, F, Min, Avg
 from django.contrib import messages
 from lead_management.models import Pi_section
 from purchase_app.models import Purchase_Details,Product_Details
-
+from .utils import render_to_pdf
 # Create your views here.
 
 
@@ -780,9 +780,10 @@ def showBill(request,sales_id,bill_company_type):
 
     if request.method == 'POST' and 'submit' in request.POST:
         bill_file = request.POST.get('bill_file')
+        print('type of bill')
         print('bill called')
+        print(bill_file)
         item = Bill()
-
         item.user_id = SiteUser.objects.get(id=request.user.id)
         item.log_entered_by = request.user.name
         item.company_type = bill_company_type
@@ -858,7 +859,30 @@ def showBill(request,sales_id,bill_company_type):
         
 
 def showBillModule(request):
-    bills_list = Bill.objects.all()
+    if check_admin_roles(request):  # For ADMIN
+        bills_list = Bill.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
+                        user_id__is_deleted=False).order_by('-id')
+            
+    else:  # For EMPLOYEE
+        bills_list = Bill.objects.filter(user_id=request.user.pk).order_by('-id')
+
+    #filter by company type (sales or scales)
+    if request.method == 'GET' and 'company_type' in request.GET:
+        
+        company_type = request.GET.get('company_type')
+        
+        if check_admin_roles(request):  # For ADMIN
+            bills_list = Bill.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
+                                                        user_id__is_deleted=False,company_type__icontains=company_type).order_by('-id')
+
+        else:  # For EMPLOYEE
+            bills_list = Bill.objects.filter(user_id=request.user.pk,company_type__icontains=company_type).order_by('-id')
+        
+        context = {
+            'bills_list':bills_list,
+        }
+        return render(request,"bills/load_bills_company_type.html", context)
+
     # search by options
     if request.method == 'POST':
         if 'submit1' in request.POST:
@@ -876,7 +900,7 @@ def showBillModule(request):
 
             context = {
                 'bills_list': bills_list,
-                'search_msg': 'Search result for Vendor Contact No: ' + contact,
+                'search_msg': 'Search result for Customer Contact No: ' + contact,
             }
             return render(request,'bills/billsModuleDashboard.html',context)
 
@@ -887,7 +911,7 @@ def showBillModule(request):
 
             context = {
                 'bills_list': bills_list,
-                'search_msg': 'Search result for Vendor Email ID: ' + email,
+                'search_msg': 'Search result for Customer Email ID: ' + email,
             }
             return render(request,'bills/billsModuleDashboard.html',context)
         elif 'submit4' in request.POST:
@@ -898,7 +922,7 @@ def showBillModule(request):
 
             context = {
                 'bills_list': bills_list,
-                'search_msg': 'Search result for Vendor Name: ' + name,
+                'search_msg': 'Search result for Customer Name: ' + name,
             }
             return render(request,'bills/billsModuleDashboard.html',context)
 
@@ -914,11 +938,11 @@ def showBillModule(request):
             return render(request,'bills/billsModuleDashboard.html',context)
         elif request.method == 'POST' and 'submit6' in request.POST:
             id = request.POST.get('id')
-            bills_list = Bill.objects.filter(id=id).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__purchase_no=id).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
-                'search_msg': 'Search result for Expense ID. : ' + str(id),
+                'search_msg': 'Search result for Sales ID : ' + str(id),
             }
             return render(request, 'bills/billsModuleDashboard.html', context)
         elif request.method == 'POST' and 'delete_bill' in request.POST:
