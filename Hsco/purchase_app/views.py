@@ -220,6 +220,7 @@ def add_purchase_details(request):
         address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
+        customer_gst_no = request.POST.get('customer_gst_no')
         date_of_purchase = request.POST.get('date_of_purchase')
         new_repeat_purchase = request.POST.get('new_repeat_purchase')
         sales_person = request.POST.get('sales_person')
@@ -272,6 +273,10 @@ def add_purchase_details(request):
                 item3.customer_email_id = customer_email_id
                 item2.company_email = customer_email_id  # new2
                 item3.save(update_fields=['customer_email_id'])
+            if customer_gst_no != '':
+                item3.customer_gst_no = customer_gst_no
+                item2.customer_gst_no = customer_gst_no  # new2
+                item3.save(update_fields=['customer_gst_no'])
 
 
         else:
@@ -289,6 +294,9 @@ def add_purchase_details(request):
             if customer_email_id != '':
                 item2.company_email = customer_email_id  # new2
                 item.customer_email_id = customer_email_id
+            if customer_gst_no != '':
+                item2.customer_gst_no = customer_gst_no  # new2
+                item.customer_gst_no = customer_gst_no
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
             import sys
@@ -1409,6 +1417,7 @@ def update_customer_details(request,id):
         address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
+        customer_gst_no = request.POST.get('customer_gst_no')
 
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         if channel_of_dispatch == None or channel_of_dispatch == '' or len(channel_of_dispatch) < 1:
@@ -1522,6 +1531,9 @@ def update_customer_details(request,id):
                 item.customer_email_id = customer_email_id
                 item2.company_email = customer_email_id  # new2
                 item.save(update_fields=['customer_email_id'])
+            if customer_gst_no != '' or customer_gst_no != 'None' or customer_gst_no != None:
+                item.customer_gst_no = customer_gst_no
+                item.save(update_fields=['customer_gst_no'])
 
 
 

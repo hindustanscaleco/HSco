@@ -212,7 +212,7 @@ td {
                 <center><p style=" float:right;">Dispatch Through: </p>
                 </center></div>
                 <div class="col-md-2">
-                <center><p style=" float:left;">ABC Module</p>
+                <center><p style=" float:left;">Sales Module</p>
                 </center></div>
           </div>
 
@@ -305,7 +305,7 @@ th {
         	<tr>
         		<td>&nbsp;</td>
         		<td></td>
-        		<td></td>
+            <td> Payment Mode : {{invoice_details.payment_mode}}</td>
         		<td><center> Total </center></td>
         		<td>INR <span style="float: right;">{{invoice_details.value_of_goods}} </span></td>
           </tr>
@@ -313,112 +313,52 @@ th {
         	<tr>
         		<td>&nbsp;</td>
         		<td></td>
-        		<td></td>
+            {% if invoice_details.payment_mode == 'Cheque' %}
+                    <td>  Bank Name: {{invoice_details.bank_name}}</td>
+            {% elif invoice_details.payment_mode == 'Credit' %}
+                    <td>  Credit Authorised By: {{invoice_details.credit_authorised_by}}</td>
+
+            {% elif invoice_details.payment_mode == 'NEFT' %}
+                    <td> NEFT Bank: {{invoice_details.neft_bank_name}} </td>
+
+            {% endif %}
         		<td><center>Discount </center></td>
         		<td>INR <span style="float: right;">0.0 </span></td>
         	</tr>
         	<tr>
         		<td>&nbsp;</td>
         		<td></td>
-        		<td></td>
+        		{% if invoice_details.payment_mode == 'Cheque' %}
+                    <td>  Cheque No: {{invoice_details.cheque_no}}</td>
+            
+            {% elif invoice_details.payment_mode == 'NEFT' %}
+                  <td>  NEFT date: {{invoice_details.neft_date}}</td>
+
+            {% endif %}
         		<td><center>P&F </center></td>
         		<td>INR <span style="float: right;">{{invoice_details.total_pf}} </span></td>
         	</tr>
-{% if invoice_details.payment_mode == 'Cash' or invoice_details.payment_mode == 'Google Pay' %}
-    <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> Payment Mode : {{invoice_details.payment_mode}}</td>
-        <td></td>
-        <td></td>
-    </tr>
- {% endif %}
-
-{% if invoice_details.payment_mode == 'Credit' %}
-        <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> Payment Mode : {{invoice_details.payment_mode}}</td>
-        <td> </td>
-        <td></td>
-    </tr>
-    <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td>  Credit Authorised By: {{invoice_details.credit_authorised_by}}</td>
-        <td> </td>
-        <td></td>
-    </tr>
- {% endif %}
 
 
-{% if invoice_details.payment_mode == 'NEFT' %}
-        <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> Payment Mode : {{invoice_details.payment_mode}}</td>
-        <td> </td>
-        <td></td>
-    </tr>
-    <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> NEFT Bank: {{invoice_details.neft_bank_name}} </td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td>  NEFT date: {{invoice_details.neft_date}}</td>
-        <td> </td>
-        <td></td>
-    </tr>
-    <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> Reference No.: {{invoice_details.reference_no}}  </td>
-        <td> </td>
-        <td></td>
-    </tr>
- {% endif %}
-{% if invoice_details.payment_mode == 'Cheque' %}
-        <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td> Payment Mode : {{invoice_details.payment_mode}}</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td>  Bank Name: {{invoice_details.bank_name}}</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td>  Cheque No: {{invoice_details.cheque_no}}</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td> &nbsp</td>
-        <td> &nbsp</td>
-        <td>  Cheque Date: {{invoice_details.cheque_date}}</td>
-        <td></td>
-        <td></td>
-    </tr>
- {% endif %}
+
+
+
+
+    
+
         	
 
 {% if invoice_details.crm_no__customer_gst_no|slice:":2" == 27 or invoice_details.crm_no__customer_gst_no == None  %}
         	<tr>
         		<td>&nbsp;</td>
         		<td></td>
-        		<td></td>
+        		{% if invoice_details.payment_mode == 'Cheque' %}
+        <td>  Cheque Date: {{invoice_details.cheque_date}}</td>
+            
+            {% elif invoice_details.payment_mode == 'NEFT' %}
+        <td> Reference No.: {{invoice_details.reference_no}}  </td>
+
+            {% endif %}
         		<td><center> CGST @ 9% </center></td>
         		<td>INR <span style="float: right;">{{invoice_details.tax_amount|div:2}} </span></td>
         	</tr>
@@ -434,7 +374,13 @@ th {
         	<tr>
         		<td>&nbsp;</td>
         		<td></td>
-        		<td></td>
+        		{% if invoice_details.payment_mode == 'Cheque' %}
+        <td>  Cheque Date: {{invoice_details.cheque_date}}</td>
+            
+            {% elif invoice_details.payment_mode == 'NEFT' %}
+        <td> Reference No.: {{invoice_details.reference_no}}  </td>
+
+            {% endif %}
         		<td><center>   IGST @ 18%  </center></td>
         		<td>INR <span style="float: right;">{{invoice_details.tax_amount}}</td>
         	</tr>
