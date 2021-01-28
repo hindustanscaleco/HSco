@@ -778,7 +778,7 @@ def showBill(request,sales_id,bill_company_type):
                                                                         'value_of_goods','bank_name','total_pf','date_of_purchase','reference_no','tax_amount','channel_of_dispatch','payment_mode',
                                                                         'credit_pending_amount','credit_authorised_by','neft_bank_name','neft_date','reference_no','cheque_no','cheque_date','purchase_no',)
 
-    if request.method == 'POST' and 'submit' in request.POST:
+    if request.method == 'POST' and 'submit' in request.POST and Bill.objects.filter(purchase_id__id=sales_id).count() == 0:
         bill_file = request.POST.get('bill_file')
         print('type of bill')
         print('bill called')
@@ -799,12 +799,15 @@ def showBill(request,sales_id,bill_company_type):
         item.purchase_id = Purchase_Details.objects.get(id=sales_id)
         item.bill_file = bill_file
         item.save()
+        Purchase_Details.objects.filter(id=sales_id).update(bill_no=item.bill_no)
         try:
             del request.session['new_bill_no']
             del request.session['bill_no_company_type']
         except:
             pass
         messages.success(request,'Bill saved successfully !')
+        return redirect('/update_customer_details/'+str(sales_id))                                                                   
+    elif request.method == 'POST' and 'submit' in request.POST:
         return redirect('/update_customer_details/'+str(sales_id))                                                                   
 
     products_details = Product_Details.objects.filter(purchase_id=sales_id).values()
