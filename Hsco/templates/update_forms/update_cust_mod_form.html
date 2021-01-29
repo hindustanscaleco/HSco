@@ -846,10 +846,10 @@ checkbox.addEventListener( 'change', function() {
       <br>
     <center>
 
-{% comment %} {% if not purchase_id_id.dispatch_id_assigned and not purchase_id_id.is_quick_entry %}
+{% comment %} {% if not purchase_id_id.dispatch_id_assigned and not purchase_id_id.is_quick_entry %} {% endcomment %}
         <button style="background-color: #FC6E20;" onclick="editableButton()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
 
-                                          {% endif %} {% endcomment %}
+                                          {% comment %} {% endif %} {% endcomment %}
 
         {% if request.session.enable_auto_edit %}
         <script>
@@ -865,10 +865,10 @@ checkbox.addEventListener( 'change', function() {
         <a href="{{request.session.lead_url}}">Back To Lead Module</a>
         {% endif %}
 
-          {% comment %} {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None and not purchase_id_id.is_quick_entry %} {% endcomment %}
+          {% comment %} {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None and not purchase_id_id.is_quick_entry %}
 
         <button style="background-color: #FC6E20;" onclick="editableButton()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
-                                  {% comment %} {% endif %} {% endcomment %}
+                                  {% endif %} {% endcomment %}
 
 
 
