@@ -708,7 +708,9 @@ def update_repairing_details(request,id):
             repair_id.second_company_name = company_name  # new2
 
             item.company_name = company_name
+            repair_id.second_company_name = company_name
             item.save(update_fields=['company_name'])
+            repair_id.save(update_fields=['second_company_name'])
         if address != '':
             item.address = address
 
