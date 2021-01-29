@@ -852,12 +852,12 @@ checkbox.addEventListener( 'change', function() {
                                           {% comment %} {% endif %} {% endcomment %}
 
         {% if request.session.enable_auto_edit %}
-        <script>
+        {% comment %} <script>
 
             document.getElementById("myText20").click();
             document.getElementById("myText20").style.display = "none";
 
-        </script>
+        </script> {% endcomment %}
         <br>
         <br>
         <button style="background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
