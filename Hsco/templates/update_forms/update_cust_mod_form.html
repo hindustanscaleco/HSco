@@ -846,18 +846,18 @@ checkbox.addEventListener( 'change', function() {
       <br>
     <center>
 
-{% comment %} {% if not purchase_id_id.dispatch_id_assigned and not purchase_id_id.is_quick_entry %} {% endcomment %}
+{% if not purchase_id_id.dispatch_id_assigned and not purchase_id_id.is_quick_entry %}
         <button style="background-color: #FC6E20;" onclick="editableButton()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
 
-                                          {% comment %} {% endif %} {% endcomment %}
+                                          {% endif %}
 
         {% if request.session.enable_auto_edit %}
-        {% comment %} <script>
+        <script>
 
             document.getElementById("myText20").click();
             document.getElementById("myText20").style.display = "none";
 
-        </script> {% endcomment %}
+        </script>
         <br>
         <br>
         <button style="background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
@@ -865,16 +865,16 @@ checkbox.addEventListener( 'change', function() {
         <a href="{{request.session.lead_url}}">Back To Lead Module</a>
         {% endif %}
 
-          {% comment %} {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None and not purchase_id_id.is_quick_entry %}
+          {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None and not purchase_id_id.is_quick_entry %}
 
         <button style="background-color: #FC6E20;" onclick="editableButton()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
-                                  {% endif %} {% endcomment %}
+                                  {% endif %}
 
 
 
         <br>
         <br>
-        <button style="display:none; background-color: #FC6E20;" id="myText225" type="submit" value="Submit" class="btn btn-primary">Save</button>
+        <button style="display:none; background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
 
     <select style="width:150px; background-color: #FC6E20; color:white;" name="bill_company_type"  id="billBUtton" class="form-control">
   <option value="">Select</option>
