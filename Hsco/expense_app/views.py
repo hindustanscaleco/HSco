@@ -11,6 +11,7 @@ from django.contrib import messages
 from lead_management.models import Pi_section
 from purchase_app.models import Purchase_Details,Product_Details
 from .utils import render_to_pdf
+from datetime import datetime
 # Create your views here.
 
 
@@ -776,7 +777,15 @@ def showBill(request,sales_id,bill_company_type):
     purchase_details = Purchase_Details.objects.filter(id=sales_id).values('total_amount','crm_no__company_name','crm_no__customer_gst_no','bill_no','second_person',
                                                                         'sales_person','crm_no__address','po_number','second_contact_no','bill_address','shipping_address',
                                                                         'value_of_goods','bank_name','total_pf','date_of_purchase','reference_no','tax_amount','channel_of_dispatch','payment_mode',
-                                                                        'credit_pending_amount','credit_authorised_by','neft_bank_name','neft_date','reference_no','cheque_no','cheque_date','purchase_no',)
+                                                                        'credit_pending_amount','credit_authorised_by','neft_bank_name','neft_date','reference_no','cheque_no','cheque_date','purchase_no','date_of_purchase')
+    todays_date = str(datetime.now().strftime("%Y-%m-%d"))
+    session_billno = request.session.get('new_bill_no')
+    session_bill_no_company_type = request.session.get('bill_no_company_type')
+    if (session_billno != '' and session_billno != None ) and Bill.objects.filter(bill_no=session_billno, company_type=session_bill_no_company_type).count() == 0 :
+            latest_bill_no = str(session_billno)
+            print('session called')
+    else:
+        latest_bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)                                                                
 
     if request.method == 'POST' and 'submit' in request.POST and Bill.objects.filter(purchase_id__id=sales_id).count() == 0:
         bill_file = request.POST.get('bill_file')
@@ -794,7 +803,7 @@ def showBill(request,sales_id,bill_company_type):
             item.bill_no = str(session_billno)
             print('session called')
         else:
-            item.bill_no = str((int(Bill.objects.latest('id').bill_no) + 1)).zfill(10)
+            item.bill_no = str((int(Bill.objects.filter(company_type=company_type).latest('id').bill_no) + 1)).zfill(10)
             print('bill no incresed')
         item.purchase_id = Purchase_Details.objects.get(id=sales_id)
         item.bill_file = bill_file
@@ -849,6 +858,8 @@ def showBill(request,sales_id,bill_company_type):
         'invoice_details':purchase_details[0],
         'products_details':products_details,
         'sales_id':sales_id,
+        'todays_date':todays_date,
+        'latest_bill_no':latest_bill_no,
     }
     if bill_company_type == 'Sales':
         return render(request,"bills/sales_bill.html", context)

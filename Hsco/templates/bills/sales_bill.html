@@ -126,7 +126,7 @@ td {
           <div class="col-md-2">
           <center><p style=" float:right;">Date:</p>
           </center></div>
-          <div class="col-md-2"> <p>01/05/2021</p>
+          <div class="col-md-2"> <p>{{todays_date}}</p>
           </div>
           </div>
 
@@ -144,7 +144,7 @@ td {
           <center><p style=" float:right;">GST Invoice No:</p>
           </center></div>
           <div class="col-md-2">
-          <center><p style=" float:left;">{{invoice_details.bill_no}} </p>
+          <center><p style=" float:left;">{{latest_bill_no}} </p>
           </center></div>
           </div>
           
@@ -320,7 +320,8 @@ th {
 
             {% elif invoice_details.payment_mode == 'NEFT' %}
                     <td> NEFT Bank: {{invoice_details.neft_bank_name}} </td>
-
+            {% else %}
+                    <td></td>
             {% endif %}
         		<td><center>Discount </center></td>
         		<td>INR <span style="float: right;">0.0 </span></td>
@@ -333,7 +334,8 @@ th {
             
             {% elif invoice_details.payment_mode == 'NEFT' %}
                   <td>  NEFT date: {{invoice_details.neft_date}}</td>
-
+            {% else %}
+                    <td></td>
             {% endif %}
         		<td><center>P&F </center></td>
         		<td>INR <span style="float: right;">{{invoice_details.total_pf}} </span></td>
@@ -357,7 +359,8 @@ th {
             
             {% elif invoice_details.payment_mode == 'NEFT' %}
         <td> Reference No.: {{invoice_details.reference_no}}  </td>
-
+          {% else %}
+                    <td></td>
             {% endif %}
         		<td><center> CGST @ 9% </center></td>
         		<td>INR <span style="float: right;">{{invoice_details.tax_amount|div:2}} </span></td>
@@ -379,7 +382,8 @@ th {
             
             {% elif invoice_details.payment_mode == 'NEFT' %}
         <td> Reference No.: {{invoice_details.reference_no}}  </td>
-
+          {% else %}
+                    <td></td>
             {% endif %}
         		<td><center>   IGST @ 18%  </center></td>
         		<td>INR <span style="float: right;">{{invoice_details.tax_amount}}</td>
