@@ -784,27 +784,29 @@ def showBill(request,sales_id,bill_company_type):
     if (session_billno != '' and session_billno != None ) and Bill.objects.filter(bill_no=session_billno, company_type=session_bill_no_company_type).count() == 0 :
             latest_bill_no = str(session_billno)
             print('session called')
-    else:
+    elif bill_company_type != '' and bill_company_type != 'None':
         latest_bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)                                                                
+    else :
+        messages.error(request,'Please select company type - Sales or Scales to generate a bill !')
+        return redirect('/update_customer_details/'+str(sales_id))
 
     if request.method == 'POST' and 'submit' in request.POST and Bill.objects.filter(purchase_id__id=sales_id).count() == 0:
         bill_file = request.POST.get('bill_file')
-        print('type of bill')
-        print('bill called')
-        print(bill_file)
+        
+        
         item = Bill()
         item.user_id = SiteUser.objects.get(id=request.user.id)
         item.log_entered_by = request.user.name
         item.company_type = bill_company_type
-        print(request.session.get('new_bill_no'))
+
         session_billno = request.session.get('new_bill_no')
         session_bill_no_company_type = request.session.get('bill_no_company_type')
         if (session_billno != '' and session_billno != None ) and Bill.objects.filter(bill_no=session_billno, company_type=session_bill_no_company_type).count() == 0 :
             item.bill_no = str(session_billno)
             print('session called')
         else:
-            item.bill_no = str((int(Bill.objects.filter(company_type=company_type).latest('id').bill_no) + 1)).zfill(10)
-            print('bill no incresed')
+            item.bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)
+            print('bill no increased')
         item.purchase_id = Purchase_Details.objects.get(id=sales_id)
         item.bill_file = bill_file
         item.save()

@@ -713,12 +713,12 @@ for (var i = 0, len = elements.length; i < len; ++i) {
         console.log("fhdkjshfkds");
         console.log("fhdkjshfkds");
                 bill = document.getElementById("bill_id");
-                var gst_id = document.getElementById("gst_id").checked;
+                {% comment %} var gst_id = document.getElementById("gst_id").checked;
                 if (gst_id ==true){
                   bill.style.display = "block";
                 }else{
                   bill.style.display = "none";
-                }
+                } {% endcomment %}
           }
                 
 
