@@ -778,7 +778,7 @@ def showBill(request,sales_id,bill_company_type):
                                                                         'sales_person','crm_no__address','po_number','second_contact_no','bill_address','shipping_address',
                                                                         'value_of_goods','bank_name','total_pf','date_of_purchase','reference_no','tax_amount','channel_of_dispatch','payment_mode','round_off_total',
                                                                         'credit_pending_amount','credit_authorised_by','neft_bank_name','neft_date','reference_no','cheque_no','cheque_date','purchase_no','date_of_purchase')
-    todays_date = str(datetime.now().strftime("%Y-%m-%d"))
+    todays_date = str(datetime.now().strftime("%d-%m-%Y"))
     session_billno = request.session.get('new_bill_no')
     session_bill_no_company_type = request.session.get('bill_no_company_type')
     if (session_billno != '' and session_billno != None ) and Bill.objects.filter(bill_no=session_billno, company_type=session_bill_no_company_type).count() == 0 :
