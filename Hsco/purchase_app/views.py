@@ -726,6 +726,11 @@ def edit_product_customer(request,product_id_rec):
 
 
     if request.method == 'POST':
+        if 'delete' in request.POST:
+            Product_Details.objects.filter(id=product_id_rec).delete()
+            messages.success(request, "Product Deleted Successfully !")
+            print('deleted successfully')
+            return redirect('/update_customer_details/'+str(purchase_id.id))
         is_return = request.POST.get('return')
         quantity = request.POST.get('quantity')
         model_of_purchase = request.POST.get('model_of_purchase')
