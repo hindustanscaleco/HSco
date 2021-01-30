@@ -776,7 +776,7 @@ def load_expense_by_company(request):
 def showBill(request,sales_id,bill_company_type):
     purchase_details = Purchase_Details.objects.filter(id=sales_id).values('total_amount','crm_no__company_name','crm_no__customer_gst_no','bill_no','second_person',
                                                                         'sales_person','crm_no__address','po_number','second_contact_no','bill_address','shipping_address',
-                                                                        'value_of_goods','bank_name','total_pf','date_of_purchase','reference_no','tax_amount','channel_of_dispatch','payment_mode',
+                                                                        'value_of_goods','bank_name','total_pf','date_of_purchase','reference_no','tax_amount','channel_of_dispatch','payment_mode','round_off_total',
                                                                         'credit_pending_amount','credit_authorised_by','neft_bank_name','neft_date','reference_no','cheque_no','cheque_date','purchase_no','date_of_purchase')
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
     session_billno = request.session.get('new_bill_no')
