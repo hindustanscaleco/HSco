@@ -678,7 +678,8 @@ def update_repairing_details(request,id):
         delivery_by = request.POST.get('delivery_by')
         repaired_by = request.POST.get('repaired_by')
         notes = request.POST.get('notes')
-
+        
+        
         # feedback_given = request.POST.get('feedback_given')
         # current_stage = request.POST.get('current_stage')
 
@@ -697,20 +698,25 @@ def update_repairing_details(request,id):
         repair_id.save(update_fields=['log_entered_by', 'notes', 'confirmed_estimate', 'second_company_name',
                                       'company_address', 'repaired', 'company_email', 'repaired_by', 'taken_by',
                                       'second_person', 'second_contact_no', ])
+        if customer_email_id != '':
+            item.customer_email_id = customer_email_id
+            repair_id.company_email = customer_email_id  # new2
+            item.save(update_fields=['customer_email_id'])
+            repair_id.save(update_fields=['company_email'])
+                                              
         if company_name != '':
             repair_id.second_company_name = company_name  # new2
 
             item.company_name = company_name
+            repair_id.second_company_name = company_name
             item.save(update_fields=['company_name'])
+            repair_id.save(update_fields=['second_company_name'])
         if address != '':
             item.address = address
 
             repair_id.company_address = address  # new2
             item.save(update_fields=['address'])
-        if customer_email_id != '':
-            item.customer_email_id = customer_email_id
-            repair_id.company_email = customer_email_id  # new2
-            item.save(update_fields=['customer_email_id'])
+        
 
 
 

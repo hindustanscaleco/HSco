@@ -3,6 +3,8 @@
 
 <head>
   {% load static %}
+  {% load mathfilters %}
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -80,20 +82,31 @@
             </div>
             
                 </div>
+<form method="POST" autocomplete="off">{% csrf_token %}
+
             <div class="row" style="float:right ; text-align:right;">
             <div class="col-xl-5 col-md-5">
  <button style="background-color: #FC6E20;" onclick="increase_billno()" type="reset" class="btn btn-primary">Bill Number</button>
  </div>
- <div id="div_bill_no" style="display:none;" class="col-xl-3 col-md-5">
- <input  class="form-control"/>
- </div>
- <div id="div_bill_submit" style="display:none;" class="col-xl-2 col-md-5">
- <button  type="submit" class="btn btn-primary">Submit</button>
- </div>
+  <div id="div_bill_no" style="display:none;" class="col-xl-3 col-md-3">
+  <input name="new_bill_no" type="number" class="form-control" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;" />
+
+  </div>
+  <div id="div_company_type" style="display:none;" class="col-xl-2 col-md-2">
+<select name="company_type" id="company_type_id" required class="form-control">
+  <option value="Sales">Sales</option>
+  <option value="Scale">Scale</option>
+</select>
+  </div>
+  <div id="div_bill_submit" style="display:none;" class="col-xl-2 col-md-5">
+  <button  type="submit" name="increase_bill_no" class="btn btn-primary">Submit</button>
+  </div>
  
  </div>
 
+ </form>
 
+<br>
 <br>
 <br>
 
@@ -188,9 +201,9 @@ $(function() {
      <option value="d1">Search By Date Range</option>
      <option value="d2">Search By Mobile Number</option>
      <option value="d3">Search By Email Id</option>
-     <option value="d4">Search By Vendor Name</option>
+     <option value="d4">Search By Customer Name</option>
      <option value="d5">Search By Company Name</option>
-     <option value="d6">Search By Expense ID</option>
+     <option value="d6">Search By Sales ID</option>
      {% comment %} <option value="d7">Search By ID</option> {% endcomment %}
      <!--<option value="d7">Search By CRM Number Range</option>-->
   </select>
@@ -252,7 +265,7 @@ $(function() {
 
     <div id="d4" class="divs d4">
         <form method="POST">{% csrf_token%}
-      <input type="text" name="name"  placeholder="Vendor Name" class="form-control" style="width: 25%;float: left;">
+      <input type="text" name="name"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
       <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button>
     </form>
@@ -268,7 +281,7 @@ $(function() {
                                <form method="POST">{% csrf_token%}
 
     <div id="d6" class="divs d6">
-      <input type="text" name="id" placeholder="Expense ID" class="form-control" style="width: 25%;float: left;">
+      <input type="text" name="id" placeholder="Sales ID" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
       <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
 </form>
@@ -432,7 +445,7 @@ td {
              {% endfor %}
 
 {% endif %}
-        <div class="row" id="expense_table_list">
+        <div class="row" id="bill_table_list">
 
     <table>
         <tr style="background-color: gray; color: white;">
@@ -464,23 +477,24 @@ td {
           <td>{{item.purchase_id.second_contact_no}}</td>
           <td>{{item.purchase_id.total_amount}}</td>
           <td>{{item.purchase_id.total_pf}}</td>
-          {% comment %} {% if  item.purchase_id.total_pf  %} {% endcomment %}
-            <td>{{item.purchase_id.tax_amount}}</td>
-            <td>{{item.purchase_id.tax_amount}}</td>
-          {% comment %} {% elif %}
-            <td>0</td>
-            <td>0</td>
-            <td>{{item.purchase_id.tax_amount}}</td>
-          {% endif %} {% endcomment %}
-          <td>{{item.purchase_id.tax_amount}}</td>
-          <td>{{item.purchase_id.tax_amount}}</td>
+          {% if item.purchase_id.crm_no.customer_gst_no|slice:":2" == "27" or item.purchase_id.crm_no.customer_gst_no|length < 5 or item.purchase_id.crm_no.customer_gst_no == None  %}
+        		<td>{{item.purchase_id.tax_amount|div:2}} </td>
+        		<td>{{item.purchase_id.tax_amount|div:2}} </td>
+            <td></td>
+          {% else %}
+          <td></td>
+            <td></td>
+        		<td>{{item.purchase_id.tax_amount}}</td>
+            
+          {% endif %}
+          <td></td>
           <td>{{item.purchase_id.grand_total}}</td>
 
           <td>
           <form method="POST">{% csrf_token %}
             <input type="hidden" name="bill_id" value={{item.id}}></input>
-              <a href="{{item.bill_file.url}}"><span><i style="color: #FC6E20;" class="fa fa-print" aria-hidden="true"></i></span></a>
-              <a href="{{item.bill_file.url}}"><span><i style="color: #FC6E20;" class="fa fa-download" aria-hidden="true"></i></span></a>
+              <a href="{% if item.bill_file %} {{item.bill_file.url}} {% endif %}"><span><i style="color: #FC6E20;" class="fa fa-print" aria-hidden="true"></i></span></a>
+              <a href="{% if item.bill_file %} {{item.bill_file.url}} {% endif %}"><span><i style="color: #FC6E20;" class="fa fa-download" aria-hidden="true"></i></span></a>
               <a href="/update_customer_details/{{item.purchase_id.id}}"><span><i style="color: #FC6E20;" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
               <button type="submit"  name="delete_bill"><span><i style="color: #FC6E20;" class="fa fa-trash" aria-hidden="true"></i></span></button>
           </form>
@@ -520,26 +534,29 @@ td {
   function increase_billno(){
     var bill_no = document.getElementById("div_bill_no");
     var bill_submit = document.getElementById("div_bill_submit");
+    var div_company_type = document.getElementById("div_company_type");
     if (bill_no.style.display == "none"){
     bill_no.style.display = "block";
     bill_submit.style.display = "block";
+    div_company_type.style.display = "block";
     }
     else{
     bill_no.style.display = "none";
     bill_submit.style.display = "none";
+    div_company_type.style.display = "none";
     }
   }
   function filterby_company(select) {
 //$("#model_of_purchase").val(select.options[select.selectedIndex].text);
      //alert(select.options[select.selectedIndex].value);
     $.ajax({                       // initialize an AJAX request
-        url: "/expense_dashboard/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        url: "/showBillModule/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
         data: {
           'company_type': select.options[select.selectedIndex].value       // add the country id to the GET parameters
 
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
-    $("#expense_table_list").html(data);
+    $("#bill_table_list").html(data);
 
         }
       });

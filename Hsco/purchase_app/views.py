@@ -220,6 +220,7 @@ def add_purchase_details(request):
         address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
+        customer_gst_no = request.POST.get('customer_gst_no')
         date_of_purchase = request.POST.get('date_of_purchase')
         new_repeat_purchase = request.POST.get('new_repeat_purchase')
         sales_person = request.POST.get('sales_person')
@@ -272,6 +273,10 @@ def add_purchase_details(request):
                 item3.customer_email_id = customer_email_id
                 item2.company_email = customer_email_id  # new2
                 item3.save(update_fields=['customer_email_id'])
+            if customer_gst_no != '':
+                item3.customer_gst_no = customer_gst_no
+                item2.customer_gst_no = customer_gst_no  # new2
+                item3.save(update_fields=['customer_gst_no'])
 
 
         else:
@@ -289,6 +294,9 @@ def add_purchase_details(request):
             if customer_email_id != '':
                 item2.company_email = customer_email_id  # new2
                 item.customer_email_id = customer_email_id
+            if customer_gst_no != '':
+                item2.customer_gst_no = customer_gst_no  # new2
+                item.customer_gst_no = customer_gst_no
             # item.user_id = SiteUser.objects.get(id=request.user.pk)
             # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
             import sys
@@ -718,6 +726,11 @@ def edit_product_customer(request,product_id_rec):
 
 
     if request.method == 'POST':
+        if 'delete' in request.POST:
+            Product_Details.objects.filter(id=product_id_rec).delete()
+            messages.success(request, "Product Deleted Successfully !")
+            print('deleted successfully')
+            return redirect('/update_customer_details/'+str(purchase_id.id))
         is_return = request.POST.get('return')
         quantity = request.POST.get('quantity')
         model_of_purchase = request.POST.get('model_of_purchase')
@@ -1366,10 +1379,12 @@ def update_customer_details(request,id):
     channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
     industry_list = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
 
-    #for updating total amount in all sales entry
     try:
+        round_off = round(purchase_id_id.value_of_goods + purchase_id_id.tax_amount + purchase_id_id.total_pf)
+        #for updating total amount in all sales entry
         if purchase_id_id.total_amount == 0 or purchase_id_id.total_amount == "None":
-            Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
+            Purchase_Details.objects.filter(id=id).update(total_amount=round_off)
+        Purchase_Details.objects.filter(id=id).update(round_off_total=round_off)
     except Exception as e:
         print(e)
         pass
@@ -1399,11 +1414,17 @@ def update_customer_details(request,id):
         feedback = None
 
     if request.method=='POST':
+        if 'generate_bill' in request.POST:
+            bill_company_type = request.POST.get('bill_company_type')
+            if bill_company_type == '' :
+                bill_company_type = None
+            return redirect('/showBill/'+str(id)+'/'+str(bill_company_type))
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('customer_address')
         contact_no = request.POST.get('contact_no')
         customer_email_id = request.POST.get('customer_email_id')
+        customer_gst_no = request.POST.get('customer_gst_no')
 
         channel_of_dispatch = request.POST.get('channel_of_dispatch')
         if channel_of_dispatch == None or channel_of_dispatch == '' or len(channel_of_dispatch) < 1:
@@ -1517,6 +1538,9 @@ def update_customer_details(request,id):
                 item.customer_email_id = customer_email_id
                 item2.company_email = customer_email_id  # new2
                 item.save(update_fields=['customer_email_id'])
+            if customer_gst_no != '' or customer_gst_no != 'None' or customer_gst_no != None:
+                item.customer_gst_no = customer_gst_no
+                item.save(update_fields=['customer_gst_no'])
 
 
 

@@ -300,7 +300,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="text" name="customer_email_id" placeholder="Customer GST No" id="customer_email_id"  class="form-control" value="{{purchase_id_id.crm_no.customer_gst_no}}" >
+  <input type="text" name="customer_gst_no" placeholder="Customer GST No" id="customer_gst_no"  class="form-control" value="{{purchase_id_id.crm_no.customer_gst_no}}" >
     </div>
   </div>
 {% endif %}
@@ -454,6 +454,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
       <option  value="Credit">Credit</option>
   <option  value="Cheque">Cheque</option>
   <option  value="Razorpay">Razorpay</option>
+    <option  value="Google Pay">Google Pay</option>
   <option  value="NEFT">NEFT</option>
 </select>
     </div>
@@ -548,7 +549,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="cheque_date" id="neft_date2"  value="{{purchase_id_id.neft_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
+  <input  name="neft_date" id="neft_date2"  value="{{purchase_id_id.neft_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
     </div>
   </div>
 
@@ -712,12 +713,12 @@ for (var i = 0, len = elements.length; i < len; ++i) {
         console.log("fhdkjshfkds");
         console.log("fhdkjshfkds");
                 bill = document.getElementById("bill_id");
-                var gst_id = document.getElementById("gst_id").checked;
+                {% comment %} var gst_id = document.getElementById("gst_id").checked;
                 if (gst_id ==true){
                   bill.style.display = "block";
                 }else{
                   bill.style.display = "none";
-                }
+                } {% endcomment %}
           }
                 
 
@@ -875,12 +876,12 @@ checkbox.addEventListener( 'change', function() {
         <br>
         <button style="display:none; background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
 
-    <select style="width:150px; background-color: #FC6E20; color:white;" name="payment_mode" id="billBUtton" class="form-control">
+    <select style="width:150px; background-color: #FC6E20; color:white;" name="bill_company_type"  id="billBUtton" class="form-control">
   <option value="">Select</option>
-  <option value="Cash">Scale</option>
-  <option  value="Cheque">Sales</option>
+  <option value="Scale">Scale</option>
+  <option  value="Sales">Sales</option>
 </select>
-                  <button style="background-color: #FC6E20; " type="button" value="button1" id="bill_id"  class="btn btn-primary"><a href="/showBill/{{purchase_id_id.pk}}" target="_blank">Bill</a></button>
+                  <button style="background-color: #FC6E20; " type="submit" name="generate_bill" id="bill_id"  class="btn btn-primary">Bill</button>
 
 
       </center>
@@ -979,7 +980,7 @@ tr:nth-child(even) {
 
                   <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
 
-                  {% elif user.role == 'Admin' or user.role == 'Super Admin' %}
+                  {% else %}
                                     <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
 
                   {% endif %}
@@ -1155,7 +1156,6 @@ on_gst();
 }
 disabledEnable();
 
-console.log("on gst called");
   </script>
 
 

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_crontab',
     'expense_app',
     'django_user_agents',
+    'mathfilters',
 
 ]
 

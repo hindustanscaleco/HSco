@@ -68,6 +68,7 @@ class Purchase_Details(models.Model):   #cleaned
     credit_authorised_by = models.CharField(max_length=250,null=True, blank=True )
 
     tax_amount = models.FloatField(default=0.0)
+    round_off_total = models.FloatField(null=True,blank=True)
     total_amount = models.FloatField(null=True,blank=True)
     total_pf = models.FloatField(default=0.0)
     is_gst = models.BooleanField(default=False)
@@ -130,13 +131,7 @@ class Feedback(models.Model):
     class Meta:
         unique_together = ('user_id', 'customer_id', 'purchase_id',)
 
-class Bill(models.Model):
-    user_id = models.ForeignKey(SiteUser, on_delete=models.CASCADE, null=True, blank=True)
-    purchase_id = models.ForeignKey(Purchase_Details,on_delete=models.CASCADE, null=True, blank=True)
-    bill_file = models.FileField(upload_to='',null=True,blank=True)
-    log_entered_by = models.CharField(blank= True, null=True, max_length=100)
-    # entry_timedate = models.DateTimeField(default=timezone.now,)
-    entry_date = models.DateField(default=datetime.date.today)
+
 
 
 

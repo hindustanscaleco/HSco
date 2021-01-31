@@ -53,13 +53,11 @@ class LoginView(FormView):
                 password = request.session['user_password']
                 latitude = request.session['latitude']
                 longitude = request.session['longitude']
-
                 user = authenticate(request, employee_number=mobile, password=password)
                 if user is not None:
                     login(request, user)
                     request.session['registered_mobile'] = mobile
                     request.session['user_password'] = password
-
 
                     dev_fam = request.user_agent.device.family
                     os_fam = request.user_agent.os.family
@@ -75,13 +73,13 @@ class LoginView(FormView):
                     Location : '''+str(latitude)+''', '''+str(longitude)+'''
                     '''
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9284336756&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9730644834&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 
                     # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
                     # x = response.text
-                    # print(x)
+
 
                     return redirect('/dashboard/')
             return render(request, self.template_name, {'form': form})
@@ -115,7 +113,7 @@ class LoginView(FormView):
                                       Os : ''' + str(os_fam) + '''
                                       Browser : ''' + str(browser_fam) + '''
                                       Device : ''' + str(dev_fam) + '''
-                                      Location : ''' + str(latitude) + ''', ''' + str(longitude) + '''
+                                      Location : ''' + str(request.session['latitude']) + ''', ''' + str(request.session['longitude']) + '''
                                       '''
 
                     url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9284336756&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
@@ -130,9 +128,9 @@ class LoginView(FormView):
         else:
             employee_number = form.cleaned_data.get('mobile')
             password = form.cleaned_data.get('password')
-            latitude = form.cleaned_data.get('latitude')
-            longitude = form.cleaned_data.get('longitude')
-
+            latitude = request.POST.get('latitude')
+            longitude = request.POST.get('longitude')
+            
             user = authenticate(request, employee_number=employee_number, password=password)
             if user is not None:
                 login(request, user)
@@ -143,24 +141,21 @@ class LoginView(FormView):
                 registered_mobile = request.session['registered_mobile']
                 print(request.session['user_password'])
                 next = request.GET.get('next', '/dashboard/')
-
-                if not is_safe_url(next, allowed_hosts=None):
-
+                if is_safe_url(next, allowed_hosts=None):
                     dev_fam = request.user_agent.device.family
                     os_fam = request.user_agent.os.family
                     browser_fam = request.user_agent.browser.family
-                    is_mobile = request.user_agent.is_mobile
+                    is_mobile = 'No' if request.user_agent.is_mobile == False else 'Yes'
 
-                    msg = '''
-                                      User : ''' + employee_number + '''
-                                      Is Mobile User : ''' + str(is_mobile) + '''
-                                      Os : ''' + str(os_fam) + '''
-                                      Browser : ''' + str(browser_fam) + '''
-                                      Device : ''' + str(dev_fam) + '''
-                                      Location : ''' + str(latitude) + ''', ''' + str(longitude) + '''
-                                      '''
+                    msg = '''User : ''' + employee_number + '''\n
+Is Mobile User : ''' + str(is_mobile) + '''\n
+Os : ''' + str(os_fam) + '''\n
+Browser : ''' + str(browser_fam) + '''\n
+Device : ''' + str(dev_fam) + '''\n
+Location : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
+                            '''
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9284336756&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9730644834&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 

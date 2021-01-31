@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Expense_Type_Sub_Master, Expense_Type_Sub_Sub_Master, Vendor, Expense, Expense_Product
+from .models import Expense_Type_Sub_Master, Expense_Type_Sub_Sub_Master, Vendor, Expense, Expense_Product , Bill
 from django.shortcuts import render, redirect
 from user_app.models import SiteUser
 from django.http import HttpResponse, JsonResponse
@@ -9,8 +9,9 @@ from purchase_app.views import check_admin_roles
 from django.db.models import Q, F, Min, Avg
 from django.contrib import messages
 from lead_management.models import Pi_section
-from purchase_app.models import Purchase_Details,Product_Details, Bill
-
+from purchase_app.models import Purchase_Details,Product_Details
+from .utils import render_to_pdf
+from datetime import datetime
 # Create your views here.
 
 
@@ -602,15 +603,20 @@ def final_expense_report(request):
     end_date = request.session.get('end_date')
 
     selected_expense_list = request.session.get('selected_expense_list')    
-    selected_product_list = request.session.get('selected_product_list')    
+    selected_product_list = ['expense_id'] + request.session.get('selected_product_list')    
     string_expense = request.session.get('string_expense')    
     string_product = request.session.get('string_product')    
+    final_row_product = []
+    final_row = []
+    product_query = Expense_Product.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_product_list)
+    print('product query')
+    print(product_query)
+    from django.db.models import F
 
-    product_query = Expense_Product.objects.filter(entry_date__range=(start_date, end_date)).values(*string_product)
     for product in product_query:
-        expense_query = Expense.objects.filter(id=product['id']).values(*string_expense)
-        
-        print(sales_query)
+        expense_query = Expense.objects.filter(id=product['expense_id']).values(*selected_expense_list)
+    
+    
     try:
         del request.session['start_date']
         del request.session['end_date']
@@ -624,9 +630,9 @@ def final_expense_report(request):
     context={
         'final_row':final_row,
         'final_row_product':final_row_product,
-        'selected_list':selected_list,
-        'selected_product_list':selected_product_list+selected_list,
-        'sales_query':product_query,
+        'selected_list':selected_expense_list,
+        'selected_product_list':selected_product_list+selected_expense_list,
+        'expense_query':expense_query,
     }
     return render(request,'expense_app/final_expense_report.html', context)
 
@@ -767,14 +773,53 @@ def load_expense_by_company(request):
     }
     return JsonResponse(data)
 
-def showBill(request,sales_id):
+def showBill(request,sales_id,bill_company_type):
     purchase_details = Purchase_Details.objects.filter(id=sales_id).values('total_amount','crm_no__company_name','crm_no__customer_gst_no','bill_no','second_person',
-                                                                           'sales_person','crm_no__address','po_number','second_contact_no','bill_address','shipping_address',
-                                                                           'value_of_goods','bank_name','total_pf','date_of_purchase','reference_no','tax_amount','channel_of_dispatch','payment_mode',
-                                                                           'credit_pending_amount','credit_authorised_by','neft_bank_name','neft_date','reference_no','cheque_no','cheque_date')
-    # print(purchase_details.channel_of_dispatch)
+                                                                        'sales_person','crm_no__address','po_number','second_contact_no','bill_address','shipping_address',
+                                                                        'value_of_goods','bank_name','total_pf','date_of_purchase','reference_no','tax_amount','channel_of_dispatch','payment_mode','round_off_total',
+                                                                        'credit_pending_amount','credit_authorised_by','neft_bank_name','neft_date','reference_no','cheque_no','cheque_date','purchase_no','date_of_purchase')
+    todays_date = str(datetime.now().strftime("%d-%m-%Y"))
+    session_billno = request.session.get('new_bill_no')
+    session_bill_no_company_type = request.session.get('bill_no_company_type')
+    if (session_billno != '' and session_billno != None ) and Bill.objects.filter(bill_no=session_billno, company_type=session_bill_no_company_type).count() == 0 :
+            latest_bill_no = str(session_billno)
+            print('session called')
+    elif bill_company_type != '' and bill_company_type != 'None':
+        latest_bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)                                                                
+    else :
+        messages.error(request,'Please select company type - Sales or Scales to generate a bill !')
+        return redirect('/update_customer_details/'+str(sales_id))
 
-                                                                       
+    if request.method == 'POST' and 'submit' in request.POST and Bill.objects.filter(purchase_id__id=sales_id).count() == 0:
+        bill_file = request.POST.get('bill_file')
+        
+        
+        item = Bill()
+        item.user_id = SiteUser.objects.get(id=request.user.id)
+        item.log_entered_by = request.user.name
+        item.company_type = bill_company_type
+
+        session_billno = request.session.get('new_bill_no')
+        session_bill_no_company_type = request.session.get('bill_no_company_type')
+        if (session_billno != '' and session_billno != None ) and Bill.objects.filter(bill_no=session_billno, company_type=session_bill_no_company_type).count() == 0 :
+            item.bill_no = str(session_billno)
+            print('session called')
+        else:
+            item.bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)
+            print('bill no increased')
+        item.purchase_id = Purchase_Details.objects.get(id=sales_id)
+        item.bill_file = bill_file
+        item.save()
+        Purchase_Details.objects.filter(id=sales_id).update(bill_no=item.bill_no)
+        try:
+            del request.session['new_bill_no']
+            del request.session['bill_no_company_type']
+        except:
+            pass
+        messages.success(request,'Bill saved successfully !')
+        return redirect('/update_customer_details/'+str(sales_id))                                                                   
+    elif request.method == 'POST' and 'submit' in request.POST:
+        return redirect('/update_customer_details/'+str(sales_id))                                                                   
 
     products_details = Product_Details.objects.filter(purchase_id=sales_id).values()
     for item in products_details:
@@ -810,29 +855,50 @@ def showBill(request,sales_id):
                 obj['is_cgst'] = False
         else:
             obj['is_cgst'] = False
-    if request.method == 'POST':
-        bill_file = request.POST.get('bill_file')
-        print('bill file')
-        print(bill_file)
-        
-        item = Bill()
-
-        item.user_id = SiteUser.objects.get(id=request.user.id)
-        item.log_entered_by = request.user.name
-        item.purchase_id = Purchase_Details.objects.get(id=sales_id)
-        item.bill_file = bill_file
-        item.save()
-        messages.success(request,'Bill saved successfully !')
-        return redirect('/update_customer_details/'+str(sales_id))
+    
     context={
         'invoice_details':purchase_details[0],
         'products_details':products_details,
         'sales_id':sales_id,
+        'todays_date':todays_date,
+        'latest_bill_no':latest_bill_no,
     }
-    return render(request,'bills/billsNew.html',context)
+    if bill_company_type == 'Sales':
+        return render(request,"bills/sales_bill.html", context)
+    elif bill_company_type == 'Scale':
+        return render(request,"bills/scales_bill.html", context)
+    else:
+        print('fdskjfdskj')
+        messages.error(request,'Please select company type - Sales or Scales to generate a bill !')
+        return redirect('/update_customer_details/'+str(sales_id))
+    return redirect('/update_customer_details/'+str(sales_id))
+        
 
 def showBillModule(request):
-    bills_list = Bill.objects.all()
+    if check_admin_roles(request):  # For ADMIN
+        bills_list = Bill.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
+                        user_id__is_deleted=False).order_by('-id')
+            
+    else:  # For EMPLOYEE
+        bills_list = Bill.objects.filter(user_id=request.user.pk).order_by('-id')
+
+    #filter by company type (sales or scales)
+    if request.method == 'GET' and 'company_type' in request.GET:
+        
+        company_type = request.GET.get('company_type')
+        
+        if check_admin_roles(request):  # For ADMIN
+            bills_list = Bill.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
+                                                        user_id__is_deleted=False,company_type__icontains=company_type).order_by('-id')
+
+        else:  # For EMPLOYEE
+            bills_list = Bill.objects.filter(user_id=request.user.pk,company_type__icontains=company_type).order_by('-id')
+        
+        context = {
+            'bills_list':bills_list,
+        }
+        return render(request,"bills/load_bills_company_type.html", context)
+
     # search by options
     if request.method == 'POST':
         if 'submit1' in request.POST:
@@ -850,7 +916,7 @@ def showBillModule(request):
 
             context = {
                 'bills_list': bills_list,
-                'search_msg': 'Search result for Vendor Contact No: ' + contact,
+                'search_msg': 'Search result for Customer Contact No: ' + contact,
             }
             return render(request,'bills/billsModuleDashboard.html',context)
 
@@ -861,7 +927,7 @@ def showBillModule(request):
 
             context = {
                 'bills_list': bills_list,
-                'search_msg': 'Search result for Vendor Email ID: ' + email,
+                'search_msg': 'Search result for Customer Email ID: ' + email,
             }
             return render(request,'bills/billsModuleDashboard.html',context)
         elif 'submit4' in request.POST:
@@ -872,7 +938,7 @@ def showBillModule(request):
 
             context = {
                 'bills_list': bills_list,
-                'search_msg': 'Search result for Vendor Name: ' + name,
+                'search_msg': 'Search result for Customer Name: ' + name,
             }
             return render(request,'bills/billsModuleDashboard.html',context)
 
@@ -888,21 +954,47 @@ def showBillModule(request):
             return render(request,'bills/billsModuleDashboard.html',context)
         elif request.method == 'POST' and 'submit6' in request.POST:
             id = request.POST.get('id')
-            bills_list = Bill.objects.filter(id=id).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__purchase_no=id).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
-                'search_msg': 'Search result for Expense ID. : ' + str(id),
+                'search_msg': 'Search result for Sales ID : ' + str(id),
             }
             return render(request, 'bills/billsModuleDashboard.html', context)
         elif request.method == 'POST' and 'delete_bill' in request.POST:
             bill_id = request.POST.get('bill_id')
-            print('bill_id')
-            print(bill_id)
+            
             bills_list = Bill.objects.filter(id=bill_id).delete()
             messages.success(request,"Bill Deleted Successfully!")
             return redirect('/showBillModule/')
-            return render(request, 'bills/billsModuleDashboard.html', context)    
+            return render(request, 'bills/billsModuleDashboard.html', context) 
+        elif 'increase_bill_no' in request.POST:
+            new_bill_no = request.POST.get('new_bill_no')
+            company_type = request.POST.get('company_type')
+            new_bill_no = str(new_bill_no).zfill(10)
+            print('new_bill_no')
+            print(new_bill_no)
+            print(Bill.objects.filter(company_type=company_type).latest('id').bill_no)
+            if new_bill_no < Bill.objects.filter(company_type=company_type).latest('id').bill_no :
+                messages.error(request,"Bill no cannot be decreased  !")
+            elif new_bill_no == Bill.objects.filter(bill_no = new_bill_no, company_type=company_type):
+                messages.error(request,"Bill no already exists for company type "+company_type +"!")    
+            else:
+                try:
+                    del request.session['new_bill_no']
+                    del request.session['bill_no_company_type']
+                except:
+                    pass
+                try:
+                    request.session['new_bill_no'] = new_bill_no
+                    request.session['bill_no_company_type'] = company_type
+                except:
+                    pass
+                # bill_no = request.session.get('new_bill_no')
+                print(request.session.get('bill_no_company_type'))
+                messages.success(request,"Bills will be now created from bill id "+str(new_bill_no)+" for company type - "+str(company_type))
+            print('session bill no')
+            return redirect('/showBillModule/')
     context={
         "bills_list":bills_list,
     }

@@ -35,7 +35,7 @@ font-family: 'Montserrat', sans-serif;
 }</script>
 </head>
 
-<body style="background-color: #FC6E20;">
+<body onload="getLocation()" style="background-color: #FC6E20;">
 
   <div class="container">
 
@@ -84,6 +84,8 @@ font-family: 'Montserrat', sans-serif;
                     <div class="form-group">
                         {{form.password}}
                     </div>
+                    <input type="text" hidden name="latitude" id="latitude"/>
+                    <input type="text" hidden name="longitude" id="longitude"/>
                     <!--<div class="form-group">-->
                       <!--<div class="custom-control custom-checkbox small">-->
                         <!--<input type="checkbox" class="" id="customCheck">-->
@@ -120,7 +122,28 @@ font-family: 'Montserrat', sans-serif;
     </div>
 
   </div>
+  
+{% comment %} <button onclick="getLocation()">Try It</button> {% endcomment %}
 
+<p id="demo"></p>
+
+<script>
+
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+  document.getElementById("latitude").value = position.coords.latitude;
+  document.getElementById("longitude").value = position.coords.longitude;
+
+}
+</script>
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

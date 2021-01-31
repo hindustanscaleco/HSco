@@ -476,6 +476,7 @@ Format : (contact no)
   <option  value="Cheque">Cheque</option>
   <option  value="Credit">Credit</option>
   <option  value="Razorpay">Razorpay</option>
+  <option  value="Google Pay">Google Pay</option>
   <option  value="NEFT">NEFT</option>
 </select>
     </div>
@@ -571,7 +572,7 @@ Format : (contact no)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
-  <input  name="cheque_date" id="neft_date2" value="" placeholder="Cheque Date" class="form-control"  type="date">
+  <input  name="neft_date" id="neft_date2" value="" placeholder="Cheque Date" class="form-control"  type="date">
     </div>
   </div>
 
@@ -727,16 +728,12 @@ Format : (contact no)
           function on_gst(){
                 gst_selected = document.getElementById("gst_id").checked;
                 if (gst_selected == true){
-                      $('#bill_no').attr('required', '');
                       $('#customer_gst_no').attr('required', '');
                       $("#label_customer_gst_no").html("Customer GST No. *");
-                      $("#label_bill_no").html("Bill No *");
                 }
                 else{
-                      $('#bill_no').removeAttr('required', '');
                       $('#customer_gst_no').removeAttr('required', '');
                       $("#label_customer_gst_no").html("Customer GST No.");
-                      $("#label_bill_no").html("Bill No");
                 }
           }
           function show(){
@@ -752,7 +749,6 @@ Format : (contact no)
                   $('#bank_name2').attr('required', '');
                   $('#cheque_no2').attr('required', '');
                   $('#cheque_date2').attr('required', '');
-                  $('#bill_no').attr('required', '');
 
                   $('#credit_authorised_by_id').removeAttr('required', '');
                   $('#credit_pending_amount_id').removeAttr('required', '')
@@ -769,7 +765,6 @@ Format : (contact no)
 
                   $('#neft_bank_name2').attr('required', '');
                   $('#neft_date2').attr('required', '');
-                  $('#bill_no').attr('required', '');
 
                   $('#credit_authorised_by_id').removeAttr('required', '');
                   $('#credit_pending_amount_id').removeAttr('required', '')
@@ -798,12 +793,10 @@ Format : (contact no)
               else{
                   if (mode == 'Razorpay'){
                   document.getElementById("gst_id").checked = true;
-                  $('#bill_no').attr('required', '');
 
                   }
                   else{
                     document.getElementById("gst_id").checked = false;
-                    $('#bill_no').removeAttr('required', '');
 
                   }
                   x.style.display = "none";

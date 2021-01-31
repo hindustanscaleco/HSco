@@ -1974,23 +1974,29 @@ def update_view_lead(request,id):
                             cc_list.append(_email)
 
 
-
+                    
 
                     email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request,extra),
                                           settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id,],connection=connection,cc=cc_list)
                     email_send.content_subtype = 'html'
                     email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
-
+                    
                     #add brochure and product document in pi email
                     pi_products = Pi_product.objects.filter(lead_id=lead_id)
                     for pi_product in pi_products:
-                        if pi_product.add_brochure == True:
-                            email_send.attach_file(pi_product.product_id.product_brochure.path)
-                        if pi_product.add_product_document == True:
-                            email_send.attach_file(pi_product.product_id.product_document.path)
+                        try:
+                            if pi_product.add_brochure == True:
+                                email_send.attach_file(pi_product.product_id.product_brochure.path)
+                        except:
+                            pass
+                        try:
+                            if pi_product.add_product_document == True:
+                                email_send.attach_file(pi_product.product_id.product_document.path)
+                        except:
+                            pass
 
                     email_send.send()
-
+                
                 history = Pi_History()
                 lead_id = Lead.objects.get(id=id)
                 todays_date = str(datetime.now().strftime("%Y-%m-%d"))
@@ -2280,21 +2286,23 @@ def update_view_lead(request,id):
                                 use_tls=True
                         ) as connection:
 
-
+                            
                             email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
                                                       user(request, extra),
                                                       settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],
                                                       connection=connection,cc=cc_list)
                             email_send.content_subtype = 'html'
                             email_send.attach_file(history.pi_history_file.path)
-                            email_send.attach_file()
                             # add brochure and product document in pi email
                             pi_products = Pi_product.objects.filter(lead_id=lead_id)
-                            for pi_product in pi_products:
-                                if pi_product.add_brochure == True:
-                                    email_send.attach_file(pi_product.product_id.product_brochure.path)
-                                if pi_product.add_product_document == True:
-                                    email_send.attach_file(pi_product.product_id.product_document.path)
+                            try:
+                                for pi_product in pi_products:
+                                    if pi_product.add_brochure == True:
+                                        email_send.attach_file(pi_product.product_id.product_brochure.path)
+                                    if pi_product.add_product_document == True:
+                                        email_send.attach_file(pi_product.product_id.product_document.path)
+                            except:
+                                pass
                             email_send.send()
                         messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
                     except Exception as e:
@@ -2331,7 +2339,7 @@ def update_view_lead(request,id):
                                 host=host_file,
                                 port=587,
                                 username=settings.EMAIL_HOST_USER3,
-                                password=settings.EMAIL_HOST_PASSWORD,
+                                password=settings.EMAIL_HOST_PASSWORD3,
                                 use_tls=True
                         ) as connection:
 
