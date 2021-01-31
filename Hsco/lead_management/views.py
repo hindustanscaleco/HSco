@@ -60,7 +60,7 @@ def lead_home(request):
     from_date = last_date
     import datetime
     # to_date = datetime.datetime.today().strftime('%d-%b-%Y')
-    to_date= last_date + datetime.timedelta(days=20)
+    to_date= (IndiamartLeadDetails.objects.latest('to_date').to_date + datetime.timedelta(days=20)).strftime('%d-%b-%Y')
 
 
     from datetime import datetime
