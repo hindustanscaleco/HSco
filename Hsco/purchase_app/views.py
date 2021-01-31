@@ -2759,28 +2759,13 @@ def reportCustomerPage(request):
     }
     return render(request,'gstVScash/customerDetailsinReportSales.html',context)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def payment_mode_report(request):
+    this_month=[]
+    if request.method == 'POST':
+        from_date = request.POST.get('date1')
+        to_date = request.POST.get('date2')
+        this_month = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date]).values('payment_mode').annotate(data_count=Sum('total_amount')).values('payment_mode','data_count',)
+    context = {
+        "this_month": this_month,
+    }
+    return render(request,'gstVScash/payment_mode_report.html',context)
