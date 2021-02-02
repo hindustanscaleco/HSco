@@ -491,7 +491,7 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
         </a>
         <form method="POST" >{% csrf_token %}
 
-        <button style="background-color: #FC6E20;" name="submit" value="submit" type="submit" onclick="window.print()" value="Submit" class="btn btn-primary">Submit & Print</button>
+        <button style="background-color: #FC6E20;" name="submit" value="submit" type="submit" onclick="get_details()" value="Submit" class="btn btn-primary">Submit & Print</button>
         </form>
 	</div>
 
@@ -499,6 +499,7 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 
 <script>
   function printDiv(divName) {
+
      var printContents = document.getElementById(divName).innerHTML;
      var originalContents = document.body.innerHTML;
 
@@ -508,7 +509,14 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 
      document.body.innerHTML = originalContents;
 
+
 }
+function get_details() {
+alert("helloooo");
+  alert("helloooo");
+  alert("helloooo");
+window.print();
+     console.log("hhihi");
 function getCookie(name) {
              var cookieValue = null;
              if (document.cookie && document.cookie != '') {
@@ -545,6 +553,8 @@ function getCookie(name) {
     xhr.send(formData);
 
     });
+}
+
 
 
 </script>

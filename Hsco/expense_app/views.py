@@ -1,4 +1,9 @@
+import io
+
+from django.core.files.base import ContentFile
 from django.shortcuts import render
+from django.template.loader import get_template
+
 from .models import Expense_Type_Sub_Master, Expense_Type_Sub_Sub_Master, Vendor, Expense, Expense_Product , Bill
 from django.shortcuts import render, redirect
 from user_app.models import SiteUser
@@ -773,11 +778,31 @@ def load_expense_by_company(request):
     }
     return JsonResponse(data)
 
+
+class BytesIOWrapper(object):
+
+    def __init__(self, file, encoding='utf-8', errors='strict'):
+        self.file, self.encoding, self.errors = file, encoding, errors
+        self.buf = b''
+    def readinto(self, buf):
+        if not self.buf:
+            self.buf = self.file.read(4096).encode(self.encoding, self.errors)
+            if not self.buf:
+                return 0
+        length = min(len(buf), len(self.buf))
+        buf[:length] = self.buf[:length]
+        self.buf = self.buf[length:]
+        return length
+    def readable(self):
+        return True
+
+
 def showBill(request,sales_id,bill_company_type):
     purchase_details = Purchase_Details.objects.filter(id=sales_id).values('total_amount','crm_no__company_name','crm_no__customer_gst_no','bill_no','second_person',
                                                                         'sales_person','crm_no__address','po_number','second_contact_no','bill_address','shipping_address',
                                                                         'value_of_goods','bank_name','total_pf','date_of_purchase','reference_no','tax_amount','channel_of_dispatch','payment_mode','round_off_total',
                                                                         'credit_pending_amount','credit_authorised_by','neft_bank_name','neft_date','reference_no','cheque_no','cheque_date','purchase_no','date_of_purchase')
+    latest_bill_no=0
     todays_date = str(datetime.now().strftime("%d-%m-%Y"))
     session_billno = request.session.get('new_bill_no')
     session_bill_no_company_type = request.session.get('bill_no_company_type')
@@ -785,15 +810,53 @@ def showBill(request,sales_id,bill_company_type):
             latest_bill_no = str(session_billno)
             print('session called')
     elif bill_company_type != '' and bill_company_type != 'None':
-        latest_bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)                                                                
+        latest_bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)
     else :
         messages.error(request,'Please select company type - Sales or Scales to generate a bill !')
         return redirect('/update_customer_details/'+str(sales_id))
 
+    products_details = Product_Details.objects.filter(purchase_id=sales_id).values()
+    for item in products_details:
+        # <<<<<<< development
+        #         product = Product.objects.filter(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
+        #                                                   sub_category__name=item['sub_model'])[0]
+
+        try:
+            product = Product.objects.get(scale_type__name=item['type_of_scale'],
+                                          main_category__name=item['model_of_purchase'],
+                                          sub_category__name=item['sub_model'],
+                                          sub_sub_category__name=item['sub_sub_model'])
+        except:
+            product = Product.objects.get(scale_type__name=item['type_of_scale'],
+                                          main_category__name=item['model_of_purchase'],
+                                          sub_category__name=item['sub_model'])
+
+        item['rate'] = product.cost_price
+        item['hsn_code'] = product.hsn_code
+    print("purchase_details")
+    print(purchase_details)
+    for obj in purchase_details:
+        # print('sqddqsfwdwffewfewqfefefefeqwe',obj['channel_of_dispatch'])
+        if obj['channel_of_dispatch'] == "Franchisee Store":
+            obj['shipping_address'] = obj['crm_no__address']
+            obj['bill_address'] = obj['crm_no__address']
+
+        if obj['channel_of_dispatch'] != "Franchisee Store" and obj['shipping_address'] == obj['bill_address']:
+            obj['shipping_address'] = obj['bill_address']
+            # obj['bill_address']=obj['crm_no__address']
+
+        if obj['crm_no__customer_gst_no'] != None:
+            if '27' in obj['crm_no__customer_gst_no'] or (
+                    len(obj['crm_no__customer_gst_no']) == 1 and 'A' in obj['crm_no__customer_gst_no']):
+                obj['is_cgst'] = True
+            else:
+                obj['is_cgst'] = False
+        else:
+            obj['is_cgst'] = False
+
     if request.method == 'POST' and 'submit' in request.POST and Bill.objects.filter(purchase_id__id=sales_id).count() == 0:
         bill_file = request.POST.get('bill_file')
-        
-        
+
         item = Bill()
         item.user_id = SiteUser.objects.get(id=request.user.id)
         item.log_entered_by = request.user.name
@@ -808,7 +871,25 @@ def showBill(request,sales_id,bill_company_type):
             item.bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)
             print('bill no increased')
         item.purchase_id = Purchase_Details.objects.get(id=sales_id)
-        item.bill_file = bill_file
+
+        context22 = {
+            'invoice_details': purchase_details[0],
+            'products_details': products_details,
+            'sales_id': sales_id,
+            'todays_date': todays_date,
+            'latest_bill_no': latest_bill_no,
+            'csrf_token': "busuicbig_uivgbiegbviuegviygu",
+            'hide_buttons': True,
+            'is_download': True,
+        }
+        template = get_template('bills/sales_bill.html')
+        html = template.render(context22)
+        file_pdf = ContentFile(html)
+        # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
+        item.bill_file.save('billing.html', file_pdf, save=False)
+
+
+        # item.bill_file = bill_file
         item.save()
         Purchase_Details.objects.filter(id=sales_id).update(bill_no=item.bill_no)
         try:
@@ -818,43 +899,10 @@ def showBill(request,sales_id,bill_company_type):
             pass
         messages.success(request,'Bill saved successfully !')
         return redirect('/update_customer_details/'+str(sales_id))                                                                   
-    elif request.method == 'POST' and 'submit' in request.POST:
-        return redirect('/update_customer_details/'+str(sales_id))                                                                   
+    # elif request.method == 'POST' and 'submit' in request.POST:
+    #     return redirect('/update_customer_details/'+str(sales_id))
 
-    products_details = Product_Details.objects.filter(purchase_id=sales_id).values()
-    for item in products_details:
-# <<<<<<< development
-#         product = Product.objects.filter(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
-#                                                   sub_category__name=item['sub_model'])[0]
 
-        try:
-            product = Product.objects.get(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
-                                                    sub_category__name=item['sub_model'], sub_sub_category__name=item['sub_sub_model'])
-        except:     
-            product = Product.objects.get(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
-                                                    sub_category__name=item['sub_model'])
-                                                       
-        item['rate'] = product.cost_price
-        item['hsn_code'] = product.hsn_code
-    print("purchase_details")
-    print(purchase_details)
-    for obj in purchase_details:
-        # print('sqddqsfwdwffewfewqfefefefeqwe',obj['channel_of_dispatch'])
-        if obj['channel_of_dispatch'] == "Franchisee Store":
-            obj['shipping_address']=obj['crm_no__address']
-            obj['bill_address']=obj['crm_no__address']
-
-        if obj['channel_of_dispatch'] != "Franchisee Store" and obj['shipping_address'] == obj['bill_address']:
-            obj['shipping_address']=obj['bill_address']
-            # obj['bill_address']=obj['crm_no__address']
-
-        if obj['crm_no__customer_gst_no']!=None:
-            if '27' in obj['crm_no__customer_gst_no'] or (len(obj['crm_no__customer_gst_no'])==1 and 'A' in obj['crm_no__customer_gst_no']):
-                obj['is_cgst']=True
-            else:
-                obj['is_cgst'] = False
-        else:
-            obj['is_cgst'] = False
     
     context={
         'invoice_details':purchase_details[0],
@@ -862,6 +910,9 @@ def showBill(request,sales_id,bill_company_type):
         'sales_id':sales_id,
         'todays_date':todays_date,
         'latest_bill_no':latest_bill_no,
+        'hide_buttons': False,
+        'is_download': False,
+
     }
     if bill_company_type == 'Sales':
         return render(request,"bills/sales_bill.html", context)

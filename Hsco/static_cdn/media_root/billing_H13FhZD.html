@@ -4,8 +4,8 @@
   <title>
     HSCO
   </title>
-  {% load static %}
-{% load mathfilters %}
+  
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
@@ -76,8 +76,8 @@ td {
 <div id="printableArea" style="margin-left: 3%; margin-right: 3%;">
 <div class="row">
     <div class="col-xl-3 col-md-3 ">
-<img src="{% static 'images/HSCo BT Bluetooth Smart Weighing Scale App_logo.png' %}" class="img-rounded" width="100" height="90" style="float: left;">
-<img style="margin-top: 10px;" src="{% static 'images/Alpha BT.png' %}" class="img-rounded" width="100" height="80" style="float: left;">
+<img src="/static/images/HSCo%20BT%20Bluetooth%20Smart%20Weighing%20Scale%20App_logo.png" class="img-rounded" width="100" height="90" style="float: left;">
+<img style="margin-top: 10px;" src="/static/images/Alpha%20BT.png" class="img-rounded" width="100" height="80" style="float: left;">
 
 </div>
     <div class="col-xl-6 col-md-6 ">
@@ -126,7 +126,7 @@ td {
           <div class="col-md-2">
           <center><p style=" float:right;">Date:</p>
           </center></div>
-          <div class="col-md-2"> <p>{{todays_date}}</p>
+          <div class="col-md-2"> <p>02-02-2021</p>
           </div>
           </div>
 
@@ -136,7 +136,7 @@ td {
           <center><p style=" float:right;"> Company Name :</p>
           </center></div>
           <div class="col-md-5">
-          <center><p style=" float:left; ">{{invoice_details.crm_no__company_name}} </p>
+          <center><p style=" float:left; ">testing </p>
           </center></div>
           
 
@@ -144,7 +144,7 @@ td {
           <center><p style=" float:right;">GST Invoice No:</p>
           </center></div>
           <div class="col-md-2">
-          <center><p style=" float:left;">{{latest_bill_no}} </p>
+          <center><p style=" float:left;">0 </p>
           </center></div>
           </div>
           
@@ -153,14 +153,14 @@ td {
           <center><p style=" float:right;">Contact Person :</p>
           </center></div>
           <div class="col-md-5">
-          <center><p style=" float:left;">{{invoice_details.second_person}} </p>
+          <center><p style=" float:left;">vikas </p>
           </center></div>
        
           <div class="col-md-3" style="padding:0%">
           <center><p style="float:right;">Sales Person :</p>
           </center></div>
           <div class="col-md-2">
-          <center><p style=" float:left;"> {{invoice_details.sales_person}}</p>
+          <center><p style=" float:left;"> Haider</p>
           </center></div>
           </div>
          
@@ -170,7 +170,7 @@ td {
           <center><p style=" float:right;">Billing Address:</p>
           </center></div>
           <div class="col-md-5">
-          <center><p style=" float:left;"> {{invoice_details.bill_address}} </p>
+          <center><p style=" float:left;"> None </p>
           </center></div>
           
          
@@ -178,7 +178,7 @@ td {
           <center><p style=" float:right;">PO Number:</p>
           </center></div>
           <div class="col-md-2">
-          <center><p style=" float:left;">{{invoice_details.po_number}}</p>
+          <center><p style=" float:left;"></p>
           </center></div>
           </div>
           
@@ -190,14 +190,14 @@ td {
               <center><p style=" float:right;">Shipping Address :</p>
               </center></div>
               <div class="col-md-5">
-              <center><p style=" float:left;">{{invoice_details.shipping_address}}</p>
+              <center><p style=" float:left;">None</p>
               </center></div>
     
           <div class="col-md-3" style="padding:0%">
           <center><p style=" float:right;">Customer GST Number: </p>
           </center></div>
           <div class="col-md-2">
-          <center><p style=" float:left;">{{invoice_details.crm_no__customer_gst_no}}</p>
+          <center><p style=" float:left;">None</p>
           </center></div>
           </div>
 
@@ -206,7 +206,7 @@ td {
               <center><p style=" float:right;">Phone :</p>
               </center></div>
               <div class="col-md-5">
-              <center><p style=" float:left;">{{invoice_details.second_contact_no}}</p>
+              <center><p style=" float:left;">9860918453</p>
               </center></div>
               <div class="col-md-3" style="padding:0%">
                 <center><p style=" float:right;">Dispatch Through: </p>
@@ -273,20 +273,20 @@ th {
     </tr>
 
         <tbody>
-        {% for item in products_details %}
+        
 
         	<tr>
         		<td>
-        			<center> {{item.quantity}} </center> 
+        			<center> 1.0 </center> 
         		</td>
         		<td>
-        			<center> {{item.hsn_code}} </center>
+        			<center> 8423 </center>
         		</td>
-        		<td>{{item.sub_sub_model}}		</td>
-        		<td>INR <span style="float: right;">  {{item.rate}} </span></td>
-        		<td> INR <span style="float: right;">{{item.amount}} </span></td>
+        		<td>MSS005		</td>
+        		<td>INR <span style="float: right;">  3500.0 </span></td>
+        		<td> INR <span style="float: right;">3500.0 </span></td>
         	</tr>
-        {% endfor %}
+        
           
         
 
@@ -305,40 +305,28 @@ th {
         	<tr>
         		<td>&nbsp;</td>
         		<td></td>
-            <td> Payment Mode : {{invoice_details.payment_mode}}</td>
+            <td> Payment Mode : Cash</td>
         		<td><center> Total </center></td>
-        		<td>INR <span style="float: right;">{{invoice_details.value_of_goods}} </span></td>
+        		<td>INR <span style="float: right;">3500.0 </span></td>
           </tr>
           
         	<tr>
         		<td>&nbsp;</td>
         		<td></td>
-            {% if invoice_details.payment_mode == 'Cheque' %}
-                    <td>  Bank Name: {{invoice_details.bank_name}}</td>
-            {% elif invoice_details.payment_mode == 'Credit' %}
-                    <td>  Credit Authorised By: {{invoice_details.credit_authorised_by}}</td>
-
-            {% elif invoice_details.payment_mode == 'NEFT' %}
-                    <td> NEFT Bank: {{invoice_details.neft_bank_name}} </td>
-            {% else %}
+            
                     <td></td>
-            {% endif %}
+            
         		<td><center>Discount </center></td>
         		<td>INR <span style="float: right;">0.0 </span></td>
         	</tr>
         	<tr>
         		<td>&nbsp;</td>
         		<td></td>
-        		{% if invoice_details.payment_mode == 'Cheque' %}
-                    <td>  Cheque No: {{invoice_details.cheque_no}}</td>
-            
-            {% elif invoice_details.payment_mode == 'NEFT' %}
-                  <td>  NEFT date: {{invoice_details.neft_date}}</td>
-            {% else %}
+        		
                     <td></td>
-            {% endif %}
+            
         		<td><center>P&F </center></td>
-        		<td>INR <span style="float: right;">{{invoice_details.total_pf}} </span></td>
+        		<td>INR <span style="float: right;">0.0 </span></td>
         	</tr>
 
 
@@ -350,20 +338,15 @@ th {
 
         	
 
-{% if invoice_details.crm_no__customer_gst_no|slice:":2" == 27 or invoice_details.crm_no__customer_gst_no|slice:":2" == '27' or invoice_details.crm_no__customer_gst_no == None or invoice_details.crm_no__customer_gst_no == 'None' or invoice_details.crm_no__customer_gst_no == ''  %}
+
         	<tr>
         		<td>&nbsp;</td>
         		<td></td>
-        		{% if invoice_details.payment_mode == 'Cheque' %}
-        <td>  Cheque Date: {{invoice_details.cheque_date}}</td>
-            
-            {% elif invoice_details.payment_mode == 'NEFT' %}
-        <td> Reference No.: {{invoice_details.reference_no}}  </td>
-          {% else %}
+        		
                     <td></td>
-            {% endif %}
+            
         		<td><center> CGST @ 9% </center></td>
-        		<td>INR <span style="float: right;">{{invoice_details.tax_amount|div:2}} </span></td>
+        		<td>INR <span style="float: right;">0.0 </span></td>
         	</tr>
 
         	<tr>
@@ -371,30 +354,15 @@ th {
         		<td></td>
         		<td> </td>
         		<td><center>  SGST @ 9% </center></td>
-        		<td>INR <span style="float: right;">{{invoice_details.tax_amount|div:2}}  </span></td>
+        		<td>INR <span style="float: right;">0.0  </span></td>
         	</tr>
-{% else %}
-        	<tr>
-        		<td>&nbsp;</td>
-        		<td></td>
-        		{% if invoice_details.payment_mode == 'Cheque' %}
-        <td>  Cheque Date: {{invoice_details.cheque_date}}</td>
-            
-            {% elif invoice_details.payment_mode == 'NEFT' %}
-        <td> Reference No.: {{invoice_details.reference_no}}  </td>
-          {% else %}
-                    <td></td>
-            {% endif %}
-        		<td><center>   IGST @ 18%  </center></td>
-        		<td>INR <span style="float: right;">{{invoice_details.tax_amount}}</td>
-        	</tr>
-{% endif %}
+
           <tr>
             <td>&nbsp;</td>
             <td></td>
             <td></td>
             <td><center>   Round Off </center></td>
-            <td>INR <span style="float: right;">{{invoice_details.round_off_total}}</span></td>
+            <td>INR <span style="float: right;">3500.0</span></td>
           </tr>
 
         	<tr>
@@ -402,7 +370,7 @@ th {
         		<td></td>
         		<td></td>
         		<td><center><b>Grand Total </b></center></td>
-        		<td><b>INR <span style="float: right;">{{invoice_details.total_amount}} </span></b></td>
+        		<td><b>INR <span style="float: right;">3500.0 </span></b></td>
         	</tr>
 
 
@@ -424,11 +392,11 @@ th {
                     TAN Number - <b>MUMH17506G</b></p>
             </div>
 	         <div class="col-md-8">
-<img src="{% static 'images/logo_bill.png' %}" style="width: 100%; height:90px;">
+<img src="/static/images/logo_bill.png" style="width: 100%; height:90px;">
          </div>
              <div class="row">
             <div class="col-md-12 " style="padding:10px;"><p style="font-size: 10px;">
-I/We hereby certify that my/our registration certificate under the Goods and Service Tax Laws is in force on the date of which the sale of goods specified in this ‚ÄúProforma Invoice‚Äù is made by me/us and that the transaction of sale is covered by this and has been effected by me/us and it shall be accounted for in the turnover of sales while filing of return and the due tax, if any, payable on the sale has been paid
+I/We hereby certify that my/our registration certificate under the Goods and Service Tax Laws is in force on the date of which the sale of goods specified in this ìProforma Invoiceî is made by me/us and that the transaction of sale is covered by this and has been effected by me/us and it shall be accounted for in the turnover of sales while filing of return and the due tax, if any, payable on the sale has been paid
   </p>     </div>
         </div>
 
@@ -456,7 +424,7 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
                 </p>
             </div>
             <div class="col-md-4" style="margin-left: 50%;">
-              <img src="{% static 'images/qr.png' %}" style="height: 240px; width: 300px;">
+              <img src="/static/images/qr.png" style="height: 240px; width: 300px;">
             </div>
         </div>
 </div>
@@ -465,7 +433,7 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
       <span style="font-size: 11px;">Hindustan Sales and Consultancy, 102 Mezzanine Floor, Issaji Street, Next to Hanuman Mandir, Mumbai 400003</span>
             </div>
   <div class="col-md-2" style="border-top: 1px solid black;">
-      <span style="font-size: 11px;">{{invoice_details.purchase_no}}</span>
+      <span style="font-size: 11px;">26320</span>
             </div>
 </div>
         </div>
@@ -478,23 +446,10 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 
 </center>
 
-{% if not hide_buttons %}
-<center>
-	<div id="no-print" class="d-print-none">
-		
-        <a href="/update_customer_details/{{sales_id}}"><button style="background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Edit</button>
-        </a>
-        <form method="POST" >{% csrf_token %}
-        <button style="background-color: #FC6E20;" name="submit" value="submit" type="submit" onclick="get_details()" value="Submit" class="btn btn-primary">Submit & Print</button>
-        </form>
-	</div>
-
-    </center>
-
-{% endif %}
 
 
-{% if is_download %}
+
+
 <script>
 window.onload = function(e){
 
@@ -512,9 +467,11 @@ setTimeout(function() {
 
 
 </script>
-{% endif %}
+
 <script>
   function printDiv(divName) {
+  alert("helloooo");
+  alert("helloooo");
      var printContents = document.getElementById(divName).innerHTML;
      var originalContents = document.body.innerHTML;
 
@@ -526,7 +483,10 @@ setTimeout(function() {
 
 }
 function get_details() {
+  alert("helloooo");
+
 window.print();
+     console.log("hhihi");
 function getCookie(name) {
              var cookieValue = null;
              if (document.cookie && document.cookie != '') {
@@ -558,7 +518,7 @@ function getCookie(name) {
             console.log(result);
         }
     }
-    xhr.open('POST', '/showBill/{{sales_id}}/Scale', true);
+    xhr.open('POST', '/showBill/3511/Scale', true);
     xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
     xhr.setRequestHeader("Content-Type","multipart/form-data");
     xhr.send(formData);
