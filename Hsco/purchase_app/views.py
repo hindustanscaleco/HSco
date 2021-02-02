@@ -52,6 +52,7 @@ from restamping_app.models import Restamping_after_sales_service
 from amc_visit_app.models import Amc_After_Sales
 
 today_month = datetime.now().month
+today_year = datetime.now().year
 
 @receiver(pre_save, sender=Purchase_Details)
 def purchase_handler(sender, instance, update_fields=None, **kwargs):
@@ -1288,12 +1289,11 @@ def view_customer_details(request):
         if check_admin_roles(request):  # For ADMIN
             cust_list = Purchase_Details.objects.filter(
                 Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
-                user_id__is_deleted=False, user_id__modules_assigned__icontains='Customer Module',
-                entry_timedate__month=today_month).order_by('-purchase_no')
+                user_id__is_deleted=False, user_id__modules_assigned__icontains='Customer Module',entry_timedate__month=today_month,entry_timedate__year=today_year).order_by('-purchase_no')
             
         else:  # For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,
-                                                        entry_timedate__month=today_month).order_by('-purchase_no')
+                                                        entry_timedate__month=today_month,entry_timedate__year=today_year).order_by('-purchase_no')
             
 
 
@@ -2615,12 +2615,15 @@ def modules_map(request):
                                                        entry_timedate__range=[from_date, to_date]).values(
             "address", ).distinct()
         for item in address_list:
-            location = geolocator.geocode(item['address'])
-            if location != None:
-                location = geolocator.geocode(location.address)
+            try:
+                location = geolocator.geocode(item['address'])
                 if location != None:
-                    customer_object = Customer_Details.objects.filter(address=item['address'])
-                    customer_object.update(latitude=location.latitude, longitude=location.longitude)
+                    location = geolocator.geocode(location.address)
+                    if location != None:
+                        customer_object = Customer_Details.objects.filter(address=item['address'])
+                        customer_object.update(latitude=location.latitude, longitude=location.longitude)
+            except Exception as e:
+                pass
 
 
         if 'sales' in selected_module:
@@ -2643,7 +2646,8 @@ def modules_map(request):
                 temp_list.append(float(obj['longitude']))
                 temp_list.append(obj['id'])
                 lat_lon_list.append(temp_list)
-
+    print("lat_lon_list")
+    print(lat_lon_list)
     context={
         "address_list":lat_lon_list,
     }
@@ -2759,28 +2763,13 @@ def reportCustomerPage(request):
     }
     return render(request,'gstVScash/customerDetailsinReportSales.html',context)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def payment_mode_report(request):
+    this_month=[]
+    if request.method == 'POST':
+        from_date = request.POST.get('date1')
+        to_date = request.POST.get('date2')
+        this_month = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date]).values('payment_mode').annotate(data_count=Sum('total_amount')).values('payment_mode','data_count',)
+    context = {
+        "this_month": this_month,
+    }
+    return render(request,'gstVScash/payment_mode_report.html',context)

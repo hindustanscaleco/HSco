@@ -60,6 +60,7 @@ def lead_home(request):
     from_date = last_date
     import datetime
     to_date = datetime.datetime.today().strftime('%d-%b-%Y')
+    # to_date= (IndiamartLeadDetails.objects.latest('to_date').to_date + datetime.timedelta(days=20)).strftime('%d-%b-%Y')
 
 
     from datetime import datetime
@@ -491,12 +492,16 @@ def lead_home(request):
             url = "https://mapi.indiamart.com/wservce/enquiry/listing/GLUSR_MOBILE/" + mobile + "/GLUSR_MOBILE_KEY/" + api + "/Start_Time/" + from_date + "/End_Time/" + to_date + "/"
             response = requests.get(url=url).json()
             lead_count = len(response)
+            print("response")
+            print(response)
 
             try:
                 if lead_count == 1 and response[0]['Error_Message'] == 'It is advised to hit this API once in every 15 minutes,but it seems that you have crossed this limit. please try again after 15 minutes.':
                     messages.error(request,"Try after 15 minutes.")
                 if lead_count == 1 and response[0]['Error_Message'] == 'There are no leads in the given time duration.please try for a different duration.':
                     messages.success(request, "Already Fetched!!!")
+                elif response[0]['Error_Message']:
+                    messages.error(request, response[0]['Error_Message'])
             except Exception as e:
                 print('str(e)')
                 print(str(e))

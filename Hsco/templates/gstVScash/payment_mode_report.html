@@ -55,64 +55,16 @@
           <!-- Page Heading -->
             <div class="row">
 
-                <div class="card-body" style="padding: 2px;">
-<!--                  <div class="row no-gutters align-items-right">-->
-<!--<h1 class="h3 mb-0 text-gray-800 ">Customer Analytics</h1>-->
-<!--                  </div>-->
-     <div class="row align-items-right justify-content-between">
-         <div class="col-md-10">
-                  <h1 style="color: black; font-size: 25px;">Custom Product Report</h1>
+                       <div class="col-md-10">
+                                 <h1 style="color: black; font-size: 25px;">Payment Mode Report</h1>
 
-         </div>
-         <div class="col-md-2">
-                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"  onclick="tableToExcel(&#39;testTable&#39;, &#39;W3C Example Table&#39;)" ><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                       </div>
+                       <div class="col-md-2">
+                                       <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"  onclick="tableToExcel(&#39;testTable&#39;, &#39;W3C Example Table&#39;)" ><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
 
-         </div>
+
           </div>
 
-
-              </div>
-
-
-
-<!--                 <div class="col-xl-8 col-md-9 mb-9 ">-->
-
-
-<!--                <div class="card-body" style="padding: 2px;">-->
-<!--                  <div class="row no-gutters align-items-right">-->
-
-<!--     {% if request.user.is_authenticated %}-->
-<!--{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}-->
-<!--<a style="padding: 2px; " href="/purchase_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>-->
-
-
-<!--<form method="POST" ion="">{%csrf_token%}-->
-<!-- <a href="#"><button style="background-color: #FC6E20; margin-top: 3px;" name="deleted" type="submit" class="btn btn-primary" >Deleted User</button></a>-->
-<!--</form>-->
-
-<!-- <a style="padding: 2px;" href="/purchase_logs/"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>-->
-<!-- <a style="padding: 2px;" href="/report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>-->
-<!-- <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Sales </button></a>-->
-<!--                      <a style="padding: 2px;" href="/quick_purchase_entry/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Rush Hour Entry </button></a>-->
-<!--                      <a style="padding: 2px;" href="#"><button style="background-color: #FC6E20;" class="btn btn-primary"> GST vs Cash </button></a>-->
-
-<!--{% else %}-->
-<!-- <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Sales </button></a>-->
-<!-- <a style="padding: 2px;" href="/quick_purchase_entry/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Quick Entry </button></a>-->
-<!--{% endif %}-->
-<!--{% endif %}-->
-
-
-
-
-
-<!--                </div>-->
-<!--              </div>-->
-
-
-
-
-<!--            </div>-->
 
 
 
@@ -204,7 +156,9 @@ $(function() {
 });
             </script>
                     <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
-<form action="" method="post">{% csrf_token %}
+
+            <form action="" method="post">{% csrf_token %}
+
 
 
 <div class="row">
@@ -224,10 +178,13 @@ $(function() {
 
       </div>
       <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
-                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">GO</button></div>
+                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
 
       </div>
-</form>
+             </form>
+
+
+
 
 
                <style>
@@ -310,25 +267,24 @@ td {
     <table id="testTable" summary="Code page support in different versions of MS Windows." rules="groups" frame="hsides">
 
         <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Customer ID</td>
-            <td style="border: 0px solid gray;">Customer Name</td>
-            <td style="border: 0px solid gray;">Customer Email ID </td>
-            <td style="border: 0px solid gray;"> Customer Mobile No</td>
-            <td style="border: 0px solid gray;">Sales</td>
-            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Sales Count</td>
-        </tr>
+                        <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No</td>
 
+            <td style="border: 0px solid gray;">Payment Mode </td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;"> Amount</td>
+        </tr>
 
         {% for obj in this_month %}
-        <tr>
-            <td style="border: 1px solid gray;">{{obj.crm_no__id}}</td>
-            <td style="border: 1px solid gray;">{{obj.crm_no__customer_name}}</td>
-            <td style="border: 1px solid gray;">{{obj.crm_no__customer_email_id}}</td>
-            <td style="border: 1px solid gray;">{{obj.crm_no__contact_no}}</td>
-            <td style="border: 1px solid gray;">{{obj.data_sum}}</td>
-            <td style="border: 1px solid gray;">{{obj.data_count}}</td>
+          <tr>
+                          <td style="border: 1px solid gray;">{{forloop.counter}}</td>
+            <td style="border: 1px solid gray;">{{obj.payment_mode}} </td>
+            <td style="border: 1px solid gray;"> {{obj.data_count}}</td>
         </tr>
         {% endfor %}
+<!--  <tr>-->
+<!--                          <td style="border: 1px solid gray;"><b>TOTAL</b></td>-->
+<!--            <td style="border: 1px solid gray;"><b>{{total_gst}} </b></td>-->
+<!--            <td style="border: 1px solid gray;"><b> {{total_cash}}</b></td>-->
+<!--        </tr>-->
 
     </table>
 
@@ -378,7 +334,7 @@ td {
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
+  </div>
 
     <!--<div class="row" style="width: 100%; margin-top: 20%;">-->
 
@@ -495,7 +451,6 @@ var tableToExcel = (function() {
 })()
 
 </script>
-  </div>
 </body>
 
 </html>
