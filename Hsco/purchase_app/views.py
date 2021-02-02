@@ -2615,12 +2615,15 @@ def modules_map(request):
                                                        entry_timedate__range=[from_date, to_date]).values(
             "address", ).distinct()
         for item in address_list:
-            location = geolocator.geocode(item['address'])
-            if location != None:
-                location = geolocator.geocode(location.address)
+            try:
+                location = geolocator.geocode(item['address'])
                 if location != None:
-                    customer_object = Customer_Details.objects.filter(address=item['address'])
-                    customer_object.update(latitude=location.latitude, longitude=location.longitude)
+                    location = geolocator.geocode(location.address)
+                    if location != None:
+                        customer_object = Customer_Details.objects.filter(address=item['address'])
+                        customer_object.update(latitude=location.latitude, longitude=location.longitude)
+            except Exception as e:
+                pass
 
 
         if 'sales' in selected_module:
