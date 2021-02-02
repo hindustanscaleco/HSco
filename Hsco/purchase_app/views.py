@@ -1563,7 +1563,7 @@ def update_customer_details(request,id):
             # item2.value_of_goods = value_of_goods
 
             channel_of_dispatch_test = DynamicDropdown.objects.get(id=channel_of_dispatch).name
-            if (purchase_id_id.dispatch_id_assigned == None and channel_of_dispatch_test != 'Franchisee Store')  or (item2.channel_of_dispatch_id.name =='Franchisee Store' and channel_of_dispatch_test != 'Franchisee Store') :
+            if (purchase_id_id.dispatch_id_assigned == None and channel_of_dispatch_test != 'Franchisee Store')  or (item2.channel_of_dispatch_id !='None' or item2.channel_of_dispatch_id.name =='Franchisee Store' and channel_of_dispatch_test != 'Franchisee Store') :
                 dispatch = Dispatch()
 
                 if Customer_Details.objects.filter(customer_name=customer_name,
@@ -1637,7 +1637,7 @@ def update_customer_details(request,id):
                     Product_Details.objects.filter(id=item).update(product_dispatch_id=dispatch_pro.pk)
 
             channel_of_dispatch_test = DynamicDropdown.objects.get(id=channel_of_dispatch).name
-            if item2.channel_of_dispatch_id.name != 'Franchisee Store' and channel_of_dispatch_test == 'Franchisee Store' :
+            if item2.channel_of_dispatch_id !='None' or ( item2.channel_of_dispatch_id.name != 'Franchisee Store' and channel_of_dispatch_test == 'Franchisee Store' ):
                 customer_id = Purchase_Details.objects.get(id=item2.pk)
                 customer_id.dispatch_id_assigned = None  # str(dispatch.pk + 00000)
                 customer_id.save(update_fields=['dispatch_id_assigned'])
