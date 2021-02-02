@@ -1988,11 +1988,13 @@ def update_view_lead(request,id):
                             if pi_product.add_brochure == True:
                                 email_send.attach_file(pi_product.product_id.product_brochure.path)
                         except:
+                            print('attach error')
                             pass
                         try:
                             if pi_product.add_product_document == True:
                                 email_send.attach_file(pi_product.product_id.product_document.path)
                         except:
+                            print('attach error')
                             pass
 
                     email_send.send()
@@ -2024,6 +2026,7 @@ def update_view_lead(request,id):
             except Exception as e:
                 messages.error(request, str(e))
                 print(e)
+                print('error')
             print("mail sending...")
 
 
