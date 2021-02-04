@@ -882,11 +882,14 @@ def showBill(request,sales_id,bill_company_type):
             'hide_buttons': True,
             'is_download': True,
         }
-        template = get_template('bills/sales_bill.html')
+        if bill_company_type == "Sales":
+            template = get_template('bills/sales_bill.html')
+        else:
+            template = get_template('bills/scales_bill.html')
         html = template.render(context22)
         file_pdf = ContentFile(html)
         # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
-        item.bill_file.save('billing.html', file_pdf, save=False)
+        item.bill_file.save('Bill_'+str(bill_company_type)+'_'+str(sales_id)+'.html', file_pdf, save=False)
 
 
         # item.bill_file = bill_file
