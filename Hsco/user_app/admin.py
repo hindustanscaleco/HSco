@@ -51,7 +51,7 @@ class UserAdmin(ImportExportModelAdmin):
 
     fieldsets = (
                 ('Login Credentials', {'fields': ('mobile', 'password', 'name','employee_number','can_reply_to_sa','product_master_access','professional_email','professional_email_password',)}),
-        ('Personal info', {'fields': ('modules_assigned','email', 'profile_name', 'role','manager','admin','super_admin','date_of_joining','average_rating','group','pancard','aadhar_card','photo','upload_pancard','upload_aadhar_card','is_deleted','is_admin')}),
+        ('Personal info', {'fields': ('modules_assigned','login_sms_number','email', 'profile_name', 'role','manager','admin','super_admin','date_of_joining','average_rating','group','pancard','aadhar_card','photo','upload_pancard','upload_aadhar_card','is_deleted','is_admin')}),
         ('Bank Details', {'fields': ('bank_name', 'account_number', 'branch_name','ifsc_code')}),
         ('Seen', {'fields': ('last_login',)}),
     )

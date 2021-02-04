@@ -155,13 +155,13 @@ Device : ''' + str(dev_fam) + '''\n
 Location : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
                             '''
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9730644834&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile="+SiteUser.objects.get(role='Super Admin').login_sms_number+"&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-                    # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                    # x = response.text
-                    # print(x)
+                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    x = response.text
+                    print(x)
                     next = '/dashboard/'
                 return redirect(next)
 
