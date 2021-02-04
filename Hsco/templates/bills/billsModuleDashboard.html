@@ -86,7 +86,9 @@
 
             <div class="row" style="float:right ; text-align:right;">
             <div class="col-xl-5 col-md-5">
+                        {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' %}
  <button style="background-color: #FC6E20;" onclick="increase_billno()" type="reset" class="btn btn-primary">Bill Number</button>
+ {% endif %}
  </div>
   <div id="div_bill_no" style="display:none;" class="col-xl-3 col-md-3">
   <input name="new_bill_no" type="number" class="form-control" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;" />

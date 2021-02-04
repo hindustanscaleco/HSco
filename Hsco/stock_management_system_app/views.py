@@ -1454,6 +1454,8 @@ def stock_transaction_status(request,from_godown_id, trans_id):
 def stock_accpet_goods(request, godown_id, accept_id):
     godown_goods = GodownProduct.objects.filter(godown_id=godown_id)
     accepted_goods = AGProducts.objects.filter(godown_id_id=godown_id,accept_product_id_id =accept_id).order_by('-id')
+    
+
     if request.method == 'POST' or request.method == 'FILES':
         if 'submit1' in request.POST:
             product_id = request.POST.get('product_id')
@@ -1497,21 +1499,32 @@ def stock_accpet_goods(request, godown_id, accept_id):
             item2.notes = notes
             item2.save(update_fields=['notes', 'log_entered_by', 'from_godown','good_added'])
             accepted_goods = AGProducts.objects.filter(godown_id_id=godown_id,accept_product_id_id =accept_id)
-            #send message to user (godown assigned)
-            message = 'Testing:- Product added to godown ' + str(
-                item2.from_godown.name_of_godown) 
+            
+            # save transaction
+            new_transaction = GodownTransactions()
+            new_transaction.accept_goods_id = item2
+            new_transaction.save()
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item2.from_godown.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            msg_product_string = ''
+            for product in accepted_goods:
+                if product.godown_product_id.product_id.sub_sub_category != None:
+                    product_name = product.godown_product_id.product_id.sub_sub_category
+                else:
+                    product_name = product.godown_product_id.product_id.sub_category
+                msg_product_string+= "\n Product Name: "+str(product_name)+", Quantity: "+str(product.quantity)
+            #send message to user (godown assigned)
+            message = '''Godown Name: ''' + str(item2.from_godown.name_of_godown)+ '''
+Type: Purchase '''  + '''
+Transaction Id : ''' + str(new_transaction.id) + msg_product_string 
+
+
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item2.from_godown.contact_no  + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
             print(x)
-            # save transaction
-            new_transaction = GodownTransactions()
-            new_transaction.accept_goods_id = item2
-            new_transaction.save()
             for good in accepted_goods:
                 if GodownProduct.objects.filter(godown_id=godown_id,product_id=good.godown_product_id.product_id):
                     godown_product = GodownProduct.objects.get(godown_id=godown_id,product_id=good.godown_product_id.product_id)
