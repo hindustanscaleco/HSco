@@ -1,7 +1,7 @@
 import datetime
 from django.db import models
 from django.utils import timezone
-from customer_app.models import Lead_Customer_Details
+from customer_app.models import Lead_Customer_Details, DynamicDropdown
 from user_app.models import SiteUser
 from stock_management_system_app.models import Product
 from django.core.validators import URLValidator
@@ -16,7 +16,10 @@ class Lead(models.Model):
     current_stage = models.CharField(max_length=50,null=True,blank=True)
     new_existing_customer = models.CharField(max_length=50,null=True,blank=True)
     date_of_initiation = models.DateTimeField(default=timezone.now,)
+    #old field
     channel = models.CharField(max_length=50,null=True,blank=True)
+    #new field
+    channel_id = models.ForeignKey(DynamicDropdown,on_delete=models.CASCADE,related_name='channel_marketing_lead', null=True, blank=True)
     channel_of_marketing = models.CharField(max_length=50,null=True,blank=True)
     requirement = models.TextField(null=True,blank=True)
     requirement_indiamart_unique = models.CharField(max_length=120,null=True,blank=True)

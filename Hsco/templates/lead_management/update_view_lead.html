@@ -557,23 +557,13 @@ myFunction225();
                              <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-    <input type="text" required name="channel" placeholder="Channel of Marketing" class="form-control" id="myText16" value="{{ lead_id.channel }}" list="channel10">
-    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
-      <datalist style="height:20px;" id="channel10">
-      <option value="Phone"></option>
-      <option value="Whatsapp"></option>
-      <option value="ask"></option>
-      <option value="hsc"></option>
-      <option value="sales"></option>
-      <option value="Google"></option>
-      <option value="IndiaMart"></option>
-      <option value="Justdial"></option>
-      <option value="Website"></option>
-      <option value="Reference from Existing Customer"></option>
-      <option value="Existing Customer"></option>
-      <option value="BNI"></option>
-      <option value="Others"></option>
-    </datalist>
+    
+        <select required name="channel" id="channel" class="form-control"  id="myText16" >
+
+    {% for item in channel_marketing %}
+          <option {% if lead_id.channel_id.pk == item.id %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+          </select>
     </div>
   </div>
                           </div>

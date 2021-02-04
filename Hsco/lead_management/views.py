@@ -49,6 +49,22 @@ from customer_app.models import DynamicDropdown
 today_month = datetime.now().month
 host_file = 'smtp.gmail.com'
 
+def one_time_dd_lead():
+    lead_id = Lead.objects.filter(Q(channel_id=None)).values('id')
+    for item in lead_id:
+        lead_id_id = Lead.objects.get(id=item['id'])
+        # print(DynamicDropdown.objects.get(name=purchase_id_id.channel_of_sales,type="CHANNEL OF SALES").name)
+        if lead_id_id.channel!=None and lead_id_id.channel!="":
+            print(lead_id_id.channel)
+            refined = lead_id_id.channel
+            if lead_id_id.channel == 'markett' or lead_id_id.channel =='MARKRT':
+                refined = 'Market'
+            if lead_id_id.channel == 'IndiaMart' or lead_id_id.channel == 'Indiamart':
+                refined= 'India Mart'
+
+            lead_id_id.channel_id=DynamicDropdown.objects.get(name=refined,type="CHANNEL OF MARKETING")
+        lead_id_id.save(update_fields=['channel_id',])
+           
 @login_required(login_url='/')
 def lead_home(request):
     import requests
@@ -1266,7 +1282,16 @@ def lead_home(request):
 
 @login_required(login_url='/')
 def add_lead(request):
-    context={}
+    channel_sales = DynamicDropdown.objects.filter(type="CHANNEL OF SALES",is_enabled=True)
+    channel_marketing = DynamicDropdown.objects.filter(type="CHANNEL OF MARKETING",is_enabled=True)
+    channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
+    indutry = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
+    context={
+        'channel_sales':channel_sales,
+        'channel_marketing':channel_marketing,
+        'channel_dispatch':channel_dispatch,
+        'indutry':indutry,
+    }
     users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',)
     under_admin_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',admin__icontains=request.user.profile_name)
     under_manager_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',manager__icontains=request.user.profile_name)
@@ -1349,14 +1374,16 @@ def add_lead(request):
         item2.current_stage = current_stage
         item2.new_existing_customer = new_existing_customer
         item2.date_of_initiation = date_of_initiation
-        item2.channel = channel
+        item2.channel = DynamicDropdown.objects.get(id=channel).name
         item2.requirement = requirement
         item2.lost_reason = lost_reason
         item2.postponed_reason = postponed_reason
         item2.owner_of_opportunity = SiteUser.objects.filter(profile_name=owner_of_opportunity).first()
         item2.upload_requirement_file = upload_requirement_file
         item2.log_entered_by = request.user.name
-
+        if channel != None and channel != '':
+            item2.channel_id = DynamicDropdown.objects.get(id=channel)
+        
         try:
             item2.save()
 
@@ -1386,6 +1413,7 @@ def add_lead(request):
 
 @login_required(login_url='/')
 def update_view_lead(request,id):
+    one_time_dd_lead()
     if len(str(id)) == 1 :
         email_pi_id = '000'+str(id)
     elif len(str(id)) == 2 :
@@ -1409,7 +1437,10 @@ def update_view_lead(request,id):
     history_follow = History_followup.objects.filter(follow_up_section__id=hfu.id).last()
 
     followup_products_list = Followup_product.objects.filter(lead_id=id)
-
+    channel_sales = DynamicDropdown.objects.filter(type="CHANNEL OF SALES",is_enabled=True)
+    channel_marketing = DynamicDropdown.objects.filter(type="CHANNEL OF MARKETING",is_enabled=True)
+    channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
+    indutry = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
     table = ''
     table2 = ''
     total = 0.0
@@ -1514,6 +1545,10 @@ def update_view_lead(request,id):
         'customer_id':customer_id,
         'history_follow':history_follow,
         'work_area_godowns':work_area_godowns,
+        'channel_sales':channel_sales,
+        'channel_marketing':channel_marketing,
+        'channel_dispatch':channel_dispatch,
+        'indutry':indutry,
     }
 
     try:
@@ -2168,7 +2203,9 @@ def update_view_lead(request,id):
             item2.current_stage = current_stage
             item2.new_existing_customer = new_existing_customer
             item2.date_of_initiation = date_of_initiation
-            item2.channel = channel
+            item2.channel = DynamicDropdown.objects.get(id=channel).name
+            if channel != None and channel != '':
+                item2.channel_id = DynamicDropdown.objects.get(id=channel)
             item2.requirement = requirement
             item2.lost_reason = lost_reason
             item2.postponed_reason = postponed_reason
@@ -2181,7 +2218,7 @@ def update_view_lead(request,id):
                 item2.owner_of_opportunity = SiteUser.objects.get(profile_name=owner_of_opportunity)
             item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
                                       'requirement','upload_requirement_file','owner_of_opportunity','log_entered_by',
-                                      'lost_reason','postponed_reason','postpond_time_date'])
+                                      'lost_reason','postponed_reason','postpond_time_date','channel_id'])
 
             messages.success(request, 'Deal Details Saved Successfully!!!')
 
