@@ -147,7 +147,7 @@ class LoginView(FormView):
                     browser_fam = request.user_agent.browser.family
                     is_mobile = 'No' if request.user_agent.is_mobile == False else 'Yes'
 
-                    msg = '''User : ''' + employee_number + '''\n
+                    msg = '''User : ID - ''' + str(employee_number)+', Name - '+str(request.user.profile_name) + '''\n
 Is Mobile User : ''' + str(is_mobile) + '''\n
 Os : ''' + str(os_fam) + '''\n
 Browser : ''' + str(browser_fam) + '''\n
@@ -158,10 +158,18 @@ Location : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
                     url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile="+SiteUser.objects.get(role='Super Admin').login_sms_number+"&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                    x = response.text
-                    print(x)
+                    print(SiteUser.objects.get(id=request.user.id).is_deleted)
+                    if SiteUser.objects.get(id=request.user.id).is_deleted == True:
+                        messages.error(request,"Deleted user cannot be logged in !")
+                        return redirect('/logout/')
+                    try:
+                        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                        x = response.text
+                        print(x)
+                        print('login sms send!!')
+                    except Exception as e:
+                        print('login sms not send')
+                        print(e)
                     next = '/dashboard/'
                 return redirect(next)
 
