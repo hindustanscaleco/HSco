@@ -294,20 +294,22 @@ th {
         		<td>INR <span style="float: right;">  {{item.amount}} </span></td>
         		<td> INR <span style="float: right;">{{item.amount}} </span></td>
         	</tr>
-          {% if forloop.counter == 1 %}
-              <tr ><td>  .<td/><td><td/><td></tr>
-              <tr><td>  .<td/><td><td/><td></tr>
-              <tr><td>  .<td/><td><td/><td></tr>
-              <tr><td>  .<td/><td><td/><td></tr>
-          {% elif forloop.counter == 2 %}
-              <tr ><td>  .<td/><td><td/><td></tr>
-              <tr><td>  .<td/><td><td/><td></tr>
-              <tr><td>  .<td/><td><td/><td></tr>
-          {% elif forloop.counter == 3 %}
-              <tr ><td>  .<td/><td><td/><td></tr>
-              <tr ><td>  .<td/><td><td/><td></tr>
-          {% elif forloop.counter == 4 %}
-              <tr ><td>  .<td/><td><td/><td></tr>
+          {% if forloop.last %}
+            {% if forloop.counter == 1 %}
+                <tr ><td>  .<td/><td><td/><td></tr>
+                <tr><td>  .<td/><td><td/><td></tr>
+                <tr><td>  .<td/><td><td/><td></tr>
+                <tr><td>  .<td/><td><td/><td></tr>
+            {% elif forloop.counter == 2 %}
+                <tr ><td>  .<td/><td><td/><td></tr>
+                <tr><td>  .<td/><td><td/><td></tr>
+                <tr><td>  .<td/><td><td/><td></tr>
+            {% elif forloop.counter == 3 %}
+                <tr ><td>  .<td/><td><td/><td></tr>
+                <tr ><td>  .<td/><td><td/><td></tr>
+            {% elif forloop.counter == 4 %}
+                <tr ><td>  .<td/><td><td/><td></tr>
+          {% endif %} 
         {% endif %} 
         {% endfor %}
           
