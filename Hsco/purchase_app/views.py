@@ -1654,7 +1654,7 @@ def update_customer_details(request,id):
             # item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
             item2.log_entered_by = request.user.profile_name
 
-            item2.save(update_fields=['log_entered_by','date_of_purchase','sales_person','bill_no','po_number','new_repeat_purchase',
+            item2.save(update_fields=['log_entered_by','date_of_purchase','sales_person','po_number','new_repeat_purchase',
                                       'channel_of_sales_id','shipping_address','bill_address','industry_id','channel_of_dispatch_id','notes','second_person',
                                       'second_contact_no','second_company_name','company_address','company_email',
                                       ])  #new6

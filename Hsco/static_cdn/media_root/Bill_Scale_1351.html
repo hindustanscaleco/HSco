@@ -4,8 +4,8 @@
   <title>
     HSCO
   </title>
-  {% load static %}
-{% load mathfilters %}
+  
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
@@ -81,7 +81,7 @@ td {
 <div id="printableArea" style="margin-left: 4%; margin-right: 4%;">
 <div class="row">
     <div class="col-xl-3 col-md-3 ">
-<img src="{% static 'images/hsco_logo.jpg' %}" class="" width="200" height="80" style="float: left;">
+<img src="/static/images/hsco_logo.jpg" class="" width="200" height="80" style="float: left;">
 </div>
     <div class="col-xl-1 col-md-1 ">
     </div>
@@ -135,7 +135,7 @@ td {
           <div class="col-md-2">
           <center><p style=" float:right;">Date:</p>
           </center></div>
-          <div class="col-md-2"> <p>{{todays_date}}</p>
+          <div class="col-md-2"> <p>05-02-2021</p>
           </div>
           </div>
 
@@ -145,7 +145,7 @@ td {
           <center><p style=" float:right;"> Company Name :</p>
           </center></div>
           <div class="col-md-5">
-          <center><p style=" float:left; ">{{invoice_details.crm_no__company_name}} </p>
+          <center><p style=" float:left; ">jkldsjflsa </p>
           </center></div>
           
 
@@ -153,7 +153,7 @@ td {
           <center><p style=" float:right;">GST Invoice No:</p>
           </center></div>
           <div class="col-md-2">
-          <center><p style=" float:left;">{{latest_bill_no}} </p>
+          <center><p style=" float:left;">0000000098 </p>
           </center></div>
           </div>
           
@@ -162,14 +162,14 @@ td {
           <center><p style=" float:right;">Contact Person :</p>
           </center></div>
           <div class="col-md-5">
-          <center><p style=" float:left;">{{invoice_details.second_person}} </p>
+          <center><p style=" float:left;">sagar singh </p>
           </center></div>
        
           <div class="col-md-3" style="padding:0%">
           <center><p style="float:right;">Sales Person :</p>
           </center></div>
           <div class="col-md-2">
-          <center><p style=" float:left;"> {{invoice_details.sales_person}}</p>
+          <center><p style=" float:left;"> Haider</p>
           </center></div>
           </div>
          
@@ -179,7 +179,7 @@ td {
           <center><p style=" float:right;">Billing Address:</p>
           </center></div>
           <div class="col-md-5">
-          <center><p style=" float:left;"> {{invoice_details.bill_address}} </p>
+          <center><p style=" float:left;"> building no 34 flat no 1266 sector 7 antophill mumbai </p>
           </center></div>
           
          
@@ -187,7 +187,7 @@ td {
           <center><p style=" float:right;">PO Number:</p>
           </center></div>
           <div class="col-md-2">
-          <center><p style=" float:left;">{{invoice_details.po_number}}</p>
+          <center><p style=" float:left;">43534</p>
           </center></div>
           </div>
           
@@ -199,14 +199,14 @@ td {
               <center><p style=" float:right;">Shipping Address :</p>
               </center></div>
               <div class="col-md-5">
-              <center><p style=" float:left;">{{invoice_details.shipping_address}}</p>
+              <center><p style=" float:left;">None</p>
               </center></div>
     
           <div class="col-md-3" style="padding:0%">
           <center><p style=" float:right;">Customer GST Number: </p>
           </center></div>
           <div class="col-md-2">
-          <center><p style=" float:left;">{{invoice_details.crm_no__customer_gst_no}}</p>
+          <center><p style=" float:left;">None</p>
           </center></div>
           </div>
 
@@ -215,7 +215,7 @@ td {
               <center><p style=" float:right;">Phone :</p>
               </center></div>
               <div class="col-md-5">
-              <center><p style=" float:left;">{{invoice_details.second_contact_no}}</p>
+              <center><p style=" float:left;">9730644834</p>
               </center></div>
               <div class="col-md-3" style="padding:0%">
                 <center><p style=" float:right;">Dispatch Through: </p>
@@ -281,35 +281,20 @@ th {
     </tr>
 
         <tbody>
-        	{% for item in products_details %}
+        	
 
         	<tr>
         		<td>
-        			<center> {{item.quantity}} </center> 
+        			<center> 1.0 </center> 
         		</td>
         		<td>
-        			<center> {{item.hsn_code}} </center>
+        			<center> 8423 </center>
         		</td>
-        		<td>{{item.sub_sub_model}}		</td>
-        		<td>INR <span style="float: right;">  {{item.amount}} </span></td>
-        		<td> INR <span style="float: right;">{{item.amount}} </span></td>
+        		<td>MSS001		</td>
+        		<td>INR <span style="float: right;">  3500.0 </span></td>
+        		<td> INR <span style="float: right;">3500.0 </span></td>
         	</tr>
-          {% if forloop.counter == 1 %}
-              <tr ><td>  .<td/><td><td/><td></tr>
-              <tr><td>  .<td/><td><td/><td></tr>
-              <tr><td>  .<td/><td><td/><td></tr>
-              <tr><td>  .<td/><td><td/><td></tr>
-          {% elif forloop.counter == 2 %}
-              <tr ><td>  .<td/><td><td/><td></tr>
-              <tr><td>  .<td/><td><td/><td></tr>
-              <tr><td>  .<td/><td><td/><td></tr>
-          {% elif forloop.counter == 3 %}
-              <tr ><td>  .<td/><td><td/><td></tr>
-              <tr ><td>  .<td/><td><td/><td></tr>
-          {% elif forloop.counter == 4 %}
-              <tr ><td>  .<td/><td><td/><td></tr>
-        {% endif %} 
-        {% endfor %}
+        
           
         
 
@@ -328,58 +313,41 @@ th {
         	<tr>
         		<td>&nbsp;</td>
         		<td></td>
-            <td> Payment Mode : {{invoice_details.payment_mode}}</td>
+            <td> Payment Mode : Cash</td>
         		<td><center> Total </center></td>
-        		<td>INR <span style="float: right;">{{invoice_details.value_of_goods}} </span></td>
+        		<td>INR <span style="float: right;">3500.0 </span></td>
           </tr>
           
         	<tr>
         		<td>&nbsp;</td>
         		<td></td>
-        		{% if invoice_details.payment_mode == 'Cheque' %}
-                    <td>  Bank Name: {{invoice_details.bank_name}}</td>
-            {% elif invoice_details.payment_mode == 'Credit' %}
-                    <td>  Credit Authorised By: {{invoice_details.credit_authorised_by}}</td>
-
-            {% elif invoice_details.payment_mode == 'NEFT' %}
-                    <td> NEFT Bank: {{invoice_details.neft_bank_name}} </td>
-            {% else %}
+        		
               <td></td>
-            {% endif %}
+            
         		<td><center>Discount </center></td>
         		<td>INR <span style="float: right;">0.0 </span></td>
         	</tr>
         	<tr>
         		<td>&nbsp;</td>
         		<td></td>
-        		{% if invoice_details.payment_mode == 'Cheque' %}
-                    <td>  Cheque No: {{invoice_details.cheque_no}}</td>
-            
-            {% elif invoice_details.payment_mode == 'NEFT' %}
-                  <td>  NEFT date: {{invoice_details.neft_date}}</td>
-            {% else %}
+        		
               <td></td>
-            {% endif %}
+            
         		<td><center>P&F </center></td>
-        		<td>INR <span style="float: right;">{{invoice_details.total_pf}} </span></td>
+        		<td>INR <span style="float: right;">0.0 </span></td>
         	</tr>
 
         	
 
-{% if invoice_details.crm_no__customer_gst_no|slice:":2" == 27 or invoice_details.crm_no__customer_gst_no|slice:":2" == '27' or invoice_details.crm_no__customer_gst_no == None or invoice_details.crm_no__customer_gst_no == 'None' or invoice_details.crm_no__customer_gst_no == ''  %}
+
         	<tr>
         		<td>&nbsp;</td>
         		<td></td>
-        		{% if invoice_details.payment_mode == 'Cheque' %}
-        <td>  Cheque Date: {{invoice_details.cheque_date}}</td>
-            
-            {% elif invoice_details.payment_mode == 'NEFT' %}
-        <td> Reference No.: {{invoice_details.reference_no}}  </td>
-            {% else %}
+        		
               <td></td>
-            {% endif %}
+            
         		<td><center> CGST @ 9% </center></td>
-        		<td>INR <span style="float: right;">{{invoice_details.tax_amount|div:2}} </span></td>
+        		<td>INR <span style="float: right;">0.0 </span></td>
         	</tr>
 
         	<tr>
@@ -387,30 +355,15 @@ th {
         		<td></td>
         		<td> </td>
         		<td><center>  SGST @ 9% </center></td>
-        		<td>INR <span style="float: right;">{{invoice_details.tax_amount|div:2}}  </span></td>
+        		<td>INR <span style="float: right;">0.0  </span></td>
         	</tr>
-{% else %}
-        	<tr>
-        		<td>&nbsp;</td>
-        		<td></td>
-        		{% if invoice_details.payment_mode == 'Cheque' %}
-        <td>  Cheque Date: {{invoice_details.cheque_date}}</td>
-            
-            {% elif invoice_details.payment_mode == 'NEFT' %}
-        <td> Reference No.: {{invoice_details.reference_no}}  </td>
-            {% else %}
-              <td></td>
-            {% endif %}
-        		<td><center>   IGST @ 18%  </center></td>
-        		<td>INR <span style="float: right;">{{invoice_details.tax_amount}}</td>
-        	</tr>
-{% endif %}
+
           <tr>
             <td>&nbsp;</td>
             <td></td>
             <td></td>
             <td><center>   Round Off </center></td>
-            <td>INR <span style="float: right;">{{invoice_details.round_off_total}}</span></td>
+            <td>INR <span style="float: right;">3500.0</span></td>
           </tr>
 
         	<tr>
@@ -418,7 +371,7 @@ th {
         		<td></td>
         		<td></td>
         		<td><center><b>Grand Total </b></center></td>
-        		<td><b>INR <span style="float: right;">{{invoice_details.total_amount}} </span></b></td>
+        		<td><b>INR <span style="float: right;">3500.0 </span></b></td>
         	</tr>
 
 
@@ -442,11 +395,11 @@ th {
                     TAN Number - <b>MUMH17092F</b></p>
             </div>
 	         <div class="col-md-8">
-<img src="{% static 'images/logo_bill.png' %}" style="width: 100%; height:90px;">
+<img src="/static/images/logo_bill.png" style="width: 100%; height:90px;">
          </div>
              <div class="row">
             <div class="col-md-12 " style="padding:10px;"><p style="font-size: 12px;">
-I/We hereby certify that my/our registration certificate under the Goods and Service Tax Laws is in force on the date of which the sale of goods specified in this ‚ÄúProforma Invoice‚Äù is made by me/us and that the transaction of sale is covered by this and has been effected by me/us and it shall be accounted for in the turnover of sales while filing of return and the due tax, if any, payable on the sale has been paid
+I/We hereby certify that my/our registration certificate under the Goods and Service Tax Laws is in force on the date of which the sale of goods specified in this ìProforma Invoiceî is made by me/us and that the transaction of sale is covered by this and has been effected by me/us and it shall be accounted for in the turnover of sales while filing of return and the due tax, if any, payable on the sale has been paid
   </p>     </div>
 
 
@@ -463,11 +416,11 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
                 Cheque should be in the name of "Hindustan Scale Co".
                 Bank details are as follows <br>
                 <b>DCB Bank<br>
-                Name ‚Äì Hindustan Scale Co.<br>
-                Acct No ‚Äì 01922412121947<br>  
+                Name ñ Hindustan Scale Co.<br>
+                Acct No ñ 01922412121947<br>  
                 IFSC Code-DCBL0000019<br>
-                Type of account ‚Äì Current Account <br>
-                Bank Name ‚Äì DCB Bank<br>
+                Type of account ñ Current Account <br>
+                Bank Name ñ DCB Bank<br>
                 Address Mohamedali Road Branch</b><br>
                 <b style="background-color: black; color: white; 
                 font-size: 40px;
@@ -477,7 +430,7 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
               </p>
             </div>
             <div class="col-md-4" style="padding-left: 15%;">
-              <img src="{% static 'images/qr.png' %}" style="height: 240px; width: 300px;">
+              <img src="/static/images/qr.png" style="height: 240px; width: 300px;">
           </div>
         </div>
       </div>
@@ -486,7 +439,7 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
             <span style="font-size: 11px;">HINDUSTAN SCALE COMPANY, 186/188 Janjikar Street, Crawford Market, Mumbai - 400003</span>
                   </div>
                   <div class="col-md-2" style="border-top: 1px solid black;">
-                    <span style="font-size: 11px;">{{invoice_details.purchase_no}}</span>
+                    <span style="font-size: 11px;">24204</span>
                           </div>
       </div>
         </div>
@@ -502,9 +455,9 @@ I/We hereby certify that my/our registration certificate under the Goods and Ser
 <center>
 	<div id="no-print" class="d-print-none">
 		
-        <a href="/update_customer_details/{{sales_id}}"><button style="background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Edit</button>
+        <a href="/update_customer_details/1351"><button style="background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Edit</button>
         </a>
-        <form method="POST" >{% csrf_token %}
+        <form method="POST" ><input type="hidden" name="csrfmiddlewaretoken" value="busuicbig_uivgbiegbviuegviygu">
 
         <button style="background-color: #FC6E20;" name="submit" value="submit" type="submit" onclick="get_details()" value="Submit" class="btn btn-primary">Submit & Print</button>
         </form>
@@ -561,7 +514,7 @@ function getCookie(name) {
             console.log(result);
         }
     }
-    xhr.open('POST', '/showBill/{{sales_id}}/Scale', true);
+    xhr.open('POST', '/showBill/1351/Scale', true);
     xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
     xhr.send(formData);
 

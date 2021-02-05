@@ -1413,7 +1413,7 @@ def add_lead(request):
 
 @login_required(login_url='/')
 def update_view_lead(request,id):
-    one_time_dd_lead()
+    # one_time_dd_lead()
     if len(str(id)) == 1 :
         email_pi_id = '000'+str(id)
     elif len(str(id)) == 2 :

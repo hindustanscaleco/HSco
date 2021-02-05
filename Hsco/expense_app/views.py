@@ -804,11 +804,12 @@ def showBill(request,sales_id,bill_company_type):
                                                                         'credit_pending_amount','credit_authorised_by','neft_bank_name','neft_date','reference_no','cheque_no','cheque_date','purchase_no','date_of_purchase')
     latest_bill_no=0
     todays_date = str(datetime.now().strftime("%d-%m-%Y"))
-    session_billno = request.session.get('new_bill_no')
-    session_bill_no_company_type = request.session.get('bill_no_company_type')
-    if (session_billno != '' and session_billno != None ) and Bill.objects.filter(bill_no=session_billno, company_type=session_bill_no_company_type).count() == 0 :
-            latest_bill_no = str(session_billno)
-            print('session called')
+    
+
+    update_bill_no = Bill.objects.filter(company_type=bill_company_type).latest('id').update_bill_no
+    if (update_bill_no != '' and update_bill_no != None ) and Bill.objects.filter(bill_no=update_bill_no, company_type=bill_company_type).count() == 0 :
+            latest_bill_no = str(update_bill_no)
+            print('bill no sequence changed')
     elif bill_company_type != '' and bill_company_type != 'None':
         latest_bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)
     else :
@@ -816,6 +817,8 @@ def showBill(request,sales_id,bill_company_type):
         return redirect('/update_customer_details/'+str(sales_id))
 
     products_details = Product_Details.objects.filter(purchase_id=sales_id).values()
+    print('product details')
+    print(products_details)
     for item in products_details:
         # <<<<<<< development
         #         product = Product.objects.filter(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
@@ -862,10 +865,9 @@ def showBill(request,sales_id,bill_company_type):
         item.log_entered_by = request.user.name
         item.company_type = bill_company_type
 
-        session_billno = request.session.get('new_bill_no')
-        session_bill_no_company_type = request.session.get('bill_no_company_type')
-        if (session_billno != '' and session_billno != None ) and Bill.objects.filter(bill_no=session_billno, company_type=session_bill_no_company_type).count() == 0 :
-            item.bill_no = str(session_billno)
+        update_bill_no = Bill.objects.filter(company_type=bill_company_type).latest('id').update_bill_no
+        if (update_bill_no != '' and update_bill_no != None ) and Bill.objects.filter(bill_no=update_bill_no, company_type=bill_company_type).count() == 0 :
+            item.bill_no = str(update_bill_no)
             print('session called')
         else:
             item.bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)
@@ -902,8 +904,8 @@ def showBill(request,sales_id,bill_company_type):
             pass
         messages.success(request,'Bill saved successfully !')
         return redirect('/update_customer_details/'+str(sales_id))                                                                   
-    # elif request.method == 'POST' and 'submit' in request.POST:
-    #     return redirect('/update_customer_details/'+str(sales_id))
+    elif request.method == 'POST' and 'submit' in request.POST:
+        return redirect('/update_customer_details/'+str(sales_id))
 
 
     
@@ -1034,6 +1036,8 @@ def showBillModule(request):
             elif new_bill_no == Bill.objects.filter(bill_no = new_bill_no, company_type=company_type):
                 messages.error(request,"Bill no already exists for company type "+company_type +"!")    
             else:
+                bill = Bill.objects.filter(company_type=company_type).update(update_bill_no=new_bill_no)
+                
                 try:
                     del request.session['new_bill_no']
                     del request.session['bill_no_company_type']
