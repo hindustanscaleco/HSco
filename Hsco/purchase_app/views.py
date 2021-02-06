@@ -1380,12 +1380,14 @@ def update_customer_details(request,id):
     industry_list = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
 
     try:
+        total_amt = purchase_id_id.value_of_goods + purchase_id_id.tax_amount + purchase_id_id.total_pf
         round_off = round(purchase_id_id.value_of_goods + purchase_id_id.tax_amount + purchase_id_id.total_pf)
         #for updating total amount in all sales entry
         if purchase_id_id.total_amount == 0 or purchase_id_id.total_amount == "None":
-            Purchase_Details.objects.filter(id=id).update(total_amount=round_off)
+            Purchase_Details.objects.filter(id=id).update(total_amount=total_amt)
         Purchase_Details.objects.filter(id=id).update(round_off_total=round_off)
     except Exception as e:
+        print('error updating total amount in all sales entry')
         print(e)
         pass
 

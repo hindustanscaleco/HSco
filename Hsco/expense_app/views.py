@@ -807,11 +807,12 @@ def showBill(request,sales_id,bill_company_type):
     
 
     update_bill_no = Bill.objects.filter(company_type=bill_company_type).latest('id').update_bill_no
-    if (update_bill_no != '' and update_bill_no != None ) and Bill.objects.filter(bill_no=update_bill_no, company_type=bill_company_type).count() == 0 :
-            latest_bill_no = str(update_bill_no)
-            print('bill no sequence changed')
-    elif bill_company_type != '' and bill_company_type != 'None':
+    if (update_bill_no != '' and update_bill_no != None ) and Bill.objects.filter(bill_no=update_bill_no, company_type=bill_company_type).count() == 0 and bill_company_type != '' and bill_company_type != 'None':
+        latest_bill_no = str(update_bill_no).zfill(10)
+    elif bill_company_type != '' and bill_company_type != 'None' and Bill.objects.filter(bill_no=update_bill_no, company_type=bill_company_type).count() == 0 :
         latest_bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)
+    elif  Bill.objects.filter(bill_no=update_bill_no, company_type=bill_company_type).count() > 0 :
+        latest_bill_no = str(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no)
     else :
         messages.error(request,'Please select company type - Sales or Scales to generate a bill !')
         return redirect('/update_customer_details/'+str(sales_id))
@@ -905,6 +906,28 @@ def showBill(request,sales_id,bill_company_type):
         messages.success(request,'Bill saved successfully !')
         return redirect('/update_customer_details/'+str(sales_id))                                                                   
     elif request.method == 'POST' and 'submit' in request.POST:
+        item = Bill.objects.get(purchase_id__id=sales_id)
+        if item.company_type == "Sales":
+            template = get_template('bills/sales_bill.html')
+        else:
+            template = get_template('bills/scales_bill.html')
+        context22 = {
+            'invoice_details': purchase_details[0],
+            'products_details': products_details,
+            'sales_id': sales_id,
+            'todays_date': todays_date,
+            'latest_bill_no': latest_bill_no,
+            'csrf_token': "busuicbig_uivgbiegbviuegviygu",
+            'hide_buttons': True,
+            'is_download': True,
+        }
+        html = template.render(context22)
+        
+        file_pdf = ContentFile(html)
+        # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
+        item.bill_file.save('Bill_'+str(bill_company_type)+'_'+str(sales_id)+'.html', file_pdf, save=False)
+        item.save(update_fields=['bill_file',])
+        messages.success(request,'Bill updated successfully !')
         return redirect('/update_customer_details/'+str(sales_id))
 
 
