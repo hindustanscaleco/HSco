@@ -1381,7 +1381,10 @@ def update_customer_details(request,id):
 
     try:
         total_amt = purchase_id_id.value_of_goods + purchase_id_id.tax_amount + purchase_id_id.total_pf
-        round_off = round(purchase_id_id.value_of_goods + purchase_id_id.tax_amount + purchase_id_id.total_pf)
+        print('total')
+        print(purchase_id_id.value_of_goods + purchase_id_id.tax_amount + purchase_id_id.total_pf)
+        print(purchase_id_id.total_amount)
+        round_off = abs(purchase_id_id.total_amount - (purchase_id_id.value_of_goods + purchase_id_id.tax_amount + purchase_id_id.total_pf))
         #for updating total amount in all sales entry
         if purchase_id_id.total_amount == 0 or purchase_id_id.total_amount == "None":
             Purchase_Details.objects.filter(id=id).update(total_amount=total_amt)

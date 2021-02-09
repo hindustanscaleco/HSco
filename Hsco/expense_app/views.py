@@ -811,14 +811,16 @@ def showBill(request,sales_id,bill_company_type):
         bill_no = Bill.objects.filter(company_type=bill_company_type,purchase_id=sales_id).latest('id').bill_no
     except:
         bill_no = 0
-
+    print('update bill no')
+    # print(Bill.objects.filter(bill_no=bill_no, company_type=bill_company_type))
+    # print(Bill.objects.filter(bill_no=bill_no, company_type=bill_company_type).bill_no)
     if  Bill.objects.filter(bill_no=bill_no, company_type=bill_company_type).count() > 0 and bill_company_type != '' and bill_company_type != 'None':
         latest_bill_no = str(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no)
     elif (update_bill_no != '' and update_bill_no != None ) and Bill.objects.filter(bill_no=update_bill_no, company_type=bill_company_type).count() == 0 and bill_company_type != '' and bill_company_type != 'None':
         latest_bill_no = str(update_bill_no).zfill(10)
     elif bill_company_type != '' and bill_company_type != 'None' and Bill.objects.filter(bill_no=update_bill_no, company_type=bill_company_type).count() > 0 :
         latest_bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)
-    else :
+    elif bill_company_type == '' or bill_company_type == 'None' :
         messages.error(request,'Please select company type - Sales or Scales to generate a bill !')
         return redirect('/update_customer_details/'+str(sales_id))
 
