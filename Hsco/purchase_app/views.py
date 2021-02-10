@@ -50,6 +50,7 @@ from customer_app.models import DynamicDropdown
 from restamping_app.models import Restamping_after_sales_service
 
 from amc_visit_app.models import Amc_After_Sales
+from expense_app.models import Bill
 
 today_month = datetime.now().month
 today_year = datetime.now().year
@@ -795,6 +796,8 @@ def edit_product_customer(request,product_id_rec):
             new_transaction.save()
             Product_Details.objects.filter(id=product_id_rec).delete()
             messages.success(request, 'Purchase Product with ID:-'+str(product_id_rec)+' returned to Godown successfully!')
+            if return_reason == 'Exchanged for another product':
+                return redirect('/add_product_details/'+str(purchase_id.id))                                                
             return redirect('/update_customer_details/'+str(purchase_id.id))                                                
         # if product changed then update stock
         if item.type_of_scale != type_of_scale or item.model_of_purchase != model_of_purchase or item.sub_model != sub_model or item.sub_sub_model != sub_sub_model or is_return == 'on':
@@ -1423,6 +1426,8 @@ def update_customer_details(request,id):
             bill_company_type = request.POST.get('bill_company_type')
             if bill_company_type == '' :
                 bill_company_type = None
+            if Bill.objects.filter(purchase_id=purchase_id_id.id).count() > 0 :
+                return redirect('/showBill/'+str(id)+'/'+str(Bill.objects.get(purchase_id=purchase_id_id.id).company_type))
             return redirect('/showBill/'+str(id)+'/'+str(bill_company_type))
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
