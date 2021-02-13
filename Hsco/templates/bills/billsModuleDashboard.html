@@ -477,7 +477,7 @@ td {
           <td>{{item.purchase_id.bill_no}}</td>
           <td>{{item.purchase_id.second_company_name}}</td>
           <td>{{item.purchase_id.second_contact_no}}</td>
-          <td>{{item.purchase_id.total_amount}}</td>
+          <td>{{item.purchase_id.value_of_goods}}</td>
           <td>{{item.purchase_id.total_pf}}</td>
           {% if item.purchase_id.crm_no.customer_gst_no|slice:":2" == "27" or item.purchase_id.crm_no.customer_gst_no|length < 5 or item.purchase_id.crm_no.customer_gst_no == None  %}
         		<td>{{item.purchase_id.tax_amount|div:2}} </td>
@@ -490,7 +490,7 @@ td {
             
           {% endif %}
           <td></td>
-          <td>{{item.purchase_id.grand_total}}</td>
+          <td>{{item.purchase_id.total_amount}}</td>
 
           <td>
           <form method="POST">{% csrf_token %}
