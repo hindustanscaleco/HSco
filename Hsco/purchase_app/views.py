@@ -1104,6 +1104,19 @@ def view_customer_details(request):
     #for updating total amount in all sales entry
     sales_list = Purchase_Details.objects.all()
     for sale in sales_list:
+        try:
+            product = Product_Details.objects.filter(purchase_id=sale.id).aggregate(Sum('amount'))
+            print(product)
+            print(product)
+            Purchase_Details.objects.filter(id=sale.id).update(value_of_goods=product['amount__sum'])
+            if purchase_id_id.is_gst == True:
+                Purchase_Details.objects.filter(id=sale.id).update(tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
+            Purchase_Details.objects.filter(id=sale.id).update(total_amount=product['amount__sum']+ purchase_id_id.tax_amount + purchase_id_id.total_pf)
+            Purchase_Details.objects.filter(id=sale.id).update(round_off_total=product['amount__sum']+ purchase_id_id.tax_amount + purchase_id_id.total_pf)
+        except Exception  as e:
+            print(e)
+            pass
+
         if (sale.value_of_goods == None and sale.total_amount == None) or (sale.value_of_goods == 'None' and sale.total_amount == 'None'):
             print(sale.id)
             pro_sum = Product_Details.objects.filter(purchase_id__id=sale.id).aggregate(Sum('amount'))
@@ -1381,6 +1394,18 @@ def update_customer_details(request,id):
     channel_marketing = DynamicDropdown.objects.filter(type="CHANNEL OF MARKETING",is_enabled=True)
     channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
     industry_list = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
+    try:
+        product = Product_Details.objects.filter(purchase_id=id).aggregate(Sum('amount'))
+        print(product)
+        print(product)
+        Purchase_Details.objects.filter(id=id).update(value_of_goods=product['amount__sum'])
+        if purchase_id_id.is_gst == True:
+            Purchase_Details.objects.filter(id=id).update(tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
+        Purchase_Details.objects.filter(id=id).update(total_amount=product['amount__sum']+ purchase_id_id.tax_amount + purchase_id_id.total_pf)
+        Purchase_Details.objects.filter(id=id).update(round_off_total=product['amount__sum']+ purchase_id_id.tax_amount + purchase_id_id.total_pf)
+    except Exception  as e:
+        print(e)
+        pass
 
     try:
         total_amt = purchase_id_id.value_of_goods + purchase_id_id.tax_amount + purchase_id_id.total_pf
