@@ -805,8 +805,10 @@ def showBill(request,sales_id,bill_company_type):
     latest_bill_no=0
     todays_date = str(datetime.now().strftime("%d-%m-%Y"))
     
-
-    update_bill_no = Bill.objects.filter(company_type=bill_company_type).latest('id').update_bill_no
+    try:
+        update_bill_no = Bill.objects.filter(company_type=bill_company_type).latest('id').update_bill_no
+    except:
+        update_bill_no = ''
     try:
         bill_no = Bill.objects.filter(company_type=bill_company_type,purchase_id=sales_id).latest('id').bill_no
     except:
@@ -818,7 +820,10 @@ def showBill(request,sales_id,bill_company_type):
     elif (update_bill_no != '' and update_bill_no != None ) and Bill.objects.filter(bill_no=update_bill_no, company_type=bill_company_type).count() == 0 and bill_company_type != '' and bill_company_type != 'None':
         latest_bill_no = str(update_bill_no).zfill(10)
     elif bill_company_type != '' and bill_company_type != 'None':
-        latest_bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)
+        try:
+            latest_bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)
+        except:
+            latest_bill_no = '0000000001'
     elif bill_company_type == '' or bill_company_type == 'None' :
         messages.error(request,'Please select company type - Sales or Scales to generate a bill !')
         return redirect('/update_customer_details/'+str(sales_id))
@@ -871,14 +876,19 @@ def showBill(request,sales_id,bill_company_type):
         item.user_id = SiteUser.objects.get(id=request.user.id)
         item.log_entered_by = request.user.name
         item.company_type = bill_company_type
-
-        update_bill_no = Bill.objects.filter(company_type=bill_company_type).latest('id').update_bill_no
+        try:
+            update_bill_no = Bill.objects.filter(company_type=bill_company_type).latest('id').update_bill_no
+        except:
+            update_bill_no = ''
         if (update_bill_no != '' and update_bill_no != None ) and Bill.objects.filter(bill_no=update_bill_no, company_type=bill_company_type).count() == 0 :
             item.bill_no = str(update_bill_no)
             print('session called')
         else:
-            item.bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)
-            print('bill no increased')
+            try:
+                item.bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)
+                print('bill no increased')
+            except:
+                item.bill_no = '0000000001'
         item.purchase_id = Purchase_Details.objects.get(id=sales_id)
 
         context22 = {
