@@ -282,7 +282,11 @@ th {
         		<td>
         			<center> {{item.hsn_code}} </center>
         		</td>
+            {% if item.sub_sub_model == '' %}
+        		<td>{{item.sub_model}}		</td>
+            {% else %}
         		<td>{{item.sub_sub_model}}		</td>
+            {% endif %}
         		<td>INR <span style="float: right;">  {{item.amount}} </span></td>
         		<td> INR <span style="float: right;">{{item.amount}} </span></td>
         	</tr>
