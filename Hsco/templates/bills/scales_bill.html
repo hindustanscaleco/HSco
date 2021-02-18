@@ -290,7 +290,7 @@ th {
         		<td>
         			<center> {{item.hsn_code}} </center>
         		</td>
-        		{% if item.sub_sub_model == '' %}
+        		{% if item.sub_sub_model == '' or item.sub_sub_model == 'None' %}
         		<td>{{item.sub_model}}		</td>
             {% else %}
         		<td>{{item.sub_sub_model}}		</td>
