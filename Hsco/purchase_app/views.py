@@ -1582,7 +1582,7 @@ def update_customer_details(request,id):
             # item2.value_of_goods = value_of_goods
 
             channel_of_dispatch_test = DynamicDropdown.objects.get(id=channel_of_dispatch).name
-            if (purchase_id_id.dispatch_id_assigned == None and channel_of_dispatch_test != 'Franchisee Store')  and (item2.channel_of_dispatch_id !='None' and item2.channel_of_dispatch_id.name !='Franchisee Store' and channel_of_dispatch_test != 'Franchisee Store') :
+            if (purchase_id_id.dispatch_id_assigned == None and channel_of_dispatch_test != 'Franchisee Store')  :
                 dispatch = Dispatch()
 
                 if Customer_Details.objects.filter(customer_name=customer_name,
