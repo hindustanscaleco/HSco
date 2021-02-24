@@ -987,8 +987,11 @@ def update_dispatch_details(request,update_id):
         item2 = customer_id
         item2.customer_name = customer_name
         item2.contact_no = contact_no
-        if customer_id.contact_no != item2.contact_no or customer_id.customer_name != item2.customer_name :
-            item2.save(update_fields=['customer_name','contact_no'])  #new3
+        if customer_id.customer_name != item2.customer_name and customer_name != None :
+            item2.save(update_fields=['customer_name'])  #new3
+
+        if customer_id.contact_no != item2.contact_no and contact_no != None and contact_no != 'None' :
+            item2.save(update_fields=['contact_no'])  #new3
 
         if company_name != '':
             item2.company_name = company_name
@@ -1018,12 +1021,17 @@ def update_dispatch_details(request,update_id):
         try:
             purchase_id=Purchase_Details.objects.get(dispatch_id_assigned=update_id)
 
-            purchase_id.second_person = customer_name
-            purchase_id.second_contact_no = contact_no
+            if customer_name != None and customer_name != 'None':
+                purchase_id.second_person = customer_name
+                purchase_id.save(update_fields=['second_person', ])
+
+            if contact_no != None and contact_no != 'None':
+                purchase_id.second_contact_no = contact_no
+                purchase_id.save(update_fields=['second_contact_no', ])
             # purchase_id.channel_of_dispatch = channel_of_dispatch
             purchase_id.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)
             # channel_of_dispatch = request.POST.get('channel_of_dispatch')
-            purchase_id.save(update_fields=['second_person', 'second_contact_no','channel_of_dispatch_id' ])
+            purchase_id.save(update_fields=['channel_of_dispatch_id' ])
 
 
 
@@ -1072,7 +1080,8 @@ def update_dispatch_details(request,update_id):
         # item.second_contact_no=second_contact_no
         # item.third_contact_no=third_contact_no
         item.second_person=customer_name   #new4
-        item.second_contact_no=contact_no   #new5
+        if contact_no != None and contact_no != 'None':
+            item.second_contact_no=contact_no   #new5
         # if date_of_dispatch != '':
         #     item.date_of_dispatch = date_of_dispatch
         #     item.save(update_fields=['date_of_dispatch'])
