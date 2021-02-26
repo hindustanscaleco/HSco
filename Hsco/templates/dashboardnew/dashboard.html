@@ -374,6 +374,7 @@ Module
             </div>
             {% endif %}
 
+  {% if request.user.is_authenticated and 'Expense Module' in user.modules_assigned %}
 
           <div class="col-xl-4 col-md-6 mb-4">
             <div class="card border-left-info shadow  ">
@@ -395,8 +396,8 @@ Module
               </div>
             </div>
           </div>
-
-
+{% endif %}
+{% if request.user.is_authenticated and 'Bill Module' in user.modules_assigned %}
           <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-primary shadow">
                   <a href="/showBillModule/">
@@ -418,7 +419,7 @@ Module
             </div> 
 
           </div>
-
+{% endif %}
           <!-- Content Row -->
 <br>
 <br>

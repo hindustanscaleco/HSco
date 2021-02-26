@@ -373,9 +373,41 @@ color:;
   </div>
   </div>
         {% endif %}
+{% if request.user.is_authenticated and 'Bill Module' in request.user.modules_assigned %}
+
+   <label class="col-md-2 control-label">Bill Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Bill Module" id="customCheck101">
+  <label class="custom-control-label" for="customCheck101"></label>
+  </div>
+  </div>
+        {% endif %}
+
 
 </div>
+{% if request.user.is_authenticated and 'Expense Module' in request.user.modules_assigned %}
 
+        <div class="form-group row">
+
+   <label class="col-md-2 control-label">Expense Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Expense Module" id="customCheck91">
+  <label class="custom-control-label" for="customCheck91"></label>
+  </div>
+  </div>
+  
+
+
+</div>
+        {% endif %}
          <div class="form-group row">
                               {% if request.user.is_authenticated and 'Indiamart Leads' in request.user.modules_assigned %}
 
@@ -405,6 +437,7 @@ color:;
         {% endif %}
 
 </div>
+
       {% if user.product_master_access %}
          <div class="form-group row">
              <label class="col-md-2 control-label">Product Master
