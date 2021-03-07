@@ -794,6 +794,10 @@ def edit_product_customer(request,product_id_rec):
                                     + ', Contact: ' + str(request.user.mobile) + ',\nProduct changed' + \
                                     '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
             new_transaction.save()
+            Purchase_Details.objects.filter(id=purchase_id.id).update(
+                value_of_goods=F("value_of_goods") - item.amount)
+            Purchase_Details.objects.filter(id=purchase_id).update(tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
+            Purchase_Details.objects.filter(id=purchase_id).update(total_amount=F("value_of_goods") + F("tax_amount") + F("total_pf"))
             Product_Details.objects.filter(id=product_id_rec).delete()
             messages.success(request, 'Purchase Product with ID:-'+str(product_id_rec)+' returned to Godown successfully!')
             if return_reason == 'Exchanged for another product':
