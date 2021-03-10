@@ -736,7 +736,7 @@ def dispatch_view(request):
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
 
-            dispatch_list = dispatch_list.filter(entry_timedate__range=[start_date, end_date]).order_by('-dispatch_no')
+            dispatch_list = Dispatch.objects.filter(entry_timedate__range=[start_date, end_date]).order_by('-dispatch_no')
 
             context = {
                 'dispatch_list': dispatch_list,
@@ -746,7 +746,7 @@ def dispatch_view(request):
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
 
-            dispatch_list = dispatch_list.filter(second_contact_no__icontains=contact).order_by('-dispatch_no')
+            dispatch_list = Dispatch.objects.filter(second_contact_no__icontains=contact).order_by('-dispatch_no')
 
             context = {
                 'dispatch_list': dispatch_list,
