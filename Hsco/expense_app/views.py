@@ -258,7 +258,10 @@ def add_expense(request):
         item.credit_authorised_by = credit_authorised_by
 
         item.save()
-        return redirect('/expense_product/'+str(item.pk))  
+        if expense_type_master == 'Purchase of Goods':
+            return redirect('/expense_product/'+str(item.pk))
+        else :  
+            return redirect('/expense_dashboard/' )
 
     
     return render(request,"expense_app/add_expense.html", context)
