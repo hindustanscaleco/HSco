@@ -1010,7 +1010,7 @@ def showBillModule(request):
             return render(request,'bills/billsModuleDashboard.html',context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
-            bills_list = Bill.objects.filter(purchase_id__crm_no__contact_no=contact).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__crm_no__contact_no__icontains=contact).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
@@ -1021,7 +1021,7 @@ def showBillModule(request):
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
 
-            bills_list = Bill.objects.filter(purchase_id__crm_no__customer_email_id=email).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__crm_no__customer_email_id__icontains=email).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
@@ -1031,7 +1031,7 @@ def showBillModule(request):
         elif 'submit4' in request.POST:
             name = request.POST.get('name')
 
-            bills_list = Bill.objects.filter(purchase_id__crm_no__customer_name=name).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__crm_no__customer_name__icontains=name).order_by('-id')
 
 
             context = {
@@ -1043,7 +1043,7 @@ def showBillModule(request):
         elif 'submit5' in request.POST:
             company = request.POST.get('company')
 
-            bills_list = Bill.objects.filter(purchase_id__crm_no__company_name=company).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__crm_no__company_name__icontains=company).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
@@ -1051,8 +1051,8 @@ def showBillModule(request):
             }
             return render(request,'bills/billsModuleDashboard.html',context)
         elif request.method == 'POST' and 'submit6' in request.POST:
-            id = request.POST.get('id')
-            bills_list = Bill.objects.filter(purchase_id__purchase_no=id).order_by('-id')
+            bill_id = request.POST.get('id')
+            bills_list = Bill.objects.filter(purchase_id__purchase_no__icontains=bill_id).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
