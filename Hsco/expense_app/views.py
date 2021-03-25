@@ -621,7 +621,7 @@ def final_expense_report(request):
     from django.db.models import F
     expense_query = Expense.objects.none()
     
-    if product_query == None or product_query == '':
+    if product_query == None or product_query == '' or product_query == 'None':
         expense_query = Expense.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_expense_list)
     else:
         for product in product_query:
