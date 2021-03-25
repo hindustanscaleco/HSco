@@ -622,8 +622,11 @@ def final_expense_report(request):
     from django.db.models import F
     expense_query = Expense.objects.none()
     print(expense_query)
-    for product in product_query:
+    if product_query == None or product_query == '':
         expense_query = Expense.objects.filter(id=product['expense_id']).values(*selected_expense_list)
+    else:
+        for product in product_query:
+            expense_query = Expense.objects.filter(id=product['expense_id']).values(*selected_expense_list)
     
     # for n, i in enumerate(expense_query):
     #     print('expense query')
