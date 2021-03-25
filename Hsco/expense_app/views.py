@@ -621,24 +621,13 @@ def final_expense_report(request):
     from django.db.models import F
     expense_query = Expense.objects.none()
     
-    if product_query == None or product_query == '' or product_query == 'None':
-        expense_query = Expense.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_expense_list)
-    else:
-        for product in product_query:
-            expense_query = Expense.objects.filter(id=product['expense_id']).values(*selected_expense_list)
+    # if product_query == None or product_query == '' or product_query == 'None':
+    expense_query = Expense.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_expense_list)
+    # else:
+    #     for product in product_query:
+    #         expense_query = Expense.objects.filter(id=product['expense_id']).values(*selected_expense_list)
     
-    # for n, i in enumerate(expense_query):
-    #     print('expense query')
-    #     print(expense_query)
-    #     print(i)
-    #     if i == 'expense_type_sub_sub_master_id__expense_type_sub_master_id__expense_type_master':
-    #         expense_query[n] = 'Purchase ID'
-    #     if i == 'customer_app_customer_details.id':
-    #         expense_query[n] = 'Customer No'
-    #     if i == 'today_date':
-    #         expense_query[n] = 'Entry Date'
-    #     if i == 'second_person':
-    #         expense_query[n] = 'Customer Name'
+    
     try:
         del request.session['start_date']
         del request.session['end_date']
