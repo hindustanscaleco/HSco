@@ -622,6 +622,8 @@ def final_expense_report(request):
     from django.db.models import F
     expense_query = Expense.objects.none()
     print(expense_query)
+    print('product id')
+    print(product['expense_id'])
     if product_query == None or product_query == '':
         expense_query = Expense.objects.filter(id=product['expense_id']).values(*selected_expense_list)
     else:
