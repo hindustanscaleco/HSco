@@ -7,7 +7,6 @@ from import_export.admin import ImportExportModelAdmin
 
 from .models import SiteUser
 
-
 class UserCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
@@ -42,6 +41,10 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
+def flush_users(modeladmin, request, queryset):
+    queryset.update(is_active=False)
+flush_users.short_description = "Flush Selected Users"
+
 class UserAdmin(ImportExportModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
@@ -66,6 +69,7 @@ class UserAdmin(ImportExportModelAdmin):
     search_fields = ('mobile', 'name')
     ordering = ('id',)
     filter_horizontal = ()
+    actions = [flush_users]
 
 
 
