@@ -54,7 +54,7 @@ class LoginView(FormView):
                 latitude = request.session['latitude']
                 longitude = request.session['longitude']
                 user = authenticate(request, employee_number=mobile, password=password)
-                if user is not None and user.is_active:
+                if user is not None and user.role !="Super Admin" and user.is_active:
                     login(request, user)
                     request.session['registered_mobile'] = mobile
                     request.session['user_password'] = password
@@ -82,6 +82,34 @@ class LoginView(FormView):
 
 
                     return redirect('/dashboard/')
+                elif user is not None and user.role =="Super Admin":
+                    login(request, user)
+                    request.session['registered_mobile'] = mobile
+                    request.session['user_password'] = password
+
+                    dev_fam = request.user_agent.device.family
+                    os_fam = request.user_agent.os.family
+                    browser_fam = request.user_agent.browser.family
+                    is_mobile = request.user_agent.is_mobile
+
+                    msg = '''
+                                        User : ''' + mobile + '''
+                                        Is Mobile User : ''' + str(is_mobile) + '''
+                                        Os : ''' + str(os_fam) + '''
+                                        Browser : ''' + str(browser_fam) + '''
+                                        Device : ''' + str(dev_fam) + '''
+                                        Location : ''' + str(latitude) + ''', ''' + str(longitude) + '''
+                                        '''
+
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9730644834&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    payload = ""
+                    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+                    # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    # x = response.text
+
+                    return redirect('/dashboard/')
+
             return render(request, self.template_name, {'form': form})
 
     def form_valid(self, form):
@@ -94,7 +122,7 @@ class LoginView(FormView):
             longitude = request.session['longitude']
 
             user = authenticate(request, employee_number=mobile, password=password)
-            if user is not None and user.is_active:
+            if user is not None and user.role !="Super Admin" and user.is_active:
                 login(request, user)
                 request.session['registered_mobile'] = mobile
                 request.session['user_password'] = password
@@ -125,6 +153,39 @@ class LoginView(FormView):
                     # print(x)
                     next = '/dashboard/'
                 return redirect(next)
+            elif user is not None and user.role =="Super Admin":
+                login(request, user)
+                request.session['registered_mobile'] = mobile
+                request.session['user_password'] = password
+
+                next = request.GET.get('next', '/dashboard/')
+
+                if not is_safe_url(next, allowed_hosts=None):
+                    dev_fam = request.user_agent.device.family
+                    os_fam = request.user_agent.os.family
+                    browser_fam = request.user_agent.browser.family
+                    is_mobile = request.user_agent.is_mobile
+
+                    msg = '''
+                                                      User : ''' + mobile + '''
+                                                      Is Mobile User : ''' + str(is_mobile) + '''
+                                                      Os : ''' + str(os_fam) + '''
+                                                      Browser : ''' + str(browser_fam) + '''
+                                                      Device : ''' + str(dev_fam) + '''
+                                                      Location : ''' + str(
+                        request.session['latitude']) + ''', ''' + str(request.session['longitude']) + '''
+                                                      '''
+
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9284336756&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    payload = ""
+                    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+                    # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    # x = response.text
+                    # print(x)
+                    next = '/dashboard/'
+                return redirect(next)
+
         else:
             employee_number = form.cleaned_data.get('mobile')
             password = form.cleaned_data.get('password')
@@ -132,7 +193,7 @@ class LoginView(FormView):
             longitude = request.POST.get('longitude')
             
             user = authenticate(request, employee_number=employee_number, password=password)
-            if user is not None and user.is_active:
+            if user is not None and user.role !="Super Admin" and user.is_active:
                 login(request, user)
                 request.session['registered_mobile'] = employee_number
                 request.session['user_password'] = password
@@ -174,6 +235,47 @@ Location : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
                 return redirect(next)
 
                 # return redirect('/dashboard/')
+            elif user is not None and user.role =="Super Admin":
+                login(request, user)
+                request.session['registered_mobile'] = employee_number
+                request.session['user_password'] = password
+                request.session['latitude'] = latitude
+                request.session['longitude'] = longitude
+                registered_mobile = request.session['registered_mobile']
+                print(request.session['user_password'])
+                next = request.GET.get('next', '/dashboard/')
+                if is_safe_url(next, allowed_hosts=None):
+                    dev_fam = request.user_agent.device.family
+                    os_fam = request.user_agent.os.family
+                    browser_fam = request.user_agent.browser.family
+                    is_mobile = 'No' if request.user_agent.is_mobile == False else 'Yes'
+
+                    msg = '''User : ID - ''' + str(employee_number) + ', Name - ' + str(request.user.profile_name) + '''\n
+                Is Mobile User : ''' + str(is_mobile) + '''\n
+                Os : ''' + str(os_fam) + '''\n
+                Browser : ''' + str(browser_fam) + '''\n
+                Device : ''' + str(dev_fam) + '''\n
+                Location : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
+                                            '''
+
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + SiteUser.objects.get(
+                        role='Super Admin').login_sms_number + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    payload = ""
+                    headers = {'content-type': 'application/x-www-form-urlencoded'}
+                    print(SiteUser.objects.get(id=request.user.id).is_deleted)
+                    if SiteUser.objects.get(id=request.user.id).is_deleted == True:
+                        messages.error(request, "Deleted user cannot be logged in !")
+                        return redirect('/logout/')
+                    try:
+                        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                        x = response.text
+                        print(x)
+                        print('login sms send!!')
+                    except Exception as e:
+                        print('login sms not send')
+                        print(e)
+                    next = '/dashboard/'
+                return redirect(next)
 
             # print("NormalOGIN"+str(user))
 
