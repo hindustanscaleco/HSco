@@ -45,6 +45,10 @@ def flush_users(modeladmin, request, queryset):
     queryset.update(is_active=False)
 flush_users.short_description = "Flush Selected Users"
 
+def allow_users_login(modeladmin, request, queryset):
+    queryset.update(is_active=True)
+allow_users_login.short_description = "Allow Selected Users To Login"
+
 class UserAdmin(ImportExportModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
@@ -69,7 +73,7 @@ class UserAdmin(ImportExportModelAdmin):
     search_fields = ('mobile', 'name')
     ordering = ('id',)
     filter_horizontal = ()
-    actions = [flush_users]
+    actions = [flush_users,allow_users_login]
 
 
 
