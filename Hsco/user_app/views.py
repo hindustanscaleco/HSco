@@ -54,7 +54,7 @@ class LoginView(FormView):
                 latitude = request.session['latitude']
                 longitude = request.session['longitude']
                 user = authenticate(request, employee_number=mobile, password=password)
-                if user is not None and user.role !="Super Admin" and user.is_active:
+                if user is not None and user.role !="Super Admin" and user.is_active and not user.is_deleted:
                     login(request, user)
                     request.session['registered_mobile'] = mobile
                     request.session['user_password'] = password
@@ -122,7 +122,7 @@ class LoginView(FormView):
             longitude = request.session['longitude']
 
             user = authenticate(request, employee_number=mobile, password=password)
-            if user is not None and user.role !="Super Admin" and user.is_active:
+            if user is not None and user.role !="Super Admin" and user.is_active and not user.is_deleted:
                 login(request, user)
                 request.session['registered_mobile'] = mobile
                 request.session['user_password'] = password
@@ -193,7 +193,7 @@ class LoginView(FormView):
             longitude = request.POST.get('longitude')
             
             user = authenticate(request, employee_number=employee_number, password=password)
-            if user is not None and user.role !="Super Admin" and user.is_active:
+            if user is not None and user.role !="Super Admin" and user.is_active and not user.is_deleted:
                 login(request, user)
                 request.session['registered_mobile'] = employee_number
                 request.session['user_password'] = password
