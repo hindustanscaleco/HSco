@@ -599,7 +599,8 @@ def lead_home(request):
                                 item3.customer_industry = ''
                                 new_existing_customer = 'New'
                                 try:
-                                    item3.save()
+                                    if clean_mob != '0000000000':
+                                        item3.save()
                                 except:
                                     pass
 

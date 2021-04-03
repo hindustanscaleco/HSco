@@ -1131,7 +1131,7 @@ def report_bill_form(request):
 def final_bill_report(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
-    string_purchase = request.session.get('string') + ['crm_no_id'] + ['id']
+    string_purchase = request.session.get('string') 
     string_product = request.session.get('string_product')  + ['id'] + ['purchase_id']
 
     selected_customer_list = request.session.get('selected_customer_list')
@@ -1143,8 +1143,12 @@ def final_bill_report(request):
     final_row_product = []
     final_row = []
 
-    for n, i in enumerate(selected_list):
-        if i == 'purchase_app_purchase_details.id':
+    
+    print('string purchase')
+    print(string_purchase)
+    product_query = Bill.objects.filter(entry_date__range=(start_date, end_date)).values(*string_purchase)
+    for n, i in enumerate(product_query):
+        if i == 'purchase_id__tax_amount':
             selected_list[n] = 'Purchase ID'
         if i == 'customer_app_customer_details.id':
             selected_list[n] = 'Customer No'
@@ -1152,45 +1156,43 @@ def final_bill_report(request):
             selected_list[n] = 'Entry Date'
         if i == 'second_person':
             selected_list[n] = 'Customer Name'
-
-    product_query = Product_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_product)
-    for product in product_query:
-        sales_query = Purchase_Details.objects.filter(id=product['purchase_id']).values(*string_purchase)
+    # for product in product_query:
+    #     sales_query = Purchase_Details.objects.filter(id=product['purchase_id']).values(*string_purchase)
         
-        try:
-            if selected_customer_list:
-                customer_query = Customer_Details.objects.filter(id=list(sales_query)[0]['crm_no_id']).values(*selected_customer_list)
-                for item in customer_query:
-                    product.update(item)
-        except:
-            print('no customer error')
-            pass
+    #     try:
+    #         if selected_customer_list:
+    #             customer_query = Customer_Details.objects.filter(id=list(sales_query)[0]['crm_no_id']).values(*selected_customer_list)
+    #             for item in customer_query:
+    #                 product.update(item)
+    #     except:
+    #         print('no customer error')
+    #         pass
         
-        for item in sales_query:
-            #payment details in sales report
-            if payment_details == 'payment_details':
-                print('payment details')
-                print(payment_details)
-                sale = Purchase_Details.objects.get(id=product['purchase_id'])
-                if sale.payment_mode == 'Cash' or sale.payment_mode == 'Razorpay':
-                    item['payment_mode'] = sale.payment_mode
-                elif sale.payment_mode == 'Credit':
-                    item['payment_mode'] = sale.payment_mode
-                    item['credit_authorised_by'] = 'Authorised by: '+str(sale.credit_authorised_by)
-                    item['credit_pending_amount'] = 'Pending Amount: '+str(sale.credit_pending_amount)
-                elif sale.payment_mode == 'Cheque':
-                    item['payment_mode'] = sale.payment_mode
-                    item['bank_name'] = 'Bank Name: '+str(sale.bank_name)
-                    item['cheque_no'] = 'Cheque No: '+str(sale.cheque_no)
-                    item['cheque_date'] = 'Cheque Date: '+str(sale.cheque_date)
-                elif sale.payment_mode == 'NEFT':
-                    item['payment_mode'] = sale.payment_mode
-                    item['neft_bank_name'] = 'Bank Name: '+str(sale.neft_bank_name)
-                    item['neft_date'] = 'NEFT Date: '+str(sale.neft_date)
-                    item['reference_no'] = 'Reference No: '+str(sale.reference_no)
-            print(item)
-            print('entry_timedate' in item)
-            product.update(item)
+    #     for item in sales_query:
+    #         #payment details in sales report
+    #         if payment_details == 'payment_details':
+    #             print('payment details')
+    #             print(payment_details)
+    #             sale = Purchase_Details.objects.get(id=product['purchase_id'])
+    #             if sale.payment_mode == 'Cash' or sale.payment_mode == 'Razorpay':
+    #                 item['payment_mode'] = sale.payment_mode
+    #             elif sale.payment_mode == 'Credit':
+    #                 item['payment_mode'] = sale.payment_mode
+    #                 item['credit_authorised_by'] = 'Authorised by: '+str(sale.credit_authorised_by)
+    #                 item['credit_pending_amount'] = 'Pending Amount: '+str(sale.credit_pending_amount)
+    #             elif sale.payment_mode == 'Cheque':
+    #                 item['payment_mode'] = sale.payment_mode
+    #                 item['bank_name'] = 'Bank Name: '+str(sale.bank_name)
+    #                 item['cheque_no'] = 'Cheque No: '+str(sale.cheque_no)
+    #                 item['cheque_date'] = 'Cheque Date: '+str(sale.cheque_date)
+    #             elif sale.payment_mode == 'NEFT':
+    #                 item['payment_mode'] = sale.payment_mode
+    #                 item['neft_bank_name'] = 'Bank Name: '+str(sale.neft_bank_name)
+    #                 item['neft_date'] = 'NEFT Date: '+str(sale.neft_date)
+    #                 item['reference_no'] = 'Reference No: '+str(sale.reference_no)
+    #         print(item)
+    #         print('entry_timedate' in item)
+    #         product.update(item)
 
     try:
         del request.session['start_date']
