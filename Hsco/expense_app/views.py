@@ -616,7 +616,7 @@ def final_expense_report(request):
     string_product = request.session.get('string_product')    
     final_row_product = []
     final_row = []
-    product_query = Expense_Product.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_product_list)
+    # product_query = Expense_Product.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_product_list)
     
     from django.db.models import F
     expense_query = Expense.objects.none()
@@ -642,7 +642,7 @@ def final_expense_report(request):
         'final_row':final_row,
         'final_row_product':final_row_product,
         'selected_list':selected_expense_list,
-        'selected_product_list':selected_product_list+selected_expense_list,
+        # 'selected_product_list':selected_product_list+selected_expense_list,
         'expense_query':expense_query,
     }
     return render(request,'expense_app/final_expense_report.html', context)
