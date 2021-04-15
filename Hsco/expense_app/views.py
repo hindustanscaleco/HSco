@@ -1108,14 +1108,14 @@ def showBillModule(request):
 
 
 def report_bill_form(request):
-    sales_list = Purchase_Details.objects.all()
-    for sale in sales_list:
+    bill_list = Bill.objects.all()
+    for bill in bill_list:
         try:
-            if  sale.crm_no.customer_gst_no == 'None' or sale.crm_no.customer_gst_no == None or sale.crm_no.customer_gst_no == '' or sale.crm_no.customer_gst_no[:2] == '27'  :
-                Purchase_Details.objects.filter(id=sale.id).update(cgst=F("tax_amount")/2 )
-                Purchase_Details.objects.filter(id=sale.id).update(sgst=F("tax_amount")/2 )
+            if  bill.purchase_id.crm_no.customer_gst_no == 'None' or bill.purchase_id.crm_no.customer_gst_no == None or bill.purchase_id.crm_no.customer_gst_no == '' or bill.purchase_id.crm_no.customer_gst_no[:2] == '27'  :
+                Purchase_Details.objects.filter(id=bill.purchase_id.id).update(cgst=F("tax_amount")/2 )
+                Purchase_Details.objects.filter(id=bill.purchase_id.id).update(sgst=F("tax_amount")/2 )
             else :
-                Purchase_Details.objects.filter(id=sale.id).update(igst=F("tax_amount") )
+                Purchase_Details.objects.filter(id=bill.purchase_id.id).update(igst=F("tax_amount") )
         except:
             pass
     if request.method =='POST':
