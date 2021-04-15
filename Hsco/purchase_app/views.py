@@ -1138,18 +1138,18 @@ def view_customer_details(request):
             pass
 
 
-        if (sale.value_of_goods == None and sale.total_amount == None) or (sale.value_of_goods == 'None' and sale.total_amount == 'None'):
-            print(sale.id)
-            pro_sum = Product_Details.objects.filter(purchase_id__id=sale.id).aggregate(Sum('amount'))
-            total_value =  pro_sum['amount__sum'] if pro_sum['amount__sum'] != None else 0 + sale.total_pf if sale.total_pf != None else 0  + sale.tax_amount if sale.tax_amount  != None else 0 
-            print(total_value)
-            Purchase_Details.objects.filter(id=sale.id).update(total_amount=total_value )
-            Purchase_Details.objects.filter(id=sale.id).update(value_of_goods=pro_sum['amount__sum'] )
-        if sale.total_amount == 0 or sale.total_amount == None or sale.total_amount == 'None':
-            try:
-                Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
-            except:
-                pass
+        # if (sale.value_of_goods == None and sale.total_amount == None) or (sale.value_of_goods == 'None' and sale.total_amount == 'None'):
+        #     print(sale.id)
+        #     pro_sum = Product_Details.objects.filter(purchase_id__id=sale.id).aggregate(Sum('amount'))
+        #     total_value =  pro_sum['amount__sum'] if pro_sum['amount__sum'] != None else 0 + sale.total_pf if sale.total_pf != None else 0  + sale.tax_amount if sale.tax_amount  != None else 0 
+        #     print(total_value)
+        #     Purchase_Details.objects.filter(id=sale.id).update(total_amount=total_value )
+        #     Purchase_Details.objects.filter(id=sale.id).update(value_of_goods=pro_sum['amount__sum'] )
+        # if sale.total_amount == 0 or sale.total_amount == None or sale.total_amount == 'None':
+        #     try:
+        #         Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
+        #     except:
+        #         pass
 
     #for deleting purchase entries
     if request.method == 'POST' and 'delete_purchase_id' in request.POST:
