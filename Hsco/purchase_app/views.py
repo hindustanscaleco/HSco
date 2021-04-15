@@ -1146,7 +1146,10 @@ def view_customer_details(request):
             Purchase_Details.objects.filter(id=sale.id).update(total_amount=total_value )
             Purchase_Details.objects.filter(id=sale.id).update(value_of_goods=pro_sum['amount__sum'] )
         if sale.total_amount == 0 or sale.total_amount == None or sale.total_amount == 'None':
-            Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
+            try:
+                Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
+            except:
+                pass
 
     #for deleting purchase entries
     if request.method == 'POST' and 'delete_purchase_id' in request.POST:
