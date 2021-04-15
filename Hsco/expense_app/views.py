@@ -1105,6 +1105,16 @@ def showBillModule(request):
 
 
 def report_bill_form(request):
+    sales_list = Purchase_Details.objects.all()
+    for sale in sales_list:
+        try:
+            if  sale.crm_no.customer_gst_no == 'None' or sale.crm_no.customer_gst_no == None or sale.crm_no.customer_gst_no == '' or sale.crm_no.customer_gst_no[:2] == '27'  :
+                Purchase_Details.objects.filter(id=sale.id).update(cgst=F("tax_amount")/2 )
+                Purchase_Details.objects.filter(id=sale.id).update(sgst=F("tax_amount")/2 )
+            else :
+                Purchase_Details.objects.filter(id=sale.id).update(igst=F("tax_amount") )
+        except:
+            pass
     if request.method =='POST':
         selected_purchase_list = request.POST.getlist('checks[]')
         selected_product_list = request.POST.getlist('products[]')
