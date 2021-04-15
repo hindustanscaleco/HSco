@@ -68,10 +68,14 @@ class Purchase_Details(models.Model):   #cleaned
     credit_authorised_by = models.CharField(max_length=250,null=True, blank=True )
 
     tax_amount = models.FloatField(default=0.0)
-    round_off_total = models.FloatField(null=True,blank=True)
-    total_amount = models.FloatField(null=True,blank=True)
+    round_off_total = models.FloatField(default=0.0)
+    total_amount = models.FloatField(default=0.0)
     total_pf = models.FloatField(default=0.0)
     is_gst = models.BooleanField(default=False)
+
+    cgst = models.FloatField(default=0.0)
+    sgst = models.FloatField(default=0.0)
+    igst = models.FloatField(default=0.0)
 
     bill_notes = models.TextField(null=True, blank=True)
 
@@ -86,6 +90,9 @@ class Purchase_Details(models.Model):   #cleaned
             return self.total_amount + self.total_pf
         else:
             return 0.0
+    
+
+
 # def save_purchase_details(sender,instance, **kwargs):
 #
 # post_save.connect(save_purchase_details, sender = Purchase_Details)

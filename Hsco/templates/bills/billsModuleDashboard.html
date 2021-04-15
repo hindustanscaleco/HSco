@@ -72,7 +72,7 @@
                  <div class="col-xl-3 col-md-3 mb-3">
                 <div class="card-body" style="padding: 2px;">
                   <div class="row no-gutters align-items-right">
-     {% if request.user.is_authenticated %}
+     {% if request.user.role == 'Super Admin'  %}
  <a style="padding: 2px;" href="/report_bill_form/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
  
 {% endif %}
@@ -469,7 +469,6 @@ td {
             <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Grand Total</td>
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Actions</td>
         </tr>
-        {% for item in bills_list %}
 <!--      <tr onclick="location.href='/showBill/{{item.user_id}}';">-->
       <tr>
           <td>{{item.entry_date}}</td>
@@ -502,7 +501,6 @@ td {
           </form>
           </td>
         </tr>
-        {% endfor %}
 
     </table>
 

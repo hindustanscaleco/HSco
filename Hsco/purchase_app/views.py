@@ -181,6 +181,18 @@ def purchase_product_handler(sender, instance, update_fields=None, **kwargs):
 
 @login_required(login_url='/')
 def add_purchase_details(request):
+    # message = 'fdsafsdafsd'
+
+    # url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9730644834"  + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt" + "&tid=1207161735423953054"
+    # payload = ""
+    # headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+    # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+    # x = response.text
+    # print(response.status_code)
+    # print(response.content)
+    # print('sending sms')
+    # print(x)
     if 'purchase_id' in request.session:
         if request.session.get('product_saved'):
             pass
@@ -1116,6 +1128,16 @@ def view_customer_details(request):
     #for updating total amount in all sales entry
     sales_list = Purchase_Details.objects.all()
     for sale in sales_list:
+        try:
+            if  sale.crm_no.customer_gst_no == 'None' or sale.crm_no.customer_gst_no == None or sale.crm_no.customer_gst_no == '' or sale.crm_no.customer_gst_no[:2] == '27'  :
+                Purchase_Details.objects.filter(id=sale.id).update(cgst=F("tax_amount")/2 )
+                Purchase_Details.objects.filter(id=sale.id).update(sgst=F("tax_amount")/2 )
+            else :
+                Purchase_Details.objects.filter(id=sale.id).update(igst=F("tax_amount") )
+        except:
+            pass
+
+
         if (sale.value_of_goods == None and sale.total_amount == None) or (sale.value_of_goods == 'None' and sale.total_amount == 'None'):
             print(sale.id)
             pro_sum = Product_Details.objects.filter(purchase_id__id=sale.id).aggregate(Sum('amount'))
@@ -1918,12 +1940,13 @@ def add_product_details(request,id):
                 purchase.crm_no.pk) + '/' + str(
                 purchase.id) + '\n For more details contact us on - 7045922250'
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid +"&TID=1207161735423953054"+ "&type=txt"
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
+            print('sending sms')
             print(x)
 
         Purchase_Details.objects.filter(id=purchase_id).update(value_of_goods=F("value_of_goods") + value_of_goods)
