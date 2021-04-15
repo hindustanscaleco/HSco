@@ -976,7 +976,10 @@ def showBill(request,sales_id,bill_company_type):
         
 
 def showBillModule(request):
-    if check_admin_roles(request):  # For ADMIN
+    if request.user.role == 'Super Admin':
+        bills_list = Bill.objects.all().order_by('-id')
+
+    elif check_admin_roles(request):  # For ADMIN
         bills_list = Bill.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
                         user_id__is_deleted=False).order_by('-id')
             
