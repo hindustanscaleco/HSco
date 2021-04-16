@@ -1125,31 +1125,22 @@ def view_customer_details(request):
     date_today= datetime.now().strftime('%Y-%m-%d')
     message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
 
-    #for updating total amount in all sales entry
-    # sales_list = Purchase_Details.objects.all()
-    # for sale in sales_list:
-    #     try:
-    #         if  sale.crm_no.customer_gst_no == 'None' or sale.crm_no.customer_gst_no == None or sale.crm_no.customer_gst_no == '' or sale.crm_no.customer_gst_no[:2] == '27'  :
-    #             Purchase_Details.objects.filter(id=sale.id).update(cgst=F("tax_amount")/2 )
-    #             Purchase_Details.objects.filter(id=sale.id).update(sgst=F("tax_amount")/2 )
-    #         else :
-    #             Purchase_Details.objects.filter(id=sale.id).update(igst=F("tax_amount") )
-    #     except:
-    #         pass
+    # for updating total amount in all sales entry
+    sales_list = Purchase_Details.objects.all()
+    for sale in sales_list:
 
-
-        # if (sale.value_of_goods == None and sale.total_amount == None) or (sale.value_of_goods == 'None' and sale.total_amount == 'None'):
-        #     print(sale.id)
-        #     pro_sum = Product_Details.objects.filter(purchase_id__id=sale.id).aggregate(Sum('amount'))
-        #     total_value =  pro_sum['amount__sum'] if pro_sum['amount__sum'] != None else 0 + sale.total_pf if sale.total_pf != None else 0  + sale.tax_amount if sale.tax_amount  != None else 0 
-        #     print(total_value)
-        #     Purchase_Details.objects.filter(id=sale.id).update(total_amount=total_value )
-        #     Purchase_Details.objects.filter(id=sale.id).update(value_of_goods=pro_sum['amount__sum'] )
-        # if sale.total_amount == 0 or sale.total_amount == None or sale.total_amount == 'None':
-        #     try:
-        #         Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
-        #     except:
-        #         pass
+        if (sale.value_of_goods == None and sale.total_amount == None) or (sale.value_of_goods == 'None' and sale.total_amount == 'None'):
+            print(sale.id)
+            pro_sum = Product_Details.objects.filter(purchase_id__id=sale.id).aggregate(Sum('amount'))
+            total_value =  pro_sum['amount__sum'] if pro_sum['amount__sum'] != None else 0 + sale.total_pf if sale.total_pf != None else 0  + sale.tax_amount if sale.tax_amount  != None else 0 
+            print(total_value)
+            Purchase_Details.objects.filter(id=sale.id).update(total_amount=total_value )
+            Purchase_Details.objects.filter(id=sale.id).update(value_of_goods=pro_sum['amount__sum'] )
+        if sale.total_amount == 0 or sale.total_amount == None or sale.total_amount == 'None':
+            try:
+                Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
+            except:
+                pass
 
     #for deleting purchase entries
     if request.method == 'POST' and 'delete_purchase_id' in request.POST:
