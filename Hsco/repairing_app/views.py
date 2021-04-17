@@ -596,7 +596,7 @@ def repair_product(request,id):
                     rep.repairing_no) + '.' \
                                         ' For any further details please contact our customer service team on 7045922251'
 
-                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + rep.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + rep.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt" +"&tid=1207161762951899253"
                 payload = ""
                 headers = {'content-type': 'application/x-www-form-urlencoded'}
 
@@ -788,7 +788,7 @@ def update_repairing_details(request,id):
                     'Repairing No '+str(repair_id.repairing_no)+' is  '+str(repair_id.total_cost)+'/- For any further details please contact our customer ' \
                     'service team on 7045922251'
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt" +"&tid=1207161762964372059"
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 
@@ -889,7 +889,7 @@ def update_repairing_details(request,id):
                                                   ' http://139.59.76.87/feedback_repairing/'+str(request.user.pk)+'/'+str(repair_id.crm_no.pk)+'/'+str(repair_id.id)+'\n ' \
                           'Contact our customer service team on 7045922251'
 
-                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt" + "&tid=1207161762995358485"
                 payload = ""
                 headers = {'content-type': 'application/x-www-form-urlencoded'}
 
@@ -2186,7 +2186,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
             pass
 
 
-    url = "http://smshorizon.co.in/api/sendsms.php?user=" + user_hsco + "&apikey=" + api + "&mobile=" + mobile + "&message=" + message + "&senderid=" + senderid + "&type=txt"
+    url = "http://smshorizon.co.in/api/sendsms.php?user=" + user_hsco + "&apikey=" + api + "&mobile=" + mobile + "&message=" + message + "&senderid=" + senderid + "&type=txt" +"&tid=1207161762995358485"
     payload = ""
     headers = {'content-type': 'application/x-www-form-urlencoded'}
 

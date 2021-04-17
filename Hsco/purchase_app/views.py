@@ -1122,6 +1122,7 @@ def edit_product_customer(request,product_id_rec):
 
 @login_required(login_url='/')
 def view_customer_details(request):
+    
     date_today= datetime.now().strftime('%Y-%m-%d')
     message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
 
@@ -1934,7 +1935,7 @@ def add_product_details(request,id):
                 purchase.crm_no.pk) + '/' + str(
                 purchase.id) + '\n For more details contact us on - 7045922250'
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid +"&TID=1207161735423953054"+ "&type=txt"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt" +"&tid=1207161735423953054"
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 
