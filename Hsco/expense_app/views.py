@@ -610,8 +610,8 @@ def final_expense_report(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
 
-    selected_expense_list = request.session.get('selected_expense_list')    
-    selected_product_list = ['expense_id'] + request.session.get('selected_product_list')    
+    selected_expense_list = ['id'] + request.session.get('selected_expense_list')    
+    selected_product_list = request.session.get('selected_product_list')    
     string_expense = request.session.get('string_expense')    
     string_product = request.session.get('string_product')    
     final_row_product = []
@@ -623,9 +623,13 @@ def final_expense_report(request):
     
     # if product_query == None or product_query == '' or product_query == 'None':
     expense_query = Expense.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_expense_list)
-    # else:
-    #     for product in product_query:
-    #         expense_query = Expense.objects.filter(id=product['expense_id']).values(*selected_expense_list)
+    print('expense query')
+    print(expense_query)
+    # for product in expense_query:
+    product_query = Expense_Product.objects.filter(entry_date__range=(start_date, end_date)).select_related(*selected_expense_list).values(*selected_product_list)
+    print('product query')
+    print('product')    
+    print(product_query)
     
     
     try:
@@ -1144,7 +1148,7 @@ def report_bill_form(request):
 def final_bill_report(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
-    string_purchase = request.session.get('string') 
+    string_purchase = ['purchase_id']  + request.session.get('string')  
     string_product = request.session.get('string_product')  + ['id'] + ['purchase_id']
 
     selected_customer_list = request.session.get('selected_customer_list')
@@ -1157,18 +1161,30 @@ def final_bill_report(request):
     final_row = []
 
     
-    print('string purchase')
-    print(string_purchase)
-    product_query = Bill.objects.filter(entry_date__range=(start_date, end_date)).values(*string_purchase)
-    for n, i in enumerate(product_query):
-        if i == 'purchase_id__tax_amount':
-            selected_list[n] = 'Purchase ID'
-        if i == 'customer_app_customer_details.id':
-            selected_list[n] = 'Customer No'
-        if i == 'today_date':
-            selected_list[n] = 'Entry Date'
-        if i == 'second_person':
-            selected_list[n] = 'Customer Name'
+  
+    bill_query = Bill.objects.filter(entry_date__range=(start_date, end_date)).values(*string_purchase)
+    # for n, i in enumerate(product_query):
+    #     if i == 'purchase_id__tax_amount':
+    #         selected_list[n] = 'Purchase ID'
+    #     if i == 'customer_app_customer_details.id':
+    #         selected_list[n] = 'Customer No'
+    #     if i == 'today_date':
+    #         selected_list[n] = 'Entry Date'
+    #     if i == 'second_person':
+    #         selected_list[n] = 'Customer Name'
+    print('bill query')
+    print(bill_query)
+    for single_bill in bill_query:
+        product_query = Product_Details.objects.filter(purchase_id=single_bill['purchase_id']).values('quantity')
+        print('product query')
+        print(product_query)
+        for item in bill_query:
+            item.update(single_bill)
+        print('item dfjklsa')
+        print(item)
+        print('product djlksalf')
+        print(single_bill)
+        print(bill_query)
     # for product in product_query:
     #     sales_query = Purchase_Details.objects.filter(id=product['purchase_id']).values(*string_purchase)
         
@@ -1222,7 +1238,7 @@ def final_bill_report(request):
         'final_row_product':final_row_product,
         'selected_list':selected_list,
         'selected_product_list':selected_product_list+selected_list,
-        'sales_query':product_query,
+        'sales_query':bill_query,
     }
     return render(request,"report/final_bill_report.html",context)
 
