@@ -1220,21 +1220,20 @@ def update_dispatch_details(request,update_id):
                     pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).purchase_no
                 except:
                     pur_id = Dispatch.objects.get(id=update_id)
-                try:
-                    msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
-                                                    ' is dispatch from our end with Dispatch ID ' \
-                          + str(item.dispatch_no)+ ' and LR No ' + str(lr_no) + ' by ' + str(transport_name) + '. For more details contact us on - 7045922252'
+                msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
+                                                ' is dispatch from our end with Dispatch ID ' \
+                        + str(item.dispatch_no)+ ' and LR No ' + str(lr_no) + ' by ' + str(transport_name) + '. For more details contact us on - 7045922252'
+                print(dispatch_item.second_contact_no)
+                print(settings.senderid)
+                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + dispatch_item.second_contact_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt" +"&tid=1207161779247554338"
+                payload = ""
+                headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
-                    payload = ""
-                    headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                    x = response.text
-                except Exception as e:
-                    print('msg not send!!!')
-                    print(e)
-
+                response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                x = response.text
+                print('sms reponse')
+                print(x)
+                
 
         if (current_stage_in_db == 'dispatch q') and (dispatch_by != '' and dispatch_by != None) and dispatch_by != dispatch_item.dispatch_by  :
             Dispatch.objects.filter(id=update_id).update(current_stage='dispatch but lr not updated')

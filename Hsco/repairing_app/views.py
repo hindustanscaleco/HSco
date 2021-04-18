@@ -591,7 +591,7 @@ def repair_product(request,id):
             #     request.user.pk) + '/' + str(rep.crm_no.pk) + '/' + str(rep.pk)
             repair_id = Repairing_after_sales_service.objects.get(id=id)
             if repair_id.first_message_send == False:
-                message = 'Dear ' + rep.second_person + ', Your Scales has been ' \
+                message = 'Dear ' + rep.second_person + ', Your Scales have been ' \
                                                     'received at our Repairing Center. Your Repairing No is ' + str(
                     rep.repairing_no) + '.' \
                                         ' For any further details please contact our customer service team on 7045922251'
@@ -794,6 +794,8 @@ def update_repairing_details(request,id):
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
+            print('sms response ')
+            print(x)
 
             Repairing_after_sales_service.objects.filter(id=id).update(
                 estimate_informed_sms_count=F("estimate_informed_sms_count") + 1)
@@ -883,7 +885,7 @@ def update_repairing_details(request,id):
                 #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
                 message = ' Dear ' + customer_name + ',Thank you for selecting HSCo. Your Scale with Repairing No ' + str(
-                                  repair_id.repairing_no) + ' has been ' \
+                                  repair_id.repairing_no) + ' have been ' \
                           'Successfully Resolved and Collected. We will love ' \
                           'to hear your feedback to help us improve our customer experience. Please click on the link below:\n ' \
                                                   ' http://139.59.76.87/feedback_repairing/'+str(request.user.pk)+'/'+str(repair_id.crm_no.pk)+'/'+str(repair_id.id)+'\n ' \
@@ -2099,7 +2101,8 @@ def send_sms(request,name,phone,email,repair_id,item_id):
     repair_id = Repairing_after_sales_service.objects.get(id=id).repairing_no
     api = 'PF8MzCBOGTopfpYFlSZT'
     if msg_id == '1':
-        message = 'Dear '+name+', Your Scales has been ' \
+        tid='1207161762951899253'
+        message = 'Dear '+name+', Your Scales have been ' \
                   'received at our Repairing Center. Your Repairing No is '+str(repair_id)+'.' \
                   ' For any further details please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(scale_sub_sms_count=F("scale_sub_sms_count")+1)
@@ -2116,6 +2119,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
             print(e)
             pass
     elif msg_id == '2':
+        tid='1207161762964372059'
         rep_id = Repairing_after_sales_service.objects.get(id=id)
         message = 'Dear '+name+', The Estimate for Your' \
                   ' Repairing No '+str(repair_id)+' is  '+str(rep_id.total_cost)+'/- For any further details please contact our ' \
@@ -2133,6 +2137,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
         except:
             pass
     elif msg_id == '3':
+        tid=''
         message = 'Dear '+name+', Your Repairing Complaint No '+str(repair_id)+' is resolved.' \
                   ' Please collect your Scales within the next 3 days. Consider this as your final reminder.For any further details please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(reparing_done_sms_count=F("reparing_done_sms_count") + 1)
@@ -2148,6 +2153,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
         except:
             pass
     elif msg_id == '4':
+        tid='1207161762986598863'
         print('late mark sms')
         message = 'Dear '+name+', Your Repairing No '+str(repair_id)+' has been Overdue ' \
                   'with us for more than 3 days. Please Collect it without fail today before 8 pm else we will scrap it.' \
@@ -2166,6 +2172,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
         except:
             pass
     elif msg_id == '5':
+        tid='1207161762995358485'
         rep_id=Repairing_after_sales_service.objects.get(id=id)
         message = ' Dear ' + name + ',Thank you for selecting HSCo. Your Scale with Repairing No ' + str(repair_id) + ' has been ' \
                                       'Successfully Resolved and Collected. We will love ' \
@@ -2186,7 +2193,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
             pass
 
 
-    url = "http://smshorizon.co.in/api/sendsms.php?user=" + user_hsco + "&apikey=" + api + "&mobile=" + mobile + "&message=" + message + "&senderid=" + senderid + "&type=txt" +"&tid=1207161762995358485"
+    url = "http://smshorizon.co.in/api/sendsms.php?user=" + user_hsco + "&apikey=" + api + "&mobile=" + mobile + "&message=" + message + "&senderid=" + senderid + "&type=txt" +"&tid="+tid
     payload = ""
     headers = {'content-type': 'application/x-www-form-urlencoded'}
 

@@ -470,6 +470,7 @@ td {
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Actions</td>
         </tr>
 <!--      <tr onclick="location.href='/showBill/{{item.user_id}}';">-->
+  {% for item in bills_list %}
       <tr>
           <td>{{item.entry_date}}</td>
           <td>{{item.purchase_id.purchase_no}}</td>
@@ -501,7 +502,7 @@ td {
           </form>
           </td>
         </tr>
-
+{% endfor %}
     </table>
 
         </div>
