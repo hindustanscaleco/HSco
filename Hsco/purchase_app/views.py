@@ -2298,21 +2298,21 @@ def customer_employee_sales_graph(request,user_id):
         previous_mon = 12
     else:
         previous_mon = (datetime.now().month) - 1
-    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=previous_mon)\
-        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
+    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=previous_mon)\
+        .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
         x = i
-        previous_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        previous_lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
         previous_lis_sum.append(x['data_sum'])
 
     if request.method=='POST' and 'date1' in request.POST :
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
 
-        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__range=(start_date, end_date))\
-        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
+        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__range=(start_date, end_date))\
+        .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -2374,13 +2374,13 @@ def customer_employee_sales_graph(request,user_id):
 
     else:
 
-        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
-        .values('entry_timedate').annotate(data_sum=Sum('value_of_goods'))
+        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=datetime.now().month)\
+        .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
         lis_date = []
         lis_sum = []
         for i in qs:
             x=i
-            lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
             lis_sum.append(x['data_sum'])
         context={
             'final_list':lis_date,
