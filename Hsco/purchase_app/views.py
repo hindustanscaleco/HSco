@@ -2283,7 +2283,7 @@ def customer_employee_sales_graph(request,user_id):
 
     # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
     #                                                                                                      'total_sales_done_today').order_by('entry_date')
-    this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
+    this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=datetime.now().month)\
         .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
     this_lis_date = []
     this_lis_sum = []
