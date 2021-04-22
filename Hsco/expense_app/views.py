@@ -1171,17 +1171,17 @@ def final_bill_report(request):
     #         selected_list[n] = 'Customer Name'
     print('bill query')
     print(bill_query)
-    for single_bill in bill_query:
-        product_query = Product_Details.objects.filter(purchase_id=single_bill['purchase_id']).values('quantity')
-        print('product query')
-        print(product_query)
-        for item in bill_query:
-            item.update(single_bill)
-        print('item dfjklsa')
-        print(item)
-        print('product djlksalf')
-        print(single_bill)
-        print(bill_query)
+    # for single_bill in bill_query:
+    #     product_query = Product_Details.objects.filter(purchase_id=single_bill['purchase_id']).values('quantity')
+    #     print('product query')
+    #     print(product_query)
+    #     for item in bill_query:
+    #         item.update(single_bill)
+    #     print('item dfjklsa')
+    #     print(item)
+    #     print('product djlksalf')
+    #     print(single_bill)
+    #     print(bill_query)
     # for product in product_query:
     #     sales_query = Purchase_Details.objects.filter(id=product['purchase_id']).values(*string_purchase)
         
