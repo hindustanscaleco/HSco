@@ -1159,7 +1159,7 @@ def final_bill_report(request):
 
     
   
-    bill_query = Bill.objects.filter(entry_date__range=(start_date, end_date)).values(*string_purchase)
+    bill_query = Bill.objects.filter(entry_date__range=(start_date, end_date)).values(*string_purchase).order_by('-id')
     # for n, i in enumerate(product_query):
     #     if i == 'purchase_id__tax_amount':
     #         selected_list[n] = 'Purchase ID'
@@ -1170,11 +1170,9 @@ def final_bill_report(request):
     #     if i == 'second_person':
     #         selected_list[n] = 'Customer Name'
     bill_query_list = list(bill_query)
-    print('selected product list')
-    print(selected_product_list)
     if 'product_details' in selected_product_list:
         for single_bill in bill_query:
-            # purchase_product  = Product_Details.objects.filter(purchase_id=single_bill['purchase_id']
+            # purchase_product  = Product_Details.objects.filter(purchase_id=single_bill['purchase_id'])
             single_bill['product details'] = list(Product_Details.objects.filter(purchase_id=single_bill['purchase_id']).values('type_of_scale','model_of_purchase','sub_model','sub_sub_model','quantity','amount')) 
 
         # try:
