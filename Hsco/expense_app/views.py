@@ -1169,31 +1169,25 @@ def final_bill_report(request):
     #         selected_list[n] = 'Entry Date'
     #     if i == 'second_person':
     #         selected_list[n] = 'Customer Name'
-    print('bill query')
-    print(bill_query)
-    # for single_bill in bill_query:
-    #     product_query = Product_Details.objects.filter(purchase_id=single_bill['purchase_id']).values('quantity')
-    #     print('product query')
-    #     print(product_query)
-    #     for item in bill_query:
-    #         item.update(single_bill)
-    #     print('item dfjklsa')
-    #     print(item)
-    #     print('product djlksalf')
-    #     print(single_bill)
-    #     print(bill_query)
-    # for product in product_query:
-    #     sales_query = Purchase_Details.objects.filter(id=product['purchase_id']).values(*string_purchase)
+    bill_query_list = list(bill_query)
+    print('bill qeriy list')
+    print(bill_query_list)
+    
+    for single_bill in bill_query:
+        # purchase_product  = Product_Details.objects.filter(purchase_id=single_bill['purchase_id']
+        single_bill['product details'] = list(Product_Details.objects.filter(purchase_id=single_bill['purchase_id']).values('type_of_scale','model_of_purchase','sub_model','sub_sub_model','quantity','amount')) 
+
+        # try:
+        #     if (purchase_product__sub_sub_model == None or purchase_product__sub_sub_model == ""):
+        #         product_database = Product.objects.get(scale_type_=purchase_product__type_of_scale, main_category=purchase_product__model_of_purchase,
+        #                                         sub_category=purchase_product__sub_model, sub_sub_category=None)
+                
+        #     elif (purchase_product__sub_sub_model != None or purchase_product__sub_sub_model != ""):
+        #         product_database = Product.objects.get(cale_type_=purchase_product__type_of_scale, main_category=purchase_product__model_of_purchase,
+        #                                         sub_category=purchase_product__sub_model, sub_sub_category__id=purchase_product__sub_sub_model)
+        # lead.update(list(Product_Details.objects.filter(purchase_id=single_bill['purchase_id']).values('quantity','amount')))
         
-    #     try:
-    #         if selected_customer_list:
-    #             customer_query = Customer_Details.objects.filter(id=list(sales_query)[0]['crm_no_id']).values(*selected_customer_list)
-    #             for item in customer_query:
-    #                 product.update(item)
-    #     except:
-    #         print('no customer error')
-    #         pass
-        
+    
     #     for item in sales_query:
     #         #payment details in sales report
     #         if payment_details == 'payment_details':
