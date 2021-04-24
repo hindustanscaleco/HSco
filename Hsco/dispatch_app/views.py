@@ -944,15 +944,14 @@ def dispatch_view(request):
     return render(request, "manager/dispatch_view.html", context)
 
 def update_dispatch_details(request,update_id):
-    one_time_dd()
+    # one_time_dd()
     channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
 
 
     dispatch_item=Dispatch.objects.get(id=update_id)
     product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
     # customer_id = Dispatch.objects.get(id=update_id).crm_no
-    print(dispatch_item)
-    print('dispatch')
+    
     try:
         customer_id = Customer_Details.objects.get(id=dispatch_item.crm_no)
     except:
@@ -1222,7 +1221,7 @@ def update_dispatch_details(request,update_id):
                     pur_id = Dispatch.objects.get(id=update_id)
                 msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
                                                 ' is dispatch from our end with Dispatch ID ' \
-                        + str(item.dispatch_no)+ ' and LR No ' + str(lr_no) + ' by ' + str(transport_name) + '. For more details contact us on - 7045922252'
+                        + str(item.dispatch_no)+ ' and LR No ' + str(lr_no) + ' by ' + str(transport_name) + '. For more details contact us on - 7045922210'
                 print(dispatch_item.second_contact_no)
                 print(settings.senderid)
                 url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + dispatch_item.second_contact_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt" +"&tid=1207161779247554338"
