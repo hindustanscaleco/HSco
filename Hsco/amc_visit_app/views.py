@@ -448,22 +448,28 @@ def amc_views(request):
             
 
     else:
-        if request.user.role == 'Admin' or request.user.role == 'Super Admin':     #For ADMIN
-            amc_list = Amc_After_Sales.objects.filter((Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False) | Q(user_id__name__icontains=request.user.name)) ).order_by('-id')
-            print('amc list')
-            print(amc_list)
+        # if request.user.role == 'Admin' or request.user.role == 'Super Admin':     #For ADMIN
+        #     amc_list = Amc_After_Sales.objects.filter((Q(user_id__group__icontains=request.user.name,user_id__is_deleted=False) | Q(user_id__name__icontains=request.user.name)) ).order_by('-id')
+        #     print('amc list')
+        #     print(amc_list)
             
-        elif request.user.role == 'Manager':
-            admin = SiteUser.objects.get(id=request.user.pk).admin
-            amc_list = Amc_After_Sales.objects.filter((Q(user_id__admin=admin, user_id__is_deleted=False)| Q(user_id__name__icontains=request.user.name)|Q(user_id__name=admin)) ).order_by(
-                '-id')
+        # elif request.user.role == 'Manager':
+        #     admin = SiteUser.objects.get(id=request.user.pk).admin
+        #     amc_list = Amc_After_Sales.objects.filter((Q(user_id__admin=admin, user_id__is_deleted=False)| Q(user_id__name__icontains=request.user.name)|Q(user_id__name=admin)) ).order_by(
+        #         '-id')
             
 
-        else:  #For EMPLOYEE
-            admin = SiteUser.objects.get(id=request.user.pk).admin
+        # else:  #For EMPLOYEE
+        #     admin = SiteUser.objects.get(id=request.user.pk).admin
 
-            amc_list = Amc_After_Sales.objects.filter((Q(user_id__admin=admin)| Q(user_id__name=request.user.name)|Q(user_id__name=admin))).order_by('-id')
+        #     amc_list = Amc_After_Sales.objects.filter((Q(user_id__admin=admin)| Q(user_id__name=request.user.name)|Q(user_id__name=admin))).order_by('-id')
             
+        if check_admin_roles(request):  # For ADMIN
+            amc_list = Amc_After_Sales.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
+                            user_id__is_deleted=False).order_by('-id')
+                
+        else:  # For EMPLOYEE
+            amc_list = Amc_After_Sales.objects.filter(user_id=request.user.pk).order_by('-id')
 
         context = {
             'amc_list': amc_list,
