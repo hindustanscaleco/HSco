@@ -629,7 +629,7 @@ def final_expense_report(request):
 
     if 'product_details' in selected_product_list:
         for single_expense in expense_query:
-            single_expense['product details'] = list(Expense_Product.objects.filter(purchase_id=single_expense['id']).values('type_of_scale','model_of_purchase','sub_model','sub_sub_model','quantity','amount')) 
+            single_expense['product details'] = list(Expense_Product.objects.filter(expense_id=single_expense['id']).values('type_of_scale','model_of_purchase','sub_model','sub_sub_model','quantity','amount')) 
 
     
     
