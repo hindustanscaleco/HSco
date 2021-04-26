@@ -623,13 +623,15 @@ def final_expense_report(request):
     
     # if product_query == None or product_query == '' or product_query == 'None':
     expense_query = Expense.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_expense_list)
-    print('expense query')
-    print(expense_query)
+    print('selected product list')
+    print(selected_product_list)
     # for product in expense_query:
-    product_query = Expense_Product.objects.filter(entry_date__range=(start_date, end_date)).select_related(*selected_expense_list).values(*selected_product_list)
-    print('product query')
-    print('product')    
-    print(product_query)
+
+    if 'product_details' in selected_product_list:
+        for single_bill in expense_query:
+            single_bill['product details'] = list(Expense_Product.objects.filter(purchase_id=single_bill['expense_id']).values('type_of_scale','model_of_purchase','sub_model','sub_sub_model','quantity','amount')) 
+
+    
     
     
     try:
@@ -1152,8 +1154,7 @@ def final_bill_report(request):
     selected_list = request.session.get('selected_list') + ['crm_no_id']
     selected_product_list = request.session.get('selected_product_list') + ['Purchase ID']
     payment_details = request.session.get('payment_details')
-    print('payment details')
-    print(payment_details)
+
     final_row_product = []
     final_row = []
 
@@ -1184,33 +1185,7 @@ def final_bill_report(request):
         #         product_database = Product.objects.get(cale_type_=purchase_product__type_of_scale, main_category=purchase_product__model_of_purchase,
         #                                         sub_category=purchase_product__sub_model, sub_sub_category__id=purchase_product__sub_sub_model)
         # lead.update(list(Product_Details.objects.filter(purchase_id=single_bill['purchase_id']).values('quantity','amount')))
-        
-    
-    #     for item in sales_query:
-    #         #payment details in sales report
-    #         if payment_details == 'payment_details':
-    #             print('payment details')
-    #             print(payment_details)
-    #             sale = Purchase_Details.objects.get(id=product['purchase_id'])
-    #             if sale.payment_mode == 'Cash' or sale.payment_mode == 'Razorpay':
-    #                 item['payment_mode'] = sale.payment_mode
-    #             elif sale.payment_mode == 'Credit':
-    #                 item['payment_mode'] = sale.payment_mode
-    #                 item['credit_authorised_by'] = 'Authorised by: '+str(sale.credit_authorised_by)
-    #                 item['credit_pending_amount'] = 'Pending Amount: '+str(sale.credit_pending_amount)
-    #             elif sale.payment_mode == 'Cheque':
-    #                 item['payment_mode'] = sale.payment_mode
-    #                 item['bank_name'] = 'Bank Name: '+str(sale.bank_name)
-    #                 item['cheque_no'] = 'Cheque No: '+str(sale.cheque_no)
-    #                 item['cheque_date'] = 'Cheque Date: '+str(sale.cheque_date)
-    #             elif sale.payment_mode == 'NEFT':
-    #                 item['payment_mode'] = sale.payment_mode
-    #                 item['neft_bank_name'] = 'Bank Name: '+str(sale.neft_bank_name)
-    #                 item['neft_date'] = 'NEFT Date: '+str(sale.neft_date)
-    #                 item['reference_no'] = 'Reference No: '+str(sale.reference_no)
-    #         print(item)
-    #         print('entry_timedate' in item)
-    #         product.update(item)
+       
 
     try:
         del request.session['start_date']
