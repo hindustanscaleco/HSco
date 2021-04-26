@@ -18,6 +18,7 @@ from purchase_app.models import Purchase_Details,Product_Details
 from .utils import render_to_pdf
 from datetime import datetime
 # Create your views here.
+today_month = datetime.now().month
 
 
 def expense_dashboard(request):
