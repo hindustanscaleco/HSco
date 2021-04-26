@@ -23,10 +23,10 @@ from datetime import datetime
 def expense_dashboard(request):
     if check_admin_roles(request):  # For ADMIN
         expense_list = Expense.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                        user_id__is_deleted=False).order_by('-id')
+                        user_id__is_deleted=False, entry_date__month=today_month).order_by('-id')
             
     else:  # For EMPLOYEE
-        expense_list = Expense.objects.filter(user_id=request.user.pk).order_by('-id')
+        expense_list = Expense.objects.filter(user_id=request.user.pk, entry_date__month=today_month).order_by('-id')
             
     #filter by company type (sales or scales)
     if request.method == 'GET' and 'company_type' in request.GET:
@@ -984,11 +984,11 @@ def showBill(request,sales_id,bill_company_type):
 def showBillModule(request):
     if check_admin_roles(request):  # For ADMIN
         bills_list = Bill.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                        user_id__is_deleted=False).order_by('-id')
+                        user_id__is_deleted=False, entry_date__month=today_month).order_by('-id')
         
             
     else:  # For EMPLOYEE
-        bills_list = Bill.objects.filter(user_id=request.user.pk).order_by('-id')
+        bills_list = Bill.objects.filter(user_id=request.user.pk, entry_date__month=today_month).order_by('-id')
 
     #filter by company type (sales or scales)
     if request.method == 'GET' and 'company_type' in request.GET:
