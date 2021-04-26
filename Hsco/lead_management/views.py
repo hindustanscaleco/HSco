@@ -1711,6 +1711,17 @@ def update_view_lead(request,id):
                     purchase_det.product_purchase_date = lead_id.entry_timedate
                     purchase_det.sales_person = lead_id.owner_of_opportunity.name
 
+                    #update pf
+                    
+                    product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
+                    pf_total = 0.0
+                    for x in product_pf:
+                        pf_total += float(x['pf'])
+                    Pi_section.objects.filter(lead_id=lead_id).update(pf_total= F("pf_total") + pf_total)
+                    pi_obj = Pi_section.objects.get(lead_id=lead_id)
+                    
+                    purchase_det.total_pf = pf_total
+
                     #payment details
                     purchase_det.payment_mode = payment_id.payment_mode
                     purchase_det.bank_name = payment_id.bank_name
