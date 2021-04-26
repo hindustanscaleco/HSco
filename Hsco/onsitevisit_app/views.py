@@ -937,7 +937,7 @@ def update_onsite_details(request,id):
                   + str(request.user.pk) + '/' + str(item2.pk) + '/' + str(onsite_id.pk) + ' If you feel ' \
                                                                                               'that your complaint has not been resolved please contact our customer service team on 7045922251'
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt" + "&tid=1207161779573952483" 
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 

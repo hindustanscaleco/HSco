@@ -394,7 +394,7 @@ def career_module_form(request):
                                   "Due to our brilliant engineering and service-oriented attitude, we have successfully garnered the trust of most of the reputed global clients from across the world. "
         try:
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + phone_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + phone_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"+"&tid=1207161779217930806"  
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 
@@ -566,7 +566,7 @@ def career_module_form_hsc(request):
 
         try:
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + phone_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + phone_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt" +"&tid=1207161779217930806" 
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 
