@@ -622,7 +622,7 @@ def final_expense_report(request):
     expense_query = Expense.objects.none()
     
     # if product_query == None or product_query == '' or product_query == 'None':
-    expense_query = Expense.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_expense_list)
+    expense_query = Expense.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_expense_list).order_by('-id')
     print('selected product list')
     print(selected_product_list)
     # for product in expense_query:
