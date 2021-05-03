@@ -1081,6 +1081,10 @@ def stock_quick_transfer(request,godown_id, request_id):
             # good_request.goods_received = True
             if good_request.goods_sent == False:
                     for good in requested_goods:
+                        if GodownProduct.objects.filter(godown_id=good_request.req_to_godown.id,
+                                                            product_id=good.godown_product_id.product_id).count() == 0:
+                                messages.success(request, 'Please add product in godown '+str(good_request.req_to_godown.name_of_godown)+'!!!')
+                                return redirect('/stock_quick_transfer/'+str(godown_id)+'/'+str(request_id))
 
                         if good_request.req_to_godown:
                             godown_product_sent = GodownProduct.objects.get(godown_id=good_request.req_to_godown.id,
@@ -1095,12 +1099,19 @@ def stock_quick_transfer(request,godown_id, request_id):
                                     GodownProduct.objects.filter(godown_id=good_request.req_to_godown.id,
                                                                  product_id=good.godown_product_id.product_id).update(
                                         quantity=F("quantity") - good.sent_quantity)
+                                    
+                                    GodownProduct.objects.filter(godown_id=good_request.req_from_godown.id,
+                                                                 product_id=good.godown_product_id.product_id).update(
+                                        quantity=F("quantity") + good.sent_quantity)
                                 elif good.req_type == 'Carton':
                                     product = Product.objects.get(id=good.godown_product_id.product_id)
                                     individual_quantity = (float(product.carton_size) * float(good.sent_carton_count))
                                     GodownProduct.objects.filter(godown_id=good_request.req_to_godown.id,
                                                                  product_id=good.godown_product_id.product_id).update(
                                         quantity=F("quantity") - individual_quantity)
+                                    GodownProduct.objects.filter(godown_id=good_request.req_from_godown.id,
+                                                                 product_id=good.godown_product_id.product_id).update(
+                                        quantity=F("quantity") + good.sent_quantity)
                                 good_request.goods_sent = True
                                 good_request.goods_received = True
                                 good_request.save(update_fields=['goods_sent',])

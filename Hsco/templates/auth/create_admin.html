@@ -1,67 +1,27 @@
-
-<!DOCTYPE html>
-
+ <!DOCTYPE html>
 <html lang="en">
-	<!--begin::Head-->
-	<head><base href="">
-		{% load static %}
-		<meta charset="utf-8" />
-		<title></title>
-		<meta name="description" content="Updates and statistics" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-		<!--begin::Fonts-->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Page Vendors Styles(used by this page)-->
-		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<!--end::Page Vendors Styles-->
-		<!--begin::Global Theme Styles(used by all pages)-->
-		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-		<!--end::Global Theme Styles-->
-		<!--begin::Layout Themes(used by all pages)-->
-		<!--end::Layout Themes-->
-		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
-	</head>
-	<!--end::Head-->
-	<!--begin::Body-->
-	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
-		<!--begin::Main-->
-		<!--begin::Header Mobile-->
-		<div id="kt_header_mobile" class="header-mobile">
-			<!--begin::Logo-->
-			<a href="index.html">
-				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
-			</a>
-			<!--end::Logo-->
-			<!--begin::Toolbar-->
-			<div class="d-flex align-items-center">
-				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
-					<span></span>
-				</button>
-			</div>
-			<!--end::Toolbar-->
-		</div>
-		<!--end::Header Mobile-->
-		<div class="d-flex flex-column flex-root">
-			<!--begin::Page-->
-			<div class="d-flex flex-row flex-column-fluid page">
-				<!--begin::Aside-->
-					{% include 'base_templates/aside.html' %}
+  <title>HSCO</title>
 
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-				<!--end::Aside-->
-				<!--begin::Wrapper-->
-				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-					<!--begin::Content-->
-					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-						<!--begin::Subheader-->
-						<div class="" id="kt_subheader">
-							<div class="container-fluid">
-								<!--begin::Info-->
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
 
 <style>
 
@@ -70,7 +30,7 @@ color:;
 }
   .faicons {
   font-size: 18px;
-  margin-top: 20px;
+  margin-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
   color: #5a5c69;
@@ -93,6 +53,7 @@ color:;
 
   <!-- Page Wrapper -->
   <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -102,11 +63,10 @@ color:;
 
       <!-- Main Content -->
       <div id="content" style="background-color: white;">
-          <br>
-          <br>
 
 
         <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -207,202 +167,236 @@ color:;
   <!--</div>-->
 
 
-    <div class="form-group row">
 
 
-        <h3 class="col-md-12 col-12">
-            <br>
-            Modules Assigned :-
-            <br>
-            <br>
-        </h3>
-
-        <div class="col-xl-12 row">
-            <div class="form-group row col-md-12 col-12">
-                <label class="col-md-4 col-8 control-label ">Sales Module
-
-                </label>
-
-                <div class="col-md-2 col-4 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="checks[]" value="Customer Module"
-                               id="customCheck1">
-                        <label class="custom-control-label" for="customCheck1"></label>
-                    </div>
-                </div>
-
-                <label class="col-md-4 col-8 control-label">Repairing Module
 
 
-                </label>
-
-                <div class="col-md-2 col-4 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="checks[]" value="Repairing Module"
-                               id="customCheck2">
-                        <label class="custom-control-label" for="customCheck2"></label>
-                    </div>
 
 
-                </div>
-            </div>
+
+<div class="form-group row" >
 
 
-            <div class="form-group row col-md-12 col-12">
-                <label class="col-md-4 col-8 control-label">Restamping Module
+ <label class="col-md-2 control-label">Modules Assigned
+
+</label>
+
+  <div class="col xl-12">
+  <div class="form-group row">
+  <label class="col-md-2 control-label ">Sales Module
 
 
-                </label>
 
-                <div class="col-md-2 col-4 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="checks[]" value="Restamping Module"
-                               id="customCheck3">
-                        <label class="custom-control-label" for="customCheck3"></label>
-                    </div>
-                </div>
-
-                <label class="col-md-4 col-8 control-label">Dispatch Module
-
-
-                </label>
-
-                <div class="col-md-2 col-4 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="checks[]" value="Dispatch Module"
-                               id="customCheck4">
-                        <label class="custom-control-label" for="customCheck4"></label>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="form-group row col-md-12 col-12">
-                <label class="col-md-4 col-8 control-label">AMC Module
-
-
-                </label>
-                <div class="col-md-2 col-4 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="checks[]" value="AMC Module"
-                               id="customCheck5">
-                        <label class="custom-control-label" for="customCheck5"></label>
-                    </div>
-                </div>
-
-                <label class="col-md-4 col-8 control-label">Onsite Repairing Module
-
-
-                </label>
-
-                <div class="col-md-2 col-4 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="checks[]"
-                               value="Onsite Repairing Module" id="customCheck6">
-                        <label class="custom-control-label" for="customCheck6"></label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group row col-md-12 col-12">
-                <label class="col-md-4 col-8 control-label">Lead Module
-
-
-                </label>
-                <div class="col-md-2 col-4 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="checks[]" value="Lead Module"
-                               id="customCheck7">
-                        <label class="custom-control-label" for="customCheck7"></label>
-                    </div>
-                </div>
-
-                <label class="col-md-4 col-8 control-label">Stock Module
-
-
-                </label>
-                <div class="col-md-2 col-4 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="checks[]" value="Stock Module"
-                               id="customCheck8">
-                        <label class="custom-control-label" for="customCheck8"></label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group row col-md-12 col-12">
-
-                <label class="col-md-4 col-8 control-label">Career Module
-
-
-                </label>
-                <div class="col-md-2 col-4 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="checks[]" value="Career Module"
-                               id="customCheck9">
-                        <label class="custom-control-label" for="customCheck9"></label>
-                    </div>
-                </div>
-
-
-            </div>
-
-            <div class="form-group row col-md-12 col-12">
-
-                <label class="col-md-4 col-8 control-label">Indiamart Leads
-
-
-                </label>
-
-                <div class="col-md-2 col-4 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="checks[]" value="Indiamart Leads"
-                               id="customCheck10">
-                        <label class="custom-control-label" for="customCheck10"></label>
-                    </div>
-                </div>
-
-
-                <label class="col-md-4 col-8 control-label">Hsco Website Leads
-
-
-                </label>
-                <div class="col-md-2 col-4 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="checks[]" value="Hsco Website Leads"
-                               id="customCheck11">
-                        <label class="custom-control-label" for="customCheck11"></label>
-                    </div>
-                </div>
-
-            </div>
-            <div class="form-group row col-md-12 col-12">
-                <label class="col-md-4 col-8 control-label">Product Master
-
-
-                </label>
-                <div class="col-md-2 col-4 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="product_master" value="True"
-                               id="customCheck12">
-                        <label class="custom-control-label" for="customCheck12"></label>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
-
-
-    <div class="form-group row">
-  <label class="col-md-4 col-8 control-label">Date of joining *
 
 
 </label>
-  <div class="col-md-2 col-4 inputGroupContainer">
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Customer Module" id="customCheck1">
+  <label class="custom-control-label" for="customCheck1"></label>
+  </div>
+</div>
+
+    <label class="col-md-2 control-label">Repairing Module
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Repairing Module" id="customCheck2">
+  <label class="custom-control-label" for="customCheck2"></label>
+  </div>
+
+
+</div>
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Restamping Module
+
+
+
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Restamping Module" id="customCheck3">
+  <label class="custom-control-label" for="customCheck3"></label>
+  </div>
+</div>
+
+    <label class="col-md-2 control-label">Dispatch Module
+
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Dispatch Module" id="customCheck4">
+  <label class="custom-control-label" for="customCheck4"></label>
+  </div>
+
+</div>
+
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">AMC Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="AMC Module" id="customCheck5">
+  <label class="custom-control-label" for="customCheck5"></label>
+  </div>
+  </div>
+
+    <label class="col-md-2 control-label">Onsite Repairing Module
+
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Onsite Repairing Module" id="customCheck6">
+  <label class="custom-control-label" for="customCheck6"></label>
+  </div>
+</div>
+</div>
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Lead Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Lead Module" id="customCheck7">
+  <label class="custom-control-label" for="customCheck7"></label>
+  </div>
+  </div>
+
+   <label class="col-md-2 control-label">Stock Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Stock Module" id="customCheck8">
+  <label class="custom-control-label" for="customCheck8"></label>
+  </div>
+  </div>
+</div>
+
+      <div class="form-group row">
+
+   <label class="col-md-2 control-label">Career Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Career Module" id="customCheck9">
+  <label class="custom-control-label" for="customCheck9"></label>
+  </div>
+  </div>
+  <label class="col-md-2 control-label">Bill Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Bill Module" id="customCheck101">
+  <label class="custom-control-label" for="customCheck101"></label>
+  </div>
+  </div>
+
+
+</div>
+<div class="form-group row">
+
+   <label class="col-md-2 control-label">Expense Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Expense Module" id="customCheck91">
+  <label class="custom-control-label" for="customCheck91"></label>
+  </div>
+  </div>
+  
+
+
+</div>
+
+            <div class="form-group row">
+
+            <label class="col-md-2 control-label">Indiamart Leads
+
+
+</label>
+
+            <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Indiamart Leads" id="customCheck10">
+  <label class="custom-control-label" for="customCheck10"></label>
+  </div>
+  </div>
+
+
+   <label class="col-md-2 control-label">Hsco Website Leads
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Hsco Website Leads" id="customCheck11">
+  <label class="custom-control-label" for="customCheck11"></label>
+  </div>
+  </div>
+
+</div>
+         <div class="form-group row">
+             <label class="col-md-2 control-label">Product Master
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="product_master" value="True" id="customCheck12">
+  <label class="custom-control-label" for="customCheck12"></label>
+  </div>
+  </div>
+         </div>
+
+
+  </div>
+</div>
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Date of joining *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="date_of_joining" placeholder="PO Number" class="form-control" required type="date">
@@ -415,22 +409,22 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-4 col-8 control-label">Bank Name
+  <label class="col-md-2 control-label">Bank Name
 
 
 </label>
-  <div class="col-md-2 col-4 inputGroupContainer">
+  <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="bank_name" placeholder="Bank Name" class="form-control"  type="text">
     </div>
   </div>
 
-    <label class="col-md-4 col-8 control-label">Account no
+    <label class="col-md-2 control-label">Account no
 
 </label>
 
-    <div class="col-md-2 col-4 inputGroupContainer">
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="account_no" placeholder="Account no" class="form-control"  type="text">
@@ -441,24 +435,24 @@ color:;
 
 
 <div class="form-group row">
-  <label class="col-md-4 col-8 control-label">Branch Name
+  <label class="col-md-2 control-label">Branch Name
 
 
 
 </label>
-  <div class="col-md-2 col-4 inputGroupContainer">
+  <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="branch_name" placeholder="Branch Name" class="form-control"  type="text">
     </div>
   </div>
 
-    <label class="col-md-4 col-8 control-label">IFSC Code
+    <label class="col-md-2 control-label">IFSC Code
 
 
 </label>
 
-    <div class="col-md-2 col-4 inputGroupContainer">
+    <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  type="text" name="ifsc_code" class="form-control" >
@@ -468,18 +462,18 @@ color:;
 </div>
 
 <div class="form-group row">
-   <label class="col-md-4 col-8 control-label">Photo
+   <label class="col-md-2 control-label">Photo
 </label>
-  <div class="col-md-2 col-4 inputGroupContainer">
+  <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="photo" placeholder="Photo" class="form-control"  type="file">
     </div>
   </div>
 
-  <label class="col-md-4 col-8 control-label">Password
+  <label class="col-md-2 control-label">Password
 </label>
-  <div class="col-md-2 col-4 inputGroupContainer">
+  <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="password" placeholder="Password" class="form-control"  type="text" required>
@@ -488,7 +482,7 @@ color:;
 </div>
 
 <div class="form-group row">
-   <label class="col-md-2 col-4 col-8 control-label">Salary Slip
+   <label class="col-md-2 control-label">Salary Slip
 </label>
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -496,9 +490,9 @@ color:;
   <input  name="salary_slip" placeholder="Salary Slip" class="form-control"  type="file">
     </div>
   </div>
-       <label class="col-md-4 col-8 control-label">Employee Number *
+       <label class="col-md-2 control-label">Employee Number *
 </label>
-  <div class="col-md-2 col-4 inputGroupContainer">
+  <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input name="employee_number" placeholder="Employee Number" class="form-control" type="text" required>
@@ -507,9 +501,9 @@ color:;
 </div>
 
        <div class="form-group row">
-   <label class="col-md-4 col-8 control-label"> Pan Card
+   <label class="col-md-2 control-label"> Pan Card
 </label>
-  <div class="col-md-2 col-4 inputGroupContainer">
+  <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
         <input name="pancard" id="pancard" placeholder="Pan Card Number" class="form-control" value="{{user_id.pancard}}" type="text">
@@ -517,9 +511,9 @@ color:;
     </div>
   </div>
 
-   <label class="col-md-4 col-8 control-label">Aadhar Card
+   <label class="col-md-2 control-label">Aadhar Card
 </label>
-  <div class="col-md-2 col-4 inputGroupContainer">
+  <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
       <input type="text" name="aadhar_card" placeholder="Aadhar Card Number" data-type="adhaar-number" maxLength="19" class="form-control" value="{{user_id.aadhar_card}}" >
@@ -529,18 +523,18 @@ color:;
 </div>
 
 <div class="form-group row">
-   <label class="col-md-4 col-8 control-label">Upload Pan Card
+   <label class="col-md-2 control-label">Upload Pan Card
 </label>
-  <div class="col-md-2 col-4 inputGroupContainer">
+  <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input  name="upload_pancard" placeholder="Upload Pan Card" class="form-control"  type="file">
     </div>
   </div>
 
-   <label class="col-md-4 col-8 control-label">Upload Aadhar Card
+   <label class="col-md-2 control-label">Upload Aadhar Card
 </label>
-  <div class="col-md-2 col-4 inputGroupContainer">
+  <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
   <input name="upload_aadhar_card" placeholder="Upload Aadhar Card" class="form-control" type="file" >
@@ -549,10 +543,10 @@ color:;
 </div>
 
 
-      {% include 'professional_email/pemail_fields.html' %}
+    	{% include 'professional_email/pemail_fields.html' %}
 
 <center>
-   <button  type="submit" value="Submit" class="btn btn-primary">Submit</button>
+   <button style="background-color: #FC6E20;" type="submit" value="Submit" class="btn btn-primary">Submit</button>
 </center>
 
 
@@ -625,33 +619,37 @@ else{
 <br>
 
 
-							
-							</div>
-						</div>
-					</div>
-				</div>
-										
 
-			
-				<!--end::Purchase-->
-			</div>
-			<!--end::Content-->
-		</div>
-		<!--end::Demo Panel-->
-		<!--begin::Global Config(global config for global JS scripts)-->
-		
-		<!--end::Global Config-->
-		<!--begin::Global Theme Bundle(used by all pages)-->
-		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
-<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
-<script src="{% static 'js/scripts.bundle.js' %}"></script>
-<!--end::Global Theme Bundle-->
-<!--begin::Page Vendors(used by this page)-->
-<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
-<!--end::Page Vendors-->
-<!--begin::Page Scripts(used by this page)-->
-<script src="{% static 'js/pages/widgets.js' %}"></script>
-		<!--end::Page Scripts-->
-	</body>
-	<!--end::Body-->
+
+
+
+
+
+
+
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+
+    </div>
+  </div>
+
+</body>
+
 </html>

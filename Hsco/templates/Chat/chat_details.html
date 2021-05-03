@@ -1,68 +1,27 @@
-
-<!DOCTYPE html>
-
+ <!DOCTYPE html>
 <html lang="en">
-	<!--begin::Head-->
-	<head><base href="">
-		{% load static %}
-		<meta charset="utf-8" />
-		<title></title>
-		<meta name="description" content="Updates and statistics" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-		<!--begin::Fonts-->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Page Vendors Styles(used by this page)-->
-		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<!--end::Page Vendors Styles-->
-		<!--begin::Global Theme Styles(used by all pages)-->
-		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-		<!--end::Global Theme Styles-->
-		<!--begin::Layout Themes(used by all pages)-->
-		<!--end::Layout Themes-->
-		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
-	</head>
-	<!--end::Head-->
-	<!--begin::Body-->
-	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
-		<!--begin::Main-->
-		<!--begin::Header Mobile-->
-		<div id="kt_header_mobile" class="header-mobile">
-			<!--begin::Logo-->
-			<a href="index.html">
-				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
-			</a>
-			<!--end::Logo-->
-			<!--begin::Toolbar-->
-			<div class="d-flex align-items-center">
-				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
-					<span></span>
-				</button>
-			</div>
-			<!--end::Toolbar-->
-		</div>
-		<!--end::Header Mobile-->
-		<div class="d-flex flex-column flex-root">
-			<!--begin::Page-->
-			<div class="d-flex flex-row flex-column-fluid page">
-				<!--begin::Aside-->
-					{% include 'base_templates/aside.html' %}
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+		<title>Hsco</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
 
-				<!--end::Aside-->
-				<!--begin::Wrapper-->
-				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-					<!--begin::Content-->
-					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-						<!--begin::Subheader-->
-						<div class="" id="kt_subheader">
-							<div class="container-fluid">
-								<!--begin::Info-->
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
+  <!-- Custom fonts for this template-->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %} rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
 
 <style>
 /* width */
@@ -104,12 +63,135 @@ $(function() {
  <style>
 
 
+ .container-fluid {
+ font-size: 13px;
+ }
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: green;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
 </style>
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
 </style>
             <style>
 
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: green;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
 .divs{
 display:none;
 }
@@ -209,7 +291,7 @@ img{ max-width:100%;}
 .mesgs {
   float: left;
   padding: 30px 15px 0 25px;
-  width: 100%;
+  width: 60%;
 }
 
  .sent_msg p {
@@ -261,6 +343,7 @@ img{ max-width:100%;}
 
   <!-- Page Wrapper -->
   <div class="bg" id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -272,6 +355,7 @@ img{ max-width:100%;}
       <!-- Main Content -->
       <div id="content" >
  <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
 
@@ -297,46 +381,6 @@ img{ max-width:100%;}
 
 <div class="container">
 <div class="messaging" >
-
-    {% if request.user.role == 'Super Admin' %}
-
-<div class="card shadow row">
-    <br>
-    <center>
-            <h5 style="color:black;">{{to_id_name}}'s Replying Status :</h5>
-
-
-    </center>
-
-                      <br>
-                  <div class=" col-xl-12 col-md-2 col-mb-8 row">
-
-                      <div class="col-xl-3 col-md-2 col-mb-8"></div>
-                         <div class="col-xl-2 col-md-2 col-mb-8">
-    <p> ON</p>
-                     </div>
-                     <div class="col-xl-3 col-md-2 col-mb-8">
-                         {% if can_reply_to_sa %}
-                         <label class="switch ">
-  <input name="deleted" type="checkbox" id="checker" onchange="toggleCheckbox2(this)">
-  <span class="slider round"></span>
-</label>
-                         {% else %}
-                                              <label class="switch ">
-  <input name="deleted" type="checkbox" id="checker" checked onchange="toggleCheckbox2(this)">
-  <span class="slider round"></span>
-</label>
-                         {% endif %}
-
-                     </div>
-                     <div class="col-xl-2 col-md-2 col-mb-8">
-                         <p>OFF</p>
-
-                     </div>
-                     </div>
-
-</div>
-{% endif %}
 
         <div class="mesgs" style="border: 2px solid gray; border-radius: 5px;">
           <div id="messag" class="msg_history">
@@ -715,7 +759,7 @@ style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-w
 {% if not dont_show %}
 <form method="post" enctype="multipart/form-data">{% csrf_token %}
     <div class="mesgs" style="border: 2px solid gray; border-radius: 5px;">
-        <label style="margin-left:2%;font-size:20px;color:black;">Defects
+        <label style="margin-left:10%;font-size:20px;color:black;">Defects
             <input name="defectnwarn" value="defect" onclick="myFunction3();" type="radio">
         </label>
 
@@ -737,7 +781,45 @@ style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-w
 {% endif %}
 {% endif %}
 
+{% if request.user.role == 'Super Admin' %}
 
+<div class="card shadow row">
+    <br>
+    <center>
+            <h5 style="color:black;">{{to_id_name}}'s Replying Status :</h5>
+
+
+    </center>
+
+                      <br>
+                  <div class=" col-xl-12 col-md-2 col-mb-8 row">
+
+                      <div class="col-xl-3 col-md-2 col-mb-8"></div>
+                         <div class="col-xl-2 col-md-2 col-mb-8">
+    <p> ON</p>
+                     </div>
+                     <div class="col-xl-3 col-md-2 col-mb-8">
+                         {% if can_reply_to_sa %}
+                         <label class="switch ">
+  <input name="deleted" type="checkbox" id="checker" onchange="toggleCheckbox2(this)">
+  <span class="slider round"></span>
+</label>
+                         {% else %}
+                                              <label class="switch ">
+  <input name="deleted" type="checkbox" id="checker" checked onchange="toggleCheckbox2(this)">
+  <span class="slider round"></span>
+</label>
+                         {% endif %}
+
+                     </div>
+                     <div class="col-xl-2 col-md-2 col-mb-8">
+                         <p>OFF</p>
+
+                     </div>
+                     </div>
+
+</div>
+{% endif %}
 
       </div>
 
@@ -807,39 +889,29 @@ z.placeholder = "Enter Warning"
 
   <!-- End of Page Wrapper -->
 
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
 
 </div>
 
 
 
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
 
-							</div>
-						</div>
-					</div>
-				</div>
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
 
 
 
-				<!--end::Purchase-->
-			</div>
-			<!--end::Content-->
-		</div>
-		<!--end::Demo Panel-->
-		<!--begin::Global Config(global config for global JS scripts)-->
 
-		<!--end::Global Config-->
-		<!--begin::Global Theme Bundle(used by all pages)-->
-		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
-<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
-<script src="{% static 'js/scripts.bundle.js' %}"></script>
-<!--end::Global Theme Bundle-->
-<!--begin::Page Vendors(used by this page)-->
-<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
-<!--end::Page Vendors-->
-<!--begin::Page Scripts(used by this page)-->
-<script src="{% static 'js/pages/widgets.js' %}"></script>
-		<!--end::Page Scripts-->
-	</body>
-	<!--end::Body-->
+</body>
+
 </html>

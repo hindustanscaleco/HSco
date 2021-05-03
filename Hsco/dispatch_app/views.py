@@ -736,7 +736,7 @@ def dispatch_view(request):
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
 
-            dispatch_list = dispatch_list.filter(entry_timedate__range=[start_date, end_date]).order_by('-dispatch_no')
+            dispatch_list = Dispatch.objects.filter(entry_timedate__range=[start_date, end_date]).order_by('-dispatch_no')
 
             context = {
                 'dispatch_list': dispatch_list,
@@ -746,7 +746,7 @@ def dispatch_view(request):
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
 
-            dispatch_list = dispatch_list.filter(second_contact_no__icontains=contact).order_by('-dispatch_no')
+            dispatch_list = Dispatch.objects.filter(second_contact_no__icontains=contact).order_by('-dispatch_no')
 
             context = {
                 'dispatch_list': dispatch_list,
@@ -944,15 +944,14 @@ def dispatch_view(request):
     return render(request, "manager/dispatch_view.html", context)
 
 def update_dispatch_details(request,update_id):
-    one_time_dd()
+    # one_time_dd()
     channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
 
 
     dispatch_item=Dispatch.objects.get(id=update_id)
     product_list = Product_Details_Dispatch.objects.filter(dispatch_id=update_id)
     # customer_id = Dispatch.objects.get(id=update_id).crm_no
-    print(dispatch_item)
-    print('dispatch')
+    
     try:
         customer_id = Customer_Details.objects.get(id=dispatch_item.crm_no)
     except:
@@ -987,8 +986,11 @@ def update_dispatch_details(request,update_id):
         item2 = customer_id
         item2.customer_name = customer_name
         item2.contact_no = contact_no
-        if customer_id.contact_no != item2.contact_no or customer_id.customer_name != item2.customer_name :
-            item2.save(update_fields=['customer_name','contact_no'])  #new3
+        if customer_id.customer_name != item2.customer_name and customer_name != None :
+            item2.save(update_fields=['customer_name'])  #new3
+
+        if customer_id.contact_no != item2.contact_no and contact_no != None and contact_no != 'None' :
+            item2.save(update_fields=['contact_no'])  #new3
 
         if company_name != '':
             item2.company_name = company_name
@@ -1018,12 +1020,17 @@ def update_dispatch_details(request,update_id):
         try:
             purchase_id=Purchase_Details.objects.get(dispatch_id_assigned=update_id)
 
-            purchase_id.second_person = customer_name
-            purchase_id.second_contact_no = contact_no
+            if customer_name != None and customer_name != 'None':
+                purchase_id.second_person = customer_name
+                purchase_id.save(update_fields=['second_person', ])
+
+            if contact_no != None and contact_no != 'None':
+                purchase_id.second_contact_no = contact_no
+                purchase_id.save(update_fields=['second_contact_no', ])
             # purchase_id.channel_of_dispatch = channel_of_dispatch
             purchase_id.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)
             # channel_of_dispatch = request.POST.get('channel_of_dispatch')
-            purchase_id.save(update_fields=['second_person', 'second_contact_no','channel_of_dispatch_id' ])
+            purchase_id.save(update_fields=['channel_of_dispatch_id' ])
 
 
 
@@ -1072,7 +1079,8 @@ def update_dispatch_details(request,update_id):
         # item.second_contact_no=second_contact_no
         # item.third_contact_no=third_contact_no
         item.second_person=customer_name   #new4
-        item.second_contact_no=contact_no   #new5
+        if contact_no != None and contact_no != 'None':
+            item.second_contact_no=contact_no   #new5
         # if date_of_dispatch != '':
         #     item.date_of_dispatch = date_of_dispatch
         #     item.save(update_fields=['date_of_dispatch'])
@@ -1211,21 +1219,20 @@ def update_dispatch_details(request,update_id):
                     pur_id = Purchase_Details.objects.get(dispatch_id_assigned=item.pk).purchase_no
                 except:
                     pur_id = Dispatch.objects.get(id=update_id)
-                try:
-                    msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
-                                                    ' is dispatch from our end with Dispatch ID ' \
-                          + str(item.dispatch_no)+ ' and LR No ' + str(lr_no) + ' by ' + str(transport_name) + '. For more details contact us on - 7045922252'
+                msg = 'Dear ' + customer_name + ', Thank you for selecting HSCo, Your Purchase '+str(pur_id)+'' \
+                                                ' is dispatch from our end with Dispatch ID ' \
+                        + str(item.dispatch_no)+ ' and LR No ' + str(lr_no) + ' by ' + str(transport_name) + '. For more details contact us on - 7045922210'
+                print(dispatch_item.second_contact_no)
+                print(settings.senderid)
+                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + dispatch_item.second_contact_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt" +"&tid=1207161779247554338"
+                payload = ""
+                headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + contact_no + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
-                    payload = ""
-                    headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                    x = response.text
-                except Exception as e:
-                    print('msg not send!!!')
-                    print(e)
-
+                response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                x = response.text
+                print('sms reponse')
+                print(x)
+                
 
         if (current_stage_in_db == 'dispatch q') and (dispatch_by != '' and dispatch_by != None) and dispatch_by != dispatch_item.dispatch_by  :
             Dispatch.objects.filter(id=update_id).update(current_stage='dispatch but lr not updated')

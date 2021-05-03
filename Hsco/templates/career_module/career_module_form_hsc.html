@@ -1,54 +1,39 @@
-
-<!DOCTYPE html>
-
+ <!DOCTYPE html>
 <html lang="en">
-	<!--begin::Head-->
-	<head><base href="">
-		{% load static %}
-		<meta charset="utf-8" />
-		<title></title>
-		<meta name="description" content="Updates and statistics" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-		<!--begin::Fonts-->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Page Vendors Styles(used by this page)-->
-		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<!--end::Page Vendors Styles-->
-		<!--begin::Global Theme Styles(used by all pages)-->
-		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-		<!--end::Global Theme Styles-->
-		<!--begin::Layout Themes(used by all pages)-->
-		<!--end::Layout Themes-->
-		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
-	</head>
-	<!--end::Head-->
-	<!--begin::Body-->
-	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
-		<!--begin::Main-->
-		<!--begin::Header Mobile-->
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Career | HSCO</title>
 
-		<!--end::Header Mobile-->
-		<div class="">
-			<!--begin::Page-->
-			<div class="">
-				<!--begin::Aside-->
+<link href=
+'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
+          rel='stylesheet'>
 
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" >
+    </script>
 
-				<!--end::Aside-->
-				<!--begin::Wrapper-->
-				<div class="" id="kt_wrapper">
-					<!--begin::Content-->
-					<div class=" d-flex flex-column flex-column-fluid" id="kt_content">
-						<!--begin::Subheader-->
-						<div class="" id="kt_subheader">
-							<div class="">
-								<!--begin::Info-->
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" >
+    </script>
+  <!-- Custom fonts for this template-->
+<!--  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">-->
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+    <!--<script src="//code.jquery.com/jquery.min.js"></script>-->
+<!--<script src="lib/year-select.js"></script>-->
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
 
+</head>
+
+<body id="page-top" style="background-color:#FAA252;">
 
 <style>
 
@@ -57,7 +42,7 @@ color:;
 }
   .faicons {
   font-size: 18px;
-  margin-top: 20px;
+  margin-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
   color: #5a5c69;
@@ -212,16 +197,16 @@ body {font-family: Arial, Helvetica, sans-serif;}
 <br>
     <p style="color: black;">
 
-        1-  YOU CAN APPLY ONCE. Please Double check the details before submitting your details. <br>
-2-  You increase your chances of shortlisting by entering your educational details and work experience. If you need to mention any extra curricular activities please mention in the Notes section. <br>
-3-  Upload your Resume. Its important. Not uploading your resume lowers your chances of selection. <br>
-4-  Please donot mail us your resume or call us. Once your resume is shortlisted you will get a call from our HR Department. <br>
-5-  When you submit your application, you will receive an SMS mentioning your candidate number. All further processing will be done using that number only. <br>
-6-  Enter your mobile number and email id the ones that you check frequently. All communication will be done on emails and smses via the system. You don’t need to mention the country code. <br>
+        1-	YOU CAN APPLY ONCE. Please Double check the details before submitting your details. <br>
+2-	You increase your chances of shortlisting by entering your educational details and work experience. If you need to mention any extra curricular activities please mention in the Notes section. <br>
+3-	Upload your Resume. Its important. Not uploading your resume lowers your chances of selection. <br>
+4-	Please donot mail us your resume or call us. Once your resume is shortlisted you will get a call from our HR Department. <br>
+5-	When you submit your application, you will receive an SMS mentioning your candidate number. All further processing will be done using that number only. <br>
+6-	Enter your mobile number and email id the ones that you check frequently. All communication will be done on emails and smses via the system. You don’t need to mention the country code. <br>
     </p>
       <center>
 
-    <button type="button" class="delete_edu_detail btn btn-success " style=" width: 60px;"><span class="close">Ok</span>
+    <button type="button" class="delete_edu_detail btn btn-success " style="background-color: #FC6E20; width: 60px;"><span class="close">Ok</span>
  </button>
       </center>
 
@@ -312,7 +297,7 @@ window.location.replace("https://hindustanscale.com/");
     <br>
 
  <div id="loaded_customer">
-
+     
 
 
 
@@ -484,8 +469,8 @@ window.location.replace("https://hindustanscale.com/");
 
  </div>
      <center>
-    <button type="button" class="add_edu_detail btn btn-primary">Add </button> &nbsp; &nbsp;
-    <button type="button" class="delete_edu_detail btn btn-primary">Delete </button>
+    <button type="button" class="add_edu_detail btn btn-primary" style="background-color: #FC6E20;">Add </button> &nbsp; &nbsp;
+    <button type="button" class="delete_edu_detail btn btn-primary" style="background-color: #FC6E20;">Delete </button>
 </center>
                <hr style="border:2px solid;">
 
@@ -544,8 +529,8 @@ window.location.replace("https://hindustanscale.com/");
         </div>
   </div>
           <center>
-     <button type="button" class="add_work_exp btn btn-primary">Add </button> &nbsp; &nbsp;
-    <button type="button" class="delete_work_exp btn btn-primary">Delete </button>
+     <button type="button" class="add_work_exp btn btn-primary" style="background-color: #FC6E20;">Add </button> &nbsp; &nbsp;
+    <button type="button" class="delete_work_exp btn btn-primary" style="background-color: #FC6E20;">Delete </button>
               </center>
 
  </div>
@@ -555,7 +540,7 @@ window.location.replace("https://hindustanscale.com/");
 <br>
 
 <center>
-  <button type="submit" value="submit" class="btn btn-primary">Save</button>
+	<button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Save</button>
 
 </center>
 
@@ -850,35 +835,6 @@ $("#tagscloud span").text("Total experience is " + finalDate + " years.");
   <!--<script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>-->
 
 
+</body>
 
-								
-							
-							</div>
-						</div>
-					</div>
-				</div>
-										
-
-			
-				<!--end::Purchase-->
-			</div>
-			<!--end::Content-->
-		</div>
-		<!--end::Demo Panel-->
-		<!--begin::Global Config(global config for global JS scripts)-->
-		
-		<!--end::Global Config-->
-		<!--begin::Global Theme Bundle(used by all pages)-->
-		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
-<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
-<script src="{% static 'js/scripts.bundle.js' %}"></script>
-<!--end::Global Theme Bundle-->
-<!--begin::Page Vendors(used by this page)-->
-<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
-<!--end::Page Vendors-->
-<!--begin::Page Scripts(used by this page)-->
-<script src="{% static 'js/pages/widgets.js' %}"></script>
-		<!--end::Page Scripts-->
-	</body>
-	<!--end::Body-->
 </html>

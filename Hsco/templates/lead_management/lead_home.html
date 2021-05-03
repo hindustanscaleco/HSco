@@ -1,71 +1,39 @@
-
-<!DOCTYPE html>
-
+ <!DOCTYPE html>
 <html lang="en">
-	<!--begin::Head-->
-	<head><base href="">
-		{% load static %}
-		<meta charset="utf-8" />
-		<title></title>
-		<meta name="description" content="Updates and statistics" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-		<!--begin::Fonts-->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Page Vendors Styles(used by this page)-->
-		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<!--end::Page Vendors Styles-->
-		<!--begin::Global Theme Styles(used by all pages)-->
-		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
-		        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-		<!--end::Global Theme Styles-->
-		<!--begin::Layout Themes(used by all pages)-->
-		<!--end::Layout Themes-->
-		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
-	</head>
-	<!--end::Head-->
-	<!--begin::Body-->
-	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
-		<!--begin::Main-->
-		<!--begin::Header Mobile-->
-		<div id="kt_header_mobile" class="header-mobile">
-			<!--begin::Logo-->
-			<a href="index.html">
-				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
-			</a>
-			<!--end::Logo-->
-			<!--begin::Toolbar-->
-			<div class="d-flex align-items-center">
-				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
-					<span></span>
-				</button>
-			</div>
-			<!--end::Toolbar-->
-		</div>
-		<!--end::Header Mobile-->
-		<div class="d-flex flex-column flex-root">
-			<!--begin::Page-->
-			<div class="d-flex flex-row flex-column-fluid page">
-				<!--begin::Aside-->
-					{% include 'base_templates/aside.html' %}
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
 
-				<!--end::Aside-->
-				<!--begin::Wrapper-->
-				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-					<!--begin::Content-->
-					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-						<!--begin::Subheader-->
-						<div class="">
-							<div class="container-fluid">
-								<!--begin::Info-->
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+<style>
+    * {
+    font-family: 'Poppins';
+}
+
+</style>
+</head>
+
+<body id="page-top">
 
   <!-- Page Wrapper -->
-  <div id="wrapper" style="margin-top:5%;">
+  <div id="wrapper">
+  {% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -78,10 +46,11 @@
 
 
         <!-- Topbar -->
+  {% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class=" ">
+        <div class="container-fluid ">
 
           <!-- Page Heading -->
             <div class="row">
@@ -106,18 +75,18 @@
                   <div class="row no-gutters align-items-right">
 
 
- <a style="padding: 2px;" href="{% url 'add_lead' %}"><button class="btn btn-primary"> Add Lead </button></a>
-                      <a style="padding: 2px;" href="//"><button class="btn btn-primary">Share</button></a>
-                      <a style="padding: 2px;" href="{% url 'lead_logs' %}"><button class="btn btn-primary">Log</button></a>
+ <a style="padding: 2px;" href="{% url 'add_lead' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Lead </button></a>
+                      <a style="padding: 2px;" href="//"><button style="background-color: #FC6E20;" class="btn btn-primary">Share</button></a>
+                      <a style="padding: 2px;" href="{% url 'lead_logs' %}"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
                       {% if user.role == 'Super Admin' or user.role == 'Manager' or user.role == 'Admin' %}
-<a style="padding: 2px;" href="{% url 'report_2' %}"> <button class="btn btn-primary">Report</button></a>
+<a style="padding: 2px;" href="{% url 'report_2' %}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
                       {% endif %}
- <a style="padding: 2px;" href="{% url 'lead_analytics' %}"><button class="btn btn-primary">Analytics</button></a>
+ <a style="padding: 2px;" href="{% url 'lead_analytics' %}"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
                       {% if request.user.is_authenticated and 'Indiamart Leads' in user.modules_assigned %}
                       <form action="" method="post">{% csrf_token %}
                           <input type="hidden" name="from_date_form" value="{{from_date}}">
                            <input type="hidden" name="to_date_form" value="{{to_date}}">
-                          <button type="submit" name="fetch_lead" class="btn btn-primary">Fetch Lead</button>
+                          <button style="background-color: #FC6E20;" type="submit" name="fetch_lead" class="btn btn-primary">Fetch Lead</button>
 
                       </form>
                       {% endif %}
@@ -336,7 +305,7 @@ $(function() {
                 <input name="date2" type="date"  class="form-control">
       </div>
       <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
-                <button name="submit1" type="submit" class="btn btn-primary">Search</button>
+                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button>
       </div>
                                </form>
 
@@ -347,7 +316,7 @@ $(function() {
       <form method="POST" >{% csrf_token%}
       <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button type="submit" name="submit2" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Search</button>
   </form>
   </div>
 
@@ -359,7 +328,7 @@ $(function() {
       <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
 
-      <button name="submit3" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" name="submit3" class="btn btn-primary">Search</button>
           </form>
   </div>
 
@@ -369,7 +338,7 @@ $(function() {
         <form method="POST">{% csrf_token%}
       <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button name="submit4" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button>
     </form>
     </div>
 
@@ -378,7 +347,7 @@ $(function() {
 
       <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button name="submit5" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button>
   </form>
 
   </div>
@@ -389,7 +358,7 @@ $(function() {
 
       <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button name="submit6" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button>
     </form>
 </div>
 
@@ -398,7 +367,7 @@ $(function() {
 
       <input type="text" name="serial_no" placeholder="Serial No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button name="submit7" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button>
     </form>
 </div>
                                <!--<form method="POST">{% csrf_token%}-->
@@ -436,7 +405,7 @@ $(function() {
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
                      <div class="col-xl-12 col-md-2 col-mb-8 row">
 
-<a href="{% url 'lead_manager_view' %}"><button type="button" class="btn btn-primary" style=" ">Manager</button></a>
+<a href="{% url 'lead_manager_view' %}"><button type="button" class="btn btn-primary" style="background-color:#FC6E20; ">Manager</button></a>
 
                      </div>
 {% else %}
@@ -490,7 +459,7 @@ $(function() {
 
                 <div  class="col-xl-1 col-md-3 col-mb-3">
                     <div class="button">
- <input class="btn btn-primary" type="submit" value="GO" name="sort_submit">
+ <input style="background-color:#FC6E20;" class="btn btn-primary" type="submit" value="GO" name="sort_submit">
 </div>
                             </div>
 
@@ -514,65 +483,60 @@ $(function() {
 
 <br>
             <form action="" method="post">{% csrf_token %}
-                <div class="row">
+               <div class="row" style="margin-left:0%;">
+                   <div class="row col-xl-1 col-md-3 mb-12"></div>
+
+            <button class="col-xl-1 btn btn-primary" type="submit" name="sub1" style="background: #35477d !important;">
+                  <center style="font-size: 15px;"> Not Yet Initiated <br> ( {{not_yet_stage}} ) </center></button>
 
 
-                    <button class="col-xl-1  btn btn-primary" type="submit" name="sub1"
-                            style="background: #35477d !important; margin: 5px;">
-                        <center style="font-size: 15px;"> Not Yet Initiated <br> ( {{not_yet_stage}} )</center>
-                    </button>
+                   &nbsp&nbsp&nbsp&nbsp&nbsp
+
+      <button class="col-xl-1 btn btn-primary"  name="sub2" style="background: #7FA998 !important;">
+                   <center>Customer Called&nbsp;<br> ( {{cust_called_stage}}  )</center></button>
+
+&nbsp&nbsp&nbsp&nbsp&nbsp
+              <button class="col-xl-1 btn btn-primary"  name="sub3" style="background: #12CAD6 !important">
+                  <center><p style="margin-top:10px; font-size: 15px;"> PI Sent & Follow-up <br> ( {{pi_sent_stage}} ) <br>( {{pi_sent_stage_total}} ) </p></center></button>
+&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <button class="col-xl-1 btn btn-primary"  name="sub4" style="background: rgba(252,98,98,.9)">
+                  <center><p style="margin-top:8px; font-size: 12px;"> PO Issued - Payment not done <br> ( {{po_no_payment}} ) <br> ( {{po_no_payment_total}} ) </p></center>
+</button>
+
+&nbsp&nbsp&nbsp&nbsp&nbsp
+            <button class="col-xl-1 btn btn-primary"  name="sub5" style="background: #015668">
+
+                   <center><p style="margin-top:0px; font-size: 12px;"> PO Issued - Payment Done - Dispatch Pending <br> ( {{po_payment_done}} ) <br> ( {{po_payment_done_total}} )</p></center>
+</button>
+&nbsp&nbsp&nbsp&nbsp&nbsp
+            <button class="col-xl-1 btn btn-primary"  name="sub6" style="background: #8B2F97">
+
+                   <center><p style="margin-top:0 px; font-size: 12px;"> Dispatch Done - Closed <br> ( {{dispatch_stage}} )<br> ( {{dispatch_done_stage_total}} ) </p></center>
+</button>
+
+&nbsp&nbsp&nbsp&nbsp&nbsp
+
+            <button class="col-xl-1 btn btn-primary"  name="sub7" style="background: rgba(214,186,277,.9)">
+
+                    <center><p style="margin-top:15px font-size: 12px;"> Lost <br> ( {{lost_stage}} )<br> ( {{lost_stage_total}} ) </p></center>
+</button>
+                   &nbsp&nbsp&nbsp&nbsp&nbsp
+            <button class="col-xl-1 btn btn-primary"  name="sub8" style="background: #fd5e53">
+
+                   <center><p style="margin-top:10px font-size: 12px;"> Not Relevant <br> ( {{not_relevant_stage}} )<br> ( {{not_relevant_stage_total}} ) </p></center>
+</button>
+
+&nbsp&nbsp&nbsp&nbsp&nbsp
 
 
-                    <button class="col-xl-1 btn btn-primary " name="sub2"
-                            style="background: #7FA998 !important;margin: 5px;">
-                        <center>Customer Called&nbsp;<br> ( {{cust_called_stage}} )</center>
-                    </button>
-
-                    <button class="col-xl-1 btn btn-primary " name="sub3"
-                            style="background: #12CAD6 !important;margin: 5px;">
-                        <center><p style="margin-top:10px; font-size: 15px;"> PI Sent & Follow-up <br> (
-                            {{pi_sent_stage}} ) <br>( {{pi_sent_stage_total}} ) </p></center>
-                    </button>
-                    <button class="col-xl-1 btn btn-primary " name="sub4"
-                            style="background: rgba(252,98,98,.9);margin: 5px;">
-                        <center><p style="margin-top:8px; font-size: 12px;"> PO Issued - Payment not done <br> (
-                            {{po_no_payment}} ) <br> ( {{po_no_payment_total}} ) </p></center>
-                    </button>
-
-                    <button class="col-xl-1 btn btn-primary " name="sub5" style="background: #015668;margin: 5px;">
-
-                        <center><p style="margin-top:0px; font-size: 12px;"> PO Issued - Payment Done - Dispatch Pending
-                            <br> ( {{po_payment_done}} ) <br> ( {{po_payment_done_total}} )</p></center>
-                    </button>
-                    <button class="col-xl-1 btn btn-primary " name="sub6" style="background: #8B2F97;margin: 5px;">
-
-                        <center><p style="margin-top:0 px; font-size: 12px;"> Dispatch Done - Closed <br> (
-                            {{dispatch_stage}} )<br> ( {{dispatch_done_stage_total}} ) </p></center>
-                    </button>
+            <button class="col-xl-1 btn btn-primary"  name="sub9" style="background: #ffba5a">
+                  <center><p style="margin-top:15px"> Postponed <br>( {{postponed_stage}} )<br> ( {{postponed_stage_total}} ) </p></center>
+</button>
+ </div>
+</form>
 
 
-                    <button class="col-xl-1 btn btn-primary " name="sub7"
-                            style="background: rgba(214,186,277,.9);margin: 5px;">
-
-                        <center><p style="margin-top:15px font-size: 12px;"> Lost <br> ( {{lost_stage}} )<br> (
-                            {{lost_stage_total}} ) </p></center>
-                    </button>
-                    <button class="col-xl-1 btn btn-primary " name="sub8" style="background: #fd5e53;margin: 5px;">
-
-                        <center><p style="margin-top:10px font-size: 12px;"> Not Relevant <br> ( {{not_relevant_stage}}
-                            )<br> ( {{not_relevant_stage_total}} ) </p></center>
-                    </button>
-
-
-                    <button class="col-xl-1 btn btn-primary " name="sub9" style="background: #ffba5a;margin: 5px;">
-                        <center><p style="margin-top:15px"> Postponed <br>( {{postponed_stage}} )<br> (
-                            {{postponed_stage_total}} ) </p></center>
-                    </button>
-                </div>
-            </form>
-
-
-            </form>
+                </form>
 
                <style>
         .border-right-primarya {
@@ -733,7 +697,7 @@ td {
       </select>
     <div class="col-md-1"></div>
 
-            <button style="cursor: pointer;" type="submit" name="assign_lead" class="col-md-6 btn btn-success">Assign Leads</button>
+            <button style="cursor: pointer;" type="submit" name="assign_lead" class="col-md-6 btn-success">Assign Leads</button>
 
 </div>
         {% endif %}
@@ -742,7 +706,7 @@ td {
           {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin' %}
 <div>
 
-            <button style="cursor: pointer;" type="submit" name="delete_lead" class="btn btn-danger">Delete Selected Leads</button>
+            <button style="cursor: pointer;" type="submit" name="delete_lead" class="btn-danger">Delete Selected Leads</button>
 
 </div>
         {% endif %}
@@ -785,6 +749,10 @@ td {
   </div>
 
 
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
              <script>
 
@@ -818,34 +786,23 @@ value = !select.checked;
     </script>
 
 
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
 
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
 
-							</div>
-						</div>
-					</div>
-				</div>
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
 
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
 
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
 
-				<!--end::Purchase-->
-			</div>
-			<!--end::Content-->
-		</div>
-		<!--end::Demo Panel-->
-		<!--begin::Global Config(global config for global JS scripts)-->
+</body>
 
-		<!--end::Global Config-->
-		<!--begin::Global Theme Bundle(used by all pages)-->
-		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
-<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
-<script src="{% static 'js/scripts.bundle.js' %}"></script>
-<!--end::Global Theme Bundle-->
-<!--begin::Page Vendors(used by this page)-->
-<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
-<!--end::Page Vendors-->
-<!--begin::Page Scripts(used by this page)-->
-<script src="{% static 'js/pages/widgets.js' %}"></script>
-		<!--end::Page Scripts-->
-	</body>
-	<!--end::Body-->
 </html>

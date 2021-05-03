@@ -144,7 +144,7 @@ td {
           <center><p style=" float:right;">GST Invoice No:</p>
           </center></div>
           <div class="col-md-2">
-          <center><p style=" float:left;">{{latest_bill_no}} </p>
+          <center><p style=" float:left;">{% if invoice_details.bill_no != None and invoice_details.bill_no != 'None' and invoice_details.bill_no != '' %} {{invoice_details.bill_no}} {% else %} {{ latest_bill_no }} {% endif %}</p>
           </center></div>
           </div>
           
@@ -282,8 +282,12 @@ th {
         		<td>
         			<center> {{item.hsn_code}} </center>
         		</td>
+        		{% if item.sub_sub_model == '' or item.sub_sub_model == 'None' or item.sub_sub_model == None %}
+        		<td>{{item.sub_model}}		</td>
+            {% else %}
         		<td>{{item.sub_sub_model}}		</td>
-        		<td>INR <span style="float: right;">  {{item.amount}} </span></td>
+            {% endif %}
+        		<td>INR <span style="float: right;">  {{item.amount|div:item.quantity}} </span></td>
         		<td> INR <span style="float: right;">{{item.amount}} </span></td>
         	</tr>
           {% if forloop.last %}

@@ -191,10 +191,10 @@ td {
                             {% if forloop.last %}
 
                             {% else %}
-                                <td>{{ value }}</td>
+                                <td>{{ value|default_if_none:"" }}</td>
                             {% endif %}
                         {% else %}
-                            <td>{{ value }}</td>
+                            <td>{{ value|default_if_none:"" }}</td>
                         {% endif %}
                     {% endfor %}
                 </tr>

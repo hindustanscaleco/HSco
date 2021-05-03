@@ -1,0 +1,8 @@
+employee master name num address
+driver mast name driver no phone address
+customer mast 
+
+veh mast
+stering, no of times check test reading
+
+mapping

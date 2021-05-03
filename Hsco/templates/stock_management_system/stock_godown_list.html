@@ -1,68 +1,26 @@
-
-<!DOCTYPE html>
-
+ <!DOCTYPE html>
 <html lang="en">
-	<!--begin::Head-->
-	<head><base href="">
-		{% load static %}
-		<meta charset="utf-8" />
-		<title></title>
-		<meta name="description" content="Updates and statistics" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-		<!--begin::Fonts-->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Page Vendors Styles(used by this page)-->
-		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<!--end::Page Vendors Styles-->
-		<!--begin::Global Theme Styles(used by all pages)-->
-		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
-		        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-		<!--end::Global Theme Styles-->
-		<!--begin::Layout Themes(used by all pages)-->
-		<!--end::Layout Themes-->
-		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
-	</head>
-	<!--end::Head-->
-	<!--begin::Body-->
-	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
-		<!--begin::Main-->
-		<!--begin::Header Mobile-->
-		<div id="kt_header_mobile" class="header-mobile">
-			<!--begin::Logo-->
-			<a href="index.html">
-				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
-			</a>
-			<!--end::Logo-->
-			<!--begin::Toolbar-->
-			<div class="d-flex align-items-center">
-				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
-					<span></span>
-				</button>
-			</div>
-			<!--end::Toolbar-->
-		</div>
-		<!--end::Header Mobile-->
-		<div class="d-flex flex-column flex-root">
-			<!--begin::Page-->
-			<div class="d-flex flex-row flex-column-fluid page">
-				<!--begin::Aside-->
-					{% include 'base_templates/aside.html' %}
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
 
-				<!--end::Aside-->
-				<!--begin::Wrapper-->
-				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-					<!--begin::Content-->
-					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-						<!--begin::Subheader-->
-						<div class="" id="kt_subheader">
-							<div class="container-fluid">
-								<!--begin::Info-->
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
 <style>
     * {
     font-family: 'Poppins';
@@ -93,9 +51,11 @@
     </style>
 </head>
 
+<body id="page-top">
 
   <!-- Page Wrapper -->
-  <div id="wrapper" style="margin-top:5%;">
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -108,10 +68,11 @@
 
 
         <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class=" ">
+        <div class="container-fluid ">
 
           <!-- Page Heading -->
             <div class="row">
@@ -136,11 +97,11 @@
 
 
 
- <a href="{% url 'add_godown' %}"><button class="btn btn-primary"> Add Godown </button></a>
+ <a href="{% url 'add_godown' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Godown </button></a>
 
 {% if  request.user.role == 'Super Admin'%}
 
-                       <a href="{% url 'stock_report' %}"><button class="btn btn-primary"> Report </button></a>
+                       <a href="{% url 'stock_report' %}"><button style="background-color: #FC6E20;" class="btn btn-primary"> Report </button></a>
                        {% endif %}
 
 
@@ -302,7 +263,7 @@ $(function() {
 
       </div>
       <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
-                <button name="submit1" type="submit" class="btn btn-primary">Search</button></div>
+                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
 
       </div>
                                </form>
@@ -312,7 +273,7 @@ $(function() {
       <form method="POST" >{% csrf_token%}
       <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button type="submit" name="submit2" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Search</button>
   </form>
   </div>
 
@@ -324,7 +285,7 @@ $(function() {
       <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
 
-      <button  name="submit3" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" name="submit3" class="btn btn-primary">Search</button>
           </form>
   </div>
 
@@ -334,7 +295,7 @@ $(function() {
         <form method="POST">{% csrf_token%}
       <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button name="submit4" class="btn btn-primary">Search</button>
+      <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button>
     </form>
     </div>
 
@@ -342,7 +303,7 @@ $(function() {
   <div id="d5" class="divs d5">
       <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button name="submit5" class="btn btn-primary">Search</button></div>
+      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button></div>
 </form>
 
                                <form method="POST">{% csrf_token%}
@@ -350,14 +311,14 @@ $(function() {
     <div id="d6" class="divs d6">
       <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button name="submit6" class="btn btn-primary">Search</button></div>
+      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
 </form>
                        <form method="POST">{% csrf_token%}
 
     <div id="d7" class="divs d7">
       <input type="text" name="purchase_no" placeholder="Purchase No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button name="submit7" class="btn btn-primary">Search</button></div>
+      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
 </form>
                                <!--<form method="POST">{% csrf_token%}-->
 
@@ -416,60 +377,30 @@ a:hover {
     }
 
 </style>
- <style>
 
 
-  table {
-  border-collapse: collapse;
-  width: 99%;
-  font-size: 14px;
-  border-color: black;
-  color: black;
-  background-color:white;
-}
 
 
-th {
 
-  font-size: 13px;
-    border: 1px solid black;
-    text-align: left;
-    padding:5px;
-
-}
-
-td {
-  border: 1px solid black;
-  padding: 3px;
-  font-size: 13px;
-  padding: 5px;
-  text-align: center;
-}
-
-
-            </style>
-
-
-<div class="table-responsive">
-    <table>
-        <tr>
-            <th style="border-radius: 15px 0px 0px 0px; border: 0px solid gray; background-color: gray; color:white;"> <center>Sr.No</center></th>
-            <th style=" border: 0px solid gray; background-color: gray; color:white;"><center>Address </center></th>
-            <th style="border: 0px solid gray; background-color: gray; color:white;"><center>Godown Name</center></th>
-            <th style="border-radius: 0px 15px 0px 0px; border: 0px solid gray; background-color: gray; color:white;"> <center>Contact No</center></th>
-        </tr>
-        {% for item in godown_list %}
-            <tr>
-                <td> <center>{{ item.id }}</center></td>
-                <td><center>{{ item.location }} </center></td>
-                <td> <center>{{ item.name_of_godown }}</center></td>
-                <td> <center>{{ item.contact_no }}</center></td>
-            </tr>
-        {% endfor %}
-    </table>
-
+<div class="card" style="height:60px; box-shadow: inset 0px 0px 0px 1px #555555;">
+        <div class="card-body row col-md-12">
+        <div class="col-md-2"> <center>Sr.No</center></div>|
+        <div class="col-md-3"> <center>Address </center></div>|
+        <div class="col-md-3"> <center>Godown Name</center></div>|
+        <div class="col-md-3"> <center>Contact No</center></div>
+        </div>
 </div>
 
+{% for item in godown_list %}
+<div class="card" style="cursor: pointer; height:60px; box-shadow:10px;" onclick="location.href='/stock_godown/{{item.id}}';">
+        <div class="card-body row col-md-12" style="margin-top:0px;">
+        <div class="col-md-2"> <center>{{ item.id }}</center></div>|
+        <div class="col-md-3"> <center>{{ item.location }} </center></div>|
+        <div class="col-md-3"> <center>{{ item.name_of_godown }}</center></div>|
+        <div class="col-md-3"> <center>{{ item.contact_no }}</center></div>
+        </div>
+</div>
+            {% endfor %}
 
 
      </div>         </div>
@@ -484,6 +415,10 @@ td {
 
 
 
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
              <script>
 
@@ -599,34 +534,23 @@ value = !select.checked;
 
           <!--</div>-->
 
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
 
-							
-							</div>
-						</div>
-					</div>
-				</div>
-										
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
 
-			
-				<!--end::Purchase-->
-			</div>
-			<!--end::Content-->
-		</div>
-		<!--end::Demo Panel-->
-		<!--begin::Global Config(global config for global JS scripts)-->
-		
-		<!--end::Global Config-->
-		<!--begin::Global Theme Bundle(used by all pages)-->
-		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
-<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
-<script src="{% static 'js/scripts.bundle.js' %}"></script>
-<!--end::Global Theme Bundle-->
-<!--begin::Page Vendors(used by this page)-->
-<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
-<!--end::Page Vendors-->
-<!--begin::Page Scripts(used by this page)-->
-<script src="{% static 'js/pages/widgets.js' %}"></script>
-		<!--end::Page Scripts-->
-	</body>
-	<!--end::Body-->
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
+</body>
+
 </html>

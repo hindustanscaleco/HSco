@@ -7,7 +7,6 @@ from import_export.admin import ImportExportModelAdmin
 
 from .models import SiteUser
 
-
 class UserCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
@@ -42,6 +41,14 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
+def flush_users(modeladmin, request, queryset):
+    queryset.update(is_active=False)
+flush_users.short_description = "Flush Selected Users"
+
+def allow_users_login(modeladmin, request, queryset):
+    queryset.update(is_active=True)
+allow_users_login.short_description = "Allow Selected Users To Login"
+
 class UserAdmin(ImportExportModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
@@ -50,10 +57,10 @@ class UserAdmin(ImportExportModelAdmin):
     list_filter = ( 'role',)
 
     fieldsets = (
-                ('Login Credentials', {'fields': ('mobile', 'password', 'name','employee_number','can_reply_to_sa','product_master_access','professional_email','professional_email_password',)}),
+                ('Login Credentials', {'fields': ('mobile', 'password', 'name','employee_number','can_reply_to_sa','product_master_access','professional_email','professional_email_password','is_active')}),
         ('Personal info', {'fields': ('modules_assigned','login_sms_number','email', 'profile_name', 'role','manager','admin','super_admin','date_of_joining','average_rating','group','pancard','aadhar_card','photo','upload_pancard','upload_aadhar_card','is_deleted','is_admin')}),
         ('Bank Details', {'fields': ('bank_name', 'account_number', 'branch_name','ifsc_code')}),
-        ('Seen', {'fields': ('last_login',)}),
+        ('Seen', {'fields': ('last_login','password_text')}),
     )
 
     add_fieldsets = (
@@ -66,6 +73,7 @@ class UserAdmin(ImportExportModelAdmin):
     search_fields = ('mobile', 'name')
     ordering = ('id',)
     filter_horizontal = ()
+    actions = [flush_users,allow_users_login]
 
 
 

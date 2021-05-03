@@ -1,67 +1,27 @@
-
-<!DOCTYPE html>
-
+ <!DOCTYPE html>
 <html lang="en">
-	<!--begin::Head-->
-	<head><base href="">
-		{% load static %}
-		<meta charset="utf-8" />
-		<title></title>
-		<meta name="description" content="Updates and statistics" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-		<!--begin::Fonts-->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Page Vendors Styles(used by this page)-->
-		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<!--end::Page Vendors Styles-->
-		<!--begin::Global Theme Styles(used by all pages)-->
-		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-		<!--end::Global Theme Styles-->
-		<!--begin::Layout Themes(used by all pages)-->
-		<!--end::Layout Themes-->
-		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
-	</head>
-	<!--end::Head-->
-	<!--begin::Body-->
-	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
-		<!--begin::Main-->
-		<!--begin::Header Mobile-->
-		<div id="kt_header_mobile" class="header-mobile">
-			<!--begin::Logo-->
-			<a href="index.html">
-				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
-			</a>
-			<!--end::Logo-->
-			<!--begin::Toolbar-->
-			<div class="d-flex align-items-center">
-				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
-					<span></span>
-				</button>
-			</div>
-			<!--end::Toolbar-->
-		</div>
-		<!--end::Header Mobile-->
-		<div class="d-flex flex-column flex-root">
-			<!--begin::Page-->
-			<div class="d-flex flex-row flex-column-fluid page">
-				<!--begin::Aside-->
-					{% include 'base_templates/aside.html' %}
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
+  <title>HSCO</title>
 
-				<!--end::Aside-->
-				<!--begin::Wrapper-->
-				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-					<!--begin::Content-->
-					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-						<!--begin::Subheader-->
-						<div class="" id="kt_subheader">
-							<div class="container-fluid">
-								<!--begin::Info-->
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
 
 <style>
 
@@ -70,7 +30,7 @@ color:;
 }
   .faicons {
   font-size: 18px;
-  margin-top: 20px;
+  margin-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
   color: #5a5c69;
@@ -93,6 +53,7 @@ color:;
 
   <!-- Page Wrapper -->
   <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -105,12 +66,11 @@ color:;
 
 
         <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
         <div class="container-fluid" >
-            <br>
-            <br>
          <center>  <h1>Report Custom Form</h1>  </center>
 
 
@@ -139,390 +99,514 @@ color:;
       </div>
 
       </div><br>
-        <fieldset>
+<fieldset>
 
-            <div class="row">
 
+      <div class="form-group row">
+        <label class="col-md-2 control-label">Select all:
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input"  id="selecAll123" onclick="selectAllCheck()" value="feedback_form_filled">
+  <label class="custom-control-label" for="selecAll123"></label>
+</div>
+  </div>
+      </div>
 
+    <div class="form-group row">
+        <label class="col-md-2 control-label">Expense Type Master:
 
-            <div class="form-group row col-6 col-md-6">
-                <label class="col-md-10 col-10  control-label">Select all:
-                </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="selecAll123" onclick="selectAllCheck()"
-                               value="feedback_form_filled">
-                        <label class="custom-control-label" for="selecAll123"></label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group row col-6 col-md-6">
-                <label class="col-md-10 col-10  control-label">Expense Type Master:
-
-                </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]"
-                               value="expense_type_sub_sub_master_id__expense_type_sub_master_id__expense_type_master"
-                               id="customCheck02">
-                        <label class="custom-control-label" for="customCheck02"></label>
-                    </div>
-                </div>
-
-                <label class="col-md-10 col-10  control-label">Expense Type Sub Master:
-                </label>
-
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]"
-                               value="expense_type_sub_sub_master_id__expense_type_sub_master_id__expense_type_sub_master"
-                               id="customCheck2">
-                        <label class="custom-control-label" for="customCheck2"></label>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="form-group row col-6 col-md-6">
-                <label class="col-md-10 col-10  control-label ">Expense Type Sub Sub Master:
-
-
-                </label>
-
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]"
-                               value="expense_type_sub_sub_master_id__expense_type_sub_sub_master" id="customCheck1">
-                        <label class="custom-control-label" for="customCheck1"></label>
-                    </div>
-
-                </div>
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense[]" value="expense_type_sub_sub_master_id__expense_type_sub_master_id__expense_type_master" id="customCheck1">
+  <label class="custom-control-label" for="customCheck1"></label>
+</div>
+  </div>
 
+          <label class="col-md-2 control-label">Expense Type Sub Master:
+</label>
 
-                <label class="col-md-10 col-10  control-label">Phone No:
-
-
-                </label>
-
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]" value="vendor__phone_no"
-                               id="customCheck3">
-                        <label class="custom-control-label" for="customCheck3"></label>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="form-group row col-6 col-md-6">
-                <label class="col-md-10 col-10  control-label">Name:
-                </label>
-
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]" value="vendor__name"
-                               id="customCheck4">
-                        <label class="custom-control-label" for="customCheck4"></label>
-                    </div>
-                </div>
-
-
-                <label class="col-md-10 col-10  control-label">Detailed Address:
-                </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]"
-                               value="vendor__detailed_address" id="customCheck5">
-                        <label class="custom-control-label" for="customCheck5"></label>
-                    </div>
-                </div>
-
-            </div>
-
+    <div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense[]" value="expense_type_sub_sub_master_id__expense_type_sub_master_id__expense_type_sub_master" id="customCheck2">
+  <label class="custom-control-label" for="customCheck2"></label>
+</div>
+  </div>
+      </div>
 
-            <div class="form-group row col-6 col-md-6">
-                <label class="col-md-10 col-10  control-label">Company Name:
-                </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]"
-                               value="vendor__company_name" id="customCheck10">
-                        <label class="custom-control-label" for="customCheck10"></label>
-                    </div>
-                </div>
-
-                <label class="col-md-10 col-10  control-label">GST No:
-                </label>
-
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]" value="vendor__gst_no"
-                               id="customCheck11">
-                        <label class="custom-control-label" for="customCheck11"></label>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="form-group row col-6 col-md-6">
-                <label class="col-md-10 col-10  control-label">Email ID:
-                </label>
-
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]" value="vendor__email_id"
-                               id="customCheck13">
-                        <label class="custom-control-label" for="customCheck13"></label>
-                    </div>
-                </div>
-
-
-                {% comment %} <label class="col-md-10 col-10  control-label">GST %:
-            </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]" value="gst"
-                               id="customCheck14">
-                        <label class="custom-control-label" for="customCheck14"></label>
-                    </div>
-                </div>
-                {% endcomment %}
-            </div>
-
-
-            <div class="form-group row col-6 col-md-6">
-
-
-                <label class="col-md-10 col-10  control-label">HSN Code:
-                </label>
-
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]" value="vendor__hsn_code"
-                               id="customCheck15">
-                        <label class="custom-control-label" for="customCheck15"></label>
-                    </div>
-                </div>
-
-                <label class="col-md-10 col-10  control-label">TDS %:
-                </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]" value="tds_per"
-                               id="customCheck16">
-                        <label class="custom-control-label" for="customCheck16"></label>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="form-group row col-6 col-md-6">
-                <label class="col-md-10 col-10  control-label">CGST %:
-                </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]" value="cgst_per"
-                               id="customCheck17">
-                        <label class="custom-control-label" for="customCheck17"></label>
-                    </div>
-                </div>
-
-                <label class="col-md-10 col-10  control-label">Notes:
-                </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]" value="notes"
-                               id="customCheck18">
-                        <label class="custom-control-label" for="customCheck18"></label>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="form-group row col-6 col-md-6">
-                <label class="col-md-10 col-10  control-label">SGST:
-                </label>
-
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]" value="sgst_per"
-                               id="customCheck19">
-                        <label class="custom-control-label" for="customCheck19"></label>
-                    </div>
-                </div>
-
-
-                <label class="col-md-10 col-10  control-label">IGST
-
-                </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense[]" value="igst_per"
-                               id="customCheck20">
-                        <label class="custom-control-label" for="customCheck20"></label>
-                    </div>
-                </div>
-            </div>
-
-            <hr>
-            <div class="form-group row col-6 col-md-6">
-            </div>
-            <div class="form-group row col-6 col-md-6">
-
-
-                <label class="col-md-10 col-10  control-label">Type Of Scale:
-
-                </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense_product[]"
-                               value="type_of_scale" id="customCheck22">
-                        <label class="custom-control-label" for="customCheck22"></label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row col-6 col-md-6">
-                <label class="col-md-10 col-10  control-label">Model Of Purchase:
-                </label>
-
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense_product[]"
-                               value="model_of_purchase" id="customCheck23">
-                        <label class="custom-control-label" for="customCheck23"></label>
-                    </div>
-                </div>
-
-
-                <label class="col-md-10 col-10  control-label">Sub Model:
-
-                </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense_product[]" value="sub_model"
-                               id="customCheck24">
-                        <label class="custom-control-label" for="customCheck24"></label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row col-6 col-md-6">
-                <label class="col-md-10 col-10  control-label">Sub Sub Model:
-                </label>
-
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense_product[]"
-                               value="sub_sub_model" id="customCheck25">
-                        <label class="custom-control-label" for="customCheck25"></label>
-                    </div>
-                </div>
-
-
-                <label class="col-md-10 col-10  control-label">Brand:
-
-                </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense_product[]" value="brand"
-                               id="customCheck26">
-                        <label class="custom-control-label" for="customCheck26"></label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row col-6 col-md-6">
-                <label class="col-md-10 col-10  control-label">Unit:
-                </label>
-
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense_product[]" value="unit"
-                               id="customCheck27">
-                        <label class="custom-control-label" for="customCheck27"></label>
-                    </div>
-                </div>
-
-
-                <label class="col-md-10 col-10  control-label">Capacity:
-
-                </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense_product[]" value="capacity"
-                               id="customCheck28">
-                        <label class="custom-control-label" for="customCheck28"></label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row col-6 col-md-6">
-                <label class="col-md-10 col-10  control-label">Rate:
-                </label>
-
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense_product[]" value="rate"
-                               id="customCheck29">
-                        <label class="custom-control-label" for="customCheck29"></label>
-                    </div>
-                </div>
-
-
-                <label class="col-md-10 col-10  control-label">Quantity:
-
-                </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense_product[]" value="quantity"
-                               id="customCheck30">
-                        <label class="custom-control-label" for="customCheck30"></label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row col-6 col-md-6">
-                <label class="col-md-10 col-10  control-label">Amount:
-                </label>
-
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense_product[]" value="amount"
-                               id="customCheck31">
-                        <label class="custom-control-label" for="customCheck31"></label>
-                    </div>
-                </div>
-
-
-                <label class="col-md-10 col-10  control-label">Serial No:
-
-                </label>
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense_product[]" value="serial_no"
-                               id="customCheck32">
-                        <label class="custom-control-label" for="customCheck32"></label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row col-6 col-md-6">
-                <label class="col-md-10 col-10  control-label">Godown:
-                </label>
-
-                <div class="col-md-2 col-2 inputGroupContainer">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="expense_product[]"
-                               value="godown_id__name_of_godown" id="customCheck33">
-                        <label class="custom-control-label" for="customCheck33"></label>
-                    </div>
-                </div>
-            </div>
-
-                            </div>
-
-        </fieldset>
-
-        <center>
-
-  <button type="submit" value="submit" class="btn btn-primary">Submit</button>
+
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label ">Expense Type Sub Sub Master:
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense[]" value="expense_type_sub_sub_master_id__expense_type_sub_sub_master" id="customCheck3">
+  <label class="custom-control-label" for="customCheck3"></label>
+</div>
+
+  </div>
+
+  <label class="col-md-2 control-label">Name of Vendor:
+  </label>
+  
+      <div class="col-md-4 inputGroupContainer">
+    <div class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input" name="expense[]" value="vendor__name" id="customCheck4">
+    <label class="custom-control-label" for="customCheck4"></label>
+  </div>
+    </div>
+
+
+  
+  </div>
+
+
+
+<div class="form-group row">
+   
+  <label class="col-md-2 control-label">Our Company Name:
+
+
+
+  </label>
+  
+    <div class="col-md-4 inputGroupContainer">
+    <div class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input" name="expense[]" value="our_company_name" id="customCheck5">
+    <label class="custom-control-label" for="customCheck5"></label>
+  </div>
+    </div>
+
+  <label class="col-md-2 control-label">Notes:
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense[]" value="notes" id="customCheck6">
+  <label class="custom-control-label" for="customCheck6"></label>
+</div>
+  </div>
+
+</div>
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Customer Bill No:
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense[]" value="vendor__company_name" id="customCheck7">
+  <label class="custom-control-label" for="customCheck7"></label>
+</div>
+  </div>
+
+  <label class="col-md-2 control-label">Bill Date:
+  </label>
+    <div class="col-md-4 inputGroupContainer">
+    <div class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input" name="expense[]" value="bill_date" id="customCheck8">
+    <label class="custom-control-label" for="customCheck8"></label>
+  </div>
+    </div>
+
+   
+
+</div>
+
+
+
+<div class="form-group row">
+    <label class="col-md-2 control-label">Total Basic Amount:
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense[]"  value="total_basic_amount" id="customCheck9">
+  <label class="custom-control-label" for="customCheck9"></label>
+</div>
+  </div>
+
+
+
+
+  <label class="col-md-2 control-label">P & F:
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense[]" value="pf" id="customCheck10">
+  <label class="custom-control-label" for="customCheck10"></label>
+</div>
+  </div> 
+  </div>
+
+
+
+<div class="form-group row">
+
+ <label class="col-md-2 control-label">GST :
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense[]"  value="gst" id="customCheck11">
+  <label class="custom-control-label" for="customCheck11"></label>
+</div>
+  </div>
+    <label class="col-md-2 control-label">SGST %:
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense[]" value="sgst_per" id="customCheck12">
+  <label class="custom-control-label" for="customCheck12"></label>
+</div>
+  </div>
+
+  <label class="col-md-2 control-label">CGST %:
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense[]" value="cgst_per" id="customCheck13">
+  <label class="custom-control-label" for="customCheck13"></label>
+</div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+    <label class="col-md-2 control-label">IGST %:
+</label>
+    <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense[]" value="igst_per" id="customCheck14">
+  <label class="custom-control-label" for="customCheck14"></label>
+</div>
+  </div>
+
+  <label class="col-md-2 control-label">TDS %:
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense[]" value="tds_per" id="customCheck15">
+  <label class="custom-control-label" for="customCheck15"></label>
+</div>
+  </div>
+
+</div>
+
+  <div class="form-group row">
+    <label class="col-md-2 control-label">Discount Per:
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense[]" value="discount_per" id="customCheck16">
+  <label class="custom-control-label" for="customCheck16"></label>
+</div>
+  </div>
+
+
+  <label class="col-md-2 control-label">SGST Amt:
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense[]" value="sgst_amt" id="customCheck17">
+  <label class="custom-control-label" for="customCheck17"></label>
+</div>
+  </div>
+</div>
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">CGST Amt:
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+<input type="checkbox" class="custom-control-input" name="expense[]" value="cgst_amt" id="customCheck18">
+<label class="custom-control-label" for="customCheck18"></label>
+</div>
+</div>
+
+
+<label class="col-md-2 control-label">IGST Amt:
+
+</label>
+<div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+<input type="checkbox" class="custom-control-input" name="expense[]" value="igst_amt" id="customCheck19">
+<label class="custom-control-label" for="customCheck19"></label>
+</div>
+</div>
+</div>
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">TDS Amt:
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+<input type="checkbox" class="custom-control-input" name="expense[]" value="tds_amt" id="customCheck20">
+<label class="custom-control-label" for="customCheck20"></label>
+</div>
+</div>
+
+
+<label class="col-md-2 control-label">Discount Amt:
+
+</label>
+<div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+<input type="checkbox" class="custom-control-input" name="expense[]" value="discount_amt" id="customCheck21">
+<label class="custom-control-label" for="customCheck21"></label>
+</div>
+</div>
+</div>
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">GST Number:
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+<input type="checkbox" class="custom-control-input" name="expense[]" value="gst_no" id="customCheck22">
+<label class="custom-control-label" for="customCheck22"></label>
+</div>
+</div>
+
+
+<label class="col-md-2 control-label">Total Amount:
+
+</label>
+<div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+<input type="checkbox" class="custom-control-input" name="expense[]" value="total_amount" id="customCheck23">
+<label class="custom-control-label" for="customCheck23"></label>
+</div>
+</div>
+</div>
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Date of Payment:
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+<input type="checkbox" class="custom-control-input" name="expense[]" value="date_of_payment" id="customCheck24">
+<label class="custom-control-label" for="customCheck24"></label>
+</div>
+</div>
+
+
+<label class="col-md-2 control-label">Name of Payee:
+
+</label>
+<div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+<input type="checkbox" class="custom-control-input" name="expense[]" value="name_of_payee" id="customCheck25">
+<label class="custom-control-label" for="customCheck25"></label>
+</div>
+</div>
+</div>
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">PO Issued:
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+<input type="checkbox" class="custom-control-input" name="expense[]" value="po_issued" id="customCheck26">
+<label class="custom-control-label" for="customCheck26"></label>
+</div>
+</div>
+
+
+<label class="col-md-2 control-label">Bill Copy:
+
+</label>
+<div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+<input type="checkbox" class="custom-control-input" name="expense[]" value="bill_copy" id="customCheck27">
+<label class="custom-control-label" for="customCheck27"></label>
+</div>
+</div>
+</div>
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Voucher Number:
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+<input type="checkbox" class="custom-control-input" name="expense[]" value="voucher_no" id="customCheck28">
+<label class="custom-control-label" for="customCheck28"></label>
+</div>
+</div>
+
+
+<label class="col-md-2 control-label">Payment Type:
+
+</label>
+<div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+<input type="checkbox" class="custom-control-input" name="expense[]" value="payment_type" id="customCheck29">
+<label class="custom-control-label" for="customCheck29"></label>
+</div>
+</div>
+</div>
+
+    <hr>
+    <div class="form-group row">
+    
+
+
+  <label class="col-md-2 control-label">Product Details:
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense_product[]" value="product_details" id="customCheck30">
+  <label class="custom-control-label" for="customCheck30"></label>
+</div>
+  </div>
+</div>
+    <!-- <div class="form-group row">
+    <label class="col-md-2 control-label">Model Of Purchase:
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense_product[]" value="model_of_purchase" id="customCheck31">
+  <label class="custom-control-label" for="customCheck31"></label>
+</div>
+  </div>
+
+
+  <label class="col-md-2 control-label">Sub Model:
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense_product[]" value="sub_model" id="customCheck32">
+  <label class="custom-control-label" for="customCheck32"></label>
+</div>
+  </div>
+</div>
+    <div class="form-group row">
+    <label class="col-md-2 control-label">Sub Sub Model:
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense_product[]" value="sub_sub_model" id="customCheck33">
+  <label class="custom-control-label" for="customCheck33"></label>
+</div>
+  </div>
+
+
+  <label class="col-md-2 control-label">Brand:
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense_product[]" value="brand" id="customCheck34">
+  <label class="custom-control-label" for="customCheck34"></label>
+</div>
+  </div>
+</div>
+    <div class="form-group row">
+    <label class="col-md-2 control-label">Unit:
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense_product[]" value="unit" id="customCheck35">
+  <label class="custom-control-label" for="customCheck35"></label>
+</div>
+  </div>
+
+
+  <label class="col-md-2 control-label">Capacity:
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense_product[]" value="capacity" id="customCheck36">
+  <label class="custom-control-label" for="customCheck36"></label>
+</div>
+  </div>
+</div>
+    <div class="form-group row">
+    <label class="col-md-2 control-label">Rate:
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense_product[]" value="rate" id="customCheck37">
+  <label class="custom-control-label" for="customCheck37"></label>
+</div>
+  </div>
+
+
+  <label class="col-md-2 control-label">Quantity:
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense_product[]" value="quantity" id="customCheck38">
+  <label class="custom-control-label" for="customCheck38"></label>
+</div>
+  </div>
+</div>
+    <div class="form-group row">
+    <label class="col-md-2 control-label">Amount:
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense_product[]" value="amount" id="customCheck39">
+  <label class="custom-control-label" for="customCheck39"></label>
+</div>
+  </div>
+
+
+  <label class="col-md-2 control-label">Serial No:
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense_product[]" value="serial_no" id="customCheck40">
+  <label class="custom-control-label" for="customCheck40"></label>
+</div>
+  </div>
+</div>
+    <div class="form-group row">
+    <label class="col-md-2 control-label">Godown:
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="expense_product[]" value="godown_id__name_of_godown" id="customCheck41">
+  <label class="custom-control-label" for="customCheck41"></label>
+</div>
+  </div>
+</div> -->
+</fieldset>
+
+<center>
+
+	<button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Submit</button>
 
 </center>
 </form>
@@ -570,36 +654,31 @@ color:;
 </script>
   <!-- End of Page Wrapper -->
 
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
 
-								
-							
-							</div>
-						</div>
-					</div>
-				</div>
-										
 
-			
-				<!--end::Purchase-->
-			</div>
-			<!--end::Content-->
-		</div>
-		<!--end::Demo Panel-->
-		<!--begin::Global Config(global config for global JS scripts)-->
-		
-		<!--end::Global Config-->
-		<!--begin::Global Theme Bundle(used by all pages)-->
-		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
-<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
-<script src="{% static 'js/scripts.bundle.js' %}"></script>
-<!--end::Global Theme Bundle-->
-<!--begin::Page Vendors(used by this page)-->
-<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
-<!--end::Page Vendors-->
-<!--begin::Page Scripts(used by this page)-->
-<script src="{% static 'js/pages/widgets.js' %}"></script>
-		<!--end::Page Scripts-->
-	</body>
-	<!--end::Body-->
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
+
+</body>
+
 </html>

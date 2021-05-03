@@ -181,6 +181,18 @@ def purchase_product_handler(sender, instance, update_fields=None, **kwargs):
 
 @login_required(login_url='/')
 def add_purchase_details(request):
+    # message = 'fdsafsdafsd'
+
+    # url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9730644834"  + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt" + "&tid=1207161735423953054"
+    # payload = ""
+    # headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+    # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+    # x = response.text
+    # print(response.status_code)
+    # print(response.content)
+    # print('sending sms')
+    # print(x)
     if 'purchase_id' in request.session:
         if request.session.get('product_saved'):
             pass
@@ -381,7 +393,7 @@ def add_purchase_details(request):
             dispatch_text = DynamicDropdown.objects.get(id=channel_of_dispatch).name
         else:
             dispatch_text = None
-        if not (dispatch_text == 'Franchisee Store'):
+        if not (dispatch_text == 'Franchisee Store') :
             dispatch = Dispatch()
 
             if Customer_Details.objects.filter(customer_name=customer_name,
@@ -695,7 +707,7 @@ def edit_product_customer(request,product_id_rec):
     purchase = Product_Details.objects.get(id=product_id_rec)
     purchase_id = Purchase_Details.objects.get(id=purchase.purchase_id)
     type_of_purchase_list = type_purchase.objects.all()  # 1
-
+    
     # dispatch_id_assigned = str(purchase_id.dispatch_id_assigned)
     try:
         dispatch_id_assigned = str(purchase.dispatch_id_assigned)
@@ -794,6 +806,10 @@ def edit_product_customer(request,product_id_rec):
                                     + ', Contact: ' + str(request.user.mobile) + ',\nProduct changed' + \
                                     '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
             new_transaction.save()
+            Purchase_Details.objects.filter(id=purchase_id.id).update(
+                value_of_goods=F("value_of_goods") - item.amount)
+            Purchase_Details.objects.filter(id=purchase_id).update(tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
+            Purchase_Details.objects.filter(id=purchase_id).update(total_amount=F("value_of_goods") + F("tax_amount") + F("total_pf"))
             Product_Details.objects.filter(id=product_id_rec).delete()
             messages.success(request, 'Purchase Product with ID:-'+str(product_id_rec)+' returned to Godown successfully!')
             if return_reason == 'Exchanged for another product':
@@ -1084,7 +1100,15 @@ def edit_product_customer(request,product_id_rec):
         #
         # except:
         #     pass
-
+        try:
+            product = Product_Details.objects.filter(purchase_id=purchase_id.id).aggregate(Sum('amount'))
+            Purchase_Details.objects.filter(id=purchase_id.id).update(value_of_goods=product['amount__sum'])
+            if purchase_id.is_gst == True:
+                Purchase_Details.objects.filter(id=purchase_id.id).update(tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
+            Purchase_Details.objects.filter(id=purchase_id.id).update(total_amount=product['amount__sum']+ purchase_id.tax_amount + purchase_id.total_pf)
+        except Exception  as e:
+            print(e)
+            pass
         return redirect('/update_customer_details/' + str(purchase_id.id))
 
     context = {
@@ -1098,12 +1122,14 @@ def edit_product_customer(request,product_id_rec):
 
 @login_required(login_url='/')
 def view_customer_details(request):
+    
     date_today= datetime.now().strftime('%Y-%m-%d')
     message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
 
-    #for updating total amount in all sales entry
+    # for updating total amount in all sales entry
     sales_list = Purchase_Details.objects.all()
     for sale in sales_list:
+
         if (sale.value_of_goods == None and sale.total_amount == None) or (sale.value_of_goods == 'None' and sale.total_amount == 'None'):
             print(sale.id)
             pro_sum = Product_Details.objects.filter(purchase_id__id=sale.id).aggregate(Sum('amount'))
@@ -1112,7 +1138,10 @@ def view_customer_details(request):
             Purchase_Details.objects.filter(id=sale.id).update(total_amount=total_value )
             Purchase_Details.objects.filter(id=sale.id).update(value_of_goods=pro_sum['amount__sum'] )
         if sale.total_amount == 0 or sale.total_amount == None or sale.total_amount == 'None':
-            Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
+            try:
+                Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
+            except:
+                pass
 
     #for deleting purchase entries
     if request.method == 'POST' and 'delete_purchase_id' in request.POST:
@@ -1381,6 +1410,7 @@ def update_customer_details(request,id):
     channel_marketing = DynamicDropdown.objects.filter(type="CHANNEL OF MARKETING",is_enabled=True)
     channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
     industry_list = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
+    
 
     try:
         total_amt = purchase_id_id.value_of_goods + purchase_id_id.tax_amount + purchase_id_id.total_pf
@@ -1573,7 +1603,7 @@ def update_customer_details(request,id):
             # item2.value_of_goods = value_of_goods
 
             channel_of_dispatch_test = DynamicDropdown.objects.get(id=channel_of_dispatch).name
-            if (purchase_id_id.dispatch_id_assigned == None and channel_of_dispatch_test != 'Franchisee Store')  or (item2.channel_of_dispatch_id !='None' or item2.channel_of_dispatch_id.name =='Franchisee Store' and channel_of_dispatch_test != 'Franchisee Store') :
+            if (purchase_id_id.dispatch_id_assigned == None and channel_of_dispatch_test != 'Franchisee Store')  :
                 dispatch = Dispatch()
 
                 if Customer_Details.objects.filter(customer_name=customer_name,
@@ -1614,8 +1644,11 @@ def update_customer_details(request,id):
                 # dispatch2.dispatch_id = dispatch.pk
                 # dispatch2.save(update_fields=['dispatch_id'])
                 customer_id = Purchase_Details.objects.get(id=item2.pk)
+                print('sales entry')
+                print(customer_id)
                 customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
                 customer_id.save(update_fields=['dispatch_id_assigned'])
+                print(customer_id.dispatch_id_assigned)
 
 
                 prod_list= list(Product_Details.objects.filter(purchase_id=customer_id.pk).values_list('id', flat=True))
@@ -1647,14 +1680,14 @@ def update_customer_details(request,id):
                     Product_Details.objects.filter(id=item).update(product_dispatch_id=dispatch_pro.pk)
 
             channel_of_dispatch_test = DynamicDropdown.objects.get(id=channel_of_dispatch).name
-            if item2.channel_of_dispatch_id !='None' or ( item2.channel_of_dispatch_id.name != 'Franchisee Store' and channel_of_dispatch_test == 'Franchisee Store' ):
-                customer_id = Purchase_Details.objects.get(id=item2.pk)
-                customer_id.dispatch_id_assigned = None  # str(dispatch.pk + 00000)
-                customer_id.save(update_fields=['dispatch_id_assigned'])
-                try:
-                    Dispatch.objects.get(id=item2.dispatch_id_assigned.pk).delete()
-                except:
-                    pass
+            # if item2.channel_of_dispatch_id !='None' or ( item2.channel_of_dispatch_id.name != 'Franchisee Store' and channel_of_dispatch_test == 'Franchisee Store' ):
+            #     customer_id = Purchase_Details.objects.get(id=item2.pk)
+            #     customer_id.dispatch_id_assigned = None  # str(dispatch.pk + 00000)
+            #     customer_id.save(update_fields=['dispatch_id_assigned'])
+            #     try:
+            #         Dispatch.objects.get(id=item2.dispatch_id_assigned.pk).delete()
+            #     except:
+            #         pass
 
             # item2.channel_of_dispatch = channel_of_dispatch
             item2.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)
@@ -1902,12 +1935,13 @@ def add_product_details(request,id):
                 purchase.crm_no.pk) + '/' + str(
                 purchase.id) + '\n For more details contact us on - 7045922250'
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt" +"&tid=1207161735423953054"
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
+            print('sending sms')
             print(x)
 
         Purchase_Details.objects.filter(id=purchase_id).update(value_of_goods=F("value_of_goods") + value_of_goods)
@@ -2249,13 +2283,13 @@ def customer_employee_sales_graph(request,user_id):
 
     # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
     #                                                                                                      'total_sales_done_today').order_by('entry_date')
-    this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
-        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
+    this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=datetime.now().month)\
+        .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
         x = i
-        this_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        this_lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
         this_lis_sum.append(x['data_sum'])
 
     #previous month sales
@@ -2264,21 +2298,21 @@ def customer_employee_sales_graph(request,user_id):
         previous_mon = 12
     else:
         previous_mon = (datetime.now().month) - 1
-    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=previous_mon)\
-        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
+    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=previous_mon)\
+        .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
         x = i
-        previous_lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+        previous_lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
         previous_lis_sum.append(x['data_sum'])
 
     if request.method=='POST' and 'date1' in request.POST :
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
 
-        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__range=(start_date, end_date))\
-        .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
+        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__range=(start_date, end_date))\
+        .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -2340,13 +2374,13 @@ def customer_employee_sales_graph(request,user_id):
 
     else:
 
-        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,entry_timedate__month=datetime.now().month)\
-        .values('entry_timedate').annotate(data_sum=Sum('value_of_goods'))
+        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=datetime.now().month)\
+        .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
         lis_date = []
         lis_sum = []
         for i in qs:
             x=i
-            lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
             lis_sum.append(x['data_sum'])
         context={
             'final_list':lis_date,

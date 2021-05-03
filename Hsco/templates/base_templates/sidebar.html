@@ -148,13 +148,16 @@
           <span>Career Module</span></a>
       </li>
                     {% endif %}
-                     {% if request.user.is_authenticated  %}
+                     {% if request.user.is_authenticated and 'Expense Module' in user.modules_assigned %}
 
       <li class="nav-item ">
         <a class="nav-link" href="/expense_dashboard/">
           <!--<i class="fas fa-clipboard-list"></i>-->
           <span>Expense Module</span></a>
       </li>
+                          {% endif %}
+
+                     {% if request.user.is_authenticated and 'Bill Module' in user.modules_assigned %}
 
       <li class="nav-item ">
         <a class="nav-link" href="/showBillModule/">

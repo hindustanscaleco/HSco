@@ -94,7 +94,7 @@ DATABASES = {
  'default': {
     'ENGINE': 'django.db.backends.mysql',
     'NAME': 'hsco_db',
-    'USER': 'root',
+    'USER': 'root2',
     'PASSWORD': '',
     'HOST': '127.0.0.1',
     'PORT': '3306',
@@ -167,7 +167,7 @@ EMAIL_PORT = 587
 # EMAIL_HOST_PASSWORD = 'ipv6netuser'
 
 EMAIL_HOST_USER = 'website.hindustanscale.com@gmail.com'
-EMAIL_HOST_PASSWORD = 'Hsco123456789@'
+EMAIL_HOST_PASSWORD = 'HindustanScale@@1234'
 
 # EMAIL_HOST_USER = 'vikas.pandey9323@gmail.com'
 # EMAIL_HOST_USER = 'leosagarfcb10@gmail.com'
