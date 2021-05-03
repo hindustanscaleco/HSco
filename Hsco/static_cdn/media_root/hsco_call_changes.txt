@@ -1,3 +1,0 @@
-1.logger:- if none then change not detected
-2. sorting all logs as lifo
-3. tracking changes from which ip is made

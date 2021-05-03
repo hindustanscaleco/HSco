@@ -1,37 +1,75 @@
+
 <!DOCTYPE html>
+
 <html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<head>
-  {% load static %}
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
 
-  <title>HSCO</title>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="">
+							<div class="container-fluid">
+								<!--begin::Info-->
 
-  <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <!-- Custom styles for this template-->
-  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
-
-</head>
-
-<body id="page-top">
 <style>
      .container-fluid{
    font-size: 13px;
    }
 </style>
   <!-- Page Wrapper -->
-  <div id="wrapper">
-  {% include 'base_templates/sidebar.html' %}
+  <div id="wrapper" style="margin-top:5%;">
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -44,96 +82,37 @@
 
 
         <!-- Topbar -->
-  {% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="">
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dispatch Module</h1>
+            <h1 class="h3 mb-0 text-gray-800">Dispatch Module</h1> &nbsp;
                            <div class="row no-gutters align-items-right">
 
      {% if request.user.is_authenticated %}
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
-<a style="padding: 2px; " href="/add_dispatch_details/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Dispatch</button></a>
+<a style="padding: 2px; " href="/add_dispatch_details/"><button  class="btn btn-primary">Add Dispatch</button></a>
 
 
- <a style="padding: 2px;" href="/dispatch_logs/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
- <a style="padding: 2px;" href="/report_dis_mod/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
- <a style="padding: 2px;" href="/dispatch_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
+ <a style="padding: 2px;" href="/dispatch_logs/"> <button  class="btn btn-primary">Log</button></a>
+ <a style="padding: 2px;" href="/report_dis_mod/"> <button  class="btn btn-primary">Report</button></a>
+ <a style="padding: 2px;" href="/dispatch_analytics/"><button  class="btn btn-primary">Analytics</button></a>
 {% else %}
- <a style="padding: 2px;" href="/add_dispatch_details/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Dispatch</button></a>
+ <a style="padding: 2px;" href="/add_dispatch_details/"><button  class="btn btn-primary">Add Dispatch</button></a>
 {% endif %}
 {% endif %}
                 </div>
           </div>
+
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
 </style>
             <style>
 
 
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 24px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: green;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 20px;
-  width: 20px;
-  left: 0px;
-  bottom: 1px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
 .divs{
 display:none;
 }
@@ -196,7 +175,7 @@ $(function() {
 
       </div>
       <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
-                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
+                <button  name="submit1" type="submit" class="btn btn-primary">Search</button></div>
 
       </div>
                                </form>
@@ -205,7 +184,7 @@ $(function() {
   <div id="d2" class="divs d2">
       <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Search</button></div>
+      <button  type="submit" name="submit2" class="btn btn-primary">Search</button></div>
                                </form>
 
                                <form method="POST">{% csrf_token%}
@@ -213,20 +192,20 @@ $(function() {
   <div id="d3" class="divs d3">
       <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit3" class="btn btn-primary">Search</button></div>
+      <button  name="submit3" class="btn btn-primary">Search</button></div>
 </form>
                                <form method="POST">{% csrf_token%}
 
     <div id="d4" class="divs d4">
       <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button></div>
+      <button  name="submit4" class="btn btn-primary">Search</button></div>
 </form>
                                <form method="POST">{% csrf_token%}
   <div id="d5" class="divs d5">
       <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button></div>
+      <button  name="submit5" class="btn btn-primary">Search</button></div>
 </form>
 
                                <form method="POST">{% csrf_token%}
@@ -234,14 +213,14 @@ $(function() {
     <div id="d6" class="divs d6">
       <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
+      <button  name="submit6" class="btn btn-primary">Search</button></div>
 </form>
                                           <form method="POST">{% csrf_token%}
 
     <div id="d7" class="divs d7">
       <input type="text" name="dispatch_no" placeholder="Dispatch No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit7" class="btn btn-primary">Search</button></div>
+      <button name="submit7" class="btn btn-primary">Search</button></div>
 </form>
 
                                <!--<form method="POST">{% csrf_token%}-->
@@ -365,11 +344,11 @@ td {
             </style>
 
 
-<div class="row" style="margin-left: 25%;">
+<div class="row" style="">
 
-        <div style="cursor: pointer; " onclick="choice1('dispatch q')" class="col-xl-3 col-md-3 mb-12">
-              <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,5.5),rgba(120,115,245,.9))">
-                <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 16px; height: 90px;">
+        <div style="cursor: pointer; " onclick="choice1('dispatch q')" class="col-xl-3 col-md-3 col-6">
+              <div class="card shadow" style="  ">
+                <div class="card-body row" style="color: black; font-weight: 600; font-size: 16px; height: 100px;">
 
                   <center> In Dispatch Queue. ({{stage1}}) </center>
 
@@ -378,9 +357,9 @@ td {
                 </div>
               </div>
 
-        <div style="cursor: pointer; " onclick="choice1('dispatch but lr not updated')" class="col-xl-3 col-md-3 mb-12">
-              <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">
-                <div class="card-body row" style="padding-left: 25px; color: white; font-weight: 600; font-size: 16px;  height:auto;">
+        <div style="cursor: pointer; " onclick="choice1('dispatch but lr not updated')" class="col-xl-3 col-md-3 col-6">
+              <div class="card shadow" style="">
+                <div class="card-body row" style=" color: black; font-weight: 600; font-size: 16px;  height:100px;;">
                  <center> Dispatched But LR No. Not Updated.({{stage2}})</center>
 
 
@@ -389,9 +368,9 @@ td {
                 </div>
               </div>
 
-            <div style="cursor: pointer; " onclick="choice1('dispatch completed')" class="col-xl-3 col-md-3 mb-12">
-              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
-                <div class="card-body row" style="padding-left: 20px;color: white; font-weight: 600; font-size: 16px;  height: auto;">
+            <div style="cursor: pointer; " onclick="choice1('dispatch completed')" class="col-xl-3 col-md-3 col-12">
+              <div class="card shadow" style="">
+                <div class="card-body row" style="color: black; font-weight: 600; font-size: 16px;  height: 100px;;">
 
                    <center><p>Dispatch Completed.({{stage3}})</p></center>
 
@@ -404,11 +383,11 @@ td {
 
 
 
-<div id="id_manager_view" style="min-height: 15vw;">
+<div id="id_manager_view" style="min-height: 15vw;" class="table-responsive">
                            <center><p>{{search_msg}}</p></center>
 
 
-    <table>
+    <table class="table" style="width:100%;">
         <tr style="background-color: gray; color: white;">
 
                     <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray; width: 10%;"> Date </center></td>
@@ -418,12 +397,14 @@ td {
                     <td style="border: 0px solid gray; width: 10%;"> Contact No </td>
                     <td style="border: 0px solid gray; width: 15%;"> Entered By  </td>
                     <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray; width: 15%;"> Dispatched by </td>
-</tr>
-   </table>
+        </tr>
+    </table>
 
+
+<table>
          <div id="id_subcat">
 
-                <table>
+
 {% for list in dispatch_list %}
                 <tr style="cursor: pointer; " onclick="location.href='/update_dispatch_details/{{list.id}}';" class="">
 
@@ -446,11 +427,9 @@ td {
 
                     <td style=" width: 15%;"><center>{% if list.dispatch_by != None and list.dispatch_by != '' %}{{list.dispatch_by}}{% else %}{% endif %} </center></td>
                     <!--<div class="col-xl-3 col-md-1 mb-1"><center>{{ list.dispatch_by }} </center></div>-->
-
-
-
-      </tr>
+                </tr>
   {% endfor %}
+         </div>
   </table>
 
 </div>
@@ -541,26 +520,33 @@ value = !select.checked;
     </script>
 
 
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
-  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
-
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
-      </div>
-    </div>
-  </div>
-</body>
-
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
 </html>

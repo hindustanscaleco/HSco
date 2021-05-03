@@ -1,33 +1,71 @@
- <!DOCTYPE html>
+
+<!DOCTYPE html>
+
 <html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<head>
-  {% load static %}
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
 
-  <title>HSCO</title>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
 
-  <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <!-- Custom styles for this template-->
-  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
-
-</head>
-
-<body id="page-top">
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-	{% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -36,20 +74,22 @@
     <div id="content-wrapper" class="d-flex flex-column">
 
       <!-- Main Content -->
-      <div id="content">
+      <div id="content" style="background-color:white;">
 
 
         <!-- Topbar -->
-	{% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
+
         <div class="container-fluid">
 
           <!-- Page Heading -->
+            <br>
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Assign Manager To Admin</h1>
           </div>
+            <br>
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
 </style>
@@ -75,63 +115,35 @@ $(function() {
 
 <div style="min-height: 26vw;">
 
-        <div class="row">
+        <div class="row table-responsive">
 
-
-              <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 18px; height: 40px;">
-
-
-
-                    <div class="col-xl-1 col-md-1 mb-1"> <center>ID </center>  </div>|
-                    <div class="col-xl-3 col-md-1 mb-1"> <center>Manager </center>  </div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Admin</center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> Assign</center></div>
-
-
-
-
-                </div>
-              </div>
-            </div>
-            <br><br>
-
+            <table class="table">
+                <tr>
+                    <th>ID</th>
+                    <th>Manager</th>
+                    <th>Admin</th>
+                    <th>Assign</th>
+                </tr>
                 {% for list in manager_list %}
-              <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow">
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 400; font-size: 18px; height: 50px;">
-
-
-
-                    <div class="col-xl-1 col-md-1 mb-1"> <center>{{list.pk}} </center>  </div>|
-                    <div class="col-xl-3 col-md-1 mb-1"> <center>{{list.name}} </center>  </div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center> {{list.group}}</center></div>|
-                    <div class="col-xl-3 col-md-1 mb-1"><center>
+                <tr>
+                    <th>{{list.pk}}</th>
+                    <th>{{list.name}}</th>
+                    <th>{{list.group}}</th>
+                    <th>
                         <form method="POST"> {% csrf_token %}
                             <input value="{{list.pk}}" name="manager_id" style="display:none;">
-                        <select name="group">
-                         {%for list2 in admin_list%}
-                        <option value="{{list2.name}}">{{list2.name}}</option>
-                            {% endfor %}
-</select> <button style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
-                    </form>
-                    </center></div>
-
-
-
-                </div>
-              </div>
-            </div>
-
+                            <select name="group">
+                                {%for list2 in admin_list%}
+                                <option value="{{list2.name}}">{{list2.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <button class="btn btn-primary">Submit</button>
+                        </form>
+                    </th>
+                </tr>
                 {% endfor %}
 
-<br>
-
-
-
-
-
+            </table>
 
 
         </div>
@@ -140,60 +152,40 @@ $(function() {
 
 
 
-<br>
-<center>
-    <div class="row" style="width: 50%;">
-
-
-
-                <!--<div class="col-xl-4 col-md-12 mb-12">-->
-              <!--<div class="card border-left-primary shadow">-->
-                <!--<div class="card-body" style="padding: 12px; ">-->
-                  <!--<div class="row no-gutters align-items-center">-->
-                    <!--<div class="col ">-->
- <!--<a href="/create_manager/"><button style="background-color: #FC6E20;" class="btn btn-primary"Add Manager</button></a>                    </div>-->
-
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-
-
-
-          </div>
-
-</center>
-
 
   </div>
   <!-- End of Page Wrapper -->
       </div></div></div>
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
 
 
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
-  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
-
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
-
-
-
-</body>
-
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
 </html>

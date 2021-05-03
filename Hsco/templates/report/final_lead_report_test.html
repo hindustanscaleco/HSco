@@ -1,28 +1,68 @@
- <!DOCTYPE html>
+
+<!DOCTYPE html>
+
 <html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<head>
-  {% load static %}
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
 
-  <title>HSCO</title>
 
-  <!-- Custom fonts for this template-->
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
 
-
-  <!-- Custom styles for this template-->
-  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
-
-</head>
-
-<body id="page-top">
 
 <style>
 
@@ -31,7 +71,7 @@ color:;
 }
   .faicons {
   font-size: 18px;
-  margin-top: 10px;
+  margin-top: 20px;
   padding-left: 10px;
   padding-right: 10px;
   color: #5a5c69;
@@ -91,7 +131,6 @@ td {
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-  {% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -104,7 +143,6 @@ td {
 
 
         <!-- Topbar -->
-  {% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -289,32 +327,32 @@ td {
 
       Allow to generate report?  &nbsp; &nbsp; &nbsp;
 
-		<button class="exportToExcel btn btn-primary" id="report">Yes</button>
-		<button class="btn btn-primary">No</button>
+    <button class="exportToExcel btn btn-primary" id="report">Yes</button>
+    <button class="btn btn-primary">No</button>
 
 </div>
 
 <script>
-			$(function() {
-				$(".exportToExcel").click(function(e){
-					var table = $(this).prev('.table2excel');
-					if(table && table.length){
-						var preserveColors = (table.hasClass('table2excel_with_colors') ? true : false);
-						$(table).table2excel({
-							exclude: ".noExl",
-							name: "Excel Document Name",
-							filename: "myFileName" + new Date().toISOString().replace(/[\-\:\.]/g, "") + ".xls",
-							fileext: ".xls",
-							exclude_img: true,
-							exclude_links: true,
-							exclude_inputs: true,
-							preserveColors: preserveColors
-						});
-					}
-				});
+      $(function() {
+        $(".exportToExcel").click(function(e){
+          var table = $(this).prev('.table2excel');
+          if(table && table.length){
+            var preserveColors = (table.hasClass('table2excel_with_colors') ? true : false);
+            $(table).table2excel({
+              exclude: ".noExl",
+              name: "Excel Document Name",
+              filename: "myFileName" + new Date().toISOString().replace(/[\-\:\.]/g, "") + ".xls",
+              fileext: ".xls",
+              exclude_img: true,
+              exclude_links: true,
+              exclude_inputs: true,
+              preserveColors: preserveColors
+            });
+          }
+        });
 
-			});
-		</script>
+      });
+    </script>
 
 
 <br>
@@ -331,10 +369,6 @@ td {
   </div>
   <!-- End of Page Wrapper -->
 
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
 
 <!--<script>-->
 
@@ -411,40 +445,40 @@ td {
 
             e.tableRows = [];
 
-			// Styling variables
-			var additionalStyles = "";
-			var compStyle = null;
+      // Styling variables
+      var additionalStyles = "";
+      var compStyle = null;
 
             // get contents of table except for exclude
             $(e.element).each( function(i,o) {
                 var tempRows = "";
                 $(o).find("tr").not(e.settings.exclude).each(function (i,p) {
 
-					// Reset for this row
-					additionalStyles = "";
+          // Reset for this row
+          additionalStyles = "";
 
-					// Preserve background and text colors on the row
-					if(e.settings.preserveColors){
-						compStyle = getComputedStyle(p);
-						additionalStyles += (compStyle && compStyle.backgroundColor ? "background-color: " + compStyle.backgroundColor + ";" : "");
-						additionalStyles += (compStyle && compStyle.color ? "color: " + compStyle.color + ";" : "");
-					}
+          // Preserve background and text colors on the row
+          if(e.settings.preserveColors){
+            compStyle = getComputedStyle(p);
+            additionalStyles += (compStyle && compStyle.backgroundColor ? "background-color: " + compStyle.backgroundColor + ";" : "");
+            additionalStyles += (compStyle && compStyle.color ? "color: " + compStyle.color + ";" : "");
+          }
 
-					// Create HTML for Row
+          // Create HTML for Row
                     tempRows += "<tr style='" + additionalStyles + "'>";
 
                     // Loop through each TH and TD
                     $(p).find("td,th").not(e.settings.exclude).each(function (i,q) { // p did not exist, I corrected
 
-						// Reset for this column
-						additionalStyles = "";
+            // Reset for this column
+            additionalStyles = "";
 
-						// Preserve background and text colors on the row
-						if(e.settings.preserveColors){
-							compStyle = getComputedStyle(q);
-							additionalStyles += (compStyle && compStyle.backgroundColor ? "background-color: " + compStyle.backgroundColor + ";" : "");
-							additionalStyles += (compStyle && compStyle.color ? "color: " + compStyle.color + ";" : "");
-						}
+            // Preserve background and text colors on the row
+            if(e.settings.preserveColors){
+              compStyle = getComputedStyle(q);
+              additionalStyles += (compStyle && compStyle.backgroundColor ? "background-color: " + compStyle.backgroundColor + ";" : "");
+              additionalStyles += (compStyle && compStyle.color ? "color: " + compStyle.color + ";" : "");
+            }
 
                         var rc = {
                             rows: $(this).attr("rowspan"),
@@ -463,8 +497,8 @@ td {
                                 tempRows += " colspan='" + rc.cols + "' ";
                             }
                             if(additionalStyles){
-								tempRows += " style='" + additionalStyles + "'";
-							}
+                tempRows += " style='" + additionalStyles + "'";
+              }
                             tempRows += ">" + $(q).html() + "</td>";
                         }
                     });
@@ -625,6 +659,34 @@ td {
 
 
 
-</body>
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
 
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
 </html>

@@ -1,27 +1,67 @@
- <!DOCTYPE html>
+
+<!DOCTYPE html>
+
 <html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<head>
-  {% load static %}
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
 
-  <title>HSCO</title>
 
-  <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <!-- Custom styles for this template-->
-  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
-
-</head>
-
-<body id="page-top">
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
 
 <style>
 
@@ -30,7 +70,7 @@ font-size: 14px;
 }
   .faicons {
   font-size: 18px;
-  margin-top: 10px;
+  margin-top: 20px;
   padding-left: 10px;
   padding-right: 10px;
   color: #5a5c69;
@@ -112,7 +152,6 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-	{% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -125,7 +164,6 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 
 
         <!-- Topbar -->
-	{% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -176,7 +214,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
     document.getElementById("tax_amt_id").disabled = false;
     document.getElementById("payment_mode_id").disabled = false;
     document.getElementById("total_pf_id").disabled = false;
-    document.getElementById("gst_id").disabled = false; 
+    document.getElementById("gst_id").disabled = false;
 
 
     <!--if (mode == 'Cheque'){-->
@@ -196,7 +234,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
     <!--}-->
 
 
-    document.getElementById("myText19").style.display = "block"; 
+    document.getElementById("myText19").style.display = "block";
 
 }{% endcomment %}
 
@@ -379,7 +417,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
           <option {% if purchase_id_id.channel_of_sales_id.pk == item.id %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
           {% endfor %}
           </select>
-      
+
     </div>
   </div>
 
@@ -708,7 +746,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
 <input hidden id="gst_check" value="{{purchase_id_id.is_gst}}" >
 
       <script>
-      
+
       function on_gst(){
         console.log("fhdkjshfkds");
         console.log("fhdkjshfkds");
@@ -720,7 +758,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
                   bill.style.display = "none";
                 } {% endcomment %}
           }
-                
+
 
                 {% comment %} show(); {% endcomment %}
 
@@ -861,20 +899,20 @@ checkbox.addEventListener( 'change', function() {
         {% endif %}
 
 
-        <button style="background-color: #FC6E20;" onclick="editableButton()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
+        <button onclick="editableButton()" id="myText20" class="btn btn-primary" type="reset" >Edit</button>
 
 
 
         <br>
         <br>
-        <button style="display:none; background-color: #FC6E20;" id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
+        <button style="display:none; " id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
 
-    <select style="width:150px; background-color: #FC6E20; color:white;" name="bill_company_type"  id="billBUtton" class="form-control">
+    <select style="width:150px;" name="bill_company_type"  id="billBUtton" class="form-control">
   <option value="">Select</option>
   <option value="Scale">Scale</option>
   <option  value="Sales">Sales</option>
 </select>
-                  <button style="background-color: #FC6E20; " type="submit" name="generate_bill" id="bill_id"  class="btn btn-primary">Bill</button>
+                  <button  type="submit" name="generate_bill" id="bill_id"  class="btn btn-primary">Bill</button>
 
 
       </center>
@@ -886,13 +924,13 @@ checkbox.addEventListener( 'change', function() {
               {% else %}
                 {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None and not purchase_id_id.is_quick_entry %}
 
-                <a href="/add_product_details/{{purchase_id_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
+                <a href="/add_product_details/{{purchase_id_id.id}}"> <button class="btn btn-primary">Add Product</button></a>
 
               {% endif %}
               {% endif %}
 
               {% if not purchase_id_id.dispatch_id_assigned and not purchase_id_id.is_quick_entry %}
-                                                  <a href="/add_product_details/{{purchase_id_id.id}}"> <button style="background-color: #FC6E20;" class="btn btn-primary">Add Product</button></a>
+                                                  <a href="/add_product_details/{{purchase_id_id.id}}"> <button class="btn btn-primary">Add Product</button></a>
 
                                         {% endif %}
 
@@ -971,10 +1009,10 @@ tr:nth-child(even) {
           <br><center>
                             {% if not purchase_id_id.dispatch_id_assigned.dispatch_by == '' and purchase_id_id.dispatch_id_assigned.dispatch_by == 'None' and purchase_id_id.dispatch_id_assigned.dispatch_by == None and not purchase_id_id.is_quick_entry  %}
 
-                  <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
+                  <a href="/edit_product_customer/{{list.id}}"><button class="btn btn-primary">Edit</button></a>
 
                   {% else %}
-                                    <a href="/edit_product_customer/{{list.id}}"><button style="background-color: #FC6E20;" class="btn btn-primary">Edit</button></a>
+                                    <a href="/edit_product_customer/{{list.id}}"><button class="btn btn-primary">Edit</button></a>
 
                   {% endif %}
 
@@ -1007,32 +1045,32 @@ tr:nth-child(even) {
 
                         <b>Knowledge : </b>{% for avg in feedback.knowledge_of_person|rjust:'5'  %}
 {% if forloop.counter <= feedback.knowledge_of_person %}
-									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-							{% else %}
-									<i class="fa fa-star" aria-hidden="true"></i>
-							{% endif %}
-        						{% endfor %} <br>
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %} <br>
                   <b>Timeliness : </b>{% for avg in feedback.timeliness_of_person|rjust:'5'  %}
 {% if forloop.counter <= feedback.timeliness_of_person %}
-									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-							{% else %}
-									<i class="fa fa-star" aria-hidden="true"></i>
-							{% endif %}
-        						{% endfor %}  <br>
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %}  <br>
                   <b>Price Of Product : </b>{% for avg in feedback.price_of_product|rjust:'5'  %}
 {% if forloop.counter <= feedback.price_of_product %}
-									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-							{% else %}
-									<i class="fa fa-star" aria-hidden="true"></i>
-							{% endif %}
-        						{% endfor %}   <br>
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %}   <br>
                   <b>Over All Interaction : </b>{% for avg in feedback.overall_interaction|rjust:'5'  %}
 {% if forloop.counter <= feedback.overall_interaction %}
-									<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-							{% else %}
-									<i class="fa fa-star" aria-hidden="true"></i>
-							{% endif %}
-        						{% endfor %} <br>
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %} <br>
                   <b>About HSCO : </b>{{feedback.about_hsco}} <br>
                   <b>Any Other Suggestions: </b>{{feedback.any_suggestion}} <br>
 <!--
@@ -1078,10 +1116,10 @@ tr:nth-child(even) {
                       <!--<b>Ratings : <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>-->
 <!--&ndash;&gt;-->
 
-								<!--<i class="fa fa-star" aria-hidden="true"></i></b>-->
-								<!--<i class="fa fa-star" aria-hidden="true"></i></b>-->
-								<!--<i class="fa fa-star" aria-hidden="true"></i></b>-->
-								<!--<i class="fa fa-star" aria-hidden="true"></i></b>-->
+                <!--<i class="fa fa-star" aria-hidden="true"></i></b>-->
+                <!--<i class="fa fa-star" aria-hidden="true"></i></b>-->
+                <!--<i class="fa fa-star" aria-hidden="true"></i></b>-->
+                <!--<i class="fa fa-star" aria-hidden="true"></i></b>-->
 
 
 <!--</form>-->
@@ -1108,7 +1146,7 @@ tr:nth-child(even) {
 <script type="text/javascript">
 const editableButton=()=>{
   var x = document.getElementById("myText19");
-  
+
   var y = document.getElementById("myText20");
   var mode = document.getElementById("payment_mode_id").value;
   if (x != null){
@@ -1120,7 +1158,7 @@ const editableButton=()=>{
     y.style.display = "block";
   }
   }
-  
+
 let inputFields = document.querySelectorAll('input,select,textarea');
 for(i=0; i<=inputFields.length; i++){
 inputFields[i].disabled = false;
@@ -1151,19 +1189,6 @@ disabledEnable();
 
   </script>
 
-
-  <!-- Bootstrap core JavaScript-->
-  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
-  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
-
-  <!-- Page level plugins -->
-
   <!-- Page level custom scripts -->
 
       <script>
@@ -1191,6 +1216,35 @@ $("#stars").val("0");
 
 </script>
 
-</body>
 
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
+
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
 </html>

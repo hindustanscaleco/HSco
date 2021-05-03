@@ -1,30 +1,69 @@
- <!DOCTYPE html>
+
+<!DOCTYPE html>
+
 <html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<head>
-  {% load static %}
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
 
-  <title>HSCO</title>
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
 
 
-
-  <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <!-- Custom styles for this template-->
-  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-</head>
-
-<body id="page-top">
 <style>
     .container-fluid {
 font-size: 14px;
@@ -32,8 +71,7 @@ font-size: 14px;
 
 </style>
   <!-- Page Wrapper -->
-  <div id="wrapper">
-	{% include 'base_templates/sidebar.html' %}
+  <div id="wrapper "  style="margin-top: 5vh;">
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -46,11 +84,10 @@ font-size: 14px;
         <div id="content">
 
         <!-- Topbar -->
-	{% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="">
 
             <div class="row">
           <div class="col-xl-6 col-md-3 mb-3 ">
@@ -72,16 +109,16 @@ font-size: 14px;
 
      {% if request.user.is_authenticated %}
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
-<a style="padding: 2px; " href="/add_repairing_details/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Repairing</button></a>
+<a style="padding: 2px; " href="/add_repairing_details/"><button class="btn btn-primary">Add Repairing</button></a>
 
 <form method="POST" ion="">{%csrf_token%}
- <a href="#"><button style="background-color: #FC6E20; margin-top: 3px;" name="deleted" type="submit" class="btn btn-primary" >Deleted User</button></a>
+ <a href="#"><button style="margin-top: 3px;" name="deleted" type="submit" class="btn btn-primary" >Deleted User</button></a>
 </form>
- <a style="padding: 2px;" href="/repairing_logs/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>
- <a style="padding: 2px;" href="/repairing_report_module/"> <button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>
- <a style="padding: 2px;" href="/repairing_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>
+ <a style="padding: 2px;" href="/repairing_logs/"> <button class="btn btn-primary">Log</button></a>
+ <a style="padding: 2px;" href="/repairing_report_module/"> <button class="btn btn-primary">Report</button></a>
+ <a style="padding: 2px;" href="/repairing_analytics/"><button class="btn btn-primary">Analytics</button></a>
 {% else %}
- <a style="padding: 2px;" href="/add_repairing_details/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Repairing</button></a>
+ <a style="padding: 2px;" href="/add_repairing_details/"><button class="btn btn-primary">Add Repairing</button></a>
 {% endif %}
 {% endif %}
 
@@ -102,65 +139,6 @@ font-size: 14px;
 </style>
             <style>
 
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 24px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: green;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 20px;
-  width: 20px;
-  left: 0px;
-  bottom: 1px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
 </style>
             <script>
 $( document ).ready(function() {
@@ -238,7 +216,7 @@ display:none;
 
       </div>
       <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
-                <button style="background-color: #FC6E20;" name="submit1" type="submit" class="btn btn-primary">Search</button></div>
+                <button name="submit1" type="submit" class="btn btn-primary">Search</button></div>
 
       </div>
                                </form>
@@ -247,7 +225,7 @@ display:none;
   <div id="d2" class="divs d2">
       <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Search</button></div>
+      <button type="submit" name="submit2" class="btn btn-primary">Search</button></div>
                                </form>
 
                                <form method="POST">{% csrf_token%}
@@ -255,20 +233,20 @@ display:none;
   <div id="d3" class="divs d3">
       <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit3" class="btn btn-primary">Search</button></div>
+      <button name="submit3" class="btn btn-primary">Search</button></div>
 </form>
                                <form method="POST">{% csrf_token%}
 
     <div id="d4" class="divs d4">
       <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit4" class="btn btn-primary">Search</button></div>
+      <button name="submit4" class="btn btn-primary">Search</button></div>
 </form>
                                <form method="POST">{% csrf_token%}
   <div id="d5" class="divs d5">
       <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit5" class="btn btn-primary">Search</button></div>
+      <button name="submit5" class="btn btn-primary">Search</button></div>
 </form>
 
                                <form method="POST">{% csrf_token%}
@@ -276,7 +254,7 @@ display:none;
     <div id="d6" class="divs d6">
       <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" name="submit6" class="btn btn-primary">Search</button></div>
+      <button name="submit6" class="btn btn-primary">Search</button></div>
 </form>
 
                                <!--<form method="POST">{% csrf_token%}-->
@@ -340,35 +318,35 @@ display:none;
 
 
       <br>
-   <div class="row" style="margin-left: 10%;">
+   <div class="row" style="">
 
-        <div style="cursor: pointer; " onclick="choice1('Scale is collected but estimate is not given')" class="col-xl-2 col-md-3 mb-12">
-              <div class="card shadow" style="  background: linear-gradient(40deg,rgba(255,110,196,5.5),rgba(120,115,245,.9))">
-                <div class="card-body row" style="padding-left: 20px;color: white; font-weight: 600; font-size: 16px; height: 130px;">
 
-                  <center> Scale is collected but estimate <br> is not given.  <br> ({{rep1}}) </center>
-
-                    </div>
-
-                </div>
-              </div>
-
-        <div style="cursor: pointer; " onclick="choice1('Estimate is given but Estimate is not confirmed')" class="col-xl-2 col-md-3 mb-12">
-              <div class="card shadow" style="background: linear-gradient(40deg,rgba(32,150,255,.9),rgba(5,255,163,.9))!important;">
-                <div class="card-body row" style="padding-left: 25px; color: white; font-weight: 600; font-size: 16px;  height: 130px;">
-                 <center> Estimate is given but Estimate <br> is not confirmed. &nbsp;<br> ({{rep2}})</center>
-
+        <div style="cursor: pointer; " onclick="choice1('Scale is collected but estimate is not given')" class="col-xl-2 col-md-3 col-6">
+              <div class="card shadow" style="  ">
+                <div class="card-body row" style="color: black; font-weight: 600; font-size: 16px; height: 130px;">
+                  <center> Scale is collected but estimate is not given.  <br> ({{rep1}}) </center>
 
                     </div>
 
                 </div>
               </div>
 
-            <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-2 col-md-3 mb-12">
-              <div class="card shadow" style="background: linear-gradient(40deg,rgba(255,216,111,.9),rgba(252,98,98,.9))">
-                <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 16px;  height: 130px;">
+        <div style="cursor: pointer; " onclick="choice1('Estimate is given but Estimate is not confirmed')" class="col-sm-6 col-xl-2 col-6 ">
+              <div class="card shadow" style="">
+                <div class="card-body row" style=" color: black; font-weight: 600; font-size: 16px;  height: 130px;">
+                 <center> Estimate is given but Estimate is not confirmed. &nbsp;<br> ({{rep2}})</center>
 
-                   <center><p> Estimate is confirmed  but<br> not repaired. <br>&nbsp; ({{rep3}}) </p></center>
+
+                    </div>
+
+                </div>
+              </div>
+
+            <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-2 col-md-3 col-6">
+              <div class="card shadow" style="">
+                <div class="card-body row" style="padding-left: 25px;color: black; font-weight: 600; font-size: 16px;  height: 130px;">
+
+                   <center><p> Estimate is confirmed  but not repaired. &nbsp; ({{rep3}}) </p></center>
 
                     </div>
 
@@ -376,9 +354,22 @@ display:none;
               </div>
 
 
-       <div class="col-xl-3 col-md-3 mb-12" >
-           <div onclick="choice1('Repaired but not collected')" class="card shadow" style=" cursor: pointer; background: linear-gradient(40deg,rgba(255,110,196,.9),rgba(120,115,245,.9))">
-               <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 14px;  height: 12%;">
+
+       <div style="cursor: pointer; " onclick="choice1('Finally Collected')" class="col-xl-2 col-md-3 col-6">
+           <div class="card shadow" style=" ">
+               <div class="card-body row" style="padding-left: 45px;color: black; font-weight: 600; font-size: 16px;  height: 130px;">
+
+                   <center><p> <br>
+                       Finally Collected.&nbsp;<br> ({{rep5}})</p></center>
+
+               </div>
+
+           </div>
+       </div>
+
+       <div  class="col-xl-2 col-md-3 col-12">
+           <div onclick="choice1('Repaired but not collected')" class="card shadow" style=" cursor: pointer; ">
+               <div class="card-body row" style="padding-left: 25px;color: black; font-weight: 600; font-size: 14px;  height: 1%;">
                    <center>
                        <p>
                           Resolved but not collected.({{rep4}})
@@ -386,8 +377,8 @@ display:none;
                    </center>
                </div>
            </div>
-           <div onclick="choice1('4days')" class="card shadow" style="cursor: pointer; float:left; width:50%;  background: linear-gradient(40deg,rgba(255,110,196,.9),rgba(120,115,245,.9))">
-               <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 14px;  height: 15px;">
+           <div onclick="choice1('4days')" class="card shadow" style="cursor: pointer; float:left; width:49%;  ">
+               <div class="card-body row" style=" color: black; font-weight: 600; font-size: 14px;  height: 15px;">
                    <center>
                        <p>
                           4 Days ({{rep4_4d}})
@@ -397,8 +388,8 @@ display:none;
                </div>
 
            </div>
-           <div onclick="choice1('10days')" class="card shadow" style="cursor: pointer; float:left; width:50%; background: linear-gradient(40deg,rgba(255,110,196,.9),rgba(120,115,245,.9))">
-               <div class="card-body row" style="padding-left: 25px;color: white; font-weight: 600; font-size: 14px;  height: 12px;">
+           <div onclick="choice1('10days')" class="card shadow" style="cursor: pointer; float:right; width:49%; ">
+               <div class="card-body row" style="padding-left: 25px;color: black; font-weight: 600; font-size: 14px;  height: 12px;">
 
                    <center>
                        <p>
@@ -406,17 +397,6 @@ display:none;
                           10 Days  ({{rep4_10d}})
                         </p>
                    </center>
-
-               </div>
-
-           </div>
-       </div>
-       <div style="cursor: pointer; " onclick="choice1('Finally Collected')" class="col-xl-2 col-md-3 mb-12">
-           <div class="card shadow" style="    background: linear-gradient(40deg,rgba(69,202,252,.9),rgba(48,63,159,.9))">
-               <div class="card-body row" style="padding-left: 45px;color: white; font-weight: 600; font-size: 16px;  height: 130px;">
-
-                   <center><p> <br>
-                       Finally Collected.&nbsp;<br> ({{rep5}})</p></center>
 
                </div>
 
@@ -519,10 +499,10 @@ td {
 
  <center><p>{{search_msg}}</p></center>
 
-                <div id="id_manager_view" >
+                <div id="id_manager_view"  class="table-responsive">
 
 <!--<div class="" id="id_subcat" style="min-height: 15vw;">-->
-<table>
+<table class="table">
                     <tr style="background-color: gray; color: white;">
 
                     <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Date </center> </td>
@@ -657,26 +637,35 @@ value = !select.checked;
 
     </script>
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
-  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
-
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
 
 
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
 
-
-</body>
-
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+        <script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+        <script src="{% static 'js/scripts.bundle.js' %}"></script>
+        <!--end::Global Theme Bundle-->
+        <!--begin::Page Vendors(used by this page)-->
+        <script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+        <!--end::Page Vendors-->
+        <!--begin::Page Scripts(used by this page)-->
+        <script src="{% static 'js/pages/widgets.js' %}"></script>
+                <!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
 </html>

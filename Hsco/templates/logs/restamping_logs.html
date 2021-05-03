@@ -1,33 +1,70 @@
- <!DOCTYPE html>
+
+<!DOCTYPE html>
+
 <html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<head>
-  {% load static %}
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
 
-  <title>HSCO</title>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
-   <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="">
+							<div class="container-fluid">
 
-  <!-- Custom styles for this template-->
-  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
-
-
-</head>
-
-<body id="page-top">
 
   <!-- Page Wrapper -->
-  <div id="wrapper">
-	{% include 'base_templates/sidebar.html' %}
+  <div id="wrapper" style="margin-top: 5%;">
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -40,11 +77,10 @@
 
 
         <!-- Topbar -->
-	{% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="">
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -108,7 +144,7 @@ $(function() {
 
       </div>
       <div class="col-xl-2 col-md-2 col-mb-2">
-                <button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>
+                <button  class="btn btn-primary">Search</button></div>
 
       </div>
 
@@ -117,31 +153,31 @@ $(function() {
   <div id="d2" class="divs d2">
       <input type="number" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>
+      <button class="btn btn-primary">Search</button></div>
 
 
   <div id="d3" class="divs d3">
       <input type="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>
+      <button class="btn btn-primary">Search</button></div>
 
 
     <div id="d4" class="divs d4">
       <input type="text" placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>
+      <button class="btn btn-primary">Search</button></div>
 
 
   <div id="d5" class="divs d5">
       <input type="text" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>
+      <button class="btn btn-primary">Search</button></div>
 
 
     <div id="d6" class="divs d6">
       <input type="text" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
       &nbsp; &nbsp;
-      <button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>
+      <button  class="btn btn-primary">Search</button></div>
 
 
   <div id="d7" class="divs d7 row" style="width: 50%;">
@@ -160,7 +196,7 @@ $(function() {
 
       </div>
       <div class="col-xl-2 col-md-2 col-mb-2">
-                <button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>
+                <button  class="btn btn-primary">Search</button></div>
 
       </div>
 </div>
@@ -186,7 +222,7 @@ $(function() {
 
   table {
   border-collapse: collapse;
-  width: 100%;
+  width: 99%;
   font-size: 14px;
   border-color: black;
   color: black;
@@ -211,10 +247,10 @@ td {
 
             </style>
 
-<div style="min-height: 26vw;">
+<div style="min-height: 26vw;" class="table-responsive">
 
 
-<table>
+<table class="table">
         <tr style="background-color: gray; color: white;">
             <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">TimeStamp</td>
             <td style="border: 0px solid gray;">Entered By</td>
@@ -236,6 +272,8 @@ td {
     </table>
 
 </div>
+            <br>
+            <br>
             <div class="pagination">
     <span class="step-links">
         {% if restamping_logs.has_previous %}
@@ -269,7 +307,7 @@ td {
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col ">
-<button onclick="location.href='/repairing_module_home/'" style="background-color: #FC6E20;" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Go back</button>                    </div>
+<button onclick="location.href='/repairing_module_home/'" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Go back</button>                    </div>
 
                   </div>
                 </div>
@@ -284,7 +322,7 @@ td {
                 <div class="card-body" style="padding: 12px;">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <button onclick="location.href='/repairing_report_module/'" style="background-color: #FC6E20;" class="btn btn-primary"><i class="fa fa-file" aria-hidden="true"></i>
+                        <button onclick="location.href='/repairing_report_module/'" class="btn btn-primary"><i class="fa fa-file" aria-hidden="true"></i>
  Report</button>
 
                     </div>
@@ -302,30 +340,33 @@ td {
   </div>
   <!-- End of Page Wrapper -->
 
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
+
+							</div>
+						</div>
+					</div>
+				</div>
 
 
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
-  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
 
-  <!-- Core plugin JavaScript-->
-  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
-
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
-
-</body>
-
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
 </html>

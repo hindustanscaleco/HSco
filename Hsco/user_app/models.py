@@ -54,7 +54,7 @@ class SiteUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, mobile, password=None,):
+    def create_superuser(self, email, mobile, password=None):
         user = self.create_user(
             email=email,
             mobile=mobile,
