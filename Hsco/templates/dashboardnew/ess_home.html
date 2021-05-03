@@ -1,28 +1,67 @@
- <!DOCTYPE html>
+
+<!DOCTYPE html>
+
 <html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<head>
-  {% load static %}
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
 
-  <title>HSCO</title>
 
-  <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-  <!-- Custom styles for this template-->
-  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
-
-</head>
-
-<body id="page-top">
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
 
 <style>
 input[type=number]::-webkit-inner-spin-button,
@@ -69,7 +108,6 @@ color:;
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-	{% include 'base_templates/sidebar.html' %}
 
     <!-- Sidebar -->
     <!-- End of Sidebar -->
@@ -82,7 +120,6 @@ color:;
 
 
         <!-- Topbar -->
-	{% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -221,162 +258,134 @@ color:;
 
                                   {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager' %}
 
-           <div class="row">
-                            <div class="col-xl-12 col-md-12 mb-12">
+            <div class="row">
+                <div class="col-xl-12 col-md-12 mb-12">
 
-<center>
-    <h3 style="color: black;" class="col-xl-12 col-md-12">Approve Leaves</h3>
-</center>
-                            </div>
-           </div>
-                           <div class="row" style="max-height: 600px; overflow-y: scroll;">
-
-{% for item in leave_req_list %}
-             <div class="col-xl-12 col-md-12 mb-12" >
-                 {% if item.is_approved %}
-              <div class="card shadow border-approve">
-                    <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
-                    <div class="col-xl-2 col-md-2 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.reason}} </center></div>|
-                    {% if is_employee_of_month %}<div class="col-xl-1 col-md-1 mb-1"> &nbsp;
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-
-                        </div>{% endif %}
-
-                    </div>
+                    <center>
+                        <h3 style="color: black;" class="col-xl-12 col-md-12">Approve Leaves</h3>
+                    </center>
                 </div>
-                  {% elif item.in_process %}
-                  <div class="card shadow border-process">
-                        <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
-                    <div class="col-xl-2 col-md-2 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.reason}} </center></div>|
-                   {% if is_employee_of_month %} <div class="col-xl-1 col-md-1 mb-1"> &nbsp;
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+            </div>
 
-                        </div>{% endif %}
-                        <div class="col-xl-2 col-md-1 mb-1">
-                               <form method="post">{% csrf_token %}
-                      <button style="background-color: #FC6E20;" name="list[]" value="no" id="no" type="submit"  class="no_button"><i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i></button>
-&nbsp; <input type="hidden"  name="user_id" value="{{item.pk}}">
+            <div class="table-responsive">
 
-                        <button name="list[]" value="yes" onclick="myFunction()" type="submit" class="no_button"><i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i></button>
-                    </form>
-                        </div>
-                    </div>
-                </div>
-                     {% elif not item.is_approved %}
-                      <div class="card shadow border-disapprove">
-                            <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
-                    <div class="col-xl-2 col-md-2 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.reason}} </center></div>|
-                    {% if is_employee_of_month %}<div class="col-xl-1 col-md-1 mb-1"> &nbsp;
+                {% for item in leave_req_list %}
+                <table class="table">
+                    {% if item.is_approved %}
+                    <tr style="border: 1px solid green;">
+                        <th>{{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </th>
+                        <th>{{item.user_id.name}}</th>
+                        <th>{{item.reason}}</th>
 
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-
-
-
-                    </div>{% endif %}
-                        <div class="col-xl-2 col-md-1 mb-1">
-                             <form method="post">{% csrf_token %}
-&nbsp; <input type="hidden"  name="user_id" value="{{item.pk}}">
-
-                        <button name="list[]" value="yes" onclick="myFunction()" type="submit" class="no_button"><i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i></button>
-                    </form>
-                        </div>
-                    </div>
-                </div>
-                      {% endif %}
-
-
-                </div>
-
-
-{% endfor %}
-                                 </div>
-
-            {% endif %}
-
-{% if user.role != 'Super Admin' %}
-             <p style="font-size: 25px; text-align: center; color: black;">Leaves Applied</p>
-
-
-<div class="col-xl-12 col-md-12 mb-12" >
-
-              <div class="card shadow">
-
-                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;max-height: 300px; overflow-y: scroll;">
-
-{% for item in leave_list %}
-
-               <div class="col-xl-12 col-md-12 mb-12">
-                 {% if item.is_approved %}
-              <div class="card shadow border-approve">
-                    <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;  {% if is_employee_of_month %}
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-
-                        {% endif %}</div>
-                        <div class="col-xl-2 col-md-1 mb-1">
-{{item.reason}}
-                        </div>
-                    </div>
-                </div>
-                  {% elif item.in_process %}
-                  <div class="card shadow border-process">
-                        <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;  {% if is_employee_of_month %}
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
-
-                        {% endif %}</div>
-                        <div class="col-xl-2 col-md-1 mb-1">
-                            {{item.reason}}
-                               <!--<form method="post">{% csrf_token %}-->
-                      <!--<button name="list[]" value="no" id="no" type="submit"  class="no_button"><i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i></button>-->
-<!--&nbsp; <input type="hidden"  name="user_id" value="{{item.pk}}">-->
-
-                        <!--<button name="list[]" value="yes" onclick="myFunction()" type="submit" class="no_button"><i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i></button>-->
-                    <!--</form>-->
-                        </div>
-                    </div>
-                </div>
-                     {% elif not item.is_approved %}
-                      <div class="card shadow border-disapprove">
-                            <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
-                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
-                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
-                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;
                         {% if is_employee_of_month %}
-                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                            <th> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i></th>
+                        {% endif %}
+                    </tr>
+                    {% elif item.in_process %}
+
+                    <tr style="border: 1px solid green;">
+                        <th>{{item.requested_leave_date_from}} - {{item.requested_leave_date_to}}  </th>
+                        <th> {{item.user_id.name}}</th>
+                        <th>{{item.reason}}</th>
+
+                        {% if is_employee_of_month %}
+                            <th> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i></th>
+                        {% endif %}
+                    </tr>
+
+                     <form method="post">{% csrf_token %}
+                        <button name="list[]" value="no" id="no"
+                                type="submit" class="no_button"><i class="fa fa-times" aria-hidden="true"
+                                                                   style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i>
+                        </button>
+                        &nbsp; <input type="hidden" name="user_id" value="{{item.pk}}">
+
+                        <button name="list[]" value="yes" onclick="myFunction()" type="submit"
+                                class="no_button"><i class="fa fa-check" aria-hidden="true"
+                                                     style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i>
+                        </button>
+                    </form>
+
+                    {% elif not item.is_approved %}
+                    <tr>
+                        <th>{{item.requested_leave_date_from}} - {{item.requested_leave_date_to}}</th>
+                        <th>{{item.user_id.name}} </th>
+                        <th>{{item.reason}}</th>
+                         {% if is_employee_of_month %}
+                            <th> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i></th>
+                        {% endif %}
+                    </tr>
+                    <div class="col-xl-2 col-md-1 mb-1">
+                        <form method="post">{% csrf_token %}
+                            &nbsp; <input type="hidden" name="user_id" value="{{item.pk}}">
+
+                            <button name="list[]" value="yes" onclick="myFunction()" type="submit" class="no_button"><i
+                                    class="fa fa-check" aria-hidden="true"
+                                    style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </table>
+                {% endfor %}
+
+            </div>
 
                         {% endif %}
 
-                    </div>
-                        <div class="col-xl-2 col-md-1 mb-1">
-                             {{item.reason}}
-                             <!--<form method="post">{% csrf_token %}-->
-<!--&nbsp; <input type="hidden"  name="user_id" value="{{item.pk}}">-->
-
-                        <!--<button name="list[]" value="yes" onclick="myFunction()" type="submit" class="no_button"><i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i></button>-->
-                    <!--</form>-->
-                        </div>
-                    </div>
-                </div>
-                      {% endif %}
 
 
-                </div>
 
-                    {% endfor %}
-                </div>
-              </div>
-</div>
+{% if user.role != 'Super Admin' %}
+             <p style="font-size: 25px; text-align: center; color: black;">Leaves Applied</p>
+            {% for item in leave_list %}
+            <table class="table">
+                {% if item.is_approved %}
+
+                <tr style="border: 1px solid green;">
+                    <th>{{item.requested_leave_date_from}} - {{item.requested_leave_date_to}}</th>
+                    <th>{{item.user_id.name}}</th>
+                    <th>
+                        {% if is_employee_of_month %}
+                            <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                        {% endif %}
+                    </th>
+                    <th>{{item.reason}}</th>
+                </tr>
+
+                {% elif item.in_process %}
+
+                 <tr style="border: 1px solid green;">
+                    <th>{{item.requested_leave_date_from}} - {{item.requested_leave_date_to}}</th>
+                    <th>{{item.user_id.name}}</th>
+                    <th>
+                        {% if is_employee_of_month %}
+                            <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                        {% endif %}
+                    </th>
+                    <th>{{item.reason}}</th>
+                </tr>
+
+                {% elif not item.is_approved %}
+
+                 <tr style="border: 1px solid green;">
+                    <th>{{item.requested_leave_date_from}} - {{item.requested_leave_date_to}}</th>
+                    <th>{{item.user_id.name}}</th>
+                    <th>
+                        {% if is_employee_of_month %}
+                            <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                        {% endif %}
+                    </th>
+                    <th>{{item.reason}}</th>
+                </tr>
+
+                {% endif %}
+
+
+            </table>
+            {% endfor %}
+
+
 
 {% endif %}
 
@@ -417,11 +426,6 @@ color:;
   </div>
   <!-- End of Page Wrapper -->
 
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-
 <script>
 var today = new Date().toISOString().split('T')[0];
 document.getElementById("to_date").setAttribute('min', today);
@@ -438,20 +442,34 @@ document.getElementById("to_date").setAttribute('min', targetDate2.toISOString()
 </script>
 
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
-  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
 
-  <!-- Core plugin JavaScript-->
-
-  <!-- Custom scripts for all pages-->
-  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
-
-  <!-- Page level plugins -->
-
-  <!-- Page level custom scripts -->
-
-
-</body>
-
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
 </html>
