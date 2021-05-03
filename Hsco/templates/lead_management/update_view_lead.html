@@ -1,70 +1,42 @@
-
 <!DOCTYPE html>
-
 <html lang="en">
-	<!--begin::Head-->
-	<head><base href="">
-		{% load static %}
-		<meta charset="utf-8" />
-		<title></title>
-		<meta name="description" content="Updates and statistics" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-		<!--begin::Fonts-->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Page Vendors Styles(used by this page)-->
-		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<!--end::Page Vendors Styles-->
-		<!--begin::Global Theme Styles(used by all pages)-->
-		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-		<!--end::Global Theme Styles-->
-		<!--begin::Layout Themes(used by all pages)-->
-		<!--end::Layout Themes-->
-		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
-	</head>
-	<!--end::Head-->
-	<!--begin::Body-->
-	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
-		<!--begin::Main-->
-		<!--begin::Header Mobile-->
-		<div id="kt_header_mobile" class="header-mobile">
-			<!--begin::Logo-->
-			<a href="index.html">
-				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
-			</a>
-			<!--end::Logo-->
-			<!--begin::Toolbar-->
-			<div class="d-flex align-items-center">
-				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
-					<span></span>
-				</button>
-			</div>
-			<!--end::Toolbar-->
-		</div>
-		<!--end::Header Mobile-->
-		<div class="d-flex flex-column flex-root">
-			<!--begin::Page-->
-			<div class="d-flex flex-row flex-column-fluid page">
-				<!--begin::Aside-->
-					{% include 'base_templates/aside.html' %}
+<head>
+{% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
 
-				<!--end::Aside-->
-				<!--begin::Wrapper-->
-				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-					<!--begin::Content-->
-					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-						<!--begin::Subheader-->
-						<div class="" id="kt_subheader">
-							<div class="">
-                                <br>
-                                <br>
-								<!--begin::Info-->
+  <title>Hsco | Lead Management</title>
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+
+
+
+      <link rel="stylesheet" href="{% static 'css/dashboard/upload-images.css' %}">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <!-- Custom fonts for this template-->
+  <!--<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">-->
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
 /* width */
 ::-webkit-scrollbar {
@@ -79,13 +51,13 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #1BC5BD;
+  background: #FC6E20;
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #0c7a75;
+  background: #b30000;
 }
 scrollbar-color: #87ceeb #ff5621;
 scrollbar-width: thin;
@@ -99,6 +71,7 @@ scrollbar-width: thin;
   <div id="wrapper">
 
     <!-- Sidebar -->
+  {% include 'base_templates/sidebar.html' %}
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -108,6 +81,7 @@ scrollbar-width: thin;
       <div id="content">
 
         <!-- Topbar -->
+{% include 'base_templates/navbar_for_dashboard.html' %}
 
         <!-- End of Topbar -->
 
@@ -121,7 +95,7 @@ color:;
 }
   .faicons {
   font-size: 18px;
-  margin-top: 20px;
+  margin-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
   color: #5a5c69;
@@ -418,7 +392,7 @@ myFunction225();
 
 
 <center>
-     <button name="submit" type="submit" id="Mytext1" class="btn btn-primary">Save</button>
+     <button name="submit" type="submit" style="background-color: #FC6E20;" id="Mytext1" class="btn btn-primary">Save</button>
 </center>
 
                      </form>
@@ -583,7 +557,7 @@ myFunction225();
                              <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-
+    
         <select required name="channel" id="channel" class="form-control"  id="myText16" >
 
     {% for item in channel_marketing %}
@@ -719,7 +693,7 @@ myFunction225();
 
 <center>
 
-     <button type="submit" name="submit1" class="btn btn-primary">Save</button>
+     <button type="submit" name="submit1" style="background-color: #FC6E20;" class="btn btn-primary">Save</button>
 
 </center>
               </div>
@@ -744,13 +718,13 @@ myFunction225();
                          <div class="row">
                              <div class="col-xl-2 col-lg-2">
 </div>
-                         <a href="/select_product/{{lead_id.id}}"><input  type="button" class="btn btn-primary" value="Add Product"></a>
+                         <a href="/select_product/{{lead_id.id}}"><input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Add Product"></a>
 <div class="col-xl-2 col-lg-2">
 </div>
-                             <a href="/lead_delete_product/{{lead_id.id}}">   <input type="button" class="btn btn-primary" value="Delete Product"></a>
+                             <a href="/lead_delete_product/{{lead_id.id}}">   <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="Delete Product"></a>
 <div class="col-xl-2 col-lg-2">
 </div>
-                             <a href="/pi_section_history/{{lead_id.id}}"> <input type="button" class="btn btn-primary" value="History of Record"></a>
+                             <a href="/pi_section_history/{{lead_id.id}}"> <input style="background-color: #FC6E20;" type="button" class="btn btn-primary" value="History of Record"></a>
                          </div>
 <br>
 
@@ -774,9 +748,9 @@ tr:nth-child(even) {
 
                           <div class="card shadow">
 
-<div class="card-body row table-responsive" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+<div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
     <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
-    <table style="font-size: 14px;" class="tanle">
+    <table style="font-size: 14px;">
   <tr>
     <td>Product Code: {{ product.product_id.sub_sub_category }}</td>
       <td rowspan="5">Product Image:
@@ -869,7 +843,7 @@ tr:nth-child(even) {
                {% if pi_id.select_gst_type !=  None  %}
 
                          <center>
-<button type="button" onclick="pdf_download_manual()" name="download_pi"  class="btn btn-primary">Download PI</button>
+<button type="button" onclick="pdf_download_manual()" name="download_pi"  style="background-color: #FC6E20;" class="btn btn-primary">Download PI</button>
 </center>
 {% endif %}
 
@@ -977,7 +951,7 @@ tr:nth-child(even) {
                {% if pi_id.select_gst_type !=  None  %}
 
       <center>
-<button type="button" onclick="pdf_download_manual()" name="download_pi" class="btn btn-primary">Download PI</button>
+<button type="button" onclick="pdf_download_manual()" name="download_pi"  style="background-color: #FC6E20;" class="btn btn-primary">Download PI</button>
 </center>
                                                      {% endif %}
 
@@ -1060,14 +1034,14 @@ tr:nth-child(even) {
 
 
                          <center>
-     <button type="submit" name="submit2" id="primaryButton"  class="btn btn-primary">Submit</button>
+     <button type="submit" name="submit2" id="primaryButton"  style="background-color: #FC6E20;" class="btn btn-primary">Submit</button>
 
                              <!--<button type="submit" onclick="download_pdf()" class="btn btn-primary" style="background-color: #FC6E20;">PDF</button>-->
                              {% if pi_id.first_submit == True  %}
                              {% if pi_id.grand_total != 0.0  %}
-                             <button type="submit" onclick="download_image()" class="btn btn-primary" >Image</button>
+                             <button type="submit" onclick="download_image()" class="btn btn-primary" style="background-color: #FC6E20;">Image</button>
                              {% endif %}
-                             <a target="_blank" href="https://api.whatsapp.com/send?phone=91{{customer_id.contact_no}}&text=Hey, here is the PI"><button type="button" class="btn btn-primary">Whatsapp</button></a>
+                             <a target="_blank" href="https://api.whatsapp.com/send?phone=91{{customer_id.contact_no}}&text=Hey, here is the PI"><button type="button" class="btn btn-primary" style="background-color: #FC6E20;">Whatsapp</button></a>
                              {% endif %}
 
 </center>
@@ -1106,17 +1080,17 @@ tr:nth-child(even) {
                                                    <div class="row">
                             <div class="row col-md-6"></div>
                         <div class="row col-md-2">
- <button type="reset" onclick="location.href='/select_product_followup/{{lead_id.pk}}'"
+ <button type="reset" onclick="location.href='/select_product_followup/{{lead_id.pk}}'" style="background-color: #FC6E20;"
          class="btn btn-primary">Add Product</button>
 
                         </div>
                                                          <div class="row col-md-2">
- <button type="reset" onclick="location.href='/followup_delete_product/{{lead_id.pk}}'"
+ <button type="reset" onclick="location.href='/followup_delete_product/{{lead_id.pk}}'" style="background-color: #FC6E20;"
          class="btn btn-primary">Delete Product</button>
 
                         </div>
                             <div class="row col-md-2">
-                        <a href="/lead_follow_up_histroy/{{hfu_id}}"><input type="button" class="btn btn-primary" value="History"></a> &nbsp
+                        <a href="/lead_follow_up_histroy/{{hfu_id}}"><input type="button" style="background-color: #FC6E20;" class="btn btn-primary" value="History"></a> &nbsp
 
 
                             </div>
@@ -1372,7 +1346,7 @@ tr:nth-child(even) {
   </div>
 
                                 <center>
-                                    <button class="btn btn-primary" type="submit" name="submit3">Save</button>
+                                    <button style="background-color: #FC6E20;" class="btn btn-primary" type="submit" name="submit3">Save</button>
                                 </center>
                                 <hr>
                             </form>
@@ -1399,8 +1373,8 @@ tr:nth-child(even) {
                             <div class="">
 <div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; ">
 
-    <div style="min-height:100px;max-height:390px;" class="table-responsive">
-    <table class="table">
+    <div style="overflow:auto;min-height:100px;max-height:390px;">
+    <table >
         <tr>
             <td style="min-width: 100px;">Product Selection</td>
             <td style="min-width: 200px;">Scale Type</td>
@@ -1661,7 +1635,7 @@ tr:nth-child(even) {
                          <br>
                          <center>
 {% if auto_manual_mode == 'Manual' or auto_manual_mode == 'Select Mode' %}
-<button name="submit5" class="btn btn-primary" type="submit" onclick="save_alert_form();">Send</button>
+<button name="submit5" style="background-color: #FC6E20;" class="btn btn-primary" type="submit" onclick="save_alert_form();">Send</button>
            {% endif %}
                     </center>
                           </form>
@@ -1971,7 +1945,7 @@ function whosFunction() {
                               <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
                                 {{ form5.Payment_notes }}
                             </div>
-                             </div>
+                             </div> 
 
 
 
@@ -1984,7 +1958,7 @@ function whosFunction() {
 
 
 <center>
-     <button type="submit" name="submit_payment" class="btn btn-primary">Save</button>
+     <button type="submit" style="background-color: #FC6E20;" name="submit_payment" class="btn btn-primary">Save</button>
 </center>
 
 </form>
@@ -2016,19 +1990,19 @@ function whosFunction() {
         <div class="modal-header">
           <h4 class="modal-title">Select PI Products</h4>
 
-
-
+         
+           
           <button type="button" class="close" data-dismiss="modal">&times;</button>
 
         </div>
         <div class="modal-body">
         <div id="rec_data_quantity"></div>
                <form method="POST" >{% csrf_token %}
-        <div class="row table-responsive" >
+        <div class="row" >
+        
+            
 
-
-
-            <table class="table">
+            <table>
                 <tr style="background-color: gray; color: white;">
                     <td style="border: 1px solid gray;"><label class="checkbox">
                         Select
@@ -2094,7 +2068,7 @@ function whosFunction() {
                 {% endfor %}
 
             </table>
-
+            
 
         </div>
         <br>
@@ -2126,6 +2100,10 @@ function whosFunction() {
   </div>
   <!-- End of Page Wrapper -->
 
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
   <!-- Logout Modal-->
   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -2337,11 +2315,35 @@ function pdf_download_manual(){
 
 
 
-<script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
 
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+
+  <!--&lt;!&ndash; Page level plugins &ndash;&gt;-->
+  <!--<script src="vendor/chart.js/Chart.min.js"></script>-->
+
+  <!--&lt;!&ndash; Page level custom scripts &ndash;&gt;-->
+  <!--<script src="js/demo/chart-area-demo.js"></script>-->
+  <!--<script src="js/demo/chart-pie-demo.js"></script>-->
+  <!--<script src="js/demo/chart-bar-demo.js"></script>-->
+
+ <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+
+
+
+
+    <script  src="{% static 'js/dashboard/upload-images.js' %}"></script>
+
+<script>
+      
                 show();
 
-
+              
 
           function show(){
               var mode = document.getElementById("payment_mode_id").value;
@@ -2423,7 +2425,7 @@ function pdf_download_manual(){
                   $('#cheque_date2').removeAttr('required', '');
               }
 
-
+              
 
           }
 </script>
@@ -2506,39 +2508,9 @@ function change( el )
 
   </script>
   <script>
-
+  
   </script>
 
+</body>
 
-
-								
-							
-							</div>
-						</div>
-					</div>
-				</div>
-										
-
-			
-				<!--end::Purchase-->
-			</div>
-			<!--end::Content-->
-		</div>
-		<!--end::Demo Panel-->
-		<!--begin::Global Config(global config for global JS scripts)-->
-		
-		<!--end::Global Config-->
-		<!--begin::Global Theme Bundle(used by all pages)-->
-		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
-<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
-<script src="{% static 'js/scripts.bundle.js' %}"></script>
-<!--end::Global Theme Bundle-->
-<!--begin::Page Vendors(used by this page)-->
-<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
-<!--end::Page Vendors-->
-<!--begin::Page Scripts(used by this page)-->
-<script src="{% static 'js/pages/widgets.js' %}"></script>
-		<!--end::Page Scripts-->
-	</body>
-	<!--end::Body-->
 </html>

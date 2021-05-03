@@ -1,76 +1,98 @@
-
-<!DOCTYPE html>
-
+ <!DOCTYPE html>
 <html lang="en">
-	<!--begin::Head-->
-	<head><base href="">
-		{% load static %}
-		<meta charset="utf-8" />
-		<title></title>
-		<meta name="description" content="Updates and statistics" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-		<!--begin::Fonts-->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Page Vendors Styles(used by this page)-->
-		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<!--end::Page Vendors Styles-->
-		<!--begin::Global Theme Styles(used by all pages)-->
-		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-		<!--end::Global Theme Styles-->
-		<!--begin::Layout Themes(used by all pages)-->
-		<!--end::Layout Themes-->
-		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
-	</head>
-	<!--end::Head-->
-	<!--begin::Body-->
-	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
-		<!--begin::Main-->
-		<!--begin::Header Mobile-->
-		<div id="kt_header_mobile" class="header-mobile">
-			<!--begin::Logo-->
-			<a href="index.html">
-				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
-			</a>
-			<!--end::Logo-->
-			<!--begin::Toolbar-->
-			<div class="d-flex align-items-center">
-				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
-					<span></span>
-				</button>
-			</div>
-			<!--end::Toolbar-->
-		</div>
-		<!--end::Header Mobile-->
-		<div class="d-flex flex-column flex-root">
-			<!--begin::Page-->
-			<div class="d-flex flex-row flex-column-fluid page">
-				<!--begin::Aside-->
-					{% include 'base_templates/aside.html' %}
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
 
-				<!--end::Aside-->
-				<!--begin::Wrapper-->
-				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-					<!--begin::Content-->
-					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-						<!--begin::Subheader-->
-						<div class="" id="kt_subheader">
-							<div class="container-fluid">
-								<!--begin::Info-->
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
 
   <!-- Page Wrapper -->
   <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
 <style>
     .border-right-primary{border-right:.25rem solid #4e73df!important}
 </style>
 
+                        <style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
 
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: green;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
     <!-- Sidebar -->
     <!-- End of Sidebar -->
 
@@ -78,12 +100,11 @@
     <div id="content-wrapper" class="d-flex flex-column">
 
       <!-- Main Content -->
-      <div id="content" style="background-color: white;">
-          <br>
-          <br>
+      <div id="content">
 
 
         <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -156,31 +177,59 @@ $(function() {
 
 <div style="min-height: 26vw;">
 
-        <div id="id_deleted_view" class="row table-responsive">
+        <div id="id_deleted_view" class="row">
 
-            <table class="table">
-                <tr>
-                    <th>Name</th>
-                    <th>Role</th>
-                    <th>Email</th>
-                    <th>Mobile</th>
-                    <th>Group</th>
-                </tr>
-                {% if deleted %}
-                <tr>
-                    <th>List Of Deleted Manager Under Your Work Area</th>
-                </tr>
-                {% endif %}
+
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+
+
+
+                    <div class="col-xl-2 col-md-1 mb-1"> <center>Name </center>  </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Role</center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"> <center>Email </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"> <center> Mobile</center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"> <center> Group </center> </div>
+
+
+
+                </div>
+              </div>
+            </div><br><br>
+   {% if deleted %}
+               <center>
+                   <p>List Of Deleted Manager Under Your Work Area</p>
+
+               </center>
+               {% endif %}
                 {% for list in manager_list %}
-                <tr>
-                    <td><a href="/update_manager/{{list.id}}" >{{list.name}}</a></td>
-                    <td>{{list.role}}</td>
-                    <td>{{list.email}}</td>
-                    <td>{{list.mobile}}</td>
-                    <td>{{list.group}}</td>
-                </tr>
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+
+
+
+                    <div class="col-xl-2 col-md-1 mb-1"> <center><a href="/update_manager/{{list.id}}" >{{list.name}}</a> </center>  </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.role}}</center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"> <center>{{list.email}} </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"> <center> {{list.mobile}}</center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"> <center> {{list.group}} </center> </div>
+
+
+
+                </div>
+              </div>
+            </div>
                 {% endfor %}
-            </table>
+
+<br>
+
+
+
+
+
+
 
         </div>
 </div>
@@ -199,7 +248,7 @@ $(function() {
                 <div class="card-body" style="padding: 12px; ">
                   <div class="row no-gutters align-items-center">
                     <div class="col ">
- <a href="/create_manager/"><button class="btn btn-primary">Add Manager</button></a>                    </div>
+ <a href="/create_manager/"><button style="background-color: #FC6E20;" class="btn btn-primary">Add Manager</button></a>                    </div>
 
                   </div>
                 </div>
@@ -237,36 +286,23 @@ value = !select.checked;
 </script>
 
 
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
 
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
 
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
 
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
 
-							</div>
-						</div>
-					</div>
-				</div>
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
 
+</body>
 
-
-				<!--end::Purchase-->
-			</div>
-			<!--end::Content-->
-		</div>
-		<!--end::Demo Panel-->
-		<!--begin::Global Config(global config for global JS scripts)-->
-
-		<!--end::Global Config-->
-		<!--begin::Global Theme Bundle(used by all pages)-->
-		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
-<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
-<script src="{% static 'js/scripts.bundle.js' %}"></script>
-<!--end::Global Theme Bundle-->
-<!--begin::Page Vendors(used by this page)-->
-<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
-<!--end::Page Vendors-->
-<!--begin::Page Scripts(used by this page)-->
-<script src="{% static 'js/pages/widgets.js' %}"></script>
-		<!--end::Page Scripts-->
-	</body>
-	<!--end::Body-->
 </html>

@@ -1,79 +1,44 @@
-<!DOCTYPE html>
-
+ <!DOCTYPE html>
 <html lang="en">
-<!--begin::Head-->
+
 <head>
-    <base href="">
-    {% load static %}
-    <meta charset="utf-8"/>
-    <title></title>
-    <meta name="description" content="Updates and statistics"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <!--begin::Fonts-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>
-    <!--end::Fonts-->
-    <!--begin::Page Vendors Styles(used by this page)-->
-    <link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css"/>
-    <!--end::Page Vendors Styles-->
-    <!--begin::Global Theme Styles(used by all pages)-->
-    <link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css"/>
-    <link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css"/>
-    <link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css"/>
-    <!--end::Global Theme Styles-->
-    <!--begin::Layout Themes(used by all pages)-->
-    <!--end::Layout Themes-->
-    <link rel="shortcut icon" href="assets/media/logos/favicon.ico"/>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<!--<script src = "http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>-->
+    <script src = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
 </head>
-<!--end::Head-->
-<!--begin::Body-->
-<body id="kt_body"
-      class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
-<!--begin::Main-->
-<!--begin::Header Mobile-->
-<div id="kt_header_mobile" class="header-mobile">
-    <!--begin::Logo-->
-    <a href="index.html">
-        <img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px"/>
-    </a>
-    <!--end::Logo-->
-    <!--begin::Toolbar-->
-    <div class="d-flex align-items-center">
-        <button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
-            <span></span>
-        </button>
-    </div>
-    <!--end::Toolbar-->
-</div>
-<!--end::Header Mobile-->
-<div class="d-flex flex-column flex-root">
-    <!--begin::Page-->
-    <div class="d-flex flex-row flex-column-fluid page">
-        <!--begin::Aside-->
-        {% include 'base_templates/aside.html' %}
 
+<body id="page-top">
 
-        <!--end::Aside-->
-        <!--begin::Wrapper-->
-        <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-            <!--begin::Content-->
-            <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-                <!--begin::Subheader-->
-                <div class="" id="kt_subheader">
-                    <div class="container-fluid">
-                        <!--begin::Info-->
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
 
-                        <!--end::Info-->
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
 
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
 
-                        <!-- Sidebar -->
-                        <!-- End of Sidebar -->
-
-                        <!-- Content Wrapper -->
-                        <div class="">
-
-                            <!-- Main Content -->
-                            <div id="">
-                                <script>
+      <!-- Main Content -->
+      <div id="content">
+<script>
 $(document).ready(function(){
 
     $(".editableBox22").change(function(){
@@ -95,20 +60,20 @@ $(document).ready(function(){
         $(".timeTextBoxaa").val($(".editableBoxaa option:selected").html());
     });
 });
+</script>
 
-                                </script>
+        <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
 
-                                <!-- Topbar -->
-                                <!-- End of Topbar -->
-
-                                <style>
+<style>
 
 * {
 color:;
 }
   .faicons {
   font-size: 18px;
-  margin-top: 20px;
+  margin-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
   color: #5a5c69;
@@ -127,9 +92,8 @@ color:;
 
   }
 
-
-                                </style>
-                                <style>
+</style>
+                   <style>
           .editableBox, .editableBox1,.editableBoxa22  {
     width: 70%;
     height: 30px;
@@ -194,356 +158,335 @@ color:;
     border: none;
 }
 
+        </style>
 
-                                </style>
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+<center>
+         <!-- Page Heading -->
+            <h1 class="h3 mb-0 text-gray-800"> Add Product</h1>
+</center>
+            {% if msg %}
 
-                                <!-- Begin Page Content -->
-                                <div style="margin-top: 5vh;">
-                                    <center>
-                                        <!-- Page Heading -->
-                                        <h1 class="h3 mb-0 text-gray-800"> Add Product</h1>
-                                    </center>
-                                    {% if msg %}
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> {{msg}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+           {% if messages %}
+    {% for message in messages %}
+             {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% endif %}
 
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <strong>Error : </strong> {{msg}}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    {% endif %}
-                                    {% if messages %}
-                                    {% for message in messages %}
-                                    {% if message.tags == 'success' %}
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <strong>Success : </strong> {{ message }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    {% elif message.tags == 'error' %}
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <strong>Error : </strong> {{ message }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    {% endif %}
 
+             {% endfor %}
 
-                                    {% endfor %}
+{% endif %}
 
-                                    {% endif %}
+<br>
+<br>
+            <div id="rec_data"></div>
 
-                                    <br>
-                                    <br>
-                                    <div id="rec_data"></div>
+            <form method="POST" action="" onsubmit="return isOneChecked();" >{% csrf_token %}
 
-                                    <form method="POST" action="" onsubmit="return isOneChecked();">{% csrf_token %}
 
+<div class="form-group row">
 
-                                        <div class="form-group row">
+        <label class="col-md-2 control-label">Type of Scale *
 
-                                            <label class="col-md-2 control-label">Type of Scale *
-                                            </label>
-                                            <div class="col-md-4 inputGroupContainer">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon icon-border"><i
-                                                            class="fa fa-balance-scale faicons"></i></span>
 
-                                                    <select id="divselector" required onchange="choice1(this)"
-                                                            class="form-control">
-                                                        <option value="">Select Scale Type</option>
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
-                                                        {% for item in type_purchase %}
-                                                        <option value="{{item.pk}}">{{item.name}}</option>
+      <select id="divselector" required onchange="choice1(this)" class="form-control">
+       <option value="">Select Scale Type</option>
 
-                                                        {% endfor %}
+    {% for item in type_purchase %}
+  <option value="{{item.pk}}">{{item.name}}</option>
 
-                                                    </select>
+   {% endfor %}
 
+  </select>
 
-                                                </div>
-                                            </div>
 
-                                            <label class="col-md-2 control-label">Model *
+     </div>
+  </div>
 
+            <label class="col-md-2 control-label">Model *
 
-                                            </label>
-                                            <div class="col-md-4 inputGroupContainer">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon icon-border"><i
-                                                            class="fa fa-balance-scale faicons"></i></span>
 
-                                                    <select id="id_subcat" required onchange="choicemodel(this)"
-                                                            class="form-control">
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
+      <select id="id_subcat" required onchange="choicemodel(this)" class="form-control">
 
-                                                    </select>
 
+  </select>
 
-                                                </div>
-                                            </div>
-                                        </div>
 
+     </div>
+  </div>
+</div>
 
-                                        <div class="form-group row">
 
+<div class="form-group row">
 
-                                            <label class="col-md-2 control-label">Sub Model *
 
 
-                                            </label>
-                                            <div class="col-md-4 inputGroupContainer">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon icon-border"><i
-                                                            class="fa fa-balance-scale faicons"></i></span>
 
-                                                    <select id="id_subcat2" onchange="choice_sub_model(this)"
-                                                            class="form-control">
+                            <label class="col-md-2 control-label">Sub Model *
 
 
-                                                    </select>
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
+      <select id="id_subcat2" onchange="choice_sub_model(this)" class="form-control">
 
-                                                </div>
-                                            </div>
 
-                                            <label class="col-md-2 control-label">Sub Sub Model *
+  </select>
 
 
-                                            </label>
-                                            <div class="col-md-4 inputGroupContainer">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon icon-border"><i
-                                                            class="fa fa-balance-scale faicons"></i></span>
+     </div>
+  </div>
 
-                                                    <select required id="id_subcat22"
-                                                            onchange="choice_sub_sub_model(this)" class="form-control">
+                            <label class="col-md-2 control-label">Sub Sub Model *
 
 
-                                                    </select>
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
 
+      <select required id="id_subcat22" onchange="choice_sub_sub_model(this)" class="form-control">
 
-                                                </div>
-                                            </div>
-                                        </div>
 
 
-                                        <div class="form-group row">
-                                            <label class="col-md-2 control-label">Brand
+  </select>
 
 
-                                            </label>
-                                            <div class="col-md-4 inputGroupContainer">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon icon-border"><i
-                                                            class="fa fa-balance-scale faicons"></i></span>
-                                                    <input value="HSCO" type="text" placeholder="brand"
-                                                           class="form-control" name="brand">
-                                                    <!--<datalist style="height:20px;" id="brand">-->
-                                                    <!--<option value = "HSCO"></option>-->
-                                                    <!--</datalist>-->
-                                                </div>
-                                            </div>
-                                            <label class="col-md-2 control-label">Unit *
+     </div>
+  </div>
+</div>
 
 
-                                            </label>
-                                            <div class="col-md-4 inputGroupContainer">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon icon-border"><i
-                                                            class="fa fa-list faicons"></i></span>
-                                                    <input type="text" required placeholder="unit" value="kg"
-                                                           class="form-control" name="unit" list="unit">
-                                                    <datalist style="height:20px;" id="unit">
-                                                        <option value="gm"></option>
-                                                        <option value="kg"></option>
-                                                        <option value="Ton"></option>
-                                                        <option value="Liter"></option>
-                                                        <option value="ml"></option>
-                                                        <option value="meter"></option>
-                                                        <option value="inch"></option>
-                                                        <option value="foot"></option>
-                                                    </datalist>
-                                                </div>
-                                            </div>
 
+<div class="form-group row">
+  <label class="col-md-2 control-label">Brand
 
-                                        </div>
 
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+ <input value="HSCO" type="text" placeholder="brand" class="form-control" name="brand" >
+    <!--<datalist style="height:20px;" id="brand">-->
+    <!--<option value = "HSCO"></option>-->
+    <!--</datalist>-->
+  </div>
+  </div>
+ <label class="col-md-2 control-label">Unit *
 
-                                        <div id="product_details">
-                                            <div class="form-group row">
 
-                                                <label class="col-md-2 control-label">Capacity *
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+ <input  type="text" required placeholder="unit" value="kg" class="form-control" name="unit" list="unit">
+    <datalist style="height:20px;" id="unit">
+    <option value = "gm"></option>
+    <option value = "kg"></option>
+    <option value = "Ton"></option>
+    <option value = "Liter"></option>
+    <option value = "ml"></option>
+    <option value = "meter"></option>
+    <option value = "inch"></option>
+    <option value = "foot"></option>
+    </datalist>
+  </div>
+  </div>
 
-                                                </label>
 
-                                                <div class="col-md-4 inputGroupContainer">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon icon-border"><i
-                                                                class="fa fa-truck faicons"></i></span>
-                                                        <input name="capacity" required placeholder="Capacity"
-                                                               class="form-control" type="text" value="">
-                                                    </div>
-                                                </div>
-                                                <label class="col-md-2 control-label">Rate *
+</div>
 
 
-                                                </label>
-                                                <div class="col-md-4 inputGroupContainer">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon icon-border"><i
-                                                                class="fa fa-user faicons"></i></span>
-                                                        <input required placeholder="Rate" class="form-control"
-                                                               id="rate" onkeyup="total_product_amount()" step="0.2"
-                                                               type="number">
-                                                    </div>
-                                                </div>
+<div id="product_details">
+<div class="form-group row">
 
+    <label class="col-md-2 control-label">Capacity *
 
-                                            </div>
-                                        </div>
+</label>
 
-                                        <div class="form-group row">
-                                            <label class="col-md-2 control-label">Quantity *
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-truck faicons"></i></span>
+  <input  name="capacity" required placeholder="Capacity" class="form-control"  type="text" value="">
+    </div>
+  </div>
+  <label class="col-md-2 control-label">Rate *
 
-                                            </label>
 
-                                            <div class="col-md-4 inputGroupContainer">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon icon-border"><i
-                                                            class="fa fa-suitcase faicons"></i></span>
-                                                    <input name="quantity" placeholder="Quantity" id="quantity"
-                                                           onkeyup="total_product_amount()" required
-                                                           class="form-control" type="number" value="1">
-                                                </div>
-                                            </div>
 
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input required placeholder="Rate" class="form-control" id="rate" onkeyup="total_product_amount()" step="0.2" type="number">
+    </div>
+  </div>
 
-                                            <label class="col-md-2 control-label">Amount *
 
 
-                                            </label>
-                                            <div class="col-md-4 inputGroupContainer">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon icon-border"><i
-                                                            class="fa fa-user faicons"></i></span>
-                                                    <input name="value_of_goods" required placeholder="Rate x quantity"
-                                                           id="amount" onclick="total_product_amount()"
-                                                           class="form-control" step="0.2" type="number">
-                                                </div>
-                                            </div>
-                                            <!--                    <label class="col-md-2 control-label">Purchase Type:-->
 
-                                            <!--</label>-->
 
-                                            <!--    <div class="col-md-4 inputGroupContainer">-->
-                                            <!--  <div class="input-group">-->
-                                            <!--  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
-                                            <!--  <input  name="purchase_type" placeholder="Purchase Type" class="form-control"  type="text" value="">-->
-                                            <!--    </div>-->
-                                            <!--  </div>-->
+</div>
+</div>
 
+                <div class="form-group row">
+                     <label class="col-md-2 control-label">Quantity *
 
-                                        </div>
+</label>
 
-                                        <div class="form-group row">
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>
+  <input  name="quantity" placeholder="Quantity" id="quantity" onkeyup="total_product_amount()"  required class="form-control" type="number"  value="1">
+    </div>
+  </div>
 
 
-                                            <label class="col-md-2 control-label">Serial No. of Scale
 
-                                            </label>
+              <label class="col-md-2 control-label">Amount *
 
-                                            <div class="col-md-4 inputGroupContainer">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon icon-border"><i
-                                                            class="fa fa-sort-numeric-asc faicons"></i></span>
-                                                    <input name="serial_no_scale" placeholder="Serial No. of Scale"
-                                                           class="form-control" type="text" value="">
-                                                </div>
-                                            </div>
 
 
-                                            <label class="col-md-2 control-label">Select Godown
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="value_of_goods" required placeholder="Rate x quantity"  id="amount" onclick="total_product_amount()"  class="form-control" step="0.2" type="number">
+    </div>
+  </div>
+<!--                    <label class="col-md-2 control-label">Purchase Type:-->
 
+<!--</label>-->
 
-                                            </label>
-                                            <div class="col-md-4 inputGroupContainer">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon icon-border"><i
-                                                            class="fa fa-file faicons"
-                                                            style="margin-top: 20px;"></i></span>
-                                                    <select required id="godown" name="godown" onchange="choice5(this)"
-                                                            class="form-control">
-                                                        {% if default_godown %}
-                                                        <option value="{{default_godown.id}}">
-                                                            {{default_godown.name_of_godown}}
-                                                        </option>
-                                                        {% else %}
-                                                        <option value="">Select</option>
-                                                        {% endif %}
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
+<!--  <input  name="purchase_type" placeholder="Purchase Type" class="form-control"  type="text" value="">-->
+<!--    </div>-->
+<!--  </div>-->
 
-                                                        {% for godown in godowns %}
-                                                        <option value="{{godown.id}}">{{godown.name_of_godown}}</option>
 
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
 
-                                        </div>
+                </div>
 
-                                        <div class="form-group row">
+            <div class="form-group row">
 
 
-                                            <label class="col-md-2 control-label">Last Product ?
-                                            </label>
+                    <label class="col-md-2 control-label">Serial No. of Scale
 
-                                            <div class="col-md-4 inputGroupContainer">
-                                                <div class="input-group">
-                                                    <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
-                                                    YES:<input name="is_last_product_yes" value="yes"
-                                                               placeholder="Is deleted" class="form-control"
-                                                               type="radio">
-                                                    NO:<input name="is_last_product_yes" value="no"
-                                                              placeholder="Is deleted" class="form-control"
-                                                              type="radio">
+</label>
 
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br>
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
+  <input  name="serial_no_scale" placeholder="Serial No. of Scale" class="form-control"  type="text" value="">
+    </div>
+  </div>
 
 
-                                        <input type="hidden" value="" id="type_of_scale" name="type_of_scale">
-                                        <input type="hidden" value="" id="model_of_purchase" name="model_of_purchase">
-                                        <input type="hidden" value="" id="sub_model" name="sub_model">
-                                        <input type="hidden" value="" id="sub_sub_model" name="sub_sub_model">
-                                        <input type="hidden" value="{{global_count}}" name="global_count">
+  <label class="col-md-2 control-label">Select Godown
 
 
-                                        <center>
-                                            <button type="submit" value="submit"
-                                                    class="btn btn-primary">Submit
-                                            </button>
 
-                                        </center>
-                                    </form>
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
+<select required id="godown" name="godown" onchange="choice5(this)" class="form-control">
+    {% if default_godown %}
+          <option value="{{default_godown.id}}">{{default_godown.name_of_godown}}</option>
+    {% else %}
+              <option value="">Select</option>
+    {% endif %}
 
+  {% for godown in godowns %}
+  <option value="{{godown.id}}">{{godown.name_of_godown}}</option>
 
-                                </div>
-                                <!-- End of Page Wrapper -->
+  {% endfor %}
+</select>
+  </div>
+  </div>
 
-                                <!-- Scroll to Top Button-->
+</div>
 
-                            </div>
-                        </div>
-                    </div>
+                                <div class="form-group row">
 
 
-                    <script>
+                    <label class="col-md-2 control-label">Last Product ?
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
+  YES:<input  name="is_last_product_yes" value="yes" placeholder="Is deleted" class="form-control" type="radio">
+  NO:<input  name="is_last_product_yes" value="no" placeholder="Is deleted" class="form-control" type="radio">
+
+    </div>
+  </div>
+</div>
+            <br>
+
+
+  <input type="hidden" value="" id="type_of_scale" name="type_of_scale">
+  <input type="hidden" value="" id="model_of_purchase" name="model_of_purchase">
+  <input type="hidden" value="" id="sub_model" name="sub_model">
+  <input type="hidden" value="" id="sub_sub_model" name="sub_sub_model">
+  <input type="hidden" value="{{global_count}}"  name="global_count">
+
+
+<center>
+    <button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Submit</button>
+
+</center>
+            </form>
+
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
   function choice5(select) {
 
 
@@ -568,9 +511,8 @@ color:;
 }
 
 
-
-                    </script>
-                    <script type="text/javascript">
+  </script>
+  <script type="text/javascript">
       function total_product_amount(){
     var rate = parseFloat(document.getElementById("rate").value);
             var quantity = parseFloat(document.getElementById("quantity").value);
@@ -580,9 +522,8 @@ color:;
             document.getElementById("amount").value = total;
 }
 // create an interval calling the specified function every 10 seconds.
-
-                    </script>
-                    <script>
+  </script>
+<script>
  function choice1(select) {
      //alert(select.options[select.selectedIndex].value);
 
@@ -731,35 +672,34 @@ function isOneChecked() {
 }
 
 
-
-                    </script>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
+  </script>
 
 
-    <!--end::Purchase-->
-</div>
-<!--end::Content-->
-</div>
-<!--end::Demo Panel-->
-<!--begin::Global Config(global config for global JS scripts)-->
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
 
-<!--end::Global Config-->
-<!--begin::Global Theme Bundle(used by all pages)-->
-<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
-<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
-<script src="{% static 'js/scripts.bundle.js' %}"></script>
-<!--end::Global Theme Bundle-->
-<!--begin::Page Vendors(used by this page)-->
-<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
-<!--end::Page Vendors-->
-<!--begin::Page Scripts(used by this page)-->
-<script src="{% static 'js/pages/widgets.js' %}"></script>
-<!--end::Page Scripts-->
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <!--<script src="{% static 'js/dashboard/Chart.min.js' %}"></script>-->
+
+  <!-- Page level custom scripts -->
+  <!--<script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>-->
+  <!--<script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>-->
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+
+
 </body>
-<!--end::Body-->
+
 </html>

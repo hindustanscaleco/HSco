@@ -1,27 +1,44 @@
-<table class="table">
-    <tr>
-        <th>Name</th>
-        <th>Role</th>
-        <th>Email</th>
-        <th>Mobile</th>
-        <th>Group</th>
-    </tr>
-    {% if deleted %}
-    <tr>
-        <th>List Of Deleted Manager Under Your Work Area</th>
-    </tr>
-    {% endif %}
-    {% for list in manager_list %}
-    <tr>
-        <td><a href="/update_manager/{{list.id}}" >{{list.name}}</a></td>
-        <td>{{list.role}}</td>
-        <td>{{list.email}}</td>
-        <td>{{list.mobile}}</td>
-        <td>{{list.group}}</td>
-    </tr>
-    {% endfor %}
-</table>
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
 
 
+
+                    <div class="col-xl-2 col-md-1 mb-1"> <center>Name </center>  </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> Role</center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"> <center>Email </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"> <center> Mobile</center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"> <center> Group </center> </div>
+
+
+
+                </div>
+              </div>
+            </div><br><br>
+   {% if deleted %}
+               <center>
+                   <p>List Of Deleted Manager Under Your Work Area</p>
+
+               </center>
+               {% endif %}
+                {% for list in manager_list %}
+              <div class="col-xl-12 col-md-12 mb-12">
+              <div class="card shadow">
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+
+
+
+                    <div class="col-xl-2 col-md-1 mb-1"> <center><a href="/update_manager/{{list.id}}" >{{list.name}}</a> </center>  </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"><center> {{list.role}}</center></div>|
+                    <div class="col-xl-3 col-md-1 mb-1"> <center>{{list.email}} </center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"> <center> {{list.mobile}}</center> </div>|
+                    <div class="col-xl-2 col-md-1 mb-1"> <center> {{list.group}} </center> </div>
+
+
+
+                </div>
+              </div>
+            </div>
+                {% endfor %}
 
 <br>
