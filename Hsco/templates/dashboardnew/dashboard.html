@@ -82,7 +82,11 @@
 										<a href="#" class="btn btn-primary btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<span class="svg-icon svg-icon-lg">
 												<!--begin::Svg Icon | path:assets/media/svg/icons/Files/File.svg-->
-
+												{% if request.user.is_authenticated %}
+													WELCOME  <b>{{request.user.profile_name}}</b>
+												{% else %}
+												Login
+												{% endif %}
 												<!--end::Svg Icon-->
 											</span>
 											<span class="d-none d-md-inline">
@@ -552,7 +556,7 @@
 													<path d="M18,8 L16,8 C15.4477153,8 15,7.55228475 15,7 C15,6.44771525 15.4477153,6 16,6 L18,6 L18,4 C18,3.44771525 18.4477153,3 19,3 C19.5522847,3 20,3.44771525 20,4 L20,6 L22,6 C22.5522847,6 23,6.44771525 23,7 C23,7.55228475 22.5522847,8 22,8 L20,8 L20,10 C20,10.5522847 19.5522847,11 19,11 C18.4477153,11 18,10.5522847 18,10 L18,8 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
 													<path d="M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z" fill="#000000" fill-rule="nonzero" />
 												</g>
-											</svg>
+											</svg>dsds
 											<!--end::Svg Icon-->
 										</span>
 									</button>
@@ -687,36 +691,6 @@
 		</div>
 		<!--end::Scrolltop-->
 		<!--begin::Sticky Toolbar-->
-		<ul class="sticky-toolbar nav flex-column pl-2 pr-2 pt-3 pb-3 mt-4">
-			<!--begin::Item-->
-			<li class="nav-item mb-2" id="kt_demo_panel_toggle" data-toggle="tooltip" title="Check out more demos" data-placement="right">
-				<a class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" href="#">
-					<i class="flaticon2-drop"></i>
-				</a>
-			</li>
-			<!--end::Item-->
-			<!--begin::Item-->
-			<li class="nav-item mb-2" data-toggle="tooltip" title="Layout Builder" data-placement="left">
-				<a class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" href="https://preview.keenthemes.com/metronic/demo3/builder.html" target="_blank">
-					<i class="flaticon2-gear"></i>
-				</a>
-			</li>
-			<!--end::Item-->
-			<!--begin::Item-->
-			<li class="nav-item mb-2" data-toggle="tooltip" title="Documentation" data-placement="left">
-				<a class="btn btn-sm btn-icon btn-bg-light btn-icon-warning btn-hover-warning" href="https://keenthemes.com/metronic/?page=docs" target="_blank">
-					<i class="flaticon2-telegram-logo"></i>
-				</a>
-			</li>
-			<!--end::Item-->
-			<!--begin::Item-->
-			<li class="nav-item" id="kt_sticky_toolbar_chat_toggler" data-toggle="tooltip" title="Chat Example" data-placement="left">
-				<a class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-danger" href="#" data-toggle="modal" data-target="#kt_chat_modal">
-					<i class="flaticon2-chat-1"></i>
-				</a>
-			</li>
-			<!--end::Item-->
-		</ul>
 		<!--end::Sticky Toolbar-->
 		<!--begin::Demo Panel-->
 		<div id="kt_demo_panel" class="offcanvas offcanvas-right p-10">
@@ -733,7 +707,6 @@
 			<!--end::Content-->
 		</div>
 		<!--end::Demo Panel-->
-		<script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>
 		<!--begin::Global Config(global config for global JS scripts)-->
 		<script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1200 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#1BC5BD", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#6993FF", "warning": "#FFA800", "danger": "#F64E60", "light": "#F3F6F9", "dark": "#212121" }, "light": { "white": "#ffffff", "primary": "#1BC5BD", "secondary": "#ECF0F3", "success": "#C9F7F5", "info": "#E1E9FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#212121", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#ECF0F3", "gray-300": "#E5EAEE", "gray-400": "#D6D6E0", "gray-500": "#B5B5C3", "gray-600": "#80808F", "gray-700": "#464E5F", "gray-800": "#1B283F", "gray-900": "#212121" } }, "font-family": "Poppins" };</script>
 		<!--end::Global Config-->
@@ -913,7 +886,7 @@ var KTApexChartsDemo = function () {
 			series: [{
 				name: 'Net Profit',
 				data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-			}],
+			} ],
 			chart: {
 				type: 'bar',
 				height: 350
@@ -951,7 +924,7 @@ var KTApexChartsDemo = function () {
 					}
 				}
 			},
-			colors: [primary, success, warning]
+			colors: [success, warning]
 		};
 
 		var chart = new ApexCharts(document.querySelector(apexChart), options);
@@ -1003,7 +976,7 @@ var KTApexChartsDemo = function () {
 					}
 				}
 			},
-			colors: [primary, success, warning]
+			colors: [warning]
 		};
 
 		var chart = new ApexCharts(document.querySelector(apexChart), options);
@@ -1055,7 +1028,7 @@ var KTApexChartsDemo = function () {
 					}
 				}
 			},
-			colors: [primary, success, warning]
+			colors: [danger]
 		};
 
 		var chart = new ApexCharts(document.querySelector(apexChart), options);
